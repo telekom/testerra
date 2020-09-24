@@ -34,7 +34,7 @@ public interface PageObjectFactory {
      */
     <T extends PageObject> T createPage(Class<T> pageClass);
     default <T extends PageObject> T createPage(Class<T> pageClass, WebDriver webDriver) {
-        return createPageWithCheckRule(pageClass, webDriver, CheckRule.IS_DISPLAYED);
+        return createPageWithCheckRule(pageClass, webDriver, CheckRule.DEFAULT);
     }
     <T extends PageObject> Class<T> findBestMatchingClass(Class<T> pageClass, WebDriver webDriver);
     <T extends Component> T createComponent(Class<T> componentClass, UiElement rootElement);

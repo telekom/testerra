@@ -222,13 +222,6 @@ public abstract class Page extends AbstractPage implements TestablePage, Nameabl
         return uiElementFactory.createFromPage(this, locate);
     }
 
-    protected void pCheckPage(final boolean findNot, final boolean checkCaller) {
-        super.pCheckPage(findNot, checkCaller);
-        if (PropertyManager.getBooleanProperty(TesterraProperties.SCREENSHOT_ON_PAGELOAD, false)) {
-            this.screenshot().toReport();
-        }
-    }
-
     /**
      * Waits for a text to be not present.
      *
@@ -238,6 +231,13 @@ public abstract class Page extends AbstractPage implements TestablePage, Nameabl
     public boolean waitForIsNotTextDisplayedWithDelay(final String text, final int delayInSeconds) {
         TimerUtils.sleep(delayInSeconds * 1000);
         return waitForIsNotTextDisplayed(text);
+    }
+
+    @Override
+    protected void pageLoaded() {
+        if (PropertyManager.getBooleanProperty(TesterraProperties.SCREENSHOT_ON_PAGELOAD, false)) {
+            this.screenshot().toReport();
+        }
     }
 
     /**

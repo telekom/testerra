@@ -25,29 +25,48 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicUiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.CheckFieldAction;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.AbstractCheckFieldAction;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.lang.reflect.Field;
 
-public class GuiElementCheckFieldAction extends CheckFieldAction {
+public class GuiElementCheckFieldAction extends AbstractCheckFieldAction {
 
     private final static TestController.Overrides overrides = Testerra.injector.getInstance(TestController.Overrides.class);
+    private final CheckRule defaultCheckRule;
+    private final int defaultTimeout;
 
-    public GuiElementCheckFieldAction(Field field, AbstractPage declaringPage) {
+    public GuiElementCheckFieldAction(
+            Field field,
+            CheckRule defaultCheckRule,
+            int defaultTimeOut,
+            AbstractPage declaringPage
+    ) {
         super(field, declaringPage);
+
+        this.defaultCheckRule = defaultCheckRule;
+        this.defaultTimeout = defaultTimeOut;
     }
 
     private void pCheckField(
         BasicUiElement guiElement,
         Check check
     ) {
+
         CheckRule checkRule = check.checkRule();
         if (checkRule == CheckRule.DEFAULT) {
-            checkRule = CheckRule.valueOf(GuiElement.Properties.CHECK_RULE.asString());
+            checkRule = this.defaultCheckRule;
+            if (checkRule == CheckRule.DEFAULT) {
+                checkRule = CheckRule.valueOf(GuiElement.Properties.CHECK_RULE.asString());
+            }
         }
 
-        int prevTimeout = overrides.setTimeout(check.timeout());
+        int useTimeout = check.timeout();
+        if (useTimeout < 0) {
+            useTimeout = this.defaultTimeout;
+        }
+
+        int prevTimeout = overrides.setTimeout(useTimeout);
 
         switch (checkRule) {
             case IS_PRESENT:

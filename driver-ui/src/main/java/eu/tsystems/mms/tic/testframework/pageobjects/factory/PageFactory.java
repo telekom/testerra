@@ -149,7 +149,7 @@ public final class PageFactory {
 
             // check page
             if (positiveCheck) {
-                t.checkUiElements(CheckRule.IS_DISPLAYED);
+                t.checkUiElements(CheckRule.DEFAULT);
             } else {
                 t.checkUiElements(CheckRule.IS_NOT_DISPLAYED);
             }

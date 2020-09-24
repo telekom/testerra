@@ -84,23 +84,24 @@ public abstract class AbstractPage implements
     private int elementTimeoutInSeconds;
 
     /**
-     * @deprecated Should not be public or hidden by an interface.
-     * @see {@link PageOptions#elementTimeoutInSeconds()}
+     * @see {@link PageOptions#elementTimeoutInSeconds()} or {@link #applyPageOptions(PageOptions)}
      */
-    @Deprecated
-    public void setElementTimeoutInSeconds(int newElementTimeout) {
+    private void setElementTimeoutInSeconds(int newElementTimeout) {
         elementTimeoutInSeconds = newElementTimeout;
     }
 
     /**
      * Calls the assertPageIsShown method.
      */
-    private void checkAdditional(boolean findNot) {
+    private void checkAdditional(CheckRule checkRule) {
         try {
-            if (findNot) {
-                assertPageIsNotShown();
-            } else {
-                assertPageIsShown();
+            switch (checkRule) {
+                case IS_NOT_PRESENT:
+                case IS_NOT_DISPLAYED:
+                    assertPageIsNotShown();
+                break;
+                default:
+                    assertPageIsShown();
             }
         } catch (final Exception t) {
             /*
@@ -122,14 +123,7 @@ public abstract class AbstractPage implements
 
     @Override
     public PageObject checkUiElements(CheckRule checkRule) {
-        switch (checkRule) {
-            case IS_NOT_PRESENT:
-            case IS_NOT_DISPLAYED:
-                pCheckPage(true, true);
-                break;
-            default:
-                pCheckPage(false,  true);
-        }
+        pCheckPage(checkRule, true);
         return this;
     }
 
@@ -141,18 +135,10 @@ public abstract class AbstractPage implements
      */
     @Deprecated
     public final void checkPage() {
-        pCheckPage(false, true);
+        pCheckPage(CheckRule.DEFAULT, true);
     }
 
-    /**
-     * @deprecated Don't call this method on your own and use {@link PageFactory#create(Class, WebDriver)} instead
-     */
-    @Deprecated
-    public final void checkPage(final boolean inverse) {
-        pCheckPage(inverse, true);
-    }
-
-    protected void pCheckPage(final boolean findNot, final boolean checkCaller) {
+    private void pCheckPage(CheckRule checkRule, final boolean checkCaller) {
 
         /**
          * @todo This whole checkCaller block may be removed safely
@@ -204,8 +190,8 @@ public abstract class AbstractPage implements
          */
         checkPagePreparation();
         try {
-            checkAnnotatedFields();
-            checkAdditional(findNot);
+            checkAnnotatedFields(checkRule);
+            checkAdditional(checkRule);
         } catch (Throwable throwable) {
             try {
                 // call page error state logic
@@ -242,6 +228,7 @@ public abstract class AbstractPage implements
             }
         }
 
+        pageLoaded();
         log().info("Page loaded successfully");
     }
 
@@ -251,12 +238,9 @@ public abstract class AbstractPage implements
     protected void checkPagePreparation() {
     }
 
-    /**
-     * @deprecated
-     */
-    protected void handleDemoMode() {
-    }
+    protected void pageLoaded() {
 
+    }
     /**
      * Method entered when checkPage runs into an error (catching any throwable). You can throw a new throwable that
      * should be stacked onto the checkpage error (like new RuntimeException("bla", throwable) ).
@@ -267,7 +251,11 @@ public abstract class AbstractPage implements
     protected void checkPageErrorState(Throwable throwable) throws Throwable {
     }
 
-    public int getElementTimeoutInSeconds() {
+    /**
+     * @deprecated Should be set by {@link PageOptions} only
+     */
+    @Deprecated
+    protected int getElementTimeoutInSeconds() {
         if (elementTimeoutInSeconds < 1) {
             elementTimeoutInSeconds = Testerra.injector.getInstance(TestController.Overrides.class).getTimeoutInSeconds();
         }
@@ -277,7 +265,7 @@ public abstract class AbstractPage implements
     /**
      * Gets all @Check annotated fields of a class and executes a webdriver find().
      */
-    private void checkAnnotatedFields() {
+    private void checkAnnotatedFields(CheckRule checkRule) {
         List<Class<? extends AbstractPage>> allClasses = collectAllSuperClasses();
 
         allClasses.forEach(pageClass -> {
@@ -287,7 +275,7 @@ public abstract class AbstractPage implements
 
             for (Field field : pageClass.getDeclaredFields()) {
                 field.setAccessible(true);
-                List<AbstractFieldAction> fieldActions = getFieldActions(field, this);
+                List<AbstractFieldAction> fieldActions = getFieldActions(field, checkRule, this);
                 fieldActions.forEach(AbstractFieldAction::run);
                 field.setAccessible(false);
             }
@@ -296,7 +284,6 @@ public abstract class AbstractPage implements
 
     private void applyPageOptions(PageOptions pageOptions) {
         if (pageOptions.elementTimeoutInSeconds() >= 0) {
-            log().debug("Setting page specific timeout to " + pageOptions.elementTimeoutInSeconds() + "s");
             setElementTimeoutInSeconds(pageOptions.elementTimeoutInSeconds());
         }
     }
@@ -305,15 +292,17 @@ public abstract class AbstractPage implements
         return Optional.empty();
     }
 
-    private List<AbstractFieldAction> getFieldActions(Field field, AbstractPage declaringPage) {
+    private List<AbstractFieldAction> getFieldActions(Field field, CheckRule checkRule, AbstractPage declaringPage) {
         List<AbstractFieldAction> fieldActions = new ArrayList<>();
+
         SetNameFieldAction setNameFieldAction = new SetNameFieldAction(field, declaringPage);
         fieldActions.add(setNameFieldAction);
 
         addCustomFieldActions(field, declaringPage).ifPresent(customFieldActions -> fieldActions.addAll(customFieldActions));
 
-        GuiElementCheckFieldAction guiElementCheckFieldAction = new GuiElementCheckFieldAction(field, declaringPage);
+        GuiElementCheckFieldAction guiElementCheckFieldAction = new GuiElementCheckFieldAction(field, checkRule, getElementTimeoutInSeconds(), declaringPage);
         fieldActions.add(guiElementCheckFieldAction);
+
         return fieldActions;
     }
 

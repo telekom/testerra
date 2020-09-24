@@ -169,7 +169,6 @@ public class GuiElement implements UiElement, Loggable {
     public GuiElement(PageObject page, Locate locate) {
         this(page.getWebDriver(), locate, null);
         Page realPage = (Page)page;
-        setTimeoutInSeconds(realPage.getElementTimeoutInSeconds());
         setParent(realPage);
     }
 
@@ -886,7 +885,11 @@ public class GuiElement implements UiElement, Loggable {
         DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return frameAwareCore.isDisplayed();
+                try {
+                    return frameAwareCore.isDisplayed();
+                } catch (ElementNotFoundException e) {
+                    return false;
+                }
             }
 
             @Override

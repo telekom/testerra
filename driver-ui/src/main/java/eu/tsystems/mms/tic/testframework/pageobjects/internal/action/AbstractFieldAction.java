@@ -21,12 +21,10 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.action;
 
-import eu.tsystems.mms.tic.testframework.actions.Action;
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
-
 import java.lang.reflect.Field;
 
-public abstract class AbstractFieldAction extends Action {
+public abstract class AbstractFieldAction {
 
     protected final Field field;
     protected final AbstractPage declaringPage;
@@ -34,6 +32,19 @@ public abstract class AbstractFieldAction extends Action {
     public AbstractFieldAction(Field field, AbstractPage declaringPage) {
         this.field = field;
         this.declaringPage = declaringPage;
+    }
+
+    protected abstract boolean before();
+
+    protected abstract void execute();
+
+    protected abstract void after();
+
+    public void run() {
+        if (before()) {
+            execute();
+        }
+        after();
     }
 
 }

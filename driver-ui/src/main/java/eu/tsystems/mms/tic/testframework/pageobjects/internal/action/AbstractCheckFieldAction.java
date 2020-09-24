@@ -31,11 +31,11 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
-public abstract class CheckFieldAction extends AbstractFieldAction implements Loggable {
+public abstract class AbstractCheckFieldAction extends AbstractFieldAction implements Loggable {
 
     private BasicUiElement checkableInstance;
 
-    public CheckFieldAction(Field field, AbstractPage declaringPage) {
+    public AbstractCheckFieldAction(Field field, AbstractPage declaringPage) {
         super(field, declaringPage);
     }
 
@@ -88,8 +88,6 @@ public abstract class CheckFieldAction extends AbstractFieldAction implements Lo
             throw new TesterraRuntimeException(String.format("Field {%s.%s} is annotated with @Check and was never initialized (it is null)." +
                 "This is not allowed because @Check indicates a mandatory GuiElement of a Page.", declaringPage, fieldName));
         } else {
-            log().debug("Looking for GuiElement on " + declaringPage + ": " + fieldName
-                    + " with locator " + checkableInstance.toString());
             try {
                 checkField(checkableInstance, check);
             } catch (Throwable t) {

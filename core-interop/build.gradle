@@ -24,7 +24,7 @@ dependencies {
     compile 'com.google.inject.extensions:guice-assistedinject:4.2.2'
 
     // Required for java.lang.NoSuchMethodError: 'java.util.stream.Collector com.google.common.collect.ImmutableSortedSet.toImmutableSortedSet(java.util.Comparator)'
-    compile 'com.google.guava:guava:25.1-jre'
+    //compile 'com.google.guava:guava:25.1-jre'
 }
 
 test {

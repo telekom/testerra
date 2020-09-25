@@ -186,7 +186,7 @@ public class MailConnectorTest extends TesterraTest {
     public void testT01_saveAndLoadMessage() throws Exception {
 
         final String subject = STR_MAIL_SUBJECT + "testT01_saveAndLoadMessage";
-        final String pathMail = PATH_HOME + "/target/mail.eml";
+        final String pathMail = PATH_HOME + "/out/test/resources/mail.eml";
 
         // SETUP - Create message.
         final MimeMessage msg = createDefaultMessage(session, subject);

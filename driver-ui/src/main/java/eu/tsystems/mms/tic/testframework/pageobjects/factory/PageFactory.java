@@ -39,10 +39,16 @@ public final class PageFactory {
 
     }
 
+    /**
+     * @deprecated Use {@link PageObjectFactory#setGlobalPagePrefix(String)} instead
+     */
     public static void setGlobalPagesPrefix(String prefix) {
         pageFactory.setGlobalPagePrefix(prefix);
     }
 
+    /**
+     * @deprecated Use {@link PageObjectFactory#setThreadLocalPagePrefix(String)} instead
+     */
     @Deprecated
     public static void setThreadLocalPagesPrefix(String threadLocalPagesPrefix) {
         pageFactory.setThreadLocalPagePrefix(threadLocalPagesPrefix);
@@ -61,6 +67,10 @@ public final class PageFactory {
         return pageFactory.createPageWithCheckRule(pageClass, driver, CheckRule.IS_NOT_DISPLAYED);
     }
 
+    /**
+     * @deprecated Use {@link PageObjectFactory#createPage(Class, WebDriver)} instead
+     */
+    @Deprecated
     public static <T extends Page> T create(Class<T> pageClass, WebDriver driver) {
         return pageFactory.createPage(pageClass, driver);
     }

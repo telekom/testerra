@@ -73,7 +73,11 @@ public class GuiElementCheckFieldAction extends AbstractCheckFieldAction {
             }
         }
 
-        int prevTimeout = overrides.setTimeout(useTimeout);
+        int prevTimeout = -1;
+
+        if (useTimeout >= 0) {
+            prevTimeout = overrides.setTimeout(useTimeout);
+        }
 
         switch (checkRule) {
             case IS_PRESENT:
@@ -92,6 +96,7 @@ public class GuiElementCheckFieldAction extends AbstractCheckFieldAction {
                 guiElement.displayed(true);
             }
         }
+
         if (prevTimeout >= 0) {
             overrides.setTimeout(prevTimeout);
         }

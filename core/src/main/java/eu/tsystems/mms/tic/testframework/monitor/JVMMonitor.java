@@ -57,7 +57,7 @@ public class JVMMonitor {
 
     static {
         //        cmc.setSquash(true);
-        cmMemUsage.setMaxValue(MAX_MEMORY);
+        //cmMemUsage.setMaxValue(MAX_MEMORY);
         cmMemTotal.setMaxValue(MAX_MEMORY);
     }
 

@@ -108,8 +108,17 @@ public abstract class AbstractPage implements
         }
     }
 
-    @Override
-    public PageObject checkUiElements(CheckRule checkRule) {
+    /**
+     * Package private accessible by {@link PageObjectFactory}
+     */
+    PageObject checkUiElements() {
+        return checkUiElements(CheckRule.DEFAULT);
+    }
+
+    /**
+     * Package private accessible by {@link PageObjectFactory}
+     */
+    PageObject checkUiElements(CheckRule checkRule) {
         pCheckPage(checkRule, true);
         return this;
     }
@@ -126,50 +135,9 @@ public abstract class AbstractPage implements
     }
 
     private void pCheckPage(CheckRule checkRule, final boolean checkCaller) {
-
-        /**
-         * @todo This whole checkCaller block may be removed safely
-         */
-        if (checkCaller) {
-        /*
-        Check for class inheritance
-         */
-            StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-            // The calling class always sits at index "2" (Constructor). "0" is the getStacktrace() and "1" is the checkPage() call.
-            StackTraceElement stackTraceElement = stackTrace[3];
-            String callingMethodName = stackTraceElement.getMethodName();
-            if ("<init>".equals(callingMethodName)) {
-                log().debug("checkPage() was called from constructor. Please use PageFactory.create() and remove checkPage() from constructors.");
-            }
-            // Class.forName(stackTraceElement.getClassName()).isAssignableFrom(this.getClass())
-            String thisClassName = this.getClass().getName();
-            String callingClassName = stackTraceElement.getClassName();
-
-            // Ensure that checkPage was not called from any parent page class.
-            // If so, skip the check to avoid NPE on the not yet fully instantiated instance.
-            // Other classes outside the Page hierarchy are allowed to call checkPage though (no risk of NPE due to unfinished initialization).
-            Class<?> classCallingCheckPage = null;
-            try {
-                classCallingCheckPage = Class.forName(stackTraceElement.getClassName());
-            } catch (ClassNotFoundException e) {
-                log().debug("Internal error: Failed to load class that called checkPage, identified by name from stacktrace.", e);
-            }
-            /**
-             * We have explicitly check for {@link Page} here,
-             * because {@link AbstractComponent} which is legal to have within a Page is also an {@link AbstractPage}.
-             */
-            if (classCallingCheckPage != null && Page.class.isAssignableFrom(classCallingCheckPage)) {
-                if (!callingClassName.equals(thisClassName)) {
-                    log().debug("Not performing checkPage() for " + callingClassName + ", because the calling instance is of class " + thisClassName + ".");
-                    return;
-                }
-            }
-        }
-
         /*
         Logging and demo mode
          */
-        String classSimpleName = this.getClass().getSimpleName();
         log().info("Checking mandatory elements");
 
         /*
@@ -189,7 +157,7 @@ public abstract class AbstractPage implements
             } catch (Throwable importantThrowable) {
                 String message = importantThrowable.getMessage();
                 if (message == null) {
-                    message = "Page not found: " + classSimpleName;
+                    message = "Page not found: " + this.toString();
                 }
 
                 /*

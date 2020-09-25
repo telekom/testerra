@@ -28,10 +28,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
  * Components are PageObjects restricted to a root GuiElement
  * @author Mike Reiche
  */
-public interface Component<SELF> extends
-    CheckablePage,
-    BasicUiElement,
-    Nameable<SELF>
-{
+public interface Component<SELF> extends BasicUiElement, Nameable<SELF> {
     UiElementList<SELF> list();
 }

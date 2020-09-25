@@ -27,7 +27,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.InteractiveUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
-import eu.tsystems.mms.tic.testframework.test.core.pageobjects.testdata.MyVariables;
 import eu.tsystems.mms.tic.testframework.test.core.pageobjects.testdata.components.InputForm;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -47,8 +46,6 @@ public class WebTestPage extends BasePage {
     @Check(nonFunctional = true)
     private final GuiElement button1 = new GuiElement(this.getWebDriver(), By.id("4"));
 
-    private GuiElement specialElementFromVariable;
-
     @Check
     private InputForm inputForm = createComponent(InputForm.class, find(By.className("box")));
 
@@ -61,15 +58,6 @@ public class WebTestPage extends BasePage {
     }
 
     private final UiElement radioBtn = findById(7);
-
-    /**
-     * Default Page constructor.
-     */
-    public WebTestPage(WebDriver driver, MyVariables myVariables) {
-        super(driver);
-
-        specialElementFromVariable = new GuiElement(driver, By.id("" + myVariables.number));
-    }
 
     public WebTestPage(WebDriver driver) {
         super(driver);

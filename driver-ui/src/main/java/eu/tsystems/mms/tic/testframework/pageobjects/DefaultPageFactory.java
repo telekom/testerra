@@ -80,7 +80,7 @@ public class DefaultPageFactory implements PageObjectFactory, Loggable {
         try {
             Constructor<T> constructor = componentClass.getConstructor(UiElement.class);
             T component = constructor.newInstance(rootElement);
-            component.checkUiElements();
+            ((AbstractPage)component).checkUiElements();
             return component;
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new TesterraRuntimeException(String.format("Could not create instance of %s(%s)", componentClass, rootElement), e);
@@ -98,7 +98,7 @@ public class DefaultPageFactory implements PageObjectFactory, Loggable {
         try {
             Constructor<T> constructor = pageClass.getConstructor(WebDriver.class);
             T page = constructor.newInstance(webDriver);
-            page.checkUiElements(checkRule);
+            ((AbstractPage)page).checkUiElements(checkRule);
             return page;
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new TesterraRuntimeException(String.format("Could not create instance of %s(%s)", pageClass, webDriver), e);

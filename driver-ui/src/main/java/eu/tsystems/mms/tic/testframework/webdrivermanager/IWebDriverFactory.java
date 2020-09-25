@@ -29,6 +29,9 @@ import java.util.List;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 public interface IWebDriverFactory {
+    /**
+     * Use {@link #createWebDriver(WebDriverRequest, SessionContext)} instead
+     */
     @Deprecated
     EventFiringWebDriver getWebDriver(WebDriverRequest r, SessionContext sessionContext);
     default EventFiringWebDriver createWebDriver(WebDriverRequest request, SessionContext sessionContext) {
@@ -39,6 +42,9 @@ public interface IWebDriverFactory {
     default boolean isBrowserSupported(String browser) {
         return getSupportedBrowsers().indexOf(browser) >= 0;
     }
+
     GuiElementCore createCore(GuiElementData guiElementData);
-    GuiElementCore createCoreFromParent(GuiElementData parent, Locate locate);
+    default GuiElementCore createCoreFromParent(GuiElementData parent, Locate locate) {
+        return createCore(new GuiElementData(parent, locate));
+    }
 }

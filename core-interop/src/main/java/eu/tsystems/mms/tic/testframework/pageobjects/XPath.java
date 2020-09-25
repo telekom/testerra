@@ -21,6 +21,7 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
+import eu.tsystems.mms.tic.testframework.utils.Conditions;
 import java.util.ArrayList;
 
 /**
@@ -61,18 +62,48 @@ public class XPath {
         from.parentSelect = from;
     }
 
-    public class Function {
-        private static final String CONTAINS="contains";
-        private static final String START="starts-with";
-        private static final String END="ends-with";
+    public static Conditions createAttributeConditions() {
+        return new Conditions("and", "or");
+    }
+
+    /**
+     * Utility function for generating words search
+     */
+    static String somethingContainsWord(String something, Object string) {
+        /**
+         * @see {https://stackoverflow.com/questions/1390568/how-can-i-match-on-an-attribute-that-contains-a-certain-string}
+         */
+        // Regex match with XPath 2.0
+        //attributes.add(String.format("contains(@class, '[\\s|\\W]%s[\\s|\\W]')", className));
+        return String.format("contains(concat(' ', normalize-space(%s), ' '), ' %s ')", something, string);
+    }
+
+    static String somethingIs(String something, Object string) {
+        return String.format("%s='%s'", something, string);
+    }
+
+    static String somethingIsNot(String something, Object string) {
+        return String.format("%s!='%s'", something, string);
+    }
+
+    static String somethingMatches(String operation, String something, Object string) {
+        return String.format("%s(%s,'%s')", operation, something, string);
+    }
+
+    public class Test {
+        static final String CONTAINS="contains";
+        static final String START="starts-with";
+        static final String END="ends-with";
+
         XPath xPath;
         String function;
-        Function(XPath xPath, String function) {
+
+        Test(XPath xPath, String function) {
             this.xPath = xPath;
             this.function = function;
         }
         public XPath is(Object value) {
-            somethingIs(function, value);
+            attributeIs(function, value);
             return xPath;
         }
         public XPath present() {
@@ -80,44 +111,39 @@ public class XPath {
             return xPath;
         }
         public XPath contains(Object value) {
-            somethingMatches(CONTAINS, function, value);
+            attributeMatches(CONTAINS, function, value);
             return xPath;
         }
 
         public XPath hasWords(Object ... words) {
-            somethingContainsWords(function, words);
+            attributeContainsWords(function, words);
             return xPath;
         }
 
         public XPath startsWith(Object value) {
-            somethingMatches(START, function, value);
+            attributeMatches(START, function, value);
             return xPath;
         }
 
         public XPath endsWith(Object value) {
-            somethingMatches(END, function, value);
+            attributeMatches(END, function, value);
             return xPath;
         }
 
-        private void somethingIs(String something, Object string) {
-            attributes.add(String.format("%s='%s'", something, string));
+        private void attributeIs(String something, Object string) {
+            attributes.add(somethingIs(something, string));
         }
 
-        private void somethingMatches(String operation, String something, Object string) {
-            attributes.add(String.format("%s(%s,'%s')", operation, something, string));
+        private void attributeMatches(String operation, String something, Object string) {
+            attributes.add(somethingMatches(operation, something, string));
         }
-        private void somethingContainsWord(String something, Object string) {
-            /**
-             * @see {https://stackoverflow.com/questions/1390568/how-can-i-match-on-an-attribute-that-contains-a-certain-string}
-             */
-            attributes.add(String.format("contains(concat(' ', normalize-space(%s), ' '), ' %s ')", something, string));
-            // Regex match with XPath 2.0
-            //attributes.add(String.format("contains(@class, '[\\s|\\W]%s[\\s|\\W]')", className));
+        private void attributeContainsWord(String something, Object string) {
+            attributes.add(somethingContainsWord(something, string));
         }
-        private void somethingContainsWords(String something, Object ... texts) {
+        private void attributeContainsWords(String something, Object ... texts) {
             for (Object text : texts) {
                 for (String word : text.toString().split("\\s+")) {
-                    somethingContainsWord(something, word);
+                    attributeContainsWord(something, word);
                 }
             }
         }
@@ -127,24 +153,24 @@ public class XPath {
         return attribute("class").hasWords(classes);
     }
 
-    public Function attribute(Attribute attribute) {
-        return new Function(this, "@"+attribute.toString());
+    public Test attribute(Attribute attribute) {
+        return new Test(this, "@"+attribute.toString());
     }
 
     public XPath attribute(Attribute attribute, Object value) {
         return attribute(attribute).is(value);
     }
 
-    public Function text() {
-        return new Function(this, ".//text()");
+    public Test text() {
+        return new Test(this, ".//text()");
     }
 
     public XPath text(Object value) {
         return text().is(value);
     }
 
-    public Function attribute(String attribute) {
-        return new Function(this, "@"+attribute);
+    public Test attribute(String attribute) {
+        return new Test(this, "@"+attribute);
     }
 
     public XPath attribute(String attribute, Object value) {
@@ -152,12 +178,7 @@ public class XPath {
     }
 
     protected static String translateSubSelection(String selector) {
-        if (!selector.startsWith("/")
-                /**
-                 * Workaround for {https://jira.t-systems-mms.eu/browse/XETA-858}
-                 */
-                && !selector.startsWith(".")
-        ) {
+        if (!selector.startsWith("/") && !selector.startsWith(".")) {
             selector = "//"+selector;
         }
         return selector;

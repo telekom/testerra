@@ -26,18 +26,48 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 /**
- * Advanced locate features
+ * Abstract {@link Locate} implementation
  * @author Mike Reiche
  */
-public interface Locate {
-    By[] getBy();
-    Locate unique();
-    default Locate displayed() {
-        return displayed(true);
-    }
-    default Locate displayed(boolean displayed) {
-        return filter(webElement -> webElement.isDisplayed()==displayed);
+public abstract class AbstractLocate implements Locate {
+    private By[] by;
+    protected Predicate<WebElement> filter;
+    protected boolean unique = false;
+
+    AbstractLocate(By...by) {
+        this.setBy(by);
     }
 
-    Locate filter(Predicate<WebElement> filter);
+    public By[] getBy() {
+        return this.by;
+    }
+
+    public boolean isUnique() {
+        return this.unique;
+    }
+
+    public Locate unique() {
+        this.unique = true;
+        return this;
+    }
+
+    public Locate filter(Predicate<WebElement> filter) {
+        this.filter = filter;
+        return this;
+    }
+
+    public Predicate<WebElement> getFilter() {
+        return this.filter;
+    }
+
+    public Locate setBy(By...by) {
+        this.by = by;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        String toString = by.toString() + (unique ? " (unique)" : "");
+        return toString;
+    }
 }

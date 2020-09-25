@@ -26,9 +26,11 @@ import com.google.inject.Scopes;
 import com.google.inject.multibindings.Multibinder;
 import eu.tsystems.mms.tic.testframework.hooks.DriverUiHook;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
+import eu.tsystems.mms.tic.testframework.pageobjects.DefaultElementLabelProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.DefaultPageFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.DefaultTestControllerOverrides;
 import eu.tsystems.mms.tic.testframework.pageobjects.DefaultUiElementFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.ElementLabelProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageObjectFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultPropertyAssertionFactory;
@@ -44,6 +46,7 @@ public class ConfigureDriverUi extends AbstractModule {
         bind(TestController.Overrides.class).to(DefaultTestControllerOverrides.class).in(Scopes.SINGLETON);
         bind(PropertyAssertionFactory.class).to(DefaultPropertyAssertionFactory.class).in(Scopes.SINGLETON);
         bind(IWebDriverManager.class).to(DefaultWebDriverManager.class).in(Scopes.SINGLETON);
+        bind(ElementLabelProvider.class).to(DefaultElementLabelProvider.class).in(Scopes.SINGLETON);
 
         Multibinder<ModuleHook> hookBinder = Multibinder.newSetBinder(binder(), ModuleHook.class);
         hookBinder.addBinding().to(DriverUiHook.class).in(Scopes.SINGLETON);

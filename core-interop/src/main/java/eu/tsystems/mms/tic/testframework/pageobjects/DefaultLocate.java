@@ -19,27 +19,16 @@
  * under the License.
  *
  */
-package eu.tsystems.mms.tic.testframework.exceptions;
+package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import org.openqa.selenium.By;
 
 /**
- * Runtime Exception, stating that a {@link UiElement} is missing.
+ * Advanced selector for elements as replacement for By
+ * @author Mike Reiche
  */
-public class ElementNotFoundException extends RuntimeException {
-    public ElementNotFoundException(UiElement element, Throwable cause) {
-        this("»"+element.toString(true) + "« not found", cause);
+public class DefaultLocate extends AbstractLocate implements Locate {
+    DefaultLocate(By...oneOf) {
+        super(oneOf);
     }
-
-    /**
-     * Constructor with exception.
-     *
-     * @param text Exception message.
-     * @param cause exception for message output
-     */
-    private ElementNotFoundException(final String text, final Throwable cause) {
-        super(text, cause);
-    }
-
-
 }

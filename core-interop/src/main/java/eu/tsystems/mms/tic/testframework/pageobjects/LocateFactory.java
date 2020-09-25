@@ -29,13 +29,13 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 import org.openqa.selenium.By;
 
 /**
- * A Builder for {@link Locate}
+ * A factory for {@link Locate}
  *
  * @author Mike Reiche
  */
 public class LocateFactory {
     public Locate by(By by) {
-        return new Locate(by);
+        return new DefaultLocate(by);
     }
 
     public Locate by(XPath xPath) {
@@ -45,7 +45,7 @@ public class LocateFactory {
     public Locate byQa(String string) {
         return by(XPath.from("*").attribute(UiElement.Properties.QA_ATTRIBUTE.asString()).is(string));
     }
-    public Locate prepare(final String format) {
-        return new Locate(format);
+    public PreparedLocate prepare(final String format) {
+        return new DefaultPreparedLocate(format);
     }
 }

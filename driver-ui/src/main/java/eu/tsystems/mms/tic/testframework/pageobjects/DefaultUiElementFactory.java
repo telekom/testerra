@@ -45,10 +45,7 @@ public class DefaultUiElementFactory implements UiElementFactory, Loggable {
     }
 
     @Override
-    public UiElement createWithFrames(
-        Locate locator,
-        UiElement... frames
-    ) {
+    public UiElement createWithFrames(Locate locator, UiElement... frames) {
         if (frames == null || frames.length == 0) {
             throw new TesterraRuntimeException("No frames given");
         }
@@ -56,10 +53,7 @@ public class DefaultUiElementFactory implements UiElementFactory, Loggable {
     }
 
     @Override
-    public UiElement createFromPage(
-        PageObject page,
-        Locate locator
-    ) {
+    public UiElement createFromPage(PageObject page, Locate locator) {
         return new GuiElement(page, locator);
     }
 

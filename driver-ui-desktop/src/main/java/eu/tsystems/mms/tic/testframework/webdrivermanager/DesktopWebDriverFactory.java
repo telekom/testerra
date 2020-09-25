@@ -36,8 +36,6 @@ import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.internal.utils.TimingInfosCollector;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
-import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElementLocator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.DesktopGuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
@@ -60,7 +58,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import net.anthavio.phanbedder.Phanbedder;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -87,8 +84,7 @@ import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRequest> implements
     IWebDriverFactory,
-    Loggable,
-    UiElementLocator
+    Loggable
 {
     public static final TimingInfosCollector STARTUP_TIME_COLLECTOR = new TimingInfosCollector();
 
@@ -553,26 +549,5 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
     @Override
     public GuiElementCore createCore(GuiElementData guiElementData) {
         return new DesktopGuiElementCore(guiElementData);
-    }
-
-    @Override
-    public GuiElementCore createCoreFromParent(GuiElementData parent, Locate locate) {
-        String abstractLocatorString = locate.getBy().toString();
-        if (abstractLocatorString.toLowerCase().contains("xpath")) {
-            int i = abstractLocatorString.indexOf(":") + 1;
-            String xpath = abstractLocatorString.substring(i).trim();
-            //String prevXPath = xpath;
-            // Check if locator does not start with dot, ignoring a leading parenthesis for choosing the n-th element
-            if (xpath.startsWith("/")) {
-                xpath = xpath.replaceFirst("/", "./");
-                //log().warn(String.format("Replaced absolute xpath locator \"%s\" to relative: \"%s\"", prevXPath, xpath));
-                locate = Locate.by(By.xpath(xpath));
-            } else if (!xpath.startsWith(".")) {
-                xpath = "./" + xpath;
-                //log().warn(String.format("Added relative xpath locator for children to \"%s\": \"%s\"", prevXPath, xpath));
-                locate = Locate.by(By.xpath(xpath));
-            }
-        }
-        return new DesktopGuiElementCore(new GuiElementData(parent, locate));
     }
 }

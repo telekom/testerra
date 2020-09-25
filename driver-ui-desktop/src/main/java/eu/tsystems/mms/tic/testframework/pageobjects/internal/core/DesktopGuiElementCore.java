@@ -28,6 +28,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.NonUniqueElementException;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.pageobjects.AbstractLocate;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
@@ -70,6 +71,26 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
         super(guiElementData);
     }
 
+    private By correctBy(By by) {
+        String abstractLocatorString = by.toString();
+        if (abstractLocatorString.toLowerCase().contains("xpath")) {
+            int i = abstractLocatorString.indexOf(":") + 1;
+            String xpath = abstractLocatorString.substring(i).trim();
+            //String prevXPath = xpath;
+            // Check if locator does not start with dot, ignoring a leading parenthesis for choosing the n-th element
+            if (xpath.startsWith("/")) {
+                xpath = xpath.replaceFirst("/", "./");
+                //log().warn(String.format("Replaced absolute xpath locator \"%s\" to relative: \"%s\"", prevXPath, xpath));
+                by = By.xpath(xpath);
+            } else if (!xpath.startsWith(".")) {
+                xpath = "./" + xpath;
+                //log().warn(String.format("Added relative xpath locator for children to \"%s\": \"%s\"", prevXPath, xpath));
+                by = By.xpath(xpath);
+            }
+        }
+        return by;
+    }
+
     /**
      * Tries to find web elements by given selector and filters
      * Throws an {@link ElementNotFoundException} when no element has been found
@@ -78,31 +99,47 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
      */
     private List<WebElement> findAndFilterWebElements() {
         List<WebElement> elements = null;
-        Exception seleniumException=null;
-        try {
-            Locate locate = guiElementData.getLocate();
-            GuiElementData parentGuiElementData = guiElementData.getParent();
-            if (parentGuiElementData != null) {
-                elements = parentGuiElementData.getGuiElement().getRawCore().findWebElement().findElements(locate.getBy());
-            } else {
-                elements = guiElementData.getWebDriver().findElements(locate.getBy());
-            }
+        /**
+         * The reason could by anything
+         *  {@link WebDriverException}
+         *  {@link NonUniqueElementException}
+         *  others...
+         */
+        Throwable reason = null;
+        AbstractLocate locate = (AbstractLocate)guiElementData.getLocate();
 
-            Predicate<WebElement> filter = locate.getFilter();
-            if (filter != null) {
-                elements.removeIf(webElement -> !filter.test(webElement));
+        for (By by : locate.getBy()) {
+            try {
+                GuiElementData parentGuiElementData = guiElementData.getParent();
+                if (parentGuiElementData != null) {
+                    by = correctBy(by);
+                    elements = parentGuiElementData.getGuiElement().getRawCore().findWebElement().findElements(by);
+                } else {
+                    elements = guiElementData.getWebDriver().findElements(by);
+                }
+
+                Predicate<WebElement> filter = locate.getFilter();
+                if (filter != null) {
+                    elements.removeIf(webElement -> !filter.test(webElement));
+                }
+                if (locate.isUnique() && elements.size() > 1) {
+                    throw new NonUniqueElementException(String.format("Locator(%s) found more than one %s [%d]", locate, WebElement.class.getSimpleName(), elements.size()));
+                }
+
+                /**
+                 * Once we found the element, set the final {@link By} by to {@link Locate}
+                 */
+                locate.setBy(by);
+            } catch(Throwable e) {
+                reason = e;
             }
-            if (locate.isUnique() && elements.size() > 1) {
-                throw new NonUniqueElementException(String.format("Locator(%s) found more than one %s [%d]", locate, WebElement.class.getSimpleName(), elements.size()));
-            }
-        } catch(Exception e) {
-           seleniumException = e;
         }
+
         if (elements == null || elements.size() == 0) {
-            ElementNotFoundException exception = new ElementNotFoundException(guiElementData.getGuiElement(), seleniumException);
+            ElementNotFoundException exception = new ElementNotFoundException(guiElementData.getGuiElement(), reason);
             MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
             if (currentMethodContext != null) {
-                currentMethodContext.errorContext().setThrowable(exception.getMessage(), seleniumException);
+                currentMethodContext.errorContext().setThrowable(exception.getMessage(), reason);
             }
             throw exception;
         }
@@ -255,7 +292,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
             WebDriver driver,
             WebElement webElement
     ) {
-        By by = this.guiElementData.getLocate().getBy();
+        By by = this.guiElementData.getLocate().getBy()[0];
         if (by instanceof ByImage) {
             ByImage byImage = (ByImage) by;
             int x = byImage.getCenterX();
@@ -439,7 +476,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
     @Override
     public void doubleClick() {
         WebElement webElement = findWebElement();
-        By localBy = this.guiElementData.getLocate().getBy();
+        By localBy = this.guiElementData.getLocate().getBy()[0];
 
         WebDriverRequest driverRequest = WebDriverManager.getRelatedWebDriverRequest(guiElementData.getWebDriver());
 

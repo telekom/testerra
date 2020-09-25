@@ -193,7 +193,7 @@ public class GuiElement implements UiElement, Loggable {
         this(driver, by, null);
     }
 
-    public GuiElement(WebDriver driver, Locate locate) {
+    public GuiElement(WebDriver driver, DefaultLocate locate) {
         this(driver, locate, null);
     }
 
@@ -243,7 +243,7 @@ public class GuiElement implements UiElement, Loggable {
      * @param filter Filters to be applied
      *
      * @return The same GuiElement
-     * @deprecated Use {@link Locate} instead
+     * @deprecated Use {@link DefaultLocate} instead
      */
     @Deprecated
     public GuiElement withWebElementFilter(Predicate<WebElement> filter) {
@@ -306,7 +306,7 @@ public class GuiElement implements UiElement, Loggable {
 
     @Deprecated
     public By getBy() {
-        return guiElementData.getLocate().getBy();
+        return guiElementData.getLocate().getBy()[0];
     }
 
     @Deprecated
@@ -1002,7 +1002,7 @@ public class GuiElement implements UiElement, Loggable {
         Nameable element = this;
         do {
             if (element instanceof UiElement) {
-                xPathes.add(0, formatter.byToXPath(((UiElement) element).getLocate().getBy()));
+                xPathes.add(0, formatter.byToXPath(((UiElement) element).getLocate().getBy()[0]));
             }
             element = element.getParent();
         } while (element instanceof BasicUiElement);

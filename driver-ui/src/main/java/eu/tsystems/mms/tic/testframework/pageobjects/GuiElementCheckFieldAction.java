@@ -59,13 +59,16 @@ public class GuiElementCheckFieldAction extends AbstractCheckFieldAction {
             }
         }
 
-        int useTimeout = check.timeout();
-        if (useTimeout < 0) {
-            if (declaringPage.getClass().isAnnotationPresent(PageOptions.class)) {
-                PageOptions annotation = declaringPage.getClass().getAnnotation(PageOptions.class);
-                useTimeout = annotation.elementTimeoutInSeconds();
-                if (useTimeout < 0) {
-                    useTimeout = overrides.getTimeoutInSeconds();
+        int useTimeout;
+
+        if (overrides.hasTimeout()) {
+            useTimeout = overrides.getTimeoutInSeconds();
+        } else {
+            useTimeout = check.timeout();
+            if (useTimeout < 0) {
+                if (declaringPage.getClass().isAnnotationPresent(PageOptions.class)) {
+                    PageOptions annotation = declaringPage.getClass().getAnnotation(PageOptions.class);
+                    useTimeout = annotation.elementTimeoutInSeconds();
                 }
             }
         }

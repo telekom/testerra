@@ -44,6 +44,7 @@ public class GuiElementData implements
     private int index = -1;
     private GuiElement guiElement;
     private String name;
+    @Deprecated
     private IFrameLogic frameLogic;
     /**
      * @todo Add accessor methods
@@ -88,6 +89,7 @@ public class GuiElementData implements
         return this;
     }
 
+    @Deprecated
     public GuiElementData setFrameLogic(IFrameLogic frameLogic) {
         this.frameLogic = frameLogic;
         return this;
@@ -147,22 +149,10 @@ public class GuiElementData implements
             }
             sb.append(")");
         }
-        //toString+="("+guiElement.getLocate().toString();
-//        if (hasFrameLogic()) {
-//            String frameString = ", frames={";
-//            if (frameLogic.hasFrames()) {
-//                for (IGuiElement frame : frameLogic.getFrames()) {
-//                    frameString += frame.toString() + ", ";
-//                }
-//            } else {
-//                frameString += "autodetect, ";
-//            }
-//            frameString = frameString.substring(0, frameString.length() - 2);
-//            toString = toString + frameString + "}";
-//        }
         return sb.toString();
     }
 
+    @Deprecated
     public boolean hasFrameLogic() {
         return frameLogic != null;
     }

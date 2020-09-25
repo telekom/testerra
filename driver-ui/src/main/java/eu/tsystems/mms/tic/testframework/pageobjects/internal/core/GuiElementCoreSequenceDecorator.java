@@ -86,16 +86,6 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
     }
 
     @Override
-    public WebElement findWebElement() {
-        AtomicReference<WebElement> atomicReference = new AtomicReference<>();
-        sequenced(true, () -> {
-            atomicReference.set(decoratedCore.findWebElement());
-            return true;
-        });
-        return atomicReference.get();
-    }
-
-    @Override
     public void findWebElement(Consumer<WebElement> consumer) {
         sequenced(true, () -> {
             decoratedCore.findWebElement(consumer);

@@ -24,6 +24,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.frames;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import java.util.List;
 
+@Deprecated
 public interface IFrameLogic {
     /**
      * Returns a list of frames as GuiElement in switching order.

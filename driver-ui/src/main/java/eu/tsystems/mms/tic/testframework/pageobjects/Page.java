@@ -55,7 +55,6 @@ import org.openqa.selenium.WebElement;
  * Represents a full web page and provides advanced {@link PageObject} features:
  *      Supports finding elements by {@link #find(Locate)}
  *      Support for performance tests by {@link #perfTestExtras()}
- *      Support for frames by {@link #inFrame(UiElement)}
  *      Support for text assertions by {@link #anyElementContainsText(String)}
  * @author Peter Lehmann
  * @author Mike Reiche
@@ -95,20 +94,6 @@ public abstract class Page extends AbstractPage implements TestablePage, Nameabl
     @Override
     public String getName(boolean detailed) {
         return getClass().getSimpleName();
-    }
-
-    private static class FrameFinder {
-        private final UiElement frame;
-        private FrameFinder(UiElement frame) {
-            this.frame = frame;
-        }
-        public UiElement find(Locate locator) {
-            return uiElementFactory.createWithFrames(locator, frame);
-        }
-    }
-
-    protected FrameFinder inFrame(UiElement frame) {
-        return new FrameFinder(frame);
     }
 
     public Page(WebDriver webDriver) {

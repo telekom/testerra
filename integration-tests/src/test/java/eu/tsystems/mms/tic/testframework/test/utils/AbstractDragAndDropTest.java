@@ -58,8 +58,8 @@ public abstract class AbstractDragAndDropTest extends AbstractTestSitesTest {
         GuiElement leftFrame = new GuiElement(driver, By.id("draggableNodes"));
         GuiElement rightFrame = new GuiElement(driver, By.id("dropTargets"));
 
-        GuiElement sourceGuiElement = new GuiElement(driver, sourceLocatorFrames, leftFrame);
-        GuiElement destinationGuiElement = new GuiElement(driver, By.id("dropTarget"), rightFrame);
+        GuiElement sourceGuiElement = leftFrame.getSubElement(sourceLocatorFrames);
+        GuiElement destinationGuiElement = rightFrame.getSubElement(By.id("dropTarget"));
         return new GuiElement[]{sourceGuiElement, destinationGuiElement};
     }
 

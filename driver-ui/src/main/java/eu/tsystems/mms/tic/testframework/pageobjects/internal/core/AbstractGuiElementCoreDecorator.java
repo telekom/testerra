@@ -112,16 +112,8 @@ public abstract class AbstractGuiElementCoreDecorator extends AbstractGuiElement
     }
 
     @Override
-    public WebElement findWebElement() {
-        beforeDelegation("findWebElement");
-        WebElement webElement = decoratedCore.findWebElement();
-        afterDelegation();
-        return webElement;
-    }
-
-    @Override
     public void findWebElement(Consumer<WebElement> consumer) {
-        beforeDelegation("findWebElement(Consumer)");
+        beforeDelegation("findWebElement");
         decoratedCore.findWebElement(consumer);
         afterDelegation();
     }

@@ -78,7 +78,7 @@ public class SikuliBasedWebTest extends AbstractTestSitesTest {
         GuiElement frame = new GuiElement(driver, By.id("draggableNodes"));
 
         URL resourceURL = FileUtils.getResourceURL("sikuli/ringo.png");
-        GuiElement guiElement = new GuiElement(driver, SikuliBy.image(driver, resourceURL), frame);
+        GuiElement guiElement = frame.getSubElement(SikuliBy.image(driver, resourceURL));
 
         guiElement.asserts().assertIsDisplayed();
         guiElement.asserts().assertAttributeContains("src", "ringo");

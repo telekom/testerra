@@ -30,7 +30,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
 /**
  * Class to encapsulate the logic needed for switching between frames.
@@ -38,6 +37,7 @@ import org.openqa.selenium.WebElement;
  * <p>
  * Created by rnhb on 25.03.2015.
  */
+@Deprecated
 public class FrameLogic implements IFrameLogic, Loggable {
 
     private final WebDriver driver;
@@ -99,8 +99,8 @@ public class FrameLogic implements IFrameLogic, Loggable {
 //                // switch
 //                driver.switchTo().frame(webElement);
 //            }
-            WebElement frameWebElement = realGuiElement.getRawCore().findWebElement();
-            driver.switchTo().frame(frameWebElement);
+            //WebElement frameWebElement = realGuiElement.getRawCore().findWebElement();
+            //driver.switchTo().frame(frameWebElement);
         }
 
 

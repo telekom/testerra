@@ -25,19 +25,14 @@ import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.NonUniqueElementException;
-import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractLocate;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.MouseActions;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
-import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
@@ -48,6 +43,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import javax.imageio.ImageIO;
@@ -71,7 +69,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
         super(guiElementData);
     }
 
-    private By correctBy(By by) {
+    private By correctToRelativeXPath(By by) {
         String abstractLocatorString = by.toString();
         if (abstractLocatorString.toLowerCase().contains("xpath")) {
             int i = abstractLocatorString.indexOf(":") + 1;
@@ -92,71 +90,64 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
     }
 
     /**
-     * Tries to find web elements by given selector and filters
+     * Calls the {@link WebElement#findElements(By)} and passes the results to the consumer.
      * Throws an {@link ElementNotFoundException} when no element has been found
-     * Throws an {@link NonUniqueElementException} when more than one element has been found
-     * @return A list of {@link WebElement}
      */
-    private List<WebElement> findAndFilterWebElements() {
-        List<WebElement> elements = null;
-        /**
-         * The reason could by anything
-         *  {@link WebDriverException}
-         *  {@link NonUniqueElementException}
-         *  others...
-         */
-        Throwable reason = null;
+    private void findWebElements(Consumer<List<WebElement>> consumer) {
         AbstractLocate locate = (AbstractLocate)guiElementData.getLocate();
-
+        WebDriver webDriver = guiElementData.getWebDriver();
         for (By by : locate.getBy()) {
             try {
                 GuiElementData parentGuiElementData = guiElementData.getParent();
                 if (parentGuiElementData != null) {
-                    by = correctBy(by);
-                    elements = parentGuiElementData.getGuiElement().getRawCore().findWebElement().findElements(by);
+                    parentGuiElementData.getGuiElement().getCore().findWebElement(webElement -> {
+                        switch (webElement.getTagName()) {
+                            case "frame":
+                            case "iframe":
+                                log().debug("Switch to frame: " + guiElementData.getName(true));
+                                webDriver.switchTo().frame(webElement);
+                                consumer.accept(webDriver.findElements(by));
+                                log().debug("Switch back to default content");
+                                webDriver.switchTo().defaultContent();
+                                break;
+                            default:
+                                consumer.accept(webElement.findElements(correctToRelativeXPath(by)));
+                        }
+                    });
                 } else {
-                    elements = guiElementData.getWebDriver().findElements(by);
-                }
-
-                Predicate<WebElement> filter = locate.getFilter();
-                if (filter != null) {
-                    elements.removeIf(webElement -> !filter.test(webElement));
-                }
-                if (locate.isUnique() && elements.size() > 1) {
-                    throw new NonUniqueElementException(String.format("Locator(%s) found more than one %s [%d]", locate, WebElement.class.getSimpleName(), elements.size()));
+                    consumer.accept(webDriver.findElements(by));
                 }
 
                 /**
-                 * Once we found the element, set the final {@link By} by to {@link Locate}
+                 * Once we found the element, set the final {@link By} to {@link Locate}
                  */
                 locate.setBy(by);
-            } catch(Throwable e) {
-                reason = e;
+            } catch(Throwable reason) {
+                /**
+                 * The reason could by anything
+                 *  {@link WebDriverException}
+                 *  {@link NonUniqueElementException}
+                 *  others...
+                 */
+                ElementNotFoundException exception = new ElementNotFoundException(guiElementData.getGuiElement(), reason);
+//                MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
+//                if (currentMethodContext != null) {
+//                    currentMethodContext.errorContext().setThrowable(exception.getMessage(), reason);
+//                }
+                throw exception;
             }
         }
-
-        if (elements == null || elements.size() == 0) {
-            ElementNotFoundException exception = new ElementNotFoundException(guiElementData.getGuiElement(), reason);
-            MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
-            if (currentMethodContext != null) {
-                currentMethodContext.errorContext().setThrowable(exception.getMessage(), reason);
-            }
-            throw exception;
-        }
-        return elements;
     }
 
-    @Override
-    public WebElement findWebElement() {
-        long start = System.currentTimeMillis();
-        // find timings
-        Timings.raiseFindCounter();
-        WebElement webElement = selectWebElement(findAndFilterWebElements());
-        logTimings(start, Timings.getFindCounter());
-        if (UiElement.Properties.DELAY_AFTER_FIND_MILLIS.asLong() > 0) {
-            TimerUtils.sleep(UiElement.Properties.DELAY_AFTER_FIND_MILLIS.asLong().intValue());
+    /**
+     * Filters a list of web elements by given {@link Locate}
+     */
+    private void filterWebElements(List<WebElement> webElements) {
+        AbstractLocate locate = (AbstractLocate)guiElementData.getLocate();
+        Predicate<WebElement> filter = locate.getFilter();
+        if (filter != null) {
+            webElements.removeIf(webElement -> !filter.test(webElement));
         }
-        return webElement;
     }
 
     /**
@@ -164,31 +155,50 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
      * according to it's selector index in {@link GuiElementData#getIndex()}
      * Also prepares shadow roots by {@link GuiElementData#shadowRoot}
      * and wraps its around an {@link WebElementProxy}
+     *  Throws an {@link NonUniqueElementException} when more than one element has been found
      */
-    private WebElement selectWebElement(List<WebElement> elements) {
-        int numberOfFoundElements = elements.size();
-        WebElement webElement;
+    @Override
+    public void findWebElement(Consumer<WebElement> consumer) {
+        // find timings
+        long start = System.currentTimeMillis();
+        Timings.raiseFindCounter();
 
-        if (numberOfFoundElements > 0) {
-            // webelement to set
-            webElement = elements.get(Math.max(0, guiElementData.getIndex()));
+        this.findWebElements(webElements -> {
 
-            // check for shadowRoot
-            if (guiElementData.shadowRoot) {
-                Object shadowedWebElement = JSUtils.executeScript(guiElementData.getWebDriver(), "return arguments[0].shadowRoot", webElement);
-                if (shadowedWebElement instanceof WebElement) {
-                    webElement = (WebElement) shadowedWebElement;
-                }
+            this.filterWebElements(webElements);
+
+            AbstractLocate locate = (AbstractLocate)guiElementData.getLocate();
+            if (locate.isUnique() && webElements.size() > 1) {
+                throw new NonUniqueElementException(String.format("Locator(%s) found more than one %s [%d]", locate, WebElement.class.getSimpleName(), webElements.size()));
             }
 
-            // proxy the web element for logging
-            WebElementProxy webElementProxy = new WebElementProxy(guiElementData.getWebDriver(), webElement);
-            Class[] interfaces = ObjectUtils.getAllInterfacesOf(webElement);
-            webElement = ObjectUtils.simpleProxy(WebElement.class, webElementProxy, interfaces);
-        } else {
-            webElement = null;
-        }
-        return webElement;
+            if (webElements.size() > 0) {
+                // webelement to set
+                WebElement webElement = webElements.get(Math.max(0, guiElementData.getIndex()));
+                WebDriver webDriver = guiElementData.getWebDriver();
+
+                // check for shadowRoot
+                if (guiElementData.shadowRoot) {
+                    Object shadowedWebElement = JSUtils.executeScript(webDriver, "return arguments[0].shadowRoot", webElement);
+                    if (shadowedWebElement instanceof WebElement) {
+                        webElement = (WebElement) shadowedWebElement;
+                    }
+                }
+
+                // proxy the web element for logging
+                WebElementProxy webElementProxy = new WebElementProxy(webDriver, webElement);
+                Class[] interfaces = ObjectUtils.getAllInterfacesOf(webElement);
+                webElement = ObjectUtils.simpleProxy(WebElement.class, webElementProxy, interfaces);
+
+                // Finally pass the web element to the consumer
+                consumer.accept(webElement);
+
+                logTimings(start, Timings.getFindCounter());
+            }
+        });
+//        if (UiElement.Properties.DELAY_AFTER_FIND_MILLIS.asLong() > 0) {
+//            TimerUtils.sleep(UiElement.Properties.DELAY_AFTER_FIND_MILLIS.asLong().intValue());
+//        }
     }
 
     private void logTimings(long start, int findCounter) {
@@ -216,20 +226,24 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
 
     @Override
     public void scrollIntoView(Point offset) {
-        JSUtils utils = new JSUtils();
-        utils.scrollToCenter(guiElementData.getWebDriver(), findWebElement(), offset);
+        this.findWebElement(webElement -> {
+            JSUtils utils = new JSUtils();
+            utils.scrollToCenter(guiElementData.getWebDriver(), webElement, offset);
+        });
     }
 
     /**
      * Private scroll to element.
      */
     private void pScrollToElement(int yOffset) {
-        final Point location = findWebElement().getLocation();
-        final int x = location.getX();
-        final int y = location.getY() - yOffset;
-        log().trace("Scrolling into view: " + x + ", " + y);
+        this.findWebElement(webElement -> {
+            final Point location = webElement.getLocation();
+            final int x = location.getX();
+            final int y = location.getY() - yOffset;
+            log().trace("Scrolling into view: " + x + ", " + y);
 
-        JSUtils.executeScript(guiElementData.getWebDriver(), "scroll(" + x + ", " + y + ");");
+            JSUtils.executeScript(guiElementData.getWebDriver(), "scroll(" + x + ", " + y + ");");
+        });
     }
 
     @Override
@@ -260,115 +274,129 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
             log().warn("Text to type is empty!");
         }
 
-        WebElement webElement = findWebElement();
-        webElement.clear();
-        webElement.sendKeys(text);
+        findWebElement(webElement -> {
+            webElement.clear();
+            webElement.sendKeys(text);
 
-        String valueProperty = webElement.getAttribute("value");
-        if (valueProperty != null) {
-            if (!valueProperty.equals(text)) {
-                log().warn("Writing text to input field didn't work. Trying again.");
+            String valueProperty = webElement.getAttribute("value");
+            if (valueProperty != null) {
+                if (!valueProperty.equals(text)) {
+                    log().warn("Writing text to input field didn't work. Trying again.");
 
-                webElement.clear();
-                webElement.sendKeys(text);
+                    webElement.clear();
+                    webElement.sendKeys(text);
 
-                if (!webElement.getAttribute("value").equals(text)) {
-                    log().error("Writing text to input field didn't work on second try!");
+                    if (!webElement.getAttribute("value").equals(text)) {
+                        log().error("Writing text to input field didn't work on second try!");
+                    }
                 }
+            } else {
+                log().warn("Cannot perform value check after type() because " + this.toString() + " doesn't have a value property. Consider using sendKeys() instead.");
             }
-        } else {
-            log().warn("Cannot perform value check after type() because " + this.toString() + " doesn't have a value property. Consider using sendKeys() instead.");
-        }
+        });
     }
 
     @Override
     public void click() {
-        pClickRelative(this, guiElementData.getWebDriver(), findWebElement());
-    }
-
-
-    private void pClickRelative(
-            GuiElementCore guiElementCore,
-            WebDriver driver,
-            WebElement webElement
-    ) {
         By by = this.guiElementData.getLocate().getBy()[0];
-        if (by instanceof ByImage) {
-            ByImage byImage = (ByImage) by;
-            int x = byImage.getCenterX();
-            int y = byImage.getCenterY();
-            log().info("Image Click on image webElement at " + x + "," + y);
-            JSUtils.executeJavaScriptMouseAction(driver, webElement, JSMouseAction.CLICK, x, y);
-        } else {
-            log().trace("Standard click on: " + guiElementCore.toString());
-            // Start the StopWatch for measuring the loading time of a Page
-            StopWatch.startPageLoad(driver);
-            webElement.click();
-        }
+        this.findWebElement(webElement -> {
+            if (by instanceof ByImage) {
+                ByImage byImage = (ByImage) by;
+                int x = byImage.getCenterX();
+                int y = byImage.getCenterY();
+                log().info("Image Click on image webElement at " + x + "," + y);
+                JSUtils.executeJavaScriptMouseAction(this.guiElementData.getWebDriver(), webElement, JSMouseAction.CLICK, x, y);
+            } else {
+                // Start the StopWatch for measuring the loading time of a Page
+                //StopWatch.startPageLoad(this.guiElementData.getWebDriver());
+                webElement.click();
+            }
+        });
     }
 
     @Override
     public void submit() {
-        findWebElement().submit();
+        this.findWebElement(WebElement::submit);
     }
 
     @Override
     public void sendKeys(CharSequence... charSequences) {
-        findWebElement().sendKeys(charSequences);
+        this.findWebElement(webElement -> {
+            webElement.sendKeys(charSequences);
+        });
     }
 
     @Override
     public void clear() {
-        findWebElement().clear();
+        this.findWebElement(WebElement::clear);
     }
 
     @Override
     public String getTagName() {
-        return findWebElement().getTagName();
+        AtomicReference<String> atomicReference = new AtomicReference<>();
+        findWebElement(webElement -> atomicReference.set(webElement.getTagName()));
+        return atomicReference.get();
     }
 
     @Override
     public String getAttribute(String attributeName) {
-        return findWebElement().getAttribute(attributeName);
+        AtomicReference<String> atomicReference = new AtomicReference<>();
+        findWebElement(webElement -> atomicReference.set(webElement.getAttribute(attributeName)));
+        return atomicReference.get();
     }
 
     @Override
     public boolean isSelected() {
-        return findWebElement().isSelected();
+        AtomicBoolean atomicBoolean = new AtomicBoolean(false);
+        findWebElement(webElement -> atomicBoolean.set(webElement.isSelected()));
+        return atomicBoolean.get();
     }
 
     @Override
     public boolean isEnabled() {
-        return findWebElement().isEnabled();
+        AtomicBoolean atomicBoolean = new AtomicBoolean(false);
+        findWebElement(webElement -> atomicBoolean.set(webElement.isEnabled()));
+        return atomicBoolean.get();
     }
 
     @Override
     public String getText() {
-        return findWebElement().getText();
+        AtomicReference<String> atomicReference = new AtomicReference<>();
+        this.findWebElement(webElement -> atomicReference.set(webElement.getText()));
+        return atomicReference.get();
     }
 
     @Override
     public boolean isDisplayed() {
         if (guiElementData.shadowRoot) return false;
-        else return findWebElement().isDisplayed();
+        else {
+            AtomicBoolean atomicBoolean = new AtomicBoolean(false);
+            findWebElement(webElement -> atomicBoolean.set(webElement.isDisplayed()));
+            return atomicBoolean.get();
+        }
     }
 
     @Override
     public Rectangle getRect() {
-        return findWebElement().getRect();
+        AtomicReference<Rectangle> atomicReference = new AtomicReference<>();
+        this.findWebElement(webElement -> atomicReference.set(webElement.getRect()));
+        return atomicReference.get();
     }
 
     @Override
     public boolean isVisible(boolean complete) {
-        WebElement webElement = findWebElement();
-        if (!webElement.isDisplayed()) return false;
-        Rectangle viewport = WebDriverUtils.getViewport(guiElementData.getWebDriver());
-        // getRect doesn't work
-        Point elementLocation = webElement.getLocation();
-        Dimension elementSize = webElement.getSize();
-        java.awt.Rectangle viewportRect = new java.awt.Rectangle(viewport.x, viewport.y, viewport.width, viewport.height);
-        java.awt.Rectangle elementRect = new java.awt.Rectangle(elementLocation.x, elementLocation.y, elementSize.width, elementSize.height);
-        return ((complete && viewportRect.contains(elementRect)) || viewportRect.intersects(elementRect));
+        AtomicBoolean atomicBoolean = new AtomicBoolean(false);
+        this.findWebElement(webElement -> {
+            if (!webElement.isDisplayed()) return;
+            Rectangle viewport = WebDriverUtils.getViewport(guiElementData.getWebDriver());
+            // getRect doesn't work
+            Point elementLocation = webElement.getLocation();
+            Dimension elementSize = webElement.getSize();
+            java.awt.Rectangle viewportRect = new java.awt.Rectangle(viewport.x, viewport.y, viewport.width, viewport.height);
+            java.awt.Rectangle elementRect = new java.awt.Rectangle(elementLocation.x, elementLocation.y, elementSize.width, elementSize.height);
+            atomicBoolean.set(((complete && viewportRect.contains(elementRect)) || viewportRect.intersects(elementRect)));
+        });
+        return atomicBoolean.get();
     }
 
     @Override
@@ -402,17 +430,23 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
 
     @Override
     public Point getLocation() {
-        return findWebElement().getLocation();
+        AtomicReference<Point> atomicReference = new AtomicReference<>();
+        this.findWebElement(webElement -> atomicReference.set(webElement.getLocation()));
+        return atomicReference.get();
     }
 
     @Override
     public Dimension getSize() {
-        return findWebElement().getSize();
+        AtomicReference<Dimension> atomicReference = new AtomicReference<>();
+        this.findWebElement(webElement -> atomicReference.set(webElement.getSize()));
+        return atomicReference.get();
     }
 
     @Override
     public String getCssValue(String cssIdentifier) {
-        return findWebElement().getCssValue(cssIdentifier);
+        AtomicReference<String> atomicReference = new AtomicReference<>();
+        this.findWebElement(webElement -> atomicReference.set(webElement.getCssValue(cssIdentifier)));
+        return atomicReference.get();
     }
 
     @Override
@@ -424,22 +458,23 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
      * Hidden method.
      */
     private void pMouseOver() {
-        highlight(new Color(255, 255, 0));
-        WebElement webElement = findWebElement();
-        final Point location = webElement.getLocation();
-        final int x = location.getX();
-        final int y = location.getY();
-        webElement.getSize();
-        log().debug("MouseOver: " + toString() + " at x: " + x + " y: " + y);
+        this.findWebElement(webElement -> {
+            highlightWebElement(webElement, new Color(255, 255, 0));
+            final Point location = webElement.getLocation();
+            final int x = location.getX();
+            final int y = location.getY();
+            webElement.getSize();
+            log().debug("MouseOver: " + toString() + " at x: " + x + " y: " + y);
 
-        Actions action = new Actions(guiElementData.getWebDriver());
-        action.moveToElement(webElement).build().perform();
+            Actions action = new Actions(guiElementData.getWebDriver());
+            action.moveToElement(webElement).build().perform();
+        });
     }
 
     @Override
     public boolean isPresent() {
         try {
-            findWebElement();
+            this.findWebElement(webElement -> {});
         } catch (Exception e) {
             return false;
         }
@@ -448,8 +483,11 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
 
     @Override
     public Select getSelectElement() {
-        Select select = new Select(findWebElement());
-        return select;
+        AtomicReference<Select> atomicReference = new AtomicReference<>();
+        this.findWebElement(webElement -> {
+            atomicReference.set(new Select(webElement));
+        });
+        return atomicReference.get();
     }
 
 
@@ -459,53 +497,61 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
     }
 
     private List<String> pGetTextsFromChildren() {
+        AtomicReference<ArrayList<String>> atomicReference = new AtomicReference<>();
         // find() not necessary here, because findElements() is called, which calls find().
-        List<WebElement> childElements = findWebElement().findElements(By.xpath(".//*"));
-
-        ArrayList<String> childTexts = new ArrayList<String>();
-        for (WebElement childElement : childElements) {
-            String text = childElement.getText();
-            if (text != null && !text.equals("")) {
-                childTexts.add(text);
+        this.findWebElement(webElement -> {
+            List<WebElement> childElements = webElement.findElements(By.xpath(".//*"));
+            ArrayList<String> childTexts = new ArrayList<>();
+            for (WebElement childElement : childElements) {
+                String text = childElement.getText();
+                if (text != null && !text.equals("")) {
+                    childTexts.add(text);
+                }
             }
-        }
-
-        return childTexts;
+            atomicReference.set(childTexts);
+        });
+        return atomicReference.get();
     }
 
     @Override
     public void doubleClick() {
-        WebElement webElement = findWebElement();
         By localBy = this.guiElementData.getLocate().getBy()[0];
-
         WebDriverRequest driverRequest = WebDriverManager.getRelatedWebDriverRequest(guiElementData.getWebDriver());
 
-        if (localBy instanceof ByImage) {
-            ByImage byImage = (ByImage) localBy;
-            int x = byImage.getCenterX();
-            int y = byImage.getCenterY();
-            log().info("Image Double Click on image webElement at " + x + "," + y);
-            JSUtils.executeJavaScriptMouseAction(guiElementData.getWebDriver(), webElement, JSMouseAction.DOUBLE_CLICK, x, y);
-        } else if (Browsers.safari.equalsIgnoreCase(driverRequest.browser)) {
-            log().info("Safari double click workaround");
-            JSUtils.executeJavaScriptMouseAction(guiElementData.getWebDriver(), webElement, JSMouseAction.DOUBLE_CLICK, 0, 0);
-        } else {
-            final Actions actions = new Actions(guiElementData.getWebDriver());
-            final Action action = actions.moveToElement(webElement).doubleClick(webElement).build();
+        this.findWebElement(webElement -> {
+            if (localBy instanceof ByImage) {
+                ByImage byImage = (ByImage) localBy;
+                int x = byImage.getCenterX();
+                int y = byImage.getCenterY();
+                log().info("Image Double Click on image webElement at " + x + "," + y);
+                JSUtils.executeJavaScriptMouseAction(guiElementData.getWebDriver(), webElement, JSMouseAction.DOUBLE_CLICK, x, y);
+            } else if (Browsers.safari.equalsIgnoreCase(driverRequest.browser)) {
+                log().info("Safari double click workaround");
+                JSUtils.executeJavaScriptMouseAction(guiElementData.getWebDriver(), webElement, JSMouseAction.DOUBLE_CLICK, 0, 0);
+            } else {
+                final Actions actions = new Actions(guiElementData.getWebDriver());
+                final Action action = actions.moveToElement(webElement).doubleClick(webElement).build();
 
-            try {
-                action.perform();
-            } catch (InvalidElementStateException e) {
-                log().error("Error performing double click", e);
-                log().info("Retrying double click with click-click");
-                actions.moveToElement(webElement).click().click().build().perform();
+                try {
+                    action.perform();
+                } catch (InvalidElementStateException e) {
+                    log().error("Error performing double click", e);
+                    log().info("Retrying double click with click-click");
+                    actions.moveToElement(webElement).click().click().build().perform();
+                }
             }
-        }
+        });
     }
 
     @Override
     public void highlight(Color color) {
-        JSUtils.highlightWebElement(guiElementData.getWebDriver(), findWebElement(), color);
+        this.findWebElement(webElement -> {
+            JSUtils.highlightWebElement(guiElementData.getWebDriver(), webElement, color);
+        });
+    }
+
+    private void highlightWebElement(WebElement webElement, Color color) {
+        JSUtils.highlightWebElement(guiElementData.getWebDriver(), webElement, color);
     }
 
     @Override
@@ -523,7 +569,12 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
 
     @Override
     public int getNumberOfFoundElements() {
-        return findAndFilterWebElements().size();
+        AtomicInteger atomicInteger = new AtomicInteger();
+        this.findWebElements(webElements -> {
+            filterWebElements(webElements);
+            atomicInteger.set(webElements.size());
+        });
+        return atomicInteger.get();
     }
 
     /**
@@ -538,49 +589,47 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
 
     @Override
     public void contextClick() {
-        Actions actions = new Actions(guiElementData.getWebDriver());
-        actions.moveToElement(findWebElement()).contextClick().build().perform();
+        this.findWebElement(webElement -> {
+            Actions actions = new Actions(guiElementData.getWebDriver());
+            actions.moveToElement(webElement).contextClick().build().perform();
+        });
     }
 
     @Override
     public File takeScreenshot() {
-        final WebElement element = findWebElement();
-        final boolean isSelenium4 = false;
+        AtomicReference<File> atomicReference = new AtomicReference<>();
+        this.findWebElement(webElement -> {
+            final boolean isSelenium4 = false;
+            if (isSelenium4) {
+                atomicReference.set(webElement.getScreenshotAs(OutputType.FILE));
+            } else {
+                if (!isVisible(false)) {
+                    scrollIntoView();
+                }
+                Rectangle viewport = WebDriverUtils.getViewport(guiElementData.getWebDriver());
+                try {
+                    final TakesScreenshot driver = ((TakesScreenshot) guiElementData.getWebDriver());
 
-        if (isSelenium4) {
-            return element.getScreenshotAs(OutputType.FILE);
-        } else {
-            if (!isVisible(false)) {
-                scrollIntoView();
+                    File screenshot = driver.getScreenshotAs(OutputType.FILE);
+                    BufferedImage fullImg = ImageIO.read(screenshot);
+
+                    Point point = webElement.getLocation();
+                    int eleWidth = webElement.getSize().getWidth();
+                    int eleHeight = webElement.getSize().getHeight();
+
+                    BufferedImage eleScreenshot = fullImg.getSubimage(
+                            point.getX() - viewport.getX(),
+                            point.getY() - viewport.getY(),
+                            eleWidth,
+                            eleHeight
+                    );
+                    ImageIO.write(eleScreenshot, "png", screenshot);
+                    atomicReference.set(screenshot);
+                } catch (IOException e) {
+                    log().error(String.format("%s unable to take screenshot: %s ", guiElementData, e));
+                }
             }
-            Rectangle viewport = WebDriverUtils.getViewport(guiElementData.getWebDriver());
-            try {
-                final TakesScreenshot driver = ((TakesScreenshot) guiElementData.getWebDriver());
-
-                File screenshot = driver.getScreenshotAs(OutputType.FILE);
-                BufferedImage fullImg = ImageIO.read(screenshot);
-
-                Point point = element.getLocation();
-                int eleWidth = element.getSize().getWidth();
-                int eleHeight = element.getSize().getHeight();
-
-                BufferedImage eleScreenshot = fullImg.getSubimage(
-                        point.getX() - viewport.getX(),
-                        point.getY() - viewport.getY(),
-                        eleWidth,
-                        eleHeight
-                );
-                ImageIO.write(eleScreenshot, "png", screenshot);
-                return screenshot;
-            } catch (IOException e) {
-                log().error(String.format("%s unable to take screenshot: %s ", guiElementData, e));
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public void findWebElement(Consumer<WebElement> consumer) {
-        consumer.accept(findWebElement());
+        });
+        return atomicReference.get();
     }
 }

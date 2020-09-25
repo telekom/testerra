@@ -35,7 +35,7 @@ public class FrameAwareSubElementGuiElementTest extends AbstractGuiElementNonFun
     public GuiElement getGuiElementBy(Locate locator) {
         WebDriver driver = getWebDriver();
         GuiElement frame = new GuiElement(driver, By.name("InputFrame1"));
-        GuiElement parentElement = new GuiElement(driver, By.xpath("//body"), frame);
+        GuiElement parentElement = frame.getSubElement(By.xpath("//body"));
         return parentElement.getSubElement(locator);
     }
 

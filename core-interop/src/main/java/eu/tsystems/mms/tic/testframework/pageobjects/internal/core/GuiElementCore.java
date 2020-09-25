@@ -21,13 +21,12 @@
  */
  package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
-import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
-import eu.tsystems.mms.tic.testframework.exceptions.NonUniqueElementException;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementRetainer;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.Rectangle;
@@ -176,13 +175,8 @@ public interface GuiElementCore extends
 
     @Deprecated
     default WebElement getWebElement() {
-        return findWebElement();
+        AtomicReference<WebElement> atomicWebElement = new AtomicReference<>();
+        this.findWebElement(atomicWebElement::set);
+        return atomicWebElement.get();
     }
-
-    /**
-     * @return The first found filtered {@link WebElement}
-     * Throws an {@link ElementNotFoundException} when no element has been found
-     * Throws an {@link NonUniqueElementException} when more than one element has been found
-     */
-    WebElement findWebElement();
 }

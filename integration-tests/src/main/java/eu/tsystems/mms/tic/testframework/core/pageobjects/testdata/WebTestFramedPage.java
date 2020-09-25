@@ -38,10 +38,10 @@ public class WebTestFramedPage extends Page {
 
     /** First text field on page. */
     @Check
-    private final GuiElement input1 = new GuiElement(this.getWebDriver(), By.id("1"), inputFrame1);
+    private final GuiElement input1 = inputFrame1.getSubElement(By.id("1"));
     /** A button on the page. */
     @Check(nonFunctional = true)
-    private final GuiElement button1 = new GuiElement(this.getWebDriver(), By.id("4"), inputFrame1);
+    private final GuiElement button1 = inputFrame1.getSubElement(By.id("4"));
     /** The output text field. */
     private final GuiElement textOutputField = new GuiElement(this.getWebDriver(), By.xpath("//p[@id='99']"));
     private final GuiElement textOutputFieldNotExisting = new GuiElement(this.getWebDriver(), By.xpath("//p[@id='notthere']"));

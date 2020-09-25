@@ -67,7 +67,6 @@ public abstract class AbstractLocate implements Locate {
 
     @Override
     public String toString() {
-        String toString = by.toString() + (unique ? " (unique)" : "");
-        return toString;
+        return by[0].toString() + (unique ? " (unique)" : "");
     }
 }

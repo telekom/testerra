@@ -20,7 +20,6 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverFactory;
@@ -42,14 +41,6 @@ public class DefaultUiElementFactory implements UiElementFactory, Loggable {
         GuiElement guiElement = new GuiElement(core);
         guiElement.setParent(parentGuiElement);
         return guiElement;
-    }
-
-    @Override
-    public UiElement createWithFrames(Locate locator, UiElement... frames) {
-        if (frames == null || frames.length == 0) {
-            throw new TesterraRuntimeException("No frames given");
-        }
-        return new GuiElement(frames[0].getWebDriver(), locator, frames);
     }
 
     @Override

@@ -39,10 +39,10 @@ public class FrameAwareGuiElementTest extends AbstractGuiElementNonFunctionalAss
     public void testTFA01_GuiElement_FrameLogic_AllFrames() {
         WebDriver driver = getWebDriver();
         GuiElement frame1 = new GuiElement(driver, By.name("frame1"));
-        GuiElement frame12 = new GuiElement(driver, By.name("frame12"), frame1);
-        GuiElement frame123 = new GuiElement(driver, By.name("frame123"), frame1, frame12);
-        GuiElement frame1234 = new GuiElement(driver, By.name("InputFrame1234"), frame1, frame12, frame123);
-        GuiElement element = new GuiElement(driver, By.id("16"), frame1, frame12, frame123, frame1234);
+        GuiElement frame12 = frame1.getSubElement(By.name("frame12"));
+        GuiElement frame123 = frame12.getSubElement(By.name("frame123"));
+        GuiElement frame1234 = frame123.getSubElement(By.name("InputFrame1234"));
+        GuiElement element = frame1234.getSubElement(By.id("16"));
         element.asserts().assertIsPresent();
     }
 
@@ -50,7 +50,7 @@ public class FrameAwareGuiElementTest extends AbstractGuiElementNonFunctionalAss
     public GuiElement getGuiElementBy(Locate locator) {
         WebDriver driver = getWebDriver();
         GuiElement frame = new GuiElement(driver, By.name("InputFrame1"));
-        return new GuiElement(driver, locator, frame);
+        return frame.getSubElement(locator);
     }
 
     @Override

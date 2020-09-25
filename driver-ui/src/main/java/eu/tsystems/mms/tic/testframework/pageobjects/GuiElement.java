@@ -57,7 +57,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCor
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.DelayActionsGuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.UiElementLogger;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.DefaultGuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
@@ -132,7 +131,7 @@ public class GuiElement implements UiElement, Loggable {
         this.rawCore = factory.createCore(guiElementData);
     }
 
-    public GuiElementCore getRawCore() {
+    public GuiElementCore getCore() {
         return this.rawCore;
     }
 
@@ -167,43 +166,23 @@ public class GuiElement implements UiElement, Loggable {
      * Constructor for {@link UiElementFactory#createFromPage(PageObject, Locate)}
      */
     public GuiElement(PageObject page, Locate locate) {
-        this(page.getWebDriver(), locate, null);
+        this(page.getWebDriver(), locate);
         Page realPage = (Page)page;
         setParent(realPage);
     }
 
-    /**
-     * Constructor for {@link UiElementFactory#createWithFrames(Locate, UiElement...)}
-     */
-    public GuiElement(
-        WebDriver driver,
-        Locate locate,
-        UiElement... frames
-    ) {
+    public GuiElement(WebDriver driver, Locate locate) {
         this(new GuiElementData(driver, locate));
         guiElementData.setGuiElement(this);
-        if (frames != null && frames.length > 0) {
-            guiElementData.setFrameLogic(new FrameLogic(driver, frames));
-        }
+//        if (frames != null && frames.length > 0) {
+//            guiElementData.setFrameLogic(new FrameLogic(driver, frames));
+//        }
         createDecorators();
     }
 
     @Deprecated
     public GuiElement(WebDriver driver, By by) {
-        this(driver, by, null);
-    }
-
-    public GuiElement(WebDriver driver, DefaultLocate locate) {
-        this(driver, locate, null);
-    }
-
-    @Deprecated
-    public GuiElement(
-        WebDriver driver,
-        By by,
-        UiElement... frames
-    ) {
-        this(driver, Locate.by(by), frames);
+        this(driver, Locate.by(by));
     }
 
     @Override
@@ -218,12 +197,13 @@ public class GuiElement implements UiElement, Loggable {
      * You can move this code to DefaultGuiElementFactory when no more 'new GuiElement()' calls exists.
      */
     private void createDecorators() {
-        if (guiElementData.hasFrameLogic()) {
-            // if frames are set, the waiter should use frame switches when executing its sequences
-            frameAwareCore = new GuiElementCoreFrameAwareDecorator(rawCore, guiElementData);
-        } else {
-            frameAwareCore = rawCore;
-        }
+//        if (guiElementData.hasFrameLogic()) {
+//            // if frames are set, the waiter should use frame switches when executing its sequences
+//           frameAwareCore = new GuiElementCoreFrameAwareDecorator(rawCore, guiElementData);
+//        } else {
+//            frameAwareCore = rawCore;
+//        }
+        frameAwareCore = rawCore;
 
         // Wrap the core with sequence decorator, such that its methods are executed with sequence
         GuiElementCore sequenceCore = new GuiElementCoreSequenceDecorator(frameAwareCore);
@@ -499,7 +479,7 @@ public class GuiElement implements UiElement, Loggable {
      */
     @Deprecated
     public WebElement getWebElement() {
-        return decoratedCore.findWebElement();
+        return this.decoratedCore.getWebElement();
     }
 
     @Override
@@ -847,11 +827,13 @@ public class GuiElement implements UiElement, Loggable {
         DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                try {
-                    return frameAwareCore.findWebElement() != null;
-                } catch (ElementNotFoundException e) {
-                    return false;
-                }
+                return frameAwareCore.isPresent();
+//                try {
+//                    frameAwareCore.findWebElement(webElement -> {});
+//                    return true;
+//                } catch (ElementNotFoundException e) {
+//                    return false;
+//                }
             }
 
             @Override

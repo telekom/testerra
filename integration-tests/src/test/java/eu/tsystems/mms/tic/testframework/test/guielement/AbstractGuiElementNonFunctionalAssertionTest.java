@@ -32,6 +32,7 @@ public abstract class AbstractGuiElementNonFunctionalAssertionTest extends Abstr
     @Test
     public void testT1_GuiElement_NonFunctionalAssertLayout() throws Exception {
         GuiElement e1 = getGuiElementBy(By.id("1"));
+        e1.isDisplayed();
         GuiElement e2 = getGuiElementBy(By.id("11"));
         boolean exceptionWasThrown = false;
         try {

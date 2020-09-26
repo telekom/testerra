@@ -28,6 +28,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.NonUniqueElementException;
 import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractLocate;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
@@ -128,18 +129,19 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
         for (By by : locate.getBy()) {
             GuiElementData parentGuiElementData = guiElementData.getParent();
             if (parentGuiElementData != null) {
-                parentGuiElementData.getGuiElement().getCore().findWebElement(webElement -> {
-                    switch (webElement.getTagName()) {
-                        case "frame":
-                        case "iframe":
-                            log().debug("Switch to frame: " + guiElementData.getName(true));
-                            webDriver.switchTo().frame(webElement);
-                            consumer.accept(findElementsFromWebDriver(webDriver, by));
-                            log().debug("Switch back to default content");
-                            webDriver.switchTo().defaultContent();
-                            break;
-                        default:
-                            consumer.accept(findElementsFromWebElement(webElement, correctToRelativeXPath(by)));
+                GuiElement parent = parentGuiElementData.getGuiElement();
+                parent.getCore().findWebElement(webElement -> {
+                    /**
+                     * We need to check for shadow root before accessing the element
+                     */
+                    if (!parent.getData().isShadowRoot() && webElement.getTagName().endsWith("frame")) {
+                        log().debug("Switch to frame: " + guiElementData.getName(true));
+                        webDriver.switchTo().frame(webElement);
+                        consumer.accept(findElementsFromWebDriver(webDriver, by));
+                        log().debug("Switch back to default content");
+                        webDriver.switchTo().defaultContent();
+                    } else {
+                        consumer.accept(findElementsFromWebElement(webElement, correctToRelativeXPath(by)));
                     }
                 });
             } else {
@@ -167,7 +169,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
     /**
      * Finds the {@link WebElement} from a list of web elements
      * according to it's selector index in {@link GuiElementData#getIndex()}
-     * Also prepares shadow roots by {@link GuiElementData#shadowRoot}
+     * Also prepares shadow roots by {@link GuiElementData#isShadowRoot()}
      * and wraps its around an {@link WebElementProxy}
      *  Throws an {@link NonUniqueElementException} when more than one element has been found
      */
@@ -192,7 +194,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
                 WebDriver webDriver = guiElementData.getWebDriver();
 
                 // check for shadowRoot
-                if (guiElementData.shadowRoot) {
+                if (guiElementData.isShadowRoot()) {
                     Object shadowedWebElement = JSUtils.executeScript(webDriver, "return arguments[0].shadowRoot", webElement);
                     if (shadowedWebElement instanceof WebElement) {
                         webElement = (WebElement) shadowedWebElement;
@@ -384,7 +386,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
 
     @Override
     public boolean isDisplayed() {
-        if (guiElementData.shadowRoot) return false;
+        if (guiElementData.isShadowRoot()) return false;
         else {
             AtomicBoolean atomicBoolean = new AtomicBoolean(false);
             findWebElement(webElement -> atomicBoolean.set(webElement.isDisplayed()));

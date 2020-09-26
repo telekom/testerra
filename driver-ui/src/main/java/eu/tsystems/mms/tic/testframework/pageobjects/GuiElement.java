@@ -540,11 +540,11 @@ public class GuiElement implements UiElement, Loggable {
     }
 
     public boolean hasSensibleData() {
-        return guiElementData.sensibleData;
+        return guiElementData.hasSensibleData();
     }
 
     public GuiElement sensibleData() {
-        guiElementData.sensibleData = true;
+        guiElementData.setSensibleData(true);
         return this;
     }
 
@@ -685,7 +685,7 @@ public class GuiElement implements UiElement, Loggable {
 
     @Deprecated
     public GuiElement shadowRoot() {
-        guiElementData.shadowRoot = true;
+        guiElementData.setShadowRoot(true);
         return this;
     }
 

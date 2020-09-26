@@ -43,11 +43,8 @@ public class GuiElementData implements
     private int index = -1;
     private GuiElement guiElement;
     private String name;
-    /**
-     * @todo Add accessor methods
-     */
-    public boolean shadowRoot = false;
-    public boolean sensibleData = false;
+    private boolean shadowRoot = false;
+    private boolean sensibleData = false;
 
     /**
      * Creates a state as descendant of on another state
@@ -56,7 +53,7 @@ public class GuiElementData implements
     public GuiElementData(GuiElementData parent, Locate locate) {
         this(parent.getWebDriver(), locate);
         this.parent = parent;
-        guiElement = parent.guiElement;
+        this.guiElement = parent.guiElement;
     }
 
     /**
@@ -69,6 +66,7 @@ public class GuiElementData implements
         this.parent = parent.parent;
         this.name = parent.name;
         this.guiElement = parent.guiElement;
+        this.shadowRoot = parent.shadowRoot;
     }
 
     public GuiElementData(
@@ -109,6 +107,24 @@ public class GuiElementData implements
     @Override
     public WebDriver getWebDriver() {
         return webDriver;
+    }
+
+    public boolean isShadowRoot() {
+        return shadowRoot;
+    }
+
+    public GuiElementData setShadowRoot(boolean shadowRoot) {
+        this.shadowRoot = shadowRoot;
+        return this;
+    }
+
+    public boolean hasSensibleData() {
+        return sensibleData;
+    }
+
+    public GuiElementData setSensibleData(boolean sensibleData) {
+        this.sensibleData = sensibleData;
+        return this;
     }
 
     @Override

@@ -36,7 +36,7 @@ public class DashboardModuleTestResultPieChart extends AbstractFramePage {
 
     // Actual Run Pie Chart
     @Check
-    private GuiElement actualPieChart = new GuiElement(this.getWebDriver(), By.id("methodsPie"), mainFrame);
+    private GuiElement actualPieChart = mainFrame.getSubElement(By.id("methodsPie"));
     private GuiElement passedPieSegment = actualPieChart.getSubElement(By.id("Passed"));
     private GuiElement passedMinorPieSegment = actualPieChart.getSubElement(By.id("Minor"));
     private GuiElement failedPieSegment = actualPieChart.getSubElement(By.id("Failed"));

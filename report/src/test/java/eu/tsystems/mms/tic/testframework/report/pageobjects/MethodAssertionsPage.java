@@ -29,7 +29,7 @@ import org.openqa.selenium.WebDriver;
 public class MethodAssertionsPage extends MethodDetailsPage {
 
     @Check
-    private GuiElement headLine = new GuiElement(this.getWebDriver(), By.xpath("//h5[text()='Collected Assertions']"), mainFrame);
+    private GuiElement headLine = mainFrame.getSubElement(By.xpath("//h5[text()='Collected Assertions']"));
     private String LOCATOR_ASSERTION_HEADLINE = "//a[contains(text(), '%s')]";
     private String LOCATOR_ASSERTION_DESCRIPTION = "//a[contains(text(), '%s')]/..//pre";
 
@@ -38,12 +38,12 @@ public class MethodAssertionsPage extends MethodDetailsPage {
     }
 
     public void checkAssertionIsDisplayedCorrectly(String assertionTitle, String assertionDescription){
-        GuiElement headline = new GuiElement(this.getWebDriver(), By.xpath(String.format(LOCATOR_ASSERTION_HEADLINE, assertionTitle)), mainFrame);
+        GuiElement headline = mainFrame.getSubElement(By.xpath(String.format(LOCATOR_ASSERTION_HEADLINE, assertionTitle)));
         headline.asserts().assertIsDisplayed();
         headline.asserts().assertTextContains(assertionTitle);
 
         openAssertionDescriptionMenu(headline);
-        GuiElement description = new GuiElement(this.getWebDriver(), By.xpath(String.format(LOCATOR_ASSERTION_DESCRIPTION, assertionTitle)), mainFrame);
+        GuiElement description = mainFrame.getSubElement(By.xpath(String.format(LOCATOR_ASSERTION_DESCRIPTION, assertionTitle)));
         description.asserts().assertTextContains(assertionDescription);
     }
 

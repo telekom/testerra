@@ -35,15 +35,15 @@ public class DashboardModuleHistoryAreaChart extends AbstractFramePage {
     //TODO identifier for history chart needed, also for Annotation @Check
 
     //history chart elements
-    public final GuiElement historyHoverElementPassed = new GuiElement(this.getWebDriver(), By.xpath("(//*[@class='highcharts-tooltip'])[2]/*[5]/*[4]"), mainFrame);
-    public final GuiElement historyHoverElementPassedInherited = new GuiElement(this.getWebDriver(), By.xpath("(//*[@class='highcharts-tooltip'])[2]/*[5]/*[7]"), mainFrame);
-    public final GuiElement historyHoverElementPassedMinor = new GuiElement(this.getWebDriver(), By.xpath("(//*[@class='highcharts-tooltip'])[2]/*[5]/*[10]"), mainFrame);
-    public final GuiElement historyHoverElementFailed = new GuiElement(this.getWebDriver(), By.xpath("(//*[@class='highcharts-tooltip'])[2]/*[5]/*[13]"), mainFrame);
-    public final GuiElement historyHoverElementFailedInherited = new GuiElement(this.getWebDriver(), By.xpath("(//*[@class='highcharts-tooltip'])[2]/*[5]/*[16]"), mainFrame);
-    public final GuiElement historyHoverElementFailedMinor = new GuiElement(this.getWebDriver(), By.xpath("(//*[@class='highcharts-tooltip'])[2]/*[5]/*[19]"), mainFrame);
-    public final GuiElement historyHoverElementSkipped = new GuiElement(this.getWebDriver(), By.xpath("(//*[@class='highcharts-tooltip'])[2]/*[5]/*[22]"), mainFrame);
-    public final GuiElement historyHoverElementSkippedInherited = new GuiElement(this.getWebDriver(), By.xpath("(//*[@class='highcharts-tooltip'])[2]/*[5]/*[25]"), mainFrame);
-    private GuiElement historyChartTopLine = new GuiElement(this.getWebDriver(), By.xpath("//*[@class='highcharts-series-group']//*[@class='highcharts-markers highcharts-series-0 highcharts-tracker']"), mainFrame);
+    public final GuiElement historyHoverElementPassed = mainFrame.getSubElement(By.xpath("(//*[@class='highcharts-tooltip'])[2]/*[5]/*[4]"));
+    public final GuiElement historyHoverElementPassedInherited = mainFrame.getSubElement(By.xpath("(//*[@class='highcharts-tooltip'])[2]/*[5]/*[7]"));
+    public final GuiElement historyHoverElementPassedMinor = mainFrame.getSubElement(By.xpath("(//*[@class='highcharts-tooltip'])[2]/*[5]/*[10]"));
+    public final GuiElement historyHoverElementFailed = mainFrame.getSubElement(By.xpath("(//*[@class='highcharts-tooltip'])[2]/*[5]/*[13]"));
+    public final GuiElement historyHoverElementFailedInherited = mainFrame.getSubElement(By.xpath("(//*[@class='highcharts-tooltip'])[2]/*[5]/*[16]"));
+    public final GuiElement historyHoverElementFailedMinor = mainFrame.getSubElement(By.xpath("(//*[@class='highcharts-tooltip'])[2]/*[5]/*[19]"));
+    public final GuiElement historyHoverElementSkipped = mainFrame.getSubElement(By.xpath("(//*[@class='highcharts-tooltip'])[2]/*[5]/*[22]"));
+    public final GuiElement historyHoverElementSkippedInherited = mainFrame.getSubElement(By.xpath("(//*[@class='highcharts-tooltip'])[2]/*[5]/*[25]"));
+    private GuiElement historyChartTopLine = mainFrame.getSubElement(By.xpath("//*[@class='highcharts-series-group']//*[@class='highcharts-markers highcharts-series-0 highcharts-tracker']"));
 
     public DashboardModuleHistoryAreaChart(WebDriver driver) {
         super(driver);

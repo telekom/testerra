@@ -33,11 +33,11 @@ import org.openqa.selenium.WebDriver;
 public class DashboardModuleClassBarChart extends AbstractFramePage {
 
     @Check
-    private GuiElement barChart = new GuiElement(this.getWebDriver(), By.id("classesBars"), mainFrame);
+    private GuiElement barChart = mainFrame.getSubElement(By.id("classesBars"));
 
     //bar chart elements
-    public final GuiElement barChartBars = new GuiElement(this.getWebDriver(), By.xpath("//*[@class='highcharts-series-group']"), mainFrame);
-    public final GuiElement barChartClassNames = new GuiElement(this.getWebDriver(), By.className("highcharts-xaxis-labels"), mainFrame);
+    public final GuiElement barChartBars = mainFrame.getSubElement(By.xpath("//*[@class='highcharts-series-group']"));
+    public final GuiElement barChartClassNames = mainFrame.getSubElement(By.className("highcharts-xaxis-labels"));
 
     public DashboardModuleClassBarChart(WebDriver driver) {
         super(driver);

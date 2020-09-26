@@ -27,7 +27,7 @@ import org.openqa.selenium.WebDriver;
 
 public class MethodStackPage extends MethodDetailsPage {
 
-    private GuiElement stackTraceString = new GuiElement(this.getWebDriver(), By.xpath("//*[@id='exception']//div[@class='textLeft']"), mainFrame);
+    private GuiElement stackTraceString = mainFrame.getSubElement(By.xpath("//*[@id='exception']//div[@class='textLeft']"));
 
     public MethodStackPage(WebDriver driver) {
 

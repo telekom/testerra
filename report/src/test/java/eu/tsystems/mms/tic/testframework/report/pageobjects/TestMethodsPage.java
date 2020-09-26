@@ -30,7 +30,7 @@ import org.openqa.selenium.WebDriver;
 public class TestMethodsPage extends AbstractReportPage {
 
     @Check
-    private GuiElement headLine = new GuiElement(this.getWebDriver(), By.xpath("//div[@class='dashboardTextBig']"), mainFrame);
+    private GuiElement headLine = mainFrame.getSubElement(By.xpath("//div[@class='dashboardTextBig']"));
 
     public TestMethodsPage(WebDriver driver) {
         super(driver);

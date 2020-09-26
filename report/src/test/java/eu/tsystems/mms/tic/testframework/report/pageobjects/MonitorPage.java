@@ -30,16 +30,16 @@ import org.openqa.selenium.WebDriver;
 public class MonitorPage extends AbstractReportPage {
 
     @Check
-    private GuiElement headLine = new GuiElement(this.getWebDriver(), By.xpath("//h5[text()='JVM Monitor']"), mainFrame);
+    private GuiElement headLine = mainFrame.getSubElement(By.xpath("//h5[text()='JVM Monitor']"));
 
     public MonitorPage(WebDriver driver) {
         super(driver);
     }
 
     public void assertPageIsDisplayedCorrectly(){
-        GuiElement memoryUsageChart = new GuiElement(this.getWebDriver(), By.id("ConsumptionMeasurementsView1"), mainFrame);
-        GuiElement memoryReservedChart = new GuiElement(this.getWebDriver(), By.id("ConsumptionMeasurementsView2"), mainFrame);
-        GuiElement processorUsageChart = new GuiElement(this.getWebDriver(), By.id("ConsumptionMeasurementsView3"), mainFrame);
+        GuiElement memoryUsageChart = mainFrame.getSubElement(By.id("ConsumptionMeasurementsView1"));
+        GuiElement memoryReservedChart = mainFrame.getSubElement(By.id("ConsumptionMeasurementsView2"));
+        GuiElement processorUsageChart = mainFrame.getSubElement(By.id("ConsumptionMeasurementsView3"));
 
         memoryUsageChart.asserts().assertIsDisplayed();
         memoryReservedChart.asserts().assertIsDisplayed();

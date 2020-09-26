@@ -57,37 +57,37 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
      * Method
      */
 
-    private GuiElement methodNameString = new GuiElement(this.getWebDriver(), By.xpath("(//*[@class='dashboardTextSmall'])[1]"), mainFrame);
-    private GuiElement classNameString = new GuiElement(this.getWebDriver(), By.xpath("//tbody/tr[1]/td[3]/*[4]"), mainFrame);
-    private GuiElement methodResultString = new GuiElement(this.getWebDriver(), By.xpath("(//h5[text()='Method']/../div)[2]"), mainFrame);
-    private GuiElement stepString = new GuiElement(this.getWebDriver(), By.xpath("//tbody/tr[1]/td[3]/*[5]/*[2]"), mainFrame);
+    private GuiElement methodNameString = mainFrame.getSubElement(By.xpath("(//*[@class='dashboardTextSmall'])[1]"));
+    private GuiElement classNameString = mainFrame.getSubElement(By.xpath("//tbody/tr[1]/td[3]/*[4]"));
+    private GuiElement methodResultString = mainFrame.getSubElement(By.xpath("(//h5[text()='Method']/../div)[2]"));
+    private GuiElement stepString = mainFrame.getSubElement(By.xpath("//tbody/tr[1]/td[3]/*[5]/*[2]"));
 
     /**
      * Context
      */
-    private GuiElement contextButton = new GuiElement(this.getWebDriver(), By.xpath("//*[@title=\"Show Fingerprint\" and @onclick=\"toggleElement('context');\"]"), mainFrame);
-    private GuiElement context = new GuiElement(this.getWebDriver(), By.id("context"), mainFrame);
+    private GuiElement contextButton = mainFrame.getSubElement(By.xpath("//*[@title=\"Show Fingerprint\" and @onclick=\"toggleElement('context');\"]"));
+    private GuiElement context = mainFrame.getSubElement(By.id("context"));
 
-    private GuiElement repairedFailsIndication = new GuiElement(this.getWebDriver(), By.xpath("//div[@class='skipped']"), mainFrame);
+    private GuiElement repairedFailsIndication = mainFrame.getSubElement(By.xpath("//div[@class='skipped']"));
 
     public String durationLocator = "//*[@class='cellTop']//*[contains(text(), 'Duration')]/..";
-    private GuiElement duration = new GuiElement(this.getWebDriver(), By.id("actualRunDuration"), mainFrame);
-    private GuiElement startTime = new GuiElement(this.getWebDriver(), By.xpath(durationLocator + "//div[@class='dashboardTextSmall'][1]"), mainFrame);
-    private GuiElement finishTime = new GuiElement(this.getWebDriver(), By.xpath(durationLocator + "//div[@class='dashboardTextSmall'][2]"), mainFrame);
+    private GuiElement duration = mainFrame.getSubElement(By.id("actualRunDuration"));
+    private GuiElement startTime = mainFrame.getSubElement(By.xpath(durationLocator + "//div[@class='dashboardTextSmall'][1]"));
+    private GuiElement finishTime = mainFrame.getSubElement(By.xpath(durationLocator + "//div[@class='dashboardTextSmall'][2]"));
 
-    private GuiElement evolutionEntry1 = new GuiElement(this.getWebDriver(), By.xpath("//*[@class='highcharts-markers highcharts-series-0 highcharts-tracker']/*[1]"), mainFrame);
-    private GuiElement evolutionEntry2 = new GuiElement(this.getWebDriver(), By.xpath("//*[@class='highcharts-markers highcharts-series-0 highcharts-tracker']/*[2]"), mainFrame);
-
-    //TODO  IDs einfügen
-    private GuiElement minorCount = new GuiElement(this.getWebDriver(), By.xpath("//td[@class='cellTop']//div[@class='error clickable']"), mainFrame);
+    private GuiElement evolutionEntry1 = mainFrame.getSubElement(By.xpath("//*[@class='highcharts-markers highcharts-series-0 highcharts-tracker']/*[1]"));
+    private GuiElement evolutionEntry2 = mainFrame.getSubElement(By.xpath("//*[@class='highcharts-markers highcharts-series-0 highcharts-tracker']/*[2]"));
 
     //TODO  IDs einfügen
-    private GuiElement errorMessageString = new GuiElement(this.getWebDriver(), By.xpath("//div[@style='color: red; font-size: 30px; padding: 25px; line-height: 40px;']"), mainFrame);
+    private GuiElement minorCount = mainFrame.getSubElement(By.xpath("//td[@class='cellTop']//div[@class='error clickable']"));
+
+    //TODO  IDs einfügen
+    private GuiElement errorMessageString = mainFrame.getSubElement(By.xpath("//div[@style='color: red; font-size: 30px; padding: 25px; line-height: 40px;']"));
     private GuiElement errorMessageExtraInfo = errorMessageString.getSubElement(By.xpath("/div"));
-    private GuiElement fingerprintButton = new GuiElement(this.getWebDriver(), By.xpath("//*[@title=\"Show Fingerprint\" and @onclick=\"toggleElement('fingerprint');\"]"), mainFrame);
-    private GuiElement fingerprintString = new GuiElement(this.getWebDriver(), By.xpath("//div[@id='fingerprint']//div[@class='error']"), mainFrame);
+    private GuiElement fingerprintButton = mainFrame.getSubElement(By.xpath("//*[@title=\"Show Fingerprint\" and @onclick=\"toggleElement('fingerprint');\"]"));
+    private GuiElement fingerprintString = mainFrame.getSubElement(By.xpath("//div[@id='fingerprint']//div[@class='error']"));
 
-    public GuiElement durationEvo = new GuiElement(this.getWebDriver(), By.xpath("//*[@class=' highcharts-background']"), mainFrame);
+    public GuiElement durationEvo = mainFrame.getSubElement(By.xpath("//*[@class=' highcharts-background']"));
     public String DurEvoPoint_LOCATOR = ("//*[@class='highcharts-markers highcharts-series-0 highcharts-tracker']//*[%d]");
 
     public MethodDetailsPage(WebDriver driver) {
@@ -213,7 +213,7 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
 
     public String getDateforHistoryElementByPosition(int position) {
         String dateLocator = String.format(HISTORY_DATE_LOCATOR, position + 1);
-        GuiElement historyDateElement = new GuiElement(this.getWebDriver(), By.xpath(dateLocator), mainFrame);
+        GuiElement historyDateElement = mainFrame.getSubElement(By.xpath(dateLocator));
         return historyDateElement.getText();
     }
 
@@ -227,7 +227,7 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
             throw new TesterraRuntimeException("Invalid position in HISTORY of " + MethodDetailsPage.class.getSimpleName() + ": " + position);
         }
         String elementLocator = String.format(HISTORY_ELEMENT_LOCATOR, position + positionOffsetDOM);
-        GuiElement historyElement = new GuiElement(this.getWebDriver(), By.xpath(elementLocator), mainFrame);
+        GuiElement historyElement = mainFrame.getSubElement(By.xpath(elementLocator));
         historyElement.setName("historyEntry Position # " + position);
         return historyElement;
     }
@@ -243,7 +243,7 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
 
     public MethodDetailsPage mouseOverDurEvoPoint(int parameter) {
         String LOCATOR = String.format(DurEvoPoint_LOCATOR, parameter);
-        GuiElement DurEvoPoint = new GuiElement(this.getWebDriver(), By.xpath(LOCATOR));
+        GuiElement DurEvoPoint = mainFrame.getSubElement(By.xpath(LOCATOR));
         DurEvoPoint.mouseOver();
         return PageFactory.create(MethodDetailsPage.class, this.getWebDriver());
     }

@@ -30,7 +30,7 @@ import org.openqa.selenium.WebDriver;
 public class DashboardModuleFailureCorridor extends AbstractFramePage {
 
     @Check
-    public final GuiElement failureCorridor = new GuiElement(this.getWebDriver(), By.xpath("//div[@id='FailureCorridor']"), mainFrame);
+    public final GuiElement failureCorridor = mainFrame.getSubElement(By.xpath("//div[@id='FailureCorridor']"));
 
     //failure corridor elements
     public final GuiElement failureCorridorDescription = failureCorridor.getSubElement(By.xpath("./*[1]"));

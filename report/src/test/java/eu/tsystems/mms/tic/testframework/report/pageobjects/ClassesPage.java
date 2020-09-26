@@ -45,7 +45,7 @@ public class ClassesPage extends AbstractReportPage {
 
     //legend iterator
     @Check
-    private GuiElement legendIndicatorRow = new GuiElement(this.getWebDriver(), By.xpath("//span[@title='Passed']/parent::div"), mainFrame);
+    private GuiElement legendIndicatorRow = mainFrame.getSubElement(By.xpath("//span[@title='Passed']/parent::div"));
 
     private GuiElement testsPassedLegendIndicator = legendIndicatorRow.getSubElement(By.xpath(".//span[@title='Passed']"));
 
@@ -56,13 +56,13 @@ public class ClassesPage extends AbstractReportPage {
     private GuiElement configMethodsIndicator = legendIndicatorRow.getSubElement(By.xpath(".//font[@class='configMethods']"));
 
     //additional functions on class page
-    private GuiElement hidePassedTestsCheckbox = new GuiElement(this.getWebDriver(), By.id("hidePassed"), mainFrame);
+    private GuiElement hidePassedTestsCheckbox = mainFrame.getSubElement(By.id("hidePassed"));
 
-    private GuiElement buildUserString = new GuiElement(this.getWebDriver(), By.xpath("//tbody[@id='tests-3']/tr[1]/td[2]"), mainFrame);
+    private GuiElement buildUserString = mainFrame.getSubElement(By.xpath("//tbody[@id='tests-3']/tr[1]/td[2]"));
 
-    private GuiElement buildVerionString = new GuiElement(this.getWebDriver(), By.xpath("//tbody[@id='tests-3']/tr[2]/td[2]"), mainFrame);
+    private GuiElement buildVerionString = mainFrame.getSubElement(By.xpath("//tbody[@id='tests-3']/tr[2]/td[2]"));
 
-    private GuiElement buildTimeStampString = new GuiElement(this.getWebDriver(), By.xpath("//tbody[@id='tests-3']/tr[3]/td[2]"), mainFrame);
+    private GuiElement buildTimeStampString = mainFrame.getSubElement(By.xpath("//tbody[@id='tests-3']/tr[3]/td[2]"));
 
     public ClassesPage(WebDriver driver) {
         super(driver);
@@ -75,7 +75,7 @@ public class ClassesPage extends AbstractReportPage {
      */
     public List<GuiElement> getPassedTestClasses() {
 
-        List <GuiElement> passedTestClassesList = new GuiElement(this.getWebDriver(), By.xpath("//span[@title='Passed']/../.."), mainFrame).getList();
+        List <GuiElement> passedTestClassesList = mainFrame.getSubElement(By.xpath("//span[@title='Passed']/../..")).getList();
         passedTestClassesList.remove(0); //remove first item of the list which is the legend symbol of the page
 
         return passedTestClassesList;
@@ -88,7 +88,7 @@ public class ClassesPage extends AbstractReportPage {
      */
     public List<GuiElement> getFailedTestClasses() {
 
-        List <GuiElement> failedTestClassesList = new GuiElement(this.getWebDriver(), By.xpath("//span[@title='Failed']/../.."), mainFrame).getList();
+        List <GuiElement> failedTestClassesList = mainFrame.getSubElement(By.xpath("//span[@title='Failed']/../..")).getList();
         failedTestClassesList.remove(0); //remove first item of the list which is the legend symbol of the page
 
         return failedTestClassesList;
@@ -136,7 +136,7 @@ public class ClassesPage extends AbstractReportPage {
      * @return GuiElement classTableRow
      */
     private GuiElement getClassTableRowForClass(String className) {
-        GuiElement classTableRow = new GuiElement(this.getWebDriver(), By.xpath("//a[contains(text(),'" + className + "')]/../.."), mainFrame);
+        GuiElement classTableRow = mainFrame.getSubElement(By.xpath("//a[contains(text(),'" + className + "')]/../.."));
         classTableRow.setName("classTableRow");
         return classTableRow;
     }
@@ -148,7 +148,7 @@ public class ClassesPage extends AbstractReportPage {
      * @return GuiElement classTableRow
      */
     private GuiElement getClassTableRowForPosition(int position) {
-        GuiElement classTableRow = new GuiElement(this.getWebDriver(), By.xpath("//*[@class='columnHeadings']/following-sibling::tr[" + position + "]"), mainFrame);
+        GuiElement classTableRow = mainFrame.getSubElement(By.xpath("//*[@class='columnHeadings']/following-sibling::tr[" + position + "]"));
         classTableRow.setName("classTableRow");
         return classTableRow;
     }
@@ -297,7 +297,7 @@ public class ClassesPage extends AbstractReportPage {
      * @return ClassesDetailsPage
      */
     public ClassesDetailsPage gotoClassesDetailsPageForClass(String className) {
-        GuiElement classTableRowLink = new GuiElement(this.getWebDriver(), By.partialLinkText(className), mainFrame);
+        GuiElement classTableRowLink = mainFrame.getSubElement(By.partialLinkText(className));
         classTableRowLink.asserts().assertIsDisplayed();
         classTableRowLink.setName(className + "ClassTableRowLink");
         classTableRowLink.click();

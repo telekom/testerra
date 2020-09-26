@@ -34,15 +34,15 @@ import org.openqa.selenium.WebDriver;
 public class DashboardModuleMethodChart extends AbstractFramePage {
 
     @Check
-    public final GuiElement methodChart = new GuiElement(this.getWebDriver(), By.id("detailsView"), mainFrame);
+    public final GuiElement methodChart = mainFrame.getSubElement(By.id("detailsView"));
 
     //method chart elements
-    public final GuiElement methodChartRepairedFailsIndication = new GuiElement(this.getWebDriver(), By.xpath("//a[contains(@href, 'test_TestStatePassed2')]//div[@class='skipped']"), mainFrame);
-    public final GuiElement methodChartFailedRetried1 = new GuiElement(this.getWebDriver(), By.xpath("//tr[@class='header broken']/following-sibling::tr[1]"), mainFrame);
-    public final GuiElement methodChartFailedRetried2 = new GuiElement(this.getWebDriver(), By.xpath("//tr[@class='header broken']/following-sibling::tr[2]"), mainFrame);
-    public final GuiElement methodChartFailedRetried3 = new GuiElement(this.getWebDriver(), By.xpath("//tr[@class='header broken']/following-sibling::tr[3]"), mainFrame);
-    public final GuiElement methodChartFailedRetried4 = new GuiElement(this.getWebDriver(), By.xpath("//tr[@class='header broken']/following-sibling::tr[4]"), mainFrame);
-    public final GuiElement methodChartSuccessfulRetried = new GuiElement(this.getWebDriver(), By.xpath("//tr[@class='header passed']/following-sibling::tr[1]"), mainFrame);
+    public final GuiElement methodChartRepairedFailsIndication = mainFrame.getSubElement(By.xpath("//a[contains(@href, 'test_TestStatePassed2')]//div[@class='skipped']"));
+    public final GuiElement methodChartFailedRetried1 = mainFrame.getSubElement(By.xpath("//tr[@class='header broken']/following-sibling::tr[1]"));
+    public final GuiElement methodChartFailedRetried2 = mainFrame.getSubElement(By.xpath("//tr[@class='header broken']/following-sibling::tr[2]"));
+    public final GuiElement methodChartFailedRetried3 = mainFrame.getSubElement(By.xpath("//tr[@class='header broken']/following-sibling::tr[3]"));
+    public final GuiElement methodChartFailedRetried4 = mainFrame.getSubElement(By.xpath("//tr[@class='header broken']/following-sibling::tr[4]"));
+    public final GuiElement methodChartSuccessfulRetried = mainFrame.getSubElement(By.xpath("//tr[@class='header passed']/following-sibling::tr[1]"));
     public final GuiElement methodChartTable = methodChart.getSubElement(By.xpath("./table[@class='textleft resultsTable']"));
     public final GuiElement methodChartFailedMethodsTable = methodChart.getSubElement(By.className("filterFailed"));
     public final GuiElement methodChartPassedMethodsTable = methodChart.getSubElement(By.className("filterPassed"));
@@ -73,7 +73,7 @@ public class DashboardModuleMethodChart extends AbstractFramePage {
      * @return a method chart GuiElement
      */
     public GuiElement getMethodChartElementRowByMethodName(String methodName) {
-        GuiElement methodElement = new GuiElement(this.getWebDriver(), By.linkText(methodName), mainFrame);
+        GuiElement methodElement = mainFrame.getSubElement(By.linkText(methodName));
         methodElement.setName("methodElementFor_" + methodName);
         return methodElement.getSubElement(By.xpath("./../.."));
     }

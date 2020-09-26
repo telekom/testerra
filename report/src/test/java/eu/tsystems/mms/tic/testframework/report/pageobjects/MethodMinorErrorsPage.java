@@ -28,8 +28,8 @@ import org.openqa.selenium.WebDriver;
 
 public class MethodMinorErrorsPage extends MethodDetailsPage {
 
-    GuiElement assertion = new GuiElement(this.getWebDriver(), By.cssSelector(".standardTable.tr>td>a"), mainFrame);
-    GuiElement assertionMessage = new GuiElement(this.getWebDriver(), By.cssSelector("#non-functional-exception-0>div"), mainFrame);
+    GuiElement assertion = mainFrame.getSubElement(By.cssSelector(".standardTable.tr>td>a"));
+    GuiElement assertionMessage = mainFrame.getSubElement(By.cssSelector("#non-functional-exception-0>div"));
 
     public MethodMinorErrorsPage(WebDriver driver) {
         super(driver);

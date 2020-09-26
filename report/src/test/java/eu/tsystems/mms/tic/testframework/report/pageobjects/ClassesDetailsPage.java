@@ -50,11 +50,11 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
     private String testResultLocatorPattern = "//th[text()='%s']";
 
     @Check
-    private GuiElement headLine = new GuiElement(this.getWebDriver(), By.xpath("//div[@class='dashboardTextBig']"), mainFrame);
+    private GuiElement headLine = mainFrame.getSubElement(By.xpath("//div[@class='dashboardTextBig']"));
 
-    private GuiElement configMethodsButton = new GuiElement(this.getWebDriver(), By.id("toggleSuccessfulConfigMethodsView"), mainFrame);
+    private GuiElement configMethodsButton = mainFrame.getSubElement(By.id("toggleSuccessfulConfigMethodsView"));
 
-    private GuiElement successfulConfigMethodsHeader = new GuiElement(this.getWebDriver(), By.id("successfulConfigMethods"), mainFrame);
+    private GuiElement successfulConfigMethodsHeader = mainFrame.getSubElement(By.id("successfulConfigMethods"));
 
     public ClassesDetailsPage(WebDriver driver) {
         super(driver);
@@ -72,7 +72,7 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
     }
 
     private GuiElement getTestResultTableHeaderForTestResult(TestResultHelper.TestResult testResult) {
-        GuiElement testResultTableHeader = new GuiElement(this.getWebDriver(), By.xpath(String.format(testResultLocatorPattern, testResult.getXpathClassesDetailsHeader())), mainFrame);
+        GuiElement testResultTableHeader = mainFrame.getSubElement(By.xpath(String.format(testResultLocatorPattern, testResult.getXpathClassesDetailsHeader())));
         testResultTableHeader.setName("testResultTableHeader");
         return testResultTableHeader;
     }
@@ -141,10 +141,10 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
      * @return the left test method info column as GuiElement
      */
     private GuiElement getInformationMethodBodyForTestMethodName(String testMethodName, String configMethodName) {
-//        GuiElement informationMethodBody = new GuiElement(driver, By.xpath(String.format("//*[@id='%s']", testMethodName)), mainFrame);
-        GuiElement informationMethodBody = new GuiElement(this.getWebDriver(), By.xpath(String.format("//*[contains(@id,'%s-')]", testMethodName)), mainFrame);
+//        GuiElement informationMethodBody = new GuiElement(driver, By.xpath(String.format("//*[@id='%s']", testMethodName)));
+        GuiElement informationMethodBody = mainFrame.getSubElement(By.xpath(String.format("//*[contains(@id,'%s-')]", testMethodName)));
         if (null != configMethodName) {
-            informationMethodBody = new GuiElement(this.getWebDriver(), By.xpath(String.format("//*[contains(@id,'%s-') and .//div[contains(text(), '%s')]]", testMethodName, configMethodName)), mainFrame);
+            informationMethodBody = mainFrame.getSubElement(By.xpath(String.format("//*[contains(@id,'%s-') and .//div[contains(text(), '%s')]]", testMethodName, configMethodName)));
         }
         informationMethodBody.setName("informationMethodBody");
         return informationMethodBody;
@@ -157,7 +157,7 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
      * @return the left test method info column as GuiElement
      */
     private GuiElement getInformationMethodBodyForTestMethodName(String testMethodName) {
-        GuiElement informationMethodBody = new GuiElement(this.getWebDriver(), By.xpath(String.format("//*[contains(@id,'%s-')]", testMethodName)), mainFrame);
+        GuiElement informationMethodBody = mainFrame.getSubElement(By.xpath(String.format("//*[contains(@id,'%s-')]", testMethodName)));
         informationMethodBody.setName("informationMethodBody");
         return informationMethodBody;
     }
@@ -170,7 +170,7 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
      */
     private GuiElement getInformationMethodBodyForTestMethodNameWithTag(String testMethodTagName) {
 
-        GuiElement informationMethodBody = new GuiElement(this.getWebDriver(), By.xpath("//font[contains(text(),'" + testMethodTagName + "')]"), mainFrame);
+        GuiElement informationMethodBody = mainFrame.getSubElement(By.xpath("//font[contains(text(),'" + testMethodTagName + "')]"));
         informationMethodBody.setName("informationMethodBody");
         return informationMethodBody;
     }
@@ -378,7 +378,7 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
     public Map<Integer, Date> getAllExecutionEntries() {
         final DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.GERMAN);
         Map<Integer, Date> executionEntries = new HashMap<>();
-        List<GuiElement> testMethodInfos = new GuiElement(this.getWebDriver(), By.xpath(".//table[contains(@class,'resultsTable')]//div[5]"), mainFrame).getList();
+        List<GuiElement> testMethodInfos = mainFrame.getSubElement(By.xpath(".//table[contains(@class,'resultsTable')]//div[5]")).getList();
         for (GuiElement testMethodInfo : testMethodInfos) {
             if (!testMethodInfo.isDisplayed()) {
                 continue;

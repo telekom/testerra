@@ -30,10 +30,10 @@ import org.openqa.selenium.WebDriver;
 public class LogsPage extends AbstractReportPage {
 
     @Check
-    public GuiElement table = new GuiElement (this.getWebDriver(), By.id("datatable"), mainFrame);
+    public GuiElement table = mainFrame.getSubElement(By.id("datatable"));
 
-    private GuiElement excludeFilter = new GuiElement (this.getWebDriver(), By.id("dataTable_Filter"), mainFrame);
-    private GuiElement includeFilter = new GuiElement (this.getWebDriver(), By.id("datatable_filter"), mainFrame);
+    private GuiElement excludeFilter = mainFrame.getSubElement(By.id("dataTable_Filter"));
+    private GuiElement includeFilter = mainFrame.getSubElement(By.id("datatable_filter"));
 
     public LogsPage(WebDriver driver) {
         super(driver);
@@ -46,13 +46,13 @@ public class LogsPage extends AbstractReportPage {
         GuiElement loggerColumnHead = table.getSubElement(By.xpath(".//*[contains(@aria-label,'Logger')]"));
         GuiElement messageColumnHead = table.getSubElement(By.xpath(".//*[contains(@aria-label,'Message')]"));
 
-        GuiElement selectAllButton = new GuiElement (this.getWebDriver(), By.xpath("//span[text()='Select all']"), mainFrame);
-        GuiElement deselectAllButton = new GuiElement (this.getWebDriver(), By.xpath("//span[text()='Deselect all']"), mainFrame);
-        GuiElement copyButton = new GuiElement (this.getWebDriver(), By.xpath("//span[text()='Copy']"), mainFrame);
-        GuiElement excelButton = new GuiElement (this.getWebDriver(), By.xpath("//span[text()='Excel']"), mainFrame);
-        GuiElement csvButton = new GuiElement (this.getWebDriver(), By.xpath("//span[text()='CSV']"), mainFrame);
-        GuiElement pdfButton = new GuiElement (this.getWebDriver(), By.xpath("//span[text()='PDF']"), mainFrame);
-        GuiElement printButton = new GuiElement (this.getWebDriver(), By.xpath("//span[text()='Print']"), mainFrame);
+        GuiElement selectAllButton = mainFrame.getSubElement(By.xpath("//span[text()='Select all']"));
+        GuiElement deselectAllButton = mainFrame.getSubElement(By.xpath("//span[text()='Deselect all']"));
+        GuiElement copyButton = mainFrame.getSubElement(By.xpath("//span[text()='Copy']"));
+        GuiElement excelButton = mainFrame.getSubElement(By.xpath("//span[text()='Excel']"));
+        GuiElement csvButton = mainFrame.getSubElement(By.xpath("//span[text()='CSV']"));
+        GuiElement pdfButton = mainFrame.getSubElement(By.xpath("//span[text()='PDF']"));
+        GuiElement printButton = mainFrame.getSubElement(By.xpath("//span[text()='Print']"));
 
         levelColumnHead.asserts().assertIsDisplayed();
         timeColumnHead.asserts().assertIsDisplayed();
@@ -73,7 +73,7 @@ public class LogsPage extends AbstractReportPage {
     }
 
     public void assertLogMessageIsDisplayed(){
-        GuiElement errorMessage = new GuiElement (this.getWebDriver(), By.xpath("//td[text()='No matching records found']"), mainFrame);
+        GuiElement errorMessage = mainFrame.getSubElement(By.xpath("//td[text()='No matching records found']"));
         errorMessage.asserts().assertIsNotDisplayed();
     }
 

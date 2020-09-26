@@ -28,9 +28,9 @@ import org.openqa.selenium.WebDriver;
 
 public class MethodScreenshotPage extends MethodDetailsPage {
     @Check
-    private GuiElement screenShotInfoButton = new GuiElement(this.getWebDriver(), By.xpath("//i[@class='bgwhite fa fa-info']"), mainFrame);
+    private GuiElement screenShotInfoButton = mainFrame.getSubElement(By.xpath("//i[@class='bgwhite fa fa-info']"));
 
-    private GuiElement screenShot = new GuiElement(this.getWebDriver(), By.xpath("//div[@class='fotorama__html']"), mainFrame);
+    private GuiElement screenShot = mainFrame.getSubElement(By.xpath("//div[@class='fotorama__html']"));
 
     public MethodScreenshotPage(WebDriver driver) {
         super(driver);

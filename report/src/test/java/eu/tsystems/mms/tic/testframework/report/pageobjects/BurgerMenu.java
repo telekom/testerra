@@ -34,10 +34,10 @@ import org.openqa.selenium.WebDriver;
 public class BurgerMenu extends AbstractReportPage {
 
     @Check
-    private GuiElement exitPointsLink = new GuiElement(this.getWebDriver(), By.id("ExitPoints"), mainFrame);
-    private GuiElement logsLink = new GuiElement(this.getWebDriver(), By.id("Logs"), mainFrame);
-    private GuiElement timingsLink = new GuiElement(this.getWebDriver(), By.id("Timings"), mainFrame);
-    private GuiElement monitorLink = new GuiElement(this.getWebDriver(), By.id("JVM Monitor"), mainFrame);
+    private GuiElement exitPointsLink = mainFrame.getSubElement(By.id("ExitPoints"));
+    private GuiElement logsLink = mainFrame.getSubElement(By.id("Logs"));
+    private GuiElement timingsLink = mainFrame.getSubElement(By.id("Timings"));
+    private GuiElement monitorLink = mainFrame.getSubElement(By.id("JVM Monitor"));
 
 
 

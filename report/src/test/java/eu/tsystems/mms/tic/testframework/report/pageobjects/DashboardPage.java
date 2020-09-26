@@ -40,13 +40,13 @@ import org.openqa.selenium.WebDriver;
 public class DashboardPage extends AbstractReportPage implements IReportAnnotationVerifier {
 
 //    @Check
-    public final GuiElement testerraLogo = new GuiElement(this.getWebDriver(), By.cssSelector("img[alt='testerra']"), mainFrame);
+    public final GuiElement testerraLogo = mainFrame.getSubElement(By.cssSelector("img[alt='testerra']"));
     public final DashboardModuleTestResultPieChart dashboardModuleTestResultPieChart = PageFactory.create(DashboardModuleTestResultPieChart.class, this.getWebDriver());
     public final DashboardModuleTestResultNumberBreakdown dashboardModuleTestResultNumberBreakdown = PageFactory.create(DashboardModuleTestResultNumberBreakdown.class, this.getWebDriver());
     public final DashboardModuleFailureCorridor dashboardModuleFailureCorridor = PageFactory.create(DashboardModuleFailureCorridor.class, this.getWebDriver());
     public final DashboardModuleInformationCorridor dashboardModuleInformationCorridor = PageFactory.create(DashboardModuleInformationCorridor.class, this.getWebDriver());
     public final DashboardModuleClassBarChart dashboardModuleClassBarChart = PageFactory.create(DashboardModuleClassBarChart.class, this.getWebDriver());
-    public final GuiElement screenShotInfoButton = new GuiElement(this.getWebDriver(), By.xpath("//*[contains(text(),'test_testMidCorridorFailed1')]"), mainFrame);
+    public final GuiElement screenShotInfoButton = mainFrame.getSubElement(By.xpath("//*[contains(text(),'test_testMidCorridorFailed1')]"));
 
     public DashboardPage(WebDriver driver) {
         super(driver);
@@ -95,7 +95,7 @@ public class DashboardPage extends AbstractReportPage implements IReportAnnotati
         GuiElement knownElement;
         Actions builder = new Actions(driver);
 
-        knownElement = new GuiElement(driver, By.xpath("//*[@id='methodsPie']"), mainFrame);
+        knownElement = new GuiElement(driver, By.xpath("//*[@id='methodsPie']"));
         knownElement.waitForIsDisplayed();
         builder.moveToElement(knownElement.getWebElement(), 2, 5).click().build().perform();
     }
@@ -121,7 +121,7 @@ public class DashboardPage extends AbstractReportPage implements IReportAnnotati
      */
     public GuiElement getResultTableHeaderForTestResult(TestResultHelper.TestResult testResult) {
         String testState = testResult.getTestState();
-        GuiElement testResultTableHeader = new GuiElement(this.getWebDriver(), By.xpath("(//*[@class='header']/../tr[@class='test testbar" + testState + " filterMethods filter" + testState + "'])[1]"), mainFrame);
+        GuiElement testResultTableHeader = mainFrame.getSubElement(By.xpath("(//*[@class='header']/../tr[@class='test testbar" + testState + " filterMethods filter" + testState + "'])[1]"));
         testResultTableHeader.setName("testResultTableHeader");
 
         return testResultTableHeader;

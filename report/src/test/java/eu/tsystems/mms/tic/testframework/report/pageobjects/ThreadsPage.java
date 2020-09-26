@@ -31,8 +31,8 @@ import org.openqa.selenium.WebDriver;
 public class ThreadsPage extends AbstractReportPage {
 
     @Check
-    private GuiElement headLine = new GuiElement(this.getWebDriver(), By.xpath("//h2[text()='Threads']"), mainFrame);
-    private GuiElement threadsDataTable = new GuiElement(this.getWebDriver(), By.id("mytimeline"), mainFrame);
+    private GuiElement headLine = mainFrame.getSubElement(By.xpath("//h2[text()='Threads']"));
+    private GuiElement threadsDataTable = mainFrame.getSubElement(By.id("mytimeline"));
 
     private String LOCATOR_METHOD_NAME_LINK = "(//font[text()='%s']/..)[last()]";
 
@@ -45,7 +45,7 @@ public class ThreadsPage extends AbstractReportPage {
     }
 
     public MethodDetailsPage clickMethodAndOpenMethodDetailsPage(String methodName) {
-        GuiElement methodNameLink = new GuiElement(this.getWebDriver(), By.xpath(String.format(LOCATOR_METHOD_NAME_LINK, methodName)), mainFrame);
+        GuiElement methodNameLink = mainFrame.getSubElement(By.xpath(String.format(LOCATOR_METHOD_NAME_LINK, methodName)));
         methodNameLink.scrollToElement();
         methodNameLink.click();
 

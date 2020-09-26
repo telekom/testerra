@@ -32,15 +32,15 @@ public class MethodStepsPage extends MethodDetailsPage {
     private final String INTERNAL_STEP_LOCATOR = "//a[@id='link_viewclass_";
     private final String BROWSER_LOG_INDICATOR = "Browser:";
 
-    private GuiElement button1Point1 = new GuiElement(this.getWebDriver(), By.xpath(INTERNAL_STEP_LOCATOR + "1_1']"), mainFrame);
-    private GuiElement button2Point1 = new GuiElement(this.getWebDriver(), By.xpath(INTERNAL_STEP_LOCATOR + "2_1']"), mainFrame);
-    private GuiElement button3Point1 = new GuiElement(this.getWebDriver(), By.xpath(INTERNAL_STEP_LOCATOR + "3_1']"), mainFrame);
+    private GuiElement button1Point1 = mainFrame.getSubElement(By.xpath(INTERNAL_STEP_LOCATOR + "1_1']"));
+    private GuiElement button2Point1 = mainFrame.getSubElement(By.xpath(INTERNAL_STEP_LOCATOR + "2_1']"));
+    private GuiElement button3Point1 = mainFrame.getSubElement(By.xpath(INTERNAL_STEP_LOCATOR + "3_1']"));
 
     private final String EXTERNAL_STEP_LOCATOR = "//div[@class='list-group textleft listitems']//a[contains(text(),";
 
-    private GuiElement testStep1Button = new GuiElement(this.getWebDriver(), By.xpath(EXTERNAL_STEP_LOCATOR + "'Test-Step-1')]"), mainFrame);
-    private GuiElement testStep2Button = new GuiElement(this.getWebDriver(), By.xpath(EXTERNAL_STEP_LOCATOR + "'Test-Step-2')]"), mainFrame);
-    private GuiElement testStep3Button = new GuiElement(this.getWebDriver(), By.xpath(EXTERNAL_STEP_LOCATOR + "'Test-Step-3')]"), mainFrame);
+    private GuiElement testStep1Button = mainFrame.getSubElement(By.xpath(EXTERNAL_STEP_LOCATOR + "'Test-Step-1')]"));
+    private GuiElement testStep2Button = mainFrame.getSubElement(By.xpath(EXTERNAL_STEP_LOCATOR + "'Test-Step-2')]"));
+    private GuiElement testStep3Button = mainFrame.getSubElement(By.xpath(EXTERNAL_STEP_LOCATOR + "'Test-Step-3')]"));
 
 
     public MethodStepsPage(WebDriver driver) {
@@ -74,7 +74,7 @@ public class MethodStepsPage extends MethodDetailsPage {
     }
 
     public List<GuiElement> getLoggingRowsByActionStep(int majorStep, int minorStep) {
-        List<GuiElement> rows = new GuiElement(this.getWebDriver(), By.xpath("//tr[contains(@class,'viewclass_" + majorStep + "_" + minorStep + "')]"), mainFrame).getList();
+        List<GuiElement> rows = mainFrame.getSubElement(By.xpath("//tr[contains(@class,'viewclass_" + majorStep + "_" + minorStep + "')]")).getList();
         return rows;
     }
 

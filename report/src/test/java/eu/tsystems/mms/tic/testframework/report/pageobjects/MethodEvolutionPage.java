@@ -27,7 +27,7 @@ import org.openqa.selenium.WebDriver;
 
 public class MethodEvolutionPage extends MethodDetailsPage {
 
-    private GuiElement graphView = new GuiElement(this.getWebDriver(), By.id("historygrapharea"), mainFrame);
+    private GuiElement graphView = mainFrame.getSubElement(By.id("historygrapharea"));
 
     private GuiElement noEvolutionIndicator = graphView.getSubElement(By.tagName("h6"));
 

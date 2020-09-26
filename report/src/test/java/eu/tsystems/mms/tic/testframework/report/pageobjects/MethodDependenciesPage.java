@@ -28,12 +28,12 @@ import org.openqa.selenium.WebDriver;
 
 public class MethodDependenciesPage extends MethodDetailsPage {
 
-    private GuiElement details = new GuiElement(this.getWebDriver(), By.id("details"), mainFrame);
-    private GuiElement clickPath = new GuiElement(this.getWebDriver(), By.id("clickpath"), mainFrame);
-    private GuiElement videoArea = new GuiElement(this.getWebDriver(), By.id("videoarea"), mainFrame);
+    private GuiElement details = mainFrame.getSubElement(By.id("details"));
+    private GuiElement clickPath = mainFrame.getSubElement(By.id("clickpath"));
+    private GuiElement videoArea = mainFrame.getSubElement(By.id("videoarea"));
 
     @Check
-    private GuiElement dependenciesArea = new GuiElement(this.getWebDriver(), By.id("depsarea"), mainFrame);
+    private GuiElement dependenciesArea = mainFrame.getSubElement(By.id("depsarea"));
 
     public MethodDependenciesPage(WebDriver driver) {
         super(driver);

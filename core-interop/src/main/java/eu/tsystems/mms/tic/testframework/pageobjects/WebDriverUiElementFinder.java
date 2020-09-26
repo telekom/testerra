@@ -21,9 +21,19 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-/**
- * Provides factory for {@link Locate}
- */
-public interface UiElementLocator {
-    LocateFactory Locate = new LocateFactory();
+import eu.tsystems.mms.tic.testframework.common.Testerra;
+import org.openqa.selenium.WebDriver;
+
+public class WebDriverUiElementFinder implements UiElementFinder {
+    protected static final UiElementFactory uiElementFactory = Testerra.injector.getInstance(UiElementFactory.class);
+    private final WebDriver webDriver;
+
+    public WebDriverUiElementFinder(WebDriver webDriver) {
+        this.webDriver = webDriver;
+    }
+
+    @Override
+    public UiElement find(Locate locator) {
+        return uiElementFactory.createWithWebDriver(this.webDriver, locator);
+    }
 }

@@ -24,8 +24,8 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AbstractPropertyAssertion;
@@ -35,21 +35,14 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultStr
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertionFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ScreenshotAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import java.awt.Color;
-import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
 /**
  * Represents a full web page and provides advanced {@link PageObject} features:
@@ -270,7 +263,15 @@ public abstract class Page extends AbstractPage implements TestablePage, Nameabl
 
     @Deprecated
     public void assertIsNotTextDisplayed(String text) {
-        anyElementContainsText(text).displayed().is(false);
+        try {
+            anyElementContainsText(text).displayed().is(false);
+        } catch (AssertionError error) {
+            if (error.getCause() instanceof ElementNotFoundException) {
+                // ignore this
+            } else {
+                throw error;
+            }
+        }
     }
 
     @Override
@@ -336,46 +337,8 @@ public abstract class Page extends AbstractPage implements TestablePage, Nameabl
 
     @Override
     public TestableUiElement anyElementContainsText(String text) {
-        String textFinderXpath = String.format("//text()[contains(., '%s')]/..", text);
-        Locate locate = Locate.by(By.xpath(textFinderXpath));
-        TestableUiElement textElements = find(locate);
-        if (textElements.numberOfElements().getActual()>0) {
-            return textElements;
-        }
-        WebDriver driver = this.getWebDriver();
-
-        WebDriverRequest request = WebDriverManager.getRelatedWebDriverRequest(driver);
-        if (Browsers.safari.equalsIgnoreCase(request.browser) || Browsers.phantomjs.equalsIgnoreCase(request.browser)) {
-            String msg = "Recursive Page Scan does not work. Unsupported Browser.";
-            log().error(msg);
-            MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-            if (methodContext != null) {
-                methodContext.addPriorityMessage(msg);
-            }
-            // don't return here, let it run into failure...
-        }
-
-        List<WebElement> iframes = driver.findElements(By.tagName("iframe"));
-        for (WebElement iframe : iframes) {
-            driver.switchTo().frame(iframe);
-            textElements = anyElementContainsText(text);
-            if (textElements.numberOfElements().getActual()>0) {
-               return textElements;
-            }
-            driver.switchTo().parentFrame();
-        }
-
-        List<WebElement> frames = driver.findElements(By.tagName("frame"));
-        for (WebElement frame : frames) {
-            driver.switchTo().frame(frame);
-            textElements = anyElementContainsText(text);
-            if (textElements.numberOfElements().getActual()>0) {
-                return textElements;
-            }
-            driver.switchTo().parentFrame();
-        }
-
-        return textElements;
+        WebDriverUiElementFinder finder = new WebDriverUiElementFinder(getWebDriver());
+        return finder.findDeep(Locate.by(XPath.from("*").text().contains(text)));
     }
 
     @Override

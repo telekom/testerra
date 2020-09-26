@@ -33,7 +33,6 @@ import org.openqa.selenium.WebDriver;
  */
 public class WebTestFramedPage extends Page {
 
-
     GuiElement inputFrame1 = new GuiElement(this.getWebDriver(), By.name("InputFrame1"));
 
     /** First text field on page. */

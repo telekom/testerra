@@ -21,13 +21,9 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementBase;
-
 /**
- * Components are PageObjects restricted to a root GuiElement
- * @author Mike Reiche
+ * Provides factory for {@link Locate}
  */
-public interface Component<SELF> extends UiElementBase, Nameable<SELF> {
-    UiElementList<SELF> list();
+public interface LocateProvider {
+    LocateFactory Locate = new LocateFactory();
 }

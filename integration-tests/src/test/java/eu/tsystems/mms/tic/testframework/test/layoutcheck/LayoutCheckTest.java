@@ -25,11 +25,11 @@ import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElementLocator;
+import eu.tsystems.mms.tic.testframework.pageobjects.LocateProvider;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.Test;
 
-public class LayoutCheckTest extends AbstractTestSitesTest implements UiElementLocator {
+public class LayoutCheckTest extends AbstractTestSitesTest implements LocateProvider {
 
     @Override
     protected TestPage getTestPage() {

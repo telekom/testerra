@@ -32,7 +32,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAsse
  * Contains basic GuiElement features which every GuiElement needs to have.
  * @author Mike Reiche
  */
-public interface BasicUiElement extends WebElementActions {
+public interface UiElementBase extends WebElementActions {
     QuantityAssertion<Integer> numberOfElements();
     BinaryAssertion<Boolean> present();
     default boolean present(boolean expected) {

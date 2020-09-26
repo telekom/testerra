@@ -21,13 +21,14 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import org.openqa.selenium.By;
 
 /**
  * Interface for finding {@link UiElement}
  * @author Mike Reiche
  */
-public interface UiElementFinder extends UiElementLocator {
+public interface UiElementFinder extends LocateProvider, Loggable {
     UiElement find(Locate locator);
     default UiElement findById(Object id) {
         return find(Locate.by(By.id(id.toString())));
@@ -45,5 +46,21 @@ public interface UiElementFinder extends UiElementLocator {
         //Testerra.injector.getInstance(ElementLabelProvider.class).createBy(element, label);
         //return find(new DefaultLocate().displayed());
         return null;
+    }
+
+    default UiElement findDeep(Locate locate) {
+        UiElement currentScope = find(locate);
+        if (currentScope.numberOfElements().getActual() > 0) {
+            return currentScope;
+        }
+
+        UiElement frames = find(By.xpath("(//iframe|//frame)"));
+        for (UiElement frame : frames.list()) {
+            UiElement deepScope = frame.findDeep(locate);
+            if (deepScope.numberOfElements().getActual() > 0) {
+                return deepScope;
+            }
+        }
+        return currentScope;
     }
 }

@@ -25,6 +25,7 @@ package eu.tsystems.mms.tic.testframework.test.page;
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.WebTestFramedPage;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
+import eu.tsystems.mms.tic.testframework.pageobjects.LocateProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -36,7 +37,7 @@ import org.testng.annotations.Test;
  * Tests for correct execution of checkpage().
  * To test that checkpage() is executed, a not existing, check-annotated element is used.
  */
-public class AssertTextPageTest extends AbstractTestSitesTest implements PageFactoryTest {
+public class AssertTextPageTest extends AbstractTestSitesTest implements PageFactoryTest, LocateProvider {
 
     @Override
     protected TestPage getTestPage() {

@@ -32,7 +32,7 @@ public class ElementNotFoundException extends RuntimeException {
         this(element, null);
     }
     public ElementNotFoundException(UiElement element, Throwable cause) {
-        this("»"+element.toString(true) + "« not found", cause);
+        this(element.toString(true) + " not found", cause);
     }
 
     /**

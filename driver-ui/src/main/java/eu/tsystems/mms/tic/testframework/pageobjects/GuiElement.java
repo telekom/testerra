@@ -28,9 +28,9 @@ import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementAssertions;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementBase;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AbstractPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryAssertion;
@@ -963,8 +963,8 @@ public class GuiElement implements UiElement, Loggable {
         Formatter formatter = Testerra.injector.getInstance(Formatter.class);
         ArrayList<String> xPathes = new ArrayList<>();
         Nameable element = this;
-        while (element instanceof BasicUiElement) {
-            xPathes.add(0, formatter.byToXPath(((BasicUiElement)element).getLocate().getBy()));
+        while (element instanceof UiElementBase) {
+            xPathes.add(0, formatter.byToXPath(((UiElementBase)element).getLocate().getBy()));
             element = element.getParent();
         }
         return String.join("", xPathes);

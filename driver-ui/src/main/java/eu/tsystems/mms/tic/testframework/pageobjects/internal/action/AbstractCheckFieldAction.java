@@ -25,7 +25,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicUiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementBase;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import java.lang.reflect.Field;
@@ -33,23 +33,23 @@ import java.lang.reflect.Modifier;
 
 public abstract class AbstractCheckFieldAction extends AbstractFieldAction implements Loggable {
 
-    private BasicUiElement checkableInstance;
+    private UiElementBase checkableInstance;
 
     public AbstractCheckFieldAction(Field field, AbstractPage declaringPage) {
         super(field, declaringPage);
     }
 
-    protected abstract void checkField(BasicUiElement checkableInstance, Check check);
+    protected abstract void checkField(UiElementBase checkableInstance, Check check);
     protected boolean execute = false;
 
     @Override
     public boolean before() {
         boolean isCheckAnnotated = field.isAnnotationPresent(Check.class);
-        boolean isCheckable = BasicUiElement.class.isAssignableFrom(field.getType());
+        boolean isCheckable = UiElementBase.class.isAssignableFrom(field.getType());
 
         if (isCheckAnnotated && !isCheckable) {
             throw new TesterraRuntimeException("Field {" + field.getName() + "} of " + declaringPage
-                    + " is annotated with @Check, but the class doesn't implement " + BasicUiElement.class.getCanonicalName());
+                    + " is annotated with @Check, but the class doesn't implement " + UiElementBase.class.getCanonicalName());
         }
 
         if (isCheckable) {
@@ -75,7 +75,7 @@ public abstract class AbstractCheckFieldAction extends AbstractFieldAction imple
     public void execute() {
         String fieldName = field.getName();
         try {
-            checkableInstance = (BasicUiElement) field.get(declaringPage);
+            checkableInstance = (UiElementBase) field.get(declaringPage);
         } catch (IllegalAccessException e) {
             log().error("Internal Error", e);
             return;

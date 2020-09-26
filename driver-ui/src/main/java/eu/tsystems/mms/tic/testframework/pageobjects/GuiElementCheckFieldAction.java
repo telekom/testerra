@@ -25,7 +25,7 @@ import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicUiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementBase;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.AbstractCheckFieldAction;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -47,7 +47,7 @@ public class GuiElementCheckFieldAction extends AbstractCheckFieldAction {
     }
 
     private void pCheckField(
-        BasicUiElement guiElement,
+        UiElementBase guiElement,
         Check check
     ) {
 
@@ -103,7 +103,7 @@ public class GuiElementCheckFieldAction extends AbstractCheckFieldAction {
     }
 
     @Override
-    protected void checkField(BasicUiElement checkableInstance, Check check) {
+    protected void checkField(UiElementBase checkableInstance, Check check) {
         try {
             pCheckField(checkableInstance, check);
         } catch (AssertionError e) {

@@ -22,6 +22,7 @@
  package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
@@ -30,7 +31,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.AbstractFie
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFieldAction;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
 import eu.tsystems.mms.tic.testframework.testing.TestFeatures;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -59,10 +59,10 @@ public abstract class AbstractPage implements
         Loggable,
         TestFeatures,
         PageObject,
-        UiElementLocator,
-        UiElementFactoryProvider,
-        PageFactoryProvider
+        LocateProvider
 {
+    protected static final UiElementFactory uiElementFactory = Testerra.injector.getInstance(UiElementFactory.class);
+    protected static final PageObjectFactory pageFactory = Testerra.injector.getInstance(PageObjectFactory.class);
     abstract protected UiElement find(Locate locate);
     protected UiElement findById(Object id) {
         return find(Locate.by(By.id(id.toString())));

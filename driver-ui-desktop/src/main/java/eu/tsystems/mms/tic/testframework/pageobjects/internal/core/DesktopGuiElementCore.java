@@ -149,7 +149,6 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
                  * will fail with a {@link JavascriptException}.
                  */
                 if (!parentUiElement.getData().isShadowRoot() && (webElement.getTagName().equals("frame") || webElement.getTagName().equals("iframe"))) {
-                    log().info("Switch to frame: " + webElement);
                     webDriver.switchTo().frame(webElement);
                     consumer.accept(findElementsFromWebDriver(webDriver, by));
                 } else {
@@ -157,7 +156,6 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
                 }
             });
         } else {
-            log().debug("Switch to default content");
             webDriver.switchTo().defaultContent();
             consumer.accept(findElementsFromWebDriver(webDriver, by));
         }

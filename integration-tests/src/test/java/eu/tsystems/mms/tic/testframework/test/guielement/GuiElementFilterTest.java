@@ -23,7 +23,7 @@ package eu.tsystems.mms.tic.testframework.test.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElementLocator;
+import eu.tsystems.mms.tic.testframework.pageobjects.LocateProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
@@ -31,7 +31,7 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
 
-public class GuiElementFilterTest extends AbstractTestSitesTest implements UiElementLocator {
+public class GuiElementFilterTest extends AbstractTestSitesTest implements LocateProvider {
 
     private void assertLogFieldContains(String textToBeContained) {
         final WebDriver driver = WebDriverManager.getWebDriver();

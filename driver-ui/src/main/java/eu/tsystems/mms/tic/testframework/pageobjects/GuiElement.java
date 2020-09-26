@@ -80,18 +80,42 @@ import org.openqa.selenium.WebElement;
  * Authors: pele, rnhb
  */
 public class GuiElement implements UiElement, Loggable {
+    /**
+     * Factory required for {@link UiElementAssertions}
+     */
     private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
+    /**
+     * Factory required for {@link UiElementFinder}
+     */
     private static final UiElementFactory uiElementFactory = Testerra.injector.getInstance(UiElementFactory.class);
 
+    /**
+     * Get lazy initialized by {@link #asserts()}
+     * Is one of:
+     *  {@link #collectableAssert}
+     *  {@link #instantAssert}
+     */
     private GuiElementAssert defaultAssert;
+    /**
+     * Gets lazy initialized by {@link #instantAsserts()}
+     */
     private GuiElementAssert instantAssert;
+    /**
+     * Gets lazy initialized by {@link #assertCollector()}
+     */
     private GuiElementAssert collectableAssert;
+    /**
+     * Gets lazy initialized by {@link #nonFunctionalAssert}
+     */
     private GuiElementAssert nonFunctionalAssert;
 
     /**
      * This is the raw core implementation of {@link GuiElementCore}
      */
     private final GuiElementCore core;
+    /**
+     * Contains the elements base information and the {@link GuiElementData} hierarchy only.
+     */
     private final GuiElementData guiElementData;
     /**
      * This facade contains
@@ -103,7 +127,14 @@ public class GuiElement implements UiElement, Loggable {
     private GuiElementCore decoratedCore;
     private GuiElementWait decoratedWait;
 
-    protected Nameable parent;
+    /**
+     * Contains the {@link Nameable} hierarchy for {@link UiElement} and {@link PageObject}.
+     */
+    private Nameable parent;
+
+    /**
+     * Gets lazy initialized by {@link #list()}
+     */
     private DefaultUiElementList list;
 
     /**
@@ -116,30 +147,22 @@ public class GuiElement implements UiElement, Loggable {
         this.core = factory.createCore(guiElementData);
     }
 
-    public GuiElementCore getCore() {
-        return this.core;
-    }
-
-    public GuiElementData getData() {
-        return this.guiElementData;
-    }
-
     /**
-     * Constructor for list elements of {@link #list}
+     * Package private constructor for list elements of {@link UiElementList}.
      * Elements created by this constructor are identical to it's parent,
      * but with a different element index.
      */
-    public GuiElement(GuiElement guiElement, int index) {
+    GuiElement(GuiElement guiElement, int index) {
         this(new GuiElementData(guiElement.guiElementData, index));
         setParent(guiElement.getParent());
         createDecorators();
     }
 
     /**
-     * Constructor for {@link UiElementFactory#createFromParent(UiElement, Locate)}
+     * Package private constructor for {@link UiElementFactory#createFromParent(UiElement, Locate)}
      * This is the internal standard constructor for elements with parent {@link GuiElementCore} implementations.
      */
-    public GuiElement(GuiElementCore core) {
+    GuiElement(GuiElementCore core) {
         this.core = core;
         AbstractGuiElementCore realCore = (AbstractGuiElementCore)core;
         guiElementData = realCore.guiElementData;
@@ -148,23 +171,38 @@ public class GuiElement implements UiElement, Loggable {
     }
 
     /**
-     * Constructor for {@link UiElementFactory#createFromPage(PageObject, Locate)}
+     * Package private constructor for {@link UiElementFactory#createFromPage(PageObject, Locate)}
      */
-    public GuiElement(PageObject page, Locate locate) {
+    GuiElement(PageObject page, Locate locate) {
         this(page.getWebDriver(), locate);
         Page realPage = (Page)page;
         setParent(realPage);
     }
 
+    /**
+     * @deprecated Use {@link UiElementFactory#createWithWebDriver(WebDriver, Locate)}} instead
+     */
+    @Deprecated
     public GuiElement(WebDriver driver, Locate locate) {
         this(new GuiElementData(driver, locate));
         guiElementData.setGuiElement(this);
         createDecorators();
     }
 
+    /**
+     * @deprecated Use {@link UiElementFactory#createWithWebDriver(WebDriver, Locate)}} instead
+     */
     @Deprecated
     public GuiElement(WebDriver driver, By by) {
         this(driver, Locate.by(by));
+    }
+
+    public GuiElementCore getCore() {
+        return this.core;
+    }
+
+    public GuiElementData getData() {
+        return this.guiElementData;
     }
 
     @Override
@@ -260,7 +298,7 @@ public class GuiElement implements UiElement, Loggable {
 
     @Deprecated
     public By getBy() {
-        return guiElementData.getLocate().getBy()[0];
+        return guiElementData.getLocate().getBy();
     }
 
     @Deprecated
@@ -508,7 +546,7 @@ public class GuiElement implements UiElement, Loggable {
     }
 
     /**
-     * Retrieves the parent
+     * Retrieves the nameable parent.
      * @return Can be {@link UiElement} or {@link PageObject}
      */
     @Override
@@ -638,7 +676,7 @@ public class GuiElement implements UiElement, Loggable {
     }
 
     @Deprecated
-    public GuiElementAssert instantAsserts() {
+    private GuiElementAssert instantAsserts() {
         if (instantAssert == null) {
             InstantAssertion assertion = Testerra.injector.getInstance(InstantAssertion.class);
             instantAssert = createAssertDecorators(core, guiElementData, assertion, waits());
@@ -930,13 +968,10 @@ public class GuiElement implements UiElement, Loggable {
         Formatter formatter = Testerra.injector.getInstance(Formatter.class);
         ArrayList<String> xPathes = new ArrayList<>();
         Nameable element = this;
-        do {
-            if (element instanceof UiElement) {
-                xPathes.add(0, formatter.byToXPath(((UiElement) element).getLocate().getBy()[0]));
-            }
+        while (element instanceof BasicUiElement) {
+            xPathes.add(0, formatter.byToXPath(((BasicUiElement)element).getLocate().getBy()));
             element = element.getParent();
-        } while (element instanceof BasicUiElement);
-
+        }
         return String.join("", xPathes);
     }
 

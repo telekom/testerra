@@ -27,7 +27,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.NonUniqueElementException;
 import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.AbstractLocate;
+import eu.tsystems.mms.tic.testframework.pageobjects.DefaultLocate;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
@@ -124,34 +124,29 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
      * Throws an {@link ElementNotFoundException} when no element has been found
      */
     private void findWebElements(Consumer<List<WebElement>> consumer) {
-        AbstractLocate locate = (AbstractLocate)guiElementData.getLocate();
         WebDriver webDriver = guiElementData.getWebDriver();
-        for (By by : locate.getBy()) {
-            GuiElementData parentGuiElementData = guiElementData.getParent();
-            if (parentGuiElementData != null) {
-                GuiElement parent = parentGuiElementData.getGuiElement();
-                parent.getCore().findWebElement(webElement -> {
-                    /**
-                     * We need to check for shadow root before accessing the element
-                     */
-                    if (!parent.getData().isShadowRoot() && webElement.getTagName().endsWith("frame")) {
-                        log().debug("Switch to frame: " + guiElementData.getName(true));
-                        webDriver.switchTo().frame(webElement);
-                        consumer.accept(findElementsFromWebDriver(webDriver, by));
-                        log().debug("Switch back to default content");
-                        webDriver.switchTo().defaultContent();
-                    } else {
-                        consumer.accept(findElementsFromWebElement(webElement, correctToRelativeXPath(by)));
-                    }
-                });
-            } else {
-                consumer.accept(findElementsFromWebDriver(webDriver, by));
-            }
+        DefaultLocate locate = guiElementData.getLocate();
+        By by = locate.getBy();
 
-            /**
-             * Once we found the element, set the final {@link By} to {@link Locate}
-             */
-            locate.setBy(by);
+        GuiElementData parentData = guiElementData.getParent();
+        if (parentData != null) {
+            GuiElement parentUiElement = parentData.getGuiElement();
+            parentUiElement.getCore().findWebElement(webElement -> {
+                /**
+                 * We need to check for shadow root before accessing the element
+                 */
+                if (!parentUiElement.getData().isShadowRoot() && (webElement.getTagName().equals("frame") || webElement.getTagName().equals("iframe"))) {
+                    log().debug("Switch to frame: " + guiElementData.getName(true));
+                    webDriver.switchTo().frame(webElement);
+                    consumer.accept(findElementsFromWebDriver(webDriver, by));
+                    log().debug("Switch back to default content");
+                    webDriver.switchTo().defaultContent();
+                } else {
+                    consumer.accept(findElementsFromWebElement(webElement, correctToRelativeXPath(by)));
+                }
+            });
+        } else {
+            consumer.accept(findElementsFromWebDriver(webDriver, by));
         }
     }
 
@@ -159,8 +154,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
      * Filters a list of web elements by given {@link Locate}
      */
     private void filterWebElements(List<WebElement> webElements) {
-        AbstractLocate locate = (AbstractLocate)guiElementData.getLocate();
-        Predicate<WebElement> filter = locate.getFilter();
+        Predicate<WebElement> filter = guiElementData.getLocate().getFilter();
         if (filter != null) {
             webElements.removeIf(webElement -> !filter.test(webElement));
         }
@@ -183,7 +177,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
 
             this.filterWebElements(webElements);
 
-            AbstractLocate locate = (AbstractLocate)guiElementData.getLocate();
+            DefaultLocate locate = guiElementData.getLocate();
             if (locate.isUnique() && webElements.size() > 1) {
                 throw new NonUniqueElementException(String.format("Locator(%s) found more than one %s [%d]", locate, WebElement.class.getSimpleName(), webElements.size()));
             }
@@ -316,7 +310,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
 
     @Override
     public void click() {
-        By by = this.guiElementData.getLocate().getBy()[0];
+        By by = this.guiElementData.getLocate().getBy();
         this.findWebElement(webElement -> {
             if (by instanceof ByImage) {
                 ByImage byImage = (ByImage) by;
@@ -523,7 +517,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
 
     @Override
     public void doubleClick() {
-        By localBy = this.guiElementData.getLocate().getBy()[0];
+        By localBy = this.guiElementData.getLocate().getBy();
         WebDriverRequest driverRequest = WebDriverManager.getRelatedWebDriverRequest(guiElementData.getWebDriver());
 
         this.findWebElement(webElement -> {

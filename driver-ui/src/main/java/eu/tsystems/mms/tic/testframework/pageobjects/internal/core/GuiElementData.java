@@ -21,6 +21,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
+import eu.tsystems.mms.tic.testframework.pageobjects.DefaultLocate;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
@@ -37,7 +38,7 @@ public class GuiElementData implements
     Nameable<GuiElementData>,
     WebDriverRetainer
 {
-    private final Locate locate;
+    private final DefaultLocate locate;
     private final WebDriver webDriver;
     private GuiElementData parent;
     private int index = -1;
@@ -69,12 +70,9 @@ public class GuiElementData implements
         this.shadowRoot = parent.shadowRoot;
     }
 
-    public GuiElementData(
-        WebDriver webDriver,
-        Locate locate
-    ) {
+    public GuiElementData(WebDriver webDriver, Locate locate) {
         this.webDriver = webDriver;
-        this.locate = locate;
+        this.locate = (DefaultLocate)locate;
     }
 
     public GuiElementData setGuiElement(GuiElement guiElement) {
@@ -96,7 +94,7 @@ public class GuiElementData implements
         return name!=null;
     }
 
-    public Locate getLocate() {
+    public DefaultLocate getLocate() {
         return locate;
     }
 

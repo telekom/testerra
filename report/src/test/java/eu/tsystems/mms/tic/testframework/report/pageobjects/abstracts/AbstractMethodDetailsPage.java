@@ -36,11 +36,11 @@ public abstract class AbstractMethodDetailsPage extends AbstractReportPage {
     /**
      * Buttons on Top
      */
-    protected GuiElement backButton = new GuiElement(this.getWebDriver(), By.xpath("//div[@class='detailsmenu']"), mainFrame);
-    protected GuiElement detailsButton = new GuiElement(this.getWebDriver(), By.id("buttondetails"), mainFrame);
-    protected GuiElement stepsButton = new GuiElement(this.getWebDriver(), By.id("buttondlogs"), mainFrame);
-    protected GuiElement stackButton = new GuiElement(this.getWebDriver(), By.id("buttondstack"), mainFrame);
-    protected GuiElement minorErrorButton = new GuiElement(this.getWebDriver(), By.id("buttonminor"), mainFrame);
+    protected GuiElement backButton = mainFrame.getSubElement(By.xpath("//div[@class='detailsmenu']"));
+    protected GuiElement detailsButton = mainFrame.getSubElement(By.id("buttondetails"));
+    protected GuiElement stepsButton = mainFrame.getSubElement(By.id("buttondlogs"));
+    protected GuiElement stackButton = mainFrame.getSubElement(By.id("buttondstack"));
+    protected GuiElement minorErrorButton = mainFrame.getSubElement(By.id("buttonminor"));
 
     /**
      * Constructor called bei PageFactory

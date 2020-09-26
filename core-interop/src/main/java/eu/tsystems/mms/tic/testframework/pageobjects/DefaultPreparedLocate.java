@@ -27,11 +27,12 @@ import org.openqa.selenium.By;
  * Default implementation of {@link PreparedLocate}
  * @author Mike Reiche
  */
-public class DefaultPreparedLocate extends AbstractLocate implements PreparedLocate {
+public class DefaultPreparedLocate extends DefaultLocate implements PreparedLocate {
 
     private final String preparedFormat;
 
     DefaultPreparedLocate(String preparedFormat) {
+        super(null);
         this.preparedFormat = preparedFormat;
     }
 

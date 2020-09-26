@@ -21,14 +21,47 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
+import java.util.function.Predicate;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 /**
  * Advanced selector for elements as replacement for By
  * @author Mike Reiche
  */
-public class DefaultLocate extends AbstractLocate implements Locate {
-    DefaultLocate(By...oneOf) {
-        super(oneOf);
+public class DefaultLocate implements Locate {
+    private By by;
+    protected Predicate<WebElement> filter;
+    protected boolean unique = false;
+
+    DefaultLocate(By by) {
+        this.by = by;
+    }
+
+    public By getBy() {
+        return this.by;
+    }
+
+    public boolean isUnique() {
+        return this.unique;
+    }
+
+    public Locate unique() {
+        this.unique = true;
+        return this;
+    }
+
+    public Locate filter(Predicate<WebElement> filter) {
+        this.filter = filter;
+        return this;
+    }
+
+    public Predicate<WebElement> getFilter() {
+        return this.filter;
+    }
+
+    @Override
+    public String toString() {
+        return by.toString() + (unique ? " (unique)" : "");
     }
 }

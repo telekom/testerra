@@ -21,7 +21,6 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.common.Testerra;
 import org.openqa.selenium.By;
 
 /**
@@ -43,6 +42,8 @@ public interface UiElementFinder extends UiElementLocator {
         return find(Locate.by(xPath));
     }
     default UiElement findByLabel(String element, String label) {
-        return find(new DefaultLocate(Testerra.injector.getInstance(ElementLabelProvider.class).createBy(element, label)).displayed());
+        //Testerra.injector.getInstance(ElementLabelProvider.class).createBy(element, label);
+        //return find(new DefaultLocate().displayed());
+        return null;
     }
 }

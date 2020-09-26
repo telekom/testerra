@@ -41,21 +41,22 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
     private String HISTORY_DATE_LOCATOR = ("");
 
     @Check
-    private GuiElement backTab = new GuiElement(this.getWebDriver(), By.xpath("//div[@class='detailsmenu']"), mainFrame);
-    private GuiElement detailsTab = new GuiElement(this.getWebDriver(), By.id("buttondetails"), mainFrame);
-    private GuiElement stepsTab = new GuiElement(this.getWebDriver(), By.id("buttonlogs"), mainFrame);
-    private GuiElement stackTab = new GuiElement(this.getWebDriver(), By.id("buttonstack"), mainFrame);
-    private GuiElement screenShotTab = new GuiElement(this.getWebDriver(), By.id("buttonscreen"), mainFrame);
-    private GuiElement minorErrorTab = new GuiElement(this.getWebDriver(), By.id("buttonminor"), mainFrame);
-    private GuiElement dependenciesTab = new GuiElement(this.getWebDriver(), By.id("buttondeps"), mainFrame);
-    private GuiElement evolutionTab = new GuiElement(this.getWebDriver(), By.id("buttonhistory"), mainFrame);
-    private GuiElement assertionsTab = new GuiElement(this.getWebDriver(), By.id("buttoncollectedasserts"), mainFrame);
+    private GuiElement backTab = mainFrame.getSubElement(By.xpath("//div[@class='detailsmenu']"));
+    private GuiElement detailsTab = mainFrame.getSubElement(By.id("buttondetails"));
+    private GuiElement stepsTab = mainFrame.getSubElement(By.id("buttonlogs"));
+    private GuiElement stackTab = mainFrame.getSubElement(By.id("buttonstack"));
+    private GuiElement screenShotTab = mainFrame.getSubElement(By.id("buttonscreen"));
+    private GuiElement minorErrorTab = mainFrame.getSubElement(By.id("buttonminor"));
+    private GuiElement dependenciesTab = mainFrame.getSubElement(By.id("buttondeps"));
+    private GuiElement evolutionTab = mainFrame.getSubElement(By.id("buttonhistory"));
+    private GuiElement assertionsTab = mainFrame.getSubElement(By.id("buttoncollectedasserts"));
 
-    private GuiElement historyElementsGraph = new GuiElement(this.getWebDriver(), By.id("gitGraph"), mainFrame);
+    private GuiElement historyElementsGraph = mainFrame.getSubElement(By.id("gitGraph"));
 
     /**
      * Method
      */
+
     private GuiElement methodNameString = new GuiElement(this.getWebDriver(), By.xpath("(//*[@class='dashboardTextSmall'])[1]"), mainFrame);
     private GuiElement classNameString = new GuiElement(this.getWebDriver(), By.xpath("//tbody/tr[1]/td[3]/*[4]"), mainFrame);
     private GuiElement methodResultString = new GuiElement(this.getWebDriver(), By.xpath("(//h5[text()='Method']/../div)[2]"), mainFrame);

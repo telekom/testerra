@@ -30,7 +30,7 @@ import org.openqa.selenium.WebElement;
  * @author Mike Reiche
  */
 public interface Locate {
-    By[] getBy();
+    By getBy();
     Locate unique();
     default Locate displayed() {
         return displayed(true);

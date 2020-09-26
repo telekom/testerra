@@ -39,12 +39,12 @@ import org.openqa.selenium.WebDriver;
 public abstract class AbstractReportPage extends AbstractFramePage {
 
     @Check
-    private GuiElement burgerMenu = new GuiElement(this.getWebDriver(), By.id("menuToggle"), mainFrame);
+    private GuiElement burgerMenu = mainFrame.getSubElement(By.id("menuToggle"));
 
-    private GuiElement dashBoardLink = new GuiElement(this.getWebDriver(), By.linkText("DASHBOARD"), mainFrame);
-    private GuiElement classesLink = new GuiElement(this.getWebDriver(), By.partialLinkText("CLASSES"), mainFrame);
-    private GuiElement failureAspectsLink = new GuiElement(this.getWebDriver(), By.partialLinkText("FAILURE ASPECTS"), mainFrame);
-    private GuiElement threadsLink = new GuiElement(this.getWebDriver(), By.partialLinkText("THREADS"), mainFrame);
+    private GuiElement dashBoardLink = mainFrame.getSubElement(By.linkText("DASHBOARD"));
+    private GuiElement classesLink = mainFrame.getSubElement(By.partialLinkText("CLASSES"));
+    private GuiElement failureAspectsLink = mainFrame.getSubElement(By.partialLinkText("FAILURE ASPECTS"));
+    private GuiElement threadsLink = mainFrame.getSubElement(By.partialLinkText("THREADS"));
 
     /**
      * Constructor called bei PageFactory

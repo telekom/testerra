@@ -54,17 +54,13 @@ public class DefaultTestControllerOverrides implements TestController.Overrides 
 
     @Override
     public int setTimeout(int seconds) {
-        Integer prevTimeout = threadLocalTimeout.get();
-        if (prevTimeout == null) {
-            prevTimeout = -1;
-        }
-
+        Integer prevTimeout = getTimeoutInSeconds();
         if (seconds < 0) {
+            // Back to default
             threadLocalTimeout.remove();
         } else {
             threadLocalTimeout.set(seconds);
         }
-
         return prevTimeout;
     }
 

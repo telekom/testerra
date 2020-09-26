@@ -22,12 +22,11 @@
 
 package eu.tsystems.mms.tic.testframework;
 
-import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.core.server.Server;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
-import eu.tsystems.mms.tic.testframework.testing.TestController;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import java.lang.reflect.Method;
 import java.net.BindException;
@@ -45,8 +44,7 @@ public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implem
     @BeforeTest(alwaysRun = true)
     public void setUp() throws Exception {
 
-        TestController.Overrides overrides = Testerra.injector.getInstance(TestController.Overrides.class);
-        overrides.setTimeout(3);
+        System.setProperty(UiElement.Properties.ELEMENT_TIMEOUT_SECONDS.toString(), "3");
 
         try {
             server.start(80);

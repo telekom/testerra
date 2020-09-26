@@ -38,7 +38,6 @@ import java.util.function.Supplier;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Select;
 
 /**
  * Wraps core methods into sequences, to improve stability.
@@ -200,16 +199,6 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
         AtomicReference<String> atomicReference = new AtomicReference<>();
         sequenced(true, () -> {
             atomicReference.set(decoratedCore.getCssValue(cssIdentifier));
-            return true;
-        });
-        return atomicReference.get();
-    }
-
-    @Override
-    public Select getSelectElement() {
-        AtomicReference<Select> atomicReference = new AtomicReference<>();
-        sequenced(true, () -> {
-            atomicReference.set(decoratedCore.getSelectElement());
             return true;
         });
         return atomicReference.get();

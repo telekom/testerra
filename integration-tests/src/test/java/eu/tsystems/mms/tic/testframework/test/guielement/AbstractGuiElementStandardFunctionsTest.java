@@ -669,56 +669,35 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
     @Test
     public void testT67_WebElement_findElement() {
         GuiElement element = getSelectableElement();
-        WebElement webElement = element.getWebElement();
-        if (element.hasFrameLogic()) {
-            element.getFrameLogic().switchToCorrectFrame();
-        }
-        webElement = webElement.findElement(By.xpath("//div[1]"));
-        if (element.hasFrameLogic()) {
-            element.getFrameLogic().switchToDefaultFrame();
-        }
-        Assert.assertNotNull(webElement, "Found Element");
+        element.findWebElement(webElement -> {
+            Assert.assertNotNull(webElement.findElement(By.xpath("//div[1]")), "Found Element");
+        });
     }
 
     @Test
     public void testT68N_WebElement_findElement() {
         GuiElement element = getSelectableElement();
-        WebElement webElement = element.getWebElement();
-        if (element.hasFrameLogic()) {
-            element.getFrameLogic().switchToCorrectFrame();
-        }
-        ThrowableUtils.expectThrowable(NoSuchElementException.class, () -> webElement.findElement(By.xpath("//div[text()=\'\']")));
-        if (element.hasFrameLogic()) {
-            element.getFrameLogic().switchToDefaultFrame();
-        }
+        element.findWebElement(webElement -> {
+            ThrowableUtils.expectThrowable(NoSuchElementException.class, () -> webElement.findElement(By.xpath("//div[text()=\'\']")));
+        });
     }
 
     @Test
     public void testT69_WebElement_findElements() {
         GuiElement element = getSelectableElement();
-        WebElement webElement = element.getWebElement();
-        if (element.hasFrameLogic()) {
-            element.getFrameLogic().switchToCorrectFrame();
-        }
-        List<WebElement> webElements = webElement.findElements(By.xpath("//div"));
-        if (element.hasFrameLogic()) {
-            element.getFrameLogic().switchToDefaultFrame();
-        }
-        Assert.assertNotEquals(webElements.size(), 0, "List is not empty");
+        element.findWebElement(webElement -> {
+            List<WebElement> webElements = webElement.findElements(By.xpath("//div"));
+            Assert.assertNotEquals(webElements.size(), 0, "List is not empty");
+        });
     }
 
     @Test
     public void testT70N_WebElement_findElements() {
         GuiElement element = getSelectableElement();
-        WebElement webElement = element.getWebElement();
-        if (element.hasFrameLogic()) {
-            element.getFrameLogic().switchToCorrectFrame();
-        }
-        List<WebElement> webElements = webElement.findElements(By.xpath("//div[text()=\'\']"));
-        if (element.hasFrameLogic()) {
-            element.getFrameLogic().switchToDefaultFrame();
-        }
-        Assert.assertEquals(webElements.size(), 0, "List is empty");
+        element.findWebElement(webElement -> {
+            List<WebElement> webElements = webElement.findElements(By.xpath("//div[text()=\'\']"));
+            Assert.assertEquals(webElements.size(), 0, "List is empty");
+        });
     }
 
     @Test
@@ -775,9 +754,11 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
     @Test
     public void testT78_GuiElement_getSelectElement() {
         GuiElement element = getSingleSelect();
-        Select selectElement = element.getSelectElement();
-        List<WebElement> selectOptions = selectElement.getOptions();
-        Assert.assertEquals(selectOptions.size(), 5, "Select Item Count is right");
+        element.findWebElement(webElement -> {
+            Select selectElement = new Select(webElement);
+            List<WebElement> selectOptions = selectElement.getOptions();
+            Assert.assertEquals(selectOptions.size(), 5, "Select Item Count is right");
+        });
     }
 
     @Test

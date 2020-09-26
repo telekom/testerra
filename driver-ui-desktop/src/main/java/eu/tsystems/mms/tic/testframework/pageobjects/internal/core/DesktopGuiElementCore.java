@@ -61,7 +61,6 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.Select;
 
 public class DesktopGuiElementCore extends AbstractGuiElementCore implements Loggable {
 
@@ -69,6 +68,10 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
         super(guiElementData);
     }
 
+    /**
+     * Corrects a given {@link By} with xpath to use "./" instead of "/"
+     * when passed to a sub element search.
+     */
     private By correctToRelativeXPath(By by) {
         String abstractLocatorString = by.toString();
         if (abstractLocatorString.toLowerCase().contains("xpath")) {
@@ -480,16 +483,6 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
         }
         return true;
     }
-
-    @Override
-    public Select getSelectElement() {
-        AtomicReference<Select> atomicReference = new AtomicReference<>();
-        this.findWebElement(webElement -> {
-            atomicReference.set(new Select(webElement));
-        });
-        return atomicReference.get();
-    }
-
 
     @Override
     public List<String> getTextsFromChildren() {

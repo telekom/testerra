@@ -26,7 +26,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebDriverRetainer;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 
@@ -44,8 +43,6 @@ public class GuiElementData implements
     private int index = -1;
     private GuiElement guiElement;
     private String name;
-    @Deprecated
-    private IFrameLogic frameLogic;
     /**
      * @todo Add accessor methods
      */
@@ -59,7 +56,6 @@ public class GuiElementData implements
     public GuiElementData(GuiElementData parent, Locate locate) {
         this(parent.getWebDriver(), locate);
         this.parent = parent;
-        frameLogic = parent.frameLogic;
         guiElement = parent.guiElement;
     }
 
@@ -72,7 +68,6 @@ public class GuiElementData implements
         this.index = index;
         this.parent = parent.parent;
         this.name = parent.name;
-        this.frameLogic = parent.frameLogic;
         this.guiElement = parent.guiElement;
     }
 
@@ -89,18 +84,8 @@ public class GuiElementData implements
         return this;
     }
 
-    @Deprecated
-    public GuiElementData setFrameLogic(IFrameLogic frameLogic) {
-        this.frameLogic = frameLogic;
-        return this;
-    }
-
     public GuiElement getGuiElement() {
         return guiElement;
-    }
-
-    public IFrameLogic getFrameLogic() {
-        return frameLogic;
     }
 
     @Override
@@ -150,11 +135,6 @@ public class GuiElementData implements
             sb.append(")");
         }
         return sb.toString();
-    }
-
-    @Deprecated
-    public boolean hasFrameLogic() {
-        return frameLogic != null;
     }
 
     @Override

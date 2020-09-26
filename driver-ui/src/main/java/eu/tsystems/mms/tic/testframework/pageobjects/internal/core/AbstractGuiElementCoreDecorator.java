@@ -28,7 +28,6 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Select;
 
 /**
  * Abstract decorator for a {@link GuiElementCore}
@@ -148,14 +147,6 @@ public abstract class AbstractGuiElementCoreDecorator extends AbstractGuiElement
         String cssValue = decoratedCore.getCssValue(cssIdentifier);
         afterDelegation();
         return cssValue;
-    }
-
-    @Override
-    public Select getSelectElement() {
-        beforeDelegation("getSelectElement");
-        Select select = decoratedCore.getSelectElement();
-        afterDelegation();
-        return select;
     }
 
     @Override

@@ -19,7 +19,7 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementRetainer;
@@ -32,7 +32,6 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Select;
 
 /**
  * Provides basic {@link UiElement} features
@@ -132,13 +131,6 @@ public interface GuiElementCore extends
      * @return Css value of the webelement.
      */
     String getCssValue(final String cssIdentifier);
-
-    /**
-     * Returns the Select-Object.
-     *
-     * @return .
-     */
-    Select getSelectElement();
 
     /**
      * Returns with all texts of child-elements.

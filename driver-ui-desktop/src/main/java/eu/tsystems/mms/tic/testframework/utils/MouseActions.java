@@ -22,7 +22,6 @@
  package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
@@ -65,13 +64,9 @@ public final class MouseActions {
      * @param drop {@link GuiElement} Drop location
      */
     public static void dragAndDropJS(GuiElement drag, GuiElement drop) {
-        final IFrameLogic dragFrameLogic = drag.getFrameLogic();
-        final WebElement dragWebElement = drag.getWebElement();
         final Point dragLocation = drag.getLocation();
         final Dimension dragSize = drag.getSize();
 
-        final IFrameLogic dropFrameLogic = drop.getFrameLogic();
-        final WebElement dropWebElement = drop.getWebElement();
         final Point dropLocation = drop.getLocation();
         final Dimension dropSize = drop.getSize();
 
@@ -86,12 +81,7 @@ public final class MouseActions {
 
         final WebDriver driver = drag.getWebDriver();
 
-        // frame? ...
-        if (dragFrameLogic == null && dropFrameLogic == null) {
-            dragAndDrop(driver, dragWebElement, dropWebElement, dragFromX, dragFromY, dragToX, dragToY);
-        } else {
-            dragAndDropOverFrames(driver, drag, drop, dragFromX, dragFromY, dragToX, dragToY);
-        }
+        dragAndDropOverFrames(driver, drag, drop, dragFromX, dragFromY, dragToX, dragToY);
     }
 
     /**

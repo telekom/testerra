@@ -30,7 +30,6 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import java.awt.Color;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -302,14 +301,14 @@ public final class JSUtils {
         String hierarchyFrameSelector = "document";
 
         // Run through hierarchy
-        final IFrameLogic frameLogic = element.getFrameLogic();
-
-        if (frameLogic != null) {
-            List<UiElement> allFramesInOrder = frameLogic.getAllFramesInOrder();
-            for (UiElement guiElement : allFramesInOrder) {
-                hierarchyFrameSelector = pGetSimpleJsSelector(guiElement, hierarchyFrameSelector) + jsFrameExpander;
-            }
-        }
+//        final IFrameLogic frameLogic = element.getFrameLogic();
+//
+//        if (frameLogic != null) {
+//            List<UiElement> allFramesInOrder = frameLogic.getAllFramesInOrder();
+//            for (UiElement guiElement : allFramesInOrder) {
+//                hierarchyFrameSelector = pGetSimpleJsSelector(guiElement, hierarchyFrameSelector) + jsFrameExpander;
+//            }
+//        }
 
         // get js selector
         final String fullSelector = pGetSimpleJsSelector(element, hierarchyFrameSelector);
@@ -524,14 +523,14 @@ public final class JSUtils {
         /*
         calculate frames
          */
-        if (guiElement.getFrameLogic() != null) {
-            UiElement[] frames = guiElement.getFrameLogic().getFrames();
-            for (UiElement frame : frames) {
-                Point elementLocationInParent = getElementLocationInParent(frame, Where.TOP_LEFT);
-                x += elementLocationInParent.x;
-                y += elementLocationInParent.y;
-            }
-        }
+//        if (guiElement.getFrameLogic() != null) {
+//            UiElement[] frames = guiElement.getFrameLogic().getFrames();
+//            for (UiElement frame : frames) {
+//                Point elementLocationInParent = getElementLocationInParent(frame, Where.TOP_LEFT);
+//                x += elementLocationInParent.x;
+//                y += elementLocationInParent.y;
+//            }
+//        }
 
         /*
         calculate element

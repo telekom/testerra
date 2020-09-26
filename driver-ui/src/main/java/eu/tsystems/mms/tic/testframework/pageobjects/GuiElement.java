@@ -23,7 +23,6 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
-import eu.tsystems.mms.tic.testframework.exceptions.NonUniqueElementException;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
@@ -52,15 +51,12 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssert
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.AbstractGuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreFrameAwareDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreSequenceDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.DelayActionsGuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.UiElementLogger;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.DefaultGuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
-import eu.tsystems.mms.tic.testframework.testing.TestController;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
@@ -77,7 +73,6 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Select;
 
 /**
  * GuiElement is the access point for most tests and is an extension of WebElement.
@@ -95,22 +90,12 @@ public class GuiElement implements UiElement, Loggable {
 
     /**
      * This is the raw core implementation of {@link GuiElementCore}
-     * and doesn't contain any decorators or frame awareness.
-     * Use this instance when you need fast access to elements and expected an
-     * {@link ElementNotFoundException} or {@link NonUniqueElementException} to be thrown.
      */
-    private final GuiElementCore rawCore;
-    /**
-     * This is the decorated core for {@link GuiElementCoreFrameAwareDecorator}
-     * when {@link GuiElementData#hasFrameLogic()} is true
-     * Otherwise its the same like {@link #rawCore}
-     * Use this instance when you need safe to access properties of {@link GuiElementCore}
-     */
-    private GuiElementCore frameAwareCore;
+    private final GuiElementCore core;
     private final GuiElementData guiElementData;
     /**
      * This facade contains
-     *  {@link #frameAwareCore}
+     *  {@link #core}
      *  {@link GuiElementCoreSequenceDecorator}
      *  {@link UiElementLogger}
      *  {@link DelayActionsGuiElementFacade}
@@ -128,11 +113,11 @@ public class GuiElement implements UiElement, Loggable {
         guiElementData = data;
         guiElementData.setGuiElement(this);
         IWebDriverFactory factory = WebDriverSessionsManager.getWebDriverFactory(guiElementData.getBrowser());
-        this.rawCore = factory.createCore(guiElementData);
+        this.core = factory.createCore(guiElementData);
     }
 
     public GuiElementCore getCore() {
-        return this.rawCore;
+        return this.core;
     }
 
     public GuiElementData getData() {
@@ -155,7 +140,7 @@ public class GuiElement implements UiElement, Loggable {
      * This is the internal standard constructor for elements with parent {@link GuiElementCore} implementations.
      */
     public GuiElement(GuiElementCore core) {
-        this.rawCore = core;
+        this.core = core;
         AbstractGuiElementCore realCore = (AbstractGuiElementCore)core;
         guiElementData = realCore.guiElementData;
         guiElementData.setGuiElement(this);
@@ -174,9 +159,6 @@ public class GuiElement implements UiElement, Loggable {
     public GuiElement(WebDriver driver, Locate locate) {
         this(new GuiElementData(driver, locate));
         guiElementData.setGuiElement(this);
-//        if (frames != null && frames.length > 0) {
-//            guiElementData.setFrameLogic(new FrameLogic(driver, frames));
-//        }
         createDecorators();
     }
 
@@ -197,16 +179,8 @@ public class GuiElement implements UiElement, Loggable {
      * You can move this code to DefaultGuiElementFactory when no more 'new GuiElement()' calls exists.
      */
     private void createDecorators() {
-//        if (guiElementData.hasFrameLogic()) {
-//            // if frames are set, the waiter should use frame switches when executing its sequences
-//           frameAwareCore = new GuiElementCoreFrameAwareDecorator(rawCore, guiElementData);
-//        } else {
-//            frameAwareCore = rawCore;
-//        }
-        frameAwareCore = rawCore;
-
         // Wrap the core with sequence decorator, such that its methods are executed with sequence
-        GuiElementCore sequenceCore = new GuiElementCoreSequenceDecorator(frameAwareCore);
+        GuiElementCore sequenceCore = new GuiElementCoreSequenceDecorator(core);
         decoratedCore = new UiElementLogger(sequenceCore, this);
 
         int delayAfterAction = Properties.DELAY_AFTER_ACTION_MILLIS.asLong().intValue();
@@ -442,10 +416,6 @@ public class GuiElement implements UiElement, Loggable {
         return decoratedCore.isPresent();
     }
 
-    public Select getSelectElement() {
-        return decoratedCore.getSelectElement();
-    }
-
     @Deprecated
     public List<String> getTextsFromChildren() {
         return decoratedCore.getTextsFromChildren();
@@ -474,8 +444,8 @@ public class GuiElement implements UiElement, Loggable {
 
     /**
      * It's dangerous to use this method and rely on the given {@link WebElement}
-     * because it can become stale during the execution
-     * Use {@link #findWebElement(Consumer)} instead
+     * because it can become stale during the execution.
+     * Use {@link #findWebElement(Consumer)} instead.
      */
     @Deprecated
     public WebElement getWebElement() {
@@ -485,14 +455,6 @@ public class GuiElement implements UiElement, Loggable {
     @Override
     public UiElement doubleClick() {
         decoratedCore.doubleClick();
-        return this;
-    }
-
-    /**
-     * @deprecated  Use {@link TestController#withTimeout(int, Runnable)} instead
-     */
-    @Deprecated
-    public UiElement setTimeoutInSeconds(int timeoutInSeconds) {
         return this;
     }
 
@@ -534,20 +496,6 @@ public class GuiElement implements UiElement, Loggable {
     @Deprecated
     public File takeScreenshot() {
         return decoratedCore.takeScreenshot();
-    }
-
-    /**
-     * Get Frame Login object. It encapsulates the correct order of switching the frames containing this GuiElement.
-     *
-     * @return Frame Logic object or null.
-     */
-    @Override
-    public IFrameLogic getFrameLogic() {
-        return guiElementData.getFrameLogic();
-    }
-
-    public boolean hasFrameLogic() {
-        return guiElementData.hasFrameLogic();
     }
 
     /**
@@ -652,7 +600,7 @@ public class GuiElement implements UiElement, Loggable {
     public GuiElementAssert nonFunctionalAsserts() {
         if (nonFunctionalAssert==null) {
             NonFunctionalAssertion assertion = Testerra.injector.getInstance(NonFunctionalAssertion.class);
-            nonFunctionalAssert = createAssertDecorators(frameAwareCore, guiElementData, assertion, waits());
+            nonFunctionalAssert = createAssertDecorators(core, guiElementData, assertion, waits());
         }
         return nonFunctionalAssert;
     }
@@ -693,7 +641,7 @@ public class GuiElement implements UiElement, Loggable {
     public GuiElementAssert instantAsserts() {
         if (instantAssert == null) {
             InstantAssertion assertion = Testerra.injector.getInstance(InstantAssertion.class);
-            instantAssert = createAssertDecorators(frameAwareCore, guiElementData, assertion, waits());
+            instantAssert = createAssertDecorators(core, guiElementData, assertion, waits());
         }
         return instantAssert;
     }
@@ -708,7 +656,7 @@ public class GuiElement implements UiElement, Loggable {
     public GuiElementAssert assertCollector() {
         if (collectableAssert==null) {
             CollectedAssertion assertion = Testerra.injector.getInstance(CollectedAssertion.class);
-            collectableAssert = createAssertDecorators(frameAwareCore, guiElementData, assertion, waits());
+            collectableAssert = createAssertDecorators(core, guiElementData, assertion, waits());
         }
         return collectableAssert;
     }
@@ -758,7 +706,7 @@ public class GuiElement implements UiElement, Loggable {
         DefaultStringAssertion<String> assertion = propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
             @Override
             public String getActual() {
-                return frameAwareCore.getTagName();
+                return core.getTagName();
             }
 
             @Override
@@ -775,7 +723,7 @@ public class GuiElement implements UiElement, Loggable {
         DefaultStringAssertion<String> assertion = propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
             @Override
             public String getActual() {
-                return frameAwareCore.getText();
+                return core.getText();
             }
 
             @Override
@@ -793,7 +741,7 @@ public class GuiElement implements UiElement, Loggable {
         DefaultStringAssertion<String> assertion = propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
             @Override
             public String getActual() {
-                return frameAwareCore.getAttribute(finalAttribute);
+                return core.getAttribute(finalAttribute);
             }
 
             @Override
@@ -827,7 +775,7 @@ public class GuiElement implements UiElement, Loggable {
         DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return frameAwareCore.isPresent();
+                return core.isPresent();
 //                try {
 //                    frameAwareCore.findWebElement(webElement -> {});
 //                    return true;
@@ -850,7 +798,7 @@ public class GuiElement implements UiElement, Loggable {
         DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return frameAwareCore.isVisible(complete);
+                return core.isVisible(complete);
             }
 
             @Override
@@ -868,7 +816,7 @@ public class GuiElement implements UiElement, Loggable {
             @Override
             public Boolean getActual() {
                 try {
-                    return frameAwareCore.isDisplayed();
+                    return core.isDisplayed();
                 } catch (ElementNotFoundException e) {
                     return false;
                 }
@@ -888,7 +836,7 @@ public class GuiElement implements UiElement, Loggable {
         DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return frameAwareCore.isEnabled();
+                return core.isEnabled();
             }
 
             @Override
@@ -905,7 +853,7 @@ public class GuiElement implements UiElement, Loggable {
         DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return frameAwareCore.isSelected();
+                return core.isSelected();
             }
 
             @Override
@@ -922,7 +870,7 @@ public class GuiElement implements UiElement, Loggable {
         DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return frameAwareCore.isSelectable();
+                return core.isSelectable();
             }
 
             @Override
@@ -939,7 +887,7 @@ public class GuiElement implements UiElement, Loggable {
         DefaultRectAssertion assertion = propertyAssertionFactory.create(DefaultRectAssertion.class, new AssertionProvider<Rectangle>() {
             @Override
             public Rectangle getActual() {
-                return frameAwareCore.getRect();
+                return core.getRect();
             }
 
             @Override
@@ -957,7 +905,7 @@ public class GuiElement implements UiElement, Loggable {
             @Override
             public Integer getActual() {
                 try {
-                    return frameAwareCore.getNumberOfFoundElements();
+                    return core.getNumberOfFoundElements();
                 } catch (ElementNotFoundException e) {
                     return 0;
                 }
@@ -996,7 +944,7 @@ public class GuiElement implements UiElement, Loggable {
     public ImageAssertion screenshot() {
         final UiElement self = this;
         final AtomicReference<File> screenshot = new AtomicReference<>();
-        screenshot.set(frameAwareCore.takeScreenshot());
+        screenshot.set(core.takeScreenshot());
         DefaultImageAssertion assertion = propertyAssertionFactory.create(DefaultImageAssertion.class, new AssertionProvider<File>() {
             @Override
             public File getActual() {
@@ -1005,7 +953,7 @@ public class GuiElement implements UiElement, Loggable {
 
             @Override
             public void failed(AbstractPropertyAssertion assertion) {
-                screenshot.set(frameAwareCore.takeScreenshot());
+                screenshot.set(core.takeScreenshot());
             }
 
             @Override

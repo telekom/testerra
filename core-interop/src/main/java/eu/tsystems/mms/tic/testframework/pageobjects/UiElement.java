@@ -24,7 +24,6 @@ import eu.tsystems.mms.tic.testframework.common.IProperties;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 
 /**
  * GuiElement with new fluent API support
@@ -82,12 +81,5 @@ public interface UiElement extends
         public String asString() { return PropertyManager.getPropertiesParser().getProperty(toString(), defaultValue); }
     }
 
-    IFrameLogic getFrameLogic();
-
     UiElementList<UiElement> list();
-
-    /**
-     * Performs actions as a user
-     */
-//    InteractiveUiElement asUser();
 }

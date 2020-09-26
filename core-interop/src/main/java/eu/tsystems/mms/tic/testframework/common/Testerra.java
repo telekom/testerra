@@ -43,7 +43,7 @@ public class Testerra {
     public enum Properties implements IProperties {
         DRY_RUN("tt.dryrun", false),
         MONITOR_MEMORY("tt.monitor.memory", true),
-        DEMO_MODE("tt.demomode",true),
+        DEMO_MODE("tt.demomode",false),
         @Deprecated
         SELENIUM_SERVER_HOST("tt.selenium.server.host", "localhost"),
         @Deprecated

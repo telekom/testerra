@@ -92,6 +92,14 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
         return by;
     }
 
+    private void throwNotFoundException(Throwable reason) {
+        throw new ElementNotFoundException(guiElementData.getGuiElement(), reason);
+        //MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
+        //if (currentMethodContext != null) {
+        //      currentMethodContext.errorContext().setThrowable(exception.getMessage(), reason);
+        //}
+    }
+
     /**
      * Calls the {@link WebElement#findElements(By)} and passes the results to the consumer.
      * Throws an {@link ElementNotFoundException} when no element has been found
@@ -100,44 +108,47 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
         AbstractLocate locate = (AbstractLocate)guiElementData.getLocate();
         WebDriver webDriver = guiElementData.getWebDriver();
         for (By by : locate.getBy()) {
-            try {
-                GuiElementData parentGuiElementData = guiElementData.getParent();
-                if (parentGuiElementData != null) {
-                    parentGuiElementData.getGuiElement().getCore().findWebElement(webElement -> {
-                        switch (webElement.getTagName()) {
-                            case "frame":
-                            case "iframe":
-                                log().debug("Switch to frame: " + guiElementData.getName(true));
+            GuiElementData parentGuiElementData = guiElementData.getParent();
+            if (parentGuiElementData != null) {
+                parentGuiElementData.getGuiElement().getCore().findWebElement(webElement -> {
+                    List<WebElement> elements = null;
+                    switch (webElement.getTagName()) {
+                        case "frame":
+                        case "iframe":
+                            log().debug("Switch to frame: " + guiElementData.getName(true));
+                            try {
                                 webDriver.switchTo().frame(webElement);
-                                consumer.accept(webDriver.findElements(by));
-                                log().debug("Switch back to default content");
-                                webDriver.switchTo().defaultContent();
-                                break;
-                            default:
-                                consumer.accept(webElement.findElements(correctToRelativeXPath(by)));
-                        }
-                    });
-                } else {
-                    consumer.accept(webDriver.findElements(by));
+                                elements = webDriver.findElements(by);
+                            } catch (Throwable throwable) {
+                                throwNotFoundException(throwable);
+                            }
+                            consumer.accept(elements);
+                            log().debug("Switch back to default content");
+                            webDriver.switchTo().defaultContent();
+                            break;
+                        default:
+                            try {
+                                elements = webElement.findElements(correctToRelativeXPath(by));
+                            } catch (Throwable throwable) {
+                                throwNotFoundException(throwable);
+                            }
+                            consumer.accept(elements);
+                    }
+                });
+            } else {
+                List<WebElement> elements = null;
+                try {
+                    elements = webDriver.findElements(by);
+                } catch (Throwable throwable) {
+                    throwNotFoundException(throwable);
                 }
-
-                /**
-                 * Once we found the element, set the final {@link By} to {@link Locate}
-                 */
-                locate.setBy(by);
-            } catch(Throwable reason) {
-                /**
-                 * The reason could by anything
-                 *  {@link WebDriverException}
-                 *  {@link NonUniqueElementException}
-                 *  others...
-                 */
-                throw new ElementNotFoundException(guiElementData.getGuiElement(), reason);
-//                MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
-//                if (currentMethodContext != null) {
-//                    currentMethodContext.errorContext().setThrowable(exception.getMessage(), reason);
-//                }
+                consumer.accept(elements);
             }
+
+            /**
+             * Once we found the element, set the final {@link By} to {@link Locate}
+             */
+            locate.setBy(by);
         }
     }
 
@@ -197,7 +208,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
 
                 logTimings(start, Timings.getFindCounter());
             } else {
-                throw new ElementNotFoundException(guiElementData.getGuiElement());
+                throwNotFoundException(null);
             }
         });
 //        if (UiElement.Properties.DELAY_AFTER_FIND_MILLIS.asLong() > 0) {

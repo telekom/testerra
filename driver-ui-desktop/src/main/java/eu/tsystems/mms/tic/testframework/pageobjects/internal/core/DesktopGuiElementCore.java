@@ -100,6 +100,24 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
         //}
     }
 
+    private List<WebElement> findElementsFromWebDriver(WebDriver webDriver, By by) {
+        try {
+            return webDriver.findElements(by);
+        } catch (Throwable throwable) {
+            throwNotFoundException(throwable);
+        }
+        return null;
+    }
+
+    private List<WebElement> findElementsFromWebElement(WebElement webElement, By by) {
+        try {
+            return webElement.findElements(by);
+        } catch (Throwable throwable) {
+            throwNotFoundException(throwable);
+        }
+        return null;
+    }
+
     /**
      * Calls the {@link WebElement#findElements(By)} and passes the results to the consumer.
      * Throws an {@link ElementNotFoundException} when no element has been found
@@ -111,38 +129,21 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
             GuiElementData parentGuiElementData = guiElementData.getParent();
             if (parentGuiElementData != null) {
                 parentGuiElementData.getGuiElement().getCore().findWebElement(webElement -> {
-                    List<WebElement> elements = null;
                     switch (webElement.getTagName()) {
                         case "frame":
                         case "iframe":
                             log().debug("Switch to frame: " + guiElementData.getName(true));
-                            try {
-                                webDriver.switchTo().frame(webElement);
-                                elements = webDriver.findElements(by);
-                            } catch (Throwable throwable) {
-                                throwNotFoundException(throwable);
-                            }
-                            consumer.accept(elements);
+                            webDriver.switchTo().frame(webElement);
+                            consumer.accept(findElementsFromWebDriver(webDriver, by));
                             log().debug("Switch back to default content");
                             webDriver.switchTo().defaultContent();
                             break;
                         default:
-                            try {
-                                elements = webElement.findElements(correctToRelativeXPath(by));
-                            } catch (Throwable throwable) {
-                                throwNotFoundException(throwable);
-                            }
-                            consumer.accept(elements);
+                            consumer.accept(findElementsFromWebElement(webElement, correctToRelativeXPath(by)));
                     }
                 });
             } else {
-                List<WebElement> elements = null;
-                try {
-                    elements = webDriver.findElements(by);
-                } catch (Throwable throwable) {
-                    throwNotFoundException(throwable);
-                }
-                consumer.accept(elements);
+                consumer.accept(findElementsFromWebDriver(webDriver, by));
             }
 
             /**

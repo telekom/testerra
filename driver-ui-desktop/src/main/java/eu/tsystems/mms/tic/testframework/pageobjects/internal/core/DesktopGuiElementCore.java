@@ -132,12 +132,11 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
                  *  {@link NonUniqueElementException}
                  *  others...
                  */
-                ElementNotFoundException exception = new ElementNotFoundException(guiElementData.getGuiElement(), reason);
+                throw new ElementNotFoundException(guiElementData.getGuiElement(), reason);
 //                MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
 //                if (currentMethodContext != null) {
 //                    currentMethodContext.errorContext().setThrowable(exception.getMessage(), reason);
 //                }
-                throw exception;
             }
         }
     }
@@ -197,6 +196,8 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
                 consumer.accept(webElement);
 
                 logTimings(start, Timings.getFindCounter());
+            } else {
+                throw new ElementNotFoundException(guiElementData.getGuiElement());
             }
         });
 //        if (UiElement.Properties.DELAY_AFTER_FIND_MILLIS.asLong() > 0) {

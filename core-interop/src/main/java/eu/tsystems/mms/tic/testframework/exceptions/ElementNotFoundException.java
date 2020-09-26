@@ -27,6 +27,10 @@ import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
  * Runtime Exception, stating that a {@link UiElement} is missing.
  */
 public class ElementNotFoundException extends RuntimeException {
+
+    public ElementNotFoundException(UiElement element) {
+        this(element, null);
+    }
     public ElementNotFoundException(UiElement element, Throwable cause) {
         this("»"+element.toString(true) + "« not found", cause);
     }

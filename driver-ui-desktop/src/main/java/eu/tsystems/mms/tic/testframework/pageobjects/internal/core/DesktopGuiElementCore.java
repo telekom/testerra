@@ -138,16 +138,16 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
                  * We need to check for shadow root before accessing the element
                  */
                 if (!parentUiElement.getData().isShadowRoot() && (webElement.getTagName().equals("frame") || webElement.getTagName().equals("iframe"))) {
-                    log().debug("Switch to frame: " + guiElementData.getName(true));
+                    log().info("Switch to frame: " + webElement);
                     webDriver.switchTo().frame(webElement);
                     consumer.accept(findElementsFromWebDriver(webDriver, by));
-                    log().debug("Switch back to default content");
-                    webDriver.switchTo().defaultContent();
                 } else {
                     consumer.accept(findElementsFromWebElement(webElement, correctToRelativeXPath(by)));
                 }
             });
         } else {
+            log().debug("Switch to default content");
+            webDriver.switchTo().defaultContent();
             consumer.accept(findElementsFromWebDriver(webDriver, by));
         }
     }
@@ -220,7 +220,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
     }
 
     private String formatLocateSubject(Locate locate, int numElementsBeforeFilter) {
-        return String.format("[%d] found elements filtered", numElementsBeforeFilter);
+        return String.format("[%d] filtered elements", numElementsBeforeFilter);
     }
 
     private void logTimings(long start, int findCounter) {

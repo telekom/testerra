@@ -55,6 +55,7 @@ import javax.imageio.ImageIO;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.InvalidElementStateException;
+import org.openqa.selenium.JavascriptException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.Rectangle;
@@ -103,6 +104,10 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
         //}
     }
 
+    /**
+     * Tries to find elements from a given {@link WebDriver}.
+     * @throws ElementNotFoundException with the internal selenium exception cause.
+     */
     private List<WebElement> findElementsFromWebDriver(WebDriver webDriver, By by) {
         try {
             return webDriver.findElements(by);
@@ -112,6 +117,10 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
         return null;
     }
 
+    /**
+     * Tries to find sub elements from a given {@link WebElement}.
+     * @throws ElementNotFoundException with the internal selenium exception cause.
+     */
     private List<WebElement> findElementsFromWebElement(WebElement webElement, By by) {
         try {
             return webElement.findElements(by);
@@ -135,7 +144,9 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
             GuiElement parentUiElement = parentData.getGuiElement();
             parentUiElement.getCore().findWebElement(webElement -> {
                 /**
-                 * We need to check for shadow root before accessing the element
+                 * We need to check for shadow root before,
+                 * because accessing these element's attributes like {@link WebElement#getTagName()}
+                 * will fail with a {@link JavascriptException}.
                  */
                 if (!parentUiElement.getData().isShadowRoot() && (webElement.getTagName().equals("frame") || webElement.getTagName().equals("iframe"))) {
                     log().info("Switch to frame: " + webElement);

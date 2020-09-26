@@ -22,8 +22,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
-import eu.tsystems.mms.tic.testframework.exceptions.NonUniqueElementException;
-import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import java.util.function.Consumer;
 import org.openqa.selenium.WebElement;
 
@@ -34,8 +32,7 @@ public interface WebElementRetainer {
     /**
      * Supplies the first found filtered {@link WebElement} to a consumer.
      * This makes sure that the element is present it it's current scope and not stale
-     * @throws ElementNotFoundException If none found
-     * @throws NonUniqueElementException If more than one WebElement has been found according to given {@link Locate}
+     * @throws ElementNotFoundException If the expected count of elements hasn't been found
      */
     void findWebElement(Consumer<WebElement> consumer);
 }

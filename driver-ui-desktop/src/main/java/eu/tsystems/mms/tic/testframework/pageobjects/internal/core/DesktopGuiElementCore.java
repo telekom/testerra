@@ -21,15 +21,17 @@
  */
  package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
-import eu.tsystems.mms.tic.testframework.exceptions.NonUniqueElementException;
+import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.DefaultLocate;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementRetainer;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.MouseActions;
@@ -162,10 +164,10 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
 
     /**
      * Finds the {@link WebElement} from a list of web elements
-     * according to it's selector index in {@link GuiElementData#getIndex()}
+     * according to it's selector index in {@link GuiElementData#getIndex()}.
      * Also prepares shadow roots by {@link GuiElementData#isShadowRoot()}
-     * and wraps its around an {@link WebElementProxy}
-     *  Throws an {@link NonUniqueElementException} when more than one element has been found
+     * and wraps its around an {@link WebElementProxy}.
+     * More information see {@link WebElementRetainer#findWebElement(Consumer)}
      */
     @Override
     public void findWebElement(Consumer<WebElement> consumer) {
@@ -175,11 +177,14 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
 
         this.findWebElements(webElements -> {
 
+            int numElementsBeforeFilter = webElements.size();
+
             this.filterWebElements(webElements);
 
             DefaultLocate locate = guiElementData.getLocate();
             if (locate.isUnique() && webElements.size() > 1) {
-                throw new NonUniqueElementException(String.format("Locator(%s) found more than one %s [%d]", locate, WebElement.class.getSimpleName(), webElements.size()));
+                Assertion assertion = Testerra.injector.getInstance(Assertion.class);
+                throwNotFoundException(new AssertionError(assertion.formatExpectEquals(webElements.size(), 1, formatLocateSubject(locate, numElementsBeforeFilter))));
             }
 
             if (webElements.size() > 0) {
@@ -205,12 +210,17 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
 
                 logTimings(start, Timings.getFindCounter());
             } else {
-                throwNotFoundException(null);
+                Assertion assertion = Testerra.injector.getInstance(Assertion.class);
+                throwNotFoundException(new AssertionError(assertion.formatExpectGreaterEqualThan(assertion.toBigDecimal(0), assertion.toBigDecimal(1), formatLocateSubject(locate, numElementsBeforeFilter))));
             }
         });
 //        if (UiElement.Properties.DELAY_AFTER_FIND_MILLIS.asLong() > 0) {
 //            TimerUtils.sleep(UiElement.Properties.DELAY_AFTER_FIND_MILLIS.asLong().intValue());
 //        }
+    }
+
+    private String formatLocateSubject(Locate locate, int numElementsBeforeFilter) {
+        return String.format("[%d] found elements filtered", numElementsBeforeFilter);
     }
 
     private void logTimings(long start, int findCounter) {

@@ -40,6 +40,10 @@ public interface SimpleAssertion {
     }
     void fail(AssertionError error);
 
+    default BigDecimal toBigDecimal(Object number) {
+        return new BigDecimal(number.toString());
+    }
+
     void assertTrue(boolean actual, Object subject);
     default void assertTrue(boolean actual) {
         assertTrue(actual, null);

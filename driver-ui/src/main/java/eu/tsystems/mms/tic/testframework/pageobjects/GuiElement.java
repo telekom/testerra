@@ -853,13 +853,8 @@ public class GuiElement implements UiElement, Loggable {
         DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                try {
-                    return core.isDisplayed();
-                } catch (ElementNotFoundException e) {
-                    return false;
-                }
+                return core.isDisplayed();
             }
-
             @Override
             public String getSubject() {
                 return String.format("%s.@displayed", self.toString(true));

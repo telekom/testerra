@@ -157,7 +157,6 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
             page.notDisplayedElement().displayed().is(true,"Important element visibility");
         } catch (AssertionError e) {
             Assert.assertContains(e.getMessage(), "Important element visibility");
-            Assert.assertContains(e.getMessage(), page.notDisplayedElement().toString());
         }
     }
 

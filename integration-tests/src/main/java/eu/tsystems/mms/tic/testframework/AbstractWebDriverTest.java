@@ -25,6 +25,7 @@ package eu.tsystems.mms.tic.testframework;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverRetainer;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -38,7 +39,7 @@ import org.testng.annotations.BeforeMethod;
 /**
  * Abstract test class for tests using a WebDriver
  */
-public abstract class AbstractWebDriverTest extends TesterraTest implements WebDriverRetainer, Loggable {
+public abstract class AbstractWebDriverTest extends TesterraTest implements WebDriverRetainer, WebDriverManagerProvider, Loggable {
 
 
     //    static {
@@ -49,6 +50,13 @@ public abstract class AbstractWebDriverTest extends TesterraTest implements WebD
     //    public void resetWDCloseWindowsMode() {
     //        WebDriverManager.config().closeWindowsAfterTestMethod = true;
     //    }
+
+    private String exclusiveSessionId;
+    private boolean useExclusiveSessions;
+
+    protected void enableExclusiveSession() {
+        this.useExclusiveSessions = true;
+    }
 
     @AfterSuite(alwaysRun = true)
     private void closeBrowsers() {
@@ -81,14 +89,23 @@ public abstract class AbstractWebDriverTest extends TesterraTest implements WebD
 
     @Override
     public WebDriver getWebDriver() {
+        WebDriver webDriver;
+        if (useExclusiveSessions) {
+            if (exclusiveSessionId == null) {
+                exclusiveSessionId = webdriverManager.createExclusiveSessionId(webdriverManager.getWebDriver());
+            }
+            webDriver = webdriverManager.getWebDriverBySessionId(exclusiveSessionId);
+        } else {
+            webDriver = webdriverManager.getWebDriver();
+        }
         try {
-            WebDriverManager.getWebDriver().getWindowHandles();
+            webDriver.getWindowHandles();
         } catch (WebDriverException s) {
             log().error(s.getMessage());
-            WebDriverManager.forceShutdown(); // shutdown all threwad drivers.
+            webdriverManager.shutdownAllSessions(true); // shutdown all threwad drivers.
         }
 
-        return WebDriverManager.getWebDriver();
+        return webDriver;
     }
 
     static {

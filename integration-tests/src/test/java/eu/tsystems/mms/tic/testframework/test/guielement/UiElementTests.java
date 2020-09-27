@@ -32,9 +32,15 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAsser
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 public class UiElementTests extends AbstractTestSitesTest implements Loggable, PageFactoryTest {
+
+    @BeforeClass
+    public void makeExclusive() {
+        this.enableExclusiveSession();
+    }
 
     @Test
     public void test_Page_title() {

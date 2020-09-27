@@ -45,4 +45,13 @@ public class DefaultWebDriverManager implements IWebDriverManager {
     public WebDriver getWebDriverBySessionId(String sessionId) {
         return WebDriverManager.getWebDriver(sessionId);
     }
+
+    @Override
+    public void shutdownAllSessions(boolean force) {
+        if (force) {
+            WebDriverManager.forceShutdown();
+        } else {
+            WebDriverManager.shutdown();
+        }
+    }
 }

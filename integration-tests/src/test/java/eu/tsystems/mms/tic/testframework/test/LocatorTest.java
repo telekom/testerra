@@ -19,7 +19,7 @@ public class LocatorTest extends AbstractTestSitesTest implements UiElementFinde
     }
 
     private UiElementFinder getFinder() {
-        return finderFactory.create(getWebDriver());
+        return uiElementFinderFactory.create(getWebDriver());
     }
 
     @Test

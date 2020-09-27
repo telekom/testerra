@@ -24,9 +24,9 @@ package eu.tsystems.mms.tic.testframework;
 
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.WebDriverRetainer;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
+import eu.tsystems.mms.tic.testframework.webdriver.WebDriverRetainer;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.lang.reflect.Method;
 import org.openqa.selenium.WebDriver;

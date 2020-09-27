@@ -3,8 +3,8 @@ package eu.tsystems.mms.tic.testframework.ioc;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 import com.google.inject.multibindings.Multibinder;
+import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverFactory;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverFactory;
 
 public class ConfigureDriverUiDesktop extends AbstractModule {
     @Override

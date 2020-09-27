@@ -19,14 +19,16 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.webdrivermanager;
+package eu.tsystems.mms.tic.testframework.testing;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.WebDriverRetainer;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverManager;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 
 /**
- * Replacement for static {@link WebDriverManager}
- * @todo Rename to {@link WebDriverManager}
+ * Provides a {@link WebDriverManager}
+ * @author Mike Reiche
  */
-public interface IWebDriverManager extends WebDriverRetainer {
-
+public interface WebDriverManagerProvider {
+    IWebDriverManager webdriverManager = Testerra.injector.getInstance(IWebDriverManager.class);
 }

@@ -19,13 +19,14 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.pageobjects;
+package eu.tsystems.mms.tic.testframework.webdriver;
 
-import eu.tsystems.mms.tic.testframework.webdriver.WebDriverRetainer;
+import org.openqa.selenium.WebDriver;
 
 /**
- * Fundamental Page Object features
+ * Interface for classes retaining an {@link WebDriver} instance
  * @author Mike Reiche
  */
-public interface PageObject extends WebDriverRetainer {
+public interface WebDriverRetainer {
+    WebDriver getWebDriver();
 }

@@ -36,6 +36,7 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
+import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverFactory;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;

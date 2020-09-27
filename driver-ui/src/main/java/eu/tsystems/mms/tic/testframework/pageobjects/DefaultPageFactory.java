@@ -27,7 +27,7 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.PageFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
+import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverManager;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import org.openqa.selenium.WebDriver;

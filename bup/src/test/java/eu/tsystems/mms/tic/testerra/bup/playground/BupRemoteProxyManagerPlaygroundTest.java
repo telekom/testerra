@@ -26,15 +26,13 @@ import com.google.gson.JsonObject;
 import eu.tsystems.mms.tic.testerra.bup.BrowserUpRemoteProxyManager;
 import eu.tsystems.mms.tic.testerra.bup.BrowserUpRemoteProxyServer;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
-import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.Test;
-
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link BrowserUpRemoteProxyManager}

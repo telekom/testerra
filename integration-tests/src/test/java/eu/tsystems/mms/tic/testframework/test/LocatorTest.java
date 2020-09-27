@@ -4,15 +4,27 @@ import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.pageobjects.XPath;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFinder;
+import eu.tsystems.mms.tic.testframework.testing.UiElementFinderFactoryProvider;
+import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
 
-public class LocatorTest extends AbstractTestSitesTest {
+public class LocatorTest extends AbstractTestSitesTest implements UiElementFinderFactoryProvider, WebDriverManagerProvider {
 
     private final String textToFind = "This link has some text!";
+    private String exclusiveSessionId;
 
     private UiElementFinder getFinder() {
         return finderFactory.create(getWebDriver());
+    }
+
+    @Override
+    public WebDriver getWebDriver() {
+        if (exclusiveSessionId ==null) {
+            exclusiveSessionId = webdriverManager.createExclusiveSessionId(super.getWebDriver());
+        }
+        return webdriverManager.getWebDriverBySessionId(exclusiveSessionId);
     }
 
     @Test

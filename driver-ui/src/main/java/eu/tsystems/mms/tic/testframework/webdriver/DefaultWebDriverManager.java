@@ -19,13 +19,30 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.webdrivermanager;
+package eu.tsystems.mms.tic.testframework.webdriver;
 
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import org.openqa.selenium.WebDriver;
 
 public class DefaultWebDriverManager implements IWebDriverManager {
     @Override
     public WebDriver getWebDriver() {
         return WebDriverManager.getWebDriver();
+    }
+
+    @Override
+    public String createExclusiveSessionId(WebDriver webDriver) {
+        return WebDriverManager.makeSessionExclusive(webDriver);
+    }
+
+    @Override
+    public IWebDriverFactory getFactoryForBrowser(String browser) {
+        return WebDriverSessionsManager.getWebDriverFactory(browser);
+    }
+
+    @Override
+    public WebDriver getWebDriverBySessionId(String sessionId) {
+        return WebDriverManager.getWebDriver(sessionId);
     }
 }

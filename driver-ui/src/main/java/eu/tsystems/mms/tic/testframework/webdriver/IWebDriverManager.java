@@ -19,14 +19,17 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.pageobjects;
+package eu.tsystems.mms.tic.testframework.webdriver;
 
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 
 /**
- * Interface for classes retaining an {@link WebDriver} instance
- * @author Mike Reiche
+ * Replacement for static {@link WebDriverManager}
+ * @todo Rename to {@link WebDriverManager}
  */
-public interface WebDriverRetainer {
-    WebDriver getWebDriver();
+public interface IWebDriverManager extends WebDriverRetainer {
+    String createExclusiveSessionId(WebDriver webDriver);
+    IWebDriverFactory getFactoryForBrowser(String browser);
+    WebDriver getWebDriverBySessionId(String sessionId);
 }

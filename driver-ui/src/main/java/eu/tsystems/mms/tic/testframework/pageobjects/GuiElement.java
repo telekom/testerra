@@ -50,7 +50,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.UiElementLo
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.DefaultGuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverFactory;
+import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import java.awt.Color;
 import java.io.File;

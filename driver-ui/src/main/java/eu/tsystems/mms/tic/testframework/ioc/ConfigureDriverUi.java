@@ -38,8 +38,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFinderFac
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultPropertyAssertionFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertionFactory;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.DefaultWebDriverManager;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
+import eu.tsystems.mms.tic.testframework.webdriver.DefaultWebDriverManager;
+import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverManager;
 
 public class ConfigureDriverUi extends AbstractModule {
     protected void configure() {

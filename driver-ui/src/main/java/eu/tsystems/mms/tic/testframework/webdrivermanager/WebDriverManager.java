@@ -35,6 +35,8 @@ import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
+import eu.tsystems.mms.tic.testframework.webdriver.DefaultWebDriverManager;
+import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverFactory;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

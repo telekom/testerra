@@ -24,8 +24,8 @@ import eu.tsystems.mms.tic.testframework.common.IProperties;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.pageobjects.InteractiveUiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.WebDriverRetainer;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.UiElementBase;
+import eu.tsystems.mms.tic.testframework.webdriver.WebDriverRetainer;
 
 /**
  * GuiElement with new fluent API support

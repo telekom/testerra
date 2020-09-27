@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 
+@Deprecated
 public class PageOptionsTest_Deprecated extends AbstractTestSitesTest implements PageFactoryTest {
 
     @Override

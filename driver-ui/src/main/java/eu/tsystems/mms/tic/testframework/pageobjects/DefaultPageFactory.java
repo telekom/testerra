@@ -20,42 +20,47 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import org.openqa.selenium.WebDriver;
 
-public class DefaultPageFactory implements PageObjectFactory, Loggable {
+public class DefaultPageFactory implements PageFactory, Loggable {
 
     private String GLOBAL_PAGES_PREFIX = null;
     private final ThreadLocal<String> THREAD_LOCAL_PAGES_PREFIX = new ThreadLocal<>();
 
     @Override
-    public PageObjectFactory setGlobalPagePrefix(String pagePrefix) {
+    public PageFactory setGlobalPagePrefix(String pagePrefix) {
         GLOBAL_PAGES_PREFIX = pagePrefix;
         return this;
     }
 
     @Override
-    public PageObjectFactory setThreadLocalPagePrefix(String pagePrefix) {
+    public PageFactory setThreadLocalPagePrefix(String pagePrefix) {
         THREAD_LOCAL_PAGES_PREFIX.set(pagePrefix);
         return this;
     }
 
     @Override
-    public PageObjectFactory removeThreadLocalPagePrefix() {
+    public PageFactory removeThreadLocalPagePrefix() {
         THREAD_LOCAL_PAGES_PREFIX.remove();
         return this;
     }
 
+    private IWebDriverManager getWebDriverManager() {
+        return Testerra.injector.getInstance(IWebDriverManager.class);
+    }
+
     @Override
-    public <T extends PageObject> T createPage(Class<T> pageClass) {
-        return createPage(pageClass, WebDriverManager.getWebDriver());
+    public <T extends PageObject> T createPageWithDefaultWebDriver(Class<T> pageClass) {
+        return createPage(pageClass, getWebDriverManager().getWebDriver());
     }
 
     protected String getConfiguredPrefix() {
@@ -86,11 +91,6 @@ public class DefaultPageFactory implements PageObjectFactory, Loggable {
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new TesterraRuntimeException(String.format("Could not create instance of %s(%s)", componentClass, rootElement), e);
         }
-    }
-
-    @Override
-    public <T extends PageObject> T createPageWithCheckRule(Class<T> pageClass, CheckRule checkRule) {
-        return createPageWithCheckRule(pageClass, WebDriverManager.getWebDriver(), checkRule);
     }
 
     @Override

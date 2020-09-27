@@ -6,6 +6,6 @@ public class PageOptionsTest extends PageOptionsTest_Deprecated {
 
     @Override
     public PageWithPageOptions getPage() {
-        return getPageFactory().createPage(PageWithPageOptions.class);
+        return getPageFactory().createPageWithDefaultWebDriver(PageWithPageOptions.class);
     }
 }

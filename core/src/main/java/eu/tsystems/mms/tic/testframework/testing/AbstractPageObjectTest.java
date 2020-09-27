@@ -22,12 +22,17 @@
 package eu.tsystems.mms.tic.testframework.testing;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageObjectFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.PageFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.PageObject;
 
+/**
+ * Base test class for tests following the {@link PageObject} pattern.
+ * @author Mike Reiche
+ */
 public abstract class AbstractPageObjectTest extends TesterraTest implements PageFactoryProvider, UiElementFinderProvider {
 
     @Override
-    public PageObjectFactory getPageFactory() {
-        return Testerra.injector.getInstance(PageObjectFactory.class);
+    public PageFactory getPageFactory() {
+        return Testerra.injector.getInstance(PageFactory.class);
     }
 }

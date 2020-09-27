@@ -29,5 +29,5 @@ import org.openqa.selenium.WebDriver;
  * @author Mike Reiche
  */
 public interface UiElementFinderFactory {
-    UiElementFinder createWithWebDriver(WebDriver webDriver);
+    UiElementFinder create(WebDriver webDriver);
 }

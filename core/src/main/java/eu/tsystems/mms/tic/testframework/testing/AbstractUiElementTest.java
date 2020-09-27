@@ -24,8 +24,13 @@ package eu.tsystems.mms.tic.testframework.testing;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinderFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebDriverRetainer;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFinder;
 
+/**
+ * Base class for tests that need {@link UiElement} only.
+ * @author Mike Reiche
+ */
 public abstract class AbstractUiElementTest extends TesterraTest implements UiElementFinderProvider, WebDriverRetainer {
 
     private UiElementFinder uiElementFinder;
@@ -34,7 +39,7 @@ public abstract class AbstractUiElementTest extends TesterraTest implements UiEl
     public UiElementFinder getUiElementFinder() {
         if (uiElementFinder == null) {
             UiElementFinderFactory factory = Testerra.injector.getInstance(UiElementFinderFactory.class);
-            uiElementFinder = factory.createWithWebDriver(getWebDriver());
+            uiElementFinder = factory.create(getWebDriver());
         }
         return uiElementFinder;
     }

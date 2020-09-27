@@ -24,30 +24,29 @@
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageObjectFactory;
 import org.openqa.selenium.WebDriver;
 
 /**
- * @deprecated Use {@link PageObjectFactory} instead
+ * @deprecated Use {@link eu.tsystems.mms.tic.testframework.pageobjects.PageFactory} instead
  */
 @Deprecated
 public final class PageFactory {
 
-    private static PageObjectFactory pageFactory = Testerra.injector.getInstance(PageObjectFactory.class);
+    private static eu.tsystems.mms.tic.testframework.pageobjects.PageFactory pageFactory = Testerra.injector.getInstance(eu.tsystems.mms.tic.testframework.pageobjects.PageFactory.class);
 
     private PageFactory() {
 
     }
 
     /**
-     * @deprecated Use {@link PageObjectFactory#setGlobalPagePrefix(String)} instead
+     * @deprecated Use {@link eu.tsystems.mms.tic.testframework.pageobjects.PageFactory#setGlobalPagePrefix(String)} instead
      */
     public static void setGlobalPagesPrefix(String prefix) {
         pageFactory.setGlobalPagePrefix(prefix);
     }
 
     /**
-     * @deprecated Use {@link PageObjectFactory#setThreadLocalPagePrefix(String)} instead
+     * @deprecated Use {@link eu.tsystems.mms.tic.testframework.pageobjects.PageFactory#setThreadLocalPagePrefix(String)} instead
      */
     @Deprecated
     public static void setThreadLocalPagesPrefix(String threadLocalPagesPrefix) {
@@ -60,7 +59,7 @@ public final class PageFactory {
     }
 
     /**
-     * @deprecated Use {@link PageObjectFactory#createPageWithCheckRule(Class, CheckRule)} instead
+     * @deprecated Use {@link eu.tsystems.mms.tic.testframework.pageobjects.PageFactory#createPageWithCheckRule(Class, WebDriver, CheckRule)} instead
      */
     @Deprecated
     public static <T extends Page> T checkNot(Class<T> pageClass, WebDriver driver) {
@@ -68,7 +67,7 @@ public final class PageFactory {
     }
 
     /**
-     * @deprecated Use {@link PageObjectFactory#createPage(Class, WebDriver)} instead
+     * @deprecated Use {@link eu.tsystems.mms.tic.testframework.pageobjects.PageFactory#createPage(Class, WebDriver)} instead
      */
     @Deprecated
     public static <T extends Page> T create(Class<T> pageClass, WebDriver driver) {

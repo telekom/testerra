@@ -26,7 +26,7 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.core.server.Server;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageObjectFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.PageFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinderFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFinder;
@@ -91,15 +91,15 @@ public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implem
     }
 
     @Override
-    public PageObjectFactory getPageFactory() {
-        return Testerra.injector.getInstance(PageObjectFactory.class);
+    public PageFactory getPageFactory() {
+        return Testerra.injector.getInstance(PageFactory.class);
     }
 
     @Override
     public UiElementFinder getUiElementFinder() {
         if (uiElementFinder == null) {
             UiElementFinderFactory factory = Testerra.injector.getInstance(UiElementFinderFactory.class);
-            uiElementFinder = factory.createWithWebDriver(getWebDriver());
+            uiElementFinder = factory.create(getWebDriver());
         }
         return uiElementFinder;
     }

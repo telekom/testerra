@@ -32,7 +32,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.DefaultTestControllerOverri
 import eu.tsystems.mms.tic.testframework.pageobjects.DefaultUiElementFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.DefaultUiElementFinderFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.ElementLabelProvider;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageObjectFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.PageFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinderFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultPropertyAssertionFactory;
@@ -45,7 +45,7 @@ public class ConfigureDriverUi extends AbstractModule {
     protected void configure() {
         // Singletons
         bind(UiElementFactory.class).to(DefaultUiElementFactory.class).in(Scopes.SINGLETON);
-        bind(PageObjectFactory.class).to(DefaultPageFactory.class).in(Scopes.SINGLETON);
+        bind(PageFactory.class).to(DefaultPageFactory.class).in(Scopes.SINGLETON);
         bind(TestController.Overrides.class).to(DefaultTestControllerOverrides.class).in(Scopes.SINGLETON);
         bind(IWebDriverManager.class).to(DefaultWebDriverManager.class).in(Scopes.SINGLETON);
         bind(ElementLabelProvider.class).to(DefaultElementLabelProvider.class).in(Scopes.SINGLETON);

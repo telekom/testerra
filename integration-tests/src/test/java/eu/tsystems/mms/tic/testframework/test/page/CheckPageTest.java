@@ -44,13 +44,13 @@ public class CheckPageTest extends AbstractTestSitesTest {
 
     @Test
     public void testT01_checkExistingElement() throws Exception {
-        getPageFactory().createPage(PageWithExistingElement.class);
+        getPageFactory().createPageWithDefaultWebDriver(PageWithExistingElement.class);
     }
 
     @Test(expectedExceptions = PageNotFoundException.class)
     public void testT02_checkNotExistingElement() throws Throwable {
         try {
-            getPageFactory().createPage(PageWithNotExistingElement.class);
+            getPageFactory().createPageWithDefaultWebDriver(PageWithNotExistingElement.class);
         } catch (Throwable e) {
             do {
                 e = e.getCause();
@@ -63,17 +63,17 @@ public class CheckPageTest extends AbstractTestSitesTest {
 
     @Test(expectedExceptions = TesterraRuntimeException.class)
     public void testT03_checkNullElement() throws Exception {
-        getPageFactory().createPage(PageWithNullElement.class);
+        getPageFactory().createPageWithDefaultWebDriver(PageWithNullElement.class);
     }
 
     @Test(expectedExceptions = TesterraRuntimeException.class)
     public void testT04_checkStaticElement() throws Exception {
-        getPageFactory().createPage(PageWithExistingStaticElement.class);
+        getPageFactory().createPageWithDefaultWebDriver(PageWithExistingStaticElement.class);
     }
 
     @Test(expectedExceptions = TesterraRuntimeException.class)
     public void testT05_checkNonCheckableElement() throws Exception {
-        getPageFactory().createPage(PageWithNonCheckableCheck.class);
+        getPageFactory().createPageWithDefaultWebDriver(PageWithNonCheckableCheck.class);
     }
 
     @Test

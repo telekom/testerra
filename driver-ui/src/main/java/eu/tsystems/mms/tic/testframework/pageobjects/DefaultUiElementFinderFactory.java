@@ -30,7 +30,7 @@ import org.openqa.selenium.WebDriver;
 public class DefaultUiElementFinderFactory implements UiElementFinderFactory {
 
     @Override
-    public UiElementFinder createWithWebDriver(WebDriver webDriver) {
+    public UiElementFinder create(WebDriver webDriver) {
         return new DefaultUiElementFinder(webDriver);
     }
 }

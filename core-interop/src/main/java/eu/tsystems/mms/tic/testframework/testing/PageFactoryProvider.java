@@ -21,12 +21,12 @@
 
 package eu.tsystems.mms.tic.testframework.testing;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.PageObjectFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.PageFactory;
 
 /**
- * Provides a {@link PageObjectFactory}
+ * Provides a {@link PageFactory}
  * @author Mike Reiche
  */
 public interface PageFactoryProvider {
-    PageObjectFactory getPageFactory();
+    PageFactory getPageFactory();
 }

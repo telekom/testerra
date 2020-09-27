@@ -25,27 +25,16 @@ import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
 import org.openqa.selenium.WebDriver;
 
-/**
- * @todo Rename to PageFactory and move to internal
- */
-public interface PageObjectFactory {
-    PageObjectFactory setGlobalPagePrefix(String pagePrefix);
-    PageObjectFactory setThreadLocalPagePrefix(String pagePrefix);
-    PageObjectFactory removeThreadLocalPagePrefix();
-
-    /**
-     * @todo Make default when WebDriverManager has an interface
-     */
-    <T extends PageObject> T createPage(Class<T> pageClass);
+public interface PageFactory {
+    PageFactory setGlobalPagePrefix(String pagePrefix);
+    PageFactory setThreadLocalPagePrefix(String pagePrefix);
+    PageFactory removeThreadLocalPagePrefix();
+    <T extends PageObject> T createPageWithDefaultWebDriver(Class<T> pageClass);
     default <T extends PageObject> T createPage(Class<T> pageClass, WebDriver webDriver) {
         return createPageWithCheckRule(pageClass, webDriver, CheckRule.DEFAULT);
     }
     <T extends PageObject> Class<T> findBestMatchingClass(Class<T> pageClass, WebDriver webDriver);
     <T extends Component> T createComponent(Class<T> componentClass, UiElement rootElement);
-    /**
-     * @todo Make default when WebDriverManager has an interface
-     */
-    <T extends PageObject> T createPageWithCheckRule(Class<T> pageClass, CheckRule checkRule);
     <T extends PageObject> T createPageWithCheckRule(Class<T> pageClass, WebDriver webDriver, CheckRule checkRule);
 
 }

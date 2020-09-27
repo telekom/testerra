@@ -26,7 +26,6 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.AbstractFieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFieldAction;
@@ -60,7 +59,7 @@ public abstract class AbstractPage implements
         PageObject,
         LocateProvider
 {
-    protected static final PageObjectFactory pageFactory = Testerra.injector.getInstance(PageObjectFactory.class);
+    protected static final PageFactory pageFactory = Testerra.injector.getInstance(PageFactory.class);
 
     abstract protected UiElement find(Locator locator);
     abstract protected UiElement findDeep(Locator locator);
@@ -97,14 +96,14 @@ public abstract class AbstractPage implements
     }
 
     /**
-     * Package private accessible by {@link PageObjectFactory}
+     * Package private accessible by {@link PageFactory}
      */
     PageObject checkUiElements() {
         return checkUiElements(CheckRule.DEFAULT);
     }
 
     /**
-     * Package private accessible by {@link PageObjectFactory}
+     * Package private accessible by {@link PageFactory}
      */
     PageObject checkUiElements(CheckRule checkRule) {
         pCheckPage(checkRule, true);
@@ -115,7 +114,7 @@ public abstract class AbstractPage implements
      * The call of this method is injected into the constructor of every page class or must be called from every page
      * class constructor!!!
      * If there are several subclasses each calling checkPage, it will be only called from the class of the calling instance.
-     * @deprecated Don't call this method on your own and use {@link PageFactory#create(Class, WebDriver)} instead
+     * @deprecated Don't call this method on your own and use {@link eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory#create(Class, WebDriver)} instead
      */
     @Deprecated
     public final void checkPage() {

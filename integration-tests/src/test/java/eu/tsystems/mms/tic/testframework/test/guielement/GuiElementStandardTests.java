@@ -32,6 +32,6 @@ public class GuiElementStandardTests extends AbstractGuiElementNonFunctionalAsse
 
     @Override
     public GuiElement getGuiElementBy(Locator locator) {
-        return (GuiElement)find(locator);
+        return (GuiElement)Finder.find(locator);
     }
 }

@@ -19,14 +19,22 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.pageobjects;
+package eu.tsystems.mms.tic.testframework.testing;
 
-import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.pageobjects.WebDriverRetainer;
+import eu.tsystems.mms.tic.testframework.pageobjects.WebDriverUiElementFinder;
+import org.openqa.selenium.WebDriver;
 
 /**
- * Provides a {@link UiElementFactory}
+ * Provides a {@link WebDriverUiElementFinder}
  * @author Mike Reiche
  */
-public interface UiElementFactoryProvider {
-    UiElementFactory uiElementFactory = Testerra.injector.getInstance(UiElementFactory.class);
+public interface UiElementFinderProvider extends
+    WebDriverManagerProvider,
+    WebDriverRetainer
+{
+    WebDriverUiElementFinder Finder = new WebDriverUiElementFinder(webDriverManager.getWebDriver());
+    default WebDriver getWebDriver() {
+        return webDriverManager.getWebDriver();
+    }
 }

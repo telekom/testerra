@@ -41,5 +41,6 @@ public class PageWithExistingElement extends Page {
      */
     public PageWithExistingElement(WebDriver driver) {
         super(driver);
+        checkPage();
     }
 }

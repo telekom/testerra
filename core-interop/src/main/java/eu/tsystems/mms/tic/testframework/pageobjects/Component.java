@@ -22,7 +22,8 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementBase;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementList;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.UiElementBase;
 
 /**
  * Components are PageObjects restricted to a root GuiElement

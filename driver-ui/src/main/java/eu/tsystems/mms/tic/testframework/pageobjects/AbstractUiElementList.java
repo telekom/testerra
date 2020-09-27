@@ -21,7 +21,8 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementBase;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementList;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.UiElementBase;
 import java.util.Iterator;
 
 public abstract class AbstractUiElementList<SELF extends UiElementBase> implements UiElementList<SELF> {
@@ -35,7 +36,7 @@ public abstract class AbstractUiElementList<SELF extends UiElementBase> implemen
 
     @Override
     public int size() {
-        return guiElement.numberOfElements().getActual();
+        return guiElement.waitFor().numberOfElements().getActual();
     }
 
     @Override

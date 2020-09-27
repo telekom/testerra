@@ -37,5 +37,5 @@ public interface PropertyAssertionFactory {
     ) {
         return create(assertionClass, null, provider);
     }
-    PropertyAssertionFactory shouldWait();
+    PropertyAssertionFactory setThrowErrors(boolean throwErrors);
 }

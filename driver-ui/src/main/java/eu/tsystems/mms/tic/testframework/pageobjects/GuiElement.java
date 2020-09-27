@@ -22,7 +22,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
@@ -30,30 +29,21 @@ import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.NameableChild;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementAssertions;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementBase;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AbstractPropertyAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultBinaryAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFinder;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementList;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultGuiElementAssert;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultImageAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultQuantityAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultRectAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultStringAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultUiElementAssertions;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertDescriptionDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertHighlightDecorator;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PerformanceTestGuiElementAssert;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertionFactory;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.AbstractGuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreSequenceDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.UiElementBase;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.DelayActionsGuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.UiElementLogger;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.DefaultGuiElementWait;
@@ -65,13 +55,11 @@ import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
-import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -81,10 +69,6 @@ import org.openqa.selenium.WebElement;
  * Authors: pele, rnhb
  */
 public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable {
-    /**
-     * Factory required for {@link UiElementAssertions}
-     */
-    private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
     /**
      * Factory required for {@link UiElementFinder}
      */
@@ -114,6 +98,9 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
      * This is the raw core implementation of {@link GuiElementCore}
      */
     private final GuiElementCore core;
+    private DefaultUiElementAssertions assertions;
+    private DefaultUiElementAssertions waits;
+
     /**
      * Contains the elements base information and the {@link GuiElementData} hierarchy only.
      */
@@ -731,223 +718,19 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     }
 
     @Override
-    public StringAssertion<String> tagName() {
-        final UiElement self = this;
-        DefaultStringAssertion<String> assertion = propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
-            @Override
-            public String getActual() {
-                return core.getTagName();
-            }
-
-            @Override
-            public String getSubject() {
-                return String.format("%s.@tagName", self);
-            }
-        });
-        return assertion;
-    }
-
-    @Override
-    public StringAssertion<String> text() {
-        final UiElement self = this;
-        DefaultStringAssertion<String> assertion = propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
-            @Override
-            public String getActual() {
-                return core.getText();
-            }
-
-            @Override
-            public String getSubject() {
-                return String.format("%s.@text", self.toString(true));
-            }
-        });
-        return assertion;
-    }
-
-    @Override
-    public StringAssertion<String> value(String attribute) {
-        final String finalAttribute = attribute;
-        final UiElement self = this;
-        DefaultStringAssertion<String> assertion = propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
-            @Override
-            public String getActual() {
-                return core.getAttribute(finalAttribute);
-            }
-
-            @Override
-            public String getSubject() {
-                return String.format("%s.@%s", self.toString(true), finalAttribute);
-            }
-        });
-        return assertion;
-    }
-
-    @Override
-    public StringAssertion<String> css(String property) {
-        final UiElement self = this;
-        DefaultStringAssertion<String> assertion = propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
-            @Override
-            public String getActual() {
-                return getCssValue(property);
-            }
-
-            @Override
-            public String getSubject() {
-                return String.format("%s.css(@%s)", self.toString(true), property);
-            }
-        });
-        return assertion;
-    }
-
-    @Override
-    public BinaryAssertion<Boolean> present() {
-        final UiElement self = this;
-        DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
-            @Override
-            public Boolean getActual() {
-                return core.isPresent();
-//                try {
-//                    frameAwareCore.findWebElement(webElement -> {});
-//                    return true;
-//                } catch (ElementNotFoundException e) {
-//                    return false;
-//                }
-            }
-
-            @Override
-            public String getSubject() {
-                return String.format("%s.@present", self.toString(true));
-            }
-        });
-        return assertion;
-    }
-
-    @Override
-    public BinaryAssertion<Boolean> visible(boolean complete) {
-        final UiElement self = this;
-        DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
-            @Override
-            public Boolean getActual() {
-                return core.isVisible(complete);
-            }
-
-            @Override
-            public String getSubject() {
-                return String.format("%s.visible(complete: %s)", self.toString(true), complete);
-            }
-        });
-        return assertion;
-    }
-
-    @Override
-    public BinaryAssertion<Boolean> displayed() {
-        final UiElement self = this;
-        DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
-            @Override
-            public Boolean getActual() {
-                return core.isDisplayed();
-            }
-            @Override
-            public String getSubject() {
-                return String.format("%s.@displayed", self.toString(true));
-            }
-        });
-        return assertion;
-    }
-
-    @Override
-    public BinaryAssertion<Boolean> enabled() {
-        final UiElement self = this;
-        DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
-            @Override
-            public Boolean getActual() {
-                return core.isEnabled();
-            }
-
-            @Override
-            public String getSubject() {
-                return String.format("%s.@enabled", self.toString(true));
-            }
-        });
-        return assertion;
-    }
-
-    @Override
-    public BinaryAssertion<Boolean> selected() {
-        final UiElement self = this;
-        DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
-            @Override
-            public Boolean getActual() {
-                return core.isSelected();
-            }
-
-            @Override
-            public String getSubject() {
-                return String.format("%s.@selected", self.toString(true));
-            }
-        });
-        return assertion;
-    }
-
-    @Override
-    public BinaryAssertion<Boolean> selectable() {
-        final UiElement self = this;
-        DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
-            @Override
-            public Boolean getActual() {
-                return core.isSelectable();
-            }
-
-            @Override
-            public String getSubject() {
-                return String.format("%s.selectable", self.toString(true));
-            }
-        });
-        return assertion;
-    }
-
-    @Override
-    public RectAssertion bounds() {
-        final UiElement self = this;
-        DefaultRectAssertion assertion = propertyAssertionFactory.create(DefaultRectAssertion.class, new AssertionProvider<Rectangle>() {
-            @Override
-            public Rectangle getActual() {
-                return core.getRect();
-            }
-
-            @Override
-            public String getSubject() {
-                return String.format("%s.bounds", self.toString(true));
-            }
-        });
-        return assertion;
-    }
-
-    @Override
-    public QuantityAssertion<Integer> numberOfElements() {
-        final UiElement self = this;
-        DefaultQuantityAssertion assertion = propertyAssertionFactory.create(DefaultQuantityAssertion.class, new AssertionProvider<Integer>() {
-            @Override
-            public Integer getActual() {
-                try {
-                    return core.getNumberOfFoundElements();
-                } catch (ElementNotFoundException e) {
-                    return 0;
-                }
-            }
-
-            @Override
-            public String getSubject() {
-                return String.format("%s.@numberOfElements", self.toString(true));
-            }
-        });
-        return assertion;
-    }
-
-    @Override
     public UiElementAssertions waitFor() {
-        propertyAssertionFactory.shouldWait();
-        return this;
+        if (this.waits == null) {
+            this.waits = new DefaultUiElementAssertions(this, false);
+        }
+        return this.waits;
+    }
+
+    @Override
+    public UiElementAssertions expectThat() {
+        if (this.waits == null) {
+            this.waits = new DefaultUiElementAssertions(this, true);
+        }
+        return this.waits;
     }
 
     @Override
@@ -962,29 +745,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
         return String.join("", xPathes);
     }
 
-    @Override
-    public ImageAssertion screenshot() {
-        final UiElement self = this;
-        final AtomicReference<File> screenshot = new AtomicReference<>();
-        screenshot.set(core.takeScreenshot());
-        DefaultImageAssertion assertion = propertyAssertionFactory.create(DefaultImageAssertion.class, new AssertionProvider<File>() {
-            @Override
-            public File getActual() {
-                return screenshot.get();
-            }
 
-            @Override
-            public void failed(AbstractPropertyAssertion assertion) {
-                screenshot.set(core.takeScreenshot());
-            }
-
-            @Override
-            public String getSubject() {
-                return String.format("%s.screenshot", self.toString(true));
-            }
-        });
-        return assertion;
-    }
 
     @Override
     public void findWebElement(Consumer<WebElement> consumer) {

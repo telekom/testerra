@@ -85,7 +85,7 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
         if (!atomicPassed.get()) {
             failedFinallyRecursive();
             // Dont handle exceptions when it should only wait
-            if (!config.shouldWait) {
+            if (config.throwErrors) {
                 Assertion finalAssertion = assertionFactory.create();
                 String message = null;
                 Throwable finalThrowable;

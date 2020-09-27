@@ -21,8 +21,6 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
-
 /**
  * Contains all available actions for an {@link UiElement}
  * @author Mike Reiche

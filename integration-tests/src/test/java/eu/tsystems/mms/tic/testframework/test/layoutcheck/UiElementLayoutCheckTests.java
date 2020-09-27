@@ -24,7 +24,7 @@ import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.BasePage;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -44,27 +44,27 @@ public class UiElementLayoutCheckTests extends AbstractTestSitesTest implements 
     public void testCheckElementLayout() {
         BasePage page = preparePage();
         UiElement guiElement = page.findByQa("section/layoutTestArticle");
-        guiElement.screenshot().pixelDistance("TestArticle").isLowerThan(1.3);
+        guiElement.expectThat().screenshot().pixelDistance("TestArticle").isLowerThan(1.3);
 
         guiElement = page.findByQa("section/invisibleTestArticle");
-        guiElement.screenshot().pixelDistance("InvisibleTestArticle").isLowerThan(1.3);
+        guiElement.expectThat().screenshot().pixelDistance("InvisibleTestArticle").isLowerThan(1.3);
     }
 
     @Test
     public void testCheckElementVisibility() {
         BasePage page = preparePage();
         UiElement guiElement = page.findByQa("section/layoutTestArticle");
-        guiElement.visible(true).is(true);
+        guiElement.expectThat().visible(true).is(true);
 
         guiElement = page.findByQa("section/invisibleTestArticle");
-        guiElement.visible(false).is(false);
+        guiElement.expectThat().visible(false).is(false);
 
         // Scroll to offset doesn't work
         //guiElement.scrollToElement(300);
         //Assert.assertFalse(guiElement.isVisible(true));
 
         guiElement.scrollIntoView();
-        guiElement.visible(true).is(true);
+        guiElement.expectThat().visible(true).is(true);
     }
 
     @Test()
@@ -72,13 +72,13 @@ public class UiElementLayoutCheckTests extends AbstractTestSitesTest implements 
     public void testCheckElementLayoutDistance() {
         BasePage page = preparePage();
         UiElement guiElement = page.findByQa("section/layoutTestArticle");
-        Control.retryFor(10).withTimeout(0, () -> guiElement.screenshot().pixelDistance("TestArticleFailed").isLowerThan(1));
+        Control.retryFor(10).withTimeout(0, () -> guiElement.expectThat().screenshot().pixelDistance("TestArticleFailed").isLowerThan(1));
     }
 
     @Test
     public void testCheckPageLayout() {
         BasePage page = preparePage();
-        page.screenshot()
+        page.expectThat().screenshot()
             .toReport()
             .pixelDistance("LayoutTestPage").isLowerThan(1);
     }
@@ -86,6 +86,6 @@ public class UiElementLayoutCheckTests extends AbstractTestSitesTest implements 
     @Test(expectedExceptions = AssertionError.class)
     public void testCheckPageLayout_failed() {
         BasePage page = preparePage();
-        Control.withTimeout(0, () -> page.screenshot().pixelDistance("LayoutTestPage").isGreaterThan(100));
+        Control.withTimeout(0, () -> page.expectThat().screenshot().pixelDistance("LayoutTestPage").isGreaterThan(100));
     }
 }

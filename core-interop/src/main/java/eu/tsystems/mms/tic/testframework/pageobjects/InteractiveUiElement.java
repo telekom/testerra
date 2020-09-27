@@ -21,10 +21,11 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementActions;
 
 /**
- * Contains all interactive features for an {@link UiElement}
+ * Contains all interactive features for an {@link UiElement}.
  * @author Mike Reiche
  */
 public interface InteractiveUiElement extends

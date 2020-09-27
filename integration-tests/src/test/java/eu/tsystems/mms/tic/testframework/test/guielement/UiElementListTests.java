@@ -23,7 +23,7 @@ import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.test.core.pageobjects.testdata.UiElementListPage;
 import eu.tsystems.mms.tic.testframework.test.core.pageobjects.testdata.components.TableRow;
@@ -70,20 +70,20 @@ public class UiElementListTests extends AbstractTestSitesTest implements PageFac
     }
 
     private void testNavigationAnchors(UiElement anchors) {
-        anchors.numberOfElements().is(3);
+        anchors.expectThat().numberOfElements().is(3);
 
-        anchors.list().first().text().is("First");
-        anchors.list().get(1).text().is("Second");
-        anchors.list().last().text().is("Third");
+        anchors.list().first().expectThat().text().is("First");
+        anchors.list().get(1).expectThat().text().is("Second");
+        anchors.list().last().expectThat().text().is("Third");
     }
 
     private void testTableRowsAndData(TableRow tableRows) {
-        tableRows.numberOfElements().is(4);
+        tableRows.expectThat().numberOfElements().is(4);
         TestableUiElement tableDataUnspecified = tableRows.columns();
-        tableDataUnspecified.numberOfElements().is(2);
+        tableDataUnspecified.expectThat().numberOfElements().is(2);
 
         TestableUiElement tableDataSpecified = tableRows.list().get(1).columns();
-        tableDataSpecified.numberOfElements().is(2);
+        tableDataSpecified.expectThat().numberOfElements().is(2);
     }
 
     @Test
@@ -92,10 +92,10 @@ public class UiElementListTests extends AbstractTestSitesTest implements PageFac
         TableRow tableRows = page.getTableRowsByTagName();
         testTableRowsAndData(tableRows);
 
-        tableRows.list().first().linkByName().value(Attribute.HREF).endsWith("mkri");
-        tableRows.list().get(1).linkByName().value(Attribute.HREF).endsWith("joku");
-        tableRows.list().last().linkByName().value(Attribute.HREF).endsWith("erku");
-        tableRows.list().forEach(tableRow -> tableRow.linkByName().value(Attribute.HREF).startsWith("http"));
+        tableRows.list().first().linkByName().expectThat().value(Attribute.HREF).endsWith("mkri");
+        tableRows.list().get(1).linkByName().expectThat().value(Attribute.HREF).endsWith("joku");
+        tableRows.list().last().linkByName().expectThat().value(Attribute.HREF).endsWith("erku");
+        tableRows.list().forEach(tableRow -> tableRow.linkByName().expectThat().value(Attribute.HREF).startsWith("http"));
     }
 
     @Test
@@ -104,9 +104,9 @@ public class UiElementListTests extends AbstractTestSitesTest implements PageFac
         TableRow tableRows = page.getTableRowsByTagName();
         testTableRowsAndData(tableRows);
 
-        tableRows.list().first().linkByXPath().value(Attribute.HREF).endsWith("mkri");
-        tableRows.list().get(1).linkByXPath().value(Attribute.HREF).endsWith("joku");
-        tableRows.list().last().linkByXPath().value(Attribute.HREF).endsWith("erku");
+        tableRows.list().first().linkByXPath().expectThat().value(Attribute.HREF).endsWith("mkri");
+        tableRows.list().get(1).linkByXPath().expectThat().value(Attribute.HREF).endsWith("joku");
+        tableRows.list().last().linkByXPath().expectThat().value(Attribute.HREF).endsWith("erku");
     }
 
     @Override

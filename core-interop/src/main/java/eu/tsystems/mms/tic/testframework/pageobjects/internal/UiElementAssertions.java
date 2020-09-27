@@ -22,15 +22,15 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementBaseAssertions;
 
 /**
  * Contains all assertions on an {@link UiElement}
  * @author Mike Reiche
  */
-public interface UiElementAssertions extends UiElementBase {
+public interface UiElementAssertions extends UiElementBaseAssertions {
     default boolean text(String text) {
         return text().is(text);
     }

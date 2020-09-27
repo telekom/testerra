@@ -19,9 +19,12 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.pageobjects;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.pageobjects.LocateProvider;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
+import eu.tsystems.mms.tic.testframework.pageobjects.XPath;
 import org.openqa.selenium.By;
 
 /**
@@ -50,14 +53,14 @@ public interface UiElementFinder extends LocateProvider, Loggable {
 
     default UiElement findDeep(Locator locator) {
         UiElement currentScope = find(locator);
-        if (currentScope.numberOfElements().getActual() > 0) {
+        if (currentScope.waitFor().numberOfElements().getActual() > 0) {
             return currentScope;
         }
 
         UiElement frames = find(By.xpath("(//iframe|//frame)"));
         for (UiElement frame : frames.list()) {
             UiElement deepScope = frame.findDeep(locator);
-            if (deepScope.numberOfElements().getActual() > 0) {
+            if (deepScope.waitFor().numberOfElements().getActual() > 0) {
                 return deepScope;
             }
         }

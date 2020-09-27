@@ -27,8 +27,8 @@ import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageObject;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PageAssertions;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.lang.reflect.Modifier;
@@ -203,7 +203,7 @@ final public class ClassFinder {
 
     @SuppressWarnings("unchecked")
     public static <T extends PageObject> Class<T> getBestMatchingClass(Class<T> baseClass, WebDriver driver, String prefix) {
-        PrioritizedClassInfos<? extends Page> prioritizedClassInfos = Caches.getCache(baseClass, prefix);
+        PrioritizedClassInfos<? extends PageAssertions> prioritizedClassInfos = Caches.getCache(baseClass, prefix);
 
         if (prioritizedClassInfos == null) {
             // scan!
@@ -223,13 +223,13 @@ final public class ClassFinder {
         /*
         find best matching class
          */
-        List<? extends ResolutionClassInfo<? extends Page>> prefixedClasses = prioritizedClassInfos.getPrefixedClasses();
-        List<? extends ResolutionClassInfo<? extends Page>> nonPrexidClasses = prioritizedClassInfos.getNonPrefixedClasses();
+        List<? extends ResolutionClassInfo<? extends PageAssertions>> prefixedClasses = prioritizedClassInfos.getPrefixedClasses();
+        List<? extends ResolutionClassInfo<? extends PageAssertions>> nonPrexidClasses = prioritizedClassInfos.getNonPrefixedClasses();
         int viewPortWidth = -1;
         Class<T> bestMatchingClass = null;
 
         // check prefixed
-        for (ResolutionClassInfo<? extends Page> c : prefixedClasses) {
+        for (ResolutionClassInfo<? extends PageAssertions> c : prefixedClasses) {
             if (c.hasResolution()) {
                 viewPortWidth = getBrowserViewportSize(driver, viewPortWidth);
                 if (c.matchesResolution(viewPortWidth)) {
@@ -247,7 +247,7 @@ final public class ClassFinder {
 
         // check non-prefixed
         if (bestMatchingClass == null) {
-            for (ResolutionClassInfo<? extends Page> c : nonPrexidClasses) {
+            for (ResolutionClassInfo<? extends PageAssertions> c : nonPrexidClasses) {
                 if (c.hasResolution()) {
                     viewPortWidth = getBrowserViewportSize(driver, viewPortWidth);
                 }

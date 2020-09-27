@@ -23,7 +23,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import com.google.inject.Inject;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -33,7 +33,7 @@ import java.lang.reflect.InvocationTargetException;
  * @author Mike Reiche
  */
 public class DefaultPropertyAssertionFactory implements PropertyAssertionFactory, Loggable {
-    private boolean nextShouldWait = false;
+    private boolean throwErrors = true;
     private final TestController.Overrides overrides;
 
     @Inject
@@ -56,12 +56,12 @@ public class DefaultPropertyAssertionFactory implements PropertyAssertionFactory
                 assertion.config = parentAssertion.config;
             } else {
                 assertion.config = new PropertyAssertionConfig();
-                assertion.config.shouldWait = nextShouldWait;
+                assertion.config.throwErrors = throwErrors;
                 assertion.config.timeoutInSeconds = overrides.getTimeoutInSeconds();
                 assertion.config.pauseIntervalMs = UiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong();
             }
 
-            nextShouldWait = false;
+            throwErrors = false;
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             log().error(String.format("Unable to create assertion: %s", e.getMessage()), e);
             assertion = null;
@@ -70,8 +70,8 @@ public class DefaultPropertyAssertionFactory implements PropertyAssertionFactory
     }
 
     @Override
-    public PropertyAssertionFactory shouldWait() {
-        this.nextShouldWait = true;
+    public PropertyAssertionFactory setThrowErrors(boolean throwErrors) {
+        this.throwErrors = throwErrors;
         return this;
     }
 }

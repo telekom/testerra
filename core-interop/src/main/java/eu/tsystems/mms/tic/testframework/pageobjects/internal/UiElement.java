@@ -18,22 +18,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package eu.tsystems.mms.tic.testframework.pageobjects;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
 import eu.tsystems.mms.tic.testframework.common.IProperties;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
+import eu.tsystems.mms.tic.testframework.pageobjects.InteractiveUiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.WebDriverRetainer;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.UiElementBase;
 
 /**
  * GuiElement with new fluent API support
  * @author Mike Reiche
  */
 public interface UiElement extends
-    InteractiveUiElement,
+    UiElementBase,
+        InteractiveUiElement,
     Nameable<UiElement>,
-    WebDriverRetainer,
-    UiElementFinder
+        WebDriverRetainer,
+        UiElementFinder
 {
     enum Properties implements IProperties {
         @Deprecated

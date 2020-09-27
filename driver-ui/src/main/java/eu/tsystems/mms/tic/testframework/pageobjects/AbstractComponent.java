@@ -23,12 +23,9 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementBase;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementList;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementBaseAssertions;
 import java.awt.Color;
 import java.util.function.Consumer;
 import org.apache.commons.lang.NotImplementedException;
@@ -54,11 +51,6 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     }
 
     protected abstract SELF self();
-
-    @Override
-    public ImageAssertion screenshot() {
-        return rootElement.screenshot();
-    }
 
     @Override
     public InteractiveUiElement highlight(Color color) {
@@ -106,38 +98,13 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     }
 
     @Override
-    public BinaryAssertion<Boolean> present() {
-        return rootElement.present();
-    }
-
-    @Override
-    public BinaryAssertion<Boolean> visible(boolean complete) {
-        return rootElement.visible(complete);
-    }
-
-    @Override
-    public StringAssertion<String> tagName() {
-        return rootElement.tagName();
-    }
-
-    @Override
-    public RectAssertion bounds() {
-        return rootElement.bounds();
-    }
-
-    @Override
-    public UiElementBase waitFor() {
+    public UiElementBaseAssertions waitFor() {
         return rootElement.waitFor();
     }
 
     @Override
-    public QuantityAssertion<Integer> numberOfElements() {
-        return rootElement.numberOfElements();
-    }
-
-    @Override
-    public BinaryAssertion<Boolean> displayed() {
-        return rootElement.displayed();
+    public UiElementBaseAssertions expectThat() {
+        return rootElement.expectThat();
     }
 
     public SELF setName(String name) {

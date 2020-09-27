@@ -27,7 +27,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
@@ -40,7 +40,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     public void test_Page_title() {
         WebTestPage page = getPage();
 
-        StringAssertion<String> title = page.title();
+        StringAssertion<String> title = page.expectThat().title();
 
         title.is("Input test");
         title.isNot("Affentest");
@@ -48,7 +48,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
         title.containsNot("SuperTestPage");
         title.containsWords("Input", "test").is(true);
 
-        QuantityAssertion<Integer> length = page.title().length();
+        QuantityAssertion<Integer> length = page.expectThat().title().length();
         length.is(10);
         length.isLowerThan(100);
         length.isGreaterThan(5);
@@ -74,54 +74,54 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     @Test
     public void test_Page_title_matches() {
         WebTestPage page = getPage();
-        page.title().matches("input\\s+.es.").is(true);
+        page.expectThat().title().matches("input\\s+.es.").is(true);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void test_Page_title_matches_fails() {
         WebTestPage page = getPage();
-        page.title().matches("input\\s+.es.").is(false);
+        page.expectThat().title().matches("input\\s+.es.").is(false);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void test_Page_title_length_fails() {
         WebTestPage page = getPage();
-        page.title().length().isGreaterThan(10);
+        page.expectThat().title().length().isGreaterThan(10);
     }
 
     @Test
     @Fails(description = "The test itself passes, but collected assertions will always fail")
     public void test_Page_title_length_fails_collected() {
         WebTestPage page = getPage();
-        Control.collectAssertions(() -> page.title().length().isGreaterThan(10));
+        Control.collectAssertions(() -> page.expectThat().title().length().isGreaterThan(10));
     }
 
     @Test
     public void test_Page_title_length_fails_nonFunctional() {
         WebTestPage page = getPage();
-        Control.nonFunctionalAssertions(()-> page.title().length().isGreaterThan(10));
+        Control.nonFunctionalAssertions(()-> page.expectThat().title().length().isGreaterThan(10));
     }
 
     @Test
     public void test_Page_url() {
         WebTestPage page = getPage();
-        page.url().startsWith("http");
-        page.url().endsWith("input.html");
-        page.url().length().isGreaterEqualThan(10);
+        page.expectThat().url().startsWith("http");
+        page.expectThat().url().endsWith("input.html");
+        page.expectThat().url().length().isGreaterEqualThan(10);
     }
 
     @Test()
     public void test_Page_url_fails() {
         WebTestPage page = getPage();
         try {
-            page.url().endsWith("nonexistingfile.html", "Wrong URL");
+            page.expectThat().url().endsWith("nonexistingfile.html", "Wrong URL");
         } catch (AssertionError e) {
             Assert.assertContains(e.getMessage(), "Wrong URL");
             Assert.assertEndsWith(e.getMessage(), "ends with [nonexistingfile.html]");
         }
 
         try {
-            page.url().length().isGreaterEqualThan(10000, "URL is too short");
+            page.expectThat().url().length().isGreaterEqualThan(10000, "URL is too short");
         } catch (AssertionError e) {
             Assert.assertContains(e.getMessage(), "URL is too short");
             Assert.assertEndsWith(e.getMessage(), "is greater or equal than [10000]");
@@ -134,27 +134,27 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
         WebTestPage page = getPage();
         UiElement element = page.findById(5);
         element.sendKeys("Test");
-        element.clear().text().is("");
+        element.clear().expectThat().text().is("");
     }
 
     @Test
     public void test_GuiElement_displayed_false() {
         WebTestPage page = getPage();
-        page.notDisplayedElement().value(Attribute.STYLE).contains("display: none");
-        page.notDisplayedElement().displayed().is(false);
+        page.notDisplayedElement().expectThat().value(Attribute.STYLE).contains("display: none");
+        page.notDisplayedElement().expectThat().displayed().is(false);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void test_GuiElement_displayed_false_fails() {
         WebTestPage page = getPage();
-        page.notDisplayedElement().displayed().is(true);
+        page.notDisplayedElement().expectThat().displayed().is(true);
     }
 
     @Test()
     public void test_GuiElement_displayed_false_fails_with_message() {
         WebTestPage page = getPage();
         try {
-            page.notDisplayedElement().displayed().is(true,"Important element visibility");
+            page.notDisplayedElement().expectThat().displayed().is(true,"Important element visibility");
         } catch (AssertionError e) {
             Assert.assertContains(e.getMessage(), "Important element visibility");
         }
@@ -163,11 +163,11 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     @Test
     public void test_GuiElement_visible_false() {
         WebTestPage page = getPage();
-        page.notVisibleElement().value(Attribute.STYLE).contains("hidden");
-        page.notVisibleElement().value("style").contains("hidden");
-        page.notVisibleElement().visible(true).is(false);
-        page.notVisibleElement().visible(false).is(false);
-        page.notDisplayedElement().css("display").is("none");
+        page.notVisibleElement().expectThat().value(Attribute.STYLE).contains("hidden");
+        page.notVisibleElement().expectThat().value("style").contains("hidden");
+        page.notVisibleElement().expectThat().visible(true).is(false);
+        page.notVisibleElement().expectThat().visible(false).is(false);
+        page.notDisplayedElement().expectThat().css("display").is("none");
     }
 
     @Test
@@ -200,19 +200,19 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     @Test
     public void test_UiElement_attribute_present() {
         WebTestPage page = getPage();
-        page.getRadioBtn().value("disabled").isNot(null);
+        page.getRadioBtn().expectThat().value("disabled").isNot(null);
     }
 
     @Test
     public void test_UiElement_null_attribute() {
         WebTestPage page = getPage();
-        page.getRadioBtn().value("not-existent-attribute").is(null);
+        page.getRadioBtn().expectThat().value("not-existent-attribute").is(null);
     }
 
     @Test
     public void test_UiElement_null_attribute_mapped() {
         WebTestPage page = getPage();
-        page.getRadioBtn().value("not-existent-attribute").map(String::trim).is(null);
+        page.getRadioBtn().expectThat().value("not-existent-attribute").map(String::trim).is(null);
     }
 
     @Test
@@ -224,13 +224,13 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     @Test(expectedExceptions = AssertionError.class)
     public void test_GuiElement_visible_false_fails() {
         WebTestPage page = getPage();
-        page.notVisibleElement().visible(true).is(true);
+        page.notVisibleElement().expectThat().visible(true).is(true);
     }
 
     @Test
     public void test_NonExistent_GuiElement_present() {
         WebTestPage page = getPage();
-        page.nonExistentElement().present().is(false);
+        page.nonExistentElement().expectThat().present().is(false);
     }
 
     @Test
@@ -238,7 +238,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
         WebTestPage page = getPage();
         String msg = null;
         try {
-            page.nonExistentElement().present().is(true);
+            page.nonExistentElement().expectThat().present().is(true);
         } catch (AssertionError e) {
             msg = e.getMessage();
         }
@@ -253,13 +253,13 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     @Test(expectedExceptions = AssertionError.class)
     public void test_NonExistent_GuiElement_displayed_fails() {
         WebTestPage page = getPage();
-        page.nonExistentElement().displayed().is(false);
+        page.nonExistentElement().expectThat().displayed().is(false);
     }
 
     @Test
     public void test_GuiElement_screenshot() {
         WebTestPage page = getPage();
-        ImageAssertion screenshot = page.notVisibleElement().screenshot();
+        ImageAssertion screenshot = page.notVisibleElement().expectThat().screenshot();
         screenshot.file().exists().is(true);
     }
 
@@ -268,7 +268,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
         WebTestPage page = getPage();
         String msg=null;
         try {
-            page.nonExistentElement().screenshot().file().exists().is(true);
+            page.nonExistentElement().expectThat().screenshot().file().exists().is(true);
         } catch (ElementNotFoundException e) {
             msg = e.getMessage();
         }
@@ -279,9 +279,9 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     public void test_Component() {
         final String input = "Ich gebe etwas ein";
         WebTestPage page = getPage();
-        page.inputForm().button().value().is("Button1");
-        page.inputForm().input().clear().sendKeys(input).value().is(input);
-        page.inputForm().button().numberOfElements().is(1);
+        page.inputForm().button().expectThat().value().is("Button1");
+        page.inputForm().input().clear().sendKeys(input).expectThat().value().is(input);
+        page.inputForm().button().expectThat().numberOfElements().is(1);
     }
 
     @Test
@@ -290,9 +290,9 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
         UiElement attributes = page.findByQa("section/attributeTest");
 
         //attributes.value("ariaExpanded").is("true");
-        attributes.value("aria-expanded").is("true");
+        attributes.expectThat().value("aria-expanded").is("true");
         //attributes.value("dataCompletelyCustomAttribute").is("true");
-        attributes.value("data-completely-custom-attribute").is("yes");
+        attributes.expectThat().value("data-completely-custom-attribute").is("yes");
     }
 
     @Test
@@ -301,7 +301,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
         UiElement disableMyselfBtn = page.findById("disableMyselfBtn");
         Control.retryFor(10).withTimeout(0,() -> {
             disableMyselfBtn.click();
-            disableMyselfBtn.enabled().is(false);
+            disableMyselfBtn.expectThat().enabled().is(false);
         });
     }
 

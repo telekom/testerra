@@ -52,7 +52,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
         return propertyAssertionFactory.create(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return toRectangle(provider.getActual()).contains(toRectangle(guiElement.bounds().getActual()));
+                return toRectangle(provider.getActual()).contains(toRectangle(guiElement.waitFor().bounds().getActual()));
             }
 
             @Override
@@ -60,7 +60,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
                 return String.format("%s.contains(guiElement: %s.bounds.%s)",
                     formatter.toString(provider.getActual()),
                     guiElement,
-                    formatter.toString(guiElement.bounds().getActual())
+                    formatter.toString(guiElement.waitFor().bounds().getActual())
                 );
             }
         });
@@ -71,7 +71,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
         return propertyAssertionFactory.create(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return toRectangle(provider.getActual()).intersects(toRectangle(guiElement.bounds().getActual()));
+                return toRectangle(provider.getActual()).intersects(toRectangle(guiElement.waitFor().bounds().getActual()));
             }
 
             @Override
@@ -79,7 +79,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
                 return String.format("%s.intersects(guiElement: %s.bounds.%s)",
                     formatter.toString(provider.getActual()),
                     guiElement,
-                    formatter.toString(guiElement.bounds().getActual())
+                    formatter.toString(guiElement.waitFor().bounds().getActual())
                 );
             }
         });

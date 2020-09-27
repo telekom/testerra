@@ -25,7 +25,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
  * Configuration for implementations of {@link AbstractPropertyAssertion}
  */
 public class PropertyAssertionConfig {
-    public boolean shouldWait = false;
+    public boolean throwErrors = false;
     public int timeoutInSeconds = -1;
     public long pauseIntervalMs = 0;
 }

@@ -21,19 +21,20 @@
 
 package eu.tsystems.mms.tic.testframework.testing;
 
+import eu.tsystems.mms.tic.testframework.pageobjects.DefaultWebDriverUiElementFinder;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebDriverRetainer;
-import eu.tsystems.mms.tic.testframework.pageobjects.WebDriverUiElementFinder;
 import org.openqa.selenium.WebDriver;
 
 /**
- * Provides a {@link WebDriverUiElementFinder}
+ * Provides a {@link DefaultWebDriverUiElementFinder}
  * @author Mike Reiche
  */
 public interface UiElementFinderProvider extends
     WebDriverManagerProvider,
     WebDriverRetainer
 {
-    WebDriverUiElementFinder Finder = new WebDriverUiElementFinder(webDriverManager.getWebDriver());
+    DefaultWebDriverUiElementFinder Finder = new DefaultWebDriverUiElementFinder(webDriverManager.getWebDriver());
+
     default WebDriver getWebDriver() {
         return webDriverManager.getWebDriver();
     }

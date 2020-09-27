@@ -21,13 +21,9 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ScreenshotAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PageAssertions;
 
 public interface TestablePage {
-    TestableUiElement anyElementContainsText(String text);
-    ScreenshotAssertion screenshot();
-    StringAssertion<String> title();
-    StringAssertion<String> url();
-    TestablePage waitFor();
+    PageAssertions waitFor();
+    PageAssertions expectThat();
 }

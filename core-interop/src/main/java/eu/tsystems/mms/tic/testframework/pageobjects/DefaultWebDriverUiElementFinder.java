@@ -22,13 +22,15 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFinder;
 import org.openqa.selenium.WebDriver;
 
-public class WebDriverUiElementFinder implements UiElementFinder {
+public class DefaultWebDriverUiElementFinder implements UiElementFinder {
     protected static final UiElementFactory uiElementFactory = Testerra.injector.getInstance(UiElementFactory.class);
     private final WebDriver webDriver;
 
-    public WebDriverUiElementFinder(WebDriver webDriver) {
+    public DefaultWebDriverUiElementFinder(WebDriver webDriver) {
         this.webDriver = webDriver;
     }
 

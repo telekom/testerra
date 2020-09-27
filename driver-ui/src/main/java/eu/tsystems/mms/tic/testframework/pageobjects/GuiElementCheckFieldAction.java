@@ -24,8 +24,8 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementBase;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.AbstractCheckFieldAction;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.UiElementBase;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.lang.reflect.Field;
@@ -77,21 +77,21 @@ public class GuiElementCheckFieldAction extends AbstractCheckFieldAction {
 
         switch (checkRule) {
             case IS_PRESENT:
-                guiElement.present(true);
+                guiElement.expectThat().present(true);
                 break;
             case IS_NOT_PRESENT:
-                guiElement.present(false);
+                guiElement.expectThat().present(false);
                 break;
             case IS_NOT_DISPLAYED: {
                 if (guiElement.waitFor().present(true)) {
-                    guiElement.displayed(false);
+                    guiElement.expectThat().displayed(false);
                 }
             }
             break;
             case DEFAULT:
             case IS_DISPLAYED:
             default: {
-                guiElement.displayed(true);
+                guiElement.expectThat().displayed(true);
             }
         }
 

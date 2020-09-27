@@ -26,5 +26,6 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
  * @author Mike Reiche
  */
 public interface ScreenshotAssertion extends ImageAssertion {
+    @Deprecated
     ScreenshotAssertion toReport();
 }

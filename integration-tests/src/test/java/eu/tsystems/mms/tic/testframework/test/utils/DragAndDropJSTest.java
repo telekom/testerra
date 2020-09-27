@@ -22,14 +22,46 @@
  package eu.tsystems.mms.tic.testframework.test.utils;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.utils.MouseActions;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 
 public class DragAndDropJSTest extends AbstractDragAndDropTest {
 
+    /**
+     * @see {https://github.com/seleniumhq/selenium-google-code-issue-archive/issues/4202}
+     */
     @Override
     protected void execute(WebDriver driver, GuiElement sourceGuiElement, GuiElement destinationGuiElement) {
-        MouseActions.dragAndDropJS(sourceGuiElement, destinationGuiElement);
+        //MouseActions.dragAndDropJS(sourceGuiElement, destinationGuiElement);
+
+        sourceGuiElement.findWebElement(sourceWebElement -> {
+            Actions builder = new Actions(driver);
+            builder.clickAndHold(sourceWebElement);
+            Action dragAction = builder.build();
+            dragAction.perform();
+
+            destinationGuiElement.findWebElement(targetWebElement -> {
+                builder.moveToElement(targetWebElement);
+                builder.release(targetWebElement);
+                Action dropAction = builder.build();
+                dropAction.perform();
+            });
+        });
+//
+//        driver.switchTo().defaultContent();
+//        Actions builder = new Actions(driver);
+//        builder.clickAndHold(from);
+//        Action action = builder.build();
+//        action.perform();
+//
+//        driver.switchTo().frame("<to element frame id>");
+//
+//        builder.moveToElement(to);
+//        builder.release(to);
+//        action = builder.build();
+//        action.perform();
+
     }
 
 }

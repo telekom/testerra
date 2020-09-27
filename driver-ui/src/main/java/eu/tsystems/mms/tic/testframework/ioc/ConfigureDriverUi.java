@@ -41,14 +41,17 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
 
 public class ConfigureDriverUi extends AbstractModule {
     protected void configure() {
+        // Singletons
         bind(UiElementFactory.class).to(DefaultUiElementFactory.class).in(Scopes.SINGLETON);
         bind(PageObjectFactory.class).to(DefaultPageFactory.class).in(Scopes.SINGLETON);
         bind(TestController.Overrides.class).to(DefaultTestControllerOverrides.class).in(Scopes.SINGLETON);
-        bind(PropertyAssertionFactory.class).to(DefaultPropertyAssertionFactory.class).in(Scopes.SINGLETON);
         bind(IWebDriverManager.class).to(DefaultWebDriverManager.class).in(Scopes.SINGLETON);
         bind(ElementLabelProvider.class).to(DefaultElementLabelProvider.class).in(Scopes.SINGLETON);
 
         Multibinder<ModuleHook> hookBinder = Multibinder.newSetBinder(binder(), ModuleHook.class);
         hookBinder.addBinding().to(DriverUiHook.class).in(Scopes.SINGLETON);
+
+        // Instances
+        bind(PropertyAssertionFactory.class).to(DefaultPropertyAssertionFactory.class);
     }
 }

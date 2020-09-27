@@ -19,38 +19,19 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.pageobjects.internal;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementActions;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementBaseAssertions;
 
 /**
  * Contains basic GuiElement features which every GuiElement needs to have.
  * @author Mike Reiche
  */
 public interface UiElementBase extends WebElementActions {
-    QuantityAssertion<Integer> numberOfElements();
-    BinaryAssertion<Boolean> present();
-    default boolean present(boolean expected) {
-        return present().is(expected);
-    }
-    BinaryAssertion<Boolean> displayed();
-    default boolean displayed(boolean expected) {
-        return displayed().is(expected);
-    }
-    BinaryAssertion<Boolean> visible(boolean complete);
-    StringAssertion<String> tagName();
-    RectAssertion bounds();
-    UiElementBase waitFor();
-    /**
-     * Takes a screenshot of the current element
-     */
-    ImageAssertion screenshot();
-
+    UiElementBaseAssertions waitFor();
+    UiElementBaseAssertions expectThat();
     /**
      * Creates a xpath of the given {@link Locator} hierarchy NOT the actual element hierarchy
      */

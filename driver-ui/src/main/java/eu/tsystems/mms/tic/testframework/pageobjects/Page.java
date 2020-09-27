@@ -29,20 +29,14 @@ import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.NameableChild;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AbstractPropertyAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultScreenshotAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultStringAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultPageAssertions;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PageAssertions;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertionFactory;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ScreenshotAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
-import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
-import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import java.awt.Color;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicReference;
 import org.openqa.selenium.WebDriver;
 
 /**
@@ -54,10 +48,12 @@ import org.openqa.selenium.WebDriver;
  * @author Mike Reiche
  * @todo Rename to AbstractPage
  */
-public abstract class Page extends AbstractPage implements TestablePage, Nameable<Page> {
+public class Page extends AbstractPage implements TestablePage, Nameable<Page> {
     private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
     private WebDriver driver;
-    private WebDriverUiElementFinder finder;
+    private DefaultWebDriverUiElementFinder finder;
+    private PageAssertions assertions;
+    private PageAssertions waits;
 
     public Page(WebDriver webDriver) {
         this.driver = webDriver;
@@ -169,10 +165,9 @@ public abstract class Page extends AbstractPage implements TestablePage, Nameabl
     @Fails(validFor = "unsupportedBrowser=true")
     private boolean pIsTextPresentRecursive(final boolean isDisplayed, final String text) {
         UiElement textElement = (UiElement)anyElementContainsText(text);
-        textElement.displayed();
         if (
-            isDisplayed && textElement.displayed().getActual()
-            || textElement.present().getActual()
+            isDisplayed && textElement.waitFor().displayed().getActual()
+            || textElement.waitFor().present().getActual()
         ) {
             WebDriver driver = getWebDriver();
             textElement.findWebElement(webElement -> {
@@ -195,9 +190,9 @@ public abstract class Page extends AbstractPage implements TestablePage, Nameabl
         return waitForIsNotTextPresent(text);
     }
 
-    protected final WebDriverUiElementFinder getFinder() {
+    protected final DefaultWebDriverUiElementFinder getFinder() {
         if (this.finder == null) {
-            this.finder = new WebDriverUiElementFinder(getWebDriver());
+            this.finder = new DefaultWebDriverUiElementFinder(getWebDriver());
         }
         return this.finder;
     }
@@ -234,7 +229,7 @@ public abstract class Page extends AbstractPage implements TestablePage, Nameabl
     @Override
     protected void pageLoaded() {
         if (PropertyManager.getBooleanProperty(TesterraProperties.SCREENSHOT_ON_PAGELOAD, false)) {
-            this.screenshot().toReport();
+            this.waits.screenshot().toReport();
         }
     }
 
@@ -270,23 +265,23 @@ public abstract class Page extends AbstractPage implements TestablePage, Nameabl
 
     @Deprecated
     public void assertIsTextPresent(String text) {
-        anyElementContainsText(text).present().is(true);
+        anyElementContainsText(text).waitFor().present().is(true);
     }
 
     @Deprecated
     public void assertIsTextDisplayed(String text) {
-        anyElementContainsText(text).displayed().is(true);
+        anyElementContainsText(text).waitFor().displayed().is(true);
     }
 
     @Deprecated
     public void assertIsNotTextPresent(String text) {
-        anyElementContainsText(text).present().is(false);
+        anyElementContainsText(text).waitFor().present().is(false);
     }
 
     @Deprecated
     public void assertIsNotTextDisplayed(String text) {
         try {
-            anyElementContainsText(text).displayed().is(false);
+            anyElementContainsText(text).waitFor().displayed().is(false);
         } catch (AssertionError error) {
             if (error.getCause() instanceof ElementNotFoundException) {
                 // ignore this
@@ -296,76 +291,24 @@ public abstract class Page extends AbstractPage implements TestablePage, Nameabl
         }
     }
 
-    @Override
-    public StringAssertion<String> title() {
-        final Page self = this;
-        return propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
-            @Override
-            public String getActual() {
-                return driver.getTitle();
-            }
-
-            @Override
-            public String getSubject() {
-                return String.format("%s.@title", self.toString(true));
-            }
-        });
-    }
-
-    @Override
-    public StringAssertion<String> url() {
-        final Page self = this;
-        return propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
-            @Override
-            public String getActual() {
-                return driver.getCurrentUrl();
-            }
-
-            @Override
-            public String getSubject() {
-                return String.format("%s.@url", self.toString(true));
-            }
-        });
-    }
-
-    @Override
-    public ScreenshotAssertion screenshot() {
-        final Page self = this;
-        final AtomicReference<Screenshot> atomicScreenshot = new AtomicReference<>();
-
-        Screenshot screenshot = new Screenshot(self.toString());
-        WebDriver driver = this.getWebDriver();
-        UITestUtils.takeScreenshot(driver, screenshot);
-        atomicScreenshot.set(screenshot);
-
-        return propertyAssertionFactory.create(DefaultScreenshotAssertion.class, new AssertionProvider<Screenshot>() {
-            @Override
-            public Screenshot getActual() {
-                return atomicScreenshot.get();
-            }
-
-            @Override
-            public void failed(AbstractPropertyAssertion assertion) {
-                // Take new screenshot only if failed
-                UITestUtils.takeScreenshot(driver, atomicScreenshot.get());
-            }
-
-            @Override
-            public String getSubject() {
-                return self.toString(true);
-            }
-        });
-    }
-
-    @Override
-    public TestableUiElement anyElementContainsText(String text) {
+    private TestableUiElement anyElementContainsText(String text) {
         return getFinder().findDeep(Locate.by(XPath.from("*").text().contains(text)));
     }
 
     @Override
-    public TestablePage waitFor() {
-        propertyAssertionFactory.shouldWait();
-        return this;
+    public PageAssertions waitFor() {
+        if (this.waits == null) {
+            this.waits = new DefaultPageAssertions(this, false);
+        }
+        return this.waits;
+    }
+
+    @Override
+    public PageAssertions expectThat() {
+        if (this.assertions == null) {
+            this.assertions = new DefaultPageAssertions(this, true);
+        }
+        return this.assertions;
     }
 
 }

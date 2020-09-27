@@ -21,12 +21,26 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-/**
- * Abstract {@link Locate} implementation
- * @author Mike Reiche
- *
- */
-@Deprecated
-public abstract class AbstractLocate implements Locate {
+import org.openqa.selenium.By;
 
+/**
+ * Default implementation of {@link PreparedLocator}
+ * @author Mike Reiche
+ */
+public class DefaultPreparedLocator extends DefaultLocator implements PreparedLocator {
+
+    private final String preparedFormat;
+
+    DefaultPreparedLocator(String preparedFormat) {
+        super(null);
+        this.preparedFormat = preparedFormat;
+    }
+
+    @Override
+    public Locator with(Object... args) {
+        DefaultLocator locate = new DefaultLocator(By.xpath(String.format(preparedFormat, args)));
+        locate.unique = unique;
+        locate.filter = filter;
+        return locate;
+    }
 }

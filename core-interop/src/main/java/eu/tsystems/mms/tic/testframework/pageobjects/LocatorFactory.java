@@ -29,23 +29,23 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 import org.openqa.selenium.By;
 
 /**
- * A factory for {@link Locate}
+ * A factory for {@link Locator}
  *
  * @author Mike Reiche
  */
-public class LocateFactory {
-    public Locate by(By by) {
-        return new DefaultLocate(by);
+public class LocatorFactory {
+    public Locator by(By by) {
+        return new DefaultLocator(by);
     }
 
-    public Locate by(XPath xPath) {
+    public Locator by(XPath xPath) {
         return by(new By.ByXPath(xPath.toString()));
     }
 
-    public Locate byQa(String string) {
+    public Locator byQa(String string) {
         return by(XPath.from("*").attribute(UiElement.Properties.QA_ATTRIBUTE.asString()).is(string));
     }
-    public PreparedLocate prepare(final String format) {
-        return new DefaultPreparedLocate(format);
+    public PreparedLocator prepare(final String format) {
+        return new DefaultPreparedLocator(format);
     }
 }

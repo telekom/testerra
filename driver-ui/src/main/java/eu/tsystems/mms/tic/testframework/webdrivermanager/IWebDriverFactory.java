@@ -21,7 +21,7 @@
 
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
@@ -44,7 +44,7 @@ public interface IWebDriverFactory {
     }
 
     GuiElementCore createCore(GuiElementData guiElementData);
-    default GuiElementCore createCoreFromParent(GuiElementData parent, Locate locate) {
-        return createCore(new GuiElementData(parent, locate));
+    default GuiElementCore createCoreFromParent(GuiElementData parent, Locator locator) {
+        return createCore(new GuiElementData(parent, locator));
     }
 }

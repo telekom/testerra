@@ -21,9 +21,9 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.DefaultLocate;
+import eu.tsystems.mms.tic.testframework.pageobjects.DefaultLocator;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebDriverRetainer;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
@@ -38,7 +38,7 @@ public class GuiElementData implements
     Nameable<GuiElementData>,
     WebDriverRetainer
 {
-    private final DefaultLocate locate;
+    private final DefaultLocator locate;
     private final WebDriver webDriver;
     private GuiElementData parent;
     private int index = -1;
@@ -51,8 +51,8 @@ public class GuiElementData implements
      * Creates a state as descendant of on another state
      * by setting the GuiElementData as parent.
      */
-    public GuiElementData(GuiElementData parent, Locate locate) {
-        this(parent.getWebDriver(), locate);
+    public GuiElementData(GuiElementData parent, Locator locator) {
+        this(parent.getWebDriver(), locator);
         this.parent = parent;
         this.guiElement = parent.guiElement;
     }
@@ -70,9 +70,9 @@ public class GuiElementData implements
         this.shadowRoot = parent.shadowRoot;
     }
 
-    public GuiElementData(WebDriver webDriver, Locate locate) {
+    public GuiElementData(WebDriver webDriver, Locator locator) {
         this.webDriver = webDriver;
-        this.locate = (DefaultLocate)locate;
+        this.locate = (DefaultLocator) locator;
     }
 
     public GuiElementData setGuiElement(GuiElement guiElement) {
@@ -94,7 +94,7 @@ public class GuiElementData implements
         return name!=null;
     }
 
-    public DefaultLocate getLocate() {
+    public DefaultLocator getLocate() {
         return locate;
     }
 

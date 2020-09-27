@@ -23,7 +23,7 @@
 package eu.tsystems.mms.tic.testframework.test.guielement.variations;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
 import eu.tsystems.mms.tic.testframework.test.guielement.AbstractGuiElementNonFunctionalAssertionTest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -32,7 +32,7 @@ import org.testng.annotations.Test;
 public class SubElementGuiElementTest extends AbstractGuiElementNonFunctionalAssertionTest {
 
     @Override
-    public GuiElement getGuiElementBy(Locate locator) {
+    public GuiElement getGuiElementBy(Locator locator) {
         WebDriver driver = getWebDriver();
         GuiElement parentElement = new GuiElement(driver, By.xpath("//body"));
         return parentElement.getSubElement(locator);

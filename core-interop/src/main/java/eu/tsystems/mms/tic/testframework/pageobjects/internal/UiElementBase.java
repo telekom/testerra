@@ -21,7 +21,7 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
@@ -52,8 +52,8 @@ public interface UiElementBase extends WebElementActions {
     ImageAssertion screenshot();
 
     /**
-     * Creates a xpath of the given {@link Locate} hierarchy NOT the actual element hierarchy
+     * Creates a xpath of the given {@link Locator} hierarchy NOT the actual element hierarchy
      */
     String createXPath();
-    Locate getLocate();
+    Locator getLocate();
 }

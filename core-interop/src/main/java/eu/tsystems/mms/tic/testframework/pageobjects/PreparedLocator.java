@@ -21,23 +21,13 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import java.util.function.Predicate;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-
 /**
- * Advanced locate features
+ * Interface for prepared {@link Locator}
  * @author Mike Reiche
  */
-public interface Locate {
-    By getBy();
-    Locate unique();
-    default Locate displayed() {
-        return displayed(true);
-    }
-    default Locate displayed(boolean displayed) {
-        return filter(webElement -> webElement.isDisplayed()==displayed);
-    }
-
-    Locate filter(Predicate<WebElement> filter);
+public interface PreparedLocator extends Locator {
+    /**
+     * Formats an xpath selector
+     */
+    Locator with(Object... args);
 }

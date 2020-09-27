@@ -29,12 +29,12 @@ import org.openqa.selenium.WebElement;
  * Advanced selector for elements as replacement for By
  * @author Mike Reiche
  */
-public class DefaultLocate implements Locate {
+public class DefaultLocator implements Locator {
     private By by;
     protected Predicate<WebElement> filter;
     protected boolean unique = false;
 
-    DefaultLocate(By by) {
+    DefaultLocator(By by) {
         this.by = by;
     }
 
@@ -46,12 +46,12 @@ public class DefaultLocate implements Locate {
         return this.unique;
     }
 
-    public Locate unique() {
+    public Locator unique() {
         this.unique = true;
         return this;
     }
 
-    public Locate filter(Predicate<WebElement> filter) {
+    public Locator filter(Predicate<WebElement> filter) {
         this.filter = filter;
         return this;
     }

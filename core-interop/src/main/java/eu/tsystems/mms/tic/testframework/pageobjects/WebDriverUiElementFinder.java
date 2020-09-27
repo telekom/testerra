@@ -33,7 +33,7 @@ public class WebDriverUiElementFinder implements UiElementFinder {
     }
 
     @Override
-    public UiElement find(Locate locator) {
+    public UiElement find(Locator locator) {
         return uiElementFactory.createWithWebDriver(this.webDriver, locator);
     }
 }

@@ -31,10 +31,7 @@ public class DefaultUiElementFactory implements UiElementFactory, Loggable {
      * Creates elements as sub elements from a given element
      */
     @Override
-    public UiElement createFromParent(
-        UiElement parent,
-        Locate locator
-    ) {
+    public UiElement createFromParent(UiElement parent, Locator locator) {
         GuiElement parentGuiElement = (GuiElement)parent;
         IWebDriverFactory factory = WebDriverSessionsManager.getWebDriverFactory(parentGuiElement.getData().getBrowser());
         GuiElementCore core = factory.createCoreFromParent(parentGuiElement.getData(), locator);
@@ -44,12 +41,7 @@ public class DefaultUiElementFactory implements UiElementFactory, Loggable {
     }
 
     @Override
-    public UiElement createFromPage(PageObject page, Locate locator) {
-        return new GuiElement(page, locator);
-    }
-
-    @Override
-    public UiElement createWithWebDriver(WebDriver webDriver, Locate locator) {
+    public UiElement createWithWebDriver(WebDriver webDriver, Locator locator) {
         return new GuiElement(webDriver, locator);
     }
 }

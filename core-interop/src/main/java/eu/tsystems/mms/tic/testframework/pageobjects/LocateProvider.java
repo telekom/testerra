@@ -22,8 +22,8 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 /**
- * Provides factory for {@link Locate}
+ * Provides factory for {@link Locator}
  */
 public interface LocateProvider {
-    LocateFactory Locate = new LocateFactory();
+    LocatorFactory Locate = new LocatorFactory();
 }

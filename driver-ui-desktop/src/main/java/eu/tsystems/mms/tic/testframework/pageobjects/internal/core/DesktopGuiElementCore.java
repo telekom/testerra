@@ -28,9 +28,9 @@ import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.DefaultLocate;
+import eu.tsystems.mms.tic.testframework.pageobjects.DefaultLocator;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementRetainer;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
@@ -136,7 +136,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
      */
     private void findWebElements(Consumer<List<WebElement>> consumer) {
         WebDriver webDriver = guiElementData.getWebDriver();
-        DefaultLocate locate = guiElementData.getLocate();
+        DefaultLocator locate = guiElementData.getLocate();
         By by = locate.getBy();
 
         GuiElementData parentData = guiElementData.getParent();
@@ -162,7 +162,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
     }
 
     /**
-     * Filters a list of web elements by given {@link Locate}
+     * Filters a list of web elements by given {@link Locator}
      */
     private void filterWebElements(List<WebElement> webElements) {
         Predicate<WebElement> filter = guiElementData.getLocate().getFilter();
@@ -190,7 +190,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
 
             this.filterWebElements(webElements);
 
-            DefaultLocate locate = guiElementData.getLocate();
+            DefaultLocator locate = guiElementData.getLocate();
             if (locate.isUnique() && webElements.size() > 1) {
                 Assertion assertion = Testerra.injector.getInstance(Assertion.class);
                 throwNotFoundException(new AssertionError(assertion.formatExpectEquals(webElements.size(), 1, formatLocateSubject(locate, numElementsBeforeFilter))));
@@ -228,7 +228,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
 //        }
     }
 
-    private String formatLocateSubject(Locate locate, int numElementsBeforeFilter) {
+    private String formatLocateSubject(Locator locator, int numElementsBeforeFilter) {
         return String.format("[%d] filtered elements", numElementsBeforeFilter);
     }
 

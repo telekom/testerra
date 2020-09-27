@@ -25,7 +25,7 @@ package eu.tsystems.mms.tic.testframework.test.guielement;
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.WebTestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
 import eu.tsystems.mms.tic.testframework.testing.UiElementCreator;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils;
 import org.openqa.selenium.By;
@@ -207,5 +207,5 @@ public abstract class AbstractGuiElementTest extends AbstractTestSitesTest imple
         return getGuiElementBy(Locate.by(locator));
     }
 
-    public abstract GuiElement getGuiElementBy(Locate locate);
+    public abstract GuiElement getGuiElementBy(Locator locator);
 }

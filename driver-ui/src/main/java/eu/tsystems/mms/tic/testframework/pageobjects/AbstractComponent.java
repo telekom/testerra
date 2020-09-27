@@ -21,6 +21,7 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementBase;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryAssertion;
@@ -30,6 +31,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssert
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
 import java.awt.Color;
 import java.util.function.Consumer;
+import org.apache.commons.lang.NotImplementedException;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -41,6 +43,8 @@ import org.openqa.selenium.WebElement;
  */
 public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> extends AbstractPage implements Component<SELF>
 {
+    protected static final UiElementFactory uiElementFactory = Testerra.injector.getInstance(UiElementFactory.class);
+
     protected final UiElement rootElement;
     private String name;
     private DefaultComponentList<SELF> list;
@@ -67,7 +71,7 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     }
 
     @Override
-    public Locate getLocate() {
+    public Locator getLocate() {
         return rootElement.getLocate();
     }
 
@@ -85,10 +89,15 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     }
 
     @Override
-    protected UiElement find(eu.tsystems.mms.tic.testframework.pageobjects.Locate locate) {
-        GuiElement subElement = (GuiElement)uiElementFactory.createFromParent(rootElement, locate);
+    protected UiElement find(Locator locator) {
+        GuiElement subElement = (GuiElement)uiElementFactory.createFromParent(rootElement, locator);
         subElement.setParent(this);
         return subElement;
+    }
+
+    @Override
+    protected UiElement findDeep(Locator locator) {
+        throw new NotImplementedException();
     }
 
     @Override

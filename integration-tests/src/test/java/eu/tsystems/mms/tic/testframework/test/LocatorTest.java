@@ -7,7 +7,7 @@ import eu.tsystems.mms.tic.testframework.testing.UiElementCreator;
 import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 
-public class LocateTest extends AbstractTestSitesTest implements UiElementCreator {
+public class LocatorTest extends AbstractTestSitesTest implements UiElementCreator {
 
     private final String textToFind = "This link has some text!";
 

@@ -29,7 +29,7 @@ import org.openqa.selenium.By;
  * @author Mike Reiche
  */
 public interface UiElementFinder extends LocateProvider, Loggable {
-    UiElement find(Locate locator);
+    UiElement find(Locator locator);
     default UiElement findById(Object id) {
         return find(Locate.by(By.id(id.toString())));
     }
@@ -48,15 +48,15 @@ public interface UiElementFinder extends LocateProvider, Loggable {
         return null;
     }
 
-    default UiElement findDeep(Locate locate) {
-        UiElement currentScope = find(locate);
+    default UiElement findDeep(Locator locator) {
+        UiElement currentScope = find(locator);
         if (currentScope.numberOfElements().getActual() > 0) {
             return currentScope;
         }
 
         UiElement frames = find(By.xpath("(//iframe|//frame)"));
         for (UiElement frame : frames.list()) {
-            UiElement deepScope = frame.findDeep(locate);
+            UiElement deepScope = frame.findDeep(locator);
             if (deepScope.numberOfElements().getActual() > 0) {
                 return deepScope;
             }

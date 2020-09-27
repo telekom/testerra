@@ -25,7 +25,7 @@ package eu.tsystems.mms.tic.testframework.test.guielement;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.PreparedLocate;
+import eu.tsystems.mms.tic.testframework.pageobjects.PreparedLocator;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.ThrowableUtils;
 import java.util.ArrayList;
@@ -276,7 +276,7 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
 
     @Test
     public void test_GuiElement_findPrepared() {
-        PreparedLocate locator = Locate.prepare("//*[@id='%s']");
+        PreparedLocator locator = Locate.prepare("//*[@id='%s']");
         GuiElement guiElement = getGuiElementBy(locator.with("11"));
         Assert.assertNotNull(guiElement.getWebElement());
     }

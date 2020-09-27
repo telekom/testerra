@@ -23,7 +23,7 @@
 package eu.tsystems.mms.tic.testframework.test.guielement;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
 
 /**
  *
@@ -31,7 +31,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 public class GuiElementStandardTests extends AbstractGuiElementNonFunctionalAssertionTest {
 
     @Override
-    public GuiElement getGuiElementBy(Locate locator) {
+    public GuiElement getGuiElementBy(Locator locator) {
         return (GuiElement)find(locator);
     }
 }

@@ -21,6 +21,7 @@
  */
  package eu.tsystems.mms.tic.testframework.core.pageobjects.testdata;
 
+import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
@@ -42,7 +43,7 @@ public class BasePage extends Page implements UiElementFinder {
     }
 
     @Override
-    public UiElement find(eu.tsystems.mms.tic.testframework.pageobjects.Locate locator) {
+    public UiElement find(Locator locator) {
         return super.find(locator);
     }
 
@@ -64,5 +65,10 @@ public class BasePage extends Page implements UiElementFinder {
     @Override
     public UiElement find(XPath xPath) {
         return super.find(xPath);
+    }
+
+    @Override
+    public UiElement findDeep(Locator locator) {
+        return super.findDeep(locator);
     }
 }

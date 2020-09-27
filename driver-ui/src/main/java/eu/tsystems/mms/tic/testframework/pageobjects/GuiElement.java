@@ -29,6 +29,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.NameableChild;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementAssertions;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementBase;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AbstractPropertyAssertion;
@@ -79,7 +80,7 @@ import org.openqa.selenium.WebElement;
  * <p>
  * Authors: pele, rnhb
  */
-public class GuiElement implements UiElement, Loggable {
+public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable {
     /**
      * Factory required for {@link UiElementAssertions}
      */
@@ -159,7 +160,7 @@ public class GuiElement implements UiElement, Loggable {
     }
 
     /**
-     * Package private constructor for {@link UiElementFactory#createFromParent(UiElement, Locate)}
+     * Package private constructor for {@link UiElementFactory#createFromParent(UiElement, Locator)}
      * This is the internal standard constructor for elements with parent {@link GuiElementCore} implementations.
      */
     GuiElement(GuiElementCore core) {
@@ -171,26 +172,17 @@ public class GuiElement implements UiElement, Loggable {
     }
 
     /**
-     * Package private constructor for {@link UiElementFactory#createFromPage(PageObject, Locate)}
-     */
-    GuiElement(PageObject page, Locate locate) {
-        this(page.getWebDriver(), locate);
-        Page realPage = (Page)page;
-        setParent(realPage);
-    }
-
-    /**
-     * @deprecated Use {@link UiElementFactory#createWithWebDriver(WebDriver, Locate)}} instead
+     * @deprecated Use {@link UiElementFactory#createWithWebDriver(WebDriver, Locator)}} instead
      */
     @Deprecated
-    public GuiElement(WebDriver driver, Locate locate) {
-        this(new GuiElementData(driver, locate));
+    public GuiElement(WebDriver driver, Locator locator) {
+        this(new GuiElementData(driver, locator));
         guiElementData.setGuiElement(this);
         createDecorators();
     }
 
     /**
-     * @deprecated Use {@link UiElementFactory#createWithWebDriver(WebDriver, Locate)}} instead
+     * @deprecated Use {@link UiElementFactory#createWithWebDriver(WebDriver, Locator)}} instead
      */
     @Deprecated
     public GuiElement(WebDriver driver, By by) {
@@ -206,7 +198,7 @@ public class GuiElement implements UiElement, Loggable {
     }
 
     @Override
-    public Locate getLocate() {
+    public Locator getLocate() {
         return guiElementData.getLocate();
     }
 
@@ -235,7 +227,7 @@ public class GuiElement implements UiElement, Loggable {
      * @param filter Filters to be applied
      *
      * @return The same GuiElement
-     * @deprecated Use {@link DefaultLocate} instead
+     * @deprecated Use {@link DefaultLocator} instead
      */
     @Deprecated
     public GuiElement withWebElementFilter(Predicate<WebElement> filter) {
@@ -286,8 +278,8 @@ public class GuiElement implements UiElement, Loggable {
     }
 
     @Deprecated
-    public GuiElement getSubElement(Locate locate) {
-        return (GuiElement)find(locate);
+    public GuiElement getSubElement(Locator locator) {
+        return (GuiElement)find(locator);
     }
 
     @Override
@@ -426,7 +418,7 @@ public class GuiElement implements UiElement, Loggable {
     }
 
     @Override
-    public UiElement find(Locate locator) {
+    public UiElement find(Locator locator) {
         return uiElementFactory.createFromParent(guiElementData.getGuiElement(), locator);
     }
 

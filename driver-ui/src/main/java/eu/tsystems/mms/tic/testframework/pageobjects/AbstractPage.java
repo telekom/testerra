@@ -59,9 +59,11 @@ public abstract class AbstractPage implements
         PageObject,
         LocateProvider
 {
-    protected static final UiElementFactory uiElementFactory = Testerra.injector.getInstance(UiElementFactory.class);
     protected static final PageObjectFactory pageFactory = Testerra.injector.getInstance(PageObjectFactory.class);
-    abstract protected UiElement find(Locate locate);
+
+    abstract protected UiElement find(Locator locator);
+    abstract protected UiElement findDeep(Locator locator);
+
     protected UiElement findById(Object id) {
         return find(Locate.by(By.id(id.toString())));
     }

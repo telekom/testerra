@@ -21,7 +21,7 @@
 
 package eu.tsystems.mms.tic.testframework.testing;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFactoryProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
@@ -43,7 +43,7 @@ public interface UiElementCreator extends
     }
 
     @Override
-    default UiElement find(Locate locator) {
+    default UiElement find(Locator locator) {
         return uiElementFactory.createWithWebDriver(getWebDriver(), locator);
     }
 }

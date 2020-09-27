@@ -21,26 +21,23 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
+import java.util.function.Predicate;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 /**
- * Default implementation of {@link PreparedLocate}
+ * Advanced locate features
  * @author Mike Reiche
  */
-public class DefaultPreparedLocate extends DefaultLocate implements PreparedLocate {
-
-    private final String preparedFormat;
-
-    DefaultPreparedLocate(String preparedFormat) {
-        super(null);
-        this.preparedFormat = preparedFormat;
+public interface Locator {
+    By getBy();
+    Locator unique();
+    default Locator displayed() {
+        return displayed(true);
+    }
+    default Locator displayed(boolean displayed) {
+        return filter(webElement -> webElement.isDisplayed()==displayed);
     }
 
-    @Override
-    public Locate with(Object... args) {
-        DefaultLocate locate = new DefaultLocate(By.xpath(String.format(preparedFormat, args)));
-        locate.unique = unique;
-        locate.filter = filter;
-        return locate;
-    }
+    Locator filter(Predicate<WebElement> filter);
 }

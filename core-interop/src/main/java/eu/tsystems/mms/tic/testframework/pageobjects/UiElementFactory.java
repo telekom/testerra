@@ -28,7 +28,6 @@ import org.openqa.selenium.WebDriver;
  * @author Mike Reiche
  */
 public interface UiElementFactory {
-    UiElement createFromPage(PageObject page, Locate locator);
-    UiElement createWithWebDriver(WebDriver webDriver, Locate locator);
-    UiElement createFromParent(UiElement parent, Locate locator);
+    UiElement createWithWebDriver(WebDriver webDriver, Locator locator);
+    UiElement createFromParent(UiElement parent, Locator locator);
 }

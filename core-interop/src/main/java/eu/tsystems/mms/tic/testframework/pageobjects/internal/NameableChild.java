@@ -19,15 +19,8 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.pageobjects;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
-/**
- * Interface for prepared {@link Locate}
- * @author Mike Reiche
- */
-public interface PreparedLocate extends Locate {
-    /**
-     * Formats an xpath selector
-     */
-    Locate with(Object... args);
+public interface NameableChild<SELF> extends Nameable<SELF> {
+    Nameable<SELF> setParent(Nameable parent);
 }

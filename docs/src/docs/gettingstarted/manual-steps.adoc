@@ -218,7 +218,7 @@ Read here, if you want to setup <<WebDriver sessions,another Selenium configurat
 
 == Setup a test suite
 
-To customize the executing of your tests, you have to create a TestNG suite file `suite.xml` and locate it at `src/test/resources`
+To customize the executing of your tests, you have to create a TestNG suite file `suite.xml` and locator it at `src/test/resources`
 
 .suite.xml
 [source, xml]

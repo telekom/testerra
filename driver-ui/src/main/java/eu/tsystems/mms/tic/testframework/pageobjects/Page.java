@@ -28,6 +28,7 @@ import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.NameableChild;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AbstractPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultScreenshotAssertion;
@@ -46,7 +47,7 @@ import org.openqa.selenium.WebDriver;
 
 /**
  * Represents a full web page and provides advanced {@link PageObject} features:
- *      Supports finding elements by {@link #find(Locate)}
+ *      Supports finding elements by {@link #find(Locator)}
  *      Support for performance tests by {@link #perfTestExtras()}
  *      Support for text assertions by {@link #anyElementContainsText(String)}
  * @author Peter Lehmann
@@ -56,6 +57,14 @@ import org.openqa.selenium.WebDriver;
 public abstract class Page extends AbstractPage implements TestablePage, Nameable<Page> {
     private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
     private WebDriver driver;
+    private WebDriverUiElementFinder finder;
+
+    public Page(WebDriver webDriver) {
+        this.driver = webDriver;
+
+        // performance test stop timer
+        perfTestExtras();
+    }
 
     /**
      * Pages should not have parents. Use {@link Component} instead.
@@ -87,13 +96,6 @@ public abstract class Page extends AbstractPage implements TestablePage, Nameabl
     @Override
     public String getName(boolean detailed) {
         return getClass().getSimpleName();
-    }
-
-    public Page(WebDriver webDriver) {
-        this.driver = webDriver;
-
-        // performance test stop timer
-        perfTestExtras();
     }
 
     @Override
@@ -193,9 +195,29 @@ public abstract class Page extends AbstractPage implements TestablePage, Nameabl
         return waitForIsNotTextPresent(text);
     }
 
+    protected final WebDriverUiElementFinder getFinder() {
+        if (this.finder == null) {
+            this.finder = new WebDriverUiElementFinder(getWebDriver());
+        }
+        return this.finder;
+    }
+
     @Override
-    protected UiElement find(Locate locate) {
-        return uiElementFactory.createFromPage(this, locate);
+    protected UiElement find(Locator locator) {
+        UiElement element = getFinder().find(locator);
+        if (element instanceof NameableChild) {
+            ((NameableChild)element).setParent(this);
+        }
+        return element;
+    }
+
+    @Override
+    protected UiElement findDeep(Locator locator) {
+        UiElement element = getFinder().findDeep(locator);
+        if (element instanceof NameableChild) {
+            ((NameableChild)element).setParent(this);
+        }
+        return element;
     }
 
     /**
@@ -337,8 +359,7 @@ public abstract class Page extends AbstractPage implements TestablePage, Nameabl
 
     @Override
     public TestableUiElement anyElementContainsText(String text) {
-        WebDriverUiElementFinder finder = new WebDriverUiElementFinder(getWebDriver());
-        return finder.findDeep(Locate.by(XPath.from("*").text().contains(text)));
+        return getFinder().findDeep(Locate.by(XPath.from("*").text().contains(text)));
     }
 
     @Override

@@ -31,7 +31,7 @@ GuiElement lower = upper.getSubElement(By.xpath("./p[@id='element']")); <3>
 
 == Advanced GuiElement locating
 
-The `Locate` extension provides more features than standard Selenium `By`.
+The `Locator` extension provides more features than standard Selenium `By`.
 
 === Locate unique elements
 
@@ -114,7 +114,7 @@ if (target.hasFrameLogic()) {
 //
 //== GuiElement by image
 //
-//You can also define GuiElements defined by a snippet from a screenshot. Testerra tries to locate the image on the viewport and looking for the surrounding webelement.
+//You can also define GuiElements defined by a snippet from a screenshot. Testerra tries to locator the image on the viewport and looking for the surrounding webelement.
 //
 //[source,java]
 //----
@@ -124,7 +124,7 @@ if (target.hasFrameLogic()) {
 //        TesterraBy.image(driver, ClassLoader.getSystemResource("gui-elements/button.png")));
 //----
 //
-//It is recommended to locate the images in `src/main/resources` and create the Url object via `ClassLoader.getSystemResource()`.
+//It is recommended to locator the images in `src/main/resources` and create the Url object via `ClassLoader.getSystemResource()`.
 
 
 

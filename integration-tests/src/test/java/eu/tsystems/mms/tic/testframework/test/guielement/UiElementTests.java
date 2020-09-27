@@ -272,7 +272,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
         } catch (ElementNotFoundException e) {
             msg = e.getMessage();
         }
-        Assert.assertEndsWith(msg, "not found", ElementNotFoundException.class.toString());
+        Assert.assertStartsWith(msg, "Element not found", ElementNotFoundException.class.toString());
     }
 
     @Test

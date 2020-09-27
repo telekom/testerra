@@ -430,7 +430,7 @@ public abstract class AbstractAssertion implements Assertion {
 
     @Override
     public String formatExpectStartsWith(Object actual, Object expected, Object subject) {
-        return format(actual, String.format("begins with [%s]", expected), subject);
+        return format(actual, String.format("starts with [%s]", expected), subject);
     }
 
     @Override

@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Eric Kubenka, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -17,22 +17,16 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
-package eu.tsystems.mms.tic.testframework.test.guielement;
+package eu.tsystems.mms.tic.testframework.testing;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
+import eu.tsystems.mms.tic.testframework.pageobjects.PageObjectFactory;
 
 /**
- *
+ * Provides a {@link PageObjectFactory}
+ * @author Mike Reiche
  */
-public class GuiElementStandardTests extends AbstractGuiElementNonFunctionalAssertionTest {
-
-    @Override
-    @Deprecated
-    public GuiElement getGuiElementBy(Locator locator) {
-        return (GuiElement)getUiElementFinder().find(locator);
-    }
+public interface PageFactoryProvider {
+    PageObjectFactory getPageFactory();
 }

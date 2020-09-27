@@ -25,6 +25,9 @@ import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
 import org.openqa.selenium.WebDriver;
 
+/**
+ * @todo Rename to PageFactory and move to internal
+ */
 public interface PageObjectFactory {
     PageObjectFactory setGlobalPagePrefix(String pagePrefix);
     PageObjectFactory setThreadLocalPagePrefix(String pagePrefix);

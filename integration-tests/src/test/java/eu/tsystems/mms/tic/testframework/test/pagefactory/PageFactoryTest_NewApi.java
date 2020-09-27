@@ -29,6 +29,6 @@ import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.ResponsiveWeb
 public class PageFactoryTest_NewApi extends AbstractPageFactoryTest {
 
     public ResponsiveWebTestPage getPage() {
-        return pageFactory.createPage(ResponsiveWebTestPage.class);
+        return getPageFactory().createPage(ResponsiveWebTestPage.class);
     }
 }

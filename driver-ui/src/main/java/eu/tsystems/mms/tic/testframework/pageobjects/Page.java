@@ -32,7 +32,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.NameableChild;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultPageAssertions;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PageAssertions;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertionFactory;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import java.awt.Color;
@@ -49,9 +48,8 @@ import org.openqa.selenium.WebDriver;
  * @todo Rename to AbstractPage
  */
 public class Page extends AbstractPage implements TestablePage, Nameable<Page> {
-    private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
     private WebDriver driver;
-    private DefaultWebDriverUiElementFinder finder;
+    private DefaultUiElementFinder finder;
     private PageAssertions assertions;
     private PageAssertions waits;
 
@@ -190,9 +188,9 @@ public class Page extends AbstractPage implements TestablePage, Nameable<Page> {
         return waitForIsNotTextPresent(text);
     }
 
-    protected final DefaultWebDriverUiElementFinder getFinder() {
+    protected final DefaultUiElementFinder getFinder() {
         if (this.finder == null) {
-            this.finder = new DefaultWebDriverUiElementFinder(getWebDriver());
+            this.finder = new DefaultUiElementFinder(getWebDriver());
         }
         return this.finder;
     }

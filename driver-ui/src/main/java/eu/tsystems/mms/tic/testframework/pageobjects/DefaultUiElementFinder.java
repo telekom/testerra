@@ -19,23 +19,27 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.testing;
+package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.DefaultWebDriverUiElementFinder;
-import eu.tsystems.mms.tic.testframework.pageobjects.WebDriverRetainer;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFinder;
 import org.openqa.selenium.WebDriver;
 
 /**
- * Provides a {@link DefaultWebDriverUiElementFinder}
+ * Default implementation of {@link UiElementFinder}
  * @author Mike Reiche
  */
-public interface UiElementFinderProvider extends
-    WebDriverManagerProvider,
-    WebDriverRetainer
-{
-    DefaultWebDriverUiElementFinder Finder = new DefaultWebDriverUiElementFinder(webDriverManager.getWebDriver());
+public class DefaultUiElementFinder implements UiElementFinder {
+    private static final UiElementFactory uiElementFactory = Testerra.injector.getInstance(UiElementFactory.class);
+    private final WebDriver webDriver;
 
-    default WebDriver getWebDriver() {
-        return webDriverManager.getWebDriver();
+    public DefaultUiElementFinder(WebDriver webDriver) {
+        this.webDriver = webDriver;
+    }
+
+    @Override
+    public UiElement find(Locator locator) {
+        return uiElementFactory.createWithWebDriver(this.webDriver, locator);
     }
 }

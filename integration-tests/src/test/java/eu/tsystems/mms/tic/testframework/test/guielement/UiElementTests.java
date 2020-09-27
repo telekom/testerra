@@ -313,6 +313,6 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
 
     @Override
     public WebTestPage getPage() {
-        return pageFactory.createPage(WebTestPage.class);
+        return getPageFactory().createPage(WebTestPage.class);
     }
 }

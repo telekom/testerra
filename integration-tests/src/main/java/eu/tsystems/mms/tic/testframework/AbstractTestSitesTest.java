@@ -22,11 +22,16 @@
 
 package eu.tsystems.mms.tic.testframework;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.core.server.Server;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.pageobjects.PageObjectFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinderFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFinder;
 import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
+import eu.tsystems.mms.tic.testframework.testing.UiElementFinderProvider;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import java.lang.reflect.Method;
 import java.net.BindException;
@@ -37,8 +42,8 @@ import org.testng.annotations.BeforeTest;
 /**
  * Abstract test class for tests based on static test site resources
  */
-public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implements Loggable, PageFactoryProvider {
-
+public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implements Loggable, PageFactoryProvider, UiElementFinderProvider {
+    private UiElementFinder uiElementFinder;
     protected static Server server = new Server(FileUtils.getResourceFile("testsites"));
 
     @BeforeTest(alwaysRun = true)
@@ -83,5 +88,19 @@ public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implem
 
     protected TestPage getTestPage() {
         return TestPage.INPUT_TEST_PAGE;
+    }
+
+    @Override
+    public PageObjectFactory getPageFactory() {
+        return Testerra.injector.getInstance(PageObjectFactory.class);
+    }
+
+    @Override
+    public UiElementFinder getUiElementFinder() {
+        if (uiElementFinder == null) {
+            UiElementFinderFactory factory = Testerra.injector.getInstance(UiElementFinderFactory.class);
+            uiElementFinder = factory.createWithWebDriver(getWebDriver());
+        }
+        return uiElementFinder;
     }
 }

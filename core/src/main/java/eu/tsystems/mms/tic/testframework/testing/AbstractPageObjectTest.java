@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2020,  Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -17,17 +17,17 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
  */
-
 package eu.tsystems.mms.tic.testframework.testing;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageObjectFactory;
 
-/**
- * Provides a {@link PageObjectFactory}
- * @author Mike Reiche
- */
-public interface PageFactoryProvider {
-    PageObjectFactory pageFactory = Testerra.injector.getInstance(PageObjectFactory.class);
+public abstract class AbstractPageObjectTest extends TesterraTest implements PageFactoryProvider, UiElementFinderProvider {
+
+    @Override
+    public PageObjectFactory getPageFactory() {
+        return Testerra.injector.getInstance(PageObjectFactory.class);
+    }
 }

@@ -21,14 +21,12 @@
 
 package eu.tsystems.mms.tic.testframework.testing;
 
-import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFinder;
 
 /**
- * Interface for injecting the a {@link IWebDriverManager}
+ * Provides a {@link UiElementFinder}
  * @author Mike Reiche
- * @todo Check if necessary
  */
-public interface WebDriverManagerProvider {
-    IWebDriverManager webDriverManager = Testerra.injector.getInstance(IWebDriverManager.class);
+public interface UiElementFinderProvider {
+    UiElementFinder getUiElementFinder();
 }

@@ -34,13 +34,14 @@ import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithNullE
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.report.Report;
+import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.io.File;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
-public class CheckPageTest extends AbstractTestSitesTest {
+public class CheckPageTest extends AbstractTestSitesTest implements PageFactoryProvider {
 
     @Test
     public void testT01_checkExistingElement() throws Exception {

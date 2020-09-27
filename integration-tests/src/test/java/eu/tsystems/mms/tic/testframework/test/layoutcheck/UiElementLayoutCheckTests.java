@@ -25,10 +25,17 @@ import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.BasePage;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
+import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class UiElementLayoutCheckTests extends AbstractTestSitesTest implements Loggable {
+public class UiElementLayoutCheckTests extends AbstractTestSitesTest implements Loggable, PageFactoryTest {
+
+    @BeforeClass
+    public void before() {
+        this.enableExclusiveSession();
+    }
 
     @Override
     protected TestPage getTestPage() {
@@ -36,13 +43,13 @@ public class UiElementLayoutCheckTests extends AbstractTestSitesTest implements 
     }
 
     @BeforeMethod
-    private BasePage preparePage() {
+    public BasePage getPage() {
         return pageFactory.createPage(BasePage.class, getWebDriver());
     }
 
     @Test
     public void testCheckElementLayout() {
-        BasePage page = preparePage();
+        BasePage page = getPage();
         UiElement guiElement = page.findByQa("section/layoutTestArticle");
         guiElement.expectThat().screenshot().pixelDistance("TestArticle").isLowerThan(1.3);
 
@@ -52,7 +59,7 @@ public class UiElementLayoutCheckTests extends AbstractTestSitesTest implements 
 
     @Test
     public void testCheckElementVisibility() {
-        BasePage page = preparePage();
+        BasePage page = getPage();
         UiElement guiElement = page.findByQa("section/layoutTestArticle");
         guiElement.expectThat().visible(true).is(true);
 
@@ -70,14 +77,14 @@ public class UiElementLayoutCheckTests extends AbstractTestSitesTest implements 
     @Test()
     @Fails(description = "This test should fail")
     public void testCheckElementLayoutDistance() {
-        BasePage page = preparePage();
+        BasePage page = getPage();
         UiElement guiElement = page.findByQa("section/layoutTestArticle");
         Control.retryFor(10).withTimeout(0, () -> guiElement.expectThat().screenshot().pixelDistance("TestArticleFailed").isLowerThan(1));
     }
 
     @Test
     public void testCheckPageLayout() {
-        BasePage page = preparePage();
+        BasePage page = getPage();
         page.expectThat().screenshot()
             .toReport()
             .pixelDistance("LayoutTestPage").isLowerThan(1);
@@ -85,7 +92,7 @@ public class UiElementLayoutCheckTests extends AbstractTestSitesTest implements 
 
     @Test(expectedExceptions = AssertionError.class)
     public void testCheckPageLayout_failed() {
-        BasePage page = preparePage();
+        BasePage page = getPage();
         Control.withTimeout(0, () -> page.expectThat().screenshot().pixelDistance("LayoutTestPage").isGreaterThan(100));
     }
 }

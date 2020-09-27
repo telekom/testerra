@@ -27,9 +27,16 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.test.core.pageobjects.testdata.UiElementListPage;
 import eu.tsystems.mms.tic.testframework.test.core.pageobjects.testdata.components.TableRow;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 public class UiElementListTests extends AbstractTestSitesTest implements PageFactoryTest {
+
+    @BeforeClass
+    public void before() {
+        this.enableExclusiveSession();
+    }
+
     public UiElementListPage getPage() {
         return pageFactory.createPage(UiElementListPage.class, getWebDriver());
     }

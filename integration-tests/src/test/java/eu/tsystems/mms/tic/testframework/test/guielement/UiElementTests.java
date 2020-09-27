@@ -38,7 +38,7 @@ import org.testng.annotations.Test;
 public class UiElementTests extends AbstractTestSitesTest implements Loggable, PageFactoryTest {
 
     @BeforeClass
-    public void makeExclusive() {
+    public void before() {
         this.enableExclusiveSession();
     }
 
@@ -305,10 +305,12 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     public void test_retry() {
         WebTestPage page = getPage();
         UiElement disableMyselfBtn = page.findById("disableMyselfBtn");
+        disableMyselfBtn.expectThat().enabled().is(true);
         Control.retryFor(10).withTimeout(0,() -> {
             disableMyselfBtn.click();
             disableMyselfBtn.expectThat().enabled().is(false);
         });
+        disableMyselfBtn.expectThat().enabled().is(false);
     }
 
     @Test(expectedExceptions = TimeoutException.class)

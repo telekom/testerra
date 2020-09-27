@@ -27,9 +27,15 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import org.openqa.selenium.By;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 public class UiElementLayoutTests extends AbstractTestSitesTest implements PageFactoryTest {
+
+    @BeforeClass
+    public void before() {
+        this.enableExclusiveSession();
+    }
 
     @Test
     public void testT01_LeftOf() {

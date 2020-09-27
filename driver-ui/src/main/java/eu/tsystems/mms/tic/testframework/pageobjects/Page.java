@@ -263,23 +263,23 @@ public class Page extends AbstractPage implements TestablePage, Nameable<Page> {
 
     @Deprecated
     public void assertIsTextPresent(String text) {
-        anyElementContainsText(text).waitFor().present().is(true);
+        anyElementContainsText(text).expectThat().present().is(true);
     }
 
     @Deprecated
     public void assertIsTextDisplayed(String text) {
-        anyElementContainsText(text).waitFor().displayed().is(true);
+        anyElementContainsText(text).expectThat().displayed().is(true);
     }
 
     @Deprecated
     public void assertIsNotTextPresent(String text) {
-        anyElementContainsText(text).waitFor().present().is(false);
+        anyElementContainsText(text).expectThat().present().is(false);
     }
 
     @Deprecated
     public void assertIsNotTextDisplayed(String text) {
         try {
-            anyElementContainsText(text).waitFor().displayed().is(false);
+            anyElementContainsText(text).expectThat().displayed().is(false);
         } catch (AssertionError error) {
             if (error.getCause() instanceof ElementNotFoundException) {
                 // ignore this

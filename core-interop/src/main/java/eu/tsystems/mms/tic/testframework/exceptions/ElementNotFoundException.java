@@ -32,18 +32,6 @@ public class ElementNotFoundException extends RuntimeException {
         this(element, null);
     }
     public ElementNotFoundException(UiElement element, Throwable cause) {
-        this(element.toString(true) + " not found", cause);
+        super("Element not found: " + element.toString(true), cause);
     }
-
-    /**
-     * Constructor with exception.
-     *
-     * @param text Exception message.
-     * @param cause exception for message output
-     */
-    private ElementNotFoundException(final String text, final Throwable cause) {
-        super(text, cause);
-    }
-
-
 }

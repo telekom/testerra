@@ -22,6 +22,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementBase;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
@@ -113,6 +114,11 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     @Override
     public RectAssertion bounds() {
         return rootElement.bounds();
+    }
+
+    @Override
+    public UiElementBase waitFor() {
+        return rootElement.waitFor();
     }
 
     @Override

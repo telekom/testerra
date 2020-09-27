@@ -19,7 +19,9 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.exceptions;
+package eu.tsystems.mms.tic.testframework.exceptions;
+
+import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
 
 /**
  * Exception indicating that a page was not found.
@@ -33,31 +35,11 @@ public class PageNotFoundException extends RuntimeException {
      */
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Create Exception with a message.
-     *
-     * @param message Message for Exception.
-     */
-    public PageNotFoundException(final String message) {
-        super(message);
+    public PageNotFoundException(AbstractPage page) {
+        this(page, null);
     }
 
-    /**
-     * Exception create by the throwable and a message.
-     *
-     * @param message Message for Exception.
-     * @param cause Throwable that causes the exception.
-     */
-    public PageNotFoundException(final String message, final Throwable cause) {
-        super(message, cause);
-    }
-
-    /**
-     * Create Exception by a cause.
-     *
-     * @param cause Throwable that causes the exception.
-     */
-    public PageNotFoundException(final Throwable cause) {
-        super(cause);
+    public PageNotFoundException(AbstractPage page, Throwable cause) {
+        super("Page not found: " + page.getName(true), cause);
     }
 }

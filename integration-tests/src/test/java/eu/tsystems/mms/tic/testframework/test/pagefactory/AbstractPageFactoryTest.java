@@ -46,22 +46,13 @@ import org.testng.annotations.Test;
  */
 public abstract class AbstractPageFactoryTest extends AbstractTestSitesTest implements PageFactoryTest {
 
-    String baseURL = "unset";
-
     @BeforeClass
     public void before() {
-        baseURL = WebDriverManager.getBaseURL();
-        WebDriverManager.setBaseURL("http://www.google.com");
         WebDriverManager.config().closeWindowsAfterTestMethod = false;
-
-//        DesiredCapabilities caps = new DesiredCapabilities();
-//        WebDriverManagerUtils.addProxyToCapabilities(caps, "proxy.mms-dresden.de:8080");
-//        WebDriverManager.setGlobalExtraCapabilities(caps);
     }
 
     @AfterClass
     public void after() {
-        WebDriverManager.setBaseURL(baseURL);
         WebDriverManager.config().closeWindowsAfterTestMethod = true;
     }
 

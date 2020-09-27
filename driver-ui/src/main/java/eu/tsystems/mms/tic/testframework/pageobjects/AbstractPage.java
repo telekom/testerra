@@ -19,7 +19,7 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.pageobjects;
+package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
@@ -29,8 +29,6 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.AbstractFieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFieldAction;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.testing.TestFeatures;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -90,21 +88,8 @@ public abstract class AbstractPage implements
                 default:
                     assertPageIsShown();
             }
-        } catch (final Exception t) {
-            /*
-            set readable message
-             */
-            String message = "Page check failed on " + this.getClass().getSimpleName();
-
-            MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-            if (methodContext != null) {
-                methodContext.errorContext().setThrowable(message, t);
-            }
-
-            /*
-            exception
-             */
-            throw new PageNotFoundException(message, t);
+        } catch (Throwable throwable) {
+            throw new PageNotFoundException(this, throwable);
         }
     }
 
@@ -134,6 +119,8 @@ public abstract class AbstractPage implements
         pCheckPage(CheckRule.DEFAULT, true);
     }
 
+    public abstract String getName(boolean detailed);
+
     private void pCheckPage(CheckRule checkRule, final boolean checkCaller) {
         /*
         Logging and demo mode
@@ -155,31 +142,7 @@ public abstract class AbstractPage implements
                 // if nothing is checked then the orig throwable is thrown
                 throw throwable;
             } catch (Throwable importantThrowable) {
-                String message = importantThrowable.getMessage();
-                if (message == null) {
-                    message = "Page not found: " + this.toString();
-                }
-
-                /*
-                set readable message
-                 */
-                String throwableMessage = throwable.getMessage();
-                if (throwableMessage == null) {
-                    throwableMessage = message;
-                }
-
-                MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-                if (methodContext != null) {
-                    methodContext.errorContext().setThrowable(throwableMessage, importantThrowable);
-                }
-
-                if (importantThrowable instanceof Error) {
-                    throw (Error) importantThrowable;
-                } else if (importantThrowable instanceof RuntimeException) {
-                    throw (RuntimeException) importantThrowable;
-                } else {
-                    throw new PageNotFoundException(message, importantThrowable);
-                }
+                throw new PageNotFoundException(this, importantThrowable);
             }
         }
 

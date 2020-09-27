@@ -45,6 +45,7 @@ public interface UiElementBase extends WebElementActions {
     BinaryAssertion<Boolean> visible(boolean complete);
     StringAssertion<String> tagName();
     RectAssertion bounds();
+    UiElementBase waitFor();
     /**
      * Takes a screenshot of the current element
      */

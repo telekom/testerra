@@ -19,12 +19,11 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.pageobjects;
+package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
-import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementBase;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.AbstractCheckFieldAction;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
@@ -46,10 +45,7 @@ public class GuiElementCheckFieldAction extends AbstractCheckFieldAction {
         this.defaultCheckRule = defaultCheckRule;
     }
 
-    private void pCheckField(
-        UiElementBase guiElement,
-        Check check
-    ) {
+    private void pCheckField(UiElementBase guiElement, Check check) {
 
         CheckRule checkRule = check.checkRule();
         if (checkRule == CheckRule.DEFAULT) {
@@ -87,7 +83,9 @@ public class GuiElementCheckFieldAction extends AbstractCheckFieldAction {
                 guiElement.present(false);
                 break;
             case IS_NOT_DISPLAYED: {
-                guiElement.displayed(false);
+                if (guiElement.waitFor().present(true)) {
+                    guiElement.displayed(false);
+                }
             }
             break;
             case DEFAULT:
@@ -106,18 +104,15 @@ public class GuiElementCheckFieldAction extends AbstractCheckFieldAction {
     protected void checkField(UiElementBase checkableInstance, Check check) {
         try {
             pCheckField(checkableInstance, check);
-        } catch (AssertionError e) {
-            final PageNotFoundException pageNotFoundException = new PageNotFoundException(null, e);
-
-                /*
-                if @Check has a prioritizedErrorMessage mark, then wrap t's
-                 */
+        } catch (AssertionError error) {
+            /*
+            if @Check has a prioritizedErrorMessage mark, then wrap it
+             */
             String prioritizedErrorMessage = check.prioritizedErrorMessage();
             if (!StringUtils.isStringEmpty(prioritizedErrorMessage)) {
-                throw new AssertionError(prioritizedErrorMessage, pageNotFoundException);
-            }
-            else {
-                throw pageNotFoundException;
+                throw new AssertionError(prioritizedErrorMessage, error);
+            } else {
+                throw error;
             }
         }
     }

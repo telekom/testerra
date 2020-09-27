@@ -23,15 +23,13 @@ package eu.tsystems.mms.tic.testframework.test.page;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithPageOptions;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 
 @Deprecated
 public class PageOptionsTest_Deprecated extends AbstractTestSitesTest implements PageFactoryTest {
 
     @Override
     public PageWithPageOptions getPage() {
-        return PageFactory.create(PageWithPageOptions.class, WebDriverManager.getWebDriver());
+        return pageFactory.createPage(PageWithPageOptions.class, getWebDriver());
     }
 }

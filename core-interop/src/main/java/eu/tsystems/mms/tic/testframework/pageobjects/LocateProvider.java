@@ -21,6 +21,8 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.LocatorFactory;
+
 /**
  * Provides factory for {@link Locator}
  */

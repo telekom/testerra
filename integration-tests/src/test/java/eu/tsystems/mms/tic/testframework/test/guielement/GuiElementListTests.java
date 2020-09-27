@@ -26,9 +26,7 @@ import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.GuiElementListPage;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 
@@ -118,6 +116,6 @@ public class GuiElementListTests extends AbstractTestSitesTest implements PageFa
 
     @Override
     public GuiElementListPage getPage() {
-        return PageFactory.create(GuiElementListPage.class, WebDriverManager.getWebDriver());
+        return pageFactory.createPage(GuiElementListPage.class, getWebDriver());
     }
 }

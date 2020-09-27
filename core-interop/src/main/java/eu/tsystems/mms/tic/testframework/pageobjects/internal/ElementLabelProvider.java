@@ -19,15 +19,13 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.pageobjects;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFinder;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.By;
 
 /**
- * Factory for {@link UiElementFinder}
- * @author Mike Reiche
+ * Interface for generating element locators by labels
  */
-public interface UiElementFinderFactory {
-    UiElementFinder create(WebDriver webDriver);
+public interface ElementLabelProvider {
+    By[] createBy(String element, String label);
 }

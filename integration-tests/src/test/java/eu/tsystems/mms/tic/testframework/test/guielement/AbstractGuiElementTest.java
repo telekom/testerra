@@ -27,7 +27,7 @@ import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.WebTestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.LocateProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
-import eu.tsystems.mms.tic.testframework.testing.UiElementFinderProvider;
+import eu.tsystems.mms.tic.testframework.testing.UiElementFinderFactoryProvider;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils;
 import org.openqa.selenium.By;
 import org.slf4j.Logger;
@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author rnhb
  */
-public abstract class AbstractGuiElementTest extends AbstractTestSitesTest implements UiElementFinderProvider, LocateProvider {
+public abstract class AbstractGuiElementTest extends AbstractTestSitesTest implements UiElementFinderFactoryProvider, LocateProvider {
 
     @Deprecated
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -208,5 +208,6 @@ public abstract class AbstractGuiElementTest extends AbstractTestSitesTest imple
         return getGuiElementBy(Locate.by(locator));
     }
 
+    @Deprecated
     public abstract GuiElement getGuiElementBy(Locator locator);
 }

@@ -27,7 +27,6 @@ import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.GuiElementSha
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.Test;
 
 public class GuiElementShadowRootTest extends AbstractTestSitesTest {
@@ -63,6 +62,6 @@ public class GuiElementShadowRootTest extends AbstractTestSitesTest {
     }
 
     private GuiElementShadowRootPage preparePage() {
-        return PageFactory.create(GuiElementShadowRootPage.class, WebDriverManager.getWebDriver());
+        return PageFactory.create(GuiElementShadowRootPage.class, getWebDriver());
     }
 }

@@ -23,6 +23,7 @@
 package eu.tsystems.mms.tic.testframework;
 
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebDriverRetainer;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
@@ -37,7 +38,7 @@ import org.testng.annotations.BeforeMethod;
 /**
  * Abstract test class for tests using a WebDriver
  */
-public abstract class AbstractWebDriverTest extends TesterraTest implements WebDriverRetainer {
+public abstract class AbstractWebDriverTest extends TesterraTest implements WebDriverRetainer, Loggable {
 
 
     //    static {
@@ -83,6 +84,7 @@ public abstract class AbstractWebDriverTest extends TesterraTest implements WebD
         try {
             WebDriverManager.getWebDriver().getWindowHandles();
         } catch (WebDriverException s) {
+            log().error(s.getMessage());
             WebDriverManager.forceShutdown(); // shutdown all threwad drivers.
         }
 

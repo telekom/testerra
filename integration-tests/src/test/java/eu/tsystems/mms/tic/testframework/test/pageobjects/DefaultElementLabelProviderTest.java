@@ -24,7 +24,7 @@ package eu.tsystems.mms.tic.testframework.test.pageobjects;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.DefaultElementLabelProvider;
-import eu.tsystems.mms.tic.testframework.pageobjects.ElementLabelProvider;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.ElementLabelProvider;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import org.openqa.selenium.By;

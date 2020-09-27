@@ -19,13 +19,31 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.pageobjects;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
+import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
+import eu.tsystems.mms.tic.testframework.pageobjects.PreparedLocator;
+import eu.tsystems.mms.tic.testframework.pageobjects.XPath;
 import org.openqa.selenium.By;
 
 /**
- * Interface for generating element locators by labels
+ * A factory for {@link Locator}
+ *
+ * @author Mike Reiche
  */
-public interface ElementLabelProvider {
-    By[] createBy(String element, String label);
+public class LocatorFactory {
+    public Locator by(By by) {
+        return new DefaultLocator(by);
+    }
+
+    public Locator by(XPath xPath) {
+        return by(new By.ByXPath(xPath.toString()));
+    }
+
+    public Locator byQa(String string) {
+        return by(XPath.from("*").attribute(UiElement.Properties.QA_ATTRIBUTE.asString()).is(string));
+    }
+    public PreparedLocator prepare(final String format) {
+        return new DefaultPreparedLocator(format);
+    }
 }

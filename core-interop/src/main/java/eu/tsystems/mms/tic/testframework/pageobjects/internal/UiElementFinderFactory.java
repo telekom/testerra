@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020,  Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -17,22 +17,16 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
-package eu.tsystems.mms.tic.testframework.testing;
 
-import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageFactory;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageObject;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal;
+
+import org.openqa.selenium.WebDriver;
 
 /**
- * Base test class for tests following the {@link PageObject} pattern.
+ * Factory for {@link UiElementFinder}
  * @author Mike Reiche
  */
-public abstract class AbstractPageObjectTest extends TesterraTest implements PageFactoryProvider, UiElementFinderProvider {
-
-    @Override
-    public PageFactory getPageFactory() {
-        return Testerra.injector.getInstance(PageFactory.class);
-    }
+public interface UiElementFinderFactory {
+    UiElementFinder create(WebDriver webDriver);
 }

@@ -21,12 +21,13 @@
 
 package eu.tsystems.mms.tic.testframework.testing;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.PageFactory;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.PageFactory;
 
 /**
  * Provides a {@link PageFactory}
  * @author Mike Reiche
  */
 public interface PageFactoryProvider {
-    PageFactory getPageFactory();
+    PageFactory pageFactory = Testerra.injector.getInstance(PageFactory.class);
 }

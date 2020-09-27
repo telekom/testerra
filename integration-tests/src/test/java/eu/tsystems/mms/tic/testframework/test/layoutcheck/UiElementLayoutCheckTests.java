@@ -37,7 +37,7 @@ public class UiElementLayoutCheckTests extends AbstractTestSitesTest implements 
 
     @BeforeMethod
     private BasePage preparePage() {
-        return getPageFactory().createPageWithDefaultWebDriver(BasePage.class);
+        return pageFactory.createPage(BasePage.class, getWebDriver());
     }
 
     @Test

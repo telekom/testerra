@@ -19,14 +19,30 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.testing;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFinder;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
+import eu.tsystems.mms.tic.testframework.pageobjects.PreparedLocator;
+import org.openqa.selenium.By;
 
 /**
- * Provides a {@link UiElementFinder}
+ * Default implementation of {@link PreparedLocator}
  * @author Mike Reiche
  */
-public interface UiElementFinderProvider {
-    UiElementFinder getUiElementFinder();
+public class DefaultPreparedLocator extends DefaultLocator implements PreparedLocator {
+
+    private final String preparedFormat;
+
+    DefaultPreparedLocator(String preparedFormat) {
+        super(null);
+        this.preparedFormat = preparedFormat;
+    }
+
+    @Override
+    public Locator with(Object... args) {
+        DefaultLocator locate = new DefaultLocator(By.xpath(String.format(preparedFormat, args)));
+        locate.unique = unique;
+        locate.filter = filter;
+        return locate;
+    }
 }

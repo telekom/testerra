@@ -49,6 +49,10 @@ public interface UiElementBase extends WebElementActions {
      * Takes a screenshot of the current element
      */
     ImageAssertion screenshot();
+
+    /**
+     * Creates a xpath of the given {@link Locate} hierarchy NOT the actual element hierarchy
+     */
     String createXPath();
     Locate getLocate();
 }

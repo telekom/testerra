@@ -28,7 +28,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.Sequence;
-import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -39,7 +39,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class DefaultTestController implements TestController, Loggable {
 
     private final TestController.Overrides overrides;
-    private final ThreadLocal<HashSet<RunnableConfiguration>> threadLocalConfigurations = new ThreadLocal<>();
+    private final ThreadLocal<LinkedList<RunnableConfiguration>> threadLocalConfigurations = new ThreadLocal<>();
 
     private abstract class RunnableConfiguration {
         Runnable setup(Runnable runnable) {
@@ -55,9 +55,12 @@ public class DefaultTestController implements TestController, Loggable {
         this.overrides = overrides;
     }
 
-
-    private void run(Runnable runnable) {
-        HashSet<RunnableConfiguration> configurations = threadLocalConfigurations.get();
+    /**
+     * Runs all {@link #threadLocalConfigurations}
+     * Its important that this method is synchronized!
+     */
+    private synchronized void run(Runnable runnable) {
+        LinkedList<RunnableConfiguration> configurations = threadLocalConfigurations.get();
         for (RunnableConfiguration configuration : configurations) {
             runnable = configuration.setup(runnable);
         }
@@ -66,18 +69,22 @@ public class DefaultTestController implements TestController, Loggable {
         configurations.clear();
     }
 
-    @Override
-    public void collectAssertions(Runnable runnable) {
-        collectAssertions().run(runnable);
-    }
-
-    private void addConfiguration(RunnableConfiguration configuration) {
-        HashSet<RunnableConfiguration> configurations = threadLocalConfigurations.get();
+    /**
+     * Adds a {@link RunnableConfiguration} to the {@link #threadLocalConfigurations}
+     * Its important that this method is synchronized!
+     */
+    private synchronized void addConfiguration(RunnableConfiguration configuration) {
+        LinkedList<RunnableConfiguration> configurations = threadLocalConfigurations.get();
         if (configurations==null) {
-            configurations = new HashSet<>();
+            configurations = new LinkedList<>();
             threadLocalConfigurations.set(configurations);
         }
         configurations.add(configuration);
+    }
+
+    @Override
+    public void collectAssertions(Runnable runnable) {
+        collectAssertions().run(runnable);
     }
 
     @Override
@@ -132,6 +139,7 @@ public class DefaultTestController implements TestController, Loggable {
             int prevTimeout;
             @Override
             Runnable setup(Runnable runnable) {
+                log().info("Set timeout: "+ seconds);
                 prevTimeout = overrides.setTimeout(seconds);
                 return runnable;
             }
@@ -155,7 +163,7 @@ public class DefaultTestController implements TestController, Loggable {
             @Override
             Runnable setup(Runnable runnable) {
                 return () -> {
-
+                    log().info("Run retry sequence with " + seconds + " seconds");
                     Sequence sequence = new Sequence()
                             .setTimeoutMs(seconds * 1000);
 

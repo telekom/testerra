@@ -25,7 +25,6 @@ package eu.tsystems.mms.tic.testframework.test.utils;
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.utils.FileDownloader;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -56,9 +55,9 @@ public class FileDownloaderTest extends AbstractTestSitesTest {
     @Test()
     public void testT01_downloadFileAndDelete() throws IOException {
 
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getClassExclusiveWebDriver();
         FileDownloader downloader = new FileDownloader(FileUtils.getUserDirectoryPath(), true, true).setProxy(null);
-        String download = downloader.download(driver, WebDriverManager.getWebDriver().getCurrentUrl(),
+        String download = downloader.download(driver, driver.getCurrentUrl(),
                 "testT01_downloadFile.htm");
         File file = FileUtils.getFile(download);
 
@@ -76,7 +75,7 @@ public class FileDownloaderTest extends AbstractTestSitesTest {
     @Test
     public void testT02_downloadFileOfHttpsUrl() throws IOException {
 
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getClassExclusiveWebDriver();
         driver.get("https://google.de");
 
         FileDownloader downloader = new FileDownloader(FileUtils.getUserDirectoryPath(), true, true);
@@ -95,10 +94,10 @@ public class FileDownloaderTest extends AbstractTestSitesTest {
     @Test()
     public void test03_downloadFileToLongLocation() throws IOException {
 
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getClassExclusiveWebDriver();
         FileDownloader downloader = new FileDownloader(FileUtils.getUserDirectoryPath() + "/foo/bar\\test", true, true).setProxy(null);
 
-        String download = downloader.download(driver, WebDriverManager.getWebDriver().getCurrentUrl(),
+        String download = downloader.download(driver, driver.getCurrentUrl(),
                 "test03_downloadFileToLongLocation.htm");
         File file = FileUtils.getFile(download);
 
@@ -107,7 +106,7 @@ public class FileDownloaderTest extends AbstractTestSitesTest {
 
     @Test
     public void test04_readFileNameFromResponseHeader() throws IOException {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = getClassExclusiveWebDriver();
         FileDownloader downloader = new FileDownloader();
         File file = downloader.download(driver, "https://upload.wikimedia.org/wikipedia/de/thumb/e/e1/Java-Logo.svg/800px-Java-Logo.svg.png");
         Assert.assertEquals(file.getName(), "800px-Java-Logo.svg");
@@ -115,7 +114,7 @@ public class FileDownloaderTest extends AbstractTestSitesTest {
 
     @Test
     public void test05_readFileFromUrl() throws IOException {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = getClassExclusiveWebDriver();
         FileDownloader downloader = new FileDownloader();
         File file = downloader.download(driver, "https://httpbin.org/image/png");
         Assert.assertEquals(file.getName(), "png");

@@ -30,17 +30,17 @@ import org.openqa.selenium.WebDriver;
 
 public class DefaultPageAssertions implements PageAssertions {
     private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
-
+    private final PropertyAssertionConfig propertyAssertionConfig = new PropertyAssertionConfig();
     private final Page page;
 
     public DefaultPageAssertions(Page page, boolean throwErrors) {
         this.page = page;
-        propertyAssertionFactory.setThrowErrors(throwErrors);
+        this.propertyAssertionConfig.throwErrors = throwErrors;
     }
 
     @Override
     public StringAssertion<String> title() {
-        return propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
+        return propertyAssertionFactory.createWithConfig(DefaultStringAssertion.class, this.propertyAssertionConfig, new AssertionProvider<String>() {
             @Override
             public String getActual() {
                 return page.getWebDriver().getTitle();
@@ -55,7 +55,7 @@ public class DefaultPageAssertions implements PageAssertions {
 
     @Override
     public StringAssertion<String> url() {
-        return propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
+        return propertyAssertionFactory.createWithConfig(DefaultStringAssertion.class, this.propertyAssertionConfig, new AssertionProvider<String>() {
             @Override
             public String getActual() {
                 return page.getWebDriver().getCurrentUrl();
@@ -77,7 +77,7 @@ public class DefaultPageAssertions implements PageAssertions {
         UITestUtils.takeScreenshot(driver, screenshot);
         atomicScreenshot.set(screenshot);
 
-        return propertyAssertionFactory.create(DefaultScreenshotAssertion.class, new AssertionProvider<Screenshot>() {
+        return propertyAssertionFactory.createWithConfig(DefaultScreenshotAssertion.class, this.propertyAssertionConfig, new AssertionProvider<Screenshot>() {
             @Override
             public Screenshot getActual() {
                 return atomicScreenshot.get();

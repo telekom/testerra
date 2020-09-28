@@ -25,7 +25,6 @@ import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.LocateProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
@@ -34,7 +33,7 @@ import org.testng.annotations.Test;
 public class GuiElementFilterTest extends AbstractTestSitesTest implements LocateProvider {
 
     private void assertLogFieldContains(String textToBeContained) {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getWebDriver();
         GuiElement logField = new GuiElement(driver, By.xpath(".//*[@id='99']"));
         String actualLogFieldText = logField.getText();
         Assert.assertTrue(actualLogFieldText.contains("Open again clicked"), "LogField actualLogFieldText is correct.\n" +
@@ -43,7 +42,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest implements Locat
 
     @Test
     public void testT01_Telxt_Is() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getWebDriver();
         GuiElement openAgainLink = new GuiElement(driver, By.xpath(".//*[@id]"))
                 .withWebElementFilter(webElement -> webElement.getText().equals("Open again"));
         openAgainLink.asserts().assertIsPresent();
@@ -53,7 +52,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest implements Locat
 
     @Test
     public void testT02_Text_IsNot() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getWebDriver();
         GuiElement openAgainLink = new GuiElement(driver, By.xpath(".//*[@id='11']"))
                 .withWebElementFilter(WebElementFilter.TEXT.isNot("Open again"));
         Control.withTimeout(1, () -> {
@@ -63,7 +62,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest implements Locat
 
     @Test
     public void testT03_Text_Contains() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getWebDriver();
         GuiElement openAgainLink = new GuiElement(driver, By.xpath(".//*[@id]"))
                 .withWebElementFilter(WebElementFilter.TEXT.contains("Open a"));
         openAgainLink.asserts().assertIsPresent();
@@ -73,7 +72,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest implements Locat
 
     @Test
     public void testT04_Text_ContainsNot() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getWebDriver();
         GuiElement openAgainLink = new GuiElement(driver, By.xpath(".//*[@id='11']"))
                 .withWebElementFilter(WebElementFilter.TEXT.containsNot("Open a"));
         Control.withTimeout(1, () -> {
@@ -83,7 +82,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest implements Locat
 
     @Test
     public void testT05_Displayed_Is() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getWebDriver();
         GuiElement nonVisibleTable = new GuiElement(driver, By.xpath(".//*[@id]"))
                 .withWebElementFilter(WebElementFilter.DISPLAYED.is(false));
         nonVisibleTable.asserts().assertIsNotDisplayed();
@@ -92,14 +91,14 @@ public class GuiElementFilterTest extends AbstractTestSitesTest implements Locat
     @Test
     public void testT05a_Displayed_Is() {
 
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getWebDriver();
         GuiElement nonVisibleTable = new GuiElement(driver, Locate.by(By.xpath(".//*[@id]")).filter(webElement -> !webElement.isDisplayed()));
         nonVisibleTable.asserts().assertIsNotDisplayed();
     }
 
     @Test
     public void testT05b_Displayed_Is() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getWebDriver();
         GuiElement nonVisibleTable = new GuiElement(driver, Locate.by(By.xpath(".//*[@id]")).displayed(false));
         nonVisibleTable.asserts().assertIsNotDisplayed();
     }
@@ -107,7 +106,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest implements Locat
     @Test
     public void testT05c_Displayed_Is() {
 
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getWebDriver();
         GuiElement visibleTable = new GuiElement(driver, Locate.by(By.xpath(".//*[@id]")).displayed());
         visibleTable.asserts().assertIsDisplayed();
     }
@@ -115,7 +114,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest implements Locat
 
     @Test
     public void testT07_Attribute_Contains() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getWebDriver();
         GuiElement button2 = new GuiElement(driver, By.xpath("//input[@value='Button2']"));
         GuiElement elementsWithAttributes = new GuiElement(driver, By.xpath(".//*[@id]"))
                 .withWebElementFilter(WebElementFilter.ATTRIBUTE.contains("value", "Button2"));
@@ -127,7 +126,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest implements Locat
 
     @Test
     public void testT08_Attribute_ContainsNot() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getWebDriver();
         GuiElement elementsWithAttributes = new GuiElement(driver, By.xpath(".//*[@id='6']"))
                 .withWebElementFilter(WebElementFilter.ATTRIBUTE.containsNot("value", "Button2"));
         Control.withTimeout(1, () -> {
@@ -137,7 +136,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest implements Locat
 
     @Test
     public void testT09_Attribute_Exists() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getWebDriver();
         GuiElement elementsWithAttributes = new GuiElement(driver, By.xpath("//div[@class='box'][1]/input"))
                 .withWebElementFilter(WebElementFilter.ATTRIBUTE.exists("disabled"));
         elementsWithAttributes.asserts().assertAttributeContains("id", "7");
@@ -146,7 +145,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest implements Locat
 
     @Test
     public void testT10_Attribute_ExistsNot() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getWebDriver();
         GuiElement elementsWithAttributes = new GuiElement(driver, By.xpath("//input[@type='radio']"))
                 .withWebElementFilter(WebElementFilter.ATTRIBUTE.existsNot("disabled"));
         Control.withTimeout(1, () -> {
@@ -156,7 +155,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest implements Locat
 
     @Test
     public void testT11_Attribute_Is() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getWebDriver();
         GuiElement elementsWithAttributes = new GuiElement(driver, By.xpath(".//*"))
                 .withWebElementFilter(WebElementFilter.ATTRIBUTE.is("type", "submit"));
         elementsWithAttributes.asserts().assertAttributeContains("value", "Submit");
@@ -164,7 +163,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest implements Locat
 
     @Test
     public void testT12_Attribute_IsNot() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getWebDriver();
         GuiElement elementsWithAttributes = new GuiElement(driver, By.xpath(".//input[@value]"))
                 .withWebElementFilter(WebElementFilter.ATTRIBUTE.isNot("type", "button"));
         elementsWithAttributes.asserts().assertAttributeContains("value", "Submit");
@@ -172,7 +171,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest implements Locat
 
     @Test
     public void testT13_CSS_Contains() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getWebDriver();
         GuiElement elementsWithCSS = new GuiElement(driver, By.xpath(".//*[@id]"))
                 .withWebElementFilter(WebElementFilter.CSS.contains("visibility", "hid"));
         elementsWithCSS.asserts().assertAttributeContains("id", "100");
@@ -180,7 +179,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest implements Locat
 
     @Test
     public void testT14_CSS_ContainsNot() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getWebDriver();
         GuiElement elementsWithCSS = new GuiElement(driver, By.xpath(".//*[@id='100']"))
                 .withWebElementFilter(WebElementFilter.CSS.containsNot("visibility", "den"));
         Control.withTimeout(1, () -> {
@@ -190,7 +189,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest implements Locat
 
     @Test
     public void testT15_CSS_Exists() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getWebDriver();
         GuiElement elementsWithCSS = new GuiElement(driver, By.xpath(".//*[@id]"))
                 .withWebElementFilter(WebElementFilter.CSS.exists("visibility"));
         elementsWithCSS.asserts().assertAttributeContains("id", "1");
@@ -198,7 +197,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest implements Locat
 
     @Test
     public void testT16N_CSS_Exists() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getWebDriver();
         GuiElement elementsWithCSS = new GuiElement(driver, By.xpath("//*"))
                 .withWebElementFilter(WebElementFilter.CSS.exists("wabilibuu"));
         elementsWithCSS.asserts().assertIsNotPresent();
@@ -206,7 +205,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest implements Locat
 
     @Test
     public void testT17_CSS_ExistsNot() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getWebDriver();
         GuiElement elementsWithCSS = new GuiElement(driver, By.xpath(".//*"))
                 .withWebElementFilter(WebElementFilter.CSS.existsNot("visibility"));
         Control.withTimeout(1, () -> {
@@ -216,7 +215,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest implements Locat
 
     @Test
     public void testT18_CSS_Is() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getWebDriver();
         GuiElement elementsWithCSS = new GuiElement(driver, By.xpath(".//*[@id]"))
                 .withWebElementFilter(WebElementFilter.CSS.is("visibility", "hidden"));
         Control.withTimeout(1, () -> {
@@ -226,7 +225,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest implements Locat
 
     @Test
     public void testT19N_CSS_Is() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getWebDriver();
         GuiElement elementWithCSS = new GuiElement(driver, By.xpath(".//*[@id]"))
                 .withWebElementFilter(WebElementFilter.CSS.is("background-color", "black"));
         Control.withTimeout(1, () -> {
@@ -236,7 +235,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest implements Locat
 
     @Test
     public void testT20_CSS_IsNot() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getWebDriver();
         GuiElement elementWithCSS = new GuiElement(driver, By.xpath(".//*[@id='100']"))
                 .withWebElementFilter(WebElementFilter.CSS.isNot("visibility", "hidden"));
         Control.withTimeout(1, () -> {
@@ -246,7 +245,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest implements Locat
 
     @Test
     public void testT21_Tag_Contains() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getWebDriver();
         GuiElement elementsWithTag = new GuiElement(driver, By.xpath("//*[@onclick]"))
                 .withWebElementFilter(WebElementFilter.TAG.contains("inp"));
         elementsWithTag.asserts().assertAttributeContains("value", "Button1");
@@ -254,7 +253,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest implements Locat
 
     @Test
     public void testT22_Tag_ContainsNot() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getWebDriver();
         GuiElement elementsWithTag = new GuiElement(driver, By.xpath("//input"))
                 .withWebElementFilter(WebElementFilter.TAG.containsNot("inp"));
         Control.withTimeout(1, () -> {
@@ -264,7 +263,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest implements Locat
 
     @Test
     public void testT23_Tag_Is() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getWebDriver();
         GuiElement elementsWithTag = new GuiElement(driver, By.xpath(".//*"))
                 .withWebElementFilter(WebElementFilter.TAG.is("select"));
         elementsWithTag.asserts().assertAttributeContains("size", "3");
@@ -272,7 +271,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest implements Locat
 
     @Test
     public void testT24_Tag_IsNot() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getWebDriver();
         GuiElement elementWithTag = new GuiElement(driver, By.xpath(".//*[@id='6']"))
                 .withWebElementFilter(WebElementFilter.TAG.isNot("input"));
         Control.withTimeout(1, () -> {

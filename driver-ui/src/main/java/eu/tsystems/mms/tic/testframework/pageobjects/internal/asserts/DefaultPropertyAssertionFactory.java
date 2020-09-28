@@ -21,10 +21,7 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
-import com.google.inject.Inject;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
-import eu.tsystems.mms.tic.testframework.testing.TestController;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
@@ -33,33 +30,16 @@ import java.lang.reflect.InvocationTargetException;
  * @author Mike Reiche
  */
 public class DefaultPropertyAssertionFactory implements PropertyAssertionFactory, Loggable {
-    private boolean throwErrors = true;
-    private final TestController.Overrides overrides;
 
-    @Inject
-    DefaultPropertyAssertionFactory(TestController.Overrides overrides) {
-        this.overrides = overrides;
-    }
-
-    @Override
-    public <ASSERTION extends AbstractPropertyAssertion, TYPE> ASSERTION create(
-        Class<ASSERTION> assertionClass,
-        AbstractPropertyAssertion parentAssertion,
-        AssertionProvider<TYPE> provider
+    public <ASSERTION extends AbstractPropertyAssertion, TYPE> ASSERTION createAssertion(
+            Class<ASSERTION> assertionClass,
+            AbstractPropertyAssertion parentAssertion,
+            AssertionProvider<TYPE> provider
     ) {
         ASSERTION assertion;
         try {
             Constructor<ASSERTION> constructor = assertionClass.getDeclaredConstructor(AbstractPropertyAssertion.class, AssertionProvider.class);
             assertion = constructor.newInstance(parentAssertion, provider);
-
-            if (parentAssertion != null) {
-                assertion.config = parentAssertion.config;
-            } else {
-                assertion.config = new PropertyAssertionConfig();
-                assertion.config.throwErrors = throwErrors;
-                assertion.config.timeoutInSeconds = overrides.getTimeoutInSeconds();
-                assertion.config.pauseIntervalMs = UiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong();
-            }
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             log().error(String.format("Unable to create assertion: %s", e.getMessage()), e);
             assertion = null;
@@ -68,8 +48,24 @@ public class DefaultPropertyAssertionFactory implements PropertyAssertionFactory
     }
 
     @Override
-    public PropertyAssertionFactory setThrowErrors(boolean throwErrors) {
-        this.throwErrors = throwErrors;
-        return this;
+    public <ASSERTION extends AbstractPropertyAssertion, TYPE> ASSERTION createWithParent(
+        Class<ASSERTION> assertionClass,
+        AbstractPropertyAssertion parentAssertion,
+        AssertionProvider<TYPE> provider
+    ) {
+        ASSERTION assertion = createAssertion(assertionClass, parentAssertion, provider);
+        assertion.config = parentAssertion.config;
+        return assertion;
+    }
+
+    @Override
+    public <ASSERTION extends AbstractPropertyAssertion, TYPE> ASSERTION createWithConfig(
+            Class<ASSERTION> assertionClass,
+            PropertyAssertionConfig config,
+            AssertionProvider<TYPE> provider
+    ) {
+        ASSERTION assertion = createAssertion(assertionClass, null, provider);
+        assertion.config = config;
+        return assertion;
     }
 }

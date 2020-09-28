@@ -36,20 +36,20 @@ import org.openqa.selenium.Rectangle;
  */
 public class DefaultUiElementAssertions implements UiElementAssertions {
     private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
-
+    private final PropertyAssertionConfig propertyAssertionConfig = new PropertyAssertionConfig();
     private final GuiElementCore core;
     private final GuiElement guiElement;
 
     public DefaultUiElementAssertions(UiElement uiElement, boolean throwErrors) {
         this.guiElement = (GuiElement)uiElement;
         this.core = this.guiElement.getCore();
-        propertyAssertionFactory.setThrowErrors(throwErrors);
+        this.propertyAssertionConfig.throwErrors = throwErrors;
     }
 
 
     @Override
     public StringAssertion<String> tagName() {
-        DefaultStringAssertion<String> assertion = propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
+        DefaultStringAssertion<String> assertion = propertyAssertionFactory.createWithConfig(DefaultStringAssertion.class, this.propertyAssertionConfig, new AssertionProvider<String>() {
             @Override
             public String getActual() {
                 return core.getTagName();
@@ -65,7 +65,7 @@ public class DefaultUiElementAssertions implements UiElementAssertions {
 
     @Override
     public StringAssertion<String> text() {
-        DefaultStringAssertion<String> assertion = propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
+        DefaultStringAssertion<String> assertion = propertyAssertionFactory.createWithConfig(DefaultStringAssertion.class, this.propertyAssertionConfig, new AssertionProvider<String>() {
             @Override
             public String getActual() {
                 return core.getText();
@@ -82,7 +82,7 @@ public class DefaultUiElementAssertions implements UiElementAssertions {
     @Override
     public StringAssertion<String> value(String attribute) {
         final String finalAttribute = attribute;
-        DefaultStringAssertion<String> assertion = propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
+        DefaultStringAssertion<String> assertion = propertyAssertionFactory.createWithConfig(DefaultStringAssertion.class, this.propertyAssertionConfig, new AssertionProvider<String>() {
             @Override
             public String getActual() {
                 return core.getAttribute(finalAttribute);
@@ -98,7 +98,7 @@ public class DefaultUiElementAssertions implements UiElementAssertions {
 
     @Override
     public StringAssertion<String> css(String property) {
-        DefaultStringAssertion<String> assertion = propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
+        DefaultStringAssertion<String> assertion = propertyAssertionFactory.createWithConfig(DefaultStringAssertion.class, this.propertyAssertionConfig, new AssertionProvider<String>() {
             @Override
             public String getActual() {
                 return core.getCssValue(property);
@@ -114,7 +114,7 @@ public class DefaultUiElementAssertions implements UiElementAssertions {
 
     @Override
     public BinaryAssertion<Boolean> present() {
-        DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
+        DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.createWithConfig(DefaultBinaryAssertion.class, this.propertyAssertionConfig, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 return core.isPresent();
@@ -136,7 +136,7 @@ public class DefaultUiElementAssertions implements UiElementAssertions {
 
     @Override
     public BinaryAssertion<Boolean> visible(boolean complete) {
-        DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
+        DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.createWithConfig(DefaultBinaryAssertion.class, this.propertyAssertionConfig, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 return core.isVisible(complete);
@@ -152,7 +152,7 @@ public class DefaultUiElementAssertions implements UiElementAssertions {
 
     @Override
     public BinaryAssertion<Boolean> displayed() {
-        DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
+        DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.createWithConfig(DefaultBinaryAssertion.class, this.propertyAssertionConfig, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 return core.isDisplayed();
@@ -167,7 +167,7 @@ public class DefaultUiElementAssertions implements UiElementAssertions {
 
     @Override
     public BinaryAssertion<Boolean> enabled() {
-        DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
+        DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.createWithConfig(DefaultBinaryAssertion.class, this.propertyAssertionConfig, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 return core.isEnabled();
@@ -183,7 +183,7 @@ public class DefaultUiElementAssertions implements UiElementAssertions {
 
     @Override
     public BinaryAssertion<Boolean> selected() {
-        DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
+        DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.createWithConfig(DefaultBinaryAssertion.class, this.propertyAssertionConfig, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 return core.isSelected();
@@ -199,7 +199,7 @@ public class DefaultUiElementAssertions implements UiElementAssertions {
 
     @Override
     public BinaryAssertion<Boolean> selectable() {
-        DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
+        DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.createWithConfig(DefaultBinaryAssertion.class, this.propertyAssertionConfig, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 return core.isSelectable();
@@ -215,7 +215,7 @@ public class DefaultUiElementAssertions implements UiElementAssertions {
 
     @Override
     public RectAssertion bounds() {
-        DefaultRectAssertion assertion = propertyAssertionFactory.create(DefaultRectAssertion.class, new AssertionProvider<Rectangle>() {
+        DefaultRectAssertion assertion = propertyAssertionFactory.createWithConfig(DefaultRectAssertion.class, this.propertyAssertionConfig, new AssertionProvider<Rectangle>() {
             @Override
             public Rectangle getActual() {
                 return core.getRect();
@@ -231,7 +231,7 @@ public class DefaultUiElementAssertions implements UiElementAssertions {
 
     @Override
     public QuantityAssertion<Integer> numberOfElements() {
-        DefaultQuantityAssertion assertion = propertyAssertionFactory.create(DefaultQuantityAssertion.class, new AssertionProvider<Integer>() {
+        DefaultQuantityAssertion assertion = propertyAssertionFactory.createWithConfig(DefaultQuantityAssertion.class, this.propertyAssertionConfig, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
                 try {
@@ -253,7 +253,7 @@ public class DefaultUiElementAssertions implements UiElementAssertions {
     public ImageAssertion screenshot() {
         final AtomicReference<File> screenshot = new AtomicReference<>();
         screenshot.set(core.takeScreenshot());
-        DefaultImageAssertion assertion = propertyAssertionFactory.create(DefaultImageAssertion.class, new AssertionProvider<File>() {
+        DefaultImageAssertion assertion = propertyAssertionFactory.createWithConfig(DefaultImageAssertion.class, this.propertyAssertionConfig, new AssertionProvider<File>() {
             @Override
             public File getActual() {
                 return screenshot.get();

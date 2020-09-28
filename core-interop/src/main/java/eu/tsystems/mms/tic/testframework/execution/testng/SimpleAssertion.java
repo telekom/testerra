@@ -120,6 +120,12 @@ public interface SimpleAssertion {
     default void assertBetween(BigDecimal actual, BigDecimal lower, BigDecimal higher) {
         assertBetween(actual, lower, higher, null);
     }
+    default void assertBetween(Object actual, Object lower, Object higher) {
+        assertBetween(actual, lower, higher, null);
+    }
+    default void assertBetween(Object actual, Object lower, Object higher, Object subject) {
+        assertBetween(toBigDecimal(actual), toBigDecimal(lower), toBigDecimal(higher), subject);
+    }
 
     void assertEquals(Object actual, Object expected, Object subject);
     void assertEquals(Collection<?> actual, Collection<?> expected, Object subject);

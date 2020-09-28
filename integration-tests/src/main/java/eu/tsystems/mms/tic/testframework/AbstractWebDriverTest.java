@@ -85,27 +85,27 @@ public abstract class AbstractWebDriverTest extends TesterraTest implements WebD
 
     public synchronized WebDriver getClassExclusiveWebDriver() {
         if (exclusiveSessionId == null) {
-            exclusiveSessionId = webdriverManager.createExclusiveSessionId(getWebDriver());
+            exclusiveSessionId = webDriverManager.createExclusiveSessionId(getWebDriver());
         }
-        return webdriverManager.getWebDriverBySessionId(exclusiveSessionId);
+        return webDriverManager.getWebDriverBySessionId(exclusiveSessionId);
     }
 
     @AfterClass
     public void closeClassExclusiveWebDriverSession() {
         if (this.exclusiveSessionId != null) {
-            webdriverManager.shutdownExclusiveSessionId(this.exclusiveSessionId);
+            webDriverManager.shutdownExclusiveSessionId(this.exclusiveSessionId);
             this.exclusiveSessionId = null;
         }
     }
 
     @Override
     public synchronized WebDriver getWebDriver() {
-        WebDriver webDriver = webdriverManager.getWebDriver();
+        WebDriver webDriver = webDriverManager.getWebDriver();
         try {
             webDriver.getWindowHandles();
         } catch (WebDriverException s) {
             log().error(s.getMessage());
-            webdriverManager.shutdownAllSessions(true); // shutdown all threwad drivers.
+            webDriverManager.shutdownAllSessions(true); // shutdown all threwad drivers.
         }
 
         return webDriver;

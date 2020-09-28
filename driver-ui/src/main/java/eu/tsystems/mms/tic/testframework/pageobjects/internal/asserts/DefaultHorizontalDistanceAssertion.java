@@ -36,7 +36,7 @@ public class DefaultHorizontalDistanceAssertion extends AbstractPropertyAssertio
 
     @Override
     public QuantityAssertion<Integer> toRightOf(TestableUiElement guiElement) {
-        return propertyAssertionFactory.create(DefaultQuantityAssertion.class, this, new AssertionProvider<Integer>() {
+        return propertyAssertionFactory.createWithParent(DefaultQuantityAssertion.class, this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
                 Rectangle referenceRect = guiElement.waitFor().bounds().getActual();
@@ -52,7 +52,7 @@ public class DefaultHorizontalDistanceAssertion extends AbstractPropertyAssertio
 
     @Override
     public QuantityAssertion<Integer> toLeftOf(TestableUiElement guiElement) {
-        return propertyAssertionFactory.create(DefaultQuantityAssertion.class, this, new AssertionProvider<Integer>() {
+        return propertyAssertionFactory.createWithParent(DefaultQuantityAssertion.class, this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
                 Rectangle referenceRect = guiElement.waitFor().bounds().getActual();

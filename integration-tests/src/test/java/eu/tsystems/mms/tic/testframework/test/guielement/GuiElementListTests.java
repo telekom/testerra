@@ -32,6 +32,17 @@ import org.testng.annotations.Test;
 
 public class GuiElementListTests extends AbstractTestSitesTest implements PageFactoryTest {
 
+
+    @Override
+    protected TestPage getTestPage() {
+        return TestPage.LIST;
+    }
+
+    @Override
+    public GuiElementListPage getPage() {
+        return pageFactory.createPage(GuiElementListPage.class, getWebDriver());
+    }
+
     @Test
     public void test_getSubElement_getList_byTagName() {
         GuiElementListPage page = getPage();
@@ -107,15 +118,5 @@ public class GuiElementListTests extends AbstractTestSitesTest implements PageFa
 
         GuiElement erkuProfileLink = tableRows.getList().get(tableRows.getNumberOfFoundElements() - 1).getSubElement(By.xpath(".//a"));
         erkuProfileLink.asserts().assertAttributeContains("href", "erku");
-    }
-
-    @Override
-    protected TestPage getTestPage() {
-        return TestPage.LIST;
-    }
-
-    @Override
-    public GuiElementListPage getPage() {
-        return pageFactory.createPage(GuiElementListPage.class, getWebDriver());
     }
 }

@@ -99,7 +99,7 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
 
     @Override
     public <MAPPED_TYPE> StringAssertion<MAPPED_TYPE> map(Function<? super TYPE, MAPPED_TYPE> mapFunction) {
-        return propertyAssertionFactory.create(DefaultStringAssertion.class, this, new AssertionProvider<MAPPED_TYPE>() {
+        return propertyAssertionFactory.createWithParent(DefaultStringAssertion.class, this, new AssertionProvider<MAPPED_TYPE>() {
             @Override
             public MAPPED_TYPE getActual() {
                 TYPE actual = provider.getActual();
@@ -119,7 +119,7 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
 
     @Override
     public QuantityAssertion<BigDecimal> absolute() {
-        return propertyAssertionFactory.create(DefaultQuantityAssertion.class, this, new AssertionProvider<BigDecimal>() {
+        return propertyAssertionFactory.createWithParent(DefaultQuantityAssertion.class, this, new AssertionProvider<BigDecimal>() {
             @Override
             public BigDecimal getActual() {
                 BigDecimal number;

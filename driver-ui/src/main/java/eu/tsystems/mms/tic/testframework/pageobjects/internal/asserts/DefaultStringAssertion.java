@@ -77,7 +77,7 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
 
     @Override
     public PatternAssertion matches(Pattern pattern) {
-        return propertyAssertionFactory.create(DefaultPatternAssertion.class, this, new AssertionProvider<Matcher>() {
+        return propertyAssertionFactory.createWithParent(DefaultPatternAssertion.class, this, new AssertionProvider<Matcher>() {
             @Override
             public Matcher getActual() {
                 return pattern.matcher(provider.getActual().toString());
@@ -95,7 +95,7 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
         final String wordsList = String.join("|", words);
         final Pattern wordsPattern = Pattern.compile("\\b(" + wordsList + ")\\b", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 
-        return propertyAssertionFactory.create(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
+        return propertyAssertionFactory.createWithParent(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 int found = 0;
@@ -117,7 +117,7 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
 
     @Override
     public QuantityAssertion<Integer> length() {
-        return propertyAssertionFactory.create(DefaultQuantityAssertion.class, this, new AssertionProvider<Integer>() {
+        return propertyAssertionFactory.createWithParent(DefaultQuantityAssertion.class, this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
                 return provider.getActual().toString().length();

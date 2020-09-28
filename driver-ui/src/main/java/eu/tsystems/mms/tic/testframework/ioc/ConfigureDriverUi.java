@@ -50,11 +50,9 @@ public class ConfigureDriverUi extends AbstractModule {
         bind(IWebDriverManager.class).to(DefaultWebDriverManager.class).in(Scopes.SINGLETON);
         bind(ElementLabelProvider.class).to(DefaultElementLabelProvider.class).in(Scopes.SINGLETON);
         bind(UiElementFinderFactory.class).to(DefaultUiElementFinderFactory.class).in(Scopes.SINGLETON);
+        bind(PropertyAssertionFactory.class).to(DefaultPropertyAssertionFactory.class).in(Scopes.SINGLETON);
 
         Multibinder<ModuleHook> hookBinder = Multibinder.newSetBinder(binder(), ModuleHook.class);
         hookBinder.addBinding().to(DriverUiHook.class).in(Scopes.SINGLETON);
-
-        // Instances
-        bind(PropertyAssertionFactory.class).to(DefaultPropertyAssertionFactory.class);
     }
 }

@@ -26,7 +26,6 @@ import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.utils.LogAssertUtils;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.io.File;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -36,7 +35,7 @@ public class GuiElementAdditionalTests extends AbstractTestSitesTest {
 
     @Test
     public void testT01_Upload() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getWebDriver();
         final File resourceFile = FileUtils.getResourceFile("testfiles/Test.txt");
         final String absoluteFilePath = resourceFile.getAbsolutePath();
 
@@ -48,7 +47,7 @@ public class GuiElementAdditionalTests extends AbstractTestSitesTest {
     @Test
     public void testT02_SensibleData() {
 
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getWebDriver();
         GuiElement input = new GuiElement(driver, By.id("1")).sensibleData();
 
         Assert.assertTrue(input.isDisplayed());

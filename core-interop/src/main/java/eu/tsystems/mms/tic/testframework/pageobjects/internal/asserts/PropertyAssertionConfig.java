@@ -26,6 +26,4 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
  */
 public class PropertyAssertionConfig {
     public boolean throwErrors = false;
-    public int timeoutInSeconds = -1;
-    public long pauseIntervalMs = 0;
 }

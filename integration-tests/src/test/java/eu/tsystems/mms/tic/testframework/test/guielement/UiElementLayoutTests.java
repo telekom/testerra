@@ -33,7 +33,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
 
     @Override
     public WebTestPage getPage() {
-        return pageFactory.createPage(WebTestPage.class, getWebDriver());
+        return pageFactory.createPage(WebTestPage.class, getClassExclusiveWebDriver());
     }
 
     @Test

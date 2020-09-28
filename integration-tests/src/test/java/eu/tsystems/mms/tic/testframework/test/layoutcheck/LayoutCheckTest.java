@@ -26,7 +26,6 @@ import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.LocateProvider;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.Test;
 
 public class LayoutCheckTest extends AbstractTestSitesTest implements LocateProvider {
@@ -39,7 +38,7 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements LocateProv
     }
 
     private GuiElement getGuiElementQa(final String qaTag) {
-        return new GuiElement(WebDriverManager.getWebDriver(), Locate.byQa(qaTag));
+        return new GuiElement(getWebDriver(), Locate.byQa(qaTag));
     }
 
     @Test
@@ -84,7 +83,7 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements LocateProv
 
     @Test
     public void testCheckPageLayout() {
-        LayoutCheck.assertScreenshot(WebDriverManager.getWebDriver(), "LayoutTestPage", 1);
+        LayoutCheck.assertScreenshot(getWebDriver(), "LayoutTestPage", 1);
     }
 
 }

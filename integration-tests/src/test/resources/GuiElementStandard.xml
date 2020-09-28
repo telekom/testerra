@@ -14,20 +14,7 @@
             <class name="eu.tsystems.mms.tic.testframework.test.guielement.GuiElementExceptionsTest"/>
             <class name="eu.tsystems.mms.tic.testframework.test.guielement.GuiElementListTests"/>
             <class name="eu.tsystems.mms.tic.testframework.test.guielement.GuiElementShadowRootTest"/>
-        </classes>
-    </test>
-
-    <test name="GuiElement Layout Features" parallel="methods">
-        <groups>
-            <run>
-                <exclude name="SEQUENTIAL"/>
-            </run>
-        </groups>
-        <classes>
             <class name="eu.tsystems.mms.tic.testframework.test.layoutcheck.LayoutCheckTest"/>
         </classes>
     </test>
-
-
-
 </suite>

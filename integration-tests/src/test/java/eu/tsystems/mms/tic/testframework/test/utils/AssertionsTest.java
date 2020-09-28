@@ -114,7 +114,7 @@ public class AssertionsTest extends TesterraTest {
         assertion.assertStartsWith("a long time ago", "in the end");
     }
 
-    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp="Expected that »a fairytale« actual \\[a long time ago\\] begins with \\[in the end\\]")
+    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp="Expected that »a fairytale« actual \\[a long time ago\\] starts with \\[in the end\\]")
     public void testStartsWith_fails_message() {
         assertion.assertStartsWith("a long time ago", "in the end", "a fairytale");
     }

@@ -138,7 +138,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     @Test
     public void test_GuiElement_clear() {
         WebTestPage page = getPage();
-        UiElement element = page.findById(5);
+        UiElement element = page.getFinder().findById(5);
         element.sendKeys("Test");
         element.clear().expectThat().text().is("");
     }
@@ -293,7 +293,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     @Test
     public void test_Attributes() {
         WebTestPage page = getPage();
-        UiElement attributes = page.findByQa("section/attributeTest");
+        UiElement attributes = page.getFinder().findByQa("section/attributeTest");
 
         //attributes.value("ariaExpanded").is("true");
         attributes.expectThat().value("aria-expanded").is("true");
@@ -304,13 +304,35 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     @Test
     public void test_retry() {
         WebTestPage page = getPage();
-        UiElement disableMyselfBtn = page.findById("disableMyselfBtn");
-        disableMyselfBtn.expectThat().enabled().is(true);
+        UiElement disableMyselfBtn = page.getFinder().findById("disableMyselfBtn");
+        disableMyselfBtn.expectThat().enabled(true);
+        long startTime = System.currentTimeMillis();
         Control.retryFor(10).withTimeout(0,() -> {
             disableMyselfBtn.click();
-            disableMyselfBtn.expectThat().enabled().is(false);
+            disableMyselfBtn.expectThat().enabled(false);
         });
-        disableMyselfBtn.expectThat().enabled().is(false);
+        long durationSeconds = (System.currentTimeMillis() - startTime)/1000;
+        Assert.assertGreaterEqualThan(durationSeconds, 5, "Sequence duration");
+        disableMyselfBtn.expectThat().enabled(false);
+    }
+
+    @Test
+    public void test_retry_failed() {
+        WebTestPage page = getPage();
+        UiElement disableMyselfBtn = page.getFinder().findById("disableMyselfBtn");
+        disableMyselfBtn.expectThat().enabled(true);
+        long startTime = System.currentTimeMillis();
+        try {
+            Control.retryFor(3).withTimeout(0, () -> {
+                disableMyselfBtn.click();
+                disableMyselfBtn.expectThat().enabled(false);
+            });
+        } catch (Exception e) {
+            Assert.assertStartsWith(e.getMessage(), "Retry sequence timed out", e.getClass().getSimpleName());
+            Assert.assertEndsWith(e.getCause().getMessage(), "@enabled« actual [true] is one of [false, 'off', '0', 'no']", e.getCause().getClass().getSimpleName());
+        }
+        long durationSeconds = (System.currentTimeMillis() - startTime)/1000;
+        Assert.assertLowerEqualThan(durationSeconds, 4, "Sequence duration");
     }
 
     @Test(expectedExceptions = TimeoutException.class)

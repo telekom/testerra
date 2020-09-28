@@ -21,18 +21,14 @@
  */
  package eu.tsystems.mms.tic.testframework.core.pageobjects.testdata;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
-import eu.tsystems.mms.tic.testframework.pageobjects.XPath;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFinder;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 /**
  * Page base class for responsive page factory tests.
  */
-public class BasePage extends Page implements UiElementFinder {
+public class BasePage extends Page {
     /**
      * Constructor for existing sessions.
      *
@@ -42,33 +38,7 @@ public class BasePage extends Page implements UiElementFinder {
         super(driver);
     }
 
-    @Override
-    public UiElement find(Locator locator) {
-        return super.find(locator);
-    }
-
-    @Override
-    public UiElement findById(Object id) {
-        return super.findById(id);
-    }
-
-    @Override
-    public UiElement findByQa(String qa) {
-        return super.findByQa(qa);
-    }
-
-    @Override
-    public UiElement find(By by) {
-        return super.find(by);
-    }
-
-    @Override
-    public UiElement find(XPath xPath) {
-        return super.find(xPath);
-    }
-
-    @Override
-    public UiElement findDeep(Locator locator) {
-        return super.findDeep(locator);
+    public UiElementFinder getFinder() {
+        return super.getFinder();
     }
 }

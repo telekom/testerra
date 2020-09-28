@@ -50,20 +50,20 @@ public class UiElementLayoutCheckTests extends AbstractTestSitesTest implements 
     @Test
     public void testCheckElementLayout() {
         BasePage page = getPage();
-        UiElement guiElement = page.findByQa("section/layoutTestArticle");
+        UiElement guiElement = page.getFinder().findByQa("section/layoutTestArticle");
         guiElement.expectThat().screenshot().pixelDistance("TestArticle").isLowerThan(1.3);
 
-        guiElement = page.findByQa("section/invisibleTestArticle");
+        guiElement = page.getFinder().findByQa("section/invisibleTestArticle");
         guiElement.expectThat().screenshot().pixelDistance("InvisibleTestArticle").isLowerThan(1.3);
     }
 
     @Test
     public void testCheckElementVisibility() {
         BasePage page = getPage();
-        UiElement guiElement = page.findByQa("section/layoutTestArticle");
+        UiElement guiElement = page.getFinder().findByQa("section/layoutTestArticle");
         guiElement.expectThat().visible(true).is(true);
 
-        guiElement = page.findByQa("section/invisibleTestArticle");
+        guiElement = page.getFinder().findByQa("section/invisibleTestArticle");
         guiElement.expectThat().visible(false).is(false);
 
         // Scroll to offset doesn't work
@@ -78,7 +78,7 @@ public class UiElementLayoutCheckTests extends AbstractTestSitesTest implements 
     @Fails(description = "This test should fail")
     public void testCheckElementLayoutDistance() {
         BasePage page = getPage();
-        UiElement guiElement = page.findByQa("section/layoutTestArticle");
+        UiElement guiElement = page.getFinder().findByQa("section/layoutTestArticle");
         Control.retryFor(10).withTimeout(0, () -> guiElement.expectThat().screenshot().pixelDistance("TestArticleFailed").isLowerThan(1));
     }
 

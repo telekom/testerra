@@ -60,8 +60,6 @@ public class DefaultPropertyAssertionFactory implements PropertyAssertionFactory
                 assertion.config.timeoutInSeconds = overrides.getTimeoutInSeconds();
                 assertion.config.pauseIntervalMs = UiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong();
             }
-
-            throwErrors = false;
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             log().error(String.format("Unable to create assertion: %s", e.getMessage()), e);
             assertion = null;

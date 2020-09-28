@@ -22,17 +22,21 @@
 package eu.tsystems.mms.tic.testframework.testing;
 
 import com.google.inject.Inject;
+import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.Sequence;
 import java.util.HashSet;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Default implementation of {@link TestController}
  * @author Mike Reiche
  */
-public class DefaultTestController implements TestController {
+public class DefaultTestController implements TestController, Loggable {
 
     private final TestController.Overrides overrides;
     private final ThreadLocal<HashSet<RunnableConfiguration>> threadLocalConfigurations = new ThreadLocal<>();
@@ -151,17 +155,26 @@ public class DefaultTestController implements TestController {
             @Override
             Runnable setup(Runnable runnable) {
                 return () -> {
+
                     Sequence sequence = new Sequence()
                             .setTimeoutMs(seconds * 1000);
 
+                    AtomicReference<Throwable> atomicThrowable = new AtomicReference<>();
+                    AtomicBoolean atomicSuccess = new AtomicBoolean();
                     sequence.run(() -> {
                         try {
                             runnable.run();
-                            return true;
-                        } catch (Throwable e) {
-                            return false;
+                            atomicSuccess.set(true);
+                        } catch (Throwable throwable) {
+                            atomicThrowable.set(throwable);
+                            atomicSuccess.set(false);
                         }
+                        return atomicSuccess.get();
                     });
+
+                    if (!atomicSuccess.get()) {
+                        throw new TimeoutException("Retry sequence timed out after " + sequence.getDurationMs() / 1000 + "s", atomicThrowable.get());
+                    }
                 };
             }
         });

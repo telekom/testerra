@@ -23,7 +23,7 @@
 package eu.tsystems.mms.tic.testframework.test.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.WebTestPage;
+import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.BasePage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.LocateProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
@@ -201,7 +201,7 @@ public abstract class AbstractGuiElementTest extends AbstractTestSitesTest imple
     }
 
     /**
-     * @deprecated Use {@link WebTestPage#find(By)} instead
+     * @deprecated Use {@link BasePage#getFinder()}} instead
      */
     @Deprecated
     public GuiElement getGuiElementBy(By locator) {

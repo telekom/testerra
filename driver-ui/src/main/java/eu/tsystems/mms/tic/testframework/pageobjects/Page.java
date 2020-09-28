@@ -30,6 +30,7 @@ import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.NameableChild;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFinder;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultPageAssertions;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PageAssertions;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
@@ -188,7 +189,7 @@ public class Page extends AbstractPage implements TestablePage, Nameable<Page> {
         return waitForIsNotTextPresent(text);
     }
 
-    protected final DefaultUiElementFinder getFinder() {
+    protected UiElementFinder getFinder() {
         if (this.finder == null) {
             this.finder = new DefaultUiElementFinder(getWebDriver());
         }

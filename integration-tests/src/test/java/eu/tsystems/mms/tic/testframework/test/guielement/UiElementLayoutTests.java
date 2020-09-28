@@ -40,24 +40,24 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
     @Test
     public void testT01_LeftOf() {
         WebTestPage page = getPage();
-        UiElement left = page.findById(1);
-        UiElement right = page.find(By.linkText("Open again"));
+        UiElement left = page.getFinder().findById(1);
+        UiElement right = page.getFinder().find(By.linkText("Open again"));
         left.expectThat().bounds().leftOf(right).is(true);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testT02_LeftOfFails() {
         WebTestPage page = getPage();
-        UiElement left = page.findById(1);
-        UiElement right =  page.find(By.linkText("Open again"));
+        UiElement left = page.getFinder().findById(1);
+        UiElement right =  page.getFinder().find(By.linkText("Open again"));
         Control.withTimeout(0, () -> right.expectThat().bounds().leftOf(left).is(true));
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testT03_LeftOfFailsSameCoords() {
         WebTestPage page = getPage();
-        UiElement left = page.findById(1);
-        UiElement right = page.findById(5);
+        UiElement left = page.getFinder().findById(1);
+        UiElement right = page.getFinder().findById(5);
         Control.withTimeout(0, () -> right.expectThat().bounds().leftOf(left).is(true));
     }
 
@@ -68,24 +68,24 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
     @Test
     public void testT11_RightOf() {
         WebTestPage page = getPage();
-        UiElement left = page.findById(1);
-        UiElement right = page.find(By.linkText("Open again"));
+        UiElement left = page.getFinder().findById(1);
+        UiElement right = page.getFinder().find(By.linkText("Open again"));
         right.expectThat().bounds().rightOf(left).is(true);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testT12_RightOfFails() {
         WebTestPage page = getPage();
-        UiElement left = page.findById(1);
-        UiElement right = page.find(By.linkText("Open again"));
+        UiElement left = page.getFinder().findById(1);
+        UiElement right = page.getFinder().find(By.linkText("Open again"));
         Control.withTimeout(0, () -> left.expectThat().bounds().rightOf(right).is(true));
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testT13_RightOfFailsSameCoords() {
         WebTestPage page = getPage();
-        UiElement left = page.findById(1);
-        UiElement right = page.findById(5);
+        UiElement left = page.getFinder().findById(1);
+        UiElement right = page.getFinder().findById(5);
         Control.withTimeout(0, () -> left.expectThat().bounds().rightOf(right).is(true));
     }
 
@@ -96,16 +96,16 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
     @Test
     public void testT21_Above()  {
         WebTestPage page = getPage();
-        UiElement oben = page.findById(1);
-        UiElement unten = page.findById(5);
+        UiElement oben = page.getFinder().findById(1);
+        UiElement unten = page.getFinder().findById(5);
         oben.expectThat().bounds().above(unten).is(true);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testT22_AboveFails() {
         WebTestPage page = getPage();
-        UiElement oben = page.findById(1);
-        UiElement unten = page.findById(5);
+        UiElement oben = page.getFinder().findById(1);
+        UiElement unten = page.getFinder().findById(5);
         Control.withTimeout(0, () -> unten.expectThat().bounds().above(oben).is(true));
     }
 
@@ -116,16 +116,16 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
     @Test
     public void testT31_Below() {
         WebTestPage page = getPage();
-        UiElement oben = page.findById(1);
-        UiElement unten = page.findById(5);
+        UiElement oben = page.getFinder().findById(1);
+        UiElement unten = page.getFinder().findById(5);
         unten.expectThat().bounds().below(oben).is(true);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testT32_BelowFails() {
         WebTestPage page = getPage();
-        UiElement oben = page.findById(1);
-        UiElement unten = page.findById(5);
+        UiElement oben = page.getFinder().findById(1);
+        UiElement unten = page.getFinder().findById(5);
         Control.withTimeout(0, () -> oben.expectThat().bounds().below(unten).is(true));
     }
 
@@ -136,24 +136,24 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
     @Test
     public void testT41_SameTop() {
         WebTestPage page = getPage();
-        UiElement e1 = page.findById(1).find(By.xpath("./.."));
-        UiElement e2 = page.findById(11).find(By.xpath("./.."));
+        UiElement e1 = page.getFinder().findById(1).find(By.xpath("./.."));
+        UiElement e2 = page.getFinder().findById(11).find(By.xpath("./.."));
         e1.expectThat().bounds().fromTop().toTopOf(e2).is(0);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testT42_SameTopFails() {
         WebTestPage page = getPage();
-        UiElement e1 = page.findById(1).find(By.xpath("./.."));
-        UiElement e2 = page.findById(11);
+        UiElement e1 = page.getFinder().findById(1).find(By.xpath("./.."));
+        UiElement e2 = page.getFinder().findById(11);
         Control.withTimeout(0, () -> e1.expectThat().bounds().fromTop().toTopOf(e2).is(0));
     }
 
     @Test
     public void testT43_SameTopWithDelta() {
         WebTestPage page = getPage();
-        UiElement e1 = page.findById(1).find(By.xpath("./.."));
-        UiElement e2 = page.findById(11);
+        UiElement e1 = page.getFinder().findById(1).find(By.xpath("./.."));
+        UiElement e2 = page.getFinder().findById(11);
         e1.expectThat().bounds().fromTop().toTopOf(e2).absolute().isLowerEqualThan(20);
     }
 
@@ -164,24 +164,24 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
     @Test
     public void testT51_SameBottom() {
         WebTestPage page = getPage();
-        UiElement e1 = page.findById(1).find(By.xpath("./.."));
-        UiElement e2 = page.findById(11).find(By.xpath("./.."));
+        UiElement e1 = page.getFinder().findById(1).find(By.xpath("./.."));
+        UiElement e2 = page.getFinder().findById(11).find(By.xpath("./.."));
         e1.expectThat().bounds().fromBottom().toBottomOf(e2).is(0);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testT52_SameBottomFails() {
         WebTestPage page = getPage();
-        UiElement e1 = page.findById(1).find(By.xpath("./.."));
-        UiElement e2 = page.findById(11);
+        UiElement e1 = page.getFinder().findById(1).find(By.xpath("./.."));
+        UiElement e2 = page.getFinder().findById(11);
         Control.withTimeout(0, () -> e1.expectThat().bounds().fromBottom().toBottomOf(e2).is(0));
     }
 
     @Test
     public void testT53_SameBottomWithDelta() {
         WebTestPage page = getPage();
-        UiElement e1 = page.findById(1).find(By.xpath("./.."));
-        UiElement e2 = page.findById(11);
+        UiElement e1 = page.getFinder().findById(1).find(By.xpath("./.."));
+        UiElement e2 = page.getFinder().findById(11);
         e1.expectThat().bounds().fromBottom().toBottomOf(e2).absolute().isLowerEqualThan(311);
     }
 
@@ -192,24 +192,24 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
     @Test
     public void testT61_SameLeft() {
         WebTestPage page = getPage();
-        UiElement e1 = page.findById(1);
-        UiElement e2 = page.findById(5);
+        UiElement e1 = page.getFinder().findById(1);
+        UiElement e2 = page.getFinder().findById(5);
         e1.expectThat().bounds().fromLeft().toLeftOf(e2).is(0);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testT62_SameLeftFails() {
         WebTestPage page = getPage();
-        UiElement e1 = page.findById(1);
-        UiElement e2 = page.findById(3);
+        UiElement e1 = page.getFinder().findById(1);
+        UiElement e2 = page.getFinder().findById(3);
         Control.withTimeout(0, () -> e1.expectThat().bounds().fromLeft().toLeftOf(e2).is(0));
     }
 
     @Test
     public void testT63_SameLeftWithDelta() {
         WebTestPage page = getPage();
-        UiElement e1 = page.findById(1);
-        UiElement e2 = page.findById(3);
+        UiElement e1 = page.getFinder().findById(1);
+        UiElement e2 = page.getFinder().findById(3);
         QuantityAssertion<Integer> integerQuantityAssertion = e1.expectThat().bounds().fromLeft().toLeftOf(e2);
         integerQuantityAssertion.map(integer -> Math.abs(integer)).isLowerEqualThan(20);
         integerQuantityAssertion.absolute().isLowerEqualThan(20);
@@ -222,24 +222,24 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
     @Test
     public void testT71_SameRight() {
         WebTestPage page = getPage();
-        UiElement e1 = page.findById(1);
-        UiElement e2 = page.findById(5);
+        UiElement e1 = page.getFinder().findById(1);
+        UiElement e2 = page.getFinder().findById(5);
         e1.expectThat().bounds().fromRight().toRightOf(e2).is(0);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testT72_SameRightFails() {
         WebTestPage page = getPage();
-        UiElement e1 = page.findById(1);
-        UiElement e2 = page.findById(3);
+        UiElement e1 = page.getFinder().findById(1);
+        UiElement e2 = page.getFinder().findById(3);
         Control.withTimeout(0, () -> e1.expectThat().bounds().fromRight().toRightOf(e2).is(0));
     }
 
     @Test
     public void testT73_SameRightWithDelta() {
         WebTestPage page = getPage();
-        UiElement e1 = page.findById(11);
-        UiElement e2 = page.findById(12);
+        UiElement e1 = page.getFinder().findById(11);
+        UiElement e2 = page.getFinder().findById(12);
         e1.expectThat().bounds().fromRight().toRightOf(e2).absolute().isLowerEqualThan(150);
     }
 

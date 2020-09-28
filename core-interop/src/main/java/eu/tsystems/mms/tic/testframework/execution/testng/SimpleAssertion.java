@@ -93,6 +93,12 @@ public interface SimpleAssertion {
     default void assertGreaterEqualThan(BigDecimal actual, BigDecimal expected) {
         assertGreaterEqualThan(actual, expected, null);
     }
+    default void assertGreaterEqualThan(Object actual, Object expected) {
+        assertGreaterEqualThan(actual, expected, null);
+    }
+    default void assertGreaterEqualThan(Object actual, Object expected, Object subject) {
+        assertGreaterEqualThan(toBigDecimal(actual), toBigDecimal(expected), subject);
+    }
 
     void assertLowerThan(BigDecimal actual, BigDecimal expected, Object subject);
     default void assertLowerThan(BigDecimal actual, BigDecimal expected) {
@@ -102,6 +108,12 @@ public interface SimpleAssertion {
     void assertLowerEqualThan(BigDecimal actual, BigDecimal expected, Object subject);
     default void assertLowerEqualThan(BigDecimal actual, BigDecimal expected) {
         assertLowerEqualThan(actual, expected, null);
+    }
+    default void assertLowerEqualThan(Object actual, Object expected) {
+        assertLowerEqualThan(actual, expected, null);
+    }
+    default void assertLowerEqualThan(Object actual, Object expected, Object subject) {
+        assertLowerEqualThan(this.toBigDecimal(actual), this.toBigDecimal(expected), subject);
     }
 
     void assertBetween(BigDecimal actual, BigDecimal lower, BigDecimal higher, Object subject);

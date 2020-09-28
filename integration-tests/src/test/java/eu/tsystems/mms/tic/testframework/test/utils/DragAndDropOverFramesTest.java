@@ -26,6 +26,8 @@ import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.annotations.Test;
 
 public class DragAndDropOverFramesTest extends AbstractDragAndDropTest {
@@ -33,11 +35,6 @@ public class DragAndDropOverFramesTest extends AbstractDragAndDropTest {
     @Override
     public TestPage getTestPage() {
         return TestPage.DRAG_AND_DROP_OVER_FRAMES;
-    }
-
-    @Override
-    protected void execute(WebDriver driver, GuiElement sourceGuiElement, GuiElement destinationGuiElement) {
-
     }
 
     private GuiElement[] beforeDragAndDropFrames() {
@@ -64,7 +61,19 @@ public class DragAndDropOverFramesTest extends AbstractDragAndDropTest {
         GuiElement sourceGuiElement = guiElements[0];
         GuiElement destinationGuiElement = guiElements[1];
 
-        execute(getWebDriver(), sourceGuiElement, destinationGuiElement);
+        sourceGuiElement.findWebElement(sourceWebElement -> {
+            Actions builder = new Actions(sourceGuiElement.getWebDriver());
+            builder.clickAndHold(sourceWebElement);
+            Action dragAction = builder.build();
+            dragAction.perform();
+
+            destinationGuiElement.findWebElement(targetWebElement -> {
+                builder.moveToElement(targetWebElement);
+                builder.release(targetWebElement);
+                Action dropAction = builder.build();
+                dropAction.perform();
+            });
+        });
         checkResultFrames(destinationGuiElement);
     }
 }

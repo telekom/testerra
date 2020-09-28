@@ -19,49 +19,40 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.test.utils;
+package eu.tsystems.mms.tic.testframework.test.utils;
 
+import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.utils.MouseActions;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.interactions.Action;
-import org.openqa.selenium.interactions.Actions;
+import org.testng.annotations.Test;
 
 public class DragAndDropJSTest extends AbstractDragAndDropTest {
 
-    /**
-     * @see {https://github.com/seleniumhq/selenium-google-code-issue-archive/issues/4202}
-     */
-    @Override
-    protected void execute(WebDriver driver, GuiElement sourceGuiElement, GuiElement destinationGuiElement) {
-        //MouseActions.dragAndDropJS(sourceGuiElement, destinationGuiElement);
-
-        sourceGuiElement.findWebElement(sourceWebElement -> {
-            Actions builder = new Actions(driver);
-            builder.clickAndHold(sourceWebElement);
-            Action dragAction = builder.build();
-            dragAction.perform();
-
-            destinationGuiElement.findWebElement(targetWebElement -> {
-                builder.moveToElement(targetWebElement);
-                builder.release(targetWebElement);
-                Action dropAction = builder.build();
-                dropAction.perform();
-            });
-        });
-//
-//        driver.switchTo().defaultContent();
-//        Actions builder = new Actions(driver);
-//        builder.clickAndHold(from);
-//        Action action = builder.build();
-//        action.perform();
-//
-//        driver.switchTo().frame("<to element frame id>");
-//
-//        builder.moveToElement(to);
-//        builder.release(to);
-//        action = builder.build();
-//        action.perform();
-
+    private GuiElement[] beforeDragAndDropSimple() {
+        final WebDriver driver = getWebDriver();
+        GuiElement sourceGuiElement = new GuiElement(driver, sourceLocatorSimple);
+        GuiElement destinationGuiElement = new GuiElement(driver, By.id("divRectangle"));
+        return new GuiElement[]{sourceGuiElement, destinationGuiElement};
     }
 
+    private void checkResultSimple(GuiElement destinationGuiElement) {
+        final GuiElement subElement = destinationGuiElement.getSubElement(sourceLocatorSimple);
+        subElement.asserts().assertIsDisplayed();
+    }
+
+
+    @Test
+    @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
+    public void testT01_DragAndDrop() {
+        final GuiElement[] guiElements = beforeDragAndDropSimple();
+
+        GuiElement sourceGuiElement = guiElements[0];
+        GuiElement destinationGuiElement = guiElements[1];
+
+        MouseActions.dragAndDropJS(sourceGuiElement, destinationGuiElement);
+
+        checkResultSimple(destinationGuiElement);
+    }
 }

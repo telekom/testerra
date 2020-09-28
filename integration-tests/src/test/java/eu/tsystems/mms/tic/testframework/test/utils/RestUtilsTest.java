@@ -25,8 +25,8 @@ package eu.tsystems.mms.tic.testframework.test.utils;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.RESTUtils;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -49,7 +49,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
  *
  * @author Eric Kubenka
  */
-public class RestUtilsTest extends AbstractWebDriverTest implements Loggable {
+public class RestUtilsTest extends TesterraTest implements Loggable {
 
 
     private static final int WIREMOCK_SERVER_PORT = 81;

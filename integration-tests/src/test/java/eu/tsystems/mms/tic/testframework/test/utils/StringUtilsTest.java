@@ -21,13 +21,13 @@
  */
  package eu.tsystems.mms.tic.testframework.test.utils;
 
-import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.testng.annotations.Test;
 
-public class StringUtilsTest extends AbstractWebDriverTest {
+public class StringUtilsTest extends TesterraTest {
 
     private String stringEmptyAssertMessage = "String is empty";
     private String stringLengthAssertMessage = "String length";

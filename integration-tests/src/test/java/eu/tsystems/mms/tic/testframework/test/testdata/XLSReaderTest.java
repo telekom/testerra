@@ -21,9 +21,9 @@
  */
  package eu.tsystems.mms.tic.testframework.test.testdata;
 
-import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.testdata.XLSTestDataReader;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import java.io.File;
 import java.util.List;
@@ -36,7 +36,7 @@ import org.testng.annotations.Test;
  *
  * @author pele/expanded by pimi
  */
-public class XLSReaderTest extends AbstractWebDriverTest {
+public class XLSReaderTest extends TesterraTest {
 
     /**
      * Data provider for reading multiple documents from resources.

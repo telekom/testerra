@@ -33,6 +33,7 @@ import java.lang.reflect.Method;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 
@@ -52,10 +53,21 @@ public abstract class AbstractWebDriverTest extends TesterraTest implements WebD
     //    }
 
     private String exclusiveSessionId;
-    private boolean useExclusiveSessions;
+    private boolean useExclusiveWebDriver;
 
-    protected void enableExclusiveSession() {
-        this.useExclusiveSessions = true;
+    protected void setUseExclusiveTestSession() {
+        this.setUseExclusiveTestSession(true);
+    }
+    protected void setUseExclusiveTestSession(boolean exclusive) {
+        this.useExclusiveWebDriver = exclusive;
+    }
+
+    @AfterClass
+    public void closeExclusiveSession() {
+        if (this.exclusiveSessionId != null) {
+            webdriverManager.shutdownExclusiveSessionId(this.exclusiveSessionId);
+            this.exclusiveSessionId = null;
+        }
     }
 
     @AfterSuite(alwaysRun = true)
@@ -90,7 +102,7 @@ public abstract class AbstractWebDriverTest extends TesterraTest implements WebD
     @Override
     public WebDriver getWebDriver() {
         WebDriver webDriver;
-        if (useExclusiveSessions) {
+        if (useExclusiveWebDriver) {
             if (exclusiveSessionId == null) {
                 exclusiveSessionId = webdriverManager.createExclusiveSessionId(webdriverManager.getWebDriver());
             }

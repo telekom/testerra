@@ -21,12 +21,12 @@
  */
  package eu.tsystems.mms.tic.testframework.test.testdata;
 
-import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.testdata.XLSTestDataReader;
 import eu.tsystems.mms.tic.testframework.testdata.XLSWriter;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -38,7 +38,7 @@ import org.testng.annotations.Test;
  *
  * @author pele
  */
-public class XLSWriterTest extends AbstractWebDriverTest {
+public class XLSWriterTest extends TesterraTest {
 
     public static final String XLS = "testfiles/TestXLSWriter.xls";
     public static final String XLSX = "testfiles/TestXLSWriter.xlsx";

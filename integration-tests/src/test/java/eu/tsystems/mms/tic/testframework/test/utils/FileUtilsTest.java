@@ -21,9 +21,9 @@
  */
  package eu.tsystems.mms.tic.testframework.test.utils;
 
-import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.exceptions.FileNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import java.io.File;
@@ -35,7 +35,7 @@ import java.nio.file.Paths;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
-public class FileUtilsTest extends AbstractWebDriverTest {
+public class FileUtilsTest extends TesterraTest {
 
     private static final String testfile = "testfiles/Test.txt";
     private static final Path localFilePath = Paths.get(System.getProperty("user.dir"), "FileUtilsTest.txt");

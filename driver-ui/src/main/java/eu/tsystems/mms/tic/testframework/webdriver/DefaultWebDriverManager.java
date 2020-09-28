@@ -47,6 +47,11 @@ public class DefaultWebDriverManager implements IWebDriverManager {
     }
 
     @Override
+    public void shutdownExclusiveSessionId(String sessionId) {
+        WebDriverManager.shutdownExclusiveSession(sessionId);
+    }
+
+    @Override
     public void shutdownAllSessions(boolean force) {
         if (force) {
             WebDriverManager.forceShutdown();

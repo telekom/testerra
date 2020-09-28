@@ -34,7 +34,12 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
 
     @BeforeClass
     public void before() {
-        this.enableExclusiveSession();
+        this.setUseExclusiveTestSession();
+    }
+
+    @Override
+    public WebTestPage getPage() {
+        return pageFactory.createPage(WebTestPage.class, getWebDriver());
     }
 
     @Test
@@ -260,10 +265,5 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
      */
     public void testT82_Checkon_Assert() {
 
-    }
-
-    @Override
-    public WebTestPage getPage() {
-        return pageFactory.createPage(WebTestPage.class, getWebDriver());
     }
 }

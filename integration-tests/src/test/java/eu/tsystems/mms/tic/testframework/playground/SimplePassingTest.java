@@ -21,10 +21,10 @@
  */
 package eu.tsystems.mms.tic.testframework.playground;
 
-import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import org.testng.annotations.Test;
 
-public class SimplePassingTest extends AbstractWebDriverTest {
+public class SimplePassingTest extends TesterraTest {
 
     @Test
     public void testPassing() {

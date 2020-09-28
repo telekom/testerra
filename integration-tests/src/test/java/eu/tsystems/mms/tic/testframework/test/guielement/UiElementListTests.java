@@ -34,7 +34,7 @@ public class UiElementListTests extends AbstractTestSitesTest implements PageFac
 
     @BeforeClass
     public void before() {
-        this.enableExclusiveSession();
+        this.setUseExclusiveTestSession();
     }
 
     public UiElementListPage getPage() {

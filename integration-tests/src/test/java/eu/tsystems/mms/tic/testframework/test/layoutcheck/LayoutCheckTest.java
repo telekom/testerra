@@ -31,6 +31,8 @@ import org.testng.annotations.Test;
 
 public class LayoutCheckTest extends AbstractTestSitesTest implements LocateProvider {
 
+
+
     @Override
     protected TestPage getTestPage() {
         return TestPage.LAYOUT;

@@ -21,11 +21,11 @@
  */
  package eu.tsystems.mms.tic.testframework.test.common;
 
-import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import org.testng.annotations.Test;
 
-public class PropertyManagerTest extends AbstractWebDriverTest {
+public class PropertyManagerTest extends TesterraTest {
 
     /**
      * property test with system properties and replacement system

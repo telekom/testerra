@@ -21,7 +21,7 @@
  */
 package eu.tsystems.mms.tic.testframework.test.webdrivermanager;
 
-import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerUtils;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -38,7 +38,7 @@ import org.testng.annotations.Test;
  *
  * @author Eric Kubenka
  */
-public class WebDriverManagerUtilsTest extends AbstractWebDriverTest {
+public class WebDriverManagerUtilsTest extends TesterraTest {
 
     @Test
     public void testT01_AddProxyToCapabilities() throws MalformedURLException {

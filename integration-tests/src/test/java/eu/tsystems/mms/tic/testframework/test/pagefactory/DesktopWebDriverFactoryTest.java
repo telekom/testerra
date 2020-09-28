@@ -22,7 +22,7 @@
 
 package eu.tsystems.mms.tic.testframework.test.pagefactory;
 
-import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverCapabilities;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -33,7 +33,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.annotations.Test;
 
-public class DesktopWebDriverFactoryTest extends AbstractWebDriverTest {
+public class DesktopWebDriverFactoryTest extends TesterraTest {
 
     @Test
     public void testT01_BaseURL() throws Exception {

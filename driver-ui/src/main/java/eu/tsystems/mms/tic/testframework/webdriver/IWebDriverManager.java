@@ -32,6 +32,7 @@ public interface IWebDriverManager extends WebDriverRetainer {
     String createExclusiveSessionId(WebDriver webDriver);
     IWebDriverFactory getFactoryForBrowser(String browser);
     WebDriver getWebDriverBySessionId(String sessionId);
+    void shutdownExclusiveSessionId(String sessionId);
     void shutdownAllSessions(boolean force);
     default void shutdownAllSessions() {
         this.shutdownAllSessions(false);

@@ -21,13 +21,13 @@
  */
  package eu.tsystems.mms.tic.testframework.test.utils;
 
-import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.NumberUtils;
 import java.util.ArrayList;
 import java.util.List;
 import org.testng.annotations.Test;
 
-public class NumberUtilsTest extends AbstractWebDriverTest {
+public class NumberUtilsTest extends TesterraTest {
 
     /**
      * checks the average value of the list

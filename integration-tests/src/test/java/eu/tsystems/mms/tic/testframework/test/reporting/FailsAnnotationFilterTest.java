@@ -21,9 +21,9 @@
  */
  package eu.tsystems.mms.tic.testframework.test.reporting;
 
-import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.report.utils.FailsAnnotationFilter;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import org.testng.annotations.Test;
 
 /**
@@ -34,7 +34,7 @@ import org.testng.annotations.Test;
  *
  * @author erku
  */
-public class FailsAnnotationFilterTest extends AbstractWebDriverTest {
+public class FailsAnnotationFilterTest extends TesterraTest {
 
     private static String PROPERTY_ONE = "test.foobar.fails.annotation.test.property.one";
     private static String PROPERTY_TWO = "test.foobar.fails.annotation.test.property.two";

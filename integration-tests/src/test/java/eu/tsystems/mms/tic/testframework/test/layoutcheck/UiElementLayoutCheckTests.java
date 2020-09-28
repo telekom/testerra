@@ -27,14 +27,13 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class UiElementLayoutCheckTests extends AbstractTestSitesTest implements Loggable, PageFactoryTest {
 
     @BeforeClass
     public void before() {
-        this.enableExclusiveSession();
+        this.setUseExclusiveTestSession();
     }
 
     @Override
@@ -42,7 +41,7 @@ public class UiElementLayoutCheckTests extends AbstractTestSitesTest implements 
         return TestPage.LAYOUT;
     }
 
-    @BeforeMethod
+    @Override
     public BasePage getPage() {
         return pageFactory.createPage(BasePage.class, getWebDriver());
     }

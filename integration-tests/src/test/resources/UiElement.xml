@@ -11,7 +11,7 @@
             <class name="eu.tsystems.mms.tic.testframework.test.guielement.UiElementTests"/>
             <class name="eu.tsystems.mms.tic.testframework.test.guielement.UiElementLayoutTests"/>
             <class name="eu.tsystems.mms.tic.testframework.test.guielement.UiElementListTests"/>
-            <class name="eu.tsystems.mms.tic.testframework.test.layoutcheck.LayoutCheckTest"/>
+            <class name="eu.tsystems.mms.tic.testframework.test.layoutcheck.UiElementLayoutCheckTests"/>
         </classes>
     </test>
 </suite>

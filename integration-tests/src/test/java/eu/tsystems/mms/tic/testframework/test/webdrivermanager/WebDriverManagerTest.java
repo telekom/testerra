@@ -21,11 +21,11 @@
  */
 package eu.tsystems.mms.tic.testframework.test.webdrivermanager;
 
-import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.util.Map;
 import org.openqa.selenium.WebDriver;
@@ -41,7 +41,7 @@ import org.testng.annotations.Test;
  *
  * @author Eric Kubenka
  */
-public class WebDriverManagerTest extends AbstractWebDriverTest {
+public class WebDriverManagerTest extends TesterraTest {
 
     @Test
     public void testT01_isJavaScriptActivated() {

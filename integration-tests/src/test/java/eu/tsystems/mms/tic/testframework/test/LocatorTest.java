@@ -15,7 +15,7 @@ public class LocatorTest extends AbstractTestSitesTest implements UiElementFinde
 
     @BeforeClass
     public void makeExclusive() {
-        this.enableExclusiveSession();
+        this.setUseExclusiveTestSession();
     }
 
     private UiElementFinder getFinder() {

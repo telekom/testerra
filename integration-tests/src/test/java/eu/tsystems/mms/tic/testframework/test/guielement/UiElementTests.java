@@ -39,7 +39,12 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
 
     @BeforeClass
     public void before() {
-        this.enableExclusiveSession();
+        this.setUseExclusiveTestSession();
+    }
+
+    @Override
+    public WebTestPage getPage() {
+        return pageFactory.createPage(WebTestPage.class, getWebDriver());
     }
 
     @Test
@@ -318,6 +323,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
 
     @Test
     public void test_retry_failed() {
+        setUseExclusiveTestSession(false);
         WebTestPage page = getPage();
         UiElement disableMyselfBtn = page.getFinder().findById("disableMyselfBtn");
         disableMyselfBtn.expectThat().enabled(true);
@@ -333,16 +339,12 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
         }
         long durationSeconds = (System.currentTimeMillis() - startTime)/1000;
         Assert.assertLowerEqualThan(durationSeconds, 4, "Sequence duration");
+        setUseExclusiveTestSession(true);
     }
 
     @Test(expectedExceptions = TimeoutException.class)
     public void test_UiElement_click_fails() {
         WebTestPage page = getPage();
         page.nonExistentElement().click();
-    }
-
-    @Override
-    public WebTestPage getPage() {
-        return pageFactory.createPage(WebTestPage.class, getWebDriver());
     }
 }

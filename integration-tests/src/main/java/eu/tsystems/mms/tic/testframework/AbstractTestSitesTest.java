@@ -27,10 +27,8 @@ import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
-import java.lang.reflect.Method;
 import java.net.BindException;
 import org.openqa.selenium.WebDriver;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 
 /**
@@ -38,6 +36,10 @@ import org.testng.annotations.BeforeTest;
  */
 public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implements Loggable {
     protected static Server server = new Server(FileUtils.getResourceFile("testsites"));
+
+    protected TestPage getTestPage() {
+        return TestPage.INPUT_TEST_PAGE;
+    }
 
     @BeforeTest(alwaysRun = true)
     public void setUp() throws Exception {
@@ -52,9 +54,11 @@ public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implem
         }
     }
 
-    @BeforeMethod()
-    public void visitTestPage(Method method) {
-        visitTestPage(getWebDriver());
+    @Override
+    public WebDriver getWebDriver() {
+        WebDriver webDriver = super.getWebDriver();
+        visitTestPage(webDriver);
+        return webDriver;
     }
 
     /**
@@ -62,7 +66,7 @@ public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implem
      *
      * @param driver {@link WebDriver} Current webDriver Instance
      */
-    public synchronized void visitTestPage(WebDriver driver) {
+    private void visitTestPage(WebDriver driver) {
         visitTestPage(driver, getTestPage());
     }
 
@@ -72,14 +76,10 @@ public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implem
      * @param driver   {@link WebDriver} Current Instance
      * @param testPage {@link TestPage} page to open
      */
-    public synchronized void visitTestPage(WebDriver driver, TestPage testPage) {
+    protected synchronized void visitTestPage(WebDriver driver, TestPage testPage) {
         if (!driver.getCurrentUrl().contains(testPage.getPath())) {
             String baseUrl = String.format("http://localhost:%d/%s", server.getPort(), testPage.getPath());
             driver.get(baseUrl);
         }
-    }
-
-    protected TestPage getTestPage() {
-        return TestPage.INPUT_TEST_PAGE;
     }
 }

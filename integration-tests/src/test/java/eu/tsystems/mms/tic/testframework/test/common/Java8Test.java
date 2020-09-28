@@ -21,7 +21,7 @@
  */
  package eu.tsystems.mms.tic.testframework.test.common;
 
-import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -30,7 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 
-public class Java8Test extends AbstractWebDriverTest {
+public class Java8Test extends TesterraTest {
 
     @FunctionalInterface
     private interface LambaInterface {

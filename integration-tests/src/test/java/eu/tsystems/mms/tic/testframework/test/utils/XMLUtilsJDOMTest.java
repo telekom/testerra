@@ -21,8 +21,8 @@
  */
  package eu.tsystems.mms.tic.testframework.test.utils;
 
-import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.test.testdata.implementation.XMLUtilTestSupport;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.XMLUtils;
 import java.io.IOException;
 import org.jdom2.Document;
@@ -35,7 +35,7 @@ import org.testng.annotations.Test;
  *
  * @author mgn, rest
  */
-public class XMLUtilsJDOMTest extends AbstractWebDriverTest {
+public class XMLUtilsJDOMTest extends TesterraTest {
 
     // Same as JDOMNodeTest_valid.xml
     private String xmlFromString = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n"

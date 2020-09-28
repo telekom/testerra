@@ -21,7 +21,6 @@
  */
 package eu.tsystems.mms.tic.testframework.playground;
 
-import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.InDevelopment;
 import eu.tsystems.mms.tic.testframework.annotations.InfoMethod;
@@ -31,6 +30,7 @@ import eu.tsystems.mms.tic.testframework.annotations.SupportMethod;
 import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.RandomUtils;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
@@ -46,7 +46,7 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 @TestContext(name = "MyClass")
-public class ReportingAllStatesTests extends AbstractWebDriverTest {
+public class ReportingAllStatesTests extends TesterraTest {
 
     static {
         System.setProperty("test.foobar.fails.annotation.test.property.one", "one");

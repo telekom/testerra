@@ -40,7 +40,7 @@ public class AssertTextPageTest extends AbstractTestSitesTest implements PageFac
 
     @BeforeClass
     public void before() {
-        this.enableExclusiveSession();
+        this.setUseExclusiveTestSession();
     }
 
     @Override

@@ -25,6 +25,7 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertionFactory;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
 import eu.tsystems.mms.tic.testframework.utils.Sequence;
@@ -39,7 +40,7 @@ import java.util.function.Supplier;
  * and informs the Assertion Provider about it.
  * @author Mike Reiche
  */
-public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropertyAssertion<T> {
+public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropertyAssertion<T> implements Loggable {
     protected static final AssertionFactory assertionFactory = Testerra.injector.getInstance(AssertionFactory.class);
     protected static final Assertion assertion = Testerra.injector.getInstance(InstantAssertion.class);
     private static final TestController.Overrides overrides = Testerra.injector.getInstance(TestController.Overrides.class);
@@ -61,7 +62,7 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
             Function<T, String> failMessageSupplier
     ) {
         Sequence sequence = new Sequence()
-                .setPauseMs(UiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong())
+                .setWaitMsAfterRun(UiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong())
                 .setTimeoutMs(overrides.getTimeoutInSeconds() * 1000);
 
         AtomicBoolean atomicPassed = new AtomicBoolean(false);

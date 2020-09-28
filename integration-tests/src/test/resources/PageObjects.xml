@@ -8,6 +8,7 @@
         </groups>
         <packages>
             <package name="eu.tsystems.mms.tic.testframework.test.page"/>
+            <package name="eu.tsystems.mms.tic.testframework.test.pageobjects"/>
         </packages>
     </test>
     <test name="Page Factory">

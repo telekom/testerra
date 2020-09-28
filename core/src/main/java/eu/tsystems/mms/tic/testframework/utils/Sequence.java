@@ -29,7 +29,7 @@ import java.util.function.Supplier;
  * @author Mike Reiche
  */
 public class Sequence implements Loggable {
-    private long pauseMs = 0;
+    private long waitMsAfterRun = 0;
     private long timeoutMs = 0;
     private long startTime;
     private long endTime;
@@ -42,21 +42,13 @@ public class Sequence implements Loggable {
         return endTime;
     }
 
-    public long getPauseMs() {
-        return pauseMs;
-    }
-
-    public Sequence setPauseMs(long pauseMs) {
-        this.pauseMs = pauseMs;
+    public Sequence setWaitMsAfterRun(long millis) {
+        this.waitMsAfterRun = millis;
         return this;
     }
 
-    public long getTimeoutMs() {
-        return timeoutMs;
-    }
-
-    public Sequence setTimeoutMs(long timeoutMs) {
-        this.timeoutMs = timeoutMs;
+    public Sequence setTimeoutMs(long millis) {
+        this.timeoutMs = millis;
         return this;
     }
 
@@ -75,7 +67,7 @@ public class Sequence implements Loggable {
                 if (runnable.get()) {
                     break;
                 }
-                Thread.sleep(pauseMs);
+                Thread.sleep(waitMsAfterRun);
                 endTime = System.currentTimeMillis();
             } while (getDurationMs() < timeoutMs);
 

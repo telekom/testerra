@@ -21,7 +21,6 @@
 package eu.tsystems.mms.tic.testframework.test.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.WebTestPage;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
@@ -29,8 +28,6 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.testng.annotations.Test;
@@ -43,99 +40,17 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     }
 
     @Test
-    public void test_Page_title() {
-        WebTestPage page = getPage();
-
-        StringAssertion<String> title = page.expectThat().title();
-
-        title.is("Input test");
-        title.isNot("Affentest");
-        title.contains("Input");
-        title.containsNot("SuperTestPage");
-        title.containsWords("Input", "test").is(true);
-
-        QuantityAssertion<Integer> length = page.expectThat().title().length();
-        length.is(10);
-        length.isLowerThan(100);
-        length.isGreaterThan(5);
-        length.isBetween(1,11);
-        length.isGreaterEqualThan(-10);
-        length.isLowerEqualThan(10);
-    }
-
-    @Test
-    public void test_Page_waitFor() {
-        WebTestPage page = getPage();
-        Control.withTimeout(0, () -> {
-            Assert.assertFalse(page.waitFor().title().contains("Katzentitel"));
-            Assert.assertTrue(page.waitFor().title().is("Input test"));
-        });
-    }
-
-    @Test
-    public void test_Page_title_matches() {
-        WebTestPage page = getPage();
-        page.expectThat().title().matches("input\\s+.es.").is(true);
-    }
-
-    @Test(expectedExceptions = AssertionError.class)
-    public void test_Page_title_matches_fails() {
-        WebTestPage page = getPage();
-        page.expectThat().title().matches("input\\s+.es.").is(false);
-    }
-
-    @Test(expectedExceptions = AssertionError.class)
-    public void test_Page_title_length_fails() {
-        WebTestPage page = getPage();
-        page.expectThat().title().length().isGreaterThan(10);
-    }
-
-    @Test
-    @Fails(description = "The test itself passes, but collected assertions will always fail")
-    public void test_Page_title_length_fails_collected() {
-        WebTestPage page = getPage();
-        Control.collectAssertions(() -> page.expectThat().title().length().isGreaterThan(10));
-    }
-
-    @Test
-    public void test_Page_title_length_fails_nonFunctional() {
-        WebTestPage page = getPage();
-        Control.nonFunctionalAssertions(()-> page.expectThat().title().length().isGreaterThan(10));
-    }
-
-    @Test
-    public void test_Page_url() {
-        WebTestPage page = getPage();
-        page.expectThat().url().startsWith("http");
-        page.expectThat().url().endsWith("input.html");
-        page.expectThat().url().length().isGreaterEqualThan(10);
-    }
-
-    @Test()
-    public void test_Page_url_fails() {
-        WebTestPage page = getPage();
-        try {
-            page.expectThat().url().endsWith("nonexistingfile.html", "Wrong URL");
-        } catch (AssertionError e) {
-            Assert.assertContains(e.getMessage(), "Wrong URL");
-            Assert.assertEndsWith(e.getMessage(), "ends with [nonexistingfile.html]");
-        }
-
-        try {
-            page.expectThat().url().length().isGreaterEqualThan(10000, "URL is too short");
-        } catch (AssertionError e) {
-            Assert.assertContains(e.getMessage(), "URL is too short");
-            Assert.assertEndsWith(e.getMessage(), "is greater or equal than [10000]");
-        }
-
-    }
-
-    @Test
     public void test_UiElement_clear() {
         WebTestPage page = getPage();
         UiElement element = page.getFinder().findById(5);
         element.sendKeys("Test");
         element.clear().expectThat().text().is("");
+    }
+
+    @Test(expectedExceptions = TimeoutException.class)
+    public void test_UiElement_click_fails() {
+        WebTestPage page = getPage();
+        page.nonExistentElement().click();
     }
 
     @Test
@@ -310,15 +225,6 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
         Assert.assertStartsWith(msg, "Element not found", ElementNotFoundException.class.toString());
     }
 
-    @Test
-    public void test_Component() {
-        final String input = "Ich gebe etwas ein";
-        WebTestPage page = getPage();
-        page.inputForm().button().expectThat().value().is("Button1");
-        page.inputForm().input().clear().sendKeys(input).expectThat().value().is(input);
-        page.inputForm().button().expectThat().numberOfElements().is(1);
-    }
-
 //    @Test
 //    public void test_Attributes() {
 //        WebTestPage page = getPage();
@@ -331,7 +237,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
 //    }
 
     @Test
-    public void test_retry() {
+    public void test_UiElement_click_retry() {
         WebTestPage page = getPage();
         UiElement disableMyselfBtn = page.getFinder().findById("disableMyselfBtn");
         disableMyselfBtn.expectThat().enabled(true);
@@ -346,7 +252,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     }
 
     @Test
-    public void test_retry_failed() {
+    public void test_UiElement_click_retry_fails() {
         WebTestPage page = pageFactory.createPage(WebTestPage.class, getWebDriver());
         UiElement disableMyselfBtn = page.getFinder().findById("disableMyselfBtn");
         disableMyselfBtn.expectThat().enabled(true);
@@ -367,9 +273,4 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
 //        Assert.assertLowerEqualThan(durationSeconds, 4, "Sequence duration");
     }
 
-    @Test(expectedExceptions = TimeoutException.class)
-    public void test_UiElement_click_fails() {
-        WebTestPage page = getPage();
-        page.nonExistentElement().click();
-    }
 }

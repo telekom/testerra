@@ -289,7 +289,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 log().debug("Edge Browser was requested, trying a second workaround");
 
                 Sequence sequence = new Sequence()
-                        .setPauseMs(500)
+                        .setWaitMsAfterRun(500)
                         .setTimeoutMs(5000);
                 sequence.run(() -> {
                     try {

@@ -64,7 +64,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
 
         Sequence sequence = new Sequence()
                 .setTimeoutMs(overrides.getTimeoutInSeconds()*1000)
-                .setPauseMs(UiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong());
+                .setWaitMsAfterRun(UiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong());
 
         AtomicReference<Throwable> atomicThrowable = new AtomicReference<>();
         AtomicBoolean atomicSuccess = new AtomicBoolean();

@@ -53,6 +53,7 @@ import org.slf4j.LoggerFactory;
  * @author sepr
  * @todo Migrate to {@link DefaultWebDriverManager}
  */
+@Deprecated
 public final class WebDriverManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverManager.class);

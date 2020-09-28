@@ -30,7 +30,6 @@ import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.ResponsiveWeb
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.ResponsiveWebTestPage_601px_800px;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.ResponsiveWebTestPage_801px_1234px;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.ResponsiveWebTestPage_Min_600px;
-import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
@@ -58,7 +57,7 @@ public abstract class AbstractPageFactoryTest extends AbstractTestSitesTest impl
 
     @Test
     public void testT01_InRange_1() {
-        PageFactoryPrefixedTest.setViewportSize(WebDriverManager.getWebDriver(), 799, 1000);
+        PageFactoryPrefixedTest.setViewportSize(getClassExclusiveWebDriver(), 799, 1000);
         Page blaPage = getPage();
 
         Assert.assertEquals(blaPage.getClass().getSimpleName(), ResponsiveWebTestPage_601px_800px.class.getSimpleName(), "Instantiated correct page.");
@@ -66,7 +65,7 @@ public abstract class AbstractPageFactoryTest extends AbstractTestSitesTest impl
 
     @Test
     public void testT02_InRange_2() {
-        PageFactoryPrefixedTest.setViewportSize(WebDriverManager.getWebDriver(), 1024, 1000);
+        PageFactoryPrefixedTest.setViewportSize(getClassExclusiveWebDriver(), 1024, 1000);
         Page blaPage = getPage();
 
         Assert.assertEquals(blaPage.getClass().getSimpleName(), ResponsiveWebTestPage_801px_1234px.class.getSimpleName(), "Instantiated correct page.");
@@ -74,7 +73,7 @@ public abstract class AbstractPageFactoryTest extends AbstractTestSitesTest impl
 
     @Test
     public void testT03_ClassPerfectMatch_LowerValue() {
-        PageFactoryPrefixedTest.setViewportSize(WebDriverManager.getWebDriver(), 601, 1000);
+        PageFactoryPrefixedTest.setViewportSize(getClassExclusiveWebDriver(), 601, 1000);
         Page blaPage = getPage();
 
         Assert.assertEquals(blaPage.getClass().getSimpleName(), ResponsiveWebTestPage_601px_800px.class.getSimpleName(), "Instantiated correct page.");
@@ -82,7 +81,7 @@ public abstract class AbstractPageFactoryTest extends AbstractTestSitesTest impl
 
     @Test
     public void testT04_ClassPerfectMatch_UpperValue() {
-        PageFactoryPrefixedTest.setViewportSize(WebDriverManager.getWebDriver(), 800, 1000);
+        PageFactoryPrefixedTest.setViewportSize(getClassExclusiveWebDriver(), 800, 1000);
         Page blaPage = getPage();
 
         Assert.assertEquals(blaPage.getClass().getSimpleName(), ResponsiveWebTestPage_601px_800px.class.getSimpleName(), "Instantiated correct page.");
@@ -90,7 +89,7 @@ public abstract class AbstractPageFactoryTest extends AbstractTestSitesTest impl
 
     @Test
     public void testT05_Match_Min() {
-        PageFactoryPrefixedTest.setViewportSize(WebDriverManager.getWebDriver(), 599, 1000);
+        PageFactoryPrefixedTest.setViewportSize(getClassExclusiveWebDriver(), 599, 1000);
         Page blaPage = getPage();
 
         Assert.assertEquals(blaPage.getClass().getSimpleName(), ResponsiveWebTestPage_Min_600px.class.getSimpleName(), "Instantiated correct page.");
@@ -98,7 +97,7 @@ public abstract class AbstractPageFactoryTest extends AbstractTestSitesTest impl
 
     @Test
     public void testT06_Match_Max() {
-        PageFactoryPrefixedTest.setViewportSize(WebDriverManager.getWebDriver(), 1600, 1000);
+        PageFactoryPrefixedTest.setViewportSize(getClassExclusiveWebDriver(), 1600, 1000);
         Page blaPage = getPage();
 
         Assert.assertEquals(blaPage.getClass().getSimpleName(), ResponsiveWebTestPage_1235px_Max.class.getSimpleName(), "Instantiated correct page.");
@@ -106,7 +105,7 @@ public abstract class AbstractPageFactoryTest extends AbstractTestSitesTest impl
 
     @Test
     public void testT07_IgnoreOtherImpls() {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = getClassExclusiveWebDriver();
         BasePage basePage = PageFactory.create(BasePage.class, driver);
 
         AssertCollector.assertFalse(basePage instanceof BasePage2016, "its a BasePage2016");
@@ -116,10 +115,7 @@ public abstract class AbstractPageFactoryTest extends AbstractTestSitesTest impl
 
     @Test
     public void testT08_CheckNot() {
-
-        WebDriver driver = WebDriverManager.getWebDriver();
-        visitTestPage(driver, TestPage.INPUT_TEST_PAGE);
-
+        WebDriver driver = getClassExclusiveWebDriver();
         final PageWithExistingElement pageWithExistingElement = PageFactory.create(PageWithExistingElement.class, driver);
         final PageWithNotExistingElementWithoutCheckPage pageWithNotExistingElement = PageFactory.checkNot(PageWithNotExistingElementWithoutCheckPage.class, driver);
     }

@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -17,11 +17,10 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
- package eu.tsystems.mms.tic.testframework.test.utils;
 
-import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+package eu.tsystems.mms.tic.testframework.test.utils;
+
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
@@ -29,45 +28,43 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
 
-public abstract class AbstractDragAndDropTest extends AbstractTestSitesTest {
-
-    final By sourceLocatorSimple = By.id("dragLogo");
-    final By sourceLocatorFrames = By.xpath(".//img[@alt='Ringo Starr']");
+public class DragAndDropOverFramesTest extends AbstractDragAndDropTest {
 
     @Override
-    protected TestPage getTestPage() {
-        return TestPage.DRAG_AND_DROP;
+    public TestPage getTestPage() {
+        return TestPage.DRAG_AND_DROP_OVER_FRAMES;
     }
 
-    private GuiElement[] beforeDragAndDropSimple() {
+    @Override
+    protected void execute(WebDriver driver, GuiElement sourceGuiElement, GuiElement destinationGuiElement) {
+
+    }
+
+    private GuiElement[] beforeDragAndDropFrames() {
         final WebDriver driver = getWebDriver();
-        GuiElement sourceGuiElement = new GuiElement(driver, sourceLocatorSimple);
-        GuiElement destinationGuiElement = new GuiElement(driver, By.id("divRectangle"));
+
+        GuiElement leftFrame = new GuiElement(driver, By.id("draggableNodes"));
+        GuiElement rightFrame = new GuiElement(driver, By.id("dropTargets"));
+
+        GuiElement sourceGuiElement = leftFrame.getSubElement(sourceLocatorFrames);
+        GuiElement destinationGuiElement = rightFrame.getSubElement(By.id("dropTarget"));
         return new GuiElement[]{sourceGuiElement, destinationGuiElement};
     }
 
-    private void checkResultSimple(GuiElement destinationGuiElement) {
-        final GuiElement subElement = destinationGuiElement.getSubElement(sourceLocatorSimple);
+    private void checkResultFrames(GuiElement destinationGuiElement) {
+        final GuiElement subElement = destinationGuiElement.getSubElement(sourceLocatorFrames);
         subElement.asserts().assertIsDisplayed();
     }
 
-
     @Test
     @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
-    public void testT01_DragAndDrop() {
-        final GuiElement[] guiElements = beforeDragAndDropSimple();
+    public void testT2_DragAndDropOverFrames() {
+        final GuiElement[] guiElements = beforeDragAndDropFrames();
 
         GuiElement sourceGuiElement = guiElements[0];
         GuiElement destinationGuiElement = guiElements[1];
 
-        WebDriver driver = getWebDriver();
-
-        execute(driver, sourceGuiElement, destinationGuiElement);
-
-        checkResultSimple(destinationGuiElement);
+        execute(getWebDriver(), sourceGuiElement, destinationGuiElement);
+        checkResultFrames(destinationGuiElement);
     }
-
-
-    protected abstract void execute(WebDriver driver, GuiElement sourceGuiElement, GuiElement destinationGuiElement);
-
 }

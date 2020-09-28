@@ -57,6 +57,10 @@ public class PageFactoryPrefixedTest extends AbstractTestSitesTest implements Lo
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PageFactoryPrefixedTest.class);
 
+    public ResponsiveWebTestPage getPage() {
+        return PageFactory.create(ResponsiveWebTestPage.class, WebDriverManager.getWebDriver());
+    }
+
     /**
      * Set the browser size by adjusting it to the given viewport size.
      *
@@ -89,10 +93,6 @@ public class PageFactoryPrefixedTest extends AbstractTestSitesTest implements Lo
         } catch (Exception e) {
             throw new TesterraRuntimeException("Unable to set viewport size", e);
         }
-    }
-
-    public ResponsiveWebTestPage getPage() {
-        return PageFactory.create(ResponsiveWebTestPage.class, WebDriverManager.getWebDriver());
     }
 
     String baseURL = "unset";

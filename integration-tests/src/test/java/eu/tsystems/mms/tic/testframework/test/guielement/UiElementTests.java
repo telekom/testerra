@@ -32,15 +32,9 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAsser
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 public class UiElementTests extends AbstractTestSitesTest implements Loggable, PageFactoryTest {
-
-    @BeforeClass
-    public void before() {
-        this.setUseExclusiveTestSession();
-    }
 
     @Override
     public WebTestPage getPage() {
@@ -72,13 +66,8 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     public void test_Page_waitFor() {
         WebTestPage page = getPage();
         Control.withTimeout(0, () -> {
-            if (page.waitFor().title().contains("Katzentitel")) {
-                Assert.assertFalse(true);
-            }
-
-            if (page.waitFor().title().is("Input test")) {
-                Assert.assertTrue(true);
-            }
+            Assert.assertFalse(page.waitFor().title().contains("Katzentitel"));
+            Assert.assertTrue(page.waitFor().title().is("Input test"));
         });
     }
 
@@ -323,7 +312,6 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
 
     @Test
     public void test_retry_failed() {
-        setUseExclusiveTestSession(false);
         WebTestPage page = getPage();
         UiElement disableMyselfBtn = page.getFinder().findById("disableMyselfBtn");
         disableMyselfBtn.expectThat().enabled(true);
@@ -339,7 +327,6 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
         }
         long durationSeconds = (System.currentTimeMillis() - startTime)/1000;
         Assert.assertLowerEqualThan(durationSeconds, 4, "Sequence duration");
-        setUseExclusiveTestSession(true);
     }
 
     @Test(expectedExceptions = TimeoutException.class)

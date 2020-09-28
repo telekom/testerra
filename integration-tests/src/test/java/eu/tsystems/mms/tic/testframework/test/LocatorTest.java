@@ -6,20 +6,14 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFinder;
 import eu.tsystems.mms.tic.testframework.testing.UiElementFinderFactoryProvider;
 import org.openqa.selenium.By;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 public class LocatorTest extends AbstractTestSitesTest implements UiElementFinderFactoryProvider {
 
     private final String textToFind = "This link has some text!";
 
-    @BeforeClass
-    public void makeExclusive() {
-        this.setUseExclusiveTestSession();
-    }
-
     private UiElementFinder getFinder() {
-        return uiElementFinderFactory.create(getWebDriver());
+        return uiElementFinderFactory.create(getClassExclusiveWebDriver());
     }
 
     @Test

@@ -26,15 +26,9 @@ import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 public class UiElementLayoutCheckTests extends AbstractTestSitesTest implements Loggable, PageFactoryTest {
-
-    @BeforeClass
-    public void before() {
-        this.setUseExclusiveTestSession();
-    }
 
     @Override
     protected TestPage getTestPage() {

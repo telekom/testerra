@@ -53,22 +53,6 @@ public abstract class AbstractWebDriverTest extends TesterraTest implements WebD
     //    }
 
     private String exclusiveSessionId;
-    private boolean useExclusiveWebDriver;
-
-    protected void setUseExclusiveTestSession() {
-        this.setUseExclusiveTestSession(true);
-    }
-    protected void setUseExclusiveTestSession(boolean exclusive) {
-        this.useExclusiveWebDriver = exclusive;
-    }
-
-    @AfterClass
-    public void closeExclusiveSession() {
-        if (this.exclusiveSessionId != null) {
-            webdriverManager.shutdownExclusiveSessionId(this.exclusiveSessionId);
-            this.exclusiveSessionId = null;
-        }
-    }
 
     @AfterSuite(alwaysRun = true)
     private void closeBrowsers() {
@@ -99,17 +83,24 @@ public abstract class AbstractWebDriverTest extends TesterraTest implements WebD
         }
     }
 
-    @Override
-    public WebDriver getWebDriver() {
-        WebDriver webDriver;
-        if (useExclusiveWebDriver) {
-            if (exclusiveSessionId == null) {
-                exclusiveSessionId = webdriverManager.createExclusiveSessionId(webdriverManager.getWebDriver());
-            }
-            webDriver = webdriverManager.getWebDriverBySessionId(exclusiveSessionId);
-        } else {
-            webDriver = webdriverManager.getWebDriver();
+    public synchronized WebDriver getClassExclusiveWebDriver() {
+        if (exclusiveSessionId == null) {
+            exclusiveSessionId = webdriverManager.createExclusiveSessionId(getWebDriver());
         }
+        return webdriverManager.getWebDriverBySessionId(exclusiveSessionId);
+    }
+
+    @AfterClass
+    public void closeClassExclusiveWebDriverSession() {
+        if (this.exclusiveSessionId != null) {
+            webdriverManager.shutdownExclusiveSessionId(this.exclusiveSessionId);
+            this.exclusiveSessionId = null;
+        }
+    }
+
+    @Override
+    public synchronized WebDriver getWebDriver() {
+        WebDriver webDriver = webdriverManager.getWebDriver();
         try {
             webDriver.getWindowHandles();
         } catch (WebDriverException s) {

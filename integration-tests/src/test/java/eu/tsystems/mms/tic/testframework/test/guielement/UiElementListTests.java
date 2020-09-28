@@ -32,7 +32,7 @@ import org.testng.annotations.Test;
 public class UiElementListTests extends AbstractTestSitesTest implements PageFactoryTest {
 
     public UiElementListPage getPage() {
-        return pageFactory.createPage(UiElementListPage.class, getWebDriver());
+        return pageFactory.createPage(UiElementListPage.class, getClassExclusiveWebDriver());
     }
 
     @Test

@@ -28,7 +28,6 @@ import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.Sequence;
-import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -39,153 +38,53 @@ import java.util.concurrent.atomic.AtomicReference;
 public class DefaultTestController implements TestController, Loggable {
 
     private final TestController.Overrides overrides;
-    private final ThreadLocal<LinkedList<RunnableConfiguration>> threadLocalConfigurations = new ThreadLocal<>();
-
-    private abstract class RunnableConfiguration {
-        Runnable setup(Runnable runnable) {
-            return runnable;
-        }
-        void teardown() {
-
-        }
-    }
 
     @Inject
     protected DefaultTestController(TestController.Overrides overrides) {
         this.overrides = overrides;
     }
 
-    /**
-     * Runs all {@link #threadLocalConfigurations}
-     * Its important that this method is synchronized!
-     */
-    private synchronized void run(Runnable runnable) {
-        LinkedList<RunnableConfiguration> configurations = threadLocalConfigurations.get();
-        for (RunnableConfiguration configuration : configurations) {
-            runnable = configuration.setup(runnable);
-        }
-        runnable.run();
-        configurations.forEach(configuration -> configuration.teardown());
-        configurations.clear();
-    }
-
-    /**
-     * Adds a {@link RunnableConfiguration} to the {@link #threadLocalConfigurations}
-     * Its important that this method is synchronized!
-     */
-    private synchronized void addConfiguration(RunnableConfiguration configuration) {
-        LinkedList<RunnableConfiguration> configurations = threadLocalConfigurations.get();
-        if (configurations==null) {
-            configurations = new LinkedList<>();
-            threadLocalConfigurations.set(configurations);
-        }
-        configurations.add(configuration);
-    }
-
     @Override
     public void collectAssertions(Runnable runnable) {
-        collectAssertions().run(runnable);
-    }
-
-    @Override
-    public DefaultTestController collectAssertions() {
-        addConfiguration(new RunnableConfiguration() {
-            Class<? extends Assertion> prevClass;
-            @Override
-            Runnable setup(Runnable runnable) {
-                prevClass = overrides.setAssertionClass(CollectedAssertion.class);
-                return runnable;
-            }
-
-            @Override
-            void teardown() {
-                overrides.setAssertionClass(prevClass);
-            }
-        });
-        return this;
+        Class<? extends Assertion> prevClass = overrides.setAssertionClass(CollectedAssertion.class);
+        runnable.run();
+        overrides.setAssertionClass(prevClass);
     }
 
     @Override
     public void nonFunctionalAssertions(Runnable runnable) {
-        nonFunctionalAssertions().run(runnable);
-    }
-
-    @Override
-    public DefaultTestController nonFunctionalAssertions() {
-        addConfiguration(new RunnableConfiguration() {
-            Class<? extends Assertion> prevClass;
-            @Override
-            Runnable setup(Runnable runnable) {
-                prevClass = overrides.setAssertionClass(NonFunctionalAssertion.class);
-                return runnable;
-            }
-
-            @Override
-            void teardown() {
-                overrides.setAssertionClass(prevClass);
-            }
-        });
-        return this;
+        Class<? extends Assertion> prevClass = overrides.setAssertionClass(NonFunctionalAssertion.class);
+        runnable.run();
+        overrides.setAssertionClass(prevClass);
     }
 
     @Override
     public void withTimeout(int seconds, Runnable runnable) {
-        withTimeout(seconds).run(runnable);
-    }
-
-    @Override
-    public DefaultTestController withTimeout(int seconds) {
-        addConfiguration(new RunnableConfiguration() {
-            int prevTimeout;
-            @Override
-            Runnable setup(Runnable runnable) {
-                log().info("Set timeout: "+ seconds);
-                prevTimeout = overrides.setTimeout(seconds);
-                return runnable;
-            }
-
-            @Override
-            void teardown() {
-                overrides.setTimeout(prevTimeout);
-            }
-        });
-        return this;
+        int prevTimeout = overrides.setTimeout(seconds);
+        runnable.run();
+        overrides.setTimeout(prevTimeout);
     }
 
     @Override
     public void retryFor(int seconds, Runnable runnable) {
-        retryFor(seconds).run(runnable);
-    }
+        Sequence sequence = new Sequence()
+                .setTimeoutMs(seconds * 1000);
 
-    @Override
-    public DefaultTestController retryFor(int seconds) {
-        addConfiguration(new RunnableConfiguration() {
-            @Override
-            Runnable setup(Runnable runnable) {
-                return () -> {
-                    log().info("Run retry sequence with " + seconds + " seconds");
-                    Sequence sequence = new Sequence()
-                            .setTimeoutMs(seconds * 1000);
-
-                    AtomicReference<Throwable> atomicThrowable = new AtomicReference<>();
-                    AtomicBoolean atomicSuccess = new AtomicBoolean();
-                    sequence.run(() -> {
-                        try {
-                            runnable.run();
-                            atomicSuccess.set(true);
-                        } catch (Throwable throwable) {
-                            atomicThrowable.set(throwable);
-                            atomicSuccess.set(false);
-                        }
-                        return atomicSuccess.get();
-                    });
-
-                    if (!atomicSuccess.get()) {
-                        throw new TimeoutException("Retry sequence timed out after " + sequence.getDurationMs() / 1000 + "s", atomicThrowable.get());
-                    }
-                };
+        AtomicReference<Throwable> atomicThrowable = new AtomicReference<>();
+        AtomicBoolean atomicSuccess = new AtomicBoolean();
+        sequence.run(() -> {
+            try {
+                runnable.run();
+                atomicSuccess.set(true);
+            } catch (Throwable throwable) {
+                atomicThrowable.set(throwable);
+                atomicSuccess.set(false);
             }
+            return atomicSuccess.get();
         });
-        return this;
+
+        if (!atomicSuccess.get()) {
+            throw new TimeoutException("Retry sequence timed out after " + sequence.getDurationMs() / 1000 + "s", atomicThrowable.get());
+        }
     }
 }

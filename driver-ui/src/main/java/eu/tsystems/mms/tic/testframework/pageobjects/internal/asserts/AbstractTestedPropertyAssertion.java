@@ -54,7 +54,7 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
      * @param actualProperty The {@link ActualProperty} to test
      * @param testFunction The test {@link Predicate}
      * @param failMessageSupplier The fail message {@link Supplier} when the test finally fails.
-     * @return
+     * @return True if the test passed
      */
     protected boolean testSequence(
             ActualProperty<T> actualProperty,

@@ -71,19 +71,9 @@ public interface TestController {
     void collectAssertions(Runnable runnable);
 
     /**
-     * Configures the next {@link Runnable} with collection assertions
-     */
-    TestController collectAssertions();
-
-    /**
      * Runs a {@link Runnable} with non-functional assertions
      */
     void nonFunctionalAssertions(Runnable runnable);
-
-    /**
-     * Configures the next {@link Runnable} with non-functional assertions
-     */
-    TestController nonFunctionalAssertions();
 
     /**
      * Runs a {@link Runnable} with a specified timeout
@@ -91,19 +81,8 @@ public interface TestController {
     void withTimeout(int seconds, Runnable runnable);
 
     /**
-     * Configures the next {@link Runnable} with a specified timeout
-     */
-    TestController withTimeout(int seconds);
-
-    /**
      * Runs a {@link Runnable} while {@link Throwable} occurs for a specified period
      * @param seconds Period in seconds
      */
     void retryFor(int seconds, Runnable runnable);
-
-    /**
-     * Configures the next {@link Runnable} to run while {@link Throwable} occurs for a specified period
-     * @param seconds Period in seconds
-     */
-    TestController retryFor(int seconds);
 }

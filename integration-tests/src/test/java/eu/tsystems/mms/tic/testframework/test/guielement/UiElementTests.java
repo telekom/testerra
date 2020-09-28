@@ -242,10 +242,12 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
         UiElement disableMyselfBtn = page.getFinder().findById("disableMyselfBtn");
         disableMyselfBtn.expectThat().enabled(true);
         AtomicInteger retryCount = new AtomicInteger();
-        Control.retryFor(10).withTimeout(1, () -> {
-            retryCount.incrementAndGet();
-            disableMyselfBtn.click();
-            disableMyselfBtn.expectThat().enabled(false);
+        Control.retryFor(10, () -> {
+            Control.withTimeout(1, () -> {
+                retryCount.incrementAndGet();
+                disableMyselfBtn.click();
+                disableMyselfBtn.expectThat().enabled(false);
+            });
         });
         Assert.assertEquals(retryCount.get(), 5, "Retry count");
         disableMyselfBtn.expectThat().enabled(false);
@@ -257,20 +259,19 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
         UiElement disableMyselfBtn = page.getFinder().findById("disableMyselfBtn");
         disableMyselfBtn.expectThat().enabled(true);
         AtomicInteger retryCount = new AtomicInteger();
-//        long startTime = System.currentTimeMillis();
         try {
-            Control.retryFor(3).withTimeout(1, () -> {
-                retryCount.incrementAndGet();
-                disableMyselfBtn.click();
-                disableMyselfBtn.expectThat().enabled(false);
+            Control.retryFor(3, () -> {
+                Control.withTimeout(1, () -> {
+                    retryCount.incrementAndGet();
+                    disableMyselfBtn.click();
+                    disableMyselfBtn.expectThat().enabled(false);
+                });
             });
         } catch (Exception e) {
             Assert.assertStartsWith(e.getMessage(), "Retry sequence timed out", e.getClass().getSimpleName());
             Assert.assertEndsWith(e.getCause().getMessage(), "@enabled« actual [true] is one of [false, 'off', '0', 'no']", e.getCause().getClass().getSimpleName());
         }
         Assert.assertEquals(retryCount.get(), 3, "Retry count");
-//        long durationSeconds = (System.currentTimeMillis() - startTime)/1000;
-//        Assert.assertLowerEqualThan(durationSeconds, 4, "Sequence duration");
     }
 
 }

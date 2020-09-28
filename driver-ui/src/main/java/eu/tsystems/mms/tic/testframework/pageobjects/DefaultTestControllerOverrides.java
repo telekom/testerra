@@ -28,7 +28,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
 
 /**
- * Default implementation of {@link TestController.Overrides}
+ * Default implementation of {@link ThreadLocal} {@link TestController.Overrides}
  * @author Mike Reiche
  */
 public class DefaultTestControllerOverrides implements TestController.Overrides {

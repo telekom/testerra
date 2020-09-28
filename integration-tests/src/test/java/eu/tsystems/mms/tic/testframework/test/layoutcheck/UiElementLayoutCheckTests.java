@@ -37,7 +37,7 @@ public class UiElementLayoutCheckTests extends AbstractTestSitesTest implements 
 
     @Override
     public BasePage getPage() {
-        return pageFactory.createPage(BasePage.class, getWebDriver());
+        return pageFactory.createPage(BasePage.class, getClassExclusiveWebDriver());
     }
 
     @Test
@@ -72,7 +72,9 @@ public class UiElementLayoutCheckTests extends AbstractTestSitesTest implements 
     public void testCheckElementLayoutDistance() {
         BasePage page = getPage();
         UiElement guiElement = page.getFinder().findByQa("section/layoutTestArticle");
-        Control.retryFor(10).withTimeout(0, () -> guiElement.expectThat().screenshot().pixelDistance("TestArticleFailed").isLowerThan(1));
+        Control.retryFor(10,() -> {
+            Control.withTimeout(0, () -> guiElement.expectThat().screenshot().pixelDistance("TestArticleFailed").isLowerThan(1));
+        });
     }
 
     @Test

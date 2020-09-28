@@ -83,7 +83,7 @@ public abstract class AbstractWebDriverTest extends TesterraTest implements WebD
         }
     }
 
-    public synchronized WebDriver getClassExclusiveWebDriver() {
+    public WebDriver getClassExclusiveWebDriver() {
         if (exclusiveSessionId == null) {
             exclusiveSessionId = webDriverManager.createExclusiveSessionId(getWebDriver());
         }
@@ -99,7 +99,7 @@ public abstract class AbstractWebDriverTest extends TesterraTest implements WebD
     }
 
     @Override
-    public synchronized WebDriver getWebDriver() {
+    public WebDriver getWebDriver() {
         WebDriver webDriver = webDriverManager.getWebDriver();
         try {
             webDriver.getWindowHandles();

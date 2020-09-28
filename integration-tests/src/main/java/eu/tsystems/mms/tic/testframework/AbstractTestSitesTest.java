@@ -55,7 +55,7 @@ public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implem
     }
 
     @Override
-    public synchronized WebDriver getWebDriver() {
+    public WebDriver getWebDriver() {
         WebDriver webDriver = super.getWebDriver();
         visitTestPage(webDriver, getTestPage());
         return webDriver;
@@ -67,7 +67,7 @@ public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implem
      * @param driver   {@link WebDriver} Current Instance
      * @param testPage {@link TestPage} page to open
      */
-    private synchronized void visitTestPage(WebDriver driver, TestPage testPage) {
+    private void visitTestPage(WebDriver driver, TestPage testPage) {
         if (!driver.getCurrentUrl().contains(testPage.getPath())) {
             String baseUrl = String.format("http://localhost:%d/%s", server.getPort(), testPage.getPath());
             driver.get(baseUrl);

@@ -52,7 +52,7 @@ public class EventLoggingEventDriverListener implements WebDriverEventListener, 
 
     @Override
     public void beforeNavigateTo(String s, WebDriver webDriver) {
-        log().info("GET " + s);
+        log().info("GET " + s + " on " + webDriver);
     }
 
     @Override

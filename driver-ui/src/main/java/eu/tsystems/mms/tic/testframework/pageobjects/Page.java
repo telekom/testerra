@@ -228,7 +228,7 @@ public class Page extends AbstractPage implements TestablePage, Nameable<Page> {
     @Override
     protected void pageLoaded() {
         if (PropertyManager.getBooleanProperty(TesterraProperties.SCREENSHOT_ON_PAGELOAD, false)) {
-            this.waits.screenshot().toReport();
+            this.waitFor().screenshot().toReport();
         }
     }
 

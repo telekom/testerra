@@ -35,10 +35,8 @@ import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.io.File;
 import org.openqa.selenium.WebDriver;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
 public class CheckPageTest extends AbstractTestSitesTest implements PageFactoryProvider {
@@ -87,7 +85,7 @@ public class CheckPageTest extends AbstractTestSitesTest implements PageFactoryP
         Assert.assertTrue(reportScreenshotDirectory.isDirectory());
         Assert.assertNotNull(reportScreenshotDirectory.listFiles());
 
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getWebDriver();
 
         final int fileCountBeforeAction = reportScreenshotDirectory.listFiles().length;
         PropertyManager.getFileProperties().setProperty(TesterraProperties.SCREENSHOT_ON_PAGELOAD, "false");
@@ -101,10 +99,6 @@ public class CheckPageTest extends AbstractTestSitesTest implements PageFactoryP
         final int fileCountAfterCheckPageWithScreenshot = reportScreenshotDirectory.listFiles().length;
 
         Assert.assertNotEquals(fileCountAfterCheckPageWithoutScreenshot, fileCountAfterCheckPageWithScreenshot, "Record Screenshot count altered.");
-    }
-
-    @AfterMethod(alwaysRun = true)
-    public void tearDownScreenshotOnLoad() {
         PropertyManager.getFileProperties().setProperty(TesterraProperties.SCREENSHOT_ON_PAGELOAD, "false");
     }
 }

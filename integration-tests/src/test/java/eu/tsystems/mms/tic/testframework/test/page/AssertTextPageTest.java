@@ -25,7 +25,6 @@ package eu.tsystems.mms.tic.testframework.test.page;
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.WebTestFramedPage;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import org.testng.annotations.Test;
 
@@ -44,7 +43,9 @@ public class AssertTextPageTest extends AbstractTestSitesTest implements PageFac
 
     @Override
     public WebTestFramedPage getPage() {
-        return PageFactory.create(WebTestFramedPage.class, getClassExclusiveWebDriver());
+         WebTestFramedPage page = pageFactory.createPage(WebTestFramedPage.class, getWebDriver());
+         //page.expectThat().url().contains(getTestPage().getPath());
+         return page;
     }
 
     @Test

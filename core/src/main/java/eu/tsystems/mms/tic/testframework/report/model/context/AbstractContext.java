@@ -44,8 +44,8 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
     public final String id = IDUtils.getB64encXID();
     public AbstractContext parentContext;
     public String swi; // system-wide identifier
-    public Date startTime = new Date();
-    public Date endTime = new Date();
+    public final Date startTime = new Date();
+    public Date endTime;
 
     protected static void fillBasicContextValues(AbstractContext context, AbstractContext parentContext, String name) {
         context.name = name;

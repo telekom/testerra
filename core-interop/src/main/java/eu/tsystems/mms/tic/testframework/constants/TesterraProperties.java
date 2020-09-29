@@ -189,8 +189,7 @@ public final class TesterraProperties {
     public static final String WEBDRIVER_TIMEOUT_SECONDS_PAGELOAD = "webdriver.timeouts.seconds.pageload";
     public static final String WEBDRIVER_TIMEOUT_SECONDS_SCRIPT = "webdriver.timeouts.seconds.script";
 
-    public static final String PROXY_SETTINGS_LOAD = "tt.proxy.settings.load";
-    public static final String PROXY_SETTINGS_FILE = "tt.proxy.settings.file";
+    public static final String SYSTEM_SETTINGS_FILE = "tt.system.settings.file";
 
     public static final String LIST_TESTS = "tt.list.tests";
 
@@ -275,5 +274,7 @@ public final class TesterraProperties {
     public static final String LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_EDGE_STRENGTH = "tt.layoutcheck.text.error.detector.minimal.edge.strength";
 
     public static final String SCREENCASTER_ACTIVE = "tt.screencaster.active";
+    public static final String SCREENCASTER_ACTIVE_ON_SUCCESS = "tt.screencaster.active.on.success";
+    public static final String SCREENCASTER_ACTIVE_ON_FAILED = "tt.screencaster.active.on.failed";
 
 }

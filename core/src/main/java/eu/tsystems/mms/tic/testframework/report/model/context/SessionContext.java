@@ -23,7 +23,6 @@ package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -39,7 +38,12 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
         this.provider = provider;
 
         final MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
-        this.name = currentMethodContext.getName() + "_" + sessionKey;
+        if (currentMethodContext != null) {
+            this.name = currentMethodContext.getName() + "_";
+        } else {
+            this.name = "";
+        }
+        this.name += sessionKey;
     }
 
     private SessionContext() {

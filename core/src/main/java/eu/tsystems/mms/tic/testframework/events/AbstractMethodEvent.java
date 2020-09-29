@@ -94,6 +94,10 @@ public abstract class AbstractMethodEvent {
     }
 
     public boolean isFailed() {
-        return (!testResult.isSuccess() && !isSkipped());
+        return (!isPassed() && !isSkipped());
+    }
+
+    public boolean isPassed() {
+        return testResult.isSuccess();
     }
 }

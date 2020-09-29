@@ -34,11 +34,8 @@ import org.openqa.selenium.WebDriver;
 
 public class GuiElementCheckFieldAction extends CheckFieldAction {
 
-    final boolean forceStandardAssert;
-
     public GuiElementCheckFieldAction(FieldWithActionConfig field, AbstractPage declaringPage) {
         super(field, declaringPage);
-        forceStandardAssert = field.forceStandardAssert;
     }
 
     private void pCheckField(GuiElement guiElement, GuiElementAssert GuiElementAssert, CheckRule checkRule, boolean findNot, boolean fast) {
@@ -148,11 +145,6 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
             pCheckField(guiElement, guiElement.nonFunctionalAsserts(), checkRule, findNot, fast);
         } else {
 
-            // force standard asserts if commanded so
-            if (forceStandardAssert) {
-                guiElement.forceStandardAsserts();
-            }
-
             try {
                 pCheckField(guiElement, guiElement.asserts(), checkRule, findNot, fast);
             } catch (AssertionError e) {
@@ -166,11 +158,6 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
                     throw new AssertionError(prioritizedErrorMessage, pageNotFoundException);
                 } else {
                     throw pageNotFoundException;
-                }
-            } finally {
-                // reset standard asserts setting
-                if (forceStandardAssert) {
-                    guiElement.resetDefaultAsserts();
                 }
             }
 

@@ -18,6 +18,17 @@ When it's still not defined, in will fall back to the given `default` value.
 
 == Property files
 
+include::../properties/property-attributes.adoc[]
+
 Testerra supports and loads automatically `.properties` files located under  `test/resources`.
 
 The `test.properties` is called the Test Configuration and contains everything required by the test, like Browser setup, SUT credentials or Layout test thresholds.
+
+When a `system.properties` exists, Testerra loads and sets the given properties via `System.setProperty()` if they are not present already.
+
+NOTE: You cannot override system properties given by command line.
+
+The path of this file can be changed by `{system_settings_file}` and will be automatically loaded with the following message
+----
+common.TesterraCommons - Load system properties: /path/to/your/system.properties
+----

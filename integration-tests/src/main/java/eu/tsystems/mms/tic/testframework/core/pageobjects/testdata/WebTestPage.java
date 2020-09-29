@@ -45,6 +45,7 @@ public class WebTestPage extends AbstractWebTestPage {
     @Check
     private final GuiElement textOutputField = new GuiElement(this.getWebDriver(), By.id("99"));
 
+    @Deprecated
     public static class MyVariables implements PageVariables {
 
         int number;

@@ -41,7 +41,6 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import org.openqa.selenium.By;
@@ -55,12 +54,6 @@ import org.testng.Assert;
  * @author pele
  */
 public abstract class Page extends AbstractPage {
-
-    private static List<PageLoadHandler> pageLoadHandlers = new LinkedList<>();
-
-    public static void registerPageLoadHandler(PageLoadHandler h) {
-        pageLoadHandlers.add(h);
-    }
 
     /**
      * Constructor for existing sessions.
@@ -78,11 +71,6 @@ public abstract class Page extends AbstractPage {
 
         // performance test stop timer
         perfTestExtras();
-
-        // call page load handlers
-        for (PageLoadHandler pageLoadHandler : pageLoadHandlers) {
-            pageLoadHandler.run(this);
-        }
     }
 
     /**

@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
@@ -55,13 +56,11 @@ public abstract class AbstractPage implements Loggable {
      */
     protected int elementTimeoutInSeconds = POConfig.getUiElementTimeoutInSeconds();
 
-    private boolean forcedGuiElementStandardAsserts = false;
-
     /**
-     * Setter.
-     *
-     * @param newElementTimeout a new timeout in seconds
+     * @deprecated Should not be public or hidden by an interface.
+     * @see {@link PageOptions#elementTimeoutInSeconds()}
      */
+    @Deprecated
     public void setElementTimeoutInSeconds(final int newElementTimeout) {
         elementTimeoutInSeconds = newElementTimeout;
     }
@@ -103,24 +102,27 @@ public abstract class AbstractPage implements Loggable {
         }
     }
 
-    public final void forceGuiElementStandardAsserts() {
-        forcedGuiElementStandardAsserts = true;
-    }
-
     /**
      * The call of this method is injected into the constructor of every page class or must be called from every page
      * class constructor!!!
      * If there are several subclasses each calling checkPage, it will be only called from the class of the calling instance.
+     * @deprecated Don't call this method on your own and use {@link PageFactory#create(Class, WebDriver)} instead
      */
+    @Deprecated
     public final void checkPage() {
         pCheckPage(false, false, true);
     }
 
+    /**
+     * @deprecated Don't call this method on your own and use {@link PageFactory#create(Class, WebDriver)} instead
+     */
+    @Deprecated
     public final void checkPage(final boolean inverse, final boolean fast) {
         pCheckPage(inverse, fast, true);
     }
 
-    void pCheckPage(final boolean findNot, final boolean fast, final boolean checkCaller) {
+    @Deprecated
+    private void pCheckPage(final boolean findNot, final boolean fast, final boolean checkCaller) {
 
         if (checkCaller) {
         /*
@@ -298,7 +300,7 @@ public abstract class AbstractPage implements Loggable {
         ArrayList<FieldWithActionConfig> fieldToChecks = new ArrayList<FieldWithActionConfig>();
         for (final Class<? extends AbstractPage> cl : allClasses) {
             for (final Field field : cl.getDeclaredFields()) {
-                fieldToChecks.add(new FieldWithActionConfig(field, findNot, fast, forcedGuiElementStandardAsserts));
+                fieldToChecks.add(new FieldWithActionConfig(field, findNot, fast));
             }
         }
         return fieldToChecks;

@@ -2,8 +2,7 @@
 // If a property was changed in Testerra, change it here!
 
 // Testerra core
-:proxy_settings_load:                           tt.proxy.settings.load
-:proxy_settings_file:                           tt.proxy.settings.file
+:system_settings_file:                           tt.system.settings.file
 
 // webdriver
 :browser:                                       tt.browser
@@ -46,6 +45,8 @@
 :report_screenshots_preview:                    tt.report.screenshots.preview
 :screenshot_on_pageload:                        tt.screenshot.on.pageload
 :screencaster_active:                           tt.screencaster.active
+:screencaster_active_on_failed:                 tt.screencaster.active.on.failed
+:screencaster_active_on_success:                tt.screencaster.active.on.success
 
 // execution
 :dryrun:                                        tt.dryrun
@@ -117,7 +118,6 @@
 :perf_thinktime_ms:                             tt.perf.page.thinktime.ms
 
 // Selenoid connector
-:screencaster_active:                           tt.screencaster.active
 :selenoid_vnc_enabled:                          tt.selenoid.vnc.enabled
 :selenoid_vnc_address:                          tt.selenoid.vnc.address
 

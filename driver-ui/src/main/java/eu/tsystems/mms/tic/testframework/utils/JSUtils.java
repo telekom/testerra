@@ -29,7 +29,10 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
+import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
 import java.awt.Color;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -59,11 +62,9 @@ public final class JSUtils {
 
     /**
      * try to implement javascript on page
-     *
-     * @param driver       .
-     * @param resourceFile .
-     * @param id           .
+     * @deprecated Implementing JavaScript on a page like this is dangerous, because it can be prohibited by Content Security Policies
      */
+    @Deprecated
     public static void implementJavascriptOnPage(final WebDriver driver, final String resourceFile, final String id) {
 
         // TODO rnhb&pele: find a solution that is not conflicting with GuiElement activity (maybe run this before
@@ -90,6 +91,10 @@ public final class JSUtils {
         implementJavascriptOnPage(id, driver, inline);
     }
 
+    /**
+     * @deprecated Implementing JavaScript on a page like this is dangerous, because it can be prohibited by Content Security Policies
+     */
+    @Deprecated
     public static void implementJavascriptOnPage(
             String scriptId,
             WebDriver driver,
@@ -295,23 +300,23 @@ public final class JSUtils {
      * @param element GuiElement
      * @return String
      */
-    public static String getJavaScriptSelector(final UiElement element) {
+    @Deprecated
+    public static String getJavaScriptSelector(GuiElement element) {
 
         final String jsFrameExpander = ".contentDocument";
         String hierarchyFrameSelector = "document";
 
-        // Run through hierarchy
-//        final IFrameLogic frameLogic = element.getFrameLogic();
-//
-//        if (frameLogic != null) {
-//            List<UiElement> allFramesInOrder = frameLogic.getAllFramesInOrder();
-//            for (UiElement guiElement : allFramesInOrder) {
-//                hierarchyFrameSelector = pGetSimpleJsSelector(guiElement, hierarchyFrameSelector) + jsFrameExpander;
-//            }
-//        }
+        GuiElementData guiElementData = element.getData();
+
+        // Run through frame hierarchy
+        GuiElementData parentData = guiElementData.getParent();
+        while (parentData != null && parentData.isFrame()) {
+            hierarchyFrameSelector = pGetSimpleJsSelector(parentData, hierarchyFrameSelector) + jsFrameExpander;
+            parentData = parentData.getParent();
+        }
 
         // get js selector
-        final String fullSelector = pGetSimpleJsSelector(element, hierarchyFrameSelector);
+        final String fullSelector = pGetSimpleJsSelector(guiElementData, hierarchyFrameSelector);
 
         return fullSelector;
     }
@@ -319,11 +324,11 @@ public final class JSUtils {
     /**
      * Gets the selector without frame hierarchy
      *
-     * @param element          GuiElement
+     * @param guiElementData          GuiElement
      * @param documentSelector String Current Selector
      * @return String
      */
-    private static String pGetSimpleJsSelector(final UiElement element, final String documentSelector) {
+    private static String pGetSimpleJsSelector(GuiElementData guiElementData, final String documentSelector) {
 
         final String jsById = documentSelector + ".getElementById(\"###\")";
         final String jsByClassName = documentSelector + ".getElementsByClassName(\"###\")[0]";
@@ -343,7 +348,7 @@ public final class JSUtils {
 
         // By-Class does not allow to access the selector field
         // ... use .toString() and extract selector.
-        final By by = element.getLocate().getBy();
+        final By by = guiElementData.getLocate().getBy();
         final String beautifiedSelector = beautifySelectorString(by);
         String jsSelector = "";
 
@@ -379,6 +384,10 @@ public final class JSUtils {
         return selector.toString().replaceFirst("By.*:", "").trim();
     }
 
+    /**
+     * @deprecated Use by deprecated {@link Layout}
+     */
+    @Deprecated
     public static Map<String, Long> getElementInnerBorders(UiElement guiElement) {
         String cmd = "el = arguments[0];" +
                 "bl = window.getComputedStyle(el, null).getPropertyValue('border-left-width');" +

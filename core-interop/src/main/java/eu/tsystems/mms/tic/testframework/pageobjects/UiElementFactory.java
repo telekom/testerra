@@ -29,6 +29,12 @@ import org.openqa.selenium.WebDriver;
  * @author Mike Reiche
  */
 public interface UiElementFactory {
+    /**
+     * Creates root elements from the WebDriver's default content
+     */
     UiElement createWithWebDriver(WebDriver webDriver, Locator locator);
+    /**
+     * Creates sub elements from a given parent element
+     */
     UiElement createFromParent(UiElement parent, Locator locator);
 }

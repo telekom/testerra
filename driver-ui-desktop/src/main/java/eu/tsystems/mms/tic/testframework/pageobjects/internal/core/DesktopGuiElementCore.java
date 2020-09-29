@@ -28,7 +28,6 @@ import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultLocator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementRetainer;
@@ -55,7 +54,6 @@ import javax.imageio.ImageIO;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.InvalidElementStateException;
-import org.openqa.selenium.JavascriptException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.Rectangle;
@@ -141,18 +139,12 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
 
         GuiElementData parentData = guiElementData.getParent();
         if (parentData != null) {
-            GuiElement parentUiElement = parentData.getGuiElement();
-            parentUiElement.getCore().findWebElement(webElement -> {
-                /**
-                 * We need to check for shadow root before,
-                 * because accessing these element's attributes like {@link WebElement#getTagName()}
-                 * will fail with a {@link JavascriptException}.
-                 */
-                if (!parentUiElement.getData().isShadowRoot() && (webElement.getTagName().equals("frame") || webElement.getTagName().equals("iframe"))) {
-                    webDriver.switchTo().frame(webElement);
+            parentData.getGuiElement().getCore().findWebElement(parentWebElement -> {
+                if (parentData.isFrame()) {
+                    webDriver.switchTo().frame(parentWebElement);
                     consumer.accept(findElementsFromWebDriver(webDriver, by));
                 } else {
-                    consumer.accept(findElementsFromWebElement(webElement, correctToRelativeXPath(by)));
+                    consumer.accept(findElementsFromWebElement(parentWebElement, correctToRelativeXPath(by)));
                 }
             });
         } else {
@@ -197,7 +189,9 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
             }
 
             if (webElements.size() > 0) {
-                // webelement to set
+                /**
+                 * Selected the right element from {@link GuiElementData#getIndex()}
+                 */
                 WebElement webElement = webElements.get(Math.max(0, guiElementData.getIndex()));
                 WebDriver webDriver = guiElementData.getWebDriver();
 
@@ -207,6 +201,8 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
                     if (shadowedWebElement instanceof WebElement) {
                         webElement = (WebElement) shadowedWebElement;
                     }
+                } else if (webElement.getTagName().equals("frame") || webElement.getTagName().equals("iframe")) {
+                    guiElementData.setIsFrame(true);
                 }
 
                 // proxy the web element for logging

@@ -21,16 +21,17 @@
 
 package eu.tsystems.mms.tic.testframework.test.utils;
 
+import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.utils.MouseActions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.interactions.Action;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.annotations.Test;
 
-public class DragAndDropOverFramesTest extends AbstractDragAndDropTest {
+public class DragAndDropOverFramesTest extends AbstractTestSitesTest {
+    final By sourceLocatorFrames = By.xpath(".//img[@alt='Ringo Starr']");
 
     @Override
     public TestPage getTestPage() {
@@ -57,23 +58,11 @@ public class DragAndDropOverFramesTest extends AbstractDragAndDropTest {
     @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
     public void testT2_DragAndDropOverFrames() {
         final GuiElement[] guiElements = beforeDragAndDropFrames();
-
         GuiElement sourceGuiElement = guiElements[0];
         GuiElement destinationGuiElement = guiElements[1];
 
-        sourceGuiElement.findWebElement(sourceWebElement -> {
-            Actions builder = new Actions(sourceGuiElement.getWebDriver());
-            builder.clickAndHold(sourceWebElement);
-            Action dragAction = builder.build();
-            dragAction.perform();
+        MouseActions.dragAndDropJS(sourceGuiElement, destinationGuiElement);
 
-            destinationGuiElement.findWebElement(targetWebElement -> {
-                builder.moveToElement(targetWebElement);
-                builder.release(targetWebElement);
-                Action dropAction = builder.build();
-                dropAction.perform();
-            });
-        });
         checkResultFrames(destinationGuiElement);
     }
 }

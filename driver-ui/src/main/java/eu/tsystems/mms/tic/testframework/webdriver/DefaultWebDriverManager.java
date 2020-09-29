@@ -22,6 +22,7 @@
 package eu.tsystems.mms.tic.testframework.webdriver;
 
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import org.openqa.selenium.WebDriver;
 
@@ -37,7 +38,7 @@ public class DefaultWebDriverManager implements IWebDriverManager {
     }
 
     @Override
-    public IWebDriverFactory getFactoryForBrowser(String browser) {
+    public IWebDriverFactory getWebDriverFactoryForBrowser(String browser) {
         return WebDriverSessionsManager.getWebDriverFactory(browser);
     }
 
@@ -58,5 +59,10 @@ public class DefaultWebDriverManager implements IWebDriverManager {
         } else {
             WebDriverManager.shutdown();
         }
+    }
+
+    @Override
+    public WebDriverRequest getWebDriverRequestByWebDriver(WebDriver webDriver) {
+        return WebDriverManager.getRelatedWebDriverRequest(webDriver);
     }
 }

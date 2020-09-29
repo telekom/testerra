@@ -83,6 +83,9 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     @Override
     protected UiElement find(Locator locator) {
         GuiElement subElement = (GuiElement)uiElementFactory.createFromParent(rootElement, locator);
+        /**
+         * We change the parent from its {@link #rootElement} to this {@link Nameable}
+         */
         subElement.setParent(this);
         return subElement;
     }

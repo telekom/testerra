@@ -48,8 +48,9 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.DelayAction
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.UiElementLogger;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.DefaultGuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
+import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverFactory;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
@@ -67,7 +68,7 @@ import org.openqa.selenium.WebElement;
  * <p>
  * Authors: pele, rnhb
  */
-public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable {
+public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable, WebDriverManagerProvider {
     /**
      * Factory required for {@link UiElementFinder}
      */
@@ -130,7 +131,8 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     private GuiElement(GuiElementData data) {
         guiElementData = data;
         guiElementData.setGuiElement(this);
-        IWebDriverFactory factory = WebDriverSessionsManager.getWebDriverFactory(guiElementData.getBrowser());
+        WebDriverRequest webDriverRequest = webDriverManager.getWebDriverRequestByWebDriver(guiElementData.getWebDriver());
+        IWebDriverFactory factory = webDriverManager.getWebDriverFactoryForBrowser(webDriverRequest.browser);
         this.core = factory.createCore(guiElementData);
     }
 
@@ -560,7 +562,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     }
 
     public GuiElement sensibleData() {
-        guiElementData.setSensibleData(true);
+        guiElementData.setHasSensibleData(true);
         return this;
     }
 
@@ -701,7 +703,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
 
     @Deprecated
     public GuiElement shadowRoot() {
-        guiElementData.setShadowRoot(true);
+        guiElementData.setHasShadowRoot(true);
         return this;
     }
 
@@ -743,7 +745,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
             }
             sb.insert(0, elementPath);
             guiElementData = guiElementData.getParent();
-        } while (guiElementData != null);
+        } while (guiElementData != null && !guiElementData.isFrame());
 
         return sb.toString();
     }

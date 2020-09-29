@@ -27,12 +27,11 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultLocator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverRetainer;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 
 /**
- * Holds the state of the {@link GuiElement} to interchange with any other
- * implementations like {@link GuiElementCore}
+ * Contains the intersecting information of {@link GuiElement} and {@link GuiElementCore}
+ * required for communication or creating new elements.
  */
 public class GuiElementData implements
     Nameable<GuiElementData>,
@@ -46,6 +45,7 @@ public class GuiElementData implements
     private String name;
     private boolean shadowRoot = false;
     private boolean sensibleData = false;
+    private boolean isFrame = false;
 
     /**
      * Creates a state as descendant of on another state
@@ -98,10 +98,6 @@ public class GuiElementData implements
         return locate;
     }
 
-    public String getBrowser() {
-        return WebDriverManager.getRelatedWebDriverRequest(webDriver).browser;
-    }
-
     @Override
     public WebDriver getWebDriver() {
         return webDriver;
@@ -111,7 +107,7 @@ public class GuiElementData implements
         return shadowRoot;
     }
 
-    public GuiElementData setShadowRoot(boolean shadowRoot) {
+    public GuiElementData setHasShadowRoot(boolean shadowRoot) {
         this.shadowRoot = shadowRoot;
         return this;
     }
@@ -120,7 +116,7 @@ public class GuiElementData implements
         return sensibleData;
     }
 
-    public GuiElementData setSensibleData(boolean sensibleData) {
+    public GuiElementData setHasSensibleData(boolean sensibleData) {
         this.sensibleData = sensibleData;
         return this;
     }
@@ -164,5 +160,13 @@ public class GuiElementData implements
 
     public int getIndex() {
         return index;
+    }
+    public boolean isFrame() {
+        return isFrame;
+    }
+
+    public GuiElementData setIsFrame(boolean frame) {
+        isFrame = frame;
+        return this;
     }
 }

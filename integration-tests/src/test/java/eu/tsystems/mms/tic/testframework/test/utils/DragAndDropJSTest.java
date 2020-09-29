@@ -21,14 +21,23 @@
  */
 package eu.tsystems.mms.tic.testframework.test.utils;
 
+import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
+import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.utils.MouseActions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
 
-public class DragAndDropJSTest extends AbstractDragAndDropTest {
+public class DragAndDropJSTest extends AbstractTestSitesTest {
+
+    final By sourceLocatorSimple = By.id("dragLogo");
+
+    @Override
+    protected TestPage getTestPage() {
+        return TestPage.DRAG_AND_DROP;
+    }
 
     private GuiElement[] beforeDragAndDropSimple() {
         final WebDriver driver = getWebDriver();
@@ -41,7 +50,6 @@ public class DragAndDropJSTest extends AbstractDragAndDropTest {
         final GuiElement subElement = destinationGuiElement.getSubElement(sourceLocatorSimple);
         subElement.asserts().assertIsDisplayed();
     }
-
 
     @Test
     @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")

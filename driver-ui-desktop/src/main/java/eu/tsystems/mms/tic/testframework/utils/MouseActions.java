@@ -25,7 +25,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
 public final class MouseActions {
 
@@ -112,16 +111,6 @@ public final class MouseActions {
 
         final String script = "TesterraDNDFrame(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4], arguments[5]);";
         JSUtils.executeScript(driver, script, jsSelectorDrag, jsSelectorDrop, fromX, fromY, toX, toY);
-    }
-
-    private static void dragAndDrop(final WebDriver driver, WebElement drag, WebElement drop, int fromX, int fromY,
-                                    int toX, int toY) {
-
-        JSUtils.implementJavascriptOnPage(driver, "js/inject/dragAndDrop.js", "TesterraDragAndDrop");
-
-        final String script = "TesterraDND(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4], arguments[5]);";
-
-        JSUtils.executeScript(driver, script, drag, drop, fromX, fromY, toX, toY);
     }
 
     public static void swipeElement(GuiElement elementToSwipe, int offsetX, int offsetY) {

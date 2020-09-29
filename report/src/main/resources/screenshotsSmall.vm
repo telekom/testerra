@@ -1,4 +1,4 @@
-#if (${methodInfo.screenshots.size()} > 0)
+#if (${methodInfo.getAllScreenshotsFromTestSteps().findAny().isPresent()} > 0)
     <div class="spacy shadow">
         <div class="fotorama"
              data-height="90"
@@ -12,8 +12,8 @@
              data-fit="scaledown"
              data-thumbwidth="32"
              data-thumbheight="32">
-            #foreach( $screenshot in $methodInfo.screenshots )
-                <div data-img="../../screenshots/${screenshot.filename}">
+            #foreach( $screenshot in $methodInfo.getAllScreenshotsFromTestSteps().toArray() )
+                <div data-img="../../screenshots/${screenshot.getScreenshotFile().getName()}">
                     <!-- Fullscreen -->
                     <a class="gallerybutton" href="#" title="Fullscreen" onclick="fotorama.cancelFullScreen();">
                         <i class="bgwhite fa fa-arrows-alt"></i>

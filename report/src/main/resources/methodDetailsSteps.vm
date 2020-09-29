@@ -129,8 +129,8 @@
                                         <td colspan="2" style="position: relative;">
                                             <!-- screen -->
                                             #if ($entry.screenshot)
-                                                <a href="../../screenshots/${entry.screenshot.filename}" target="_blank">
-                                                    <img alt="screenshot" src="../../screenshots/${entry.screenshot.filename}"
+                                                <a href="../../screenshots/${entry.screenshot.getScreenshotFile().getName()}" target="_blank">
+                                                    <img alt="screenshot" src="../../screenshots/${entry.screenshot.getScreenshotFile().getName()}"
                                                          width="300px"/>
                                                 </a>
                                                 <div style="position: absolute; padding: 5px;background: #ff7777; bottom: 10px; opacity: 0.8;">

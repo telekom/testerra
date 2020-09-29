@@ -1,4 +1,4 @@
-#if (${methodInfo.screenshots.size()} > 0)
+#if (${methodInfo.getAllScreenshotsFromTestSteps().findAny().isPresent()})
     <div style="padding:20px;">
         <div id="infobox" class="selectable screenshotmessagebox"></div>
     </div>
@@ -16,8 +16,8 @@
              data-height="90%"
              data-width="90%"
         >
-            #foreach( $screenshot in $methodInfo.screenshots )
-                #set ($path = "../../screenshots/${screenshot.filename}")
+            #foreach( $screenshot in $methodInfo.getAllScreenshotsFromTestSteps().toArray() )
+                #set ($path = "../../screenshots/${screenshot.getScreenshotFile().getName()}")
 
                 #set ($infoText = "")
                 #if ($screenshot.meta().size() > 0)
@@ -39,9 +39,9 @@
                             <i class="bgwhite fa fa-cloud-download"></i>
                         </a>
                         <!-- page source -->
-                        #if (${screenshot.sourceFilename})
+                        #if (${screenshot.getPageSourceFile()})
                         <a class="gallerybutton" title="PageSource" target="_blank"
-                           href="../../screenshots/${screenshot.sourceFilename}">
+                           href="../../screenshots/${screenshot.getPageSourceFile().getName()}">
                             <i class="bgwhite fa fa-file-code-o"></i>
                         </a>
                         #end

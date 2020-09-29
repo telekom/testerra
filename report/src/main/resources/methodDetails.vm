@@ -109,7 +109,7 @@
             #end
 
             <!-- screens link-->
-            #if (${testMethod.screenshots.size()} > 0)
+            #if (${testMethod.getAllScreenshotsFromTestSteps().findAny().isPresent()})
                 <div id="buttonscreen" onclick="toggleDetailsView('screenshotarea', 'toggleview', 'buttonscreen', 'togglebutton');"
                      title="Show screenshots" class="detailsmenu togglebutton">
                     <h6><i class="symbols fa fa-photo fa-2x"></i>Screenshots</h6>
@@ -355,7 +355,7 @@
                                              data-click="false"
                                              data-fit="scaledown"
                                         >
-                                            #set($imageNames=[$customError.actualScreenshot.filename,$customError.expectedScreenshot.filename,$customError.distanceScreenshot.filename])
+                                            #set($imageNames=[$customError.actualScreenshot.getScreenshotFile().getName(),$customError.expectedScreenshot.getScreenshotFile().getName(),$customError.distanceScreenshot.getScreenshotFile().getName()])
                                             #set($imageCaptions=["Actual","Expected reference", "Distance"])
 
                                             #foreach ($imageName in $imageNames)
@@ -413,12 +413,12 @@
                         <div style="margin: 10px; float: left;">
                             <div>
                                 <video width="1024" height="512" controls autoplay>
-                                    <source src="../../videos/$video.filename" type="video/mp4">
+                                    <source src="../../videos/$video.getVideoFile().getName()" type="video/mp4">
                                     Your browser does not support the video tag.
                                 </video>
                             </div>
                             <div>
-                                <a href="../../videos/$video" download="../../videos/$video.filename" title="Video">Download</a>
+                                <a href="../../videos/$video" download="../../videos/$video.getVideoFile().getName()" title="Video">Download</a>
                             </div>
                         </div>
                     #end

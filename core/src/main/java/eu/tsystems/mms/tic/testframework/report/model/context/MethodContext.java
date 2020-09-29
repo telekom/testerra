@@ -34,6 +34,7 @@ import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.lang.annotation.Annotation;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
@@ -96,7 +97,8 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return this.testStepController.getTestSteps().stream()
                 .flatMap(testStep -> testStep.getTestStepActions().stream())
                 .flatMap(testStepAction -> testStepAction.getTestStepActionEntries().stream())
-                .map(testStepActionEntry -> testStepActionEntry.screenshot);
+                .map(testStepActionEntry -> testStepActionEntry.screenshot)
+                .filter(Objects::nonNull);
 
     }
 
@@ -151,6 +153,13 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return this;
     }
 
+    public ErrorContext getErrorContext() {
+        return this.errorContext();
+    }
+
+    /**
+     * @deprecated Use {@link #getErrorContext()} instead
+     */
     public ErrorContext errorContext() {
         if (errorContext == null) {
             errorContext = new ErrorContext();
@@ -340,7 +349,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         TestStepAction currentTestStepAction = steps().getCurrentTestStep().getCurrentTestStepAction();
         screenshots.forEach(screenshot -> {
             if (!screenshot.hasErrorContextId()) {
-                screenshot.setErrorContextId(this.errorContext.id);
+                screenshot.setErrorContextId(this.getErrorContext().id);
             }
             currentTestStepAction.addScreenshot(screenshot);
         });
@@ -348,7 +357,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     public MethodContext addVideo(Video video) {
-        if (!video.hasErrorContextId()) video.setErrorContextId(this.errorContext.id);
+        if (!video.hasErrorContextId()) video.setErrorContextId(this.getErrorContext().id);
         this.videos.add(video);
         return this;
     }

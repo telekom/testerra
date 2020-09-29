@@ -49,7 +49,7 @@
     </td>
 
     <td class="cellCenter">
-            #if (${testMethod.screenshots.size()} > 0)
+            #if (${testMethod.getAllScreenshotsFromTestSteps().findAny().isPresent()})
                 <div class="fotoramaControl">
                     <a class="fotoramaSwitchOn fotoramaSwitchOn$index" href="javascript:showFotorama('$index');">
                         <!--<img alt="F" title="Show Screenshots" src="style/paper-clip-attach-interface-symbol.png" style="width: 21px;"/>-->
@@ -74,8 +74,8 @@
                              data-thumbwidth="32"
                              data-thumbheight="32"
                         >
-                            #foreach( $screenshot in $testMethod.screenshots )
-                                <div data-img="../screenshots/${screenshot.filename}">
+                            #foreach( $screenshot in $testMethod.getAllScreenshotsFromTestSteps().toArray() )
+                                <div data-img="../screenshots/${screenshot.getScreenshotFile().getName()}">
                                     <!-- Quit fullscreen -->
                                     <a class="gallerybutton" href="#">
                                         <!--<img id="fullscreenButton" alt="F" title="Fullscreen" src="style/thumb_full-screen.png" style="width: 21px; background-color: white;"/>-->

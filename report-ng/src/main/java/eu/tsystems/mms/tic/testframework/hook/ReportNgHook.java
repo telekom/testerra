@@ -24,7 +24,7 @@ package eu.tsystems.mms.tic.testframework.hook;
 
 import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
-import eu.tsystems.mms.tic.testframework.listeners.GenerateReportModelListener;
+import eu.tsystems.mms.tic.testframework.listeners.GenerateReportNgModelListener;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 
@@ -34,7 +34,7 @@ public class ReportNgHook implements ModuleHook {
     public void init() {
         EventBus eventBus = TesterraListener.getEventBus();
         Report report = new Report();
-        eventBus.register(new GenerateReportModelListener(report.getReportDirectory("app/dist/model")));
+        eventBus.register(new GenerateReportNgModelListener(report.getReportDirectory("app/dist/model")));
     }
 
     @Override

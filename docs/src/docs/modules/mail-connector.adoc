@@ -74,7 +74,7 @@ POP3MailConnector pop3MailConnector = new POP3MailConnector();
 // fetch all emails from Server
 MimeMessage[] messages = pop3MailConnector.getMessages();
 
-// wait until the email with subject 'test' arrived
+// wait until the email with subject 'test' arrived in the InboxFolder
 SubjectTerm subjectTerm = new SubjectTerm(subject);
 Email email = pop3MailConnector.waitForMails(subjectTerm).get(0));
 
@@ -95,6 +95,7 @@ pop3MailConnector.deleteMessage(recipient, RecipientType.TO, subject, messageId)
 .Working with attachments
 [source,java]
 ----
+// wait until the email with subject 'test' arrived in the InboxFolder
 SubjectTerm subjectTerm = new SubjectTerm(subject);
 Email email = pop3MailConnector.waitForMails(subjectTerm).get(0);
 
@@ -151,7 +152,7 @@ The `ImapMailConnector` operates like the <<POP3MailConnector>> with an addition
 ----
 ImapMailConnector imapMailConnector = new ImapMailConnector();
 
-// wait until the email with subject 'test' arrived
+// wait until the email with subject 'test' arrived in the InboxFolder
 SubjectTerm subjectTerm = new SubjectTerm(subject);
 Email email = imapMailConnector.waitForMails(subjectTerm).get(0);
 

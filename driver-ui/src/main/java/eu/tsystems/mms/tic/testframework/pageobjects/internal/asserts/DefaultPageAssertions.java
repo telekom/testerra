@@ -98,9 +98,7 @@ public class DefaultPageAssertions implements PageAssertions {
 
             @Override
             public void failedFinally(AbstractPropertyAssertion assertion) {
-                if (reportMode == Report.Mode.WHEN_FAILED) {
-                    report.addScreenshot(atomicScreenshot.get(), Report.FileMode.MOVE);
-                }
+                report.addScreenshot(atomicScreenshot.get(), Report.FileMode.MOVE);
             }
 
             @Override

@@ -258,9 +258,7 @@ public class DefaultUiElementAssertions implements UiElementAssertions {
 
             @Override
             public void failedFinally(AbstractPropertyAssertion assertion) {
-                if (reportMode == Report.Mode.WHEN_FAILED) {
-                    report.addScreenshot(atomicScreenshot.get(), Report.FileMode.MOVE);
-                }
+                report.addScreenshot(atomicScreenshot.get(), Report.FileMode.MOVE);
             }
 
             @Override

@@ -21,9 +21,9 @@ export namespace data {
 
         /**
          * Constructs a new SuiteContext.
-         * @param [properties] Properties to set
+         * @param [p] Properties to set
          */
-        constructor(properties?: data.ISuiteContext);
+        constructor(p?: data.ISuiteContext);
 
         /** SuiteContext contextValues. */
         public contextValues?: (data.IContextValues|null);
@@ -35,22 +35,14 @@ export namespace data {
         public executionContextId: string;
 
         /**
-         * Encodes the specified SuiteContext message. Does not implicitly {@link data.SuiteContext.verify|verify} messages.
-         * @param message SuiteContext message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: data.ISuiteContext, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
          * Decodes a SuiteContext message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
+         * @param r Reader or buffer to decode from
+         * @param [l] Message length if known beforehand
          * @returns SuiteContext
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): data.SuiteContext;
+        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.SuiteContext;
     }
 
     /** Properties of a ClassContext. */
@@ -83,9 +75,9 @@ export namespace data {
 
         /**
          * Constructs a new ClassContext.
-         * @param [properties] Properties to set
+         * @param [p] Properties to set
          */
-        constructor(properties?: data.IClassContext);
+        constructor(p?: data.IClassContext);
 
         /** ClassContext contextValues. */
         public contextValues?: (data.IContextValues|null);
@@ -109,22 +101,14 @@ export namespace data {
         public merged: boolean;
 
         /**
-         * Encodes the specified ClassContext message. Does not implicitly {@link data.ClassContext.verify|verify} messages.
-         * @param message ClassContext message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: data.IClassContext, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
          * Decodes a ClassContext message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
+         * @param r Reader or buffer to decode from
+         * @param [l] Message length if known beforehand
          * @returns ClassContext
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): data.ClassContext;
+        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.ClassContext;
     }
 
     /** Properties of a TestContext. */
@@ -148,9 +132,9 @@ export namespace data {
 
         /**
          * Constructs a new TestContext.
-         * @param [properties] Properties to set
+         * @param [p] Properties to set
          */
-        constructor(properties?: data.ITestContext);
+        constructor(p?: data.ITestContext);
 
         /** TestContext contextValues. */
         public contextValues?: (data.IContextValues|null);
@@ -165,22 +149,14 @@ export namespace data {
         public executionContextId: string;
 
         /**
-         * Encodes the specified TestContext message. Does not implicitly {@link data.TestContext.verify|verify} messages.
-         * @param message TestContext message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: data.ITestContext, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
          * Decodes a TestContext message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
+         * @param r Reader or buffer to decode from
+         * @param [l] Message length if known beforehand
          * @returns TestContext
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): data.TestContext;
+        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.TestContext;
     }
 
     /** Properties of an ExecutionContext. */
@@ -228,9 +204,9 @@ export namespace data {
 
         /**
          * Constructs a new ExecutionContext.
-         * @param [properties] Properties to set
+         * @param [p] Properties to set
          */
-        constructor(properties?: data.IExecutionContext);
+        constructor(p?: data.IExecutionContext);
 
         /** ExecutionContext contextValues. */
         public contextValues?: (data.IContextValues|null);
@@ -269,22 +245,14 @@ export namespace data {
         public estimatedTestMethodCount: number;
 
         /**
-         * Encodes the specified ExecutionContext message. Does not implicitly {@link data.ExecutionContext.verify|verify} messages.
-         * @param message ExecutionContext message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: data.IExecutionContext, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
          * Decodes an ExecutionContext message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
+         * @param r Reader or buffer to decode from
+         * @param [l] Message length if known beforehand
          * @returns ExecutionContext
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): data.ExecutionContext;
+        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.ExecutionContext;
     }
 
     /** Properties of a ContextClip. */
@@ -302,9 +270,9 @@ export namespace data {
 
         /**
          * Constructs a new ContextClip.
-         * @param [properties] Properties to set
+         * @param [p] Properties to set
          */
-        constructor(properties?: data.IContextClip);
+        constructor(p?: data.IContextClip);
 
         /** ContextClip key. */
         public key: string;
@@ -313,22 +281,14 @@ export namespace data {
         public methodContextIds: string[];
 
         /**
-         * Encodes the specified ContextClip message. Does not implicitly {@link data.ContextClip.verify|verify} messages.
-         * @param message ContextClip message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: data.IContextClip, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
          * Decodes a ContextClip message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
+         * @param r Reader or buffer to decode from
+         * @param [l] Message length if known beforehand
          * @returns ContextClip
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): data.ContextClip;
+        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.ContextClip;
     }
 
     /** Properties of a MethodContext. */
@@ -412,9 +372,9 @@ export namespace data {
 
         /**
          * Constructs a new MethodContext.
-         * @param [properties] Properties to set
+         * @param [p] Properties to set
          */
-        constructor(properties?: data.IMethodContext);
+        constructor(p?: data.IMethodContext);
 
         /** MethodContext contextValues. */
         public contextValues?: (data.IContextValues|null);
@@ -489,22 +449,14 @@ export namespace data {
         public customContextJson: string;
 
         /**
-         * Encodes the specified MethodContext message. Does not implicitly {@link data.MethodContext.verify|verify} messages.
-         * @param message MethodContext message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: data.IMethodContext, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
          * Decodes a MethodContext message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
+         * @param r Reader or buffer to decode from
+         * @param [l] Message length if known beforehand
          * @returns MethodContext
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): data.MethodContext;
+        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.MethodContext;
     }
 
     /** Properties of a ContextValues. */
@@ -540,9 +492,9 @@ export namespace data {
 
         /**
          * Constructs a new ContextValues.
-         * @param [properties] Properties to set
+         * @param [p] Properties to set
          */
-        constructor(properties?: data.IContextValues);
+        constructor(p?: data.IContextValues);
 
         /** ContextValues id. */
         public id: string;
@@ -569,22 +521,14 @@ export namespace data {
         public execStatus: data.ExecStatusType;
 
         /**
-         * Encodes the specified ContextValues message. Does not implicitly {@link data.ContextValues.verify|verify} messages.
-         * @param message ContextValues message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: data.IContextValues, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
          * Decodes a ContextValues message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
+         * @param r Reader or buffer to decode from
+         * @param [l] Message length if known beforehand
          * @returns ContextValues
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): data.ContextValues;
+        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.ContextValues;
     }
 
     /** Properties of a PTestStep. */
@@ -605,9 +549,9 @@ export namespace data {
 
         /**
          * Constructs a new PTestStep.
-         * @param [properties] Properties to set
+         * @param [p] Properties to set
          */
-        constructor(properties?: data.IPTestStep);
+        constructor(p?: data.IPTestStep);
 
         /** PTestStep name. */
         public name: string;
@@ -619,22 +563,14 @@ export namespace data {
         public testStepActions: data.IPTestStepAction[];
 
         /**
-         * Encodes the specified PTestStep message. Does not implicitly {@link data.PTestStep.verify|verify} messages.
-         * @param message PTestStep message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: data.IPTestStep, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
          * Decodes a PTestStep message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
+         * @param r Reader or buffer to decode from
+         * @param [l] Message length if known beforehand
          * @returns PTestStep
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): data.PTestStep;
+        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.PTestStep;
     }
 
     /** Properties of a PTestStepAction. */
@@ -664,9 +600,9 @@ export namespace data {
 
         /**
          * Constructs a new PTestStepAction.
-         * @param [properties] Properties to set
+         * @param [p] Properties to set
          */
-        constructor(properties?: data.IPTestStepAction);
+        constructor(p?: data.IPTestStepAction);
 
         /** PTestStepAction name. */
         public name: string;
@@ -687,22 +623,14 @@ export namespace data {
         public screenshotIds: string[];
 
         /**
-         * Encodes the specified PTestStepAction message. Does not implicitly {@link data.PTestStepAction.verify|verify} messages.
-         * @param message PTestStepAction message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: data.IPTestStepAction, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
          * Decodes a PTestStepAction message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
+         * @param r Reader or buffer to decode from
+         * @param [l] Message length if known beforehand
          * @returns PTestStepAction
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): data.PTestStepAction;
+        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.PTestStepAction;
     }
 
     /** PClickPathEventType enum. */
@@ -733,9 +661,9 @@ export namespace data {
 
         /**
          * Constructs a new PClickPathEvent.
-         * @param [properties] Properties to set
+         * @param [p] Properties to set
          */
-        constructor(properties?: data.IPClickPathEvent);
+        constructor(p?: data.IPClickPathEvent);
 
         /** PClickPathEvent type. */
         public type: data.PClickPathEventType;
@@ -747,22 +675,14 @@ export namespace data {
         public sessionId: string;
 
         /**
-         * Encodes the specified PClickPathEvent message. Does not implicitly {@link data.PClickPathEvent.verify|verify} messages.
-         * @param message PClickPathEvent message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: data.IPClickPathEvent, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
          * Decodes a PClickPathEvent message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
+         * @param r Reader or buffer to decode from
+         * @param [l] Message length if known beforehand
          * @returns PClickPathEvent
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): data.PClickPathEvent;
+        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.PClickPathEvent;
     }
 
     /** Properties of an ErrorContext. */
@@ -792,9 +712,9 @@ export namespace data {
 
         /**
          * Constructs a new ErrorContext.
-         * @param [properties] Properties to set
+         * @param [p] Properties to set
          */
-        constructor(properties?: data.IErrorContext);
+        constructor(p?: data.IErrorContext);
 
         /** ErrorContext readableErrorMessage. */
         public readableErrorMessage: string;
@@ -815,22 +735,14 @@ export namespace data {
         public executionObjectSource?: (data.IScriptSource|null);
 
         /**
-         * Encodes the specified ErrorContext message. Does not implicitly {@link data.ErrorContext.verify|verify} messages.
-         * @param message ErrorContext message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: data.IErrorContext, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
          * Decodes an ErrorContext message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
+         * @param r Reader or buffer to decode from
+         * @param [l] Message length if known beforehand
          * @returns ErrorContext
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): data.ErrorContext;
+        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.ErrorContext;
     }
 
     /** Properties of a SessionContext. */
@@ -857,9 +769,9 @@ export namespace data {
 
         /**
          * Constructs a new SessionContext.
-         * @param [properties] Properties to set
+         * @param [p] Properties to set
          */
-        constructor(properties?: data.ISessionContext);
+        constructor(p?: data.ISessionContext);
 
         /** SessionContext contextValues. */
         public contextValues?: (data.IContextValues|null);
@@ -877,22 +789,14 @@ export namespace data {
         public sessionId: string;
 
         /**
-         * Encodes the specified SessionContext message. Does not implicitly {@link data.SessionContext.verify|verify} messages.
-         * @param message SessionContext message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: data.ISessionContext, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
          * Decodes a SessionContext message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
+         * @param r Reader or buffer to decode from
+         * @param [l] Message length if known beforehand
          * @returns SessionContext
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): data.SessionContext;
+        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.SessionContext;
     }
 
     /** Properties of a RunConfig. */
@@ -913,9 +817,9 @@ export namespace data {
 
         /**
          * Constructs a new RunConfig.
-         * @param [properties] Properties to set
+         * @param [p] Properties to set
          */
-        constructor(properties?: data.IRunConfig);
+        constructor(p?: data.IRunConfig);
 
         /** RunConfig runcfg. */
         public runcfg: string;
@@ -927,22 +831,14 @@ export namespace data {
         public reportName: string;
 
         /**
-         * Encodes the specified RunConfig message. Does not implicitly {@link data.RunConfig.verify|verify} messages.
-         * @param message RunConfig message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: data.IRunConfig, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
          * Decodes a RunConfig message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
+         * @param r Reader or buffer to decode from
+         * @param [l] Message length if known beforehand
          * @returns RunConfig
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): data.RunConfig;
+        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.RunConfig;
     }
 
     /** Properties of a BuildInformation. */
@@ -972,9 +868,9 @@ export namespace data {
 
         /**
          * Constructs a new BuildInformation.
-         * @param [properties] Properties to set
+         * @param [p] Properties to set
          */
-        constructor(properties?: data.IBuildInformation);
+        constructor(p?: data.IBuildInformation);
 
         /** BuildInformation buildJavaVersion. */
         public buildJavaVersion: string;
@@ -995,22 +891,14 @@ export namespace data {
         public buildTimestamp: string;
 
         /**
-         * Encodes the specified BuildInformation message. Does not implicitly {@link data.BuildInformation.verify|verify} messages.
-         * @param message BuildInformation message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: data.IBuildInformation, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
          * Decodes a BuildInformation message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
+         * @param r Reader or buffer to decode from
+         * @param [l] Message length if known beforehand
          * @returns BuildInformation
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): data.BuildInformation;
+        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.BuildInformation;
     }
 
     /** FailureCorridorValue enum. */
@@ -1043,9 +931,9 @@ export namespace data {
 
         /**
          * Constructs a new StackTrace.
-         * @param [properties] Properties to set
+         * @param [p] Properties to set
          */
-        constructor(properties?: data.IStackTrace);
+        constructor(p?: data.IStackTrace);
 
         /** StackTrace cause. */
         public cause?: (data.IStackTraceCause|null);
@@ -1054,22 +942,14 @@ export namespace data {
         public additionalErrorMessage: string;
 
         /**
-         * Encodes the specified StackTrace message. Does not implicitly {@link data.StackTrace.verify|verify} messages.
-         * @param message StackTrace message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: data.IStackTrace, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
          * Decodes a StackTrace message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
+         * @param r Reader or buffer to decode from
+         * @param [l] Message length if known beforehand
          * @returns StackTrace
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): data.StackTrace;
+        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.StackTrace;
     }
 
     /** Properties of a StackTraceCause. */
@@ -1093,9 +973,9 @@ export namespace data {
 
         /**
          * Constructs a new StackTraceCause.
-         * @param [properties] Properties to set
+         * @param [p] Properties to set
          */
-        constructor(properties?: data.IStackTraceCause);
+        constructor(p?: data.IStackTraceCause);
 
         /** StackTraceCause className. */
         public className: string;
@@ -1110,22 +990,14 @@ export namespace data {
         public cause?: (data.IStackTraceCause|null);
 
         /**
-         * Encodes the specified StackTraceCause message. Does not implicitly {@link data.StackTraceCause.verify|verify} messages.
-         * @param message StackTraceCause message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: data.IStackTraceCause, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
          * Decodes a StackTraceCause message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
+         * @param r Reader or buffer to decode from
+         * @param [l] Message length if known beforehand
          * @returns StackTraceCause
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): data.StackTraceCause;
+        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.StackTraceCause;
     }
 
     /** Properties of a ScriptSource. */
@@ -1146,9 +1018,9 @@ export namespace data {
 
         /**
          * Constructs a new ScriptSource.
-         * @param [properties] Properties to set
+         * @param [p] Properties to set
          */
-        constructor(properties?: data.IScriptSource);
+        constructor(p?: data.IScriptSource);
 
         /** ScriptSource fileName. */
         public fileName: string;
@@ -1160,22 +1032,14 @@ export namespace data {
         public lines: data.IScriptSourceLine[];
 
         /**
-         * Encodes the specified ScriptSource message. Does not implicitly {@link data.ScriptSource.verify|verify} messages.
-         * @param message ScriptSource message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: data.IScriptSource, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
          * Decodes a ScriptSource message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
+         * @param r Reader or buffer to decode from
+         * @param [l] Message length if known beforehand
          * @returns ScriptSource
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): data.ScriptSource;
+        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.ScriptSource;
     }
 
     /** Properties of a ScriptSourceLine. */
@@ -1196,9 +1060,9 @@ export namespace data {
 
         /**
          * Constructs a new ScriptSourceLine.
-         * @param [properties] Properties to set
+         * @param [p] Properties to set
          */
-        constructor(properties?: data.IScriptSourceLine);
+        constructor(p?: data.IScriptSourceLine);
 
         /** ScriptSourceLine line. */
         public line: string;
@@ -1210,22 +1074,14 @@ export namespace data {
         public mark: boolean;
 
         /**
-         * Encodes the specified ScriptSourceLine message. Does not implicitly {@link data.ScriptSourceLine.verify|verify} messages.
-         * @param message ScriptSourceLine message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: data.IScriptSourceLine, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
          * Decodes a ScriptSourceLine message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
+         * @param r Reader or buffer to decode from
+         * @param [l] Message length if known beforehand
          * @returns ScriptSourceLine
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): data.ScriptSourceLine;
+        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.ScriptSourceLine;
     }
 
     /** Properties of a File. */
@@ -1273,9 +1129,9 @@ export namespace data {
 
         /**
          * Constructs a new File.
-         * @param [properties] Properties to set
+         * @param [p] Properties to set
          */
-        constructor(properties?: data.IFile);
+        constructor(p?: data.IFile);
 
         /** File id. */
         public id: string;
@@ -1314,22 +1170,14 @@ export namespace data {
         public name: string;
 
         /**
-         * Encodes the specified File message. Does not implicitly {@link data.File.verify|verify} messages.
-         * @param message File message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: data.IFile, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
          * Decodes a File message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
+         * @param r Reader or buffer to decode from
+         * @param [l] Message length if known beforehand
          * @returns File
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): data.File;
+        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.File;
     }
 
     /** ExecStatusType enum. */
@@ -1378,9 +1226,9 @@ export namespace data {
 
         /**
          * Constructs a new ClassContextAggregate.
-         * @param [properties] Properties to set
+         * @param [p] Properties to set
          */
-        constructor(properties?: data.IClassContextAggregate);
+        constructor(p?: data.IClassContextAggregate);
 
         /** ClassContextAggregate classContext. */
         public classContext?: (data.IClassContext|null);
@@ -1389,21 +1237,13 @@ export namespace data {
         public methodContexts: data.IMethodContext[];
 
         /**
-         * Encodes the specified ClassContextAggregate message. Does not implicitly {@link data.ClassContextAggregate.verify|verify} messages.
-         * @param message ClassContextAggregate message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: data.IClassContextAggregate, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
          * Decodes a ClassContextAggregate message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
+         * @param r Reader or buffer to decode from
+         * @param [l] Message length if known beforehand
          * @returns ClassContextAggregate
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): data.ClassContextAggregate;
+        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.ClassContextAggregate;
     }
 }

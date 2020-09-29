@@ -1,12 +1,12 @@
 import {autoinject} from "aurelia-framework";
-import {DataBackendService} from "./data-backend-service";
+import {DataLoader} from "./data-loader";
 import {MergedClass} from "./merged-class";
 
 @autoinject()
 export class StatisticValues {
   private mergedClasses: MergedClass[];
   constructor(
-    private _dataservice: DataBackendService,
+    private _dataservice: DataLoader,
   ) {
 
   }

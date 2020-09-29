@@ -2,7 +2,7 @@
 import * as $protobuf from "protobufjs/minimal";
 
 // Common aliases
-const $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
+const $Reader = $protobuf.Reader, $util = $protobuf.util;
 
 // Exported root namespace
 const $root = $protobuf.roots["default"] || ($protobuf.roots["default"] = {});
@@ -33,14 +33,14 @@ export const data = $root.data = (() => {
          * @classdesc Represents a SuiteContext.
          * @implements ISuiteContext
          * @constructor
-         * @param {data.ISuiteContext=} [properties] Properties to set
+         * @param {data.ISuiteContext=} [p] Properties to set
          */
-        function SuiteContext(properties) {
+        function SuiteContext(p) {
             this.testContextIds = [];
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
+            if (p)
+                for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
+                    if (p[ks[i]] != null)
+                        this[ks[i]] = p[ks[i]];
         }
 
         /**
@@ -68,62 +68,40 @@ export const data = $root.data = (() => {
         SuiteContext.prototype.executionContextId = "";
 
         /**
-         * Encodes the specified SuiteContext message. Does not implicitly {@link data.SuiteContext.verify|verify} messages.
-         * @function encode
-         * @memberof data.SuiteContext
-         * @static
-         * @param {data.ISuiteContext} message SuiteContext message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        SuiteContext.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.contextValues != null && Object.hasOwnProperty.call(message, "contextValues"))
-                $root.data.ContextValues.encode(message.contextValues, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            if (message.testContextIds != null && message.testContextIds.length)
-                for (let i = 0; i < message.testContextIds.length; ++i)
-                    writer.uint32(/* id 6, wireType 2 =*/50).string(message.testContextIds[i]);
-            if (message.executionContextId != null && Object.hasOwnProperty.call(message, "executionContextId"))
-                writer.uint32(/* id 7, wireType 2 =*/58).string(message.executionContextId);
-            return writer;
-        };
-
-        /**
          * Decodes a SuiteContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.SuiteContext
          * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
+         * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
+         * @param {number} [l] Message length if known beforehand
          * @returns {data.SuiteContext} SuiteContext
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        SuiteContext.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.data.SuiteContext();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
+        SuiteContext.decode = function decode(r, l) {
+            if (!(r instanceof $Reader))
+                r = $Reader.create(r);
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.SuiteContext();
+            while (r.pos < c) {
+                var t = r.uint32();
+                switch (t >>> 3) {
                 case 1:
-                    message.contextValues = $root.data.ContextValues.decode(reader, reader.uint32());
+                    m.contextValues = $root.data.ContextValues.decode(r, r.uint32());
                     break;
                 case 6:
-                    if (!(message.testContextIds && message.testContextIds.length))
-                        message.testContextIds = [];
-                    message.testContextIds.push(reader.string());
+                    if (!(m.testContextIds && m.testContextIds.length))
+                        m.testContextIds = [];
+                    m.testContextIds.push(r.string());
                     break;
                 case 7:
-                    message.executionContextId = reader.string();
+                    m.executionContextId = r.string();
                     break;
                 default:
-                    reader.skipType(tag & 7);
+                    r.skipType(t & 7);
                     break;
                 }
             }
-            return message;
+            return m;
         };
 
         return SuiteContext;
@@ -150,14 +128,14 @@ export const data = $root.data = (() => {
          * @classdesc Represents a ClassContext.
          * @implements IClassContext
          * @constructor
-         * @param {data.IClassContext=} [properties] Properties to set
+         * @param {data.IClassContext=} [p] Properties to set
          */
-        function ClassContext(properties) {
+        function ClassContext(p) {
             this.methodContextIds = [];
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
+            if (p)
+                for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
+                    if (p[ks[i]] != null)
+                        this[ks[i]] = p[ks[i]];
         }
 
         /**
@@ -217,82 +195,52 @@ export const data = $root.data = (() => {
         ClassContext.prototype.merged = false;
 
         /**
-         * Encodes the specified ClassContext message. Does not implicitly {@link data.ClassContext.verify|verify} messages.
-         * @function encode
-         * @memberof data.ClassContext
-         * @static
-         * @param {data.IClassContext} message ClassContext message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ClassContext.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.contextValues != null && Object.hasOwnProperty.call(message, "contextValues"))
-                $root.data.ContextValues.encode(message.contextValues, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            if (message.methodContextIds != null && message.methodContextIds.length)
-                for (let i = 0; i < message.methodContextIds.length; ++i)
-                    writer.uint32(/* id 6, wireType 2 =*/50).string(message.methodContextIds[i]);
-            if (message.fullClassName != null && Object.hasOwnProperty.call(message, "fullClassName"))
-                writer.uint32(/* id 7, wireType 2 =*/58).string(message.fullClassName);
-            if (message.simpleClassName != null && Object.hasOwnProperty.call(message, "simpleClassName"))
-                writer.uint32(/* id 8, wireType 2 =*/66).string(message.simpleClassName);
-            if (message.testContextId != null && Object.hasOwnProperty.call(message, "testContextId"))
-                writer.uint32(/* id 9, wireType 2 =*/74).string(message.testContextId);
-            if (message.executionContextId != null && Object.hasOwnProperty.call(message, "executionContextId"))
-                writer.uint32(/* id 10, wireType 2 =*/82).string(message.executionContextId);
-            if (message.merged != null && Object.hasOwnProperty.call(message, "merged"))
-                writer.uint32(/* id 12, wireType 0 =*/96).bool(message.merged);
-            return writer;
-        };
-
-        /**
          * Decodes a ClassContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.ClassContext
          * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
+         * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
+         * @param {number} [l] Message length if known beforehand
          * @returns {data.ClassContext} ClassContext
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        ClassContext.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.data.ClassContext();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
+        ClassContext.decode = function decode(r, l) {
+            if (!(r instanceof $Reader))
+                r = $Reader.create(r);
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.ClassContext();
+            while (r.pos < c) {
+                var t = r.uint32();
+                switch (t >>> 3) {
                 case 1:
-                    message.contextValues = $root.data.ContextValues.decode(reader, reader.uint32());
+                    m.contextValues = $root.data.ContextValues.decode(r, r.uint32());
                     break;
                 case 6:
-                    if (!(message.methodContextIds && message.methodContextIds.length))
-                        message.methodContextIds = [];
-                    message.methodContextIds.push(reader.string());
+                    if (!(m.methodContextIds && m.methodContextIds.length))
+                        m.methodContextIds = [];
+                    m.methodContextIds.push(r.string());
                     break;
                 case 7:
-                    message.fullClassName = reader.string();
+                    m.fullClassName = r.string();
                     break;
                 case 8:
-                    message.simpleClassName = reader.string();
+                    m.simpleClassName = r.string();
                     break;
                 case 9:
-                    message.testContextId = reader.string();
+                    m.testContextId = r.string();
                     break;
                 case 10:
-                    message.executionContextId = reader.string();
+                    m.executionContextId = r.string();
                     break;
                 case 12:
-                    message.merged = reader.bool();
+                    m.merged = r.bool();
                     break;
                 default:
-                    reader.skipType(tag & 7);
+                    r.skipType(t & 7);
                     break;
                 }
             }
-            return message;
+            return m;
         };
 
         return ClassContext;
@@ -316,14 +264,14 @@ export const data = $root.data = (() => {
          * @classdesc Represents a TestContext.
          * @implements ITestContext
          * @constructor
-         * @param {data.ITestContext=} [properties] Properties to set
+         * @param {data.ITestContext=} [p] Properties to set
          */
-        function TestContext(properties) {
+        function TestContext(p) {
             this.classContextIds = [];
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
+            if (p)
+                for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
+                    if (p[ks[i]] != null)
+                        this[ks[i]] = p[ks[i]];
         }
 
         /**
@@ -359,67 +307,43 @@ export const data = $root.data = (() => {
         TestContext.prototype.executionContextId = "";
 
         /**
-         * Encodes the specified TestContext message. Does not implicitly {@link data.TestContext.verify|verify} messages.
-         * @function encode
-         * @memberof data.TestContext
-         * @static
-         * @param {data.ITestContext} message TestContext message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        TestContext.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.contextValues != null && Object.hasOwnProperty.call(message, "contextValues"))
-                $root.data.ContextValues.encode(message.contextValues, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            if (message.classContextIds != null && message.classContextIds.length)
-                for (let i = 0; i < message.classContextIds.length; ++i)
-                    writer.uint32(/* id 6, wireType 2 =*/50).string(message.classContextIds[i]);
-            if (message.suiteContextId != null && Object.hasOwnProperty.call(message, "suiteContextId"))
-                writer.uint32(/* id 7, wireType 2 =*/58).string(message.suiteContextId);
-            if (message.executionContextId != null && Object.hasOwnProperty.call(message, "executionContextId"))
-                writer.uint32(/* id 8, wireType 2 =*/66).string(message.executionContextId);
-            return writer;
-        };
-
-        /**
          * Decodes a TestContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.TestContext
          * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
+         * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
+         * @param {number} [l] Message length if known beforehand
          * @returns {data.TestContext} TestContext
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        TestContext.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.data.TestContext();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
+        TestContext.decode = function decode(r, l) {
+            if (!(r instanceof $Reader))
+                r = $Reader.create(r);
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.TestContext();
+            while (r.pos < c) {
+                var t = r.uint32();
+                switch (t >>> 3) {
                 case 1:
-                    message.contextValues = $root.data.ContextValues.decode(reader, reader.uint32());
+                    m.contextValues = $root.data.ContextValues.decode(r, r.uint32());
                     break;
                 case 6:
-                    if (!(message.classContextIds && message.classContextIds.length))
-                        message.classContextIds = [];
-                    message.classContextIds.push(reader.string());
+                    if (!(m.classContextIds && m.classContextIds.length))
+                        m.classContextIds = [];
+                    m.classContextIds.push(r.string());
                     break;
                 case 7:
-                    message.suiteContextId = reader.string();
+                    m.suiteContextId = r.string();
                     break;
                 case 8:
-                    message.executionContextId = reader.string();
+                    m.executionContextId = r.string();
                     break;
                 default:
-                    reader.skipType(tag & 7);
+                    r.skipType(t & 7);
                     break;
                 }
             }
-            return message;
+            return m;
         };
 
         return TestContext;
@@ -451,18 +375,18 @@ export const data = $root.data = (() => {
          * @classdesc Represents an ExecutionContext.
          * @implements IExecutionContext
          * @constructor
-         * @param {data.IExecutionContext=} [properties] Properties to set
+         * @param {data.IExecutionContext=} [p] Properties to set
          */
-        function ExecutionContext(properties) {
+        function ExecutionContext(p) {
             this.mergedClassContextIds = [];
             this.exitPoints = [];
             this.failureAscpects = [];
             this.suiteContextIds = [];
             this.exclusiveSessionContextIds = [];
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
+            if (p)
+                for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
+                    if (p[ks[i]] != null)
+                        this[ks[i]] = p[ks[i]];
         }
 
         /**
@@ -562,119 +486,75 @@ export const data = $root.data = (() => {
         ExecutionContext.prototype.estimatedTestMethodCount = 0;
 
         /**
-         * Encodes the specified ExecutionContext message. Does not implicitly {@link data.ExecutionContext.verify|verify} messages.
-         * @function encode
-         * @memberof data.ExecutionContext
-         * @static
-         * @param {data.IExecutionContext} message ExecutionContext message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ExecutionContext.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.contextValues != null && Object.hasOwnProperty.call(message, "contextValues"))
-                $root.data.ContextValues.encode(message.contextValues, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            if (message.mergedClassContextIds != null && message.mergedClassContextIds.length)
-                for (let i = 0; i < message.mergedClassContextIds.length; ++i)
-                    writer.uint32(/* id 3, wireType 2 =*/26).string(message.mergedClassContextIds[i]);
-            if (message.exitPoints != null && message.exitPoints.length)
-                for (let i = 0; i < message.exitPoints.length; ++i)
-                    $root.data.ContextClip.encode(message.exitPoints[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-            if (message.failureAscpects != null && message.failureAscpects.length)
-                for (let i = 0; i < message.failureAscpects.length; ++i)
-                    $root.data.ContextClip.encode(message.failureAscpects[i], writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
-            if (message.suiteContextIds != null && message.suiteContextIds.length)
-                for (let i = 0; i < message.suiteContextIds.length; ++i)
-                    writer.uint32(/* id 6, wireType 2 =*/50).string(message.suiteContextIds[i]);
-            if (message.runConfig != null && Object.hasOwnProperty.call(message, "runConfig"))
-                $root.data.RunConfig.encode(message.runConfig, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
-            if (message.project_Id != null && Object.hasOwnProperty.call(message, "project_Id"))
-                writer.uint32(/* id 8, wireType 2 =*/66).string(message.project_Id);
-            if (message.job_Id != null && Object.hasOwnProperty.call(message, "job_Id"))
-                writer.uint32(/* id 9, wireType 2 =*/74).string(message.job_Id);
-            if (message.run_Id != null && Object.hasOwnProperty.call(message, "run_Id"))
-                writer.uint32(/* id 10, wireType 2 =*/82).string(message.run_Id);
-            if (message.task_Id != null && Object.hasOwnProperty.call(message, "task_Id"))
-                writer.uint32(/* id 11, wireType 2 =*/90).string(message.task_Id);
-            if (message.exclusiveSessionContextIds != null && message.exclusiveSessionContextIds.length)
-                for (let i = 0; i < message.exclusiveSessionContextIds.length; ++i)
-                    writer.uint32(/* id 12, wireType 2 =*/98).string(message.exclusiveSessionContextIds[i]);
-            if (message.estimatedTestMethodCount != null && Object.hasOwnProperty.call(message, "estimatedTestMethodCount"))
-                writer.uint32(/* id 13, wireType 0 =*/104).int32(message.estimatedTestMethodCount);
-            return writer;
-        };
-
-        /**
          * Decodes an ExecutionContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.ExecutionContext
          * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
+         * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
+         * @param {number} [l] Message length if known beforehand
          * @returns {data.ExecutionContext} ExecutionContext
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        ExecutionContext.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.data.ExecutionContext();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
+        ExecutionContext.decode = function decode(r, l) {
+            if (!(r instanceof $Reader))
+                r = $Reader.create(r);
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.ExecutionContext();
+            while (r.pos < c) {
+                var t = r.uint32();
+                switch (t >>> 3) {
                 case 1:
-                    message.contextValues = $root.data.ContextValues.decode(reader, reader.uint32());
+                    m.contextValues = $root.data.ContextValues.decode(r, r.uint32());
                     break;
                 case 3:
-                    if (!(message.mergedClassContextIds && message.mergedClassContextIds.length))
-                        message.mergedClassContextIds = [];
-                    message.mergedClassContextIds.push(reader.string());
+                    if (!(m.mergedClassContextIds && m.mergedClassContextIds.length))
+                        m.mergedClassContextIds = [];
+                    m.mergedClassContextIds.push(r.string());
                     break;
                 case 4:
-                    if (!(message.exitPoints && message.exitPoints.length))
-                        message.exitPoints = [];
-                    message.exitPoints.push($root.data.ContextClip.decode(reader, reader.uint32()));
+                    if (!(m.exitPoints && m.exitPoints.length))
+                        m.exitPoints = [];
+                    m.exitPoints.push($root.data.ContextClip.decode(r, r.uint32()));
                     break;
                 case 5:
-                    if (!(message.failureAscpects && message.failureAscpects.length))
-                        message.failureAscpects = [];
-                    message.failureAscpects.push($root.data.ContextClip.decode(reader, reader.uint32()));
+                    if (!(m.failureAscpects && m.failureAscpects.length))
+                        m.failureAscpects = [];
+                    m.failureAscpects.push($root.data.ContextClip.decode(r, r.uint32()));
                     break;
                 case 6:
-                    if (!(message.suiteContextIds && message.suiteContextIds.length))
-                        message.suiteContextIds = [];
-                    message.suiteContextIds.push(reader.string());
+                    if (!(m.suiteContextIds && m.suiteContextIds.length))
+                        m.suiteContextIds = [];
+                    m.suiteContextIds.push(r.string());
                     break;
                 case 7:
-                    message.runConfig = $root.data.RunConfig.decode(reader, reader.uint32());
+                    m.runConfig = $root.data.RunConfig.decode(r, r.uint32());
                     break;
                 case 8:
-                    message.project_Id = reader.string();
+                    m.project_Id = r.string();
                     break;
                 case 9:
-                    message.job_Id = reader.string();
+                    m.job_Id = r.string();
                     break;
                 case 10:
-                    message.run_Id = reader.string();
+                    m.run_Id = r.string();
                     break;
                 case 11:
-                    message.task_Id = reader.string();
+                    m.task_Id = r.string();
                     break;
                 case 12:
-                    if (!(message.exclusiveSessionContextIds && message.exclusiveSessionContextIds.length))
-                        message.exclusiveSessionContextIds = [];
-                    message.exclusiveSessionContextIds.push(reader.string());
+                    if (!(m.exclusiveSessionContextIds && m.exclusiveSessionContextIds.length))
+                        m.exclusiveSessionContextIds = [];
+                    m.exclusiveSessionContextIds.push(r.string());
                     break;
                 case 13:
-                    message.estimatedTestMethodCount = reader.int32();
+                    m.estimatedTestMethodCount = r.int32();
                     break;
                 default:
-                    reader.skipType(tag & 7);
+                    r.skipType(t & 7);
                     break;
                 }
             }
-            return message;
+            return m;
         };
 
         return ExecutionContext;
@@ -696,14 +576,14 @@ export const data = $root.data = (() => {
          * @classdesc Represents a ContextClip.
          * @implements IContextClip
          * @constructor
-         * @param {data.IContextClip=} [properties] Properties to set
+         * @param {data.IContextClip=} [p] Properties to set
          */
-        function ContextClip(properties) {
+        function ContextClip(p) {
             this.methodContextIds = [];
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
+            if (p)
+                for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
+                    if (p[ks[i]] != null)
+                        this[ks[i]] = p[ks[i]];
         }
 
         /**
@@ -723,57 +603,37 @@ export const data = $root.data = (() => {
         ContextClip.prototype.methodContextIds = $util.emptyArray;
 
         /**
-         * Encodes the specified ContextClip message. Does not implicitly {@link data.ContextClip.verify|verify} messages.
-         * @function encode
-         * @memberof data.ContextClip
-         * @static
-         * @param {data.IContextClip} message ContextClip message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ContextClip.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.key != null && Object.hasOwnProperty.call(message, "key"))
-                writer.uint32(/* id 1, wireType 2 =*/10).string(message.key);
-            if (message.methodContextIds != null && message.methodContextIds.length)
-                for (let i = 0; i < message.methodContextIds.length; ++i)
-                    writer.uint32(/* id 2, wireType 2 =*/18).string(message.methodContextIds[i]);
-            return writer;
-        };
-
-        /**
          * Decodes a ContextClip message from the specified reader or buffer.
          * @function decode
          * @memberof data.ContextClip
          * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
+         * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
+         * @param {number} [l] Message length if known beforehand
          * @returns {data.ContextClip} ContextClip
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        ContextClip.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.data.ContextClip();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
+        ContextClip.decode = function decode(r, l) {
+            if (!(r instanceof $Reader))
+                r = $Reader.create(r);
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.ContextClip();
+            while (r.pos < c) {
+                var t = r.uint32();
+                switch (t >>> 3) {
                 case 1:
-                    message.key = reader.string();
+                    m.key = r.string();
                     break;
                 case 2:
-                    if (!(message.methodContextIds && message.methodContextIds.length))
-                        message.methodContextIds = [];
-                    message.methodContextIds.push(reader.string());
+                    if (!(m.methodContextIds && m.methodContextIds.length))
+                        m.methodContextIds = [];
+                    m.methodContextIds.push(r.string());
                     break;
                 default:
-                    reader.skipType(tag & 7);
+                    r.skipType(t & 7);
                     break;
                 }
             }
-            return message;
+            return m;
         };
 
         return ContextClip;
@@ -817,9 +677,9 @@ export const data = $root.data = (() => {
          * @classdesc Represents a MethodContext.
          * @implements IMethodContext
          * @constructor
-         * @param {data.IMethodContext=} [properties] Properties to set
+         * @param {data.IMethodContext=} [p] Properties to set
          */
-        function MethodContext(properties) {
+        function MethodContext(p) {
             this.parameters = [];
             this.methodTags = [];
             this.nonFunctionalInfos = [];
@@ -831,10 +691,10 @@ export const data = $root.data = (() => {
             this.sessionContextIds = [];
             this.videoIds = [];
             this.screenshotIds = [];
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
+            if (p)
+                for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
+                    if (p[ks[i]] != null)
+                        this[ks[i]] = p[ks[i]];
         }
 
         /**
@@ -1030,197 +890,123 @@ export const data = $root.data = (() => {
         MethodContext.prototype.customContextJson = "";
 
         /**
-         * Encodes the specified MethodContext message. Does not implicitly {@link data.MethodContext.verify|verify} messages.
-         * @function encode
-         * @memberof data.MethodContext
-         * @static
-         * @param {data.IMethodContext} message MethodContext message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        MethodContext.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.contextValues != null && Object.hasOwnProperty.call(message, "contextValues"))
-                $root.data.ContextValues.encode(message.contextValues, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            if (message.methodType != null && Object.hasOwnProperty.call(message, "methodType"))
-                writer.uint32(/* id 7, wireType 0 =*/56).int32(message.methodType);
-            if (message.parameters != null && message.parameters.length)
-                for (let i = 0; i < message.parameters.length; ++i)
-                    writer.uint32(/* id 8, wireType 2 =*/66).string(message.parameters[i]);
-            if (message.methodTags != null && message.methodTags.length)
-                for (let i = 0; i < message.methodTags.length; ++i)
-                    writer.uint32(/* id 9, wireType 2 =*/74).string(message.methodTags[i]);
-            if (message.retryNumber != null && Object.hasOwnProperty.call(message, "retryNumber"))
-                writer.uint32(/* id 10, wireType 0 =*/80).int32(message.retryNumber);
-            if (message.methodRunIndex != null && Object.hasOwnProperty.call(message, "methodRunIndex"))
-                writer.uint32(/* id 11, wireType 0 =*/88).int32(message.methodRunIndex);
-            if (message.threadName != null && Object.hasOwnProperty.call(message, "threadName"))
-                writer.uint32(/* id 12, wireType 2 =*/98).string(message.threadName);
-            if (message.failureCorridorValue != null && Object.hasOwnProperty.call(message, "failureCorridorValue"))
-                writer.uint32(/* id 14, wireType 0 =*/112).int32(message.failureCorridorValue);
-            if (message.classContextId != null && Object.hasOwnProperty.call(message, "classContextId"))
-                writer.uint32(/* id 15, wireType 2 =*/122).string(message.classContextId);
-            if (message.executionContextId != null && Object.hasOwnProperty.call(message, "executionContextId"))
-                writer.uint32(/* id 16, wireType 2 =*/130).string(message.executionContextId);
-            if (message.nonFunctionalInfos != null && message.nonFunctionalInfos.length)
-                for (let i = 0; i < message.nonFunctionalInfos.length; ++i)
-                    $root.data.ErrorContext.encode(message.nonFunctionalInfos[i], writer.uint32(/* id 17, wireType 2 =*/138).fork()).ldelim();
-            if (message.collectedAssertions != null && message.collectedAssertions.length)
-                for (let i = 0; i < message.collectedAssertions.length; ++i)
-                    $root.data.ErrorContext.encode(message.collectedAssertions[i], writer.uint32(/* id 18, wireType 2 =*/146).fork()).ldelim();
-            if (message.infos != null && message.infos.length)
-                for (let i = 0; i < message.infos.length; ++i)
-                    writer.uint32(/* id 19, wireType 2 =*/154).string(message.infos[i]);
-            if (message.priorityMessage != null && Object.hasOwnProperty.call(message, "priorityMessage"))
-                writer.uint32(/* id 21, wireType 2 =*/170).string(message.priorityMessage);
-            if (message.relatedMethodContextIds != null && message.relatedMethodContextIds.length)
-                for (let i = 0; i < message.relatedMethodContextIds.length; ++i)
-                    writer.uint32(/* id 23, wireType 2 =*/186).string(message.relatedMethodContextIds[i]);
-            if (message.dependsOnMethodContextIds != null && message.dependsOnMethodContextIds.length)
-                for (let i = 0; i < message.dependsOnMethodContextIds.length; ++i)
-                    writer.uint32(/* id 24, wireType 2 =*/194).string(message.dependsOnMethodContextIds[i]);
-            if (message.errorContext != null && Object.hasOwnProperty.call(message, "errorContext"))
-                $root.data.ErrorContext.encode(message.errorContext, writer.uint32(/* id 25, wireType 2 =*/202).fork()).ldelim();
-            if (message.testSteps != null && message.testSteps.length)
-                for (let i = 0; i < message.testSteps.length; ++i)
-                    $root.data.PTestStep.encode(message.testSteps[i], writer.uint32(/* id 26, wireType 2 =*/210).fork()).ldelim();
-            if (message.testContextId != null && Object.hasOwnProperty.call(message, "testContextId"))
-                writer.uint32(/* id 27, wireType 2 =*/218).string(message.testContextId);
-            if (message.suiteContextId != null && Object.hasOwnProperty.call(message, "suiteContextId"))
-                writer.uint32(/* id 28, wireType 2 =*/226).string(message.suiteContextId);
-            if (message.sessionContextIds != null && message.sessionContextIds.length)
-                for (let i = 0; i < message.sessionContextIds.length; ++i)
-                    writer.uint32(/* id 29, wireType 2 =*/234).string(message.sessionContextIds[i]);
-            if (message.videoIds != null && message.videoIds.length)
-                for (let i = 0; i < message.videoIds.length; ++i)
-                    writer.uint32(/* id 30, wireType 2 =*/242).string(message.videoIds[i]);
-            if (message.screenshotIds != null && message.screenshotIds.length)
-                for (let i = 0; i < message.screenshotIds.length; ++i)
-                    writer.uint32(/* id 31, wireType 2 =*/250).string(message.screenshotIds[i]);
-            if (message.customContextJson != null && Object.hasOwnProperty.call(message, "customContextJson"))
-                writer.uint32(/* id 32, wireType 2 =*/258).string(message.customContextJson);
-            return writer;
-        };
-
-        /**
          * Decodes a MethodContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.MethodContext
          * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
+         * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
+         * @param {number} [l] Message length if known beforehand
          * @returns {data.MethodContext} MethodContext
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        MethodContext.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.data.MethodContext();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
+        MethodContext.decode = function decode(r, l) {
+            if (!(r instanceof $Reader))
+                r = $Reader.create(r);
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.MethodContext();
+            while (r.pos < c) {
+                var t = r.uint32();
+                switch (t >>> 3) {
                 case 1:
-                    message.contextValues = $root.data.ContextValues.decode(reader, reader.uint32());
+                    m.contextValues = $root.data.ContextValues.decode(r, r.uint32());
                     break;
                 case 7:
-                    message.methodType = reader.int32();
+                    m.methodType = r.int32();
                     break;
                 case 8:
-                    if (!(message.parameters && message.parameters.length))
-                        message.parameters = [];
-                    message.parameters.push(reader.string());
+                    if (!(m.parameters && m.parameters.length))
+                        m.parameters = [];
+                    m.parameters.push(r.string());
                     break;
                 case 9:
-                    if (!(message.methodTags && message.methodTags.length))
-                        message.methodTags = [];
-                    message.methodTags.push(reader.string());
+                    if (!(m.methodTags && m.methodTags.length))
+                        m.methodTags = [];
+                    m.methodTags.push(r.string());
                     break;
                 case 10:
-                    message.retryNumber = reader.int32();
+                    m.retryNumber = r.int32();
                     break;
                 case 11:
-                    message.methodRunIndex = reader.int32();
+                    m.methodRunIndex = r.int32();
                     break;
                 case 12:
-                    message.threadName = reader.string();
+                    m.threadName = r.string();
                     break;
                 case 14:
-                    message.failureCorridorValue = reader.int32();
+                    m.failureCorridorValue = r.int32();
                     break;
                 case 15:
-                    message.classContextId = reader.string();
+                    m.classContextId = r.string();
                     break;
                 case 16:
-                    message.executionContextId = reader.string();
+                    m.executionContextId = r.string();
                     break;
                 case 17:
-                    if (!(message.nonFunctionalInfos && message.nonFunctionalInfos.length))
-                        message.nonFunctionalInfos = [];
-                    message.nonFunctionalInfos.push($root.data.ErrorContext.decode(reader, reader.uint32()));
+                    if (!(m.nonFunctionalInfos && m.nonFunctionalInfos.length))
+                        m.nonFunctionalInfos = [];
+                    m.nonFunctionalInfos.push($root.data.ErrorContext.decode(r, r.uint32()));
                     break;
                 case 18:
-                    if (!(message.collectedAssertions && message.collectedAssertions.length))
-                        message.collectedAssertions = [];
-                    message.collectedAssertions.push($root.data.ErrorContext.decode(reader, reader.uint32()));
+                    if (!(m.collectedAssertions && m.collectedAssertions.length))
+                        m.collectedAssertions = [];
+                    m.collectedAssertions.push($root.data.ErrorContext.decode(r, r.uint32()));
                     break;
                 case 19:
-                    if (!(message.infos && message.infos.length))
-                        message.infos = [];
-                    message.infos.push(reader.string());
+                    if (!(m.infos && m.infos.length))
+                        m.infos = [];
+                    m.infos.push(r.string());
                     break;
                 case 21:
-                    message.priorityMessage = reader.string();
+                    m.priorityMessage = r.string();
                     break;
                 case 23:
-                    if (!(message.relatedMethodContextIds && message.relatedMethodContextIds.length))
-                        message.relatedMethodContextIds = [];
-                    message.relatedMethodContextIds.push(reader.string());
+                    if (!(m.relatedMethodContextIds && m.relatedMethodContextIds.length))
+                        m.relatedMethodContextIds = [];
+                    m.relatedMethodContextIds.push(r.string());
                     break;
                 case 24:
-                    if (!(message.dependsOnMethodContextIds && message.dependsOnMethodContextIds.length))
-                        message.dependsOnMethodContextIds = [];
-                    message.dependsOnMethodContextIds.push(reader.string());
+                    if (!(m.dependsOnMethodContextIds && m.dependsOnMethodContextIds.length))
+                        m.dependsOnMethodContextIds = [];
+                    m.dependsOnMethodContextIds.push(r.string());
                     break;
                 case 25:
-                    message.errorContext = $root.data.ErrorContext.decode(reader, reader.uint32());
+                    m.errorContext = $root.data.ErrorContext.decode(r, r.uint32());
                     break;
                 case 26:
-                    if (!(message.testSteps && message.testSteps.length))
-                        message.testSteps = [];
-                    message.testSteps.push($root.data.PTestStep.decode(reader, reader.uint32()));
+                    if (!(m.testSteps && m.testSteps.length))
+                        m.testSteps = [];
+                    m.testSteps.push($root.data.PTestStep.decode(r, r.uint32()));
                     break;
                 case 27:
-                    message.testContextId = reader.string();
+                    m.testContextId = r.string();
                     break;
                 case 28:
-                    message.suiteContextId = reader.string();
+                    m.suiteContextId = r.string();
                     break;
                 case 29:
-                    if (!(message.sessionContextIds && message.sessionContextIds.length))
-                        message.sessionContextIds = [];
-                    message.sessionContextIds.push(reader.string());
+                    if (!(m.sessionContextIds && m.sessionContextIds.length))
+                        m.sessionContextIds = [];
+                    m.sessionContextIds.push(r.string());
                     break;
                 case 30:
-                    if (!(message.videoIds && message.videoIds.length))
-                        message.videoIds = [];
-                    message.videoIds.push(reader.string());
+                    if (!(m.videoIds && m.videoIds.length))
+                        m.videoIds = [];
+                    m.videoIds.push(r.string());
                     break;
                 case 31:
-                    if (!(message.screenshotIds && message.screenshotIds.length))
-                        message.screenshotIds = [];
-                    message.screenshotIds.push(reader.string());
+                    if (!(m.screenshotIds && m.screenshotIds.length))
+                        m.screenshotIds = [];
+                    m.screenshotIds.push(r.string());
                     break;
                 case 32:
-                    message.customContextJson = reader.string();
+                    m.customContextJson = r.string();
                     break;
                 default:
-                    reader.skipType(tag & 7);
+                    r.skipType(t & 7);
                     break;
                 }
             }
-            return message;
+            return m;
         };
 
         return MethodContext;
@@ -1248,13 +1034,13 @@ export const data = $root.data = (() => {
          * @classdesc Represents a ContextValues.
          * @implements IContextValues
          * @constructor
-         * @param {data.IContextValues=} [properties] Properties to set
+         * @param {data.IContextValues=} [p] Properties to set
          */
-        function ContextValues(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
+        function ContextValues(p) {
+            if (p)
+                for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
+                    if (p[ks[i]] != null)
+                        this[ks[i]] = p[ks[i]];
         }
 
         /**
@@ -1322,84 +1108,53 @@ export const data = $root.data = (() => {
         ContextValues.prototype.execStatus = 0;
 
         /**
-         * Encodes the specified ContextValues message. Does not implicitly {@link data.ContextValues.verify|verify} messages.
-         * @function encode
-         * @memberof data.ContextValues
-         * @static
-         * @param {data.IContextValues} message ContextValues message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ContextValues.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.id != null && Object.hasOwnProperty.call(message, "id"))
-                writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
-            if (message.created != null && Object.hasOwnProperty.call(message, "created"))
-                writer.uint32(/* id 2, wireType 0 =*/16).int64(message.created);
-            if (message.name != null && Object.hasOwnProperty.call(message, "name"))
-                writer.uint32(/* id 3, wireType 2 =*/26).string(message.name);
-            if (message.startTime != null && Object.hasOwnProperty.call(message, "startTime"))
-                writer.uint32(/* id 4, wireType 0 =*/32).int64(message.startTime);
-            if (message.endTime != null && Object.hasOwnProperty.call(message, "endTime"))
-                writer.uint32(/* id 5, wireType 0 =*/40).int64(message.endTime);
-            if (message.swi != null && Object.hasOwnProperty.call(message, "swi"))
-                writer.uint32(/* id 6, wireType 2 =*/50).string(message.swi);
-            if (message.resultStatus != null && Object.hasOwnProperty.call(message, "resultStatus"))
-                writer.uint32(/* id 7, wireType 0 =*/56).int32(message.resultStatus);
-            if (message.execStatus != null && Object.hasOwnProperty.call(message, "execStatus"))
-                writer.uint32(/* id 8, wireType 0 =*/64).int32(message.execStatus);
-            return writer;
-        };
-
-        /**
          * Decodes a ContextValues message from the specified reader or buffer.
          * @function decode
          * @memberof data.ContextValues
          * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
+         * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
+         * @param {number} [l] Message length if known beforehand
          * @returns {data.ContextValues} ContextValues
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        ContextValues.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.data.ContextValues();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
+        ContextValues.decode = function decode(r, l) {
+            if (!(r instanceof $Reader))
+                r = $Reader.create(r);
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.ContextValues();
+            while (r.pos < c) {
+                var t = r.uint32();
+                switch (t >>> 3) {
                 case 1:
-                    message.id = reader.string();
+                    m.id = r.string();
                     break;
                 case 2:
-                    message.created = reader.int64();
+                    m.created = r.int64();
                     break;
                 case 3:
-                    message.name = reader.string();
+                    m.name = r.string();
                     break;
                 case 4:
-                    message.startTime = reader.int64();
+                    m.startTime = r.int64();
                     break;
                 case 5:
-                    message.endTime = reader.int64();
+                    m.endTime = r.int64();
                     break;
                 case 6:
-                    message.swi = reader.string();
+                    m.swi = r.string();
                     break;
                 case 7:
-                    message.resultStatus = reader.int32();
+                    m.resultStatus = r.int32();
                     break;
                 case 8:
-                    message.execStatus = reader.int32();
+                    m.execStatus = r.int32();
                     break;
                 default:
-                    reader.skipType(tag & 7);
+                    r.skipType(t & 7);
                     break;
                 }
             }
-            return message;
+            return m;
         };
 
         return ContextValues;
@@ -1422,14 +1177,14 @@ export const data = $root.data = (() => {
          * @classdesc Represents a PTestStep.
          * @implements IPTestStep
          * @constructor
-         * @param {data.IPTestStep=} [properties] Properties to set
+         * @param {data.IPTestStep=} [p] Properties to set
          */
-        function PTestStep(properties) {
+        function PTestStep(p) {
             this.testStepActions = [];
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
+            if (p)
+                for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
+                    if (p[ks[i]] != null)
+                        this[ks[i]] = p[ks[i]];
         }
 
         /**
@@ -1457,62 +1212,40 @@ export const data = $root.data = (() => {
         PTestStep.prototype.testStepActions = $util.emptyArray;
 
         /**
-         * Encodes the specified PTestStep message. Does not implicitly {@link data.PTestStep.verify|verify} messages.
-         * @function encode
-         * @memberof data.PTestStep
-         * @static
-         * @param {data.IPTestStep} message PTestStep message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        PTestStep.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.name != null && Object.hasOwnProperty.call(message, "name"))
-                writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-            if (message.id != null && Object.hasOwnProperty.call(message, "id"))
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.id);
-            if (message.testStepActions != null && message.testStepActions.length)
-                for (let i = 0; i < message.testStepActions.length; ++i)
-                    $root.data.PTestStepAction.encode(message.testStepActions[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-            return writer;
-        };
-
-        /**
          * Decodes a PTestStep message from the specified reader or buffer.
          * @function decode
          * @memberof data.PTestStep
          * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
+         * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
+         * @param {number} [l] Message length if known beforehand
          * @returns {data.PTestStep} PTestStep
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        PTestStep.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.data.PTestStep();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
+        PTestStep.decode = function decode(r, l) {
+            if (!(r instanceof $Reader))
+                r = $Reader.create(r);
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.PTestStep();
+            while (r.pos < c) {
+                var t = r.uint32();
+                switch (t >>> 3) {
                 case 1:
-                    message.name = reader.string();
+                    m.name = r.string();
                     break;
                 case 2:
-                    message.id = reader.string();
+                    m.id = r.string();
                     break;
                 case 3:
-                    if (!(message.testStepActions && message.testStepActions.length))
-                        message.testStepActions = [];
-                    message.testStepActions.push($root.data.PTestStepAction.decode(reader, reader.uint32()));
+                    if (!(m.testStepActions && m.testStepActions.length))
+                        m.testStepActions = [];
+                    m.testStepActions.push($root.data.PTestStepAction.decode(r, r.uint32()));
                     break;
                 default:
-                    reader.skipType(tag & 7);
+                    r.skipType(t & 7);
                     break;
                 }
             }
-            return message;
+            return m;
         };
 
         return PTestStep;
@@ -1538,16 +1271,16 @@ export const data = $root.data = (() => {
          * @classdesc Represents a PTestStepAction.
          * @implements IPTestStepAction
          * @constructor
-         * @param {data.IPTestStepAction=} [properties] Properties to set
+         * @param {data.IPTestStepAction=} [p] Properties to set
          */
-        function PTestStepAction(properties) {
+        function PTestStepAction(p) {
             this.screenshotNames = [];
             this.clickpathEvents = [];
             this.screenshotIds = [];
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
+            if (p)
+                for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
+                    if (p[ks[i]] != null)
+                        this[ks[i]] = p[ks[i]];
         }
 
         /**
@@ -1599,83 +1332,53 @@ export const data = $root.data = (() => {
         PTestStepAction.prototype.screenshotIds = $util.emptyArray;
 
         /**
-         * Encodes the specified PTestStepAction message. Does not implicitly {@link data.PTestStepAction.verify|verify} messages.
-         * @function encode
-         * @memberof data.PTestStepAction
-         * @static
-         * @param {data.IPTestStepAction} message PTestStepAction message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        PTestStepAction.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.name != null && Object.hasOwnProperty.call(message, "name"))
-                writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-            if (message.id != null && Object.hasOwnProperty.call(message, "id"))
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.id);
-            if (message.timestamp != null && Object.hasOwnProperty.call(message, "timestamp"))
-                writer.uint32(/* id 3, wireType 0 =*/24).int64(message.timestamp);
-            if (message.screenshotNames != null && message.screenshotNames.length)
-                for (let i = 0; i < message.screenshotNames.length; ++i)
-                    writer.uint32(/* id 4, wireType 2 =*/34).string(message.screenshotNames[i]);
-            if (message.clickpathEvents != null && message.clickpathEvents.length)
-                for (let i = 0; i < message.clickpathEvents.length; ++i)
-                    $root.data.PClickPathEvent.encode(message.clickpathEvents[i], writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
-            if (message.screenshotIds != null && message.screenshotIds.length)
-                for (let i = 0; i < message.screenshotIds.length; ++i)
-                    writer.uint32(/* id 6, wireType 2 =*/50).string(message.screenshotIds[i]);
-            return writer;
-        };
-
-        /**
          * Decodes a PTestStepAction message from the specified reader or buffer.
          * @function decode
          * @memberof data.PTestStepAction
          * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
+         * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
+         * @param {number} [l] Message length if known beforehand
          * @returns {data.PTestStepAction} PTestStepAction
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        PTestStepAction.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.data.PTestStepAction();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
+        PTestStepAction.decode = function decode(r, l) {
+            if (!(r instanceof $Reader))
+                r = $Reader.create(r);
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.PTestStepAction();
+            while (r.pos < c) {
+                var t = r.uint32();
+                switch (t >>> 3) {
                 case 1:
-                    message.name = reader.string();
+                    m.name = r.string();
                     break;
                 case 2:
-                    message.id = reader.string();
+                    m.id = r.string();
                     break;
                 case 3:
-                    message.timestamp = reader.int64();
+                    m.timestamp = r.int64();
                     break;
                 case 4:
-                    if (!(message.screenshotNames && message.screenshotNames.length))
-                        message.screenshotNames = [];
-                    message.screenshotNames.push(reader.string());
+                    if (!(m.screenshotNames && m.screenshotNames.length))
+                        m.screenshotNames = [];
+                    m.screenshotNames.push(r.string());
                     break;
                 case 5:
-                    if (!(message.clickpathEvents && message.clickpathEvents.length))
-                        message.clickpathEvents = [];
-                    message.clickpathEvents.push($root.data.PClickPathEvent.decode(reader, reader.uint32()));
+                    if (!(m.clickpathEvents && m.clickpathEvents.length))
+                        m.clickpathEvents = [];
+                    m.clickpathEvents.push($root.data.PClickPathEvent.decode(r, r.uint32()));
                     break;
                 case 6:
-                    if (!(message.screenshotIds && message.screenshotIds.length))
-                        message.screenshotIds = [];
-                    message.screenshotIds.push(reader.string());
+                    if (!(m.screenshotIds && m.screenshotIds.length))
+                        m.screenshotIds = [];
+                    m.screenshotIds.push(r.string());
                     break;
                 default:
-                    reader.skipType(tag & 7);
+                    r.skipType(t & 7);
                     break;
                 }
             }
-            return message;
+            return m;
         };
 
         return PTestStepAction;
@@ -1720,13 +1423,13 @@ export const data = $root.data = (() => {
          * @classdesc Represents a PClickPathEvent.
          * @implements IPClickPathEvent
          * @constructor
-         * @param {data.IPClickPathEvent=} [properties] Properties to set
+         * @param {data.IPClickPathEvent=} [p] Properties to set
          */
-        function PClickPathEvent(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
+        function PClickPathEvent(p) {
+            if (p)
+                for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
+                    if (p[ks[i]] != null)
+                        this[ks[i]] = p[ks[i]];
         }
 
         /**
@@ -1754,59 +1457,38 @@ export const data = $root.data = (() => {
         PClickPathEvent.prototype.sessionId = "";
 
         /**
-         * Encodes the specified PClickPathEvent message. Does not implicitly {@link data.PClickPathEvent.verify|verify} messages.
-         * @function encode
-         * @memberof data.PClickPathEvent
-         * @static
-         * @param {data.IPClickPathEvent} message PClickPathEvent message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        PClickPathEvent.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.type != null && Object.hasOwnProperty.call(message, "type"))
-                writer.uint32(/* id 1, wireType 0 =*/8).int32(message.type);
-            if (message.subject != null && Object.hasOwnProperty.call(message, "subject"))
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.subject);
-            if (message.sessionId != null && Object.hasOwnProperty.call(message, "sessionId"))
-                writer.uint32(/* id 3, wireType 2 =*/26).string(message.sessionId);
-            return writer;
-        };
-
-        /**
          * Decodes a PClickPathEvent message from the specified reader or buffer.
          * @function decode
          * @memberof data.PClickPathEvent
          * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
+         * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
+         * @param {number} [l] Message length if known beforehand
          * @returns {data.PClickPathEvent} PClickPathEvent
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        PClickPathEvent.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.data.PClickPathEvent();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
+        PClickPathEvent.decode = function decode(r, l) {
+            if (!(r instanceof $Reader))
+                r = $Reader.create(r);
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.PClickPathEvent();
+            while (r.pos < c) {
+                var t = r.uint32();
+                switch (t >>> 3) {
                 case 1:
-                    message.type = reader.int32();
+                    m.type = r.int32();
                     break;
                 case 2:
-                    message.subject = reader.string();
+                    m.subject = r.string();
                     break;
                 case 3:
-                    message.sessionId = reader.string();
+                    m.sessionId = r.string();
                     break;
                 default:
-                    reader.skipType(tag & 7);
+                    r.skipType(t & 7);
                     break;
                 }
             }
-            return message;
+            return m;
         };
 
         return PClickPathEvent;
@@ -1832,13 +1514,13 @@ export const data = $root.data = (() => {
          * @classdesc Represents an ErrorContext.
          * @implements IErrorContext
          * @constructor
-         * @param {data.IErrorContext=} [properties] Properties to set
+         * @param {data.IErrorContext=} [p] Properties to set
          */
-        function ErrorContext(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
+        function ErrorContext(p) {
+            if (p)
+                for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
+                    if (p[ks[i]] != null)
+                        this[ks[i]] = p[ks[i]];
         }
 
         /**
@@ -1890,74 +1572,47 @@ export const data = $root.data = (() => {
         ErrorContext.prototype.executionObjectSource = null;
 
         /**
-         * Encodes the specified ErrorContext message. Does not implicitly {@link data.ErrorContext.verify|verify} messages.
-         * @function encode
-         * @memberof data.ErrorContext
-         * @static
-         * @param {data.IErrorContext} message ErrorContext message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ErrorContext.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.readableErrorMessage != null && Object.hasOwnProperty.call(message, "readableErrorMessage"))
-                writer.uint32(/* id 1, wireType 2 =*/10).string(message.readableErrorMessage);
-            if (message.additionalErrorMessage != null && Object.hasOwnProperty.call(message, "additionalErrorMessage"))
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.additionalErrorMessage);
-            if (message.stackTrace != null && Object.hasOwnProperty.call(message, "stackTrace"))
-                $root.data.StackTrace.encode(message.stackTrace, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-            if (message.errorFingerprint != null && Object.hasOwnProperty.call(message, "errorFingerprint"))
-                writer.uint32(/* id 6, wireType 2 =*/50).string(message.errorFingerprint);
-            if (message.scriptSource != null && Object.hasOwnProperty.call(message, "scriptSource"))
-                $root.data.ScriptSource.encode(message.scriptSource, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
-            if (message.executionObjectSource != null && Object.hasOwnProperty.call(message, "executionObjectSource"))
-                $root.data.ScriptSource.encode(message.executionObjectSource, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
-            return writer;
-        };
-
-        /**
          * Decodes an ErrorContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.ErrorContext
          * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
+         * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
+         * @param {number} [l] Message length if known beforehand
          * @returns {data.ErrorContext} ErrorContext
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        ErrorContext.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.data.ErrorContext();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
+        ErrorContext.decode = function decode(r, l) {
+            if (!(r instanceof $Reader))
+                r = $Reader.create(r);
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.ErrorContext();
+            while (r.pos < c) {
+                var t = r.uint32();
+                switch (t >>> 3) {
                 case 1:
-                    message.readableErrorMessage = reader.string();
+                    m.readableErrorMessage = r.string();
                     break;
                 case 2:
-                    message.additionalErrorMessage = reader.string();
+                    m.additionalErrorMessage = r.string();
                     break;
                 case 3:
-                    message.stackTrace = $root.data.StackTrace.decode(reader, reader.uint32());
+                    m.stackTrace = $root.data.StackTrace.decode(r, r.uint32());
                     break;
                 case 6:
-                    message.errorFingerprint = reader.string();
+                    m.errorFingerprint = r.string();
                     break;
                 case 7:
-                    message.scriptSource = $root.data.ScriptSource.decode(reader, reader.uint32());
+                    m.scriptSource = $root.data.ScriptSource.decode(r, r.uint32());
                     break;
                 case 8:
-                    message.executionObjectSource = $root.data.ScriptSource.decode(reader, reader.uint32());
+                    m.executionObjectSource = $root.data.ScriptSource.decode(r, r.uint32());
                     break;
                 default:
-                    reader.skipType(tag & 7);
+                    r.skipType(t & 7);
                     break;
                 }
             }
-            return message;
+            return m;
         };
 
         return ErrorContext;
@@ -1982,14 +1637,14 @@ export const data = $root.data = (() => {
          * @classdesc Represents a SessionContext.
          * @implements ISessionContext
          * @constructor
-         * @param {data.ISessionContext=} [properties] Properties to set
+         * @param {data.ISessionContext=} [p] Properties to set
          */
-        function SessionContext(properties) {
+        function SessionContext(p) {
             this.metadata = {};
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
+            if (p)
+                for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
+                    if (p[ks[i]] != null)
+                        this[ks[i]] = p[ks[i]];
         }
 
         /**
@@ -2033,89 +1688,63 @@ export const data = $root.data = (() => {
         SessionContext.prototype.sessionId = "";
 
         /**
-         * Encodes the specified SessionContext message. Does not implicitly {@link data.SessionContext.verify|verify} messages.
-         * @function encode
-         * @memberof data.SessionContext
-         * @static
-         * @param {data.ISessionContext} message SessionContext message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        SessionContext.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.contextValues != null && Object.hasOwnProperty.call(message, "contextValues"))
-                $root.data.ContextValues.encode(message.contextValues, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            if (message.sessionKey != null && Object.hasOwnProperty.call(message, "sessionKey"))
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.sessionKey);
-            if (message.provider != null && Object.hasOwnProperty.call(message, "provider"))
-                writer.uint32(/* id 3, wireType 2 =*/26).string(message.provider);
-            if (message.metadata != null && Object.hasOwnProperty.call(message, "metadata"))
-                for (let keys = Object.keys(message.metadata), i = 0; i < keys.length; ++i)
-                    writer.uint32(/* id 4, wireType 2 =*/34).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.metadata[keys[i]]).ldelim();
-            if (message.sessionId != null && Object.hasOwnProperty.call(message, "sessionId"))
-                writer.uint32(/* id 6, wireType 2 =*/50).string(message.sessionId);
-            return writer;
-        };
-
-        /**
          * Decodes a SessionContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.SessionContext
          * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
+         * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
+         * @param {number} [l] Message length if known beforehand
          * @returns {data.SessionContext} SessionContext
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        SessionContext.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.data.SessionContext(), key, value;
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
+        SessionContext.decode = function decode(r, l) {
+            if (!(r instanceof $Reader))
+                r = $Reader.create(r);
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.SessionContext(), k, value;
+            while (r.pos < c) {
+                var t = r.uint32();
+                switch (t >>> 3) {
                 case 1:
-                    message.contextValues = $root.data.ContextValues.decode(reader, reader.uint32());
+                    m.contextValues = $root.data.ContextValues.decode(r, r.uint32());
                     break;
                 case 2:
-                    message.sessionKey = reader.string();
+                    m.sessionKey = r.string();
                     break;
                 case 3:
-                    message.provider = reader.string();
+                    m.provider = r.string();
                     break;
                 case 4:
-                    if (message.metadata === $util.emptyObject)
-                        message.metadata = {};
-                    let end2 = reader.uint32() + reader.pos;
-                    key = "";
+                    if (m.metadata === $util.emptyObject)
+                        m.metadata = {};
+                    var c2 = r.uint32() + r.pos;
+                    k = "";
                     value = "";
-                    while (reader.pos < end2) {
-                        let tag2 = reader.uint32();
+                    while (r.pos < c2) {
+                        var tag2 = r.uint32();
                         switch (tag2 >>> 3) {
                         case 1:
-                            key = reader.string();
+                            k = r.string();
                             break;
                         case 2:
-                            value = reader.string();
+                            value = r.string();
                             break;
                         default:
-                            reader.skipType(tag2 & 7);
+                            r.skipType(tag2 & 7);
                             break;
                         }
                     }
-                    message.metadata[key] = value;
+                    m.metadata[k] = value;
                     break;
                 case 6:
-                    message.sessionId = reader.string();
+                    m.sessionId = r.string();
                     break;
                 default:
-                    reader.skipType(tag & 7);
+                    r.skipType(t & 7);
                     break;
                 }
             }
-            return message;
+            return m;
         };
 
         return SessionContext;
@@ -2138,13 +1767,13 @@ export const data = $root.data = (() => {
          * @classdesc Represents a RunConfig.
          * @implements IRunConfig
          * @constructor
-         * @param {data.IRunConfig=} [properties] Properties to set
+         * @param {data.IRunConfig=} [p] Properties to set
          */
-        function RunConfig(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
+        function RunConfig(p) {
+            if (p)
+                for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
+                    if (p[ks[i]] != null)
+                        this[ks[i]] = p[ks[i]];
         }
 
         /**
@@ -2172,59 +1801,38 @@ export const data = $root.data = (() => {
         RunConfig.prototype.reportName = "";
 
         /**
-         * Encodes the specified RunConfig message. Does not implicitly {@link data.RunConfig.verify|verify} messages.
-         * @function encode
-         * @memberof data.RunConfig
-         * @static
-         * @param {data.IRunConfig} message RunConfig message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        RunConfig.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.runcfg != null && Object.hasOwnProperty.call(message, "runcfg"))
-                writer.uint32(/* id 1, wireType 2 =*/10).string(message.runcfg);
-            if (message.buildInformation != null && Object.hasOwnProperty.call(message, "buildInformation"))
-                $root.data.BuildInformation.encode(message.buildInformation, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-            if (message.reportName != null && Object.hasOwnProperty.call(message, "reportName"))
-                writer.uint32(/* id 3, wireType 2 =*/26).string(message.reportName);
-            return writer;
-        };
-
-        /**
          * Decodes a RunConfig message from the specified reader or buffer.
          * @function decode
          * @memberof data.RunConfig
          * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
+         * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
+         * @param {number} [l] Message length if known beforehand
          * @returns {data.RunConfig} RunConfig
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        RunConfig.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.data.RunConfig();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
+        RunConfig.decode = function decode(r, l) {
+            if (!(r instanceof $Reader))
+                r = $Reader.create(r);
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.RunConfig();
+            while (r.pos < c) {
+                var t = r.uint32();
+                switch (t >>> 3) {
                 case 1:
-                    message.runcfg = reader.string();
+                    m.runcfg = r.string();
                     break;
                 case 2:
-                    message.buildInformation = $root.data.BuildInformation.decode(reader, reader.uint32());
+                    m.buildInformation = $root.data.BuildInformation.decode(r, r.uint32());
                     break;
                 case 3:
-                    message.reportName = reader.string();
+                    m.reportName = r.string();
                     break;
                 default:
-                    reader.skipType(tag & 7);
+                    r.skipType(t & 7);
                     break;
                 }
             }
-            return message;
+            return m;
         };
 
         return RunConfig;
@@ -2250,13 +1858,13 @@ export const data = $root.data = (() => {
          * @classdesc Represents a BuildInformation.
          * @implements IBuildInformation
          * @constructor
-         * @param {data.IBuildInformation=} [properties] Properties to set
+         * @param {data.IBuildInformation=} [p] Properties to set
          */
-        function BuildInformation(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
+        function BuildInformation(p) {
+            if (p)
+                for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
+                    if (p[ks[i]] != null)
+                        this[ks[i]] = p[ks[i]];
         }
 
         /**
@@ -2308,74 +1916,47 @@ export const data = $root.data = (() => {
         BuildInformation.prototype.buildTimestamp = "";
 
         /**
-         * Encodes the specified BuildInformation message. Does not implicitly {@link data.BuildInformation.verify|verify} messages.
-         * @function encode
-         * @memberof data.BuildInformation
-         * @static
-         * @param {data.IBuildInformation} message BuildInformation message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        BuildInformation.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.buildJavaVersion != null && Object.hasOwnProperty.call(message, "buildJavaVersion"))
-                writer.uint32(/* id 1, wireType 2 =*/10).string(message.buildJavaVersion);
-            if (message.buildOsName != null && Object.hasOwnProperty.call(message, "buildOsName"))
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.buildOsName);
-            if (message.buildOsVersion != null && Object.hasOwnProperty.call(message, "buildOsVersion"))
-                writer.uint32(/* id 3, wireType 2 =*/26).string(message.buildOsVersion);
-            if (message.buildUserName != null && Object.hasOwnProperty.call(message, "buildUserName"))
-                writer.uint32(/* id 4, wireType 2 =*/34).string(message.buildUserName);
-            if (message.buildVersion != null && Object.hasOwnProperty.call(message, "buildVersion"))
-                writer.uint32(/* id 5, wireType 2 =*/42).string(message.buildVersion);
-            if (message.buildTimestamp != null && Object.hasOwnProperty.call(message, "buildTimestamp"))
-                writer.uint32(/* id 6, wireType 2 =*/50).string(message.buildTimestamp);
-            return writer;
-        };
-
-        /**
          * Decodes a BuildInformation message from the specified reader or buffer.
          * @function decode
          * @memberof data.BuildInformation
          * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
+         * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
+         * @param {number} [l] Message length if known beforehand
          * @returns {data.BuildInformation} BuildInformation
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        BuildInformation.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.data.BuildInformation();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
+        BuildInformation.decode = function decode(r, l) {
+            if (!(r instanceof $Reader))
+                r = $Reader.create(r);
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.BuildInformation();
+            while (r.pos < c) {
+                var t = r.uint32();
+                switch (t >>> 3) {
                 case 1:
-                    message.buildJavaVersion = reader.string();
+                    m.buildJavaVersion = r.string();
                     break;
                 case 2:
-                    message.buildOsName = reader.string();
+                    m.buildOsName = r.string();
                     break;
                 case 3:
-                    message.buildOsVersion = reader.string();
+                    m.buildOsVersion = r.string();
                     break;
                 case 4:
-                    message.buildUserName = reader.string();
+                    m.buildUserName = r.string();
                     break;
                 case 5:
-                    message.buildVersion = reader.string();
+                    m.buildVersion = r.string();
                     break;
                 case 6:
-                    message.buildTimestamp = reader.string();
+                    m.buildTimestamp = r.string();
                     break;
                 default:
-                    reader.skipType(tag & 7);
+                    r.skipType(t & 7);
                     break;
                 }
             }
-            return message;
+            return m;
         };
 
         return BuildInformation;
@@ -2431,13 +2012,13 @@ export const data = $root.data = (() => {
          * @classdesc Represents a StackTrace.
          * @implements IStackTrace
          * @constructor
-         * @param {data.IStackTrace=} [properties] Properties to set
+         * @param {data.IStackTrace=} [p] Properties to set
          */
-        function StackTrace(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
+        function StackTrace(p) {
+            if (p)
+                for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
+                    if (p[ks[i]] != null)
+                        this[ks[i]] = p[ks[i]];
         }
 
         /**
@@ -2457,54 +2038,35 @@ export const data = $root.data = (() => {
         StackTrace.prototype.additionalErrorMessage = "";
 
         /**
-         * Encodes the specified StackTrace message. Does not implicitly {@link data.StackTrace.verify|verify} messages.
-         * @function encode
-         * @memberof data.StackTrace
-         * @static
-         * @param {data.IStackTrace} message StackTrace message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        StackTrace.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.cause != null && Object.hasOwnProperty.call(message, "cause"))
-                $root.data.StackTraceCause.encode(message.cause, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            if (message.additionalErrorMessage != null && Object.hasOwnProperty.call(message, "additionalErrorMessage"))
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.additionalErrorMessage);
-            return writer;
-        };
-
-        /**
          * Decodes a StackTrace message from the specified reader or buffer.
          * @function decode
          * @memberof data.StackTrace
          * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
+         * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
+         * @param {number} [l] Message length if known beforehand
          * @returns {data.StackTrace} StackTrace
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        StackTrace.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.data.StackTrace();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
+        StackTrace.decode = function decode(r, l) {
+            if (!(r instanceof $Reader))
+                r = $Reader.create(r);
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.StackTrace();
+            while (r.pos < c) {
+                var t = r.uint32();
+                switch (t >>> 3) {
                 case 1:
-                    message.cause = $root.data.StackTraceCause.decode(reader, reader.uint32());
+                    m.cause = $root.data.StackTraceCause.decode(r, r.uint32());
                     break;
                 case 2:
-                    message.additionalErrorMessage = reader.string();
+                    m.additionalErrorMessage = r.string();
                     break;
                 default:
-                    reader.skipType(tag & 7);
+                    r.skipType(t & 7);
                     break;
                 }
             }
-            return message;
+            return m;
         };
 
         return StackTrace;
@@ -2528,14 +2090,14 @@ export const data = $root.data = (() => {
          * @classdesc Represents a StackTraceCause.
          * @implements IStackTraceCause
          * @constructor
-         * @param {data.IStackTraceCause=} [properties] Properties to set
+         * @param {data.IStackTraceCause=} [p] Properties to set
          */
-        function StackTraceCause(properties) {
+        function StackTraceCause(p) {
             this.stackTraceElements = [];
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
+            if (p)
+                for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
+                    if (p[ks[i]] != null)
+                        this[ks[i]] = p[ks[i]];
         }
 
         /**
@@ -2571,67 +2133,43 @@ export const data = $root.data = (() => {
         StackTraceCause.prototype.cause = null;
 
         /**
-         * Encodes the specified StackTraceCause message. Does not implicitly {@link data.StackTraceCause.verify|verify} messages.
-         * @function encode
-         * @memberof data.StackTraceCause
-         * @static
-         * @param {data.IStackTraceCause} message StackTraceCause message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        StackTraceCause.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.className != null && Object.hasOwnProperty.call(message, "className"))
-                writer.uint32(/* id 1, wireType 2 =*/10).string(message.className);
-            if (message.message != null && Object.hasOwnProperty.call(message, "message"))
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.message);
-            if (message.stackTraceElements != null && message.stackTraceElements.length)
-                for (let i = 0; i < message.stackTraceElements.length; ++i)
-                    writer.uint32(/* id 3, wireType 2 =*/26).string(message.stackTraceElements[i]);
-            if (message.cause != null && Object.hasOwnProperty.call(message, "cause"))
-                $root.data.StackTraceCause.encode(message.cause, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-            return writer;
-        };
-
-        /**
          * Decodes a StackTraceCause message from the specified reader or buffer.
          * @function decode
          * @memberof data.StackTraceCause
          * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
+         * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
+         * @param {number} [l] Message length if known beforehand
          * @returns {data.StackTraceCause} StackTraceCause
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        StackTraceCause.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.data.StackTraceCause();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
+        StackTraceCause.decode = function decode(r, l) {
+            if (!(r instanceof $Reader))
+                r = $Reader.create(r);
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.StackTraceCause();
+            while (r.pos < c) {
+                var t = r.uint32();
+                switch (t >>> 3) {
                 case 1:
-                    message.className = reader.string();
+                    m.className = r.string();
                     break;
                 case 2:
-                    message.message = reader.string();
+                    m.message = r.string();
                     break;
                 case 3:
-                    if (!(message.stackTraceElements && message.stackTraceElements.length))
-                        message.stackTraceElements = [];
-                    message.stackTraceElements.push(reader.string());
+                    if (!(m.stackTraceElements && m.stackTraceElements.length))
+                        m.stackTraceElements = [];
+                    m.stackTraceElements.push(r.string());
                     break;
                 case 4:
-                    message.cause = $root.data.StackTraceCause.decode(reader, reader.uint32());
+                    m.cause = $root.data.StackTraceCause.decode(r, r.uint32());
                     break;
                 default:
-                    reader.skipType(tag & 7);
+                    r.skipType(t & 7);
                     break;
                 }
             }
-            return message;
+            return m;
         };
 
         return StackTraceCause;
@@ -2654,14 +2192,14 @@ export const data = $root.data = (() => {
          * @classdesc Represents a ScriptSource.
          * @implements IScriptSource
          * @constructor
-         * @param {data.IScriptSource=} [properties] Properties to set
+         * @param {data.IScriptSource=} [p] Properties to set
          */
-        function ScriptSource(properties) {
+        function ScriptSource(p) {
             this.lines = [];
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
+            if (p)
+                for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
+                    if (p[ks[i]] != null)
+                        this[ks[i]] = p[ks[i]];
         }
 
         /**
@@ -2689,62 +2227,40 @@ export const data = $root.data = (() => {
         ScriptSource.prototype.lines = $util.emptyArray;
 
         /**
-         * Encodes the specified ScriptSource message. Does not implicitly {@link data.ScriptSource.verify|verify} messages.
-         * @function encode
-         * @memberof data.ScriptSource
-         * @static
-         * @param {data.IScriptSource} message ScriptSource message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ScriptSource.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.fileName != null && Object.hasOwnProperty.call(message, "fileName"))
-                writer.uint32(/* id 1, wireType 2 =*/10).string(message.fileName);
-            if (message.methodName != null && Object.hasOwnProperty.call(message, "methodName"))
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.methodName);
-            if (message.lines != null && message.lines.length)
-                for (let i = 0; i < message.lines.length; ++i)
-                    $root.data.ScriptSourceLine.encode(message.lines[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-            return writer;
-        };
-
-        /**
          * Decodes a ScriptSource message from the specified reader or buffer.
          * @function decode
          * @memberof data.ScriptSource
          * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
+         * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
+         * @param {number} [l] Message length if known beforehand
          * @returns {data.ScriptSource} ScriptSource
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        ScriptSource.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.data.ScriptSource();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
+        ScriptSource.decode = function decode(r, l) {
+            if (!(r instanceof $Reader))
+                r = $Reader.create(r);
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.ScriptSource();
+            while (r.pos < c) {
+                var t = r.uint32();
+                switch (t >>> 3) {
                 case 1:
-                    message.fileName = reader.string();
+                    m.fileName = r.string();
                     break;
                 case 2:
-                    message.methodName = reader.string();
+                    m.methodName = r.string();
                     break;
                 case 3:
-                    if (!(message.lines && message.lines.length))
-                        message.lines = [];
-                    message.lines.push($root.data.ScriptSourceLine.decode(reader, reader.uint32()));
+                    if (!(m.lines && m.lines.length))
+                        m.lines = [];
+                    m.lines.push($root.data.ScriptSourceLine.decode(r, r.uint32()));
                     break;
                 default:
-                    reader.skipType(tag & 7);
+                    r.skipType(t & 7);
                     break;
                 }
             }
-            return message;
+            return m;
         };
 
         return ScriptSource;
@@ -2767,13 +2283,13 @@ export const data = $root.data = (() => {
          * @classdesc Represents a ScriptSourceLine.
          * @implements IScriptSourceLine
          * @constructor
-         * @param {data.IScriptSourceLine=} [properties] Properties to set
+         * @param {data.IScriptSourceLine=} [p] Properties to set
          */
-        function ScriptSourceLine(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
+        function ScriptSourceLine(p) {
+            if (p)
+                for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
+                    if (p[ks[i]] != null)
+                        this[ks[i]] = p[ks[i]];
         }
 
         /**
@@ -2801,59 +2317,38 @@ export const data = $root.data = (() => {
         ScriptSourceLine.prototype.mark = false;
 
         /**
-         * Encodes the specified ScriptSourceLine message. Does not implicitly {@link data.ScriptSourceLine.verify|verify} messages.
-         * @function encode
-         * @memberof data.ScriptSourceLine
-         * @static
-         * @param {data.IScriptSourceLine} message ScriptSourceLine message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ScriptSourceLine.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.line != null && Object.hasOwnProperty.call(message, "line"))
-                writer.uint32(/* id 1, wireType 2 =*/10).string(message.line);
-            if (message.lineNumber != null && Object.hasOwnProperty.call(message, "lineNumber"))
-                writer.uint32(/* id 2, wireType 0 =*/16).int32(message.lineNumber);
-            if (message.mark != null && Object.hasOwnProperty.call(message, "mark"))
-                writer.uint32(/* id 3, wireType 0 =*/24).bool(message.mark);
-            return writer;
-        };
-
-        /**
          * Decodes a ScriptSourceLine message from the specified reader or buffer.
          * @function decode
          * @memberof data.ScriptSourceLine
          * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
+         * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
+         * @param {number} [l] Message length if known beforehand
          * @returns {data.ScriptSourceLine} ScriptSourceLine
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        ScriptSourceLine.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.data.ScriptSourceLine();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
+        ScriptSourceLine.decode = function decode(r, l) {
+            if (!(r instanceof $Reader))
+                r = $Reader.create(r);
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.ScriptSourceLine();
+            while (r.pos < c) {
+                var t = r.uint32();
+                switch (t >>> 3) {
                 case 1:
-                    message.line = reader.string();
+                    m.line = r.string();
                     break;
                 case 2:
-                    message.lineNumber = reader.int32();
+                    m.lineNumber = r.int32();
                     break;
                 case 3:
-                    message.mark = reader.bool();
+                    m.mark = r.bool();
                     break;
                 default:
-                    reader.skipType(tag & 7);
+                    r.skipType(t & 7);
                     break;
                 }
             }
-            return message;
+            return m;
         };
 
         return ScriptSourceLine;
@@ -2885,14 +2380,14 @@ export const data = $root.data = (() => {
          * @classdesc Represents a File.
          * @implements IFile
          * @constructor
-         * @param {data.IFile=} [properties] Properties to set
+         * @param {data.IFile=} [p] Properties to set
          */
-        function File(properties) {
+        function File(p) {
             this.meta = {};
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
+            if (p)
+                for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
+                    if (p[ks[i]] != null)
+                        this[ks[i]] = p[ks[i]];
         }
 
         /**
@@ -2992,124 +2487,84 @@ export const data = $root.data = (() => {
         File.prototype.name = "";
 
         /**
-         * Encodes the specified File message. Does not implicitly {@link data.File.verify|verify} messages.
-         * @function encode
-         * @memberof data.File
-         * @static
-         * @param {data.IFile} message File message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        File.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.id != null && Object.hasOwnProperty.call(message, "id"))
-                writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
-            if (message.size != null && Object.hasOwnProperty.call(message, "size"))
-                writer.uint32(/* id 2, wireType 0 =*/16).int64(message.size);
-            if (message.mimetype != null && Object.hasOwnProperty.call(message, "mimetype"))
-                writer.uint32(/* id 3, wireType 2 =*/26).string(message.mimetype);
-            if (message.relativePath != null && Object.hasOwnProperty.call(message, "relativePath"))
-                writer.uint32(/* id 4, wireType 2 =*/34).string(message.relativePath);
-            if (message.createdTimestamp != null && Object.hasOwnProperty.call(message, "createdTimestamp"))
-                writer.uint32(/* id 5, wireType 0 =*/40).int64(message.createdTimestamp);
-            if (message.sha1Checksum != null && Object.hasOwnProperty.call(message, "sha1Checksum"))
-                writer.uint32(/* id 6, wireType 2 =*/50).bytes(message.sha1Checksum);
-            if (message.meta != null && Object.hasOwnProperty.call(message, "meta"))
-                for (let keys = Object.keys(message.meta), i = 0; i < keys.length; ++i)
-                    writer.uint32(/* id 7, wireType 2 =*/58).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.meta[keys[i]]).ldelim();
-            if (message.lastModified != null && Object.hasOwnProperty.call(message, "lastModified"))
-                writer.uint32(/* id 9, wireType 0 =*/72).int64(message.lastModified);
-            if (message.projectId != null && Object.hasOwnProperty.call(message, "projectId"))
-                writer.uint32(/* id 10, wireType 2 =*/82).string(message.projectId);
-            if (message.jobId != null && Object.hasOwnProperty.call(message, "jobId"))
-                writer.uint32(/* id 11, wireType 2 =*/90).string(message.jobId);
-            if (message.isDirectory != null && Object.hasOwnProperty.call(message, "isDirectory"))
-                writer.uint32(/* id 12, wireType 0 =*/96).bool(message.isDirectory);
-            if (message.name != null && Object.hasOwnProperty.call(message, "name"))
-                writer.uint32(/* id 13, wireType 2 =*/106).string(message.name);
-            return writer;
-        };
-
-        /**
          * Decodes a File message from the specified reader or buffer.
          * @function decode
          * @memberof data.File
          * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
+         * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
+         * @param {number} [l] Message length if known beforehand
          * @returns {data.File} File
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        File.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.data.File(), key, value;
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
+        File.decode = function decode(r, l) {
+            if (!(r instanceof $Reader))
+                r = $Reader.create(r);
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.File(), k, value;
+            while (r.pos < c) {
+                var t = r.uint32();
+                switch (t >>> 3) {
                 case 1:
-                    message.id = reader.string();
+                    m.id = r.string();
                     break;
                 case 2:
-                    message.size = reader.int64();
+                    m.size = r.int64();
                     break;
                 case 3:
-                    message.mimetype = reader.string();
+                    m.mimetype = r.string();
                     break;
                 case 4:
-                    message.relativePath = reader.string();
+                    m.relativePath = r.string();
                     break;
                 case 5:
-                    message.createdTimestamp = reader.int64();
+                    m.createdTimestamp = r.int64();
                     break;
                 case 6:
-                    message.sha1Checksum = reader.bytes();
+                    m.sha1Checksum = r.bytes();
                     break;
                 case 7:
-                    if (message.meta === $util.emptyObject)
-                        message.meta = {};
-                    let end2 = reader.uint32() + reader.pos;
-                    key = "";
+                    if (m.meta === $util.emptyObject)
+                        m.meta = {};
+                    var c2 = r.uint32() + r.pos;
+                    k = "";
                     value = "";
-                    while (reader.pos < end2) {
-                        let tag2 = reader.uint32();
+                    while (r.pos < c2) {
+                        var tag2 = r.uint32();
                         switch (tag2 >>> 3) {
                         case 1:
-                            key = reader.string();
+                            k = r.string();
                             break;
                         case 2:
-                            value = reader.string();
+                            value = r.string();
                             break;
                         default:
-                            reader.skipType(tag2 & 7);
+                            r.skipType(tag2 & 7);
                             break;
                         }
                     }
-                    message.meta[key] = value;
+                    m.meta[k] = value;
                     break;
                 case 9:
-                    message.lastModified = reader.int64();
+                    m.lastModified = r.int64();
                     break;
                 case 10:
-                    message.projectId = reader.string();
+                    m.projectId = r.string();
                     break;
                 case 11:
-                    message.jobId = reader.string();
+                    m.jobId = r.string();
                     break;
                 case 12:
-                    message.isDirectory = reader.bool();
+                    m.isDirectory = r.bool();
                     break;
                 case 13:
-                    message.name = reader.string();
+                    m.name = r.string();
                     break;
                 default:
-                    reader.skipType(tag & 7);
+                    r.skipType(t & 7);
                     break;
                 }
             }
-            return message;
+            return m;
         };
 
         return File;
@@ -3197,14 +2652,14 @@ export const data = $root.data = (() => {
          * @classdesc Represents a ClassContextAggregate.
          * @implements IClassContextAggregate
          * @constructor
-         * @param {data.IClassContextAggregate=} [properties] Properties to set
+         * @param {data.IClassContextAggregate=} [p] Properties to set
          */
-        function ClassContextAggregate(properties) {
+        function ClassContextAggregate(p) {
             this.methodContexts = [];
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
+            if (p)
+                for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
+                    if (p[ks[i]] != null)
+                        this[ks[i]] = p[ks[i]];
         }
 
         /**
@@ -3224,57 +2679,37 @@ export const data = $root.data = (() => {
         ClassContextAggregate.prototype.methodContexts = $util.emptyArray;
 
         /**
-         * Encodes the specified ClassContextAggregate message. Does not implicitly {@link data.ClassContextAggregate.verify|verify} messages.
-         * @function encode
-         * @memberof data.ClassContextAggregate
-         * @static
-         * @param {data.IClassContextAggregate} message ClassContextAggregate message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ClassContextAggregate.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.classContext != null && Object.hasOwnProperty.call(message, "classContext"))
-                $root.data.ClassContext.encode(message.classContext, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            if (message.methodContexts != null && message.methodContexts.length)
-                for (let i = 0; i < message.methodContexts.length; ++i)
-                    $root.data.MethodContext.encode(message.methodContexts[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-            return writer;
-        };
-
-        /**
          * Decodes a ClassContextAggregate message from the specified reader or buffer.
          * @function decode
          * @memberof data.ClassContextAggregate
          * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
+         * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
+         * @param {number} [l] Message length if known beforehand
          * @returns {data.ClassContextAggregate} ClassContextAggregate
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        ClassContextAggregate.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.data.ClassContextAggregate();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
+        ClassContextAggregate.decode = function decode(r, l) {
+            if (!(r instanceof $Reader))
+                r = $Reader.create(r);
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.ClassContextAggregate();
+            while (r.pos < c) {
+                var t = r.uint32();
+                switch (t >>> 3) {
                 case 1:
-                    message.classContext = $root.data.ClassContext.decode(reader, reader.uint32());
+                    m.classContext = $root.data.ClassContext.decode(r, r.uint32());
                     break;
                 case 2:
-                    if (!(message.methodContexts && message.methodContexts.length))
-                        message.methodContexts = [];
-                    message.methodContexts.push($root.data.MethodContext.decode(reader, reader.uint32()));
+                    if (!(m.methodContexts && m.methodContexts.length))
+                        m.methodContexts = [];
+                    m.methodContexts.push($root.data.MethodContext.decode(r, r.uint32()));
                     break;
                 default:
-                    reader.skipType(tag & 7);
+                    r.skipType(t & 7);
                     break;
                 }
             }
-            return message;
+            return m;
         };
 
         return ClassContextAggregate;

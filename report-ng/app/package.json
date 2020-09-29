@@ -72,6 +72,6 @@
     "start": "webpack-dev-server --extractCss",
     "build:dev": "webpack --extractCss",
     "analyze": "webpack --env.production --analyze",
-    "proto": "pbjs --no-create --no-verify --no-convert --no-delimited -t static-module --es6 -w es6 -o src/services/report-model.js ../../report-model/src/main/proto/*.proto && pbts -o src/services/report-model.d.ts src/services/report-model.js"
+    "proto": "pbjs --no-create --no-encode --no-verify --no-convert --no-delimited --no-beautify -t static-module --es6 -w es6 -o src/services/report-model.js ../../report-model/src/main/proto/*.proto && pbts -o src/services/report-model.d.ts src/services/report-model.js"
   }
 }

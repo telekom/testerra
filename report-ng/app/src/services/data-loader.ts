@@ -13,7 +13,7 @@ import ClassContextAggregate = data.ClassContextAggregate;
  * @author Mike Reiche <mike.reiche@t-systems.com>
  */
 @autoinject()
-export class DataBackendService {
+export class DataLoader {
 
   constructor(
     private _httpClient: HttpClient,

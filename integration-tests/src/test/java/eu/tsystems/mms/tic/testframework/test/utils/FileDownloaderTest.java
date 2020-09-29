@@ -22,7 +22,7 @@
 
 package eu.tsystems.mms.tic.testframework.test.utils;
 
-import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
+import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.utils.FileDownloader;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import java.io.File;
@@ -40,7 +40,7 @@ import org.testng.annotations.Test;
  *
  * @author erku
  */
-public class FileDownloaderTest extends AbstractWebDriverTest {
+public class FileDownloaderTest extends AbstractTestSitesTest {
 
     @AfterMethod(alwaysRun = true)
     public void tearDown(Method method) {

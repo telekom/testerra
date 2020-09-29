@@ -1,0 +1,108 @@
+= Appium Connector
+
+include::../properties/property-attributes.adoc[]
+
+Appium connector is an extension for the Testerra Framework and uses the open source standard Appium to run web tests based on Testerra on mobile devices.
+
+It will register with Testerra Hooking system and uses the event bus to react on Testerra events.
+
+== Project setup
+
+.build.gradle
+[source,gradle,role="primary"]
+----
+apply plugin: 'java'
+
+dependencies {
+    compile 'eu.tsystems.mms.tic.testerra:appium:1-SNAPSHOT'
+}
+----
+
+.pom.xml
+[source,xml,role="secondary"]
+----
+<project>
+    <dependencies>
+        <dependency>
+            <groupId>eu.tsystems.mms.tic.testerra</groupId>
+            <artifactId>appium</artifactId>
+            <version>1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+</project>
+----
+
+=== Customize test.properties
+
+Because you may use different grids for mobile and desktop automation, you have to set mobile properties in your `test.properties` file specifying the connection settings.
+
+.test.properties
+[source,properties,subs="attributes"]
+----
+#Set the browser
+{browser}=mobile_chrome
+
+#Set the start page
+{baseurl}=http://example.org
+
+#Set your mobile cloud configuration
+{mobile_server_url}=https://mobiledevicecloud.example.com/wd/hub
+{mobile_access_key}=YOUR ACCESS KEY
+
+#set your device filter - will filter for android devices only
+{mobile_device_query_ios}=@os='ios' and @category='PHONE'
+{mobile_device_query_android}=@os='android' and @category='PHONE' and @version='10'
+----
+
+=== Use appium features
+
+The Appium connector will register `mobile_chrome` and `mobile_safari` as available browser configurations for your `{browser}` value.
+Further the connector will provide the `AppiumDriverManager` that you can use to unlock appium related features on the implementation of `WebDriver` interface.
+
+.Appium test class
+[source,java]
+----
+public class ExampleTest extends TesterraTest {
+
+    @Test
+    public void testT01_My_first_test() {
+
+        final AppiumDriverManager appiumDriverManager = new AppiumDriverManager();
+
+        final WebDriver driver = WebDriverManager.getWebDriver();
+        final AppiumDriver<MobileElement> appiumDriver = appiumDriverManager.fromWebDriver(driver);
+
+        appiumDriver.rotate(ScreenOrientation.LANDSCAPE);
+        driver.get(PropertyManager.get("tt.baseurl"));
+    }
+}
+----
+
+=== Device filtering
+
+If you have to run your tests on specific mobile devices available on your mobile device farm, you can use the `{mobile_device_query_android}` and `{mobile_device_query_ios}` to filter for your devices by different properties.
+To reserve a device and run tests on it you can simply use `WebDriverManager.getWebDriver()` call.
+If one or more device(s) matches your filter, the driver will be instantiated, otherwise the call will fail.
+
+The following query attributes are available for the device query strings.
+
+- @category
+- @os
+- @version
+- @manufacture
+- @model
+- @name
+
+Please keep in mind, that you have to specify the device query for each operating system with the properties mentioned above.
+The default values will provide you a device with given operating system and of `@category PHONE`.
+
+== Configuration
+
+[cols="2,^1,4a",options="header"]
+|===
+| Property | default | Description
+| {mobile_server_url} | NONE | Grid URL of Appium / Selenium Grid ending on "wd/hub"
+| {mobile_access_key} | NONE | Access key of your user and project
+| {mobile_device_query_ios} | "@os='ios' and @category='PHONE'" | Access key of your user  and project
+| {mobile_device_query_android} | "@os='android' and @category='PHONE'" | Access key of your user  and project
+|===

@@ -147,62 +147,69 @@ public final class MailUtils {
             throws TesterraSystemException {
 
         try {
-            // Checks if Content Type are equal.
-            if (!sent.getContentType().equals(received.getMessage().getContentType())) {
-                LOGGER.error("Content types not equal: " + sent.getContentType() + "<>"
-                        + received.getMessage().getContentType());
+            // Checks if Content Types are equal.
+            String contentTypeSentMessage = sent.getContentType();
+            String contentTypeReceivedMessage = received.getMessage().getContentType();
+
+            if (!contentTypeSentMessage.equals(contentTypeReceivedMessage)) {
+                LOGGER.error("Content types not equal: " + contentTypeSentMessage + "<>"
+                        + contentTypeReceivedMessage);
                 return false;
             }
 
             // Checks if the Content is an instance of BASE64DecoderStream
-            else if (sent.getContent() instanceof BASE64DecoderStream) {
-                LOGGER.info("Content is an instance of BASE64DecoderStream");
+            else {
+                final Object contentMailSent = sent.getContent();
 
-                final InputStream sentB64 = (InputStream) sent.getContent();
-                final InputStream receivedB64 = (InputStream) received.getMessage().getContent();
+                if (contentMailSent instanceof BASE64DecoderStream) {
+                    LOGGER.info("Content is an instance of BASE64DecoderStream");
 
-                return org.apache.commons.io.IOUtils.contentEquals(sentB64, receivedB64);
-            }
+                    final InputStream sentB64 = (InputStream) contentMailSent;
+                    final InputStream receivedB64 = (InputStream) received.getMessage().getContent();
 
-            // Checks if the Content is an instance of MimeMultipart
-            else if (sent.getContent() instanceof MimeMultipart) {
-                LOGGER.info("Content is an instance of MimeMultipart");
+                    return org.apache.commons.io.IOUtils.contentEquals(sentB64, receivedB64);
+                }
 
-                /*
-                 * Here the MimeMultipart has to be converted into an ImputStream, which can be read by the
-                 * contentEquals-Method (org.apache.commons.io.IOUtils)
-                 */
+                // Checks if the Content is an instance of MimeMultipart
+                else if (contentMailSent instanceof MimeMultipart) {
+                    LOGGER.info("Content is an instance of MimeMultipart");
 
-                final MimeMultipart sentMulti = (MimeMultipart) sent.getContent();
-                final MimeMultipart receivedMulti = (MimeMultipart) received.getMessage().getContent();
+                    /*
+                     * Here the MimeMultipart has to be converted into an ImputStream, which can be read by the
+                     * contentEquals-Method (org.apache.commons.io.IOUtils)
+                     */
 
-                final ByteArrayOutputStream sentOutStream = new ByteArrayOutputStream();
-                final ByteArrayOutputStream received2OutStream = new ByteArrayOutputStream();
+                    final MimeMultipart sentMulti = (MimeMultipart) contentMailSent;
+                    final MimeMultipart receivedMulti = (MimeMultipart) received.getMessage().getContent();
 
-                sentMulti.writeTo(sentOutStream);
-                receivedMulti.writeTo(received2OutStream);
+                    final ByteArrayOutputStream sentOutStream = new ByteArrayOutputStream();
+                    final ByteArrayOutputStream received2OutStream = new ByteArrayOutputStream();
 
-                final byte[] sentBytes = sentOutStream.toByteArray();
-                final byte[] receivedBytes = received2OutStream.toByteArray();
+                    sentMulti.writeTo(sentOutStream);
+                    receivedMulti.writeTo(received2OutStream);
 
-                final ByteArrayInputStream sentInStream = new ByteArrayInputStream(sentBytes);
-                final ByteArrayInputStream receivedInStream = new ByteArrayInputStream(receivedBytes);
+                    final byte[] sentBytes = sentOutStream.toByteArray();
+                    final byte[] receivedBytes = received2OutStream.toByteArray();
 
-                return org.apache.commons.io.IOUtils.contentEquals(sentInStream, receivedInStream);
-            }
+                    final ByteArrayInputStream sentInStream = new ByteArrayInputStream(sentBytes);
+                    final ByteArrayInputStream receivedInStream = new ByteArrayInputStream(receivedBytes);
 
-            // Checks if the Content is an instance of String
-            else if (sent.getContent() instanceof String) {
-                LOGGER.info("Content is an instance of String");
+                    return org.apache.commons.io.IOUtils.contentEquals(sentInStream, receivedInStream);
+                }
 
-                final String sentStr = sent.getContent().toString().trim();
-                final String receivedStr = received.getMessageText().trim();
+                // Checks if the Content is an instance of String
+                else if (contentMailSent instanceof String) {
+                    LOGGER.info("Content is an instance of String");
 
-                String contentType = sent.getContentType();
-                contentType = contentType.split("charset=")[1];
+                    final String sentStr = contentMailSent.toString().trim();
+                    final String receivedStr = received.getMessageText().trim();
 
-                return java.util.Arrays.equals(sentStr.getBytes(contentType),
-                        receivedStr.getBytes(contentType));
+                    String contentType = contentTypeSentMessage;
+                    contentType = contentType.split("charset=")[1];
+
+                    return java.util.Arrays.equals(sentStr.getBytes(contentType),
+                            receivedStr.getBytes(contentType));
+                }
             }
             // The Content is unknown.
             LOGGER.error("Content type is unknown: " + sent.getContent());
@@ -226,7 +233,10 @@ public final class MailUtils {
             throws TesterraSystemException {
         try {
             // Checks if Content Type are equal.
-            if (!sent.getContentType().equals(received.getContentType())) {
+            final String contentTypeSentMessage = sent.getContentType().toLowerCase();
+            final String contentTypeReceivedMessage = received.getContentType().toLowerCase();
+
+            if (!contentTypeSentMessage.equals(contentTypeReceivedMessage)) {
                 LOGGER.error("Content types not equal: " + sent.getContentType() + "<>" + received.getContentType());
                 return false;
             }

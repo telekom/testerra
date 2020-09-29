@@ -21,11 +21,14 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
-import org.openqa.selenium.By;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
 
 /**
  * Interface for generating element locators by labels
  */
-public interface ElementLabelProvider {
-    By[] createBy(String element, String label);
+public interface UiElementLabelLocator {
+    String BUTTON="button";
+    String INPUT="input";
+    String LINK="link";
+    Locator createLocator(String element, String label);
 }

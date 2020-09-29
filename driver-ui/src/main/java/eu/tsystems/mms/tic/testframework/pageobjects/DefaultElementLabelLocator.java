@@ -21,28 +21,28 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.ElementLabelProvider;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementLabelLocator;
 import eu.tsystems.mms.tic.testframework.utils.Conditions;
 import java.util.ArrayList;
 import org.openqa.selenium.By;
 
 /**
- * Default implementation of {@link ElementLabelProvider}
+ * Default implementation of {@link UiElementLabelLocator}
  */
-public class DefaultElementLabelProvider implements ElementLabelProvider {
+public class DefaultElementLabelLocator implements UiElementLabelLocator, LocatorFactoryProvider {
 
     @Override
-    public By[] createBy(String element, String label) {
+    public Locator createLocator(String element, String label) {
         Conditions conditions = XPath.createAttributeConditions();
         Conditions.Chain attributes;
 
-        ArrayList<By> by = new ArrayList<>();
+        ArrayList<String> xpathes = new ArrayList<>();
         switch (element) {
-            case "button": {
+            case BUTTON: {
                 attributes = conditions
                         .is(XPath.somethingContainsWord(".//text()", label))
                 ;
-                by.add(By.xpath("//button["+attributes+"]"));
+                xpathes.add("//button["+attributes+"]");
 
                 attributes = conditions
                         .is(
@@ -51,17 +51,17 @@ public class DefaultElementLabelProvider implements ElementLabelProvider {
                         )
                         .and(XPath.somethingContainsWord("@value", label))
                 ;
-                by.add(By.xpath("//input["+attributes+"]"));
+                xpathes.add("//input["+attributes+"]");
 
                 attributes = conditions
                         .is(XPath.somethingIs("@role", "button"))
                         .and(XPath.somethingContainsWord(".//text()", label))
                 ;
-                by.add(By.xpath("//div["+attributes+"]"));
+                xpathes.add("//div["+attributes+"]");
 
                 break;
             }
-            case "input": {
+            case INPUT: {
                 attributes = conditions
                         .is(
                             conditions.is(XPath.somethingIsNot("@type", "button"))
@@ -72,20 +72,20 @@ public class DefaultElementLabelProvider implements ElementLabelProvider {
                             .or(XPath.somethingContainsWord("@value", label))
                         );
                 ;
-                by.add(By.xpath("//input["+attributes+"]"));
+                xpathes.add("//input["+attributes+"]");
 
                 break;
             }
 
-            case "link": {
+            case LINK: {
                 attributes = conditions
                         .is(XPath.somethingContainsWord(".//text()", label))
                         .or(XPath.somethingContainsWord("@title", label))
                 ;
-                by.add(By.xpath("//a["+attributes+"]"));
+                xpathes.add("//a["+attributes+"]");
             }
         }
 
-        return by.toArray(new By[]{});
+        return Locate.by(By.xpath("("+String.join("|", xpathes)+")"));
     }
 }

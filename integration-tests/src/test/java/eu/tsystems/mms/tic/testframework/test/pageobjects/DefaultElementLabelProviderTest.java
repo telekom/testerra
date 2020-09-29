@@ -23,24 +23,19 @@ package eu.tsystems.mms.tic.testframework.test.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.DefaultElementLabelProvider;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.ElementLabelProvider;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementLabelLocator;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
-import eu.tsystems.mms.tic.testframework.utils.Formatter;
-import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 
 public class DefaultElementLabelProviderTest extends TesterraTest implements Loggable {
 
-    private ElementLabelProvider locator = new DefaultElementLabelProvider();
-    private Formatter formatter = Testerra.injector.getInstance(Formatter.class);
+    private UiElementLabelLocator labelLocator = Testerra.injector.getInstance(UiElementLabelLocator.class);
 
     @Test
     public void test_button() {
-        By[] bys = locator.createBy("button", "Ich stimme zu");
-        for (By by : bys) {
-            log().info(by.toString());
-        }
+        Locator locator = labelLocator.createLocator(UiElementLabelLocator.BUTTON, "Ich stimme zu");
+        log().info(locator.toString());
     }
 
 }

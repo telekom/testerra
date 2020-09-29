@@ -57,7 +57,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
 
             @Override
             public String getSubject() {
-                return String.format("%s.contains(guiElement: %s.bounds.%s)",
+                return String.format("%s.contains(%s.bounds.%s)",
                     formatter.toString(provider.getActual()),
                     guiElement,
                     formatter.toString(guiElement.waitFor().bounds().getActual())
@@ -76,7 +76,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
 
             @Override
             public String getSubject() {
-                return String.format("%s.intersects(guiElement: %s.bounds.%s)",
+                return String.format("%s.intersects(%s.bounds.%s)",
                     formatter.toString(provider.getActual()),
                     guiElement,
                     formatter.toString(guiElement.waitFor().bounds().getActual())
@@ -95,7 +95,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
 
             @Override
             public String getSubject() {
-                return String.format("leftOf(guiElement: %s)", guiElement);
+                return String.format("leftOf(%s)", guiElement);
             }
         });
     }
@@ -110,7 +110,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
 
             @Override
             public String getSubject() {
-                return String.format("rightOf(guiElement: %s)", guiElement);
+                return String.format("rightOf(%s)", guiElement);
             }
         });
     }
@@ -125,7 +125,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
 
             @Override
             public String getSubject() {
-                return String.format("above(guiElement: %s)", guiElement);
+                return String.format("above(%s)", guiElement);
             }
         });
     }
@@ -140,7 +140,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
 
             @Override
             public String getSubject() {
-                return String.format("below(guiElement: %s)", guiElement);
+                return String.format("below(%s)", guiElement);
             }
         });
     }

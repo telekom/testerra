@@ -21,6 +21,7 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
 import eu.tsystems.mms.tic.testframework.pageobjects.LocatorFactoryProvider;
@@ -46,9 +47,7 @@ public interface UiElementFinder extends LocatorFactoryProvider, Loggable {
         return find(Locate.by(xPath));
     }
     default UiElement findByLabel(String element, String label) {
-        //Testerra.injector.getInstance(ElementLabelProvider.class).createBy(element, label);
-        //return find(new DefaultLocate().displayed());
-        return null;
+        return findDeep(Testerra.injector.getInstance(UiElementLabelLocator.class).createLocator(element, label));
     }
 
     default UiElement findDeep(Locator locator) {

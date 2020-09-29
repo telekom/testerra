@@ -25,8 +25,6 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import org.apache.commons.io.FilenameUtils;
 
 public class Screenshot extends Attachment implements Loggable {
@@ -56,7 +54,6 @@ public class Screenshot extends Attachment implements Loggable {
     @Deprecated
     public String sourceFilename;
     private File pageSourceFile;
-    private Map<String, String> meta;
 
     public Screenshot() {
         this("Screenshot");
@@ -74,10 +71,11 @@ public class Screenshot extends Attachment implements Loggable {
     }
 
     @Override
-    protected Attachment setFile(File file) {
+    public Screenshot setFile(File file) {
         meta().put(Meta.DATE.toString(), new Date(file.lastModified()).toString());
         meta().put(Meta.FILE_NAME.toString(), file.getName());
-        return super.setFile(file);
+        super.setFile(file);
+        return this;
     }
 
     public File getScreenshotFile() {
@@ -109,14 +107,7 @@ public class Screenshot extends Attachment implements Loggable {
         return "Screenshot{" +
                 "filename='" + filename + '\'' +
                 ", sourceFilename='" + sourceFilename + '\'' +
-                ", meta=" + meta +
+                ", meta=" + meta() +
                 '}';
-    }
-
-    public Map<String, String> meta() {
-        if (meta == null) {
-            meta = new HashMap<>();
-        }
-        return meta;
     }
 }

@@ -48,6 +48,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.DelayAction
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.UiElementLogger;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.DefaultGuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
+import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
@@ -186,7 +187,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     }
 
     @Override
-    public Locator getLocate() {
+    public Locator getLocator() {
         return guiElementData.getLocate();
     }
 
@@ -753,5 +754,10 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     @Override
     public void findWebElement(Consumer<WebElement> consumer) {
         decoratedCore.findWebElement(consumer);
+    }
+
+    @Override
+    public void screenshotToReport() {
+        this.waitFor().screenshot(Report.Mode.ALWAYS);
     }
 }

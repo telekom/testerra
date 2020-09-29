@@ -63,8 +63,8 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     }
 
     @Override
-    public Locator getLocate() {
-        return rootElement.getLocate();
+    public Locator getLocator() {
+        return rootElement.getLocator();
     }
 
     @Override
@@ -143,5 +143,10 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     @Override
     public void findWebElement(Consumer<WebElement> consumer) {
         rootElement.findWebElement(consumer);
+    }
+
+    @Override
+    public void screenshotToReport() {
+        rootElement.screenshotToReport();
     }
 }

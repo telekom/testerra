@@ -33,6 +33,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFinder;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultPageAssertions;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PageAssertions;
+import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import java.awt.Color;
@@ -228,7 +229,7 @@ public class Page extends AbstractPage implements TestablePage, Nameable<Page> {
     @Override
     protected void pageLoaded() {
         if (PropertyManager.getBooleanProperty(TesterraProperties.SCREENSHOT_ON_PAGELOAD, false)) {
-            this.waitFor().screenshot().toReport();
+            this.screenshotToReport();
         }
     }
 
@@ -310,4 +311,8 @@ public class Page extends AbstractPage implements TestablePage, Nameable<Page> {
         return this.assertions;
     }
 
+    @Override
+    public void screenshotToReport() {
+        this.waitFor().screenshot(Report.Mode.ALWAYS);
+    }
 }

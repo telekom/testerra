@@ -22,8 +22,8 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.LocateProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
+import eu.tsystems.mms.tic.testframework.pageobjects.LocatorFactoryProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.XPath;
 import org.openqa.selenium.By;
 
@@ -31,7 +31,7 @@ import org.openqa.selenium.By;
  * Interface for finding {@link UiElement}
  * @author Mike Reiche
  */
-public interface UiElementFinder extends LocateProvider, Loggable {
+public interface UiElementFinder extends LocatorFactoryProvider, Loggable {
     UiElement find(Locator locator);
     default UiElement findById(Object id) {
         return find(Locate.by(By.id(id.toString())));

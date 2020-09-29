@@ -58,7 +58,7 @@ public abstract class AbstractPage implements
         Loggable,
         TestFeatures,
         PageObject,
-        LocateProvider
+        LocatorFactoryProvider
 {
     protected static final PageFactory pageFactory = Testerra.injector.getInstance(PageFactory.class);
 

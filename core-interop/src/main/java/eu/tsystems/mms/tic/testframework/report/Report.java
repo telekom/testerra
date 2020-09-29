@@ -31,9 +31,13 @@ public interface Report {
     String SCREENSHOTS_FOLDER_NAME = "screenshots";
     String VIDEO_FOLDER_NAME = "videos";
     String XML_FOLDER_NAME = "xml";
-    enum Mode {
+    enum FileMode {
         COPY,
         MOVE
+    }
+    enum Mode {
+        ALWAYS,
+        WHEN_FAILED
     }
     enum Properties implements IProperties {
         BASE_DIR("dir", "testerra-report"),
@@ -82,13 +86,13 @@ public interface Report {
     /**
      * Adds a screenshot to the current MethodContext
      */
-    Report addScreenshot(Screenshot screenshot, Mode mode);
+    Report addScreenshot(Screenshot screenshot, FileMode fileMode);
     /**
      * Creates a screenshot, moves it files but doesn't add in to the current MethodContext
      */
-    Screenshot provideScreenshot(File file, Mode mode);
-    Report addVideo(Video video, Mode mode);
-    Video provideVideo(File file, Mode mode);
+    Screenshot provideScreenshot(File file, FileMode fileMode);
+    Report addVideo(Video video, FileMode fileMode);
+    Video provideVideo(File file, FileMode fileMode);
     File finalizeReport();
 
     File getReportDirectory();

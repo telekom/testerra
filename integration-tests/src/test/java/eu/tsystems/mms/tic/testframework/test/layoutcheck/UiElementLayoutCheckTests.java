@@ -80,9 +80,7 @@ public class UiElementLayoutCheckTests extends AbstractTestSitesTest implements 
     @Test
     public void testCheckPageLayout() {
         BasePage page = getPage();
-        page.expectThat().screenshot()
-            .toReport()
-            .pixelDistance("LayoutTestPage").isLowerThan(1);
+        page.expectThat().screenshot().pixelDistance("LayoutTestPage").isLowerThan(1);
     }
 
     @Test(expectedExceptions = AssertionError.class)

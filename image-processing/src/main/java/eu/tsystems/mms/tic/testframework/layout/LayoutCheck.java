@@ -670,13 +670,13 @@ public final class LayoutCheck {
         // For readable report
         context.distance = new BigDecimal(step.distance).setScale(2, RoundingMode.HALF_UP).doubleValue();
         // Always copy the reference image
-        context.expectedScreenshot = report.provideScreenshot(referenceScreenshotPath.toFile(),  Report.Mode.COPY);
-        context.actualScreenshot = report.provideScreenshot(actualScreenshotPath.toFile(), Report.Mode.MOVE);
-        context.distanceScreenshot = report.provideScreenshot(distanceScreenshotPath.toFile(), Report.Mode.MOVE);
+        context.expectedScreenshot = report.provideScreenshot(referenceScreenshotPath.toFile(),  Report.FileMode.COPY);
+        context.actualScreenshot = report.provideScreenshot(actualScreenshotPath.toFile(), Report.FileMode.MOVE);
+        context.distanceScreenshot = report.provideScreenshot(distanceScreenshotPath.toFile(), Report.FileMode.MOVE);
         context.distanceScreenshot.meta().put("Distance", Double.toString(step.distance));
         if (step.annotatedReferenceFileName!=null) {
             final Path annotatedReferenceScreenshotPath = step.annotatedReferenceFileName;
-            context.annotatedScreenshot = report.provideScreenshot(annotatedReferenceScreenshotPath.toFile(), Report.Mode.MOVE);
+            context.annotatedScreenshot = report.provideScreenshot(annotatedReferenceScreenshotPath.toFile(), Report.FileMode.MOVE);
         }
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         methodContext.customContexts.add(context);

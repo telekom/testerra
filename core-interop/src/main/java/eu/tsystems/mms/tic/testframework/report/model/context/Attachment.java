@@ -1,10 +1,10 @@
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Attachment implements Loggable {
     private static HashMap<String, Integer> counter = new HashMap<>();
@@ -17,6 +17,7 @@ public class Attachment implements Loggable {
      */
     @Deprecated
     public String errorContextId;
+    private Map<String, String> meta;
 
     /**
      * @todo We may pass name and extension later.
@@ -47,7 +48,7 @@ public class Attachment implements Loggable {
         return file;
     }
 
-    protected Attachment setFile(File file) {
+    public Attachment setFile(File file) {
         filename = file.getName();
         this.file = file;
         return this;
@@ -64,5 +65,12 @@ public class Attachment implements Loggable {
 
     public boolean hasErrorContext() {
         return this.errorContextId != null;
+    }
+
+    public Map<String, String> meta() {
+        if (meta == null) {
+            meta = new HashMap<>();
+        }
+        return meta;
     }
 }

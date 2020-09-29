@@ -21,11 +21,15 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
+import eu.tsystems.mms.tic.testframework.report.Report;
+
 /**
  * Screenshot features
  * @author Mike Reiche
  */
-public interface ScreenshotAssertion extends ImageAssertion {
-    @Deprecated
-    ScreenshotAssertion toReport();
+public interface ScreenshotAssertion {
+    ImageAssertion screenshot(Report.Mode reportMode);
+    default ImageAssertion screenshot() {
+        return screenshot(Report.Mode.WHEN_FAILED);
+    }
 }

@@ -25,7 +25,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
  * Contains basic GuiElement features which every GuiElement needs to have.
  * @author Mike Reiche
  */
-public interface UiElementBaseAssertions {
+public interface UiElementBaseAssertions extends ScreenshotAssertion {
     QuantityAssertion<Integer> numberOfElements();
     BinaryAssertion<Boolean> present();
     default boolean present(boolean expected) {
@@ -38,8 +38,4 @@ public interface UiElementBaseAssertions {
     BinaryAssertion<Boolean> visible(boolean complete);
     StringAssertion<String> tagName();
     RectAssertion bounds();
-    /**
-     * Takes a screenshot of the current element
-     */
-    ImageAssertion screenshot();
 }

@@ -28,4 +28,5 @@ import eu.tsystems.mms.tic.testframework.webdriver.WebDriverRetainer;
  * @author Mike Reiche
  */
 public interface PageObject extends WebDriverRetainer {
+    void screenshotToReport();
 }

@@ -23,13 +23,16 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
+import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
+import java.io.File;
 import java.util.concurrent.atomic.AtomicReference;
 import org.openqa.selenium.WebDriver;
 
 public class DefaultPageAssertions implements PageAssertions {
     private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
+    private static final Report report = Testerra.injector.getInstance(Report.class);
     private final PropertyAssertionConfig propertyAssertionConfig = new PropertyAssertionConfig();
     private final Page page;
 
@@ -69,24 +72,34 @@ public class DefaultPageAssertions implements PageAssertions {
     }
 
     @Override
-    public ScreenshotAssertion screenshot() {
-        final AtomicReference<Screenshot> atomicScreenshot = new AtomicReference<>();
-
+    public ImageAssertion screenshot(Report.Mode reportMode) {
         Screenshot screenshot = new Screenshot(page.toString());
-        WebDriver driver = page.getWebDriver();
-        UITestUtils.takeScreenshot(driver, screenshot);
+        WebDriver webDriver = page.getWebDriver();
+        UITestUtils.takeScreenshot(webDriver, screenshot);
+        if (reportMode == Report.Mode.ALWAYS) {
+            report.addScreenshot(screenshot, Report.FileMode.COPY);
+        }
+
+        AtomicReference<Screenshot> atomicScreenshot = new AtomicReference<>();
         atomicScreenshot.set(screenshot);
 
-        return propertyAssertionFactory.createWithConfig(DefaultScreenshotAssertion.class, this.propertyAssertionConfig, new AssertionProvider<Screenshot>() {
+        return propertyAssertionFactory.createWithConfig(DefaultImageAssertion.class, this.propertyAssertionConfig, new AssertionProvider<File>() {
             @Override
-            public Screenshot getActual() {
-                return atomicScreenshot.get();
+            public File getActual() {
+                return atomicScreenshot.get().getScreenshotFile();
             }
 
             @Override
             public void failed(AbstractPropertyAssertion assertion) {
                 // Take new screenshot only if failed
-                UITestUtils.takeScreenshot(page.getWebDriver(), atomicScreenshot.get());
+                UITestUtils.takeScreenshot(webDriver, atomicScreenshot.get());
+            }
+
+            @Override
+            public void failedFinally(AbstractPropertyAssertion assertion) {
+                if (reportMode == Report.Mode.WHEN_FAILED) {
+                    report.addScreenshot(atomicScreenshot.get(), Report.FileMode.MOVE);
+                }
             }
 
             @Override

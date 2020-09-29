@@ -21,8 +21,7 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
-public interface PageAssertions {
+public interface PageAssertions extends ScreenshotAssertion {
     StringAssertion<String> title();
     StringAssertion<String> url();
-    ScreenshotAssertion screenshot();
 }

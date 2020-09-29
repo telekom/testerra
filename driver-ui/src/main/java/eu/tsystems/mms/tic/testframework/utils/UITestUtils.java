@@ -114,7 +114,7 @@ public class UITestUtils {
         );
         if (intoReport) {
             if (screenshot != null) {
-                report.addScreenshot(screenshot, Report.Mode.MOVE);
+                report.addScreenshot(screenshot, Report.FileMode.MOVE);
             }
         }
 

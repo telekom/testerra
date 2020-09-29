@@ -53,9 +53,9 @@ public class DefaultReport implements Report, Loggable {
     }
 
 
-    private void addFile(File sourceFile, File directory, Mode mode) {
+    private void addFile(File sourceFile, File directory, FileMode fileMode) {
         try {
-            switch (mode) {
+            switch (fileMode) {
                 case COPY:
                     FileUtils.copyFileToDirectory(sourceFile, directory, true);
                     break;
@@ -95,40 +95,40 @@ public class DefaultReport implements Report, Loggable {
         methodContext.addScreenshots(screenshots);
     }
 
-    private void addScreenshotFiles(Screenshot screenshot, Mode mode) {
+    private void addScreenshotFiles(Screenshot screenshot, FileMode fileMode) {
         if (screenshot.getScreenshotFile() != null) {
-            addFile(screenshot.getScreenshotFile(), SCREENSHOTS_DIRECTORY, mode);
+            addFile(screenshot.getScreenshotFile(), SCREENSHOTS_DIRECTORY, fileMode);
         }
 
         if (screenshot.getPageSourceFile() != null) {
-            addFile(screenshot.getPageSourceFile(), SCREENSHOTS_DIRECTORY, mode);
+            addFile(screenshot.getPageSourceFile(), SCREENSHOTS_DIRECTORY, fileMode);
         }
     }
 
     @Override
-    public Report addScreenshot(Screenshot screenshot, Mode mode) {
-        addScreenshotFiles(screenshot, mode);
+    public Report addScreenshot(Screenshot screenshot, FileMode fileMode) {
+        addScreenshotFiles(screenshot, fileMode);
         addScreenshot(screenshot);
         return this;
     }
 
     @Override
-    public Screenshot provideScreenshot(File file, Mode mode) {
+    public Screenshot provideScreenshot(File file, FileMode fileMode) {
         Screenshot screenshot = new Screenshot(file, null);
-        addScreenshotFiles(screenshot, mode);
+        addScreenshotFiles(screenshot, fileMode);
         return screenshot;
     }
 
     @Override
-    public Report addVideo(Video video, Mode mode) {
-        addFile(video.getVideoFile(), VIDEO_DIRECTORY, mode);
+    public Report addVideo(Video video, FileMode fileMode) {
+        addFile(video.getVideoFile(), VIDEO_DIRECTORY, fileMode);
         return this;
     }
 
     @Override
-    public Video provideVideo(File file, Mode mode)  {
+    public Video provideVideo(File file, FileMode fileMode)  {
         Video video = new Video(file);
-        addVideo(video, mode);
+        addVideo(video, fileMode);
         return video;
     }
 

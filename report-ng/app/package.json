@@ -27,7 +27,7 @@
     "aurelia-fetch-client": "^1.8.2",
     "aurelia-typed-observable-plugin": "^0.4.2",
     "moment": "^2.28.0",
-    "protobufjs": "~6.10.1"
+    "protobufjs": "^6.10.1"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.161",
@@ -72,6 +72,6 @@
     "start": "webpack-dev-server --extractCss",
     "build:dev": "webpack --extractCss",
     "analyze": "webpack --env.production --analyze",
-    "proto": "pbjs -t static-module --es6 -w commonjs -o src/services/report-model.js --no-encode --no-create --no-verify --no-convert --no-delimited ../../report-model/src/main/proto/framework.proto && pbts -o src/services/report-model.d.ts src/services/report-model.js"
+    "proto": "pbjs --no-create --no-verify --no-convert --no-delimited -t static-module --es6 -w es6 -o src/services/report-model.js ../../report-model/src/main/proto/*.proto && pbts -o src/services/report-model.d.ts src/services/report-model.js"
   }
 }

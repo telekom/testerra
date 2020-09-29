@@ -1,6 +1,7 @@
 import {autoinject, PLATFORM} from "aurelia-framework";
 import {Router, RouterConfiguration} from 'aurelia-router';
-import {StatisticValues} from "./services/statistic-values";
+//import {StatisticValues} from "./services/statistic-values";
+import {DataBackendService} from "./services/data-backend-service";
 
 @autoinject()
 export class App {
@@ -9,7 +10,8 @@ export class App {
 
 
   constructor(
-    //private statisticValues: StatisticValues
+    //private statisticValues: StatisticValues,
+    private _dataLoader : DataBackendService
   ) {
 
   }

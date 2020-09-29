@@ -1,10 +1,8 @@
 /*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars*/
-"use strict";
-
-var $protobuf = require("protobufjs/minimal");
+import * as $protobuf from "protobufjs/minimal";
 
 // Common aliases
-const $Reader = $protobuf.Reader, $util = $protobuf.util;
+const $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
 // Exported root namespace
 const $root = $protobuf.roots["default"] || ($protobuf.roots["default"] = {});
@@ -68,6 +66,28 @@ export const data = $root.data = (() => {
          * @instance
          */
         SuiteContext.prototype.executionContextId = "";
+
+        /**
+         * Encodes the specified SuiteContext message. Does not implicitly {@link data.SuiteContext.verify|verify} messages.
+         * @function encode
+         * @memberof data.SuiteContext
+         * @static
+         * @param {data.ISuiteContext} message SuiteContext message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        SuiteContext.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.contextValues != null && Object.hasOwnProperty.call(message, "contextValues"))
+                $root.data.ContextValues.encode(message.contextValues, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            if (message.testContextIds != null && message.testContextIds.length)
+                for (let i = 0; i < message.testContextIds.length; ++i)
+                    writer.uint32(/* id 6, wireType 2 =*/50).string(message.testContextIds[i]);
+            if (message.executionContextId != null && Object.hasOwnProperty.call(message, "executionContextId"))
+                writer.uint32(/* id 7, wireType 2 =*/58).string(message.executionContextId);
+            return writer;
+        };
 
         /**
          * Decodes a SuiteContext message from the specified reader or buffer.
@@ -197,6 +217,36 @@ export const data = $root.data = (() => {
         ClassContext.prototype.merged = false;
 
         /**
+         * Encodes the specified ClassContext message. Does not implicitly {@link data.ClassContext.verify|verify} messages.
+         * @function encode
+         * @memberof data.ClassContext
+         * @static
+         * @param {data.IClassContext} message ClassContext message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ClassContext.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.contextValues != null && Object.hasOwnProperty.call(message, "contextValues"))
+                $root.data.ContextValues.encode(message.contextValues, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            if (message.methodContextIds != null && message.methodContextIds.length)
+                for (let i = 0; i < message.methodContextIds.length; ++i)
+                    writer.uint32(/* id 6, wireType 2 =*/50).string(message.methodContextIds[i]);
+            if (message.fullClassName != null && Object.hasOwnProperty.call(message, "fullClassName"))
+                writer.uint32(/* id 7, wireType 2 =*/58).string(message.fullClassName);
+            if (message.simpleClassName != null && Object.hasOwnProperty.call(message, "simpleClassName"))
+                writer.uint32(/* id 8, wireType 2 =*/66).string(message.simpleClassName);
+            if (message.testContextId != null && Object.hasOwnProperty.call(message, "testContextId"))
+                writer.uint32(/* id 9, wireType 2 =*/74).string(message.testContextId);
+            if (message.executionContextId != null && Object.hasOwnProperty.call(message, "executionContextId"))
+                writer.uint32(/* id 10, wireType 2 =*/82).string(message.executionContextId);
+            if (message.merged != null && Object.hasOwnProperty.call(message, "merged"))
+                writer.uint32(/* id 12, wireType 0 =*/96).bool(message.merged);
+            return writer;
+        };
+
+        /**
          * Decodes a ClassContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.ClassContext
@@ -307,6 +357,30 @@ export const data = $root.data = (() => {
          * @instance
          */
         TestContext.prototype.executionContextId = "";
+
+        /**
+         * Encodes the specified TestContext message. Does not implicitly {@link data.TestContext.verify|verify} messages.
+         * @function encode
+         * @memberof data.TestContext
+         * @static
+         * @param {data.ITestContext} message TestContext message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        TestContext.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.contextValues != null && Object.hasOwnProperty.call(message, "contextValues"))
+                $root.data.ContextValues.encode(message.contextValues, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            if (message.classContextIds != null && message.classContextIds.length)
+                for (let i = 0; i < message.classContextIds.length; ++i)
+                    writer.uint32(/* id 6, wireType 2 =*/50).string(message.classContextIds[i]);
+            if (message.suiteContextId != null && Object.hasOwnProperty.call(message, "suiteContextId"))
+                writer.uint32(/* id 7, wireType 2 =*/58).string(message.suiteContextId);
+            if (message.executionContextId != null && Object.hasOwnProperty.call(message, "executionContextId"))
+                writer.uint32(/* id 8, wireType 2 =*/66).string(message.executionContextId);
+            return writer;
+        };
 
         /**
          * Decodes a TestContext message from the specified reader or buffer.
@@ -488,6 +562,50 @@ export const data = $root.data = (() => {
         ExecutionContext.prototype.estimatedTestMethodCount = 0;
 
         /**
+         * Encodes the specified ExecutionContext message. Does not implicitly {@link data.ExecutionContext.verify|verify} messages.
+         * @function encode
+         * @memberof data.ExecutionContext
+         * @static
+         * @param {data.IExecutionContext} message ExecutionContext message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ExecutionContext.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.contextValues != null && Object.hasOwnProperty.call(message, "contextValues"))
+                $root.data.ContextValues.encode(message.contextValues, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            if (message.mergedClassContextIds != null && message.mergedClassContextIds.length)
+                for (let i = 0; i < message.mergedClassContextIds.length; ++i)
+                    writer.uint32(/* id 3, wireType 2 =*/26).string(message.mergedClassContextIds[i]);
+            if (message.exitPoints != null && message.exitPoints.length)
+                for (let i = 0; i < message.exitPoints.length; ++i)
+                    $root.data.ContextClip.encode(message.exitPoints[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+            if (message.failureAscpects != null && message.failureAscpects.length)
+                for (let i = 0; i < message.failureAscpects.length; ++i)
+                    $root.data.ContextClip.encode(message.failureAscpects[i], writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+            if (message.suiteContextIds != null && message.suiteContextIds.length)
+                for (let i = 0; i < message.suiteContextIds.length; ++i)
+                    writer.uint32(/* id 6, wireType 2 =*/50).string(message.suiteContextIds[i]);
+            if (message.runConfig != null && Object.hasOwnProperty.call(message, "runConfig"))
+                $root.data.RunConfig.encode(message.runConfig, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
+            if (message.project_Id != null && Object.hasOwnProperty.call(message, "project_Id"))
+                writer.uint32(/* id 8, wireType 2 =*/66).string(message.project_Id);
+            if (message.job_Id != null && Object.hasOwnProperty.call(message, "job_Id"))
+                writer.uint32(/* id 9, wireType 2 =*/74).string(message.job_Id);
+            if (message.run_Id != null && Object.hasOwnProperty.call(message, "run_Id"))
+                writer.uint32(/* id 10, wireType 2 =*/82).string(message.run_Id);
+            if (message.task_Id != null && Object.hasOwnProperty.call(message, "task_Id"))
+                writer.uint32(/* id 11, wireType 2 =*/90).string(message.task_Id);
+            if (message.exclusiveSessionContextIds != null && message.exclusiveSessionContextIds.length)
+                for (let i = 0; i < message.exclusiveSessionContextIds.length; ++i)
+                    writer.uint32(/* id 12, wireType 2 =*/98).string(message.exclusiveSessionContextIds[i]);
+            if (message.estimatedTestMethodCount != null && Object.hasOwnProperty.call(message, "estimatedTestMethodCount"))
+                writer.uint32(/* id 13, wireType 0 =*/104).int32(message.estimatedTestMethodCount);
+            return writer;
+        };
+
+        /**
          * Decodes an ExecutionContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.ExecutionContext
@@ -603,6 +721,26 @@ export const data = $root.data = (() => {
          * @instance
          */
         ContextClip.prototype.methodContextIds = $util.emptyArray;
+
+        /**
+         * Encodes the specified ContextClip message. Does not implicitly {@link data.ContextClip.verify|verify} messages.
+         * @function encode
+         * @memberof data.ContextClip
+         * @static
+         * @param {data.IContextClip} message ContextClip message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ContextClip.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.key != null && Object.hasOwnProperty.call(message, "key"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.key);
+            if (message.methodContextIds != null && message.methodContextIds.length)
+                for (let i = 0; i < message.methodContextIds.length; ++i)
+                    writer.uint32(/* id 2, wireType 2 =*/18).string(message.methodContextIds[i]);
+            return writer;
+        };
 
         /**
          * Decodes a ContextClip message from the specified reader or buffer.
@@ -892,6 +1030,80 @@ export const data = $root.data = (() => {
         MethodContext.prototype.customContextJson = "";
 
         /**
+         * Encodes the specified MethodContext message. Does not implicitly {@link data.MethodContext.verify|verify} messages.
+         * @function encode
+         * @memberof data.MethodContext
+         * @static
+         * @param {data.IMethodContext} message MethodContext message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        MethodContext.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.contextValues != null && Object.hasOwnProperty.call(message, "contextValues"))
+                $root.data.ContextValues.encode(message.contextValues, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            if (message.methodType != null && Object.hasOwnProperty.call(message, "methodType"))
+                writer.uint32(/* id 7, wireType 0 =*/56).int32(message.methodType);
+            if (message.parameters != null && message.parameters.length)
+                for (let i = 0; i < message.parameters.length; ++i)
+                    writer.uint32(/* id 8, wireType 2 =*/66).string(message.parameters[i]);
+            if (message.methodTags != null && message.methodTags.length)
+                for (let i = 0; i < message.methodTags.length; ++i)
+                    writer.uint32(/* id 9, wireType 2 =*/74).string(message.methodTags[i]);
+            if (message.retryNumber != null && Object.hasOwnProperty.call(message, "retryNumber"))
+                writer.uint32(/* id 10, wireType 0 =*/80).int32(message.retryNumber);
+            if (message.methodRunIndex != null && Object.hasOwnProperty.call(message, "methodRunIndex"))
+                writer.uint32(/* id 11, wireType 0 =*/88).int32(message.methodRunIndex);
+            if (message.threadName != null && Object.hasOwnProperty.call(message, "threadName"))
+                writer.uint32(/* id 12, wireType 2 =*/98).string(message.threadName);
+            if (message.failureCorridorValue != null && Object.hasOwnProperty.call(message, "failureCorridorValue"))
+                writer.uint32(/* id 14, wireType 0 =*/112).int32(message.failureCorridorValue);
+            if (message.classContextId != null && Object.hasOwnProperty.call(message, "classContextId"))
+                writer.uint32(/* id 15, wireType 2 =*/122).string(message.classContextId);
+            if (message.executionContextId != null && Object.hasOwnProperty.call(message, "executionContextId"))
+                writer.uint32(/* id 16, wireType 2 =*/130).string(message.executionContextId);
+            if (message.nonFunctionalInfos != null && message.nonFunctionalInfos.length)
+                for (let i = 0; i < message.nonFunctionalInfos.length; ++i)
+                    $root.data.ErrorContext.encode(message.nonFunctionalInfos[i], writer.uint32(/* id 17, wireType 2 =*/138).fork()).ldelim();
+            if (message.collectedAssertions != null && message.collectedAssertions.length)
+                for (let i = 0; i < message.collectedAssertions.length; ++i)
+                    $root.data.ErrorContext.encode(message.collectedAssertions[i], writer.uint32(/* id 18, wireType 2 =*/146).fork()).ldelim();
+            if (message.infos != null && message.infos.length)
+                for (let i = 0; i < message.infos.length; ++i)
+                    writer.uint32(/* id 19, wireType 2 =*/154).string(message.infos[i]);
+            if (message.priorityMessage != null && Object.hasOwnProperty.call(message, "priorityMessage"))
+                writer.uint32(/* id 21, wireType 2 =*/170).string(message.priorityMessage);
+            if (message.relatedMethodContextIds != null && message.relatedMethodContextIds.length)
+                for (let i = 0; i < message.relatedMethodContextIds.length; ++i)
+                    writer.uint32(/* id 23, wireType 2 =*/186).string(message.relatedMethodContextIds[i]);
+            if (message.dependsOnMethodContextIds != null && message.dependsOnMethodContextIds.length)
+                for (let i = 0; i < message.dependsOnMethodContextIds.length; ++i)
+                    writer.uint32(/* id 24, wireType 2 =*/194).string(message.dependsOnMethodContextIds[i]);
+            if (message.errorContext != null && Object.hasOwnProperty.call(message, "errorContext"))
+                $root.data.ErrorContext.encode(message.errorContext, writer.uint32(/* id 25, wireType 2 =*/202).fork()).ldelim();
+            if (message.testSteps != null && message.testSteps.length)
+                for (let i = 0; i < message.testSteps.length; ++i)
+                    $root.data.PTestStep.encode(message.testSteps[i], writer.uint32(/* id 26, wireType 2 =*/210).fork()).ldelim();
+            if (message.testContextId != null && Object.hasOwnProperty.call(message, "testContextId"))
+                writer.uint32(/* id 27, wireType 2 =*/218).string(message.testContextId);
+            if (message.suiteContextId != null && Object.hasOwnProperty.call(message, "suiteContextId"))
+                writer.uint32(/* id 28, wireType 2 =*/226).string(message.suiteContextId);
+            if (message.sessionContextIds != null && message.sessionContextIds.length)
+                for (let i = 0; i < message.sessionContextIds.length; ++i)
+                    writer.uint32(/* id 29, wireType 2 =*/234).string(message.sessionContextIds[i]);
+            if (message.videoIds != null && message.videoIds.length)
+                for (let i = 0; i < message.videoIds.length; ++i)
+                    writer.uint32(/* id 30, wireType 2 =*/242).string(message.videoIds[i]);
+            if (message.screenshotIds != null && message.screenshotIds.length)
+                for (let i = 0; i < message.screenshotIds.length; ++i)
+                    writer.uint32(/* id 31, wireType 2 =*/250).string(message.screenshotIds[i]);
+            if (message.customContextJson != null && Object.hasOwnProperty.call(message, "customContextJson"))
+                writer.uint32(/* id 32, wireType 2 =*/258).string(message.customContextJson);
+            return writer;
+        };
+
+        /**
          * Decodes a MethodContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.MethodContext
@@ -1110,6 +1322,37 @@ export const data = $root.data = (() => {
         ContextValues.prototype.execStatus = 0;
 
         /**
+         * Encodes the specified ContextValues message. Does not implicitly {@link data.ContextValues.verify|verify} messages.
+         * @function encode
+         * @memberof data.ContextValues
+         * @static
+         * @param {data.IContextValues} message ContextValues message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ContextValues.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.id != null && Object.hasOwnProperty.call(message, "id"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+            if (message.created != null && Object.hasOwnProperty.call(message, "created"))
+                writer.uint32(/* id 2, wireType 0 =*/16).int64(message.created);
+            if (message.name != null && Object.hasOwnProperty.call(message, "name"))
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.name);
+            if (message.startTime != null && Object.hasOwnProperty.call(message, "startTime"))
+                writer.uint32(/* id 4, wireType 0 =*/32).int64(message.startTime);
+            if (message.endTime != null && Object.hasOwnProperty.call(message, "endTime"))
+                writer.uint32(/* id 5, wireType 0 =*/40).int64(message.endTime);
+            if (message.swi != null && Object.hasOwnProperty.call(message, "swi"))
+                writer.uint32(/* id 6, wireType 2 =*/50).string(message.swi);
+            if (message.resultStatus != null && Object.hasOwnProperty.call(message, "resultStatus"))
+                writer.uint32(/* id 7, wireType 0 =*/56).int32(message.resultStatus);
+            if (message.execStatus != null && Object.hasOwnProperty.call(message, "execStatus"))
+                writer.uint32(/* id 8, wireType 0 =*/64).int32(message.execStatus);
+            return writer;
+        };
+
+        /**
          * Decodes a ContextValues message from the specified reader or buffer.
          * @function decode
          * @memberof data.ContextValues
@@ -1214,6 +1457,28 @@ export const data = $root.data = (() => {
         PTestStep.prototype.testStepActions = $util.emptyArray;
 
         /**
+         * Encodes the specified PTestStep message. Does not implicitly {@link data.PTestStep.verify|verify} messages.
+         * @function encode
+         * @memberof data.PTestStep
+         * @static
+         * @param {data.IPTestStep} message PTestStep message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        PTestStep.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.name != null && Object.hasOwnProperty.call(message, "name"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
+            if (message.id != null && Object.hasOwnProperty.call(message, "id"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.id);
+            if (message.testStepActions != null && message.testStepActions.length)
+                for (let i = 0; i < message.testStepActions.length; ++i)
+                    $root.data.PTestStepAction.encode(message.testStepActions[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+            return writer;
+        };
+
+        /**
          * Decodes a PTestStep message from the specified reader or buffer.
          * @function decode
          * @memberof data.PTestStep
@@ -1264,6 +1529,7 @@ export const data = $root.data = (() => {
          * @property {number|Long|null} [timestamp] PTestStepAction timestamp
          * @property {Array.<string>|null} [screenshotNames] PTestStepAction screenshotNames
          * @property {Array.<data.IPClickPathEvent>|null} [clickpathEvents] PTestStepAction clickpathEvents
+         * @property {Array.<string>|null} [screenshotIds] PTestStepAction screenshotIds
          */
 
         /**
@@ -1277,6 +1543,7 @@ export const data = $root.data = (() => {
         function PTestStepAction(properties) {
             this.screenshotNames = [];
             this.clickpathEvents = [];
+            this.screenshotIds = [];
             if (properties)
                 for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -1324,6 +1591,44 @@ export const data = $root.data = (() => {
         PTestStepAction.prototype.clickpathEvents = $util.emptyArray;
 
         /**
+         * PTestStepAction screenshotIds.
+         * @member {Array.<string>} screenshotIds
+         * @memberof data.PTestStepAction
+         * @instance
+         */
+        PTestStepAction.prototype.screenshotIds = $util.emptyArray;
+
+        /**
+         * Encodes the specified PTestStepAction message. Does not implicitly {@link data.PTestStepAction.verify|verify} messages.
+         * @function encode
+         * @memberof data.PTestStepAction
+         * @static
+         * @param {data.IPTestStepAction} message PTestStepAction message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        PTestStepAction.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.name != null && Object.hasOwnProperty.call(message, "name"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
+            if (message.id != null && Object.hasOwnProperty.call(message, "id"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.id);
+            if (message.timestamp != null && Object.hasOwnProperty.call(message, "timestamp"))
+                writer.uint32(/* id 3, wireType 0 =*/24).int64(message.timestamp);
+            if (message.screenshotNames != null && message.screenshotNames.length)
+                for (let i = 0; i < message.screenshotNames.length; ++i)
+                    writer.uint32(/* id 4, wireType 2 =*/34).string(message.screenshotNames[i]);
+            if (message.clickpathEvents != null && message.clickpathEvents.length)
+                for (let i = 0; i < message.clickpathEvents.length; ++i)
+                    $root.data.PClickPathEvent.encode(message.clickpathEvents[i], writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+            if (message.screenshotIds != null && message.screenshotIds.length)
+                for (let i = 0; i < message.screenshotIds.length; ++i)
+                    writer.uint32(/* id 6, wireType 2 =*/50).string(message.screenshotIds[i]);
+            return writer;
+        };
+
+        /**
          * Decodes a PTestStepAction message from the specified reader or buffer.
          * @function decode
          * @memberof data.PTestStepAction
@@ -1359,6 +1664,11 @@ export const data = $root.data = (() => {
                     if (!(message.clickpathEvents && message.clickpathEvents.length))
                         message.clickpathEvents = [];
                     message.clickpathEvents.push($root.data.PClickPathEvent.decode(reader, reader.uint32()));
+                    break;
+                case 6:
+                    if (!(message.screenshotIds && message.screenshotIds.length))
+                        message.screenshotIds = [];
+                    message.screenshotIds.push(reader.string());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1442,6 +1752,27 @@ export const data = $root.data = (() => {
          * @instance
          */
         PClickPathEvent.prototype.sessionId = "";
+
+        /**
+         * Encodes the specified PClickPathEvent message. Does not implicitly {@link data.PClickPathEvent.verify|verify} messages.
+         * @function encode
+         * @memberof data.PClickPathEvent
+         * @static
+         * @param {data.IPClickPathEvent} message PClickPathEvent message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        PClickPathEvent.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.type != null && Object.hasOwnProperty.call(message, "type"))
+                writer.uint32(/* id 1, wireType 0 =*/8).int32(message.type);
+            if (message.subject != null && Object.hasOwnProperty.call(message, "subject"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.subject);
+            if (message.sessionId != null && Object.hasOwnProperty.call(message, "sessionId"))
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.sessionId);
+            return writer;
+        };
 
         /**
          * Decodes a PClickPathEvent message from the specified reader or buffer.
@@ -1557,6 +1888,33 @@ export const data = $root.data = (() => {
          * @instance
          */
         ErrorContext.prototype.executionObjectSource = null;
+
+        /**
+         * Encodes the specified ErrorContext message. Does not implicitly {@link data.ErrorContext.verify|verify} messages.
+         * @function encode
+         * @memberof data.ErrorContext
+         * @static
+         * @param {data.IErrorContext} message ErrorContext message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ErrorContext.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.readableErrorMessage != null && Object.hasOwnProperty.call(message, "readableErrorMessage"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.readableErrorMessage);
+            if (message.additionalErrorMessage != null && Object.hasOwnProperty.call(message, "additionalErrorMessage"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.additionalErrorMessage);
+            if (message.stackTrace != null && Object.hasOwnProperty.call(message, "stackTrace"))
+                $root.data.StackTrace.encode(message.stackTrace, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+            if (message.errorFingerprint != null && Object.hasOwnProperty.call(message, "errorFingerprint"))
+                writer.uint32(/* id 6, wireType 2 =*/50).string(message.errorFingerprint);
+            if (message.scriptSource != null && Object.hasOwnProperty.call(message, "scriptSource"))
+                $root.data.ScriptSource.encode(message.scriptSource, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
+            if (message.executionObjectSource != null && Object.hasOwnProperty.call(message, "executionObjectSource"))
+                $root.data.ScriptSource.encode(message.executionObjectSource, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
+            return writer;
+        };
 
         /**
          * Decodes an ErrorContext message from the specified reader or buffer.
@@ -1675,6 +2033,32 @@ export const data = $root.data = (() => {
         SessionContext.prototype.sessionId = "";
 
         /**
+         * Encodes the specified SessionContext message. Does not implicitly {@link data.SessionContext.verify|verify} messages.
+         * @function encode
+         * @memberof data.SessionContext
+         * @static
+         * @param {data.ISessionContext} message SessionContext message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        SessionContext.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.contextValues != null && Object.hasOwnProperty.call(message, "contextValues"))
+                $root.data.ContextValues.encode(message.contextValues, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            if (message.sessionKey != null && Object.hasOwnProperty.call(message, "sessionKey"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.sessionKey);
+            if (message.provider != null && Object.hasOwnProperty.call(message, "provider"))
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.provider);
+            if (message.metadata != null && Object.hasOwnProperty.call(message, "metadata"))
+                for (let keys = Object.keys(message.metadata), i = 0; i < keys.length; ++i)
+                    writer.uint32(/* id 4, wireType 2 =*/34).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.metadata[keys[i]]).ldelim();
+            if (message.sessionId != null && Object.hasOwnProperty.call(message, "sessionId"))
+                writer.uint32(/* id 6, wireType 2 =*/50).string(message.sessionId);
+            return writer;
+        };
+
+        /**
          * Decodes a SessionContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.SessionContext
@@ -1786,6 +2170,27 @@ export const data = $root.data = (() => {
          * @instance
          */
         RunConfig.prototype.reportName = "";
+
+        /**
+         * Encodes the specified RunConfig message. Does not implicitly {@link data.RunConfig.verify|verify} messages.
+         * @function encode
+         * @memberof data.RunConfig
+         * @static
+         * @param {data.IRunConfig} message RunConfig message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        RunConfig.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.runcfg != null && Object.hasOwnProperty.call(message, "runcfg"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.runcfg);
+            if (message.buildInformation != null && Object.hasOwnProperty.call(message, "buildInformation"))
+                $root.data.BuildInformation.encode(message.buildInformation, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+            if (message.reportName != null && Object.hasOwnProperty.call(message, "reportName"))
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.reportName);
+            return writer;
+        };
 
         /**
          * Decodes a RunConfig message from the specified reader or buffer.
@@ -1901,6 +2306,33 @@ export const data = $root.data = (() => {
          * @instance
          */
         BuildInformation.prototype.buildTimestamp = "";
+
+        /**
+         * Encodes the specified BuildInformation message. Does not implicitly {@link data.BuildInformation.verify|verify} messages.
+         * @function encode
+         * @memberof data.BuildInformation
+         * @static
+         * @param {data.IBuildInformation} message BuildInformation message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BuildInformation.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.buildJavaVersion != null && Object.hasOwnProperty.call(message, "buildJavaVersion"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.buildJavaVersion);
+            if (message.buildOsName != null && Object.hasOwnProperty.call(message, "buildOsName"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.buildOsName);
+            if (message.buildOsVersion != null && Object.hasOwnProperty.call(message, "buildOsVersion"))
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.buildOsVersion);
+            if (message.buildUserName != null && Object.hasOwnProperty.call(message, "buildUserName"))
+                writer.uint32(/* id 4, wireType 2 =*/34).string(message.buildUserName);
+            if (message.buildVersion != null && Object.hasOwnProperty.call(message, "buildVersion"))
+                writer.uint32(/* id 5, wireType 2 =*/42).string(message.buildVersion);
+            if (message.buildTimestamp != null && Object.hasOwnProperty.call(message, "buildTimestamp"))
+                writer.uint32(/* id 6, wireType 2 =*/50).string(message.buildTimestamp);
+            return writer;
+        };
 
         /**
          * Decodes a BuildInformation message from the specified reader or buffer.
@@ -2025,6 +2457,25 @@ export const data = $root.data = (() => {
         StackTrace.prototype.additionalErrorMessage = "";
 
         /**
+         * Encodes the specified StackTrace message. Does not implicitly {@link data.StackTrace.verify|verify} messages.
+         * @function encode
+         * @memberof data.StackTrace
+         * @static
+         * @param {data.IStackTrace} message StackTrace message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        StackTrace.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.cause != null && Object.hasOwnProperty.call(message, "cause"))
+                $root.data.StackTraceCause.encode(message.cause, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            if (message.additionalErrorMessage != null && Object.hasOwnProperty.call(message, "additionalErrorMessage"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.additionalErrorMessage);
+            return writer;
+        };
+
+        /**
          * Decodes a StackTrace message from the specified reader or buffer.
          * @function decode
          * @memberof data.StackTrace
@@ -2118,6 +2569,30 @@ export const data = $root.data = (() => {
          * @instance
          */
         StackTraceCause.prototype.cause = null;
+
+        /**
+         * Encodes the specified StackTraceCause message. Does not implicitly {@link data.StackTraceCause.verify|verify} messages.
+         * @function encode
+         * @memberof data.StackTraceCause
+         * @static
+         * @param {data.IStackTraceCause} message StackTraceCause message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        StackTraceCause.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.className != null && Object.hasOwnProperty.call(message, "className"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.className);
+            if (message.message != null && Object.hasOwnProperty.call(message, "message"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.message);
+            if (message.stackTraceElements != null && message.stackTraceElements.length)
+                for (let i = 0; i < message.stackTraceElements.length; ++i)
+                    writer.uint32(/* id 3, wireType 2 =*/26).string(message.stackTraceElements[i]);
+            if (message.cause != null && Object.hasOwnProperty.call(message, "cause"))
+                $root.data.StackTraceCause.encode(message.cause, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+            return writer;
+        };
 
         /**
          * Decodes a StackTraceCause message from the specified reader or buffer.
@@ -2214,6 +2689,28 @@ export const data = $root.data = (() => {
         ScriptSource.prototype.lines = $util.emptyArray;
 
         /**
+         * Encodes the specified ScriptSource message. Does not implicitly {@link data.ScriptSource.verify|verify} messages.
+         * @function encode
+         * @memberof data.ScriptSource
+         * @static
+         * @param {data.IScriptSource} message ScriptSource message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ScriptSource.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.fileName != null && Object.hasOwnProperty.call(message, "fileName"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.fileName);
+            if (message.methodName != null && Object.hasOwnProperty.call(message, "methodName"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.methodName);
+            if (message.lines != null && message.lines.length)
+                for (let i = 0; i < message.lines.length; ++i)
+                    $root.data.ScriptSourceLine.encode(message.lines[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+            return writer;
+        };
+
+        /**
          * Decodes a ScriptSource message from the specified reader or buffer.
          * @function decode
          * @memberof data.ScriptSource
@@ -2302,6 +2799,27 @@ export const data = $root.data = (() => {
          * @instance
          */
         ScriptSourceLine.prototype.mark = false;
+
+        /**
+         * Encodes the specified ScriptSourceLine message. Does not implicitly {@link data.ScriptSourceLine.verify|verify} messages.
+         * @function encode
+         * @memberof data.ScriptSourceLine
+         * @static
+         * @param {data.IScriptSourceLine} message ScriptSourceLine message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ScriptSourceLine.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.line != null && Object.hasOwnProperty.call(message, "line"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.line);
+            if (message.lineNumber != null && Object.hasOwnProperty.call(message, "lineNumber"))
+                writer.uint32(/* id 2, wireType 0 =*/16).int32(message.lineNumber);
+            if (message.mark != null && Object.hasOwnProperty.call(message, "mark"))
+                writer.uint32(/* id 3, wireType 0 =*/24).bool(message.mark);
+            return writer;
+        };
 
         /**
          * Decodes a ScriptSourceLine message from the specified reader or buffer.
@@ -2474,6 +2992,46 @@ export const data = $root.data = (() => {
         File.prototype.name = "";
 
         /**
+         * Encodes the specified File message. Does not implicitly {@link data.File.verify|verify} messages.
+         * @function encode
+         * @memberof data.File
+         * @static
+         * @param {data.IFile} message File message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        File.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.id != null && Object.hasOwnProperty.call(message, "id"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+            if (message.size != null && Object.hasOwnProperty.call(message, "size"))
+                writer.uint32(/* id 2, wireType 0 =*/16).int64(message.size);
+            if (message.mimetype != null && Object.hasOwnProperty.call(message, "mimetype"))
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.mimetype);
+            if (message.relativePath != null && Object.hasOwnProperty.call(message, "relativePath"))
+                writer.uint32(/* id 4, wireType 2 =*/34).string(message.relativePath);
+            if (message.createdTimestamp != null && Object.hasOwnProperty.call(message, "createdTimestamp"))
+                writer.uint32(/* id 5, wireType 0 =*/40).int64(message.createdTimestamp);
+            if (message.sha1Checksum != null && Object.hasOwnProperty.call(message, "sha1Checksum"))
+                writer.uint32(/* id 6, wireType 2 =*/50).bytes(message.sha1Checksum);
+            if (message.meta != null && Object.hasOwnProperty.call(message, "meta"))
+                for (let keys = Object.keys(message.meta), i = 0; i < keys.length; ++i)
+                    writer.uint32(/* id 7, wireType 2 =*/58).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.meta[keys[i]]).ldelim();
+            if (message.lastModified != null && Object.hasOwnProperty.call(message, "lastModified"))
+                writer.uint32(/* id 9, wireType 0 =*/72).int64(message.lastModified);
+            if (message.projectId != null && Object.hasOwnProperty.call(message, "projectId"))
+                writer.uint32(/* id 10, wireType 2 =*/82).string(message.projectId);
+            if (message.jobId != null && Object.hasOwnProperty.call(message, "jobId"))
+                writer.uint32(/* id 11, wireType 2 =*/90).string(message.jobId);
+            if (message.isDirectory != null && Object.hasOwnProperty.call(message, "isDirectory"))
+                writer.uint32(/* id 12, wireType 0 =*/96).bool(message.isDirectory);
+            if (message.name != null && Object.hasOwnProperty.call(message, "name"))
+                writer.uint32(/* id 13, wireType 2 =*/106).string(message.name);
+            return writer;
+        };
+
+        /**
          * Decodes a File message from the specified reader or buffer.
          * @function decode
          * @memberof data.File
@@ -2623,7 +3181,106 @@ export const data = $root.data = (() => {
         return values;
     })();
 
+    data.ClassContextAggregate = (function() {
+
+        /**
+         * Properties of a ClassContextAggregate.
+         * @memberof data
+         * @interface IClassContextAggregate
+         * @property {data.IClassContext|null} [classContext] ClassContextAggregate classContext
+         * @property {Array.<data.IMethodContext>|null} [methodContexts] ClassContextAggregate methodContexts
+         */
+
+        /**
+         * Constructs a new ClassContextAggregate.
+         * @memberof data
+         * @classdesc Represents a ClassContextAggregate.
+         * @implements IClassContextAggregate
+         * @constructor
+         * @param {data.IClassContextAggregate=} [properties] Properties to set
+         */
+        function ClassContextAggregate(properties) {
+            this.methodContexts = [];
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * ClassContextAggregate classContext.
+         * @member {data.IClassContext|null|undefined} classContext
+         * @memberof data.ClassContextAggregate
+         * @instance
+         */
+        ClassContextAggregate.prototype.classContext = null;
+
+        /**
+         * ClassContextAggregate methodContexts.
+         * @member {Array.<data.IMethodContext>} methodContexts
+         * @memberof data.ClassContextAggregate
+         * @instance
+         */
+        ClassContextAggregate.prototype.methodContexts = $util.emptyArray;
+
+        /**
+         * Encodes the specified ClassContextAggregate message. Does not implicitly {@link data.ClassContextAggregate.verify|verify} messages.
+         * @function encode
+         * @memberof data.ClassContextAggregate
+         * @static
+         * @param {data.IClassContextAggregate} message ClassContextAggregate message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ClassContextAggregate.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.classContext != null && Object.hasOwnProperty.call(message, "classContext"))
+                $root.data.ClassContext.encode(message.classContext, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            if (message.methodContexts != null && message.methodContexts.length)
+                for (let i = 0; i < message.methodContexts.length; ++i)
+                    $root.data.MethodContext.encode(message.methodContexts[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Decodes a ClassContextAggregate message from the specified reader or buffer.
+         * @function decode
+         * @memberof data.ClassContextAggregate
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {data.ClassContextAggregate} ClassContextAggregate
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ClassContextAggregate.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.data.ClassContextAggregate();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.classContext = $root.data.ClassContext.decode(reader, reader.uint32());
+                    break;
+                case 2:
+                    if (!(message.methodContexts && message.methodContexts.length))
+                        message.methodContexts = [];
+                    message.methodContexts.push($root.data.MethodContext.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        return ClassContextAggregate;
+    })();
+
     return data;
 })();
 
-module.exports = $root;
+export { $root as default };

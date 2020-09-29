@@ -4,8 +4,8 @@ import {data} from "services/report-model";
 import ExecutionContext = data.ExecutionContext;
 import SuiteContext = data.SuiteContext;
 import TestContext = data.TestContext;
-import ClassContext = data.ClassContext;
 import MethodContext = data.MethodContext;
+import ClassContextAggregate = data.ClassContextAggregate;
 
 
 /**
@@ -24,13 +24,14 @@ export class DataBackendService {
     this._httpClient.configure(config => {
       config
         .useStandardConfiguration()
-        .rejectErrorResponses()
-        .withDefaults({
-          "headers": {
-            // "content-type": "application/octet-stream",
-            "accept": "*/*"
-          }
-        });
+        // .rejectErrorResponses()
+        // .withDefaults({
+        //   "headers": {
+        //     // "content-type": "application/octet-stream",
+        //     "accept": "*/*"
+        //   }
+        // });
+      ;
     });
   }
 
@@ -53,7 +54,6 @@ export class DataBackendService {
       })
   }
 
-
   getSuite(apath : string): Promise<SuiteContext> {
     return this.get("model/suites/"+apath)
       .then(response => {
@@ -61,7 +61,6 @@ export class DataBackendService {
       })
   }
 
-  // @ts-ignore
   getTest(apath : string): Promise<TestContext> {
     return this.get("model/tests/"+apath)
       .then(response => {
@@ -69,15 +68,13 @@ export class DataBackendService {
       })
   }
 
-  // @ts-ignore
-  getClass(apath : string): Promise<ClassContext> {
-    return this.get("model/classes/"+apath)
+  getClass(id : string): Promise<ClassContextAggregate> {
+    return this.get("model/classes/"+id)
       .then(response => {
-        return this.responseToProtobufJSMessage(response, ClassContext)
+        return this.responseToProtobufJSMessage(response, ClassContextAggregate)
       })
   }
 
-  // @ts-ignore
   getMethod(apath : string): Promise<MethodContext> {
     return this.get("model/methods/"+apath)
       .then(response => {

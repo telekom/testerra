@@ -213,6 +213,11 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
                 // Finally pass the web element to the consumer
                 consumer.accept(webElement);
 
+                // We have to switch back to the default content at the end
+                if (guiElementData.isFrame()) {
+                    webDriver.switchTo().defaultContent();
+                }
+
                 logTimings(start, Timings.getFindCounter());
             } else {
                 Assertion assertion = Testerra.injector.getInstance(Assertion.class);

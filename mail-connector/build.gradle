@@ -1,6 +1,8 @@
+def mailVersion = '1.6.5'
+
 dependencies {
-    compile group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
-    compile group: 'jakarta.mail', name: 'jakarta.mail-api', version: '1.6.5'
+    compile "com.sun.mail:jakarta.mail:${mailVersion}"
+    compile "jakarta.mail:jakarta.mail-api:${mailVersion}"
     compile 'org.bouncycastle:bcmail-jdk15on:1.52'
     compile 'net.iharder:base64:2.3.8'
     compile core

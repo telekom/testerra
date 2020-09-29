@@ -5,25 +5,20 @@ include::../properties/property-attributes.adoc[]
 There are three ways for setting up a proxy for your test run environment.
 
 - System proxy settings for the build environment (Maven, Gradle), TestNG, JVM and Selenium
-- Testerra proxy settings for TestNG, JVM and Selenium only
 - Browser proxy settings for the SUT, which is done by capabilities as described here <<Browser capabilities,Proxy setup>>
 
-== System proxy (recommended)
-
+== Command line (recommended)
 To setup a proxy for the whole system, including the build environment (Maven, Gradle), the JVM and Testerra, the recommended way is to pass it by command line arguments like
 [source]
 ----
 gradle test -Dhttps.proxyHost=your-proxy-host.com -Dhttps.proxyPort=8080
 ----
-IMPORTANT: Setting the System proxy will override the Testerra proxy settings.
 
-== Testerra proxy
+== Property file
 
-If you want to setup a proxy for Testerra, including TestNG, JVM and Selenium, just add `proxysettings.properties` to your resource bundle at `src/test/resources` with the following content
+You can also put your proxy settings to the system <<PropertyManager, Property files>> with the following content
 
-For example Testerra requires this setting to connect to a Selenium grid, if you are in a corporate network.
-
-.Example of proxysettings.properties
+.Example of system.properties
 [source,properties]
 ----
 https.proxyHost=your-proxy-host.com
@@ -37,13 +32,7 @@ http.proxyPort=8080
 http.proxyUser=
 http.proxyPassword=
 ----
-The path of this file be changed by `{proxy_settings_file}` and will be automatically loaded during runtime when `{proxy_settings_load}` is `true` with the following message
-----
-common.TesterraCommons - Load proxy settings: /path/to/your/proxysettings.properties
-----
-
-IMPORTANT: Setting up the Testerra proxy will not setup a proxy for the build environment nor a browser.
 
 == Access the system proxy URL
 
-Both system and Testerra proxy can be accessed by <<Proxy Utilities>>
+The system proxy can be accessed by <<Proxy Utilities>>

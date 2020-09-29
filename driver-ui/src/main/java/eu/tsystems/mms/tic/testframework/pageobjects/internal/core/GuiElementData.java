@@ -27,13 +27,12 @@ import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import java.util.WeakHashMap;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.WeakHashMap;
 
 public class GuiElementData {
     public static final WeakHashMap<WebElement, GuiElement> WEBELEMENT_MAP = new WeakHashMap<>();
@@ -47,6 +46,7 @@ public class GuiElementData {
 
     public final WebDriver webDriver;
     public String name;
+    @Deprecated
     public int timeoutInSeconds;
     public final TimerWrapper timerWrapper;
     public WebElement webElement;
@@ -109,10 +109,18 @@ public class GuiElementData {
         return LoggerFactory.getLogger("GuiElement" + (name == null ? "" : " " + name));
     }
 
+    /**
+     * @deprecated See {@link GuiElement#getTimeoutInSeconds()} for description
+     */
+    @Deprecated
     public int getTimeoutInSeconds() {
         return timeoutInSeconds;
     }
 
+    /**
+     * @deprecated See {@link GuiElement#setTimeoutInSeconds(int)} for description
+     */
+    @Deprecated
     public void setTimeoutInSeconds(int timeoutInSeconds) {
         this.timeoutInSeconds = timeoutInSeconds;
         timerWrapper.setTimeoutInSeconds(timeoutInSeconds);

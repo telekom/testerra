@@ -2,7 +2,7 @@
 
 include::../properties/property-attributes.adoc[]
 
-Using a Seleniumd Grid based on https://github.com/aerokube/selenoid[Selenoid] this module provides access to videos and VNC streams.
+Using a Selenium Grid based on https://github.com/aerokube/selenoid[Selenoid] this module provides access to videos and VNC streams.
 
 The module will register automatically by using Testera <<Hooks>>.
 

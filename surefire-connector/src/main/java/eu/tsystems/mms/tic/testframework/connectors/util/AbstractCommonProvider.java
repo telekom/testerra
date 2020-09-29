@@ -21,17 +21,16 @@
  */
 package eu.tsystems.mms.tic.testframework.connectors.util;
 
-import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.MapUtils;
+import java.util.LinkedList;
+import java.util.Properties;
 import org.apache.maven.surefire.providerapi.AbstractProvider;
 import org.apache.maven.surefire.providerapi.ProviderParameters;
 import org.apache.maven.surefire.report.ReporterFactory;
 import org.apache.maven.surefire.suite.RunResult;
 import org.apache.maven.surefire.testset.TestRequest;
 import org.apache.maven.surefire.testset.TestSetFailedException;
-import java.util.LinkedList;
-import java.util.Properties;
 
 /**
  * Abstract class encapsulating common tasks for surefire providers of testerra.
@@ -39,10 +38,6 @@ import java.util.Properties;
  * @author sepr
  */
 public abstract class AbstractCommonProvider extends AbstractProvider implements Loggable {
-
-    static {
-        TesterraCommons.init();
-    }
 
     /**
      * The class loader used to find the test classes.

@@ -189,8 +189,7 @@ public final class TesterraProperties {
     public static final String WEBDRIVER_TIMEOUT_SECONDS_PAGELOAD = "webdriver.timeouts.seconds.pageload";
     public static final String WEBDRIVER_TIMEOUT_SECONDS_SCRIPT = "webdriver.timeouts.seconds.script";
 
-    public static final String PROXY_SETTINGS_LOAD = "tt.proxy.settings.load";
-    public static final String PROXY_SETTINGS_FILE = "tt.proxy.settings.file";
+    public static final String SYSTEM_SETTINGS_FILE = "tt.system.settings.file";
 
     public static final String LIST_TESTS = "tt.list.tests";
 

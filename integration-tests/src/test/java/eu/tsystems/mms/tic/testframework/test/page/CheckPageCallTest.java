@@ -35,6 +35,7 @@ import org.testng.annotations.Test;
  *
  * Test that checkpage is not executed when called in the constructor of a super page
  */
+@Deprecated
 public class CheckPageCallTest extends AbstractTestSitesTest {
 
     /**

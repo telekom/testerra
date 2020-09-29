@@ -25,16 +25,16 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
-import org.apache.maven.surefire.testset.TestRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.stream.Collectors;
+import org.apache.maven.surefire.testset.TestRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A helper class containing methods for Synchronizer.
@@ -191,15 +191,8 @@ public final class SyncUtils {
     }
 
     public static List<File> getVideoFiles() {
-
         final List<Video> videoList = TestEvidenceCollector.collectVideos();
-        final List<File> result = new ArrayList<>();
-
-        for (final Video video : videoList) {
-            result.add(new File(video.filename));
-        }
-
-        return result;
+        return videoList.stream().map(Video::getVideoFile).collect(Collectors.toList());
     }
 
     /**
@@ -212,13 +205,7 @@ public final class SyncUtils {
     public static List<File> getScreenshotFiles() {
 
         final List<Screenshot> screenshotList = TestEvidenceCollector.collectScreenshots();
-        final List<File> fileList = new ArrayList<>();
-
-        for (Screenshot screenshot : screenshotList) {
-            fileList.add(new File(screenshot.filename));
-        }
-
-        return fileList;
+        return screenshotList.stream().map(Screenshot::getScreenshotFile).collect(Collectors.toList());
     }
 
 }

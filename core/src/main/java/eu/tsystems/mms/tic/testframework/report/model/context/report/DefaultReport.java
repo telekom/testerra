@@ -29,8 +29,7 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.stream.Stream;
 
 public class DefaultReport implements Report, Loggable {
 
@@ -53,12 +52,13 @@ public class DefaultReport implements Report, Loggable {
     }
 
 
-    private void addFile(File sourceFile, File directory, FileMode fileMode) {
+    private File addFile(File sourceFile, File directory, FileMode fileMode) {
         try {
             switch (fileMode) {
                 case COPY:
                     FileUtils.copyFileToDirectory(sourceFile, directory, true);
                     break;
+                default:
                 case MOVE:
                     FileUtils.moveFileToDirectory(sourceFile, directory, true);
                     break;
@@ -66,6 +66,7 @@ public class DefaultReport implements Report, Loggable {
         } catch (IOException e) {
             log().error(e.getMessage());
         }
+        return new File(directory, sourceFile.getName());
     }
 
     public File finalizeReport() {
@@ -87,28 +88,25 @@ public class DefaultReport implements Report, Loggable {
         return finalReportDirectory;
     }
 
-    private void addScreenshot(Screenshot screenshot) {
-        List<Screenshot> screenshots = new ArrayList<>();
-        screenshots.add(screenshot);
-
+    private void addScreenshotToMethodContext(Screenshot screenshot) {
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-        methodContext.addScreenshots(screenshots);
+        methodContext.addScreenshots(Stream.of(screenshot));
     }
 
     private void addScreenshotFiles(Screenshot screenshot, FileMode fileMode) {
         if (screenshot.getScreenshotFile() != null) {
-            addFile(screenshot.getScreenshotFile(), SCREENSHOTS_DIRECTORY, fileMode);
+            screenshot.setFile(addFile(screenshot.getScreenshotFile(), SCREENSHOTS_DIRECTORY, fileMode));
         }
 
         if (screenshot.getPageSourceFile() != null) {
-            addFile(screenshot.getPageSourceFile(), SCREENSHOTS_DIRECTORY, fileMode);
+            screenshot.setPageSourceFile(addFile(screenshot.getPageSourceFile(), SCREENSHOTS_DIRECTORY, fileMode));
         }
     }
 
     @Override
     public Report addScreenshot(Screenshot screenshot, FileMode fileMode) {
         addScreenshotFiles(screenshot, fileMode);
-        addScreenshot(screenshot);
+        addScreenshotToMethodContext(screenshot);
         return this;
     }
 
@@ -121,7 +119,7 @@ public class DefaultReport implements Report, Loggable {
 
     @Override
     public Report addVideo(Video video, FileMode fileMode) {
-        addFile(video.getVideoFile(), VIDEO_DIRECTORY, fileMode);
+        video.setFile(addFile(video.getVideoFile(), VIDEO_DIRECTORY, fileMode));
         return this;
     }
 

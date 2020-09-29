@@ -51,8 +51,6 @@ public class Screenshot extends Attachment implements Loggable {
         }
     }
 
-    @Deprecated
-    public String sourceFilename;
     private File pageSourceFile;
 
     public Screenshot() {
@@ -82,10 +80,9 @@ public class Screenshot extends Attachment implements Loggable {
         return getOrCreateTempFile(".png");
     }
 
-    private Screenshot setPageSourceFile(File file) {
-        sourceFilename = file.getName();
+    public Screenshot setPageSourceFile(File file) {
         pageSourceFile = file;
-        meta().put(Meta.SOURCE_FILE_NAME.toString(), sourceFilename);
+        meta().put(Meta.SOURCE_FILE_NAME.toString(), file.getName());
         return this;
     }
 
@@ -100,14 +97,5 @@ public class Screenshot extends Attachment implements Loggable {
             }
         }
         return pageSourceFile;
-    }
-
-    @Override
-    public String toString() {
-        return "Screenshot{" +
-                "filename='" + filename + '\'' +
-                ", sourceFilename='" + sourceFilename + '\'' +
-                ", meta=" + meta() +
-                '}';
     }
 }

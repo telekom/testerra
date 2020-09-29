@@ -34,6 +34,7 @@ import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.lang.annotation.Annotation;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Stream;
 import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
@@ -91,12 +92,16 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return dependsOnMethodContexts;
     }
 
-    public final List<Video> videos = new LinkedList<>();
-    /**
-     * @deprecated This should not be public
-     */
-    @Deprecated
-    public final List<Screenshot> screenshots = new LinkedList<>();
+    public Stream<Screenshot> getAllScreenshotsFromTestSteps() {
+        return this.testStepController.getTestSteps().stream()
+                .flatMap(testStep -> testStep.getTestStepActions().stream())
+                .flatMap(testStepAction -> testStepAction.getTestStepActionEntries().stream())
+                .map(testStepActionEntry -> testStepActionEntry.screenshot);
+
+    }
+
+    private final List<Video> videos = new LinkedList<>();
+
     public final List<CustomContext> customContexts = new LinkedList<>();
 
     private ErrorContext errorContext;
@@ -331,12 +336,21 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     /**
      * Publish the screenshots to the report into the current errorContext.
      */
-    public void addScreenshots(List<Screenshot> screenshots) {
+    public MethodContext addScreenshots(Stream<Screenshot> screenshots) {
         TestStepAction currentTestStepAction = steps().getCurrentTestStep().getCurrentTestStepAction();
-        screenshots.stream().filter(s -> !s.hasErrorContext()).forEach(screenshot -> {
-            screenshot.setErrorContextId(this.id);
+        screenshots.forEach(screenshot -> {
+            if (!screenshot.hasErrorContextId()) {
+                screenshot.setErrorContextId(this.errorContext.id);
+            }
             currentTestStepAction.addScreenshot(screenshot);
         });
+        return this;
+    }
+
+    public MethodContext addVideo(Video video) {
+        if (!video.hasErrorContextId()) video.setErrorContextId(this.errorContext.id);
+        this.videos.add(video);
+        return this;
     }
 
     public List<Video> getVideos() {

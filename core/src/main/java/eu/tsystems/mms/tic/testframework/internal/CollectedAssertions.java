@@ -53,10 +53,7 @@ public final class CollectedAssertions implements AssertionsCollector {
 
         // take scrennshots
         List<Screenshot> screenshots = TestEvidenceCollector.collectScreenshots();
-        if (screenshots != null) {
-            screenshots.forEach(s -> s.errorContextId = assertionInfo.id);
-            currentMethodContext.screenshots.addAll(screenshots);
-        }
+        currentMethodContext.addScreenshots(screenshots.stream().peek(screenshot -> screenshot.setErrorContextId(assertionInfo.id)));
 
         // get custom error contexts in queue
         List<CustomContext> customContexts = ExecutionContextController.getCurrentMethodContext().customContexts;

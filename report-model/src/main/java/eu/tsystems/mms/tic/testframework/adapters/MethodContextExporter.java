@@ -37,6 +37,7 @@ import eu.tsystems.mms.tic.testframework.report.model.ScriptSource;
 import eu.tsystems.mms.tic.testframework.report.model.ScriptSourceLine;
 import eu.tsystems.mms.tic.testframework.report.model.StackTrace;
 import eu.tsystems.mms.tic.testframework.report.model.StackTraceCause;
+import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
 import java.lang.annotation.Annotation;
@@ -44,6 +45,7 @@ import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 public class MethodContextExporter extends AbstractContextExporter {
     private Report report = Testerra.injector.getInstance(Report.class);
@@ -122,12 +124,10 @@ public class MethodContextExporter extends AbstractContextExporter {
          */
         final java.io.File targetVideoDir = report.getFinalReportDirectory(Report.VIDEO_FOLDER_NAME);
         final java.io.File targetScreenshotDir = report.getFinalReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
-        final java.io.File currentVideoDir = report.getFinalReportDirectory(Report.VIDEO_FOLDER_NAME);
-        final java.io.File currentScreenshotDir = report.getFinalReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
 
-        forEach(methodContext.videos, video -> {
-            final java.io.File targetVideoFile = new java.io.File(targetVideoDir, video.filename);
-            final java.io.File currentVideoFile = new java.io.File(currentVideoDir, video.filename);
+        forEach(methodContext.getVideos(), video -> {
+            final java.io.File currentVideoFile = video.getVideoFile();
+            final java.io.File targetVideoFile = new java.io.File(targetVideoDir, currentVideoFile.getName());
             final String mappedPathVideoPath = mapArtifactsPath(targetVideoFile.getAbsolutePath());
 
             final String videoId = IDUtils.getB64encXID();
@@ -144,15 +144,15 @@ public class MethodContextExporter extends AbstractContextExporter {
             fileConsumer.accept(fileBuilderVideo);
         });
 
-        forEach(methodContext.screenshots, screenshot -> {
+        Stream<Screenshot> allScreenshotsFromTestSteps = methodContext.getAllScreenshotsFromTestSteps();
+        allScreenshotsFromTestSteps.forEach(screenshot -> {
             // build screenshot and sources files
-            final java.io.File targetScreenshotFile = new java.io.File(targetScreenshotDir, screenshot.filename);
-            final java.io.File currentScreenshotFile = new java.io.File(currentScreenshotDir, screenshot.filename);
+            final java.io.File currentScreenshotFile = screenshot.getScreenshotFile();
+            final java.io.File targetScreenshotFile = new java.io.File(targetScreenshotDir, currentScreenshotFile.getName());
             final String mappedScreenshotPath = mapArtifactsPath(targetScreenshotFile.getAbsolutePath());
 
-            //final java.io.File realSourceFile = new java.io.File(Report.SCREENSHOTS_DIRECTORY, screenshot.sourceFilename);
-            final java.io.File targetSourceFile = new java.io.File(targetScreenshotDir, screenshot.filename);
-            final java.io.File currentSourceFile = new java.io.File(currentScreenshotDir, screenshot.filename);
+            final java.io.File currentSourceFile = screenshot.getPageSourceFile();
+            final java.io.File targetSourceFile = new java.io.File(targetScreenshotDir, currentSourceFile.getName());
             final String mappedSourcePath = mapArtifactsPath(targetSourceFile.getAbsolutePath());
 
             final String screenshotId = IDUtils.getB64encXID();
@@ -293,7 +293,7 @@ public class MethodContextExporter extends AbstractContextExporter {
                 testStepBuilder.addClickpathEvents(clickPathBuilder.build());
             }
             if (testStepActionEntry.screenshot != null) {
-                testStepBuilder.addScreenshotNames(testStepActionEntry.screenshot.filename);
+                testStepBuilder.addScreenshotNames(testStepActionEntry.screenshot.getScreenshotFile().getName());
             }
         });
         return testStepBuilder;

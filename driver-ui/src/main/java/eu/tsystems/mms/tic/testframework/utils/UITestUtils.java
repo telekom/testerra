@@ -299,20 +299,14 @@ public class UITestUtils {
             LOGGER.info("Taking screenshot from desktop");
             final ScreenLocation upperLeftCorner = screenRegion.getUpperLeftCorner();
             final ScreenLocation lowerRightCorner = screenRegion.getLowerRightCorner();
-            final BufferedImage screenshot = screenRegion.getScreen()
+            final BufferedImage screenshotImage = screenRegion.getScreen()
                     .getScreenshot(upperLeftCorner.getX(), upperLeftCorner.getY(), lowerRightCorner.getX(), lowerRightCorner.getY());
 
             final String filename = "Desktop_" + FILES_DATE_FORMAT.format(new Date()) + ".png";
+            Screenshot screenshot = new Screenshot(filename);
             Report report = Testerra.injector.getInstance(Report.class);
-            final File targetFile = new File(report.getReportDirectory(Report.SCREENSHOTS_FOLDER_NAME), filename);
-            saveBufferedImage(screenshot, targetFile);
-
-            final MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-            if (methodContext != null) {
-                Screenshot screenshot1 = new Screenshot();
-                screenshot1.filename = filename;
-                methodContext.screenshots.add(screenshot1);
-            }
+            saveBufferedImage(screenshotImage, screenshot.getScreenshotFile());
+            report.addScreenshot(screenshot, Report.FileMode.MOVE);
         } else {
             LOGGER.error("Could not take native screenshot, screen region is missing");
         }
@@ -342,11 +336,11 @@ public class UITestUtils {
 
         if (methodContext != null) {
             // which means we have to publish the screenshots
-            if (explicitly) {
-                screenshots.forEach(screenshot -> screenshot.errorContextId = methodContext.id);
-            }
+//            if (explicitly) {
+//                screenshots.stream().peek(screenshot -> screenshot.setErrorContextId(methodContext.id));
+//            }
 
-            methodContext.addScreenshots(screenshots);
+            methodContext.addScreenshots(screenshots.stream());
         }
 
         return screenshots;

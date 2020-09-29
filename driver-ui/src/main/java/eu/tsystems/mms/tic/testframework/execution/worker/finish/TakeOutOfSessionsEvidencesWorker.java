@@ -46,8 +46,9 @@ public class TakeOutOfSessionsEvidencesWorker extends AbstractEvidencesWorker im
             List<Video> videos = TestEvidenceCollector.collectVideos();
             log().debug("Evidence Videos: " + videos);
             if (videos != null) {
-                videos.forEach(v -> v.errorContextId = event.getMethodContext().id);
-                event.getMethodContext().videos.addAll(videos);
+                videos.forEach(v -> {
+                    event.getMethodContext().addVideo(v);
+                });
             }
         }
     }

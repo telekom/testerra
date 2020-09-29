@@ -10,13 +10,7 @@ public class Attachment implements Loggable {
     private static HashMap<String, Integer> counter = new HashMap<>();
     private String tmpName;
     private File file;
-    @Deprecated
-    public String filename;
-    /*
-    Refers to the errorContext the screenshot belongs to.
-     */
-    @Deprecated
-    public String errorContextId;
+    private String errorContextId;
     private Map<String, String> meta;
 
     /**
@@ -49,7 +43,6 @@ public class Attachment implements Loggable {
     }
 
     public Attachment setFile(File file) {
-        filename = file.getName();
         this.file = file;
         return this;
     }
@@ -63,7 +56,7 @@ public class Attachment implements Loggable {
         return this.errorContextId;
     }
 
-    public boolean hasErrorContext() {
+    public boolean hasErrorContextId() {
         return this.errorContextId != null;
     }
 
@@ -72,5 +65,13 @@ public class Attachment implements Loggable {
             meta = new HashMap<>();
         }
         return meta;
+    }
+
+    @Override
+    public String toString() {
+        return "Attachment{" +
+                "file=" + file +
+                ", meta=" + meta +
+                '}';
     }
 }

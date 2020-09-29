@@ -34,13 +34,4 @@ public class Video extends Attachment {
     public File getVideoFile() {
         return getOrCreateTempFile(".mp4");
     }
-
-    @Override
-    public String toString() {
-        return "Video{" +
-                "filename='" + filename + '\'' +
-                ", infos=" + meta() +
-                ", errorContextId='" + errorContextId + '\'' +
-                '}';
-    }
 }

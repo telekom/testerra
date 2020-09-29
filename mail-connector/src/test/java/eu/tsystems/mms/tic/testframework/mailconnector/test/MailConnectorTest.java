@@ -25,8 +25,10 @@ import com.icegreen.greenmail.util.DummySSLSocketFactory;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetupTest;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.mailconnector.imap.ImapMailConnector;
 import eu.tsystems.mms.tic.testframework.mailconnector.pop3.POP3MailConnector;
 import eu.tsystems.mms.tic.testframework.mailconnector.smtp.SMTPMailConnector;
+import eu.tsystems.mms.tic.testframework.mailconnector.util.AbstractInboxConnector;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.Email;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.MailUtils;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
@@ -41,11 +43,14 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import javax.mail.Address;
+import javax.mail.Folder;
+import javax.mail.Message;
 import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Part;
 import javax.mail.Session;
+import javax.mail.Store;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
@@ -132,6 +137,7 @@ public class MailConnectorTest extends TesterraTest {
      * POP3MailConnector
      */
     private POP3MailConnector pop3; // Mail connector using the POP3 protocol
+    private ImapMailConnector imap; // Mail connector using the IMAP protocol
 
     private GreenMail mailServerAll; // Mail Server for Smtp and Pop3 including SSL
 
@@ -147,9 +153,13 @@ public class MailConnectorTest extends TesterraTest {
     public void clearMailBox(Method method) {
 
         pop3.deleteAllMessages();
+        imap.deleteAllMessages();
 
-        final boolean inboxEmpty = (pop3.getMessageCount() == 0);
-        Assert.assertTrue(inboxEmpty, "Mail box is empty");
+        final boolean inboxPop3Empty = (pop3.getMessageCount() == 0);
+        final boolean inboxImapEmpty = (imap.getMessageCount() == 0);
+
+        Assert.assertTrue(inboxPop3Empty, "POP3 Mail box is empty");
+        Assert.assertTrue(inboxImapEmpty, "Imap Mail box is empty");
     }
 
     @AfterClass
@@ -171,6 +181,7 @@ public class MailConnectorTest extends TesterraTest {
         mailServerAll.start();
 
         pop3 = new POP3MailConnector();
+        imap = new ImapMailConnector();
         smtp = new SMTPMailConnector();
 
         session = smtp.getSession();
@@ -538,6 +549,33 @@ public class MailConnectorTest extends TesterraTest {
         Assert.assertTrue(inboxEmpty, "Mail box is empty");
     }
 
+    @Test
+    public void testT13_moveMessage() throws MessagingException {
+
+        final String targetFolder = "MOVED";
+        final String mailSubject = "testT12_moveMessage";
+
+        // send Mail
+        final MimeMessage msg = this.createDefaultMessage(smtp.getSession(), mailSubject);
+        smtp.sendMessage(msg);
+
+        // verify receive
+        final Email receivedMsg = waitForMessage(mailSubject, imap);
+
+        // move Mail
+        final int amountOfMovedMessages = imap.moveMessage(targetFolder, new SubjectTerm(mailSubject));
+
+        // moved exactly one mail
+        Assert.assertEquals(amountOfMovedMessages, 1, "Mail moved");
+
+        final Email movedMessage = waitForMessage(new SubjectTerm(mailSubject), imap, targetFolder);
+
+        final boolean areContentsEqual = MailUtils.compareSentAndReceivedEmailContents(receivedMsg.getMessage(), movedMessage);
+        Assert.assertTrue(areContentsEqual, ERR_CONTENT_DIFFERS);
+
+        deleteMessage(receivedMsg, imap, targetFolder);
+    }
+
     private void sendAndWaitForMessageWithoutAttachement(final String testname,
                                                          final SearchTerm searchTerm) throws MessagingException, IOException {
 
@@ -597,7 +635,13 @@ public class MailConnectorTest extends TesterraTest {
     private Email waitForMessage(String subject) throws AssertionError {
 
         final SearchTerm searchTerm = new SubjectTerm(subject);
-        return waitForMessage(searchTerm);
+        return waitForMessage(searchTerm, pop3);
+    }
+
+    private Email waitForMessage(final String subject, final AbstractInboxConnector abstractInboxConnector) throws AssertionError {
+
+        final SearchTerm searchTerm = new SubjectTerm(subject);
+        return waitForMessage(searchTerm, abstractInboxConnector);
     }
 
     /**
@@ -608,12 +652,15 @@ public class MailConnectorTest extends TesterraTest {
      * @throws AssertionError in case no message was received at all
      */
     private Email waitForMessage(final SearchTerm searchTerm) throws AssertionError {
+       return waitForMessage(searchTerm, pop3);
+    }
 
+    private Email waitForMessage(final SearchTerm searchTerm, final AbstractInboxConnector abstractInboxConnector, final String folderName) throws AssertionError {
         Email receivedMsg = null;
 
         // TEST - Fail, if no message was received.
         try {
-            receivedMsg = pop3.waitForMails(searchTerm).get(0);
+            receivedMsg = abstractInboxConnector.waitForMails(searchTerm, folderName).get(0);
         } catch (Exception e) {
             Assert.fail(ERR_NO_MSG_RECEIVED);
         }
@@ -621,14 +668,18 @@ public class MailConnectorTest extends TesterraTest {
         return receivedMsg;
     }
 
+    private Email waitForMessage(final SearchTerm searchTerm, final AbstractInboxConnector abstractInboxConnector) throws AssertionError {
+        return waitForMessage(searchTerm, abstractInboxConnector, abstractInboxConnector.getInboxFolder());
+    }
+
     /**
      * Clean up method which deletes the message, which is passed as first parameter.
      *
      * @param msg          the TesterraMail-message to delete
-     * @param pop3Instance mailclient to use.
+     * @param abstractInboxConnector mailclient to use.
      * @throws AssertionError if the inbox is not empty after deleting the message
      */
-    private void deleteMessage(final Email msg, final POP3MailConnector pop3Instance) throws AssertionError, AddressException {
+    private void deleteMessage(final Email msg, final AbstractInboxConnector abstractInboxConnector) throws AssertionError, AddressException {
 
         final String recipient = msg.getRecipients().get(0);
         final String subject = msg.getSubject();
@@ -637,9 +688,23 @@ public class MailConnectorTest extends TesterraTest {
                 new SubjectTerm(subject),
                 new RecipientTerm(RecipientType.TO, new InternetAddress(recipient)));
 
-        pop3Instance.deleteMessage(searchTerm);
+        abstractInboxConnector.deleteMessage(searchTerm);
 
-        final boolean inboxEmpty = (pop3Instance.getMessageCount() == 0);
+        final boolean inboxEmpty = (abstractInboxConnector.getMessageCount() == 0);
+        Assert.assertTrue(inboxEmpty, "Mail box is empty");
+    }
+
+    private void deleteMessage(final Email msg, final AbstractInboxConnector abstractInboxConnector, final String folderName) throws AssertionError, AddressException {
+        final String recipient = msg.getRecipients().get(0);
+        final String subject = msg.getSubject();
+
+        final SearchTerm searchTerm = new AndTerm(
+                new SubjectTerm(subject),
+                new RecipientTerm(RecipientType.TO, new InternetAddress(recipient)));
+
+        abstractInboxConnector.deleteMessage(searchTerm, folderName);
+
+        final boolean inboxEmpty = (abstractInboxConnector.getMessageCount() == 0);
         Assert.assertTrue(inboxEmpty, "Mail box is empty");
     }
 }

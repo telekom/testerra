@@ -61,8 +61,8 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
     public boolean startsWith(String expected, String failMessage) {
         return testSequence(
                 provider,
-                (actual) -> assertion.startsWith(actual, expected),
-                (actual) -> assertion.formatExpectStartsWith(actual, expected, createFailMessage(failMessage))
+                (actual) -> assertion.startsWith(actual.toString(), expected),
+                (actual) -> assertion.formatExpectStartsWith(actual.toString(), expected, createFailMessage(failMessage))
         );
     }
 
@@ -70,8 +70,8 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
     public boolean endsWith(String expected, String failMessage) {
         return testSequence(
                 provider,
-                (actual) -> assertion.endsWith(provider.getActual(), expected),
-                (actual) -> assertion.formatExpectEndsWith(provider.getActual(), expected, createFailMessage(failMessage))
+                (actual) -> assertion.endsWith(actual.toString(), expected),
+                (actual) -> assertion.formatExpectEndsWith(actual.toString(), expected, createFailMessage(failMessage))
         );
     }
 

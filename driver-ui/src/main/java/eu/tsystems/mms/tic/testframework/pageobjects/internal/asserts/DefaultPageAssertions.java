@@ -76,6 +76,7 @@ public class DefaultPageAssertions implements PageAssertions {
         Screenshot screenshot = new Screenshot(page.toString());
         WebDriver webDriver = page.getWebDriver();
         UITestUtils.takeScreenshot(webDriver, screenshot);
+
         if (reportMode == Report.Mode.ALWAYS) {
             report.addScreenshot(screenshot, Report.FileMode.COPY);
         }

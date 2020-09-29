@@ -236,12 +236,15 @@ public class DefaultUiElementAssertions implements UiElementAssertions {
     @Override
     public ImageAssertion screenshot(Report.Mode reportMode) {
         Screenshot screenshot = new Screenshot(guiElement.getName(true));
+        screenshot.setFile(core.takeScreenshot());
+
         AtomicReference<Screenshot> atomicScreenshot = new AtomicReference<>();
         atomicScreenshot.set(screenshot);
-        screenshot.setFile(core.takeScreenshot());
+
         if (reportMode == Report.Mode.ALWAYS) {
             report.addScreenshot(atomicScreenshot.get(), Report.FileMode.COPY);
         }
+
         return propertyAssertionFactory.createWithConfig(DefaultImageAssertion.class, this.propertyAssertionConfig, new AssertionProvider<File>() {
             @Override
             public File getActual() {

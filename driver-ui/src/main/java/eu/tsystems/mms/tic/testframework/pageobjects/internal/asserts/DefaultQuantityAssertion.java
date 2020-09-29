@@ -66,7 +66,7 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
         return testSequence(
                 provider,
                 (actual) -> assertion.isLowerThan(new BigDecimal(actual.toString()), expected),
-                (actual) -> assertion.formatExpectLowerThan(new BigDecimal(provider.getActual().toString()), expected, createFailMessage(failMessage))
+                (actual) -> assertion.formatExpectLowerThan(new BigDecimal(actual.toString()), expected, createFailMessage(failMessage))
         );
     }
 

@@ -40,9 +40,9 @@ public class GenerateReportNgModelListener extends GenerateReportModelListener {
     public void onFinalizeExecution(FinalizeExecutionEvent event) {
         ExecutionContext executionContext = event.getExecutionContext();
         executionContext.suiteContexts.forEach(suiteContext -> {
-            //writeBuilderToFile(suiteContextExporter.prepareSuiteContext(suiteContext), new File(suitesDir, suiteContext.id));
+            writeBuilderToFile(getSuiteContextExporter().prepareSuiteContext(suiteContext), new File(getSuitesDir(), suiteContext.id));
             suiteContext.testContextModels.forEach(testContextModel -> {
-                //writeBuilderToFile(testContextExporter.prepareTestContext(testContextModel), new File(testsDir, testContextModel.id));
+                writeBuilderToFile(getTestContextExporter().prepareTestContext(testContextModel), new File(getTestsDir(), testContextModel.id));
                 testContextModel.classContexts.forEach(classContext -> {
                     ClassContextAggregate.Builder classContextAggregateBuilder = ClassContextAggregate.newBuilder();
                     classContextAggregateBuilder.setClassContext(getClassContextExporter().prepareClassContext(classContext));
@@ -55,5 +55,6 @@ public class GenerateReportNgModelListener extends GenerateReportModelListener {
                 });
             });
         });
+        writeBuilderToFile(getExecutionContextExporter().prepareExecutionContext(executionContext), new File(baseDir, "execution"));
     }
 }

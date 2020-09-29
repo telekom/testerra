@@ -51,7 +51,7 @@ public class GenerateReportModelListener implements
     private SuiteContextExporter suiteContextExporter = new SuiteContextExporter();
     private TestContextExporter testContextExporter = new TestContextExporter();
     private ExecutionContextExporter executionContextExporter = new ExecutionContextExporter();
-    private final File baseDir;
+    protected final File baseDir;
     private File classesDir;
     private File filesDir;
     private File methodsDir;

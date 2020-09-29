@@ -294,6 +294,7 @@ public class MethodContextExporter extends AbstractContextExporter {
             }
             if (testStepActionEntry.screenshot != null) {
                 testStepBuilder.addScreenshotNames(testStepActionEntry.screenshot.filename);
+                testStepBuilder.addScreenshotIds(testStepActionEntry.screenshot.errorContextId);
             }
         });
         return testStepBuilder;

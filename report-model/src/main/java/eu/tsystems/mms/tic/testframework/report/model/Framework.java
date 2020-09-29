@@ -151,7 +151,7 @@ public final class Framework {
       "\n\007task_Id\030\013 \001(\t\022%\n\035exclusive_session_con" +
       "text_ids\030\014 \003(\t\022 \n\030estimatedTestMethodCou" +
       "nt\030\r \001(\005\"6\n\013ContextClip\022\013\n\003key\030\001 \001(\t\022\032\n\022" +
-      "method_context_ids\030\002 \003(\t\"\205\006\n\rMethodConte" +
+      "method_context_ids\030\002 \003(\t\"\211\006\n\rMethodConte" +
       "xt\022+\n\016context_values\030\001 \001(\0132\023.data.Contex" +
       "tValues\022%\n\013method_type\030\007 \001(\0162\020.data.Meth" +
       "odType\022\022\n\nparameters\030\010 \003(\t\022\023\n\013method_tag" +
@@ -169,74 +169,75 @@ public final class Framework {
       "rrorContext\022#\n\ntest_steps\030\032 \003(\0132\017.data.P" +
       "TestStep\022\027\n\017test_context_id\030\033 \001(\t\022\030\n\020sui" +
       "te_context_id\030\034 \001(\t\022\033\n\023session_context_i" +
-      "ds\030\035 \003(\t\022\021\n\tvideo_ids\030\036 \003(\t\022\026\n\016screensho" +
-      "t_ids\030\037 \003(\t\022\033\n\023custom_context_json\030  \001(\t" +
-      "\"\307\001\n\rContextValues\022\n\n\002id\030\001 \001(\t\022\017\n\007create" +
-      "d\030\002 \001(\003\022\014\n\004name\030\003 \001(\t\022\022\n\nstart_time\030\004 \001(" +
-      "\003\022\020\n\010end_time\030\005 \001(\003\022\013\n\003swi\030\006 \001(\t\022-\n\rresu" +
-      "lt_status\030\007 \001(\0162\026.data.ResultStatusType\022" +
-      ")\n\013exec_status\030\010 \001(\0162\024.data.ExecStatusTy" +
-      "pe\"W\n\tPTestStep\022\014\n\004name\030\001 \001(\t\022\n\n\002id\030\002 \001(" +
-      "\t\0220\n\021test_step_actions\030\003 \003(\0132\025.data.PTes" +
-      "tStepAction\"\211\001\n\017PTestStepAction\022\014\n\004name\030" +
-      "\001 \001(\t\022\n\n\002id\030\002 \001(\t\022\021\n\ttimestamp\030\003 \001(\003\022\030\n\020" +
-      "screenshot_names\030\004 \003(\t\022/\n\020clickpath_even" +
-      "ts\030\005 \003(\0132\025.data.PClickPathEvent\"_\n\017PClic" +
-      "kPathEvent\022\'\n\004type\030\001 \001(\0162\031.data.PClickPa" +
-      "thEventType\022\017\n\007subject\030\002 \001(\t\022\022\n\nsession_" +
-      "id\030\003 \001(\t\"\362\001\n\014ErrorContext\022\036\n\026readable_er" +
-      "ror_message\030\001 \001(\t\022 \n\030additional_error_me" +
-      "ssage\030\002 \001(\t\022%\n\013stack_trace\030\003 \001(\0132\020.data." +
-      "StackTrace\022\031\n\021error_fingerprint\030\006 \001(\t\022)\n" +
-      "\rscript_source\030\007 \001(\0132\022.data.ScriptSource" +
-      "\0223\n\027execution_object_source\030\010 \001(\0132\022.data" +
-      ".ScriptSource\"\337\001\n\016SessionContext\022+\n\016cont" +
-      "ext_values\030\001 \001(\0132\023.data.ContextValues\022\023\n" +
-      "\013session_key\030\002 \001(\t\022\020\n\010provider\030\003 \001(\t\0224\n\010" +
-      "metadata\030\004 \003(\0132\".data.SessionContext.Met" +
-      "adataEntry\022\022\n\nsession_id\030\006 \001(\t\032/\n\rMetada" +
-      "taEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"" +
-      "c\n\tRunConfig\022\016\n\006runcfg\030\001 \001(\t\0221\n\021build_in" +
-      "formation\030\002 \001(\0132\026.data.BuildInformation\022" +
-      "\023\n\013report_name\030\003 \001(\t\"\250\001\n\020BuildInformatio" +
-      "n\022\032\n\022build_java_version\030\001 \001(\t\022\025\n\rbuild_o" +
-      "s_name\030\002 \001(\t\022\030\n\020build_os_version\030\003 \001(\t\022\027" +
-      "\n\017build_user_name\030\004 \001(\t\022\025\n\rbuild_version" +
-      "\030\005 \001(\t\022\027\n\017build_timestamp\030\006 \001(\t\"T\n\nStack" +
-      "Trace\022$\n\005cause\030\001 \001(\0132\025.data.StackTraceCa" +
-      "use\022 \n\030additional_error_message\030\002 \001(\t\"z\n" +
-      "\017StackTraceCause\022\022\n\nclass_name\030\001 \001(\t\022\017\n\007" +
-      "message\030\002 \001(\t\022\034\n\024stack_trace_elements\030\003 " +
-      "\003(\t\022$\n\005cause\030\004 \001(\0132\025.data.StackTraceCaus" +
-      "e\"]\n\014ScriptSource\022\021\n\tfile_name\030\001 \001(\t\022\023\n\013" +
-      "method_name\030\002 \001(\t\022%\n\005lines\030\003 \003(\0132\026.data." +
-      "ScriptSourceLine\"C\n\020ScriptSourceLine\022\014\n\004" +
-      "line\030\001 \001(\t\022\023\n\013line_number\030\002 \001(\005\022\014\n\004mark\030" +
-      "\003 \001(\010\"\253\002\n\004File\022\n\n\002id\030\001 \001(\t\022\014\n\004size\030\002 \001(\003" +
-      "\022\020\n\010mimetype\030\003 \001(\t\022\025\n\rrelative_path\030\004 \001(" +
-      "\t\022\031\n\021created_timestamp\030\005 \001(\003\022\025\n\rsha1_che" +
-      "cksum\030\006 \001(\014\022\"\n\004meta\030\007 \003(\0132\024.data.File.Me" +
-      "taEntry\022\025\n\rlast_modified\030\t \001(\003\022\022\n\nprojec" +
-      "t_id\030\n \001(\t\022\016\n\006job_id\030\013 \001(\t\022\024\n\014is_directo" +
-      "ry\030\014 \001(\010\022\014\n\004name\030\r \001(\t\032+\n\tMetaEntry\022\013\n\003k" +
-      "ey\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001*W\n\023PClickPat" +
-      "hEventType\022\013\n\007NOT_SET\020\000\022\n\n\006WINDOW\020\001\022\t\n\005C" +
-      "LICK\020\002\022\t\n\005VALUE\020\003\022\010\n\004PAGE\020\004\022\007\n\003URL\020\005*C\n\024" +
-      "FailureCorridorValue\022\017\n\013FCV_NOT_SET\020\000\022\010\n" +
-      "\004HIGH\020\001\022\007\n\003MID\020\002\022\007\n\003LOW\020\003*G\n\nMethodType\022" +
-      "\016\n\nMT_NOT_SET\020\000\022\017\n\013TEST_METHOD\020\001\022\030\n\024CONF" +
-      "IGURATION_METHOD\020\002*\252\001\n\016ExecStatusType\022\017\n" +
-      "\013EST_NOT_SET\020\000\022\007\n\003NEW\020\001\022\013\n\007PENDING\020\002\022\020\n\014" +
-      "PROVISIONING\020\003\022\013\n\007RUNNING\020\004\022\014\n\010FINISHED\020" +
-      "\005\022\013\n\007ABORTED\020\006\022\013\n\007CRASHED\020\007\022\013\n\007INVALID\020\010" +
-      "\022\010\n\004VOID\020\t\022\023\n\017ARTIFACT_UPLOAD\020\n*\307\001\n\020Resu" +
-      "ltStatusType\022\017\n\013RST_NOT_SET\020\000\022\n\n\006NO_RUN\020" +
-      "\001\022\010\n\004INFO\020\002\022\013\n\007SKIPPED\020\003\022\n\n\006PASSED\020\004\022\t\n\005" +
-      "MINOR\020\005\022\n\n\006FAILED\020\007\022\020\n\014FAILED_MINOR\020\010\022\022\n" +
-      "\016FAILED_RETRIED\020\t\022\023\n\017FAILED_EXPECTED\020\n\022\020" +
-      "\n\014PASSED_RETRY\020\013\022\017\n\013MINOR_RETRY\020\014B2\n.eu." +
-      "tsystems.mms.tic.testframework.report.mo" +
-      "delP\001b\006proto3"
+      "ds\030\035 \003(\t\022\021\n\tvideo_ids\030\036 \003(\t\022\032\n\016screensho" +
+      "t_ids\030\037 \003(\tB\002\030\001\022\033\n\023custom_context_json\030 " +
+      " \001(\t\"\307\001\n\rContextValues\022\n\n\002id\030\001 \001(\t\022\017\n\007cr" +
+      "eated\030\002 \001(\003\022\014\n\004name\030\003 \001(\t\022\022\n\nstart_time\030" +
+      "\004 \001(\003\022\020\n\010end_time\030\005 \001(\003\022\013\n\003swi\030\006 \001(\t\022-\n\r" +
+      "result_status\030\007 \001(\0162\026.data.ResultStatusT" +
+      "ype\022)\n\013exec_status\030\010 \001(\0162\024.data.ExecStat" +
+      "usType\"W\n\tPTestStep\022\014\n\004name\030\001 \001(\t\022\n\n\002id\030" +
+      "\002 \001(\t\0220\n\021test_step_actions\030\003 \003(\0132\025.data." +
+      "PTestStepAction\"\245\001\n\017PTestStepAction\022\014\n\004n" +
+      "ame\030\001 \001(\t\022\n\n\002id\030\002 \001(\t\022\021\n\ttimestamp\030\003 \001(\003" +
+      "\022\034\n\020screenshot_names\030\004 \003(\tB\002\030\001\022/\n\020clickp" +
+      "ath_events\030\005 \003(\0132\025.data.PClickPathEvent\022" +
+      "\026\n\016screenshot_ids\030\006 \003(\t\"_\n\017PClickPathEve" +
+      "nt\022\'\n\004type\030\001 \001(\0162\031.data.PClickPathEventT" +
+      "ype\022\017\n\007subject\030\002 \001(\t\022\022\n\nsession_id\030\003 \001(\t" +
+      "\"\362\001\n\014ErrorContext\022\036\n\026readable_error_mess" +
+      "age\030\001 \001(\t\022 \n\030additional_error_message\030\002 " +
+      "\001(\t\022%\n\013stack_trace\030\003 \001(\0132\020.data.StackTra" +
+      "ce\022\031\n\021error_fingerprint\030\006 \001(\t\022)\n\rscript_" +
+      "source\030\007 \001(\0132\022.data.ScriptSource\0223\n\027exec" +
+      "ution_object_source\030\010 \001(\0132\022.data.ScriptS" +
+      "ource\"\337\001\n\016SessionContext\022+\n\016context_valu" +
+      "es\030\001 \001(\0132\023.data.ContextValues\022\023\n\013session" +
+      "_key\030\002 \001(\t\022\020\n\010provider\030\003 \001(\t\0224\n\010metadata" +
+      "\030\004 \003(\0132\".data.SessionContext.MetadataEnt" +
+      "ry\022\022\n\nsession_id\030\006 \001(\t\032/\n\rMetadataEntry\022" +
+      "\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"c\n\tRunCo" +
+      "nfig\022\016\n\006runcfg\030\001 \001(\t\0221\n\021build_informatio" +
+      "n\030\002 \001(\0132\026.data.BuildInformation\022\023\n\013repor" +
+      "t_name\030\003 \001(\t\"\250\001\n\020BuildInformation\022\032\n\022bui" +
+      "ld_java_version\030\001 \001(\t\022\025\n\rbuild_os_name\030\002" +
+      " \001(\t\022\030\n\020build_os_version\030\003 \001(\t\022\027\n\017build_" +
+      "user_name\030\004 \001(\t\022\025\n\rbuild_version\030\005 \001(\t\022\027" +
+      "\n\017build_timestamp\030\006 \001(\t\"T\n\nStackTrace\022$\n" +
+      "\005cause\030\001 \001(\0132\025.data.StackTraceCause\022 \n\030a" +
+      "dditional_error_message\030\002 \001(\t\"z\n\017StackTr" +
+      "aceCause\022\022\n\nclass_name\030\001 \001(\t\022\017\n\007message\030" +
+      "\002 \001(\t\022\034\n\024stack_trace_elements\030\003 \003(\t\022$\n\005c" +
+      "ause\030\004 \001(\0132\025.data.StackTraceCause\"]\n\014Scr" +
+      "iptSource\022\021\n\tfile_name\030\001 \001(\t\022\023\n\013method_n" +
+      "ame\030\002 \001(\t\022%\n\005lines\030\003 \003(\0132\026.data.ScriptSo" +
+      "urceLine\"C\n\020ScriptSourceLine\022\014\n\004line\030\001 \001" +
+      "(\t\022\023\n\013line_number\030\002 \001(\005\022\014\n\004mark\030\003 \001(\010\"\253\002" +
+      "\n\004File\022\n\n\002id\030\001 \001(\t\022\014\n\004size\030\002 \001(\003\022\020\n\010mime" +
+      "type\030\003 \001(\t\022\025\n\rrelative_path\030\004 \001(\t\022\031\n\021cre" +
+      "ated_timestamp\030\005 \001(\003\022\025\n\rsha1_checksum\030\006 " +
+      "\001(\014\022\"\n\004meta\030\007 \003(\0132\024.data.File.MetaEntry\022" +
+      "\025\n\rlast_modified\030\t \001(\003\022\022\n\nproject_id\030\n \001" +
+      "(\t\022\016\n\006job_id\030\013 \001(\t\022\024\n\014is_directory\030\014 \001(\010" +
+      "\022\014\n\004name\030\r \001(\t\032+\n\tMetaEntry\022\013\n\003key\030\001 \001(\t" +
+      "\022\r\n\005value\030\002 \001(\t:\0028\001*W\n\023PClickPathEventTy" +
+      "pe\022\013\n\007NOT_SET\020\000\022\n\n\006WINDOW\020\001\022\t\n\005CLICK\020\002\022\t" +
+      "\n\005VALUE\020\003\022\010\n\004PAGE\020\004\022\007\n\003URL\020\005*C\n\024FailureC" +
+      "orridorValue\022\017\n\013FCV_NOT_SET\020\000\022\010\n\004HIGH\020\001\022" +
+      "\007\n\003MID\020\002\022\007\n\003LOW\020\003*G\n\nMethodType\022\016\n\nMT_NO" +
+      "T_SET\020\000\022\017\n\013TEST_METHOD\020\001\022\030\n\024CONFIGURATIO" +
+      "N_METHOD\020\002*\252\001\n\016ExecStatusType\022\017\n\013EST_NOT" +
+      "_SET\020\000\022\007\n\003NEW\020\001\022\013\n\007PENDING\020\002\022\020\n\014PROVISIO" +
+      "NING\020\003\022\013\n\007RUNNING\020\004\022\014\n\010FINISHED\020\005\022\013\n\007ABO" +
+      "RTED\020\006\022\013\n\007CRASHED\020\007\022\013\n\007INVALID\020\010\022\010\n\004VOID" +
+      "\020\t\022\023\n\017ARTIFACT_UPLOAD\020\n*\307\001\n\020ResultStatus" +
+      "Type\022\017\n\013RST_NOT_SET\020\000\022\n\n\006NO_RUN\020\001\022\010\n\004INF" +
+      "O\020\002\022\013\n\007SKIPPED\020\003\022\n\n\006PASSED\020\004\022\t\n\005MINOR\020\005\022" +
+      "\n\n\006FAILED\020\007\022\020\n\014FAILED_MINOR\020\010\022\022\n\016FAILED_" +
+      "RETRIED\020\t\022\023\n\017FAILED_EXPECTED\020\n\022\020\n\014PASSED" +
+      "_RETRY\020\013\022\017\n\013MINOR_RETRY\020\014B2\n.eu.tsystems" +
+      ".mms.tic.testframework.report.modelP\001b\006p" +
+      "roto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -295,7 +296,7 @@ public final class Framework {
     internal_static_data_PTestStepAction_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_data_PTestStepAction_descriptor,
-        new java.lang.String[] { "Name", "Id", "Timestamp", "ScreenshotNames", "ClickpathEvents", });
+        new java.lang.String[] { "Name", "Id", "Timestamp", "ScreenshotNames", "ClickpathEvents", "ScreenshotIds", });
     internal_static_data_PClickPathEvent_descriptor =
       getDescriptor().getMessageTypes().get(9);
     internal_static_data_PClickPathEvent_fieldAccessorTable = new

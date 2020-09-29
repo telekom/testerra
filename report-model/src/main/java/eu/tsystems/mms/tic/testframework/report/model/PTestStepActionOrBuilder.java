@@ -38,28 +38,28 @@ public interface PTestStepActionOrBuilder extends
   long getTimestamp();
 
   /**
-   * <code>repeated string screenshot_names = 4;</code>
+   * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
    * @return A list containing the screenshotNames.
    */
-  java.util.List<java.lang.String>
+  @java.lang.Deprecated java.util.List<java.lang.String>
       getScreenshotNamesList();
   /**
-   * <code>repeated string screenshot_names = 4;</code>
+   * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
    * @return The count of screenshotNames.
    */
-  int getScreenshotNamesCount();
+  @java.lang.Deprecated int getScreenshotNamesCount();
   /**
-   * <code>repeated string screenshot_names = 4;</code>
+   * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
    * @param index The index of the element to return.
    * @return The screenshotNames at the given index.
    */
-  java.lang.String getScreenshotNames(int index);
+  @java.lang.Deprecated java.lang.String getScreenshotNames(int index);
   /**
-   * <code>repeated string screenshot_names = 4;</code>
+   * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
    * @param index The index of the value to return.
    * @return The bytes of the screenshotNames at the given index.
    */
-  com.google.protobuf.ByteString
+  @java.lang.Deprecated com.google.protobuf.ByteString
       getScreenshotNamesBytes(int index);
 
   /**
@@ -85,4 +85,29 @@ public interface PTestStepActionOrBuilder extends
    */
   eu.tsystems.mms.tic.testframework.report.model.PClickPathEventOrBuilder getClickpathEventsOrBuilder(
       int index);
+
+  /**
+   * <code>repeated string screenshot_ids = 6;</code>
+   * @return A list containing the screenshotIds.
+   */
+  java.util.List<java.lang.String>
+      getScreenshotIdsList();
+  /**
+   * <code>repeated string screenshot_ids = 6;</code>
+   * @return The count of screenshotIds.
+   */
+  int getScreenshotIdsCount();
+  /**
+   * <code>repeated string screenshot_ids = 6;</code>
+   * @param index The index of the element to return.
+   * @return The screenshotIds at the given index.
+   */
+  java.lang.String getScreenshotIds(int index);
+  /**
+   * <code>repeated string screenshot_ids = 6;</code>
+   * @param index The index of the value to return.
+   * @return The bytes of the screenshotIds at the given index.
+   */
+  com.google.protobuf.ByteString
+      getScreenshotIdsBytes(int index);
 }

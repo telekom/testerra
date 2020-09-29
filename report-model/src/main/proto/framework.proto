@@ -92,7 +92,7 @@ message MethodContext {
 
     repeated string session_context_ids = 29;
     repeated string video_ids = 30;
-    repeated string screenshot_ids = 31;
+    repeated string screenshot_ids = 31 [deprecated = true];
     string custom_context_json = 32;
 }
 
@@ -118,8 +118,9 @@ message PTestStepAction {
     string name = 1;
     string id = 2;
     int64 timestamp = 3;
-    repeated string screenshot_names = 4;
+    repeated string screenshot_names = 4 [deprecated = true];
     repeated PClickPathEvent clickpath_events = 5;
+    repeated string screenshot_ids = 6;
 }
 
 enum PClickPathEventType {

@@ -52,28 +52,82 @@ public class GenerateReportModelListener implements
     private TestContextExporter testContextExporter = new TestContextExporter();
     private ExecutionContextExporter executionContextExporter = new ExecutionContextExporter();
     private final File baseDir;
-    private final File classesDir;
-    private final File filesDir;
-    private final File methodsDir;
-    private final File testsDir;
-    private final File suitesDir;
+    private File classesDir;
+    private File filesDir;
+    private File methodsDir;
+    private File testsDir;
+    private File suitesDir;
+
+    protected MethodContextExporter getMethodContextExporter() {
+        return methodContextExporter;
+    }
+
+    protected ClassContextExporter getClassContextExporter() {
+        return classContextExporter;
+    }
+
+    protected SuiteContextExporter getSuiteContextExporter() {
+        return suiteContextExporter;
+    }
+
+    protected TestContextExporter getTestContextExporter() {
+        return testContextExporter;
+    }
+
+    protected ExecutionContextExporter getExecutionContextExporter() {
+        return executionContextExporter;
+    }
+
+    protected File getBaseDir() {
+        return baseDir;
+    }
+
+    protected File getClassesDir() {
+        if (classesDir == null) {
+            classesDir = new File(baseDir, "classes");
+            classesDir.mkdir();
+        }
+        return classesDir;
+    }
+
+    protected File getFilesDir() {
+        if (filesDir == null) {
+            filesDir = new File(baseDir, "files");
+            filesDir.mkdir();
+        }
+        return filesDir;
+    }
+
+    protected File getMethodsDir() {
+        if (methodsDir == null) {
+            methodsDir = new File(baseDir, "methods");
+            methodsDir.mkdir();
+        }
+        return methodsDir;
+    }
+
+    protected File getTestsDir() {
+        if (testsDir == null) {
+            testsDir = new File(baseDir, "tests");
+            testsDir.mkdir();
+        }
+        return testsDir;
+    }
+
+    protected File getSuitesDir() {
+        if (suitesDir == null) {
+            suitesDir = new File(baseDir, "suites");
+            suitesDir.mkdir();
+        }
+        return suitesDir;
+    }
 
     public GenerateReportModelListener(File baseDir) {
         this.baseDir = baseDir;
         baseDir.mkdirs();
-        classesDir = new File(baseDir, "classes");
-        classesDir.mkdir();
-        filesDir = new File(baseDir, "files");
-        filesDir.mkdir();
-        methodsDir = new File(baseDir, "methods");
-        methodsDir.mkdir();
-        testsDir = new File(baseDir, "tests");
-        testsDir.mkdir();
-        suitesDir = new File(baseDir, "suites");
-        suitesDir.mkdir();
     }
 
-    private void writeBuilderToFile(Message.Builder builder, File file) {
+    protected void writeBuilderToFile(Message.Builder builder, File file) {
         try {
             FileOutputStream stream = new FileOutputStream(file);
             builder.build().writeTo(stream);
@@ -88,9 +142,9 @@ public class GenerateReportModelListener implements
     public void onMethodEnd(MethodEndEvent event) {
         MethodContext methodContext = event.getMethodContext();
         eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder methodContextBuilder = methodContextExporter.prepareMethodContext(methodContext, fileBuilder -> {
-            writeBuilderToFile(fileBuilder, new File(filesDir, fileBuilder.getId()));
+            writeBuilderToFile(fileBuilder, new File(getFilesDir(), fileBuilder.getId()));
         });
-        writeBuilderToFile(methodContextBuilder, new File(methodsDir, methodContext.id));
+        writeBuilderToFile(methodContextBuilder, new File(getMethodsDir(), methodContext.id));
     }
 
     @Override
@@ -98,11 +152,11 @@ public class GenerateReportModelListener implements
     public void onFinalizeExecution(FinalizeExecutionEvent event) {
         ExecutionContext executionContext = event.getExecutionContext();
         executionContext.suiteContexts.forEach(suiteContext -> {
-            writeBuilderToFile(suiteContextExporter.prepareSuiteContext(suiteContext), new File(suitesDir, suiteContext.id));
+            writeBuilderToFile(suiteContextExporter.prepareSuiteContext(suiteContext), new File(getSuitesDir(), suiteContext.id));
             suiteContext.testContextModels.forEach(testContextModel -> {
-                writeBuilderToFile(testContextExporter.prepareTestContext(testContextModel), new File(testsDir, testContextModel.id));
+                writeBuilderToFile(testContextExporter.prepareTestContext(testContextModel), new File(getTestsDir(), testContextModel.id));
                 testContextModel.classContexts.forEach(classContext -> {
-                    writeBuilderToFile(classContextExporter.prepareClassContext(classContext), new File(classesDir, classContext.id));
+                    writeBuilderToFile(classContextExporter.prepareClassContext(classContext), new File(getClassesDir(), classContext.id));
                 });
             });
         });

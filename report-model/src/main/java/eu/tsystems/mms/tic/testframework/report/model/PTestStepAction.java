@@ -20,6 +20,7 @@ private static final long serialVersionUID = 0L;
     id_ = "";
     screenshotNames_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     clickpathEvents_ = java.util.Collections.emptyList();
+    screenshotIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
   }
 
   @java.lang.Override
@@ -88,6 +89,15 @@ private static final long serialVersionUID = 0L;
                 input.readMessage(eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent.parser(), extensionRegistry));
             break;
           }
+          case 50: {
+            java.lang.String s = input.readStringRequireUtf8();
+            if (!((mutable_bitField0_ & 0x00000004) != 0)) {
+              screenshotIds_ = new com.google.protobuf.LazyStringArrayList();
+              mutable_bitField0_ |= 0x00000004;
+            }
+            screenshotIds_.add(s);
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -108,6 +118,9 @@ private static final long serialVersionUID = 0L;
       }
       if (((mutable_bitField0_ & 0x00000002) != 0)) {
         clickpathEvents_ = java.util.Collections.unmodifiableList(clickpathEvents_);
+      }
+      if (((mutable_bitField0_ & 0x00000004) != 0)) {
+        screenshotIds_ = screenshotIds_.getUnmodifiableView();
       }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
@@ -211,34 +224,34 @@ private static final long serialVersionUID = 0L;
   public static final int SCREENSHOT_NAMES_FIELD_NUMBER = 4;
   private com.google.protobuf.LazyStringList screenshotNames_;
   /**
-   * <code>repeated string screenshot_names = 4;</code>
+   * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
    * @return A list containing the screenshotNames.
    */
-  public com.google.protobuf.ProtocolStringList
+  @java.lang.Deprecated public com.google.protobuf.ProtocolStringList
       getScreenshotNamesList() {
     return screenshotNames_;
   }
   /**
-   * <code>repeated string screenshot_names = 4;</code>
+   * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
    * @return The count of screenshotNames.
    */
-  public int getScreenshotNamesCount() {
+  @java.lang.Deprecated public int getScreenshotNamesCount() {
     return screenshotNames_.size();
   }
   /**
-   * <code>repeated string screenshot_names = 4;</code>
+   * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
    * @param index The index of the element to return.
    * @return The screenshotNames at the given index.
    */
-  public java.lang.String getScreenshotNames(int index) {
+  @java.lang.Deprecated public java.lang.String getScreenshotNames(int index) {
     return screenshotNames_.get(index);
   }
   /**
-   * <code>repeated string screenshot_names = 4;</code>
+   * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
    * @param index The index of the value to return.
    * @return The bytes of the screenshotNames at the given index.
    */
-  public com.google.protobuf.ByteString
+  @java.lang.Deprecated public com.google.protobuf.ByteString
       getScreenshotNamesBytes(int index) {
     return screenshotNames_.getByteString(index);
   }
@@ -278,6 +291,41 @@ private static final long serialVersionUID = 0L;
     return clickpathEvents_.get(index);
   }
 
+  public static final int SCREENSHOT_IDS_FIELD_NUMBER = 6;
+  private com.google.protobuf.LazyStringList screenshotIds_;
+  /**
+   * <code>repeated string screenshot_ids = 6;</code>
+   * @return A list containing the screenshotIds.
+   */
+  public com.google.protobuf.ProtocolStringList
+      getScreenshotIdsList() {
+    return screenshotIds_;
+  }
+  /**
+   * <code>repeated string screenshot_ids = 6;</code>
+   * @return The count of screenshotIds.
+   */
+  public int getScreenshotIdsCount() {
+    return screenshotIds_.size();
+  }
+  /**
+   * <code>repeated string screenshot_ids = 6;</code>
+   * @param index The index of the element to return.
+   * @return The screenshotIds at the given index.
+   */
+  public java.lang.String getScreenshotIds(int index) {
+    return screenshotIds_.get(index);
+  }
+  /**
+   * <code>repeated string screenshot_ids = 6;</code>
+   * @param index The index of the value to return.
+   * @return The bytes of the screenshotIds at the given index.
+   */
+  public com.google.protobuf.ByteString
+      getScreenshotIdsBytes(int index) {
+    return screenshotIds_.getByteString(index);
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -306,6 +354,9 @@ private static final long serialVersionUID = 0L;
     }
     for (int i = 0; i < clickpathEvents_.size(); i++) {
       output.writeMessage(5, clickpathEvents_.get(i));
+    }
+    for (int i = 0; i < screenshotIds_.size(); i++) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 6, screenshotIds_.getRaw(i));
     }
     unknownFields.writeTo(output);
   }
@@ -338,6 +389,14 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(5, clickpathEvents_.get(i));
     }
+    {
+      int dataSize = 0;
+      for (int i = 0; i < screenshotIds_.size(); i++) {
+        dataSize += computeStringSizeNoTag(screenshotIds_.getRaw(i));
+      }
+      size += dataSize;
+      size += 1 * getScreenshotIdsList().size();
+    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -363,6 +422,8 @@ private static final long serialVersionUID = 0L;
         .equals(other.getScreenshotNamesList())) return false;
     if (!getClickpathEventsList()
         .equals(other.getClickpathEventsList())) return false;
+    if (!getScreenshotIdsList()
+        .equals(other.getScreenshotIdsList())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -388,6 +449,10 @@ private static final long serialVersionUID = 0L;
     if (getClickpathEventsCount() > 0) {
       hash = (37 * hash) + CLICKPATH_EVENTS_FIELD_NUMBER;
       hash = (53 * hash) + getClickpathEventsList().hashCode();
+    }
+    if (getScreenshotIdsCount() > 0) {
+      hash = (37 * hash) + SCREENSHOT_IDS_FIELD_NUMBER;
+      hash = (53 * hash) + getScreenshotIdsList().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -537,6 +602,8 @@ private static final long serialVersionUID = 0L;
       } else {
         clickpathEventsBuilder_.clear();
       }
+      screenshotIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -581,6 +648,11 @@ private static final long serialVersionUID = 0L;
       } else {
         result.clickpathEvents_ = clickpathEventsBuilder_.build();
       }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        screenshotIds_ = screenshotIds_.getUnmodifiableView();
+        bitField0_ = (bitField0_ & ~0x00000004);
+      }
+      result.screenshotIds_ = screenshotIds_;
       onBuilt();
       return result;
     }
@@ -675,6 +747,16 @@ private static final long serialVersionUID = 0L;
             clickpathEventsBuilder_.addAllMessages(other.clickpathEvents_);
           }
         }
+      }
+      if (!other.screenshotIds_.isEmpty()) {
+        if (screenshotIds_.isEmpty()) {
+          screenshotIds_ = other.screenshotIds_;
+          bitField0_ = (bitField0_ & ~0x00000004);
+        } else {
+          ensureScreenshotIdsIsMutable();
+          screenshotIds_.addAll(other.screenshotIds_);
+        }
+        onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -896,44 +978,44 @@ private static final long serialVersionUID = 0L;
        }
     }
     /**
-     * <code>repeated string screenshot_names = 4;</code>
+     * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
      * @return A list containing the screenshotNames.
      */
-    public com.google.protobuf.ProtocolStringList
+    @java.lang.Deprecated public com.google.protobuf.ProtocolStringList
         getScreenshotNamesList() {
       return screenshotNames_.getUnmodifiableView();
     }
     /**
-     * <code>repeated string screenshot_names = 4;</code>
+     * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
      * @return The count of screenshotNames.
      */
-    public int getScreenshotNamesCount() {
+    @java.lang.Deprecated public int getScreenshotNamesCount() {
       return screenshotNames_.size();
     }
     /**
-     * <code>repeated string screenshot_names = 4;</code>
+     * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
      * @param index The index of the element to return.
      * @return The screenshotNames at the given index.
      */
-    public java.lang.String getScreenshotNames(int index) {
+    @java.lang.Deprecated public java.lang.String getScreenshotNames(int index) {
       return screenshotNames_.get(index);
     }
     /**
-     * <code>repeated string screenshot_names = 4;</code>
+     * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
      * @param index The index of the value to return.
      * @return The bytes of the screenshotNames at the given index.
      */
-    public com.google.protobuf.ByteString
+    @java.lang.Deprecated public com.google.protobuf.ByteString
         getScreenshotNamesBytes(int index) {
       return screenshotNames_.getByteString(index);
     }
     /**
-     * <code>repeated string screenshot_names = 4;</code>
+     * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
      * @param index The index to set the value at.
      * @param value The screenshotNames to set.
      * @return This builder for chaining.
      */
-    public Builder setScreenshotNames(
+    @java.lang.Deprecated public Builder setScreenshotNames(
         int index, java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
@@ -944,11 +1026,11 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated string screenshot_names = 4;</code>
+     * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
      * @param value The screenshotNames to add.
      * @return This builder for chaining.
      */
-    public Builder addScreenshotNames(
+    @java.lang.Deprecated public Builder addScreenshotNames(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
@@ -959,11 +1041,11 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated string screenshot_names = 4;</code>
+     * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
      * @param values The screenshotNames to add.
      * @return This builder for chaining.
      */
-    public Builder addAllScreenshotNames(
+    @java.lang.Deprecated public Builder addAllScreenshotNames(
         java.lang.Iterable<java.lang.String> values) {
       ensureScreenshotNamesIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -972,21 +1054,21 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated string screenshot_names = 4;</code>
+     * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
      * @return This builder for chaining.
      */
-    public Builder clearScreenshotNames() {
+    @java.lang.Deprecated public Builder clearScreenshotNames() {
       screenshotNames_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
     /**
-     * <code>repeated string screenshot_names = 4;</code>
+     * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
      * @param value The bytes of the screenshotNames to add.
      * @return This builder for chaining.
      */
-    public Builder addScreenshotNamesBytes(
+    @java.lang.Deprecated public Builder addScreenshotNamesBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
@@ -1236,6 +1318,116 @@ private static final long serialVersionUID = 0L;
         clickpathEvents_ = null;
       }
       return clickpathEventsBuilder_;
+    }
+
+    private com.google.protobuf.LazyStringList screenshotIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private void ensureScreenshotIdsIsMutable() {
+      if (!((bitField0_ & 0x00000004) != 0)) {
+        screenshotIds_ = new com.google.protobuf.LazyStringArrayList(screenshotIds_);
+        bitField0_ |= 0x00000004;
+       }
+    }
+    /**
+     * <code>repeated string screenshot_ids = 6;</code>
+     * @return A list containing the screenshotIds.
+     */
+    public com.google.protobuf.ProtocolStringList
+        getScreenshotIdsList() {
+      return screenshotIds_.getUnmodifiableView();
+    }
+    /**
+     * <code>repeated string screenshot_ids = 6;</code>
+     * @return The count of screenshotIds.
+     */
+    public int getScreenshotIdsCount() {
+      return screenshotIds_.size();
+    }
+    /**
+     * <code>repeated string screenshot_ids = 6;</code>
+     * @param index The index of the element to return.
+     * @return The screenshotIds at the given index.
+     */
+    public java.lang.String getScreenshotIds(int index) {
+      return screenshotIds_.get(index);
+    }
+    /**
+     * <code>repeated string screenshot_ids = 6;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the screenshotIds at the given index.
+     */
+    public com.google.protobuf.ByteString
+        getScreenshotIdsBytes(int index) {
+      return screenshotIds_.getByteString(index);
+    }
+    /**
+     * <code>repeated string screenshot_ids = 6;</code>
+     * @param index The index to set the value at.
+     * @param value The screenshotIds to set.
+     * @return This builder for chaining.
+     */
+    public Builder setScreenshotIds(
+        int index, java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureScreenshotIdsIsMutable();
+      screenshotIds_.set(index, value);
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>repeated string screenshot_ids = 6;</code>
+     * @param value The screenshotIds to add.
+     * @return This builder for chaining.
+     */
+    public Builder addScreenshotIds(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureScreenshotIdsIsMutable();
+      screenshotIds_.add(value);
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>repeated string screenshot_ids = 6;</code>
+     * @param values The screenshotIds to add.
+     * @return This builder for chaining.
+     */
+    public Builder addAllScreenshotIds(
+        java.lang.Iterable<java.lang.String> values) {
+      ensureScreenshotIdsIsMutable();
+      com.google.protobuf.AbstractMessageLite.Builder.addAll(
+          values, screenshotIds_);
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>repeated string screenshot_ids = 6;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearScreenshotIds() {
+      screenshotIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      bitField0_ = (bitField0_ & ~0x00000004);
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>repeated string screenshot_ids = 6;</code>
+     * @param value The bytes of the screenshotIds to add.
+     * @return This builder for chaining.
+     */
+    public Builder addScreenshotIdsBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      ensureScreenshotIdsIsMutable();
+      screenshotIds_.add(value);
+      onChanged();
+      return this;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

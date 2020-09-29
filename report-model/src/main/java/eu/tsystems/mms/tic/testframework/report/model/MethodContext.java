@@ -1004,34 +1004,34 @@ private static final long serialVersionUID = 0L;
   public static final int SCREENSHOT_IDS_FIELD_NUMBER = 31;
   private com.google.protobuf.LazyStringList screenshotIds_;
   /**
-   * <code>repeated string screenshot_ids = 31;</code>
+   * <code>repeated string screenshot_ids = 31 [deprecated = true];</code>
    * @return A list containing the screenshotIds.
    */
-  public com.google.protobuf.ProtocolStringList
+  @java.lang.Deprecated public com.google.protobuf.ProtocolStringList
       getScreenshotIdsList() {
     return screenshotIds_;
   }
   /**
-   * <code>repeated string screenshot_ids = 31;</code>
+   * <code>repeated string screenshot_ids = 31 [deprecated = true];</code>
    * @return The count of screenshotIds.
    */
-  public int getScreenshotIdsCount() {
+  @java.lang.Deprecated public int getScreenshotIdsCount() {
     return screenshotIds_.size();
   }
   /**
-   * <code>repeated string screenshot_ids = 31;</code>
+   * <code>repeated string screenshot_ids = 31 [deprecated = true];</code>
    * @param index The index of the element to return.
    * @return The screenshotIds at the given index.
    */
-  public java.lang.String getScreenshotIds(int index) {
+  @java.lang.Deprecated public java.lang.String getScreenshotIds(int index) {
     return screenshotIds_.get(index);
   }
   /**
-   * <code>repeated string screenshot_ids = 31;</code>
+   * <code>repeated string screenshot_ids = 31 [deprecated = true];</code>
    * @param index The index of the value to return.
    * @return The bytes of the screenshotIds at the given index.
    */
-  public com.google.protobuf.ByteString
+  @java.lang.Deprecated public com.google.protobuf.ByteString
       getScreenshotIdsBytes(int index) {
     return screenshotIds_.getByteString(index);
   }
@@ -4417,44 +4417,44 @@ private static final long serialVersionUID = 0L;
        }
     }
     /**
-     * <code>repeated string screenshot_ids = 31;</code>
+     * <code>repeated string screenshot_ids = 31 [deprecated = true];</code>
      * @return A list containing the screenshotIds.
      */
-    public com.google.protobuf.ProtocolStringList
+    @java.lang.Deprecated public com.google.protobuf.ProtocolStringList
         getScreenshotIdsList() {
       return screenshotIds_.getUnmodifiableView();
     }
     /**
-     * <code>repeated string screenshot_ids = 31;</code>
+     * <code>repeated string screenshot_ids = 31 [deprecated = true];</code>
      * @return The count of screenshotIds.
      */
-    public int getScreenshotIdsCount() {
+    @java.lang.Deprecated public int getScreenshotIdsCount() {
       return screenshotIds_.size();
     }
     /**
-     * <code>repeated string screenshot_ids = 31;</code>
+     * <code>repeated string screenshot_ids = 31 [deprecated = true];</code>
      * @param index The index of the element to return.
      * @return The screenshotIds at the given index.
      */
-    public java.lang.String getScreenshotIds(int index) {
+    @java.lang.Deprecated public java.lang.String getScreenshotIds(int index) {
       return screenshotIds_.get(index);
     }
     /**
-     * <code>repeated string screenshot_ids = 31;</code>
+     * <code>repeated string screenshot_ids = 31 [deprecated = true];</code>
      * @param index The index of the value to return.
      * @return The bytes of the screenshotIds at the given index.
      */
-    public com.google.protobuf.ByteString
+    @java.lang.Deprecated public com.google.protobuf.ByteString
         getScreenshotIdsBytes(int index) {
       return screenshotIds_.getByteString(index);
     }
     /**
-     * <code>repeated string screenshot_ids = 31;</code>
+     * <code>repeated string screenshot_ids = 31 [deprecated = true];</code>
      * @param index The index to set the value at.
      * @param value The screenshotIds to set.
      * @return This builder for chaining.
      */
-    public Builder setScreenshotIds(
+    @java.lang.Deprecated public Builder setScreenshotIds(
         int index, java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
@@ -4465,11 +4465,11 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated string screenshot_ids = 31;</code>
+     * <code>repeated string screenshot_ids = 31 [deprecated = true];</code>
      * @param value The screenshotIds to add.
      * @return This builder for chaining.
      */
-    public Builder addScreenshotIds(
+    @java.lang.Deprecated public Builder addScreenshotIds(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
@@ -4480,11 +4480,11 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated string screenshot_ids = 31;</code>
+     * <code>repeated string screenshot_ids = 31 [deprecated = true];</code>
      * @param values The screenshotIds to add.
      * @return This builder for chaining.
      */
-    public Builder addAllScreenshotIds(
+    @java.lang.Deprecated public Builder addAllScreenshotIds(
         java.lang.Iterable<java.lang.String> values) {
       ensureScreenshotIdsIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -4493,21 +4493,21 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated string screenshot_ids = 31;</code>
+     * <code>repeated string screenshot_ids = 31 [deprecated = true];</code>
      * @return This builder for chaining.
      */
-    public Builder clearScreenshotIds() {
+    @java.lang.Deprecated public Builder clearScreenshotIds() {
       screenshotIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       bitField0_ = (bitField0_ & ~0x00000400);
       onChanged();
       return this;
     }
     /**
-     * <code>repeated string screenshot_ids = 31;</code>
+     * <code>repeated string screenshot_ids = 31 [deprecated = true];</code>
      * @param value The bytes of the screenshotIds to add.
      * @return This builder for chaining.
      */
-    public Builder addScreenshotIdsBytes(
+    @java.lang.Deprecated public Builder addScreenshotIdsBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();

@@ -23,6 +23,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.utils.Conditions;
 import java.util.ArrayList;
+import org.openqa.selenium.By;
 
 /**
  * Prototype of XPath Builder
@@ -88,6 +89,22 @@ public class XPath {
 
     static String somethingMatches(String operation, String something, Object string) {
         return String.format("%s(%s,'%s')", operation, something, string);
+    }
+
+    static String byToXPath(By by) {
+        String[] split = by.toString().split("\\: ", 2);
+        if (split[0].startsWith("By.xpath")) {
+            return split[1];
+        } else if (split[0].startsWith("By.name")) {
+            return "//*[" + somethingIs("@name", split[1]) + "]";
+        } else if (split[0].startsWith("By.className")) {
+            return "//*[" + somethingContainsWord("@class", split[1]) + "]";
+        } else if (split[0].startsWith("By.id")) {
+            return "//*[" + somethingIs("@id", split[1]) + "]";
+        } else if (split[0].startsWith("By.tagName")) {
+            return "//" + split[1];
+        }
+        return "(not-supported)";
     }
 
     public class Test {

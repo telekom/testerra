@@ -44,12 +44,10 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.AbstractGuiEl
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreSequenceDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.UiElementBase;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.DelayActionsGuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.UiElementLogger;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.DefaultGuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
-import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import java.awt.Color;
@@ -736,17 +734,19 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
 
     @Override
     public String createXPath() {
-        Formatter formatter = Testerra.injector.getInstance(Formatter.class);
-        ArrayList<String> xPathes = new ArrayList<>();
-        Nameable element = this;
-        while (element instanceof UiElementBase) {
-            xPathes.add(0, formatter.byToXPath(((UiElementBase)element).getLocate().getBy()));
-            element = element.getParent();
-        }
-        return String.join("", xPathes);
+        GuiElementData guiElementData = this.guiElementData;
+        StringBuilder sb = new StringBuilder();
+        do {
+            String elementPath = XPath.byToXPath(guiElementData.getLocate().getBy());
+            if (guiElementData.getIndex() >= 0) {
+                elementPath += "["+guiElementData.getIndex()+"]";
+            }
+            sb.insert(0, elementPath);
+            guiElementData = guiElementData.getParent();
+        } while (guiElementData != null);
+
+        return sb.toString();
     }
-
-
 
     @Override
     public void findWebElement(Consumer<WebElement> consumer) {

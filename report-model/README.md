@@ -1,4 +1,4 @@
-# Report Modle
+# Report Model
 
 ## Compile Proto
 

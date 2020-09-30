@@ -1246,4 +1246,46 @@ export namespace data {
          */
         public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.ClassContextAggregate;
     }
+
+    /** Properties of an ExecutionAggregate. */
+    interface IExecutionAggregate {
+
+        /** ExecutionAggregate executionContext */
+        executionContext?: (data.IExecutionContext|null);
+
+        /** ExecutionAggregate suiteContexts */
+        suiteContexts?: (data.ISuiteContext[]|null);
+
+        /** ExecutionAggregate testContexts */
+        testContexts?: (data.ITestContext[]|null);
+    }
+
+    /** Represents an ExecutionAggregate. */
+    class ExecutionAggregate implements IExecutionAggregate {
+
+        /**
+         * Constructs a new ExecutionAggregate.
+         * @param [p] Properties to set
+         */
+        constructor(p?: data.IExecutionAggregate);
+
+        /** ExecutionAggregate executionContext. */
+        public executionContext?: (data.IExecutionContext|null);
+
+        /** ExecutionAggregate suiteContexts. */
+        public suiteContexts: data.ISuiteContext[];
+
+        /** ExecutionAggregate testContexts. */
+        public testContexts: data.ITestContext[];
+
+        /**
+         * Decodes an ExecutionAggregate message from the specified reader or buffer.
+         * @param r Reader or buffer to decode from
+         * @param [l] Message length if known beforehand
+         * @returns ExecutionAggregate
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.ExecutionAggregate;
+    }
 }

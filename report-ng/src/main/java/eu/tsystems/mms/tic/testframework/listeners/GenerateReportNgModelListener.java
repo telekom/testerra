@@ -24,6 +24,7 @@ package eu.tsystems.mms.tic.testframework.listeners;
 import eu.tsystems.mms.tic.testframework.events.FinalizeExecutionEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.report.model.ClassContextAggregate;
+import eu.tsystems.mms.tic.testframework.report.model.ExecutionAggregate;
 import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import java.io.File;
 
@@ -38,14 +39,20 @@ public class GenerateReportNgModelListener extends GenerateReportModelListener {
     }
     @Override
     public void onFinalizeExecution(FinalizeExecutionEvent event) {
+
+        ExecutionAggregate.Builder executionAggregateBuilder = ExecutionAggregate.newBuilder();
+
         ExecutionContext executionContext = event.getExecutionContext();
         executionContext.suiteContexts.forEach(suiteContext -> {
-            writeBuilderToFile(getSuiteContextExporter().prepareSuiteContext(suiteContext), new File(getSuitesDir(), suiteContext.id));
+            executionAggregateBuilder.addSuiteContexts(getSuiteContextExporter().prepareSuiteContext(suiteContext));
+
             suiteContext.testContextModels.forEach(testContextModel -> {
-                writeBuilderToFile(getTestContextExporter().prepareTestContext(testContextModel), new File(getTestsDir(), testContextModel.id));
+                executionAggregateBuilder.addTestContexts(getTestContextExporter().prepareTestContext(testContextModel));
+
                 testContextModel.classContexts.forEach(classContext -> {
                     ClassContextAggregate.Builder classContextAggregateBuilder = ClassContextAggregate.newBuilder();
                     classContextAggregateBuilder.setClassContext(getClassContextExporter().prepareClassContext(classContext));
+
                     classContext.methodContexts.forEach(methodContext -> {
                         classContextAggregateBuilder.addMethodContexts(getMethodContextExporter().prepareMethodContext(methodContext, fileBuilder -> {
                             writeBuilderToFile(fileBuilder, new File(getFilesDir(), fileBuilder.getId()));
@@ -55,6 +62,7 @@ public class GenerateReportNgModelListener extends GenerateReportModelListener {
                 });
             });
         });
-        writeBuilderToFile(getExecutionContextExporter().prepareExecutionContext(executionContext), new File(baseDir, "execution"));
+        executionAggregateBuilder.setExecutionContext(getExecutionContextExporter().prepareExecutionContext(executionContext));
+        writeBuilderToFile(executionAggregateBuilder, new File(baseDir, "execution"));
     }
 }

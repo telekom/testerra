@@ -1,6 +1,5 @@
 import {autoinject, PLATFORM} from "aurelia-framework";
 import {Router, RouterConfiguration} from 'aurelia-router';
-//import {StatisticValues} from "./services/statistic-values";
 import {DataLoader} from "./services/data-loader";
 
 @autoinject()
@@ -8,21 +7,23 @@ export class App {
 
   router: Router;
 
-
   constructor(
-    //private statisticValues: StatisticValues,
     private _dataLoader : DataLoader
   ) {
 
   }
 
   attached() {
-    this._dataLoader.getClass("5f739c68ddc20235940ecbbc").then(value => {
-      console.log("loaded aggregated class context", value);
+    this._dataLoader.getExecutionAggregate().then(executionContextAggregate => {
+      console.log(executionContextAggregate);
+      executionContextAggregate.testContexts.forEach(testContext => {
+        testContext.classContextIds.forEach(classContextId => {
+          this._dataLoader.getClassContextAggregate(classContextId).then(classContextAggregate => {
+            console.log(classContextAggregate);
+          });
+        })
+      });
     });
-    // this.statisticValues.createMergeClassStatistics().then(value => {
-    //   console.log(value);
-    // })
   }
 
 

@@ -1,11 +1,9 @@
 import {autoinject} from 'aurelia-framework';
 import {HttpClient} from 'aurelia-fetch-client';
 import {data} from "services/report-model";
-import ExecutionContext = data.ExecutionContext;
-import SuiteContext = data.SuiteContext;
-import TestContext = data.TestContext;
-import MethodContext = data.MethodContext;
 import ClassContextAggregate = data.ClassContextAggregate;
+import ExecutionAggregate = data.ExecutionAggregate;
+import File = data.File;
 
 
 /**
@@ -47,38 +45,24 @@ export class DataLoader {
     });
   }
 
-  getExecution(): Promise<ExecutionContext> {
+  getExecutionAggregate(): Promise<ExecutionAggregate> {
     return this.get("model/execution")
       .then(response => {
-        return this.responseToProtobufJSMessage(response, ExecutionContext)
+        return this.responseToProtobufJSMessage(response, ExecutionAggregate)
       })
   }
 
-  getSuite(apath : string): Promise<SuiteContext> {
-    return this.get("model/suites/"+apath)
-      .then(response => {
-        return this.responseToProtobufJSMessage(response, SuiteContext)
-      })
-  }
-
-  getTest(apath : string): Promise<TestContext> {
-    return this.get("model/tests/"+apath)
-      .then(response => {
-        return this.responseToProtobufJSMessage(response, TestContext)
-      })
-  }
-
-  getClass(id : string): Promise<ClassContextAggregate> {
+  getClassContextAggregate(id : string): Promise<ClassContextAggregate> {
     return this.get("model/classes/"+id)
       .then(response => {
         return this.responseToProtobufJSMessage(response, ClassContextAggregate)
       })
   }
 
-  getMethod(apath : string): Promise<MethodContext> {
-    return this.get("model/methods/"+apath)
+  getFile(id : string): Promise<File> {
+    return this.get("model/files/"+id)
       .then(response => {
-        return this.responseToProtobufJSMessage(response, MethodContext)
+        return this.responseToProtobufJSMessage(response, File)
       })
   }
 }

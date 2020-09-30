@@ -19,6 +19,11 @@ public final class Report {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_ClassContextAggregate_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_data_ExecutionAggregate_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_data_ExecutionAggregate_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -31,7 +36,11 @@ public final class Report {
       "\n\014report.proto\022\004data\032\017framework.proto\"p\n" +
       "\025ClassContextAggregate\022)\n\rclass_context\030" +
       "\001 \001(\0132\022.data.ClassContext\022,\n\017method_cont" +
-      "exts\030\002 \003(\0132\023.data.MethodContextB2\n.eu.ts" +
+      "exts\030\002 \003(\0132\023.data.MethodContext\"\235\001\n\022Exec" +
+      "utionAggregate\0221\n\021execution_context\030\001 \001(" +
+      "\0132\026.data.ExecutionContext\022*\n\016suite_conte" +
+      "xts\030\002 \003(\0132\022.data.SuiteContext\022(\n\rtest_co" +
+      "ntexts\030\003 \003(\0132\021.data.TestContextB2\n.eu.ts" +
       "ystems.mms.tic.testframework.report.mode" +
       "lP\001b\006proto3"
     };
@@ -46,6 +55,12 @@ public final class Report {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_data_ClassContextAggregate_descriptor,
         new java.lang.String[] { "ClassContext", "MethodContexts", });
+    internal_static_data_ExecutionAggregate_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_data_ExecutionAggregate_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_data_ExecutionAggregate_descriptor,
+        new java.lang.String[] { "ExecutionContext", "SuiteContexts", "TestContexts", });
     eu.tsystems.mms.tic.testframework.report.model.Framework.getDescriptor();
   }
 

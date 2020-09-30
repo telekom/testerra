@@ -1,6 +1,7 @@
 import {autoinject, PLATFORM} from "aurelia-framework";
 import {Router, RouterConfiguration} from 'aurelia-router';
 import {DataLoader} from "./services/data-loader";
+import {StatusConverter} from "./services/status-converter";
 
 @autoinject()
 export class App {
@@ -8,7 +9,8 @@ export class App {
   router: Router;
 
   constructor(
-    private _dataLoader : DataLoader
+    private _dataLoader : DataLoader,
+    private _statusConverter : StatusConverter
   ) {
 
   }

@@ -57,13 +57,13 @@ export class StatusConverter {
 
   groupStatisticStatus(status: ResultStatusType): ResultStatusType {
     switch (status) {
-      // case ResultStatusType.FAILED_EXPECTED:
-      // case ResultStatusType.FAILED_RETRIED:
+      case ResultStatusType.FAILED_EXPECTED:
+      case ResultStatusType.FAILED_RETRIED:
       case ResultStatusType.FAILED_MINOR:
       case ResultStatusType.FAILED:
         return ResultStatusType.FAILED;
-      //case ResultStatusType.MINOR_RETRY:
-      //case ResultStatusType.PASSED_RETRY:
+      case ResultStatusType.MINOR_RETRY:
+      case ResultStatusType.PASSED_RETRY:
       case ResultStatusType.MINOR:
       case ResultStatusType.PASSED:
         return ResultStatusType.PASSED;

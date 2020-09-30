@@ -17,7 +17,7 @@ dependencies {
     implementation opencv
 
     // <core>
-    // This should be part of driver-ui or core
+    // Todo: Solve this circular dependency when moving to module: driver-ui
     compile 'org.seleniumhq.selenium:selenium-java:' + seleniumVersion
     // </core>
 

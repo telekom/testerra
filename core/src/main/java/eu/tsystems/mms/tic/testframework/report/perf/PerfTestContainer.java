@@ -22,10 +22,14 @@
  package eu.tsystems.mms.tic.testframework.report.perf;
 
 import eu.tsystems.mms.tic.testframework.internal.TimingInfo;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
-
-import java.util.*;
 
 public final class PerfTestContainer {
 
@@ -171,25 +175,4 @@ public final class PerfTestContainer {
 //        PerfTestReportUtils.saveTestConfigs();
 //    }
 
-    public static void prepareMeasurementsForReport() {
-
-        Map<String, Map<Long, List<TimingInfo>>> pageLoadInfosPerTestMethod = PerfTestContainer
-                .getPageLoadInfosPerTestMethod();
-
-
-        // 1. sort the Map per method like in perftest--> all PageLoadInfos that occured are sorted
-        Set<String> testMethodNames = pageLoadInfosPerTestMethod.keySet();
-
-        for(String testMethodName : testMethodNames) {
-            Map<Long, List<TimingInfo>> pageLoadInfoPerTestMethod = pageLoadInfosPerTestMethod.get(testMethodName);
-            Map<Long, List<TimingInfo>> sortedPageLoadInfos = PerfTestReportUtils.sortMap(pageLoadInfoPerTestMethod);
-            pageLoadInfosPerTestMethod.put(testMethodName, sortedPageLoadInfos);
-        }
-
-        // 2. create Map per Action --> the List of pageLoadInfos is sorted implicitly
-        PerfTestReportUtils.createPageLoadInfosOfAllActions(pageLoadInfosPerTestMethod);
-
-        PerfTestReportUtils.generateAverageMinMaxPerAction();
-
-    }
 }

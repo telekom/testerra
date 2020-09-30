@@ -22,11 +22,7 @@
 
 package eu.tsystems.mms.tic.testframework.report;
 
-import static eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController.getCurrentExecutionContext;
-
-
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -35,15 +31,14 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.ITestResult;
 import org.testng.SkipException;
+import static eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController.getCurrentExecutionContext;
 
 public class TestStatusController {
 
@@ -68,25 +63,25 @@ public class TestStatusController {
     private TestStatusController() {
 
     }
-
-    public static JSONObject createStatusJSON() {
-        Map<String, Object> statusMap = new HashMap<>();
-
-        statusMap.put("TestsSuccessful", testsSuccessful);
-        statusMap.put("TestsSkipped", testsSkipped);
-        statusMap.put("TestsFailed", testsFailed);
-
-        statusMap.put("FailureCorridorActive", Flags.FAILURE_CORRIDOR_ACTIVE);
-        statusMap.put("DryRun", Flags.DRY_RUN);
-
-        statusMap.put("Status", getCurrentExecutionContext().getStatus());
-        statusMap.put("StatusBool", getCurrentExecutionContext().getStatus() == Status.PASSED);
-
-        statusMap.put("RunCfg", getCurrentExecutionContext().runConfig.RUNCFG);
-        statusMap.put("Date", getCurrentExecutionContext().startTime.toString());
-
-        return new JSONObject(statusMap);
-    }
+//
+//    public static JSONObject createStatusJSON() {
+//        Map<String, Object> statusMap = new HashMap<>();
+//
+//        statusMap.put("TestsSuccessful", testsSuccessful);
+//        statusMap.put("TestsSkipped", testsSkipped);
+//        statusMap.put("TestsFailed", testsFailed);
+//
+//        statusMap.put("FailureCorridorActive", Flags.FAILURE_CORRIDOR_ACTIVE);
+//        statusMap.put("DryRun", Flags.DRY_RUN);
+//
+//        statusMap.put("Status", getCurrentExecutionContext().getStatus());
+//        statusMap.put("StatusBool", getCurrentExecutionContext().getStatus() == Status.PASSED);
+//
+//        statusMap.put("RunCfg", getCurrentExecutionContext().runConfig.RUNCFG);
+//        statusMap.put("Date", getCurrentExecutionContext().startTime.toString());
+//
+//        return new JSONObject(statusMap);
+//    }
 
     public static synchronized void setMethodStatus(MethodContext methodContext, Status status, Method method) {
         /*

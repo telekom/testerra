@@ -15,7 +15,11 @@ def opencv = [
 dependencies {
     compile core
     implementation opencv
+
+    // <core>
+    // This should be part of driver-ui or core
     compile 'org.seleniumhq.selenium:selenium-java:' + seleniumVersion
+    // </core>
 
     // <LayoutCheck AnnotationContainer>
     implementation 'com.google.code.gson:gson:2.8.6'

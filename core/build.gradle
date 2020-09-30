@@ -3,15 +3,25 @@ import org.gradle.internal.jvm.Jvm
 
 dependencies {
     compile core_interop
-    implementation 'org.apache.poi:poi-ooxml:3.17'
+
+    // <PdfUtils>
     implementation 'org.apache.pdfbox:pdfbox:1.8.10'
+    // </PdfUtils>
+
+    // <HttpClientUtils>
     implementation 'org.apache.httpcomponents:httpcore:4.4.13'
     implementation 'org.apache.httpcomponents:httpclient:4.5.12'
+    // </HttpClientUtils>
+
+    // <RESTUtils>
     implementation 'com.sun.jersey:jersey-client:1.19.3'
+    // </RESTUtils
+
     implementation "com.google.guava:guava:${guavaVersion}"
 
     // <XML>
     // These dependencies are exposed by XMLUtils.java
+    implementation 'org.apache.poi:poi-ooxml:3.17'
     compile 'org.jsoup:jsoup:1.7.2'
     compile 'org.jdom:jdom2:2.0.6'
     compile "javax.xml.bind:jaxb-api:2.3.0"
@@ -21,10 +31,17 @@ dependencies {
     compile "xerces:xercesImpl:2.8.0"
     // </XML
 
+    // <CSVTestDataReader>
     implementation 'com.opencsv:opencsv:3.9'
+    // </CSVTestDataReader>
+
     implementation 'nl.basjes.parse.useragent:yauaa:4.5'
-    implementation 'org.json:json:20140107'
-    implementation 'org.reflections:reflections:0.9.12'
+    //implementation 'org.reflections:reflections:0.9.12'
+
+    // <ExceptionUtils>
+    // Comes already implicit from reflections
+    implementation 'org.javassist:javassist:3.20.0-GA'
+    // </ExceptionUtils>
 }
 
 processResources {

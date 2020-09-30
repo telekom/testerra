@@ -4,5 +4,8 @@
     Started: ${executionContext.contextValues.startTime|dateFormat:"LLL"}<br>
     Ended: ${executionContext.contextValues.endTime|dateFormat:"LLL"}<br>
   </p>
+  <p>
+    Passed: ${_testsPassed}
+  </p>
   <apex-chart class="mx-auto" data.bind="_chartData"></apex-chart>
 </template>

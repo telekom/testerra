@@ -16,16 +16,7 @@ export class App {
   }
 
   attached() {
-    this._dataLoader.getExecutionAggregate().then(executionContextAggregate => {
-      console.log(executionContextAggregate);
-      executionContextAggregate.testContexts.forEach(testContext => {
-        testContext.classContextIds.forEach(classContextId => {
-          this._dataLoader.getClassContextAggregate(classContextId).then(classContextAggregate => {
-            console.log(classContextAggregate);
-          });
-        })
-      });
-    });
+
   }
 
 

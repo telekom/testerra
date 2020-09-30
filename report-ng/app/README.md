@@ -17,3 +17,4 @@ npm run proto
 - Charts Framework: https://apexcharts.com/
 - Time and Date: https://momentjs.com/
 - Duration Format: https://github.com/jsmreese/moment-duration-format
+- Aurelia Value Converters: https://aurelia.io/docs/binding/value-converters#converter-parameters

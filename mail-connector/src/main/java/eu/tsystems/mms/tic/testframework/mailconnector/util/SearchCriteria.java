@@ -25,6 +25,9 @@ package eu.tsystems.mms.tic.testframework.mailconnector.util;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 
 @Deprecated
+/**
+ * @deprecated Use {@link SearchTerm} instead
+ */
 public class SearchCriteria {
 
     private final SearchCriteriaType searchCriteriaType;

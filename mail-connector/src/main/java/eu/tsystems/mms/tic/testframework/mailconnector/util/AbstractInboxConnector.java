@@ -92,7 +92,8 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      *
      * @param searchCriterias The subject which message should contain.
      * @return The message.
-     * @throws TesterraSystemException thrown if an error by waiting for the message occurs.
+     *
+     * @throws AddressException thrown if an error by waiting for the message occurs.
      */
     @Deprecated
     public List<Email> waitForMails(List<SearchCriteria> searchCriterias) throws AddressException {
@@ -105,7 +106,6 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      *
      * @param searchTerm The criterias which the message should contain.
      * @return The message.
-     * @throws TesterraSystemException thrown if an error by waiting for the message occurs.
      */
     public List<Email> waitForMails(final SearchTerm searchTerm) {
 
@@ -130,7 +130,8 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      * @param maxReadTries
      * @param pollingTimerSeconds
      * @return The message.
-     * @throws TesterraSystemException thrown if an error by waiting for the message occurs.
+     *
+     * @throws AddressException thrown if an error by waiting for the message occurs.
      */
     @Deprecated
     public List<Email> waitForMails(List<SearchCriteria> searchCriterias, int maxReadTries, int pollingTimerSeconds) throws AddressException {
@@ -140,14 +141,15 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
 
     /**
      * translate Array of SearchCriteria to Array of SearchTerms
-     * @param messagesCriterias
+     * @param searchCriterias
      * @return
-     * @throws AddressException
+     *
+     * @throws AddressException thrown if an error occurred in the translation of the searchCriterias to SearchTerm.
      */
-    private SearchTerm[] getSearchTermsFromSearchCriterias(final SearchCriteria[] messagesCriterias) throws AddressException {
-        SearchTerm[] searchTerms = new SearchTerm[messagesCriterias.length];
-        for (int i = 0; i < messagesCriterias.length; i++) {
-            searchTerms[i] = translateSearchCriterias(Collections.singletonList(messagesCriterias[i]));
+    private SearchTerm[] getSearchTermsFromSearchCriterias(final SearchCriteria[] searchCriterias) throws AddressException {
+        SearchTerm[] searchTerms = new SearchTerm[searchCriterias.length];
+        for (int i = 0; i < searchCriterias.length; i++) {
+            searchTerms[i] = translateSearchCriterias(Collections.singletonList(searchCriterias[i]));
         }
 
         return searchTerms;
@@ -157,7 +159,8 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      * translate a given List of SearchCriteria to a SearchTerm
      * @param searchCriterias
      * @return
-     * @throws AddressException
+     *
+     * @throws AddressException thrown if an error occurred in the translation of the searchCriterias to SearchTerm.
      */
     private SearchTerm translateSearchCriterias(final List<SearchCriteria> searchCriterias) throws AddressException {
 
@@ -221,8 +224,6 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      * @param pollingTimerSeconds
      *
      * @return The message.
-     *
-     * @throws TesterraSystemException thrown if an error by waiting for the message occurs.
      */
     public List<Email> waitForMails(final SearchTerm searchTerm, int maxReadTries, int pollingTimerSeconds) {
         return waitForMails(searchTerm, maxReadTries, pollingTimerSeconds, getInboxFolder());
@@ -245,10 +246,10 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
         return out;
     }
 
-    private List<MimeMessage> pWaitForMessage(final SearchTerm searchTerm, int maxReadTries, int pollingTimerSeconds, final String foldername) throws TesterraSystemException {
+    private List<MimeMessage> pWaitForMessage(final SearchTerm searchTerm, int maxReadTries, int pollingTimerSeconds, final String foldername) {
 
         if (searchTerm == null) {
-            throw new TesterraSystemException("No SearchTerm given. Can not filter for messages.");
+            throw new RuntimeException("No SearchTerm given. Can not filter for messages.");
         }
 
         Store store = null;
@@ -288,7 +289,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
             }
         }  catch (final Exception e) {
             logger.error("Error searching for message", e);
-            throw new TesterraSystemException(e);
+            throw new RuntimeException(e);
         } finally {
             if (store != null) {
                 try {
@@ -299,7 +300,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
             }
         }
 
-        throw new TesterraSystemException(String.format("No messages found after %s seconds.",
+        throw new RuntimeException(String.format("No messages found after %s seconds.",
                 pollingTimerSeconds * maxReadTries));
 
     }
@@ -308,10 +309,8 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      * Get the message count from pop3 server.
      *
      * @return The number of new messages.
-     *
-     * @throws TesterraSystemException thrown if message count can't be ascertained.
      */
-    public int getMessageCount() throws TesterraSystemException {
+    public int getMessageCount() {
 
         return this.pGetMessageCount();
     }
@@ -320,10 +319,8 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      * Get the message count from pop3 server.
      *
      * @return The number of new messages.
-     *
-     * @throws TesterraSystemException thrown if message count can't be ascertained.
      */
-    private int pGetMessageCount() throws TesterraSystemException {
+    private int pGetMessageCount() {
 
         Store store;
         int nrOfMessages;
@@ -337,10 +334,10 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
             store.close();
         } catch (final NoSuchProviderException e) {
             logger.error(e.getMessage());
-            throw new TesterraSystemException(e);
+            throw new RuntimeException(e);
         } catch (final MessagingException e) {
             logger.error("Error in getMessageCount", e);
-            throw new TesterraSystemException(e);
+            throw new RuntimeException(e);
         }
 
         return nrOfMessages;
@@ -350,10 +347,8 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      * Get all messages.
      *
      * @return An array containing the messages.
-     *
-     * @throws TesterraSystemException thrown if messages couldn't read.
      */
-    public MimeMessage[] getMessages() throws TesterraSystemException {
+    public MimeMessage[] getMessages() {
 
         return this.pGetMessages();
     }
@@ -362,10 +357,8 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      * Get all messages.
      *
      * @return An array containing the messages.
-     *
-     * @throws TesterraSystemException thrown if messages couldn't read.
      */
-    private MimeMessage[] pGetMessages() throws TesterraSystemException {
+    private MimeMessage[] pGetMessages() {
 
         Store store;
         ArrayList<MimeMessage> mimes;
@@ -387,7 +380,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
             // folder.close(true); // leads to error "folder not open" when reading message content
             store.close();
         } catch (final MessagingException e) {
-            throw new TesterraSystemException(e);
+            throw new RuntimeException(e);
         }
         return mimes.toArray(new MimeMessage[mimes.size()]);
     }
@@ -401,11 +394,9 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      * @param messageId     The id of the message. Can be null.
      *
      * @return true if message was deleted, else false
-     *
-     * @throws TesterraSystemException thrown if an message can't deleted.
      */
     public boolean deleteMessage(final String recipient, final Message.RecipientType recipientType,
-                                 final String subject, final String messageId) throws TesterraSystemException {
+                                 final String subject, final String messageId) {
 
         return this.pDeleteMessage(recipient, recipientType, subject, messageId);
     }
@@ -428,6 +419,8 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      *            message
      *
      * @return true if messages were deleted
+     *
+     * @throws AddressException thrown if an error occurred in the translation of the searchCriterias to SearchTerm.
      */
     @Deprecated
     public boolean deleteMessage(List<List<SearchCriteria>> messagesCriterias) throws AddressException {
@@ -465,9 +458,8 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      * delete message by given SearchTerm in the InboxFolder
      * @param searchTerm
      * @return
-     * @throws TesterraSystemException
      */
-    public boolean deleteMessage(final SearchTerm searchTerm) throws TesterraSystemException {
+    public boolean deleteMessage(final SearchTerm searchTerm) {
         return this.pDeleteMessage(searchTerm);
     }
 
@@ -476,9 +468,8 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      * @param searchTerm
      * @param folderName
      * @return
-     * @throws TesterraSystemException
      */
-    public boolean deleteMessage(final SearchTerm searchTerm, final String folderName) throws TesterraSystemException {
+    public boolean deleteMessage(final SearchTerm searchTerm, final String folderName) {
         return this.pDeleteMessage(searchTerm, folderName);
     }
 
@@ -512,14 +503,16 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      * move messages by given search criterias into folder with given name.
      *
      * @param targetFolder Name of folder to move into.
-     * @param messagesCriterias List of search criteria list - inner list represents searchcriterias to identify one
+     * @param searchCriterias List of search criteria list - inner list represents searchcriterias to identify one
      *            message
      *
      * @return count of moved mails.
+     *
+     * @throws AddressException thrown if an error occurred in the translation of the searchCriterias to SearchTerm.
      */
-    public int moveMessage(String targetFolder, SearchCriteria... messagesCriterias) throws AddressException {
+    public int moveMessage(String targetFolder, SearchCriteria... searchCriterias) throws AddressException {
 
-        final SearchTerm[] searchTerms = getSearchTermsFromSearchCriterias(messagesCriterias);
+        final SearchTerm[] searchTerms = getSearchTermsFromSearchCriterias(searchCriterias);
         return moveMessage(targetFolder, searchTerms);
     }
 
@@ -559,7 +552,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
 
         } catch (final MessagingException e) {
             logger.error(e.getMessage());
-            throw new TesterraSystemException(e);
+            throw new RuntimeException(e);
         }
 
         return count;
@@ -618,11 +611,11 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
         return pDeleteMessage(null);
     }
 
-    private boolean pDeleteMessage(final SearchTerm searchTerm) throws TesterraSystemException {
+    private boolean pDeleteMessage(final SearchTerm searchTerm) {
         return pDeleteMessage(searchTerm, getInboxFolder());
     }
 
-    private boolean pDeleteMessage(final SearchTerm searchTerm, final String folderName) throws TesterraSystemException {
+    private boolean pDeleteMessage(final SearchTerm searchTerm, final String folderName) {
 
         boolean deleted = false;
 
@@ -662,7 +655,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
 
         } catch (final MessagingException e) {
             logger.error(e.getMessage());
-            throw new TesterraSystemException(e);
+            throw new RuntimeException(e);
         }
         return deleted;
     }
@@ -676,12 +669,10 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      * @param messageId     The id of the message. Can be null.
      *
      * @return true if message was deleted, else false
-     *
-     * @throws TesterraSystemException thrown if an message can't deleted.
      */
     @Deprecated
     private boolean pDeleteMessage(final String recipient, final Message.RecipientType recipientType,
-                                   final String subject, final String messageId) throws TesterraSystemException {
+                                   final String subject, final String messageId) {
 
         boolean deleted = false;
 
@@ -705,12 +696,9 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
             folder.close(true);
             store.close();
 
-        } catch (final NoSuchProviderException e) {
-            logger.error(e.getMessage());
-            throw new TesterraSystemException(e);
         } catch (final MessagingException e) {
             logger.error(e.getMessage());
-            throw new TesterraSystemException(e);
+            throw new RuntimeException(e);
         }
         return deleted;
     }
@@ -725,15 +713,13 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      * @param messageId     .
      *
      * @return True if message was found and deleted, else false.
-     *
-     * @throws TesterraSystemException If some error by reading the messages occurred.
      */
     private boolean compareMessageAndDelete(final Message message, final String recipient,
                                             final Message.RecipientType recipientType, final String subject,
-                                            final String messageId) throws TesterraSystemException {
+                                            final String messageId) {
 
         try {
-            boolean found = false;
+            boolean found;
 
             if ((subject == null || message.getSubject() == null) && recipient != null) {
                 // compare by recipient
@@ -776,7 +762,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
             return false;
         } catch (final MessagingException e) {
             logger.error("Error handling message", e);
-            throw new TesterraSystemException(e);
+            throw new RuntimeException(e);
         }
     }
 }

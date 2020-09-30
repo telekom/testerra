@@ -1,4 +1,8 @@
 <template>
-  <h1>${message}</h1>
+  <h1>${_executionContext.contextValues.name}</h1>
+  <p>
+    Started: ${executionContext.contextValues.startTime|dateFormat:"LLL"}<br>
+    Ended: ${executionContext.contextValues.endTime|dateFormat:"LLL"}<br>
+  </p>
   <apex-chart class="mx-auto" data.bind="_chartData"></apex-chart>
 </template>

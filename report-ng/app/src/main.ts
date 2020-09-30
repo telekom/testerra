@@ -5,9 +5,6 @@ import {PLATFORM} from 'aurelia-pal';
 export function configure(aurelia: Aurelia) {
   aurelia.use
     .standardConfiguration()
-    .feature(PLATFORM.moduleName('resources/index'));
-  aurelia
-    .use
     .plugin(PLATFORM.moduleName('@aurelia-mdc-web/base'))
     .plugin(PLATFORM.moduleName('@aurelia-mdc-web/button'))
     .plugin(PLATFORM.moduleName('@aurelia-mdc-web/data-table'))
@@ -24,6 +21,7 @@ export function configure(aurelia: Aurelia) {
     .plugin(PLATFORM.moduleName('@aurelia-mdc-web/text-field'))
     .globalResources([
       PLATFORM.moduleName('components/apex-chart/apex-chart'),
+      PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/date-format-value-converter'),
     ])
 
   aurelia.use.developmentLogging(environment.debug ? 'debug' : 'warn');

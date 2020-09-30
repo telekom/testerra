@@ -7,6 +7,7 @@
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true, // Required for momentjs
     "lib": [
       "es2017",
       "dom"

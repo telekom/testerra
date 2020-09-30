@@ -1,15 +1,24 @@
 // @ts-ignore
-import ApexCharts from 'apexcharts'
+import {DataLoader} from "../services/data-loader";
+import {data} from "../services/report-model";
+import {autoinject} from "aurelia-framework";
+import IExecutionContext = data.IExecutionContext;
 
+@autoinject()
 export class Dashboard {
-  message: string;
   _chartData : object;
-  constructor() {
-    this.message = 'This is the home URL and therefore loads the Dashboard component. More routes are implemented, take a look around. The old testing site can be found in >testing';
+  _executionContext:IExecutionContext;
 
-
+  constructor(
+    private _dataLoader:DataLoader
+  ) {
   }
   attached() {
+
+    this._dataLoader.getExecutionAggregate().then(executionAggregate => {
+      this._executionContext = executionAggregate.executionContext;
+    })
+
     this._chartData = {
       chart: {
         type: 'bar'

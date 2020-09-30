@@ -21,8 +21,6 @@ dependencies {
     compile "xerces:xercesImpl:2.8.0"
     // </XML
 
-    implementation 'org.codehaus.plexus:plexus-utils:2.1'
-
     implementation 'com.opencsv:opencsv:3.9'
     implementation 'nl.basjes.parse.useragent:yauaa:4.5'
     implementation 'org.json:json:20140107'

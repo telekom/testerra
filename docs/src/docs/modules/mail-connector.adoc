@@ -65,7 +65,7 @@ If you want to use an SSL-encrypted connection, you  need to set `SMTP_SSL_ENABL
 The actual connection to the mail server is implicitly opened within each `MailConnector` class.
 
 == POP3MailConnector
-The `POP3MailConnector` provides access to a POP3 server. Emails are read and processed by using methods of the superclass `AbstractInboxConnector`.
+The `POP3MailConnector` provides access to a POP3 server. Emails are read and processed by using methods of the superclass `AbstractInboxConnector`. Specific mails can be extracted with serverside filtering by matching given criteria expressed with SearchTerm (see https://javaee.github.io/javaee-spec/javadocs/javax/mail/search/package-summary.html[JavaMail API])
 
 .Reading and Deleting Mails
 [source,java]

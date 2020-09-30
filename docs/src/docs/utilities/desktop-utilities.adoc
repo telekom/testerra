@@ -1,0 +1,20 @@
+= Desktop WebDriver utilities
+
+This utility class provides some additional methods to interact with web elements.
+
+== JavaScript based interactions
+
+With the help of JavaScript you can interact with elements if the default Selenium way is not possible (e.g. hidden elements).
+
+.A short clickJS example
+[source,java]
+----
+GuiElement element = new GuiElement(driver, By.id("label"));
+DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
+
+utils.clickJS(element);
+----
+
+
+
+== Other interactions

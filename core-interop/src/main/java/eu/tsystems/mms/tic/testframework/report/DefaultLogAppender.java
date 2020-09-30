@@ -21,12 +21,12 @@
  */
  package eu.tsystems.mms.tic.testframework.report;
 
-import org.apache.logging.log4j.Level;
+import java.io.OutputStream;
+import java.io.Serializable;
 import org.apache.logging.log4j.core.Appender;
 import org.apache.logging.log4j.core.Core;
 import org.apache.logging.log4j.core.Filter;
 import org.apache.logging.log4j.core.Layout;
-import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.appender.AbstractOutputStreamAppender;
 import org.apache.logging.log4j.core.appender.ManagerFactory;
 import org.apache.logging.log4j.core.config.Property;
@@ -36,13 +36,10 @@ import org.apache.logging.log4j.core.layout.PatternLayout;
 import org.apache.logging.log4j.core.util.CloseShieldOutputStream;
 import org.apache.logging.log4j.core.util.NullOutputStream;
 
-import java.io.OutputStream;
-import java.io.Serializable;
-
 /**
  * BaseLoggingActor allows to use log4j logs for HTML Reports.
  */
-@Plugin(name = "DefaultLog", category = Core.CATEGORY_NAME, elementType = Appender.ELEMENT_TYPE, printObject = true)
+@Plugin(name = "TesterraLogAppender", category = Core.CATEGORY_NAME, elementType = Appender.ELEMENT_TYPE, printObject = true)
 public class DefaultLogAppender extends AbstractOutputStreamAppender<DefaultLogAppenderOutputStreamManager> implements TesterraLogger {
 
     private LogFormatter formatter = new DefaultLogFormatter();
@@ -67,25 +64,25 @@ public class DefaultLogAppender extends AbstractOutputStreamAppender<DefaultLogA
      *
      * @param event The event to be logged.
      */
-    @Override
-    public void append(final LogEvent event) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(this.formatter.format(event));
-
-        if (event.getThrown() != null) {
-            for (StackTraceElement ste : event.getThrown().getStackTrace()) {
-                sb.append("\n");
-                sb.append(ste);
-            }
-        }
-
-        // append for console
-        if (event.getLevel().isMoreSpecificThan(Level.ERROR)) {
-            System.err.println(sb.toString());
-        } else {
-            System.out.println(sb.toString());
-        }
-    }
+    //@Override
+//    public void append(final LogEvent event) {
+//        StringBuilder sb = new StringBuilder();
+//        sb.append(this.formatter.format(event));
+//
+//        if (event.getThrown() != null) {
+//            for (StackTraceElement ste : event.getThrown().getStackTrace()) {
+//                sb.append("\n");
+//                sb.append(ste);
+//            }
+//        }
+//
+//        // append for console
+//        if (event.getLevel().isMoreSpecificThan(Level.ERROR)) {
+//            System.err.println(sb.toString());
+//        } else {
+//            System.out.println(sb.toString());
+//        }
+//    }
 
     public static class Builder<B extends DefaultLogAppender.Builder<B>> extends AbstractOutputStreamAppender.Builder<B>
             implements org.apache.logging.log4j.core.util.Builder<DefaultLogAppender> {

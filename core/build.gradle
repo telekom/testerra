@@ -35,7 +35,11 @@ dependencies {
     implementation 'com.opencsv:opencsv:3.9'
     // </CSVTestDataReader>
 
+    // <YauaaBrowserInformation>
+    // Should be moved to driver-ui
     implementation 'nl.basjes.parse.useragent:yauaa:4.5'
+    // </YauaaBrowserInformation>
+
     //implementation 'org.reflections:reflections:0.9.12'
 
     // <ExceptionUtils>

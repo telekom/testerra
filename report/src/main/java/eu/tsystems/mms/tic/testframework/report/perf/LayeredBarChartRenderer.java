@@ -21,6 +21,11 @@
  */
  package eu.tsystems.mms.tic.testframework.report.perf;
 
+import java.awt.GradientPaint;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.Stroke;
+import java.awt.geom.Rectangle2D;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.entity.EntityCollection;
@@ -31,9 +36,6 @@ import org.jfree.chart.renderer.category.LayeredBarRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.ui.GradientPaintTransformer;
 import org.jfree.ui.RectangleEdge;
-
-import java.awt.*;
-import java.awt.geom.Rectangle2D;
 
 public class LayeredBarChartRenderer extends LayeredBarRenderer {
 

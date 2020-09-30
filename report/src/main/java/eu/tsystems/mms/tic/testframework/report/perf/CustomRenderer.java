@@ -21,10 +21,10 @@
  */
  package eu.tsystems.mms.tic.testframework.report.perf;
 
+import java.awt.Color;
+import java.awt.Paint;
 import org.jfree.chart.renderer.category.BarRenderer3D;
 import org.jfree.data.category.CategoryDataset;
-
-import java.awt.*;
 
 
 /**

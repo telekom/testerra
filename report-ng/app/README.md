@@ -10,3 +10,8 @@ npm start
 ```bash
 npm run proto
 ```
+
+## References
+
+- Material Framework: https://github.com/aurelia-ui-toolkits/aurelia-mdc-web
+- Charts Framework: https://apexcharts.com/

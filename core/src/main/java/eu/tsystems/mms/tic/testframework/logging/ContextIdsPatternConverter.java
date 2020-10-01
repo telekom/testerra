@@ -17,48 +17,46 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
-package eu.tsystems.mms.tic.testframework.report;
+
+package eu.tsystems.mms.tic.testframework.logging;
 
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import org.apache.logging.log4j.CloseableThreadContext;
-import org.apache.logging.log4j.core.Layout;
 import org.apache.logging.log4j.core.LogEvent;
-import org.apache.logging.log4j.core.layout.PatternLayout;
+import org.apache.logging.log4j.core.config.plugins.Plugin;
+import org.apache.logging.log4j.core.pattern.ConverterKeys;
+import org.apache.logging.log4j.core.pattern.LogEventPatternConverter;
+import org.apache.logging.log4j.core.pattern.PatternConverter;
 
 /**
- * Adds {@link SessionContext} and {@link MethodContext} ids to log message
+ * Replaces %contextIds by [MCID:xxx][SID:xxx] in the log pattern layout
+ * @todo Try to find a way to initialize this programmatically
  * @author Mike Reiche
  */
-public class ContextLogFormatter implements LogFormatter {
-    private final Layout layout;
-
-    {
-        PatternLayout.Builder builder = PatternLayout.newBuilder();
-        builder.withPattern("%d{dd.MM.yyyy HH:mm:ss.SSS} [%t][%p]%X{ids}: %c{2} - %m");
-        layout = builder.build();
+@Plugin(name = "ContextIdsPatternConverter", category = PatternConverter.CATEGORY)
+@ConverterKeys({"contextIds"})
+public class ContextIdsPatternConverter extends LogEventPatternConverter {
+    protected ContextIdsPatternConverter() {
+        super( "ContextIdsPatternConverter", null );
     }
 
     @Override
-    public String format(LogEvent event) {
-        StringBuilder sb = new StringBuilder();
-
+    public void format(LogEvent event, StringBuilder toAppendTo ) {
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         if (methodContext != null) {
-            sb.append("[MCID:").append(methodContext.id).append("]");
+            toAppendTo.append("[MCID:").append(methodContext.id).append("]");
         }
 
         // enhance with method context id
         SessionContext currentSessionContext = ExecutionContextController.getCurrentSessionContext();
         if (currentSessionContext != null) {
-            sb.append("[SCID:").append(currentSessionContext.id).append("]");
+            toAppendTo.append("[SCID:").append(currentSessionContext.id).append("]");
         }
+    }
 
-        try (final CloseableThreadContext.Instance ctc = CloseableThreadContext.put("ids", sb.toString())) {
-            return new String(layout.toByteArray(event));
-        }
+    public static ContextIdsPatternConverter newInstance(String[] options) {
+        return new ContextIdsPatternConverter();
     }
 }

@@ -33,7 +33,7 @@ The following methods are supported:
 
 See <<Mouse over>> for more details about the `mouseOverAbsolute2Axis` method.
 
-== `mouseOver` vs `mouseOverAbsolute2Axis`
+== `mouseOver` vs. `mouseOverAbsolute2Axis`
 
 The `mouseOverAbsolute2Axis` method does not move the mouse pointer relativly from the last position.
 

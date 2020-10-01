@@ -14,7 +14,7 @@ element.doubleClick();
 element.rightClick();
 ----
 
-NOTE: If you have troubles using these methods, take a look to the fallback solution <<Desktop WebDriver utilities>>
+NOTE: If you have troubles using these methods, take a look to the fallback solution <<Desktop WebDriver utilities>>.
 
 == Enter text
 
@@ -93,7 +93,7 @@ GuiElement element = new GuiElement(driver, By.id("label"));
 element.mouseOver();
 ----
 
-NOTE: If you have troubles using this method, take a look to the fallback solution <<Desktop WebDriver utilities>>
+NOTE: If you have troubles using this method, take a look to the fallback solution <<Desktop WebDriver utilities>>.
 
 == Drag and drop actions
 

@@ -4,11 +4,16 @@
     Started: ${executionContext.contextValues.startTime|dateFormat:"LLL"}<br>
     Ended: ${executionContext.contextValues.endTime|dateFormat:"LLL"}<br>
   </p>
-  <p>
-    Passed: ${_testsPassed}
-    Failed: ${_testsFailed}
-    Skipped: ${_testsSkipped}
-  </p>
-
+  <div class="demo-container">
+    <button mdc-button outlined>
+      <mdc-icon>favorite</mdc-icon> ${_testsPassed} Passed
+    </button>
+    <button mdc-button outlined>
+      <mdc-icon>favorite</mdc-icon>  ${_testsFailed} Skipped
+    </button>
+    <button mdc-button outlined>
+      <mdc-icon>favorite</mdc-icon>  ${_testsSkipped} failed
+    </button>
+  </div>
   <apex-chart data.bind="_apexDonutOptions" id="donut-chart"></apex-chart>-
 </template>

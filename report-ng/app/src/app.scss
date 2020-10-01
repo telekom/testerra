@@ -35,6 +35,7 @@
 @use '@material/top-app-bar/mdc-top-app-bar';
 @use '@material/top-app-bar';
 @use '@material/icon-button/mdc-icon-button';
+
 .button-primary {
   @include button.filled-accessible(theme.$primary);
 }

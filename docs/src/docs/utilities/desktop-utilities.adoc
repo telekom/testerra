@@ -2,9 +2,16 @@
 
 This utility class provides some additional methods to interact with web elements.
 
-== JavaScript based interactions
+All methods using JavaScript snippets to execute an action instead the Selenium way.
 
-With the help of JavaScript you can interact with elements if the default Selenium way is not possible (e.g. hidden elements).
+[IMPORTANT]
+====
+Please consider this utility class as a fallback solution.
+
+It could be useful if elements are hidden or not reachable by Selenium.
+====
+
+== Supported actions
 
 .A short clickJS example
 [source,java]
@@ -15,6 +22,26 @@ DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
 utils.clickJS(element);
 ----
 
+The following methods are supported:
 
+* clickJS()
+* rightClickJS()
+* doubleClickJS()
+* mouseOverJS()
+* clickAbsolute()
+* mouseOverAbsolute2Axis()
 
-== Other interactions
+See <<Mouse over>> for more details about the `mouseOverAbsolute2Axis` method.
+
+== `mouseOver` vs `mouseOverAbsolute2Axis`
+
+The `mouseOverAbsolute2Axis` method does not move the mouse pointer relativly from the last position.
+
+The following graphic shows 2 different mouse pointer paths beginning at the upper right image to the button 1.
+
+.Two possible mouse paths
+image::absolute2Axis.png[]
+
+The standard path (green) goes over a menu with hover effects.
+This could hide your target element.
+The blue path variant always goes first to the point (0,0) of the viewport, then in x and y direction the the target element.

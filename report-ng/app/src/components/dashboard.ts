@@ -46,7 +46,8 @@ export class Dashboard {
   private _prepareDonutChart(): void {
     this._apexDonutOptions = {
       chart: {
-        type: 'donut'
+        type: 'donut',
+        width: '400px'
       },
       series: [this._testsPassed, this._testsFailed, this._testsSkipped],
       labels: ["passed", "failed", "skipped"]

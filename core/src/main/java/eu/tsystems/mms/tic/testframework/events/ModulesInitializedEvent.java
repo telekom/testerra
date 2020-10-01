@@ -21,6 +21,9 @@
 
 package eu.tsystems.mms.tic.testframework.events;
 
+/**
+ * Called after every module has been initialized
+ */
 public class ModulesInitializedEvent {
     public interface Listener {
         void onModulesInitialized(ModulesInitializedEvent event);

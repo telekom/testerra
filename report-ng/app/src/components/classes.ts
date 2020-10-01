@@ -1,3 +1,4 @@
+import {MDCDataTable} from '@material/data-table';
 export class Classes {
   message: string;
 

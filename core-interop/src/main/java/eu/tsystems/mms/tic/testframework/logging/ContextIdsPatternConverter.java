@@ -26,10 +26,13 @@ import org.apache.logging.log4j.core.config.plugins.Plugin;
 import org.apache.logging.log4j.core.pattern.ConverterKeys;
 import org.apache.logging.log4j.core.pattern.LogEventPatternConverter;
 
-@Plugin(name = "ContextLayoutConverter", category = "Converter")
-@ConverterKeys({"testerra"})
-public class ContextLayoutConverter extends LogEventPatternConverter {
-    protected ContextLayoutConverter( String name, String style ) {
+/**
+ * Replaces %contextIds by [MCID:xxx][SID:xxx] in the log pattern layout
+ */
+@Plugin(name = "ContextIdsPatternConverter", category = "Converter")
+@ConverterKeys({"contextIds"})
+public class ContextIdsPatternConverter extends LogEventPatternConverter {
+    protected ContextIdsPatternConverter(String name, String style ) {
         super( name, style );
     }
 
@@ -38,7 +41,7 @@ public class ContextLayoutConverter extends LogEventPatternConverter {
         toAppendTo.append("Mausi");
     }
 
-    public static ContextLayoutConverter newInstance(String[] options) {
-        return new ContextLayoutConverter("trnLogid",Thread.currentThread().getName());
+    public static ContextIdsPatternConverter newInstance(String[] options) {
+        return new ContextIdsPatternConverter("trnLogid",Thread.currentThread().getName());
     }
 }

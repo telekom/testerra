@@ -33,6 +33,7 @@ import org.apache.logging.log4j.core.layout.PatternLayout;
  * Adds {@link SessionContext} and {@link MethodContext} ids to log message
  * @author Mike Reiche
  */
+@Deprecated
 public class ContextLogFormatter implements LogFormatter {
     private final Layout layout;
 

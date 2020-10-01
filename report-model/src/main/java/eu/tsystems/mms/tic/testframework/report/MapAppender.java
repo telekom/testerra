@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Eric Kubenka, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -17,43 +17,34 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
 package eu.tsystems.mms.tic.testframework.report;
 
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
-import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import org.apache.logging.log4j.core.LogEvent;
+import org.apache.logging.log4j.core.appender.AbstractAppender;
 
-/**
- * Adds log events as {@link LogMessage} to {@link TestStep}
- *
- * @author Mike Reiche
- */
-public class ReportLogFormatter extends ContextLogFormatter {
+public class MapAppender extends AbstractAppender {
 
-    @Override
-    public String format(LogEvent event) {
-        appendForReport(event);
-        return super.format(event);
+    private ConcurrentMap<String, LogEvent> eventMap = new ConcurrentHashMap<>();
+
+    public MapAppender() {
+        super("MapAppender", null, null, true, null);
     }
 
-    /**
-     * Appends a LoggingEvent to the HTML Report using Reporter.log().
-     *
-     * @param event The event to be logged.
-     */
-    private TestStepAction appendForReport(final LogEvent event) {
-
+    @Override
+    public void append(LogEvent event) {
         /**
          * We dont log any messages from steps package,
          * because logs from {@link TestStep} also triggering logs by {@link LoggingDispatcher}
          * which may result in a callstack loop.
          */
         if (event.getLoggerName().startsWith(TestStep.class.getPackage().getName())) {
-            return null;
+            return;
         }
 
         /*
@@ -92,6 +83,6 @@ public class ReportLogFormatter extends ContextLogFormatter {
          * Add log message.
          */
         LogMessage logMessage = new LogMessage(event);
-        return LoggingDispatcher.getInstance().addLogMessage(logMessage);
+        LoggingDispatcher.getInstance().addLogMessage(logMessage);
     }
 }

@@ -6,7 +6,10 @@
   </p>
   <p>
     Passed: ${_testsPassed}
+    Failed: ${_testsFailed}
+    Skipped: ${_testsSkipped}
   </p>
   <p>Name of Class: ${_testsClasses}</p>
-  <apex-chart class="mx-auto" data.bind="_chartData"></apex-chart>
+
+  <apex-chart data.bind="_apexDonutOptions" id="donut-chart"></apex-chart>
 </template>

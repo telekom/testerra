@@ -22,9 +22,11 @@
  package eu.tsystems.mms.tic.testframework.boot;
 
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
+import eu.tsystems.mms.tic.testframework.events.ModulesInitializedEvent;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.internal.BuildInformation;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -133,9 +135,11 @@ public final class Booter {
                         moduleHook.init();
                         MODULE_HOOKS.add(moduleHook);
                     } catch (Exception e) {
-                        LOGGER.error("Could not load Init Hook " + aClass.getSimpleName());
+                        LOGGER.error("Could not init " + ModuleHook.class.getSimpleName() + ": " + aClass.getSimpleName(), e);
                     }
                 });
+
+        TesterraListener.getEventBus().post(new ModulesInitializedEvent());
     }
 
     public static void shutdown() {

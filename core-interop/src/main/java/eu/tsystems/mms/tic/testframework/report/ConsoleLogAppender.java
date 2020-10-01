@@ -40,16 +40,16 @@ import org.apache.logging.log4j.core.util.NullOutputStream;
  * BaseLoggingActor allows to use log4j logs for HTML Reports.
  */
 @Plugin(name = "TesterraLogAppender", category = Core.CATEGORY_NAME, elementType = Appender.ELEMENT_TYPE, printObject = true)
-public class DefaultLogAppender extends AbstractOutputStreamAppender<DefaultLogAppenderOutputStreamManager> implements TesterraLogger {
+public class ConsoleLogAppender extends AbstractOutputStreamAppender<DefaultLogAppenderOutputStreamManager> implements TesterraLogger {
 
     private LogFormatter formatter = new DefaultLogFormatter();
 
-    protected DefaultLogAppender(String name, Layout<? extends Serializable> layout, Filter filter, boolean ignoreExceptions, boolean immediateFlush, Property[] properties, eu.tsystems.mms.tic.testframework.report.DefaultLogAppenderOutputStreamManager manager) {
+    protected ConsoleLogAppender(String name, Layout<? extends Serializable> layout, Filter filter, boolean ignoreExceptions, boolean immediateFlush, Property[] properties, eu.tsystems.mms.tic.testframework.report.DefaultLogAppenderOutputStreamManager manager) {
         super(name, layout, filter, ignoreExceptions, immediateFlush, properties, manager);
     }
 
     @Override
-    public DefaultLogAppender setFormatter(LogFormatter formatter) {
+    public ConsoleLogAppender setFormatter(LogFormatter formatter) {
         this.formatter = formatter;
         return this;
     }
@@ -84,8 +84,8 @@ public class DefaultLogAppender extends AbstractOutputStreamAppender<DefaultLogA
 //        }
 //    }
 
-    public static class Builder<B extends DefaultLogAppender.Builder<B>> extends AbstractOutputStreamAppender.Builder<B>
-            implements org.apache.logging.log4j.core.util.Builder<DefaultLogAppender> {
+    public static class Builder<B extends ConsoleLogAppender.Builder<B>> extends AbstractOutputStreamAppender.Builder<B>
+            implements org.apache.logging.log4j.core.util.Builder<ConsoleLogAppender> {
 
         private boolean follow = false;
 
@@ -94,11 +94,11 @@ public class DefaultLogAppender extends AbstractOutputStreamAppender<DefaultLogA
         private OutputStream target;
 
         @Override
-        public DefaultLogAppender build() {
+        public ConsoleLogAppender build() {
             final Layout<? extends Serializable> layout = getLayout();
             final Layout<? extends Serializable> actualLayout = layout == null ? PatternLayout.createDefaultLayout()
                     : layout;
-            return new DefaultLogAppender(getName(), actualLayout, getFilter(), ignoreExceptions, true, getPropertyArray(), getManager(target, follow, actualLayout));
+            return new ConsoleLogAppender(getName(), actualLayout, getFilter(), ignoreExceptions, true, getPropertyArray(), getManager(target, follow, actualLayout));
         }
 
         public B setFollow(final boolean shouldFollow) {
@@ -125,7 +125,7 @@ public class DefaultLogAppender extends AbstractOutputStreamAppender<DefaultLogA
         }
     }
 
-    private static class DefaultLogAppenderOutputStreamManagerFactory implements ManagerFactory<DefaultLogAppenderOutputStreamManager, DefaultLogAppender.FactoryData> {
+    private static class DefaultLogAppenderOutputStreamManagerFactory implements ManagerFactory<DefaultLogAppenderOutputStreamManager, ConsoleLogAppender.FactoryData> {
 
         /**
          * Creates an OutputStreamManager.
@@ -143,7 +143,7 @@ public class DefaultLogAppender extends AbstractOutputStreamAppender<DefaultLogA
     private static DefaultLogAppenderOutputStreamManagerFactory factory = new DefaultLogAppenderOutputStreamManagerFactory();
 
     @PluginFactory
-    public static DefaultLogAppender createAppender(Layout<? extends Serializable> layout, final Filter filter,
+    public static ConsoleLogAppender createAppender(Layout<? extends Serializable> layout, final Filter filter,
                                                     final OutputStream target, final String name, final boolean follow, final boolean ignore) {
         if (name == null) {
             LOGGER.error("No name provided for OutputStreamAppender");
@@ -152,7 +152,7 @@ public class DefaultLogAppender extends AbstractOutputStreamAppender<DefaultLogA
         if (layout == null) {
             layout = PatternLayout.createDefaultLayout();
         }
-        return new DefaultLogAppender(name, layout, filter, ignore, true, null, getManager(target, follow, layout));
+        return new ConsoleLogAppender(name, layout, filter, ignore, true, null, getManager(target, follow, layout));
     }
 
     private static DefaultLogAppenderOutputStreamManager getManager(final OutputStream target, final boolean follow,
@@ -161,6 +161,6 @@ public class DefaultLogAppender extends AbstractOutputStreamAppender<DefaultLogA
         final OutputStream targetRef = target == null ? os : target;
         final String managerName = targetRef.getClass().getName() + "@" + Integer.toHexString(targetRef.hashCode())
                 + '.' + follow;
-        return DefaultLogAppenderOutputStreamManager.getManager(managerName, new DefaultLogAppender.FactoryData(os, managerName, layout), factory);
+        return DefaultLogAppenderOutputStreamManager.getManager(managerName, new ConsoleLogAppender.FactoryData(os, managerName, layout), factory);
     }
 }

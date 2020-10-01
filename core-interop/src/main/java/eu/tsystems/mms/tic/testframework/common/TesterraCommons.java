@@ -22,6 +22,7 @@
  package eu.tsystems.mms.tic.testframework.common;
 
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.report.ConsoleLogAppender;
 import eu.tsystems.mms.tic.testframework.report.TesterraLogger;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -29,10 +30,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Appender;
 import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.appender.ConsoleAppender;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.DefaultConfiguration;
 import org.slf4j.Logger;
@@ -52,8 +56,35 @@ public class TesterraCommons {
      * and remove all duplicate ConsoleLoggers
      */
     private static void initializeLogging() {
+
+       /* final URL log4j = Resources.getResource("log4j2-test.xml");
+        ConfigurationSource configurationSource = new ConfigurationSource(
+                Resources.asByteSource(log4j).openStream(), log4j);
+
+        LoggerContext context = LoggerContext.getContext(false);
+        XmlConfiguration xmlConfiguration = new XmlConfiguration(context, configurationSource);
+
+        context.start(xmlConfiguration);*/
+
+        //ConfigurationBuilder<BuiltConfiguration> builder = ConfigurationBuilderFactory.newConfigurationBuilder();
+
+
         DefaultConfiguration defaultConfiguration = new DefaultConfiguration();
+        //defaultConfiguration.getPluginPackages().add("eu.tsystems.mms.tic.testframework.logging");
+        //defaultConfiguration.addComponent("ContextLayoutConverter", new ContextLayoutConverter("ContextLayoutConverter", "none"));
         LoggerContext loggerContext = Configurator.initialize(defaultConfiguration);
+
+        Optional<Appender> consoleAppender = loggerContext.getRootLogger().getAppenders().entrySet().stream()
+                .map(Map.Entry::getValue)
+                .filter(appender -> appender instanceof ConsoleAppender)
+                .findFirst();
+
+        if (!consoleAppender.isPresent()) {
+            LOGGER.info(String.format("No %s present, registering own", ConsoleAppender.class));
+            ConsoleLogAppender.Builder builder = new ConsoleLogAppender.Builder();
+            loggerContext.getRootLogger().addAppender(builder.build());
+        }
+
         //Configurator.setRootLevel(Level.INFO);
         //org.apache.logging.log4j.core.Logger rootLogger = loggerContext.getRootLogger();
 
@@ -78,6 +109,7 @@ public class TesterraCommons {
 //        }
     }
 
+    @Deprecated
     public static TesterraLogger getTesterraLogger() {
         org.apache.logging.log4j.core.Logger root = (org.apache.logging.log4j.core.Logger) LogManager.getRootLogger();
         Appender testerraLogger = root.getAppenders().get(TesterraLogger.class.getSimpleName());

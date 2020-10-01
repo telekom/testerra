@@ -28,6 +28,7 @@ import org.apache.logging.log4j.core.Appender;
  *
  * @author Mike Reiche
  */
+@Deprecated
 public interface TesterraLogger extends Appender {
 
     TesterraLogger setFormatter(LogFormatter formatter);

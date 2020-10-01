@@ -35,6 +35,9 @@
 @use '@material/top-app-bar/mdc-top-app-bar';
 @use '@material/top-app-bar';
 @use '@material/icon-button/mdc-icon-button';
+@use '@material/card/mdc-card';
+@use '@material/card';
+
 
 .button-primary {
   @include button.filled-accessible(theme.$primary);
@@ -86,4 +89,32 @@ router-view {
   position: absolute;
   margin-top: 66px;
   margin-left: 10px;
+}
+
+/*--------------------------------------------card*---------------------------------------*/
+.demo-card {
+  width: 350px;
+  margin: 28px;
+}
+
+.demo-card-article {
+  padding: 16px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.demo-card-article-group-heading {
+  @include theme.prop(color, text-secondary-on-light);
+
+  padding: 8px 16px;
+}
+
+.demo-card-article__title {
+  margin: 0 0 4px 0;
+}
+
+.demo-card-article__snippet {
+  @include theme.prop(color, text-secondary-on-light);
+
+  margin: 0;
 }

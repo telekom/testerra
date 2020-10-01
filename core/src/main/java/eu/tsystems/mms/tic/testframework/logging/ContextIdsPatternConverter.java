@@ -21,15 +21,21 @@
 
 package eu.tsystems.mms.tic.testframework.logging;
 
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.config.plugins.Plugin;
 import org.apache.logging.log4j.core.pattern.ConverterKeys;
 import org.apache.logging.log4j.core.pattern.LogEventPatternConverter;
+import org.apache.logging.log4j.core.pattern.PatternConverter;
 
 /**
  * Replaces %contextIds by [MCID:xxx][SID:xxx] in the log pattern layout
+ * @todo Try to find a way to initialize this programmatically
+ * @author Mike Reiche
  */
-@Plugin(name = "ContextIdsPatternConverter", category = "Converter")
+@Plugin(name = "ContextIdsPatternConverter", category = PatternConverter.CATEGORY)
 @ConverterKeys({"contextIds"})
 public class ContextIdsPatternConverter extends LogEventPatternConverter {
     protected ContextIdsPatternConverter() {
@@ -38,7 +44,16 @@ public class ContextIdsPatternConverter extends LogEventPatternConverter {
 
     @Override
     public void format(LogEvent event, StringBuilder toAppendTo ) {
-        toAppendTo.append("Mausi");
+        MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
+        if (methodContext != null) {
+            toAppendTo.append("[MCID:").append(methodContext.id).append("]");
+        }
+
+        // enhance with method context id
+        SessionContext currentSessionContext = ExecutionContextController.getCurrentSessionContext();
+        if (currentSessionContext != null) {
+            toAppendTo.append("[SCID:").append(currentSessionContext.id).append("]");
+        }
     }
 
     public static ContextIdsPatternConverter newInstance(String[] options) {

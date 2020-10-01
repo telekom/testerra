@@ -32,8 +32,8 @@ import org.apache.logging.log4j.core.pattern.LogEventPatternConverter;
 @Plugin(name = "ContextIdsPatternConverter", category = "Converter")
 @ConverterKeys({"contextIds"})
 public class ContextIdsPatternConverter extends LogEventPatternConverter {
-    protected ContextIdsPatternConverter(String name, String style ) {
-        super( name, style );
+    protected ContextIdsPatternConverter() {
+        super( "ContextIdsPatternConverter", null );
     }
 
     @Override
@@ -42,6 +42,6 @@ public class ContextIdsPatternConverter extends LogEventPatternConverter {
     }
 
     public static ContextIdsPatternConverter newInstance(String[] options) {
-        return new ContextIdsPatternConverter("trnLogid",Thread.currentThread().getName());
+        return new ContextIdsPatternConverter();
     }
 }

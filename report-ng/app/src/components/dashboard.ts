@@ -3,7 +3,6 @@ import {DataLoader} from "../services/data-loader";
 import {data} from "../services/report-model";
 import {autoinject} from "aurelia-framework";
 import {StatusConverter} from "../services/status-converter";
-import 'apexcharts'
 import IExecutionContext = data.IExecutionContext;
 import ResultStatusType = data.ResultStatusType;
 
@@ -24,8 +23,6 @@ export class Dashboard {
 
 
   attached() {
-    this._prepareDonutChart();
-
     this._dataLoader.getExecutionAggregate().then(executionAggregate => {
       console.log(executionAggregate);
       executionAggregate.testContexts.forEach(testContext => {
@@ -33,53 +30,27 @@ export class Dashboard {
           this._dataLoader.getClassContextAggregate(classContextId).then(classContextAggregate => {
             classContextAggregate.methodContexts.forEach(methodContext => {
               const status = this._statusConverter.groupStatisticStatus(methodContext.contextValues.resultStatus);
-              //console.log("status:" + status + "result status" + resultStatus);
-              if (status == ResultStatusType.PASSED) {
-                this._testsPassed++;
+              switch(status) {
+                case ResultStatusType.PASSED: this._testsPassed++; break;
+                case ResultStatusType.FAILED: this._testsFailed++; break;
+                case ResultStatusType.SKIPPED: this._testsSkipped++; break;
               }
             });
           });
         })
       });
     });
-    console.log(this._testsPassed);
-  }
-
-  private _prepareData(resultStatus: ResultStatusType): number {
-    let testsInState: number = 0;
-
-    this._dataLoader.getExecutionAggregate().then(executionAggregate => {
-      console.log(executionAggregate);
-      executionAggregate.testContexts.forEach(testContext => {
-        testContext.classContextIds.forEach(classContextId => {
-          this._dataLoader.getClassContextAggregate(classContextId).then(classContextAggregate => {
-            classContextAggregate.methodContexts.forEach(methodContext => {
-              const status = this._statusConverter.groupStatisticStatus(methodContext.contextValues.resultStatus);
-              //console.log("status:" + status + "result status" + resultStatus);
-              if (status == resultStatus) {
-                testsInState++;
-              }
-            });
-          });
-        })
-      });
-    });
-    console.log(testsInState);
-    return testsInState;
+    setTimeout(() => { this._prepareDonutChart(); }, 1000);
   }
 
   private _prepareDonutChart(): void {
-    let options: any = undefined;
-
-    options = {
+    this._apexDonutOptions = {
       chart: {
         type: 'donut'
       },
-      series: [10,10,20],
+      series: [this._testsPassed, this._testsFailed, this._testsSkipped],
       labels: ["passed", "failed", "skipped"]
     }
-
-    this._apexDonutOptions = options;
   }
 
 

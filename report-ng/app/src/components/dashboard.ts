@@ -36,9 +36,8 @@ export class Dashboard {
         width: '400px'
       },
       series: [executionStatistics.overallPassed, executionStatistics.overallFailed, executionStatistics.overallSkipped],
-      labels: ["passed", "failed", "skipped"]
+      labels: ["passed", "failed", "skipped"],
+      colors:['#1abc9c', '#f1556c', '#495561']
     }
   }
-
-
 }

@@ -6,18 +6,16 @@ import ResultStatusType = data.ResultStatusType;
 
 @autoinject()
 export class Classes {
-  message: string;
   _testsClasses: string;
-  _testsPassed:number = 0;
-  _testsSkipped:number =0
-  _testsFailed: number= 0;
+  _methodsId;
+  _status:string;
+
 
   constructor(
     private _dataLoader:DataLoader,
     private _statusConverter:StatusConverter
 
   ) {
-    this.message = 'This is the classes component. Unfortunately I cannot bind hrefs to a button, which is why the a tag wraps around some other span';
   }
   attached() {
     this._dataLoader.getExecutionAggregate().then(executionAggregate => {
@@ -27,18 +25,7 @@ export class Classes {
           this._dataLoader.getClassContextAggregate(classContextId).then(classContextAggregate => {
             console.log(classContextAggregate);
 
-            classContextAggregate.methodContexts.forEach(methodContext => {
-              const status = this._statusConverter.groupStatisticStatus(methodContext.contextValues.resultStatus);
-              if (status == ResultStatusType.PASSED) {
-                this._testsPassed++;
-              }
-              if(status==ResultStatusType.FAILED){
-                this._testsFailed++;
-              }
-              if(status==ResultStatusType.SKIPPED){
-                this._testsSkipped++;
-              }
-            });
+            this._methodsId= classContextAggregate.classContext.methodContextIds ;
             this._testsClasses= classContextAggregate.classContext.contextValues.name;
 
           });
@@ -54,6 +41,8 @@ export class Classes {
   desserts: dessert[] =  [this.ice, this.Eclair] ;
 
 }
+
+
 class dessert{
   name: string;
   calories: number;

@@ -21,35 +21,50 @@ export class Dashboard {
   ) {
   }
 
-
   attached() {
-    this._dataLoader.getExecutionAggregate().then(executionAggregate => {
-      console.log(executionAggregate);
-      executionAggregate.testContexts.forEach(testContext => {
-        testContext.classContextIds.forEach(classContextId => {
-          this._dataLoader.getClassContextAggregate(classContextId).then(classContextAggregate => {
-            classContextAggregate.methodContexts.forEach(methodContext => {
-              const status = this._statusConverter.groupStatisticStatus(methodContext.contextValues.resultStatus);
-              switch(status) {
-                case ResultStatusType.PASSED: this._testsPassed++; break;
-                case ResultStatusType.FAILED: this._testsFailed++; break;
-                case ResultStatusType.SKIPPED: this._testsSkipped++; break;
-              }
-            });
-          });
-        })
-      });
+    this._prepareStatisticsData().then(value => {
+      this._testsPassed = value[ResultStatusType.PASSED];
+      this._testsFailed = value[ResultStatusType.FAILED];
+      this._testsSkipped = value[ResultStatusType.SKIPPED];
+      this._prepareDonutChart(value);
     });
-    setTimeout(() => { this._prepareDonutChart(); }, 1000);
   }
 
-  private _prepareDonutChart(): void {
+  private _prepareStatisticsData() {
+    return this._dataLoader.getExecutionAggregate()
+      .then(executionAggregate => {
+        const overallStatistics = {}
+        const loadingPromises = [];
+        executionAggregate.testContexts.forEach(testContext => {
+          testContext.classContextIds.forEach(classContextId => {
+            const loadingPromise = this._dataLoader.getClassContextAggregate(classContextId).then(classContextAggregate => {
+              classContextAggregate.methodContexts.forEach(methodContext => {
+                const status = this._statusConverter.groupStatisticStatus(methodContext.contextValues.resultStatus);
+                if (!overallStatistics[status]) {
+                  overallStatistics[status] = 1;
+                } else {
+                  overallStatistics[status]++;
+                }
+              });
+            });
+
+            loadingPromises.push(loadingPromise);
+          })
+        });
+
+        return Promise.all(loadingPromises).then(() => {
+          return Promise.resolve(overallStatistics);
+        })
+      });
+  }
+
+  private _prepareDonutChart(value): void {
     this._apexDonutOptions = {
       chart: {
         type: 'donut',
         width: '400px'
       },
-      series: [this._testsPassed, this._testsFailed, this._testsSkipped],
+      series: [value[ResultStatusType.PASSED], value[ResultStatusType.FAILED], value[ResultStatusType.SKIPPED]],
       labels: ["passed", "failed", "skipped"]
     }
   }

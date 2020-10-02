@@ -1,13 +1,13 @@
 <template>
   <h1>${_executionContext.contextValues.name}</h1>
   <p>
-    Started: ${executionContext.contextValues.startTime|dateFormat:"LLL"}<br>
-    Ended: ${executionContext.contextValues.endTime|dateFormat:"LLL"}<br>
+    Started: ${_executionContext.contextValues.startTime|dateFormat:"LLL"}<br>
+    Ended: ${_executionContext.contextValues.endTime|dateFormat:"LLL"}<br>
   </p>
   <p>
-    Passed: ${_testsPassed}
-    Failed: ${_testsFailed}
-    Skipped: ${_testsSkipped}
+    Passed: ${_executionStatistics.overallPassed}
+    Failed: ${_executionStatistics.overallFailed}
+    Skipped: ${_executionStatistics.overallSkipped}
   </p>
 
   <apex-chart data.bind="_apexDonutOptions" id="donut-chart"></apex-chart>-

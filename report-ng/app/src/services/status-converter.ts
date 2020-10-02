@@ -55,6 +55,9 @@ export class StatusConverter {
     return StatusConverter.execStatusKeys[index];
   }
 
+  /**
+   * @deprecated
+   */
   groupStatisticStatus(status: ResultStatusType): ResultStatusType {
     switch (status) {
       case ResultStatusType.FAILED_EXPECTED:

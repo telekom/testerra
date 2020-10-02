@@ -2,16 +2,18 @@
   <mdc-data-table>
     <mdc-data-table-header>
       <mdc-data-table-header-cell>Classes</mdc-data-table-header-cell>
-      <mdc-data-table-header-cell>Method Idc</mdc-data-table-header-cell>
       <mdc-data-table-header-cell>Passed</mdc-data-table-header-cell>
+      <mdc-data-table-header-cell>Skipped</mdc-data-table-header-cell>
       <mdc-data-table-header-cell>Failed</mdc-data-table-header-cell>
+      <mdc-data-table-header-cell>Method Ids</mdc-data-table-header-cell>
     </mdc-data-table-header>
     <mdc-data-table-content>
       <mdc-data-table-row repeat.for="classStatistics of _classStatistics">
         <mdc-data-table-cell>${classStatistics.classAggregate.classContext.contextValues.name}</mdc-data-table-cell>
-        <mdc-data-table-cell>${classStatistics.classAggregate.classContext.methodContextIds}</mdc-data-table-cell>
         <mdc-data-table-cell numeric>${classStatistics.overallPassed}</mdc-data-table-cell>
+        <mdc-data-table-cell numeric>${classStatistics.overallSkipped}</mdc-data-table-cell>
         <mdc-data-table-cell numeric>${classStatistics.overallFailed}</mdc-data-table-cell>
+        <mdc-data-table-cell>${classStatistics.classAggregate.classContext.methodContextIds}</mdc-data-table-cell>
       </mdc-data-table-row>
     </mdc-data-table-content>
   </mdc-data-table>

@@ -6,13 +6,13 @@
   </p>
   <div class="demo-container mdc-card">
     <button mdc-button outlined>
-      <mdc-icon>favorite</mdc-icon> ${_executionStatistics.overallPassed} Passed
+      <mdc-icon>done</mdc-icon> ${_executionStatistics.overallPassed} Passed
     </button>
     <button mdc-button outlined>
-      <mdc-icon>favorite</mdc-icon>  ${_executionStatistics.overallSkipped} Skipped
+      <mdc-icon>skip_next</mdc-icon>  ${_executionStatistics.overallSkipped} Skipped
     </button>
     <button mdc-button outlined>
-      <mdc-icon>favorite</mdc-icon>  ${_executionStatistics.overallFailed} failed
+      <mdc-icon>close</mdc-icon>  ${_executionStatistics.overallFailed} failed
     </button>
   </div>
   <apex-chart data.bind="_apexDonutOptions" id="donut-chart"></apex-chart>-

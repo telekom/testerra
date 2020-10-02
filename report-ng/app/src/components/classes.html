@@ -3,15 +3,15 @@
     <mdc-data-table-header>
       <mdc-data-table-header-cell>Classes</mdc-data-table-header-cell>
       <mdc-data-table-header-cell>Methods</mdc-data-table-header-cell>
-      <mdc-data-table-header-cell>status</mdc-data-table-header-cell>
+      <mdc-data-table-header-cell>Passed</mdc-data-table-header-cell>
       <mdc-data-table-header-cell>Failed</mdc-data-table-header-cell>
     </mdc-data-table-header>
     <mdc-data-table-content>
-      <mdc-data-table-row>
-        <mdc-data-table-cell>${_testsClasses}</mdc-data-table-cell>
-        <mdc-data-table-cell>${ _methodsId}</mdc-data-table-cell>
-        <mdc-data-table-cell numeric></mdc-data-table-cell>
-        <mdc-data-table-cell numeric></mdc-data-table-cell>
+      <mdc-data-table-row repeat.for="classStatistics of _classStatistics">
+        <mdc-data-table-cell>${classStatistics.classAggregate.classContext.contextValues.name}</mdc-data-table-cell>
+        <mdc-data-table-cell>${classStatistics.classAggregate.classContext.methodContextIds}</mdc-data-table-cell>
+        <mdc-data-table-cell numeric>${classStatistics.overallPassed}</mdc-data-table-cell>
+        <mdc-data-table-cell numeric>${classStatistics.overallFailed}</mdc-data-table-cell>
       </mdc-data-table-row>
     </mdc-data-table-content>
   </mdc-data-table>

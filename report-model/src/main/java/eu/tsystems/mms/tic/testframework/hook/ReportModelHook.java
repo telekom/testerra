@@ -1,14 +1,15 @@
 package eu.tsystems.mms.tic.testframework.hook;
 
 import com.google.common.eventbus.EventBus;
-import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.listeners.GenerateXmlReportListener;
-import eu.tsystems.mms.tic.testframework.report.ContextLogFormatter;
-import eu.tsystems.mms.tic.testframework.report.ReportLogFormatter;
+import eu.tsystems.mms.tic.testframework.report.TestStepLogAppender;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
+import org.apache.logging.log4j.core.Appender;
 
 public class ReportModelHook implements ModuleHook {
+
+    private Appender reportLogAppender;
 
     @Override
     public void init() {
@@ -16,12 +17,14 @@ public class ReportModelHook implements ModuleHook {
         eventBus.register(new GenerateXmlReportListener());
 
         // Enable report formatter here
-        TesterraCommons.getTesterraLogger().setFormatter(new ReportLogFormatter());
+        this.reportLogAppender = new TestStepLogAppender();
+        this.reportLogAppender.start();
+        TesterraListener.getLoggerContext().getRootLogger().addAppender(this.reportLogAppender);
     }
 
     @Override
     public void terminate() {
         // Reset to default logger
-        TesterraCommons.getTesterraLogger().setFormatter(new ContextLogFormatter());
+        TesterraListener.getLoggerContext().getRootLogger().removeAppender(this.reportLogAppender);
     }
 }

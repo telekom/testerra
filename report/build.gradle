@@ -7,6 +7,12 @@ dependencies {
     compile core_interop
     compile project(':report-model')
 
+    // <Report>
+    implementation 'org.apache.velocity:velocity:1.7'
+    implementation group: 'org.apache.velocity', name: 'velocity-tools', version: '2.0'
+    implementation 'org.jfree:jfreechart:1.0.19'
+    // </Report>
+
     testCompile driver_ui_desktop
     testCompile project(':integration-tests')
     testCompile project(':report-ng')

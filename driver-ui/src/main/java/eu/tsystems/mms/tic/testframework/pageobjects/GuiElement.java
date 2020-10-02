@@ -379,6 +379,12 @@ public class GuiElement implements
         guiElementData.resetLogLevel();
     }
 
+    /**
+     * @deprecated
+     * This method is no longer acceptable as a part of GuiElement.
+     * Use {@link eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils#clickJS()} instead
+     *
+     */
     @Override
     @Deprecated
     public void clickJS() {
@@ -387,6 +393,12 @@ public class GuiElement implements
         guiElementData.resetLogLevel();
     }
 
+    /**
+     * @deprecated
+     * This method is no longer acceptable as a part of GuiElement.
+     * Use {@link eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils#clickAbsolute()} instead
+     *
+     */
     @Override
     @Deprecated
     public void clickAbsolute() {
@@ -395,6 +407,12 @@ public class GuiElement implements
         guiElementData.resetLogLevel();
     }
 
+    /**
+     * @deprecated
+     * This method is no longer acceptable as a part of GuiElement.
+     * Use {@link eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils#mouseOverAbsolute2Axis()} instead
+     *
+     */
     @Override
     @Deprecated
     public void mouseOverAbsolute2Axis() {
@@ -486,6 +504,12 @@ public class GuiElement implements
         guiElementFacade.mouseOver();
     }
 
+    /**
+     * @deprecated
+     * This method is no longer acceptable as a part of GuiElement.
+     * Use {@link eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils#mouseOverJS()} instead
+     *
+     */
     @Override
     @Deprecated
     public void mouseOverJS() {
@@ -577,12 +601,24 @@ public class GuiElement implements
         guiElementFacade.rightClick();
     }
 
+    /**
+     * @deprecated
+     * This method is no longer acceptable as a part of GuiElement.
+     * Use {@link eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils#rightClickJS()} instead
+     *
+     */
     @Override
     @Deprecated
     public void rightClickJS() {
         guiElementFacade.rightClickJS();
     }
 
+    /**
+     * @deprecated
+     * This method is no longer acceptable as a part of GuiElement.
+     * Use {@link eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils#doubleClickJS()} instead
+     *
+     */
     @Override
     @Deprecated
     public void doubleClickJS() {

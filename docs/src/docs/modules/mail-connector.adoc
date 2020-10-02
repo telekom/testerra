@@ -65,7 +65,7 @@ If you want to use an SSL-encrypted connection, you  need to set `SMTP_SSL_ENABL
 The actual connection to the mail server is implicitly opened within each `MailConnector` class.
 
 == POP3MailConnector
-The `POP3MailConnector` provides access to a POP3 server. Emails are read and processed by using methods of the superclass `AbstractInboxConnector`.
+The `POP3MailConnector` provides access to a POP3 server. Emails are read and processed by using methods of the superclass `AbstractInboxConnector`. Specific mails can be extracted with serverside filtering by matching given criteria expressed with SearchTerm (see https://javaee.github.io/javaee-spec/javadocs/javax/mail/search/package-summary.html[JavaMail API])
 
 .Reading and Deleting Mails
 [source,java]
@@ -74,11 +74,9 @@ POP3MailConnector pop3MailConnector = new POP3MailConnector();
 // fetch all emails from Server
 MimeMessage[] messages = pop3MailConnector.getMessages();
 
-// wait until the email with subject 'test' arrived
-final List<SearchCriteria> searchCriteria = new ArrayList<>();
-searchCriteria.add(new SearchCriteria(SearchCriteriaType.SUBJECT, "test"));
-
-Email email = pop3MailConnector.waitForMails(searchCriteria).get(0));
+// wait until the email with subject 'test' arrived in the InboxFolder
+SubjectTerm subjectTerm = new SubjectTerm(subject);
+Email email = pop3MailConnector.waitForMails(subjectTerm).get(0));
 
 // delete all emails with this subject from the server while setting timeout and max number of polls explicitly
 int maxPolls = 5;
@@ -97,9 +95,9 @@ pop3MailConnector.deleteMessage(recipient, RecipientType.TO, subject, messageId)
 .Working with attachments
 [source,java]
 ----
-final List<SearchCriteria> searchCriteria = new ArrayList<>();
-searchCriteria.add(new SearchCriteria(SearchCriteriaType.SUBJECT, "test"));
-Email email = pop3MailConnector.waitForMails(searchCriteria).get(0);
+// wait until the email with subject 'test' arrived in the InboxFolder
+SubjectTerm subjectTerm = new SubjectTerm(subject);
+Email email = pop3MailConnector.waitForMails(subjectTerm).get(0);
 
 try {
     Multipart content = (Multipart) email.getMessage().getContent();
@@ -154,11 +152,9 @@ The `ImapMailConnector` operates like the <<POP3MailConnector>> with an addition
 ----
 ImapMailConnector imapMailConnector = new ImapMailConnector();
 
-// wait until the email with subject 'test' arrived
-final List<SearchCriteria> searchCriteria = new ArrayList<>();
-searchCriteria.add(new SearchCriteria(SearchCriteriaType.SUBJECT, "test"));
-
-Email email = imapMailConnector.waitForMails(searchCriteria).get(0);
+// wait until the email with subject 'test' arrived in the InboxFolder
+SubjectTerm subjectTerm = new SubjectTerm(subject);
+Email email = imapMailConnector.waitForMails(subjectTerm).get(0);
 
 // mark all mails in inbox as seen
 imapMailConnector.markAllMailsAsSeen();

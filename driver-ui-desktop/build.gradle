@@ -10,7 +10,7 @@ dependencies {
     }
     // </PhantomJS>
 
-    implementation 'org.json:json:20140107'
+    //implementation 'org.json:json:20140107'
 }
 
 test {

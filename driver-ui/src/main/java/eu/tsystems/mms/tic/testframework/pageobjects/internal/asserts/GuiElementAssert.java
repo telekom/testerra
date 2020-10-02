@@ -123,7 +123,8 @@ public interface GuiElementAssert {
     /**
      * Checks if the GuiElement, contains the given texts. Please note that this will only assert successfully, if the
      * elements text is actually visible.
-     *
+     * Use {@link #assertTextContains(String...)} instead
+     * 
      * @param text Strings that should be contained in text. Will NOT be trimmed.
      */
     @Deprecated

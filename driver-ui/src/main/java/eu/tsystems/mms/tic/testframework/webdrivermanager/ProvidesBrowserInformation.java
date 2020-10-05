@@ -21,7 +21,7 @@
  */
  package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import eu.tsystems.mms.tic.testframework.report.model.BrowserInformation;
+import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
 
 public interface ProvidesBrowserInformation {
 

@@ -28,7 +28,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementList;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementBaseAssertions;
 import java.awt.Color;
 import java.util.function.Consumer;
-import org.apache.commons.lang.NotImplementedException;
+import org.apache.commons.lang3.NotImplementedException;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -92,7 +92,7 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
 
     @Override
     protected UiElement findDeep(Locator locator) {
-        throw new NotImplementedException();
+        throw new NotImplementedException("Deep finding on components is not implemented");
     }
 
     @Override

@@ -18,6 +18,11 @@ dependencies {
     //implementation 'commons-codec:commons-codec:1.13'
     //implementation 'commons-collections:commons-collections:3.2.2'
     //implementation 'org.reflections:reflections:0.9.12'
+
+    // <BrowserInformation>
+    //implementation 'nl.basjes.parse.useragent:yauaa:4.5'
+    implementation group: 'com.github.ua-parser', name: 'uap-java', version: '1.4.3'
+    // </BrowserInformation>
 }
 
 test {

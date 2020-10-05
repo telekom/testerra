@@ -17,9 +17,8 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
-package eu.tsystems.mms.tic.testframework.report.model;
+package eu.tsystems.mms.tic.testframework.useragents;
 
 public interface BrowserInformation {
 

@@ -18,7 +18,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package eu.tsystems.mms.tic.testframework.report.model;
+package eu.tsystems.mms.tic.testframework.useragents;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import java.io.IOException;

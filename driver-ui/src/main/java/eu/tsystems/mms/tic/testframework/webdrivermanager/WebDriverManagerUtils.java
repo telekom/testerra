@@ -22,7 +22,7 @@
  package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.report.model.BrowserInformation;
+import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
 import java.net.URL;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

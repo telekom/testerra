@@ -38,6 +38,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementLabelLoca
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultPropertyAssertionFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertionFactory;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
+import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
+import eu.tsystems.mms.tic.testframework.useragents.UapBrowserInformation;
 import eu.tsystems.mms.tic.testframework.webdriver.DefaultWebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverManager;
 
@@ -54,5 +56,8 @@ public class ConfigureDriverUi extends AbstractModule {
 
         Multibinder<ModuleHook> hookBinder = Multibinder.newSetBinder(binder(), ModuleHook.class);
         hookBinder.addBinding().to(DriverUiHook.class).in(Scopes.SINGLETON);
+
+        // Instances
+        bind(BrowserInformation.class).to(UapBrowserInformation.class);
     }
 }

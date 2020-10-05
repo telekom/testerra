@@ -36,8 +36,6 @@ import eu.tsystems.mms.tic.testframework.execution.testng.ThrowingAssertion;
 import eu.tsystems.mms.tic.testframework.internal.AssertionsCollector;
 import eu.tsystems.mms.tic.testframework.internal.CollectedAssertions;
 import eu.tsystems.mms.tic.testframework.report.Report;
-import eu.tsystems.mms.tic.testframework.report.model.BrowserInformation;
-import eu.tsystems.mms.tic.testframework.report.model.UapBrowserInformation;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.DefaultReport;
 import eu.tsystems.mms.tic.testframework.testing.DefaultTestController;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
@@ -46,6 +44,7 @@ import eu.tsystems.mms.tic.testframework.utils.Formatter;
 
 public class ConfigureCore extends AbstractModule {
     protected void configure() {
+        // Singletons
         bind(Report.class).to(DefaultReport.class).in(Scopes.SINGLETON);
         bind(Formatter.class).to(DefaultFormatter.class).in(Scopes.SINGLETON);
         bind(AssertionFactory.class).to(DefaultAssertionFactory.class).in(Scopes.SINGLETON);
@@ -55,7 +54,5 @@ public class ConfigureCore extends AbstractModule {
         bind(AssertionsCollector.class).to(CollectedAssertions.class).in(Scopes.SINGLETON);
         bind(Assertion.class).to(DefaultAssertionWrapper.class).in(Scopes.SINGLETON);
         bind(TestController.class).to(DefaultTestController.class).in(Scopes.SINGLETON);
-        bind(BrowserInformation.class).to(UapBrowserInformation.class);
-        //bind(BrowserInformation.class).to(YauaaBrowserInformation.class);
     }
 }

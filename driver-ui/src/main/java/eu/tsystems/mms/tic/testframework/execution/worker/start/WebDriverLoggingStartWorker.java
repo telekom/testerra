@@ -24,7 +24,7 @@
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.events.MethodStartEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.report.model.BrowserInformation;
+import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerUtils;
 import java.util.List;

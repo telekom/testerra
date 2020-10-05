@@ -22,7 +22,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementAssertions;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementAssertions;
 
 /**
  * Contains all test related features for an {@link UiElement}

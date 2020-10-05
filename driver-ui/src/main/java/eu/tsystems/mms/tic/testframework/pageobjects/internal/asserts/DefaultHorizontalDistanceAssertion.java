@@ -19,8 +19,12 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.internal.asserts;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
+import eu.tsystems.mms.tic.testframework.internal.asserts.AbstractPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.internal.asserts.AssertionProvider;
+import eu.tsystems.mms.tic.testframework.internal.asserts.DefaultQuantityAssertion;
+import eu.tsystems.mms.tic.testframework.internal.asserts.QuantityAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
 import org.openqa.selenium.Rectangle;
 

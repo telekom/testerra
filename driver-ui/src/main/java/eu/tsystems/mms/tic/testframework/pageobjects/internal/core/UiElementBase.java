@@ -21,10 +21,10 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
-import eu.tsystems.mms.tic.testframework.internal.asserts.UiElementBaseAssertions;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageObject;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementActions;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementBaseAssertions;
 
 /**
  * Contains basic GuiElement features which every GuiElement needs to have.

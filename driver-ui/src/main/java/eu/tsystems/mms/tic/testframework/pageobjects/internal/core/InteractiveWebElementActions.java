@@ -19,7 +19,7 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.pageobjects.internal;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.InteractiveUiElement;
 import org.openqa.selenium.WebElement;

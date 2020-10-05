@@ -19,13 +19,23 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.internal.asserts;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
+import eu.tsystems.mms.tic.testframework.internal.asserts.AbstractPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.internal.asserts.AssertionProvider;
+import eu.tsystems.mms.tic.testframework.internal.asserts.BinaryAssertion;
+import eu.tsystems.mms.tic.testframework.internal.asserts.DefaultBinaryAssertion;
+import eu.tsystems.mms.tic.testframework.internal.asserts.DefaultQuantityAssertion;
+import eu.tsystems.mms.tic.testframework.internal.asserts.DefaultStringAssertion;
+import eu.tsystems.mms.tic.testframework.internal.asserts.ImageAssertion;
+import eu.tsystems.mms.tic.testframework.internal.asserts.PropertyAssertionConfig;
+import eu.tsystems.mms.tic.testframework.internal.asserts.PropertyAssertionFactory;
+import eu.tsystems.mms.tic.testframework.internal.asserts.QuantityAssertion;
+import eu.tsystems.mms.tic.testframework.internal.asserts.StringAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementAssertions;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.context.Screenshot;

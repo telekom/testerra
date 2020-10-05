@@ -19,15 +19,17 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.internal.asserts;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
+import eu.tsystems.mms.tic.testframework.internal.asserts.ActualProperty;
+import eu.tsystems.mms.tic.testframework.internal.asserts.QuantityAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
 
 /**
  * Allows element location tests
  * @author Mike Reiche
  */
-public interface VerticalDistanceAssertion extends ActualProperty<Integer> {
-    QuantityAssertion<Integer> toTopOf(TestableUiElement guiElement);
-    QuantityAssertion<Integer> toBottomOf(TestableUiElement guiElement);
+public interface HorizontalDistanceAssertion extends ActualProperty<Integer> {
+    QuantityAssertion<Integer> toRightOf(TestableUiElement guiElement);
+    QuantityAssertion<Integer> toLeftOf(TestableUiElement guiElement);
 }

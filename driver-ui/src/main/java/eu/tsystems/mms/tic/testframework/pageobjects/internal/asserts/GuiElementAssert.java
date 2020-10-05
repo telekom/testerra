@@ -18,7 +18,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
- package eu.tsystems.mms.tic.testframework.internal.asserts;
+ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.ILayout;
@@ -124,7 +124,7 @@ public interface GuiElementAssert {
      * Checks if the GuiElement, contains the given texts. Please note that this will only assert successfully, if the
      * elements text is actually visible.
      * Use {@link #assertTextContains(String...)} instead
-     * 
+     *
      * @param text Strings that should be contained in text. Will NOT be trimmed.
      */
     @Deprecated

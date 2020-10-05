@@ -18,7 +18,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package eu.tsystems.mms.tic.testframework.internal.asserts;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
@@ -28,6 +28,7 @@ import java.awt.Color;
 /**
  * Highlights assertions in Demo Mode
  */
+@Deprecated
 public class GuiElementAssertHighlightDecorator extends GuiElementAssertDecorator {
 
     private final GuiElementData guiElementData;

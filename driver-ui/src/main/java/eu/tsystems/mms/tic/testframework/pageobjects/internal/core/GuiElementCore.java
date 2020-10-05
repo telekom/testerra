@@ -21,9 +21,9 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
-import eu.tsystems.mms.tic.testframework.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementRetainer;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;

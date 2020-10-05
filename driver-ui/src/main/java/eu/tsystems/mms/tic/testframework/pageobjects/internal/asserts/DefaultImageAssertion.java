@@ -19,8 +19,15 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.internal.asserts;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
+import eu.tsystems.mms.tic.testframework.internal.asserts.AbstractPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.internal.asserts.AssertionProvider;
+import eu.tsystems.mms.tic.testframework.internal.asserts.DefaultFileAssertion;
+import eu.tsystems.mms.tic.testframework.internal.asserts.DefaultQuantityAssertion;
+import eu.tsystems.mms.tic.testframework.internal.asserts.FileAssertion;
+import eu.tsystems.mms.tic.testframework.internal.asserts.ImageAssertion;
+import eu.tsystems.mms.tic.testframework.internal.asserts.QuantityAssertion;
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import java.io.File;
 import java.util.concurrent.atomic.AtomicReference;

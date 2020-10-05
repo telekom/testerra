@@ -19,9 +19,16 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.internal.asserts;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.internal.asserts.AbstractPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.internal.asserts.AssertionProvider;
+import eu.tsystems.mms.tic.testframework.internal.asserts.DefaultStringAssertion;
+import eu.tsystems.mms.tic.testframework.internal.asserts.ImageAssertion;
+import eu.tsystems.mms.tic.testframework.internal.asserts.PropertyAssertionConfig;
+import eu.tsystems.mms.tic.testframework.internal.asserts.PropertyAssertionFactory;
+import eu.tsystems.mms.tic.testframework.internal.asserts.StringAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.context.Screenshot;

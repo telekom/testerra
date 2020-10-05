@@ -18,10 +18,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
- package eu.tsystems.mms.tic.testframework.internal.asserts;
+ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.ILayout;
 
+@Deprecated
 public class PerformanceTestGuiElementAssert implements GuiElementAssert {
 
     @Override

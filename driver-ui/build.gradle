@@ -23,6 +23,8 @@ dependencies {
     //implementation 'nl.basjes.parse.useragent:yauaa:4.5'
     implementation group: 'com.github.ua-parser', name: 'uap-java', version: '1.4.3'
     // </BrowserInformation>
+
+    compile 'org.seleniumhq.selenium:selenium-java:' + seleniumVersion
 }
 
 test {

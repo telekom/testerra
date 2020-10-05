@@ -31,9 +31,6 @@ dependencies {
     // </Booter>
 
     //implementation 'org.apache.commons:commons-text:1.8'
-
-    compile 'org.seleniumhq.selenium:selenium-java:' + seleniumVersion
-
     // @see https://github.com/google/guice/issues/1256
     compile 'com.google.inject:guice:4.2.2:no_aop'
     compile 'com.google.inject.extensions:guice-assistedinject:4.2.2'

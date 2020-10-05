@@ -70,7 +70,7 @@ public class XPath {
     /**
      * Utility function for generating words search
      */
-    static String somethingContainsWord(String something, Object string) {
+    public static String somethingContainsWord(String something, Object string) {
         /**
          * @see {https://stackoverflow.com/questions/1390568/how-can-i-match-on-an-attribute-that-contains-a-certain-string}
          */
@@ -79,15 +79,15 @@ public class XPath {
         return String.format("contains(concat(' ', normalize-space(%s), ' '), ' %s ')", something, string);
     }
 
-    static String somethingIs(String something, Object string) {
+    public static String somethingIs(String something, Object string) {
         return String.format("%s='%s'", something, string);
     }
 
-    static String somethingIsNot(String something, Object string) {
+    public static String somethingIsNot(String something, Object string) {
         return String.format("%s!='%s'", something, string);
     }
 
-    static String somethingMatches(String operation, String something, Object string) {
+    public static String somethingMatches(String operation, String something, Object string) {
         return String.format("%s(%s,'%s')", operation, something, string);
     }
 

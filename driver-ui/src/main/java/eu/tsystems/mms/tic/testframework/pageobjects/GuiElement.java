@@ -30,7 +30,6 @@ import eu.tsystems.mms.tic.testframework.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.internal.NameableChild;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultLocator;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultUiElementList;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultGuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultUiElementAssertions;

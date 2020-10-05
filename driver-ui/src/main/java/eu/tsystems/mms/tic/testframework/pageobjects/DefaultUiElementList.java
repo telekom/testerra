@@ -19,10 +19,9 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.pageobjects.internal;
+package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.AbstractUiElementList;
 
 public class DefaultUiElementList extends AbstractUiElementList<UiElement> {
     private GuiElement guiElement;

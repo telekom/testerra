@@ -29,19 +29,24 @@ However, Testerra supports using local web drivers.
 - Search for your browser's selenium driver online, like _selenium gecko driver_ for Firefox or _selenium crome driver_ for Chrome based browsers
 - Download your WebDriver binary from browser vendor's website to a local location
 - Make sure the driver version supports your installed browser
-- Open your properties file and tell where your binaries are located
+- Since the properties are system properties, you need to put the location of the binaries to the `system.properties` file as mentioned in the <<Property files>> section.
 
-.test.properties
+.system.properties
 [source,properties,subs="attributes"]
 ----
 {webdriver_mode}=local
-webdriver.gecko.driver="C:\absolute\path\to\your\geckodriver.exe"
+webdriver.gecko.driver="C:\\absolute\\path\to\\your\\geckodriver.exe"
 
 # or for other browsers
 webdriver.chrome.driver=...
 webdriver.edge.driver=...
 webdriver.ie.driver=...
 ----
+
+You can also pass the wedriver by the command line using
+```bash
+-Dwebdriver.gecko.driver=C:\absolute\path\to\your\geckodriver.exe
+```
 
 == Usage of WebDriver sessions
 

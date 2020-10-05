@@ -45,7 +45,7 @@ public class DefaultVerticalDistanceAssertion extends AbstractPropertyAssertion<
 
             @Override
             public String getSubject() {
-                return String.format("toTopOf(guiElement: %s)", guiElement);
+                return String.format("toTopOf(%s)", guiElement);
             }
         });
     }
@@ -61,7 +61,7 @@ public class DefaultVerticalDistanceAssertion extends AbstractPropertyAssertion<
 
             @Override
             public String getSubject() {
-                return String.format("toBottomOf(guiElement: %s)", guiElement);
+                return String.format("toBottomOf(%s)", guiElement);
             }
         });
     }

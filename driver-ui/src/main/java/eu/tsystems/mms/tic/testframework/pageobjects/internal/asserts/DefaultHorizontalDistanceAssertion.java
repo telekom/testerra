@@ -45,7 +45,7 @@ public class DefaultHorizontalDistanceAssertion extends AbstractPropertyAssertio
 
             @Override
             public String getSubject() {
-                return String.format("toRightOf(guiElement: %s)", guiElement);
+                return String.format("toRightOf(%s)", guiElement);
             }
         });
     }
@@ -61,7 +61,7 @@ public class DefaultHorizontalDistanceAssertion extends AbstractPropertyAssertio
 
             @Override
             public String getSubject() {
-                return String.format("toLeftOf(guiElement: %s)", guiElement);
+                return String.format("toLeftOf(%s)", guiElement);
             }
         });
     }

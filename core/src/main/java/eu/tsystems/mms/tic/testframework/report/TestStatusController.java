@@ -32,11 +32,9 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.ITestResult;
@@ -64,25 +62,25 @@ public class TestStatusController {
     private TestStatusController() {
 
     }
-
-    public static JSONObject createStatusJSON() {
-        Map<String, Object> statusMap = new HashMap<>();
-
-        statusMap.put("TestsSuccessful", testsSuccessful);
-        statusMap.put("TestsSkipped", testsSkipped);
-        statusMap.put("TestsFailed", testsFailed);
-
-        statusMap.put("FailureCorridorActive", Testerra.Properties.FAILURE_CORRIDOR_ACTIVE.asBool());
-        statusMap.put("DryRun", Testerra.Properties.DRY_RUN.asString());
-
-        statusMap.put("Status", getCurrentExecutionContext().getStatus());
-        statusMap.put("StatusBool", getCurrentExecutionContext().getStatus() == Status.PASSED);
-
-        statusMap.put("RunCfg", getCurrentExecutionContext().runConfig.RUNCFG);
-        statusMap.put("Date", getCurrentExecutionContext().startTime.toString());
-
-        return new JSONObject(statusMap);
-    }
+//
+//    public static JSONObject createStatusJSON() {
+//        Map<String, Object> statusMap = new HashMap<>();
+//
+//        statusMap.put("TestsSuccessful", testsSuccessful);
+//        statusMap.put("TestsSkipped", testsSkipped);
+//        statusMap.put("TestsFailed", testsFailed);
+//
+//        statusMap.put("FailureCorridorActive", Testerra.Properties.FAILURE_CORRIDOR_ACTIVE.asBool());
+//        statusMap.put("DryRun", Testerra.Properties.DRY_RUN.asString());
+//
+//        statusMap.put("Status", getCurrentExecutionContext().getStatus());
+//        statusMap.put("StatusBool", getCurrentExecutionContext().getStatus() == Status.PASSED);
+//
+//        statusMap.put("RunCfg", getCurrentExecutionContext().runConfig.RUNCFG);
+//        statusMap.put("Date", getCurrentExecutionContext().startTime.toString());
+//
+//        return new JSONObject(statusMap);
+//    }
 
     public static synchronized void setMethodStatus(MethodContext methodContext, Status status, Method method) {
         /*

@@ -175,25 +175,4 @@ public final class PerfTestContainer {
 //        PerfTestReportUtils.saveTestConfigs();
 //    }
 
-    public static void prepareMeasurementsForReport() {
-
-        Map<String, Map<Long, List<TimingInfo>>> pageLoadInfosPerTestMethod = PerfTestContainer
-                .getPageLoadInfosPerTestMethod();
-
-
-        // 1. sort the Map per method like in perftest--> all PageLoadInfos that occured are sorted
-        Set<String> testMethodNames = pageLoadInfosPerTestMethod.keySet();
-
-        for(String testMethodName : testMethodNames) {
-            Map<Long, List<TimingInfo>> pageLoadInfoPerTestMethod = pageLoadInfosPerTestMethod.get(testMethodName);
-            Map<Long, List<TimingInfo>> sortedPageLoadInfos = PerfTestReportUtils.sortMap(pageLoadInfoPerTestMethod);
-            pageLoadInfosPerTestMethod.put(testMethodName, sortedPageLoadInfos);
-        }
-
-        // 2. create Map per Action --> the List of pageLoadInfos is sorted implicitly
-        PerfTestReportUtils.createPageLoadInfosOfAllActions(pageLoadInfosPerTestMethod);
-
-        PerfTestReportUtils.generateAverageMinMaxPerAction();
-
-    }
 }

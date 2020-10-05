@@ -81,8 +81,13 @@ public final class JSUtils {
          * Build inline string
          */
         String inline = "";
-        try {
-            InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceFile);
+
+        try (final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceFile)) {
+
+            if (inputStream == null) {
+                throw new TesterraSystemException("Could not load resource file: " + resourceFile);
+            }
+
             inline = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
         } catch (Exception e) {
             throw new TesterraSystemException(e);
@@ -203,11 +208,11 @@ public final class JSUtils {
         executeScript(
                 driver,
                 String.format("var element = arguments[0];\n" +
-                        "var origOutline = element.style.outline;\n" +
-                        "element.style.outline='5px solid rgba(%d,%d,%d,%d)';\n" +
-                        "var t = window.setTimeout(function(){\n" +
-                        "   element.style.outline = origOutline;\n" +
-                        "}, %d);",
+                                "var origOutline = element.style.outline;\n" +
+                                "element.style.outline='5px solid rgba(%d,%d,%d,%d)';\n" +
+                                "var t = window.setTimeout(function(){\n" +
+                                "   element.style.outline = origOutline;\n" +
+                                "}, %d);",
                         color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha(), ms),
                 webElement
         );
@@ -245,7 +250,8 @@ public final class JSUtils {
         LOGGER.debug("Static highlighting WebElement " + webElement);
         executeScript(
                 driver,
-                String.format("arguments[0].style.outline='5px dotted rgba(%d,%d,%d,%d)';", color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()),
+                String.format("arguments[0].style.outline='5px dotted rgba(%d,%d,%d,%d)';", color.getRed(), color.getGreen(), color.getBlue(),
+                        color.getAlpha()),
                 webElement
         );
         LOGGER.debug("Finished static highlighting WebElement" + webElement);

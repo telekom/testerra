@@ -25,9 +25,11 @@ import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
+import eu.tsystems.mms.tic.testframework.events.ModulesInitializedEvent;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.internal.BuildInformation;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -109,6 +111,7 @@ public final class Booter implements Loggable {
             log().debug("Calling Init Hook " + moduleHook.getClass().getSimpleName() + "...");
             moduleHook.init();
         });
+        TesterraListener.getEventBus().post(new ModulesInitializedEvent());
     }
 
     public void shutdown() {

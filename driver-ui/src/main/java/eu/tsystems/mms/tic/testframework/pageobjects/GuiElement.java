@@ -323,6 +323,12 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
         return this;
     }
 
+    /**
+     * @deprecated
+     * This method is no longer acceptable as a part of GuiElement.
+     * Use {@link eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils#clickJS()} instead
+     *
+     */
     @Override
     public UiElement sendKeys(CharSequence... charSequences) {
         decoratedCore.sendKeys(charSequences);
@@ -337,12 +343,24 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
 //        return this.userSimulator;
 //    }
 
+    /**
+     * @deprecated
+     * This method is no longer acceptable as a part of GuiElement.
+     * Use {@link eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils#clickAbsolute()} instead
+     *
+     */
     @Override
     public UiElement clear() {
         decoratedCore.clear();
         return this;
     }
 
+    /**
+     * @deprecated
+     * This method is no longer acceptable as a part of GuiElement.
+     * Use {@link eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils#mouseOverAbsolute2Axis()} instead
+     *
+     */
     @Override
     public InteractiveUiElement hover() {
         return mouseOver();
@@ -419,11 +437,16 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
         return this.list;
     }
 
+    /**
+     * @deprecated
+     * This method is no longer acceptable as a part of GuiElement.
+     * Use {@link eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils#mouseOverJS()} instead
+     *
+     */
     @Deprecated
     public String getCssValue(String cssIdentifier) {
         return decoratedCore.getCssValue(cssIdentifier);
     }
-
     @Deprecated
     public UiElement mouseOver() {
         decoratedCore.mouseOver();
@@ -506,6 +529,12 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
         return this.contextClick();
     }
 
+    /**
+     * @deprecated
+     * This method is no longer acceptable as a part of GuiElement.
+     * Use {@link eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils#doubleClickJS()} instead
+     *
+     */
     @Override
     public UiElement contextClick() {
         decoratedCore.contextClick();

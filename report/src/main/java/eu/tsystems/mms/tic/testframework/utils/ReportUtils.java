@@ -37,6 +37,7 @@ import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.perf.PerfTestReportUtils;
+import eu.tsystems.mms.tic.testframework.report.perf.TimingsGraphGenerator;
 import eu.tsystems.mms.tic.testframework.report.threadvisualizer.ThreadVisualizer;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import java.io.File;
@@ -301,10 +302,10 @@ public final class ReportUtils {
         Create guielement timing graphs
          */
         if (Timings.TIMING_GUIELEMENT_FIND.size() > 0) {
-            Timings.createGuiElementFindTimingsGraph();
+            TimingsGraphGenerator.createGuiElementFindTimingsGraph();
         }
         if (Timings.TIMING_GUIELEMENT_FIND_WITH_PARENT.size() > 0) {
-            Timings.createGuiElementFindWithParentTimingsGraph();
+            TimingsGraphGenerator.createGuiElementFindWithParentTimingsGraph();
         }
 
         /*

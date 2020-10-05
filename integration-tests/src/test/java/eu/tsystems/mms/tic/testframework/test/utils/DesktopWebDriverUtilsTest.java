@@ -23,7 +23,7 @@
 package eu.tsystems.mms.tic.testframework.test.utils;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
 import eu.tsystems.mms.tic.testframework.test.guielement.AbstractGuiElementTest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils;
 import org.openqa.selenium.WebDriver;
@@ -107,7 +107,7 @@ public class DesktopWebDriverUtilsTest extends AbstractGuiElementTest {
         utils.mouseOverAbsolute2Axis(element);      // How can we assert this special mouse over?
     }
 
-    public GuiElement getGuiElementBy(Locate locator) {
+    public GuiElement getGuiElementBy(Locator locator) {
         WebDriver driver = getWebDriver();
         return new GuiElement(driver, locator);
     }

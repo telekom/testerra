@@ -22,7 +22,7 @@
  package eu.tsystems.mms.tic.testframework.core.pageobjects.testdata;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFinder;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
 import org.openqa.selenium.WebDriver;
 
 /**

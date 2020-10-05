@@ -22,7 +22,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.layout;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 
 @Deprecated
 public interface ILayout {

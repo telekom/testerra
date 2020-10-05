@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -17,19 +17,23 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
- package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.ClassFinder;
-import org.openqa.selenium.WebDriver;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
-/**
- * A page factory that supports the instantiation of responsive page objects
- */
-public class ResponsivePageFactory extends DefaultPageFactory {
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+
+public class DefaultUiElementList extends AbstractUiElementList<UiElement> {
+    private GuiElement guiElement;
+
+    public DefaultUiElementList(GuiElement guiElement) {
+        super(guiElement);
+        this.guiElement = guiElement;
+    }
+
     @Override
-    public <T extends PageObject> Class<T> findBestMatchingClass(Class<T> pageClass, WebDriver webDriver) {
-        return ClassFinder.getBestMatchingClass(pageClass, webDriver, getConfiguredPrefix());
+    public UiElement get(int i) {
+        return new GuiElement(guiElement, i);
     }
 }

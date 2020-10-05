@@ -21,7 +21,7 @@
  */
 package eu.tsystems.mms.tic.testframework.exceptions;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.AbstractPage;
 
 /**
  * Exception indicating that a page was not found.

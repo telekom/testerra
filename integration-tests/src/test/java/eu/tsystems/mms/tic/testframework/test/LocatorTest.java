@@ -1,9 +1,9 @@
 package eu.tsystems.mms.tic.testframework.test;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
 import eu.tsystems.mms.tic.testframework.pageobjects.XPath;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFinder;
 import eu.tsystems.mms.tic.testframework.testing.UiElementFinderFactoryProvider;
 import org.openqa.selenium.By;
 import org.testng.annotations.Test;

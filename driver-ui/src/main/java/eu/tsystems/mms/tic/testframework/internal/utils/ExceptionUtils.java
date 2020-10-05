@@ -21,7 +21,7 @@
  */
  package eu.tsystems.mms.tic.testframework.internal.utils;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.AbstractPage;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 

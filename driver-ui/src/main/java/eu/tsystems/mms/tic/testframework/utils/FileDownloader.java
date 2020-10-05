@@ -25,7 +25,7 @@ package eu.tsystems.mms.tic.testframework.utils;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;

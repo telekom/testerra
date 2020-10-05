@@ -21,7 +21,7 @@
  */
 package eu.tsystems.mms.tic.testframework.exceptions;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 
 /**
  * Runtime Exception, stating that a {@link UiElement} is missing.

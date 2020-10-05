@@ -19,13 +19,11 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.pageobjects.internal;
+package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
-import eu.tsystems.mms.tic.testframework.pageobjects.LocatorFactoryProvider;
-import eu.tsystems.mms.tic.testframework.pageobjects.XPath;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementLabelLocator;
 import org.openqa.selenium.By;
 
 /**

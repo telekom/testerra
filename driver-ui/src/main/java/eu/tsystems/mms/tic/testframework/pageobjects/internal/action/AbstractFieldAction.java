@@ -21,7 +21,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.action;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.AbstractPage;
 import java.lang.reflect.Field;
 
 public abstract class AbstractFieldAction {

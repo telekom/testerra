@@ -18,28 +18,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+ package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
-package eu.tsystems.mms.tic.testframework.pageobjects;
-
-import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFinder;
+import eu.tsystems.mms.tic.testframework.pageobjects.PageObject;
+import eu.tsystems.mms.tic.testframework.pageobjects.factory.ClassFinder;
 import org.openqa.selenium.WebDriver;
 
 /**
- * Default implementation of {@link UiElementFinder}
- * @author Mike Reiche
+ * A page factory that supports the instantiation of responsive page objects
  */
-public class DefaultUiElementFinder implements UiElementFinder {
-    private static final UiElementFactory uiElementFactory = Testerra.injector.getInstance(UiElementFactory.class);
-    private final WebDriver webDriver;
-
-    public DefaultUiElementFinder(WebDriver webDriver) {
-        this.webDriver = webDriver;
-    }
-
+public class ResponsivePageFactory extends DefaultPageFactory {
     @Override
-    public UiElement find(Locator locator) {
-        return uiElementFactory.createWithWebDriver(this.webDriver, locator);
+    public <T extends PageObject> Class<T> findBestMatchingClass(Class<T> pageClass, WebDriver webDriver) {
+        return ClassFinder.getBestMatchingClass(pageClass, webDriver, getConfiguredPrefix());
     }
 }

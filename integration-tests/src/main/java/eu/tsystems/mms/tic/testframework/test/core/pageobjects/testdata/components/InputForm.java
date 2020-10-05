@@ -3,7 +3,7 @@ package eu.tsystems.mms.tic.testframework.test.core.pageobjects.testdata.compone
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractComponent;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.InteractiveUiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import org.openqa.selenium.By;
 
 public class InputForm extends AbstractComponent<InputForm> {

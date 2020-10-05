@@ -19,24 +19,28 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.pageobjects;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.PageFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
+import org.openqa.selenium.WebDriver;
 
-public class DefaultComponentList<COMPONENT extends AbstractComponent<COMPONENT>> extends AbstractUiElementList<COMPONENT> {
-    private final PageFactory pageFactory = Testerra.injector.getInstance(PageFactory.class);
-    private COMPONENT component;
+/**
+ * Default implementation of {@link UiElementFinder}
+ * @author Mike Reiche
+ */
+public class DefaultUiElementFinder implements UiElementFinder {
+    private static final UiElementFactory uiElementFactory = Testerra.injector.getInstance(UiElementFactory.class);
+    private final WebDriver webDriver;
 
-    public DefaultComponentList(COMPONENT component) {
-        super(component);
-        this.component = component;
+    public DefaultUiElementFinder(WebDriver webDriver) {
+        this.webDriver = webDriver;
     }
 
     @Override
-    public COMPONENT get(int i) {
-        COMPONENT component = (COMPONENT)pageFactory.createComponent(this.component.getClass(), this.component.rootElement.list().get(i));
-        //component.setParent(this.component.getParent());
-        return component;
+    public UiElement find(Locator locator) {
+        return uiElementFactory.createWithWebDriver(this.webDriver, locator);
     }
 }

@@ -19,20 +19,23 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.pageobjects;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import org.openqa.selenium.WebDriver;
 
-public class DefaultUiElementList extends AbstractUiElementList<UiElement> {
-    private GuiElement guiElement;
-
-    public DefaultUiElementList(GuiElement guiElement) {
-        super(guiElement);
-        this.guiElement = guiElement;
-    }
-
-    @Override
-    public UiElement get(int i) {
-        return new GuiElement(guiElement, i);
-    }
+/**
+ * Creates {@link UiElement}
+ * @author Mike Reiche
+ */
+public interface UiElementFactory {
+    /**
+     * Creates root elements from the WebDriver's default content
+     */
+    UiElement createWithWebDriver(WebDriver webDriver, Locator locator);
+    /**
+     * Creates sub elements from a given parent element
+     */
+    UiElement createFromParent(UiElement parent, Locator locator);
 }

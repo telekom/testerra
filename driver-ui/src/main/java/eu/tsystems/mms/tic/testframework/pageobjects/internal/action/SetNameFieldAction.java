@@ -24,7 +24,7 @@
 import eu.tsystems.mms.tic.testframework.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractComponent;
-import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.AbstractPage;
 import java.lang.reflect.Field;
 
 /**

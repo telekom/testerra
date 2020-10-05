@@ -1,7 +1,7 @@
 package eu.tsystems.mms.tic.testframework.test.core.pageobjects.testdata;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.test.core.pageobjects.testdata.components.TableRow;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

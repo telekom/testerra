@@ -22,7 +22,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.internal.Nameable;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementList;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.UiElementBase;
 
 /**

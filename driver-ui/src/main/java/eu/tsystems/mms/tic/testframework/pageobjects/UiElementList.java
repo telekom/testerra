@@ -21,17 +21,24 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFinder;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFinderFactory;
-import org.openqa.selenium.WebDriver;
+import java.util.Iterator;
 
-/**
- * Default implementation of {@link UiElementFinderFactory}
- */
-public class DefaultUiElementFinderFactory implements UiElementFinderFactory {
+public interface UiElementList<SELF> extends
+    Iterable<SELF>,
+    Iterator<SELF>
+{
+    SELF get(int i);
+    int size();
 
-    @Override
-    public UiElementFinder create(WebDriver webDriver) {
-        return new DefaultUiElementFinder(webDriver);
+    default boolean isEmpty() {
+        return size()==0;
+    }
+
+    default SELF first() {
+        return get(0);
+    }
+
+    default SELF last() {
+        return get(size()-1);
     }
 }

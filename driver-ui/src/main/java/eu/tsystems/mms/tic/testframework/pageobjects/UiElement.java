@@ -18,13 +18,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package eu.tsystems.mms.tic.testframework.pageobjects.internal;
+package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.IProperties;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.internal.Nameable;
-import eu.tsystems.mms.tic.testframework.pageobjects.InteractiveUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.UiElementBase;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverRetainer;
 

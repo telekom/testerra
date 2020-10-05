@@ -23,8 +23,9 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.internal.Nameable;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementList;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.AbstractPage;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultComponentList;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementBaseAssertions;
 import java.awt.Color;
 import java.util.function.Consumer;

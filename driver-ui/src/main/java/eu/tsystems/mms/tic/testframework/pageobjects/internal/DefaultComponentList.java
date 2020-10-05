@@ -21,24 +21,22 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
-import java.util.Iterator;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.pageobjects.AbstractComponent;
 
-public interface UiElementList<SELF> extends
-    Iterable<SELF>,
-    Iterator<SELF>
-{
-    SELF get(int i);
-    int size();
+public class DefaultComponentList<COMPONENT extends AbstractComponent<COMPONENT>> extends AbstractUiElementList<COMPONENT> {
+    private final PageFactory pageFactory = Testerra.injector.getInstance(PageFactory.class);
+    private COMPONENT component;
 
-    default boolean isEmpty() {
-        return size()==0;
+    public DefaultComponentList(COMPONENT component) {
+        super(component);
+        this.component = component;
     }
 
-    default SELF first() {
-        return get(0);
-    }
-
-    default SELF last() {
-        return get(size()-1);
+    @Override
+    public COMPONENT get(int i) {
+        COMPONENT component = (COMPONENT)pageFactory.createComponent(this.component.getClass(), this.component.rootElement.list().get(i));
+        //component.setParent(this.component.getParent());
+        return component;
     }
 }

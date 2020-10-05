@@ -19,22 +19,18 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.pageobjects;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
 import org.openqa.selenium.WebDriver;
 
 /**
- * Creates {@link UiElement}
- * @author Mike Reiche
+ * Default implementation of {@link UiElementFinderFactory}
  */
-public interface UiElementFactory {
-    /**
-     * Creates root elements from the WebDriver's default content
-     */
-    UiElement createWithWebDriver(WebDriver webDriver, Locator locator);
-    /**
-     * Creates sub elements from a given parent element
-     */
-    UiElement createFromParent(UiElement parent, Locator locator);
+public class DefaultUiElementFinderFactory implements UiElementFinderFactory {
+
+    @Override
+    public UiElementFinder create(WebDriver webDriver) {
+        return new DefaultUiElementFinder(webDriver);
+    }
 }

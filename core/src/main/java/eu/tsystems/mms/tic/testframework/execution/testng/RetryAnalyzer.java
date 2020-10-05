@@ -29,16 +29,10 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraInheritedFailedExcep
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.report.utils.FailsAnnotationFilter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.IRetryAnalyzer;
-import org.testng.ITestNGMethod;
-import org.testng.ITestResult;
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,6 +40,11 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.IRetryAnalyzer;
+import org.testng.ITestNGMethod;
+import org.testng.ITestResult;
 
 /**
  * Testng Retry Analyzer.

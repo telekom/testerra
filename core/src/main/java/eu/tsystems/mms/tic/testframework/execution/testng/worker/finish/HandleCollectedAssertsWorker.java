@@ -26,8 +26,8 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.SharedTestResultAttributes;
 import eu.tsystems.mms.tic.testframework.internal.AssertionsCollector;
+import eu.tsystems.mms.tic.testframework.report.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.AssertionInfo;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import java.util.List;
 import org.testng.ITestResult;
 

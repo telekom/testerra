@@ -21,7 +21,7 @@
  */
  package eu.tsystems.mms.tic.testframework.report.model;
 
-import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
+import eu.tsystems.mms.tic.testframework.report.context.ErrorContext;
 
 /**
  * Internal class for non functional infos.

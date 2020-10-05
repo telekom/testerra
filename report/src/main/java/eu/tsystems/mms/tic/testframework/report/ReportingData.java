@@ -21,9 +21,9 @@
  */
 package eu.tsystems.mms.tic.testframework.report;
 
-import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.context.ClassContext;
+import eu.tsystems.mms.tic.testframework.report.context.ExecutionContext;
+import eu.tsystems.mms.tic.testframework.report.context.MethodContext;
 import java.util.Collection;
 import java.util.List;
 

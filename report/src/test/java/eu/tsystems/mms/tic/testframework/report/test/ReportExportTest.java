@@ -22,9 +22,9 @@
 package eu.tsystems.mms.tic.testframework.report.test;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.report.context.report.DefaultReport;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.DefaultReport;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import java.io.File;
 import org.testng.annotations.Test;

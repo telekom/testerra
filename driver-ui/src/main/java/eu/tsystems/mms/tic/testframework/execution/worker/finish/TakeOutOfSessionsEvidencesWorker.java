@@ -29,7 +29,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.worker.SharedTestResul
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
-import eu.tsystems.mms.tic.testframework.report.model.context.Video;
+import eu.tsystems.mms.tic.testframework.report.context.Video;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.util.List;
 

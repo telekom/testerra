@@ -23,9 +23,9 @@
 
 import eu.tsystems.mms.tic.testframework.execution.testng.DefaultNonFunctionalAssertion;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
+import eu.tsystems.mms.tic.testframework.report.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.AssertionInfo;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import java.util.List;
 import org.slf4j.Logger;

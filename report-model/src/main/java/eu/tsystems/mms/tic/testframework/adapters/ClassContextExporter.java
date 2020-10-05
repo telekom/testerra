@@ -23,7 +23,7 @@ import eu.tsystems.mms.tic.testframework.report.model.ClassContext;
 
 public class ClassContextExporter extends AbstractContextExporter {
 
-    public ClassContext.Builder prepareClassContext(eu.tsystems.mms.tic.testframework.report.model.context.ClassContext classContext) {
+    public ClassContext.Builder prepareClassContext(eu.tsystems.mms.tic.testframework.report.context.ClassContext classContext) {
         ClassContext.Builder builder = ClassContext.newBuilder();
 
         apply(createContextValues(classContext), builder::setContextValues);

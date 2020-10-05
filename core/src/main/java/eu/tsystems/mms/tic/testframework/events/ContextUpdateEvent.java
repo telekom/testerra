@@ -22,7 +22,7 @@
 
 package eu.tsystems.mms.tic.testframework.events;
 
-import eu.tsystems.mms.tic.testframework.report.model.context.SynchronizableContext;
+import eu.tsystems.mms.tic.testframework.report.context.SynchronizableContext;
 
 /**
  * This event gets fired whenever a context should be updated.

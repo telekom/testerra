@@ -23,6 +23,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 import eu.tsystems.mms.tic.testframework.common.IProperties;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
+import eu.tsystems.mms.tic.testframework.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.InteractiveUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.UiElementBase;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverRetainer;
@@ -34,7 +35,7 @@ import eu.tsystems.mms.tic.testframework.webdriver.WebDriverRetainer;
 public interface UiElement extends
     UiElementBase,
         InteractiveUiElement,
-    Nameable<UiElement>,
+        Nameable<UiElement>,
         WebDriverRetainer,
         UiElementFinder
 {

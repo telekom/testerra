@@ -22,7 +22,7 @@
  package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
-import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
+import eu.tsystems.mms.tic.testframework.report.context.SessionContext;
 
 public abstract class WebDriverRequest {
 

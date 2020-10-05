@@ -23,8 +23,8 @@ package eu.tsystems.mms.tic.testframework.connectors.util;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
-import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
-import eu.tsystems.mms.tic.testframework.report.model.context.Video;
+import eu.tsystems.mms.tic.testframework.report.context.Screenshot;
+import eu.tsystems.mms.tic.testframework.report.context.Video;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;

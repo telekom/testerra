@@ -21,10 +21,10 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
+import eu.tsystems.mms.tic.testframework.internal.asserts.BinaryAssertion;
+import eu.tsystems.mms.tic.testframework.internal.asserts.StringAssertion;
+import eu.tsystems.mms.tic.testframework.internal.asserts.UiElementBaseAssertions;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementBaseAssertions;
 
 /**
  * Contains all assertions on an {@link UiElement}

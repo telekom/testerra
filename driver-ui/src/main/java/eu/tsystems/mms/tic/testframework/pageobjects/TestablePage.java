@@ -21,7 +21,7 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PageAssertions;
+import eu.tsystems.mms.tic.testframework.internal.asserts.PageAssertions;
 
 public interface TestablePage {
     PageAssertions waitFor();

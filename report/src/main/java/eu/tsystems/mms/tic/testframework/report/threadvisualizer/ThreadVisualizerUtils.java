@@ -22,7 +22,7 @@
 
 package eu.tsystems.mms.tic.testframework.report.threadvisualizer;
 
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.context.MethodContext;
 
 /**
  * Created with IntelliJ IDEA. User: pele Date: 04.01.13 Time: 10:14 To change this template use File | Settings | File

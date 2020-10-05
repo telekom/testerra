@@ -36,7 +36,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.ThrowingAssertion;
 import eu.tsystems.mms.tic.testframework.internal.AssertionsCollector;
 import eu.tsystems.mms.tic.testframework.internal.CollectedAssertions;
 import eu.tsystems.mms.tic.testframework.report.Report;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.DefaultReport;
+import eu.tsystems.mms.tic.testframework.report.context.report.DefaultReport;
 import eu.tsystems.mms.tic.testframework.testing.DefaultTestController;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
 import eu.tsystems.mms.tic.testframework.utils.DefaultFormatter;

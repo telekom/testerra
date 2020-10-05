@@ -22,10 +22,9 @@
  package eu.tsystems.mms.tic.testframework.report;
 
 import eu.tsystems.mms.tic.testframework.interop.ScreenshotCollector;
-import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
+import eu.tsystems.mms.tic.testframework.report.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-
 import java.util.List;
 
 public class ScreenshotGrabber implements ScreenshotCollector {

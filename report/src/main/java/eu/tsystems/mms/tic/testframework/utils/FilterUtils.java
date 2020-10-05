@@ -23,7 +23,7 @@
 package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.context.MethodContext;
 import java.util.List;
 import java.util.Queue;
 import java.util.stream.Collectors;

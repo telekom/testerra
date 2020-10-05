@@ -30,7 +30,7 @@ import java.util.Map;
 
 public class ExecutionContextExporter extends AbstractContextExporter {
 
-    public ExecutionContext.Builder prepareExecutionContext(eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext executionContext) {
+    public ExecutionContext.Builder prepareExecutionContext(eu.tsystems.mms.tic.testframework.report.context.ExecutionContext executionContext) {
         ExecutionContext.Builder builder = ExecutionContext.newBuilder();
 
         apply(createContextValues(executionContext), builder::setContextValues);
@@ -45,7 +45,7 @@ public class ExecutionContextExporter extends AbstractContextExporter {
         return builder;
     }
 
-    private List<ContextClip> createContextClip(Map<String, List<eu.tsystems.mms.tic.testframework.report.model.context.MethodContext>> values) {
+    private List<ContextClip> createContextClip(Map<String, List<eu.tsystems.mms.tic.testframework.report.context.MethodContext>> values) {
         List<ContextClip> out = new LinkedList<>();
         values.forEach((key, list) -> {
             ContextClip.Builder builder = ContextClip.newBuilder();
@@ -57,7 +57,7 @@ public class ExecutionContextExporter extends AbstractContextExporter {
         return out;
     }
 
-    public RunConfig.Builder prepareRunConfig(eu.tsystems.mms.tic.testframework.report.model.context.RunConfig runConfig) {
+    public RunConfig.Builder prepareRunConfig(eu.tsystems.mms.tic.testframework.report.context.RunConfig runConfig) {
         RunConfig.Builder builder = RunConfig.newBuilder();
 
         apply(runConfig.getReportName(), builder::setReportName);

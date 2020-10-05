@@ -21,13 +21,12 @@
  */
  package eu.tsystems.mms.tic.testframework.report.model.steps;
 
-import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.clickpath.ClickPathEvent;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.report.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.Serial;
-import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
-
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.LinkedList;

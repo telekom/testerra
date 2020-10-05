@@ -1,12 +1,12 @@
 package eu.tsystems.mms.tic.testframework.adapters;
 
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.context.AbstractContext;
+import eu.tsystems.mms.tic.testframework.report.context.ExecutionContext;
+import eu.tsystems.mms.tic.testframework.report.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.ContextValues;
 import eu.tsystems.mms.tic.testframework.report.model.ExecStatusType;
 import eu.tsystems.mms.tic.testframework.report.model.ResultStatusType;
-import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import java.util.Date;
 import java.util.LinkedHashMap;

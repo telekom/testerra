@@ -22,11 +22,10 @@
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
+import eu.tsystems.mms.tic.testframework.report.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
-import org.openqa.selenium.WebDriver;
-
 import java.lang.reflect.Method;
+import org.openqa.selenium.WebDriver;
 
 public class WebDriverProxy extends ObjectUtils.PassThroughProxy<WebDriver> implements Loggable {
 

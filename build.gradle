@@ -12,7 +12,6 @@ ext {
     /*
     module stuff
      */
-    core_interop = project(':core-interop')
     driver_ui = project(':driver-ui')
     driver_ui_desktop = project(':driver-ui-desktop')
     core = project(':core')

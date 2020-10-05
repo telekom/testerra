@@ -23,7 +23,7 @@ import eu.tsystems.mms.tic.testframework.report.model.SuiteContext;
 
 public class SuiteContextExporter extends AbstractContextExporter {
 
-    public SuiteContext.Builder prepareSuiteContext(eu.tsystems.mms.tic.testframework.report.model.context.SuiteContext suiteContext) {
+    public SuiteContext.Builder prepareSuiteContext(eu.tsystems.mms.tic.testframework.report.context.SuiteContext suiteContext) {
         SuiteContext.Builder builder = SuiteContext.newBuilder();
 
         apply(createContextValues(suiteContext), builder::setContextValues);

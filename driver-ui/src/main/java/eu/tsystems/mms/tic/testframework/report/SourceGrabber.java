@@ -25,7 +25,7 @@ import eu.tsystems.mms.tic.testframework.interop.SourceCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
-import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
+import eu.tsystems.mms.tic.testframework.report.context.ScriptSource;
 import eu.tsystems.mms.tic.testframework.utils.SourceUtils;
 
 public class SourceGrabber implements SourceCollector {

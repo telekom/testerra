@@ -24,7 +24,7 @@
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
-import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
+import eu.tsystems.mms.tic.testframework.report.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.util.List;
 

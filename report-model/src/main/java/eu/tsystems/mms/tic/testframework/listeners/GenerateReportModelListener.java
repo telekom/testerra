@@ -32,8 +32,8 @@ import eu.tsystems.mms.tic.testframework.adapters.TestContextExporter;
 import eu.tsystems.mms.tic.testframework.events.FinalizeExecutionEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.context.ExecutionContext;
+import eu.tsystems.mms.tic.testframework.report.context.MethodContext;
 import java.io.File;
 import java.io.FileOutputStream;
 

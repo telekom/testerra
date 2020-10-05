@@ -22,7 +22,7 @@
 
 package eu.tsystems.mms.tic.testframework.report.threadvisualizer;
 
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.context.MethodContext;
 import java.io.Serializable;
 
 /**

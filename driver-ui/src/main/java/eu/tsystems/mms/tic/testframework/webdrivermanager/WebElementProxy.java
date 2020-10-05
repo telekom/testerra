@@ -22,14 +22,13 @@
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
+import eu.tsystems.mms.tic.testframework.report.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.stream.Collectors;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 public class WebElementProxy extends ObjectUtils.PassThroughProxy<WebElement> implements Loggable {
 

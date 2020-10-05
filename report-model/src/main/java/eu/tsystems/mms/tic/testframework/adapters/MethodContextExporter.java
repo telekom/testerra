@@ -24,6 +24,7 @@ import com.google.gson.Gson;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.internal.IDUtils;
 import eu.tsystems.mms.tic.testframework.report.Report;
+import eu.tsystems.mms.tic.testframework.report.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.FailureCorridorValue;
 import eu.tsystems.mms.tic.testframework.report.model.File;
@@ -37,7 +38,6 @@ import eu.tsystems.mms.tic.testframework.report.model.ScriptSource;
 import eu.tsystems.mms.tic.testframework.report.model.ScriptSourceLine;
 import eu.tsystems.mms.tic.testframework.report.model.StackTrace;
 import eu.tsystems.mms.tic.testframework.report.model.StackTraceCause;
-import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
 import java.lang.annotation.Annotation;
@@ -86,7 +86,7 @@ public class MethodContextExporter extends AbstractContextExporter {
         return path;
     }
 
-    public MethodContext.Builder prepareMethodContext(eu.tsystems.mms.tic.testframework.report.model.context.MethodContext methodContext, Consumer<File.Builder> fileConsumer) {
+    public MethodContext.Builder prepareMethodContext(eu.tsystems.mms.tic.testframework.report.context.MethodContext methodContext, Consumer<File.Builder> fileConsumer) {
         MethodContext.Builder builder = MethodContext.newBuilder();
 
         apply(createContextValues(methodContext), builder::setContextValues);
@@ -198,7 +198,7 @@ public class MethodContextExporter extends AbstractContextExporter {
         builder.setSize(file.length());
     }
 
-    public StackTrace.Builder prepareStackTrace(eu.tsystems.mms.tic.testframework.report.model.context.StackTrace stackTrace) {
+    public StackTrace.Builder prepareStackTrace(eu.tsystems.mms.tic.testframework.report.context.StackTrace stackTrace) {
         StackTrace.Builder builder = StackTrace.newBuilder();
 
         apply(stackTrace.additionalErrorMessage, builder::setAdditionalErrorMessage);
@@ -207,7 +207,7 @@ public class MethodContextExporter extends AbstractContextExporter {
         return builder;
     }
 
-    public StackTraceCause.Builder prepareStackTraceCause(eu.tsystems.mms.tic.testframework.report.model.context.StackTrace.Cause cause) {
+    public StackTraceCause.Builder prepareStackTraceCause(eu.tsystems.mms.tic.testframework.report.context.StackTrace.Cause cause) {
         StackTraceCause.Builder builder = StackTraceCause.newBuilder();
 
         apply(cause.className, builder::setClassName);
@@ -218,7 +218,7 @@ public class MethodContextExporter extends AbstractContextExporter {
         return builder;
     }
 
-    public ScriptSource.Builder prepareScriptSource(eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource scriptSource) {
+    public ScriptSource.Builder prepareScriptSource(eu.tsystems.mms.tic.testframework.report.context.ScriptSource scriptSource) {
         ScriptSource.Builder builder = ScriptSource.newBuilder();
 
         apply(scriptSource.fileName, builder::setFileName);
@@ -228,7 +228,7 @@ public class MethodContextExporter extends AbstractContextExporter {
         return builder;
     }
 
-    public ScriptSourceLine.Builder prepareScriptSourceLine(eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource.Line line) {
+    public ScriptSourceLine.Builder prepareScriptSourceLine(eu.tsystems.mms.tic.testframework.report.context.ScriptSource.Line line) {
         ScriptSourceLine.Builder builder = ScriptSourceLine.newBuilder();
 
         apply(line.line, builder::setLine);
@@ -238,7 +238,7 @@ public class MethodContextExporter extends AbstractContextExporter {
         return builder;
     }
 
-    public ErrorContext.Builder prepareErrorContext(eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext errorContext) {
+    public ErrorContext.Builder prepareErrorContext(eu.tsystems.mms.tic.testframework.report.context.ErrorContext errorContext) {
         ErrorContext.Builder builder = ErrorContext.newBuilder();
 
         apply(errorContext.getReadableErrorMessage(), builder::setReadableErrorMessage);

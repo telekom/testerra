@@ -10,7 +10,7 @@ import static eu.tsystems.mms.tic.testframework.report.model.SessionContext.newB
 
 public class SessionContextExporter extends AbstractContextExporter implements Loggable {
 
-    public SessionContext.Builder prepareSessionContext(eu.tsystems.mms.tic.testframework.report.model.context.SessionContext sessionContext) {
+    public SessionContext.Builder prepareSessionContext(eu.tsystems.mms.tic.testframework.report.context.SessionContext sessionContext) {
         Builder builder = newBuilder();
 
         apply(createContextValues(sessionContext), builder::setContextValues);

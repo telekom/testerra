@@ -25,7 +25,7 @@ package eu.tsystems.mms.tic.testframework.report.threadvisualizer;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.report.Report;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.utils.ReportUtils;
 import java.io.InputStream;
 import java.util.List;

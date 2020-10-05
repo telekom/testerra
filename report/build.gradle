@@ -4,7 +4,6 @@ plugins {
 
 dependencies {
     compile core
-    compile core_interop
     compile project(':report-model')
 
     // <Report>

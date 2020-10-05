@@ -22,10 +22,9 @@
  package eu.tsystems.mms.tic.testframework.report.model.steps;
 
 import eu.tsystems.mms.tic.testframework.clickpath.ClickPathEvent;
+import eu.tsystems.mms.tic.testframework.report.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.Serial;
-import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
-
 import java.io.Serializable;
 
 public class TestStepActionEntry implements Serializable {

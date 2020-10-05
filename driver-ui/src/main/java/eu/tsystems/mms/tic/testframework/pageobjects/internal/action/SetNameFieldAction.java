@@ -21,10 +21,10 @@
  */
  package eu.tsystems.mms.tic.testframework.pageobjects.internal.action;
 
+import eu.tsystems.mms.tic.testframework.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractComponent;
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import java.lang.reflect.Field;
 
 /**

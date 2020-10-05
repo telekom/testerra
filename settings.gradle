@@ -1,7 +1,6 @@
 rootProject.name = 'testerra'
 include 'core'
 include 'surefire-connector'
-include 'core-interop'
 include 'driver-ui'
 include 'driver-ui-desktop'
 include 'bmp'

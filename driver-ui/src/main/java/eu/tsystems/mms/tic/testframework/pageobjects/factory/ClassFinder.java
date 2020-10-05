@@ -21,13 +21,11 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.factory;
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.lang.reflect.Modifier;
@@ -57,9 +55,6 @@ final class ClassFinder {
     private static final String PATTERN_MID = SCHEMA_DIV + RESOLUTION_REGEX + SCHEMA_DIV + RESOLUTION_REGEX;
     private static final String PATTERN_HI = SCHEMA_DIV + RESOLUTION_REGEX + SCHEMA_DIV + KEYWORD_MAX;
     private static final String PATTERN_RES = "TODO"; // TODO
-
-    private static final String PROJECT_PACKAGE = PropertyManager.getProperty(TesterraProperties.PROJECT_PACKAGE,
-            TesterraCommons.DEFAULT_PACKAGE_NAME);
 
     private ClassFinder() {
 
@@ -120,7 +115,7 @@ final class ClassFinder {
             prefix = "";
         }
 
-        final Reflections reflections = new Reflections(PROJECT_PACKAGE);
+        final Reflections reflections = new Reflections(TesterraListener.PROJECT_PACKAGE);
         final String baseClassName = baseClass.getSimpleName();
 
         PrioritizedClassInfos<T> prioritizedClassInfos = new PrioritizedClassInfos<>();

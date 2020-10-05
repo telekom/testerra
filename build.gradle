@@ -15,7 +15,6 @@ ext {
     core_interop = project(':core-interop')
     driver_ui = project(':driver-ui')
     driver_ui_desktop = project(':driver-ui-desktop')
-    image_processing = project(':image-processing')
     core = project(':core')
     report = project(':report')
 

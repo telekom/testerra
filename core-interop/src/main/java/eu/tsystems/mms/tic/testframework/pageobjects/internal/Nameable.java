@@ -21,11 +21,10 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.PageObject;
 import java.util.function.Consumer;
 
 /**
- * This interface supports naming hierarchy of {@link PageObject}
+ * This interface supports naming hierarchy
  * @param <SELF>
  */
 public interface Nameable<SELF> {

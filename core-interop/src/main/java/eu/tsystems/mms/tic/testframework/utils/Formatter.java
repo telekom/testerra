@@ -23,7 +23,6 @@ package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import java.util.Date;
-import org.openqa.selenium.Rectangle;
 import org.testng.ITestNGMethod;
 
 /**
@@ -31,9 +30,6 @@ import org.testng.ITestNGMethod;
  * @author Mike Reiche
  */
 public interface Formatter {
-    default String toString(Rectangle rectangle) {
-        return String.format("(left: %d, top: %d, right: %d, bottom: %d)", rectangle.x, rectangle.y, rectangle.x+rectangle.width,rectangle.y+rectangle.height);
-    }
     default String cutString(String string, int maxLength) {
         return cutString(string, maxLength, "...");
     }

@@ -21,11 +21,15 @@
  */
  package eu.tsystems.mms.tic.testframework.exceptions;
 
+import org.apache.commons.lang3.NotImplementedException;
+
 /**
  * RuntimeException for tt.
  *
  * @author pele
+ * @deprecated Use {@link NotImplementedException}
  */
+@Deprecated
 public class NotYetImplementedException extends RuntimeException {
 
     /**

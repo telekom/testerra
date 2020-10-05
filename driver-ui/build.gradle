@@ -1,9 +1,25 @@
+
+def opencv = [
+        //'org.bytedeco.javacpp-presets:opencv:2.4.9-0.9',
+        'org.bytedeco.javacpp-presets:opencv:2.4.9-0.9:windows-x86',
+        'org.bytedeco.javacpp-presets:opencv:2.4.9-0.9:windows-x86_64',
+        'org.bytedeco.javacpp-presets:opencv:2.4.9-0.9:linux-x86',
+        'org.bytedeco.javacpp-presets:opencv:2.4.9-0.9:linux-x86_64',
+        'nu.pattern:opencv:2.4.9-7',
+        'org.javatuples:javatuples:1.2'
+]
+
+
 dependencies {
     compile core
-    compile image_processing
+    implementation opencv
+
+    // <LayoutCheck AnnotationContainer>
+    implementation 'com.google.code.gson:gson:2.8.6'
+    // </LayoutCheck AnnotationContainer>
 
     // <UITestUtils>
-    compile 'org.sikuli:sikuli-api:1.2.0'
+    implementation 'org.sikuli:sikuli-api:1.2.0'
     // </UITestUtils>
 
     // <PageFactory>

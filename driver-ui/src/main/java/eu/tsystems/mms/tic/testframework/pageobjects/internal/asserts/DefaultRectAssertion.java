@@ -21,9 +21,7 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
-import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
-import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import org.openqa.selenium.Rectangle;
 
 /**
@@ -31,8 +29,6 @@ import org.openqa.selenium.Rectangle;
  * @author Mike Reiche
  */
 public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> implements RectAssertion {
-
-    private static final Formatter formatter = Testerra.injector.getInstance(Formatter.class);
 
     public DefaultRectAssertion(AbstractPropertyAssertion<Rectangle> parentAssertion, AssertionProvider<Rectangle> provider) {
         super(parentAssertion, provider);
@@ -47,6 +43,10 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
         return provider.getActual();
     }
 
+    protected String format(Rectangle rectangle) {
+        return String.format("(left: %d, top: %d, right: %d, bottom: %d)", rectangle.x, rectangle.y, rectangle.x+rectangle.width,rectangle.y+rectangle.height);
+    }
+
     @Override
     public BinaryAssertion<Boolean> contains(TestableUiElement uiElement) {
         return propertyAssertionFactory.createWithParent(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
@@ -58,9 +58,9 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
             @Override
             public String getSubject() {
                 return String.format("%s.contains(%s.bounds.%s)",
-                    formatter.toString(provider.getActual()),
+                    format(provider.getActual()),
                     uiElement,
-                    formatter.toString(uiElement.waitFor().bounds().getActual())
+                    format(uiElement.waitFor().bounds().getActual())
                 );
             }
         });
@@ -77,9 +77,9 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
             @Override
             public String getSubject() {
                 return String.format("%s.intersects(%s.bounds.%s)",
-                    formatter.toString(provider.getActual()),
+                    format(provider.getActual()),
                     uiElement,
-                    formatter.toString(uiElement.waitFor().bounds().getActual())
+                    format(uiElement.waitFor().bounds().getActual())
                 );
             }
         });

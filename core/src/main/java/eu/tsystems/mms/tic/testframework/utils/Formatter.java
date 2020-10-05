@@ -51,7 +51,7 @@ public interface Formatter {
         sb
             .append((method.isTest()?"Test":"Configuration"))
             .append("(")
-            .append(method.getTestClass().getName().replace(TesterraListener.class.getPackage().getName()+".", ""))
+            .append(method.getTestClass().getName().replace(TesterraListener.DEFAULT_PACKAGE+".", ""))
             .append(".")
             .append(method.getMethodName())
             .append(")");

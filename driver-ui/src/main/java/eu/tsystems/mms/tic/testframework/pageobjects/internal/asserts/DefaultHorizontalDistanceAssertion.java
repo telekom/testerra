@@ -35,33 +35,33 @@ public class DefaultHorizontalDistanceAssertion extends AbstractPropertyAssertio
     }
 
     @Override
-    public QuantityAssertion<Integer> toRightOf(TestableUiElement guiElement) {
+    public QuantityAssertion<Integer> toRightOf(TestableUiElement uiElement) {
         return propertyAssertionFactory.createWithParent(DefaultQuantityAssertion.class, this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
-                Rectangle referenceRect = guiElement.waitFor().bounds().getActual();
+                Rectangle referenceRect = uiElement.waitFor().bounds().getActual();
                 return provider.getActual()-(referenceRect.x+referenceRect.width);
             }
 
             @Override
             public String getSubject() {
-                return String.format("toRightOf(%s)", guiElement);
+                return String.format("toRightOf(%s)", uiElement);
             }
         });
     }
 
     @Override
-    public QuantityAssertion<Integer> toLeftOf(TestableUiElement guiElement) {
+    public QuantityAssertion<Integer> toLeftOf(TestableUiElement uiElement) {
         return propertyAssertionFactory.createWithParent(DefaultQuantityAssertion.class, this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
-                Rectangle referenceRect = guiElement.waitFor().bounds().getActual();
+                Rectangle referenceRect = uiElement.waitFor().bounds().getActual();
                 return provider.getActual()-referenceRect.x;
             }
 
             @Override
             public String getSubject() {
-                return String.format("toLeftOf(%s)", guiElement);
+                return String.format("toLeftOf(%s)", uiElement);
             }
         });
     }

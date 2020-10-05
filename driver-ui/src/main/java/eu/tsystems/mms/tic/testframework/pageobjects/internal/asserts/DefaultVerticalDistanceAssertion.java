@@ -35,33 +35,33 @@ public class DefaultVerticalDistanceAssertion extends AbstractPropertyAssertion<
     }
 
     @Override
-    public QuantityAssertion<Integer> toTopOf(TestableUiElement guiElement) {
+    public QuantityAssertion<Integer> toTopOf(TestableUiElement uiElement) {
         return propertyAssertionFactory.createWithParent(DefaultQuantityAssertion.class, this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
-                Rectangle referenceRect = guiElement.waitFor().bounds().getActual();
+                Rectangle referenceRect = uiElement.waitFor().bounds().getActual();
                 return provider.getActual()-referenceRect.y;
             }
 
             @Override
             public String getSubject() {
-                return String.format("toTopOf(%s)", guiElement);
+                return String.format("toTopOf(%s)", uiElement);
             }
         });
     }
 
     @Override
-    public QuantityAssertion<Integer> toBottomOf(TestableUiElement guiElement) {
+    public QuantityAssertion<Integer> toBottomOf(TestableUiElement uiElement) {
         return propertyAssertionFactory.createWithParent(DefaultQuantityAssertion.class, this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
-                Rectangle referenceRect = guiElement.waitFor().bounds().getActual();
+                Rectangle referenceRect = uiElement.waitFor().bounds().getActual();
                 return provider.getActual()-(referenceRect.y+referenceRect.height);
             }
 
             @Override
             public String getSubject() {
-                return String.format("toBottomOf(%s)", guiElement);
+                return String.format("toBottomOf(%s)", uiElement);
             }
         });
     }

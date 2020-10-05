@@ -26,17 +26,17 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.UiElementBase
 import java.util.Iterator;
 
 public abstract class AbstractUiElementList<SELF extends UiElementBase> implements UiElementList<SELF> {
-    private final SELF guiElement;
+    private final SELF uiElement;
     private int iteratorIndex = 0;
     private int iteratorSize = 0;
 
-    public AbstractUiElementList(SELF guiElement) {
-        this.guiElement = guiElement;
+    public AbstractUiElementList(SELF uiElement) {
+        this.uiElement = uiElement;
     }
 
     @Override
     public int size() {
-        return guiElement.waitFor().numberOfElements().getActual();
+        return uiElement.waitFor().numberOfElements().getActual();
     }
 
     @Override

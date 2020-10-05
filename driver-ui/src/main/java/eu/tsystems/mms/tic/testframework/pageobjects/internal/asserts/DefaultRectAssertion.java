@@ -48,99 +48,99 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
     }
 
     @Override
-    public BinaryAssertion<Boolean> contains(TestableUiElement guiElement) {
+    public BinaryAssertion<Boolean> contains(TestableUiElement uiElement) {
         return propertyAssertionFactory.createWithParent(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return toRectangle(provider.getActual()).contains(toRectangle(guiElement.waitFor().bounds().getActual()));
+                return toRectangle(provider.getActual()).contains(toRectangle(uiElement.waitFor().bounds().getActual()));
             }
 
             @Override
             public String getSubject() {
                 return String.format("%s.contains(%s.bounds.%s)",
                     formatter.toString(provider.getActual()),
-                    guiElement,
-                    formatter.toString(guiElement.waitFor().bounds().getActual())
+                    uiElement,
+                    formatter.toString(uiElement.waitFor().bounds().getActual())
                 );
             }
         });
     }
 
     @Override
-    public BinaryAssertion<Boolean> intersects(TestableUiElement guiElement) {
+    public BinaryAssertion<Boolean> intersects(TestableUiElement uiElement) {
         return propertyAssertionFactory.createWithParent(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return toRectangle(provider.getActual()).intersects(toRectangle(guiElement.waitFor().bounds().getActual()));
+                return toRectangle(provider.getActual()).intersects(toRectangle(uiElement.waitFor().bounds().getActual()));
             }
 
             @Override
             public String getSubject() {
                 return String.format("%s.intersects(%s.bounds.%s)",
                     formatter.toString(provider.getActual()),
-                    guiElement,
-                    formatter.toString(guiElement.waitFor().bounds().getActual())
+                    uiElement,
+                    formatter.toString(uiElement.waitFor().bounds().getActual())
                 );
             }
         });
     }
 
     @Override
-    public BinaryAssertion<Boolean> leftOf(TestableUiElement guiElement) {
+    public BinaryAssertion<Boolean> leftOf(TestableUiElement uiElement) {
         return propertyAssertionFactory.createWithParent(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return fromLeft().toLeftOf(guiElement).getActual()<0;
+                return fromLeft().toLeftOf(uiElement).getActual()<0;
             }
 
             @Override
             public String getSubject() {
-                return String.format("leftOf(%s)", guiElement);
+                return String.format("leftOf(%s)", uiElement);
             }
         });
     }
 
     @Override
-    public BinaryAssertion<Boolean> rightOf(TestableUiElement guiElement) {
+    public BinaryAssertion<Boolean> rightOf(TestableUiElement uiElement) {
         return propertyAssertionFactory.createWithParent(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return fromLeft().toRightOf(guiElement).getActual()>=0;
+                return fromLeft().toRightOf(uiElement).getActual()>=0;
             }
 
             @Override
             public String getSubject() {
-                return String.format("rightOf(%s)", guiElement);
+                return String.format("rightOf(%s)", uiElement);
             }
         });
     }
 
     @Override
-    public BinaryAssertion<Boolean> above(TestableUiElement guiElement) {
+    public BinaryAssertion<Boolean> above(TestableUiElement uiElement) {
         return propertyAssertionFactory.createWithParent(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return fromTop().toTopOf(guiElement).getActual()<0;
+                return fromTop().toTopOf(uiElement).getActual()<0;
             }
 
             @Override
             public String getSubject() {
-                return String.format("above(%s)", guiElement);
+                return String.format("above(%s)", uiElement);
             }
         });
     }
 
     @Override
-    public BinaryAssertion<Boolean> below(TestableUiElement guiElement) {
+    public BinaryAssertion<Boolean> below(TestableUiElement uiElement) {
         return propertyAssertionFactory.createWithParent(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return fromTop().toBottomOf(guiElement).getActual()>=0;
+                return fromTop().toBottomOf(uiElement).getActual()>=0;
             }
 
             @Override
             public String getSubject() {
-                return String.format("below(%s)", guiElement);
+                return String.format("below(%s)", uiElement);
             }
         });
     }

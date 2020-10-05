@@ -41,6 +41,7 @@ public abstract class AbstractPropertyAssertion<T> implements ActualProperty<T> 
         this.provider = provider;
     }
 
+    @Override
     public T getActual() {
         return provider.getActual();
     }

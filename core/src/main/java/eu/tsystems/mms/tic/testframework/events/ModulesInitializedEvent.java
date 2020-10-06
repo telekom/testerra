@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Mike Beuthan, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -17,13 +17,15 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
-package eu.tsystems.mms.tic.testframework.report;
 
-import org.apache.logging.log4j.core.LogEvent;
+package eu.tsystems.mms.tic.testframework.events;
 
-public interface LogFormatter {
-
-    String format(final LogEvent event);
+/**
+ * Called after every module has been initialized
+ */
+public class ModulesInitializedEvent {
+    public interface Listener {
+        void onModulesInitialized(ModulesInitializedEvent event);
+    }
 }

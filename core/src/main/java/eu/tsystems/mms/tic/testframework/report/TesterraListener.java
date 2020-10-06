@@ -51,6 +51,9 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.config.DefaultConfiguration;
 import org.testng.IConfigurable;
 import org.testng.IConfigureCallBack;
 import org.testng.IHookCallBack;
@@ -95,8 +98,13 @@ public class TesterraListener implements
      */
     private static int instances = 0;
     private static final Object LOCK = new Object();
+    private static LoggerContext loggerContext;
 
     static {
+
+        DefaultConfiguration defaultConfiguration = new DefaultConfiguration();
+        loggerContext = Configurator.initialize(defaultConfiguration);
+
         /*
          * Add monitoring event listeners
          */
@@ -127,6 +135,10 @@ public class TesterraListener implements
 
     public static EventBus getEventBus() {
         return eventBus;
+    }
+
+    public static LoggerContext getLoggerContext() {
+        return loggerContext;
     }
 
     /**

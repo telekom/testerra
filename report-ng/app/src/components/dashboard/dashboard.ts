@@ -1,5 +1,5 @@
 // @ts-ignore
-import './dashboard.css';
+import './dashboard.scss';
 import {data} from "../../services/report-model";
 import {autoinject} from "aurelia-framework";
 import {StatusConverter} from "../../services/status-converter";

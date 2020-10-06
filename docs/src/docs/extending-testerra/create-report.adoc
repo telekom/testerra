@@ -27,7 +27,6 @@ You can automatically generate all the models during the execution, when you reg
 ----
 
 import com.google.common.eventbus.EventBus;
-import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.listeners.GenerateReportModelListener;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;

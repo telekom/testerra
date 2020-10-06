@@ -15,7 +15,11 @@ def opencv = [
 dependencies {
     compile core
     implementation opencv
+
+    // <core>
+    // Todo: Solve this circular dependency when moving to module: driver-ui
     compile 'org.seleniumhq.selenium:selenium-java:' + seleniumVersion
+    // </core>
 
     // <LayoutCheck AnnotationContainer>
     implementation 'com.google.code.gson:gson:2.8.6'

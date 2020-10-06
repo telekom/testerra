@@ -2,6 +2,7 @@
 
 include::utilities/assert-utilities.adoc[leveloffset=+1]
 include::utilities/cert-utilities.adoc[leveloffset=+1]
+include::utilities/desktop-utilities.adoc[leveloffset=+1]
 include::utilities/js-utilities.adoc[leveloffset=+1]
 include::utilities/file-downloader.adoc[leveloffset=+1]
 include::utilities/pdf-utilities.adoc[leveloffset=+1]

@@ -32,7 +32,7 @@ import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.ReportingData;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.perf.PerfTestContainer;
+import eu.tsystems.mms.tic.testframework.report.perf.PerfTestReportUtils;
 import eu.tsystems.mms.tic.testframework.report.threadvisualizer.DataSet;
 import eu.tsystems.mms.tic.testframework.report.threadvisualizer.DataStorage;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -113,7 +113,7 @@ public class GenerateHtmlReportListener implements
     @Subscribe
     public void onFinalizeExecution(FinalizeExecutionEvent event) {
 
-        PerfTestContainer.prepareMeasurementsForReport();
+        PerfTestReportUtils.prepareMeasurementsForReport();
         JVMMonitor.label("Report");
         /*
          * Create report

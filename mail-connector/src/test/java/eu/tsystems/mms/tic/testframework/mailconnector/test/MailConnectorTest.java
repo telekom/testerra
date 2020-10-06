@@ -25,12 +25,12 @@ import com.icegreen.greenmail.util.DummySSLSocketFactory;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetupTest;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.mailconnector.imap.ImapMailConnector;
 import eu.tsystems.mms.tic.testframework.mailconnector.pop3.POP3MailConnector;
 import eu.tsystems.mms.tic.testframework.mailconnector.smtp.SMTPMailConnector;
+import eu.tsystems.mms.tic.testframework.mailconnector.util.AbstractInboxConnector;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.Email;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.MailUtils;
-import eu.tsystems.mms.tic.testframework.mailconnector.util.SearchCriteria;
-import eu.tsystems.mms.tic.testframework.mailconnector.util.SearchCriteriaType;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -43,22 +43,31 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import javax.mail.Address;
+import javax.mail.Folder;
+import javax.mail.Message;
 import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Part;
 import javax.mail.Session;
+import javax.mail.Store;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.mail.search.AndTerm;
+import javax.mail.search.ComparisonTerm;
+import javax.mail.search.FromTerm;
+import javax.mail.search.RecipientTerm;
+import javax.mail.search.SearchTerm;
+import javax.mail.search.SentDateTerm;
+import javax.mail.search.SubjectTerm;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.security.Security;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Integration Tests for TesterraMailConnector.
@@ -128,6 +137,7 @@ public class MailConnectorTest extends TesterraTest {
      * POP3MailConnector
      */
     private POP3MailConnector pop3; // Mail connector using the POP3 protocol
+    private ImapMailConnector imap; // Mail connector using the IMAP protocol
 
     private GreenMail mailServerAll; // Mail Server for Smtp and Pop3 including SSL
 
@@ -143,9 +153,13 @@ public class MailConnectorTest extends TesterraTest {
     public void clearMailBox(Method method) {
 
         pop3.deleteAllMessages();
+        imap.deleteAllMessages();
 
-        final boolean inboxEmpty = (pop3.getMessageCount() == 0);
-        Assert.assertTrue(inboxEmpty, "Mail box is empty");
+        final boolean inboxPop3Empty = (pop3.getMessageCount() == 0);
+        final boolean inboxImapEmpty = (imap.getMessageCount() == 0);
+
+        Assert.assertTrue(inboxPop3Empty, "POP3 Mail box is empty");
+        Assert.assertTrue(inboxImapEmpty, "Imap Mail box is empty");
     }
 
     @AfterClass
@@ -167,6 +181,7 @@ public class MailConnectorTest extends TesterraTest {
         mailServerAll.start();
 
         pop3 = new POP3MailConnector();
+        imap = new ImapMailConnector();
         smtp = new SMTPMailConnector();
 
         session = smtp.getSession();
@@ -182,18 +197,18 @@ public class MailConnectorTest extends TesterraTest {
     public void testT01_saveAndLoadMessage() throws Exception {
 
         final String subject = STR_MAIL_SUBJECT + "testT01_saveAndLoadMessage";
-        final String pathMail = PATH_HOME + "/target/mail.eml";
+        final String pathMail = PATH_HOME + "/out/test/resources/mail.eml";
 
         // SETUP - Create message.
-        MimeMessage msg = createDefaultMessage(session, subject);
+        final MimeMessage msg = createDefaultMessage(session, subject);
 
         // EXECUTION - Save and reload.
         MailUtils.saveEmail(msg, pathMail);
-        MimeMessage loadedMsg = MailUtils.loadEmailFile(pathMail);
+        final MimeMessage loadedMsg = MailUtils.loadEmailFile(pathMail);
 
         // TEST - Compare message headers for equality.
-        String[] headersSavedMsg = MailUtils.getEmailHeaders(msg);
-        String[] headersLoadedMsg = MailUtils.getEmailHeaders(loadedMsg);
+        final String[] headersSavedMsg = MailUtils.getEmailHeaders(msg);
+        final String[] headersLoadedMsg = MailUtils.getEmailHeaders(loadedMsg);
 
         Assert.assertEquals(headersLoadedMsg, headersSavedMsg);
         Assert.assertEquals(loadedMsg.getContent(), msg.getContent());
@@ -204,19 +219,18 @@ public class MailConnectorTest extends TesterraTest {
      * POP3MailConnector.
      */
     @Test
-    public void testT02_sendAndWaitForMessageWithoutAttachement() {
+    public void testT02_sendAndWaitForMessageWithoutAttachement() throws MessagingException {
 
         final String subject = STR_MAIL_SUBJECT + "testT02_sendAndWaitForMessage";
 
         // SETUP - Create message.
-        MimeMessage msg = createDefaultMessage(session, subject);
+        final MimeMessage msg = createDefaultMessage(session, subject);
 
         // EXECUTION - Send and receive message.
         smtp.sendMessage(msg);
-        Email receivedMsg = waitForMessage(subject);
+        final Email receivedMsg = waitForMessage(subject);
 
         // TEST - Compare sent message with received message (content & headers).
-
         boolean areContentsEqual = MailUtils.compareSentAndReceivedEmailContents(msg, receivedMsg);
         boolean areHeadersEqual = MailUtils.compareSentAndReceivedEmailHeaders(msg, receivedMsg.getMessage());
 
@@ -239,15 +253,15 @@ public class MailConnectorTest extends TesterraTest {
         final File attachmentFile = FileUtils.getResourceFile("attachment.txt");
 
         // SETUP - Create message, add attachment.
-        MimeMessage msg = this.createDefaultMessage(session, subject);
-        MimeBodyPart attachment = smtp.createAttachment(attachmentFile);
-        MimeBodyPart[] attachments = {attachment};
+        final MimeMessage msg = this.createDefaultMessage(session, subject);
+        final MimeBodyPart attachment = smtp.createAttachment(attachmentFile);
+        final MimeBodyPart[] attachments = {attachment};
         smtp.addAttachmentsToMessage(attachments, msg);
 
         // EXECUTION - Send and receive message.
         smtp.sendMessage(msg);
 
-        Email receivedMsg = waitForMessage(subject);
+        final Email receivedMsg = waitForMessage(subject);
 
         // TEST 1 - Fail, if the message contains no attachment (content is plain text).
         if (!(receivedMsg.getMessage().getContent() instanceof MimeMultipart)) {
@@ -255,8 +269,9 @@ public class MailConnectorTest extends TesterraTest {
         }
 
         // TEST 2 - Check email text and attachment file name.
-        Multipart content = (Multipart) receivedMsg.getMessage().getContent();
-        int contentCnt = content.getCount();
+        final Multipart content = (Multipart) receivedMsg.getMessage().getContent();
+        final int contentCnt = content.getCount();
+
         String attachmentFileName = null;
         String text = null;
 
@@ -278,7 +293,6 @@ public class MailConnectorTest extends TesterraTest {
         Assert.assertEquals(attachmentFileName, attachmentFile.getName());
 
         // CLEAN UP - Delete message.
-
         deleteMessage(receivedMsg, pop3);
     }
 
@@ -292,10 +306,11 @@ public class MailConnectorTest extends TesterraTest {
         final File resourceFile = FileUtils.getResourceFile("cacert.p12");
         final String pahtKeyStore = resourceFile.getAbsolutePath();
         final String password = "123456";
-        MimeMessage msg = createDefaultMessage(session, subject);
+
+        final MimeMessage msg = createDefaultMessage(session, subject);
 
         // EXECUTION 1 - Encrypt message.
-        MimeMessage encryptedMsg = MailUtils.encryptMessageWithKeystore(msg, session, pahtKeyStore, password);
+        final MimeMessage encryptedMsg = MailUtils.encryptMessageWithKeystore(msg, session, pahtKeyStore, password);
 
         // TEST 1 - Check encryption.
         final String expContentType = "application/pkcs7-mime; name=\"smime.p7m\"; smime-type=enveloped-data";
@@ -304,14 +319,14 @@ public class MailConnectorTest extends TesterraTest {
 
         // EXECUTION 2 - Send and retrieve encrypted message.
         smtp.sendMessage(encryptedMsg);
-        Email receivedMsg = waitForMessage(subject);
+        final Email receivedMsg = waitForMessage(subject);
 
         // TEST 2 - Content should be encrypted (not equal to original message).
-        boolean areContentsEqual = MailUtils.compareSentAndReceivedEmailContents(msg, receivedMsg);
+        final boolean areContentsEqual = MailUtils.compareSentAndReceivedEmailContents(msg, receivedMsg);
         Assert.assertFalse(areContentsEqual);
 
         // EXECUTION 3 - Decrypt message.
-        MimeMessage decryptedMsg = MailUtils.decryptMessageWithKeystore(encryptedMsg, session, pahtKeyStore,
+        final MimeMessage decryptedMsg = MailUtils.decryptMessageWithKeystore(encryptedMsg, session, pahtKeyStore,
                 password);
 
         // TEST 3 - Check decryption.
@@ -336,10 +351,10 @@ public class MailConnectorTest extends TesterraTest {
         final File testCertificateFile = FileUtils.getResourceFile("test_certificate.cer");
 
         // SETUP - Create message.
-        MimeMessage msg = createDefaultMessage(session, subject);
+        final MimeMessage msg = createDefaultMessage(session, subject);
 
         // EXECUTION 1 - Encrypt message.
-        MimeMessage encryptedMsg = MailUtils.encryptMessageWithCert(msg, session, testCertificateFile.getAbsolutePath());
+        final MimeMessage encryptedMsg = MailUtils.encryptMessageWithCert(msg, session, testCertificateFile.getAbsolutePath());
 
         // TEST 1 - Check encryption.
         final String expContentType = "application/pkcs7-mime; name=\"smime.p7m\"; smime-type=enveloped-data";
@@ -348,10 +363,10 @@ public class MailConnectorTest extends TesterraTest {
 
         // EXECUTION 2 - Send and retrieve encrypted message.
         smtp.sendMessage(encryptedMsg);
-        Email receivedMsg = waitForMessage(subject);
+        final Email receivedMsg = waitForMessage(subject);
 
         // TEST 2 - Content should be encrypted (not equal to original message).
-        boolean areContentsEqual = MailUtils.compareSentAndReceivedEmailContents(msg, receivedMsg);
+        final boolean areContentsEqual = MailUtils.compareSentAndReceivedEmailContents(msg, receivedMsg);
         Assert.assertFalse(areContentsEqual);
 
         // CLEAN UP - Delete message.
@@ -364,14 +379,14 @@ public class MailConnectorTest extends TesterraTest {
      * POP3MailConnector.
      */
     @Test
-    public void testT06_sendAndWaitForSSLMessage() {
+    public void testT06_sendAndWaitFomrSSLMessage() throws MessagingException {
 
         final String subject = STR_MAIL_SUBJECT + "testT06_sendAndWaitForSSLMessage";
         final String sslPortPop3 = PropertyManager.getProperty("POP3_SERVER_PORT_SSL", null);
         final String sslPortSmtp = PropertyManager.getProperty("SMTP_SERVER_PORT_SSL", null);
 
         // SETUP 1 - Create SSL connectors and message.
-        SMTPMailConnector smtpSSL = new SMTPMailConnector();
+        final SMTPMailConnector smtpSSL = new SMTPMailConnector();
         smtpSSL.setSslEnabled(true);
         smtpSSL.setPort(sslPortSmtp);
 
@@ -386,15 +401,15 @@ public class MailConnectorTest extends TesterraTest {
         System.setProperty("POP3_SSL_ENABLED", "true");
 
         // SETUP 2 - Create message.
-        MimeMessage msg = this.createDefaultMessage(smtpSSL.getSession(), subject);
+        final MimeMessage msg = this.createDefaultMessage(smtpSSL.getSession(), subject);
 
         // EXECUTION - Send and receive message.
         smtpSSL.sendMessage(msg);
-        Email receivedMsg = waitForMessage(subject);
+        final Email receivedMsg = waitForMessage(subject);
 
         // TEST - Compare sent message with received message (content & headers).
-        boolean areContentsEqual = MailUtils.compareSentAndReceivedEmailContents(msg, receivedMsg);
-        boolean areHeadersEqual = MailUtils.compareSentAndReceivedEmailHeaders(msg,
+        final boolean areContentsEqual = MailUtils.compareSentAndReceivedEmailContents(msg, receivedMsg);
+        final boolean areHeadersEqual = MailUtils.compareSentAndReceivedEmailHeaders(msg,
                 receivedMsg.getMessage());
 
         Assert.assertTrue(areContentsEqual, ERR_CONTENT_DIFFERS);
@@ -422,14 +437,14 @@ public class MailConnectorTest extends TesterraTest {
 
         try {
             // SETUP - Create message.
-            MimeMessage msg = this.createDefaultMessage(session, STR_MAIL_SUBJECT + "testT07_signMessage");
+            final MimeMessage msg = this.createDefaultMessage(session, STR_MAIL_SUBJECT + "testT07_signMessage");
 
             // EXECUTION - Sign message.
-            MimeMessage signedMsg = MailUtils.signMessageWithKeystore(msg, session, pathKeyStore, password);
+            final MimeMessage signedMsg = MailUtils.signMessageWithKeystore(msg, session, pathKeyStore, password);
 
             // TEST 1 - Check content.
-            String expectedContent = "multipart/signed; protocol=\"application/pkcs7-signature\"; micalg=sha-1;";
-            boolean msgContainsExpContent = signedMsg.getContentType().contains(expectedContent);
+            final String expectedContent = "multipart/signed; protocol=\"application/pkcs7-signature\"; micalg=sha-1;";
+            final boolean msgContainsExpContent = signedMsg.getContentType().contains(expectedContent);
             Assert.assertTrue(msgContainsExpContent, "Message Content as is expected: " + expectedContent + " but actual is: "
                     + signedMsg.getContentType());
 
@@ -456,15 +471,16 @@ public class MailConnectorTest extends TesterraTest {
     @Test
     public void testT08_sendAndWaitForMessageWithoutAttachement_SubjectSenderRecipient() throws Exception {
 
-        String subject = "testT08_sendAndWaitForMessageWithoutAttachement_SubjectSenderRecipient"
+        final String subject = "testT08_sendAndWaitForMessageWithoutAttachement_SubjectSenderRecipient"
                 + StringUtils.getRandomStringWithLength(5);
 
-        final List<SearchCriteria> searchCriterias = new ArrayList<>();
-        searchCriterias.add(new SearchCriteria(SearchCriteriaType.SUBJECT, subject));
-        searchCriterias.add(new SearchCriteria(SearchCriteriaType.SENDER, SENDER));
-        searchCriterias.add(new SearchCriteria(SearchCriteriaType.RECIPIENT, RECIPIENT));
+        final SearchTerm searchTerm = new AndTerm(new SearchTerm [] {
+                        new SubjectTerm(subject),
+                        new FromTerm(new InternetAddress(SENDER)),
+                        new RecipientTerm(RecipientType.TO, new InternetAddress(RECIPIENT))
+                        });
 
-        sendAndWaitForMessageWithoutAttachement(subject, searchCriterias);
+        sendAndWaitForMessageWithoutAttachement(subject, searchTerm);
     }
 
     /**
@@ -475,14 +491,14 @@ public class MailConnectorTest extends TesterraTest {
     @Test
     public void testT09_sendAndWaitForMessageWithoutAttachement_SubjectRecipient() throws Exception {
 
-        String subject = "testT09_sendAndWaitForMessageWithoutAttachement_SubjectRecipient"
+        final String subject = "testT09_sendAndWaitForMessageWithoutAttachement_SubjectRecipient"
                 + StringUtils.getRandomStringWithLength(5);
 
-        final List<SearchCriteria> searchCriterias = new ArrayList<>();
-        searchCriterias.add(new SearchCriteria(SearchCriteriaType.SUBJECT, subject));
-        searchCriterias.add(new SearchCriteria(SearchCriteriaType.SENDER, SENDER));
+        final SearchTerm searchTerm = new AndTerm(
+                new SubjectTerm(subject),
+                new FromTerm(new InternetAddress(SENDER)));
 
-        sendAndWaitForMessageWithoutAttachement(subject, searchCriterias);
+        sendAndWaitForMessageWithoutAttachement(subject, searchTerm);
     }
 
     /**
@@ -493,14 +509,14 @@ public class MailConnectorTest extends TesterraTest {
     @Test
     public void testT10_sendAndWaitForMessageWithoutAttachement_SubjectSender() throws Exception {
 
-        String subject = "testT10_sendAndWaitForMessageWithoutAttachement_SubjectSender"
+        final String subject = "testT10_sendAndWaitForMessageWithoutAttachement_SubjectSender"
                 + StringUtils.getRandomStringWithLength(5);
 
-        final List<SearchCriteria> searchCriterias = new ArrayList<>();
-        searchCriterias.add(new SearchCriteria(SearchCriteriaType.SUBJECT, subject));
-        searchCriterias.add(new SearchCriteria(SearchCriteriaType.SENDER, SENDER));
+        final SearchTerm searchTerm = new AndTerm(
+                new SubjectTerm(subject),
+                new FromTerm(new InternetAddress(SENDER)));
 
-        sendAndWaitForMessageWithoutAttachement(subject, searchCriterias);
+        sendAndWaitForMessageWithoutAttachement(subject, searchTerm);
     }
 
     /**
@@ -511,13 +527,13 @@ public class MailConnectorTest extends TesterraTest {
     @Test
     public void testT12_sendAndWaitForMessageWithoutAttachement_SubjectSentDate() throws Exception {
 
-        String subject = "testT10_sendAndWaitForMessageWithoutAttachement_SubjectSender";
+        final String subject = "testT10_sendAndWaitForMessageWithoutAttachement_SubjectSender";
 
-        final List<SearchCriteria> searchCriterias = new ArrayList<>();
-        searchCriterias.add(new SearchCriteria(SearchCriteriaType.SUBJECT, subject));
-        searchCriterias.add(new SearchCriteria(SearchCriteriaType.AFTER_DATE, new Date()));
+        final SearchTerm searchTerm = new AndTerm(
+                new SubjectTerm(subject),
+                new SentDateTerm(ComparisonTerm.LT, new Date()));
 
-        sendAndWaitForMessageWithoutAttachement(subject, searchCriterias);
+        sendAndWaitForMessageWithoutAttachement(subject, searchTerm);
     }
 
     /**
@@ -533,24 +549,51 @@ public class MailConnectorTest extends TesterraTest {
         Assert.assertTrue(inboxEmpty, "Mail box is empty");
     }
 
+    @Test
+    public void testT13_moveMessage() throws MessagingException {
+
+        final String targetFolder = "MOVED";
+        final String mailSubject = "testT12_moveMessage";
+
+        // send Mail
+        final MimeMessage msg = this.createDefaultMessage(smtp.getSession(), mailSubject);
+        smtp.sendMessage(msg);
+
+        // verify receive
+        final Email receivedMsg = waitForMessage(mailSubject, imap);
+
+        // move Mail
+        final int amountOfMovedMessages = imap.moveMessage(targetFolder, new SubjectTerm(mailSubject));
+
+        // moved exactly one mail
+        Assert.assertEquals(amountOfMovedMessages, 1, "Mail moved");
+
+        final Email movedMessage = waitForMessage(new SubjectTerm(mailSubject), imap, targetFolder);
+
+        final boolean areContentsEqual = MailUtils.compareSentAndReceivedEmailContents(receivedMsg.getMessage(), movedMessage);
+        Assert.assertTrue(areContentsEqual, ERR_CONTENT_DIFFERS);
+
+        deleteMessage(receivedMsg, imap, targetFolder);
+    }
+
     private void sendAndWaitForMessageWithoutAttachement(final String testname,
-                                                         final List<SearchCriteria> searchCriterias) throws MessagingException, IOException {
+                                                         final SearchTerm searchTerm) throws MessagingException, IOException {
 
         final String subject = STR_MAIL_SUBJECT + testname;
 
         // SETUP - Create message.
-        MimeMessage msg = createDefaultMessage(session, subject);
+        final MimeMessage msg = createDefaultMessage(session, subject);
 
         // EXECUTION - Send and receive message.
         smtp.sendMessage(msg);
-        Email receivedMsg = waitForMessage(searchCriterias);
+        final Email receivedMsg = waitForMessage(searchTerm);
 
         // get content
         receivedMsg.getMessage().getContent();
 
         // TEST - Compare sent message with received message (content & headers).
-        boolean areContentsEqual = MailUtils.compareSentAndReceivedEmailContents(msg, receivedMsg);
-        boolean areHeadersEqual = MailUtils.compareSentAndReceivedEmailHeaders(msg,
+        final boolean areContentsEqual = MailUtils.compareSentAndReceivedEmailContents(msg, receivedMsg);
+        final boolean areHeadersEqual = MailUtils.compareSentAndReceivedEmailHeaders(msg,
                 receivedMsg.getMessage());
 
         Assert.assertTrue(areContentsEqual, ERR_CONTENT_DIFFERS);
@@ -569,7 +612,7 @@ public class MailConnectorTest extends TesterraTest {
      */
     private MimeMessage createDefaultMessage(Session mailSession, String subject) {
 
-        MimeMessage msg = new MimeMessage(mailSession);
+        final MimeMessage msg = new MimeMessage(mailSession);
         try {
             msg.addRecipients(RecipientType.TO, RECIPIENT);
             msg.addFrom(new Address[]{new InternetAddress(SENDER)});
@@ -591,25 +634,33 @@ public class MailConnectorTest extends TesterraTest {
      */
     private Email waitForMessage(String subject) throws AssertionError {
 
-        final List<SearchCriteria> searchCriteria = new ArrayList<>();
-        searchCriteria.add(new SearchCriteria(SearchCriteriaType.SUBJECT, subject));
-        return waitForMessage(searchCriteria);
+        final SearchTerm searchTerm = new SubjectTerm(subject);
+        return waitForMessage(searchTerm, pop3);
+    }
+
+    private Email waitForMessage(final String subject, final AbstractInboxConnector abstractInboxConnector) throws AssertionError {
+
+        final SearchTerm searchTerm = new SubjectTerm(subject);
+        return waitForMessage(searchTerm, abstractInboxConnector);
     }
 
     /**
      * Waits until a message with a given subject was received.
      *
-     * @param searchCriterias .
+     * @param searchTerm
      * @return the received TesterraMail-message
      * @throws AssertionError in case no message was received at all
      */
-    private Email waitForMessage(final List<SearchCriteria> searchCriterias) throws AssertionError {
+    private Email waitForMessage(final SearchTerm searchTerm) throws AssertionError {
+       return waitForMessage(searchTerm, pop3);
+    }
 
+    private Email waitForMessage(final SearchTerm searchTerm, final AbstractInboxConnector abstractInboxConnector, final String folderName) throws AssertionError {
         Email receivedMsg = null;
 
         // TEST - Fail, if no message was received.
         try {
-            receivedMsg = pop3.waitForMails(searchCriterias).get(0);
+            receivedMsg = abstractInboxConnector.waitForMails(searchTerm, folderName).get(0);
         } catch (Exception e) {
             Assert.fail(ERR_NO_MSG_RECEIVED);
         }
@@ -617,22 +668,43 @@ public class MailConnectorTest extends TesterraTest {
         return receivedMsg;
     }
 
+    private Email waitForMessage(final SearchTerm searchTerm, final AbstractInboxConnector abstractInboxConnector) throws AssertionError {
+        return waitForMessage(searchTerm, abstractInboxConnector, abstractInboxConnector.getInboxFolder());
+    }
+
     /**
      * Clean up method which deletes the message, which is passed as first parameter.
      *
      * @param msg          the TesterraMail-message to delete
-     * @param pop3Instance mailclient to use.
+     * @param abstractInboxConnector mailclient to use.
      * @throws AssertionError if the inbox is not empty after deleting the message
      */
-    private void deleteMessage(Email msg, POP3MailConnector pop3Instance) throws AssertionError {
-        RecipientType to = RecipientType.TO;
-        String recipient = msg.getRecipients().get(0);
-        String subject = msg.getSubject();
-        String messageId = null;
+    private void deleteMessage(final Email msg, final AbstractInboxConnector abstractInboxConnector) throws AssertionError, AddressException {
 
-        pop3Instance.deleteMessage(recipient, to, subject, messageId);
+        final String recipient = msg.getRecipients().get(0);
+        final String subject = msg.getSubject();
 
-        final boolean inboxEmpty = (pop3Instance.getMessageCount() == 0);
+        final SearchTerm searchTerm = new AndTerm(
+                new SubjectTerm(subject),
+                new RecipientTerm(RecipientType.TO, new InternetAddress(recipient)));
+
+        abstractInboxConnector.deleteMessage(searchTerm);
+
+        final boolean inboxEmpty = (abstractInboxConnector.getMessageCount() == 0);
+        Assert.assertTrue(inboxEmpty, "Mail box is empty");
+    }
+
+    private void deleteMessage(final Email msg, final AbstractInboxConnector abstractInboxConnector, final String folderName) throws AssertionError, AddressException {
+        final String recipient = msg.getRecipients().get(0);
+        final String subject = msg.getSubject();
+
+        final SearchTerm searchTerm = new AndTerm(
+                new SubjectTerm(subject),
+                new RecipientTerm(RecipientType.TO, new InternetAddress(recipient)));
+
+        abstractInboxConnector.deleteMessage(searchTerm, folderName);
+
+        final boolean inboxEmpty = (abstractInboxConnector.getMessageCount() == 0);
         Assert.assertTrue(inboxEmpty, "Mail box is empty");
     }
 }

@@ -430,11 +430,11 @@ public final class WebDriverSessionsManager {
             sessionContext.parentContext = methodContext;
             ExecutionContextController.setCurrentSessionContext(sessionContext);
 
-            TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(sessionContext));
             /*
             setup new session
              */
             eventFiringWebDriver = webDriverFactory.getWebDriver(webDriverRequest, sessionContext);
+            TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(sessionContext));
 
             /*
             run the handlers

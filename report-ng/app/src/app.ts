@@ -27,7 +27,7 @@ export class App {
       {
         route: '',
         name: 'Dashboard',
-        moduleId: PLATFORM.moduleName('components/dashboard'),
+        moduleId: PLATFORM.moduleName('components/dashboard/dashboard'),
         nav: true,
         title: 'Dashboard'
       },

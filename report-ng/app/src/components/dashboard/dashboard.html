@@ -1,0 +1,37 @@
+<template>
+
+  <h1>${_executionContext.contextValues.name}</h1>
+  <mdc-layout-grid>
+    <mdc-layout-grid-cell>
+      <mdc-card outlined="true">
+        <mdc-primary-action>
+          <div mdc-body1>
+            Started: ${_executionContext.contextValues.startTime|dateFormat:"LLL"}<br>
+            Ended: ${_executionContext.contextValues.endTime|dateFormat:"LLL"}<br>
+          </div>
+        </mdc-primary-action>
+      </mdc-card>
+    </mdc-layout-grid-cell>
+
+    <mdc-layout-grid-cell>
+      <mdc-card outlined="true">
+        <button mdc-button outlined>
+          <mdc-icon>done</mdc-icon> ${_executionStatistics.overallPassed} Passed
+        </button>
+        <button mdc-button outlined>
+          <mdc-icon>skip_next</mdc-icon>  ${_executionStatistics.overallSkipped} Skipped
+        </button>
+        <button mdc-button outlined>
+          <mdc-icon>close</mdc-icon>  ${_executionStatistics.overallFailed} failed
+        </button>
+      </mdc-card>
+    </mdc-layout-grid-cell>
+
+    <mdc-layout-grid-cell>
+      <mdc-card outlined="true">
+        <apex-chart data.bind="_apexDonutOptions" id="donut-chart"></apex-chart>
+      </mdc-card>
+    </mdc-layout-grid-cell>
+  </mdc-layout-grid>
+
+</template>

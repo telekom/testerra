@@ -19,6 +19,9 @@ export function configure(aurelia: Aurelia) {
     .plugin(PLATFORM.moduleName('@aurelia-mdc-web/tab-bar'))
     .plugin(PLATFORM.moduleName('@aurelia-mdc-web/top-app-bar'))
     .plugin(PLATFORM.moduleName('@aurelia-mdc-web/text-field'))
+    .plugin(PLATFORM.moduleName('@aurelia-mdc-web/card'))
+    .plugin(PLATFORM.moduleName('@aurelia-mdc-web/typography'))
+    .plugin(PLATFORM.moduleName('@aurelia-mdc-web/layout-grid'))
     .globalResources([
       PLATFORM.moduleName('components/apex-chart/apex-chart'),
       PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/date-format-value-converter'),

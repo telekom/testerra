@@ -81,7 +81,6 @@ export class App {
   navigateTo(route) {
     this.router.navigateToRoute(route)
   }
-
 }
 
 

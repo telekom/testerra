@@ -2,17 +2,18 @@
 @use '@material/button';
 @use '@material/card/mdc-card';
 @use '@material/card';
-@use "@material/checkbox";
-@use "@material/icon-button";
-@use "@material/data-table";
-@use "@material/data-table/mdc-data-table";
+@use '@material/checkbox';
+@use '@material/icon-button';
+@use '@material/data-table';
+@use '@material/data-table/mdc-data-table';
 @use '@material/theme';
 @use '@material/dialog/mdc-dialog';
 @use '@material/dialog';
-@use "@material/drawer/mdc-drawer";
+@use '@material/drawer/mdc-drawer';
+@use '@material/drawer';
 @use '@material/elevation/mdc-elevation';
 @use '@material/icon-button/mdc-icon-button';
-@use "@material/layout-grid/mdc-layout-grid";
+@use '@material/layout-grid/mdc-layout-grid';
 @use '@material/list/mdc-list';
 @use '@material/list';
 @use '@material/textfield/mdc-text-field';
@@ -41,32 +42,45 @@
 @use '@material/typography/mdc-typography';
 @use '@material/typography';
 
+@include drawer.core-styles;
+@include drawer.dismissible-core-styles;
+@include drawer.modal-core-styles;
+@include list.core-styles;
+
 .button-primary {
   @include button.filled-accessible(theme.$primary);
 }
-.mdc-drawer-app-content {
-  position: unset !important ;
-}
-mdc-drawer {
-  position: fixed !important;
-}
+
 .button-secondary {
   @include button.filled-accessible(theme.$secondary);
 }
-.demo-drawer-app {
-  border: 1px solid rgba(0,0,0,.15);
-  max-height: 30em;
-  overflow: hidden;
-  position: relative;
-  z-index: 0;
-  height: 20em;
-  width: 50%;
+
+/*General style settings______________________________________________________________________________________________*/
+
+//Body has a native margin for some reason
+body {
+  margin: 0;
 }
 
- .demo-layout__row--no-wrap {
-   display: flex;
-   flex-direction: row;
- }
+//Put drawer behind top app bar
+.app-top-bar {
+  z-index: 7;
+}
+
+//adapt router view size to drawer because it doesn't do that on it's own for some reason
+.mdc-drawer-app-content {
+  display: inline-flex;
+  flex: 0 1 auto;
+  box-sizing: border-box;
+  padding: 1.5rem 2rem;
+}
+
+/*Testing view________________________________________________________________________________________________________*/
+
+.demo-layout__row--no-wrap {
+    display: flex;
+    flex-direction: row;
+  }
 
 .elevation__item{
   display: inline-flex;
@@ -74,50 +88,5 @@ mdc-drawer {
   justify-content: space-around;
   min-height: 100px;
   min-width: 150px;
-}
-//fixing the drawer
-.mdc-drawer--modal {
-  position: absolute !important;
-}
-
-html, body {
-  margin: 0;
-  padding: 0;
-}
-.app-top-bar {
-  z-index: 7;
-}
-router-view {
-  position: absolute;
-  margin-top: 66px;
-  margin-left: 10px;
-}
-
-/*--------------------------------------------card*---------------------------------------*/
-.demo-card {
-  width: 350px;
-  margin: 28px;
-}
-
-.demo-card-article {
-  padding: 16px;
-  text-decoration: none;
-  color: inherit;
-}
-
-.demo-card-article-group-heading {
-  @include theme.prop(color, text-secondary-on-light);
-
-  padding: 8px 16px;
-}
-
-.demo-card-article__title {
-  margin: 0 0 4px 0;
-}
-
-.demo-card-article__snippet {
-  @include theme.prop(color, text-secondary-on-light);
-
-  margin: 0;
 }
 

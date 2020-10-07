@@ -120,27 +120,27 @@ export class StatusConverter {
     switch (execStatus) {
       case ExecStatusType.NEW:
       case ExecStatusType.PENDING:
-        return 'waiting-i';
+        return '.mdi .mdi-clock-outline';
       case ExecStatusType.PROVISIONING:
       case ExecStatusType.RUNNING:
-        return 'processing-i';
+        return '.mdi .mdi-spin .mdi-loading';
       case ExecStatusType.FINISHED:
         // If finished, the result status will be checked for a detailed status
         switch (resultStatus) {
           case ResultStatusType.PASSED:
-            return "passed-i";
+            return ".mdi .mdi-check-circle-outline";
           case ResultStatusType.FAILED:
-            return "failed-i";
+            return ".mdi .mdi-alert-circle-outline";
           //case ResultStatusType.NO_RUN:
           default:
-            return 'processed-i';
+            return '.mdi .mdi-checkbox-blank-circle-outline';
         }
       case ExecStatusType.ABORTED:
-        return 'aborted-i';
+        return '.mdi .mdi-close-circle-outline';
       case ExecStatusType.CRASHED:
-        return 'crashed-i';
+        return '.mdi .mdi-skull-outline';
       default:
-        return 'crashed-i';
+        return '.mdi .mdi-skull-outline';
     }
   }
 

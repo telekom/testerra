@@ -9,6 +9,7 @@ import {ClassStatistics} from "../services/statistic-models";
 export class Classes {
   private _classStatistics:ClassStatistics[] = [];
 
+  private _methods;
   constructor(
     private _dataLoader:DataLoader,
     private _statusConverter:StatusConverter,
@@ -21,8 +22,8 @@ export class Classes {
       executionStatistics.classStatistics.forEach(classStatistics => {
         console.log(classStatistics);
         this._classStatistics.push(classStatistics);
-        // classStatistics.classAggregate.methodContexts.forEach(methodContext => {
-        //   this._methods.push(methodContext);
+         //classStatistics.classAggregate.methodContexts.forEach(methodContext=> {
+         // this._methods.errorFingerprint.push(methodContext);
         // })
       })
     });

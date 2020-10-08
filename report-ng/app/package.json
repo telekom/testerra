@@ -23,6 +23,7 @@
     "@aurelia-mdc-web/text-field": "^1.0.5",
     "@aurelia-mdc-web/top-app-bar": "^1.0.5",
     "@material/card": "^7.0.0",
+    "@types/moment-duration-format": "^2.2.2",
     "apexcharts": "^3.20.2",
     "aurelia-animator-css": "^1.0.4",
     "aurelia-binding": "^2.5.4",
@@ -31,6 +32,7 @@
     "aurelia-templating": "^1.10.4",
     "aurelia-typed-observable-plugin": "^0.4.2",
     "moment": "^2.29.0",
+    "moment-duration-format": "^2.3.2",
     "momentjs": "^2.0.0",
     "protobufjs": "^6.10.1",
     "t-systems-aurelia-components": "^1.0.0"

@@ -132,7 +132,6 @@ public class MethodContextExporter extends AbstractContextExporter {
         forEach(methodContext.videos, video -> {
             final java.io.File targetVideoFile = new java.io.File(targetVideoDir, video.filename);
             final java.io.File currentVideoFile = new java.io.File(currentVideoDir, video.filename);
-            final String mappedPathVideoPath = mapArtifactsPath(targetVideoFile.getPath());
 
             final String videoId = IDUtils.getB64encXID();
 
@@ -142,7 +141,7 @@ public class MethodContextExporter extends AbstractContextExporter {
             // add video data
             final File.Builder fileBuilderVideo = File.newBuilder();
             fileBuilderVideo.setId(videoId);
-            fileBuilderVideo.setRelativePath(mappedPathVideoPath);
+            fileBuilderVideo.setRelativePath(targetVideoFile.getPath());
             fileBuilderVideo.setMimetype(MediaType.WEBM_VIDEO.toString());
             fillFileBasicData(fileBuilderVideo, currentVideoFile);
             fileConsumer.accept(fileBuilderVideo);
@@ -152,7 +151,6 @@ public class MethodContextExporter extends AbstractContextExporter {
             // build screenshot and sources files
             final java.io.File targetScreenshotFile = new java.io.File(targetScreenshotDir, screenshot.filename);
             final java.io.File currentScreenshotFile = new java.io.File(currentScreenshotDir, screenshot.filename);
-            final String mappedScreenshotPath = mapArtifactsPath(targetScreenshotFile.getPath());
 
             //final java.io.File realSourceFile = new java.io.File(Report.SCREENSHOTS_DIRECTORY, screenshot.sourceFilename);
             final java.io.File targetSourceFile = new java.io.File(targetScreenshotDir, screenshot.filename);
@@ -164,12 +162,11 @@ public class MethodContextExporter extends AbstractContextExporter {
 
             // create ref link
             builder.addScreenshotIds(screenshotId);
-            LOGGER.debug("Screenshot id - {}, file - {}", screenshotId, currentScreenshotFile.getPath());
 
             // add screenshot data
             final File.Builder fileBuilderScreenshot = File.newBuilder();
             fileBuilderScreenshot.setId(screenshotId);
-            fileBuilderScreenshot.setRelativePath(currentScreenshotFile.getPath());
+            fileBuilderScreenshot.setRelativePath(targetScreenshotFile.getPath());
             fileBuilderScreenshot.setMimetype(MediaType.PNG.toString());
             fileBuilderScreenshot.putAllMeta(screenshot.meta());
             fileBuilderScreenshot.putMeta("sourcesRefId", sourcesRefId);

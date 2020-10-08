@@ -128,7 +128,7 @@ public class MethodContextExporter extends AbstractContextExporter {
         forEach(methodContext.videos, video -> {
             final java.io.File targetVideoFile = new java.io.File(targetVideoDir, video.filename);
             final java.io.File currentVideoFile = new java.io.File(currentVideoDir, video.filename);
-            final String mappedPathVideoPath = mapArtifactsPath(targetVideoFile.getAbsolutePath());
+            final String mappedPathVideoPath = mapArtifactsPath(targetVideoFile.getPath());
 
             final String videoId = IDUtils.getB64encXID();
 
@@ -153,7 +153,7 @@ public class MethodContextExporter extends AbstractContextExporter {
             //final java.io.File realSourceFile = new java.io.File(Report.SCREENSHOTS_DIRECTORY, screenshot.sourceFilename);
             final java.io.File targetSourceFile = new java.io.File(targetScreenshotDir, screenshot.filename);
             final java.io.File currentSourceFile = new java.io.File(currentScreenshotDir, screenshot.filename);
-            final String mappedSourcePath = mapArtifactsPath(targetSourceFile.getAbsolutePath());
+            final String mappedSourcePath = mapArtifactsPath(targetSourceFile.getPath());
 
             final String screenshotId = IDUtils.getB64encXID();
             final String sourcesRefId = IDUtils.getB64encXID();
@@ -175,7 +175,7 @@ public class MethodContextExporter extends AbstractContextExporter {
             final File.Builder fileBuilderSources = File.newBuilder();
             fileBuilderSources.setId(sourcesRefId);
             fileBuilderSources.setRelativePath(mappedSourcePath);
-            fileBuilderSources.setMimetype(MediaType.PLAIN_TEXT_UTF_8.toString());
+            fileBuilderSources.setMimetype(MediaType.PNG.toString());
             fillFileBasicData(fileBuilderSources, currentSourceFile);
             fileConsumer.accept(fileBuilderSources);
 //            methodContextData.files.add(fileBuilderSources.build());

@@ -175,7 +175,7 @@ public class MethodContextExporter extends AbstractContextExporter {
             final File.Builder fileBuilderSources = File.newBuilder();
             fileBuilderSources.setId(sourcesRefId);
             fileBuilderSources.setRelativePath(mappedSourcePath);
-            fileBuilderSources.setMimetype(MediaType.PNG.toString());
+            fileBuilderSources.setMimetype(MediaType.PLAIN_TEXT_UTF_8.toString());
             fillFileBasicData(fileBuilderSources, currentSourceFile);
             fileConsumer.accept(fileBuilderSources);
 //            methodContextData.files.add(fileBuilderSources.build());

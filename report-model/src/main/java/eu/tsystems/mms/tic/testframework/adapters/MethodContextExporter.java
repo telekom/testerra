@@ -118,7 +118,7 @@ public class MethodContextExporter extends AbstractContextExporter {
         map(methodContext.errorContext(), this::prepareErrorContext, builder::setErrorContext);
         forEach(methodContext.nonFunctionalInfos, assertionInfo -> builder.addNonFunctionalInfos(prepareErrorContext(assertionInfo)));
         forEach(methodContext.collectedAssertions, assertionInfo -> builder.addCollectedAssertions(prepareErrorContext(assertionInfo)));
-        forEach(methodContext.sessionContexts, sessionContext -> builder.addScreenshotIds(sessionContext.id));
+        forEach(methodContext.sessionContexts, sessionContext -> builder.addSessionContextIds(sessionContext.id));
 
         /**
          * The report is already moved to the target directory at this point.

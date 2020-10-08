@@ -148,12 +148,12 @@ public class MethodContextExporter extends AbstractContextExporter {
             // build screenshot and sources files
             final java.io.File targetScreenshotFile = new java.io.File(targetScreenshotDir, screenshot.filename);
             final java.io.File currentScreenshotFile = new java.io.File(currentScreenshotDir, screenshot.filename);
-            final String mappedScreenshotPath = mapArtifactsPath(targetScreenshotFile.getAbsolutePath());
+            final String mappedScreenshotPath = mapArtifactsPath(targetScreenshotFile.getPath());
 
             //final java.io.File realSourceFile = new java.io.File(Report.SCREENSHOTS_DIRECTORY, screenshot.sourceFilename);
             final java.io.File targetSourceFile = new java.io.File(targetScreenshotDir, screenshot.filename);
             final java.io.File currentSourceFile = new java.io.File(currentScreenshotDir, screenshot.filename);
-            final String mappedSourcePath = mapArtifactsPath(targetSourceFile.getPath());
+            final String mappedSourcePath = mapArtifactsPath(targetSourceFile.getAbsolutePath());
 
             final String screenshotId = IDUtils.getB64encXID();
             final String sourcesRefId = IDUtils.getB64encXID();

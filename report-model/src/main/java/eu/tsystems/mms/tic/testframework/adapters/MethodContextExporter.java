@@ -38,6 +38,9 @@ import eu.tsystems.mms.tic.testframework.report.model.StackTraceCause;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
@@ -47,6 +50,7 @@ import java.util.function.Consumer;
 public class MethodContextExporter extends AbstractContextExporter {
     private Report report = new Report();
     private Gson jsonEncoder = new Gson();
+    private static final Logger LOGGER = LoggerFactory.getLogger(MethodContextExporter.class);
 
     private static String annotationToString(Annotation annotation) {
         String json = "\"" + annotation.annotationType().getSimpleName() + "\"";
@@ -160,6 +164,7 @@ public class MethodContextExporter extends AbstractContextExporter {
 
             // create ref link
             builder.addScreenshotIds(screenshotId);
+            LOGGER.debug("Screenshot id - {}, file - {}", screenshotId, mappedScreenshotPath);
 
             // add screenshot data
             final File.Builder fileBuilderScreenshot = File.newBuilder();

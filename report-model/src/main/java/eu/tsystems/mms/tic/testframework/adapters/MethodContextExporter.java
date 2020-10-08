@@ -164,12 +164,12 @@ public class MethodContextExporter extends AbstractContextExporter {
 
             // create ref link
             builder.addScreenshotIds(screenshotId);
-            LOGGER.debug("Screenshot id - {}, file - {}", screenshotId, mappedScreenshotPath);
+            LOGGER.debug("Screenshot id - {}, file - {}", screenshotId, currentScreenshotFile.getPath());
 
             // add screenshot data
             final File.Builder fileBuilderScreenshot = File.newBuilder();
             fileBuilderScreenshot.setId(screenshotId);
-            fileBuilderScreenshot.setRelativePath(mappedScreenshotPath);
+            fileBuilderScreenshot.setRelativePath(currentScreenshotFile.getPath());
             fileBuilderScreenshot.setMimetype(MediaType.PNG.toString());
             fileBuilderScreenshot.putAllMeta(screenshot.meta());
             fileBuilderScreenshot.putMeta("sourcesRefId", sourcesRefId);

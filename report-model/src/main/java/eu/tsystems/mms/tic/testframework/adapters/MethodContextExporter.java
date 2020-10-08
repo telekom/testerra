@@ -169,6 +169,7 @@ public class MethodContextExporter extends AbstractContextExporter {
             fileBuilderScreenshot.putAllMeta(screenshot.meta());
             fileBuilderScreenshot.putMeta("sourcesRefId", sourcesRefId);
             fillFileBasicData(fileBuilderScreenshot, currentScreenshotFile);
+            fileConsumer.accept(fileBuilderScreenshot);
 //            methodContextData.files.add(fileBuilderScreenshot.build());
 
             // add sources data
@@ -177,7 +178,7 @@ public class MethodContextExporter extends AbstractContextExporter {
             fileBuilderSources.setRelativePath(mappedSourcePath);
             fileBuilderSources.setMimetype(MediaType.PLAIN_TEXT_UTF_8.toString());
             fillFileBasicData(fileBuilderSources, currentSourceFile);
-            fileConsumer.accept(fileBuilderSources);
+//            fileConsumer.accept(fileBuilderSources);
 //            methodContextData.files.add(fileBuilderSources.build());
 
         });

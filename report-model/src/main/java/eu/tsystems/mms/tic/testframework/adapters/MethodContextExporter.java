@@ -50,7 +50,6 @@ import java.util.function.Consumer;
 public class MethodContextExporter extends AbstractContextExporter {
     private Report report = new Report();
     private Gson jsonEncoder = new Gson();
-    private static final Logger LOGGER = LoggerFactory.getLogger(MethodContextExporter.class);
 
     private static String annotationToString(Annotation annotation) {
         String json = "\"" + annotation.annotationType().getSimpleName() + "\"";
@@ -134,15 +133,6 @@ public class MethodContextExporter extends AbstractContextExporter {
             final java.io.File currentVideoFile = new java.io.File(currentVideoDir, video.filename);
 
             final String videoId = IDUtils.getB64encXID();
-            LOGGER.debug("targetVideoFile.getPath() - {}, currentVideoFile.getPath() - {}",
-                    targetVideoFile.getPath(), currentVideoFile.getPath()
-                    );
-            LOGGER.debug("targetVideoFile.getAbsolutePath() - {}",
-                    targetVideoFile.getAbsolutePath()
-            );
-            LOGGER.debug("targetVideoDir.getPath() - {}, targetVideoDir.getAbsolutePath() - {}",
-                    targetVideoDir.getPath(), targetVideoDir.getAbsolutePath()
-            );
 
             // link file
             builder.addVideoIds(videoId);
@@ -181,7 +171,6 @@ public class MethodContextExporter extends AbstractContextExporter {
             fileBuilderScreenshot.putMeta("sourcesRefId", sourcesRefId);
             fillFileBasicData(fileBuilderScreenshot, currentScreenshotFile);
             fileConsumer.accept(fileBuilderScreenshot);
-//            methodContextData.files.add(fileBuilderScreenshot.build());
 
             // add sources data
             final File.Builder fileBuilderSources = File.newBuilder();
@@ -189,9 +178,7 @@ public class MethodContextExporter extends AbstractContextExporter {
             fileBuilderSources.setRelativePath(mappedSourcePath);
             fileBuilderSources.setMimetype(MediaType.PLAIN_TEXT_UTF_8.toString());
             fillFileBasicData(fileBuilderSources, currentSourceFile);
-//            fileConsumer.accept(fileBuilderSources);
-//            methodContextData.files.add(fileBuilderSources.build());
-
+            fileConsumer.accept(fileBuilderSources);
         });
 
         map(methodContext.customContexts, jsonEncoder::toJson, builder::setCustomContextJson);

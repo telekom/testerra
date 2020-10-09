@@ -106,7 +106,7 @@ public class PageFactoryPrefixedTest extends AbstractTestSitesTest implements Lo
         WebDriverManagerConfig config = WebDriverManager.getConfig();
         baseURL = config.getBaseUrl();
         config.setBaseUrl("http://www.google.com");
-        config.setCloseSessionAfterTestMethod(false);
+        config.setShutdownSessionAfterTestMethod(false);
     }
 
     @AfterClass(alwaysRun = true)
@@ -114,7 +114,7 @@ public class PageFactoryPrefixedTest extends AbstractTestSitesTest implements Lo
         PageFactory.setGlobalPagesPrefix(null);
         WebDriverManagerConfig config = WebDriverManager.getConfig();
         config.setBaseUrl(baseURL);
-        config.setCloseSessionAfterTestMethod(true);
+        config.setShutdownSessionAfterTestMethod(true);
     }
 
     @Test

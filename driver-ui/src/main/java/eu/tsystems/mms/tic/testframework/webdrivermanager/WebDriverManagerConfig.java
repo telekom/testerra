@@ -139,11 +139,11 @@ public class WebDriverManagerConfig implements Loggable {
         return executeCloseWindows && closeWindowsAfterTestMethod;
     }
 
-    public boolean shouldCloseSessions() {
+    public boolean shouldShutdownSessions() {
         return executeCloseWindows;
     }
 
-    public WebDriverManagerConfig setCloseSessions(boolean close) {
+    public WebDriverManagerConfig setShutdownSessions(boolean close) {
         this.executeCloseWindows = close;
         return this;
     }
@@ -153,21 +153,27 @@ public class WebDriverManagerConfig implements Loggable {
         return this;
     }
 
-    public boolean shouldCloseSessionAfterTestMethod() {
+    public boolean shouldShutdownSessionAfterTestMethod() {
         return closeWindowsAfterTestMethod;
     }
 
-    public WebDriverManagerConfig setCloseSessionAfterTestMethod(boolean close) {
-        this.closeWindowsAfterTestMethod = close;
+    public WebDriverManagerConfig setShutdownSessionAfterTestMethod(boolean shutdown) {
+        if (shutdown) {
+            this.setShutdownSessions(true);
+        }
+        this.closeWindowsAfterTestMethod = shutdown;
         return this;
     }
 
-    public boolean shouldCloseSessionOnFailure() {
+    public boolean shouldShutdownSessionOnFailure() {
         return closeWindowsOnFailure;
     }
 
-    public WebDriverManagerConfig setCloseSessionOnFailure(boolean close) {
-        this.closeWindowsOnFailure = close;
+    public WebDriverManagerConfig setShutdownSessionOnFailure(boolean shutdown) {
+        if (shutdown) {
+            this.setShutdownSessions(true);
+        }
+        this.closeWindowsOnFailure = shutdown;
         return this;
     }
 

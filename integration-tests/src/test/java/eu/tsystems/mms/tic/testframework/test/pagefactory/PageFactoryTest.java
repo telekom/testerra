@@ -61,14 +61,14 @@ public class PageFactoryTest extends AbstractTestSitesTest {
         WebDriverManagerConfig config = WebDriverManager.getConfig();
         baseURL = config.getBaseUrl();
         config.setBaseUrl("http://www.google.com");
-        config.setCloseSessionAfterTestMethod(false);
+        config.setShutdownSessionAfterTestMethod(false);
     }
 
     @AfterClass
     public void after() {
         WebDriverManagerConfig config = WebDriverManager.getConfig();
         config.setBaseUrl(baseURL);
-        config.setCloseSessionAfterTestMethod(true);
+        config.setShutdownSessionAfterTestMethod(true);
     }
 
     @Test

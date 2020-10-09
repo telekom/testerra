@@ -135,10 +135,6 @@ public class WebDriverManagerConfig implements Loggable {
         return browserVersion;
     }
 
-    public boolean areSessionsClosedAfterTestMethod() {
-        return executeCloseWindows && closeWindowsAfterTestMethod;
-    }
-
     public boolean shouldShutdownSessions() {
         return executeCloseWindows;
     }
@@ -154,7 +150,7 @@ public class WebDriverManagerConfig implements Loggable {
     }
 
     public boolean shouldShutdownSessionAfterTestMethod() {
-        return closeWindowsAfterTestMethod;
+        return executeCloseWindows && closeWindowsAfterTestMethod;
     }
 
     public WebDriverManagerConfig setShutdownSessionAfterTestMethod(boolean shutdown) {
@@ -166,7 +162,7 @@ public class WebDriverManagerConfig implements Loggable {
     }
 
     public boolean shouldShutdownSessionOnFailure() {
-        return closeWindowsOnFailure;
+        return executeCloseWindows && closeWindowsOnFailure;
     }
 
     public WebDriverManagerConfig setShutdownSessionOnFailure(boolean shutdown) {

@@ -30,7 +30,8 @@
     "aurelia-fetch-client": "^1.8.2",
     "aurelia-templating": "^1.10.4",
     "aurelia-typed-observable-plugin": "^0.4.2",
-    "moment": "^2.29.0",
+    "moment": "^2.29.1",
+    "moment-duration-format": "^2.3.2",
     "momentjs": "^2.0.0",
     "protobufjs": "^6.10.1",
     "t-systems-aurelia-components": "^1.0.0"

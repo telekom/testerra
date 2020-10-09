@@ -1,13 +1,20 @@
 <template>
 
-  <div mdc-headline4>${_executionContext.contextValues.name}</div>
+  <div mdc-headline4>
+    Today is: ${dur.toString()}<br>
+  </div>
   <mdc-layout-grid>
     <mdc-layout-grid-cell>
       <mdc-card outlined="true">
         <mdc-primary-action>
           <div mdc-body1>
-            Started: ${_executionContext.contextValues.startTime|dateFormat:"LLL"}<br>
+            Started: ${_executionContext.contextValues.startTime |dateFormat:"LLL"} <br>
+            Started: ${_executionContext.contextValues.startTime} sek<br>
+            <br>
+            Duration: ${_duration}<br>
+            <br>
             Ended: ${_executionContext.contextValues.endTime|dateFormat:"LLL"}<br>
+            Ended: ${_executionContext.contextValues.endTime} sek<br>
           </div>
         </mdc-primary-action>
       </mdc-card>

@@ -8,7 +8,6 @@ import {ClassStatistics} from "../services/statistic-models";
 @autoinject()
 export class Classes {
   private _classStatistics:ClassStatistics[] = [];
-
   private _methods;
   constructor(
     private _dataLoader:DataLoader,

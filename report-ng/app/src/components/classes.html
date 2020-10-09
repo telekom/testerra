@@ -10,8 +10,7 @@
     <mdc-data-table-content>
       <mdc-data-table-row repeat.for="classStatistics of _classStatistics">
         <mdc-data-table-cell>
-          <mdc-icon if.bind="classStatistics.overallFailed>0 || classStatistics.overallSkipped>0">close</mdc-icon>
-          <mdc-icon></mdc-icon>
+          <mdc-icon class="icon" if.bind="classStatistics.overallFailed>0 || classStatistics.overallSkipped>0">close</mdc-icon>
             ${classStatistics.classAggregate.classContext.contextValues.name}
         </mdc-data-table-cell>
         <mdc-data-table-cell numeric>${classStatistics.overallPassed}</mdc-data-table-cell>

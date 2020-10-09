@@ -66,7 +66,9 @@ public final class WebDriverManagerUtils {
      *
      * @param presetBaseURL A manually set baseUrl
      * @return BaseUrl to use.
+     * @deprecated Use {@link WebDriverManager#config()} instead
      */
+    @Deprecated
     protected static String getBaseUrl(final String presetBaseURL) {
         String baseUrl;
         /*

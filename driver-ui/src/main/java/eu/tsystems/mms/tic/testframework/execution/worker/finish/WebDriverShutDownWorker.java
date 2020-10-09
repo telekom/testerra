@@ -52,11 +52,11 @@ public class WebDriverShutDownWorker implements MethodEndEvent.Listener {
                 if (iTestResult.getMethod().isTest()) {
                     // shutdown in case of a test method
                     boolean close = true;
-                    if (config.executeCloseWindows) {
-                        if (!config.closeWindowsAfterTestMethod) {
+                    if (config.shouldCloseSessions()) {
+                        if (!config.shouldCloseSessionAfterTestMethod()) {
                             close = false;
                         } else {
-                            if (!iTestResult.isSuccess() && !config.closeWindowsOnFailure) {
+                            if (!iTestResult.isSuccess() && !config.shouldCloseSessionOnFailure()) {
                                 close = false;
                             }
                         }

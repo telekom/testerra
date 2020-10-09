@@ -42,7 +42,7 @@ public class ConditionalBehaviourWorker implements Loggable, MethodEndEvent.List
             if (skipShutdown) {
                 log().debug("ON_STATE_TESTFAILED_SKIP_SHUTDOWN: true");
                 // leave all windows open when this condition is true (except you call forceShutdown)
-                WebDriverManager.config().executeCloseWindows = false;
+                WebDriverManager.config().setCloseSessions(false);
             }
 
             // check state condition: skip test methods

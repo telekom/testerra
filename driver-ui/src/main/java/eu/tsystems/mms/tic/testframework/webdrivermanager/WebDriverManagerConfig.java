@@ -41,28 +41,31 @@ public class WebDriverManagerConfig implements Loggable {
     /**
      * Specifies if windows should be closed.
      */
-    public boolean executeCloseWindows = true;
+    private boolean executeCloseWindows = true;
 
     /**
      * WebDriverMode that is used.
      */
-    public WebDriverMode webDriverMode = WebDriverMode.valueOf(PropertyManager.getProperty(TesterraProperties.WEBDRIVERMODE, WebDriverMode.remote.name()));
+    private WebDriverMode webDriverMode = WebDriverMode.valueOf(PropertyManager.getProperty(TesterraProperties.WEBDRIVERMODE, WebDriverMode.remote.name()));
 
     /**
      * Close windows after Test Methods.
      */
-    public boolean closeWindowsAfterTestMethod = PropertyManager.getBooleanProperty(
+    private boolean closeWindowsAfterTestMethod = PropertyManager.getBooleanProperty(
             TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS,
             true);
     /**
      * Close windows on failure.
      */
-    public boolean closeWindowsOnFailure = PropertyManager.getBooleanProperty(
+    private boolean closeWindowsOnFailure = PropertyManager.getBooleanProperty(
             TesterraProperties.CLOSE_WINDOWS_ON_FAILURE,
             true);
 
-    public boolean maximize = PropertyManager.getBooleanProperty(TesterraProperties.BROWSER_MAXIMIZE, false);
-    public Position maximizePosition = Position.valueOf(PropertyManager.getProperty(TesterraProperties.BROWSER_MAXIMIZE_POSITION, Position.CENTER.toString()).toUpperCase());
+    private boolean maximize = PropertyManager.getBooleanProperty(TesterraProperties.BROWSER_MAXIMIZE, false);
+
+    private Position maximizePosition;
+
+    private String baseUrl = null;
 
     /**
      * Default constructor.
@@ -70,18 +73,42 @@ public class WebDriverManagerConfig implements Loggable {
     public WebDriverManagerConfig() {
     }
 
+    public String getBaseUrl() {
+        if (baseUrl == null) {
+            baseUrl = PropertyManager.getProperty(TesterraProperties.BASEURL, "");
+        }
+        return baseUrl;
+    }
+
+    public WebDriverManagerConfig setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+        return this;
+    }
+
     /**
-     * @deprecated Use {@link #browser()} instead
+     * @deprecated Use {@link #getBrowser()} instead
      */
     @Deprecated
     public String getDefaultBrowser() {
         return browser();
     }
 
+    public String getBrowser() {
+        return browser();
+    }
+
+    public String getBrowserVersion() {
+        return browserVersion();
+    }
+
     public WebDriverMode getWebDriverMode() {
         return webDriverMode;
     }
 
+    /**
+     * @deprecated Use {@link #getBrowser()} ()} instead
+     */
+    @Deprecated
     public String browser() {
         String browser = PropertyManager.getProperty(TesterraProperties.BROWSER, null);
 
@@ -94,6 +121,10 @@ public class WebDriverManagerConfig implements Loggable {
         return browser;
     }
 
+    /**
+     * @deprecated Use {@link #getBrowserVersion()} instead
+     */
+    @Deprecated
     public String browserVersion() {
         String browserVersion = PropertyManager.getProperty(TesterraProperties.BROWSER_VERSION, null);
         String browserSetting = PropertyManager.getProperty(TesterraProperties.BROWSER_SETTING);
@@ -108,4 +139,56 @@ public class WebDriverManagerConfig implements Loggable {
         return executeCloseWindows && closeWindowsAfterTestMethod;
     }
 
+    public boolean shouldCloseSessions() {
+        return executeCloseWindows;
+    }
+
+    public WebDriverManagerConfig setCloseSessions(boolean close) {
+        this.executeCloseWindows = close;
+        return this;
+    }
+
+    public WebDriverManagerConfig setWebDriverMode(WebDriverMode webDriverMode) {
+        this.webDriverMode = webDriverMode;
+        return this;
+    }
+
+    public boolean shouldCloseSessionAfterTestMethod() {
+        return closeWindowsAfterTestMethod;
+    }
+
+    public WebDriverManagerConfig setCloseSessionAfterTestMethod(boolean close) {
+        this.closeWindowsAfterTestMethod = close;
+        return this;
+    }
+
+    public boolean shouldCloseSessionOnFailure() {
+        return closeWindowsOnFailure;
+    }
+
+    public WebDriverManagerConfig setCloseSessionOnFailure(boolean close) {
+        this.closeWindowsOnFailure = close;
+        return this;
+    }
+
+    public boolean shouldMaximizeViewport() {
+        return maximize;
+    }
+
+    public WebDriverManagerConfig setMaximizeViewport(boolean maximize) {
+        this.maximize = maximize;
+        return this;
+    }
+
+    public Position getMaximizePosition() {
+        if (this.maximizePosition == null) {
+            this.maximizePosition = Position.valueOf(PropertyManager.getProperty(TesterraProperties.BROWSER_MAXIMIZE_POSITION, Position.CENTER.toString()).toUpperCase());
+        }
+        return maximizePosition;
+    }
+
+    public WebDriverManagerConfig setMaximizePosition(Position maximizePosition) {
+        this.maximizePosition = maximizePosition;
+        return this;
+    }
 }

@@ -46,10 +46,10 @@ public class DriverAndGuiElementTest extends AbstractTestSitesTest {
     @Test
     public void testGuiElement() throws Exception {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-        request.baseUrl = WebDriverManager.getBaseURL();
-        request.webDriverMode = WebDriverMode.local;
-        request.browser = Browsers.phantomjs;
-        request.browserVersion = "egal";
+        request.setBaseUrl(WebDriverManager.config().getBaseUrl());
+        request.setWebDriverMode(WebDriverMode.local);
+        request.setBrowser(Browsers.phantomjs);
+        request.setBrowserVersion("egal");
 
 //        DesiredCapabilities caps = new DesiredCapabilities();
 //        WebDriverManagerUtils.addProxyToCapabilities(caps, "proxyblabla");
@@ -62,9 +62,9 @@ public class DriverAndGuiElementTest extends AbstractTestSitesTest {
     @Test
     public void testTapCapabilities() throws Exception {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-        request.baseUrl = "http://google.de";
-        request.webDriverMode = WebDriverMode.local;
-        request.browser = Browsers.phantomjs;
+        request.setBaseUrl("http://google.de");
+        request.setWebDriverMode(WebDriverMode.local);
+        request.setBrowser(Browsers.phantomjs);
 
         /*
         create caps
@@ -76,8 +76,8 @@ public class DriverAndGuiElementTest extends AbstractTestSitesTest {
         // start session
         WebDriver driver = WebDriverManager.getWebDriver(request);
 
-        WebDriverRequest r = WebDriverManager.getRelatedWebDriverRequest(driver);
-        Map<String, Object> sessionCapabilities = ((DesktopWebDriverRequest) r).sessionCapabilities;
+        WebDriverRequest relatedRequest = WebDriverManager.getRelatedWebDriverRequest(driver);
+        Map<String, Object> sessionCapabilities = ((DesktopWebDriverRequest) relatedRequest).getSessionCapabilities();
 
         Assert.assertEquals(sessionCapabilities.get("projectId"), caps.getCapability("projectId"), "EndPoint Capability is set");
     }
@@ -85,9 +85,9 @@ public class DriverAndGuiElementTest extends AbstractTestSitesTest {
     @Test
     public void testFailing() throws Exception {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-        request.baseUrl = "http://google.de";
-        request.webDriverMode = WebDriverMode.local;
-        request.browser = Browsers.phantomjs;
+        request.setBaseUrl("http://google.de");
+        request.setWebDriverMode(WebDriverMode.local);
+        request.setBrowser(Browsers.phantomjs);
 
         WebDriverManager.getWebDriver(request);
         Assert.assertTrue(false);

@@ -47,7 +47,7 @@ public class WebDriverShutDownWorker implements MethodEndEvent.Listener {
              * Take Screenshot of failure and log it into report.
              */
             if (iTestResult != null) {
-                WebDriverManagerConfig config = WebDriverManager.config();
+                WebDriverManagerConfig config = WebDriverManager.getConfig();
 
                 if (iTestResult.getMethod().isTest()) {
                     // shutdown in case of a test method

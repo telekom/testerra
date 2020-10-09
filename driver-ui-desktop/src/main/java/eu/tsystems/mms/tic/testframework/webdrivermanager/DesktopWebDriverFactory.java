@@ -103,14 +103,14 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         set webdriver mode
          */
         if (finalRequest.getWebDriverMode() == null) {
-            finalRequest.setWebDriverMode(WebDriverManager.config().getWebDriverMode());
+            finalRequest.setWebDriverMode(WebDriverManager.getConfig().getWebDriverMode());
         }
         return finalRequest;
     }
 
     @Override
     protected DesiredCapabilities buildCapabilities(DesiredCapabilities preSetCaps, DesktopWebDriverRequest desktopWebDriverRequest) {
-        return DesktopWebDriverCapabilities.createCapabilities(WebDriverManager.config(), preSetCaps, desktopWebDriverRequest);
+        return DesktopWebDriverCapabilities.createCapabilities(WebDriverManager.getConfig(), preSetCaps, desktopWebDriverRequest);
     }
 
     @Override
@@ -192,7 +192,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
           */
         StopWatch.startPageLoad(eventFiringWebDriver);
 
-        WebDriverManagerConfig config = WebDriverManager.config();
+        WebDriverManagerConfig config = WebDriverManager.getConfig();
         WebDriver.Window window = eventFiringWebDriver.manage().window();
         /*
          Maximize

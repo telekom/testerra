@@ -267,7 +267,7 @@ public final class WebDriverManager {
      * @param force Handles the report of Windows beside WebDriverManagerConfig.executeCloseWindows.
      */
     private static void realShutdown(final boolean force) {
-        if (config().shouldCloseSessions() || force) {
+        if (getConfig().shouldCloseSessions() || force) {
             if (WebDriverManager.isWebDriverActive()) {
                 WebDriverSessionsManager.shutDownAllThreadSessions();
                 WebDriverCapabilities.clearThreadCapabilities();
@@ -412,7 +412,7 @@ public final class WebDriverManager {
     }
 
     private static void pRealShutdownAllThreads(final boolean force) {
-        if (config().shouldCloseSessions() || force) {
+        if (getConfig().shouldCloseSessions() || force) {
             WebDriverSessionsManager.shutDownAllSessions();
             WDInternal.cleanupDriverReferencesInCurrentThread();
         }

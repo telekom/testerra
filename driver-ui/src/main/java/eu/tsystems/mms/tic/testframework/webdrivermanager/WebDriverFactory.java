@@ -44,7 +44,7 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> implements Lo
         this.sessionContext = sessionContext;
 
         if (!request.hasBaseUrl()) {
-            request.setBaseUrl(WebDriverManager.config().getBaseUrl());
+            request.setBaseUrl(WebDriverManager.getConfig().getBaseUrl());
         }
 
         /*

@@ -365,11 +365,11 @@ public final class WebDriverSessionsManager {
         }
 
         if (!webDriverRequest.hasBrowser()) {
-            webDriverRequest.setBrowser(WebDriverManager.config().getBrowser());
+            webDriverRequest.setBrowser(WebDriverManager.getConfig().getBrowser());
         }
 
         if (!webDriverRequest.hasBrowserVersion()) {
-            webDriverRequest.setBrowserVersion(WebDriverManager.config().getBrowserVersion());
+            webDriverRequest.setBrowserVersion(WebDriverManager.getConfig().getBrowserVersion());
         }
 
         String browser = webDriverRequest.getBrowser();

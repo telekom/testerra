@@ -102,7 +102,7 @@ public class DesktopWebDriverRequest extends WebDriverRequest implements Loggabl
         return "DesktopWebDriverRequest{" +
                 "sessionCapabilities=" + sessionCapabilities +
                 ", desiredCapabilities=" + desiredCapabilities +
-                ", seleniumServerURL='" + seleniumServerURL + '\'' +
+                ", seleniumServerURL='" + getSeleniumServerUrl() + '\'' +
                 ", webDriverMode=" + webDriverMode +
                 ", browser=" + getBrowser() +
                 ", sessionKey='" + getSessionKey() + '\'' +

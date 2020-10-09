@@ -46,7 +46,7 @@ public class DriverAndGuiElementTest extends AbstractTestSitesTest {
     @Test
     public void testGuiElement() throws Exception {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-        request.setBaseUrl(WebDriverManager.config().getBaseUrl());
+        request.setBaseUrl(WebDriverManager.getConfig().getBaseUrl());
         request.setWebDriverMode(WebDriverMode.local);
         request.setBrowser(Browsers.phantomjs);
         request.setBrowserVersion("egal");

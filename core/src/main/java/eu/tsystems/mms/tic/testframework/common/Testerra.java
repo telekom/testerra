@@ -26,6 +26,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.util.Modules;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import java.lang.reflect.Constructor;
 import java.util.Iterator;
 import java.util.Set;
@@ -108,7 +109,7 @@ public class Testerra {
      */
     private static Injector initIoc() {
         if (injector ==null) {
-            Reflections reflections = new Reflections(TesterraCommons.DEFAULT_PACKAGE_NAME);
+            Reflections reflections = new Reflections(TesterraListener.DEFAULT_PACKAGE);
             Set<Class<? extends AbstractModule>> classes = reflections.getSubTypesOf(AbstractModule.class);
             Iterator<Class<? extends AbstractModule>> iterator = classes.iterator();
             TreeMap<String, Module> sortedModules = new TreeMap<>();

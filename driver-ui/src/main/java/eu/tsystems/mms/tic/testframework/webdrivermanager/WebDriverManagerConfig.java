@@ -24,7 +24,6 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.enums.Position;
-import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 
@@ -32,12 +31,7 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
  * Class holding configuration settings for the WebDriverManager. Some are writable. This class is not ThreadSafe, some
  * settings may not be valid.
  */
-public class WebDriverManagerConfig implements Loggable {
-
-    /*
-     * Default values.
-     */
-
+public class WebDriverManagerConfig {
     /**
      * Specifies if windows should be closed.
      */
@@ -46,31 +40,40 @@ public class WebDriverManagerConfig implements Loggable {
     /**
      * WebDriverMode that is used.
      */
-    private WebDriverMode webDriverMode = WebDriverMode.valueOf(PropertyManager.getProperty(TesterraProperties.WEBDRIVERMODE, WebDriverMode.remote.name()));
+    private WebDriverMode webDriverMode;
 
     /**
      * Close windows after Test Methods.
      */
-    private boolean closeWindowsAfterTestMethod = PropertyManager.getBooleanProperty(
-            TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS,
-            true);
+    private boolean closeWindowsAfterTestMethod;
+
     /**
      * Close windows on failure.
      */
-    private boolean closeWindowsOnFailure = PropertyManager.getBooleanProperty(
-            TesterraProperties.CLOSE_WINDOWS_ON_FAILURE,
-            true);
+    private boolean closeWindowsOnFailure;
 
-    private boolean maximize = PropertyManager.getBooleanProperty(TesterraProperties.BROWSER_MAXIMIZE, false);
+    private boolean maximize;
 
     private Position maximizePosition;
 
-    private String baseUrl = null;
+    private String baseUrl;
 
     /**
      * Default constructor.
      */
     public WebDriverManagerConfig() {
+        this.reset();
+    }
+
+    public WebDriverManagerConfig reset() {
+        this.executeCloseWindows = true;
+        this.webDriverMode = WebDriverMode.valueOf(PropertyManager.getProperty(TesterraProperties.WEBDRIVERMODE, WebDriverMode.remote.name()));
+        this.closeWindowsAfterTestMethod = PropertyManager.getBooleanProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, true);
+        this.closeWindowsOnFailure = PropertyManager.getBooleanProperty(TesterraProperties.CLOSE_WINDOWS_ON_FAILURE, true);
+        this.maximize = PropertyManager.getBooleanProperty(TesterraProperties.BROWSER_MAXIMIZE, false);
+        this.maximizePosition = null;
+        this.baseUrl = null;
+        return this;
     }
 
     public String getBaseUrl() {

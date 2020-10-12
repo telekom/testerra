@@ -47,19 +47,16 @@
 @include drawer.modal-core-styles;
 @include list.core-styles;
 
-.button-primary {
-  @include button.filled-accessible(theme.$primary);
-}
-
-.button-secondary {
-  @include button.filled-accessible(theme.$secondary);
-}
-
 /*General style settings______________________________________________________________________________________________*/
 
 //Body has a native margin for some reason
 body {
   margin: 0;
+}
+
+#logo{
+  width: 60px;
+  height: 60px;
 }
 
 //Put drawer behind top app bar

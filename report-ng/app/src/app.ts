@@ -7,6 +7,7 @@ import {StatusConverter} from "./services/status-converter";
 export class App {
 
   router: Router;
+  private  _logo = "../static/logo.png"; //workaround for webpack changing filename and therefor messing up the src-attribute
 
   constructor(
     private _dataLoader : DataLoader,

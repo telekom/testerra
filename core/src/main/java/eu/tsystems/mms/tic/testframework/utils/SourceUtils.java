@@ -22,8 +22,8 @@
  package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.context.ScriptSource;
 import eu.tsystems.mms.tic.testframework.report.context.report.DefaultReport;
 import java.io.BufferedReader;
@@ -54,8 +54,6 @@ public final class SourceUtils {
     private static int linePrefetch = PropertyManager.getIntProperty(TesterraProperties.SOURCE_LINES_PREFETCH, 5);
     private static final boolean FIND_SOURCES = DefaultReport.Properties.ACTIVATE_SOURCES.asBool();
     private static HashMap<Class, List<String>> cachedClassNames = new HashMap<Class, List<String>>();
-    private static final String PACKAGE_SCOPE = PropertyManager.getProperty(TesterraProperties.PROJECT_PACKAGE,
-            TesterraCommons.DEFAULT_PACKAGE_NAME);
 
     public static ScriptSource findScriptSourceForThrowable(Throwable throwable) {
         if (!FIND_SOURCES) {
@@ -69,7 +67,7 @@ public final class SourceUtils {
         int lineNumber = 0;
         boolean inDefaultPackageSection = false;
         for (StackTraceElement stackTraceElement : stackTrace) {
-            if (stackTraceElement.getClassName().startsWith(TesterraCommons.DEFAULT_PACKAGE_NAME)) {
+            if (stackTraceElement.getClassName().startsWith(TesterraListener.DEFAULT_PACKAGE)) {
                 className = stackTraceElement.getClassName();
                 fileName = stackTraceElement.getFileName();
                 lineNumber = stackTraceElement.getLineNumber();
@@ -176,7 +174,7 @@ public final class SourceUtils {
 
     private static List<String> findClassNamesForSubTypesOf(Class clazz) {
         final List<String> classnames = new ArrayList<String>();
-        Reflections reflections = new Reflections(PACKAGE_SCOPE);
+        Reflections reflections = new Reflections(TesterraListener.PROJECT_PACKAGE);
         Set<Class> subTypesOf = reflections.getSubTypesOf(clazz);
         for (Class aClass : subTypesOf) {
             classnames.add(aClass.getName());

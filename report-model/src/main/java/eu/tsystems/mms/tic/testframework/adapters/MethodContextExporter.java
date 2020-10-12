@@ -40,6 +40,7 @@ import eu.tsystems.mms.tic.testframework.report.model.StackTrace;
 import eu.tsystems.mms.tic.testframework.report.model.StackTraceCause;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
@@ -117,7 +118,7 @@ public class MethodContextExporter extends AbstractContextExporter {
         map(methodContext.errorContext(), this::prepareErrorContext, builder::setErrorContext);
         forEach(methodContext.nonFunctionalInfos, assertionInfo -> builder.addNonFunctionalInfos(prepareErrorContext(assertionInfo)));
         forEach(methodContext.collectedAssertions, assertionInfo -> builder.addCollectedAssertions(prepareErrorContext(assertionInfo)));
-        forEach(methodContext.sessionContexts, sessionContext -> builder.addScreenshotIds(sessionContext.id));
+        forEach(methodContext.sessionContexts, sessionContext -> builder.addSessionContextIds(sessionContext.id));
 
         /**
          * The report is already moved to the target directory at this point.
@@ -128,7 +129,6 @@ public class MethodContextExporter extends AbstractContextExporter {
         forEach(methodContext.getVideos(), video -> {
             final java.io.File currentVideoFile = video.getVideoFile();
             final java.io.File targetVideoFile = new java.io.File(targetVideoDir, currentVideoFile.getName());
-            final String mappedPathVideoPath = mapArtifactsPath(targetVideoFile.getAbsolutePath());
 
             final String videoId = IDUtils.getB64encXID();
 
@@ -138,7 +138,7 @@ public class MethodContextExporter extends AbstractContextExporter {
             // add video data
             final File.Builder fileBuilderVideo = File.newBuilder();
             fileBuilderVideo.setId(videoId);
-            fileBuilderVideo.setRelativePath(mappedPathVideoPath);
+            fileBuilderVideo.setRelativePath(targetVideoFile.getPath());
             fileBuilderVideo.setMimetype(MediaType.WEBM_VIDEO.toString());
             fillFileBasicData(fileBuilderVideo, currentVideoFile);
             fileConsumer.accept(fileBuilderVideo);
@@ -149,7 +149,6 @@ public class MethodContextExporter extends AbstractContextExporter {
             // build screenshot and sources files
             final java.io.File currentScreenshotFile = screenshot.getScreenshotFile();
             final java.io.File targetScreenshotFile = new java.io.File(targetScreenshotDir, currentScreenshotFile.getName());
-            final String mappedScreenshotPath = mapArtifactsPath(targetScreenshotFile.getAbsolutePath());
 
             final java.io.File currentSourceFile = screenshot.getPageSourceFile();
             final java.io.File targetSourceFile = new java.io.File(targetScreenshotDir, currentSourceFile.getName());
@@ -164,12 +163,12 @@ public class MethodContextExporter extends AbstractContextExporter {
             // add screenshot data
             final File.Builder fileBuilderScreenshot = File.newBuilder();
             fileBuilderScreenshot.setId(screenshotId);
-            fileBuilderScreenshot.setRelativePath(mappedScreenshotPath);
+            fileBuilderScreenshot.setRelativePath(targetScreenshotFile.getPath());
             fileBuilderScreenshot.setMimetype(MediaType.PNG.toString());
             fileBuilderScreenshot.putAllMeta(screenshot.meta());
             fileBuilderScreenshot.putMeta("sourcesRefId", sourcesRefId);
             fillFileBasicData(fileBuilderScreenshot, currentScreenshotFile);
-//            methodContextData.files.add(fileBuilderScreenshot.build());
+            fileConsumer.accept(fileBuilderScreenshot);
 
             // add sources data
             final File.Builder fileBuilderSources = File.newBuilder();
@@ -178,8 +177,6 @@ public class MethodContextExporter extends AbstractContextExporter {
             fileBuilderSources.setMimetype(MediaType.PLAIN_TEXT_UTF_8.toString());
             fillFileBasicData(fileBuilderSources, currentSourceFile);
             fileConsumer.accept(fileBuilderSources);
-//            methodContextData.files.add(fileBuilderSources.build());
-
         });
 
         map(methodContext.customContexts, jsonEncoder::toJson, builder::setCustomContextJson);

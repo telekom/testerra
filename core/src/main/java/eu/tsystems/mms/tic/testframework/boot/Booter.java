@@ -24,7 +24,6 @@ package eu.tsystems.mms.tic.testframework.boot;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.events.ModulesInitializedEvent;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.internal.BuildInformation;
@@ -44,7 +43,6 @@ public final class Booter implements Loggable {
     private Set<ModuleHook> MODULE_HOOKS;
 
     public Booter() {
-        TesterraCommons.init();
         // when logger is configured:
         printTesterraBanner();
         initHooks();

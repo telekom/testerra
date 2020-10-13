@@ -29,6 +29,7 @@ When a `system.properties` exists, Testerra loads and sets the given properties 
 NOTE: You cannot override system properties given by command line.
 
 The path of this file can be changed by `{system_settings_file}` and will be automatically loaded with the following message
+
 ----
-common.TesterraCommons - Load system properties: /path/to/your/system.properties
+common.PropertyManager - Load system properties: /path/to/your/system.properties
 ----

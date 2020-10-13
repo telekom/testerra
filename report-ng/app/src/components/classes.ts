@@ -6,12 +6,12 @@ import {StatisticsGenerator} from "../services/statistics-generator";
 import {ClassStatistics} from "../services/statistic-models";
 import IMethodContext = data.IMethodContext;
 import IContextValues = data.IContextValues;
+import ContextValues = data.ContextValues;
 
 @autoinject()
 export class Classes {
   private _classStatistics:ClassStatistics[] = [];
-  private _methodContext: IMethodContext;
-  private _ContextValue: IContextValues;
+  private _methodContext: IMethodContext[];
   constructor(
     private _dataLoader:DataLoader,
     private _statusConverter:StatusConverter,
@@ -27,10 +27,6 @@ export class Classes {
          //classStatistics.classAggregate.methodContexts.forEach(methodContext=> {
          // this._methods.errorFingerprint.push(methodContext);
         // })
-      })
-
-      executionStatistics.classStatistics.forEach(methodContext=>{
-        this._methodContext.contextValues.name;
       })
     });
   }

@@ -5,21 +5,22 @@ import {autoinject} from "aurelia-framework";
 import {StatusConverter} from "../../services/status-converter";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {ExecutionStatistics} from "../../services/statistic-models";
-import IExecutionContext = data.IExecutionContext;
-import moment from "moment";
+import moment from 'moment';
 import 'moment-duration-format';
+import IExecutionContext = data.IExecutionContext;
 
 @autoinject()
 export class Dashboard {
   private _apexDonutOptions: any = undefined;
   private _testDuration: string = undefined;
 
-  private _executionContext:IExecutionContext;
-  private _executionStatistics:ExecutionStatistics;
+
+  _executionContext: IExecutionContext;
+  private _executionStatistics: ExecutionStatistics;
 
   constructor(
-    private _statusConverter:StatusConverter,
-    private _statisticsGenerator:StatisticsGenerator,
+    private _statusConverter: StatusConverter,
+    private _statisticsGenerator: StatisticsGenerator,
   ) {
   }
 
@@ -30,7 +31,6 @@ export class Dashboard {
       this._testDuration = moment.duration(<number>this._executionContext.contextValues.endTime - <number>this._executionContext.contextValues.startTime).format();
       console.log(this._executionContext);
       this._prepareDonutChart(executionStatistics);
-
     })
   }
 

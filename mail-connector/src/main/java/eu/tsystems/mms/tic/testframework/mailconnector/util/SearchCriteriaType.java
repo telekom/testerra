@@ -21,15 +21,41 @@
  */
 package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
+import javax.mail.search.FromTerm;
+import javax.mail.search.MessageIDTerm;
+import javax.mail.search.RecipientTerm;
+import javax.mail.search.SearchTerm;
+import javax.mail.search.SentDateTerm;
+import javax.mail.search.SubjectTerm;
+
 /**
  * Enum for criteria to search mails for.
  *
  * @author pele
+ * @deprecated Use implementations of {@link SearchTerm} instead
  */
+@Deprecated
 public enum SearchCriteriaType {
-    /** Criteria to search mails. */
-    SENDER, RECIPIENT, SUBJECT, MESSAGEID,
-    /** Expect sentDate to be after criteria value */
+    /**
+     * Criteria to search mails.
+     * @deprecated Use {@link FromTerm} instead
+     */
+    SENDER,
+    /**
+     * @deprecated Use {@link RecipientTerm} instead
+     */
+    RECIPIENT,
+    /**
+     * @deprecated Use {@link SubjectTerm} instead
+     */
+    SUBJECT,
+    /**
+     * @deprecated Use {@link MessageIDTerm} instead
+     */
+    MESSAGEID,
+    /**
+     * Expect sentDate to be after criteria value
+     * @deprecated Use {@link SentDateTerm} instead
+     */
     AFTER_DATE
-
 }

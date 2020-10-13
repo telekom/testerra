@@ -1,0 +1,53 @@
+= How to test multiple environments
+
+include::../properties/property-attributes.adoc[]
+
+If you run your tests on multiple test environments, you need for every environment a specific set of settings for `{baseurl}` or `{browser}`.
+
+== Define your properties
+
+Your `test.properties` describes your default setting. If you want to change some properties, you can define another property file and locate it into the `resource` folder.
+
+.test.properties
+[source, properties, subs="attributes"]
+----
+{browser}=chrome
+{baseurl}=http://example.org
+
+env=
+----
+
+.test_qa.properties with specific QA environment settings
+[source, properties, subs="attributes"]
+----
+{browser}=firefox
+{baseurl}=http://qa.example.org
+----
+
+== Load specific properties at startup
+
+Load your custom property file at test startup if its necessary.
+
+.Example to load properties in any setup method
+[source, java]
+----
+@BeforeSuite
+public void setup() {
+    String env = PropertyManager.getProperty("env", "");
+    if (!"".equals(env)) {
+        PropertyManager.loadProperties("test_" + env + ".properties");
+    }
+}
+----
+
+== What happens?
+
+Testerra is loading the `test.properties` automatically at its initialization. Loading another property file overwrites already existing values.
+
+If you add your `env` property at the Gradle or Maven call, you can control the execution depending on the test environment.
+
+.Gradle example
+[source, bash]
+----
+gradle test -Denv=qa
+----

@@ -24,10 +24,12 @@ package eu.tsystems.mms.tic.testframework.mailconnector.util;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
-import org.apache.commons.lang3.ArrayUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.Message;
@@ -47,12 +49,9 @@ import javax.mail.search.RecipientTerm;
 import javax.mail.search.SearchTerm;
 import javax.mail.search.SentDateTerm;
 import javax.mail.search.SubjectTerm;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import org.apache.commons.lang3.ArrayUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * abstract class to handle mail connector
@@ -94,6 +93,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      * @return The message.
      *
      * @throws AddressException thrown if an error by waiting for the message occurs.
+     * @deprecated Use {@link #waitForMails(SearchTerm)} instead
      */
     @Deprecated
     public List<Email> waitForMails(List<SearchCriteria> searchCriterias) throws AddressException {
@@ -132,6 +132,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      * @return The message.
      *
      * @throws AddressException thrown if an error by waiting for the message occurs.
+     * @deprecated Use {@link #waitForMails(SearchTerm, int, int)} instead
      */
     @Deprecated
     public List<Email> waitForMails(List<SearchCriteria> searchCriterias, int maxReadTries, int pollingTimerSeconds) throws AddressException {
@@ -205,7 +206,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
 
                 case AFTER_DATE:
                     final Date expectedDate = (Date) searchCriteria.getValue();
-                    return  new SentDateTerm(ComparisonTerm.LT, expectedDate);
+                    return new SentDateTerm(ComparisonTerm.GT, expectedDate);
 
                 case MESSAGEID:
                     final String messageId = searchCriteria.getStringValue();

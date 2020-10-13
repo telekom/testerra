@@ -16,7 +16,7 @@
         <mdc-data-table-cell numeric>${classStatistics.overallPassed}</mdc-data-table-cell>
         <mdc-data-table-cell numeric>${classStatistics.overallSkipped}</mdc-data-table-cell>
         <mdc-data-table-cell numeric>${classStatistics.overallFailed}</mdc-data-table-cell>
-        <mdc-data-table-cell >${classStatistics._classAggregate.methodContexts}</mdc-data-table-cell>
+        <mdc-data-table-cell >${classStatistics.classAggregate.methodContexts.push(contextValues.name)}</mdc-data-table-cell>
       </mdc-data-table-row>
     </mdc-data-table-content>
   </mdc-data-table>

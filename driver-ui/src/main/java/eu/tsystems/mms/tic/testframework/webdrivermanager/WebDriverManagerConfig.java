@@ -83,6 +83,10 @@ public class WebDriverManagerConfig {
         return baseUrl;
     }
 
+    /**
+     * @deprecated Set your base url via. {@link WebDriverRequest#setBaseUrl(String)} instead
+     */
+    @Deprecated
     public WebDriverManagerConfig setBaseUrl(String baseUrl) {
         this.baseUrl = baseUrl;
         return this;

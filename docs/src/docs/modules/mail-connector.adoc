@@ -75,14 +75,14 @@ POP3MailConnector pop3MailConnector = new POP3MailConnector();
 MimeMessage[] messages = pop3MailConnector.getMessages();
 
 // wait until the email with subject 'test' arrived in the InboxFolder
-SubjectTerm subjectTerm = new SubjectTerm(subject);
-Email email = pop3MailConnector.waitForMails(subjectTerm).get(0));
+EMailQuery query = new EMailQuery().setSearchTerm(new SubjectTerm(subject));
+Email email = pop3MailConnector.query(query).findFirst().get();
 
 // delete all emails with this subject from the server while setting timeout and max number of polls explicitly
-int maxPolls = 5;
-int timeoutInSeconds = 2
+query.setRetryCount(5);
+query.setPauseMs(2000);
 
-Email email = pop3MailConnector.waitForMails(searchCriteria).get(0), maxPolls, timeoutInSeconds);
+Email email = pop3MailConnector.query(query).findFirst().get();
 
 // delete mails matching the given criteria
 String recipient = email.getRecipients().get(0));
@@ -96,8 +96,8 @@ pop3MailConnector.deleteMessage(recipient, RecipientType.TO, subject, messageId)
 [source,java]
 ----
 // wait until the email with subject 'test' arrived in the InboxFolder
-SubjectTerm subjectTerm = new SubjectTerm(subject);
-Email email = pop3MailConnector.waitForMails(subjectTerm).get(0);
+EmailQuery query = new EMailQuery().setSearchTerm(new SubjectTerm(subject));
+Email email = pop3MailConnector.query(query).findFirst().get();
 
 try {
     Multipart content = (Multipart) email.getMessage().getContent();
@@ -152,9 +152,10 @@ The `ImapMailConnector` operates like the <<POP3MailConnector>> with an addition
 ----
 ImapMailConnector imapMailConnector = new ImapMailConnector();
 
-// wait until the email with subject 'test' arrived in the InboxFolder
-SubjectTerm subjectTerm = new SubjectTerm(subject);
-Email email = imapMailConnector.waitForMails(subjectTerm).get(0);
+EMailQuery query = new EMailQuery().setSearchTerm(new SubjectTerm(subject));
+imapMailConnector.query(query).findFirst().ifPresent(email -> {
+    // EMail found
+});
 
 // mark all mails in inbox as seen
 imapMailConnector.markAllMailsAsSeen();
@@ -162,6 +163,53 @@ imapMailConnector.markAllMailsAsSeen();
 // delete all mails in inbox
 imapMailConnector.deleteAllMessages();
 ----
+
+== Best Practices
+
+=== Combine search terms
+
+You can combine search terms the following way
+```java
+EmailQuery query = new EmailQuery();
+
+query.withAllOfSearchTerms(
+    new SubjectTerm("My Subject"),
+    new ReceivedDateTerm(DateTerm.EQ, new Date())
+);
+
+// or
+SearchTerm oneOf = new OrTerm(
+    new SubjectTerm("My Subject"),
+    new SubjectTerm("PetsOverNight.com"),
+);
+query.setSearchTerm(oneOf);
+
+// or
+List<SearchTerm> searchTerms = new ArrayList<>();
+searchTerms.add(oneOf);
+searchTerms.add(new ReceivedDateTerm(DateTerm.EQ, new Date()));
+query.withAllOfSearchTerms(searchTerms);
+```
+
+=== Find emails by specified date
+
+To find emails for a specified date, you should combine the `SentDateTerm` and an explicit filter, because the internal library is not able to filter by exact
+date with the IMAP protocol.
+
+```java
+EMailQuery query = new EMailQuery();
+Date now = new Date();
+
+// Query emails that arrived today
+query.setSearchTerm(new SentDateTerm(ComparisonTerm.EQ, now));
+
+// But check also if the are newer than now
+query.setFilter(email -> email.getSentDate().after(now));
+
+connector.query(query).forEach(email -> {
+    // EMail found
+});
+```
 
 == MailUtils
 This helper class contains methods which facilitate reoccurring tasks when working with mails, e.g. encrypting, decrypting, and comparing mails.

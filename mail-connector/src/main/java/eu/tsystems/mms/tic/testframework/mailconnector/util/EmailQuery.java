@@ -22,6 +22,7 @@
 package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import java.util.List;
 import java.util.function.Predicate;
 import javax.mail.search.AndTerm;
 import javax.mail.search.SearchTerm;
@@ -70,6 +71,10 @@ public class EmailQuery {
     public EmailQuery setSearchTerm(SearchTerm searchTerm) {
         this.searchTerm = searchTerm;
         return this;
+    }
+
+    public EmailQuery withAllOfSearchTerms(List<SearchTerm> searchTerms) {
+        return withAllOfSearchTerms(searchTerms.toArray(new SearchTerm[]{}));
     }
 
     public EmailQuery withAllOfSearchTerms(SearchTerm...searchTerms) {

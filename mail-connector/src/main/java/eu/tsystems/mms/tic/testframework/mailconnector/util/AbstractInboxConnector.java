@@ -72,7 +72,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
     @Deprecated
     public List<Email> waitForMails(List<SearchCriteria> searchCriterias) throws AddressException {
         EmailQuery query = new EmailQuery();
-        return waitForMails(searchCriterias, query.getRetryCount(), query.getPauseMs()*1000);
+        return waitForMails(searchCriterias, query.getRetryCount(), query.getPauseMs()/1000);
     }
 
     /**
@@ -85,7 +85,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
     @Deprecated
     public List<Email> waitForMails(final SearchTerm searchTerm) {
         EmailQuery query = new EmailQuery();
-        return waitForMails(searchTerm, query.getRetryCount(), query.getPauseMs()*1000);
+        return waitForMails(searchTerm, query.getRetryCount(), query.getPauseMs()/1000);
     }
 
     /**
@@ -98,7 +98,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
     @Deprecated
     public List<Email> waitForMails(final SearchTerm searchTerm, final String folderName) {
         EmailQuery query = new EmailQuery();
-        return waitForMails(searchTerm, query.getRetryCount(), query.getPauseMs()*1000, folderName);
+        return waitForMails(searchTerm, query.getRetryCount(), query.getPauseMs()/1000, folderName);
     }
 
     /**
@@ -236,7 +236,6 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
     public Stream<Email> query(EmailQuery query) {
         String folderName = query.getFolderName();
         if (folderName==null) folderName = getInboxFolder();
-
 
         List<MimeMessage> mimeMessages = pWaitForMessage(query.getSearchTerm(), query.getRetryCount(), query.getPauseMs()*1000, folderName);
         Stream<Email> emailStream = mimeMessages.stream().map(Email::new);

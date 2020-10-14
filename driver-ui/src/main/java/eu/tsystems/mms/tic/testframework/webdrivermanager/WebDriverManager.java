@@ -36,16 +36,15 @@ import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Provides threadsafe WebDriver and Selenium objects. These objects are needed for correct logging and reporting.
@@ -76,11 +75,6 @@ public final class WebDriverManager {
      * Executing selenium hosts. Package local access for WDInternal class.
      */
     static final ThreadLocal<String> EXECUTING_SELENIUM_HOSTS_PER_THREAD = new ThreadLocal<>();
-
-    /**
-     * The preset baseURL. Set by setBaseURL().
-     */
-    private static String presetBaseURL = null;
 
     private static final HashMap<String, UserAgentConfig> userAgentConfigurators = new HashMap<>();
 
@@ -160,18 +154,22 @@ public final class WebDriverManager {
      * Sets the baseURL.
      *
      * @param baseURL Base URL for tests.
+     * @deprecated Use {@link #getConfig()} instead
      */
+    @Deprecated
     public static void setBaseURL(final String baseURL) {
-        presetBaseURL = baseURL;
+        getConfig().setBaseUrl(baseURL);
     }
 
     /**
      * Returns the tt. test base url.
      *
      * @return base url as string.
+     * @deprecated Use {@link #getConfig()} instead
      */
+    @Deprecated
     public static String getBaseURL() {
-        return WebDriverManagerUtils.getBaseUrl(presetBaseURL);
+        return getConfig().getBaseUrl();
     }
 
     /**
@@ -197,7 +195,7 @@ public final class WebDriverManager {
      */
     public static WebDriver getWebDriver(final String sessionKey) {
         UnspecificWebDriverRequest webDriverRequest = new UnspecificWebDriverRequest();
-        webDriverRequest.sessionKey = sessionKey;
+        webDriverRequest.setSessionKey(sessionKey);
         return getWebDriver(webDriverRequest);
     }
 
@@ -269,7 +267,7 @@ public final class WebDriverManager {
      * @param force Handles the report of Windows beside WebDriverManagerConfig.executeCloseWindows.
      */
     private static void realShutdown(final boolean force) {
-        if (config().executeCloseWindows || force) {
+        if (getConfig().shouldShutdownSessions() || force) {
             if (WebDriverManager.isWebDriverActive()) {
                 WebDriverSessionsManager.shutDownAllThreadSessions();
                 WebDriverCapabilities.clearThreadCapabilities();
@@ -293,12 +291,18 @@ public final class WebDriverManager {
      * Returns the WebDriverManagerConfig Object.
      *
      * @return .
+     * @deprecated Use {@link #getConfig()} instead
      */
+    @Deprecated
     public static WebDriverManagerConfig config() {
         if (webdriverManagerConfig == null) {
             webdriverManagerConfig = new WebDriverManagerConfig();
         }
         return webdriverManagerConfig;
+    }
+
+    public static WebDriverManagerConfig getConfig() {
+        return config();
     }
 
     /**
@@ -408,7 +412,7 @@ public final class WebDriverManager {
     }
 
     private static void pRealShutdownAllThreads(final boolean force) {
-        if (config().executeCloseWindows || force) {
+        if (getConfig().shouldShutdownSessions() || force) {
             WebDriverSessionsManager.shutDownAllSessions();
             WDInternal.cleanupDriverReferencesInCurrentThread();
         }

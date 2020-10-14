@@ -23,12 +23,11 @@
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.remote.DesiredCapabilities;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
+import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 @Deprecated
 public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
@@ -36,7 +35,7 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
     private static final Map<Pattern, Capabilities> ENDPOINT_CAPABILITIES = new LinkedHashMap<>();
 
     private DesktopWebDriverCapabilities() {
-        
+
     }
 
     static void addContextCapabilities(DesiredCapabilities baseCapabilities, DesktopWebDriverRequest desktopWebDriverRequest) {
@@ -70,24 +69,22 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
         /*
         add session caps
          */
-        if (desktopWebDriverRequest.sessionCapabilities != null) {
-            for (String key : desktopWebDriverRequest.sessionCapabilities.keySet()) {
-                Object value = desktopWebDriverRequest.sessionCapabilities.get(key);
-                safelyAddCapsValue(baseCapabilities, key, value);
-            }
+        for (String key : desktopWebDriverRequest.getSessionCapabilities().keySet()) {
+            Object value = desktopWebDriverRequest.getSessionCapabilities().get(key);
+            safelyAddCapsValue(baseCapabilities, key, value);
         }
 
-        if (desktopWebDriverRequest.desiredCapabilities != null) {
-            Map<String, ?> stringMap = desktopWebDriverRequest.desiredCapabilities.asMap();
+        desktopWebDriverRequest.getDesiredCapabilities().ifPresent(desiredCapabilities -> {
+            Map<String, ?> stringMap = desiredCapabilities.asMap();
             for (String key : stringMap.keySet()) {
                 Object value = stringMap.get(key);
                 safelyAddCapsValue(baseCapabilities, key, value);
             }
-        }
+        });
     }
 
     static DesiredCapabilities createCapabilities(final WebDriverManagerConfig config, DesiredCapabilities preSetCaps, DesktopWebDriverRequest desktopWebDriverRequest) {
-        String browser = desktopWebDriverRequest.browser;
+        String browser = desktopWebDriverRequest.getBrowser();
         if (browser == null) {
             throw new TesterraRuntimeException("Browser is not set correctly");
         }
@@ -95,8 +92,8 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
         desiredCapabilities.merge(preSetCaps);
 
         // set browser version into capabilities
-        if (!StringUtils.isStringEmpty(desktopWebDriverRequest.browserVersion)) {
-            WebDriverManagerUtils.addBrowserVersionToCapabilities(desiredCapabilities, desktopWebDriverRequest.browserVersion);
+        if (!StringUtils.isStringEmpty(desktopWebDriverRequest.getBrowserVersion())) {
+            WebDriverManagerUtils.addBrowserVersionToCapabilities(desiredCapabilities, desktopWebDriverRequest.getBrowserVersion());
         }
 
         /*
@@ -115,10 +112,10 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
     @Deprecated
     private static void addEndPointCapabilities(DesktopWebDriverRequest desktopWebDriverRequest) {
         for (Pattern pattern : ENDPOINT_CAPABILITIES.keySet()) {
-            if (pattern.matcher(desktopWebDriverRequest.seleniumServerHost).find()) {
+            if (pattern.matcher(desktopWebDriverRequest.getSeleniumServerUrl().getHost()).find()) {
                 Capabilities capabilities = ENDPOINT_CAPABILITIES.get(pattern);
                 Map<String, ?> m = capabilities.asMap();
-                desktopWebDriverRequest.sessionCapabilities.putAll(m);
+                desktopWebDriverRequest.getSessionCapabilities().putAll(m);
                 LOGGER.info("Applying EndPoint Capabilities: " + m);
             }
         }

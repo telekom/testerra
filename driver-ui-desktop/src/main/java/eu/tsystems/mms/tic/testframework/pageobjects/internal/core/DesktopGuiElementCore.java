@@ -570,7 +570,7 @@ public class DesktopGuiElementCore implements GuiElementCore, Loggable {
             int y = byImage.getCenterY();
             LOGGER.info("Image Double Click on image webElement at " + x + "," + y);
             JSUtils.executeJavaScriptMouseAction(webDriver, webElement, JSMouseAction.DOUBLE_CLICK, x, y);
-        } else if (Browsers.safari.equalsIgnoreCase(driverRequest.browser)) {
+        } else if (Browsers.safari.equalsIgnoreCase(driverRequest.getBrowser())) {
             LOGGER.info("Safari double click workaround");
             JSUtils.executeJavaScriptMouseAction(webDriver, webElement, JSMouseAction.DOUBLE_CLICK, 0, 0);
         } else {

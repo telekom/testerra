@@ -25,7 +25,6 @@ export class Dashboard {
   }
 
   attached() {
-
     this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
       this._executionStatistics = executionStatistics;
       this._executionContext = executionStatistics.executionAggregate.executionContext;
@@ -47,6 +46,3 @@ export class Dashboard {
     }
   }
 }
-
-
-

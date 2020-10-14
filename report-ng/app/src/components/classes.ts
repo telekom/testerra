@@ -4,11 +4,14 @@ import {StatusConverter} from "../services/status-converter";
 import {autoinject} from "aurelia-framework";
 import {StatisticsGenerator} from "../services/statistics-generator";
 import {ClassStatistics} from "../services/statistic-models";
+import IMethodContext = data.IMethodContext;
+import IContextValues = data.IContextValues;
+import ContextValues = data.ContextValues;
 
 @autoinject()
 export class Classes {
   private _classStatistics:ClassStatistics[] = [];
-  private _methods;
+  private _methodContext: IMethodContext[];
   constructor(
     private _dataLoader:DataLoader,
     private _statusConverter:StatusConverter,

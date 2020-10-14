@@ -5,7 +5,8 @@
       <mdc-data-table-header-cell>Passed</mdc-data-table-header-cell>
       <mdc-data-table-header-cell>Skipped</mdc-data-table-header-cell>
       <mdc-data-table-header-cell>Failed</mdc-data-table-header-cell>
-      <mdc-data-table-header-cell>Failed</mdc-data-table-header-cell>
+      <mdc-data-table-header-cell>Method</mdc-data-table-header-cell>
+      <mdc-data-table-header-cell>Method name</mdc-data-table-header-cell>
     </mdc-data-table-header>
     <mdc-data-table-content>
       <mdc-data-table-row repeat.for="classStatistics of _classStatistics">
@@ -16,7 +17,8 @@
         <mdc-data-table-cell numeric>${classStatistics.overallPassed}</mdc-data-table-cell>
         <mdc-data-table-cell numeric>${classStatistics.overallSkipped}</mdc-data-table-cell>
         <mdc-data-table-cell numeric>${classStatistics.overallFailed}</mdc-data-table-cell>
-        <mdc-data-table-cell >${classStatistics._classAggregate.methodContexts}</mdc-data-table-cell>
+        <mdc-data-table-cell >${classStatistics.classAggregate.methodContexts.push(contextValues.name)}</mdc-data-table-cell>
+        <mdc-data-table-cell >${classStatistics.classAggregate.methodContexts}</mdc-data-table-cell>
       </mdc-data-table-row>
     </mdc-data-table-content>
   </mdc-data-table>

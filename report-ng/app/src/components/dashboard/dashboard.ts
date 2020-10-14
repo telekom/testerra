@@ -12,6 +12,7 @@ import IExecutionContext = data.IExecutionContext;
 @autoinject()
 export class Dashboard {
   private _apexDonutOptions: any = undefined;
+  private _apexBarOptions: any = undefined;
   private _testDuration: string = undefined;
 
 
@@ -31,6 +32,7 @@ export class Dashboard {
       this._testDuration = moment.duration(<number>this._executionContext.contextValues.endTime - <number>this._executionContext.contextValues.startTime).format();
       console.log(this._executionContext);
       this._prepareDonutChart(executionStatistics);
+      this._prepareHorizontalBarChart();
     })
   }
 
@@ -43,6 +45,29 @@ export class Dashboard {
       series: [executionStatistics.overallPassed, executionStatistics.overallFailed, executionStatistics.overallSkipped],
       labels: ["passed", "failed", "skipped"],
       colors:['#1abc9c', '#f1556c', '#495561']
+    }
+  }
+
+  private _prepareHorizontalBarChart():void{
+    this._apexBarOptions={
+      chart: {
+        type: 'bar',
+      },
+      series: [{
+        name: 'sales',
+        data: [30,40,35,50,49,60,70,91,125]
+      }],
+      xaxis: {
+        categories: [1991,1992,1993,1994,1995,1996,1997, 1998,1999]
+      },
+      plotOptions:{
+        bar: {
+          horizontal: true,
+        }
+      },
+      fill: {
+        colors:['#f44336']
+      }
     }
   }
 }

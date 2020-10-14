@@ -87,13 +87,9 @@ public class AssertUtilsTest extends AbstractWebDriverTest {
         AssertUtils.assertLowerEqualThan(new BigDecimal(1), new BigDecimal(2));
     }
 
-    @Test
+    @Test(expectedExceptions = AssertionError.class)
     public void test_assertLowerThanFails() {
-        try {
-            AssertUtils.assertLowerEqualThan(new BigDecimal(2), new BigDecimal(1));
-        } catch (AssertionError e) {
-            System.out.println(e);
-        }
+        AssertUtils.assertLowerEqualThan(new BigDecimal(2), new BigDecimal(1));
 
     }
 
@@ -102,13 +98,9 @@ public class AssertUtilsTest extends AbstractWebDriverTest {
         AssertUtils.assertGreaterThan(new BigDecimal(2), new BigDecimal(1));
     }
 
-    @Test
+    @Test(expectedExceptions = AssertionError.class)
     public void test_assertGreaterThanFails() {
-        try {
-            AssertUtils.assertGreaterThan(new BigDecimal(1), new BigDecimal(2));
-        } catch (AssertionError e) {
-            System.out.println(e);
-        }
+        AssertUtils.assertGreaterThan(new BigDecimal(1), new BigDecimal(2));
     }
 
     @Test
@@ -116,13 +108,9 @@ public class AssertUtilsTest extends AbstractWebDriverTest {
         AssertUtils.assertLowerEqualThan(new BigDecimal(2), new BigDecimal(2));
     }
 
-    @Test
+    @Test(expectedExceptions = AssertionError.class)
     public void test_assertLowerEqualThanFails() {
-        try {
-            AssertUtils.assertLowerEqualThan(new BigDecimal(2), new BigDecimal(1));
-        } catch (AssertionError e) {
-            System.out.println(e);
-        }
+        AssertUtils.assertLowerEqualThan(new BigDecimal(2), new BigDecimal(1));
     }
 
     @Test
@@ -130,13 +118,9 @@ public class AssertUtilsTest extends AbstractWebDriverTest {
         AssertUtils.assertGreaterEqualThan(new BigDecimal(2), new BigDecimal(2));
     }
 
-    @Test
+    @Test(expectedExceptions = AssertionError.class)
     public void test_assertGreaterEqualThanFails() {
-        try {
-            AssertUtils.assertGreaterEqualThan(new BigDecimal(1), new BigDecimal(2));
-        } catch (AssertionError e) {
-            System.out.println(e);
-        }
+        AssertUtils.assertGreaterEqualThan(new BigDecimal(1), new BigDecimal(2));
     }
 
     @Test
@@ -144,13 +128,9 @@ public class AssertUtilsTest extends AbstractWebDriverTest {
         AssertUtils.assertContainsNot("affe", "haus");
     }
 
-    @Test
+    @Test(expectedExceptions = AssertionError.class)
     public void test_assertContainsNotFails() {
-        try {
-            AssertUtils.assertContainsNot("affe", "affe");
-        } catch (AssertionError e) {
-            System.out.println(e);
-        }
+        AssertUtils.assertContainsNot("affe", "affe");
     }
 
 }

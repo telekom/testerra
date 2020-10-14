@@ -24,6 +24,8 @@ package eu.tsystems.mms.tic.testframework.report;
 
 import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.boot.Booter;
+import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.events.AbstractMethodEvent;
 import eu.tsystems.mms.tic.testframework.events.ExecutionFinishEvent;
 import eu.tsystems.mms.tic.testframework.events.InterceptMethodsEvent;
@@ -51,6 +53,9 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.config.DefaultConfiguration;
 import org.testng.IConfigurable;
 import org.testng.IConfigureCallBack;
 import org.testng.IHookCallBack;
@@ -84,6 +89,12 @@ public class TesterraListener implements
         Loggable
 {
     /**
+     * Default package namespace for project tests
+     */
+    public final static String DEFAULT_PACKAGE = "eu.tsystems.mms.tic";
+    public static final String PROJECT_PACKAGE = PropertyManager.getProperty(TesterraProperties.PROJECT_PACKAGE, DEFAULT_PACKAGE);
+
+    /**
      * Skip test methods control.
      */
     private static boolean skipAllMethods = false;
@@ -95,8 +106,13 @@ public class TesterraListener implements
      */
     private static int instances = 0;
     private static final Object LOCK = new Object();
+    private static LoggerContext loggerContext;
 
     static {
+
+        DefaultConfiguration defaultConfiguration = new DefaultConfiguration();
+        loggerContext = Configurator.initialize(defaultConfiguration);
+
         /*
          * Add monitoring event listeners
          */
@@ -127,6 +143,10 @@ public class TesterraListener implements
 
     public static EventBus getEventBus() {
         return eventBus;
+    }
+
+    public static LoggerContext getLoggerContext() {
+        return loggerContext;
     }
 
     /**

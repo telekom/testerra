@@ -21,7 +21,6 @@
  */
 package eu.tsystems.mms.tic.testframework.core.server;
 
-import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import java.io.File;
 import java.net.ServerSocket;
@@ -77,7 +76,6 @@ public class Server {
     }
 
     public static void main(String[] args) throws Exception {
-        TesterraCommons.init();
         Server server = new Server(FileUtils.getResourceFile("testsites"));
         server.start();
         System.out.println("Hit ENTER to stop");

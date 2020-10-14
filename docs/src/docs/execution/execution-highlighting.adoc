@@ -1,4 +1,5 @@
 = Element Highlighting
+include::../properties/property-attributes.adoc[]
 
 == Demo mode
 In the demo mode actions on pages are marked with distinctive coloured frames around the element of the action. This mechanism is set by a property

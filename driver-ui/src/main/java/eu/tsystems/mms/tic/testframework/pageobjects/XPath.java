@@ -21,7 +21,7 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.utils.Conditions;
+import eu.tsystems.mms.tic.testframework.utils.Condition;
 import java.util.ArrayList;
 import org.openqa.selenium.By;
 
@@ -63,8 +63,8 @@ public class XPath {
         from.parentSelect = from;
     }
 
-    public static Conditions createAttributeConditions() {
-        return new Conditions("and", "or");
+    public static Condition createAttributeCondition() {
+        return new Condition("and", "or");
     }
 
     /**

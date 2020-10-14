@@ -29,7 +29,7 @@ import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.internal.asserts.DefaultPropertyAssertionFactory;
 import eu.tsystems.mms.tic.testframework.internal.asserts.PropertyAssertionFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.DefaultUiElementFactory;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultElementLabelLocator;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.AriaElementLocator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultPageFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultTestControllerOverrides;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultUiElementFinderFactory;
@@ -50,7 +50,7 @@ public class ConfigureDriverUi extends AbstractModule {
         bind(PageFactory.class).to(DefaultPageFactory.class).in(Scopes.SINGLETON);
         bind(TestController.Overrides.class).to(DefaultTestControllerOverrides.class).in(Scopes.SINGLETON);
         bind(IWebDriverManager.class).to(DefaultWebDriverManager.class).in(Scopes.SINGLETON);
-        bind(UiElementLabelLocator.class).to(DefaultElementLabelLocator.class).in(Scopes.SINGLETON);
+        bind(UiElementLabelLocator.class).to(AriaElementLocator.class).in(Scopes.SINGLETON);
         bind(UiElementFinderFactory.class).to(DefaultUiElementFinderFactory.class).in(Scopes.SINGLETON);
         bind(PropertyAssertionFactory.class).to(DefaultPropertyAssertionFactory.class).in(Scopes.SINGLETON);
 

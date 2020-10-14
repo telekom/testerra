@@ -28,35 +28,35 @@ import java.util.stream.Collectors;
  * Fluent interface for AND/OR conditions
  * @author Mike Reiche
  */
-public class Conditions {
+public class Condition {
     public class Chain {
         private final ArrayList<Object> expressions = new ArrayList<>();
-        private final Conditions conditions;
+        private final Condition condition;
 
-        Chain(Conditions conditions) {
-            this.conditions = conditions;
+        Chain(Condition condition) {
+            this.condition = condition;
         }
-        Chain(Conditions conditions, Object expression) {
-            this.conditions = conditions;
+        Chain(Condition condition, Object expression) {
+            this.condition = condition;
             this.expressions.add(expression);
         }
 
         public Chain and(Object expression) {
-            if (this.expressions.size()>0) this.expressions.add(this.conditions.andDelimiter);
+            if (this.expressions.size()>0) this.expressions.add(this.condition.andDelimiter);
             this.expressions.add(expression);
             return this;
         }
 
         public Chain or(Object expression) {
-            if (this.expressions.size()>0) this.expressions.add(this.conditions.orDelimiter);
+            if (this.expressions.size()>0) this.expressions.add(this.condition.orDelimiter);
             this.expressions.add(expression);
             return this;
         }
 
         public String toString() {
-            return this.conditions.groupStartDelimiter +
-                    this.expressions.stream().map(Object::toString).collect(Collectors.joining(this.conditions.expressionDelimiter)) +
-                    this.conditions.groupEndDelimiter;
+            return this.condition.groupStartDelimiter +
+                    this.expressions.stream().map(Object::toString).collect(Collectors.joining(this.condition.expressionDelimiter)) +
+                    this.condition.groupEndDelimiter;
         }
     }
 
@@ -66,11 +66,11 @@ public class Conditions {
     private final String groupEndDelimiter;
     private final String expressionDelimiter;
 
-    public Conditions(String andDelimiter, String orDelimiter) {
+    public Condition(String andDelimiter, String orDelimiter) {
         this(andDelimiter, orDelimiter, "(", ")", " ");
     }
 
-    public Conditions(
+    public Condition(
             String andDelimiter,
             String orDelimiter,
             String groupStartDelimiter,

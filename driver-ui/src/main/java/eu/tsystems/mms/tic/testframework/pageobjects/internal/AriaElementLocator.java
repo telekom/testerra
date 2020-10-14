@@ -21,41 +21,45 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
+import eu.tsystems.mms.tic.testframework.pageobjects.Aria;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
 import eu.tsystems.mms.tic.testframework.pageobjects.LocatorFactoryProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.XPath;
-import eu.tsystems.mms.tic.testframework.utils.Conditions;
+import eu.tsystems.mms.tic.testframework.utils.Condition;
 import java.util.ArrayList;
 import org.openqa.selenium.By;
 
 /**
- * Default implementation of {@link UiElementLabelLocator}
+ * Aria based implementation of {@link UiElementLabelLocator}
  */
-public class DefaultElementLabelLocator implements UiElementLabelLocator, LocatorFactoryProvider {
+public class AriaElementLocator implements UiElementLabelLocator, LocatorFactoryProvider {
 
     @Override
     public Locator createLocator(String element, String label) {
-        Conditions conditions = XPath.createAttributeConditions();
-        Conditions.Chain attributes;
+        Condition condition = XPath.createAttributeCondition();
+        Condition.Chain attributes;
 
         ArrayList<String> xpathes = new ArrayList<>();
         switch (element) {
-            case BUTTON: {
-                attributes = conditions
+            case Aria.BUTTON: {
+                attributes = condition
                         .is(XPath.somethingContainsWord(".//text()", label))
                 ;
                 xpathes.add("//button["+attributes+"]");
 
-                attributes = conditions
+                attributes = condition
                         .is(
-                            conditions.is(XPath.somethingIs("@type", "button"))
+                            condition.is(XPath.somethingIs("@type", "button"))
                             .or(XPath.somethingIs("@type","submit"))
                         )
-                        .and(XPath.somethingContainsWord("@value", label))
+                        .and(
+                            condition.is(XPath.somethingContainsWord("@value", label))
+                            .or(XPath.somethingContainsWord("@aria-label", label))
+                        )
                 ;
                 xpathes.add("//input["+attributes+"]");
 
-                attributes = conditions
+                attributes = condition
                         .is(XPath.somethingIs("@role", "button"))
                         .and(XPath.somethingContainsWord(".//text()", label))
                 ;
@@ -63,13 +67,15 @@ public class DefaultElementLabelLocator implements UiElementLabelLocator, Locato
 
                 break;
             }
-            case INPUT: {
-                attributes = conditions
+            case Aria.TEXTBOX: {
+                attributes = condition
                         .is(
-                            conditions.is(XPath.somethingIsNot("@type", "button"))
+                            condition.is(XPath.somethingIsNot("@type", "button"))
                             .and(XPath.somethingIsNot("@type", "submit")))
                         .and(
-                            conditions.is(XPath.somethingContainsWord("@title", label))
+                            condition.is()
+                            .or(XPath.somethingContainsWord("@title", label))
+                            .or(XPath.somethingContainsWord("@aria-label", label))
                             .or(XPath.somethingContainsWord("@placeholder", label))
                             .or(XPath.somethingContainsWord("@value", label))
                         );
@@ -79,8 +85,8 @@ public class DefaultElementLabelLocator implements UiElementLabelLocator, Locato
                 break;
             }
 
-            case LINK: {
-                attributes = conditions
+            case Aria.LINK: {
+                attributes = condition
                         .is(XPath.somethingContainsWord(".//text()", label))
                         .or(XPath.somethingContainsWord("@title", label))
                 ;

@@ -27,8 +27,5 @@ import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
  * Interface for generating element locators by labels
  */
 public interface UiElementLabelLocator {
-    String BUTTON="button";
-    String INPUT="input";
-    String LINK="link";
     Locator createLocator(String element, String label);
 }

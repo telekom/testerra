@@ -57,24 +57,25 @@ public abstract class AbstractCommonSynchronizer implements Loggable, MethodEndE
 
         switch (currentTestResult.getStatus()) {
             case ITestResult.SUCCESS:
-                pOnTestSuccess(currentTestResult);
+
+                pOnTestSuccess(event);
                 break;
             case ITestResult.FAILURE:
-                pOnTestFailure(currentTestResult);
+                pOnTestFailure(event);
                 break;
             case ITestResult.SKIP:
-                pOnTestSkip(currentTestResult);
+                pOnTestSkip(event);
                 break;
             default:
                 log().warn("unsupported test method result");
         }
     }
 
-    protected abstract void pOnTestSuccess(ITestResult testResult);
+    protected abstract void pOnTestSuccess(MethodEndEvent event);
 
-    protected abstract void pOnTestFailure(ITestResult testResult);
+    protected abstract void pOnTestFailure(MethodEndEvent event);
 
-    protected void pOnTestSkip(ITestResult testResult) {
+    protected void pOnTestSkip(MethodEndEvent event) {
 
         /* do nothing at default */
     }

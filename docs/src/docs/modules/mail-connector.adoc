@@ -75,7 +75,7 @@ POP3MailConnector pop3MailConnector = new POP3MailConnector();
 MimeMessage[] messages = pop3MailConnector.getMessages();
 
 // wait until the email with subject 'test' arrived in the InboxFolder
-EMailQuery query = new EMailQuery().setSearchTerm(new SubjectTerm(subject));
+EmailQuery query = new EmailQuery().setSearchTerm(new SubjectTerm(subject));
 Email email = pop3MailConnector.query(query).findFirst().get();
 
 // delete all emails with this subject from the server while setting timeout and max number of polls explicitly
@@ -96,7 +96,7 @@ pop3MailConnector.deleteMessage(recipient, RecipientType.TO, subject, messageId)
 [source,java]
 ----
 // wait until the email with subject 'test' arrived in the InboxFolder
-EmailQuery query = new EMailQuery().setSearchTerm(new SubjectTerm(subject));
+EmailQuery query = new EmailQuery().setSearchTerm(new SubjectTerm(subject));
 Email email = pop3MailConnector.query(query).findFirst().get();
 
 try {
@@ -152,7 +152,7 @@ The `ImapMailConnector` operates like the <<POP3MailConnector>> with an addition
 ----
 ImapMailConnector imapMailConnector = new ImapMailConnector();
 
-EMailQuery query = new EMailQuery().setSearchTerm(new SubjectTerm(subject));
+EmailQuery query = new EmailQuery().setSearchTerm(new SubjectTerm(subject));
 imapMailConnector.query(query).findFirst().ifPresent(email -> {
     // EMail found
 });
@@ -199,7 +199,7 @@ date with the IMAP protocol.
 
 [source,java]
 ----
-EMailQuery query = new EMailQuery();
+EmailQuery query = new EmailQuery();
 Date now = new Date();
 
 // Query emails that arrived today

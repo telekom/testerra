@@ -531,7 +531,7 @@ public class MailConnectorTest extends TesterraTest {
 
         final SearchTerm searchTerm = new AndTerm(
                 new SubjectTerm(subject),
-                new SentDateTerm(ComparisonTerm.GT, aMinuteBefore)
+                new SentDateTerm(ComparisonTerm.EQ, aMinuteBefore)
         );
 
         sendAndWaitForMessageWithoutAttachement(subject, searchTerm);

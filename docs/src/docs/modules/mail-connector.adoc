@@ -169,7 +169,8 @@ imapMailConnector.deleteAllMessages();
 === Combine search terms
 
 You can combine search terms the following way
-```java
+[source,java]
+----
 EmailQuery query = new EmailQuery();
 
 query.withAllOfSearchTerms(
@@ -189,14 +190,15 @@ List<SearchTerm> searchTerms = new ArrayList<>();
 searchTerms.add(oneOf);
 searchTerms.add(new ReceivedDateTerm(DateTerm.EQ, new Date()));
 query.withAllOfSearchTerms(searchTerms);
-```
+----
 
 === Find emails by specified date
 
 To find emails for a specified date, you should combine the `SentDateTerm` and an explicit filter, because the internal library is not able to filter by exact
 date with the IMAP protocol.
 
-```java
+[source,java]
+----
 EMailQuery query = new EMailQuery();
 Date now = new Date();
 
@@ -209,7 +211,7 @@ query.setFilter(email -> email.getSentDate().after(now));
 connector.query(query).forEach(email -> {
     // EMail found
 });
-```
+----
 
 == MailUtils
 This helper class contains methods which facilitate reoccurring tasks when working with mails, e.g. encrypting, decrypting, and comparing mails.

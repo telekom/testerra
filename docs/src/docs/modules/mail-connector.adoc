@@ -201,9 +201,9 @@ EMailQuery query = new EMailQuery();
 Date now = new Date();
 
 // Query emails that arrived today
-query.setSearchTerm(new SentDateTerm(ComparisonTerm.EQ, now));
+query.setSearchTerm(new SentDateTerm(ComparisonTerm.GE, now));
 
-// But check also if the are newer than now
+// But check also if they are newer than now
 query.setFilter(email -> email.getSentDate().after(now));
 
 connector.query(query).forEach(email -> {

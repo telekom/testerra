@@ -1,4 +1,5 @@
 <template>
+  <require from="../../value-converters/duration-format"></require>
 
   <div mdc-headline4>${_executionContext.contextValues.name}</div>
   <div class="layout-grid">
@@ -7,8 +8,8 @@
         <mdc-primary-action>
           <div mdc-body1>
             Started: ${_executionContext.contextValues.startTime|dateFormat:"LLL"}<br>
-            Ended: ${_executionContext.contextValues.endTime|dateFormat:"LLL"}<br>
-            Duration: ${_testDuration}
+            Ended: ${_executionContext.contextValues.endTime|dateFormat:"LLL"}<br><br>
+            Duration: ${_testDuration | durationFormat}
           </div>
         </mdc-primary-action>
       </mdc-card>

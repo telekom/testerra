@@ -547,7 +547,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
                 int y = byImage.getCenterY();
                 log().info("Image Double Click on image webElement at " + x + "," + y);
                 JSUtils.executeJavaScriptMouseAction(guiElementData.getWebDriver(), webElement, JSMouseAction.DOUBLE_CLICK, x, y);
-            } else if (Browsers.safari.equalsIgnoreCase(driverRequest.browser)) {
+            } else if (Browsers.safari.equalsIgnoreCase(driverRequest.getBrowser())) {
                 log().info("Safari double click workaround");
                 JSUtils.executeJavaScriptMouseAction(guiElementData.getWebDriver(), webElement, JSMouseAction.DOUBLE_CLICK, 0, 0);
             } else {

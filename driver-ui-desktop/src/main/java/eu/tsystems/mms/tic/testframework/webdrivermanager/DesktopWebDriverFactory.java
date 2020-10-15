@@ -93,12 +93,12 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
 
     @Override
     protected DesktopWebDriverRequest buildRequest(WebDriverRequest request) {
-        DesktopWebDriverRequest r;
+        DesktopWebDriverRequest finalRequest;
         if (request instanceof DesktopWebDriverRequest) {
-            r = (DesktopWebDriverRequest) request;
+            finalRequest = (DesktopWebDriverRequest) request;
         } else if (request instanceof UnspecificWebDriverRequest) {
-            r = new DesktopWebDriverRequest();
-            r.copyFrom(request);
+            finalRequest = new DesktopWebDriverRequest();
+            finalRequest.copyFrom(request);
         } else {
             throw new TesterraSystemException(request.getClass().getSimpleName() + " is not allowed here");
         }
@@ -106,35 +106,15 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         /*
         set webdriver mode
          */
-        if (r.webDriverMode == null) {
-            r.webDriverMode = WebDriverManager.config().webDriverMode;
+        if (finalRequest.getWebDriverMode() == null) {
+            finalRequest.setWebDriverMode(WebDriverManager.getConfig().getWebDriverMode());
         }
-
-        /*
-        build endpoint stuff
-         */
-        String host = StringUtils.getFirstValidString(r.seleniumServerHost, Testerra.Properties.SELENIUM_SERVER_HOST.asString());
-        String port = StringUtils.getFirstValidString(r.seleniumServerPort, Testerra.Properties.SELENIUM_SERVER_PORT.asString());
-        String url = StringUtils.getFirstValidString(r.seleniumServerURL, Testerra.Properties.SELENIUM_SERVER_URL.newDefault(String.format("http://%s:%s/wd/hub", host, port)).asString());
-
-        // set backwards
-        try {
-            URL url1 = new URL(url);
-            host = url1.getHost();
-            port = url1.getPort() + "";
-        } catch (MalformedURLException e) {
-            log().error("INTERNAL ERROR: Could not parse URL", e);
-        }
-        r.seleniumServerHost = host;
-        r.seleniumServerPort = port;
-        r.seleniumServerURL = url;
-
-        return r;
+        return finalRequest;
     }
 
     @Override
     protected DesiredCapabilities buildCapabilities(DesiredCapabilities preSetCaps, DesktopWebDriverRequest desktopWebDriverRequest) {
-        return DesktopWebDriverCapabilities.createCapabilities(WebDriverManager.config(), preSetCaps, desktopWebDriverRequest);
+        return DesktopWebDriverCapabilities.createCapabilities(WebDriverManager.getConfig(), preSetCaps, desktopWebDriverRequest);
     }
 
     @Override
@@ -144,18 +124,18 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
          */
         WebDriver driver = startSession(request, desiredCapabilities);
 
-        if (request.baseUrl != null && !request.baseUrl.isEmpty()) {
+        if (request.hasBaseUrl()) {
             URL baseUrl;
             try {
-                baseUrl = new URL(request.baseUrl);
+                baseUrl = new URL(request.getBaseUrl());
                 log().info("Opening: " + baseUrl.toString());
                 StopWatch.startPageLoad(driver);
                 driver.get(baseUrl.toString());
             } catch (MalformedURLException e) {
-                log().warn(String.format("Won't open baseUrl: '%s': %s", request.baseUrl, e.getMessage()), e);
+                log().warn(String.format("Won't open baseUrl: '%s': %s", request.getBaseUrl(), e.getMessage()), e);
             } catch (Exception e) {
                 if (StringUtils.containsAll(e.getMessage(), true, "Reached error page", "connectionFailure")) {
-                    throw new TesterraRuntimeException("Could not start driver session, because of unreachable url: " + request.baseUrl, e);
+                    throw new TesterraRuntimeException("Could not start driver session, because of unreachable url: " + request.getBaseUrl(), e);
                 }
                 throw e;
             }
@@ -183,7 +163,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                     /*
                     Open url
                      */
-                    final String baseUrl = WebDriverManagerUtils.getBaseUrl(desktopWebDriverRequest.baseUrl);
+                    final String baseUrl = desktopWebDriverRequest.getBaseUrl();
                     log().info("Opening baseUrl with reused driver: " + baseUrl);
                     StopWatch.startPageLoad(driver);
                     driver.get(baseUrl);
@@ -205,7 +185,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
 
     @Override
     public void setupSession(EventFiringWebDriver eventFiringWebDriver, DesktopWebDriverRequest request) {
-        final String browser = request.browser;
+        final String browser = request.getBrowser();
 
         // add event listeners
         eventFiringWebDriver.register(new VisualEventDriverListener());
@@ -216,21 +196,21 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
           */
         StopWatch.startPageLoad(eventFiringWebDriver);
 
-        WebDriverManagerConfig config = WebDriverManager.config();
+        WebDriverManagerConfig config = WebDriverManager.getConfig();
         WebDriver.Window window = eventFiringWebDriver.manage().window();
         /*
          Maximize
          */
-        if (config.maximize) {
+        if (config.shouldMaximizeViewport()) {
             log().debug("Trying to maximize window");
             try {
                 Dimension originWindowSize = window.getSize();
                 // Maximize to detect window size
                 window.maximize();
-                if (config.maximizePosition != Position.CENTER) {
-                    log().debug(String.format("Setting maximized window position to: %s", config.maximizePosition));
+                if (config.getMaximizePosition() != Position.CENTER) {
+                    log().debug(String.format("Setting maximized window position to: %s", config.getMaximizePosition()));
                     Point targetPosition = new Point(0, 0);
-                    switch (config.maximizePosition) {
+                    switch (config.getMaximizePosition()) {
                         case LEFT:
                             targetPosition.x = -originWindowSize.width;
                             break;
@@ -306,9 +286,8 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
     }
 
     private WebDriver newWebDriver(DesktopWebDriverRequest desktopWebDriverRequest, DesiredCapabilities capabilities) {
-        String sessionKey = desktopWebDriverRequest.sessionKey;
-        final String url = desktopWebDriverRequest.seleniumServerURL;
-        final String browser = desktopWebDriverRequest.browser;
+        String sessionKey = desktopWebDriverRequest.getSessionKey();
+        final String browser = desktopWebDriverRequest.getBrowser();
 
         org.apache.commons.lang3.time.StopWatch sw = new org.apache.commons.lang3.time.StopWatch();
         sw.start();
@@ -317,18 +296,12 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
          * Remote or local
          */
         WebDriver newDriver;
-        if (desktopWebDriverRequest.webDriverMode == WebDriverMode.remote) {
+        if (desktopWebDriverRequest.getWebDriverMode() == WebDriverMode.remote) {
             /*
              ##### Remote
              */
 
-            URL remoteAddress;
-            try {
-                remoteAddress = new URL(url);
-            } catch (final MalformedURLException e) {
-                throw new TesterraRuntimeException("MalformedUrlException while building Remoteserver URL: " + url, e);
-            }
-
+            URL remoteAddress = desktopWebDriverRequest.getSeleniumServerUrl();
             /*
              * Start a new web driver session.
              */
@@ -360,15 +333,14 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         Log session id
          */
         SessionId webDriverSessionId = ((RemoteWebDriver) newDriver).getSessionId();
-        desktopWebDriverRequest.storedSessionId = webDriverSessionId.toString();
-        desktopWebDriverRequest.sessionContext.sessionId = desktopWebDriverRequest.storedSessionId;
+        desktopWebDriverRequest.setSessionId(webDriverSessionId.toString());
 
         /*
         Log User Agent and executing host
          */
         DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
         NodeInfo nodeInfo = utils.getNodeInfo(desktopWebDriverRequest);
-        desktopWebDriverRequest.storedExecutingNode = nodeInfo;
+        desktopWebDriverRequest.setExecutingNode(nodeInfo);
         WebDriverManager.addExecutingSeleniumHostInfo(sessionKey + ": " + nodeInfo.toString());
         sw.stop();
 

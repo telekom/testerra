@@ -230,7 +230,7 @@ public class UITestUtils {
          * If this is eventually supported by WebDriver, this special branch can be removed.
          */
         WebDriverRequest relatedWebDriverRequest = WebDriverManager.getRelatedWebDriverRequest(eventFiringWebDriver);
-        String browser = relatedWebDriverRequest.browser;
+        String browser = relatedWebDriverRequest.getBrowser();
         if (Browsers.ie.equalsIgnoreCase(browser)) {
             Viewport viewport = JSUtils.getViewport(driver);
 

@@ -40,29 +40,26 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> implements Lo
 
     protected abstract void setupSession(EventFiringWebDriver eventFiringWebDriver, R request);
 
-    public EventFiringWebDriver getWebDriver(WebDriverRequest r, SessionContext sessionContext) {
-        /*
-        set base parameters
-         */
-        if (r.baseUrl == null) {
-            r.baseUrl = WebDriverManager.getBaseURL();
-        }
+    public EventFiringWebDriver getWebDriver(WebDriverRequest request, SessionContext sessionContext) {
+        this.sessionContext = sessionContext;
 
+        if (!request.hasBaseUrl()) {
+            request.setBaseUrl(WebDriverManager.getConfig().getBaseUrl());
+        }
 
         /*
         build the final request (filled with all requested values)
          */
-        R finalRequest = buildRequest(r);
-        r = null; // invalidate
+        R finalRequest = buildRequest(request);
 
         // link session context
-        finalRequest.sessionContext = sessionContext;
+        finalRequest.setSessionId(sessionContext.id);
 
         /*
         fill the session context
          */
-        sessionContext.metaData.put("requested.browser", finalRequest.browser);
-        sessionContext.metaData.put("requested.browserVersion", finalRequest.browserVersion);
+        sessionContext.metaData.put("requested.browser", finalRequest.getBrowser());
+        sessionContext.metaData.put("requested.browserVersion", finalRequest.getBrowserVersion());
 
         /*
         create basic capabilities
@@ -70,7 +67,7 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> implements Lo
         final DesiredCapabilities caps = new DesiredCapabilities();
         DesiredCapabilities tapOptions = new DesiredCapabilities();
         ExecutionContextController.getCurrentExecutionContext().metaData.forEach(tapOptions::setCapability);
-        tapOptions.setCapability("scid", finalRequest.sessionContext.id);
+        tapOptions.setCapability("scid", finalRequest.getSessionId());
         sessionContext.metaData.forEach(tapOptions::setCapability);
         tapOptions.setCapability("sessionKey", sessionContext.sessionKey);
         caps.setCapability("tapOptions", tapOptions);

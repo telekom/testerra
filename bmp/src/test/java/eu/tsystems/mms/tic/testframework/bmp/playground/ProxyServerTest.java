@@ -37,13 +37,13 @@ public class ProxyServerTest extends AbstractTest {
 
     @BeforeSuite
     public void setupFFProfile() {
-        WebDriverManager.config().webDriverMode = WebDriverMode.remote;
+        WebDriverManager.getConfig().setWebDriverMode(WebDriverMode.remote);
 
         DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
         WebDriverManagerUtils.addProxyToCapabilities(desiredCapabilities, "localhost:9999");
         WebDriverManager.setGlobalExtraCapabilities(desiredCapabilities);
 
-        WebDriverManager.setBaseURL("https://www.google.de");
+        WebDriverManager.getConfig().setBaseUrl("https://www.google.de");
     }
 
     @Test

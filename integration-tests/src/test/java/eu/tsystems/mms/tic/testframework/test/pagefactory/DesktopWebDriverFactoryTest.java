@@ -38,7 +38,7 @@ public class DesktopWebDriverFactoryTest extends TesterraTest {
     @Test
     public void testT01_BaseURL() throws Exception {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-        request.baseUrl = "http://google.de";
+        request.setBaseUrl("http://google.de");
         //request.webDriverMode = WebDriverMode.local;
         //request.browser = Browsers.phantomjs;
 
@@ -62,7 +62,7 @@ public class DesktopWebDriverFactoryTest extends TesterraTest {
     @Test
     public void testT03_EndPointCapabilities() throws Exception {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-        request.baseUrl = "http://google.de";
+        request.setBaseUrl("http://google.de");
         //request.webDriverMode = WebDriverMode.local;
         //request.browser = Browsers.phantomjs;
 
@@ -79,8 +79,8 @@ public class DesktopWebDriverFactoryTest extends TesterraTest {
         // start session
         WebDriver driver = WebDriverManager.getWebDriver(request);
 
-        WebDriverRequest r = WebDriverManager.getRelatedWebDriverRequest(driver);
-        Map<String, Object> sessionCapabilities = ((DesktopWebDriverRequest) r).sessionCapabilities;
+        WebDriverRequest relatedRequest = WebDriverManager.getRelatedWebDriverRequest(driver);
+        Map<String, Object> sessionCapabilities = ((DesktopWebDriverRequest) relatedRequest).getSessionCapabilities();
 
         Assert.assertEquals(sessionCapabilities.get("tap:projectId"), caps.getCapability("tap:projectId"), "EndPoint Capability is set");
     }

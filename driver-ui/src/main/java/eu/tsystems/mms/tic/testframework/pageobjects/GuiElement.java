@@ -131,7 +131,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
         guiElementData = data;
         guiElementData.setGuiElement(this);
         WebDriverRequest webDriverRequest = webDriverManager.getWebDriverRequestByWebDriver(guiElementData.getWebDriver());
-        IWebDriverFactory factory = webDriverManager.getWebDriverFactoryForBrowser(webDriverRequest.browser);
+        IWebDriverFactory factory = webDriverManager.getWebDriverFactoryForBrowser(webDriverRequest.getBrowser());
         this.core = factory.createCore(guiElementData);
     }
 

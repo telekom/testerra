@@ -35,6 +35,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -47,12 +48,17 @@ public abstract class AbstractPageFactoryTest extends AbstractTestSitesTest impl
 
     @BeforeClass
     public void before() {
-        WebDriverManager.config().closeWindowsAfterTestMethod = false;
+        WebDriverManagerConfig config = WebDriverManager.getConfig();
+        //baseURL = config.getBaseUrl();
+        //config.setBaseUrl("http://www.google.com");
+        config.setShutdownSessionAfterTestMethod(false);
     }
 
     @AfterClass
     public void after() {
-        WebDriverManager.config().closeWindowsAfterTestMethod = true;
+        WebDriverManagerConfig config = WebDriverManager.getConfig();
+        //config.setBaseUrl(baseURL);
+        config.setShutdownSessionAfterTestMethod(true);
     }
 
     @Test

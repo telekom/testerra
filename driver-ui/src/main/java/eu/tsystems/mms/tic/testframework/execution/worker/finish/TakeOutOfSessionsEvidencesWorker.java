@@ -39,7 +39,7 @@ public class TakeOutOfSessionsEvidencesWorker extends AbstractEvidencesWorker im
     private final boolean SCREENCASTER_ACTIVE_ON_FAILED = PropertyManager.getBooleanProperty(TesterraProperties.SCREENCASTER_ACTIVE_ON_FAILED, true);
 
     protected void collect() {
-        if (event.getTestMethod().isTest() && WebDriverManager.config().areSessionsClosedAfterTestMethod()) {
+        if (event.getTestMethod().isTest() && WebDriverManager.getConfig().shouldShutdownSessionAfterTestMethod()) {
             /*
             videos are now fetched only after test methods
              */

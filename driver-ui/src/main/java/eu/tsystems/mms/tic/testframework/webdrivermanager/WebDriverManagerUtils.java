@@ -57,22 +57,11 @@ public final class WebDriverManagerUtils {
      *
      * @param presetBaseURL A manually set baseUrl
      * @return BaseUrl to use.
+     * @deprecated Use {@link WebDriverManager#getConfig()} instead
      */
+    @Deprecated
     protected static String getBaseUrl(final String presetBaseURL) {
-        String baseUrl;
-        /*
-         * preset baseurl
-         */
-        if (presetBaseURL != null) {
-            baseUrl = presetBaseURL;
-        }
-        /*
-         * baseURL defined by System property or config file
-         */
-        else {
-            baseUrl = Testerra.Properties.BASEURL.asString();
-        }
-        return baseUrl;
+        return WebDriverManager.getConfig().getBaseUrl();
     }
 
     private static final Map<WebDriver, BrowserInformation> CACHED_BROWSER_INFOS = new ConcurrentHashMap<>();

@@ -78,7 +78,7 @@ public abstract class AbstractWebDriverTest extends TesterraTest implements WebD
      * Sets the unsupportedBrowser=true flag for the @Fails annotation
      */
     protected static void setUnsupportedBrowserFlag() {
-        if (Browsers.phantomjs.equals(WebDriverManager.config().browser())) {
+        if (Browsers.phantomjs.equals(WebDriverManager.getConfig().getBrowser())) {
             System.setProperty("unsupportedBrowser", "true");
         }
     }

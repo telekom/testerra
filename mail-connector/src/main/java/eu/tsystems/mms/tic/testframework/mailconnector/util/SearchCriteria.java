@@ -23,11 +23,14 @@ package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
+import javax.mail.search.AndTerm;
+import javax.mail.search.OrTerm;
+import javax.mail.search.SearchTerm;
 
-@Deprecated
 /**
- * @deprecated Use {@link SearchTerm} instead
+ * @deprecated Use implementations of {@link SearchTerm} and combine them with {@link AndTerm} or {@link OrTerm} instead.
  */
+@Deprecated
 public class SearchCriteria {
 
     private final SearchCriteriaType searchCriteriaType;

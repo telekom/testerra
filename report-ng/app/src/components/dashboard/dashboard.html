@@ -6,10 +6,13 @@
     <div class="grid-cell">
       <mdc-card outlined="true">
         <mdc-primary-action>
-          <div mdc-body1>
-            Started: ${_executionContext.contextValues.startTime|dateFormat:"LLL"}<br>
-            Ended: ${_executionContext.contextValues.endTime|dateFormat:"LLL"}<br><br>
-            Duration: ${_testDuration | durationFormat}
+          <div mdc-body1 class="duration-info">
+            Started: ${_executionContext.contextValues.startTime|dateFormat:"LLL"}<br><br>
+            <span id="duration">
+              <mdc-icon>timer</mdc-icon> Duration: ${_testDuration |durationFormat}
+            </span><br><br>
+            Ended: ${_executionContext.contextValues.endTime|dateFormat:"LLL"}<br>
+
           </div>
         </mdc-primary-action>
       </mdc-card>

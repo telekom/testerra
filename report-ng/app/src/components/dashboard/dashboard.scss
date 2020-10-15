@@ -21,3 +21,13 @@
     grid-column-end: span 6;
   }
 }
+
+.duration-info {
+  text-align: center;
+  padding: 1em;
+
+  #duration{
+    padding: 1em 0;
+    font-size: 2em;
+  }
+}

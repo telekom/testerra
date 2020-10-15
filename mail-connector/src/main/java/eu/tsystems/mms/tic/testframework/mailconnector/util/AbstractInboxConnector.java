@@ -21,13 +21,18 @@
  */
 package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
-import org.apache.commons.lang3.ArrayUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.Message;
@@ -47,46 +52,14 @@ import javax.mail.search.RecipientTerm;
 import javax.mail.search.SearchTerm;
 import javax.mail.search.SentDateTerm;
 import javax.mail.search.SubjectTerm;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * abstract class to handle mail connector
  *
  * @author sepr
  */
-public abstract class AbstractInboxConnector extends AbstractMailConnector {
-
-    /**
-     * LOGGER.
-     */
-    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    /**
-     * Key for pollingfrequency Property.
-     */
-    private static final String POLLING_TIMER_SECONDS_PROPERTY = "POLLING_TIMER_SECONDS";
-    /**
-     * Key for max_read_tries Property.
-     */
-    private static final String MAX_READ_TRIES_PROPERTY = "MAX_READ_TRIES";
-
-    /**
-     * Default value.
-     */
-    private static final String SLEEP_SECONDS_DEFAULT = "10";
-    /**
-     * Default value.
-     */
-    private static final String MAX_READ_TRIES_DEFAULT = "20";
-
-    private static final int SLEEP_SECONDS = Integer.parseInt(PropertyManager.getProperty(POLLING_TIMER_SECONDS_PROPERTY, SLEEP_SECONDS_DEFAULT));
-    private static final int MAX_READ_TRIES = Integer.parseInt(PropertyManager.getProperty(MAX_READ_TRIES_PROPERTY, MAX_READ_TRIES_DEFAULT));
-
+public abstract class AbstractInboxConnector extends AbstractMailConnector implements Loggable {
     /**
      * Wait until messages with search criteria are received.
      *
@@ -94,11 +67,12 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      * @return The message.
      *
      * @throws AddressException thrown if an error by waiting for the message occurs.
+     * @deprecated Use {@link #query(EmailQuery)} instead
      */
     @Deprecated
     public List<Email> waitForMails(List<SearchCriteria> searchCriterias) throws AddressException {
-
-        return waitForMails(searchCriterias, MAX_READ_TRIES, SLEEP_SECONDS);
+        EmailQuery query = new EmailQuery();
+        return waitForMails(searchCriterias, query.getRetryCount(), query.getPauseMs()/1000);
     }
 
     /**
@@ -106,10 +80,12 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      *
      * @param searchTerm The criterias which the message should contain.
      * @return The message.
+     * @deprecated Use {@link #query(EmailQuery)} instead
      */
+    @Deprecated
     public List<Email> waitForMails(final SearchTerm searchTerm) {
-
-        return waitForMails(searchTerm, MAX_READ_TRIES, SLEEP_SECONDS);
+        EmailQuery query = new EmailQuery();
+        return waitForMails(searchTerm, query.getRetryCount(), query.getPauseMs()/1000);
     }
 
     /**
@@ -117,10 +93,12 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      * @param searchTerm
      * @param folderName
      * @return
+     * @deprecated Use {@link #query(EmailQuery)} instead
      */
+    @Deprecated
     public List<Email> waitForMails(final SearchTerm searchTerm, final String folderName) {
-
-        return waitForMails(searchTerm, MAX_READ_TRIES, SLEEP_SECONDS, folderName);
+        EmailQuery query = new EmailQuery();
+        return waitForMails(searchTerm, query.getRetryCount(), query.getPauseMs()/1000, folderName);
     }
 
     /**
@@ -132,6 +110,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      * @return The message.
      *
      * @throws AddressException thrown if an error by waiting for the message occurs.
+     * @deprecated Use {@link #query(EmailQuery)} instead
      */
     @Deprecated
     public List<Email> waitForMails(List<SearchCriteria> searchCriterias, int maxReadTries, int pollingTimerSeconds) throws AddressException {
@@ -205,7 +184,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
 
                 case AFTER_DATE:
                     final Date expectedDate = (Date) searchCriteria.getValue();
-                    return  new SentDateTerm(ComparisonTerm.LT, expectedDate);
+                    return new SentDateTerm(ComparisonTerm.GT, expectedDate);
 
                 case MESSAGEID:
                     final String messageId = searchCriteria.getStringValue();
@@ -224,6 +203,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      * @param pollingTimerSeconds
      *
      * @return The message.
+     * @deprecated Use {@link #query(EmailQuery)} instead
      */
     public List<Email> waitForMails(final SearchTerm searchTerm, int maxReadTries, int pollingTimerSeconds) {
         return waitForMails(searchTerm, maxReadTries, pollingTimerSeconds, getInboxFolder());
@@ -236,14 +216,34 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      * @param pollingTimerSeconds
      * @param folderName
      * @return
+     * @deprecated Use {@link #query(EmailQuery)} instead
      */
     public List<Email> waitForMails(final SearchTerm searchTerm, int maxReadTries, int pollingTimerSeconds, final String folderName) {
-        List<MimeMessage> messages = pWaitForMessage(searchTerm, maxReadTries, pollingTimerSeconds, folderName);
-        List<Email> out = new LinkedList<>();
-        for (MimeMessage message : messages) {
-            out.add(new Email(message));
-        }
-        return out;
+        EmailQuery query = new EmailQuery()
+                .setSearchTerm(searchTerm)
+                .setRetryCount(maxReadTries)
+                .setPauseMs(pollingTimerSeconds*1000)
+                .setFolderName(folderName);
+
+        return query(query).collect(Collectors.toList());
+    }
+
+    /**
+     * Queries emails by given {@link EmailQuery}
+     * @param query
+     * @return
+     */
+    public Stream<Email> query(EmailQuery query) {
+        String folderName = query.getFolderName();
+        if (folderName==null) folderName = getInboxFolder();
+
+        List<MimeMessage> mimeMessages = pWaitForMessage(query.getSearchTerm(), query.getRetryCount(), query.getPauseMs()*1000, folderName);
+        Stream<Email> emailStream = mimeMessages.stream().map(Email::new);
+
+        Predicate<Email> filter = query.getFilter();
+        if (filter != null) emailStream = emailStream.filter(filter);
+
+        return emailStream;
     }
 
     private List<MimeMessage> pWaitForMessage(final SearchTerm searchTerm, int maxReadTries, int pollingTimerSeconds, final String foldername) {
@@ -258,11 +258,11 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
 
         if (maxReadTries < 1) {
             maxReadTries = 1;
-            logger.info("Changing read tries to min value: 1");
+            log().info("Changing read tries to min value: 1");
         }
         if (pollingTimerSeconds < 10) {
             pollingTimerSeconds = 10;
-            logger.info("Changing poller timer to min value: 10s");
+            log().info("Changing poller timer to min value: 10s");
         }
 
         try {
@@ -288,14 +288,14 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
                 TimerUtils.sleep(pollingTimerSeconds * 1000, "Waiting for Mail");
             }
         }  catch (final Exception e) {
-            logger.error("Error searching for message", e);
+            log().error("Error searching for message", e);
             throw new RuntimeException(e);
         } finally {
             if (store != null) {
                 try {
                     store.close();
                 } catch (MessagingException e) {
-                    logger.warn("Error closing connection", e);
+                    log().warn("Error closing connection", e);
                 }
             }
         }
@@ -333,10 +333,10 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
             nrOfMessages = folder.getMessageCount();
             store.close();
         } catch (final NoSuchProviderException e) {
-            logger.error(e.getMessage());
+            log().error(e.getMessage());
             throw new RuntimeException(e);
         } catch (final MessagingException e) {
-            logger.error("Error in getMessageCount", e);
+            log().error("Error in getMessageCount", e);
             throw new RuntimeException(e);
         }
 
@@ -368,14 +368,14 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
             final Folder folder = store.getFolder(getInboxFolder());
             folder.open(Folder.READ_ONLY);
             final Message[] messages = folder.getMessages();
-            mimes = new ArrayList<MimeMessage>();
-            logger.info("Fetched messages from " + getInboxFolder() + ":");
+            mimes = new ArrayList<>();
+            log().info("Fetched messages from " + getInboxFolder() + ":");
             if (messages.length > 0) {
                 for (final Message message : messages) {
                     mimes.add((MimeMessage) message);
                 }
             } else {
-                logger.info("None.");
+                log().info("None.");
             }
             // folder.close(true); // leads to error "folder not open" when reading message content
             store.close();
@@ -531,7 +531,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
             final Folder folder = store.getFolder(getInboxFolder());
             folder.open(Folder.READ_WRITE);
 
-            logger.info("Checking messages from " + getInboxFolder() + " for MessageID:");
+            log().info("Checking messages from " + getInboxFolder() + " for MessageID:");
             ArrayList<Message> copyList = new ArrayList<>();
             for (final SearchTerm searchTerm : searchTerms) {
                 final Message[] messages = folder.search(searchTerm);
@@ -551,7 +551,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
             store.close();
 
         } catch (final MessagingException e) {
-            logger.error(e.getMessage());
+            log().error(e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -634,7 +634,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
                 messages = folder.getMessages();
             }
 
-            logger.info("Checking messages from " + getInboxFolder() + " for MessageID:");
+            log().info("Checking messages from " + getInboxFolder() + " for MessageID:");
 
             if (messages.length > 0) {
                 String msg = "Message found, DELETING";
@@ -643,18 +643,18 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
                     if (message.getSubject() != null) {
                         msg += ": " + message.getSubject();
                     }
-                    logger.info(msg);
+                    log().info(msg);
                     message.setFlag(Flags.Flag.DELETED, true);
                 }
             } else {
-                logger.info("None.");
+                log().info("None.");
             }
             // leads to error "folder not open" when reading message content
             folder.close(true);
             store.close();
 
         } catch (final MessagingException e) {
-            logger.error(e.getMessage());
+            log().error(e.getMessage());
             throw new RuntimeException(e);
         }
         return deleted;
@@ -683,21 +683,21 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
             final Folder folder = store.getFolder(getInboxFolder());
             folder.open(Folder.READ_WRITE);
             final Message[] messages = folder.getMessages();
-            logger.info("Checking messages from " + getInboxFolder() + " for MessageID:");
+            log().info("Checking messages from " + getInboxFolder() + " for MessageID:");
 
             if (messages.length > 0) {
                 for (final Message message : messages) {
                     deleted = compareMessageAndDelete(message, recipient, recipientType, subject, messageId);
                 }
             } else {
-                logger.info("None.");
+                log().info("None.");
             }
             // leads to error "folder not open" when reading message content
             folder.close(true);
             store.close();
 
         } catch (final MessagingException e) {
-            logger.error(e.getMessage());
+            log().error(e.getMessage());
             throw new RuntimeException(e);
         }
         return deleted;
@@ -751,17 +751,17 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
                 if (message.getSubject() != null) {
                     msg += ": " + message.getSubject();
                 }
-                logger.info(msg);
+                log().info(msg);
                 message.setFlag(Flags.Flag.DELETED, true);
                 return true;
             } else {
                 return false;
             }
         } catch (final MessageRemovedException e) {
-            logger.error("Error deleting message: " + e.getMessage());
+            log().error("Error deleting message: " + e.getMessage());
             return false;
         } catch (final MessagingException e) {
-            logger.error("Error handling message", e);
+            log().error("Error handling message", e);
             throw new RuntimeException(e);
         }
     }

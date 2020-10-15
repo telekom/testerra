@@ -5,10 +5,10 @@ dependencies {
     compile "jakarta.mail:jakarta.mail-api:${mailVersion}"
     compile 'org.bouncycastle:bcmail-jdk15on:1.52'
     compile 'net.iharder:base64:2.3.8'
-    compile core
-    testCompile report
+    compileOnly core
 
-    testCompile 'com.icegreen:greenmail:1.5.9'
+    testImplementation core
+    testImplementation 'com.icegreen:greenmail:1.5.9'
 }
 
 test {

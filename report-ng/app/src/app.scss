@@ -77,6 +77,10 @@ body {
   padding: 1.5rem 2rem;
 }
 
+.btn-secondary {
+  @include button.filled-accessible(theme.$secondary);
+}
+
 /*Testing view________________________________________________________________________________________________________*/
 
 .demo-layout__row--no-wrap {

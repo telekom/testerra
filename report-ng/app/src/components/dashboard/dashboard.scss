@@ -1,0 +1,23 @@
+.layout-grid {
+  width: 100%;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1rem;
+}
+
+.grid-cell {
+  grid-column-end: span 12;
+}
+
+@media only screen and (min-width: 1600px) {
+  .grid-cell {
+    grid-column-end: span 4;
+  }
+}
+
+@media only screen and (max-width: 1599px) and (min-width: 1160px) {
+  .grid-cell {
+    grid-column-end: span 6;
+  }
+}

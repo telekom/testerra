@@ -1,8 +1,8 @@
 <template>
 
   <div mdc-headline4>${_executionContext.contextValues.name}</div>
-  <mdc-layout-grid>
-    <mdc-layout-grid-cell>
+  <div class="layout-grid">
+    <div class="grid-cell">
       <mdc-card outlined="true">
         <mdc-primary-action>
           <div mdc-body1>
@@ -10,30 +10,33 @@
             Ended: ${_executionContext.contextValues.endTime|dateFormat:"LLL"}<br>
             Duration: ${_testDuration}
           </div>
-          <img src="../../../static/logo.png">
         </mdc-primary-action>
       </mdc-card>
-    </mdc-layout-grid-cell>
-
-    <mdc-layout-grid-cell>
+    </div>
+    <div class="grid-cell">
       <mdc-card outlined="true">
-        <button mdc-button outlined>
+        <button mdc-button outlined class="btn-secondary">
           <mdc-icon>done</mdc-icon> ${_executionStatistics.overallPassed} Passed
         </button>
-        <button mdc-button outlined>
+        <button mdc-button outlined class="btn-secondary">
           <mdc-icon>skip_next</mdc-icon>  ${_executionStatistics.overallSkipped} Skipped
         </button>
-        <button mdc-button outlined>
+        <button mdc-button outlined class="btn-secondary">
           <mdc-icon>close</mdc-icon>  ${_executionStatistics.overallFailed} failed
         </button>
       </mdc-card>
-    </mdc-layout-grid-cell>
-
-    <mdc-layout-grid-cell>
+    </div>
+    <div class="grid-cell">
       <mdc-card outlined="true">
         <apex-chart data.bind="_apexDonutOptions" id="donut-chart"></apex-chart>
       </mdc-card>
-    </mdc-layout-grid-cell>
+    </div>
+  </div>
+
+  <mdc-layout-grid>
+    <mdc-layout-grid-cell></mdc-layout-grid-cell>
+    <mdc-layout-grid-cell></mdc-layout-grid-cell>
+    <mdc-layout-grid-cell></mdc-layout-grid-cell>
   </mdc-layout-grid>
 
 </template>

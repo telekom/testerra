@@ -21,8 +21,7 @@
  */
  package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
@@ -68,8 +67,8 @@ public class DesktopWebDriverRequest extends WebDriverRequest implements Loggabl
         if (seleniumServerURL == null) {
             try {
                 setSeleniumServerUrl(StringUtils.getFirstValidString(
-                        PropertyManager.getProperty(TesterraProperties.SELENIUM_SERVER_URL),
-                        "http://" + StringUtils.getFirstValidString(PropertyManager.getProperty(TesterraProperties.SELENIUM_SERVER_HOST), "localhost") + ":" + StringUtils.getFirstValidString(PropertyManager.getProperty(TesterraProperties.SELENIUM_SERVER_PORT), "4444") + "/wd/hub"
+                        Testerra.Properties.SELENIUM_SERVER_URL.asString(),
+                        "http://" + Testerra.Properties.SELENIUM_SERVER_HOST.asString() + ":" + Testerra.Properties.SELENIUM_SERVER_PORT.asString() + "/wd/hub"
                 ));
             } catch (MalformedURLException e) {
                 log().error("Unable to retrieve default Selenium URL from properties", e);

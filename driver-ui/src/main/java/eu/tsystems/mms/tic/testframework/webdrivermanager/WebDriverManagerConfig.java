@@ -41,7 +41,7 @@ public class WebDriverManagerConfig {
     /**
      * WebDriverMode that is used.
      */
-    public WebDriverMode webDriverMode = WebDriverMode.valueOf(Testerra.Properties.WEBDRIVER_MODE.asString());
+    public WebDriverMode webDriverMode;
 
     /**
      * Close windows after Test Methods.
@@ -68,7 +68,7 @@ public class WebDriverManagerConfig {
 
     public WebDriverManagerConfig reset() {
         this.executeCloseWindows = true;
-        this.webDriverMode = WebDriverMode.valueOf(PropertyManager.getProperty(TesterraProperties.WEBDRIVERMODE, WebDriverMode.remote.name()));
+        this.webDriverMode = null;
         this.closeWindowsAfterTestMethod = PropertyManager.getBooleanProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, true);
         this.closeWindowsOnFailure = PropertyManager.getBooleanProperty(TesterraProperties.CLOSE_WINDOWS_ON_FAILURE, true);
         this.maximize = PropertyManager.getBooleanProperty(TesterraProperties.BROWSER_MAXIMIZE, false);
@@ -79,7 +79,7 @@ public class WebDriverManagerConfig {
 
     public String getBaseUrl() {
         if (baseUrl == null) {
-            baseUrl = PropertyManager.getProperty(TesterraProperties.BASEURL, "");
+            baseUrl = Testerra.Properties.BASEURL.asString();
         }
         return baseUrl;
     }
@@ -110,7 +110,10 @@ public class WebDriverManagerConfig {
     }
 
     public WebDriverMode getWebDriverMode() {
-        return webDriverMode;
+        if (this.webDriverMode == null) {
+            this.webDriverMode = WebDriverMode.valueOf(Testerra.Properties.WEBDRIVER_MODE.asString());
+        }
+        return this.webDriverMode;
     }
 
     /**

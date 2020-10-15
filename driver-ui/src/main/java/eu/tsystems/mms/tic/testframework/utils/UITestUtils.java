@@ -191,7 +191,7 @@ public class UITestUtils {
         }
 
         WebDriverRequest webDriverRequest = WebDriverManager.getRelatedWebDriverRequest(eventFiringWebDriver);
-        if (Browsers.htmlunit.equalsIgnoreCase(webDriverRequest.browser)) {
+        if (Browsers.htmlunit.equalsIgnoreCase(webDriverRequest.getBrowser())) {
             LOGGER.warn("Not taking screenshot for htmunit");
             return null;
         }

@@ -184,7 +184,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
 
                 case AFTER_DATE:
                     final Date expectedDate = (Date) searchCriteria.getValue();
-                    return new SentDateTerm(ComparisonTerm.GT, expectedDate);
+                    return new SentDateTerm(ComparisonTerm.GE, expectedDate);
 
                 case MESSAGEID:
                     final String messageId = searchCriteria.getStringValue();

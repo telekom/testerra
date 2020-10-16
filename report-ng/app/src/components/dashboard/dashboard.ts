@@ -12,7 +12,7 @@ import ResultStatusType = data.ResultStatusType;
 
 @autoinject()
 export class Dashboard {
-  private _apexDonutOptions: any = undefined;
+  private _apexPieOptions: any = undefined;
   private _apexBarOptions: any = undefined;
   private _testDuration: Duration = moment.duration(0);
 
@@ -32,17 +32,17 @@ export class Dashboard {
       this._executionContext = executionStatistics.executionAggregate.executionContext;
       this._testDuration = moment.duration(<number>this._executionContext.contextValues.endTime - <number>this._executionContext.contextValues.startTime);
       console.log(this._testDuration);
-      this._prepareDonutChart(executionStatistics);
+      this._preparePieChart(executionStatistics);
       this._prepareHorizontalBarChart();
     })
 
 
   }
 
-  private _prepareDonutChart(executionStatistics:ExecutionStatistics): void {
-    this._apexDonutOptions = {
+  private _preparePieChart(executionStatistics:ExecutionStatistics): void {
+    this._apexPieOptions = {
       chart: {
-        type: 'donut',
+        type: 'pie',
         width: '400px'
       },
       series: [executionStatistics.overallPassed, executionStatistics.overallFailed, executionStatistics.overallSkipped],

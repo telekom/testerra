@@ -1,3 +1,9 @@
+@use "@material/theme" with (
+  $primary: #e63946,
+  $secondary: #a8dadc,
+  $on-primary: #f1faee,
+  $on-secondary: #1d3557,
+);
 @use '@material/button/mdc-button';
 @use '@material/button';
 @use '@material/card/mdc-card';
@@ -6,7 +12,6 @@
 @use '@material/icon-button';
 @use '@material/data-table';
 @use '@material/data-table/mdc-data-table';
-@use '@material/theme';
 @use '@material/dialog/mdc-dialog';
 @use '@material/dialog';
 @use '@material/drawer/mdc-drawer';
@@ -70,6 +75,10 @@ body {
   flex: 0 1 auto;
   box-sizing: border-box;
   padding: 1.5rem 2rem;
+}
+
+.btn-secondary {
+  @include button.filled-accessible(theme.$secondary);
 }
 
 /*Testing view________________________________________________________________________________________________________*/

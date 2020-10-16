@@ -35,7 +35,7 @@ export class App {
       {
         route: 'classes',
         name: 'Classes',
-        moduleId: PLATFORM.moduleName('components/classes'),
+        moduleId: PLATFORM.moduleName('components/classes/classes'),
         nav: true,
         title: 'Classes'
       },

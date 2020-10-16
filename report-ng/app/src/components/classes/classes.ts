@@ -1,9 +1,10 @@
-import {data} from "../services/report-model";
-import {DataLoader} from "../services/data-loader";
-import {StatusConverter} from "../services/status-converter";
+import {data} from "../../services/report-model";
+import './classes.scss'
+import {DataLoader} from "../../services/data-loader";
+import {StatusConverter} from "../../services/status-converter";
 import {autoinject} from "aurelia-framework";
-import {StatisticsGenerator} from "../services/statistics-generator";
-import {ClassStatistics} from "../services/statistic-models";
+import {StatisticsGenerator} from "../../services/statistics-generator";
+import {ClassStatistics} from "../../services/statistic-models";
 import IMethodContext = data.IMethodContext;
 import IContextValues = data.IContextValues;
 import ContextValues = data.ContextValues;

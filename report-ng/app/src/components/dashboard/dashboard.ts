@@ -4,10 +4,10 @@ import {data} from "../../services/report-model";
 import {autoinject} from "aurelia-framework";
 import {StatusConverter} from "../../services/status-converter";
 import {StatisticsGenerator} from "../../services/statistics-generator";
-import {ExecutionStatistics} from "../../services/statistic-models";
-import IExecutionContext = data.IExecutionContext;
-import {ClassStatistics} from "../../services/statistic-models";
+import {ClassStatistics, ExecutionStatistics} from "../../services/statistic-models";
 import moment, {Duration} from 'moment';
+import IExecutionContext = data.IExecutionContext;
+import ResultStatusType = data.ResultStatusType;
 
 
 @autoinject()
@@ -47,7 +47,9 @@ export class Dashboard {
       },
       series: [executionStatistics.overallPassed, executionStatistics.overallFailed, executionStatistics.overallSkipped],
       labels: ["passed", "failed", "skipped"],
-      colors:['#1abc9c', '#f1556c', '#495561']
+      colors:[this._statusConverter.colorFor(ResultStatusType.PASSED),
+              this._statusConverter.colorFor(ResultStatusType.FAILED),
+              this._statusConverter.colorFor(ResultStatusType.SKIPPED)]
     }
   }
 

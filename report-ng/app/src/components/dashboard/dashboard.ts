@@ -6,7 +6,7 @@ import {StatusConverter} from "../../services/status-converter";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {ExecutionStatistics} from "../../services/statistic-models";
 import IExecutionContext = data.IExecutionContext;
-import {Classes} from "../classes";
+import {ClassStatistics} from "../../services/statistic-models";
 import moment, {Duration} from 'moment';
 
 
@@ -14,11 +14,11 @@ import moment, {Duration} from 'moment';
 export class Dashboard {
   private _apexDonutOptions: any = undefined;
   private _apexBarOptions: any = undefined;
-  private _testDuration: string = undefined;
-
+  private _testDuration: Duration = moment.duration(0);
 
   _executionContext: IExecutionContext;
   private _executionStatistics: ExecutionStatistics;
+  private _classStatistics:ClassStatistics[] = [];
 
   constructor(
     private _statusConverter: StatusConverter,
@@ -35,6 +35,8 @@ export class Dashboard {
       this._prepareDonutChart(executionStatistics);
       this._prepareHorizontalBarChart();
     })
+
+
   }
 
   private _prepareDonutChart(executionStatistics:ExecutionStatistics): void {
@@ -53,12 +55,37 @@ export class Dashboard {
     this._apexBarOptions={
       chart: {
         type: 'bar',
+        stacked:true,
       },
       series: [{
-        
+        name: 'Marine Sprite',
+        data: [44, 55, 41, 37, 22, 43, 21]
+      }, {
+        name: 'Striking Calf',
+        data: [53, 32, 33, 52, 13, 43, 32]
+      }, {
+        name: 'Tank Picture',
+        data: [12, 17, 11, 9, 15, 11, 20]
       }],
       xaxis: {
-
+        categories: [2008, 2009, 2010, 2011, 2012, 2013, 2014],
+        labels: {
+          formatter: function (val) {
+            return val + "K"
+          }
+        }
+      },
+      yaxis: {
+        title: {
+          text: undefined
+        },
+      },
+      tooltip: {
+        y: {
+          formatter: function (val) {
+            return val + "K"
+          }
+        }
       },
       plotOptions:{
         bar: {
@@ -66,7 +93,7 @@ export class Dashboard {
         }
       },
       fill: {
-        colors:['#f44336']
+        opacity: 1,
       },
       dataLabels:{
         enable:false,
@@ -79,6 +106,11 @@ export class Dashboard {
         style:{
           fontSize: '20px',
         }
+      },
+      legend: {
+        position: 'top',
+        horizontalAlign: 'left',
+        offsetX: 40
       }
     }
   }

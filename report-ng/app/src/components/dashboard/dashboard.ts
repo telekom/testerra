@@ -18,7 +18,7 @@ export class Dashboard {
 
   _executionContext: IExecutionContext;
   private _executionStatistics: ExecutionStatistics;
-  private _classStatistics:ClassStatistics[] = [];
+  //private _classStatistics:ClassStatistics[] = [];
 
   constructor(
     private _statusConverter: StatusConverter,
@@ -33,7 +33,14 @@ export class Dashboard {
       this._testDuration = moment.duration(<number>this._executionContext.contextValues.endTime - <number>this._executionContext.contextValues.startTime);
       console.log(this._testDuration);
       this._preparePieChart(executionStatistics);
-      this._prepareHorizontalBarChart();
+
+
+
+      executionStatistics.classStatistics.forEach(classStatistics => {
+        console.log(classStatistics);
+        //this._classStatistics.push(classStatistics);
+        this._prepareHorizontalBarChart(classStatistics);
+      })
     })
 
 
@@ -53,15 +60,15 @@ export class Dashboard {
     }
   }
 
-  private _prepareHorizontalBarChart():void{
+  private _prepareHorizontalBarChart(classStatistics: ClassStatistics):void{
     this._apexBarOptions={
       chart: {
         type: 'bar',
         stacked:true,
       },
       series: [{
-        name: 'Marine Sprite',
-        data: [44, 55, 41, 37, 22, 43, 21]
+        name: this._statusConverter.i18nKeyForResultStatus(ResultStatusType.PASSED),
+        data: [classStatistics.overallPassed]
       }, {
         name: 'Striking Calf',
         data: [53, 32, 33, 52, 13, 43, 32]
@@ -93,6 +100,9 @@ export class Dashboard {
         bar: {
           horizontal: true,
         }
+      },
+      noData: {
+        text: "There is no data available at the moment. Please be patient!"
       },
       fill: {
         opacity: 1,

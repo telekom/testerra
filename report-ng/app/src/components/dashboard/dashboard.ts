@@ -8,6 +8,7 @@ import {ExecutionStatistics} from "../../services/statistic-models";
 import moment from 'moment';
 import 'moment-duration-format';
 import IExecutionContext = data.IExecutionContext;
+import {Classes} from "../classes";
 
 @autoinject()
 export class Dashboard {
@@ -54,11 +55,10 @@ export class Dashboard {
         type: 'bar',
       },
       series: [{
-        name: 'sales',
-        data: [30,40,35,50,49,60,70,91,125]
+        
       }],
       xaxis: {
-        categories: [1991,1992,1993,1994,1995,1996,1997, 1998,1999]
+
       },
       plotOptions:{
         bar: {
@@ -67,6 +67,18 @@ export class Dashboard {
       },
       fill: {
         colors:['#f44336']
+      },
+      dataLabels:{
+        enable:false,
+      },
+      title: {
+        text: 'Test Classes',
+        align: 'center',
+        margin: 20,
+        offsetY: 20,
+        style:{
+          fontSize: '20px',
+        }
       }
     }
   }

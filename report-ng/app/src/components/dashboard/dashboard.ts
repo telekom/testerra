@@ -56,29 +56,28 @@ export class Dashboard {
     let xlabels: Array<string> = [];
     let displayedStatuses: Array<string> = ["passed", "failed", "skipped"];
 
+    //Set statuses we need for the chart
     displayedStatuses.forEach (status => {
       data.set(status, []);
     })
 
+    //Iterate through classStatistics array to fill map with data for series
     console.log(classStatistics);
     classStatistics.forEach(classStats => {
-      //const classStatisticsValues = StatisticsValues.create();
+      data.get("passed").push(classStats.overallPassed);
+      data.get("failed").push(classStats.overallFailed);
 
-      /*if (classStats) {
-        classStats.forEach(statisticsValue => {
-          console.log(statisticsValue)
-          //classesStatisticsValues.addStatisticsValue(statisticsValue);
-        });
-      }*/
+      if (classStats.overallSkipped){
+        data.get("skipped").push(classStats.overallSkipped);
+      } else {
+        data.get("skipped").push(0);
+      }
 
-      displayedStatuses.forEach(status => {
-        console.log("");
-        //data.get(status).push(classesStatisticsValues[status]);
-      });
-
+      //Push Class Names in array for x-axis labels
       xlabels.push(classStats.classAggregate.classContext.fullClassName);
     });
 
+    //Display at least 10 rows in bar chart even if there are less classes
     if (xlabels.length < 10) {
       for (let i = xlabels.length; i <= 10; i++) {
         xlabels[i] = "";
@@ -96,16 +95,15 @@ export class Dashboard {
       },
       series: [{
         name: "Passed",
-        data: [5, 2, 0, 0, 0, 0]
+        data: data.get("passed")
       } , {
         name: "Failed",
-        data: [3, 1, 0, 0, 0, 0]
+        data: data.get("failed")
       } , {
         name: "Skipped",
-        data: [1, 5, 0, 0, 0, 0]
+        data: data.get("skipped")
       }
       ],
-      labels: ["passed", "failed", "skipped"],
       colors:[
         this._statusConverter.colorFor(ResultStatusType.PASSED),
         this._statusConverter.colorFor(ResultStatusType.FAILED),

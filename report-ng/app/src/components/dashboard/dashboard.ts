@@ -31,25 +31,16 @@ export class Dashboard {
       this._executionStatistics = executionStatistics;
       this._executionContext = executionStatistics.executionAggregate.executionContext;
       this._testDuration = moment.duration(<number>this._executionContext.contextValues.endTime - <number>this._executionContext.contextValues.startTime);
-      console.log(this._testDuration);
+
       this._preparePieChart(executionStatistics);
-
-
-
-      executionStatistics.classStatistics.forEach(classStatistics => {
-        console.log(classStatistics);
-        //this._classStatistics.push(classStatistics);
-        this._prepareHorizontalBarChart(classStatistics);
-      })
+      this._prepareHorizontalBarChart(executionStatistics.classStatistics);
     })
-
-
   }
 
   private _preparePieChart(executionStatistics:ExecutionStatistics): void {
     this._apexPieOptions = {
       chart: {
-        type: 'pie',
+        type: 'donut',
         width: '400px'
       },
       series: [executionStatistics.overallPassed, executionStatistics.overallFailed, executionStatistics.overallSkipped],
@@ -60,29 +51,68 @@ export class Dashboard {
     }
   }
 
-  private _prepareHorizontalBarChart(classStatistics: ClassStatistics):void{
-    this._apexBarOptions={
+  private _prepareHorizontalBarChart(classStatistics):void{
+    let data: Map<string, Array<number>> = new Map();
+    let xlabels: Array<string> = [];
+    let displayedStatuses: Array<string> = ["passed", "failed", "skipped"];
+
+    displayedStatuses.forEach (status => {
+      data.set(status, []);
+    })
+
+    console.log(classStatistics);
+    classStatistics.forEach(classStats => {
+      //const classStatisticsValues = StatisticsValues.create();
+
+      /*if (classStats) {
+        classStats.forEach(statisticsValue => {
+          console.log(statisticsValue)
+          //classesStatisticsValues.addStatisticsValue(statisticsValue);
+        });
+      }*/
+
+      displayedStatuses.forEach(status => {
+        console.log("");
+        //data.get(status).push(classesStatisticsValues[status]);
+      });
+
+      xlabels.push(classStats.classAggregate.classContext.fullClassName);
+    });
+
+    if (xlabels.length < 10) {
+      for (let i = xlabels.length; i <= 10; i++) {
+        xlabels[i] = "";
+        displayedStatuses.forEach(status => {
+          data.get(status)[i] = 0;
+        })
+      }
+    }
+
+
+    this._apexBarOptions = {
       chart: {
         type: 'bar',
-        stacked:true,
+        stacked:true
       },
       series: [{
-        name: this._statusConverter.i18nKeyForResultStatus(ResultStatusType.PASSED),
-        data: [classStatistics.overallPassed]
-      }, {
-        name: 'Striking Calf',
-        data: [53, 32, 33, 52, 13, 43, 32]
-      }, {
-        name: 'Tank Picture',
-        data: [12, 17, 11, 9, 15, 11, 20]
-      }],
+        name: "Passed",
+        data: [5, 2, 0, 0, 0, 0]
+      } , {
+        name: "Failed",
+        data: [3, 1, 0, 0, 0, 0]
+      } , {
+        name: "Skipped",
+        data: [1, 5, 0, 0, 0, 0]
+      }
+      ],
+      labels: ["passed", "failed", "skipped"],
+      colors:[
+        this._statusConverter.colorFor(ResultStatusType.PASSED),
+        this._statusConverter.colorFor(ResultStatusType.FAILED),
+        this._statusConverter.colorFor(ResultStatusType.SKIPPED)
+      ],
       xaxis: {
-        categories: [2008, 2009, 2010, 2011, 2012, 2013, 2014],
-        labels: {
-          formatter: function (val) {
-            return val + "K"
-          }
-        }
+        categories: xlabels
       },
       yaxis: {
         title: {
@@ -92,7 +122,7 @@ export class Dashboard {
       tooltip: {
         y: {
           formatter: function (val) {
-            return val + "K"
+            return val
           }
         }
       },
@@ -109,15 +139,6 @@ export class Dashboard {
       },
       dataLabels:{
         enable:false,
-      },
-      title: {
-        text: 'Test Classes',
-        align: 'center',
-        margin: 20,
-        offsetY: 20,
-        style:{
-          fontSize: '20px',
-        }
       },
       legend: {
         position: 'top',

@@ -7,12 +7,11 @@
       <mdc-card outlined="true">
         <mdc-primary-action>
           <div mdc-body1 class="duration-info">
-            Started: ${_executionContext.contextValues.startTime|dateFormat:"LLL"}<br><br>
-            <span id="duration">
+            Started: ${_executionContext.contextValues.startTime|dateFormat:"LLL"}
+            <p id="duration">
               <mdc-icon>timer</mdc-icon> Duration: ${_testDuration |durationFormat}
-            </span><br><br>
+            </p>
             Ended: ${_executionContext.contextValues.endTime|dateFormat:"LLL"}<br>
-
           </div>
         </mdc-primary-action>
       </mdc-card>
@@ -35,9 +34,10 @@
         <apex-chart data.bind="_apexPieOptions" id="Pie-chart"></apex-chart>
       </mdc-card>
     </div>
+    <div class="grid-cell grid-cell-large">
+      <mdc-card outlined="true">
+        <apex-chart data.bind="_apexBarOptions" id="bar-chart"></apex-chart>
+      </mdc-card>
+    </div>
   </div>
-  <br>
-  <mdc-card outlined="true">
-    <apex-chart data.bind="_apexBarOptions" id="bar-chart"></apex-chart>
-  </mdc-card>
 </template>

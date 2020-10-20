@@ -40,7 +40,7 @@ export class Dashboard {
   private _preparePieChart(executionStatistics:ExecutionStatistics): void {
     this._apexPieOptions = {
       chart: {
-        type: 'donut',
+        type: 'pie',
         width: '400px'
       },
       series: [executionStatistics.overallPassed, executionStatistics.overallFailed, executionStatistics.overallSkipped],

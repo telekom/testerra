@@ -72,7 +72,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
     @Deprecated
     public List<Email> waitForMails(List<SearchCriteria> searchCriterias) throws AddressException {
         EmailQuery query = new EmailQuery();
-        return waitForMails(searchCriterias, query.getRetryCount(), query.getPauseMs()/1000);
+        return waitForMails(searchCriterias, query.getRetryCount(), Math.round(query.getPauseMs()/1000f));
     }
 
     /**
@@ -85,7 +85,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
     @Deprecated
     public List<Email> waitForMails(final SearchTerm searchTerm) {
         EmailQuery query = new EmailQuery();
-        return waitForMails(searchTerm, query.getRetryCount(), query.getPauseMs()/1000);
+        return waitForMails(searchTerm, query.getRetryCount(), Math.round(query.getPauseMs()/1000f));
     }
 
     /**
@@ -98,7 +98,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
     @Deprecated
     public List<Email> waitForMails(final SearchTerm searchTerm, final String folderName) {
         EmailQuery query = new EmailQuery();
-        return waitForMails(searchTerm, query.getRetryCount(), query.getPauseMs()/1000, folderName);
+        return waitForMails(searchTerm, query.getRetryCount(), Math.round(query.getPauseMs()/1000f), folderName);
     }
 
     /**
@@ -237,7 +237,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
         String folderName = query.getFolderName();
         if (folderName==null) folderName = getInboxFolder();
 
-        List<MimeMessage> mimeMessages = pWaitForMessage(query.getSearchTerm(), query.getRetryCount(), query.getPauseMs()/1000, folderName);
+        List<MimeMessage> mimeMessages = pWaitForMessage(query.getSearchTerm(), query.getRetryCount(), query.getPauseMs(), folderName);
         Stream<Email> emailStream = mimeMessages.stream().map(Email::new);
 
         Predicate<Email> filter = query.getFilter();
@@ -246,7 +246,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
         return emailStream;
     }
 
-    private List<MimeMessage> pWaitForMessage(final SearchTerm searchTerm, int maxReadTries, int pollingTimerSeconds, final String foldername) {
+    private List<MimeMessage> pWaitForMessage(final SearchTerm searchTerm, int maxReadTries, long pauseMs, final String foldername) {
 
         if (searchTerm == null) {
             throw new RuntimeException("No SearchTerm given. Can not filter for messages.");
@@ -255,15 +255,6 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
         Store store = null;
 
         List<MimeMessage> out = new LinkedList<>();
-
-        if (maxReadTries < 1) {
-            maxReadTries = 1;
-            log().info("Changing read tries to min value: 1");
-        }
-        if (pollingTimerSeconds < 10) {
-            pollingTimerSeconds = 10;
-            log().info("Changing poller timer to min value: 10s");
-        }
 
         try {
             for (int i = 0; i < maxReadTries; i++) {
@@ -284,8 +275,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
                     return out;
                 }
 
-                // sleep for pollingTimerSeconds
-                TimerUtils.sleep(pollingTimerSeconds * 1000, "Waiting for Mail");
+                TimerUtils.sleep(Long.valueOf(pauseMs).intValue(), "Waiting for Mail");
             }
         }  catch (final Exception e) {
             log().error("Error searching for message", e);
@@ -300,8 +290,10 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
             }
         }
 
-        throw new RuntimeException(String.format("No messages found after %s seconds.",
-                pollingTimerSeconds * maxReadTries));
+        throw new RuntimeException(String.format(
+                "No messages found after %s seconds.",
+                (pauseMs * maxReadTries)/1000f)
+        );
 
     }
 

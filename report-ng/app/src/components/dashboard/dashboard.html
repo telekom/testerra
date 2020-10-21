@@ -3,7 +3,7 @@
 
   <div mdc-headline4 class="headline">My Dashboard</div>
   <div class="layout-grid">
-    <div class="grid-cell-large">
+    <div class="grid-cell">
       <mdc-card outlined="true">
         <mdc-primary-action>
           <div mdc-body1 class="duration-info">
@@ -21,7 +21,7 @@
         </mdc-primary-action>
       </mdc-card>
     </div>
-    <div class="grid-cell-large">
+    <div class="grid-cell">
       <mdc-card outlined="true">
         <button mdc-button outlined class="btn-secondary">
           <mdc-icon>done</mdc-icon> ${_executionStatistics.overallPassed} Passed
@@ -34,12 +34,12 @@
         </button>
       </mdc-card>
     </div>
-    <div class="grid-cell-large">
+    <div class="grid-cell grid-cell-medium">
       <mdc-card outlined="true">
         <apex-chart data.bind="_apexPieOptions" id="Pie-chart"></apex-chart>
       </mdc-card>
     </div>
-    <div class="grid-cell-large">
+    <div class="grid-cell grid-cell-large">
       <mdc-card outlined="true">
         <apex-chart data.bind="_apexBarOptions" id="bar-chart"></apex-chart>
       </mdc-card>

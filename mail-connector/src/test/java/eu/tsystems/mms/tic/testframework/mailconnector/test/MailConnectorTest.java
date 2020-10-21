@@ -727,12 +727,8 @@ public class MailConnectorTest extends TesterraTest {
         Assert.assertEquals(query.getRetryCount(), initRetry);
 
         long startTime = System.currentTimeMillis();
-        try {
-            Stream<Email> emails = this.imap.query(query);
-            Assert.assertEquals(emails.count(), 0);
-        } catch (Exception e) {
-            // ignore message here
-        }
+        Stream<Email> emails = this.imap.query(query);
+        Assert.assertEquals(emails.count(), 0);
         long endTime = System.currentTimeMillis()-startTime;
 
         AssertUtils.assertGreaterEqualThan(new BigDecimal(endTime), new BigDecimal(initPause * initRetry), "Invalid polling time");

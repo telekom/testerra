@@ -41,7 +41,7 @@ public class EmailQuery {
     private static final String MAX_READ_TRIES_PROPERTY = "MAX_READ_TRIES";
 
     private int retryCount = Integer.parseInt(PropertyManager.getProperty(MAX_READ_TRIES_PROPERTY, "20"));
-    private int pauseMs = Integer.parseInt(PropertyManager.getProperty(POLLING_TIMER_SECONDS_PROPERTY, "10"));
+    private int pauseMs = Integer.parseInt(PropertyManager.getProperty(POLLING_TIMER_SECONDS_PROPERTY, "10"))*1000;
     private SearchTerm searchTerm;
     private Predicate<Email> filter;
     private String folderName;

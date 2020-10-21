@@ -8,6 +8,7 @@ import {ClassStatistics, ExecutionStatistics} from "../../services/statistic-mod
 import moment, {Duration} from 'moment';
 import IExecutionContext = data.IExecutionContext;
 import ResultStatusType = data.ResultStatusType;
+import ContextValues = data.ContextValues;
 
 
 @autoinject()
@@ -15,6 +16,7 @@ export class Dashboard {
   private _apexPieOptions: any = undefined;
   private _apexBarOptions: any = undefined;
   private _testDuration: Duration = moment.duration(0);
+  private _hasFinished: boolean = true;
 
   _executionContext: IExecutionContext;
   private _executionStatistics: ExecutionStatistics;
@@ -30,14 +32,22 @@ export class Dashboard {
     this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
       this._executionStatistics = executionStatistics;
       this._executionContext = executionStatistics.executionAggregate.executionContext;
-      this._testDuration = moment.duration(<number>this._executionContext.contextValues.endTime - <number>this._executionContext.contextValues.startTime);
 
-      this._preparePieChart(executionStatistics);
-      this._prepareHorizontalBarChart(executionStatistics.classStatistics);
+      this._prepareDuration(this._executionContext.contextValues)
+      this._preparePieChart(this._executionStatistics);
+      this._prepareHorizontalBarChart(this._executionStatistics.classStatistics);
     })
   }
 
-  private _preparePieChart(executionStatistics:ExecutionStatistics): void {
+  private _prepareDuration(contextValues: data.IContextValues): void {
+    if (contextValues.endTime == null) {
+      this._hasFinished = false;
+    } else {
+      this._testDuration = moment.duration(<number>contextValues.endTime - <number>contextValues.startTime);
+    }
+  }
+
+  private _preparePieChart(executionStatistics: ExecutionStatistics): void {
     this._apexPieOptions = {
       chart: {
         type: 'pie',
@@ -51,7 +61,7 @@ export class Dashboard {
     }
   }
 
-  private _prepareHorizontalBarChart(classStatistics):void{
+  private _prepareHorizontalBarChart(classStatistics): void{
     let data: Map<string, Array<number>> = new Map();
     let xlabels: Array<string> = [];
     let displayedStatuses: Array<string> = ["passed", "failed", "skipped"];

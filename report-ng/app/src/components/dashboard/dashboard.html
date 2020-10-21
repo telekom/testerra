@@ -11,7 +11,12 @@
             <p id="duration">
               <mdc-icon>timer</mdc-icon> Duration: ${_testDuration |durationFormat}
             </p>
-            Ended: ${_executionContext.contextValues.endTime|dateFormat:"LLL"}<br>
+            <p if.bind="_hasFinished">
+              Ended: ${_executionContext.contextValues.endTime|dateFormat:"LLL"} <br>
+            </p>
+            <p else>
+              Running...
+            </p>
           </div>
         </mdc-primary-action>
       </mdc-card>

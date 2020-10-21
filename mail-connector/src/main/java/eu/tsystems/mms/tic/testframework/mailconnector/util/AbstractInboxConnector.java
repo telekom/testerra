@@ -237,7 +237,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
         String folderName = query.getFolderName();
         if (folderName==null) folderName = getInboxFolder();
 
-        List<MimeMessage> mimeMessages = pWaitForMessage(query.getSearchTerm(), query.getRetryCount(), query.getPauseMs()*1000, folderName);
+        List<MimeMessage> mimeMessages = pWaitForMessage(query.getSearchTerm(), query.getRetryCount(), query.getPauseMs()/1000, folderName);
         Stream<Email> emailStream = mimeMessages.stream().map(Email::new);
 
         Predicate<Email> filter = query.getFilter();

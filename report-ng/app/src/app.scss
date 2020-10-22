@@ -69,16 +69,30 @@ body {
   z-index: 7;
 }
 
+.flex-container {
+  display: flex;
+}
+
 //adapt router view size to drawer because it doesn't do that on it's own for some reason
 .mdc-drawer-app-content {
-  display: inline-flex;
+  width:100vw;
+  display: flex;
   flex: 0 1 auto;
-  box-sizing: border-box;
+  box-sizing: content-box;
   padding: 1.5rem 2rem;
+  background-color: #f5f5f5;
+}
+
+#content-router {
+  width: 100%;
 }
 
 .btn-secondary {
   @include button.filled-accessible(theme.$secondary);
+}
+
+.mdc-card {
+  @include card.fill-color(#ffffff);
 }
 
 /*Testing view________________________________________________________________________________________________________*/

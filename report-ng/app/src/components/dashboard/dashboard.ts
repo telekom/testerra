@@ -51,7 +51,8 @@ export class Dashboard {
     this._apexPieOptions = {
       chart: {
         type: 'pie',
-        width: '400px'
+        width: '400px',
+        fontFamily: 'Roboto'
       },
       series: [executionStatistics.overallPassed, executionStatistics.overallFailed, executionStatistics.overallSkipped],
       labels: ["passed", "failed", "skipped"],
@@ -101,6 +102,7 @@ export class Dashboard {
     this._apexBarOptions = {
       chart: {
         type: 'bar',
+        fontFamily: 'Roboto',
         stacked:true
       },
       series: [{
@@ -122,21 +124,13 @@ export class Dashboard {
       xaxis: {
         categories: xlabels
       },
-      yaxis: {
-        title: {
-          text: undefined
-        },
-      },
-      tooltip: {
-        y: {
-          formatter: function (val) {
-            return val
-          }
-        }
+      grid: {
+        show: false
       },
       plotOptions:{
         bar: {
           horizontal: true,
+          barHeight: '50%'
         }
       },
       noData: {
@@ -150,8 +144,7 @@ export class Dashboard {
       },
       legend: {
         position: 'top',
-        horizontalAlign: 'left',
-        offsetX: 40
+        horizontalAlign: 'center'
       }
     }
   }

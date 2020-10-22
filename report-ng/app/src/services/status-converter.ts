@@ -25,11 +25,18 @@ import ExecStatusType = data.ExecStatusType;
 import ResultStatusType = data.ResultStatusType;
 
 class GraphColors {
-  static readonly PASSED = '#00c853'; // $success
+  static readonly PASSED = '#3C8F64'; // $success
+  static readonly SKIPPED = '#8a929a'; // $dark
+  static readonly FAILED = '#E63946'; // $danger
+  static readonly CRASHED = '#5d6f81'; // $secondary
+  static readonly RUNNING = '#0089b6'; // $info
+
+  /*old color schme*/
+  /*static readonly PASSED = '#00c853'; // $success
   static readonly SKIPPED = '#8a929a'; // $dark
   static readonly FAILED = '#D50000'; // $danger
   static readonly CRASHED = '#5d6f81'; // $secondary
-  static readonly RUNNING = '#0089b6'; // $info
+  static readonly RUNNING = '#0089b6'; // $info */
 }
 
 @autoinject()

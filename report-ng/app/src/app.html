@@ -28,27 +28,29 @@
 
       </mdc-top-app-bar-row>
     </mdc-top-app-bar>
+    <div class="flex-container">
+      <mdc-drawer view-model.ref="drawer" type="dismissible" class="mdc-drawer--open">
 
-    <mdc-drawer view-model.ref="drawer" type="dismissible" class="mdc-drawer--open">
+        <mdc-drawer-header title="Testerra" subtitle="Test Report"></mdc-drawer-header>
+        <mdc-drawer-content>
+          <mdc-list activated="" wrap-focus="" mdclist:action.delegate="navigateTo(route.value)" tabindex="0" repeat.for="nav of router.navigation" aria-orientation="vertical">
+            <mdc-list-item class="mdc-list-item mdc-ripple-upgraded ${nav.isActive ? 'mdc-list-item--activated' : ''}"   tabindex="0">
 
-      <mdc-drawer-header title="Testerra" subtitle="Test Report"></mdc-drawer-header>
-      <mdc-drawer-content>
-        <mdc-list activated="" wrap-focus="" mdclist:action.delegate="navigateTo(route.value)" tabindex="0" repeat.for="nav of router.navigation" aria-orientation="vertical">
-          <mdc-list-item class="mdc-list-item mdc-ripple-upgraded ${nav.isActive ? 'mdc-list-item--activated' : ''}"   tabindex="0">
-
-            <div class="mdc-list-item__ripple"></div>
-            <span class="mdc-list-item__text" value.bind="nav.title" textcontent.bind="nav.title" ref="route">
+              <div class="mdc-list-item__ripple"></div>
+              <span class="mdc-list-item__text" value.bind="nav.title" textcontent.bind="nav.title" ref="route">
             </span>
 
-          </mdc-list-item>
-        </mdc-list>
-      </mdc-drawer-content>
+            </mdc-list-item>
+          </mdc-list>
+        </mdc-drawer-content>
 
-    </mdc-drawer>
+      </mdc-drawer>
 
-    <mdc-drawer-app-content>
-      <router-view></router-view>
-    </mdc-drawer-app-content>
+      <mdc-drawer-app-content>
+        <router-view id="content-router"></router-view>
+      </mdc-drawer-app-content>
+    </div>
+
 
   <!--
   <div class="mdc-tab-bar" role="tablist">

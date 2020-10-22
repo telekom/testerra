@@ -6,6 +6,10 @@
   gap: 1rem;
 }
 
+.mdc-card {
+  min-height: 300px;
+}
+
 .grid-cell {
   grid-column-end: span 12;
 }
@@ -13,6 +17,10 @@
 @media only screen and (max-width: 1599px) and (min-width: 1160px) {
   .grid-cell {
     grid-column-end: span 6;
+  }
+
+  .grid-cell-medium {
+    grid-column-end: span 12;
   }
 
   .grid-cell-large {
@@ -25,8 +33,12 @@
     grid-column-end: span 4;
   }
 
+  .grid-cell-medium {
+    grid-column-end: span 4;
+  }
+
   .grid-cell-large {
-    grid-column-end: span 6;
+    grid-column-end: span 12;
   }
 }
 

@@ -127,7 +127,7 @@ export class StatusConverter {
     switch (execStatus) {
       case ExecStatusType.NEW:
       case ExecStatusType.PENDING:
-        return '.mdi .mdi-clock-outline';
+        return 'clock';
       case ExecStatusType.PROVISIONING:
       case ExecStatusType.RUNNING:
         return '.mdi .mdi-spin .mdi-loading';

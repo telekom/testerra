@@ -11,6 +11,11 @@ npm start
 npm run proto
 ```
 
+## Build release
+```bash
+npm run build
+```
+
 ## References
 
 - Material Framework: https://github.com/aurelia-ui-toolkits/aurelia-mdc-web

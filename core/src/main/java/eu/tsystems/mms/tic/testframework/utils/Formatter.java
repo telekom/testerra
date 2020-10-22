@@ -17,14 +17,12 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 package eu.tsystems.mms.tic.testframework.utils;
 
-import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
-import org.testng.ITestNGMethod;
-
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import java.util.Date;
+import org.testng.ITestNGMethod;
 
 /**
  * General formatter for everything
@@ -53,7 +51,7 @@ public interface Formatter {
         sb
             .append((method.isTest()?"Test":"Configuration"))
             .append("(")
-            .append(method.getTestClass().getName().replace(TesterraCommons.FRAMEWORK_PACKAGE+".", ""))
+            .append(method.getTestClass().getName().replace(TesterraListener.DEFAULT_PACKAGE+".", ""))
             .append(".")
             .append(method.getMethodName())
             .append(")");

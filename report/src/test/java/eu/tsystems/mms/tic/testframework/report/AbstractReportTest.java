@@ -36,7 +36,7 @@ public abstract class AbstractReportTest extends AbstractWebDriverTest {
     @BeforeTest(alwaysRun = true)
     public void setUp() throws Exception {
         server.start();
-        WebDriverManager.setBaseURL(String.format("http://localhost:%d", server.getPort()));
+        WebDriverManager.getConfig().setBaseUrl(String.format("http://localhost:%d", server.getPort()));
     }
 
     @AfterTest(alwaysRun = true)

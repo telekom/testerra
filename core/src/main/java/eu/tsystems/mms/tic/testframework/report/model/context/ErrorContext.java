@@ -21,10 +21,10 @@
  */
  package eu.tsystems.mms.tic.testframework.report.model.context;
 
-import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 
@@ -211,9 +211,9 @@ public class ErrorContext extends AbstractContext {
          * stacktrace filter
          */
         if (stackTrace != null) {
-            final String testframeworkPackage = TesterraCommons.DEFAULT_PACKAGE_NAME + ".testframework";
+            final String testframeworkPackage = TesterraListener.DEFAULT_PACKAGE;
             final String completeStackTrace = stackTrace.toString();
-            if (completeStackTrace.contains(TesterraCommons.DEFAULT_PACKAGE_NAME) &&
+            if (completeStackTrace.contains(TesterraListener.PROJECT_PACKAGE) &&
                     ((!completeStackTrace.contains(testframeworkPackage))
                                     ||
                     (completeStackTrace.contains(testframeworkPackage) && completeStackTrace.contains("playground")))

@@ -24,6 +24,8 @@ package eu.tsystems.mms.tic.testframework.report;
 
 import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.boot.Booter;
+import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.events.AbstractMethodEvent;
 import eu.tsystems.mms.tic.testframework.events.ExecutionFinishEvent;
 import eu.tsystems.mms.tic.testframework.events.InterceptMethodsEvent;
@@ -86,6 +88,12 @@ public class TesterraListener implements
         ISuiteListener,
         Loggable
 {
+    /**
+     * Default package namespace for project tests
+     */
+    public final static String DEFAULT_PACKAGE = "eu.tsystems.mms.tic";
+    public static final String PROJECT_PACKAGE = PropertyManager.getProperty(TesterraProperties.PROJECT_PACKAGE, DEFAULT_PACKAGE);
+
     /**
      * Skip test methods control.
      */

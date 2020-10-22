@@ -68,13 +68,13 @@ export class App {
         nav: true,
         title: 'JVM Monitor'
       },
-      {
-        route: 'testing',
-        name: 'Testing',
-        moduleId: PLATFORM.moduleName('components/testing'),
-        nav: true,
-        title: 'Testing'
-      },
+      // {
+      //   route: 'testing',
+      //   name: 'Testing',
+      //   moduleId: PLATFORM.moduleName('components/testing'),
+      //   nav: true,
+      //   title: 'Testing'
+      // },
 
     ]);
   }

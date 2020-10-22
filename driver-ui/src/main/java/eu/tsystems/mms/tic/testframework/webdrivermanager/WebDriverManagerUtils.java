@@ -21,8 +21,6 @@
  */
  package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.model.HostInfo;
 import eu.tsystems.mms.tic.testframework.report.model.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.report.model.YauaaBrowserInformation;
@@ -66,22 +64,11 @@ public final class WebDriverManagerUtils {
      *
      * @param presetBaseURL A manually set baseUrl
      * @return BaseUrl to use.
+     * @deprecated Use {@link WebDriverManager#getConfig()} instead
      */
+    @Deprecated
     protected static String getBaseUrl(final String presetBaseURL) {
-        String baseUrl;
-        /*
-         * preset baseurl
-         */
-        if (presetBaseURL != null) {
-            baseUrl = presetBaseURL;
-        }
-        /*
-         * baseURL defined by System property or config file
-         */
-        else {
-            baseUrl = PropertyManager.getProperty(TesterraProperties.BASEURL, "");
-        }
-        return baseUrl;
+        return WebDriverManager.getConfig().getBaseUrl();
     }
 
     /**

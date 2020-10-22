@@ -19,34 +19,100 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.webdrivermanager;
+package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
-import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 
 public abstract class WebDriverRequest {
-
     /*
     Request
      */
-    public String sessionKey;
-    public String browser;
-    public String browserVersion;
-    public String baseUrl;
-    public SessionContext sessionContext;
+    private String sessionKey;
+    private String browser;
+    private String browserVersion;
+    private String baseUrl;
 
     /*
     Runtime
      */
-    public String storedSessionId;
-    public NodeInfo storedExecutingNode;
+    private String storedSessionId;
+    private NodeInfo storedExecutingNode;
 
+    public boolean hasSessionKey() {
+        return sessionKey != null && !sessionKey.trim().isEmpty();
+    }
+
+    public String getSessionKey() {
+        return sessionKey;
+    }
+
+    public WebDriverRequest setSessionKey(String sessionKey) {
+        this.sessionKey = sessionKey;
+        return this;
+    }
+
+    public boolean hasBrowser() {
+        return browser != null && !browser.trim().isEmpty();
+    }
+
+    public String getBrowser() {
+        return browser;
+    }
+
+    public WebDriverRequest setBrowser(String browser) {
+        this.browser = browser;
+        return this;
+    }
+
+    public boolean hasBrowserVersion() {
+        return browserVersion != null && !browserVersion.trim().isEmpty();
+    }
+
+    public String getBrowserVersion() {
+        return browserVersion;
+    }
+
+    public WebDriverRequest setBrowserVersion(String browserVersion) {
+        this.browserVersion = browserVersion;
+        return this;
+    }
+
+    public boolean hasBaseUrl() {
+        return baseUrl != null && !baseUrl.trim().isEmpty();
+    }
+
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public WebDriverRequest setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+        return this;
+    }
+
+    public NodeInfo getExecutingNode() {
+        return storedExecutingNode;
+    }
+
+    public WebDriverRequest setExecutingNode(NodeInfo executingNode) {
+        this.storedExecutingNode = executingNode;
+        return this;
+    }
+
+    public String getSessionId() {
+        return storedSessionId;
+    }
+
+    public WebDriverRequest setSessionId(String sessionId) {
+        this.storedSessionId = sessionId;
+        return this;
+    }
 
     public void copyFrom(WebDriverRequest webDriverRequest) {
         this.browser = webDriverRequest.browser;
         this.sessionKey = webDriverRequest.sessionKey;
         this.baseUrl = webDriverRequest.baseUrl;
         this.browserVersion = webDriverRequest.browserVersion;
-        this.sessionContext = webDriverRequest.sessionContext;
+        this.storedSessionId = webDriverRequest.storedSessionId;
     }
 }

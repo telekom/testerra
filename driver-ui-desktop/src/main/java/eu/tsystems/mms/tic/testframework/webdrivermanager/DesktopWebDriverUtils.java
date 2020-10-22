@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.RESTUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
+import java.net.URL;
 import org.json.JSONObject;
 
 public final class DesktopWebDriverUtils implements Loggable {
@@ -36,15 +37,13 @@ public final class DesktopWebDriverUtils implements Loggable {
     }
 
     public NodeInfo getNodeInfo(DesktopWebDriverRequest desktopWebDriverRequest) {
-        if (desktopWebDriverRequest.webDriverMode == WebDriverMode.local) {
+        if (desktopWebDriverRequest.getWebDriverMode() == WebDriverMode.local) {
             return new NodeInfo("local", 0);
         }
 
-        final String host = desktopWebDriverRequest.seleniumServerHost;
-        final String port = desktopWebDriverRequest.seleniumServerPort;
-        String url = desktopWebDriverRequest.seleniumServerURL;
-
-        final String sessionId = desktopWebDriverRequest.storedSessionId;
+        URL seleniumUrl = desktopWebDriverRequest.getSeleniumServerUrl();
+        String url = seleniumUrl.toString();
+        String sessionId = desktopWebDriverRequest.getSessionId();
 
         url = url.replace("/wd/hub", "");
 
@@ -58,7 +57,7 @@ public final class DesktopWebDriverUtils implements Loggable {
             return nodeInfo;
         } catch (Exception e) {
             log().debug("Could not get node info: " + e.getMessage());
-            return new NodeInfo(host, Integer.valueOf(port));
+            return new NodeInfo(seleniumUrl.getHost(), seleniumUrl.getPort());
         }
     }
 

@@ -42,6 +42,7 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -102,17 +103,18 @@ public class PageFactoryPrefixedTest extends AbstractTestSitesTest implements Lo
     public void before() {
         PageFactory.clearCache();
         PageFactory.setGlobalPagesPrefix("Prefix");
-        baseURL = WebDriverManager.getBaseURL();
-        WebDriverManager.setBaseURL("http://www.google.com");
-
-        WebDriverManager.config().closeWindowsAfterTestMethod = false;
+        WebDriverManagerConfig config = WebDriverManager.getConfig();
+        baseURL = config.getBaseUrl();
+        config.setBaseUrl("http://www.google.com");
+        config.setShutdownSessionAfterTestMethod(false);
     }
 
     @AfterClass(alwaysRun = true)
     public void after() {
         PageFactory.setGlobalPagesPrefix(null);
-        WebDriverManager.setBaseURL(baseURL);
-        WebDriverManager.config().closeWindowsAfterTestMethod = true;
+        WebDriverManagerConfig config = WebDriverManager.getConfig();
+        config.setBaseUrl(baseURL);
+        config.setShutdownSessionAfterTestMethod(true);
     }
 
     @Test

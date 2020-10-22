@@ -28,46 +28,38 @@ System.setProperty(TesterraProperties.BROWSER, Browsers.firefox);
 System.setProperty(TesterraProperties.BROWSER_VERSION, "66");
 ----
 
-=== Configure with `WebDriverManager.config()`
+=== Configure with `WebDriverManager.getConfig()`
 
 Some of the WebdriverManager settings you can change as follows
 
 [source,java]
 ----
-WebDriverManager.config().executeCloseWindows = true;
-
 // tt.wdm.closewindows.aftertestmethods
-WebDriverManager.config().closeWindowsAfterTestMethod = true;
+WebDriverManager.getConfig().setShutdownSessionAfterTestMethod(true);
 
 // tt.wdm.closewindows.onfailure
-WebDriverManager.config().closeWindowsOnFailure = false;
+WebDriverManager.getConfig().setShutdownSessionOnFailure(false);
 
 // tt.browser.maximize
-WebDriverManager.config().maximize = true;
-
-// tt.takeAutomaticScreenshot
-WebDriverManager.config().takeScreenShotsActive = false;
+WebDriverManager.getConfig().setMaximizeViewport(true);
 
 // tt.webdriver.mode
-WebDriverManager.config().webDriverMode = WebDriverMode.remote;
+WebDriverManager.getConfig().setWebDriverMode(WebDriverMode.remote);
 ----
-
-Except for `executeCloseWindows` the associated property name is added as comment.
 
 [NOTE]
 ======
-`WebDriverManager.config().executeCloseWindows` controls the closing of browser windows after every test method in generally.
+`WebDriverManager.getConfig().setShutdownSessions()` controls closing of browser windows after every test method in general,
+when its set to `false`, this also affects `shouldShutdownSessionOnFailure()` and `shouldShutdownSessionAfterTestMethod()`.
 
-If `executeCloseWindows = false`, the settings `closeWindowsAfterTestMethod` and `closeWindowsOnFailure` have no effect.
-
-Keep in mind, that after the complete test run a browser close is forced.
+Keep in mind, that after the complete test run a session shutdown is being forced.
 ======
 
 You can reset the settings to the default values or defined in `test.properties` as follows
 
 [source,java]
 ----
-WebDriverManager.resetConfig();
+WebDriverManager.getConfig().reset();
 ----
 
 == Local configuration
@@ -80,10 +72,10 @@ NOTE: If an attribute is not set the global definition is used.
 [source,java]
 ----
 WebDriverRequest myRequest = new DesktopWebDriverRequest();
-myRequest.baseUrl = "http://example.org";
-myRequest.browser = Browsers.firefox;
-myRequest.browserVersion = "66";
-myRequest.sessionKey = "mysession";     // if no custom session defined, the default value 'default' is set
+myRequest.setBaseUrl("http://example.org");
+myRequest.setBrowser(Browsers.firefox);
+myRequest.setBrowserVersion("66");
+myRequest.setSessionKey("mysession");     // if no custom session defined, the default value 'default' is set
 
 WebDriver driver = WebDriverManager.getWebDriver(myRequest);
 ----

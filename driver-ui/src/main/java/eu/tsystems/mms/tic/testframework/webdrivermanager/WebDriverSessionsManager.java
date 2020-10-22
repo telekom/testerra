@@ -32,7 +32,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import java.util.Collections;
 import java.util.Date;
@@ -84,7 +83,7 @@ public final class WebDriverSessionsManager {
     }
 
     static void storeWebDriverSession(WebDriverRequest webDriverRequest, WebDriver eventFiringWebDriver, SessionContext sessionContext) {
-        final String sessionKey = webDriverRequest.sessionKey;
+        final String sessionKey = webDriverRequest.getSessionKey();
         final String fullSessionKey = getFullSessionKey(sessionKey);
         ALL_EVENTFIRING_WEBDRIVER_SESSIONS.put(fullSessionKey, eventFiringWebDriver);
         ALL_EVENTFIRING_WEBDRIVER_SESSIONS_INVERSE.put(eventFiringWebDriver, fullSessionKey);
@@ -183,7 +182,7 @@ public final class WebDriverSessionsManager {
         ExecutionContextController.getCurrentMethodContext().sessionContexts.add(sessionContext);
 
         UnspecificWebDriverRequest r = new UnspecificWebDriverRequest();
-        r.sessionKey = sessionKey;
+        r.setSessionKey(sessionKey);
         storeWebDriverSession(r, eventFiringWebDriver, sessionContext);
     }
 
@@ -361,31 +360,20 @@ public final class WebDriverSessionsManager {
         /*
         get session key
          */
-        String sessionKey = WebDriverManager.DEFAULT_SESSION_KEY;
-        if (!StringUtils.isStringEmpty(webDriverRequest.sessionKey)) {
-            sessionKey = webDriverRequest.sessionKey;
-        } else {
-            webDriverRequest.sessionKey = sessionKey;
+        if (!webDriverRequest.hasSessionKey()) {
+            webDriverRequest.setSessionKey(WebDriverManager.DEFAULT_SESSION_KEY);
         }
 
-        /**
-         * Browser global setting.
-         */
-        String browser = WebDriverManager.config().browser();
-        String browserVersion = WebDriverManager.config().browserVersion();
-
-        if (webDriverRequest.browser != null) {
-            browser = webDriverRequest.browser;
-        } else {
-            webDriverRequest.browser = browser;
+        if (!webDriverRequest.hasBrowser()) {
+            webDriverRequest.setBrowser(WebDriverManager.getConfig().getBrowser());
         }
 
-        if (webDriverRequest.browserVersion != null) {
-            browserVersion = webDriverRequest.browserVersion;
-        } else {
-            webDriverRequest.browserVersion = browserVersion;
+        if (!webDriverRequest.hasBrowserVersion()) {
+            webDriverRequest.setBrowserVersion(WebDriverManager.getConfig().getBrowserVersion());
         }
 
+        String browser = webDriverRequest.getBrowser();
+        String sessionKey = webDriverRequest.getSessionKey();
         /*
         Check for exclusive session
          */
@@ -422,7 +410,6 @@ public final class WebDriverSessionsManager {
             create session context and link to method context
              */
             SessionContext sessionContext = new SessionContext(sessionKey, webDriverFactory.getClass().getSimpleName());
-            webDriverRequest.sessionContext = sessionContext;
             MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
             if (methodContext != null) {
                 methodContext.sessionContexts.add(sessionContext);
@@ -430,11 +417,11 @@ public final class WebDriverSessionsManager {
             sessionContext.parentContext = methodContext;
             ExecutionContextController.setCurrentSessionContext(sessionContext);
 
-            TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(sessionContext));
             /*
             setup new session
              */
             eventFiringWebDriver = webDriverFactory.getWebDriver(webDriverRequest, sessionContext);
+            TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(sessionContext));
 
             /*
             run the handlers

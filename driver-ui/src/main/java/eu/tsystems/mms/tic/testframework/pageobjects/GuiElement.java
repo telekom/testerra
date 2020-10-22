@@ -169,7 +169,7 @@ public class GuiElement implements
     private void buildInternals(WebDriver driver, By by) {
         // Create core depending on requested Browser
         WebDriverRequest webDriverRequest = WebDriverManager.getRelatedWebDriverRequest(driver);
-        String currentBrowser = webDriverRequest.browser;
+        String currentBrowser = webDriverRequest.getBrowser();
         guiElementData.browser = currentBrowser;
 
         if (coreFactories.containsKey(currentBrowser)) {

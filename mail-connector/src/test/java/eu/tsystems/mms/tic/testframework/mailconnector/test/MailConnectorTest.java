@@ -34,23 +34,17 @@ import eu.tsystems.mms.tic.testframework.mailconnector.util.MailUtils;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.security.Security;
+import java.util.Date;
 import javax.mail.Address;
-import javax.mail.Folder;
-import javax.mail.Message;
 import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Part;
 import javax.mail.Session;
-import javax.mail.Store;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
@@ -63,11 +57,14 @@ import javax.mail.search.RecipientTerm;
 import javax.mail.search.SearchTerm;
 import javax.mail.search.SentDateTerm;
 import javax.mail.search.SubjectTerm;
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.security.Security;
-import java.util.Date;
+import org.apache.commons.lang3.time.DateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
 /**
  * Integration Tests for TesterraMailConnector.
@@ -529,9 +526,13 @@ public class MailConnectorTest extends TesterraTest {
 
         final String subject = "testT10_sendAndWaitForMessageWithoutAttachement_SubjectSender";
 
+        Date aMinuteBefore = new Date();
+        DateUtils.addMinutes(aMinuteBefore, -1);
+
         final SearchTerm searchTerm = new AndTerm(
                 new SubjectTerm(subject),
-                new SentDateTerm(ComparisonTerm.LT, new Date()));
+                new SentDateTerm(ComparisonTerm.GE, aMinuteBefore)
+        );
 
         sendAndWaitForMessageWithoutAttachement(subject, searchTerm);
     }

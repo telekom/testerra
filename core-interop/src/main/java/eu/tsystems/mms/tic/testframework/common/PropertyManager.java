@@ -21,10 +21,9 @@
  */
  package eu.tsystems.mms.tic.testframework.common;
 
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -33,6 +32,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Contains methods for reading from properties files.
@@ -66,8 +67,49 @@ public final class PropertyManager {
         // set static properties
         String propertyFile = "test.properties";
         pLoadPropertiesFromResource(FILEPROPERTIES, propertyFile, null);
-
+        initializeSystemProperties();
         getPropertiesParser();
+    }
+
+    /**
+     * Loads properties from a file and sets them as system properties when not already defined
+     */
+    private static void initializeSystemProperties() {
+        FileUtils fileUtils = new FileUtils();
+        String filename = PropertyManager.getProperty(TesterraProperties.SYSTEM_SETTINGS_FILE, "system.properties");
+        try {
+            File file = fileUtils.getLocalOrResourceFile(filename);
+            if (file.exists()) {
+                loadSystemProperties(file);
+            }
+        } catch (FileNotFoundException e) {
+            //
+        }
+    }
+
+    private static void loadSystemProperties(File file) {
+        Properties props;
+        try {
+            InputStream inputStream = new FileInputStream(file);
+            LOGGER.info("Load system properties: " + file.getAbsolutePath());
+            props = new Properties();
+            props.load(inputStream);
+        } catch (Exception e) {
+            LOGGER.warn(e.getMessage());
+            return;
+        }
+
+        for (String property : props.stringPropertyNames()) {
+            final String systemPropertyValue = System.getProperty(property);
+            if (StringUtils.isStringEmpty(systemPropertyValue)) {
+                String propertyValue = props.getProperty(property);
+                System.setProperty(property, propertyValue);
+                LOGGER.debug("Setting system property " + property + " = " + propertyValue);
+            } else {
+                LOGGER.warn("System property " + property + " is NOT set because it was already set to "
+                        + systemPropertyValue);
+            }
+        }
     }
 
     /*

@@ -52,7 +52,7 @@ public class GeneralWorkflow {
     public static URI getURIForReport(String reportDirectory) {
         LOGGER.debug("Calling getURIForReport method for report directory " + reportDirectory);
         try {
-            return new URI(String.format("%s/%s/%s", WebDriverManager.getBaseURL(), reportDirectory, PropertyManager.getProperty("fileName")));
+            return new URI(String.format("%s/%s/%s", WebDriverManager.getConfig().getBaseUrl(), reportDirectory, PropertyManager.getProperty("fileName")));
         } catch (URISyntaxException e) {
             LOGGER.error("Unable to create report url", e);
         }

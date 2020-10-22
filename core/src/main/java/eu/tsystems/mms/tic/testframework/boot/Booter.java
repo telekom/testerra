@@ -21,7 +21,6 @@
  */
  package eu.tsystems.mms.tic.testframework.boot;
 
-import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.events.ModulesInitializedEvent;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.internal.BuildInformation;
@@ -47,7 +46,6 @@ public final class Booter {
     private static final List<ModuleHook> MODULE_HOOKS = new LinkedList<>();
 
     static {
-        TesterraCommons.init();
         LOGGER = LoggerFactory.getLogger(Booter.class);
         // when logger is configured:
         printTesterraBanner();
@@ -116,7 +114,7 @@ public final class Booter {
     private static void initHooks() {
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
         configurationBuilder.addClassLoader(Thread.currentThread().getContextClassLoader());
-        configurationBuilder.forPackages("eu.tsystems.mms.tic");
+        configurationBuilder.forPackages(TesterraListener.DEFAULT_PACKAGE);
 
         final Reflections reflections = new Reflections(configurationBuilder);
         final Set<Class<? extends ModuleHook>> hooks = reflections.getSubTypesOf(ModuleHook.class);

@@ -66,7 +66,7 @@ public class DefaultTestController implements TestController, Loggable {
     }
 
     @Override
-    public void retryFor(int seconds, Runnable runnable) {
+    public void retryFor(int seconds, Runnable runnable, Runnable whenFail) {
         Sequence sequence = new Sequence()
                 .setTimeoutMs(seconds * 1000);
 
@@ -77,8 +77,12 @@ public class DefaultTestController implements TestController, Loggable {
                 runnable.run();
                 atomicSuccess.set(true);
             } catch (Throwable throwable) {
+                log().info("Retry after " + sequence.getDurationMs() + "ms because of: " + throwable.getMessage());
                 atomicThrowable.set(throwable);
                 atomicSuccess.set(false);
+                if (whenFail != null) {
+                    whenFail.run();
+                }
             }
             return atomicSuccess.get();
         });

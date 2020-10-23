@@ -23,14 +23,14 @@ package eu.tsystems.mms.tic.testframework.test.utils;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
-import eu.tsystems.mms.tic.testframework.utils.Conditions;
+import eu.tsystems.mms.tic.testframework.utils.Condition;
 import org.testng.annotations.Test;
 
 public class ConditionsTest extends TesterraTest implements Loggable {
     @Test
     public void test_Expression() {
-        Conditions conditions = new Conditions("and", "or");
-        Conditions.Chain condition = conditions
+        Condition conditions = new Condition("and", "or");
+        Condition.Chain condition = conditions
                 .is(conditions.is("ene").and("mene").and("muh"))
                 .and(conditions.is("raus!=langenicht").or("pos(du)==age(du)"));
 

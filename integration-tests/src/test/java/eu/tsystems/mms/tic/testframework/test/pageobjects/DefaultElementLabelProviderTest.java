@@ -23,6 +23,7 @@ package eu.tsystems.mms.tic.testframework.test.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.pageobjects.Aria;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementLabelLocator;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
@@ -34,7 +35,7 @@ public class DefaultElementLabelProviderTest extends TesterraTest implements Log
 
     @Test
     public void test_button() {
-        Locator locator = labelLocator.createLocator(UiElementLabelLocator.BUTTON, "Ich stimme zu");
+        Locator locator = labelLocator.createLocator(Aria.BUTTON, "Ich stimme zu");
         log().info(locator.toString());
     }
 

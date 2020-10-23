@@ -81,8 +81,17 @@ public interface TestController {
     void withTimeout(int seconds, Runnable runnable);
 
     /**
-     * Runs a {@link Runnable} while {@link Throwable} occurs for a specified period
-     * @param seconds Period in seconds
+     * Does the same like {@link #retryFor(int, Runnable, Runnable)}
      */
-    void retryFor(int seconds, Runnable runnable);
+    default void retryFor(int seconds, Runnable runnable) {
+        retryFor(seconds, runnable, null);
+    }
+
+    /**
+     * Runs a {@link Runnable} while {@link Throwable} occurs for a specified period.
+     * @param seconds Period in seconds
+     * @param runnable Runnable
+     * @param whenFail Runnable which gets called when a throwable occurred.
+     */
+    void retryFor(int seconds, Runnable runnable, Runnable whenFail);
 }

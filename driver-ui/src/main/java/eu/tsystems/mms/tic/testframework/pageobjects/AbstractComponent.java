@@ -120,7 +120,7 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
         String name;
 
         if (!hasName()) name = getClass().getSimpleName();
-        else name = getName();
+        else name = this.name;
 
         if (detailed) {
             name += "("+rootElement.getName(detailed)+")";

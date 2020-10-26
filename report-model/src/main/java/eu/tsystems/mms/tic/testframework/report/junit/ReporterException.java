@@ -40,15 +40,13 @@
  * under the License.
  */
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
-
 /**
  * Exception occurring during report generation.
  *
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
  */
 public class ReporterException
-    extends TesterraRuntimeException
+    extends RuntimeException
 {
     public ReporterException( String message, Exception nested )
     {

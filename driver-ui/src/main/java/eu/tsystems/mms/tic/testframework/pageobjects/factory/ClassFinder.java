@@ -22,7 +22,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.factory;
 
 import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
@@ -262,7 +261,7 @@ final class ClassFinder {
         Evaluate
          */
         if (bestMatchingClass == null) {
-            throw new TesterraRuntimeException("Could not find a matching page class implementation for " + baseClass.getSimpleName() +
+            throw new RuntimeException("Could not find a matching page class implementation for " + baseClass.getSimpleName() +
                     "\nMaybe you can solve this by making the base class non-abstract.");
         } else {
             if (viewPortWidth > 0) {

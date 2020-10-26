@@ -23,7 +23,6 @@ package eu.tsystems.mms.tic.testframework.report.test;
 
 import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.report.general.AbstractReportFailuresTest;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
@@ -57,7 +56,7 @@ public class ExitPointsPageTest extends AbstractReportFailuresTest {
             case SystemTestsGroup.SYSTEMTESTSFILTER2:
                 return new TestReportTwoNumbers().getExitPoints();
             default:
-                throw new TesterraRuntimeException("Not implemented for Report: " + reportFilter);
+                throw new RuntimeException("Not implemented for Report: " + reportFilter);
         }
     }
 
@@ -73,7 +72,7 @@ public class ExitPointsPageTest extends AbstractReportFailuresTest {
                 }
                 return counter;
             default:
-                throw new TesterraRuntimeException("Not implemented for Report: " + reportFilter);
+                throw new RuntimeException("Not implemented for Report: " + reportFilter);
         }
     }
 
@@ -83,7 +82,7 @@ public class ExitPointsPageTest extends AbstractReportFailuresTest {
             case SystemTestsGroup.SYSTEMTESTSFILTER2:
                 return TestReportTwoExitPoints.getAllExitPointEntryTestObjects();
             default:
-                throw new TesterraRuntimeException("Not implemented for Report: " + reportFilter);
+                throw new RuntimeException("Not implemented for Report: " + reportFilter);
         }
     }
 

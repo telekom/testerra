@@ -23,7 +23,6 @@
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
@@ -38,7 +37,7 @@ public class Report {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Report.class);
 
-    private static final String DEFAULT_REPORTDIR = "testerra-report";
+    private static final String DEFAULT_REPORTDIR = "static-report";
 
     /**
      * Temporary report directory
@@ -90,7 +89,7 @@ public class Report {
                 LOGGER.info("Report written to " + finalReportDirectory.getAbsolutePath());
             }
         } catch (IOException e) {
-            throw new TesterraRuntimeException("Could not move report dir: " + e.getMessage(), e);
+            throw new RuntimeException("Could not move report dir: " + e.getMessage(), e);
         }
         return finalReportDirectory;
     }

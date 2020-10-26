@@ -21,15 +21,13 @@
  */
 package eu.tsystems.mms.tic.testframework.layout.core;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.report.model.Serial;
+import java.io.Serializable;
+import java.util.HashSet;
 import org.opencv.core.Mat;
 import org.opencv.core.Range;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.Serializable;
-import java.util.HashSet;
 
 /**
  * User: rnhb
@@ -134,7 +132,7 @@ public class LayoutElement implements Serializable {
         }
         colorString = colorString.substring(0, colorString.length() - 1);
         colorString += "]";
-        throw new TesterraRuntimeException("The reference image snippet at " + corners[Corners.UPPER_LEFT.i] + " to " + corners[Corners.LOWER_RIGHT.i] +
+        throw new RuntimeException("The reference image snippet at " + corners[Corners.UPPER_LEFT.i] + " to " + corners[Corners.LOWER_RIGHT.i] +
                 " does only contain the color " + colorString + ". It is highly likely that the annotation is incorrect or " +
                 "uses a wrong Reference Image");
     }

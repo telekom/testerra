@@ -22,7 +22,6 @@
  package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionHandler;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
@@ -277,7 +276,7 @@ public final class WebDriverSessionsManager {
 
     static synchronized String makeSessionExclusive(final WebDriver eventFiringWebDriver) {
         if (!(eventFiringWebDriver instanceof EventFiringWebDriver)) {
-            throw new TesterraRuntimeException("Nah, your WebDriver is not an EventFiringWebDriver.");
+            throw new RuntimeException("Nah, your WebDriver is not an EventFiringWebDriver.");
         }
 
         if (ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.containsValue(eventFiringWebDriver)) {

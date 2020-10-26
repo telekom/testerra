@@ -21,8 +21,6 @@
  */
 package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
-
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import javax.mail.search.AndTerm;
 import javax.mail.search.OrTerm;
 import javax.mail.search.SearchTerm;
@@ -60,7 +58,7 @@ public class SearchCriteria {
      */
     public String getStringValue() {
         if(!(value instanceof String)) {
-            throw new TesterraRuntimeException("Expect String value for SearchCriteria of type " + searchCriteriaType.name());
+            throw new RuntimeException("Expect String value for SearchCriteria of type " + searchCriteriaType.name());
         }
         return (String) value;
     }

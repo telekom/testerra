@@ -22,7 +22,6 @@
 
 package eu.tsystems.mms.tic.testframework.utils;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.utils.xmlutils.AbstractXMLUtils;
 import eu.tsystems.mms.tic.testframework.utils.xmlutils.JDom;
 import eu.tsystems.mms.tic.testframework.utils.xmlutils.JSoup;
@@ -134,7 +133,7 @@ public class XMLUtils extends AbstractXMLUtils {
             T tObject = (T) un.unmarshal(inputStream);
             return tObject;
         } catch (JAXBException e) {
-            throw new TesterraRuntimeException("Cannot unmarshal xml to object.", e);
+            throw new RuntimeException("Cannot unmarshal xml to object.", e);
         }
     }
 
@@ -161,7 +160,7 @@ public class XMLUtils extends AbstractXMLUtils {
             byte[] bytes = os.toByteArray();
             return new String(bytes);
         } catch (JAXBException e) {
-            throw new TesterraRuntimeException("Cannot marshal object to xml.", e);
+            throw new RuntimeException("Cannot marshal object to xml.", e);
         }
     }
 

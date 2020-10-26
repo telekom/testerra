@@ -8,27 +8,33 @@ import {ClassStatistics} from "../../services/statistic-models";
 import IMethodContext = data.IMethodContext;
 import IContextValues = data.IContextValues;
 import ContextValues = data.ContextValues;
+import MethodContext = data.MethodContext;
 
 @autoinject()
 export class Classes {
-  private _classStatistics:ClassStatistics[] = [];
-  private _methodContext: IMethodContext[];
-  constructor(
-    private _dataLoader:DataLoader,
-    private _statusConverter:StatusConverter,
-    private _statisticsGenerator:StatisticsGenerator,
 
+  private _classStatistics: ClassStatistics[] = [];
+  constructor(
+    private _dataLoader: DataLoader,
+    private _statusConverter: StatusConverter,
+    private _statisticsGenerator: StatisticsGenerator,
   ) {
   }
+
   attached() {
     this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
       executionStatistics.classStatistics.forEach(classStatistics => {
         console.log(classStatistics);
-        this._classStatistics.push(classStatistics);
-         //classStatistics.classAggregate.methodContexts.forEach(methodContext=> {
-         // this._methods.errorFingerprint.push(methodContext);
+        this._prepareClasses(this._classStatistics.push(classStatistics));
+        //classStatistics.classAggregate.methodContexts.forEach(methodContext=> {
+        // this._methods.errorFingerprint.push(methodContext);
         // })
       })
     });
   }
+
+  private _prepareClasses(classStatistics) {
+
+  }
 }
+

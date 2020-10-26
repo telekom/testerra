@@ -1,11 +1,13 @@
 <template>
+  <p>${ classStatistics.classAggregate.classContext.fullClassName}</p>
+  <h1 repeat.for="classStatistics of _classStatistics">
+  </h1>
+
+
   <mdc-data-table>
     <mdc-data-table-header>
       <mdc-data-table-header-cell>Classes</mdc-data-table-header-cell>
-      <mdc-data-table-header-cell>Passed</mdc-data-table-header-cell>
-      <mdc-data-table-header-cell>Skipped</mdc-data-table-header-cell>
-      <mdc-data-table-header-cell>Failed</mdc-data-table-header-cell>
-      <mdc-data-table-header-cell>Method name</mdc-data-table-header-cell>
+      <mdc-data-table-header-cell>All Methods</mdc-data-table-header-cell>
     </mdc-data-table-header>
     <mdc-data-table-content>
       <mdc-data-table-row repeat.for="classStatistics of _classStatistics">
@@ -14,12 +16,9 @@
           <mdc-icon class="class-icon" if.bind="classStatistics.overallPassed>0 && classStatistics.overallFailed==0 && classStatistics.overallSkipped==0">done</mdc-icon>
           <span class="classes-name">${classStatistics.classAggregate.classContext.contextValues.name}</span>
         </mdc-data-table-cell>
-        <mdc-data-table-cell numeric>${classStatistics.overallPassed}</mdc-data-table-cell>
-        <mdc-data-table-cell numeric>${classStatistics.overallSkipped}</mdc-data-table-cell>
-        <mdc-data-table-cell numeric>${classStatistics.overallFailed}</mdc-data-table-cell>
-        <mdc-data-table-cell >${classStatistics.classAggregate.methodContexts}</mdc-data-table-cell>
+        <mdc-data-table-cell ><span repeat.for="method of classStatistics.classAggregate.methodContexts"> ${method.contextValues.name}</span>
+         </mdc-data-table-cell>
       </mdc-data-table-row>
     </mdc-data-table-content>
   </mdc-data-table>
-
 </template>

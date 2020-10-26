@@ -19,28 +19,45 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.exceptions;
-
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+package eu.tsystems.mms.tic.testframework.exceptions;
 
 /**
- * Exception indicating an unexpected element was found on a page.
+ * Exception for system internals
  *
  * @author pele
  */
-public class UnexpectedElementFoundException extends RuntimeException {
+public class SystemException extends java.lang.RuntimeException {
 
     /**
-     * Default serial version uid.
+     *
      */
     private static final long serialVersionUID = 1L;
 
     /**
-     * Constructor for this Exception.
+     * Exception with message.
      *
-     * @param guiElement GuiElement that was found but not expected.
+     * @param message The message that should displayed.
      */
-    public UnexpectedElementFoundException(final GuiElement guiElement) {
-        super("The element should NOT be shown: " + guiElement.toString());
+    public SystemException(final String message) {
+        super(message);
+    }
+
+    /**
+     * Exception with message and cause.
+     *
+     * @param message The message that should displayed.
+     * @param cause The Throwable of the exception.
+     */
+    public SystemException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
+
+    /**
+     * Exception with cause.
+     *
+     * @param cause The Throwable of the exception.
+     */
+    public SystemException(final Throwable cause) {
+        super(cause);
     }
 }

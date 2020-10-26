@@ -21,18 +21,24 @@
  */
  package eu.tsystems.mms.tic.testframework.testdata;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <Beschreibung der Klasse>
@@ -179,20 +185,20 @@ public abstract class AbstractXLSIO {
                     .getResourceAsStream(fileInResources);
 
             if (resourceAsStream == null) {
-                throw new TesterraSystemException("Error reading resource file " + fileInResources);
+                throw new SystemException("Error reading resource file " + fileInResources);
             }
 
             try {
                 workbook = WorkbookFactory.create(resourceAsStream);
             } catch (IOException e) {
-                throw new TesterraSystemException("Cannot read xls(x) file: " + fileInResources, e);
+                throw new SystemException("Cannot read xls(x) file: " + fileInResources, e);
             } catch (InvalidFormatException e) {
-                throw new TesterraSystemException("Cannot read xls(x) file: " + fileInResources, e);
+                throw new SystemException("Cannot read xls(x) file: " + fileInResources, e);
             }
             // Get data sheet by name
             sheet = workbook.getSheet(sheetName);
             if (sheet == null) {
-                throw new TesterraSystemException("No sheet with name " + sheetName + " found.");
+                throw new SystemException("No sheet with name " + sheetName + " found.");
             }
             return null;
         }
@@ -214,14 +220,14 @@ public abstract class AbstractXLSIO {
                 FileInputStream fileInputStream = new FileInputStream(filename);
                 workbook = WorkbookFactory.create(fileInputStream);
             } catch (IOException e) {
-                throw new TesterraSystemException("Cannot read xls(x) file: " + filename, e);
+                throw new SystemException("Cannot read xls(x) file: " + filename, e);
             } catch (InvalidFormatException e) {
-                throw new TesterraSystemException("Cannot read xls(x) file: " + filename, e);
+                throw new SystemException("Cannot read xls(x) file: " + filename, e);
             }
             // Get data sheet by name
             sheet = workbook.getSheet(sheetName);
             if (sheet == null) {
-                throw new TesterraSystemException("No sheet with name " + sheetName + " found.");
+                throw new SystemException("No sheet with name " + sheetName + " found.");
             }
 
             return null;
@@ -253,7 +259,7 @@ public abstract class AbstractXLSIO {
                 return row;
             }
         }
-        throw new TesterraSystemException("Could not find a dataset for >" + id + "< in column " + indexColumn
+        throw new SystemException("Could not find a dataset for >" + id + "< in column " + indexColumn
                 + " in current worksheet.");
     }
 

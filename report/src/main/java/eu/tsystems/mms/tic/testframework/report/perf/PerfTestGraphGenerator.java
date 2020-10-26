@@ -20,7 +20,6 @@
  */
 package eu.tsystems.mms.tic.testframework.report.perf;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.TimingInfo;
 import eu.tsystems.mms.tic.testframework.report.GraphGenerator;
 import java.awt.Color;
@@ -1158,7 +1157,7 @@ public class PerfTestGraphGenerator {
      */
     private long getMaxValueOfMap(Map<Integer, Long> responseTimeMap) {
         if (responseTimeMap == null) {
-            throw new TesterraSystemException("Map is null");
+            throw new SystemException("Map is null");
         }
 
         int size = responseTimeMap.size();
@@ -1185,7 +1184,7 @@ public class PerfTestGraphGenerator {
      */
     private long getMinValueOfMap(Map<Integer, Long> responseTimeMap) {
         if (responseTimeMap == null) {
-            throw new TesterraSystemException("Map is null");
+            throw new SystemException("Map is null");
         }
 
         int size = responseTimeMap.size();

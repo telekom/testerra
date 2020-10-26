@@ -21,8 +21,12 @@
  */
  package eu.tsystems.mms.tic.testframework.report.utils;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import org.testng.*;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
+import org.testng.IClass;
+import org.testng.IInvokedMethod;
+import org.testng.ITestContext;
+import org.testng.ITestNGMethod;
+import org.testng.ITestResult;
 
 public final class TestNGHelper {
 
@@ -45,7 +49,7 @@ public final class TestNGHelper {
             }
         }
 
-        throw new TesterraSystemException("Could not get " + scope);
+        throw new SystemException("Could not get " + scope);
     }
 
     public static String getSuiteName(ITestResult testResult, ITestContext testContext) {

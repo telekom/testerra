@@ -22,7 +22,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.factory;
 
 import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
@@ -204,7 +203,7 @@ final class ClassFinder {
             prioritizedClassInfos = Caches.getCache(baseClass, prefix);
 
             if (prioritizedClassInfos == null) {
-                throw new TesterraSystemException("Something went wrong scanning this class for sub types: " + baseClass.getName());
+                throw new SystemException("Something went wrong scanning this class for sub types: " + baseClass.getName());
             }
         }
 

@@ -21,7 +21,7 @@
  */
 package eu.tsystems.mms.tic.testframework.test.testdata;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.test.testdata.implementation.TestCsvReaderBean;
 import eu.tsystems.mms.tic.testframework.test.testdata.implementation.TestCsvReaderBeanWithSubBean;
 import eu.tsystems.mms.tic.testframework.test.testdata.implementation.TestCsvReaderSubBean;
@@ -60,16 +60,16 @@ public class CSVReaderTest {
         final CSVTestDataReader csvTestDataReader = new CSVTestDataReader();
         csvTestDataReader.setHeaderRow(1);
 
-        TesterraSystemException testerraSystemException = null;
+        SystemException systemException = null;
 
         try {
             csvTestDataReader.readCsvTestDataFromResource("testfiles/Not_existing.csv");
-        } catch (TesterraSystemException e) {
-            testerraSystemException = e;
+        } catch (SystemException e) {
+            systemException = e;
         }
 
-        Assert.assertNotNull(testerraSystemException, "Exception thrown.");
-        Assert.assertTrue(testerraSystemException.getMessage().contains("Could not load resource file"));
+        Assert.assertNotNull(systemException, "Exception thrown.");
+        Assert.assertTrue(systemException.getMessage().contains("Could not load resource file"));
     }
 
     @Test

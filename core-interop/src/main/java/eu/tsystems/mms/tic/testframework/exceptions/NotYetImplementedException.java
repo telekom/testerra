@@ -26,7 +26,7 @@
  *
  * @author pele
  */
-public class NotYetImplementedException extends RuntimeException {
+public class NotYetImplementedException extends java.lang.RuntimeException {
 
     /**
      *

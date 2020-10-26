@@ -26,7 +26,7 @@
  *
  * @author pele
  */
-public class TesterraTestFailureException extends RuntimeException {
+public class TestFailureException extends java.lang.RuntimeException {
 
     /**
      * UID
@@ -38,7 +38,7 @@ public class TesterraTestFailureException extends RuntimeException {
      *
      * @param message The message that should displayed.
      */
-    public TesterraTestFailureException(final String message) {
+    public TestFailureException(final String message) {
         super(message);
     }
 
@@ -48,7 +48,7 @@ public class TesterraTestFailureException extends RuntimeException {
      * @param message The message that should displayed.
      * @param cause The Throwable of the exception.
      */
-    public TesterraTestFailureException(final String message, final Throwable cause) {
+    public TestFailureException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
@@ -57,7 +57,7 @@ public class TesterraTestFailureException extends RuntimeException {
      *
      * @param cause The Throwable of the exception.
      */
-    public TesterraTestFailureException(final Throwable cause) {
+    public TestFailureException(final Throwable cause) {
         super(cause);
     }
 }

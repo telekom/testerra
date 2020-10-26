@@ -4,11 +4,10 @@ import {data} from "../../services/report-model";
 import {autoinject} from "aurelia-framework";
 import {StatusConverter} from "../../services/status-converter";
 import {StatisticsGenerator} from "../../services/statistics-generator";
-import {ClassStatistics, ExecutionStatistics} from "../../services/statistic-models";
+import {ExecutionStatistics} from "../../services/statistic-models";
 import moment, {Duration} from 'moment';
 import IExecutionContext = data.IExecutionContext;
 import ResultStatusType = data.ResultStatusType;
-import ContextValues = data.ContextValues;
 
 
 @autoinject()

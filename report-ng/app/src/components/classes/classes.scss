@@ -1,7 +1,16 @@
+@import "../../report-ng/app/src/app";
 .class-icon{
-  position: absolute;
+position: center;
+
 }
 .classes-name{
 color: #5852ff;
-  padding-left: 30px;
+}
+.mdc-data-table__header-cell{
+}
+
+.method-list{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }

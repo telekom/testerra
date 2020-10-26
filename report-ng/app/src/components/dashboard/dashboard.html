@@ -1,5 +1,6 @@
 <template>
   <require from="../../value-converters/duration-format"></require>
+  <require from="../test-results-card/test-results-card"></require>
 
   <div mdc-headline4 class="headline">Test: ${ _executionContext.contextValues.name}</div>
   <div class="layout-grid">
@@ -21,27 +22,8 @@
         </div>
       </mdc-card>
     </div>
-    <div class="grid-cell">
-      <mdc-card outlined="true">
-        <div class="card-content">
-          <button mdc-button outlined class="btn-secondary status-button">
-            <mdc-icon>check</mdc-icon> ${_executionStatistics.overallPassed} Passed
-          </button>
-          <button mdc-button outlined class="btn-secondary status-button">
-            <mdc-icon>radio_button_unchecked</mdc-icon>  ${_executionStatistics.overallSkipped} Skipped
-          </button>
-          <button mdc-button outlined class="btn-secondary status-button">
-            <mdc-icon>highlight_off</mdc-icon>  ${_executionStatistics.overallFailed} failed
-          </button>
-        </div>
-      </mdc-card>
-    </div>
     <div class="grid-cell grid-cell-medium">
-      <mdc-card outlined="true">
-        <div class="card-content">
-          <apex-chart data.bind="_apexPieOptions" id="Pie-chart"></apex-chart>
-        </div>
-      </mdc-card>
+      <test-results-card></test-results-card>
     </div>
     <div class="grid-cell grid-cell-large">
       <mdc-card outlined="true">

@@ -38,17 +38,12 @@
   }
 
   .grid-cell-medium {
-    grid-column-end: span 4;
+    grid-column-end: span 8;
   }
 
   .grid-cell-large {
     grid-column-end: span 12;
   }
-}
-
-.status-button {
-  width: 100%;
-  margin: 0.5em 0;
 }
 
 .duration-info {

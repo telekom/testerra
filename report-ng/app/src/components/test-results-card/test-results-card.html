@@ -1,0 +1,19 @@
+<template>
+  <mdc-card outlined="true">
+    <div class="card-content">
+      <apex-chart data.bind="_apexPieOptions" id="Pie-chart"></apex-chart>
+
+      <div class="results">
+        <button mdc-button outlined class="btn-secondary status-button">
+          <mdc-icon>check</mdc-icon> ${_executionStatistics.overallPassed} Passed
+        </button>
+        <button mdc-button outlined class="btn-secondary status-button">
+          <mdc-icon>radio_button_unchecked</mdc-icon>  ${_executionStatistics.overallSkipped} Skipped
+        </button>
+        <button mdc-button outlined class="btn-secondary status-button">
+          <mdc-icon>highlight_off</mdc-icon>  ${_executionStatistics.overallFailed} failed
+        </button>
+      </div>
+    </div>
+  </mdc-card>
+</template>

@@ -1,18 +1,44 @@
-.card-content {
+#test-results {
   display: flex;
-  justify-content: flex-start;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
-apex-chart {
+#pie-chart {
   display: block;
 }
 
 .results {
-  display: flex;
-  flex-direction: column;
+  width: 100%;
   max-height: 400px;
+  padding: 1em;
+  margin: auto;
 }
 
-.status-button {
-  margin: 0.5em 0;
+.result-card {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0.5em 0
+}
+
+.result-status-icon {
+  font-size: 40px !important;
+}
+
+.result-status-text {
+  text-align: right;
+}
+
+/*Ab mittlerer Bildschirmgröße Darstellung von Chart und absoluten zahlen nebeneinander*/
+@media only screen and (min-width: 1160px) {
+  #test-results {
+    flex-direction: row;
+  }
+
+  #pie-chart {
+    width: 50%;
+  }
 }

@@ -11,7 +11,7 @@
                 <mdc-icon class="result-status-icon">check</mdc-icon>
                 <div class="result-status-text">
                   <div mdc-headline5>${_executionStatistics.overallPassed}</div>
-                  <div mdc-body2>Passed</div>
+                  <div mdc-body2 class="result-status-type">Passed</div>
                 </div>
               </div>
             </mdc-data-table-cell>
@@ -22,7 +22,7 @@
                 <mdc-icon class="result-status-icon">radio_button_unchecked</mdc-icon>
                 <div class="result-status-text">
                   <div mdc-headline5>${_executionStatistics.overallSkipped}</div>
-                  <div mdc-body2>Skipped</div>
+                  <div mdc-body2 class="result-status-type">Skipped</div>
                 </div>
               </div>
             </mdc-data-table-cell>
@@ -33,7 +33,7 @@
                 <mdc-icon class="result-status-icon">highlight_off</mdc-icon>
                 <div class="result-status-text">
                   <div mdc-headline5>${_executionStatistics.overallFailed}</div>
-                  <div mdc-body2>Failed</div>
+                  <div mdc-body2 class="result-status-type">Failed</div>
                 </div>
               </div>
             </mdc-data-table-cell>

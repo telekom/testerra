@@ -32,10 +32,18 @@
   text-align: right;
 }
 
+.result-status-type {
+  color: slategrey !important;
+}
+
 /*Ab mittlerer Bildschirmgröße Darstellung von Chart und absoluten zahlen nebeneinander*/
 @media only screen and (min-width: 1160px) {
   #test-results {
     flex-direction: row;
+  }
+
+  .results {
+    width: 50%;
   }
 
   #pie-chart {

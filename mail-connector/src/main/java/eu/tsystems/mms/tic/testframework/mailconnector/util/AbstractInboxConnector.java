@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -72,7 +71,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
     @Deprecated
     public List<Email> waitForMails(List<SearchCriteria> searchCriterias) throws AddressException {
         EmailQuery query = new EmailQuery();
-        return waitForMails(searchCriterias, query.getRetryCount(), query.getPauseMs()/1000);
+        return waitForMails(searchCriterias, query.getRetryCount(), Math.round(query.getPauseMs()/1000f));
     }
 
     /**
@@ -85,7 +84,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
     @Deprecated
     public List<Email> waitForMails(final SearchTerm searchTerm) {
         EmailQuery query = new EmailQuery();
-        return waitForMails(searchTerm, query.getRetryCount(), query.getPauseMs()/1000);
+        return waitForMails(searchTerm, query.getRetryCount(), Math.round(query.getPauseMs()/1000f));
     }
 
     /**
@@ -98,7 +97,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
     @Deprecated
     public List<Email> waitForMails(final SearchTerm searchTerm, final String folderName) {
         EmailQuery query = new EmailQuery();
-        return waitForMails(searchTerm, query.getRetryCount(), query.getPauseMs()/1000, folderName);
+        return waitForMails(searchTerm, query.getRetryCount(), Math.round(query.getPauseMs()/1000f), folderName);
     }
 
     /**
@@ -217,6 +216,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
      * @param folderName
      * @return
      * @deprecated Use {@link #query(EmailQuery)} instead
+     * @throws RuntimeException When there are no emails present.
      */
     public List<Email> waitForMails(final SearchTerm searchTerm, int maxReadTries, int pollingTimerSeconds, final String folderName) {
         EmailQuery query = new EmailQuery()
@@ -225,84 +225,71 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
                 .setPauseMs(pollingTimerSeconds*1000)
                 .setFolderName(folderName);
 
-        return query(query).collect(Collectors.toList());
+        List<Email> emailList = query(query).collect(Collectors.toList());
+        if (emailList.isEmpty()) {
+            throw new RuntimeException(String.format(
+                    "No messages found after %s seconds.",
+                    pollingTimerSeconds * maxReadTries)
+            );
+        }
+        return emailList;
     }
 
     /**
      * Queries emails by given {@link EmailQuery}
-     * @param query
-     * @return
      */
     public Stream<Email> query(EmailQuery query) {
         String folderName = query.getFolderName();
         if (folderName==null) folderName = getInboxFolder();
 
-        List<MimeMessage> mimeMessages = pWaitForMessage(query.getSearchTerm(), query.getRetryCount(), query.getPauseMs()/1000, folderName);
-        Stream<Email> emailStream = mimeMessages.stream().map(Email::new);
-
-        Predicate<Email> filter = query.getFilter();
-        if (filter != null) emailStream = emailStream.filter(filter);
-
+        Stream<Email> emailStream;
+        try {
+            Stream<MimeMessage> messageStream = waitForMessages(query.getSearchTerm(), query.getRetryCount(), query.getPauseMs(), folderName);
+            emailStream = messageStream.map(Email::new);
+            Predicate<Email> filter = query.getFilter();
+            if (filter != null) emailStream = emailStream.filter(filter);
+        } catch (MessagingException e) {
+            log().error("Error querying mails", e);
+            emailStream = Stream.empty();
+        }
         return emailStream;
     }
 
-    private List<MimeMessage> pWaitForMessage(final SearchTerm searchTerm, int maxReadTries, int pollingTimerSeconds, final String foldername) {
-
+    /**
+     * Waits for messages and returns a stream
+     * @throws MessagingException
+     */
+    private Stream<MimeMessage> waitForMessages(final SearchTerm searchTerm, int maxReadTries, long pauseMs, final String foldername) throws MessagingException {
         if (searchTerm == null) {
             throw new RuntimeException("No SearchTerm given. Can not filter for messages.");
         }
+        Stream<MimeMessage> messageStream = Stream.empty();
+        Store store;
+        for (int i = 0; i < maxReadTries; i++) {
+            Session session = getSession();
+            store = session.getStore();
+            store.connect();
 
-        Store store = null;
+            final Folder folder = store.getFolder(foldername);
+            folder.open(Folder.READ_ONLY);
 
-        List<MimeMessage> out = new LinkedList<>();
-
-        if (maxReadTries < 1) {
-            maxReadTries = 1;
-            log().info("Changing read tries to min value: 1");
-        }
-        if (pollingTimerSeconds < 10) {
-            pollingTimerSeconds = 10;
-            log().info("Changing poller timer to min value: 10s");
-        }
-
-        try {
-            for (int i = 0; i < maxReadTries; i++) {
-                Session session = getSession();
-                store = session.getStore();
-                store.connect();
-
-                final Folder folder = store.getFolder(foldername);
-                folder.open(Folder.READ_ONLY);
-
-                final Message[] messages = folder.search(searchTerm);
-                for (Message message : messages) {
-                    final MimeMessage mimeMessage = new MimeMessage((MimeMessage) message);
-                    out.add(mimeMessage);
-                }
-
-                if (out.size() > 0) {
-                    return out;
-                }
-
-                // sleep for pollingTimerSeconds
-                TimerUtils.sleep(pollingTimerSeconds * 1000, "Waiting for Mail");
-            }
-        }  catch (final Exception e) {
-            log().error("Error searching for message", e);
-            throw new RuntimeException(e);
-        } finally {
-            if (store != null) {
-                try {
-                    store.close();
-                } catch (MessagingException e) {
-                    log().warn("Error closing connection", e);
-                }
+            final Message[] messages = folder.search(searchTerm);
+            if (messages.length == 0) {
+                TimerUtils.sleep(Long.valueOf(pauseMs).intValue(), "waiting for emails");
+            } else {
+                messageStream = Stream.of(messages).map(message -> {
+                    try {
+                        return new MimeMessage((MimeMessage) message);
+                    } catch (MessagingException e) {
+                        log().error("Unable to create message", e);
+                        return null;
+                    }
+                });
+                store.close();
+                break;
             }
         }
-
-        throw new RuntimeException(String.format("No messages found after %s seconds.",
-                pollingTimerSeconds * maxReadTries));
-
+        return messageStream;
     }
 
     /**

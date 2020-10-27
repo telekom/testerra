@@ -30,15 +30,19 @@ import eu.tsystems.mms.tic.testframework.mailconnector.pop3.POP3MailConnector;
 import eu.tsystems.mms.tic.testframework.mailconnector.smtp.SMTPMailConnector;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.AbstractInboxConnector;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.Email;
+import eu.tsystems.mms.tic.testframework.mailconnector.util.EmailQuery;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.MailUtils;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.security.Security;
 import java.util.Date;
+import java.util.stream.Stream;
 import javax.mail.Address;
 import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
@@ -707,5 +711,26 @@ public class MailConnectorTest extends TesterraTest {
 
         final boolean inboxEmpty = (abstractInboxConnector.getMessageCount() == 0);
         Assert.assertTrue(inboxEmpty, "Mail box is empty");
+    }
+
+    @Test
+    public void testPollingTimeout() {
+        int initPause = 400;
+        int initRetry = 3;
+        EmailQuery query = new EmailQuery()
+                .setPauseMs(initPause)
+                .setRetryCount(initRetry)
+                .setSearchTerm(new SubjectTerm("404: Not Found"))
+                ;
+
+        Assert.assertEquals(query.getPauseMs(), initPause);
+        Assert.assertEquals(query.getRetryCount(), initRetry);
+
+        long startTime = System.currentTimeMillis();
+        Stream<Email> emails = this.imap.query(query);
+        Assert.assertEquals(emails.count(), 0);
+        long endTime = System.currentTimeMillis()-startTime;
+
+        AssertUtils.assertGreaterEqualThan(new BigDecimal(endTime), new BigDecimal(initPause * initRetry), "Invalid polling time");
     }
 }

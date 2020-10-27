@@ -12,7 +12,6 @@ import ResultStatusType = data.ResultStatusType;
 
 @autoinject()
 export class Dashboard {
-  private _apexPieOptions: any = undefined;
   private _apexBarOptions: any = undefined;
   private _testDuration: Duration = moment.duration(0);
   private _hasFinished: boolean = true;
@@ -33,7 +32,6 @@ export class Dashboard {
       this._executionContext = executionStatistics.executionAggregate.executionContext;
 
       this._prepareDuration(this._executionContext.contextValues)
-      this._preparePieChart(this._executionStatistics);
       this._prepareHorizontalBarChart(this._executionStatistics.classStatistics);
     })
   }
@@ -43,21 +41,6 @@ export class Dashboard {
       this._hasFinished = false;
     } else {
       this._testDuration = moment.duration(<number>contextValues.endTime - <number>contextValues.startTime);
-    }
-  }
-
-  private _preparePieChart(executionStatistics: ExecutionStatistics): void {
-    this._apexPieOptions = {
-      chart: {
-        type: 'pie',
-        width: '400px',
-        fontFamily: 'Roboto'
-      },
-      series: [executionStatistics.overallPassed, executionStatistics.overallFailed, executionStatistics.overallSkipped],
-      labels: ["passed", "failed", "skipped"],
-      colors:[this._statusConverter.colorFor(ResultStatusType.PASSED),
-              this._statusConverter.colorFor(ResultStatusType.FAILED),
-              this._statusConverter.colorFor(ResultStatusType.SKIPPED)]
     }
   }
 

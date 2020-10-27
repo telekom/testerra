@@ -1,11 +1,12 @@
 <template>
   <require from="../../value-converters/duration-format"></require>
+  <require from="../test-results-card/test-results-card"></require>
 
   <div mdc-headline4 class="headline">Test: ${ _executionContext.contextValues.name}</div>
   <div class="layout-grid">
     <div class="grid-cell">
       <mdc-card outlined="true">
-        <mdc-primary-action>
+        <div class="card-content">
           <div mdc-body1 class="duration-info">
             Started: ${_executionContext.contextValues.startTime|dateFormat:"LLL"}
             <p id="duration">
@@ -18,30 +19,17 @@
               Running...
             </p>
           </div>
-        </mdc-primary-action>
-      </mdc-card>
-    </div>
-    <div class="grid-cell">
-      <mdc-card outlined="true">
-        <button mdc-button outlined class="btn-secondary">
-          <mdc-icon>check</mdc-icon> ${_executionStatistics.overallPassed} Passed
-        </button>
-        <button mdc-button outlined class="btn-secondary">
-          <mdc-icon>radio_button_unchecked</mdc-icon>  ${_executionStatistics.overallSkipped} Skipped
-        </button>
-        <button mdc-button outlined class="btn-secondary">
-          <mdc-icon>highlight_off</mdc-icon>  ${_executionStatistics.overallFailed} failed
-        </button>
+        </div>
       </mdc-card>
     </div>
     <div class="grid-cell grid-cell-medium">
-      <mdc-card outlined="true">
-        <apex-chart data.bind="_apexPieOptions" id="Pie-chart"></apex-chart>
-      </mdc-card>
+      <test-results-card></test-results-card>
     </div>
     <div class="grid-cell grid-cell-large">
       <mdc-card outlined="true">
-        <apex-chart data.bind="_apexBarOptions" id="bar-chart"></apex-chart>
+        <div class="card-content">
+          <apex-chart data.bind="_apexBarOptions" id="bar-chart"></apex-chart>
+        </div>
       </mdc-card>
     </div>
   </div>

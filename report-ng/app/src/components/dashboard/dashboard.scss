@@ -10,6 +10,10 @@
   min-height: 300px;
 }
 
+.card-content {
+  margin: auto 0;
+}
+
 .grid-cell {
   grid-column-end: span 12;
 }
@@ -34,15 +38,13 @@
   }
 
   .grid-cell-medium {
-    grid-column-end: span 4;
+    grid-column-end: span 8;
   }
 
   .grid-cell-large {
     grid-column-end: span 12;
   }
 }
-
-
 
 .duration-info {
   text-align: center;

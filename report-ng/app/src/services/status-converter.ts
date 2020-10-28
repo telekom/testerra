@@ -135,7 +135,7 @@ export class StatusConverter {
         // If finished, the result status will be checked for a detailed status
         switch (resultStatus) {
           case ResultStatusType.PASSED:
-            return ".mdi .mdi-check-circle-outline";
+            return "done";
           case ResultStatusType.FAILED:
             return ".mdi .mdi-alert-circle-outline";
           //case ResultStatusType.NO_RUN:
@@ -145,7 +145,7 @@ export class StatusConverter {
       case ExecStatusType.ABORTED:
         return '.mdi .mdi-close-circle-outline';
       case ExecStatusType.CRASHED:
-        return '.mdi .mdi-skull-outline';
+        return 'close';
       default:
         return '.mdi .mdi-skull-outline';
     }

@@ -18,3 +18,19 @@ HttpsURLConnection CertUtils.trustAllCerts(
     SSLSocketFactory sslSocketFactory
 );
 ----
+
+== Trusting hosts
+
+You can trust specified hosts in a whitespace separated list like
+
+[source, properties]
+----
+tt.cert.trusted.hosts=example.com google.com
+----
+
+Or just trust any (**not recommended**)
+
+[source, properties]
+----
+tt.cert.trusted.hosts=*
+----

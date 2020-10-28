@@ -164,6 +164,27 @@ imapMailConnector.markAllMailsAsSeen();
 imapMailConnector.deleteAllMessages();
 ----
 
+== Trusting hosts for self-signed certificates
+
+The MailConnector uses <<Certificate Utilities>> for trusting hosts.
+
+== Custom configuration
+
+You can set properties to the `JavaMail` framework like:
+
+[source,java]
+----
+connector.configureSessionProperties(properties -> {
+    String protocol = properties.getProperty("mail.store.protocol");
+    properties.put("mail."+protocol+".auth.ntlm.disable", true);
+});
+----
+
+See the original documentation for more information:
+  * IMAP: https://eclipse-ee4j.github.io/mail/docs/api/com/sun/mail/imap/package-summary.html
+  * SMTP: https://eclipse-ee4j.github.io/mail/docs/api/com/sun/mail/smtp/package-summary.html
+  * POP3: https://eclipse-ee4j.github.io/mail/docs/api/com/sun/mail/pop3/package-summary.html
+
 == Best Practices
 
 === Combine search terms

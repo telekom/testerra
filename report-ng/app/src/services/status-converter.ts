@@ -130,20 +130,20 @@ export class StatusConverter {
         return 'clock';
       case ExecStatusType.PROVISIONING:
       case ExecStatusType.RUNNING:
-        return '.mdi .mdi-spin .mdi-loading';
+        return '.mdi .mdi-spin .mdi-loading'; // looks like cube
       case ExecStatusType.FINISHED:
         // If finished, the result status will be checked for a detailed status
         switch (resultStatus) {
           case ResultStatusType.PASSED:
             return "done";
           case ResultStatusType.FAILED:
-            return ".mdi .mdi-alert-circle-outline";
+            return "error_outline";
           //case ResultStatusType.NO_RUN:
           default:
-            return '.mdi .mdi-checkbox-blank-circle-outline';
+            return 'radio_button_unchecked'; // looks like outline circle
         }
       case ExecStatusType.ABORTED:
-        return '.mdi .mdi-close-circle-outline';
+        return 'highlight_off';
       case ExecStatusType.CRASHED:
         return 'close';
       default:

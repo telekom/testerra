@@ -20,6 +20,11 @@
   grid-column-end: span 12;
 }
 
+.headline{
+   padding-bottom: 1em;
+ }
+
+
 @media only screen and (max-width: 1599px) and (min-width: 1160px) {
   .grid-cell {
     grid-column-end: span 12;
@@ -48,16 +53,3 @@
   }
 }
 
-.duration-info {
-  text-align: center;
-  padding: 1em;
-
-  #duration{
-    padding: 0.75em 0;
-    font-size: 2em;
-  }
-}
-
-.headline{
-  padding-bottom: 1em;
-}

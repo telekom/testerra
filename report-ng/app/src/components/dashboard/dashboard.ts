@@ -5,7 +5,6 @@ import {autoinject} from "aurelia-framework";
 import {StatusConverter} from "../../services/status-converter";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {ExecutionStatistics} from "../../services/statistic-models";
-import moment, {Duration} from 'moment';
 import IExecutionContext = data.IExecutionContext;
 import ResultStatusType = data.ResultStatusType;
 
@@ -13,8 +12,6 @@ import ResultStatusType = data.ResultStatusType;
 @autoinject()
 export class Dashboard {
   private _apexBarOptions: any = undefined;
-  private _testDuration: Duration = moment.duration(0);
-  private _hasFinished: boolean = true;
 
   _executionContext: IExecutionContext;
   private _executionStatistics: ExecutionStatistics;
@@ -31,17 +28,8 @@ export class Dashboard {
       this._executionStatistics = executionStatistics;
       this._executionContext = executionStatistics.executionAggregate.executionContext;
 
-      this._prepareDuration(this._executionContext.contextValues)
       this._prepareHorizontalBarChart(this._executionStatistics.classStatistics);
     })
-  }
-
-  private _prepareDuration(contextValues: data.IContextValues): void {
-    if (contextValues.endTime == null) {
-      this._hasFinished = false;
-    } else {
-      this._testDuration = moment.duration(<number>contextValues.endTime - <number>contextValues.startTime);
-    }
   }
 
   private _prepareHorizontalBarChart(classStatistics): void{

@@ -1,26 +1,11 @@
 <template>
-  <require from="../../value-converters/duration-format"></require>
+  <require from="../test-duration-card/test-duration-card"></require>
   <require from="../test-results-card/test-results-card"></require>
 
   <div mdc-headline4 class="headline">Test: ${ _executionContext.contextValues.name}</div>
   <div class="layout-grid">
     <div class="grid-cell">
-      <mdc-card outlined="true">
-        <div class="card-content">
-          <div mdc-body1 class="duration-info">
-            Started: ${_executionContext.contextValues.startTime|dateFormat:"LLL"}
-            <p id="duration">
-              <mdc-icon>timer</mdc-icon> Duration: ${_testDuration |durationFormat}
-            </p>
-            <p if.bind="_hasFinished">
-              Ended: ${_executionContext.contextValues.endTime|dateFormat:"LLL"} <br>
-            </p>
-            <p else>
-              Running...
-            </p>
-          </div>
-        </div>
-      </mdc-card>
+      <test-duration-card></test-duration-card>
     </div>
     <div class="grid-cell grid-cell-medium">
       <test-results-card></test-results-card>

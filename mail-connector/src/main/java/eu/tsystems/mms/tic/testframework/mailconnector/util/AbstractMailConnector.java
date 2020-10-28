@@ -121,6 +121,8 @@ public abstract class AbstractMailConnector implements Loggable {
             this.sessionPropertiesConfigurationConsumer.accept(mailProperties);
         }
 
+        log().info(String.format("Connecting to %s://%s@%s:%s", protocol, getUsername(), getServer(), getPort()));
+
         Session session = Session.getInstance(
                 mailProperties,
                 new Authenticator() {

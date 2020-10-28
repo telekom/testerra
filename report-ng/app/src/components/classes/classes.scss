@@ -1,18 +1,25 @@
 @import "../../report-ng/app/src/app";
 .class-icon{
-position: center;
+  position: center;
+  vertical-align: text-top;
 
 }
 .classes-name{
-color: #5852ff;
-  ;
+  color: #5852ff;
 }
+
+.mdc-data-table__cell{
+  vertical-align: text-top;
+  padding-top:1em;
+  padding-bottom: 0.5em;
+ }
 .mdc-data-table__header-cell{
 }
 
 .method-list{
   list-style-type: none;
   margin: 0;
-  padding: 1em 0 1em 0 ;
+  padding: 0.5em 0 0.5em 0 ;
 
 }
+

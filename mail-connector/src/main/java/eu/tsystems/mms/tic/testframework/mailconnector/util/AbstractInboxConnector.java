@@ -249,8 +249,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
             Predicate<Email> filter = query.getFilter();
             if (filter != null) emailStream = emailStream.filter(filter);
         } catch (MessagingException e) {
-            log().error("Error querying mails", e);
-            emailStream = Stream.empty();
+            throw new RuntimeException("Could not query emails", e);
         }
         return emailStream;
     }
@@ -263,11 +262,16 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
         if (searchTerm == null) {
             throw new RuntimeException("No SearchTerm given. Can not filter for messages.");
         }
+
         Stream<MimeMessage> messageStream = Stream.empty();
-        Store store;
+
+        if (maxReadTries < 1) {
+            maxReadTries = 1;
+        }
+
         for (int i = 0; i < maxReadTries; i++) {
             Session session = getSession();
-            store = session.getStore();
+            Store store = session.getStore();
             store.connect();
 
             final Folder folder = store.getFolder(foldername);
@@ -275,7 +279,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
 
             final Message[] messages = folder.search(searchTerm);
             if (messages.length == 0) {
-                TimerUtils.sleep(Long.valueOf(pauseMs).intValue(), "waiting for emails");
+                TimerUtils.sleep(Long.valueOf(pauseMs).intValue(), "waiting for emails (try: " + (i+1) +"/" + maxReadTries + ")");
             } else {
                 messageStream = Stream.of(messages).map(message -> {
                     try {
@@ -585,6 +589,9 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
         return true;
     }
 
+    /**
+     * @deprecated Use {@link #deleteMessage(SearchTerm)} instead
+     */
     @Deprecated
     public boolean deleteMessage(List<String> deleteCriteriaValues, DeleteCriteriaType deleteCriteriaType) {
         return deleteMessages(deleteCriteriaValues, deleteCriteriaType);

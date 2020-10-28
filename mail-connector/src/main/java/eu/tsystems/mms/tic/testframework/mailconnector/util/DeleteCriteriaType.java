@@ -21,9 +21,15 @@
  */
 package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
+@Deprecated
 public enum DeleteCriteriaType {
     /**
      * criteria to delete messages
      */
-    RECIPIENT, SUBJECT, MESSAGEID;
+    @Deprecated
+    RECIPIENT,
+    @Deprecated
+    SUBJECT,
+    @Deprecated
+    MESSAGEID;
 }

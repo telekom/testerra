@@ -24,18 +24,15 @@ package eu.tsystems.mms.tic.testframework.mailconnector.imap;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.AbstractInboxConnector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.util.Properties;
 import javax.mail.Flags.Flag;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
 import javax.mail.Store;
-import java.util.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * MailConnector using the IMAP Protocol. Creates a session with values from mailconnection.properties.
@@ -52,66 +49,39 @@ public class ImapMailConnector extends AbstractInboxConnector {
      * Constructor, creates a ImapMailConnector object.
      */
     public ImapMailConnector() {
-        this.init();
+        super();
+        init();
     }
 
     /**
      * Called from constructor. Initializes the ImapMailConnector.
      */
     private void init() {
-        PropertyManager.loadProperties("mailconnection.properties");
         setServer(PropertyManager.getProperty("IMAP_SERVER", null));
-        setPort(PropertyManager.getProperty("IMAP_SERVER_PORT",
-                null));
-        setInboxFolder(PropertyManager.getProperty(
-                "IMAP_FOLDER_INBOX", null));
-        setUsername(PropertyManager.getProperty("IMAP_USERNAME",
-                null));
-        setPassword(PropertyManager.getProperty("IMAP_PASSWORD",
-                null));
+        setPort(PropertyManager.getProperty("IMAP_SERVER_PORT", null));
+        setInboxFolder(PropertyManager.getProperty("IMAP_FOLDER_INBOX", null));
+        setUsername(PropertyManager.getProperty("IMAP_USERNAME", null));
+        setPassword(PropertyManager.getProperty("IMAP_PASSWORD", null));
+        setSslEnabled(PropertyManager.getBooleanProperty("IMAP_SSL_ENABLED", true));
 
         setDebug(PropertyManager.getBooleanProperty("DEBUG_SETTING", false));
-        setSslEnabled(PropertyManager.getBooleanProperty(
-                "IMAP_SSL_ENABLED", false));
     }
 
     /**
      * Open a new IMAP Session and save in session object.
+     * @see {https://eclipse-ee4j.github.io/mail/docs/api/com/sun/mail/imap/package-summary.html}
      */
     @Override
     protected void openSession() {
         final Properties mailprops = new Properties();
-        LOGGER.info("Setting host: " + getServer());
-        LOGGER.info("Setting port: " + getPort());
-        LOGGER.info("Setting sslEnabled: " + isSslEnabled());
 
         if (isSslEnabled()) {
-            mailprops.put("mail.imaps.host", getServer());
-            mailprops.put("mail.imaps.port", getPort());
-            mailprops.put("mail.imaps.protocol", "imaps");
-            mailprops.put("mail.imaps.socketFactory.port", getPort());
-            mailprops.put("mail.imaps.socketFactory.class",
-                    "eu.tsystems.mms.tic.testframework.mailconnector.TesterraSSLSocketFactory");
             mailprops.put("mail.store.protocol", "imaps");
         } else {
-            mailprops.put("mail.imap.host", getServer());
-            mailprops.put("mail.imap.port", getPort());
             mailprops.put("mail.store.protocol", "imap");
         }
 
-        mailprops.put("mail.user", getUsername());
-        mailprops.put("mail.debug", isDebug());
-
-        LOGGER.info("building session");
-        setSession(Session.getInstance(mailprops,
-                new javax.mail.Authenticator() {
-                    @Override
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(getUsername(),
-                                getPassword());
-                    }
-                }));
-        getSession().setDebug(isDebug());
+        setSession(createDefaultSession(mailprops, mailprops.getProperty("mail.store.protocol")));
     }
 
     /**

@@ -25,27 +25,24 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.AbstractMailConnector;
-import net.iharder.Base64;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.io.File;
+import java.io.IOException;
+import java.util.Properties;
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.mail.Message;
 import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import java.io.File;
-import java.io.IOException;
-import java.util.Properties;
+import net.iharder.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * MailConnector using the SMTP Protocol. Creates a session with values from mailconnection.properties.
@@ -72,6 +69,7 @@ public class SMTPMailConnector extends AbstractMailConnector {
      * Constructor, creates a SMTPMailConnector Object.
      */
     public SMTPMailConnector() {
+        super();
         this.init();
     }
 
@@ -79,8 +77,6 @@ public class SMTPMailConnector extends AbstractMailConnector {
      * Called from constructor. Initializes the ImapMailConnector.
      */
     private void init() {
-        PropertyManager.loadProperties("mailconnection.properties");
-
         setUsername(PropertyManager.getProperty("SMTP_USERNAME", null));
         setPassword(PropertyManager.getProperty("SMTP_PASSWORD", null));
         setServer(PropertyManager.getProperty("SMTP_SERVER", null));
@@ -92,47 +88,22 @@ public class SMTPMailConnector extends AbstractMailConnector {
 
     /**
      * Open a new SMTP Session and save in session object.
+     * @see {https://eclipse-ee4j.github.io/mail/docs/api/com/sun/mail/smtp/package-summary.html}
      */
     @Override
     protected void openSession() {
         final Properties mailprops = new Properties();
-        LOGGER.info("Setting host: " + getServer());
-        LOGGER.info("Setting port: " + getPort());
-        LOGGER.info("Setting SSL enabled: " + isSslEnabled());
-
+        String protocol;
         if (isSslEnabled()) {
-            mailprops.put("mail.transport.protocol", "smtps");
-            mailprops.put("mail.smtps.host", getServer());
-            mailprops.put("mail.smtps.port", getPort());
-            mailprops.put("mail.smtp.ssl.enable", true);
-            mailprops.put("mail.smtps.user", getUsername());
-            mailprops.put("mail.smtps.password", getPassword());
+            protocol = "smtps";
         } else {
-            mailprops.put("mail.transport.protocol", "smtp");
-            mailprops.put("mail.smtp.host", getServer());
-            mailprops.put("mail.smtp.port", getPort());
-            mailprops.put("mail.smtp.user", getUsername());
-            mailprops.put("mail.smtp.password", getPassword());
+            protocol = "smtp";
         }
 
-        mailprops.put("mail.smtp.auth", "true");
-        mailprops.put("mail.debug", isDebug());
-        mailprops.put("mail.smtp.socketFactory.port", getPort());
-        mailprops.put("mail.smtp.socketFactory.class",
-                "eu.tsystems.mms.tic.testframework.mailconnector.TesterraSSLSocketFactory");
+        mailprops.setProperty("mail.transport.protocol", protocol);
+        mailprops.put("mail."+protocol+".auth", "true");
 
-        LOGGER.info("building session");
-        setSession(Session.getInstance(mailprops,
-                new javax.mail.Authenticator() {
-                    @Override
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(getUsername(), getPassword());
-                    }
-                }
-
-        ));
-        getSession().setDebug(isDebug());
-        LOGGER.info("Done.");
+        setSession(createDefaultSession(mailprops, protocol));
     }
 
     /**

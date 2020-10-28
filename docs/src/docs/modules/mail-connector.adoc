@@ -175,8 +175,7 @@ You can set properties to the `JavaMail` framework like:
 [source,java]
 ----
 connector.configureSessionProperties(properties -> {
-    String protocol = properties.getProperty("mail.store.protocol");
-    properties.put("mail."+protocol+".auth.ntlm.disable", true);
+    properties.put("mail.imaps.auth.ntlm.disable", true);
 });
 ----
 

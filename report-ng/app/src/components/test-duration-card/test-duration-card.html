@@ -1,0 +1,20 @@
+<template>
+  <require from="../../value-converters/duration-format"></require>
+
+  <mdc-card outlined="true">
+    <div class="card-content">
+      <div mdc-body1 class="duration-info">
+        Started: ${_executionContext.contextValues.startTime|dateFormat:"LLL"}
+        <p id="duration">
+          <mdc-icon>timer</mdc-icon> Duration: ${_testDuration |durationFormat}
+        </p>
+        <p if.bind="_hasFinished">
+          Ended: ${_executionContext.contextValues.endTime|dateFormat:"LLL"} <br>
+        </p>
+        <p else>
+          Running...
+        </p>
+      </div>
+    </div>
+  </mdc-card>
+</template>

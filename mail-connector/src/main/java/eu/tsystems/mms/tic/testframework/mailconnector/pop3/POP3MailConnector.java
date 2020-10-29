@@ -24,8 +24,6 @@ package eu.tsystems.mms.tic.testframework.mailconnector.pop3;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.AbstractInboxConnector;
 import java.util.Properties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * MailConnector using the POP3 Protocol. Creates a session with values from mailconnection.properties.
@@ -33,11 +31,6 @@ import org.slf4j.LoggerFactory;
  * @author pele, mrgi
  */
 public class POP3MailConnector extends AbstractInboxConnector {
-
-    /**
-     * The Logger.
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(POP3MailConnector.class);
 
     /**
      * Constructor, creates a POP3MailConnector Object.

@@ -24,16 +24,15 @@ package eu.tsystems.mms.tic.testframework.mailconnector.smtp;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.AbstractMailConnector;
 import java.io.File;
-import java.io.IOException;
 import java.util.Properties;
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.mail.Message;
 import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
-import javax.mail.NoSuchProviderException;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -49,7 +48,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author pele, mrgi
  */
-public class SMTPMailConnector extends AbstractMailConnector {
+public class SMTPMailConnector extends AbstractMailConnector implements Loggable {
 
     /**
      * The Logger.
@@ -136,13 +135,11 @@ public class SMTPMailConnector extends AbstractMailConnector {
             }
 
             transport.sendMessage(message, message.getAllRecipients());
-            LOGGER.info("Message sent! ");
+            log().info("Message sent! ");
             transport.close();
             this.lastSentMessage = message;
-        } catch (final NoSuchProviderException e) {
-            LOGGER.error(e.getMessage(), e);
-        } catch (final MessagingException e) {
-            throw new TesterraSystemException("Email NOT sent! " + e.getMessage(), e);
+        } catch (final Exception e) {
+            log().error("Unable to send email", e);
         }
     }
 
@@ -169,7 +166,7 @@ public class SMTPMailConnector extends AbstractMailConnector {
             attachment.setFileName(file.getName());
             attachment.setDisposition(MimeBodyPart.ATTACHMENT);
         } catch (final MessagingException e) {
-            LOGGER.error(e.getMessage());
+            log().error("Unable to create attachment", e);
         }
 
         return attachment;
@@ -207,10 +204,8 @@ public class SMTPMailConnector extends AbstractMailConnector {
 
             message.setContent(mimeMultipart);
             message.saveChanges();
-        } catch (final MessagingException e) {
-            LOGGER.error(e.getLocalizedMessage());
-        } catch (final IOException e) {
-            LOGGER.error(e.getLocalizedMessage());
+        } catch (final Exception e) {
+            log().error("Unable to add attachment", e);
         }
 
         return (MimeMessage) message;

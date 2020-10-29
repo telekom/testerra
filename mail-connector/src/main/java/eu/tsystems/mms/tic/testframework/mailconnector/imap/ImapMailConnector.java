@@ -23,6 +23,7 @@ package eu.tsystems.mms.tic.testframework.mailconnector.imap;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.AbstractInboxConnector;
 import java.util.Properties;
 import javax.mail.Flags.Flag;
@@ -31,19 +32,13 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
 import javax.mail.Store;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * MailConnector using the IMAP Protocol. Creates a session with values from mailconnection.properties.
  *
  * @author mibu
  */
-public class ImapMailConnector extends AbstractInboxConnector {
-
-    /** The Logger. */
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(ImapMailConnector.class);
+public class ImapMailConnector extends AbstractInboxConnector implements Loggable {
 
     /**
      * Constructor, creates a ImapMailConnector object.
@@ -112,10 +107,10 @@ public class ImapMailConnector extends AbstractInboxConnector {
             }
             store.close();
         } catch (final NoSuchProviderException e) {
-            LOGGER.error(e.getMessage());
+            log().error(e.getMessage());
             throw new TesterraSystemException(e);
         } catch (final MessagingException e) {
-            LOGGER.error(e.getMessage());
+            log().error(e.getMessage());
             throw new TesterraSystemException(e);
         }
     }

@@ -21,35 +21,28 @@
  */
 package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
-import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.mail.Address;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.internet.MimeMessage;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.IllegalCharsetNameException;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import javax.mail.Address;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.internet.MimeMessage;
+import org.apache.commons.io.IOUtils;
 
 /**
  * E-Mail Objekt, das alle Inhalte eines javax.mail.Message-Objekts ausliest.
  *
  * @author sepr, clgr
  */
-public class Email {
-
-    /**
-     * Logger.
-     */
-    protected static final Logger LOGGER = LoggerFactory.getLogger(Email.class);
-
+public class Email implements Loggable {
     /**
      * Liste von Anhängen der Mail.
      */
@@ -217,9 +210,7 @@ public class Email {
                     try {
                         mail = IOUtils.toString(is, encoding).replaceAll("\r", "");
                     } catch (IllegalCharsetNameException e) {
-                        LOGGER.info(
-                                "Der Inhalt des Anhangs konnte nicht ermittelt werden, "
-                                        + "es wird der Name zur\u00fcckgegeben!");
+                        log().error("Unable to encode attachement", e);
                         mail = null;
                     }
                     attachmentName = ((Multipart) message.getContent()).getBodyPart(j).getFileName();
@@ -238,7 +229,7 @@ public class Email {
                 messageText = IOUtils.toString(is, encoding).replaceAll("\r", "");
             }
         } catch (MessagingException | IOException ex) {
-            LOGGER.error("error reading details from mail", ex);
+            log().error("Unable to read email details", ex);
         }
     }
 
@@ -262,9 +253,11 @@ public class Email {
             if (index > 0) {
                 encoding = encoding.substring(0, encoding.indexOf(';'));
             }
+            // Remove quotes from encoding string
+            encoding = encoding.replace("\"", "");
         } else {
-            LOGGER.warn("No Encoding found in Mail. Using 'UTF-8' instead.");
-            encoding = "UTF-8";
+            log().warn("No encoding found in email. Using '" + StandardCharsets.UTF_8.name() + "' instead");
+            encoding = StandardCharsets.UTF_8.name();
         }
 
         return encoding;

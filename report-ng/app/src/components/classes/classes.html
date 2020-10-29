@@ -1,9 +1,4 @@
 <template>
-  <p>${ classStatistics.classAggregate.classContext.fullClassName}</p>
-  <h1 repeat.for="classStatistics of _classStatistics">
-  </h1>
-
-
   <mdc-data-table>
     <mdc-data-table-header>
       <mdc-data-table-header-cell>Status</mdc-data-table-header-cell>
@@ -23,8 +18,13 @@
           <span class="classes-name">${classStatistics.classAggregate.classContext.contextValues.name}</span>
         </mdc-data-table-cell>
         <mdc-data-table-cell >
-          <ul  class="method-list" repeat.for="method of classStatistics.classAggregate.methodContexts">
-            <li>${method.contextValues.name}</li>
+          <ul  class="method-list" repeat.for="_method of classStatistics.classAggregate.methodContexts">
+            <li>
+              <mdc-icon>${ _statusConverter.iconClassesFor(_method.contextValues.resultStatus)}</mdc-icon>
+              <span>${ _method.contextValues.resultStatus}</span>
+              <span>${_method.contextValues.name}</span>
+            </li>
+            <li></li>
           </ul>
          </mdc-data-table-cell>
       </mdc-data-table-row>

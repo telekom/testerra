@@ -59,7 +59,7 @@ public class POP3MailConnector extends AbstractInboxConnector {
 
         // Password may needs to be encoded
         setDebug(PropertyManager.getBooleanProperty("DEBUG_SETTING", false));
-        setSslEnabled(PropertyManager.getBooleanProperty("POP3_SSL_ENABLED", false));
+        setSslEnabled(PropertyManager.getBooleanProperty("POP3_SSL_ENABLED", true));
     }
 
     /**

@@ -1,35 +1,30 @@
 import {data} from "../../services/report-model";
 import {autoinject} from "aurelia-framework";
+import {EventAggregator} from 'aurelia-event-aggregator';
 import "./test-results-card.css";
 import {StatusConverter} from "../../services/status-converter";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {ExecutionStatistics} from "../../services/statistic-models";
 import ApexOptions = ApexCharts.ApexOptions;
-import IExecutionContext = data.IExecutionContext;
 import ResultStatusType = data.ResultStatusType;
-
-
 
 @autoinject
 export class TestResultsCard {
   private _apexPieOptions: ApexOptions = undefined;
-
-  _executionContext: IExecutionContext;
-  private _executionStatistics: ExecutionStatistics;
+  private _executionStatistics;
 
   constructor(
     private _statusConverter: StatusConverter,
-    private _statisticsGenerator: StatisticsGenerator) {
-
+    private _statisticsGenerator: StatisticsGenerator,
+    private _eventAggregator: EventAggregator
+  ) {
   }
 
   attached() {
-    this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
-      this._executionStatistics = executionStatistics;
-      this._executionContext = executionStatistics.executionAggregate.executionContext;
-
-      this._preparePieChart(this._executionStatistics);
-    })
+    this._eventAggregator.subscribe('executionStatistics', payload => {
+      this._executionStatistics = payload;
+      this._preparePieChart(payload);
+    });
   }
 
   private _preparePieChart(executionStatistics: ExecutionStatistics): void {

@@ -1,6 +1,7 @@
 <template>
   <require from="../test-duration-card/test-duration-card"></require>
   <require from="../test-results-card/test-results-card"></require>
+  <require from="../test-classes-card/test-classes-card"></require>
 
   <div mdc-headline4 class="headline">Test: ${ _executionContext.contextValues.name}</div>
   <div class="layout-grid">
@@ -11,11 +12,7 @@
       <test-results-card></test-results-card>
     </div>
     <div class="grid-cell grid-cell-large">
-      <mdc-card outlined="true">
-        <div class="card-content">
-          <apex-chart data.bind="_apexBarOptions" id="bar-chart"></apex-chart>
-        </div>
-      </mdc-card>
+      <test-classes-card></test-classes-card>
     </div>
   </div>
 </template>

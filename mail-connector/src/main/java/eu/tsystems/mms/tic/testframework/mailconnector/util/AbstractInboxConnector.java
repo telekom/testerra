@@ -244,8 +244,8 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
 
         Stream<Email> emailStream;
         try {
-            Stream<MimeMessage> messageStream = waitForMessages(query.getSearchTerm(), query.getRetryCount(), query.getPauseMs(), folderName);
-            emailStream = messageStream.map(Email::new);
+            List<MimeMessage> messageStream = waitForMessages(query.getSearchTerm(), query.getRetryCount(), query.getPauseMs(), folderName);
+            emailStream = messageStream.stream().map(Email::new);
             Predicate<Email> filter = query.getFilter();
             if (filter != null) emailStream = emailStream.filter(filter);
         } catch (MessagingException e) {
@@ -258,12 +258,12 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
      * Waits for messages and returns a stream
      * @throws MessagingException
      */
-    private Stream<MimeMessage> waitForMessages(final SearchTerm searchTerm, int maxReadTries, long pauseMs, final String foldername) throws MessagingException {
+    private List<MimeMessage> waitForMessages(final SearchTerm searchTerm, int maxReadTries, long pauseMs, final String foldername) throws MessagingException {
         if (searchTerm == null) {
             throw new RuntimeException("No SearchTerm given. Can not filter for messages.");
         }
 
-        Stream<MimeMessage> messageStream = Stream.empty();
+        List<MimeMessage> mimeMessages = new ArrayList<>();
 
         if (maxReadTries < 1) {
             maxReadTries = 1;
@@ -281,19 +281,22 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
             if (messages.length == 0) {
                 TimerUtils.sleep(Long.valueOf(pauseMs).intValue(), "waiting for emails (try: " + (i+1) +"/" + maxReadTries + ")");
             } else {
-                messageStream = Stream.of(messages).map(message -> {
+                /**
+                 * We have to read all messages before the folder closes
+                 */
+                for (Message message : messages) {
                     try {
-                        return new MimeMessage((MimeMessage) message);
+                        MimeMessage mimeMessage = new MimeMessage((MimeMessage) message);
+                        mimeMessages.add(mimeMessage);
                     } catch (MessagingException e) {
-                        log().error("Unable to create message", e);
-                        return null;
+                        log().warn("Unable to create " + MimeMessage.class.getSimpleName(), e);
                     }
-                });
+                }
                 store.close();
                 break;
             }
         }
-        return messageStream;
+        return mimeMessages;
     }
 
     /**

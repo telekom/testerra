@@ -61,7 +61,6 @@ import javax.mail.search.RecipientTerm;
 import javax.mail.search.SearchTerm;
 import javax.mail.search.SentDateTerm;
 import javax.mail.search.SubjectTerm;
-import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -528,10 +527,11 @@ public class MailConnectorTest extends TesterraTest {
     @Test
     public void testT12_sendAndWaitForMessageWithoutAttachement_SubjectSentDate() throws Exception {
 
-        final String subject = "testT10_sendAndWaitForMessageWithoutAttachement_SubjectSender";
+        final String subject = "testT12_sendAndWaitForMessageWithoutAttachement_SubjectSentDate";
 
-        Date aMinuteBefore = new Date();
-        DateUtils.addMinutes(aMinuteBefore, -1);
+        Date now = new Date();
+        Date aMinuteBefore = new Date(now.getTime()-(1000*60));
+        Assert.assertTrue(aMinuteBefore.before(now), "SentDate is not before now");
 
         final SearchTerm searchTerm = new AndTerm(
                 new SubjectTerm(subject),

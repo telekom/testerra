@@ -380,7 +380,7 @@ public class MailConnectorTest extends TesterraTest {
      * POP3MailConnector.
      */
     @Test
-    public void testT06_sendAndWaitFomrSSLMessage() throws MessagingException {
+    public void testT06_sendAndWaitFromSSLMessage() throws MessagingException {
 
         final String subject = STR_MAIL_SUBJECT + "testT06_sendAndWaitForSSLMessage";
         final String sslPortPop3 = PropertyManager.getProperty("POP3_SERVER_PORT_SSL", null);

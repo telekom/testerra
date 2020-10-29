@@ -40,8 +40,6 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import net.iharder.Base64;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * MailConnector using the SMTP Protocol. Creates a session with values from mailconnection.properties.
@@ -49,12 +47,6 @@ import org.slf4j.LoggerFactory;
  * @author pele, mrgi
  */
 public class SMTPMailConnector extends AbstractMailConnector implements Loggable {
-
-    /**
-     * The Logger.
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(SMTPMailConnector.class);
-
     /**
      * messageID from the current sent message.
      */

@@ -21,6 +21,15 @@
  */
 package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
+import com.sun.mail.util.MailSSLSocketFactory;
+import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.utils.CertUtils;
+import java.security.GeneralSecurityException;
+import java.util.Properties;
+import java.util.function.Consumer;
+import javax.mail.Authenticator;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 
 /**
@@ -28,7 +37,7 @@ import javax.mail.Session;
  *
  * @author sepr
  */
-public abstract class AbstractMailConnector {
+public abstract class AbstractMailConnector implements Loggable {
 
     /**
      * Mail Server Name.
@@ -58,12 +67,74 @@ public abstract class AbstractMailConnector {
      * Use SSL.
      */
     private boolean sslEnabled;
+
     /**
      * The Mail Session.
      */
     private Session session;
 
     protected abstract void openSession();
+
+    protected Consumer<Properties> sessionPropertiesConfigurationConsumer;
+
+    public AbstractMailConnector() {
+        PropertyManager.loadProperties("mailconnection.properties");
+    }
+
+    /**
+     * Sets a consumer for configuring properties right before {@link #openSession()}
+     */
+    public AbstractMailConnector configureSessionProperties(Consumer<Properties> consumer) {
+        this.sessionPropertiesConfigurationConsumer = consumer;
+        return this;
+    }
+
+    protected Session createDefaultSession(Properties mailProperties, String protocol) {
+        mailProperties.put("mail."+protocol+".host", getServer());
+        mailProperties.put("mail."+protocol+".port", getPort());
+
+        try {
+            MailSSLSocketFactory sf = new MailSSLSocketFactory();
+            CertUtils certUtils = new CertUtils();
+            if (certUtils.isTrustAllHosts()) {
+                log().warn("Trusting all hosts");
+                sf.setTrustAllHosts(true);
+                mailProperties.put("mail."+protocol+".ssl.trust", "*");
+            } else {
+                String[] hostsToTrust = certUtils.getTrustedHosts();
+                if (hostsToTrust != null) {
+                    String trustedHostsString = String.join(" ", hostsToTrust);
+                    log().info("Trusting hosts: " + trustedHostsString);
+                    mailProperties.put("mail." + protocol + ".ssl.trust", trustedHostsString);
+                    sf.setTrustedHosts(hostsToTrust);
+                }
+            }
+            mailProperties.put("mail."+protocol+".ssl.socketFactory", sf);
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException("Error opening session", e);
+        }
+
+        mailProperties.put("mail.debug", isDebug());
+        mailProperties.put("mail.debug.auth", isDebug());
+
+        if (this.sessionPropertiesConfigurationConsumer != null) {
+            this.sessionPropertiesConfigurationConsumer.accept(mailProperties);
+        }
+
+        log().info(String.format("Connecting to %s://%s@%s:%s", protocol, getUsername(), getServer(), getPort()));
+
+        Session session = Session.getInstance(
+                mailProperties,
+                new Authenticator() {
+                    @Override
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(getUsername(), getPassword());
+                    }
+                }
+        );
+        session.setDebug(isDebug());
+        return session;
+    }
 
     /**
      * gets the session
@@ -85,7 +156,6 @@ public abstract class AbstractMailConnector {
      * @return the server
      */
     public String getServer() {
-
         return server;
     }
 

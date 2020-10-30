@@ -21,20 +21,41 @@
  */
  package eu.tsystems.mms.tic.testframework.utils;
 
+import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.net.ssl.*;
 import java.net.Socket;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.Arrays;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509ExtendedTrustManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class CertUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CertUtils.class);
+
+    private String[] trustedHosts;
+    private boolean trustAllHosts = false;
+
+    public CertUtils() {
+        String trustHostsProperty = PropertyManager.getProperty("tt.cert.trusted.hosts","").trim();
+        if (!trustHostsProperty.isEmpty()) {
+            if (trustHostsProperty.equals("*")) {
+                setTrustAllHosts(true);
+            } else {
+                setTrustedHosts(trustHostsProperty.split("\\s+"));
+            }
+        }
+    }
 
     /**
      * The Constant ALL_TRUSTING_TRUST_MANAGER.
@@ -71,14 +92,14 @@ public final class CertUtils {
             }
     };
 
-    /**
-     * The Constant ALL_TRUSTING_HOSTNAME_VERIFIER.
-     */
-    private static final HostnameVerifier ALL_TRUSTING_HOSTNAME_VERIFIER = new HostnameVerifier() {
-        public boolean verify(String hostname, SSLSession session) {
-            return true;
+    public HostnameVerifier getHostnameVerifier() {
+        if (trustAllHosts) {
+            return (hostname, sslSession) -> true;
+        } else {
+            return (hostname, sslSession) -> Arrays.stream(trustedHosts).anyMatch(trustedHostname -> trustedHostname.equals(hostname));
         }
-    };
+
+    }
 
     /**
      * Sets a new DefaultSSLSocketFactory which accepts all certs. ALso it sets a new DefaultHostnameVerifier which
@@ -98,8 +119,11 @@ public final class CertUtils {
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
         }
 
+        CertUtils certUtils = new CertUtils();
+        certUtils.setTrustAllHosts(true);
+
         // set default hostname verifier for https
-        HttpsURLConnection.setDefaultHostnameVerifier(ALL_TRUSTING_HOSTNAME_VERIFIER);
+        HttpsURLConnection.setDefaultHostnameVerifier(certUtils.getHostnameVerifier());
     }
 
     /**
@@ -128,11 +152,32 @@ public final class CertUtils {
 
         connection.setSSLSocketFactory(sslSocketFactory);
 
+        CertUtils certUtils = new CertUtils();
+        certUtils.setTrustAllHosts(true);
+
         // Since we may be using a cert with a different name, we need to ignore
         // the hostname as well.
-        connection.setHostnameVerifier(ALL_TRUSTING_HOSTNAME_VERIFIER);
+        connection.setHostnameVerifier(certUtils.getHostnameVerifier());
 
         return connection;
+    }
+
+    public String[] getTrustedHosts() {
+        return this.trustedHosts;
+    }
+
+    public boolean isTrustAllHosts() {
+        return this.trustAllHosts;
+    }
+
+    public CertUtils setTrustedHosts(String[] hosts) {
+        this.trustedHosts = hosts;
+        return this;
+    }
+
+    public CertUtils setTrustAllHosts(boolean trustAll) {
+        this.trustAllHosts = trustAll;
+        return this;
     }
 
 }

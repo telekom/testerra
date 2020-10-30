@@ -29,7 +29,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.mail.Flags;
@@ -246,11 +246,8 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
         try {
             Stream<MimeMessage> messageStream = waitForMessages(query.getSearchTerm(), query.getRetryCount(), query.getPauseMs(), folderName);
             emailStream = messageStream.map(Email::new);
-            Predicate<Email> filter = query.getFilter();
-            if (filter != null) emailStream = emailStream.filter(filter);
         } catch (MessagingException e) {
-            log().error("Error querying mails", e);
-            emailStream = Stream.empty();
+            throw new RuntimeException("Could not query emails", e);
         }
         return emailStream;
     }
@@ -260,36 +257,72 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
      * @throws MessagingException
      */
     private Stream<MimeMessage> waitForMessages(final SearchTerm searchTerm, int maxReadTries, long pauseMs, final String foldername) throws MessagingException {
-        if (searchTerm == null) {
-            throw new RuntimeException("No SearchTerm given. Can not filter for messages.");
+        Stream<MimeMessage> mimeMessages = Stream.empty();
+
+        if (maxReadTries < 1) {
+            maxReadTries = 1;
         }
-        Stream<MimeMessage> messageStream = Stream.empty();
-        Store store;
+
         for (int i = 0; i < maxReadTries; i++) {
             Session session = getSession();
-            store = session.getStore();
+            Store store = session.getStore();
             store.connect();
 
-            final Folder folder = store.getFolder(foldername);
+            Folder folder = store.getFolder(foldername);
             folder.open(Folder.READ_ONLY);
 
-            final Message[] messages = folder.search(searchTerm);
-            if (messages.length == 0) {
-                TimerUtils.sleep(Long.valueOf(pauseMs).intValue(), "waiting for emails");
+            Runnable closeStoreAndFolder = () -> {
+                try {
+                    folder.close();
+                    store.close();
+                } catch (MessagingException e) {
+                    log().error("Unable to close", e);
+                }
+            };
+
+            Message[] messages;
+
+            if (searchTerm != null) {
+                messages = folder.search(searchTerm);
             } else {
-                messageStream = Stream.of(messages).map(message -> {
-                    try {
-                        return new MimeMessage((MimeMessage) message);
-                    } catch (MessagingException e) {
-                        log().error("Unable to create message", e);
-                        return null;
-                    }
-                });
-                store.close();
+                messages = folder.getMessages();
+            }
+
+            if (messages.length == 0) {
+                TimerUtils.sleep(Long.valueOf(pauseMs).intValue(), "waiting for emails (try: " + (i+1) +"/" + maxReadTries + ")");
+                closeStoreAndFolder.run();
+            } else {
+                mimeMessages = Stream.of(messages)
+                        .onClose(closeStoreAndFolder)
+                        .map(message -> {
+                            MimeMessage mimeMessage = null;
+                            try {
+                                mimeMessage = new MimeMessage((MimeMessage) message);
+                            } catch (MessagingException e) {
+                                log().warn("Unable to create " + MimeMessage.class.getSimpleName(), e);
+                            }
+                            return Optional.ofNullable(mimeMessage);
+                        })
+                        .filter(Optional::isPresent)
+                        .map(Optional::get);
                 break;
             }
         }
-        return messageStream;
+        return mimeMessages;
+    }
+
+    /**
+     * Get the message count from {@link #getInboxFolder()}.
+     */
+    public long getMessageCount() {
+        return this.pGetMessageCount(getInboxFolder());
+    }
+
+    /**
+     * Get the message count from a specified folder name.
+     */
+    public long getMessageCount(String folderName) {
+        return this.pGetMessageCount(folderName);
     }
 
     /**
@@ -297,17 +330,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
      *
      * @return The number of new messages.
      */
-    public int getMessageCount() {
-
-        return this.pGetMessageCount();
-    }
-
-    /**
-     * Get the message count from pop3 server.
-     *
-     * @return The number of new messages.
-     */
-    private int pGetMessageCount() {
+    private int pGetMessageCount(String folderName) {
 
         Store store;
         int nrOfMessages;
@@ -315,7 +338,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
             store = getSession().getStore();
             store.connect(getServer(), getUsername(), getPassword());
             final Folder root = store.getDefaultFolder();
-            final Folder folder = root.getFolder(getInboxFolder());
+            final Folder folder = root.getFolder(folderName);
             folder.open(Folder.READ_ONLY);
             nrOfMessages = folder.getMessageCount();
             store.close();
@@ -331,48 +354,6 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
     }
 
     /**
-     * Get all messages.
-     *
-     * @return An array containing the messages.
-     */
-    public MimeMessage[] getMessages() {
-
-        return this.pGetMessages();
-    }
-
-    /**
-     * Get all messages.
-     *
-     * @return An array containing the messages.
-     */
-    private MimeMessage[] pGetMessages() {
-
-        Store store;
-        ArrayList<MimeMessage> mimes;
-        try {
-            store = getSession().getStore();
-            store.connect();
-            final Folder folder = store.getFolder(getInboxFolder());
-            folder.open(Folder.READ_ONLY);
-            final Message[] messages = folder.getMessages();
-            mimes = new ArrayList<>();
-            log().info("Fetched messages from " + getInboxFolder() + ":");
-            if (messages.length > 0) {
-                for (final Message message : messages) {
-                    mimes.add((MimeMessage) message);
-                }
-            } else {
-                log().info("None.");
-            }
-            // folder.close(true); // leads to error "folder not open" when reading message content
-            store.close();
-        } catch (final MessagingException e) {
-            throw new RuntimeException(e);
-        }
-        return mimes.toArray(new MimeMessage[mimes.size()]);
-    }
-
-    /**
      * Deletes a message.
      *
      * @param recipient     The recipient String. Can be null.
@@ -382,9 +363,12 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
      *
      * @return true if message was deleted, else false
      */
-    public boolean deleteMessage(final String recipient, final Message.RecipientType recipientType,
-                                 final String subject, final String messageId) {
-
+    public boolean deleteMessage(
+            final String recipient,
+            final Message.RecipientType recipientType,
+            final String subject,
+            final String messageId
+    ) {
         return this.pDeleteMessage(recipient, recipientType, subject, messageId);
     }
 
@@ -585,6 +569,9 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
         return true;
     }
 
+    /**
+     * @deprecated Use {@link #deleteMessage(SearchTerm)} instead
+     */
     @Deprecated
     public boolean deleteMessage(List<String> deleteCriteriaValues, DeleteCriteriaType deleteCriteriaType) {
         return deleteMessages(deleteCriteriaValues, deleteCriteriaType);

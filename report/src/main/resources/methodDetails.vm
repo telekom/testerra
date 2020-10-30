@@ -149,6 +149,7 @@
                                 $testMethod.name
 
                                 #if ($testMethod.infos)
+                                    <br/>
                                     <i>
                                         #foreach ($i in $testMethod.infos)
                                             $i<br>

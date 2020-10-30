@@ -1,4 +1,5 @@
 = Certificate Utilities
+include::../properties/property-attributes.adoc[]
 
 This is an utility class that offers the possibility to trust all SSL certificates.
 
@@ -23,14 +24,14 @@ HttpsURLConnection CertUtils.trustAllCerts(
 
 You can trust specified hosts in a whitespace separated list like
 
-[source, properties]
+[source, properties,subs="attributes"]
 ----
-tt.cert.trusted.hosts=example.com google.com
+{cert_trusted_hosts}=example.com google.com
 ----
 
 Or just trust any (**not recommended**)
 
-[source, properties]
+[source, properties,subs="attributes"]
 ----
-tt.cert.trusted.hosts=*
+{cert_trusted_hosts}=*
 ----

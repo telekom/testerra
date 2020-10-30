@@ -30,7 +30,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.mail.Flags;
@@ -247,8 +246,6 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
         try {
             Stream<MimeMessage> messageStream = waitForMessages(query.getSearchTerm(), query.getRetryCount(), query.getPauseMs(), folderName);
             emailStream = messageStream.map(Email::new);
-            Predicate<Email> filter = query.getFilter();
-            if (filter != null) emailStream = emailStream.filter(filter);
         } catch (MessagingException e) {
             throw new RuntimeException("Could not query emails", e);
         }

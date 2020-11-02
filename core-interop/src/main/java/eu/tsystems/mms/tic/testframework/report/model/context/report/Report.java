@@ -37,7 +37,7 @@ public class Report {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Report.class);
 
-    private static final String DEFAULT_REPORTDIR = "static-report";
+    private static final String DEFAULT_REPORTDIR = "test-report";
 
     /**
      * Temporary report directory

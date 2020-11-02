@@ -10,7 +10,7 @@ import IExecutionContext = data.IExecutionContext;
 
 @autoinject()
 export class Dashboard {
-  _executionContext: IExecutionContext;
+  _executionContext: IExecutionContext = undefined;
   private _executionStatistics: ExecutionStatistics;
 
   constructor(
@@ -27,6 +27,7 @@ export class Dashboard {
       this._eventAggregator.publish('executionStatistics', this._executionStatistics);
       this._eventAggregator.publish('executionContext', this._executionContext);
     })
-  }
+
+  };
 
 }

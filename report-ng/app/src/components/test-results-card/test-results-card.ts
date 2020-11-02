@@ -1,7 +1,7 @@
 import {data} from "../../services/report-model";
 import {autoinject} from "aurelia-framework";
 import {EventAggregator} from 'aurelia-event-aggregator';
-import "./test-results-card.css";
+import "./test-results-card.scss";
 import {StatusConverter} from "../../services/status-converter";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {ExecutionStatistics} from "../../services/statistic-models";

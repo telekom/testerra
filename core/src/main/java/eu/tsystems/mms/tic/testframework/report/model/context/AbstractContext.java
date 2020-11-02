@@ -27,15 +27,14 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Queue;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
@@ -44,8 +43,16 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
     public final String id = IDUtils.getB64encXID();
     public AbstractContext parentContext;
     public String swi; // system-wide identifier
-    public final Date startTime = new Date();
-    public Date endTime;
+    private final Date startTime = new Date();
+    private Date endTime;
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
 
     protected static void fillBasicContextValues(AbstractContext context, AbstractContext parentContext, String name) {
         context.name = name;
@@ -55,23 +62,21 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
     /**
      * Gets an context for a specified name.
      * If it not exists, it will be created by a supplier, preconfigured, added to the given queue of contexts and supplied to a consumer
-     * @param contextClass The desired context class
      * @param contexts The queue to add the context when created
      * @param newContextSupplier Supplier for the new context
      * @param whenAddedToQueue Consumer when added to the queue
      * @return {@link AbstractContext} or NULL if the context doesn't exists or should not be created
      */
     protected <T extends AbstractContext> T getOrCreateContext(
-            Class<T> contextClass,
-            Queue<T> contexts, String name,
+            Collection<T> contexts, String name,
             Supplier<T> newContextSupplier,
             Consumer<T> whenAddedToQueue
     ) {
-        List<T> collect = contexts.stream()
+        Optional<T> first = contexts.stream()
                 .filter(context -> name.equals(context.name))
-                .collect(Collectors.toList());
+                .findFirst();
 
-        if (collect.isEmpty()) {
+        if (!first.isPresent()) {
             if (newContextSupplier == null) {
                 return null;
             }
@@ -89,10 +94,7 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
             }
 
         } else {
-            if (collect.size() > 1) {
-                log().error("Found " + collect.size() + " " + contextClass.getSimpleName() + "s with name " + name + ", picking first one");
-            }
-            return collect.get(0);
+            return first.get();
         }
     }
 
@@ -133,7 +135,7 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
         return status;
     }
 
-    public String getDuration(Date startTime, Date endTime) {
+    public String getDurationAsString() {
         Duration between = Duration.between(startTime.toInstant(), endTime.toInstant());
         long millis = between.toMillis();
         if (millis > 60 * 60 * 1000) {

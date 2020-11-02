@@ -32,12 +32,11 @@ import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.testng.IInvokedMethod;
@@ -53,7 +52,7 @@ import org.testng.SkipException;
  */
 public class ClassContext extends AbstractContext implements SynchronizableContext, Loggable {
 
-    public final Queue<MethodContext> methodContexts = new ConcurrentLinkedQueue<>();
+    public final List<MethodContext> methodContexts = Collections.synchronizedList(new LinkedList<>());
     public String fullClassName;
     public String simpleClassName;
     public final TestContextModel testContextModel;
@@ -68,7 +67,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
     }
 
     public MethodContext findTestMethodContainer(String methodName) {
-        return getOrCreateContext(MethodContext.class, methodContexts, methodName, null, null);
+        return getOrCreateContext(methodContexts, methodName, null, null);
     }
 
     public MethodContext getMethodContext(ITestResult testResult, ITestContext iTestContext, IInvokedMethod invokedMethod) {

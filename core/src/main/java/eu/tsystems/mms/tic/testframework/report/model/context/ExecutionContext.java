@@ -29,12 +29,12 @@ import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -43,8 +43,8 @@ import org.testng.ITestResult;
 
 public class ExecutionContext extends AbstractContext implements SynchronizableContext {
 
-    public final Queue<SuiteContext> suiteContexts = new ConcurrentLinkedQueue<>();
-    public final Queue<ClassContext> mergedClassContexts = new ConcurrentLinkedQueue<>();
+    public final List<SuiteContext> suiteContexts = Collections.synchronizedList(new LinkedList<>());
+    public final List<ClassContext> mergedClassContexts = Collections.synchronizedList(new LinkedList<>());
     public Map<String, List<MethodContext>> failureAspects;
     public Map<String, List<MethodContext>> exitPoints;
     public final RunConfig runConfig = new RunConfig();
@@ -52,7 +52,7 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
     public final Map<String, String> metaData = new LinkedHashMap<>();
     public boolean crashed = false;
 
-    public final Queue<SessionContext> exclusiveSessionContexts = new ConcurrentLinkedQueue<>();
+    public final List<SessionContext> exclusiveSessionContexts = Collections.synchronizedList(new LinkedList<>());
 
     public int estimatedTestMethodCount;
 
@@ -65,7 +65,6 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
     public SuiteContext getSuiteContext(ITestResult testResult, ITestContext iTestContext) {
         final String suiteName = TestNGHelper.getSuiteName(testResult, iTestContext);
         return getOrCreateContext(
-                SuiteContext.class,
                 suiteContexts,
                 suiteName,
                 () -> new SuiteContext(this),

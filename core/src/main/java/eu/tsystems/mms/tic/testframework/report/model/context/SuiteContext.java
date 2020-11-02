@@ -26,14 +26,15 @@ import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 
 public class SuiteContext extends AbstractContext implements SynchronizableContext {
 
-    public final Queue<TestContextModel> testContextModels = new ConcurrentLinkedQueue<>();
+    public final List<TestContextModel> testContextModels = Collections.synchronizedList(new LinkedList<>());
     public final ExecutionContext executionContext;
 
     public SuiteContext(ExecutionContext executionContext) {
@@ -43,7 +44,6 @@ public class SuiteContext extends AbstractContext implements SynchronizableConte
     public TestContextModel getTestContext(ITestResult testResult, ITestContext iTestContext) {
         final String testName = TestNGHelper.getTestName(testResult, iTestContext);
         return getOrCreateContext(
-                TestContextModel.class,
                 testContextModels,
                 testName,
                 () -> new TestContextModel(this, executionContext),

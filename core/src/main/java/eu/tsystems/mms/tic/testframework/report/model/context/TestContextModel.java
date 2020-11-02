@@ -28,11 +28,12 @@ import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import org.testng.IClass;
 import org.testng.IInvokedMethod;
 import org.testng.ITestContext;
@@ -44,7 +45,7 @@ import org.testng.ITestResult;
  */
 public class TestContextModel extends AbstractContext implements SynchronizableContext {
 
-    public final Queue<ClassContext> classContexts = new ConcurrentLinkedQueue<>();
+    public final List<ClassContext> classContexts = Collections.synchronizedList(new LinkedList<>());
     public final SuiteContext suiteContext;
     public final ExecutionContext executionContext;
 
@@ -139,7 +140,7 @@ public class TestContextModel extends AbstractContext implements SynchronizableC
 
         EventBus eventBus = TesterraListener.getEventBus();
         eventBus.post(new ContextUpdateEvent().setContext(this));
-        
+
         return newClassContext;
 
     }

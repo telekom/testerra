@@ -29,7 +29,7 @@
  *
  * @author erku
  */
-public class TesterraInheritedFailedException extends TesterraRuntimeException {
+public class TesterraInheritedFailedException extends RuntimeException {
 
     public TesterraInheritedFailedException(final String message) {
 

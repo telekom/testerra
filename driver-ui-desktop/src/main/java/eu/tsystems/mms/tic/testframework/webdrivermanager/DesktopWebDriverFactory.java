@@ -28,7 +28,6 @@ import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.Constants;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.enums.Position;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSetupException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Defaults;
@@ -131,7 +130,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 log().warn(String.format("Won't open baseUrl: '%s': %s", request.getBaseUrl(), e.getMessage()), e);
             } catch (Exception e) {
                 if (StringUtils.containsAll(e.getMessage(), true, "Reached error page", "connectionFailure")) {
-                    throw new TesterraRuntimeException("Could not start driver session, because of unreachable url: " + request.getBaseUrl(), e);
+                    throw new RuntimeException("Could not start driver session, because of unreachable url: " + request.getBaseUrl(), e);
                 }
                 throw e;
             }

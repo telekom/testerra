@@ -24,7 +24,6 @@ package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
 import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
@@ -453,7 +452,7 @@ public final class JSUtils {
 
                 out.keySet().forEach(key -> LOGGER.info(key + "=" + out.get(key)));
                 if (out.keySet().size() != 4) {
-                    throw new TesterraRuntimeException("Could not get element border via JS call");
+                    throw new RuntimeException("Could not get element border via JS call");
                 }
 
                 return out;
@@ -465,7 +464,7 @@ public final class JSUtils {
                 frameLogic.switchToDefaultFrame();
             }
         }
-        throw new TesterraRuntimeException("Could not get element border via JS call");
+        throw new RuntimeException("Could not get element border via JS call");
     }
 
     public static Viewport getViewport(WebDriver driver) {

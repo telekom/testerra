@@ -23,7 +23,6 @@
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,14 +38,14 @@ public final class TimingConstants {
     public static final int WATCHDOG_FORCE_QUIT_TIMEOUT_SECONDS; // calculated
 
     private TimingConstants() {
-        
+
     }
 
     static {
         if (WEBDRIVER_COMMAND_TIMEOUT_SECONDS < 2 * 60) {
             String msg = "\n\nWatchDog timeout to low: " + WEBDRIVER_COMMAND_TIMEOUT_SECONDS + " Set at least to 2 minutes.\n\n";
             System.err.println(msg);
-            throw new TesterraRuntimeException(msg);
+            throw new RuntimeException(msg);
         }
         WATCHDOG_FIRST_ANNOUNCEMENT_SECONDS = WEBDRIVER_COMMAND_TIMEOUT_SECONDS / 2;
         WATCHDOG_THREAD_HANGING_TIMEOUT_SECONDS = WEBDRIVER_COMMAND_TIMEOUT_SECONDS - 20;

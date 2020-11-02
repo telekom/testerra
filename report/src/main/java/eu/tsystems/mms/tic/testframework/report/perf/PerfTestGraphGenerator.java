@@ -18,9 +18,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
- package eu.tsystems.mms.tic.testframework.report.perf;
+package eu.tsystems.mms.tic.testframework.report.perf;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.TimingInfo;
 import eu.tsystems.mms.tic.testframework.report.GraphGenerator;
@@ -645,7 +644,7 @@ public class PerfTestGraphGenerator {
             case LAYERED_RESPONSETIMES_PER_REPETITION:
             case TRANSACTION_STATUS:
             default:
-                throw new TesterraRuntimeException("Metric Type \"" + nameOfMetricType +
+                throw new RuntimeException("Metric Type \"" + nameOfMetricType +
                         "\" is not supported for a Line Chart Data Set");
         }
         if (series.getItemCount() == 0 && dataSetIsEmpty) {
@@ -808,7 +807,7 @@ public class PerfTestGraphGenerator {
             case TRANSACTIONS_PER_HOUR:
             default:
 
-                throw new TesterraRuntimeException("Metric Type \"" + nameOfMetricType +
+                throw new RuntimeException("Metric Type \"" + nameOfMetricType +
                         "\" is not supported for a Bar Chart Data Set");
 
         }
@@ -881,7 +880,7 @@ public class PerfTestGraphGenerator {
             case TRANSACTIONS_PER_HOUR:
 
             default:
-                throw new TesterraRuntimeException("Metric Type \"" + metricType.name() + "\" is not supported for Fontsetting and TickRate of BarCharts");
+                throw new RuntimeException("Metric Type \"" + metricType.name() + "\" is not supported for Fontsetting and TickRate of BarCharts");
         }
     }
 
@@ -946,7 +945,7 @@ public class PerfTestGraphGenerator {
             case TRANSACTIONS_PER_HOUR:
 
             default:
-                throw new TesterraRuntimeException("Metric Type \"" + metricType.name() + "\" is not supported for Fontsetting and TickRate of Charts based on Testexecutions");
+                throw new RuntimeException("Metric Type \"" + metricType.name() + "\" is not supported for Fontsetting and TickRate of Charts based on Testexecutions");
         }
     }
 
@@ -1012,7 +1011,7 @@ public class PerfTestGraphGenerator {
             case MIN_RESPONSETIME_PER_REPETITION:
 
             default:
-                throw new TesterraRuntimeException("Metric Type \"" + metricType.name() + "\" is not supported for Fontsetting and TickRate of Charts based on Testrepetition");
+                throw new RuntimeException("Metric Type \"" + metricType.name() + "\" is not supported for Fontsetting and TickRate of Charts based on Testrepetition");
         }
 
     }

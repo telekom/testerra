@@ -20,7 +20,6 @@
  */
  package eu.tsystems.mms.tic.testframework.report.perf;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.internal.TimingInfo;
 import eu.tsystems.mms.tic.testframework.utils.NumberUtils;
 import java.util.ArrayList;
@@ -452,7 +451,7 @@ public final class PerfTestReportUtils {
                                         break;
 
                                     default:
-                                        throw new TesterraRuntimeException("TransactionThroughput is not supported for the given timeUnit");
+                                        throw new RuntimeException("TransactionThroughput is not supported for the given timeUnit");
                                 }
                             }
                         }
@@ -517,7 +516,7 @@ public final class PerfTestReportUtils {
 
             // Exception
             default:
-                throw new TesterraRuntimeException("Camparison not supported for the given timeUnit");
+                throw new RuntimeException("Camparison not supported for the given timeUnit");
         }
 
         if (timeStampOfMeasurement.equals(timeStampInTransactionMap)) {
@@ -563,7 +562,7 @@ public final class PerfTestReportUtils {
 
                         // Exception
                         default:
-                            throw new TesterraRuntimeException("RequestThroughput is not supported for the given timeUnit");
+                            throw new RuntimeException("RequestThroughput is not supported for the given timeUnit");
 
                     }
                 }

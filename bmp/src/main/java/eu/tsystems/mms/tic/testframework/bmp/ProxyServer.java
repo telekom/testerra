@@ -21,8 +21,13 @@
  */
 package eu.tsystems.mms.tic.testframework.bmp;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 import net.lightbody.bmp.core.har.Har;
 import net.lightbody.bmp.proxy.http.BrowserMobHttpClient;
 import org.apache.http.HttpHost;
@@ -30,13 +35,6 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -144,7 +142,7 @@ public class ProxyServer {
             bmpProxyServer.start();
             //            httpClient = getHttpClient(bmpProxyServer);
         } catch (Exception e) {
-            throw new TesterraRuntimeException(e);
+            throw new RuntimeException(e);
         }
 
         bmpProxyServer.setOptions(options);
@@ -196,7 +194,7 @@ public class ProxyServer {
             bmpProxyServer.stop();
             LOGGER.info("BMP server on port " + bmpProxyServer.getPort() + " stopped");
         } catch (Exception e) {
-            throw new TesterraRuntimeException(e);
+            throw new RuntimeException(e);
         }
     }
 

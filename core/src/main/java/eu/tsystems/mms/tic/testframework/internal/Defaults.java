@@ -23,7 +23,6 @@
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -40,7 +39,7 @@ public final class Defaults {
         String value = PropertyManager.getProperty(property, defaultValue);
         Matcher matcher = compile.matcher(value);
         if (!matcher.find()) {
-            throw new TesterraRuntimeException(property + " does not match pattern " + pattern + " : " + value);
+            throw new RuntimeException(property + " does not match pattern " + pattern + " : " + value);
         }
         return value;
     }

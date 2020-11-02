@@ -23,6 +23,8 @@
 
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
+import java.awt.Rectangle;
+import java.net.URL;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.CommandExecutor;
@@ -34,13 +36,10 @@ import org.sikuli.api.ScreenRegion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.*;
-import java.net.URL;
-
 /**
  * Testerra WebDriver is a ScreenshotWebdriver enhanced by the possibilty to find elements by coordinates and images.
  */
-public class TesterraWebDriver extends RemoteWebDriver implements SikuliDriver {
+public class TesterraWebDriver extends RemoteWebDriver implements ImageWebDriver {
 
     /**
      * Logger.

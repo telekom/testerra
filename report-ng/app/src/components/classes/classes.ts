@@ -16,7 +16,6 @@ export class Classes {
     private _statisticsGenerator: StatisticsGenerator,
   ) {
   }
-
   attached() {
     this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
       executionStatistics.classStatistics.forEach(classStatistics => {
@@ -30,7 +29,7 @@ export class Classes {
   }
 
   private _prepareClasses(classStatistics) {
-
   }
+
 }
 

@@ -20,6 +20,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.perf;
 
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.TimingInfo;
 import eu.tsystems.mms.tic.testframework.report.GraphGenerator;
 import java.awt.Color;

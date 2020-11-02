@@ -39,12 +39,12 @@ import org.slf4j.LoggerFactory;
 /**
  * Testerra WebDriver is a ScreenshotWebdriver enhanced by the possibilty to find elements by coordinates and images.
  */
-public class TesterraWebDriver extends RemoteWebDriver implements ImageWebDriver {
+public class SikuliWebDriver extends RemoteWebDriver implements ImageWebDriver {
 
     /**
      * Logger.
      */
-    private static Logger logger = LoggerFactory.getLogger(TesterraWebDriver.class);
+    private static Logger logger = LoggerFactory.getLogger(SikuliWebDriver.class);
 
     /**
      * Default waiter.
@@ -62,7 +62,7 @@ public class TesterraWebDriver extends RemoteWebDriver implements ImageWebDriver
      * @param executor            .
      * @param desiredCapabilities .
      */
-    public TesterraWebDriver(CommandExecutor executor, Capabilities desiredCapabilities) {
+    public SikuliWebDriver(CommandExecutor executor, Capabilities desiredCapabilities) {
         super(executor, desiredCapabilities);
         init();
     }
@@ -72,7 +72,7 @@ public class TesterraWebDriver extends RemoteWebDriver implements ImageWebDriver
      *
      * @param desiredCapabilities .
      */
-    public TesterraWebDriver(Capabilities desiredCapabilities) {
+    public SikuliWebDriver(Capabilities desiredCapabilities) {
         super(desiredCapabilities);
         init();
     }
@@ -83,7 +83,7 @@ public class TesterraWebDriver extends RemoteWebDriver implements ImageWebDriver
      * @param remoteAddress       .
      * @param desiredCapabilities .
      */
-    public TesterraWebDriver(URL remoteAddress, Capabilities desiredCapabilities) {
+    public SikuliWebDriver(URL remoteAddress, Capabilities desiredCapabilities) {
         super(remoteAddress, desiredCapabilities);
         init();
     }

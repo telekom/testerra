@@ -40,7 +40,7 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.report.model.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
-import eu.tsystems.mms.tic.testframework.sikuli.TesterraWebDriver;
+import eu.tsystems.mms.tic.testframework.sikuli.SikuliWebDriver;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
@@ -476,7 +476,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         try {
             if (remoteAddress != null) {
                 final HttpCommandExecutor httpCommandExecutor = new HttpCommandExecutor(new HashMap<>(), remoteAddress, new TesterraHttpClientFactory());
-                driver = new TesterraWebDriver(httpCommandExecutor, finalCapabilities);
+                driver = new SikuliWebDriver(httpCommandExecutor, finalCapabilities);
                 ((RemoteWebDriver) driver).setFileDetector(new LocalFileDetector());
             } else {
                 Constructor<? extends RemoteWebDriver> constructor = driverClass.getConstructor(Capabilities.class);

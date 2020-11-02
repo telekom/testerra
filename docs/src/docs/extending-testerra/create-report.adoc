@@ -42,4 +42,4 @@ public class CustomReportModuleHook implements ModuleHook {
 }
 ----
 
-This will generate Protobuf models in `testerra-report/models`.
+This will generate Protobuf models in `test-report/models`.

@@ -246,8 +246,7 @@ public class TesterraListener implements
         /*
          * store testresult, create method context
          */
-        MethodContext methodContext = ExecutionContextController
-                .setCurrentTestResult(testResult, testContext); // stores the actual testresult, auto-creates the method context
+        MethodContext methodContext = ExecutionContextController.setCurrentTestResult(testResult, testContext); // stores the actual testresult, auto-creates the method context
         ExecutionContextController.setCurrentMethodContext(methodContext);
 
         methodContext.steps().announceTestStep(TestStep.SETUP);
@@ -346,13 +345,13 @@ public class TesterraListener implements
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         if (methodContext == null) {
 
-            if (testResult.getStatus() == ITestResult.CREATED) {
+            if (
+                    testResult.getStatus() == ITestResult.CREATED
+                    || testResult.getStatus() == ITestResult.SKIP
+            ) {
                 /*
                  * TestNG bug or whatever ?!?!
                  */
-                ClassContext classContext = ExecutionContextController.getClassContextFromTestResult(testResult, testContext, invokedMethod);
-                methodContext = classContext.safeAddSkipMethod(testResult, invokedMethod);
-            } else if (testResult.getStatus() == ITestResult.SKIP) {
                 ClassContext classContext = ExecutionContextController.getClassContextFromTestResult(testResult, testContext, invokedMethod);
                 methodContext = classContext.safeAddSkipMethod(testResult, invokedMethod);
             } else {

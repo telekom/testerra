@@ -35,6 +35,8 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -43,8 +45,8 @@ import org.testng.ITestResult;
 
 public class ExecutionContext extends AbstractContext implements SynchronizableContext {
 
-    public final List<SuiteContext> suiteContexts = Collections.synchronizedList(new LinkedList<>());
-    public final List<ClassContext> mergedClassContexts = Collections.synchronizedList(new LinkedList<>());
+    public final Queue<SuiteContext> suiteContexts = new ConcurrentLinkedQueue<>();
+    public final Queue<ClassContext> mergedClassContexts = new ConcurrentLinkedQueue<>();
     public Map<String, List<MethodContext>> failureAspects;
     public Map<String, List<MethodContext>> exitPoints;
     public final RunConfig runConfig = new RunConfig();

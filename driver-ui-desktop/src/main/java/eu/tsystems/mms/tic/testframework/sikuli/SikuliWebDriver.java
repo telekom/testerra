@@ -39,7 +39,7 @@ import org.sikuli.api.ScreenRegion;
 /**
  * Testerra WebDriver is a ScreenshotWebdriver enhanced by the possibilty to find elements by coordinates and images.
  */
-public class TesterraWebDriver extends RemoteWebDriver implements SikuliDriver, Loggable {
+public class SikuliWebDriver extends RemoteWebDriver implements ImageWebDriver, Loggable {
 
     /**
      * Stored webdriver region.
@@ -52,7 +52,7 @@ public class TesterraWebDriver extends RemoteWebDriver implements SikuliDriver, 
      * @param executor            .
      * @param desiredCapabilities .
      */
-    public TesterraWebDriver(CommandExecutor executor, Capabilities desiredCapabilities) {
+    public SikuliWebDriver(CommandExecutor executor, Capabilities desiredCapabilities) {
         super(executor, desiredCapabilities);
         init();
     }
@@ -62,7 +62,7 @@ public class TesterraWebDriver extends RemoteWebDriver implements SikuliDriver, 
      *
      * @param desiredCapabilities .
      */
-    public TesterraWebDriver(Capabilities desiredCapabilities) {
+    public SikuliWebDriver(Capabilities desiredCapabilities) {
         super(desiredCapabilities);
         init();
     }
@@ -73,7 +73,7 @@ public class TesterraWebDriver extends RemoteWebDriver implements SikuliDriver, 
      * @param remoteAddress       .
      * @param desiredCapabilities .
      */
-    public TesterraWebDriver(URL remoteAddress, Capabilities desiredCapabilities) {
+    public SikuliWebDriver(URL remoteAddress, Capabilities desiredCapabilities) {
         super(remoteAddress, desiredCapabilities);
         init();
     }

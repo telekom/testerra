@@ -22,7 +22,6 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Component;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageObject;
@@ -91,7 +90,7 @@ public class DefaultPageFactory implements PageFactory, Loggable {
             ((AbstractPage)component).checkUiElements();
             return component;
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            throw new TesterraRuntimeException(String.format("Could not create instance of %s(%s)", componentClass, rootElement), e);
+            throw new RuntimeException(String.format("Could not create instance of %s(%s)", componentClass, rootElement), e);
         }
     }
 
@@ -104,7 +103,7 @@ public class DefaultPageFactory implements PageFactory, Loggable {
             ((AbstractPage)page).checkUiElements(checkRule);
             return page;
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            throw new TesterraRuntimeException(String.format("Could not create instance of %s(%s)", pageClass, webDriver), e);
+            throw new RuntimeException(String.format("Could not create instance of %s(%s)", pageClass, webDriver), e);
         }
     }
 }

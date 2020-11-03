@@ -22,7 +22,7 @@
  package eu.tsystems.mms.tic.testframework.test.utils;
 
 import eu.tsystems.mms.tic.testframework.exceptions.FileNotFoundException;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
@@ -91,11 +91,11 @@ public class FileUtilsTest extends TesterraTest {
     @Test
     public void testT04_readFileNotExistingFailed() {
 
-        TesterraSystemException foundException = null;
+        SystemException foundException = null;
 
         try {
             FileUtils.getLocalResourceInputStream("/does/not/exist.txt");
-        } catch (final TesterraSystemException e) {
+        } catch (final SystemException e) {
             foundException = e;
         }
 
@@ -105,11 +105,11 @@ public class FileUtilsTest extends TesterraTest {
     @Test
     public void testT05_readResourceInsideDependencyJarFailed() {
 
-        TesterraSystemException exception = null;
+        SystemException exception = null;
 
         try {
             FileUtils.getLocalResourceInputStream("testng.css");
-        } catch (TesterraSystemException e) {
+        } catch (SystemException e) {
             exception = e;
         }
 

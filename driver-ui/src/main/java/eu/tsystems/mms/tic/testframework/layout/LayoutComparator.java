@@ -22,7 +22,7 @@
 package eu.tsystems.mms.tic.testframework.layout;
 
 import eu.tsystems.mms.tic.testframework.annotator.AnnotationContainer;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.layout.core.DistanceGraphInterpreter;
 import eu.tsystems.mms.tic.testframework.layout.core.LayoutElement;
@@ -154,7 +154,7 @@ public class LayoutComparator {
             // The reference image and the annotated image have to be the same size.
             if (referenceImage.height() != annotatedImage.height()
                     || referenceImage.width() != annotatedImage.width()) {
-                throw new TesterraSystemException(
+                throw new SystemException(
                         Messages.referenceAndAnnotationNotEquallySized(referenceImage.size().toString(),
                                 annotatedImage.size().toString()));
             }
@@ -290,7 +290,7 @@ public class LayoutComparator {
      */
     public List<LayoutFeature> getCriticalMatches() {
         if (layoutMatch == null) {
-            throw new TesterraSystemException("Layout match calculation error");
+            throw new SystemException("Layout match calculation error");
         }
         return layoutMatch.getCriticalMatches();
     }

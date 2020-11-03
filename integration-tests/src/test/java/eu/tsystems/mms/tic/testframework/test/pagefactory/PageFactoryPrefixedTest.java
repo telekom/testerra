@@ -36,7 +36,6 @@ import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.TLPrefix1Resp
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.TLPrefix1ResponsiveWebTestPage_801px_1234px;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.TLPrefix2ResponsiveWebTestPage_601px_800px;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.TLPrefix2ResponsiveWebTestPage_801px_1234px;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
@@ -92,7 +91,7 @@ public class PageFactoryPrefixedTest extends AbstractTestSitesTest implements Lo
             LOGGER.info("Setting browser size to " + w + "x" + h);
             driver.manage().window().setSize(new Dimension(w, h));
         } catch (Exception e) {
-            throw new TesterraRuntimeException("Unable to set viewport size", e);
+            throw new RuntimeException("Unable to set viewport size", e);
         }
     }
 

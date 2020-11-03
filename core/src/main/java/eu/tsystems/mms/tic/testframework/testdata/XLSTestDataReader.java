@@ -21,14 +21,13 @@
  */
  package eu.tsystems.mms.tic.testframework.testdata;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 
 /**
  * <Beschreibung der Klasse>
@@ -81,7 +80,7 @@ public class XLSTestDataReader extends AbstractXLSIO {
         Row headerRow = sheet.getRow(this.headerRow - 1);
 
         if (headerRow == null) {
-            throw new TesterraSystemException("Header row is empty. Row " + this.headerRow + " (1-based)");
+            throw new SystemException("Header row is empty. Row " + this.headerRow + " (1-based)");
         }
 
         // find matching row

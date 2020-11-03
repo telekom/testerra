@@ -21,11 +21,18 @@
  */
  package eu.tsystems.mms.tic.testframework.pageobjects.location;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.sikuli.WebDriverScreen;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import java.awt.Rectangle;
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.SearchContext;
@@ -38,14 +45,6 @@ import org.sikuli.api.ScreenLocation;
 import org.sikuli.api.ScreenRegion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.awt.*;
-import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * <Beschreibung der Klasse>
@@ -81,7 +80,7 @@ public class ByImage extends By {
             this.takesScreenshotDriver = (TakesScreenshot) driver;
             this.driver = driver;
         } else {
-            throw new TesterraSystemException("Your WebDriver instance is not a TakesScreenshot instance. " +
+            throw new SystemException("Your WebDriver instance is not a TakesScreenshot instance. " +
                     "Only TakesScreenshot webdrivers are supported for this action.");
         }
     }
@@ -167,15 +166,15 @@ public class ByImage extends By {
     public String toString() {
         try {
             if (url == null) {
-                throw new TesterraSystemException("url is null, ensure to have an URL set!");
+                throw new SystemException("url is null, ensure to have an URL set!");
             }
             URI uri = url.toURI();
             if (uri == null) {
-                throw new TesterraSystemException("Cannot build uri from url: " + url);
+                throw new SystemException("Cannot build uri from url: " + url);
             }
             File file = new File(uri);
             if (file == null) {
-                throw new TesterraSystemException("Cannot find file: " + uri);
+                throw new SystemException("Cannot find file: " + uri);
             }
             return "ByImage{" +
                     "url=" + file.getName() +

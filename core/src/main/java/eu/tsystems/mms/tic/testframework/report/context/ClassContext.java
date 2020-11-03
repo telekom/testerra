@@ -23,7 +23,7 @@ package eu.tsystems.mms.tic.testframework.report.context;
 import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
@@ -107,7 +107,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
             if (iTestNGMethod != null) {
                 isTest = iTestNGMethod.isTest();
             } else {
-                throw new TesterraSystemException("Error getting method infos, seems like a TestNG bug.\n" + String.join("\n", iTestNGMethod.toString(), iTestContext.toString()));
+                throw new SystemException("Error getting method infos, seems like a TestNG bug.\n" + String.join("\n", iTestNGMethod.toString(), iTestContext.toString()));
             }
 
             if (isTest) {

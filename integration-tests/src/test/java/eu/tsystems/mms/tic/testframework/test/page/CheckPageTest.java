@@ -32,7 +32,6 @@ import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithNonCh
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithNotExistingElement;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithNullElement;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
 import java.io.File;
@@ -60,17 +59,17 @@ public class CheckPageTest extends AbstractTestSitesTest implements PageFactoryP
         }
     }
 
-    @Test(expectedExceptions = TesterraRuntimeException.class)
+    @Test(expectedExceptions = RuntimeException.class)
     public void testT03_checkNullElement() throws Exception {
         pageFactory.createPage(PageWithNullElement.class, getWebDriver());
     }
 
-    @Test(expectedExceptions = TesterraRuntimeException.class)
+    @Test(expectedExceptions = RuntimeException.class)
     public void testT04_checkStaticElement() throws Exception {
         pageFactory.createPage(PageWithExistingStaticElement.class, getWebDriver());
     }
 
-    @Test(expectedExceptions = TesterraRuntimeException.class)
+    @Test(expectedExceptions = RuntimeException.class)
     public void testT05_checkNonCheckableElement() throws Exception {
         pageFactory.createPage(PageWithNonCheckableCheck.class, getWebDriver());
     }

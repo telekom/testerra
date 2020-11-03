@@ -23,7 +23,6 @@
 package eu.tsystems.mms.tic.testframework.report.threadvisualizer;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.utils.ReportUtils;
@@ -64,13 +63,13 @@ public class ThreadVisualizer {
         final String css = tvFolderName + "/timeline.css";
         final InputStream cssIS = Thread.currentThread().getContextClassLoader().getResourceAsStream(css);
         if (cssIS == null) {
-            throw new TesterraRuntimeException(css + " not found");
+            throw new RuntimeException(css + " not found");
         }
 
         final String js = tvFolderName + "/timeline.js";
         final InputStream jsIS = Thread.currentThread().getContextClassLoader().getResourceAsStream(js);
         if (jsIS == null) {
-            throw new TesterraRuntimeException(js + " not found");
+            throw new RuntimeException(js + " not found");
         }
 
         // copy

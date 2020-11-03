@@ -25,8 +25,8 @@ import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.sikuli.ImageElement;
+import eu.tsystems.mms.tic.testframework.sikuli.ImageWebDriver;
 import eu.tsystems.mms.tic.testframework.sikuli.SikuliBy;
-import eu.tsystems.mms.tic.testframework.sikuli.TesterraWebDriver;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.net.URL;
@@ -57,8 +57,8 @@ public class SikuliBasedWebTest extends AbstractTestSitesTest {
 
         URL resourceURL = FileUtils.getResourceURL("sikuli/iiswelcome.png");
 
-        TesterraWebDriver testerraWebDriver = (TesterraWebDriver) ((EventFiringWebDriver) driver).getWrappedDriver();
-        ImageElement imageElement = testerraWebDriver.findImageElement(resourceURL);
+        ImageWebDriver sikuliWebDriver = (ImageWebDriver) ((EventFiringWebDriver) driver).getWrappedDriver();
+        ImageElement imageElement = sikuliWebDriver.findImageElement(resourceURL);
         imageElement.click();
     }
 

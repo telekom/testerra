@@ -22,14 +22,12 @@
 package eu.tsystems.mms.tic.testframework.bmp.playground;
 
 import eu.tsystems.mms.tic.testframework.bmp.BmpRestClient;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.utils.ProxyUtils;
+import java.net.MalformedURLException;
+import java.net.URL;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 
 /**
  * BmpRestClientTest
@@ -72,7 +70,7 @@ public class BmpRestClientTest {
         final BmpRestClient bmpRestClient = new BmpRestClient(API_URL);
     }
 
-    @Test(expectedExceptions = TesterraRuntimeException.class)
+    @Test(expectedExceptions = RuntimeException.class)
     public void testSetHeaderWithoutStartedProxyFails() {
 
         // arrange

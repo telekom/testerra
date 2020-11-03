@@ -21,8 +21,7 @@
  */
  package eu.tsystems.mms.tic.testframework.utils;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,7 +37,7 @@ public final class NumberUtils {
      */
     public static Long getAverageValue(List<Long> numberList) {
         if (numberList == null) {
-            throw new TesterraSystemException("List is null");
+            throw new SystemException("List is null");
         }
 
         int size = numberList.size();
@@ -61,7 +60,7 @@ public final class NumberUtils {
      */
     public static <T extends Object & Comparable<? super T>> T getMaxValue(List<T> numberList) {
         if (numberList == null) {
-            throw new TesterraSystemException("List is null");
+            throw new SystemException("List is null");
         }
 
         int size = numberList.size();
@@ -80,7 +79,7 @@ public final class NumberUtils {
      */
     public static <T extends Object & Comparable<? super T>> T getMinValue(List<T> numberList) {
         if (numberList == null) {
-            throw new TesterraSystemException("List is null");
+            throw new SystemException("List is null");
         }
 
         int size = numberList.size();

@@ -23,7 +23,6 @@ package eu.tsystems.mms.tic.testframework.report.test;
 
 import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.report.general.AbstractReportFailuresTest;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
@@ -56,7 +55,7 @@ public class FailureAspectsPageTest extends AbstractReportFailuresTest {
             case SystemTestsGroup.SYSTEMTESTSFILTER2:
                 return new TestReportTwoNumbers().getFailureAspects();
             default:
-                throw new TesterraRuntimeException("Not implemented for Report: " + reportFilter);
+                throw new RuntimeException("Not implemented for Report: " + reportFilter);
         }
     }
 
@@ -72,7 +71,7 @@ public class FailureAspectsPageTest extends AbstractReportFailuresTest {
                 }
                 return counter;
             default:
-                throw new TesterraRuntimeException("Not implemented for Report: " + reportFilter);
+                throw new RuntimeException("Not implemented for Report: " + reportFilter);
         }
     }
 
@@ -82,7 +81,7 @@ public class FailureAspectsPageTest extends AbstractReportFailuresTest {
             case SystemTestsGroup.SYSTEMTESTSFILTER2:
                 return TestReportTwoFailureAspects.getAllFailureAspectEntryTestObjects();
             default:
-                throw new TesterraRuntimeException("Not implemented for Report: " + reportFilter);
+                throw new RuntimeException("Not implemented for Report: " + reportFilter);
         }
     }
     @Override

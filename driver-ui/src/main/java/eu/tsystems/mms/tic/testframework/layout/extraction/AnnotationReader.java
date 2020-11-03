@@ -22,7 +22,7 @@
 package eu.tsystems.mms.tic.testframework.layout.extraction;
 
 import eu.tsystems.mms.tic.testframework.annotator.AnnotationContainer;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.layout.LayoutComparator;
 import eu.tsystems.mms.tic.testframework.layout.core.LayoutElement;
@@ -80,12 +80,12 @@ public class AnnotationReader {
         loadProperties();
 
         if (markedPoints.size() > size.x * size.y * maximalFractionOfMarkedPixels) {
-            throw new TesterraSystemException(
+            throw new SystemException(
                     LayoutComparator.Messages.tooManyMarkedPixels("" + maximalFractionOfMarkedPixels * 100));
         }
 
         if (markedPoints.size() <= minimumMarkedPixels) {
-            throw new TesterraSystemException(LayoutComparator.Messages.tooFewMarkedPixels());
+            throw new SystemException(LayoutComparator.Messages.tooFewMarkedPixels());
         }
         return markedPoints;
     }
@@ -102,7 +102,7 @@ public class AnnotationReader {
         HashSet<Point2D> markedPoints = null;
         try {
             markedPoints = getMarkedPixels(bufImage);
-        } catch (TesterraSystemException e) {
+        } catch (SystemException e) {
             LOGGER.warn(e.getMessage());
         }
 

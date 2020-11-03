@@ -18,9 +18,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
- package eu.tsystems.mms.tic.testframework.report.context;
+package eu.tsystems.mms.tic.testframework.report.context;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
@@ -143,7 +142,7 @@ public class ErrorContext extends AbstractContext {
             }
             return "Selenium: " + out;
         }
-        else if (line.startsWith(TesterraRuntimeException.class.getPackage().getName())) {
+        else if (line.startsWith(RuntimeException.class.getPackage().getName())) {
             return line.replace(TimeoutException.class.getPackage().getName() + ".", "");
         }
         return line;

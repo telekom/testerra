@@ -22,43 +22,42 @@
  package eu.tsystems.mms.tic.testframework.exceptions;
 
 /**
- * Runtime Exception indicating any unexpected behaviour of Page objects.
+ * Exception for Test Failures
  *
  * @author pele
- *
  */
-public class PageObjectException extends RuntimeException {
+public class TestFailureException extends java.lang.RuntimeException {
 
     /**
-     * Default serial version UID
+     * UID
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1743745005509553387L;
 
     /**
-     * Inherited Constructed, giving a message to the exception.
+     * Exception with message.
      *
-     * @param message Message for exception.
+     * @param message The message that should displayed.
      */
-    public PageObjectException(final String message) {
+    public TestFailureException(final String message) {
         super(message);
     }
 
     /**
-     * Inherited Constructor creating this exception by its cause and with a message.
+     * Exception with message and cause.
      *
-     * @param message Message for exception.
-     * @param cause Cause of exception.
+     * @param message The message that should displayed.
+     * @param cause The Throwable of the exception.
      */
-    public PageObjectException(final String message, final Throwable cause) {
+    public TestFailureException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
     /**
-     * Inherited Constructor creating this exception by its cause.
+     * Exception with cause.
      *
-     * @param cause Cause of exception.
+     * @param cause The Throwable of the exception.
      */
-    public PageObjectException(final Throwable cause) {
+    public TestFailureException(final Throwable cause) {
         super(cause);
     }
 }

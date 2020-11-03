@@ -28,7 +28,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.AbstractPage;
  *
  * @author pele
  */
-public class PageNotFoundException extends RuntimeException {
+public class PageNotFoundException extends java.lang.RuntimeException {
 
     /**
      * Default serial UID.

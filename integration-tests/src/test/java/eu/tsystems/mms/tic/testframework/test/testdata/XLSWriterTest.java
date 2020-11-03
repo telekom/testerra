@@ -22,7 +22,7 @@
  package eu.tsystems.mms.tic.testframework.test.testdata;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.testdata.XLSTestDataReader;
 import eu.tsystems.mms.tic.testframework.testdata.XLSWriter;
@@ -156,7 +156,7 @@ public class XLSWriterTest extends TesterraTest {
         XLSWriter xlsWriter = new XLSWriter();
         try {
             xlsWriter.openFileFromResource("notExisting.xls", "sheet1");
-        } catch (TesterraSystemException e) {
+        } catch (SystemException e) {
             Assert.assertNotNull(e.getMessage());
             final String msg = "Error reading resource file";
             Assert.assertTrue(e.getMessage().contains(msg), "Error message contains '" + msg + "'");
@@ -179,7 +179,7 @@ public class XLSWriterTest extends TesterraTest {
         String filepath = rootDir + "\\target\\" + file;
         try {
             xlsWriter.openFileAbsolute(filepath, "sheet1");
-        } catch (TesterraSystemException e) {
+        } catch (SystemException e) {
             Assert.assertEquals(e.getMessage(),
                     "Cannot read xls(x) file: " + file.getAbsolutePath() + "\\target\\.");
             return;

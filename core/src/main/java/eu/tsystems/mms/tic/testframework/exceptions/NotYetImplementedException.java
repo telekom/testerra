@@ -30,7 +30,7 @@ import org.apache.commons.lang3.NotImplementedException;
  * @deprecated Use {@link NotImplementedException}
  */
 @Deprecated
-public class NotYetImplementedException extends RuntimeException {
+public class NotYetImplementedException extends java.lang.RuntimeException {
 
     /**
      *

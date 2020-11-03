@@ -21,7 +21,7 @@
  */
  package eu.tsystems.mms.tic.testframework.common;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.transfer.BooleanPackedResponse;
 import java.util.ArrayList;
@@ -73,7 +73,7 @@ public final class PropertiesParser implements Loggable {
             Check for loop
              */
             if (searchedStrings.contains(key)) {
-                throw new TesterraSystemException("Loop detected while replacing a property: " + match);
+                throw new SystemException("Loop detected while replacing a property: " + match);
             } else {
                 /*
                 ask

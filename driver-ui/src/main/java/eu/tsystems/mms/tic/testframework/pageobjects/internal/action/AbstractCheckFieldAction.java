@@ -21,7 +21,6 @@
  */
  package eu.tsystems.mms.tic.testframework.pageobjects.internal.action;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.AbstractPage;
@@ -48,14 +47,14 @@ public abstract class AbstractCheckFieldAction extends AbstractFieldAction imple
         boolean isCheckable = UiElementBase.class.isAssignableFrom(field.getType());
 
         if (isCheckAnnotated && !isCheckable) {
-            throw new TesterraRuntimeException("Field {" + field.getName() + "} of " + declaringPage
+            throw new RuntimeException("Field {" + field.getName() + "} of " + declaringPage
                     + " is annotated with @Check, but the class doesn't implement " + UiElementBase.class.getCanonicalName());
         }
 
         if (isCheckable) {
             if (((field.getModifiers() & Modifier.STATIC) == Modifier.STATIC)) {
                 // if the Check annotated field is not static
-                throw new TesterraRuntimeException("Checkable field MUST be non-static: " +
+                throw new RuntimeException("Checkable field MUST be non-static: " +
                         declaringPage + "." + field.getName());
             }
             else {
@@ -85,7 +84,7 @@ public abstract class AbstractCheckFieldAction extends AbstractFieldAction imple
         }
         Check check = field.getAnnotation(Check.class);
         if (checkableInstance == null) {
-            throw new TesterraRuntimeException(String.format("Field {%s.%s} is annotated with @Check and was never initialized (it is null)." +
+            throw new RuntimeException(String.format("Field {%s.%s} is annotated with @Check and was never initialized (it is null)." +
                 "This is not allowed because @Check indicates a mandatory GuiElement of a Page.", declaringPage, fieldName));
         } else {
             try {

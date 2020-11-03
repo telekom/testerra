@@ -22,7 +22,7 @@
 
 package eu.tsystems.mms.tic.testframework.utils;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
@@ -199,7 +199,7 @@ public class FileDownloader implements Loggable {
         }
 
         if (link == null || link.length() == 0) {
-            throw new TesterraSystemException("Neither href nor src attribute found on GuiElement.");
+            throw new SystemException("Neither href nor src attribute found on GuiElement.");
         }
 
         return this.download(element.getWebDriver(), link, targetFileName);

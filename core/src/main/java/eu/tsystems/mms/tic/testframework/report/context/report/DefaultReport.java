@@ -19,7 +19,6 @@
  */
 package eu.tsystems.mms.tic.testframework.report.context.report;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.context.MethodContext;
@@ -83,7 +82,7 @@ public class DefaultReport implements Report, Loggable {
                 log().info("Report written to " + finalReportDirectory.getAbsolutePath());
             }
         } catch (IOException e) {
-            throw new TesterraRuntimeException("Could not move report dir: " + e.getMessage(), e);
+            throw new RuntimeException("Could not move report dir: " + e.getMessage(), e);
         }
         return finalReportDirectory;
     }

@@ -25,8 +25,8 @@ import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.Retry;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraInheritedFailedException;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.InheritedFailedException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.context.MethodContext;
@@ -143,7 +143,7 @@ public class RetryAnalyzer implements IRetryAnalyzer {
          * no retry when TesterraInheritedExceptions raise
          */
         final Throwable throwable1 = testResult.getThrowable();
-        if (throwable1 != null && throwable1 instanceof TesterraInheritedFailedException) {
+        if (throwable1 != null && throwable1 instanceof InheritedFailedException) {
             return false;
         }
 
@@ -198,7 +198,7 @@ public class RetryAnalyzer implements IRetryAnalyzer {
                 if (throwable != null) {
                     methodContext.errorContext().setThrowable(message, throwable);
                 } else {
-                    methodContext.errorContext().setThrowable(message, new TesterraSystemException(message));
+                    methodContext.errorContext().setThrowable(message, new SystemException(message));
                 }
             }
 

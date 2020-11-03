@@ -19,14 +19,14 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.exceptions;
+package eu.tsystems.mms.tic.testframework.exceptions;
 
 /**
- * RuntimeException for testerra.
+ * Exception for system internals
  *
  * @author pele
  */
-public class TesterraRuntimeException extends RuntimeException {
+public class SystemException extends java.lang.RuntimeException {
 
     /**
      *
@@ -34,18 +34,11 @@ public class TesterraRuntimeException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Default exception, no message.
-     */
-    public TesterraRuntimeException() {
-        super();
-    }
-
-    /**
      * Exception with message.
      *
      * @param message The message that should displayed.
      */
-    public TesterraRuntimeException(final String message) {
+    public SystemException(final String message) {
         super(message);
     }
 
@@ -55,7 +48,7 @@ public class TesterraRuntimeException extends RuntimeException {
      * @param message The message that should displayed.
      * @param cause The Throwable of the exception.
      */
-    public TesterraRuntimeException(final String message, final Throwable cause) {
+    public SystemException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
@@ -64,7 +57,7 @@ public class TesterraRuntimeException extends RuntimeException {
      *
      * @param cause The Throwable of the exception.
      */
-    public TesterraRuntimeException(final Throwable cause) {
+    public SystemException(final Throwable cause) {
         super(cause);
     }
 }

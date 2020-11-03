@@ -21,7 +21,7 @@
  */
  package eu.tsystems.mms.tic.testframework.exceptions;
 
-public class TimeoutException extends RuntimeException {
+public class TimeoutException extends java.lang.RuntimeException {
 
     /**
      *

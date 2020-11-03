@@ -21,7 +21,6 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import java.awt.Color;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -168,7 +167,7 @@ public class TestResultHelper {
             case FAILEDEXPECTED:
                 return new Color(128, 128, 128);
             default:
-                throw new TesterraRuntimeException("Color not implemented: " + testResult.getColor() + " for TestResult: " + testResult.toString());
+                throw new RuntimeException("Color not implemented: " + testResult.getColor() + " for TestResult: " + testResult.toString());
         }
     }
 }

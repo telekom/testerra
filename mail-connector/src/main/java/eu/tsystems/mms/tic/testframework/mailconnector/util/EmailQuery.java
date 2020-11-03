@@ -23,7 +23,6 @@ package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import java.util.List;
-import java.util.function.Predicate;
 import javax.mail.search.AndTerm;
 import javax.mail.search.SearchTerm;
 
@@ -41,9 +40,8 @@ public class EmailQuery {
     private static final String MAX_READ_TRIES_PROPERTY = "MAX_READ_TRIES";
 
     private int retryCount = Integer.parseInt(PropertyManager.getProperty(MAX_READ_TRIES_PROPERTY, "20"));
-    private int pauseMs = Integer.parseInt(PropertyManager.getProperty(POLLING_TIMER_SECONDS_PROPERTY, "10"))*1000;
+    private long pauseMs = Integer.parseInt(PropertyManager.getProperty(POLLING_TIMER_SECONDS_PROPERTY, "10"))*1000;
     private SearchTerm searchTerm;
-    private Predicate<Email> filter;
     private String folderName;
 
     public int getRetryCount() {
@@ -55,11 +53,11 @@ public class EmailQuery {
         return this;
     }
 
-    public int getPauseMs() {
+    public long getPauseMs() {
         return pauseMs;
     }
 
-    public EmailQuery setPauseMs(int millis) {
+    public EmailQuery setPauseMs(long millis) {
         this.pauseMs = millis;
         return this;
     }
@@ -79,15 +77,6 @@ public class EmailQuery {
 
     public EmailQuery withAllOfSearchTerms(SearchTerm...searchTerms) {
         this.searchTerm = new AndTerm(searchTerms);
-        return this;
-    }
-
-    public Predicate<Email> getFilter() {
-        return filter;
-    }
-
-    public EmailQuery setFilter(Predicate<Email> filter) {
-        this.filter = filter;
         return this;
     }
 

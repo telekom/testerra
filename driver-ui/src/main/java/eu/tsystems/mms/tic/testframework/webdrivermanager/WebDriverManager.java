@@ -24,7 +24,7 @@
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionHandler;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionsAfterMethodWorker;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
@@ -330,7 +330,7 @@ public final class WebDriverManager {
         if (driver instanceof JavascriptExecutor) {
             rawJsExecutorDriver = (JavascriptExecutor) driver;
         } else {
-            throw new TesterraSystemException("WebDriver object is not a JavascriptExecutor");
+            throw new SystemException("WebDriver object is not a JavascriptExecutor");
         }
 
         try {

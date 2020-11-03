@@ -24,7 +24,7 @@ package eu.tsystems.mms.tic.testframework.layout;
 import eu.tsystems.mms.tic.testframework.common.IProperties;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.layout.extraction.AnnotationReader;
 import eu.tsystems.mms.tic.testframework.layout.reporting.LayoutCheckContext;
@@ -350,7 +350,7 @@ public final class LayoutCheck {
                 FileUtils.copyFile(screenshot, step.referenceFileName.toFile());
             } catch (IOException e) {
                 LOGGER.error(e.getMessage());
-                throw new TesterraSystemException("Error when saving reference screenshot.", e);
+                throw new SystemException("Error when saving reference screenshot.", e);
             }
             LOGGER.info(String.format("Saved reference screenshot at '%s'.", step.referenceFileName.toString()));
         } else {
@@ -364,7 +364,7 @@ public final class LayoutCheck {
                 FileUtils.copyFile(screenshot, step.actualFileName.toFile());
             } catch (IOException e) {
                 LOGGER.error(e.getMessage());
-                throw new TesterraSystemException("Error when saving screenshot.", e);
+                throw new SystemException("Error when saving screenshot.", e);
             }
             LOGGER.debug(String.format("Saved actual screenshot at '%s'.", step.actualFileName.toString()));
 
@@ -454,7 +454,7 @@ public final class LayoutCheck {
                     break;
                 default:
                     LOGGER.error("Mode" + mode.name() + "not supported");
-                    throw new TesterraSystemException("Mode " + mode.name() + " not supported.");
+                    throw new SystemException("Mode " + mode.name() + " not supported.");
             }
         }
 

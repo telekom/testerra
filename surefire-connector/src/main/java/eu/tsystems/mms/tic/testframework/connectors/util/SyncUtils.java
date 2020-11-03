@@ -21,7 +21,6 @@
  */
 package eu.tsystems.mms.tic.testframework.connectors.util;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.report.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.context.Video;
@@ -141,7 +140,7 @@ public final class SyncUtils {
                     classes.add(Class.forName(pName + '.' + file.getName().substring(0,
                             file.getName().length() - ".class".length())));
                 } catch (final ClassNotFoundException e) {
-                    throw new TesterraRuntimeException(e.getMessage(), e);
+                    throw new RuntimeException(e.getMessage(), e);
                 }
             }
         }
@@ -163,7 +162,7 @@ public final class SyncUtils {
         try {
             resources = testClassLoader.getResources(path);
         } catch (final IOException e) {
-            throw new TesterraRuntimeException(e);
+            throw new RuntimeException(e);
         }
         final List<File> dirs = new ArrayList<File>();
         URL resource;

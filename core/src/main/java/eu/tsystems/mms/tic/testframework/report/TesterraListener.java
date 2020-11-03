@@ -31,7 +31,7 @@ import eu.tsystems.mms.tic.testframework.events.ExecutionFinishEvent;
 import eu.tsystems.mms.tic.testframework.events.InterceptMethodsEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodStartEvent;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.ListenerUtils;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.HandleCollectedAssertsWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodAnnotationCheckerWorker;
@@ -356,7 +356,7 @@ public class TesterraListener implements
                 ClassContext classContext = ExecutionContextController.getClassContextFromTestResult(testResult, testContext, invokedMethod);
                 methodContext = classContext.safeAddSkipMethod(testResult, invokedMethod);
             } else {
-                throw new TesterraSystemException("INTERNAL ERROR. Could not create methodContext for " + methodName + " with result: " + testResult);
+                throw new SystemException("INTERNAL ERROR. Could not create methodContext for " + methodName + " with result: " + testResult);
             }
         }
 

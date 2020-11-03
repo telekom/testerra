@@ -22,7 +22,7 @@
 
 package eu.tsystems.mms.tic.testframework.report;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -89,7 +89,7 @@ public class TestStatusController {
          */
 
         if (methodContext == null) {
-            throw new TesterraSystemException("Test method object is null");
+            throw new SystemException("Test method object is null");
         }
 
         /*
@@ -166,7 +166,7 @@ public class TestStatusController {
                 break;
 
             default:
-                throw new TesterraSystemException("Not implemented: " + status);
+                throw new SystemException("Not implemented: " + status);
         }
 
         // print out current test execution state
@@ -200,7 +200,7 @@ public class TestStatusController {
                     }
                     break;
                 default:
-                    throw new TesterraSystemException("Could not set explicit Failure Corridor value. Missing state: " + failureCorridorValue);
+                    throw new SystemException("Could not set explicit Failure Corridor value. Missing state: " + failureCorridorValue);
             }
             LOGGER.debug("FC: " + testsFailedHIGH + "/" + testsFailedMID + "/" + testsFailedLOW);
         }
@@ -333,7 +333,7 @@ public class TestStatusController {
                     return false;
 
                 default:
-                    throw new TesterraSystemException("Unhandled state: " + this);
+                    throw new SystemException("Unhandled state: " + this);
             }
         }
 
@@ -365,7 +365,7 @@ public class TestStatusController {
 
 
                 default:
-                    throw new TesterraSystemException("Unhandled state: " + this);
+                    throw new SystemException("Unhandled state: " + this);
             }
         }
 
@@ -387,7 +387,7 @@ public class TestStatusController {
                     return true;
 
                 default:
-                    throw new TesterraSystemException("Unhandled state: " + this);
+                    throw new SystemException("Unhandled state: " + this);
             }
         }
 

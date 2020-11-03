@@ -21,7 +21,7 @@
  */
  package eu.tsystems.mms.tic.testframework.report.model.context;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.IDUtils;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
@@ -90,7 +90,7 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
                 }
                 return context;
             } catch (Exception e) {
-                throw new TesterraSystemException("Error creating Context Class", e);
+                throw new SystemException("Error creating Context Class", e);
             }
 
         } else {

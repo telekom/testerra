@@ -22,7 +22,7 @@
  package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionHandler;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
@@ -381,7 +381,7 @@ public final class WebDriverSessionsManager {
             if (ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.containsKey(sessionKey)) {
                 return ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.get(sessionKey);
             } else {
-                throw new TesterraSystemException("Session not useable anymore: " + sessionKey);
+                throw new SystemException("Session not useable anymore: " + sessionKey);
             }
         }
 
@@ -434,7 +434,7 @@ public final class WebDriverSessionsManager {
             }
             return eventFiringWebDriver;
         } else {
-            throw new TesterraSystemException("No webdriver factory registered for browser " + browser);
+            throw new SystemException("No webdriver factory registered for browser " + browser);
         }
     }
 

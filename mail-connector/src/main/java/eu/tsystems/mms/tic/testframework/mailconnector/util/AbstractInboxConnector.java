@@ -21,7 +21,7 @@
  */
 package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import java.util.ArrayList;
@@ -190,7 +190,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
                     return new MessageIDTerm(messageId);
 
                 default:
-                    throw new TesterraSystemException("Not yet implemented: " + searchCriteriaType);
+                    throw new SystemException("Not yet implemented: " + searchCriteriaType);
             }
         }
 
@@ -555,7 +555,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
                     isDeleted = deleteMessage(null, Message.RecipientType.TO, null, deleteCriteriaValue);
                     break;
                 default:
-                    throw new TesterraSystemException("Not supported: " + deleteCriteriaType);
+                    throw new SystemException("Not supported: " + deleteCriteriaType);
             }
             booleanValues.add(isDeleted);
         }

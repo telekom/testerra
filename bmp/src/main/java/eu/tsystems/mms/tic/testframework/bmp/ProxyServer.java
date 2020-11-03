@@ -21,7 +21,7 @@
  */
 package eu.tsystems.mms.tic.testframework.bmp;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -101,7 +101,7 @@ public class ProxyServer {
                 fw2.write("");
                 fw2.close();
             } catch (IOException e) {
-                throw new TesterraSystemException("Error creating browsermob proxy setup files", e);
+                throw new SystemException("Error creating browsermob proxy setup files", e);
             }
         }
     }

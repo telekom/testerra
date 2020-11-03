@@ -22,7 +22,7 @@
 
 package eu.tsystems.mms.tic.testframework.utils;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import java.io.File;
 import java.io.IOException;
@@ -196,7 +196,7 @@ public class FileDownloader {
         }
 
         if (link == null || link.length() == 0) {
-            throw new TesterraSystemException("Neither href nor src attribute found on GuiElement.");
+            throw new SystemException("Neither href nor src attribute found on GuiElement.");
         }
 
         return this.download(element.getWebDriver(), link, targetFileName);

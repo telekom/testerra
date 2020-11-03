@@ -22,7 +22,7 @@
 package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
 import com.sun.mail.util.BASE64DecoderStream;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -211,7 +211,7 @@ public final class MailUtils {
             // The Content is unknown.
             LOGGER.error("Content type is unknown: " + sent.getContent());
         } catch (final Exception e) {
-            throw new TesterraSystemException("Error comparing messages.", e);
+            throw new SystemException("Error comparing messages.", e);
         }
         return false;
     }
@@ -288,7 +288,7 @@ public final class MailUtils {
             // The Content is unknown.
             LOGGER.error("Content type is unknown: " + sent.getContent());
         } catch (final Exception e) {
-            throw new TesterraSystemException("Error comparing messages.", e);
+            throw new SystemException("Error comparing messages.", e);
         }
         return false;
     }
@@ -337,7 +337,7 @@ public final class MailUtils {
                 }
             }
         } catch (final Exception e) {
-            throw new TesterraSystemException("Error comparing message headers.", e);
+            throw new SystemException("Error comparing message headers.", e);
         }
         return true;
     }
@@ -364,7 +364,7 @@ public final class MailUtils {
             final Session mailSession = Session.getInstance(new Properties());
             message = new MimeMessage(mailSession, new FileInputStream(filename));
         } catch (final Exception e) {
-            throw new TesterraSystemException("Error loading email.", e);
+            throw new SystemException("Error loading email.", e);
         }
         return message;
     }
@@ -400,7 +400,7 @@ public final class MailUtils {
             message.writeTo(fos);
             fos.close();
         } catch (final Exception e) {
-            throw new TesterraSystemException("Can't save Email.", e);
+            throw new SystemException("Can't save Email.", e);
         }
     }
 
@@ -431,7 +431,7 @@ public final class MailUtils {
             message.getMessage().writeTo(fos);
             fos.close();
         } catch (final Exception e) {
-            throw new TesterraSystemException("Can't save Email.", e);
+            throw new SystemException("Can't save Email.", e);
         }
     }
 
@@ -457,7 +457,7 @@ public final class MailUtils {
             final Session mailSession = Session.getInstance(new Properties());
             message = new MimeMessage(mailSession, inputStream);
         } catch (final Exception e) {
-            throw new TesterraSystemException("Error loading email.", e);
+            throw new SystemException("Error loading email.", e);
         }
         return message;
     }
@@ -544,7 +544,7 @@ public final class MailUtils {
             }
             newMessage.saveChanges();
         } catch (final Exception e) {
-            throw new TesterraSystemException("Can't encrypt message.", e);
+            throw new SystemException("Can't encrypt message.", e);
         }
         return newMessage;
     }
@@ -622,7 +622,7 @@ public final class MailUtils {
             smimeEncryptedMsg.setContent(mbp.getContent(), mbp.getContentType());
             smimeEncryptedMsg.saveChanges();
         } catch (final Exception e) {
-            throw new TesterraSystemException("Can't encrypt message.", e);
+            throw new SystemException("Can't encrypt message.", e);
         }
         return smimeEncryptedMsg;
     }
@@ -695,7 +695,7 @@ public final class MailUtils {
             signedMessage.setContent(mimeMultiPart);
             signedMessage.saveChanges();
         } catch (final Exception e) {
-            throw new TesterraSystemException("Can't sign message.", e);
+            throw new SystemException("Can't sign message.", e);
         }
         return signedMessage;
     }
@@ -766,7 +766,7 @@ public final class MailUtils {
             return decryptedMessage;
 
         } catch (final Exception e) {
-            throw new TesterraSystemException("Can't decrypt message", e);
+            throw new SystemException("Can't decrypt message", e);
         }
     }
 
@@ -825,7 +825,7 @@ public final class MailUtils {
                 headersAsStrings.add((String) headers.nextElement());
             }
         } catch (final Exception e) {
-            throw new TesterraSystemException(e);
+            throw new SystemException(e);
         }
         return headersAsStrings.toArray(new String[headersAsStrings.size()]);
     }

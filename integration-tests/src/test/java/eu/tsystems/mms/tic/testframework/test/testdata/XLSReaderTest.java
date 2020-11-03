@@ -22,7 +22,7 @@
  package eu.tsystems.mms.tic.testframework.test.testdata;
 
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.testdata.XLSTestDataReader;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import java.io.File;
@@ -167,7 +167,7 @@ public class XLSReaderTest extends AbstractWebDriverTest {
             @SuppressWarnings("unused")
             Map<String, String> dataSet = xlsTestDataReader.readXLSTestDataFromResource(filename, "Sheet1",
                     "testdata");
-        } catch (TesterraSystemException e) {
+        } catch (SystemException e) {
             Assert.assertEquals(e.getMessage(), "Header row is empty. Row 2 (1-based)");
             return;
         }
@@ -188,7 +188,7 @@ public class XLSReaderTest extends AbstractWebDriverTest {
             @SuppressWarnings("unused")
             Map<String, String> dataSet = xlsTestDataReader.readXLSTestDataFromFile(file, "Sheet1",
                     "testdata");
-        } catch (TesterraSystemException e) {
+        } catch (SystemException e) {
             String msg = "Cannot read xls(x) file: " + file;
             String message = e.getMessage();
             AssertUtils.assertContains(message, msg);
@@ -212,7 +212,7 @@ public class XLSReaderTest extends AbstractWebDriverTest {
             @SuppressWarnings("unused")
             Map<String, String> dataSet = xlsTestDataReader.readXLSTestDataFromFile(filepath, "Sheet1",
                     "testdata");
-        } catch (TesterraSystemException e) {
+        } catch (SystemException e) {
             String msg = "Cannot read xls(x) file:";
             String message = e.getMessage();
             AssertUtils.assertContains(message, msg);
@@ -233,7 +233,7 @@ public class XLSReaderTest extends AbstractWebDriverTest {
             @SuppressWarnings("unused")
             Map<String, String> dataSet = xlsTestDataReader.readXLSTestDataFromResource(filename, "Seite1",
                     "testdata");
-        } catch (TesterraSystemException e) {
+        } catch (SystemException e) {
             Assert.assertEquals(e.getMessage(), "No sheet with name Seite1 found.", "Sheet not found.");
             return;
         }

@@ -129,7 +129,6 @@ public class ExecutionContextController {
      * @param methodContext Method Context.
      */
     public static void setCurrentMethodContext(final MethodContext methodContext) {
-        LOGGER.info("set " + methodContext);
         CURRENT_METHOD_CONTEXT.set(methodContext);
     }
 
@@ -145,7 +144,6 @@ public class ExecutionContextController {
      * Clear the -current testresult-. Use with care!
      */
     public static void clearCurrentTestResult() {
-        LOGGER.info("clear");
         CURRENT_TEST_RESULT.remove();
         CURRENT_METHOD_CONTEXT.remove();
     }

@@ -19,6 +19,8 @@
 @use '@material/elevation/mdc-elevation';
 @use '@material/icon-button/mdc-icon-button';
 @use '@material/layout-grid/mdc-layout-grid';
+@use '@material/linear-progress/mdc-linear-progress';
+@use '@material/linear-progress';
 @use '@material/list/mdc-list';
 @use '@material/list';
 @use '@material/textfield/mdc-text-field';
@@ -55,6 +57,8 @@
 @include drawer.dismissible-core-styles;
 @include drawer.modal-core-styles;
 @include list.core-styles;
+
+@import "variables.scss";
 
 /*General style settings______________________________________________________________________________________________*/
 

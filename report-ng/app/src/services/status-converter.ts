@@ -25,9 +25,9 @@ import ExecStatusType = data.ExecStatusType;
 import ResultStatusType = data.ResultStatusType;
 
 class GraphColors {
-  static readonly PASSED = '#3C8F64'; // $success
+  static readonly PASSED = '#3c8f64'; // $success
   static readonly SKIPPED = '#8a929a'; // $dark
-  static readonly FAILED = '#E63946'; // $danger
+  static readonly FAILED = '#e63946'; // $danger
   static readonly CRASHED = '#5d6f81'; // $secondary
   static readonly RUNNING = '#0089b6'; // $info
 

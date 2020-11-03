@@ -1,3 +1,5 @@
+@import "../../variables.scss";
+
 #test-results {
   display: flex;
   flex-direction: column;
@@ -20,19 +22,37 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0.5em 0
-}
+  margin: 0.5em 0;
 
-.result-status-icon {
-  font-size: 40px !important;
-}
+  .result-status-icon {
+    font-size: 40px !important;
+    color: #ffffff;
+    border: 5px solid;
+    border-radius: 25px;
+  }
 
-.result-status-text {
-  text-align: right;
-}
+  #icon-passed {
+    background: $passed;
+    border-color: $passed;
+  }
 
-.result-status-type {
-  color: slategrey !important;
+  #icon-skipped {
+    background: $skipped;
+    border-color: $skipped;
+  }
+
+  #icon-failed {
+    background: $failed;
+    border-color: $failed;
+  }
+
+  .result-status-text {
+    text-align: right;
+
+    .result-status-type {
+      color: slategrey !important;
+    }
+  }
 }
 
 /*Ab mittlerer Bildschirmgröße Darstellung von Chart und Tabelle nebeneinander*/

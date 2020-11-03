@@ -22,7 +22,7 @@
 package eu.tsystems.mms.tic.testframework.mailconnector.imap;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.AbstractInboxConnector;
 import java.util.Properties;
@@ -82,18 +82,18 @@ public class ImapMailConnector extends AbstractInboxConnector implements Loggabl
     /**
      * Marks all messages in inbox as seen.
      *
-     * @throws TesterraSystemException Error connecting with Server.
+     * @throws SystemException Error connecting with Server.
      */
-    public void markAllMailsAsSeen() throws TesterraSystemException {
+    public void markAllMailsAsSeen() throws SystemException {
         this.pMarkAllMailsAsSeen();
     }
 
     /**
      * Marks all messages in inbox as seen.
      *
-     * @throws TesterraSystemException Error connecting with Server.
+     * @throws SystemException Error connecting with Server.
      */
-    private void pMarkAllMailsAsSeen() throws TesterraSystemException {
+    private void pMarkAllMailsAsSeen() throws SystemException {
         Store store;
         try {
             store = getSession().getStore();
@@ -108,10 +108,10 @@ public class ImapMailConnector extends AbstractInboxConnector implements Loggabl
             store.close();
         } catch (final NoSuchProviderException e) {
             log().error(e.getMessage());
-            throw new TesterraSystemException(e);
+            throw new SystemException(e);
         } catch (final MessagingException e) {
             log().error(e.getMessage());
-            throw new TesterraSystemException(e);
+            throw new SystemException(e);
         }
     }
 }

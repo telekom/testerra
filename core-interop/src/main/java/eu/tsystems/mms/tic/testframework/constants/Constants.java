@@ -22,8 +22,7 @@
  package eu.tsystems.mms.tic.testframework.constants;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import java.text.SimpleDateFormat;
 
 /**
@@ -48,7 +47,7 @@ public final class Constants {
             SIMPLE_DATE_FORMAT_DATE = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
             SIMPLE_DATE_FORMAT_DELTA = new SimpleDateFormat("H 'h' m 'min' s 'sec' S 'ms'");
         } catch (Exception e) {
-            throw new TesterraSystemException("Internal Error", e);
+            throw new SystemException("Internal Error", e);
         }
     }
 

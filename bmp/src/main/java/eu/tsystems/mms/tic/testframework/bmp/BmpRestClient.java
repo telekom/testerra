@@ -50,15 +50,6 @@ import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.WebApplicationException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.util.Map;
-
 /**
  * @deprecated Please see Testerra bup module - BrowserUpRemoteProxyManager
  */
@@ -276,7 +267,7 @@ public class BmpRestClient {
 
             this.sendPut(urlToCall, null);
         } catch (Exception e) {
-            throw new RuntimeException("error starting capture", e);
+            throw new java.lang.RuntimeException("error starting capture", e);
         }
     }
 
@@ -312,7 +303,7 @@ public class BmpRestClient {
             final String urlToCall = url().setPath("/proxy/" + this.proxyPort + "/har").toString();
             return new JsonParser().parse(sendGet(urlToCall));
         } catch (Exception e) {
-            throw new RuntimeException("error starting capture", e);
+            throw new java.lang.RuntimeException("error starting capture", e);
         }
     }
 
@@ -339,7 +330,7 @@ public class BmpRestClient {
                 }
             }
         } catch (Exception e) {
-            throw new RuntimeException("Error executing http get request to get proxy information.", e);
+            throw new java.lang.RuntimeException("Error executing http get request to get proxy information.", e);
         }
         return false;
     }

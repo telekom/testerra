@@ -28,8 +28,8 @@ import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.Constants;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.enums.Position;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSetupException;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Defaults;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
@@ -95,7 +95,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             finalRequest = new DesktopWebDriverRequest();
             finalRequest.copyFrom(request);
         } else {
-            throw new TesterraSystemException(request.getClass().getSimpleName() + " is not allowed here");
+            throw new SystemException(request.getClass().getSimpleName() + " is not allowed here");
         }
 
         /*
@@ -175,7 +175,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             return newWebDriver(desktopWebDriverRequest, desiredCapabilities);
         }
 
-        throw new TesterraSystemException("WebDriverManager is in a bad state. Please report this to the tt. developers.");
+        throw new SystemException("WebDriverManager is in a bad state. Please report this to the tt. developers.");
     }
 
     @Override
@@ -460,7 +460,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 driverClass = EdgeDriver.class;
                 break;
             default:
-                throw new TesterraSystemException("Browser must be set through SystemProperty 'browser' or in test.properties file! + is: " + browser);
+                throw new SystemException("Browser must be set through SystemProperty 'browser' or in test.properties file! + is: " + browser);
         }
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();

@@ -24,7 +24,7 @@
 /**
  * Runtime Exception, stating that a GUI Element is missing.
  */
-public class ElementNotFoundException extends RuntimeException {
+public class ElementNotFoundException extends java.lang.RuntimeException {
 
     /**
      *

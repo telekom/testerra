@@ -22,7 +22,7 @@
 package eu.tsystems.mms.tic.testframework.mailconnector.smtp;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.AbstractMailConnector;
 import java.io.File;
@@ -100,9 +100,9 @@ public class SMTPMailConnector extends AbstractMailConnector implements Loggable
      * Send a new message.
      *
      * @param message The message to send.
-     * @throws TesterraSystemException thrown if message was not sent.
+     * @throws SystemException thrown if message was not sent.
      */
-    public void sendMessage(final MimeMessage message) throws TesterraSystemException {
+    public void sendMessage(final MimeMessage message) throws SystemException {
         this.pSendMessage(message);
     }
 
@@ -110,9 +110,9 @@ public class SMTPMailConnector extends AbstractMailConnector implements Loggable
      * Send a new message.
      *
      * @param message The message to send.
-     * @throws TesterraSystemException thrown if message was not sent.
+     * @throws SystemException thrown if message was not sent.
      */
-    private void pSendMessage(final MimeMessage message) throws TesterraSystemException {
+    private void pSendMessage(final MimeMessage message) throws SystemException {
         Transport transport = null;
         try {
             transport = getSession().getTransport();
@@ -210,11 +210,11 @@ public class SMTPMailConnector extends AbstractMailConnector implements Loggable
      * @param ccReceiver The cc address. Can be null.
      * @param bcc        The bcc address. Can be null.
      * @return A MimeMessage containing a virus signature.
-     * @throws TesterraSystemException  thrown if virus Mail can't generated.
+     * @throws SystemException  thrown if virus Mail can't generated.
      * @throws RuntimeException thrown if address parameters were wrong.
      */
     public MimeMessage generateVirusMail(final String from, final String receiver,
-                                         final String ccReceiver, final String bcc) throws TesterraSystemException, RuntimeException {
+                                         final String ccReceiver, final String bcc) throws SystemException, RuntimeException {
         return this.pGenerateVirusMail(from, receiver, ccReceiver, bcc);
     }
 
@@ -226,11 +226,11 @@ public class SMTPMailConnector extends AbstractMailConnector implements Loggable
      * @param ccReceiver The cc address. Can be null.
      * @param bcc        The bcc address. Can be null.
      * @return A MimeMessage containing a virus signature.
-     * @throws TesterraSystemException  thrown if virus Mail can't generated.
+     * @throws SystemException  thrown if virus Mail can't generated.
      * @throws RuntimeException thrown if address parameters were wrong.
      */
     private MimeMessage pGenerateVirusMail(final String from, final String receiver,
-                                           final String ccReceiver, final String bcc) throws TesterraSystemException, RuntimeException {
+                                           final String ccReceiver, final String bcc) throws SystemException, RuntimeException {
         final MimeMessage message = new MimeMessage(getSession());
         try {
 
@@ -269,7 +269,7 @@ public class SMTPMailConnector extends AbstractMailConnector implements Loggable
         } catch (final AddressException aex) {
             throw new RuntimeException("Some of the address parameters were wrong.", aex);
         } catch (final MessagingException e) {
-            throw new TesterraSystemException(e);
+            throw new SystemException(e);
         }
         return message;
     }

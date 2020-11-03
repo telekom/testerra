@@ -21,16 +21,15 @@
  */
 package eu.tsystems.mms.tic.testframework.bmp;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import org.apache.http.HttpHost;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.http.HttpHost;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @deprecated - Please see Testerra bup module - BrowserUpLocalProxyManager
@@ -56,7 +55,7 @@ public final class BMProxyManager {
 
     private static void transferAndLockPortPool() {
         if (portPool == null) {
-            throw new TesterraSystemException("Port pool in null");
+            throw new SystemException("Port pool in null");
         }
 
         String ports = "";

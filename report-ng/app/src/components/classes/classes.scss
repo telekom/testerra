@@ -8,6 +8,9 @@
   color: #5852ff;
 }
 
+#dropdown-class{
+
+}
 .mdc-data-table__cell{
   vertical-align: text-top;
   padding-top:1em;
@@ -23,3 +26,17 @@
 
 }
 
+
+@media only screen and (min-width: 1600px) {
+  .mdc-data-table__table au-target {
+    width: 50%;
+  }
+
+  .grid-cell-medium {
+    grid-column-end: span 8;
+  }
+
+  .grid-cell-large {
+    grid-column-end: span 12;
+  }
+}

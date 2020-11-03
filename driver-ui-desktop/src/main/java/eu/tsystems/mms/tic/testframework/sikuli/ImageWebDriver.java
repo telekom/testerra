@@ -21,17 +21,16 @@
  */
  package eu.tsystems.mms.tic.testframework.sikuli;
 
+import java.net.URL;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-
-import java.net.URL;
 
 /**
  * <Beschreibung der Klasse>
  *
  * @author pele
  */
-public interface SikuliDriver extends WebDriver {
+public interface ImageWebDriver extends WebDriver {
 
     /**
      * finds element by image URL

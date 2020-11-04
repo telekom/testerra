@@ -1,0 +1,17 @@
+<template>
+
+    <mdc-list-group repeat.for="failureAspect of _failureAspects">
+        <h3>${failureAspect.key}</h3>
+        <mdc-list two-line>
+            <mdc-list-item repeat.for="id of failureAspect.methodContextIds">
+                <mdc-icon mdc-list-item-graphic class="icon-failed">${4|iconName}</mdc-icon>
+                <mdc-list-item-primary-text>${id}</mdc-list-item-primary-text>
+                <mdc-list-item-secondary-text>${id}</mdc-list-item-secondary-text>
+<!--                <a href="#/list/examples" mdc-list-item-meta aria-label="View more" title="More info">-->
+<!--                    <mdc-icon>info</mdc-icon>-->
+<!--                </a>-->
+            </mdc-list-item>
+            <mdc-list-divider inset></mdc-list-divider>
+        </mdc-list>
+    </mdc-list-group>
+</template>

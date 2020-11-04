@@ -5,7 +5,6 @@ import ClassContextAggregate = data.ClassContextAggregate;
 import ExecutionAggregate = data.ExecutionAggregate;
 import File = data.File;
 
-
 /**
  * Data backend service for retrieving and caching data backend responses
  * @author Mike Reiche <mike.reiche@t-systems.com>

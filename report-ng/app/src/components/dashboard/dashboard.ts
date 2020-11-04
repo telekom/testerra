@@ -1,11 +1,10 @@
-// @ts-ignore
 import './dashboard.scss';
 import {data} from "../../services/report-model";
 import {autoinject} from "aurelia-framework";
 import {EventAggregator} from 'aurelia-event-aggregator';
-import {StatusConverter} from "../../services/status-converter";
-import {StatisticsGenerator} from "../../services/statistics-generator";
-import {ExecutionStatistics} from "../../services/statistic-models";
+import {StatusConverter} from "services/status-converter";
+import {StatisticsGenerator} from "services/statistics-generator";
+import {ExecutionStatistics} from "services/statistic-models";
 import IExecutionContext = data.IExecutionContext;
 
 @autoinject()

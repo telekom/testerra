@@ -22,47 +22,58 @@
 import {autoinject} from "aurelia-framework";
 import {DataLoader} from "./data-loader";
 import {ClassStatistics, ExecutionStatistics} from "./statistic-models";
+import {CacheService} from "t-systems-aurelia-components/src/services/cache-service";
+
 
 @autoinject()
 export class StatisticsGenerator {
-  constructor(
-    private _dataLoader:DataLoader
-  ) {
+    constructor(
+        private _dataLoader: DataLoader,
+        private _cacheService:CacheService
+    ) {
+        this._cacheService.setDefaultCacheTtl(120);
+    }
 
-  }
+    getExecutionStatistics(): Promise<ExecutionStatistics> {
+        return this._cacheService.getForKeyWithLoadingFunction("executionStatistics", () => {
+            return this._dataLoader.getExecutionAggregate().then(executionAggregate => {
 
-  getExecutionStatistics():Promise<ExecutionStatistics> {
-    return this._dataLoader.getExecutionAggregate().then(executionAggregate => {
+                const executionStatistics = new ExecutionStatistics();
+                executionStatistics.setExecutionAggregate(executionAggregate);
 
-      const executionStatistics = new ExecutionStatistics();
-      executionStatistics.setExecutionAggregate(executionAggregate);
+                const loadingPromises = [];
+                executionAggregate.testContexts.forEach(testContext => {
+                    testContext.classContextIds.forEach(classContextId => {
+                        const loadingPromise = this.getClassStatistics(classContextId).then(classStatistics => {
+                            executionStatistics.addClassStatistics(classStatistics);
+                        });
+                        loadingPromises.push(loadingPromise);
+                    })
+                });
 
-      const loadingPromises = [];
-      executionAggregate.testContexts.forEach(testContext => {
-        testContext.classContextIds.forEach(classContextId => {
-          const loadingPromise = this.getClassStatistics(classContextId).then(classStatistics => {
-            executionStatistics.addClassStatistics(classStatistics);
-          });
-          loadingPromises.push(loadingPromise);
+                return Promise.all(loadingPromises).then(() => {
+                    return Promise.resolve(executionStatistics);
+                })
+            });
         })
-      });
+    }
 
-      return Promise.all(loadingPromises).then(() => {
-        return Promise.resolve(executionStatistics);
-      })
-    });
-  }
+    getClassStatistics(id: string): Promise<ClassStatistics> {
+        return this._cacheService.getForKeyWithLoadingFunction("classStatistics:"+id, () => {
+            return this._dataLoader.getClassContextAggregate(id).then(classContextAggregate => {
+                const classStatistics = new ClassStatistics();
+                classStatistics.setClassAggregate(classContextAggregate);
 
-  getClassStatistics(id:string):Promise<ClassStatistics> {
-    return this._dataLoader.getClassContextAggregate(id).then(classContextAggregate => {
-      const classStatistics = new ClassStatistics();
-      classStatistics.setClassAggregate(classContextAggregate);
+                classContextAggregate.methodContexts.forEach(methodContext => {
+                    classStatistics.addResultStatus(methodContext.contextValues.resultStatus);
+                });
+                return Promise.resolve(classStatistics);
+            });
+        })
+    }
 
-      classContextAggregate.methodContexts.forEach(methodContext => {
-        classStatistics.addResultStatus(methodContext.contextValues.resultStatus);
-      });
-      return Promise.resolve(classStatistics);
-    });
-  }
+
+
+
 }
 

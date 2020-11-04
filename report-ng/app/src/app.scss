@@ -91,6 +91,47 @@ body {
   background-color: #f5f5f5;
 }
 
+.icon-skipped {
+    @extend .colored-icon;
+    @extend .status-skipped;
+}
+
+.icon-passed {
+    @extend .colored-icon;
+    @extend .status-passed;
+}
+
+.icon-failed {
+    @extend .colored-icon;
+    @extend .status-failed;
+}
+
+.colored-icon {
+    color: #ffffff;
+    border-radius: 25px;
+}
+
+.big-icon {
+    font-size: 40px !important;
+    border: 5px solid;
+    //border-radius: 25px;
+}
+
+.status-passed {
+    background: $passed;
+    border-color: $passed;
+}
+
+.status-skipped {
+    background: $skipped;
+    border-color: $skipped;
+}
+
+.status-failed {
+    background: $failed;
+    border-color: $failed;
+}
+
 #content-router {
   width: 100%;
 }

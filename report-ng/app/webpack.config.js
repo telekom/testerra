@@ -149,7 +149,13 @@ module.exports = ({ production } = {}, {extractCss, analyze, tests, hmr, port, h
         use: cssRules
       },
       { test: /\.html$/i, loader: 'html-loader' },
-      { test: /\.ts$/, loader: "ts-loader" },
+      {
+          test: /\.ts$/,
+          loader: "ts-loader",
+          options: {
+              allowTsInNodeModules: true
+          }
+      },
       // embed small images and fonts as Data Urls and larger ones as files:
       { test: /\.(png|gif|jpg|cur)$/i, loader: 'url-loader', options: { limit: 8192 } },
       // {

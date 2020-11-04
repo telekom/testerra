@@ -9,6 +9,7 @@ export function configure(aurelia: Aurelia) {
     .globalResources([
       PLATFORM.moduleName('components/apex-chart/apex-chart'),
       PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/date-format-value-converter'),
+        PLATFORM.moduleName('value-converters/icon-name-value-converter'),
     ])
 
   aurelia.use.developmentLogging(environment.debug ? 'debug' : 'warn');

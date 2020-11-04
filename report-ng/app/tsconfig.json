@@ -1,22 +1,23 @@
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "target": "es6",
-    "module": "esnext",
-    "skipLibCheck": true,
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true, // Required for momentjs
-    "lib": [
-      "es2017",
-      "dom"
-    ],
-    "moduleResolution": "node",
-    "baseUrl": "src",
-    "resolveJsonModule": true
-  },
-  "atom": {
-    "rewriteTsconfig": false
-  }
+    "compileOnSave": false,
+    "compilerOptions": {
+        "target": "es6",
+        "module": "esnext",
+        "skipLibCheck": true,
+        "removeComments": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        // Required for momentjs
+        "lib": [
+            "es2017",
+            "dom"
+        ],
+        "moduleResolution": "node",
+        "baseUrl": "src",
+        "resolveJsonModule": true
+    },
+    "atom": {
+        "rewriteTsconfig": false
+    }
 }

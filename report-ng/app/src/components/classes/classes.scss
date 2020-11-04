@@ -16,16 +16,18 @@
 }
 #badge-passed {
   background: $passed;
-  border-color: $passed;
   color: $white;
-  border: 4px;
+  padding: 4px 10px;
+  border:  1px solid $passed;
+  border-radius: 25px;
 }
 
 #badge-failed {
   background: $failed;
-  border-color: $failed;
+  border:  1px solid $failed;
   color: $white;
-
+  padding: 4px 10px;
+  border-radius: 25px;
 }
 
 .select-class-style{

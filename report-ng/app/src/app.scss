@@ -18,7 +18,9 @@
 @use '@material/drawer';
 @use '@material/elevation/mdc-elevation';
 @use '@material/icon-button/mdc-icon-button';
-@use '@material/layout-grid/mdc-layout-grid';
+@use "@material/layout-grid/mdc-layout-grid";
+@use "@aurelia-mdc-web/layout-grid";
+@use "@aurelia-mdc-web/expandable";
 @use '@material/linear-progress/mdc-linear-progress';
 @use '@material/linear-progress';
 @use '@material/list/mdc-list';

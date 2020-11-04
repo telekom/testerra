@@ -10,6 +10,7 @@
   "dependencies": {
     "@aurelia-mdc-web/all": "^1.1.5",
     "@aurelia-mdc-web/button": "^1.1.5",
+    "@aurelia-mdc-web/chips": "^1.1.5",
     "@aurelia-mdc-web/data-table": "^1.1.5",
     "@aurelia-mdc-web/dialog": "^1.1.5",
     "@aurelia-mdc-web/drawer": "^1.1.5",

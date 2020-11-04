@@ -14,21 +14,6 @@
   font-size: 0.875rem;
   font-style: normal; font-weight: 10;
 }
-#badge-passed {
-  background: $passed;
-  color: $white;
-  padding: 4px 10px;
-  border:  1px solid $passed;
-  border-radius: 25px;
-}
-
-#badge-failed {
-  background: $failed;
-  border:  1px solid $failed;
-  color: $white;
-  padding: 4px 10px;
-  border-radius: 25px;
-}
 
 .select-class-style{
   font-family: Roboto, sans-serif;

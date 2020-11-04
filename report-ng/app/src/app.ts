@@ -44,12 +44,14 @@ export class App {
                 route: '',
                 moduleId: PLATFORM.moduleName('components/dashboard/dashboard'),
                 nav: true,
+                name: "dashboard",
                 title: 'Dashboard'
             },
             {
                 route: 'classes',
                 moduleId: PLATFORM.moduleName('components/classes/classes'),
                 nav: true,
+                name: "classes",
                 title: 'Classes'
             },
             // {
@@ -63,6 +65,7 @@ export class App {
                 moduleId: PLATFORM.moduleName('components/failure-aspects/failure-aspects'),
                 nav: true,
                 title: 'Failure Aspects',
+                name: "failure-aspects",
                 settings: {
                     count: 0
                 }
@@ -71,6 +74,7 @@ export class App {
                 route: 'exit-points',
                 moduleId: PLATFORM.moduleName('components/exit-points/exit-points'),
                 nav: true,
+                name: "exit-points",
                 title: 'Exit Points',
                 settings: {
                     count: 0

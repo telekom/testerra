@@ -6,12 +6,12 @@
 );
 @use '@material/button/mdc-button';
 @use '@material/button';
-@use '~@material/card/mdc-card';
-@use '~@material/card';
+@use '@material/card/mdc-card';
+@use '@material/card';
 @use '@material/checkbox';
 @use '@material/icon-button';
-@use '~@material/data-table';
-@use '~@material/data-table/mdc-data-table';
+@use '@material/data-table';
+@use '@material/data-table/mdc-data-table';
 @use '@material/dialog/mdc-dialog';
 @use '@material/dialog';
 @use '@material/drawer/mdc-drawer';
@@ -35,8 +35,8 @@
 @use '@material/ripple';
 @use '@material/menu/mdc-menu';
 @use '@material/menu';
-@use '~@material/select/mdc-select';
-@use '~@material/select/_index' as select;
+@use '@material/select/mdc-select';
+@use '@material/select/_index' as select;
 @use '@material/menu-surface/mdc-menu-surface';
 @use '@material/radio/mdc-radio';
 @use '@material/radio';
@@ -50,10 +50,10 @@
 @use '@material/tab';
 @use '@material/top-app-bar/mdc-top-app-bar';
 @use '@material/top-app-bar';
-@use '~@material/typography/mdc-typography';
-@use '~@material/typography';
-
-
+@use '@material/typography/mdc-typography';
+@use '@material/typography';
+@use '@material/chips/mdc-chips';
+@use '@aurelia-mdc-web/chips';
 
 @include drawer.core-styles;
 @include drawer.dismissible-core-styles;
@@ -132,6 +132,22 @@ body {
 .status-failed {
     background: $failed;
     border-color: $failed;
+}
+
+.badge {
+    color: #ffffff;
+    padding: 4px 10px;
+    border-radius: 25px;
+}
+
+.badge-passed {
+    @extend .badge;
+    @extend .status-passed;
+}
+
+.badge-failed {
+    @extend .badge;
+    @extend .status-failed;
 }
 
 #content-router {

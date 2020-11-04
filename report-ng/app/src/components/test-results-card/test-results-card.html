@@ -11,7 +11,7 @@
           <mdc-data-table-row>
             <mdc-data-table-cell>
               <div class="result-card">
-                <mdc-icon class="icon-passed big-icon">${4|iconName}</mdc-icon>
+                <mdc-icon class="icon-passed big-icon">${4|statusIconName}</mdc-icon>
                 <div class="result-status-text">
                   <div mdc-headline5>${_executionStatistics.overallPassed}</div>
                   <div mdc-body2 class="result-status-type">Passed</div>
@@ -22,7 +22,7 @@
           <mdc-data-table-row>
             <mdc-data-table-cell>
               <div class="result-card">
-                <mdc-icon class="icon-skipped big-icon">${3|iconName}</mdc-icon>
+                <mdc-icon class="icon-skipped big-icon">${3|statusIconName}</mdc-icon>
                 <div class="result-status-text">
                   <div mdc-headline5>${_executionStatistics.overallSkipped}</div>
                   <div mdc-body2 class="result-status-type">Skipped</div>
@@ -33,7 +33,7 @@
           <mdc-data-table-row>
             <mdc-data-table-cell >
               <div class="result-card">
-                <mdc-icon class="icon-failed big-icon">${7|iconName}</mdc-icon>
+                <mdc-icon class="icon-failed big-icon">${7|statusIconName}</mdc-icon>
                 <div class="result-status-text">
                   <div mdc-headline5>${_executionStatistics.overallFailed}</div>
                   <div mdc-body2 class="result-status-type">Failed</div>

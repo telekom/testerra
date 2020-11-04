@@ -4,13 +4,13 @@ import {data} from "../services/report-model";
 import ResultStatusType = data.ResultStatusType;
 
 @autoinject()
-export class IconNameValueConverter {
+export class StatusNameValueConverter {
     constructor(
         private _statusConverter: StatusConverter
     ) {
     }
 
     toView(value: ResultStatusType) {
-        return this._statusConverter.iconNameForStatus(value);
+        return this._statusConverter.nameForStatus(value);
     }
 }

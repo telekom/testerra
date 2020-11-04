@@ -44,14 +44,13 @@ export class StatusConverter {
     private static resultStatusValues: Array<ResultStatusType | string> = Object.values(ResultStatusType);
     private static resultStatusKeys = Object.keys(ResultStatusType);
 
-    resultStatusToString(value: ResultStatusType | number): string {
-        const index = StatusConverter.resultStatusValues.indexOf(value);
-        return StatusConverter.resultStatusKeys[index];
-    }
-
-    resultStatusFromString(value: string): ResultStatusType {
-        const index = StatusConverter.resultStatusKeys.indexOf(value.toUpperCase());
-        return <ResultStatusType>StatusConverter.resultStatusValues[index];
+    nameForStatus(value: ResultStatusType | number): string {
+        switch (value) {
+            case ResultStatusType.PASSED: return "Passed";
+            case ResultStatusType.FAILED: return "Failed";
+            case ResultStatusType.FAILED_EXPECTED: return "Fail Expected";
+            case ResultStatusType.FAILED_MINOR: return "Failed minor";
+        }
     }
 
     iconNameForStatus(status: ResultStatusType) {

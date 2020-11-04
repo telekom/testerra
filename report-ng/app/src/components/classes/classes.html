@@ -7,6 +7,7 @@
       <mdc-data-table-header-cell>
 
         <select  class="select-class-style" name="All Classes">
+          <option class="class-header-text">All Classes</option>
           <option   repeat.for="classStatistics of _classStatistics" >
             ${classStatistics.classAggregate.classContext.contextValues.name}</option>
         </select>
@@ -22,12 +23,10 @@
       <mdc-data-table-row repeat.for="classStatistics of _classStatistics">
         <mdc-data-table-cell>
             <span if.bind="classStatistics.overallFailed>0 || classStatistics.overallSkipped>0">
-              <mdc-icon class="class-icon" >close</mdc-icon>
-              failed
+              <span id="badge-failed">failed</span>
             </span>
           <span if.bind="classStatistics.overallPassed>0 && classStatistics.overallFailed==0 && classStatistics.overallSkipped==0">
-            <mdc-icon class="class-icon" >done</mdc-icon>
-            passed
+            <span id="badge-passed">passed</span>
           </span>
 
         </mdc-data-table-cell>

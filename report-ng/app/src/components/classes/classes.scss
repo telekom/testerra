@@ -1,4 +1,6 @@
 @import "../../report-ng/app/src/app";
+@import "../../variables.scss";
+
 .class-icon{
   position: center;
   vertical-align: text-top;
@@ -6,17 +8,39 @@
 }
 .classes-name{
   color: #5852ff;
+
+}
+.class-header-text{
+  font-size: 0.875rem;
+  font-style: normal; font-weight: 10;
+}
+#badge-passed {
+  background: $passed;
+  border-color: $passed;
+  color: $white;
+  border: 4px;
+}
+
+#badge-failed {
+  background: $failed;
+  border-color: $failed;
+  color: $white;
+
 }
 
 .select-class-style{
   font-family: Roboto, sans-serif;
-border: none; }
+  border: none;
+}
+
 .mdc-data-table__cell{
   vertical-align: text-top;
   padding-top:1em;
   padding-bottom: 0.5em;
  }
+
 .mdc-data-table__header-cell{
+
 }
 
 .method-list{
@@ -25,7 +49,6 @@ border: none; }
   padding: 0.5em 0 0.5em 0 ;
 
 }
-
 
 @media only screen and (min-width: 1600px) {
   .mdc-data-table__table au-target {

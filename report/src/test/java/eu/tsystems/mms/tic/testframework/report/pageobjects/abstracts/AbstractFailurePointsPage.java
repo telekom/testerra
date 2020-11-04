@@ -21,7 +21,6 @@
  */
 package eu.tsystems.mms.tic.testframework.report.pageobjects.abstracts;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.model.ResultTableFailureType;
@@ -174,7 +173,7 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
             case ALL:
                 return getAllFailurePointEntryElements();
             default:
-                throw new TesterraRuntimeException("TestResultFailurePoint [" + testResult + "] not implemented");
+                throw new RuntimeException("TestResultFailurePoint [" + testResult + "] not implemented");
         }
     }
 

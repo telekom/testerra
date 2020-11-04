@@ -319,4 +319,4 @@ mvn test
 
 == Testerra Report
 
-The Testerra test report is automatically generated and can be found at `<project>/testerra-report/index.html`.
+The Testerra test report is automatically generated and can be found at `<project>/test-report/index.html`.

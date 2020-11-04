@@ -24,7 +24,7 @@
 import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Checkable;
@@ -176,7 +176,7 @@ public class GuiElement implements
             GuiElementCoreFactory guiElementCoreFactory = coreFactories.get(currentBrowser);
             guiElementCore = guiElementCoreFactory.create(by, driver, this.guiElementData);
         } else {
-            throw new TesterraSystemException("No GuiElementCoreFactory registered for " + currentBrowser);
+            throw new SystemException("No GuiElementCoreFactory registered for " + currentBrowser);
         }
         GuiElementStatusCheck guiElementStatusCheck = guiElementCore;
 

@@ -19,18 +19,13 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.utils;
+package eu.tsystems.mms.tic.testframework.utils;
 
 import de.idyl.winzipaes.AesZipFileEncrypter;
 import de.idyl.winzipaes.impl.AESEncrypter;
 import de.idyl.winzipaes.impl.AESEncrypterJCA;
 import eu.tsystems.mms.tic.testframework.exceptions.FileNotFoundException;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import net.lingala.zip4j.core.ZipFile;
-import net.lingala.zip4j.exception.ZipException;
-import net.lingala.zip4j.model.ZipParameters;
-import org.apache.commons.io.FilenameUtils;
-
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -42,7 +37,10 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Objects;
 import java.util.UUID;
-
+import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
+import net.lingala.zip4j.model.ZipParameters;
+import org.apache.commons.io.FilenameUtils;
 import static java.lang.Thread.currentThread;
 
 public final class FileUtils extends org.apache.commons.io.FileUtils {
@@ -63,20 +61,20 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
      *
      * @implNote avoid logging here!
      */
-    public static InputStream getLocalResourceInputStream(final String fileInResources) throws TesterraSystemException {
+    public static InputStream getLocalResourceInputStream(final String fileInResources) throws SystemException {
 
         final URL resource = getResourceURL(fileInResources);
 
         // exit, when no file present
         // exit, when file is not loaded from our resource path but from jar
         if (resource == null || !resource.toString().startsWith("file:")) {
-            throw new TesterraSystemException("No local resource file found: " + fileInResources);
+            throw new SystemException("No local resource file found: " + fileInResources);
         }
 
         try {
             return Objects.requireNonNull(resource).openStream();
         } catch (IOException e) {
-            throw new TesterraSystemException(fileInResources, e);
+            throw new SystemException(fileInResources, e);
         }
     }
 
@@ -91,7 +89,7 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
      * @deprecated Use {@link #getLocalOrResourceFile(String)} instead
      */
     @Deprecated
-    public static InputStream getLocalFileOrResourceInputStream(final String filePathAndName) throws TesterraSystemException{
+    public static InputStream getLocalFileOrResourceInputStream(final String filePathAndName) throws SystemException {
         try {
             return getLocalFileInputStream(filePathAndName);
             // throws FileNotFound, when not present! --> Try to get the resource file instead.
@@ -166,7 +164,7 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
         try {
             uri = resource.toURI();
         } catch (URISyntaxException e) {
-            throw new TesterraSystemException("Error getting file uri: " + resource);
+            throw new SystemException("Error getting file uri: " + resource);
         }
         File file = new File(uri);
         String absolutePath = file.getAbsolutePath();
@@ -188,7 +186,7 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
         try {
             absoluteFilePath = getAbsoluteFilePath(fileInResources);
         } catch (FileNotFoundException e) {
-            throw new TesterraSystemException("Error loading file: " + fileInResources, e);
+            throw new SystemException("Error loading file: " + fileInResources, e);
         }
 
         return readFromFile(absoluteFilePath);
@@ -313,7 +311,7 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
         final URL resourceUrl = getResourceURL(resourceFile);
 
         if (resourceUrl == null) {
-            throw new TesterraSystemException("Could not load resource file. File does not exist: " + resourceFile);
+            throw new SystemException("Could not load resource file. File does not exist: " + resourceFile);
         }
 
         return new File(resourceUrl.getFile());

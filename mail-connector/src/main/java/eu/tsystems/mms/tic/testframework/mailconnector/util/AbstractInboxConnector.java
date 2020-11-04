@@ -21,16 +21,15 @@
  */
 package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.mail.Flags;
@@ -72,7 +71,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
     @Deprecated
     public List<Email> waitForMails(List<SearchCriteria> searchCriterias) throws AddressException {
         EmailQuery query = new EmailQuery();
-        return waitForMails(searchCriterias, query.getRetryCount(), query.getPauseMs()/1000);
+        return waitForMails(searchCriterias, query.getRetryCount(), Math.round(query.getPauseMs()/1000f));
     }
 
     /**
@@ -85,7 +84,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
     @Deprecated
     public List<Email> waitForMails(final SearchTerm searchTerm) {
         EmailQuery query = new EmailQuery();
-        return waitForMails(searchTerm, query.getRetryCount(), query.getPauseMs()/1000);
+        return waitForMails(searchTerm, query.getRetryCount(), Math.round(query.getPauseMs()/1000f));
     }
 
     /**
@@ -98,7 +97,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
     @Deprecated
     public List<Email> waitForMails(final SearchTerm searchTerm, final String folderName) {
         EmailQuery query = new EmailQuery();
-        return waitForMails(searchTerm, query.getRetryCount(), query.getPauseMs()/1000, folderName);
+        return waitForMails(searchTerm, query.getRetryCount(), Math.round(query.getPauseMs()/1000f), folderName);
     }
 
     /**
@@ -191,7 +190,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
                     return new MessageIDTerm(messageId);
 
                 default:
-                    throw new TesterraSystemException("Not yet implemented: " + searchCriteriaType);
+                    throw new SystemException("Not yet implemented: " + searchCriteriaType);
             }
         }
 
@@ -217,6 +216,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
      * @param folderName
      * @return
      * @deprecated Use {@link #query(EmailQuery)} instead
+     * @throws RuntimeException When there are no emails present.
      */
     public List<Email> waitForMails(final SearchTerm searchTerm, int maxReadTries, int pollingTimerSeconds, final String folderName) {
         EmailQuery query = new EmailQuery()
@@ -225,84 +225,104 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
                 .setPauseMs(pollingTimerSeconds*1000)
                 .setFolderName(folderName);
 
-        return query(query).collect(Collectors.toList());
+        List<Email> emailList = query(query).collect(Collectors.toList());
+        if (emailList.isEmpty()) {
+            throw new RuntimeException(String.format(
+                    "No messages found after %s seconds.",
+                    pollingTimerSeconds * maxReadTries)
+            );
+        }
+        return emailList;
     }
 
     /**
      * Queries emails by given {@link EmailQuery}
-     * @param query
-     * @return
      */
     public Stream<Email> query(EmailQuery query) {
         String folderName = query.getFolderName();
         if (folderName==null) folderName = getInboxFolder();
 
-        List<MimeMessage> mimeMessages = pWaitForMessage(query.getSearchTerm(), query.getRetryCount(), query.getPauseMs()/1000, folderName);
-        Stream<Email> emailStream = mimeMessages.stream().map(Email::new);
-
-        Predicate<Email> filter = query.getFilter();
-        if (filter != null) emailStream = emailStream.filter(filter);
-
+        Stream<Email> emailStream;
+        try {
+            Stream<MimeMessage> messageStream = waitForMessages(query.getSearchTerm(), query.getRetryCount(), query.getPauseMs(), folderName);
+            emailStream = messageStream.map(Email::new);
+        } catch (MessagingException e) {
+            throw new RuntimeException("Could not query emails", e);
+        }
         return emailStream;
     }
 
-    private List<MimeMessage> pWaitForMessage(final SearchTerm searchTerm, int maxReadTries, int pollingTimerSeconds, final String foldername) {
-
-        if (searchTerm == null) {
-            throw new RuntimeException("No SearchTerm given. Can not filter for messages.");
-        }
-
-        Store store = null;
-
-        List<MimeMessage> out = new LinkedList<>();
+    /**
+     * Waits for messages and returns a stream
+     * @throws MessagingException
+     */
+    private Stream<MimeMessage> waitForMessages(final SearchTerm searchTerm, int maxReadTries, long pauseMs, final String foldername) throws MessagingException {
+        Stream<MimeMessage> mimeMessages = Stream.empty();
 
         if (maxReadTries < 1) {
             maxReadTries = 1;
-            log().info("Changing read tries to min value: 1");
-        }
-        if (pollingTimerSeconds < 10) {
-            pollingTimerSeconds = 10;
-            log().info("Changing poller timer to min value: 10s");
         }
 
-        try {
-            for (int i = 0; i < maxReadTries; i++) {
-                Session session = getSession();
-                store = session.getStore();
-                store.connect();
+        for (int i = 0; i < maxReadTries; i++) {
+            Session session = getSession();
+            Store store = session.getStore();
+            store.connect();
 
-                final Folder folder = store.getFolder(foldername);
-                folder.open(Folder.READ_ONLY);
+            Folder folder = store.getFolder(foldername);
+            folder.open(Folder.READ_ONLY);
 
-                final Message[] messages = folder.search(searchTerm);
-                for (Message message : messages) {
-                    final MimeMessage mimeMessage = new MimeMessage((MimeMessage) message);
-                    out.add(mimeMessage);
-                }
-
-                if (out.size() > 0) {
-                    return out;
-                }
-
-                // sleep for pollingTimerSeconds
-                TimerUtils.sleep(pollingTimerSeconds * 1000, "Waiting for Mail");
-            }
-        }  catch (final Exception e) {
-            log().error("Error searching for message", e);
-            throw new RuntimeException(e);
-        } finally {
-            if (store != null) {
+            Runnable closeStoreAndFolder = () -> {
                 try {
+                    folder.close();
                     store.close();
                 } catch (MessagingException e) {
-                    log().warn("Error closing connection", e);
+                    log().error("Unable to close", e);
                 }
+            };
+
+            Message[] messages;
+
+            if (searchTerm != null) {
+                messages = folder.search(searchTerm);
+            } else {
+                messages = folder.getMessages();
+            }
+
+            if (messages.length == 0) {
+                TimerUtils.sleep(Long.valueOf(pauseMs).intValue(), "waiting for emails (try: " + (i+1) +"/" + maxReadTries + ")");
+                closeStoreAndFolder.run();
+            } else {
+                mimeMessages = Stream.of(messages)
+                        .onClose(closeStoreAndFolder)
+                        .map(message -> {
+                            MimeMessage mimeMessage = null;
+                            try {
+                                mimeMessage = new MimeMessage((MimeMessage) message);
+                            } catch (MessagingException e) {
+                                log().warn("Unable to create " + MimeMessage.class.getSimpleName(), e);
+                            }
+                            return Optional.ofNullable(mimeMessage);
+                        })
+                        .filter(Optional::isPresent)
+                        .map(Optional::get);
+                break;
             }
         }
+        return mimeMessages;
+    }
 
-        throw new RuntimeException(String.format("No messages found after %s seconds.",
-                pollingTimerSeconds * maxReadTries));
+    /**
+     * Get the message count from {@link #getInboxFolder()}.
+     */
+    public long getMessageCount() {
+        return this.pGetMessageCount(getInboxFolder());
+    }
 
+    /**
+     * Get the message count from a specified folder name.
+     */
+    public long getMessageCount(String folderName) {
+        return this.pGetMessageCount(folderName);
     }
 
     /**
@@ -310,17 +330,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
      *
      * @return The number of new messages.
      */
-    public int getMessageCount() {
-
-        return this.pGetMessageCount();
-    }
-
-    /**
-     * Get the message count from pop3 server.
-     *
-     * @return The number of new messages.
-     */
-    private int pGetMessageCount() {
+    private int pGetMessageCount(String folderName) {
 
         Store store;
         int nrOfMessages;
@@ -328,7 +338,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
             store = getSession().getStore();
             store.connect(getServer(), getUsername(), getPassword());
             final Folder root = store.getDefaultFolder();
-            final Folder folder = root.getFolder(getInboxFolder());
+            final Folder folder = root.getFolder(folderName);
             folder.open(Folder.READ_ONLY);
             nrOfMessages = folder.getMessageCount();
             store.close();
@@ -344,48 +354,6 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
     }
 
     /**
-     * Get all messages.
-     *
-     * @return An array containing the messages.
-     */
-    public MimeMessage[] getMessages() {
-
-        return this.pGetMessages();
-    }
-
-    /**
-     * Get all messages.
-     *
-     * @return An array containing the messages.
-     */
-    private MimeMessage[] pGetMessages() {
-
-        Store store;
-        ArrayList<MimeMessage> mimes;
-        try {
-            store = getSession().getStore();
-            store.connect();
-            final Folder folder = store.getFolder(getInboxFolder());
-            folder.open(Folder.READ_ONLY);
-            final Message[] messages = folder.getMessages();
-            mimes = new ArrayList<>();
-            log().info("Fetched messages from " + getInboxFolder() + ":");
-            if (messages.length > 0) {
-                for (final Message message : messages) {
-                    mimes.add((MimeMessage) message);
-                }
-            } else {
-                log().info("None.");
-            }
-            // folder.close(true); // leads to error "folder not open" when reading message content
-            store.close();
-        } catch (final MessagingException e) {
-            throw new RuntimeException(e);
-        }
-        return mimes.toArray(new MimeMessage[mimes.size()]);
-    }
-
-    /**
      * Deletes a message.
      *
      * @param recipient     The recipient String. Can be null.
@@ -395,9 +363,12 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
      *
      * @return true if message was deleted, else false
      */
-    public boolean deleteMessage(final String recipient, final Message.RecipientType recipientType,
-                                 final String subject, final String messageId) {
-
+    public boolean deleteMessage(
+            final String recipient,
+            final Message.RecipientType recipientType,
+            final String subject,
+            final String messageId
+    ) {
         return this.pDeleteMessage(recipient, recipientType, subject, messageId);
     }
 
@@ -584,7 +555,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
                     isDeleted = deleteMessage(null, Message.RecipientType.TO, null, deleteCriteriaValue);
                     break;
                 default:
-                    throw new TesterraSystemException("Not supported: " + deleteCriteriaType);
+                    throw new SystemException("Not supported: " + deleteCriteriaType);
             }
             booleanValues.add(isDeleted);
         }
@@ -598,6 +569,9 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
         return true;
     }
 
+    /**
+     * @deprecated Use {@link #deleteMessage(SearchTerm)} instead
+     */
     @Deprecated
     public boolean deleteMessage(List<String> deleteCriteriaValues, DeleteCriteriaType deleteCriteriaType) {
         return deleteMessages(deleteCriteriaValues, deleteCriteriaType);

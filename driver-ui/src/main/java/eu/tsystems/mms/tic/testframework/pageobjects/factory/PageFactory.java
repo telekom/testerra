@@ -23,7 +23,6 @@
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageVariables;
@@ -104,7 +103,7 @@ public final class PageFactory {
 
     private static <T extends Page, U extends PageVariables> T loadPO(Class<T> pageClass, WebDriver driver, U pageVariables, boolean positiveCheck) {
         if (pageVariables instanceof Page) {
-            throw new TesterraRuntimeException("You cannot hand over a page to a page. This is a bad design and also may produce looping. " +
+            throw new RuntimeException("You cannot hand over a page to a page. This is a bad design and also may produce looping. " +
                     "You can make page compositions with a) static modules (Page xyzPage = PageFactory.create(...) inside a page class) " +
                     "or b) dynamic modules (public XyzPage xyz() {return PageFactory.create(...)} ).");
         }
@@ -134,7 +133,7 @@ public final class PageFactory {
                     t = constructor.newInstance(driver);
                 }
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                throw new TesterraRuntimeException(msg + pageClass.getSimpleName(), e);
+                throw new RuntimeException(msg + pageClass.getSimpleName(), e);
             }
 
             // check page
@@ -182,7 +181,7 @@ public final class PageFactory {
             // if this list is size 1, then there is only 1 page type loaded in NR_OF_LOOPS load actions (recorded by the buffer)
             if (classesInQueue.size() == 1) {
                 // NR_OF_LOOPS times this one class has been loaded in this thread
-                throw new TesterraRuntimeException("PageFactory create loop detected loading: " + classesInQueue.get(0));
+                throw new RuntimeException("PageFactory create loop detected loading: " + classesInQueue.get(0));
             }
         }
 

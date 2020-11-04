@@ -26,7 +26,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.util.Map;
+import javax.ws.rs.WebApplicationException;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -42,15 +49,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.ws.rs.WebApplicationException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.util.Map;
 
 /**
  * @deprecated Please see Testerra bup module - BrowserUpRemoteProxyManager
@@ -133,7 +131,7 @@ public class BmpRestClient {
     public void setHeader(final String key, final String value) {
 
         if (this.proxyPort == null) {
-            throw new TesterraRuntimeException("No proxy started yet. Not possible to set a header.");
+            throw new RuntimeException("No proxy started yet. Not possible to set a header.");
         }
 
         final JsonObject jsonHeaderMap = new JsonObject();
@@ -159,7 +157,7 @@ public class BmpRestClient {
     public void setBasicAuth(final String domain, final String username, final String password) {
 
         if (this.proxyPort == null) {
-            throw new TesterraRuntimeException("No proxy started yet. Not possible to set auth credentials.");
+            throw new RuntimeException("No proxy started yet. Not possible to set auth credentials.");
         }
 
         LOGGER.info("Adding Basic Auth for " + username + ":*****@" + domain);
@@ -230,7 +228,7 @@ public class BmpRestClient {
             return this.proxyPort;
 
         } catch (Exception e) {
-            throw new TesterraRuntimeException("Error starting browser mob proxy", e);
+            throw new RuntimeException("Error starting browser mob proxy", e);
         }
     }
 
@@ -244,7 +242,7 @@ public class BmpRestClient {
             sendDelete(deleteProxyUrl);
 
         } catch (Exception e) {
-            throw new TesterraRuntimeException("Error stopping proxy", e);
+            throw new RuntimeException("Error stopping proxy", e);
         }
     }
 
@@ -257,7 +255,7 @@ public class BmpRestClient {
     public void startCapture(boolean headers, boolean content) {
 
         if (this.proxyPort == null) {
-            throw new TesterraRuntimeException("No proxy started yet. Not possible to start capture.");
+            throw new RuntimeException("No proxy started yet. Not possible to start capture.");
         }
 
         try {
@@ -269,14 +267,14 @@ public class BmpRestClient {
 
             this.sendPut(urlToCall, null);
         } catch (Exception e) {
-            throw new RuntimeException("error starting capture", e);
+            throw new java.lang.RuntimeException("error starting capture", e);
         }
     }
 
     public void setHostMapping(Map<String, String> hostNameToIpMapping) {
 
         if (this.proxyPort == null) {
-            throw new TesterraRuntimeException("No proxy started yet. Not possible to set host mapping.");
+            throw new RuntimeException("No proxy started yet. Not possible to set host mapping.");
         }
 
         final JsonObject jso = new JsonObject();
@@ -305,7 +303,7 @@ public class BmpRestClient {
             final String urlToCall = url().setPath("/proxy/" + this.proxyPort + "/har").toString();
             return new JsonParser().parse(sendGet(urlToCall));
         } catch (Exception e) {
-            throw new RuntimeException("error starting capture", e);
+            throw new java.lang.RuntimeException("error starting capture", e);
         }
     }
 
@@ -332,7 +330,7 @@ public class BmpRestClient {
                 }
             }
         } catch (Exception e) {
-            throw new RuntimeException("Error executing http get request to get proxy information.", e);
+            throw new java.lang.RuntimeException("Error executing http get request to get proxy information.", e);
         }
         return false;
     }

@@ -21,7 +21,6 @@
  */
 package eu.tsystems.mms.tic.testframework.report.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
@@ -223,7 +222,7 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
     public GuiElement getHistoryElementByPosition(int position) {
         final int positionOffsetDOM = 1; // First history position is 2, second is 3, etc.
         if (position < 1) {
-            throw new TesterraRuntimeException("Invalid position in HISTORY of " + MethodDetailsPage.class.getSimpleName() + ": " + position);
+            throw new RuntimeException("Invalid position in HISTORY of " + MethodDetailsPage.class.getSimpleName() + ": " + position);
         }
         String elementLocator = String.format(HISTORY_ELEMENT_LOCATOR, position + positionOffsetDOM);
         GuiElement historyElement = new GuiElement(this.getWebDriver(), By.xpath(elementLocator), mainFrame);

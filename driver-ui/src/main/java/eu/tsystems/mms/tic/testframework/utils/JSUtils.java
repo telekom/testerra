@@ -24,8 +24,7 @@ package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
 import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
@@ -84,12 +83,12 @@ public final class JSUtils {
         try (final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceFile)) {
 
             if (inputStream == null) {
-                throw new TesterraSystemException("Could not load resource file: " + resourceFile);
+                throw new SystemException("Could not load resource file: " + resourceFile);
             }
 
             inline = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
         } catch (Exception e) {
-            throw new TesterraSystemException(e);
+            throw new SystemException(e);
         }
 
         implementJavascriptOnPage(id, driver, inline);
@@ -453,7 +452,7 @@ public final class JSUtils {
 
                 out.keySet().forEach(key -> LOGGER.info(key + "=" + out.get(key)));
                 if (out.keySet().size() != 4) {
-                    throw new TesterraRuntimeException("Could not get element border via JS call");
+                    throw new RuntimeException("Could not get element border via JS call");
                 }
 
                 return out;
@@ -465,7 +464,7 @@ public final class JSUtils {
                 frameLogic.switchToDefaultFrame();
             }
         }
-        throw new TesterraRuntimeException("Could not get element border via JS call");
+        throw new RuntimeException("Could not get element border via JS call");
     }
 
     public static Viewport getViewport(WebDriver driver) {
@@ -570,7 +569,7 @@ public final class JSUtils {
         Object o = executeScript(guiElement.getDriver(), "return arguments[0].getBoundingClientRect();", webElement);
 
         if (o == null) {
-            throw new TesterraSystemException("Could not get information about web element, please see the logs");
+            throw new SystemException("Could not get information about web element, please see the logs");
         }
 
         Map m = (Map) o;

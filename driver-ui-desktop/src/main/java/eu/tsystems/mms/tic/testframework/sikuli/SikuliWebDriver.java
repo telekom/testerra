@@ -23,6 +23,8 @@
 
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
+import java.awt.Rectangle;
+import java.net.URL;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.CommandExecutor;
@@ -34,18 +36,15 @@ import org.sikuli.api.ScreenRegion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.*;
-import java.net.URL;
-
 /**
  * Testerra WebDriver is a ScreenshotWebdriver enhanced by the possibilty to find elements by coordinates and images.
  */
-public class TesterraWebDriver extends RemoteWebDriver implements SikuliDriver {
+public class SikuliWebDriver extends RemoteWebDriver implements ImageWebDriver {
 
     /**
      * Logger.
      */
-    private static Logger logger = LoggerFactory.getLogger(TesterraWebDriver.class);
+    private static Logger logger = LoggerFactory.getLogger(SikuliWebDriver.class);
 
     /**
      * Default waiter.
@@ -63,7 +62,7 @@ public class TesterraWebDriver extends RemoteWebDriver implements SikuliDriver {
      * @param executor            .
      * @param desiredCapabilities .
      */
-    public TesterraWebDriver(CommandExecutor executor, Capabilities desiredCapabilities) {
+    public SikuliWebDriver(CommandExecutor executor, Capabilities desiredCapabilities) {
         super(executor, desiredCapabilities);
         init();
     }
@@ -73,7 +72,7 @@ public class TesterraWebDriver extends RemoteWebDriver implements SikuliDriver {
      *
      * @param desiredCapabilities .
      */
-    public TesterraWebDriver(Capabilities desiredCapabilities) {
+    public SikuliWebDriver(Capabilities desiredCapabilities) {
         super(desiredCapabilities);
         init();
     }
@@ -84,7 +83,7 @@ public class TesterraWebDriver extends RemoteWebDriver implements SikuliDriver {
      * @param remoteAddress       .
      * @param desiredCapabilities .
      */
-    public TesterraWebDriver(URL remoteAddress, Capabilities desiredCapabilities) {
+    public SikuliWebDriver(URL remoteAddress, Capabilities desiredCapabilities) {
         super(remoteAddress, desiredCapabilities);
         init();
     }

@@ -23,7 +23,7 @@ package eu.tsystems.mms.tic.testframework.layout;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.internal.Constants;
 import eu.tsystems.mms.tic.testframework.layout.extraction.AnnotationReader;
@@ -32,15 +32,9 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
-import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -52,6 +46,13 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import javax.imageio.ImageIO;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Utility class for handling layout checking screenshots.
@@ -261,7 +262,7 @@ public final class LayoutCheck {
                 FileUtils.copyFile(screenshot, step.referenceFileName.toFile());
             } catch (IOException e) {
                 LOGGER.error(e.getMessage());
-                throw new TesterraSystemException("Error when saving reference screenshot.", e);
+                throw new SystemException("Error when saving reference screenshot.", e);
             }
             LOGGER.info(String.format("Saved reference screenshot at '%s'.", step.referenceFileName.toString()));
         } else {
@@ -278,7 +279,7 @@ public final class LayoutCheck {
                 FileUtils.copyFile(screenshot, step.actualFileName.toFile());
             } catch (IOException e) {
                 LOGGER.error(e.getMessage());
-                throw new TesterraSystemException("Error when saving screenshot.", e);
+                throw new SystemException("Error when saving screenshot.", e);
             }
             LOGGER.debug(String.format("Saved actual screenshot at '%s'.", step.actualFileName.toString()));
 
@@ -374,7 +375,7 @@ public final class LayoutCheck {
                     break;
                 default:
                     LOGGER.error("Mode" + mode.name() + "not supported");
-                    throw new TesterraSystemException("Mode " + mode.name() + " not supported.");
+                    throw new SystemException("Mode " + mode.name() + " not supported.");
             }
         }
 

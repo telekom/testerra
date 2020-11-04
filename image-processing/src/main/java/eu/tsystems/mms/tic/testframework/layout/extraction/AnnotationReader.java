@@ -24,21 +24,22 @@ package eu.tsystems.mms.tic.testframework.layout.extraction;
 import eu.tsystems.mms.tic.testframework.annotator.AnnotationContainer;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.layout.DefaultParameter;
 import eu.tsystems.mms.tic.testframework.layout.LayoutComparator;
 import eu.tsystems.mms.tic.testframework.layout.core.LayoutElement;
 import eu.tsystems.mms.tic.testframework.layout.core.Point2D;
-import org.opencv.core.Mat;
-import org.opencv.core.Scalar;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import org.opencv.core.Mat;
+import org.opencv.core.Scalar;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * User: rnhb Date: 16.05.14
@@ -81,12 +82,12 @@ public class AnnotationReader {
         loadProperties();
 
         if (markedPoints.size() > size.x * size.y * maximalFractionOfMarkedPixels) {
-            throw new TesterraSystemException(
+            throw new SystemException(
                     LayoutComparator.Messages.tooManyMarkedPixels("" + maximalFractionOfMarkedPixels * 100));
         }
 
         if (markedPoints.size() <= minimumMarkedPixels) {
-            throw new TesterraSystemException(LayoutComparator.Messages.tooFewMarkedPixels());
+            throw new SystemException(LayoutComparator.Messages.tooFewMarkedPixels());
         }
         return markedPoints;
     }
@@ -103,7 +104,7 @@ public class AnnotationReader {
         HashSet<Point2D> markedPoints = null;
         try {
             markedPoints = getMarkedPixels(bufImage);
-        } catch (TesterraSystemException e) {
+        } catch (SystemException e) {
             LOGGER.warn(e.getMessage());
         }
 

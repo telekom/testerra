@@ -24,19 +24,18 @@
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraTestFailureException;
+import eu.tsystems.mms.tic.testframework.exceptions.TestFailureException;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.SharedTestResultAttributes;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.report.utils.FailsAnnotationFilter;
-import java.lang.reflect.Method;
-import org.testng.ITestResult;
-import org.testng.annotations.Test;
-
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.stream.Collectors;
+import org.testng.ITestResult;
+import org.testng.annotations.Test;
 
 public class MethodAnnotationCheckerWorker implements MethodEndEvent.Listener {
 
@@ -103,8 +102,8 @@ public class MethodAnnotationCheckerWorker implements MethodEndEvent.Listener {
                     final String message = stringBuilder.toString();
 
                     // set throwable
-                    final TesterraTestFailureException TesterraTestFailureException = new TesterraTestFailureException(message, throwable);
-                    testResult.setThrowable(TesterraTestFailureException);
+                    final TestFailureException testFailureException = new TestFailureException(message, throwable);
+                    testResult.setThrowable(testFailureException);
 
                     // set readable message
                     methodContext.errorContext().setThrowable(null, throwable, true);

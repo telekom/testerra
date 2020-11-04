@@ -2,9 +2,12 @@
   <require from="../../value-converters/duration-format"></require>
 
   <mdc-card outlined="true">
+    <div mdc-subtitle2>Test Duration</div>
+    <mdc-list-divider></mdc-list-divider>
+
     <div class="card-content">
       <div mdc-body1 class="duration-data">
-        Started: ${_executionContext.contextValues.startTime|dateFormat:"LLL"}
+        <p>Started: ${_executionContext.contextValues.startTime|dateFormat:"LLL"}</p>
         <p id="duration">
           <mdc-icon>timer</mdc-icon> Duration: ${_testDuration |durationFormat}
         </p>

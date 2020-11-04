@@ -25,9 +25,9 @@ import ExecStatusType = data.ExecStatusType;
 import ResultStatusType = data.ResultStatusType;
 
 class GraphColors {
-  static readonly PASSED = '#3C8F64'; // $success
+  static readonly PASSED = '#3c8f64'; // $success
   static readonly SKIPPED = '#8a929a'; // $dark
-  static readonly FAILED = '#E63946'; // $danger
+  static readonly FAILED = '#e63946'; // $danger
   static readonly CRASHED = '#5d6f81'; // $secondary
   static readonly RUNNING = '#0089b6'; // $info
 
@@ -130,22 +130,22 @@ export class StatusConverter {
         return 'clock';
       case ExecStatusType.PROVISIONING:
       case ExecStatusType.RUNNING:
-        return '.mdi .mdi-spin .mdi-loading';
+        return '.mdi .mdi-spin .mdi-loading'; // looks like cube
       case ExecStatusType.FINISHED:
         // If finished, the result status will be checked for a detailed status
         switch (resultStatus) {
           case ResultStatusType.PASSED:
-            return ".mdi .mdi-check-circle-outline";
+            return "done";
           case ResultStatusType.FAILED:
-            return ".mdi .mdi-alert-circle-outline";
+            return "error_outline";
           //case ResultStatusType.NO_RUN:
           default:
-            return '.mdi .mdi-checkbox-blank-circle-outline';
+            return 'radio_button_unchecked'; // looks like outline circle
         }
       case ExecStatusType.ABORTED:
-        return '.mdi .mdi-close-circle-outline';
+        return 'highlight_off';
       case ExecStatusType.CRASHED:
-        return '.mdi .mdi-skull-outline';
+        return 'close';
       default:
         return '.mdi .mdi-skull-outline';
     }

@@ -1,4 +1,4 @@
-@use "@material/theme" with (
+@use "~@material/theme" with (
   $primary: #e63946,
   $secondary: #a8dadc,
   $on-primary: #f1faee,
@@ -6,12 +6,12 @@
 );
 @use '@material/button/mdc-button';
 @use '@material/button';
-@use '@material/card/mdc-card';
-@use '@material/card';
+@use '~@material/card/mdc-card';
+@use '~@material/card';
 @use '@material/checkbox';
 @use '@material/icon-button';
-@use '@material/data-table';
-@use '@material/data-table/mdc-data-table';
+@use '~@material/data-table';
+@use '~@material/data-table/mdc-data-table';
 @use '@material/dialog/mdc-dialog';
 @use '@material/dialog';
 @use '@material/drawer/mdc-drawer';
@@ -19,6 +19,8 @@
 @use '@material/elevation/mdc-elevation';
 @use '@material/icon-button/mdc-icon-button';
 @use '@material/layout-grid/mdc-layout-grid';
+@use '@material/linear-progress/mdc-linear-progress';
+@use '@material/linear-progress';
 @use '@material/list/mdc-list';
 @use '@material/list';
 @use '@material/textfield/mdc-text-field';
@@ -31,6 +33,8 @@
 @use '@material/ripple';
 @use '@material/menu/mdc-menu';
 @use '@material/menu';
+@use '~@material/select/mdc-select';
+@use '~@material/select/_index' as select;
 @use '@material/menu-surface/mdc-menu-surface';
 @use '@material/radio/mdc-radio';
 @use '@material/radio';
@@ -44,13 +48,17 @@
 @use '@material/tab';
 @use '@material/top-app-bar/mdc-top-app-bar';
 @use '@material/top-app-bar';
-@use '@material/typography/mdc-typography';
-@use '@material/typography';
+@use '~@material/typography/mdc-typography';
+@use '~@material/typography';
+
+
 
 @include drawer.core-styles;
 @include drawer.dismissible-core-styles;
 @include drawer.modal-core-styles;
 @include list.core-styles;
+
+@import "variables.scss";
 
 /*General style settings______________________________________________________________________________________________*/
 

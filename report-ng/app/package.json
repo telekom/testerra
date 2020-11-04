@@ -23,6 +23,7 @@
     "@aurelia-mdc-web/text-field": "^1.0.5",
     "@aurelia-mdc-web/top-app-bar": "^1.0.5",
     "@material/card": "^7.0.0",
+    "@material/select": "^7.0.0",
     "@types/moment-duration-format": "^2.2.2",
     "apexcharts": "^3.20.2",
     "aurelia-animator-css": "^1.0.4",

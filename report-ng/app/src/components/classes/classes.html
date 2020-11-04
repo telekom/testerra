@@ -1,26 +1,50 @@
 <template>
-  <mdc-data-table>
+  <mdc-data-table  pagination page-sizes.bind="[10,20,30]" page-size.bind="10" records-count="10" active-page.bind="activePage"
+                   pagination-total="1-3 of 3" mdcdatatable:navigation.trigger="handleNavigation($event.detail.type)"
+                   pagination-position="between">
     <mdc-data-table-header>
-      <mdc-data-table-header-cell>Classes</mdc-data-table-header-cell>
-      <mdc-data-table-header-cell>Passed</mdc-data-table-header-cell>
-      <mdc-data-table-header-cell>Skipped</mdc-data-table-header-cell>
-      <mdc-data-table-header-cell>Failed</mdc-data-table-header-cell>
-      <mdc-data-table-header-cell>Method</mdc-data-table-header-cell>
-      <mdc-data-table-header-cell>Method name</mdc-data-table-header-cell>
+      <mdc-data-table-header-cell>Status</mdc-data-table-header-cell>
+      <mdc-data-table-header-cell>
+
+        <select  class="select-class-style" name="All Classes">
+          <option   repeat.for="classStatistics of _classStatistics" >
+            ${classStatistics.classAggregate.classContext.contextValues.name}</option>
+        </select>
+      </mdc-data-table-header-cell>
+      <mdc-data-table-header-cell>
+        All Methods
+      </mdc-data-table-header-cell>
+      <mdc-data-table-header-cell>Failure Aspect</mdc-data-table-header-cell>
+      <mdc-data-table-header-cell>Exit Point</mdc-data-table-header-cell>
+      <mdc-data-table-header-cell>Method Runtime</mdc-data-table-header-cell>
     </mdc-data-table-header>
     <mdc-data-table-content>
       <mdc-data-table-row repeat.for="classStatistics of _classStatistics">
+        <mdc-data-table-cell>
+            <span if.bind="classStatistics.overallFailed>0 || classStatistics.overallSkipped>0">
+              <mdc-icon class="class-icon" >close</mdc-icon>
+              failed
+            </span>
+          <span if.bind="classStatistics.overallPassed>0 && classStatistics.overallFailed==0 && classStatistics.overallSkipped==0">
+            <mdc-icon class="class-icon" >done</mdc-icon>
+            passed
+          </span>
+
+        </mdc-data-table-cell>
         <mdc-data-table-cell >
-          <mdc-icon class="class-icon" if.bind="classStatistics.overallFailed>0 || classStatistics.overallSkipped>0">close</mdc-icon>
           <span class="classes-name">${classStatistics.classAggregate.classContext.contextValues.name}</span>
         </mdc-data-table-cell>
-        <mdc-data-table-cell numeric>${classStatistics.overallPassed}</mdc-data-table-cell>
-        <mdc-data-table-cell numeric>${classStatistics.overallSkipped}</mdc-data-table-cell>
-        <mdc-data-table-cell numeric>${classStatistics.overallFailed}</mdc-data-table-cell>
-        <mdc-data-table-cell >${classStatistics.classAggregate.methodContexts.push(contextValues.name)}</mdc-data-table-cell>
-        <mdc-data-table-cell >${classStatistics.classAggregate.methodContexts}</mdc-data-table-cell>
+        <mdc-data-table-cell >
+          <ul  class="method-list" repeat.for="_method of classStatistics.classAggregate.methodContexts">
+            <li>
+              <!--<mdc-icon>${ _statusConverter.iconClassesFor(_method.contextValues.resultStatus)}</mdc-icon>-->
+              <span>${ _method.contextValues.resultStatus}</span>
+              <span>${_method.contextValues.name}</span>
+            </li>
+            <li></li>
+          </ul>
+         </mdc-data-table-cell>
       </mdc-data-table-row>
     </mdc-data-table-content>
   </mdc-data-table>
-
 </template>

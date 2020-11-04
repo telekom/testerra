@@ -1,7 +1,42 @@
+@import "../../report-ng/app/src/app";
 .class-icon{
-  position: absolute;
+  position: center;
+  vertical-align: text-top;
+
 }
 .classes-name{
-color: #5852ff;
-  padding-left: 30px;
+  color: #5852ff;
+}
+
+.select-class-style{
+  font-family: Roboto, sans-serif;
+border: none; }
+.mdc-data-table__cell{
+  vertical-align: text-top;
+  padding-top:1em;
+  padding-bottom: 0.5em;
+ }
+.mdc-data-table__header-cell{
+}
+
+.method-list{
+  list-style-type: none;
+  margin: 0;
+  padding: 0.5em 0 0.5em 0 ;
+
+}
+
+
+@media only screen and (min-width: 1600px) {
+  .mdc-data-table__table au-target {
+    width: 50%;
+  }
+
+  .grid-cell-medium {
+    grid-column-end: span 8;
+  }
+
+  .grid-cell-large {
+    grid-column-end: span 12;
+  }
 }

@@ -1,0 +1,71 @@
+@import "../../variables.scss";
+
+#test-results {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#pie-chart {
+  display: block;
+}
+
+.results {
+  width: 100%;
+  max-height: 400px;
+  padding: 1em;
+  margin: auto;
+}
+
+.result-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0.5em 0;
+
+  .result-status-icon {
+    font-size: 40px !important;
+    color: #ffffff;
+    border: 5px solid;
+    border-radius: 25px;
+  }
+
+  #icon-passed {
+    background: $passed;
+    border-color: $passed;
+  }
+
+  #icon-skipped {
+    background: $skipped;
+    border-color: $skipped;
+  }
+
+  #icon-failed {
+    background: $failed;
+    border-color: $failed;
+  }
+
+  .result-status-text {
+    text-align: right;
+
+    .result-status-type {
+      color: slategrey !important;
+    }
+  }
+}
+
+/*Ab mittlerer Bildschirmgröße Darstellung von Chart und Tabelle nebeneinander*/
+@media only screen and (min-width: 1160px) {
+  #test-results {
+    flex-direction: row;
+  }
+
+  .results {
+    width: 50%;
+  }
+
+  #pie-chart {
+    width: 50%;
+  }
+}

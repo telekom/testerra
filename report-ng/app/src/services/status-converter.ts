@@ -44,8 +44,8 @@ export class StatusConverter {
             ResultStatusType.PASSED,
             ResultStatusType.FAILED,
             ResultStatusType.FAILED_EXPECTED,
-            ResultStatusType.FAILED_MINOR,
             ResultStatusType.SKIPPED,
+            ResultStatusType.FAILED_MINOR,
         ];
     }
 

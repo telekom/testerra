@@ -119,6 +119,7 @@ export const data = $root.data = (() => {
          * @property {string|null} [simpleClassName] ClassContext simpleClassName
          * @property {string|null} [testContextId] ClassContext testContextId
          * @property {string|null} [executionContextId] ClassContext executionContextId
+         * @property {string|null} [testContextName] ClassContext testContextName
          * @property {boolean|null} [merged] ClassContext merged
          */
 
@@ -187,6 +188,14 @@ export const data = $root.data = (() => {
         ClassContext.prototype.executionContextId = "";
 
         /**
+         * ClassContext testContextName.
+         * @member {string} testContextName
+         * @memberof data.ClassContext
+         * @instance
+         */
+        ClassContext.prototype.testContextName = "";
+
+        /**
          * ClassContext merged.
          * @member {boolean} merged
          * @memberof data.ClassContext
@@ -231,6 +240,9 @@ export const data = $root.data = (() => {
                     break;
                 case 10:
                     m.executionContextId = r.string();
+                    break;
+                case 11:
+                    m.testContextName = r.string();
                     break;
                 case 12:
                     m.merged = r.bool();

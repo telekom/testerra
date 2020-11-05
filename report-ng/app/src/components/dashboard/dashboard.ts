@@ -22,6 +22,7 @@ export class Dashboard {
   attached() {
     this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
       this._executionStatistics = executionStatistics;
+      console.log(executionStatistics);
       this._executionContext = executionStatistics.executionAggregate.executionContext;
       this._eventAggregator.publish('executionStatistics', this._executionStatistics);
       this._eventAggregator.publish('executionContext', this._executionContext);

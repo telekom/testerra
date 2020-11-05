@@ -66,6 +66,9 @@ export namespace data {
         /** ClassContext executionContextId */
         executionContextId?: (string|null);
 
+        /** ClassContext testContextName */
+        testContextName?: (string|null);
+
         /** ClassContext merged */
         merged?: (boolean|null);
     }
@@ -96,6 +99,9 @@ export namespace data {
 
         /** ClassContext executionContextId. */
         public executionContextId: string;
+
+        /** ClassContext testContextName. */
+        public testContextName: string;
 
         /** ClassContext merged. */
         public merged: boolean;

@@ -89,8 +89,11 @@ export class ExecutionStatistics extends AbstractStatistics {
     }
 
     addClassStatistics(statistics: ClassStatistics) {
-        this.addStatistics(statistics);
         this._classStatistics.push(statistics);
+    }
+
+    updateStatistics() {
+        this._classStatistics.forEach(value => this.addStatistics(value));
     }
 
     get executionAggregate() {
@@ -105,8 +108,15 @@ export class ExecutionStatistics extends AbstractStatistics {
 export class ClassStatistics extends AbstractStatistics {
     private _classAggregate: ClassContextAggregate;
 
-    setClassAggregate(classAggregate: ClassContextAggregate) {
-        this._classAggregate = classAggregate;
+    addClassAggregate(classAggregate: ClassContextAggregate) {
+        if (!this._classAggregate) {
+            this._classAggregate = classAggregate;
+        } else {
+            this._classAggregate.methodContexts = this._classAggregate.methodContexts.concat(classAggregate.methodContexts);
+        }
+        classAggregate.methodContexts.forEach(methodContext => {
+            this.addResultStatus(methodContext.contextValues.resultStatus);
+        });
         return this;
     }
 

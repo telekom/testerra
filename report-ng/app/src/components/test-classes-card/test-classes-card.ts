@@ -29,7 +29,7 @@ export class TestClassesCard {
         let xlabels: Array<string> = [];
 
         for (const status of this._statusConverter.relevantStatuses) {
-            data.set(status, [0]);
+            data.set(status, []);
         }
 
         //Iterate through classStatistics array to fill map with data for series
@@ -37,20 +37,19 @@ export class TestClassesCard {
             for (const status of this._statusConverter.relevantStatuses) {
                 data.get(status).push(classStats.getStatusCount(status));
             }
-
             //Push Class Names in array for x-axis labels
-            xlabels.push(classStats.classAggregate.classContext.fullClassName);
+            xlabels.push(classStats.classAggregate.classContext.testContextName||classStats.classAggregate.classContext.simpleClassName);
         });
 
         //Display at least 10 rows in bar chart even if there are less classes
-        if (xlabels.length < 10) {
-            for (let i = xlabels.length; i <= 10; i++) {
-                xlabels[i] = "";
-                for (const status of this._statusConverter.relevantStatuses) {
-                    data.get(status)[i] = 0;
-                }
-            }
-        }
+        // if (xlabels.length < 10) {
+        //     for (let i = xlabels.length; i <= 10; i++) {
+        //         xlabels[i] = "";
+        //         for (const status of this._statusConverter.relevantStatuses) {
+        //             data.get(status)[i] = 0;
+        //         }
+        //     }
+        // }
 
         const series = [];
 

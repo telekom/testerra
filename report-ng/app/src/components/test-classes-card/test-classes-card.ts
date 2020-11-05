@@ -1,6 +1,6 @@
 import './test-classes-card.scss';
 import {data} from "../../services/report-model";
-import {autoinject, bindable} from "aurelia-framework";
+import {autoinject} from "aurelia-framework";
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {StatusConverter} from "../../services/status-converter";
 import {StatisticsGenerator} from "../../services/statistics-generator";
@@ -82,9 +82,9 @@ export class TestClassesCard {
       }
       ],
       colors:[
-        this._statusConverter.colorFor(ResultStatusType.PASSED),
-        this._statusConverter.colorFor(ResultStatusType.FAILED),
-        this._statusConverter.colorFor(ResultStatusType.SKIPPED)
+        this._statusConverter.getColorForStatus(ResultStatusType.PASSED),
+        this._statusConverter.getColorForStatus(ResultStatusType.FAILED),
+        this._statusConverter.getColorForStatus(ResultStatusType.SKIPPED)
       ],
       xaxis: {
         categories: xlabels

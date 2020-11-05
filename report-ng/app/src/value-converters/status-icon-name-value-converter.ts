@@ -11,6 +11,6 @@ export class StatusIconNameValueConverter {
     }
 
     toView(value: ResultStatusType) {
-        return this._statusConverter.iconNameForStatus(value);
+        return this._statusConverter.getIconNameForStatus(value);
     }
 }

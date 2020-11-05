@@ -24,47 +24,64 @@ import {autoinject} from "aurelia-framework";
 import ResultStatusType = data.ResultStatusType;
 
 class GraphColors {
-    static readonly PASSED = '#3c8f64'; // $success
+    static readonly PASSED = '#417336'; // $success
     static readonly SKIPPED = '#8a929a'; // $dark
-    static readonly FAILED = '#e63946'; // $danger
+    static readonly FAILED = '#9f0737'; // $danger
     static readonly CRASHED = '#5d6f81'; // $secondary
     static readonly RUNNING = '#0089b6'; // $info
-
-    /*old color schme*/
-    /*static readonly PASSED = '#00c853'; // $success
-    static readonly SKIPPED = '#8a929a'; // $dark
-    static readonly FAILED = '#D50000'; // $danger
-    static readonly CRASHED = '#5d6f81'; // $secondary
-    static readonly RUNNING = '#0089b6'; // $info */
+    static readonly FAILED_MINOR = '#f7af3e'; // $failedMinor
+    static readonly FAILED_EXPECTED = '#4f031b'; // $failedExpected
 }
 
 @autoinject()
 export class StatusConverter {
 
-    private static resultStatusValues: Array<ResultStatusType | string> = Object.values(ResultStatusType);
-    private static resultStatusKeys = Object.keys(ResultStatusType);
+    // private static resultStatusValues: Array<ResultStatusType | string> = Object.values(ResultStatusType);
+    // private static resultStatusKeys = Object.keys(ResultStatusType);
 
-    nameForStatus(value: ResultStatusType | number): string {
+    get relevantStatuses() {
+        return [
+            ResultStatusType.PASSED,
+            ResultStatusType.FAILED,
+            ResultStatusType.FAILED_EXPECTED,
+            ResultStatusType.FAILED_MINOR,
+            ResultStatusType.SKIPPED,
+        ];
+    }
+
+    getLabelForStatus(value: ResultStatusType | number): string {
         switch (value) {
-            case ResultStatusType.PASSED: return "Passed";
-            case ResultStatusType.FAILED: return "Failed";
-            case ResultStatusType.FAILED_EXPECTED: return "Fail Expected";
-            case ResultStatusType.FAILED_MINOR: return "Failed minor";
+            case ResultStatusType.SKIPPED:
+                return "Skipped";
+            case ResultStatusType.PASSED:
+            case ResultStatusType.MINOR:
+                return "Passed";
+            case ResultStatusType.FAILED_RETRIED:
+            case ResultStatusType.FAILED:
+                return "Failed";
+            case ResultStatusType.FAILED_EXPECTED:
+                return "Expected Failed";
+            case ResultStatusType.FAILED_MINOR:
+                return "Minor Failed";
         }
     }
 
-    iconNameForStatus(status: ResultStatusType) {
+    getIconNameForStatus(status: ResultStatusType) {
         switch (status) {
             case ResultStatusType.SKIPPED:
                 return "radio_button_unchecked";
+            case ResultStatusType.FAILED_RETRIED:
+            case ResultStatusType.FAILED_MINOR:
+            case ResultStatusType.FAILED_EXPECTED:
             case ResultStatusType.FAILED:
                 return "highlight_off";
             case ResultStatusType.PASSED:
+            case ResultStatusType.MINOR:
                 return "check";
         }
     }
 
-    colorFor(status: ResultStatusType): string {
+    getColorForStatus(status: ResultStatusType): string {
         switch (status) {
             case ResultStatusType.PASSED:
             case ResultStatusType.PASSED_RETRY:
@@ -72,13 +89,30 @@ export class StatusConverter {
                 return GraphColors.PASSED;
             case ResultStatusType.FAILED:
             case ResultStatusType.FAILED_RETRIED:
-            case ResultStatusType.FAILED_MINOR:
-            case ResultStatusType.FAILED_EXPECTED:
                 return GraphColors.FAILED;
+            case ResultStatusType.FAILED_MINOR:
+                return GraphColors.FAILED_MINOR
+            case ResultStatusType.FAILED_EXPECTED:
+               return GraphColors.FAILED_EXPECTED
             case ResultStatusType.SKIPPED:
                 return GraphColors.SKIPPED;
             case ResultStatusType.NO_RUN:
                 return GraphColors.RUNNING;
+        }
+    }
+
+    groupStatus(status: ResultStatusType): ResultStatusType {
+        switch (status) {
+            case ResultStatusType.FAILED_RETRIED:
+            case ResultStatusType.FAILED:
+                return ResultStatusType.FAILED;
+            case ResultStatusType.MINOR_RETRY:
+            case ResultStatusType.PASSED_RETRY:
+            case ResultStatusType.MINOR:
+            case ResultStatusType.PASSED:
+                return ResultStatusType.PASSED;
+            default:
+                return status;
         }
     }
 }

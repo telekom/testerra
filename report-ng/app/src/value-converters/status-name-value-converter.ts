@@ -11,6 +11,6 @@ export class StatusNameValueConverter {
     }
 
     toView(value: ResultStatusType) {
-        return this._statusConverter.nameForStatus(value);
+        return this._statusConverter.getLabelForStatus(value);
     }
 }

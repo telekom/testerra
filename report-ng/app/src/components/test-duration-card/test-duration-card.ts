@@ -5,7 +5,6 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import moment, {Duration} from "moment";
 import {StatusConverter} from "../../services/status-converter";
 import {StatisticsGenerator} from "../../services/statistics-generator";
-import IExecutionContext = data.IExecutionContext;
 
 @autoinject
 export class TestDurationCard {

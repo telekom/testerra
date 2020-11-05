@@ -4,6 +4,7 @@ import {DataLoader} from "./services/data-loader";
 import {StatusConverter} from "./services/status-converter";
 import {data} from "./services/report-model";
 import {MdcDrawer} from "@aurelia-mdc-web/drawer";
+import "./app.scss"
 import IExecutionContext = data.IExecutionContext;
 
 @autoinject()
@@ -17,26 +18,23 @@ export class App {
         private _dataLoader: DataLoader,
         private _statusConverter: StatusConverter,
     ) {
-
-        this._dataLoader.getExecutionAggregate().then(value => {
-            this._executionContext = value.executionContext;
-            this._routeConfig.title = this._executionContext.runConfig.reportName;
-            this._router.routes.filter(route => route.route == "failure-aspects").find(route => {
-                route.settings.count = this._executionContext.failureAscpects.length;
-            });
-            this._router.routes.filter(route => route.route == "exit-points").find(route => {
-                route.settings.count = this._executionContext.exitPoints.length;
-            });
-        })
-
     }
 
     attached() {
-
+        this._dataLoader.getExecutionAggregate().then(value => {
+            this._executionContext = value.executionContext;
+            // this._routeConfig.title = this._executionContext.runConfig.reportName;
+            // this._router.routes.filter(route => route.route == "failure-aspects").find(route => {
+            //     route.settings.count = this._executionContext.failureAscpects.length;
+            // });
+            // this._router.routes.filter(route => route.route == "exit-points").find(route => {
+            //     route.settings.count = this._executionContext.exitPoints.length;
+            // });
+        })
     }
 
-
-    configureRouter(config: RouterConfiguration, router: Router): void {
+    configureRouter(config: RouterConfiguration, router: Router) {
+        console.log("configure router");
         this._router = router;
         this._routeConfig = config;
         config.map([

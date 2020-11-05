@@ -38,6 +38,7 @@
     "moment-duration-format": "^2.3.2",
     "momentjs": "^2.0.0",
     "protobufjs": "^6.10.1",
+    "resolve-url-loader": "^3.1.2",
     "t-systems-aurelia-components": "^1.0.0"
   },
   "devDependencies": {

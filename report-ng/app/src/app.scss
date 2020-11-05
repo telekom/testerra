@@ -68,15 +68,18 @@ body {
 }
 
 #logo{
+  margin-top: -18px;
+  margin-left: -20px;
   width: 60px;
   height: 60px;
 }
 
 //Put drawer behind top app bar
 .app-top-bar {
-  z-index: 7;
+  z-index: 2;
 }
 
+//prevents app-content overflowing out of screen
 .flex-container {
   display: flex;
 }

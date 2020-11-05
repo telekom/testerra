@@ -9,11 +9,11 @@
 .mdc-card {
   min-height: 300px;
   height: 100%;
-  padding: 1em;
 }
 
 .card-content {
   margin: auto 0;
+  padding: 1em;
 }
 
 .grid-cell {
@@ -21,7 +21,8 @@
 }
 
 .headline{
-   padding-bottom: 1em;
+  margin: 0.4em 1em;
+  color: rgba(0, 0, 0, 0.6);
  }
 
 

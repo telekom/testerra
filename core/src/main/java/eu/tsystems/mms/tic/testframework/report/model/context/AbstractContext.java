@@ -30,11 +30,12 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
@@ -72,11 +73,11 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
             Supplier<T> newContextSupplier,
             Consumer<T> whenAddedToQueue
     ) {
-        Optional<T> first = contexts.stream()
+        List<T> list = contexts.stream()
                 .filter(context -> name.equals(context.name))
-                .findFirst();
+                .collect(Collectors.toList());
 
-        if (!first.isPresent()) {
+        if (list.size() == 0) {
             if (newContextSupplier == null) {
                 return null;
             }
@@ -92,9 +93,12 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
             } catch (Exception e) {
                 throw new SystemException("Error creating Context Class", e);
             }
-
         } else {
-            return first.get();
+            T first = list.get(0);
+            if (list.size() > 1) {
+                log().warn("Found " + list.size() + " duplicate items of " + first.getClass().getSimpleName() + ", picking first one");
+            }
+            return first;
         }
     }
 

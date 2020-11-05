@@ -37,9 +37,10 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.IRetryAnalyzer;
@@ -58,7 +59,7 @@ public class RetryAnalyzer implements IRetryAnalyzer {
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(RetryAnalyzer.class);
 
-    private static final List<AdditionalRetryAnalyzer> ADDITIONAL_RETRY_ANALYZERS = Collections.synchronizedList(new LinkedList<>());
+    private static final Queue<AdditionalRetryAnalyzer> ADDITIONAL_RETRY_ANALYZERS = new ConcurrentLinkedQueue();
 
     /**
      * Classes list.
@@ -70,7 +71,7 @@ public class RetryAnalyzer implements IRetryAnalyzer {
      */
     private static final List<String> MESSAGES_LIST = new ArrayList<>();
 
-    private static final List<MethodContext> RETRIED_METHODS = Collections.synchronizedList(new LinkedList<>());
+    private static final Queue<MethodContext> RETRIED_METHODS = new ConcurrentLinkedQueue<>();
 
     static {
         final String classes = PropertyManager.getProperty(TesterraProperties.FAILED_TESTS_IF_THROWABLE_CLASSES);
@@ -354,7 +355,7 @@ public class RetryAnalyzer implements IRetryAnalyzer {
         return retryCause;
     }
 
-    public static List<MethodContext> getRetriedMethods() {
+    public static Queue<MethodContext> getRetriedMethods() {
         return RETRIED_METHODS;
     }
 

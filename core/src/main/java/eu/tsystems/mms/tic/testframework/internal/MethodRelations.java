@@ -23,6 +23,12 @@
 
 import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeGroups;
 import org.testng.annotations.BeforeMethod;
@@ -30,20 +36,13 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import java.lang.reflect.Method;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 public class MethodRelations {
 
     private static final Map<Long, List<MethodContext>> EXECUTION_CONTEXT = Collections.synchronizedMap(new HashMap<>());
     private static final ThreadLocal<Boolean> TEST_WAS_HERE = new ThreadLocal<>();
 
     private MethodRelations() {
-        
+
     }
 
     private static boolean isBeforeXXMethod(Method method) {
@@ -98,14 +97,11 @@ public class MethodRelations {
             /*
             check for retries
              */
-            List<MethodContext> retriedMethods = RetryAnalyzer.getRetriedMethods();
-            synchronized (retriedMethods) {
-                for (MethodContext retriedMethod : retriedMethods) {
-                    if (methodContext.isSame(retriedMethod)) {
-                        containers.add(retriedMethod);
-                    }
+            RetryAnalyzer.getRetriedMethods().stream().forEach(retriedMethod -> {
+                if (methodContext.isSame(retriedMethod)) {
+                    containers.add(retriedMethod);
                 }
-            }
+            });
         }
 
         if (containers.size() > 0) {

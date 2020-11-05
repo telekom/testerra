@@ -40,7 +40,7 @@ public class SuiteContext extends AbstractContext implements SynchronizableConte
         this.parentContext = this.executionContext = executionContext;
     }
 
-    public TestContextModel getTestContext(ITestResult testResult, ITestContext iTestContext) {
+    public synchronized TestContextModel getTestContext(ITestResult testResult, ITestContext iTestContext) {
         final String testName = TestNGHelper.getTestName(testResult, iTestContext);
         return getOrCreateContext(
                 testContextModels,

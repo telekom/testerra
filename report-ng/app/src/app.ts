@@ -34,7 +34,6 @@ export class App {
     }
 
     configureRouter(config: RouterConfiguration, router: Router) {
-        console.log("configure router");
         this._router = router;
         this._routeConfig = config;
         config.map([

@@ -1,4 +1,3 @@
-import {data} from "../../services/report-model";
 import {autoinject} from "aurelia-framework";
 import {EventAggregator} from 'aurelia-event-aggregator';
 import "./test-results-card.scss";
@@ -47,8 +46,5 @@ export class TestResultsCard {
             colors: colors,
             labels: labels
         };
-
-        console.log(this._apexPieOptions);
-
     }
 }

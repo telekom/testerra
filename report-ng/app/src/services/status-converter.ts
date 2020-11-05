@@ -85,6 +85,7 @@ export class StatusConverter {
         switch (status) {
             case ResultStatusType.PASSED:
             case ResultStatusType.PASSED_RETRY:
+            case ResultStatusType.MINOR_RETRY:
             case ResultStatusType.MINOR:
                 return GraphColors.PASSED;
             case ResultStatusType.FAILED:

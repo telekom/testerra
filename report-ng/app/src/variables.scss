@@ -1,6 +1,9 @@
-$passed:    #3c8f64;
+// You also have to update the colors in status-converter.ts
+$passed:    #417336;
 $skipped:   #8a929a;
-$failed:    #e63946;
+$failed:    #9f0737;
 $crashed:   #5d6f81;
 $running:   #0089b6;
+$failedMinor: #f7af3e;
+$failedExpected: #4f031b;
 

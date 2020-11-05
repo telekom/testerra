@@ -21,7 +21,6 @@ export class TestDurationCard {
   attached() {
     this._eventAggregator.subscribe('executionContext', payload => {
       this._prepareDuration(payload.contextValues);
-      console.log(payload);
     });
   }
 

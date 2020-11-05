@@ -20,121 +20,97 @@
  */
 
 import {data} from "./report-model";
+import {Container} from "aurelia-framework";
+import {StatusConverter} from "./status-converter";
 import ResultStatusType = data.ResultStatusType;
 import ExecutionAggregate = data.ExecutionAggregate;
 import ClassContextAggregate = data.ClassContextAggregate;
 
 abstract class AbstractStatistics {
-
-  constructor() {
-  }
-
-  private _resultStatuses:{[key: number]:number} = {};
-  private _testsTotal:number = 0;
-  private _overallPassed:number = 0;
-  private _overallFailed:number = 0;
-
-  addResultStatus(status:ResultStatusType) {
-    if (!this._resultStatuses[status]) {
-      this._resultStatuses[status] = 0;
-    }
-    this._resultStatuses[status]++;
-
-    const groupedStatus = this.groupStatisticStatus(status);
-    if (groupedStatus == ResultStatusType.PASSED) {
-      this._overallPassed++;
-    } else if (groupedStatus == ResultStatusType.FAILED) {
-      this._overallFailed++;
+    private _statusConverter: StatusConverter
+    constructor() {
+        this._statusConverter = Container.instance.get(StatusConverter);
     }
 
-    this._testsTotal++;
-  }
+    private _resultStatuses: { [key: number]: number } = {};
+    private _testsTotal: number = 0;
 
-  private groupStatisticStatus(status: ResultStatusType): ResultStatusType {
-    switch (status) {
-      case ResultStatusType.FAILED_EXPECTED:
-      case ResultStatusType.FAILED_RETRIED:
-      case ResultStatusType.FAILED_MINOR:
-      case ResultStatusType.FAILED:
-        return ResultStatusType.FAILED;
-      case ResultStatusType.MINOR_RETRY:
-      case ResultStatusType.PASSED_RETRY:
-      case ResultStatusType.MINOR:
-      case ResultStatusType.PASSED:
-        return ResultStatusType.PASSED;
-      default:
-        return status;
+    addResultStatus(status: ResultStatusType) {
+        status = this.groupStatisticStatus(status);
+        if (!this._resultStatuses[status]) {
+            this._resultStatuses[status] = 0;
+        }
+        this._resultStatuses[status]++;
+        this._testsTotal++;
     }
-  }
 
-  get testsTotal() {
-    return this._testsTotal;
-  }
-  get overallPassed() {
-    return this._overallPassed;
-  }
-  get overallSkipped() {
-    return this._resultStatuses[ResultStatusType.SKIPPED]|0;
-  }
-  get overallFailed() {
-    return this._overallFailed;
-  }
-  get failed() {
-    return this._resultStatuses[ResultStatusType.FAILED]|0;
-  }
-  get failedExpected() {
-    return this._resultStatuses[ResultStatusType.FAILED_EXPECTED]|0;
-  }
-  get failedMinor() {
-    return this._resultStatuses[ResultStatusType.FAILED_MINOR]|0;
-  }
-
-
-    protected addStatistics(statistics:AbstractStatistics) {
-    for (const status in statistics._resultStatuses) {
-      if (!this._resultStatuses[status]) {
-        this._resultStatuses[status] = 0;
-      }
-      this._resultStatuses[status] += statistics._resultStatuses[status];
+    private groupStatisticStatus(status: ResultStatusType): ResultStatusType {
+        return this._statusConverter.groupStatus(status);
     }
-    this._overallPassed += statistics._overallPassed;
-    this._overallFailed += statistics._overallFailed;
-    this._testsTotal += statistics._testsTotal;
-  }
+
+    get testsTotal() {
+        return this._testsTotal;
+    }
+
+    get overallPassed() {
+        return this.getStatusCount(ResultStatusType.PASSED);
+    }
+
+    get overallSkipped() {
+        return this.getStatusCount(ResultStatusType.SKIPPED);
+    }
+
+    get overallFailed() {
+        return this.getStatusCount(ResultStatusType.FAILED);
+    }
+
+    getStatusCount(status: ResultStatusType) {
+        return this._resultStatuses[status] | 0;
+    }
+
+    protected addStatistics(statistics: AbstractStatistics) {
+        for (const status in statistics._resultStatuses) {
+            if (!this._resultStatuses[status]) {
+                this._resultStatuses[status] = 0;
+            }
+            this._resultStatuses[status] += statistics._resultStatuses[status];
+        }
+        this._testsTotal += statistics._testsTotal;
+    }
 }
 
-export class ExecutionStatistics extends AbstractStatistics{
-  private _executionAggregate:ExecutionAggregate;
-  private _classStatistics:ClassStatistics[] = [];
+export class ExecutionStatistics extends AbstractStatistics {
+    private _executionAggregate: ExecutionAggregate;
+    private _classStatistics: ClassStatistics[] = [];
 
-  setExecutionAggregate(executionAggregate:ExecutionAggregate) {
-    this._executionAggregate = executionAggregate;
-    return this;
-  }
+    setExecutionAggregate(executionAggregate: ExecutionAggregate) {
+        this._executionAggregate = executionAggregate;
+        return this;
+    }
 
-  addClassStatistics(statistics:ClassStatistics) {
-    this.addStatistics(statistics);
-    this._classStatistics.push(statistics);
-  }
+    addClassStatistics(statistics: ClassStatistics) {
+        this.addStatistics(statistics);
+        this._classStatistics.push(statistics);
+    }
 
-  get executionAggregate() {
-    return this._executionAggregate;
-  }
+    get executionAggregate() {
+        return this._executionAggregate;
+    }
 
-  get classStatistics() {
-    return this._classStatistics;
-  }
+    get classStatistics() {
+        return this._classStatistics;
+    }
 }
 
 export class ClassStatistics extends AbstractStatistics {
-  private _classAggregate:ClassContextAggregate;
+    private _classAggregate: ClassContextAggregate;
 
-  setClassAggregate(classAggregate:ClassContextAggregate) {
-    this._classAggregate = classAggregate;
-    return this;
-  }
+    setClassAggregate(classAggregate: ClassContextAggregate) {
+        this._classAggregate = classAggregate;
+        return this;
+    }
 
-  get classAggregate() {
-    return this._classAggregate;
-  }
+    get classAggregate() {
+        return this._classAggregate;
+    }
 }

@@ -1,5 +1,5 @@
 import {autoinject, PLATFORM} from "aurelia-framework";
-import {Router, RouterConfiguration} from 'aurelia-router';
+import {NavModel, Router, RouterConfiguration} from 'aurelia-router';
 import {DataLoader} from "./services/data-loader";
 import {StatusConverter} from "./services/status-converter";
 import {data} from "./services/report-model";
@@ -23,18 +23,17 @@ export class App {
     attached() {
         this._dataLoader.getExecutionAggregate().then(value => {
             this._executionContext = value.executionContext;
-            // this._routeConfig.title = this._executionContext.runConfig.reportName;
-            // this._router.routes.filter(route => route.route == "failure-aspects").find(route => {
-            //     route.settings.count = this._executionContext.failureAscpects.length;
-            // });
-            // this._router.routes.filter(route => route.route == "exit-points").find(route => {
-            //     route.settings.count = this._executionContext.exitPoints.length;
-            // });
+            this._routeConfig.title = this._executionContext.runConfig.reportName;
+            this._router.routes.filter(route => route.route == "failure-aspects").find(route => {
+                route.settings.count = this._executionContext.failureAscpects.length;
+            });
+            this._router.routes.filter(route => route.route == "exit-points").find(route => {
+                route.settings.count = this._executionContext.exitPoints.length;
+            });
         })
     }
 
     configureRouter(config: RouterConfiguration, router: Router) {
-        console.log("configure router");
         this._router = router;
         this._routeConfig = config;
         config.map([
@@ -102,8 +101,12 @@ export class App {
         ]);
     }
 
-    navigateTo(nav) {
-        this._router.navigate(nav.href)
+    navigateTo(nav:NavModel|string) {
+        if (nav instanceof NavModel) {
+            this._router.navigate(nav.href);
+        } else {
+            this._router.navigateToRoute(nav);
+        }
         this._drawer.open = false;
     }
 }

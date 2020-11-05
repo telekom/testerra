@@ -19,6 +19,3 @@ For gradle:
 ```text
 compile 'eu.tsystems.mms.tic.testerra:report:1-SNAPSHOT'
 ```
-
-### Using report module:
-

@@ -13,18 +13,12 @@
 
         <mdc-top-app-bar-section align="start">
           <button click.delegate="_drawer.toggle()" mdc-ripple="unbounded.bind: true" class="mdc-top-app-bar__navigation-icon mdc-icon-button mdc-ripple-upgraded--unbounded mdc-ripple-upgraded"  role="button" style="--mdc-ripple-fg-size:28px; --mdc-ripple-fg-scale:1.71429; --mdc-ripple-left:10px; --mdc-ripple-top:10px;"><i class="material-icons">menu</i></button>
-            <mdc-top-app-bar-title click.delegate="navigateTo('dashboard')"><a href="#" role="button" class="mdc-top-app-bar__action-item">Report name: ${_executionContext.runConfig.reportName}</a></mdc-top-app-bar-title>
+          <mdc-top-app-bar-title>Report name: ${_executionContext.runConfig.reportName}</mdc-top-app-bar-title>
         </mdc-top-app-bar-section>
 
         <mdc-top-app-bar-section align="end" class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
           <span>${_executionContext.runConfig.buildInformation.buildVersion}</span>
-          <a href="https://tapas-docs.s3.eu-central-1.amazonaws.com/testerra/latest/index.html"
-             alt="GitHub"
-             target="_blank"
-             rel="noopener"
-             class="mdc-top-app-bar__action-item mdc-icon-button mdc-ripple-upgraded--unbounded mdc-ripple-upgraded"
-             role="button"
-          >
+          <a href="https://tapas-docs.s3.eu-central-1.amazonaws.com/testerra/latest/index.html" alt="GitHub" target="_blank" rel="noopener" mdc-ripple="unbounded.bind: true" class="mdc-top-app-bar__action-item mdc-icon-button mdc-ripple-upgraded--unbounded mdc-ripple-upgraded" id="204" role="button" style="--mdc-ripple-fg-size:28px; --mdc-ripple-fg-scale:1.71429; --mdc-ripple-left:10px; --mdc-ripple-top:10px;">
            <img src="/logo.png" id="logo" title="Testerra on GitHub"/>
           </a>
         </mdc-top-app-bar-section>

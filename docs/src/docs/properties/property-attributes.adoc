@@ -167,3 +167,5 @@
 :mobile_device_query_ios:               tt.mobile.device.query.ios
 :mobile_device_query_android:           tt.mobile.device.query.android
 
+:cert_trusted_hosts:                    tt.cert.trusted.hosts
+

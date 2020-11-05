@@ -36,7 +36,6 @@ SMTP_SERVER=smtp.mailserver.com
 SMTP_SERVER_PORT=25
 SMTP_USERNAME=user
 SMTP_PASSWORD=password
-SMTP_SSL_ENABLED=false
 
 #POP3
 POP3_SERVER=pop.mailserver.com
@@ -44,8 +43,6 @@ POP3_SERVER_PORT=110
 POP3_FOLDER_INBOX=inbox
 POP3_USERNAME=user
 POP3_PASSWORD=password
-POP3_SSL_ENABLED=false
-DEBUG_SETTING=false
 
 # IMAP
 IMAP_SERVER=imap.mailserver.com
@@ -53,7 +50,6 @@ IMAP_SERVER_PORT=143
 IMAP_FOLDER_INBOX=INBOX
 IMAP_USERNAME=user
 IMAP_PASSWORD=password
-IMAP_SSL_ENABLED=false
 
 # TIMING for POP3 and IMAP
 # sets the timeout between polls, default = 50s
@@ -71,8 +67,6 @@ The `POP3MailConnector` provides access to a POP3 server. Emails are read and pr
 [source,java]
 ----
 POP3MailConnector pop3MailConnector = new POP3MailConnector();
-// fetch all emails from Server
-MimeMessage[] messages = pop3MailConnector.getMessages();
 
 // wait until the email with subject 'test' arrived in the InboxFolder
 EmailQuery query = new EmailQuery().setSearchTerm(new SubjectTerm(subject));
@@ -164,6 +158,61 @@ imapMailConnector.markAllMailsAsSeen();
 imapMailConnector.deleteAllMessages();
 ----
 
+== Get simply the message count
+
+You can get the message count for the inbox, of a specified folder name.
+
+[source,java]
+----
+connector.getMessageCount();
+connector.getMessageCount("FolderName");
+----
+
+== SSL settings and trusting hosts for self-signed certificates
+
+SSL is enabled per default for POP3 and IMAP and can be configured via. properties.
+
+[source, properties]
+----
+IMAP_SSL_ENABLED=false
+POP3_SSL_ENABLED=false
+SMTP_SSL_ENABLED=true
+----
+
+The MailConnector uses <<Certificate Utilities>> for trusting hosts.
+
+== Custom configuration
+
+You can set properties to the `JavaMail` framework like:
+
+[source,java]
+----
+connector.configureSessionProperties(properties -> {
+    properties.put("mail.imaps.auth.ntlm.disable", true);
+});
+----
+
+See the original documentation for more information:
+  * IMAP: https://eclipse-ee4j.github.io/mail/docs/api/com/sun/mail/imap/package-summary.html
+  * SMTP: https://eclipse-ee4j.github.io/mail/docs/api/com/sun/mail/smtp/package-summary.html
+  * POP3: https://eclipse-ee4j.github.io/mail/docs/api/com/sun/mail/pop3/package-summary.html
+
+== Debugging the MailConnector
+
+Enable the debug mode programatically
+
+[source, java]
+----
+connector.getSession().setDebug(true);
+----
+
+or via Properties
+
+[source, properties]
+----
+DEBUG_SETTING=true
+----
+
 == Best Practices
 
 === Combine search terms
@@ -205,12 +254,11 @@ Date now = new Date();
 // Query emails that arrived today
 query.setSearchTerm(new SentDateTerm(ComparisonTerm.GE, now));
 
-// But check also if they are newer than now
-query.setFilter(email -> email.getSentDate().after(now));
-
-connector.query(query).forEach(email -> {
-    // EMail found
-});
+connector.query(query)
+    .filter(email -> email.getSentDate().after(now))
+    .forEach(email -> {
+        // EMail found
+    });
 ----
 
 == MailUtils

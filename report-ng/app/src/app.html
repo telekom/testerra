@@ -1,23 +1,23 @@
 <template id="main">
-  <head>
+    <head>
     <!--
     Need to be included by MDC components as described in the official documentation
     https://github.com/material-components/material-components-web-components
     -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link  rel="stylesheet" href="bundle.css">
-  </head>
+    </head>
   <body class="mdc-typography">
     <mdc-top-app-bar fixed style="position: unset">
       <mdc-top-app-bar-row >
 
         <mdc-top-app-bar-section align="start">
-          <button click.delegate="drawer.toggle()" mdc-ripple="unbounded.bind: true" class="mdc-top-app-bar__navigation-icon mdc-icon-button mdc-ripple-upgraded--unbounded mdc-ripple-upgraded"  role="button" style="--mdc-ripple-fg-size:28px; --mdc-ripple-fg-scale:1.71429; --mdc-ripple-left:10px; --mdc-ripple-top:10px;"><i class="material-icons">menu</i></button>
-          <mdc-top-app-bar-title>Testerra Report</mdc-top-app-bar-title>
+          <button click.delegate="_drawer.toggle()" mdc-ripple="unbounded.bind: true" class="mdc-top-app-bar__navigation-icon mdc-icon-button mdc-ripple-upgraded--unbounded mdc-ripple-upgraded"  role="button" style="--mdc-ripple-fg-size:28px; --mdc-ripple-fg-scale:1.71429; --mdc-ripple-left:10px; --mdc-ripple-top:10px;"><i class="material-icons">menu</i></button>
+          <mdc-top-app-bar-title>Report name: ${_executionContext.runConfig.reportName}</mdc-top-app-bar-title>
         </mdc-top-app-bar-section>
 
         <mdc-top-app-bar-section align="end" class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+          <span>${_executionContext.runConfig.buildInformation.buildVersion}</span>
           <a href="https://tapas-docs.s3.eu-central-1.amazonaws.com/testerra/latest/index.html" alt="GitHub" target="_blank" rel="noopener" mdc-ripple="unbounded.bind: true" class="mdc-top-app-bar__action-item mdc-icon-button mdc-ripple-upgraded--unbounded mdc-ripple-upgraded" id="204" role="button" style="--mdc-ripple-fg-size:28px; --mdc-ripple-fg-scale:1.71429; --mdc-ripple-left:10px; --mdc-ripple-top:10px;">
            <img src="/logo.png" id="logo" title="Testerra on GitHub"/>
           </a>
@@ -26,17 +26,19 @@
       </mdc-top-app-bar-row>
     </mdc-top-app-bar>
     <div class="flex-container">
-      <mdc-drawer view-model.ref="drawer" type="dismissible" class="mdc-drawer--open">
+      <mdc-drawer view-model.ref="_drawer" type="dismissible">
 
-        <mdc-drawer-header title="Testerra" subtitle="Test Report"></mdc-drawer-header>
+        <mdc-drawer-header title="Execution" subtitle="${_executionContext.contextValues.name}"></mdc-drawer-header>
         <mdc-drawer-content>
-          <mdc-list activated="" wrap-focus="" mdclist:action.delegate="navigateTo(route.value)" tabindex="0" repeat.for="nav of router.navigation" aria-orientation="vertical">
-            <mdc-list-item class="mdc-list-item mdc-ripple-upgraded ${nav.isActive ? 'mdc-list-item--activated' : ''}"   tabindex="0">
-
+          <mdc-list repeat.for="nav of _router.navigation" aria-orientation="vertical">
+            <mdc-list-item
+                click.delegate="navigateTo(nav)"
+                class="mdc-list-item mdc-ripple-upgraded"
+                class.bind="nav.isActive ? 'mdc-list-item--activated' : ''"
+            >
               <div class="mdc-list-item__ripple"></div>
-              <span class="mdc-list-item__text" value.bind="nav.title" textcontent.bind="nav.title" ref="route">
-            </span>
-
+              <span class="mdc-list-item__text">${nav.title}</span>
+                <span if.bind="nav.settings.count>0">${nav.settings.count}</span>
             </mdc-list-item>
           </mdc-list>
         </mdc-drawer-content>

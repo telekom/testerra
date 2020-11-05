@@ -23,7 +23,6 @@
 package eu.tsystems.mms.tic.testframework.testdata;
 
 import com.opencsv.CSVReader;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -223,7 +222,7 @@ public class CSVTestDataReader {
                 .filter(line -> line.contains(identifier))
                 .findFirst()
                 .orElseThrow(
-                        () -> new TesterraRuntimeException(String.format("No line with identifier '%s' found in %s", identifier, fileInResources)));
+                        () -> new RuntimeException(String.format("No line with identifier '%s' found in %s", identifier, fileInResources)));
 
         return createBeanFromLine(clazz, correctLine, headers);
     }
@@ -248,7 +247,7 @@ public class CSVTestDataReader {
                     try {
                         obj = type.newInstance();
                     } catch (InstantiationException | IllegalAccessException e1) {
-                        throw new TesterraRuntimeException(e1);
+                        throw new RuntimeException(e1);
                     }
                 }
             }
@@ -275,14 +274,14 @@ public class CSVTestDataReader {
                 PropertyDescriptor propDesc = Arrays.stream(beanInfo.getPropertyDescriptors())
                         .filter(descriptor -> descriptor.getDisplayName().equals(headerName))
                         .findFirst()
-                        .orElseThrow(() -> new TesterraRuntimeException(String.format("No property with name %s found", headerName)));
+                        .orElseThrow(() -> new RuntimeException(String.format("No property with name %s found", headerName)));
                 Method setter = propDesc.getWriteMethod();
                 Class type = propDesc.getPropertyType();
                 Object obj = handleField(type, line.get(col));
                 setter.invoke(bean, obj);
             }
         } catch (InstantiationException | IllegalAccessException | IntrospectionException | InvocationTargetException e) {
-            throw new TesterraRuntimeException(e);
+            throw new RuntimeException(e);
         }
 
         return bean;
@@ -298,7 +297,7 @@ public class CSVTestDataReader {
         try {
             return csvReader.readAll().stream().map(l -> Arrays.stream(l).map(String::trim).toArray(String[]::new)).collect(Collectors.toList());
         } catch (IOException e) {
-            throw new TesterraRuntimeException(String.format("Could not read csv file in resources %s.", fileName), e);
+            throw new RuntimeException(String.format("Could not read csv file in resources %s.", fileName), e);
         }
     }
 }

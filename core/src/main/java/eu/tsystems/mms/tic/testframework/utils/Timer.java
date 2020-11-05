@@ -21,7 +21,7 @@
  */
 package eu.tsystems.mms.tic.testframework.utils;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
@@ -175,7 +175,7 @@ public class Timer implements Loggable {
                 success = false;
 
                 if (throwable instanceof OutOfMemoryError) {
-                    throw new TesterraSystemException("OOME catched", throwable);
+                    throw new SystemException("OOME catched", throwable);
                 } else if (throwable instanceof IllegalArgumentException) {
                     // jump out immediately
                     throw (IllegalArgumentException) throwable;

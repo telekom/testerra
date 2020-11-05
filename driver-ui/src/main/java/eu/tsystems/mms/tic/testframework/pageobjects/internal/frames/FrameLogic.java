@@ -21,18 +21,17 @@
  */
  package eu.tsystems.mms.tic.testframework.pageobjects.internal.frames;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Class to encapsulate the logic needed for switching between frames.
@@ -72,7 +71,7 @@ public class FrameLogic {
         while (framesToAdd != null) {
             GuiElement frameToAdd = framesToAdd[framesToAdd.length - 1];
             if (frameToAdd == null) {
-                throw new TesterraSystemException("Error when retrieving the frame hierarchy. This means, the GuiElement or one" +
+                throw new SystemException("Error when retrieving the frame hierarchy. This means, the GuiElement or one" +
                         " of its frames was not correctly constructed inside of testerra.");
             }
             frameList.add(frameToAdd);

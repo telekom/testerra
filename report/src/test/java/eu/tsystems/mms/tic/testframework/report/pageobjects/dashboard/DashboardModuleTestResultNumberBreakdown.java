@@ -21,7 +21,6 @@
  */
 package eu.tsystems.mms.tic.testframework.report.pageobjects.dashboard;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
@@ -107,7 +106,7 @@ public class DashboardModuleTestResultNumberBreakdown extends AbstractFramePage 
                 isDisplayed = numberFailedExpectedTests.isDisplayed();
                 break;
             default:
-                throw new TesterraRuntimeException("Unsupported Test Counter for TestResult: " + testResult);
+                throw new RuntimeException("Unsupported Test Counter for TestResult: " + testResult);
         }
         return isDisplayed;
     }
@@ -170,7 +169,7 @@ public class DashboardModuleTestResultNumberBreakdown extends AbstractFramePage 
                 counter = numberFailedExpectedTests;
                 break;
             default:
-                throw new TesterraRuntimeException("Unsupported Test Counter for TestResult: " + testResult);
+                throw new RuntimeException("Unsupported Test Counter for TestResult: " + testResult);
         }
         switch (mouseAction) {
             case CLICK:
@@ -180,7 +179,7 @@ public class DashboardModuleTestResultNumberBreakdown extends AbstractFramePage 
                 counter.mouseOver();
                 break;
             default:
-                throw new TesterraRuntimeException("Unsupported mouseAction: " + mouseAction.name());
+                throw new RuntimeException("Unsupported mouseAction: " + mouseAction.name());
         }
         counter.click();
         return PageFactory.create(DashboardPage.class, this.getWebDriver());

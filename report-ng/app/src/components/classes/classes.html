@@ -23,10 +23,10 @@
       <mdc-data-table-row repeat.for="classStatistics of _classStatistics">
         <mdc-data-table-cell>
             <span if.bind="classStatistics.overallFailed>0 || classStatistics.overallSkipped>0">
-              <span id="badge-failed">failed</span>
+              <span class="badge-failed">${7|statusName}</span>
             </span>
           <span if.bind="classStatistics.overallPassed>0 && classStatistics.overallFailed==0 && classStatistics.overallSkipped==0">
-            <span id="badge-passed">passed</span>
+            <span class="badge-passed">${3|statusName}</span>
           </span>
 
         </mdc-data-table-cell>

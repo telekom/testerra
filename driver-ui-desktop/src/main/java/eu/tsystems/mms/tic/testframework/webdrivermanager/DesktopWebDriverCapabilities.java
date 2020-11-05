@@ -19,9 +19,8 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.webdrivermanager;
+package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -86,7 +85,7 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
     static DesiredCapabilities createCapabilities(final WebDriverManagerConfig config, DesiredCapabilities preSetCaps, DesktopWebDriverRequest desktopWebDriverRequest) {
         String browser = desktopWebDriverRequest.getBrowser();
         if (browser == null) {
-            throw new TesterraRuntimeException("Browser is not set correctly");
+            throw new RuntimeException("Browser is not set correctly");
         }
         final DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
         desiredCapabilities.merge(preSetCaps);

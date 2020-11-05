@@ -21,17 +21,16 @@
  */
  package eu.tsystems.mms.tic.testframework.common;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.transfer.BooleanPackedResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Path Parser utility class.
@@ -77,7 +76,7 @@ public final class PropertiesParser {
             Check for loop
              */
             if (searchedStrings.contains(key)) {
-                throw new TesterraSystemException("Loop detected while replacing a property: " + match);
+                throw new SystemException("Loop detected while replacing a property: " + match);
             } else {
                 /*
                 ask

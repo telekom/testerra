@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Eric Kubenka, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -17,24 +17,25 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
-package eu.tsystems.mms.tic.testerra.bup;
 
-/**
- * Thrown on any API communication error on {@link BrowserUpRemoteProxyManager}
- * Date: 26.05.2020
- * Time: 09:01
- *
- * @author Eric Kubenka
- */
-public class BrowserUpHttpApiException extends RuntimeException {
+import {NavigationInstruction, RouteConfig} from "aurelia-router";
 
-    public BrowserUpHttpApiException(String message) {
-        super(message);
+export abstract class AbstractViewModel {
+
+    private _routeConfig:RouteConfig;
+    private _navInstruction:NavigationInstruction
+
+    activate(
+        params: any,
+        routeConfig: RouteConfig,
+        navInstruction: NavigationInstruction
+    ) {
+        this._routeConfig = routeConfig;
+        this._navInstruction = navInstruction;
     }
 
-    public BrowserUpHttpApiException(String message, Throwable cause) {
-        super(message, cause);
+    protected updateUrl(params:object) {
+        this._navInstruction.router.navigateToRoute(this._routeConfig.name, params, {replace: true});
     }
 }

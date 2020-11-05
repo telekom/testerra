@@ -24,7 +24,7 @@ package eu.tsystems.mms.tic.testframework.layout;
 import eu.tsystems.mms.tic.testframework.annotator.AnnotationContainer;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.layout.core.DistanceGraphInterpreter;
 import eu.tsystems.mms.tic.testframework.layout.core.LayoutElement;
@@ -43,14 +43,13 @@ import eu.tsystems.mms.tic.testframework.layout.matching.matchers.OpenCvTemplate
 import eu.tsystems.mms.tic.testframework.layout.matching.matchers.TemplateMatchingAlgorithm;
 import eu.tsystems.mms.tic.testframework.layout.reporting.GraphicalReporter;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.List;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.List;
 
 /**
  * Prerequisites are 3 images: 1. The base image that is visually approved by the Tester. 2. An annotated image where
@@ -157,7 +156,7 @@ public class LayoutComparator {
             // The reference image and the annotated image have to be the same size.
             if (referenceImage.height() != annotatedImage.height()
                     || referenceImage.width() != annotatedImage.width()) {
-                throw new TesterraSystemException(
+                throw new SystemException(
                         Messages.referenceAndAnnotationNotEquallySized(referenceImage.size().toString(),
                                 annotatedImage.size().toString()));
             }
@@ -295,7 +294,7 @@ public class LayoutComparator {
      */
     public List<LayoutFeature> getCriticalMatches() {
         if (layoutMatch == null) {
-            throw new TesterraSystemException("Layout match calculation error");
+            throw new SystemException("Layout match calculation error");
         }
         return layoutMatch.getCriticalMatches();
     }

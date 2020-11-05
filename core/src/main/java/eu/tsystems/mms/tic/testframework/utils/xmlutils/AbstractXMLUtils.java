@@ -21,19 +21,18 @@
  */
  package eu.tsystems.mms.tic.testframework.utils.xmlutils;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
+import java.io.IOException;
+import java.io.InputStream;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathFactory;
 import org.apache.commons.io.IOUtils;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathFactory;
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * Abstract XML Utils class with initializer and helper methods.
@@ -53,12 +52,12 @@ public abstract class AbstractXMLUtils {
         try {
             factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
         } catch (ParserConfigurationException e) {
-            throw new TesterraSystemException("Error disabling loading external dtd's. Document type definitions will be loaded externally.", e);
+            throw new SystemException("Error disabling loading external dtd's. Document type definitions will be loaded externally.", e);
         }
         try {
             return factory.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
-            throw new TesterraSystemException("Error creating a DocumentBuilder. Won't be able to parse xPath", e);
+            throw new SystemException("Error creating a DocumentBuilder. Won't be able to parse xPath", e);
         }
     }
 

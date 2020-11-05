@@ -29,9 +29,9 @@
  *
  * @author erku
  */
-public class TesterraInheritedFailedException extends TesterraRuntimeException {
+public class InheritedFailedException extends RuntimeException {
 
-    public TesterraInheritedFailedException(final String message) {
+    public InheritedFailedException(final String message) {
 
         super(message);
     }

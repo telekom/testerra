@@ -21,7 +21,6 @@
  */
 package eu.tsystems.mms.tic.testframework.report.pageobjects.dashboard;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
@@ -95,7 +94,7 @@ public class DashboardModuleMethodChart extends AbstractFramePage {
                 methodChartSkippedMethodsTable.asserts().assertIsDisplayed();
                 break;
             default:
-                throw new TesterraRuntimeException("Method not implemented for TestResult: " + testResult);
+                throw new RuntimeException("Method not implemented for TestResult: " + testResult);
         }
     }
 
@@ -114,7 +113,7 @@ public class DashboardModuleMethodChart extends AbstractFramePage {
             case SKIPPED:
                 return methodChartSkippedMethodsTable.getWebElement().findElements(By.tagName("tr")).size() - 1;
             default:
-                throw new TesterraRuntimeException("Method not implemented for TestResult: " + testResult);
+                throw new RuntimeException("Method not implemented for TestResult: " + testResult);
         }
     }
 }

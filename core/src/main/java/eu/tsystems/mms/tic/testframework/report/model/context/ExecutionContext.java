@@ -44,7 +44,6 @@ import org.testng.ITestResult;
 public class ExecutionContext extends AbstractContext implements SynchronizableContext {
 
     public final Queue<SuiteContext> suiteContexts = new ConcurrentLinkedQueue<>();
-    public final Queue<ClassContext> mergedClassContexts = new ConcurrentLinkedQueue<>();
     public Map<String, List<MethodContext>> failureAspects;
     public Map<String, List<MethodContext>> exitPoints;
     public final RunConfig runConfig = new RunConfig();
@@ -145,15 +144,16 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
         suiteContexts.forEach(suiteContext -> {
             suiteContext.testContextModels.forEach(testContext -> {
                 testContext.classContexts.forEach(classContext -> {
-                    if (!classContext.merged) {
+                    //if (!classContext.isMerged()) {
+                        /**
+                         * @todo We may have to group by {@link ClassContext#testContext}
+                         */
                         Map<TestStatusController.Status, Integer> methodStats = classContext.getMethodStats(includeTestMethods, includeConfigMethods);
                         methodStatsPerClass.put(classContext, methodStats);
-                    }
+                    //}
                 });
             });
         });
-
-        mergedClassContexts.forEach(classContext -> methodStatsPerClass.put(classContext, classContext.getMethodStats(includeTestMethods, includeConfigMethods)));
 
         /*
         sort

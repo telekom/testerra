@@ -231,34 +231,34 @@ private static final long serialVersionUID = 0L;
   public static final int MERGED_CLASS_CONTEXT_IDS_FIELD_NUMBER = 3;
   private com.google.protobuf.LazyStringList mergedClassContextIds_;
   /**
-   * <code>repeated string merged_class_context_ids = 3;</code>
+   * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
    * @return A list containing the mergedClassContextIds.
    */
-  public com.google.protobuf.ProtocolStringList
+  @java.lang.Deprecated public com.google.protobuf.ProtocolStringList
       getMergedClassContextIdsList() {
     return mergedClassContextIds_;
   }
   /**
-   * <code>repeated string merged_class_context_ids = 3;</code>
+   * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
    * @return The count of mergedClassContextIds.
    */
-  public int getMergedClassContextIdsCount() {
+  @java.lang.Deprecated public int getMergedClassContextIdsCount() {
     return mergedClassContextIds_.size();
   }
   /**
-   * <code>repeated string merged_class_context_ids = 3;</code>
+   * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
    * @param index The index of the element to return.
    * @return The mergedClassContextIds at the given index.
    */
-  public java.lang.String getMergedClassContextIds(int index) {
+  @java.lang.Deprecated public java.lang.String getMergedClassContextIds(int index) {
     return mergedClassContextIds_.get(index);
   }
   /**
-   * <code>repeated string merged_class_context_ids = 3;</code>
+   * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
    * @param index The index of the value to return.
    * @return The bytes of the mergedClassContextIds at the given index.
    */
-  public com.google.protobuf.ByteString
+  @java.lang.Deprecated public com.google.protobuf.ByteString
       getMergedClassContextIdsBytes(int index) {
     return mergedClassContextIds_.getByteString(index);
   }
@@ -1351,44 +1351,44 @@ private static final long serialVersionUID = 0L;
        }
     }
     /**
-     * <code>repeated string merged_class_context_ids = 3;</code>
+     * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
      * @return A list containing the mergedClassContextIds.
      */
-    public com.google.protobuf.ProtocolStringList
+    @java.lang.Deprecated public com.google.protobuf.ProtocolStringList
         getMergedClassContextIdsList() {
       return mergedClassContextIds_.getUnmodifiableView();
     }
     /**
-     * <code>repeated string merged_class_context_ids = 3;</code>
+     * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
      * @return The count of mergedClassContextIds.
      */
-    public int getMergedClassContextIdsCount() {
+    @java.lang.Deprecated public int getMergedClassContextIdsCount() {
       return mergedClassContextIds_.size();
     }
     /**
-     * <code>repeated string merged_class_context_ids = 3;</code>
+     * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
      * @param index The index of the element to return.
      * @return The mergedClassContextIds at the given index.
      */
-    public java.lang.String getMergedClassContextIds(int index) {
+    @java.lang.Deprecated public java.lang.String getMergedClassContextIds(int index) {
       return mergedClassContextIds_.get(index);
     }
     /**
-     * <code>repeated string merged_class_context_ids = 3;</code>
+     * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
      * @param index The index of the value to return.
      * @return The bytes of the mergedClassContextIds at the given index.
      */
-    public com.google.protobuf.ByteString
+    @java.lang.Deprecated public com.google.protobuf.ByteString
         getMergedClassContextIdsBytes(int index) {
       return mergedClassContextIds_.getByteString(index);
     }
     /**
-     * <code>repeated string merged_class_context_ids = 3;</code>
+     * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
      * @param index The index to set the value at.
      * @param value The mergedClassContextIds to set.
      * @return This builder for chaining.
      */
-    public Builder setMergedClassContextIds(
+    @java.lang.Deprecated public Builder setMergedClassContextIds(
         int index, java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
@@ -1399,11 +1399,11 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated string merged_class_context_ids = 3;</code>
+     * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
      * @param value The mergedClassContextIds to add.
      * @return This builder for chaining.
      */
-    public Builder addMergedClassContextIds(
+    @java.lang.Deprecated public Builder addMergedClassContextIds(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
@@ -1414,11 +1414,11 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated string merged_class_context_ids = 3;</code>
+     * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
      * @param values The mergedClassContextIds to add.
      * @return This builder for chaining.
      */
-    public Builder addAllMergedClassContextIds(
+    @java.lang.Deprecated public Builder addAllMergedClassContextIds(
         java.lang.Iterable<java.lang.String> values) {
       ensureMergedClassContextIdsIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -1427,21 +1427,21 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated string merged_class_context_ids = 3;</code>
+     * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
      * @return This builder for chaining.
      */
-    public Builder clearMergedClassContextIds() {
+    @java.lang.Deprecated public Builder clearMergedClassContextIds() {
       mergedClassContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
     /**
-     * <code>repeated string merged_class_context_ids = 3;</code>
+     * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
      * @param value The bytes of the mergedClassContextIds to add.
      * @return This builder for chaining.
      */
-    public Builder addMergedClassContextIdsBytes(
+    @java.lang.Deprecated public Builder addMergedClassContextIdsBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();

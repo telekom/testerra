@@ -96,12 +96,20 @@ public interface ClassContextOrBuilder extends
       getExecutionContextIdBytes();
 
   /**
-   * <pre>
-   *string testerra_class_context = 11;
-   * </pre>
-   *
-   * <code>bool merged = 12;</code>
+   * <code>string test_context_name = 11;</code>
+   * @return The testContextName.
+   */
+  java.lang.String getTestContextName();
+  /**
+   * <code>string test_context_name = 11;</code>
+   * @return The bytes for testContextName.
+   */
+  com.google.protobuf.ByteString
+      getTestContextNameBytes();
+
+  /**
+   * <code>bool merged = 12 [deprecated = true];</code>
    * @return The merged.
    */
-  boolean getMerged();
+  @java.lang.Deprecated boolean getMerged();
 }

@@ -23,28 +23,28 @@ public interface ExecutionContextOrBuilder extends
   eu.tsystems.mms.tic.testframework.report.model.ContextValuesOrBuilder getContextValuesOrBuilder();
 
   /**
-   * <code>repeated string merged_class_context_ids = 3;</code>
+   * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
    * @return A list containing the mergedClassContextIds.
    */
-  java.util.List<java.lang.String>
+  @java.lang.Deprecated java.util.List<java.lang.String>
       getMergedClassContextIdsList();
   /**
-   * <code>repeated string merged_class_context_ids = 3;</code>
+   * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
    * @return The count of mergedClassContextIds.
    */
-  int getMergedClassContextIdsCount();
+  @java.lang.Deprecated int getMergedClassContextIdsCount();
   /**
-   * <code>repeated string merged_class_context_ids = 3;</code>
+   * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
    * @param index The index of the element to return.
    * @return The mergedClassContextIds at the given index.
    */
-  java.lang.String getMergedClassContextIds(int index);
+  @java.lang.Deprecated java.lang.String getMergedClassContextIds(int index);
   /**
-   * <code>repeated string merged_class_context_ids = 3;</code>
+   * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
    * @param index The index of the value to return.
    * @return The bytes of the mergedClassContextIds at the given index.
    */
-  com.google.protobuf.ByteString
+  @java.lang.Deprecated com.google.protobuf.ByteString
       getMergedClassContextIdsBytes(int index);
 
   /**

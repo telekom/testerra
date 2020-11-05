@@ -35,7 +35,7 @@ public class ExecutionContextExporter extends AbstractContextExporter {
 
         apply(createContextValues(executionContext), builder::setContextValues);
         forEach(executionContext.suiteContexts, suiteContext -> builder.addSuiteContextIds(suiteContext.id));
-        forEach(executionContext.mergedClassContexts, classContext -> builder.addMergedClassContextIds(classContext.id));
+        //forEach(executionContext.mergedClassContexts, classContext -> builder.addMergedClassContextIds(classContext.id));
         map(executionContext.exitPoints, this::createContextClip, builder::addAllExitPoints);
         map(executionContext.failureAspects, this::createContextClip, builder::addAllFailureAscpects);
         map(executionContext.runConfig, this::prepareRunConfig, builder::setRunConfig);

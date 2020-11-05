@@ -38,7 +38,6 @@ import eu.tsystems.mms.tic.testframework.report.model.StackTraceCause;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
@@ -104,7 +103,7 @@ public class MethodContextExporter extends AbstractContextExporter {
         map(methodContext.failureCorridorValue, value -> FailureCorridorValue.valueOf(value.name()), builder::setFailureCorridorValue);
         apply(methodContext.suiteContext.id, builder::setSuiteContextId);
         apply(methodContext.testContextModel.id, builder::setTestContextId);
-        apply(methodContext.classContext.id, builder::setClassContextId);
+        apply(methodContext.getClassContext().getId(), builder::setClassContextId);
         apply(methodContext.executionContext.id, builder::setExecutionContextId);
 
         forEach(methodContext.infos, builder::addInfos);

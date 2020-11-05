@@ -15,10 +15,6 @@
                     </i>
                 #end
 
-                #if ($testMethod.classContext.merged)
-                    (in $testMethod.suiteContext.name - $testMethod.testContextModel.name)
-                #end
-
 ##                #if (${testMethod.dashboardInfos.size()} > 0)
 ##                    #foreach ($msg in ${testMethod.dashboardInfos})
 ##                        <small class="ttwrapper-additional-dashboard-info">$msg</small>

@@ -79,8 +79,18 @@ abstract class AbstractStatistics {
   get overallFailed() {
     return this._overallFailed;
   }
+  get failed() {
+    return this._resultStatuses[ResultStatusType.FAILED]|0;
+  }
+  get failedExpected() {
+    return this._resultStatuses[ResultStatusType.FAILED_EXPECTED]|0;
+  }
+  get failedMinor() {
+    return this._resultStatuses[ResultStatusType.FAILED_MINOR]|0;
+  }
 
-  protected addStatistics(statistics:AbstractStatistics) {
+
+    protected addStatistics(statistics:AbstractStatistics) {
     for (const status in statistics._resultStatuses) {
       if (!this._resultStatuses[status]) {
         this._resultStatuses[status] = 0;

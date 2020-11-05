@@ -27,6 +27,8 @@ class GraphColors {
     static readonly PASSED = '#3c8f64'; // $success
     static readonly SKIPPED = '#8a929a'; // $dark
     static readonly FAILED = '#e63946'; // $danger
+    static readonly FAILED_EXPECTED = '#ede42d';
+    static readonly FAILED_MINOR = '#eda02d'
     static readonly CRASHED = '#5d6f81'; // $secondary
     static readonly RUNNING = '#0089b6'; // $info
 
@@ -48,8 +50,9 @@ export class StatusConverter {
         switch (value) {
             case ResultStatusType.PASSED: return "Passed";
             case ResultStatusType.FAILED: return "Failed";
-            case ResultStatusType.FAILED_EXPECTED: return "Fail Expected";
+            case ResultStatusType.FAILED_EXPECTED: return "Failed expected";
             case ResultStatusType.FAILED_MINOR: return "Failed minor";
+            case ResultStatusType.SKIPPED: return "Skipped";
         }
     }
 
@@ -72,9 +75,11 @@ export class StatusConverter {
                 return GraphColors.PASSED;
             case ResultStatusType.FAILED:
             case ResultStatusType.FAILED_RETRIED:
-            case ResultStatusType.FAILED_MINOR:
-            case ResultStatusType.FAILED_EXPECTED:
                 return GraphColors.FAILED;
+            case ResultStatusType.FAILED_MINOR:
+                return GraphColors.FAILED_MINOR;
+            case ResultStatusType.FAILED_EXPECTED:
+                return GraphColors.FAILED_EXPECTED;
             case ResultStatusType.SKIPPED:
                 return GraphColors.SKIPPED;
             case ResultStatusType.NO_RUN:

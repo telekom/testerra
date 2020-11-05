@@ -72,8 +72,12 @@ body {
 #logo{
   margin-top: -18px;
   margin-left: -20px;
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
+}
+
+.mdc-icon-button {
+    margin-left: 10px;
 }
 
 //Put drawer behind top app bar

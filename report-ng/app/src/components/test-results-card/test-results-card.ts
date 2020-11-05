@@ -34,10 +34,16 @@ export class TestResultsCard {
         width: '400px',
         fontFamily: 'Roboto'
       },
-      series: [executionStatistics.overallPassed, executionStatistics.overallFailed, executionStatistics.overallSkipped],
-      labels: ["passed", "failed", "skipped"],
+      series: [executionStatistics.overallPassed, executionStatistics.failed, executionStatistics.failedMinor, executionStatistics.failedExpected, executionStatistics.overallSkipped],
+      labels: [this._statusConverter.nameForStatus(ResultStatusType.PASSED),
+          this._statusConverter.nameForStatus(ResultStatusType.FAILED),
+          this._statusConverter.nameForStatus(ResultStatusType.FAILED_MINOR),
+          this._statusConverter.nameForStatus(ResultStatusType.FAILED_EXPECTED),
+          this._statusConverter.nameForStatus(ResultStatusType.SKIPPED)],
       colors:[this._statusConverter.colorFor(ResultStatusType.PASSED),
         this._statusConverter.colorFor(ResultStatusType.FAILED),
+        this._statusConverter.colorFor(ResultStatusType.FAILED_MINOR),
+        this._statusConverter.colorFor(ResultStatusType.FAILED_EXPECTED),
         this._statusConverter.colorFor(ResultStatusType.SKIPPED)]
     }
   }

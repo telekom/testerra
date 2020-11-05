@@ -65,7 +65,6 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
     public SuiteContext getSuiteContext(ITestResult testResult, ITestContext iTestContext) {
         final String suiteName = TestNGHelper.getSuiteName(testResult, iTestContext);
         return getOrCreateContext(
-                SuiteContext.class,
                 suiteContexts,
                 suiteName,
                 () -> new SuiteContext(this),

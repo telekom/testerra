@@ -3,10 +3,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
-const {AureliaPlugin, ModuleDependenciesPlugin} = require('aurelia-webpack-plugin');
+const {AureliaPlugin} = require('aurelia-webpack-plugin');
 const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
-
+const {IgnorePlugin} = require('webpack');
 
 // config helpers:
 const ensureArray = (config) => config && (Array.isArray(config) ? config : [config]) || [];
@@ -20,12 +20,7 @@ const srcDir = path.resolve(__dirname, 'src');
 const nodeModulesDir = path.resolve(__dirname, 'node_modules');
 const baseUrl = '';
 
-const cssRules = [
-    {loader: 'css-loader'},
-];
-
-
-module.exports = ({production} = {}, {extractCss, analyze, tests, hmr, port, host} = {}) => ({
+module.exports = ({production} = {}, {analyze, tests, hmr, port, host} = {}) => ({
     resolve: {
         extensions: ['.ts', '.js'],
         modules: [srcDir, 'node_modules'],
@@ -187,12 +182,11 @@ module.exports = ({production} = {}, {extractCss, analyze, tests, hmr, port, hos
                 use: [
                     {loader: MiniCssExtractPlugin.loader},
                     {loader: 'css-loader'},
-                    {loader: 'resolve-url-loader'},
                     {
                         loader: 'sass-loader', options: {
                             //implementation: require('sass'),
                             sassOptions: {
-                                includePaths: [path.resolve('./node_modules')]
+                                includePaths: [nodeModulesDir]
                             }
                         }
                     },
@@ -203,9 +197,6 @@ module.exports = ({production} = {}, {extractCss, analyze, tests, hmr, port, hos
     plugins: [
         ...when(!tests, new DuplicatePackageCheckerPlugin()),
         new AureliaPlugin(),
-        new ModuleDependenciesPlugin({
-            'aurelia-testing': ['./compile-spy', './view-spy']
-        }),
         new HtmlWebpackPlugin({
             template: 'index.ejs',
             metadata: {
@@ -213,11 +204,15 @@ module.exports = ({production} = {}, {extractCss, analyze, tests, hmr, port, hos
                 title, baseUrl
             }
         }),
-        // ref: https://webpack.js.org/plugins/mini-css-extract-plugin/
-        ...when(extractCss, new MiniCssExtractPlugin({ // updated to match the naming conventions for the js files
+        new MiniCssExtractPlugin({ // updated to match the naming conventions for the js files
             filename: production ? 'css/[name].[contenthash].bundle.css' : 'css/[name].[hash].bundle.css',
             chunkFilename: production ? 'css/[name].[contenthash].chunk.css' : 'css/[name].[hash].chunk.css'
-        })),
+        }),
+        /**
+         * Optimized moment
+         * @see https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
+         */
+        new IgnorePlugin(/^\.\/locale$/, /moment$/),
         ...when(!tests, new CopyWebpackPlugin([
             {from: 'static', to: outDir, ignore: ['.*']}])), // ignore dot (hidden) files
         ...when(analyze, new BundleAnalyzerPlugin()),

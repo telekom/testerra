@@ -36,9 +36,7 @@
     "aurelia-typed-observable-plugin": "^0.4.2",
     "moment": "^2.29.1",
     "moment-duration-format": "^2.3.2",
-    "momentjs": "^2.0.0",
     "protobufjs": "^6.10.1",
-    "resolve-url-loader": "^3.1.2",
     "t-systems-aurelia-components": "^1.0.0"
   },
   "devDependencies": {
@@ -80,9 +78,9 @@
     "webpack-dev-server": "^3.11.0"
   },
   "scripts": {
-    "build": "webpack --env.production --extractCss",
-    "start": "webpack-dev-server --extractCss",
-    "build:dev": "webpack --extractCss",
+    "build": "webpack --env.production",
+    "start": "webpack-dev-server",
+    "build:dev": "webpack",
     "analyze": "webpack --env.production --analyze",
     "proto": "pbjs --no-create --no-encode --no-verify --no-convert --no-delimited --no-beautify -t static-module --es6 -w es6 -o src/services/report-model.js ../../report-model/src/main/proto/*.proto && pbts -o src/services/report-model.d.ts src/services/report-model.js"
   }

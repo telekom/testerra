@@ -197,7 +197,7 @@ public class MethodContextExporter extends AbstractContextExporter {
     public StackTrace.Builder prepareStackTrace(eu.tsystems.mms.tic.testframework.report.model.context.StackTrace stackTrace) {
         StackTrace.Builder builder = StackTrace.newBuilder();
 
-        apply(stackTrace.additionalErrorMessage, builder::setAdditionalErrorMessage);
+        //apply(stackTrace.additionalErrorMessage, builder::setAdditionalErrorMessage);
         map(stackTrace.stackTrace, this::prepareStackTraceCause, builder::setCause);
 
         return builder;
@@ -237,12 +237,14 @@ public class MethodContextExporter extends AbstractContextExporter {
     public ErrorContext.Builder prepareErrorContext(eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext errorContext) {
         ErrorContext.Builder builder = ErrorContext.newBuilder();
 
-        apply(errorContext.getReadableErrorMessage(), builder::setReadableErrorMessage);
-        apply(errorContext.getAdditionalErrorMessage(), builder::setAdditionalErrorMessage);
-        map(errorContext.stackTrace, this::prepareStackTrace, builder::setStackTrace);
-        apply(errorContext.errorFingerprint, builder::setErrorFingerprint);
-        map(errorContext.scriptSource, this::prepareScriptSource, builder::setScriptSource);
-        map(errorContext.executionObjectSource, this::prepareScriptSource, builder::setExecutionObjectSource);
+//        apply(errorContext.getReadableErrorMessage(), builder::setReadableErrorMessage);
+//        apply(errorContext.getAdditionalErrorMessage(), builder::setAdditionalErrorMessage);
+        map(errorContext.getStackTrace(), this::prepareStackTrace, builder::setStackTrace);
+//        apply(errorContext.errorFingerprint, builder::setErrorFingerprint);
+        map(errorContext.getScriptSource(), this::prepareScriptSource, builder::setScriptSource);
+        map(errorContext.getExecutionObjectSource(), this::prepareScriptSource, builder::setExecutionObjectSource);
+        if (errorContext.getTicketId() != null) builder.setTicketId(errorContext.getTicketId().toString());
+        apply(errorContext.getDescription(), builder::setDescription);
 
         return builder;
     }

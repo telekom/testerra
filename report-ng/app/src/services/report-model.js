@@ -1518,6 +1518,8 @@ export const data = $root.data = (() => {
          * @property {string|null} [errorFingerprint] ErrorContext errorFingerprint
          * @property {data.IScriptSource|null} [scriptSource] ErrorContext scriptSource
          * @property {data.IScriptSource|null} [executionObjectSource] ErrorContext executionObjectSource
+         * @property {string|null} [ticketId] ErrorContext ticketId
+         * @property {string|null} [description] ErrorContext description
          */
 
         /**
@@ -1584,6 +1586,22 @@ export const data = $root.data = (() => {
         ErrorContext.prototype.executionObjectSource = null;
 
         /**
+         * ErrorContext ticketId.
+         * @member {string} ticketId
+         * @memberof data.ErrorContext
+         * @instance
+         */
+        ErrorContext.prototype.ticketId = "";
+
+        /**
+         * ErrorContext description.
+         * @member {string} description
+         * @memberof data.ErrorContext
+         * @instance
+         */
+        ErrorContext.prototype.description = "";
+
+        /**
          * Decodes an ErrorContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.ErrorContext
@@ -1618,6 +1636,12 @@ export const data = $root.data = (() => {
                     break;
                 case 8:
                     m.executionObjectSource = $root.data.ScriptSource.decode(r, r.uint32());
+                    break;
+                case 9:
+                    m.ticketId = r.string();
+                    break;
+                case 10:
+                    m.description = r.string();
                     break;
                 default:
                     r.skipType(t & 7);

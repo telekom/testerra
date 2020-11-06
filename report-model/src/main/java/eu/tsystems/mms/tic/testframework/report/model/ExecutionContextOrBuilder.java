@@ -48,51 +48,51 @@ public interface ExecutionContextOrBuilder extends
       getMergedClassContextIdsBytes(int index);
 
   /**
-   * <code>repeated .data.ContextClip exit_points = 4;</code>
+   * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
    */
-  java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> 
+  @java.lang.Deprecated java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> 
       getExitPointsList();
   /**
-   * <code>repeated .data.ContextClip exit_points = 4;</code>
+   * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.ContextClip getExitPoints(int index);
+  @java.lang.Deprecated eu.tsystems.mms.tic.testframework.report.model.ContextClip getExitPoints(int index);
   /**
-   * <code>repeated .data.ContextClip exit_points = 4;</code>
+   * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
    */
-  int getExitPointsCount();
+  @java.lang.Deprecated int getExitPointsCount();
   /**
-   * <code>repeated .data.ContextClip exit_points = 4;</code>
+   * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
    */
-  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> 
+  @java.lang.Deprecated java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> 
       getExitPointsOrBuilderList();
   /**
-   * <code>repeated .data.ContextClip exit_points = 4;</code>
+   * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder getExitPointsOrBuilder(
+  @java.lang.Deprecated eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder getExitPointsOrBuilder(
       int index);
 
   /**
-   * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
+   * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
    */
-  java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> 
+  @java.lang.Deprecated java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> 
       getFailureAscpectsList();
   /**
-   * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
+   * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.ContextClip getFailureAscpects(int index);
+  @java.lang.Deprecated eu.tsystems.mms.tic.testframework.report.model.ContextClip getFailureAscpects(int index);
   /**
-   * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
+   * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
    */
-  int getFailureAscpectsCount();
+  @java.lang.Deprecated int getFailureAscpectsCount();
   /**
-   * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
+   * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
    */
-  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> 
+  @java.lang.Deprecated java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> 
       getFailureAscpectsOrBuilderList();
   /**
-   * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
+   * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder getFailureAscpectsOrBuilder(
+  @java.lang.Deprecated eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder getFailureAscpectsOrBuilder(
       int index);
 
   /**

@@ -711,6 +711,12 @@ export namespace data {
 
         /** ErrorContext executionObjectSource */
         executionObjectSource?: (data.IScriptSource|null);
+
+        /** ErrorContext ticketId */
+        ticketId?: (string|null);
+
+        /** ErrorContext description */
+        description?: (string|null);
     }
 
     /** Represents an ErrorContext. */
@@ -739,6 +745,12 @@ export namespace data {
 
         /** ErrorContext executionObjectSource. */
         public executionObjectSource?: (data.IScriptSource|null);
+
+        /** ErrorContext ticketId. */
+        public ticketId: string;
+
+        /** ErrorContext description. */
+        public description: string;
 
         /**
          * Decodes an ErrorContext message from the specified reader or buffer.

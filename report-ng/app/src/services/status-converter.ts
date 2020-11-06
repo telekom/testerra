@@ -39,16 +39,6 @@ export class StatusConverter {
     private resultStatusValues: Array<ResultStatusType | string> = Object.values(ResultStatusType);
     private resultStatusKeys = Object.keys(ResultStatusType);
 
-    resultStatusToString(value: ResultStatusType | number): string {
-        const index = this.resultStatusValues.indexOf(value);
-        return this.resultStatusKeys[index];
-    }
-
-    resultStatusFromString(value: string): ResultStatusType {
-        const index = this.resultStatusKeys.indexOf(value.toUpperCase());
-        return <ResultStatusType>this.resultStatusValues[index];
-    }
-
     get failedStatuses() {
         return [
             ResultStatusType.FAILED,
@@ -122,7 +112,7 @@ export class StatusConverter {
             case ResultStatusType.FAILED_MINOR:
                 return GraphColors.FAILED_MINOR
             case ResultStatusType.FAILED_EXPECTED:
-               return GraphColors.FAILED_EXPECTED
+                return GraphColors.FAILED_EXPECTED
             case ResultStatusType.SKIPPED:
                 return GraphColors.SKIPPED;
             case ResultStatusType.NO_RUN:
@@ -130,7 +120,7 @@ export class StatusConverter {
         }
     }
 
-    getClassForStatus(status: ResultStatusType): string {
+    getClassForStatus(status: number): string {
         switch (status) {
             case ResultStatusType.PASSED:
                 return "passed";
@@ -154,4 +144,30 @@ export class StatusConverter {
                 return "running";
         }
     }
+
+    getStatusForClass(status: string): ResultStatusType {
+        switch (status) {
+            case "passed":
+                return ResultStatusType.PASSED;
+            case "running":
+                return ResultStatusType.NO_RUN;
+            case "skipped":
+                return ResultStatusType.SKIPPED;
+            case "failed-expected":
+                return ResultStatusType.FAILED_EXPECTED;
+            case "failed-minor":
+                return ResultStatusType.FAILED_MINOR;
+            case "failed-retry":
+                return ResultStatusType.FAILED_RETRIED;
+            case "failed":
+                return ResultStatusType.FAILED;
+            case "minor":
+                return ResultStatusType.MINOR;
+            case "minor-retry":
+                return ResultStatusType.MINOR_RETRY;
+            case "passed-retry":
+                return ResultStatusType.PASSED_RETRY;
+        }
+    }
+
 }

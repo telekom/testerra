@@ -21,12 +21,8 @@
 package eu.tsystems.mms.tic.testframework.adapters;
 
 import eu.tsystems.mms.tic.testframework.report.model.BuildInformation;
-import eu.tsystems.mms.tic.testframework.report.model.ContextClip;
 import eu.tsystems.mms.tic.testframework.report.model.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.RunConfig;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 public class ExecutionContextExporter extends AbstractContextExporter {
 
@@ -36,26 +32,26 @@ public class ExecutionContextExporter extends AbstractContextExporter {
         apply(createContextValues(executionContext), builder::setContextValues);
         forEach(executionContext.suiteContexts, suiteContext -> builder.addSuiteContextIds(suiteContext.id));
         //forEach(executionContext.mergedClassContexts, classContext -> builder.addMergedClassContextIds(classContext.id));
-        map(executionContext.exitPoints, this::createContextClip, builder::addAllExitPoints);
-        map(executionContext.failureAspects, this::createContextClip, builder::addAllFailureAscpects);
+//        map(executionContext.exitPoints, this::createContextClip, builder::addAllExitPoints);
+//        map(executionContext.failureAspects, this::createContextClip, builder::addAllFailureAscpects);
         map(executionContext.runConfig, this::prepareRunConfig, builder::setRunConfig);
         forEach(executionContext.exclusiveSessionContexts, sessionContext -> builder.addExclusiveSessionContextIds(sessionContext.id));
         apply(executionContext.estimatedTestMethodCount, builder::setEstimatedTestMethodCount);
 
         return builder;
     }
-
-    private List<ContextClip> createContextClip(Map<String, List<eu.tsystems.mms.tic.testframework.report.model.context.MethodContext>> values) {
-        List<ContextClip> out = new LinkedList<>();
-        values.forEach((key, list) -> {
-            ContextClip.Builder builder = ContextClip.newBuilder();
-            builder.setKey(key);
-            list.forEach(methodContext -> builder.addMethodContextIds(methodContext.id));
-            ContextClip contextClip = builder.build();
-            out.add(contextClip);
-        });
-        return out;
-    }
+//
+//    private List<ContextClip> createContextClip(Map<String, List<eu.tsystems.mms.tic.testframework.report.model.context.MethodContext>> values) {
+//        List<ContextClip> out = new LinkedList<>();
+//        values.forEach((key, list) -> {
+//            ContextClip.Builder builder = ContextClip.newBuilder();
+//            builder.setKey(key);
+//            list.forEach(methodContext -> builder.addMethodContextIds(methodContext.id));
+//            ContextClip contextClip = builder.build();
+//            out.add(contextClip);
+//        });
+//        return out;
+//    }
 
     public RunConfig.Builder prepareRunConfig(eu.tsystems.mms.tic.testframework.report.model.context.RunConfig runConfig) {
         RunConfig.Builder builder = RunConfig.newBuilder();

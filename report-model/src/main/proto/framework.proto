@@ -43,8 +43,8 @@ message ExecutionContext {
     ContextValues context_values = 1;
 
     repeated string merged_class_context_ids = 3 [deprecated = true];
-    repeated ContextClip exit_points = 4;
-    repeated ContextClip failure_ascpects = 5;
+    repeated ContextClip exit_points = 4 [deprecated = true];
+    repeated ContextClip failure_ascpects = 5 [deprecated = true];
     repeated string suite_context_ids = 6;
     RunConfig run_config = 7;
 
@@ -139,12 +139,14 @@ message PClickPathEvent {
 }
 
 message ErrorContext {
-    string readable_error_message = 1;
-    string additional_error_message = 2;
+    string readable_error_message = 1 [deprecated = true];
+    string additional_error_message = 2 [deprecated = true];
     StackTrace stack_trace = 3;
-    string error_fingerprint = 6;
+    string error_fingerprint = 6 [deprecated = true];
     ScriptSource script_source = 7;
     ScriptSource execution_object_source = 8;
+    string ticketId = 9;
+    string description = 10;
 }
 
 message SessionContext {
@@ -185,7 +187,7 @@ enum MethodType {
 
 message StackTrace {
     StackTraceCause cause = 1;
-    string additional_error_message = 2;
+    string additional_error_message = 2 [deprecated = true];
 }
 
 message StackTraceCause {

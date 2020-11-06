@@ -44,7 +44,9 @@ import org.testng.ITestResult;
 public class ExecutionContext extends AbstractContext implements SynchronizableContext {
 
     public final Queue<SuiteContext> suiteContexts = new ConcurrentLinkedQueue<>();
+    @Deprecated
     public Map<String, List<MethodContext>> failureAspects;
+    @Deprecated
     public Map<String, List<MethodContext>> exitPoints;
     public final RunConfig runConfig = new RunConfig();
 

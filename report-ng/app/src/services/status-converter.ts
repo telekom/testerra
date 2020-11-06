@@ -36,8 +36,36 @@ class GraphColors {
 @autoinject()
 export class StatusConverter {
 
-    // private static resultStatusValues: Array<ResultStatusType | string> = Object.values(ResultStatusType);
-    // private static resultStatusKeys = Object.keys(ResultStatusType);
+    private resultStatusValues: Array<ResultStatusType | string> = Object.values(ResultStatusType);
+    private resultStatusKeys = Object.keys(ResultStatusType);
+
+    resultStatusToString(value: ResultStatusType | number): string {
+        const index = this.resultStatusValues.indexOf(value);
+        return this.resultStatusKeys[index];
+    }
+
+    resultStatusFromString(value: string): ResultStatusType {
+        const index = this.resultStatusKeys.indexOf(value.toUpperCase());
+        return <ResultStatusType>this.resultStatusValues[index];
+    }
+
+    get failedStatuses() {
+        return [
+            ResultStatusType.FAILED,
+            ResultStatusType.FAILED_MINOR,
+            ResultStatusType.FAILED_EXPECTED,
+            ResultStatusType.FAILED_RETRIED
+        ]
+    }
+
+    get passedStatuses() {
+        return [
+            ResultStatusType.PASSED,
+            ResultStatusType.PASSED_RETRY,
+            ResultStatusType.MINOR,
+            ResultStatusType.MINOR_RETRY
+        ]
+    }
 
     get relevantStatuses() {
         return [

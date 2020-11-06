@@ -1,6 +1,5 @@
 import {data} from "../../services/report-model";
 import {autoinject} from "aurelia-framework";
-import {EventAggregator} from 'aurelia-event-aggregator';
 import {StatusConverter} from "../../services/status-converter";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import ResultStatusType = data.ResultStatusType;
@@ -13,13 +12,12 @@ export class TestClassesCard {
     constructor(
         private _statusConverter: StatusConverter,
         private _statisticsGenerator: StatisticsGenerator,
-        private _eventAggregator: EventAggregator
     ) {
     }
 
     attached() {
-        this._eventAggregator.subscribe('executionStatistics', payload => {
-            this._prepareHorizontalBarChart(payload.classStatistics);
+        this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
+            this._prepareHorizontalBarChart(executionStatistics.classStatistics);
         });
     }
 

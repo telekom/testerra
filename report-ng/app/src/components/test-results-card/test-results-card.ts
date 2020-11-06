@@ -1,5 +1,4 @@
 import {autoinject} from "aurelia-framework";
-import {EventAggregator} from 'aurelia-event-aggregator';
 import "./test-results-card.scss";
 import {StatusConverter} from "../../services/status-converter";
 import {StatisticsGenerator} from "../../services/statistics-generator";
@@ -14,14 +13,13 @@ export class TestResultsCard {
     constructor(
         private _statusConverter: StatusConverter,
         private _statisticsGenerator: StatisticsGenerator,
-        private _eventAggregator: EventAggregator
     ) {
     }
 
     attached() {
-        this._eventAggregator.subscribe('executionStatistics', payload => {
-            this._executionStatistics = payload;
-            this._preparePieChart(payload);
+        this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
+            this._executionStatistics = executionStatistics;
+            this._preparePieChart(executionStatistics);
         });
     }
 

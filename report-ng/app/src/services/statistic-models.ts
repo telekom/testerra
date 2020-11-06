@@ -43,16 +43,20 @@ abstract class AbstractStatistics {
         this._testsTotal++;
     }
 
+    get availableStatuses() {
+        return Object.keys(this._resultStatuses);
+    }
+
     get testsTotal() {
         return this._testsTotal;
     }
 
     get overallPassed() {
-        return this.getStatusCount(ResultStatusType.PASSED)
-            + this.getStatusCount(ResultStatusType.PASSED_RETRY)
-            + this.getStatusCount(ResultStatusType.MINOR)
-            + this.getStatusCount(ResultStatusType.MINOR_RETRY)
-            ;
+        let count = 0;
+        this._statusConverter.passedStatuses.forEach(value => {
+            count += this.getStatusCount(value);
+        })
+        return count;
     }
 
     get overallSkipped() {
@@ -60,11 +64,11 @@ abstract class AbstractStatistics {
     }
 
     get overallFailed() {
-        return this.getStatusCount(ResultStatusType.FAILED)
-            + this.getStatusCount(ResultStatusType.FAILED_MINOR)
-            + this.getStatusCount(ResultStatusType.FAILED_EXPECTED)
-            + this.getStatusCount(ResultStatusType.FAILED_RETRIED)
-            ;
+        let count = 0;
+        this._statusConverter.failedStatuses.forEach(value => {
+            count += this.getStatusCount(value);
+        })
+        return count;
     }
 
     getStatusCount(status: ResultStatusType) {

@@ -36,7 +36,6 @@ abstract class AbstractStatistics {
     private _testsTotal: number = 0;
 
     addResultStatus(status: ResultStatusType) {
-        status = this.groupStatisticStatus(status);
         if (!this._resultStatuses[status]) {
             this._resultStatuses[status] = 0;
         }
@@ -44,16 +43,16 @@ abstract class AbstractStatistics {
         this._testsTotal++;
     }
 
-    private groupStatisticStatus(status: ResultStatusType): ResultStatusType {
-        return this._statusConverter.groupStatus(status);
-    }
-
     get testsTotal() {
         return this._testsTotal;
     }
 
     get overallPassed() {
-        return this.getStatusCount(ResultStatusType.PASSED);
+        return this.getStatusCount(ResultStatusType.PASSED)
+            + this.getStatusCount(ResultStatusType.PASSED_RETRY)
+            + this.getStatusCount(ResultStatusType.MINOR)
+            + this.getStatusCount(ResultStatusType.MINOR_RETRY)
+            ;
     }
 
     get overallSkipped() {
@@ -61,7 +60,11 @@ abstract class AbstractStatistics {
     }
 
     get overallFailed() {
-        return this.getStatusCount(ResultStatusType.FAILED);
+        return this.getStatusCount(ResultStatusType.FAILED)
+            + this.getStatusCount(ResultStatusType.FAILED_MINOR)
+            + this.getStatusCount(ResultStatusType.FAILED_EXPECTED)
+            + this.getStatusCount(ResultStatusType.FAILED_RETRIED)
+            ;
     }
 
     getStatusCount(status: ResultStatusType) {

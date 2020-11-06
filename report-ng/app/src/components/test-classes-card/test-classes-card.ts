@@ -1,4 +1,3 @@
-import './test-classes-card.scss';
 import {data} from "../../services/report-model";
 import {autoinject} from "aurelia-framework";
 import {EventAggregator} from 'aurelia-event-aggregator';

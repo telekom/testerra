@@ -165,9 +165,12 @@ body {
   @include card.fill-color(#ffffff);
 }
 
-/*Testing view________________________________________________________________________________________________________*/
+.card-headline {
+    margin: 0.4em 1em;
+    color: rgba(0, 0, 0, 0.6);
+}
 
-.demo-layout__row--no-wrap {
-    display: flex;
-    flex-direction: row;
-  }
+.card-content {
+    margin: auto 0;
+    padding: 1em;
+}

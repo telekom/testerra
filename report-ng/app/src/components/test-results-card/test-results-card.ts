@@ -46,7 +46,5 @@ export class TestResultsCard {
             colors: colors,
             labels: labels
         };
-
-        console.log(this._apexPieOptions);
     }
 }

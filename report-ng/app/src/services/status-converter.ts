@@ -102,18 +102,28 @@ export class StatusConverter {
         }
     }
 
-    groupStatus(status: ResultStatusType): ResultStatusType {
+    getClassForStatus(status: ResultStatusType): string {
         switch (status) {
-            case ResultStatusType.FAILED_RETRIED:
-            case ResultStatusType.FAILED:
-                return ResultStatusType.FAILED;
-            case ResultStatusType.MINOR_RETRY:
-            case ResultStatusType.PASSED_RETRY:
-            case ResultStatusType.MINOR:
             case ResultStatusType.PASSED:
-                return ResultStatusType.PASSED;
-            default:
-                return status;
+                return "passed";
+            case ResultStatusType.PASSED_RETRY:
+                return "passed-retry";
+            case ResultStatusType.MINOR_RETRY:
+                return "minor-retry";
+            case ResultStatusType.MINOR:
+                return "minor";
+            case ResultStatusType.FAILED:
+                return "failed";
+            case ResultStatusType.FAILED_RETRIED:
+                return "failed-retry";
+            case ResultStatusType.FAILED_MINOR:
+                return "failed-minor";
+            case ResultStatusType.FAILED_EXPECTED:
+                return "failed-expected";
+            case ResultStatusType.SKIPPED:
+                return "skipped";
+            case ResultStatusType.NO_RUN:
+                return "running";
         }
     }
 }

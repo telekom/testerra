@@ -23,8 +23,6 @@ import {autoinject} from "aurelia-framework";
 import {DataLoader} from "./data-loader";
 import {ClassStatistics, ExecutionStatistics} from "./statistic-models";
 import {CacheService} from "t-systems-aurelia-components/src/services/cache-service";
-import {data} from "./report-model";
-
 
 @autoinject()
 export class StatisticsGenerator {

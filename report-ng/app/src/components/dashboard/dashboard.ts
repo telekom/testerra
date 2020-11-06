@@ -9,25 +9,31 @@ import IExecutionContext = data.IExecutionContext;
 
 @autoinject()
 export class Dashboard {
-  _executionContext: IExecutionContext = undefined;
-  private _executionStatistics: ExecutionStatistics;
+    _executionContext: IExecutionContext = undefined;
+    private _executionStatistics: ExecutionStatistics;
 
-  constructor(
-    private _statusConverter: StatusConverter,
-    private _statisticsGenerator: StatisticsGenerator,
-    private _eventAggregator: EventAggregator
-  ) {
-  }
+    constructor(
+        private _statusConverter: StatusConverter,
+        private _statisticsGenerator: StatisticsGenerator,
+        private _eventAggregator: EventAggregator
+    ) {
+    }
 
-  attached() {
-    this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
-      this._executionStatistics = executionStatistics;
-      console.log(executionStatistics);
-      this._executionContext = executionStatistics.executionAggregate.executionContext;
-      this._eventAggregator.publish('executionStatistics', this._executionStatistics);
-      this._eventAggregator.publish('executionContext', this._executionContext);
-    })
+    attached() {
+        this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
+            this._executionStatistics = executionStatistics;
+            console.log(executionStatistics);
+            this._executionContext = executionStatistics.executionAggregate.executionContext;
+            /**
+             * @todo hnjo Rename event names to vendor specific
+             */
+            this._eventAggregator.publish('executionStatistics', this._executionStatistics);
+            /**
+             * @todo hnjo Why using two events for the same data type?
+             */
+            this._eventAggregator.publish('executionContext', this._executionContext);
+        })
 
-  };
+    };
 
 }

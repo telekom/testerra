@@ -24,7 +24,6 @@ import {DataLoader} from "./data-loader";
 import {ClassStatistics, ExecutionStatistics} from "./statistic-models";
 import {CacheService} from "t-systems-aurelia-components/src/services/cache-service";
 import {data} from "./report-model";
-import ClassContextAggregate = data.ClassContextAggregate;
 
 
 @autoinject()
@@ -49,7 +48,7 @@ export class StatisticsGenerator {
                         const loadingPromise = this._dataLoader.getClassContextAggregate(classContextId).then(classContextAggregate => {
                             let classStatistics:ClassStatistics;
                             if (classContextAggregate.classContext.testContextName) {
-                                classStatistics = executionStatistics.classStatistics.find(value => value.classAggregate.classContext.testContextName = classContextAggregate.classContext.testContextName);
+                                classStatistics = executionStatistics.classStatistics.find(value => value.classAggregate.classContext.testContextName == classContextAggregate.classContext.testContextName);
                             }
                             if (!classStatistics) {
                                 classStatistics = new ClassStatistics();

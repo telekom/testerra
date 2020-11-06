@@ -27,6 +27,9 @@ export class Classes extends AbstractViewModel {
     private _configurationMethods:boolean = true;
     private _searchQuery:string;
     private _searchRegexp:RegExp;
+    private _uniqueFailureAspects = 0;
+    private _uniqueStatuses = 0;
+    private _uniqueClasses = 0;
 
     constructor(
         private _dataLoader: DataLoader,
@@ -91,6 +94,10 @@ export class Classes extends AbstractViewModel {
         console.log("filter", queryParams);
         this.updateUrl(queryParams);
 
+        const uniqueClasses = {};
+        const uniqueStatuses = {};
+        const uniqueFailureAspects = {};
+
         this._filteredMethodAggregates = [];
         this._executionStatistics.classStatistics
             .filter(classStatistic => {
@@ -115,9 +122,17 @@ export class Classes extends AbstractViewModel {
                         return (!this._searchRegexp || (methodAggregate.failureAspect?.match(this._searchRegexp) || methodAggregate.methodContext.contextValues.name.match(this._searchRegexp)));
                     })
                     .forEach(methodAggregate => {
+                        uniqueClasses[classStatistic.classAggregate.classContext.simpleClassName] = true;
+                        uniqueStatuses[methodAggregate.methodContext.contextValues.resultStatus] = true;
+                        uniqueFailureAspects[methodAggregate.failureAspect] = true;
                         this._filteredMethodAggregates.push(methodAggregate);
                     })
             })
+
+        this._uniqueClasses = Object.keys(uniqueClasses).length;
+        this._uniqueFailureAspects = Object.keys(uniqueFailureAspects).length;
+        this._uniqueStatuses = Object.keys(uniqueStatuses).length;
+
     }
 }
 

@@ -13,6 +13,7 @@ export function configure(aurelia: Aurelia) {
             PLATFORM.moduleName('value-converters/status-name-value-converter'),
             PLATFORM.moduleName('value-converters/status-class-value-converter'),
             PLATFORM.moduleName('value-converters/duration-format-value-converter'),
+            PLATFORM.moduleName('value-converters/html-value-converter'),
         ])
 
     aurelia.use.developmentLogging("debug");

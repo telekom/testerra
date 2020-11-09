@@ -240,7 +240,7 @@
                                 <div>
                                     <!-- error infos -->
                                     <div>
-                                        #set($fingerprint = $testMethod.errorContext().errorFingerprint)
+                                        #set($fingerprint = $testMethod.errorContext().getExitFingerprint())
                                         <div>
                                             <h5 style="position:relative;">
                                                 <a href="#" onclick="toggleElement('fingerprint');" title="Show Fingerprint">

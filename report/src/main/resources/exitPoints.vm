@@ -105,9 +105,9 @@
 
                             #if ($testMethod.errorContext().scriptSource)
                                 #displayLines($testMethod.errorContext().scriptSource, "scriptSource")
-                            #elseif ($testMethod.errorContext().errorFingerprint)
+                            #elseif ($testMethod.errorContext().getExitFingerprint())
                                 <div class="error">
-                                    $testMethod.errorContext().errorFingerprint
+                                    $testMethod.errorContext().getExitFingerprint()
                                 </div>
                             #end
                         </td>

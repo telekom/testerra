@@ -7,7 +7,6 @@ import eu.tsystems.mms.tic.testframework.report.model.ResultStatusType;
 import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -104,7 +103,7 @@ public abstract class AbstractContextExporter {
                     builder.setResultStatus(resultStatusType);
 
                     // exec status
-                    if (ExecutionContextController.testRunFinished) {
+                    if (executionContext.getEndTime() != null) {
                         builder.setExecStatus(ExecStatusType.FINISHED);
                     } else {
                         builder.setExecStatus(ExecStatusType.RUNNING);

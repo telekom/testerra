@@ -46,10 +46,12 @@ public class FinalizeExecutionEvent {
         return this;
     }
 
+    @Deprecated
     public Optional<List<ClassContext>> getMethodStatsPerClass() {
         return methodStatsPerClass;
     }
 
+    @Deprecated
     public FinalizeExecutionEvent setMethodStatsPerClass(List<ClassContext> methodStatsPerClass) {
         this.methodStatsPerClass = Optional.of(methodStatsPerClass);
         return this;

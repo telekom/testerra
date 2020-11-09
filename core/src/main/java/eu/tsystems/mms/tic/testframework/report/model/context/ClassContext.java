@@ -186,6 +186,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
 //        return contexts;
     }
 
+    @Deprecated
     public Map<TestStatusController.Status, Integer> getMethodStats(boolean includeTestMethods, boolean includeConfigMethods) {
         Map<TestStatusController.Status, Integer> counts = new LinkedHashMap<>();
 
@@ -205,6 +206,10 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
         return counts;
     }
 
+    /**
+     * Use in methodsDashboard.vm only
+     */
+    @Deprecated
     public List<MethodContext> getTestMethodsWithStatus(TestStatusController.Status status) {
         List<MethodContext> methodContexts = new LinkedList<>();
         this.methodContexts.forEach(methodContext -> {

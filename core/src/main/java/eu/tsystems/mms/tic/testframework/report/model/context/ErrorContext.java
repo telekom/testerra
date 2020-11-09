@@ -35,7 +35,7 @@ public class ErrorContext extends AbstractContext {
     @Deprecated
     private transient StackTrace stacktraceForReadableMessage = null;
     private StackTrace stackTrace;
-    private String errorFingerprint = "";
+    private String errorFingerprint;
 
     private ScriptSource scriptSource;
     private ScriptSource executionObjectSource;
@@ -253,7 +253,10 @@ public class ErrorContext extends AbstractContext {
     }
 
     @Deprecated
-    public String buildExitFingerprint() {
+    public String getExitFingerprint() {
+        if (errorFingerprint != null) {
+            return errorFingerprint;
+        }
         /*
          * from scriptSource
          */

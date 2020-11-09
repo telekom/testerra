@@ -25,8 +25,9 @@ import {StatusConverter} from "./status-converter";
 import ResultStatusType = data.ResultStatusType;
 import ExecutionAggregate = data.ExecutionAggregate;
 import ClassContextAggregate = data.ClassContextAggregate;
+import MethodType = data.MethodType;
 
-abstract class AbstractStatistics {
+class Statistics {
     private _statusConverter: StatusConverter
     constructor() {
         this._statusConverter = Container.instance.get(StatusConverter);
@@ -75,7 +76,7 @@ abstract class AbstractStatistics {
         return this._resultStatuses[status] | 0;
     }
 
-    protected addStatistics(statistics: AbstractStatistics) {
+    protected addStatistics(statistics: Statistics) {
         for (const status in statistics._resultStatuses) {
             if (!this._resultStatuses[status]) {
                 this._resultStatuses[status] = 0;
@@ -86,7 +87,7 @@ abstract class AbstractStatistics {
     }
 }
 
-export class ExecutionStatistics extends AbstractStatistics {
+export class ExecutionStatistics extends Statistics {
     private _executionAggregate: ExecutionAggregate;
     private _classStatistics: ClassStatistics[] = [];
 
@@ -112,8 +113,9 @@ export class ExecutionStatistics extends AbstractStatistics {
     }
 }
 
-export class ClassStatistics extends AbstractStatistics {
+export class ClassStatistics extends Statistics {
     private _classAggregate: ClassContextAggregate;
+    private _configStatistics = new Statistics();
 
     addClassAggregate(classAggregate: ClassContextAggregate) {
         if (!this._classAggregate) {
@@ -121,13 +123,22 @@ export class ClassStatistics extends AbstractStatistics {
         } else {
             this._classAggregate.methodContexts = this._classAggregate.methodContexts.concat(classAggregate.methodContexts);
         }
-        classAggregate.methodContexts.forEach(methodContext => {
-            this.addResultStatus(methodContext.contextValues.resultStatus);
-        });
+        classAggregate.methodContexts
+            .forEach(methodContext => {
+                if (methodContext.methodType == MethodType.CONFIGURATION_METHOD) {
+                    this._configStatistics.addResultStatus(methodContext.contextValues.resultStatus);
+                } else {
+                    this.addResultStatus(methodContext.contextValues.resultStatus);
+                }
+            });
         return this;
     }
 
     get classAggregate() {
         return this._classAggregate;
+    }
+
+    get configStatistics() {
+        return this._configStatistics;
     }
 }

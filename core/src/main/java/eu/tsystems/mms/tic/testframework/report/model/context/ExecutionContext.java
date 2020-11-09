@@ -95,6 +95,7 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
     /**
      * Used in dashboard.vm
      */
+    @Deprecated
     public long getNumberOfRepresentationalTests() {
         AtomicLong i = new AtomicLong();
         i.set(0);
@@ -109,8 +110,9 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
     }
 
     /**
-     * Used in dashboard.vm
+     * Used in dashboard.vm only
      */
+    @Deprecated
     public Map<TestStatusController.Status, Integer> getMethodStats(boolean includeTestMethods, boolean includeConfigMethods) {
         Map<TestStatusController.Status, Integer> counts = new LinkedHashMap<>();
 
@@ -141,6 +143,7 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
      * @param includeConfigMethods .
      * @return a map
      */
+    @Deprecated
     public Map<ClassContext, Map> getMethodStatsPerClass(boolean includeTestMethods, boolean includeConfigMethods) {
         final Map<ClassContext, Map> methodStatsPerClass = new LinkedHashMap<>();
         suiteContexts.forEach(suiteContext -> {

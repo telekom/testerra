@@ -142,7 +142,6 @@ final class ExecutionEndListener implements
     @Subscribe
     public void onExecutionFinish(ExecutionFinishEvent event) {
         // set the testRunFinished flag
-        ExecutionContextController.testRunFinished = true;
         finalizeExecutionContext();
     }
 
@@ -175,7 +174,7 @@ final class ExecutionEndListener implements
                     /*
                     get exit points (this is the fingerprint)
                      */
-                    final String fingerprint = methodContext.errorContext().buildExitFingerprint();
+                    final String fingerprint = methodContext.errorContext().getExitFingerprint();
                     final String failuresMapKey;
                     if (StringUtils.isStringEmpty(fingerprint)) {
                         // fingerprint unknown -> "others"

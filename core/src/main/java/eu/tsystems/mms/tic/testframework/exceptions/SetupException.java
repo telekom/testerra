@@ -21,14 +21,14 @@
  */
  package eu.tsystems.mms.tic.testframework.exceptions;
 
-public class TesterraSetupException extends RuntimeException {
+public class SetupException extends RuntimeException {
 
     /**
      * Exception with message.
      *
      * @param message The message that should displayed.
      */
-    public TesterraSetupException(final String message) {
+    public SetupException(final String message) {
         super(message);
     }
 
@@ -38,7 +38,7 @@ public class TesterraSetupException extends RuntimeException {
      * @param message The message that should displayed.
      * @param cause The Throwable of the exception.
      */
-    public TesterraSetupException(final String message, final Throwable cause) {
+    public SetupException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
@@ -47,7 +47,7 @@ public class TesterraSetupException extends RuntimeException {
      *
      * @param cause The Throwable of the exception.
      */
-    public TesterraSetupException(final Throwable cause) {
+    public SetupException(final Throwable cause) {
         super(cause);
     }
 

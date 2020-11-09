@@ -7,7 +7,10 @@ export class HtmlValueConverter {
     ) {
     }
 
-    toView(value: string) {
+    toView(value?: string) {
+        if (!value) {
+            return value;
+        }
         return value.replaceAll("\n","<br/>");
     }
 }

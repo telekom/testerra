@@ -6,6 +6,7 @@ import {ExecutionStatistics} from "../../services/statistic-models";
 import {AbstractViewModel} from "../abstract-view-model";
 import {data} from "../../services/report-model";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
+import {FailureAspect} from "../../services/models";
 import IMethodContext = data.IMethodContext;
 import IClassContext = data.IClassContext;
 import MethodType = data.MethodType;
@@ -14,7 +15,7 @@ import ResultStatusType = data.ResultStatusType;
 interface MethodAggregate {
     methodContext:IMethodContext,
     classContext:IClassContext
-    failureAspect?:string,
+    failureAspect?:FailureAspect,
 }
 
 @autoinject()
@@ -74,6 +75,22 @@ export class Classes extends AbstractViewModel {
     }
 
     private _filter() {
+        const queryParams:any = {};
+        if (this._searchQuery?.length > 0) {
+            this._searchRegexp = new RegExp("(" + this._searchQuery + ")", "ig");
+            queryParams.q = this._searchQuery;
+        } else {
+            this._searchRegexp = null;
+        }
+
+        if (this._selectedClass) {
+            queryParams.class = this._selectedClass;
+        }
+
+        if (this._selectedStatus >= 0) {
+            queryParams.status = this._statusConverter.getClassForStatus(this._selectedStatus);
+        }
+
         const uniqueClasses = {};
         const uniqueStatuses = {};
         const uniqueFailureAspects = {};
@@ -91,6 +108,7 @@ export class Classes extends AbstractViewModel {
         this._filteredMethodAggregates = [];
         this._executionStatistics.classStatistics
             .map(classStatistics => {
+                // Determine if we need to enable showing config methods by default if there has any error occured
                 if (this._showConfigurationMethods === null) {
                     this._showConfigurationMethods = classStatistics.configStatistics.overallFailed > 0;
                 }
@@ -105,22 +123,35 @@ export class Classes extends AbstractViewModel {
                         return (!relevantStatuses || relevantStatuses.indexOf(methodContext.contextValues.resultStatus) >= 0)
                     })
                     .filter(methodContext => {
-                        return (this._showConfigurationMethods == true || (this._showConfigurationMethods == false && methodContext.methodType == MethodType.TEST_METHOD))
+                        return (this._showConfigurationMethods == true
+                            || (
+                                this._showConfigurationMethods == false
+                                && methodContext.methodType == MethodType.TEST_METHOD
+                            )
+                        )
                     })
                     .map(methodContext => {
                         return {
                             classContext: classStatistic.classAggregate.classContext,
-                            failureAspect: (this._statusConverter.failedStatuses.indexOf(methodContext.contextValues.resultStatus)>=0?methodContext.errorContext?.description||methodContext.errorContext?.stackTrace?.cause.className + (methodContext.errorContext?.stackTrace?.cause?.message?": "+methodContext.errorContext?.stackTrace?.cause?.message.trim().replace("\n", "<br/>"):""):null),
+                            failureAspect: this._statusConverter.failedStatuses.indexOf(methodContext.contextValues.resultStatus) > 0 ? new FailureAspect().setMethodContext(methodContext):null,
                             methodContext: methodContext
                         }
                     })
                     .filter(methodAggregate => {
-                        return (!this._searchRegexp || (methodAggregate.failureAspect?.match(this._searchRegexp) || methodAggregate.methodContext.contextValues.name.match(this._searchRegexp)));
+                        return (
+                            !this._searchRegexp
+                            || (
+                                methodAggregate.failureAspect?.name.match(this._searchRegexp)
+                                || methodAggregate.methodContext.contextValues.name.match(this._searchRegexp)
+                            )
+                        );
                     })
                     .forEach(methodAggregate => {
                         uniqueClasses[classStatistic.classAggregate.classContext.simpleClassName] = true;
                         uniqueStatuses[methodAggregate.methodContext.contextValues.resultStatus] = true;
-                        uniqueFailureAspects[methodAggregate.failureAspect] = true;
+                        if (methodAggregate.failureAspect) {
+                            uniqueFailureAspects[methodAggregate.failureAspect.name] = true;
+                        }
                         this._filteredMethodAggregates.push(methodAggregate);
                     })
             })
@@ -128,22 +159,6 @@ export class Classes extends AbstractViewModel {
         this._uniqueClasses = Object.keys(uniqueClasses).length;
         this._uniqueFailureAspects = Object.keys(uniqueFailureAspects).length;
         this._uniqueStatuses = Object.keys(uniqueStatuses).length;
-
-        const queryParams:any = {};
-        if (this._searchQuery?.length > 0) {
-            this._searchRegexp = new RegExp("(" + this._searchQuery + ")", "ig");
-            queryParams.q = this._searchQuery;
-        } else {
-            this._searchRegexp = null;
-        }
-
-        if (this._selectedClass) {
-            queryParams.class = this._selectedClass;
-        }
-
-        if (this._selectedStatus >= 0) {
-            queryParams.status = this._statusConverter.getClassForStatus(this._selectedStatus);
-        }
 
         queryParams.config = this._showConfigurationMethods;
         this.updateUrl(queryParams);

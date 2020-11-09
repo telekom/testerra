@@ -38,6 +38,8 @@ export class TestClassesCard {
             xlabels.push(classStats.classAggregate.classContext.testContextName||classStats.classAggregate.classContext.simpleClassName);
         });
 
+
+
         //Display at least 10 rows in bar chart even if there are less classes
         // if (xlabels.length < 10) {
         //     for (let i = xlabels.length; i <= 10; i++) {
@@ -69,6 +71,7 @@ export class TestClassesCard {
             },
             series: series,
             xaxis: {
+                show: true,
                 categories: xlabels
             },
             grid: {

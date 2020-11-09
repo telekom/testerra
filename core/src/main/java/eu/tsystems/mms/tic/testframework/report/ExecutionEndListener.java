@@ -145,7 +145,7 @@ final class ExecutionEndListener implements
         MethodRelations.flushAll();
 
         ExecutionContext currentExecutionContext = ExecutionContextController.getCurrentExecutionContext();
-        currentExecutionContext.endTime = new Date();
+        currentExecutionContext.updateEndTimeRecursive(new Date());
 
         /*
         get ALL ClassContexts

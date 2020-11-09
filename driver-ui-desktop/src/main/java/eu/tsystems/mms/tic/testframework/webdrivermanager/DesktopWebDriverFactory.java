@@ -26,8 +26,8 @@ import com.google.gson.GsonBuilder;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.enums.Position;
+import eu.tsystems.mms.tic.testframework.exceptions.SetupException;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSetupException;
 import eu.tsystems.mms.tic.testframework.internal.Defaults;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.TimingInfo;
@@ -313,7 +313,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                         } else {
                     newDriver = startNewWebDriverSession(browser, capabilities, remoteAddress, sessionKey);
                 }
-            } catch (final TesterraSetupException e) {
+            } catch (final SetupException e) {
                 int ms = Testerra.Properties.WEBDRIVER_TIMEOUT_SECONDS_RETRY.asLong().intValue()*1000;
                 log().error(String.format("Error starting WebDriver. Trying again in %d seconds", (ms/1000)), e);
                 TimerUtils.sleep(ms);
@@ -472,7 +472,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         WebDriver driver;
         try {
             if (remoteAddress != null) {
-                final HttpCommandExecutor httpCommandExecutor = new HttpCommandExecutor(new HashMap<>(), remoteAddress, new TesterraHttpClientFactory());
+                final HttpCommandExecutor httpCommandExecutor = new HttpCommandExecutor(new HashMap<>(), remoteAddress, new HttpClientFactory());
                 driver = new SikuliWebDriver(httpCommandExecutor, finalCapabilities);
                 ((RemoteWebDriver) driver).setFileDetector(new LocalFileDetector());
             } else {
@@ -481,7 +481,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             }
         } catch (Exception e) {
             WebDriverSessionsManager.SESSION_STARTUP_ERRORS.put(new Date(), e);
-            throw new TesterraSetupException("Error starting browser session", e);
+            throw new SetupException("Error starting browser session", e);
         }
 
         return driver;

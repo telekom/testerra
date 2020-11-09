@@ -100,7 +100,7 @@ public class ExecutionContextController {
      * @return the MethodContext for the result.
      */
     public static MethodContext getMethodContextFromTestResult(final ITestResult iTestResult, final ITestContext testContext) {
-        final Object[] parameters = iTestResult.getParameters();
+        //final Object[] parameters = iTestResult.getParameters();
         final ClassContext classContext = getClassContextFromTestResult(iTestResult, testContext, null);
         return classContext.getMethodContext(iTestResult, testContext, null);
     }
@@ -120,9 +120,6 @@ public class ExecutionContextController {
      */
     public static MethodContext setCurrentTestResult(final ITestResult iTestResult, final ITestContext testContext) {
         CURRENT_TEST_RESULT.set(iTestResult);
-        /*
-        auto-create method context
-         */
         return getMethodContextFromTestResult(iTestResult, testContext);
     }
 
@@ -188,7 +185,7 @@ public class ExecutionContextController {
 
         LOGGER.info(prefix + "**********************************************");
 
-        LOGGER.info(prefix + "Duration: " + executionContext.getDuration(executionContext.startTime, executionContext.endTime));
+        LOGGER.info(prefix + "Duration: " + executionContext.getDurationAsString());
 
         LOGGER.info(prefix + "**********************************************");
     }

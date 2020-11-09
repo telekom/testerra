@@ -250,7 +250,7 @@
 
                 <!-- duration -->
                 <td class="cellCenter" colspan="2">
-                    <div id="actualRunDuration" class="dashboardTextBig">${executionContext.getDuration(${executionContext.startTime}, ${executionContext.endTime})}</div>
+                    <div id="actualRunDuration" class="dashboardTextBig">${executionContext.getDurationAsString()}</div>
                     <br/>
                     <div id="actualRunStartTime" class="dashboardTextSmall">Start ${executionContext.startTime}</div>
                     <br/>

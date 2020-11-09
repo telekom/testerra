@@ -59,8 +59,8 @@ public class GenerateHtmlReportListener implements
 
     private void addThreadVisualizerDataSet(MethodContext methodContext) {
 
-        long startTimeTime = methodContext.startTime.getTime();
-        long endTimeTime = methodContext.endTime.getTime();
+        long startTimeTime = methodContext.getStartTime().getTime();
+        long endTimeTime = methodContext.getEndTime().getTime();
 
         if (endTimeTime - startTimeTime <= 10) {
             endTimeTime = startTimeTime + 10;

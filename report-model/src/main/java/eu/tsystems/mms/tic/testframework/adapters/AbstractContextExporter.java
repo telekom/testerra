@@ -69,8 +69,8 @@ public abstract class AbstractContextExporter {
         apply(context.swi, builder::setSwi);
         apply(System.currentTimeMillis(), builder::setCreated);
         apply(context.name, builder::setName);
-        map(context.startTime, Date::getTime, builder::setStartTime);
-        map(context.endTime, Date::getTime, builder::setEndTime);
+        map(context.getStartTime(), Date::getTime, builder::setStartTime);
+        map(context.getEndTime(), Date::getTime, builder::setEndTime);
 
         if (context instanceof MethodContext) {
             MethodContext methodContext = (MethodContext) context;

@@ -97,14 +97,11 @@ public class MethodRelations {
             /*
             check for retries
              */
-            List<MethodContext> retriedMethods = RetryAnalyzer.getRetriedMethods();
-            synchronized (retriedMethods) {
-                for (MethodContext retriedMethod : retriedMethods) {
-                    if (methodContext.isSame(retriedMethod)) {
-                        containers.add(retriedMethod);
-                    }
+            RetryAnalyzer.getRetriedMethods().stream().forEach(retriedMethod -> {
+                if (methodContext.isSame(retriedMethod)) {
+                    containers.add(retriedMethod);
                 }
-            }
+            });
         }
 
         if (containers.size() > 0) {

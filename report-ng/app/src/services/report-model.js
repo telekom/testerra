@@ -119,6 +119,7 @@ export const data = $root.data = (() => {
          * @property {string|null} [simpleClassName] ClassContext simpleClassName
          * @property {string|null} [testContextId] ClassContext testContextId
          * @property {string|null} [executionContextId] ClassContext executionContextId
+         * @property {string|null} [testContextName] ClassContext testContextName
          * @property {boolean|null} [merged] ClassContext merged
          */
 
@@ -187,6 +188,14 @@ export const data = $root.data = (() => {
         ClassContext.prototype.executionContextId = "";
 
         /**
+         * ClassContext testContextName.
+         * @member {string} testContextName
+         * @memberof data.ClassContext
+         * @instance
+         */
+        ClassContext.prototype.testContextName = "";
+
+        /**
          * ClassContext merged.
          * @member {boolean} merged
          * @memberof data.ClassContext
@@ -231,6 +240,9 @@ export const data = $root.data = (() => {
                     break;
                 case 10:
                     m.executionContextId = r.string();
+                    break;
+                case 11:
+                    m.testContextName = r.string();
                     break;
                 case 12:
                     m.merged = r.bool();
@@ -1506,6 +1518,8 @@ export const data = $root.data = (() => {
          * @property {string|null} [errorFingerprint] ErrorContext errorFingerprint
          * @property {data.IScriptSource|null} [scriptSource] ErrorContext scriptSource
          * @property {data.IScriptSource|null} [executionObjectSource] ErrorContext executionObjectSource
+         * @property {string|null} [ticketId] ErrorContext ticketId
+         * @property {string|null} [description] ErrorContext description
          */
 
         /**
@@ -1572,6 +1586,22 @@ export const data = $root.data = (() => {
         ErrorContext.prototype.executionObjectSource = null;
 
         /**
+         * ErrorContext ticketId.
+         * @member {string} ticketId
+         * @memberof data.ErrorContext
+         * @instance
+         */
+        ErrorContext.prototype.ticketId = "";
+
+        /**
+         * ErrorContext description.
+         * @member {string} description
+         * @memberof data.ErrorContext
+         * @instance
+         */
+        ErrorContext.prototype.description = "";
+
+        /**
          * Decodes an ErrorContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.ErrorContext
@@ -1606,6 +1636,12 @@ export const data = $root.data = (() => {
                     break;
                 case 8:
                     m.executionObjectSource = $root.data.ScriptSource.decode(r, r.uint32());
+                    break;
+                case 9:
+                    m.ticketId = r.string();
+                    break;
+                case 10:
+                    m.description = r.string();
                     break;
                 default:
                     r.skipType(t & 7);

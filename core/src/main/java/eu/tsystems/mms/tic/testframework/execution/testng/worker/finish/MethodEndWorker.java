@@ -105,11 +105,10 @@ public class MethodEndWorker implements MethodEndEvent.Listener, Loggable {
                     // look for script source
                     ScriptSource scriptSourceForThrowable = SourceUtils.findScriptSourceForThrowable(throwable);
                     if (scriptSourceForThrowable != null) {
-                        methodContext.errorContext().scriptSource = scriptSourceForThrowable;
+                        methodContext.errorContext().setScriptSource(scriptSourceForThrowable);
                     }
-                    methodContext.errorContext().executionObjectSource = TestEvidenceCollector.getSourceFor(throwable);
+                    methodContext.errorContext().setExecutionObjectSource(TestEvidenceCollector.getSourceFor(throwable));
                 }
-                methodContext.errorContext().buildExitFingerprint();
             }
 
 

@@ -231,34 +231,34 @@ private static final long serialVersionUID = 0L;
   public static final int MERGED_CLASS_CONTEXT_IDS_FIELD_NUMBER = 3;
   private com.google.protobuf.LazyStringList mergedClassContextIds_;
   /**
-   * <code>repeated string merged_class_context_ids = 3;</code>
+   * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
    * @return A list containing the mergedClassContextIds.
    */
-  public com.google.protobuf.ProtocolStringList
+  @java.lang.Deprecated public com.google.protobuf.ProtocolStringList
       getMergedClassContextIdsList() {
     return mergedClassContextIds_;
   }
   /**
-   * <code>repeated string merged_class_context_ids = 3;</code>
+   * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
    * @return The count of mergedClassContextIds.
    */
-  public int getMergedClassContextIdsCount() {
+  @java.lang.Deprecated public int getMergedClassContextIdsCount() {
     return mergedClassContextIds_.size();
   }
   /**
-   * <code>repeated string merged_class_context_ids = 3;</code>
+   * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
    * @param index The index of the element to return.
    * @return The mergedClassContextIds at the given index.
    */
-  public java.lang.String getMergedClassContextIds(int index) {
+  @java.lang.Deprecated public java.lang.String getMergedClassContextIds(int index) {
     return mergedClassContextIds_.get(index);
   }
   /**
-   * <code>repeated string merged_class_context_ids = 3;</code>
+   * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
    * @param index The index of the value to return.
    * @return The bytes of the mergedClassContextIds at the given index.
    */
-  public com.google.protobuf.ByteString
+  @java.lang.Deprecated public com.google.protobuf.ByteString
       getMergedClassContextIdsBytes(int index) {
     return mergedClassContextIds_.getByteString(index);
   }
@@ -266,34 +266,34 @@ private static final long serialVersionUID = 0L;
   public static final int EXIT_POINTS_FIELD_NUMBER = 4;
   private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> exitPoints_;
   /**
-   * <code>repeated .data.ContextClip exit_points = 4;</code>
+   * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
    */
-  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> getExitPointsList() {
+  @java.lang.Deprecated public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> getExitPointsList() {
     return exitPoints_;
   }
   /**
-   * <code>repeated .data.ContextClip exit_points = 4;</code>
+   * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
    */
-  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> 
+  @java.lang.Deprecated public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> 
       getExitPointsOrBuilderList() {
     return exitPoints_;
   }
   /**
-   * <code>repeated .data.ContextClip exit_points = 4;</code>
+   * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
    */
-  public int getExitPointsCount() {
+  @java.lang.Deprecated public int getExitPointsCount() {
     return exitPoints_.size();
   }
   /**
-   * <code>repeated .data.ContextClip exit_points = 4;</code>
+   * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
    */
-  public eu.tsystems.mms.tic.testframework.report.model.ContextClip getExitPoints(int index) {
+  @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ContextClip getExitPoints(int index) {
     return exitPoints_.get(index);
   }
   /**
-   * <code>repeated .data.ContextClip exit_points = 4;</code>
+   * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
    */
-  public eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder getExitPointsOrBuilder(
+  @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder getExitPointsOrBuilder(
       int index) {
     return exitPoints_.get(index);
   }
@@ -301,34 +301,34 @@ private static final long serialVersionUID = 0L;
   public static final int FAILURE_ASCPECTS_FIELD_NUMBER = 5;
   private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> failureAscpects_;
   /**
-   * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
+   * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
    */
-  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> getFailureAscpectsList() {
+  @java.lang.Deprecated public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> getFailureAscpectsList() {
     return failureAscpects_;
   }
   /**
-   * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
+   * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
    */
-  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> 
+  @java.lang.Deprecated public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> 
       getFailureAscpectsOrBuilderList() {
     return failureAscpects_;
   }
   /**
-   * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
+   * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
    */
-  public int getFailureAscpectsCount() {
+  @java.lang.Deprecated public int getFailureAscpectsCount() {
     return failureAscpects_.size();
   }
   /**
-   * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
+   * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
    */
-  public eu.tsystems.mms.tic.testframework.report.model.ContextClip getFailureAscpects(int index) {
+  @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ContextClip getFailureAscpects(int index) {
     return failureAscpects_.get(index);
   }
   /**
-   * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
+   * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
    */
-  public eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder getFailureAscpectsOrBuilder(
+  @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder getFailureAscpectsOrBuilder(
       int index) {
     return failureAscpects_.get(index);
   }
@@ -1351,44 +1351,44 @@ private static final long serialVersionUID = 0L;
        }
     }
     /**
-     * <code>repeated string merged_class_context_ids = 3;</code>
+     * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
      * @return A list containing the mergedClassContextIds.
      */
-    public com.google.protobuf.ProtocolStringList
+    @java.lang.Deprecated public com.google.protobuf.ProtocolStringList
         getMergedClassContextIdsList() {
       return mergedClassContextIds_.getUnmodifiableView();
     }
     /**
-     * <code>repeated string merged_class_context_ids = 3;</code>
+     * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
      * @return The count of mergedClassContextIds.
      */
-    public int getMergedClassContextIdsCount() {
+    @java.lang.Deprecated public int getMergedClassContextIdsCount() {
       return mergedClassContextIds_.size();
     }
     /**
-     * <code>repeated string merged_class_context_ids = 3;</code>
+     * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
      * @param index The index of the element to return.
      * @return The mergedClassContextIds at the given index.
      */
-    public java.lang.String getMergedClassContextIds(int index) {
+    @java.lang.Deprecated public java.lang.String getMergedClassContextIds(int index) {
       return mergedClassContextIds_.get(index);
     }
     /**
-     * <code>repeated string merged_class_context_ids = 3;</code>
+     * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
      * @param index The index of the value to return.
      * @return The bytes of the mergedClassContextIds at the given index.
      */
-    public com.google.protobuf.ByteString
+    @java.lang.Deprecated public com.google.protobuf.ByteString
         getMergedClassContextIdsBytes(int index) {
       return mergedClassContextIds_.getByteString(index);
     }
     /**
-     * <code>repeated string merged_class_context_ids = 3;</code>
+     * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
      * @param index The index to set the value at.
      * @param value The mergedClassContextIds to set.
      * @return This builder for chaining.
      */
-    public Builder setMergedClassContextIds(
+    @java.lang.Deprecated public Builder setMergedClassContextIds(
         int index, java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
@@ -1399,11 +1399,11 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated string merged_class_context_ids = 3;</code>
+     * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
      * @param value The mergedClassContextIds to add.
      * @return This builder for chaining.
      */
-    public Builder addMergedClassContextIds(
+    @java.lang.Deprecated public Builder addMergedClassContextIds(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
@@ -1414,11 +1414,11 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated string merged_class_context_ids = 3;</code>
+     * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
      * @param values The mergedClassContextIds to add.
      * @return This builder for chaining.
      */
-    public Builder addAllMergedClassContextIds(
+    @java.lang.Deprecated public Builder addAllMergedClassContextIds(
         java.lang.Iterable<java.lang.String> values) {
       ensureMergedClassContextIdsIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -1427,21 +1427,21 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated string merged_class_context_ids = 3;</code>
+     * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
      * @return This builder for chaining.
      */
-    public Builder clearMergedClassContextIds() {
+    @java.lang.Deprecated public Builder clearMergedClassContextIds() {
       mergedClassContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
     /**
-     * <code>repeated string merged_class_context_ids = 3;</code>
+     * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
      * @param value The bytes of the mergedClassContextIds to add.
      * @return This builder for chaining.
      */
-    public Builder addMergedClassContextIdsBytes(
+    @java.lang.Deprecated public Builder addMergedClassContextIdsBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
@@ -1466,9 +1466,9 @@ private static final long serialVersionUID = 0L;
         eu.tsystems.mms.tic.testframework.report.model.ContextClip, eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder, eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> exitPointsBuilder_;
 
     /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
+     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
      */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> getExitPointsList() {
+    @java.lang.Deprecated public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> getExitPointsList() {
       if (exitPointsBuilder_ == null) {
         return java.util.Collections.unmodifiableList(exitPoints_);
       } else {
@@ -1476,9 +1476,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
+     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
      */
-    public int getExitPointsCount() {
+    @java.lang.Deprecated public int getExitPointsCount() {
       if (exitPointsBuilder_ == null) {
         return exitPoints_.size();
       } else {
@@ -1486,9 +1486,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
+     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.ContextClip getExitPoints(int index) {
+    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ContextClip getExitPoints(int index) {
       if (exitPointsBuilder_ == null) {
         return exitPoints_.get(index);
       } else {
@@ -1496,9 +1496,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
+     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
      */
-    public Builder setExitPoints(
+    @java.lang.Deprecated public Builder setExitPoints(
         int index, eu.tsystems.mms.tic.testframework.report.model.ContextClip value) {
       if (exitPointsBuilder_ == null) {
         if (value == null) {
@@ -1513,9 +1513,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
+     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
      */
-    public Builder setExitPoints(
+    @java.lang.Deprecated public Builder setExitPoints(
         int index, eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder builderForValue) {
       if (exitPointsBuilder_ == null) {
         ensureExitPointsIsMutable();
@@ -1527,9 +1527,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
+     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
      */
-    public Builder addExitPoints(eu.tsystems.mms.tic.testframework.report.model.ContextClip value) {
+    @java.lang.Deprecated public Builder addExitPoints(eu.tsystems.mms.tic.testframework.report.model.ContextClip value) {
       if (exitPointsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -1543,9 +1543,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
+     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
      */
-    public Builder addExitPoints(
+    @java.lang.Deprecated public Builder addExitPoints(
         int index, eu.tsystems.mms.tic.testframework.report.model.ContextClip value) {
       if (exitPointsBuilder_ == null) {
         if (value == null) {
@@ -1560,9 +1560,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
+     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
      */
-    public Builder addExitPoints(
+    @java.lang.Deprecated public Builder addExitPoints(
         eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder builderForValue) {
       if (exitPointsBuilder_ == null) {
         ensureExitPointsIsMutable();
@@ -1574,9 +1574,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
+     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
      */
-    public Builder addExitPoints(
+    @java.lang.Deprecated public Builder addExitPoints(
         int index, eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder builderForValue) {
       if (exitPointsBuilder_ == null) {
         ensureExitPointsIsMutable();
@@ -1588,9 +1588,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
+     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
      */
-    public Builder addAllExitPoints(
+    @java.lang.Deprecated public Builder addAllExitPoints(
         java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.ContextClip> values) {
       if (exitPointsBuilder_ == null) {
         ensureExitPointsIsMutable();
@@ -1603,9 +1603,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
+     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
      */
-    public Builder clearExitPoints() {
+    @java.lang.Deprecated public Builder clearExitPoints() {
       if (exitPointsBuilder_ == null) {
         exitPoints_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000002);
@@ -1616,9 +1616,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
+     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
      */
-    public Builder removeExitPoints(int index) {
+    @java.lang.Deprecated public Builder removeExitPoints(int index) {
       if (exitPointsBuilder_ == null) {
         ensureExitPointsIsMutable();
         exitPoints_.remove(index);
@@ -1629,16 +1629,16 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
+     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder getExitPointsBuilder(
+    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder getExitPointsBuilder(
         int index) {
       return getExitPointsFieldBuilder().getBuilder(index);
     }
     /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
+     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder getExitPointsOrBuilder(
+    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder getExitPointsOrBuilder(
         int index) {
       if (exitPointsBuilder_ == null) {
         return exitPoints_.get(index);  } else {
@@ -1646,9 +1646,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
+     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
      */
-    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> 
+    @java.lang.Deprecated public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> 
          getExitPointsOrBuilderList() {
       if (exitPointsBuilder_ != null) {
         return exitPointsBuilder_.getMessageOrBuilderList();
@@ -1657,24 +1657,24 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
+     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder addExitPointsBuilder() {
+    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder addExitPointsBuilder() {
       return getExitPointsFieldBuilder().addBuilder(
           eu.tsystems.mms.tic.testframework.report.model.ContextClip.getDefaultInstance());
     }
     /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
+     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder addExitPointsBuilder(
+    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder addExitPointsBuilder(
         int index) {
       return getExitPointsFieldBuilder().addBuilder(
           index, eu.tsystems.mms.tic.testframework.report.model.ContextClip.getDefaultInstance());
     }
     /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
+     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
      */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder> 
+    @java.lang.Deprecated public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder> 
          getExitPointsBuilderList() {
       return getExitPointsFieldBuilder().getBuilderList();
     }
@@ -1706,9 +1706,9 @@ private static final long serialVersionUID = 0L;
         eu.tsystems.mms.tic.testframework.report.model.ContextClip, eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder, eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> failureAscpectsBuilder_;
 
     /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
+     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
      */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> getFailureAscpectsList() {
+    @java.lang.Deprecated public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> getFailureAscpectsList() {
       if (failureAscpectsBuilder_ == null) {
         return java.util.Collections.unmodifiableList(failureAscpects_);
       } else {
@@ -1716,9 +1716,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
+     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
      */
-    public int getFailureAscpectsCount() {
+    @java.lang.Deprecated public int getFailureAscpectsCount() {
       if (failureAscpectsBuilder_ == null) {
         return failureAscpects_.size();
       } else {
@@ -1726,9 +1726,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
+     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.ContextClip getFailureAscpects(int index) {
+    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ContextClip getFailureAscpects(int index) {
       if (failureAscpectsBuilder_ == null) {
         return failureAscpects_.get(index);
       } else {
@@ -1736,9 +1736,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
+     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
      */
-    public Builder setFailureAscpects(
+    @java.lang.Deprecated public Builder setFailureAscpects(
         int index, eu.tsystems.mms.tic.testframework.report.model.ContextClip value) {
       if (failureAscpectsBuilder_ == null) {
         if (value == null) {
@@ -1753,9 +1753,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
+     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
      */
-    public Builder setFailureAscpects(
+    @java.lang.Deprecated public Builder setFailureAscpects(
         int index, eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder builderForValue) {
       if (failureAscpectsBuilder_ == null) {
         ensureFailureAscpectsIsMutable();
@@ -1767,9 +1767,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
+     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
      */
-    public Builder addFailureAscpects(eu.tsystems.mms.tic.testframework.report.model.ContextClip value) {
+    @java.lang.Deprecated public Builder addFailureAscpects(eu.tsystems.mms.tic.testframework.report.model.ContextClip value) {
       if (failureAscpectsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -1783,9 +1783,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
+     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
      */
-    public Builder addFailureAscpects(
+    @java.lang.Deprecated public Builder addFailureAscpects(
         int index, eu.tsystems.mms.tic.testframework.report.model.ContextClip value) {
       if (failureAscpectsBuilder_ == null) {
         if (value == null) {
@@ -1800,9 +1800,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
+     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
      */
-    public Builder addFailureAscpects(
+    @java.lang.Deprecated public Builder addFailureAscpects(
         eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder builderForValue) {
       if (failureAscpectsBuilder_ == null) {
         ensureFailureAscpectsIsMutable();
@@ -1814,9 +1814,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
+     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
      */
-    public Builder addFailureAscpects(
+    @java.lang.Deprecated public Builder addFailureAscpects(
         int index, eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder builderForValue) {
       if (failureAscpectsBuilder_ == null) {
         ensureFailureAscpectsIsMutable();
@@ -1828,9 +1828,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
+     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
      */
-    public Builder addAllFailureAscpects(
+    @java.lang.Deprecated public Builder addAllFailureAscpects(
         java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.ContextClip> values) {
       if (failureAscpectsBuilder_ == null) {
         ensureFailureAscpectsIsMutable();
@@ -1843,9 +1843,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
+     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
      */
-    public Builder clearFailureAscpects() {
+    @java.lang.Deprecated public Builder clearFailureAscpects() {
       if (failureAscpectsBuilder_ == null) {
         failureAscpects_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000004);
@@ -1856,9 +1856,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
+     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
      */
-    public Builder removeFailureAscpects(int index) {
+    @java.lang.Deprecated public Builder removeFailureAscpects(int index) {
       if (failureAscpectsBuilder_ == null) {
         ensureFailureAscpectsIsMutable();
         failureAscpects_.remove(index);
@@ -1869,16 +1869,16 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
+     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder getFailureAscpectsBuilder(
+    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder getFailureAscpectsBuilder(
         int index) {
       return getFailureAscpectsFieldBuilder().getBuilder(index);
     }
     /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
+     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder getFailureAscpectsOrBuilder(
+    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder getFailureAscpectsOrBuilder(
         int index) {
       if (failureAscpectsBuilder_ == null) {
         return failureAscpects_.get(index);  } else {
@@ -1886,9 +1886,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
+     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
      */
-    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> 
+    @java.lang.Deprecated public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> 
          getFailureAscpectsOrBuilderList() {
       if (failureAscpectsBuilder_ != null) {
         return failureAscpectsBuilder_.getMessageOrBuilderList();
@@ -1897,24 +1897,24 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
+     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder addFailureAscpectsBuilder() {
+    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder addFailureAscpectsBuilder() {
       return getFailureAscpectsFieldBuilder().addBuilder(
           eu.tsystems.mms.tic.testframework.report.model.ContextClip.getDefaultInstance());
     }
     /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
+     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder addFailureAscpectsBuilder(
+    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder addFailureAscpectsBuilder(
         int index) {
       return getFailureAscpectsFieldBuilder().addBuilder(
           index, eu.tsystems.mms.tic.testframework.report.model.ContextClip.getDefaultInstance());
     }
     /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
+     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
      */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder> 
+    @java.lang.Deprecated public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder> 
          getFailureAscpectsBuilderList() {
       return getFailureAscpectsFieldBuilder().getBuilderList();
     }

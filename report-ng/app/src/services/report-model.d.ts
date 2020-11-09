@@ -66,6 +66,9 @@ export namespace data {
         /** ClassContext executionContextId */
         executionContextId?: (string|null);
 
+        /** ClassContext testContextName */
+        testContextName?: (string|null);
+
         /** ClassContext merged */
         merged?: (boolean|null);
     }
@@ -96,6 +99,9 @@ export namespace data {
 
         /** ClassContext executionContextId. */
         public executionContextId: string;
+
+        /** ClassContext testContextName. */
+        public testContextName: string;
 
         /** ClassContext merged. */
         public merged: boolean;
@@ -705,6 +711,12 @@ export namespace data {
 
         /** ErrorContext executionObjectSource */
         executionObjectSource?: (data.IScriptSource|null);
+
+        /** ErrorContext ticketId */
+        ticketId?: (string|null);
+
+        /** ErrorContext description */
+        description?: (string|null);
     }
 
     /** Represents an ErrorContext. */
@@ -733,6 +745,12 @@ export namespace data {
 
         /** ErrorContext executionObjectSource. */
         public executionObjectSource?: (data.IScriptSource|null);
+
+        /** ErrorContext ticketId. */
+        public ticketId: string;
+
+        /** ErrorContext description. */
+        public description: string;
 
         /**
          * Decodes an ErrorContext message from the specified reader or buffer.

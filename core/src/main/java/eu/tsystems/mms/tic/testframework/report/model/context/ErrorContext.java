@@ -28,15 +28,56 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 
 public class ErrorContext extends AbstractContext {
-
-    public String readableErrorMessage;
+    private String readableErrorMessage;
+    @Deprecated
     public String additionalErrorMessage;
     private transient Throwable throwable = null;
+    @Deprecated
     private transient StackTrace stacktraceForReadableMessage = null;
-    public StackTrace stackTrace;
-    public String errorFingerprint = "";
-    public ScriptSource scriptSource;
-    public ScriptSource executionObjectSource;
+    private StackTrace stackTrace;
+    private String errorFingerprint = "";
+
+    private ScriptSource scriptSource;
+    private ScriptSource executionObjectSource;
+    private Object ticketId;
+
+    public ScriptSource getScriptSource() {
+        return scriptSource;
+    }
+
+    public ErrorContext setScriptSource(ScriptSource scriptSource) {
+        this.scriptSource = scriptSource;
+        return this;
+    }
+
+    public ScriptSource getExecutionObjectSource() {
+        return executionObjectSource;
+    }
+
+    public ErrorContext setExecutionObjectSource(ScriptSource executionObjectSource) {
+        this.executionObjectSource = executionObjectSource;
+        return this;
+    }
+
+    public Object getTicketId() {
+        return ticketId;
+    }
+
+    public ErrorContext setTicketId(Object ticketId) {
+        this.ticketId = ticketId;
+        return this;
+    }
+
+    private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public ErrorContext setDescription(String description) {
+        this.description = description;
+        return this;
+    }
 
     public Throwable getThrowable() {
         return throwable;
@@ -51,26 +92,42 @@ public class ErrorContext extends AbstractContext {
         return stackTrace;
     }
 
+    @Deprecated
     public String getAdditionalErrorMessage() {
         return additionalErrorMessage;
     }
 
+    @Deprecated
     public String getAdditionalErrorMessageFormatted() {
         return "<i>" + StringUtils.prepareStringForHTML(additionalErrorMessage) + "</i>";
     }
 
+    @Deprecated
     public String getReadableErrorMessage() {
         return readableErrorMessage;
     }
 
+    @Deprecated
     public String getReadableMessageFormatted() {
         return StringUtils.prepareStringForHTML(this.getReadableErrorMessage());
     }
 
+    public void setThrowable(final Throwable throwable) {
+        this.throwable = throwable;
+    }
+
+    /**
+     * Use {@link #setThrowable(Throwable)} instead
+     */
+    @Deprecated
     public void setThrowable(final String readableMessage, final Throwable throwable) {
         setThrowable(readableMessage, throwable, false);
     }
 
+    /**
+     * Use {@link #setThrowable(Throwable)} instead
+     */
+    @Deprecated
     public void setThrowable(final String readableMessage, Throwable throwable, boolean forceUpdateReadableMessage) {
         this.throwable = throwable;
 
@@ -195,15 +252,13 @@ public class ErrorContext extends AbstractContext {
         return message;
     }
 
-    public void buildExitFingerprint() {
-        errorFingerprint = "";
-
+    @Deprecated
+    public String buildExitFingerprint() {
         /*
          * from scriptSource
          */
         if (scriptSource != null) {
-            errorFingerprint = scriptSource.toString();
-            return;
+            return scriptSource.toString();
         }
 
         /*
@@ -220,6 +275,7 @@ public class ErrorContext extends AbstractContext {
                 errorFingerprint = completeStackTrace;
             }
         }
+        return errorFingerprint;
     }
 
     @Override

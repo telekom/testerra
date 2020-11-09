@@ -1,49 +1,11 @@
 <template>
-  <mdc-card outlined="true">
-    <div mdc-subtitle2 class="headline">Test Results</div>
-    <mdc-list-divider></mdc-list-divider>
+    <mdc-card outlined="true">
+        <div mdc-subtitle2 class="card-headline">Test Results</div>
+        <mdc-list-divider></mdc-list-divider>
 
-    <div class="card-content" id="test-results">
-      <apex-chart data.bind="_apexPieOptions" id="pie-chart"></apex-chart>
+        <div class="card-content">
+            <apex-chart data.bind="_apexPieOptions" id="pie-chart"></apex-chart>
+        </div>
 
-      <mdc-data-table class="results">
-        <mdc-data-table-content>
-          <mdc-data-table-row>
-            <mdc-data-table-cell>
-              <div class="result-card">
-                <mdc-icon class="icon-passed big-icon">${4|statusIconName}</mdc-icon>
-                <div class="result-status-text">
-                  <div mdc-headline5>${_executionStatistics.overallPassed}</div>
-                  <div mdc-body2 class="result-status-type">Passed</div>
-                </div>
-              </div>
-            </mdc-data-table-cell>
-          </mdc-data-table-row>
-          <mdc-data-table-row>
-            <mdc-data-table-cell>
-              <div class="result-card">
-                <mdc-icon class="icon-skipped big-icon">${3|statusIconName}</mdc-icon>
-                <div class="result-status-text">
-                  <div mdc-headline5>${_executionStatistics.overallSkipped}</div>
-                  <div mdc-body2 class="result-status-type">Skipped</div>
-                </div>
-              </div>
-            </mdc-data-table-cell>
-          </mdc-data-table-row>
-          <mdc-data-table-row>
-            <mdc-data-table-cell >
-              <div class="result-card">
-                <mdc-icon class="icon-failed big-icon">${7|statusIconName}</mdc-icon>
-                <div class="result-status-text">
-                  <div mdc-headline5>${_executionStatistics.overallFailed}</div>
-                  <div mdc-body2 class="result-status-type">Failed</div>
-                </div>
-              </div>
-            </mdc-data-table-cell>
-          </mdc-data-table-row>
-        </mdc-data-table-content>
-      </mdc-data-table>
-    </div>
-
-  </mdc-card>
+    </mdc-card>
 </template>

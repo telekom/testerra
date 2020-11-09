@@ -1,10 +1,8 @@
-import './test-duration-card.scss';
-import {data} from "../../services/report-model";
+import {data} from "services/report-model";
 import {autoinject} from "aurelia-framework";
-import {EventAggregator} from 'aurelia-event-aggregator';
 import moment, {Duration} from "moment";
-import {StatusConverter} from "../../services/status-converter";
-import {StatisticsGenerator} from "../../services/statistics-generator";
+import {StatusConverter} from "services/status-converter";
+import {StatisticsGenerator} from "services/statistics-generator";
 
 @autoinject
 export class TestDurationCard {
@@ -14,14 +12,13 @@ export class TestDurationCard {
   constructor(
     private _statusConverter: StatusConverter,
     private _statisticsGenerator: StatisticsGenerator,
-    private _eventAggregator: EventAggregator
   ) {
   }
 
   attached() {
-    this._eventAggregator.subscribe('executionContext', payload => {
-      this._prepareDuration(payload.contextValues);
-    });
+      this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
+          this._prepareDuration(executionStatistics.executionAggregate.executionContext.contextValues);
+      })
   }
 
   private _prepareDuration(contextValues: data.IContextValues): void {

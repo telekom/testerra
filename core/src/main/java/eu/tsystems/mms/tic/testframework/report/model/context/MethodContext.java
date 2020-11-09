@@ -63,8 +63,11 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     public String threadName = "unrelated";
     private TestStep lastFailedStep;
     public FailureCorridor.Value failureCorridorValue = FailureCorridor.Value.HIGH;
-
-    public ClassContext classContext;
+    /**
+     * @deprecated Use {@link #getClassContext()} instead
+     */
+    @Deprecated
+    public final ClassContext classContext;
     public TestContextModel testContextModel;
     public SuiteContext suiteContext;
     public final ExecutionContext executionContext;
@@ -96,6 +99,10 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     public final List<CustomContext> customContexts = new LinkedList<>();
 
     private ErrorContext errorContext;
+
+    public ClassContext getClassContext() {
+        return classContext;
+    }
 
     /**
      * Public constructor. Creates a new <code>MethodContext</code> object.
@@ -316,12 +323,13 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
                 '}';
     }
 
+    /**
+     * @deprecated Use {@link #getClassContext()} instead
+     * @return
+     */
+    @Deprecated
     public ClassContext getEffectiveClassContext() {
-        if (classContext.merged) {
-            return classContext.mergedIntoClassContext;
-        } else {
-            return classContext;
-        }
+        return classContext;
     }
 
     public List<Video> getVideos() {

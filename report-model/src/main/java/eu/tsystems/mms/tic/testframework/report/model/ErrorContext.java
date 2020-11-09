@@ -19,6 +19,8 @@ private static final long serialVersionUID = 0L;
     readableErrorMessage_ = "";
     additionalErrorMessage_ = "";
     errorFingerprint_ = "";
+    ticketId_ = "";
+    description_ = "";
   }
 
   @java.lang.Override
@@ -108,6 +110,18 @@ private static final long serialVersionUID = 0L;
 
             break;
           }
+          case 74: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            ticketId_ = s;
+            break;
+          }
+          case 82: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            description_ = s;
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -143,10 +157,10 @@ private static final long serialVersionUID = 0L;
   public static final int READABLE_ERROR_MESSAGE_FIELD_NUMBER = 1;
   private volatile java.lang.Object readableErrorMessage_;
   /**
-   * <code>string readable_error_message = 1;</code>
+   * <code>string readable_error_message = 1 [deprecated = true];</code>
    * @return The readableErrorMessage.
    */
-  public java.lang.String getReadableErrorMessage() {
+  @java.lang.Deprecated public java.lang.String getReadableErrorMessage() {
     java.lang.Object ref = readableErrorMessage_;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
@@ -159,10 +173,10 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string readable_error_message = 1;</code>
+   * <code>string readable_error_message = 1 [deprecated = true];</code>
    * @return The bytes for readableErrorMessage.
    */
-  public com.google.protobuf.ByteString
+  @java.lang.Deprecated public com.google.protobuf.ByteString
       getReadableErrorMessageBytes() {
     java.lang.Object ref = readableErrorMessage_;
     if (ref instanceof java.lang.String) {
@@ -179,10 +193,10 @@ private static final long serialVersionUID = 0L;
   public static final int ADDITIONAL_ERROR_MESSAGE_FIELD_NUMBER = 2;
   private volatile java.lang.Object additionalErrorMessage_;
   /**
-   * <code>string additional_error_message = 2;</code>
+   * <code>string additional_error_message = 2 [deprecated = true];</code>
    * @return The additionalErrorMessage.
    */
-  public java.lang.String getAdditionalErrorMessage() {
+  @java.lang.Deprecated public java.lang.String getAdditionalErrorMessage() {
     java.lang.Object ref = additionalErrorMessage_;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
@@ -195,10 +209,10 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string additional_error_message = 2;</code>
+   * <code>string additional_error_message = 2 [deprecated = true];</code>
    * @return The bytes for additionalErrorMessage.
    */
-  public com.google.protobuf.ByteString
+  @java.lang.Deprecated public com.google.protobuf.ByteString
       getAdditionalErrorMessageBytes() {
     java.lang.Object ref = additionalErrorMessage_;
     if (ref instanceof java.lang.String) {
@@ -238,10 +252,10 @@ private static final long serialVersionUID = 0L;
   public static final int ERROR_FINGERPRINT_FIELD_NUMBER = 6;
   private volatile java.lang.Object errorFingerprint_;
   /**
-   * <code>string error_fingerprint = 6;</code>
+   * <code>string error_fingerprint = 6 [deprecated = true];</code>
    * @return The errorFingerprint.
    */
-  public java.lang.String getErrorFingerprint() {
+  @java.lang.Deprecated public java.lang.String getErrorFingerprint() {
     java.lang.Object ref = errorFingerprint_;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
@@ -254,10 +268,10 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string error_fingerprint = 6;</code>
+   * <code>string error_fingerprint = 6 [deprecated = true];</code>
    * @return The bytes for errorFingerprint.
    */
-  public com.google.protobuf.ByteString
+  @java.lang.Deprecated public com.google.protobuf.ByteString
       getErrorFingerprintBytes() {
     java.lang.Object ref = errorFingerprint_;
     if (ref instanceof java.lang.String) {
@@ -317,6 +331,78 @@ private static final long serialVersionUID = 0L;
     return getExecutionObjectSource();
   }
 
+  public static final int TICKETID_FIELD_NUMBER = 9;
+  private volatile java.lang.Object ticketId_;
+  /**
+   * <code>string ticketId = 9;</code>
+   * @return The ticketId.
+   */
+  public java.lang.String getTicketId() {
+    java.lang.Object ref = ticketId_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      ticketId_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string ticketId = 9;</code>
+   * @return The bytes for ticketId.
+   */
+  public com.google.protobuf.ByteString
+      getTicketIdBytes() {
+    java.lang.Object ref = ticketId_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      ticketId_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int DESCRIPTION_FIELD_NUMBER = 10;
+  private volatile java.lang.Object description_;
+  /**
+   * <code>string description = 10;</code>
+   * @return The description.
+   */
+  public java.lang.String getDescription() {
+    java.lang.Object ref = description_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      description_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string description = 10;</code>
+   * @return The bytes for description.
+   */
+  public com.google.protobuf.ByteString
+      getDescriptionBytes() {
+    java.lang.Object ref = description_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      description_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -349,6 +435,12 @@ private static final long serialVersionUID = 0L;
     if (executionObjectSource_ != null) {
       output.writeMessage(8, getExecutionObjectSource());
     }
+    if (!getTicketIdBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 9, ticketId_);
+    }
+    if (!getDescriptionBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 10, description_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -378,6 +470,12 @@ private static final long serialVersionUID = 0L;
     if (executionObjectSource_ != null) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(8, getExecutionObjectSource());
+    }
+    if (!getTicketIdBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, ticketId_);
+    }
+    if (!getDescriptionBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, description_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -415,6 +513,10 @@ private static final long serialVersionUID = 0L;
       if (!getExecutionObjectSource()
           .equals(other.getExecutionObjectSource())) return false;
     }
+    if (!getTicketId()
+        .equals(other.getTicketId())) return false;
+    if (!getDescription()
+        .equals(other.getDescription())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -444,6 +546,10 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + EXECUTION_OBJECT_SOURCE_FIELD_NUMBER;
       hash = (53 * hash) + getExecutionObjectSource().hashCode();
     }
+    hash = (37 * hash) + TICKETID_FIELD_NUMBER;
+    hash = (53 * hash) + getTicketId().hashCode();
+    hash = (37 * hash) + DESCRIPTION_FIELD_NUMBER;
+    hash = (53 * hash) + getDescription().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -601,6 +707,10 @@ private static final long serialVersionUID = 0L;
         executionObjectSource_ = null;
         executionObjectSourceBuilder_ = null;
       }
+      ticketId_ = "";
+
+      description_ = "";
+
       return this;
     }
 
@@ -645,6 +755,8 @@ private static final long serialVersionUID = 0L;
       } else {
         result.executionObjectSource_ = executionObjectSourceBuilder_.build();
       }
+      result.ticketId_ = ticketId_;
+      result.description_ = description_;
       onBuilt();
       return result;
     }
@@ -714,6 +826,14 @@ private static final long serialVersionUID = 0L;
       if (other.hasExecutionObjectSource()) {
         mergeExecutionObjectSource(other.getExecutionObjectSource());
       }
+      if (!other.getTicketId().isEmpty()) {
+        ticketId_ = other.ticketId_;
+        onChanged();
+      }
+      if (!other.getDescription().isEmpty()) {
+        description_ = other.description_;
+        onChanged();
+      }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
       return this;
@@ -745,10 +865,10 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object readableErrorMessage_ = "";
     /**
-     * <code>string readable_error_message = 1;</code>
+     * <code>string readable_error_message = 1 [deprecated = true];</code>
      * @return The readableErrorMessage.
      */
-    public java.lang.String getReadableErrorMessage() {
+    @java.lang.Deprecated public java.lang.String getReadableErrorMessage() {
       java.lang.Object ref = readableErrorMessage_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
@@ -761,10 +881,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string readable_error_message = 1;</code>
+     * <code>string readable_error_message = 1 [deprecated = true];</code>
      * @return The bytes for readableErrorMessage.
      */
-    public com.google.protobuf.ByteString
+    @java.lang.Deprecated public com.google.protobuf.ByteString
         getReadableErrorMessageBytes() {
       java.lang.Object ref = readableErrorMessage_;
       if (ref instanceof String) {
@@ -778,11 +898,11 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string readable_error_message = 1;</code>
+     * <code>string readable_error_message = 1 [deprecated = true];</code>
      * @param value The readableErrorMessage to set.
      * @return This builder for chaining.
      */
-    public Builder setReadableErrorMessage(
+    @java.lang.Deprecated public Builder setReadableErrorMessage(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
@@ -793,21 +913,21 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string readable_error_message = 1;</code>
+     * <code>string readable_error_message = 1 [deprecated = true];</code>
      * @return This builder for chaining.
      */
-    public Builder clearReadableErrorMessage() {
+    @java.lang.Deprecated public Builder clearReadableErrorMessage() {
       
       readableErrorMessage_ = getDefaultInstance().getReadableErrorMessage();
       onChanged();
       return this;
     }
     /**
-     * <code>string readable_error_message = 1;</code>
+     * <code>string readable_error_message = 1 [deprecated = true];</code>
      * @param value The bytes for readableErrorMessage to set.
      * @return This builder for chaining.
      */
-    public Builder setReadableErrorMessageBytes(
+    @java.lang.Deprecated public Builder setReadableErrorMessageBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
@@ -821,10 +941,10 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object additionalErrorMessage_ = "";
     /**
-     * <code>string additional_error_message = 2;</code>
+     * <code>string additional_error_message = 2 [deprecated = true];</code>
      * @return The additionalErrorMessage.
      */
-    public java.lang.String getAdditionalErrorMessage() {
+    @java.lang.Deprecated public java.lang.String getAdditionalErrorMessage() {
       java.lang.Object ref = additionalErrorMessage_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
@@ -837,10 +957,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string additional_error_message = 2;</code>
+     * <code>string additional_error_message = 2 [deprecated = true];</code>
      * @return The bytes for additionalErrorMessage.
      */
-    public com.google.protobuf.ByteString
+    @java.lang.Deprecated public com.google.protobuf.ByteString
         getAdditionalErrorMessageBytes() {
       java.lang.Object ref = additionalErrorMessage_;
       if (ref instanceof String) {
@@ -854,11 +974,11 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string additional_error_message = 2;</code>
+     * <code>string additional_error_message = 2 [deprecated = true];</code>
      * @param value The additionalErrorMessage to set.
      * @return This builder for chaining.
      */
-    public Builder setAdditionalErrorMessage(
+    @java.lang.Deprecated public Builder setAdditionalErrorMessage(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
@@ -869,21 +989,21 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string additional_error_message = 2;</code>
+     * <code>string additional_error_message = 2 [deprecated = true];</code>
      * @return This builder for chaining.
      */
-    public Builder clearAdditionalErrorMessage() {
+    @java.lang.Deprecated public Builder clearAdditionalErrorMessage() {
       
       additionalErrorMessage_ = getDefaultInstance().getAdditionalErrorMessage();
       onChanged();
       return this;
     }
     /**
-     * <code>string additional_error_message = 2;</code>
+     * <code>string additional_error_message = 2 [deprecated = true];</code>
      * @param value The bytes for additionalErrorMessage to set.
      * @return This builder for chaining.
      */
-    public Builder setAdditionalErrorMessageBytes(
+    @java.lang.Deprecated public Builder setAdditionalErrorMessageBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
@@ -1016,10 +1136,10 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object errorFingerprint_ = "";
     /**
-     * <code>string error_fingerprint = 6;</code>
+     * <code>string error_fingerprint = 6 [deprecated = true];</code>
      * @return The errorFingerprint.
      */
-    public java.lang.String getErrorFingerprint() {
+    @java.lang.Deprecated public java.lang.String getErrorFingerprint() {
       java.lang.Object ref = errorFingerprint_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
@@ -1032,10 +1152,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string error_fingerprint = 6;</code>
+     * <code>string error_fingerprint = 6 [deprecated = true];</code>
      * @return The bytes for errorFingerprint.
      */
-    public com.google.protobuf.ByteString
+    @java.lang.Deprecated public com.google.protobuf.ByteString
         getErrorFingerprintBytes() {
       java.lang.Object ref = errorFingerprint_;
       if (ref instanceof String) {
@@ -1049,11 +1169,11 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string error_fingerprint = 6;</code>
+     * <code>string error_fingerprint = 6 [deprecated = true];</code>
      * @param value The errorFingerprint to set.
      * @return This builder for chaining.
      */
-    public Builder setErrorFingerprint(
+    @java.lang.Deprecated public Builder setErrorFingerprint(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
@@ -1064,21 +1184,21 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string error_fingerprint = 6;</code>
+     * <code>string error_fingerprint = 6 [deprecated = true];</code>
      * @return This builder for chaining.
      */
-    public Builder clearErrorFingerprint() {
+    @java.lang.Deprecated public Builder clearErrorFingerprint() {
       
       errorFingerprint_ = getDefaultInstance().getErrorFingerprint();
       onChanged();
       return this;
     }
     /**
-     * <code>string error_fingerprint = 6;</code>
+     * <code>string error_fingerprint = 6 [deprecated = true];</code>
      * @param value The bytes for errorFingerprint to set.
      * @return This builder for chaining.
      */
-    public Builder setErrorFingerprintBytes(
+    @java.lang.Deprecated public Builder setErrorFingerprintBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
@@ -1326,6 +1446,158 @@ private static final long serialVersionUID = 0L;
         executionObjectSource_ = null;
       }
       return executionObjectSourceBuilder_;
+    }
+
+    private java.lang.Object ticketId_ = "";
+    /**
+     * <code>string ticketId = 9;</code>
+     * @return The ticketId.
+     */
+    public java.lang.String getTicketId() {
+      java.lang.Object ref = ticketId_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        ticketId_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string ticketId = 9;</code>
+     * @return The bytes for ticketId.
+     */
+    public com.google.protobuf.ByteString
+        getTicketIdBytes() {
+      java.lang.Object ref = ticketId_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        ticketId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string ticketId = 9;</code>
+     * @param value The ticketId to set.
+     * @return This builder for chaining.
+     */
+    public Builder setTicketId(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      ticketId_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string ticketId = 9;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearTicketId() {
+      
+      ticketId_ = getDefaultInstance().getTicketId();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string ticketId = 9;</code>
+     * @param value The bytes for ticketId to set.
+     * @return This builder for chaining.
+     */
+    public Builder setTicketIdBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      ticketId_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object description_ = "";
+    /**
+     * <code>string description = 10;</code>
+     * @return The description.
+     */
+    public java.lang.String getDescription() {
+      java.lang.Object ref = description_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        description_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string description = 10;</code>
+     * @return The bytes for description.
+     */
+    public com.google.protobuf.ByteString
+        getDescriptionBytes() {
+      java.lang.Object ref = description_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        description_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string description = 10;</code>
+     * @param value The description to set.
+     * @return This builder for chaining.
+     */
+    public Builder setDescription(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      description_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string description = 10;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearDescription() {
+      
+      description_ = getDefaultInstance().getDescription();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string description = 10;</code>
+     * @param value The bytes for description to set.
+     * @return This builder for chaining.
+     */
+    public Builder setDescriptionBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      description_ = value;
+      onChanged();
+      return this;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

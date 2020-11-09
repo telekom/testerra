@@ -126,10 +126,10 @@ private static final long serialVersionUID = 0L;
   public static final int ADDITIONAL_ERROR_MESSAGE_FIELD_NUMBER = 2;
   private volatile java.lang.Object additionalErrorMessage_;
   /**
-   * <code>string additional_error_message = 2;</code>
+   * <code>string additional_error_message = 2 [deprecated = true];</code>
    * @return The additionalErrorMessage.
    */
-  public java.lang.String getAdditionalErrorMessage() {
+  @java.lang.Deprecated public java.lang.String getAdditionalErrorMessage() {
     java.lang.Object ref = additionalErrorMessage_;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
@@ -142,10 +142,10 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string additional_error_message = 2;</code>
+   * <code>string additional_error_message = 2 [deprecated = true];</code>
    * @return The bytes for additionalErrorMessage.
    */
-  public com.google.protobuf.ByteString
+  @java.lang.Deprecated public com.google.protobuf.ByteString
       getAdditionalErrorMessageBytes() {
     java.lang.Object ref = additionalErrorMessage_;
     if (ref instanceof java.lang.String) {
@@ -612,10 +612,10 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object additionalErrorMessage_ = "";
     /**
-     * <code>string additional_error_message = 2;</code>
+     * <code>string additional_error_message = 2 [deprecated = true];</code>
      * @return The additionalErrorMessage.
      */
-    public java.lang.String getAdditionalErrorMessage() {
+    @java.lang.Deprecated public java.lang.String getAdditionalErrorMessage() {
       java.lang.Object ref = additionalErrorMessage_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
@@ -628,10 +628,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string additional_error_message = 2;</code>
+     * <code>string additional_error_message = 2 [deprecated = true];</code>
      * @return The bytes for additionalErrorMessage.
      */
-    public com.google.protobuf.ByteString
+    @java.lang.Deprecated public com.google.protobuf.ByteString
         getAdditionalErrorMessageBytes() {
       java.lang.Object ref = additionalErrorMessage_;
       if (ref instanceof String) {
@@ -645,11 +645,11 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string additional_error_message = 2;</code>
+     * <code>string additional_error_message = 2 [deprecated = true];</code>
      * @param value The additionalErrorMessage to set.
      * @return This builder for chaining.
      */
-    public Builder setAdditionalErrorMessage(
+    @java.lang.Deprecated public Builder setAdditionalErrorMessage(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
@@ -660,21 +660,21 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string additional_error_message = 2;</code>
+     * <code>string additional_error_message = 2 [deprecated = true];</code>
      * @return This builder for chaining.
      */
-    public Builder clearAdditionalErrorMessage() {
+    @java.lang.Deprecated public Builder clearAdditionalErrorMessage() {
       
       additionalErrorMessage_ = getDefaultInstance().getAdditionalErrorMessage();
       onChanged();
       return this;
     }
     /**
-     * <code>string additional_error_message = 2;</code>
+     * <code>string additional_error_message = 2 [deprecated = true];</code>
      * @param value The bytes for additionalErrorMessage to set.
      * @return This builder for chaining.
      */
-    public Builder setAdditionalErrorMessageBytes(
+    @java.lang.Deprecated public Builder setAdditionalErrorMessageBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();

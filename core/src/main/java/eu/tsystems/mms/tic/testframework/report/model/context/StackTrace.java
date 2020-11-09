@@ -44,6 +44,7 @@ public class StackTrace {
     }
 
     public Cause stackTrace;
+    @Deprecated
     public String additionalErrorMessage;
 
     @Override

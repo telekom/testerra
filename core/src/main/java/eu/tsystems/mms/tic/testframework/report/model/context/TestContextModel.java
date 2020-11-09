@@ -27,9 +27,7 @@ import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -75,28 +73,9 @@ public class TestContextModel extends AbstractContext implements SynchronizableC
         final Class<?> realClass = testClass.getRealClass();
 
         /*
-            tree example:
-
-            - A
-            - A' (from test1)
-            - A'' (from test2)
-
-            A=the only one A context (A'++ don't exist)
-            A=dummy (A'++ exist)
-
-            **** no TesterraClassContext
-            C running first time: C -> A
-            C running seconds time: return A
-            C' (another testcontext) running first time: C' -> A'', A -> A'
-
-            **** with TesterraClassContext
-            same like above, with classContext reference to merge Context
-         */
-
-        /*
         basic tree entries for the context
          */
-        final ClassContext newClassContext = createAndAddClassContext(realClass);
+        ClassContext newClassContext = createAndAddClassContext(realClass);
 
         /**
          * check if {@link TestContext} is present on class
@@ -106,39 +85,9 @@ public class TestContextModel extends AbstractContext implements SynchronizableC
             /*
             hook into executionContext mergedContexts
              */
-            final TestContext actualTestContext = realClass.getAnnotation(TestContext.class);
-
+            TestContext actualTestContext = realClass.getAnnotation(TestContext.class);
             if (actualTestContext.mode() == TestContext.Mode.ONE_FOR_ALL) {
-                synchronized (executionContext.mergedClassContexts) {
-                    final ClassContext mergedClassContext;
-
-                    // check if this class is present
-                    Optional<ClassContext> first = executionContext.mergedClassContexts.stream()
-                            .filter(c -> c.testContext == actualTestContext)
-                            .findFirst();
-
-                    if (first.isPresent()) {
-                        mergedClassContext = first.get();
-                    } else {
-                        // create and add to list
-                        mergedClassContext = new ClassContext(this, executionContext);
-                        mergedClassContext.fullClassName = realClass.getName();
-                        mergedClassContext.simpleClassName = realClass.getSimpleName();
-                        fillBasicContextValues(mergedClassContext, this, mergedClassContext.simpleClassName);
-                        mergedClassContext.testContext = actualTestContext;
-                        mergedClassContext.merged = true;
-
-                        if (!StringUtils.isStringEmpty(actualTestContext.name())) {
-                            mergedClassContext.name = actualTestContext.name();
-                        }
-
-                        executionContext.mergedClassContexts.add(mergedClassContext);
-                    }
-
-                    // mark context reference
-                    newClassContext.merged = true;
-                    newClassContext.mergedIntoClassContext = mergedClassContext;
-                }
+                newClassContext.setTestContext(actualTestContext);
             }
         }
 

@@ -38,7 +38,6 @@ import eu.tsystems.mms.tic.testframework.report.model.StackTraceCause;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
@@ -104,7 +103,7 @@ public class MethodContextExporter extends AbstractContextExporter {
         map(methodContext.failureCorridorValue, value -> FailureCorridorValue.valueOf(value.name()), builder::setFailureCorridorValue);
         apply(methodContext.suiteContext.id, builder::setSuiteContextId);
         apply(methodContext.testContextModel.id, builder::setTestContextId);
-        apply(methodContext.classContext.id, builder::setClassContextId);
+        apply(methodContext.getClassContext().getId(), builder::setClassContextId);
         apply(methodContext.executionContext.id, builder::setExecutionContextId);
 
         forEach(methodContext.infos, builder::addInfos);
@@ -198,7 +197,7 @@ public class MethodContextExporter extends AbstractContextExporter {
     public StackTrace.Builder prepareStackTrace(eu.tsystems.mms.tic.testframework.report.model.context.StackTrace stackTrace) {
         StackTrace.Builder builder = StackTrace.newBuilder();
 
-        apply(stackTrace.additionalErrorMessage, builder::setAdditionalErrorMessage);
+        //apply(stackTrace.additionalErrorMessage, builder::setAdditionalErrorMessage);
         map(stackTrace.stackTrace, this::prepareStackTraceCause, builder::setCause);
 
         return builder;
@@ -238,12 +237,14 @@ public class MethodContextExporter extends AbstractContextExporter {
     public ErrorContext.Builder prepareErrorContext(eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext errorContext) {
         ErrorContext.Builder builder = ErrorContext.newBuilder();
 
-        apply(errorContext.getReadableErrorMessage(), builder::setReadableErrorMessage);
-        apply(errorContext.getAdditionalErrorMessage(), builder::setAdditionalErrorMessage);
-        map(errorContext.stackTrace, this::prepareStackTrace, builder::setStackTrace);
-        apply(errorContext.errorFingerprint, builder::setErrorFingerprint);
-        map(errorContext.scriptSource, this::prepareScriptSource, builder::setScriptSource);
-        map(errorContext.executionObjectSource, this::prepareScriptSource, builder::setExecutionObjectSource);
+//        apply(errorContext.getReadableErrorMessage(), builder::setReadableErrorMessage);
+//        apply(errorContext.getAdditionalErrorMessage(), builder::setAdditionalErrorMessage);
+        map(errorContext.getStackTrace(), this::prepareStackTrace, builder::setStackTrace);
+//        apply(errorContext.errorFingerprint, builder::setErrorFingerprint);
+        map(errorContext.getScriptSource(), this::prepareScriptSource, builder::setScriptSource);
+        map(errorContext.getExecutionObjectSource(), this::prepareScriptSource, builder::setExecutionObjectSource);
+        if (errorContext.getTicketId() != null) builder.setTicketId(errorContext.getTicketId().toString());
+        apply(errorContext.getDescription(), builder::setDescription);
 
         return builder;
     }

@@ -21,6 +21,7 @@ private static final long serialVersionUID = 0L;
     simpleClassName_ = "";
     testContextId_ = "";
     executionContextId_ = "";
+    testContextName_ = "";
   }
 
   @java.lang.Override
@@ -98,6 +99,12 @@ private static final long serialVersionUID = 0L;
             java.lang.String s = input.readStringRequireUtf8();
 
             executionContextId_ = s;
+            break;
+          }
+          case 90: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            testContextName_ = s;
             break;
           }
           case 96: {
@@ -342,17 +349,49 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int TEST_CONTEXT_NAME_FIELD_NUMBER = 11;
+  private volatile java.lang.Object testContextName_;
+  /**
+   * <code>string test_context_name = 11;</code>
+   * @return The testContextName.
+   */
+  public java.lang.String getTestContextName() {
+    java.lang.Object ref = testContextName_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      testContextName_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string test_context_name = 11;</code>
+   * @return The bytes for testContextName.
+   */
+  public com.google.protobuf.ByteString
+      getTestContextNameBytes() {
+    java.lang.Object ref = testContextName_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      testContextName_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   public static final int MERGED_FIELD_NUMBER = 12;
   private boolean merged_;
   /**
-   * <pre>
-   *string testerra_class_context = 11;
-   * </pre>
-   *
-   * <code>bool merged = 12;</code>
+   * <code>bool merged = 12 [deprecated = true];</code>
    * @return The merged.
    */
-  public boolean getMerged() {
+  @java.lang.Deprecated public boolean getMerged() {
     return merged_;
   }
 
@@ -387,6 +426,9 @@ private static final long serialVersionUID = 0L;
     }
     if (!getExecutionContextIdBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 10, executionContextId_);
+    }
+    if (!getTestContextNameBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 11, testContextName_);
     }
     if (merged_ != false) {
       output.writeBool(12, merged_);
@@ -424,6 +466,9 @@ private static final long serialVersionUID = 0L;
     if (!getExecutionContextIdBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, executionContextId_);
     }
+    if (!getTestContextNameBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, testContextName_);
+    }
     if (merged_ != false) {
       size += com.google.protobuf.CodedOutputStream
         .computeBoolSize(12, merged_);
@@ -458,6 +503,8 @@ private static final long serialVersionUID = 0L;
         .equals(other.getTestContextId())) return false;
     if (!getExecutionContextId()
         .equals(other.getExecutionContextId())) return false;
+    if (!getTestContextName()
+        .equals(other.getTestContextName())) return false;
     if (getMerged()
         != other.getMerged()) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
@@ -487,6 +534,8 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getTestContextId().hashCode();
     hash = (37 * hash) + EXECUTION_CONTEXT_ID_FIELD_NUMBER;
     hash = (53 * hash) + getExecutionContextId().hashCode();
+    hash = (37 * hash) + TEST_CONTEXT_NAME_FIELD_NUMBER;
+    hash = (53 * hash) + getTestContextName().hashCode();
     hash = (37 * hash) + MERGED_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
         getMerged());
@@ -639,6 +688,8 @@ private static final long serialVersionUID = 0L;
 
       executionContextId_ = "";
 
+      testContextName_ = "";
+
       merged_ = false;
 
       return this;
@@ -682,6 +733,7 @@ private static final long serialVersionUID = 0L;
       result.simpleClassName_ = simpleClassName_;
       result.testContextId_ = testContextId_;
       result.executionContextId_ = executionContextId_;
+      result.testContextName_ = testContextName_;
       result.merged_ = merged_;
       onBuilt();
       return result;
@@ -758,6 +810,10 @@ private static final long serialVersionUID = 0L;
       }
       if (!other.getExecutionContextId().isEmpty()) {
         executionContextId_ = other.executionContextId_;
+        onChanged();
+      }
+      if (!other.getTestContextName().isEmpty()) {
+        testContextName_ = other.testContextName_;
         onChanged();
       }
       if (other.getMerged() != false) {
@@ -1326,42 +1382,106 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
+    private java.lang.Object testContextName_ = "";
+    /**
+     * <code>string test_context_name = 11;</code>
+     * @return The testContextName.
+     */
+    public java.lang.String getTestContextName() {
+      java.lang.Object ref = testContextName_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        testContextName_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string test_context_name = 11;</code>
+     * @return The bytes for testContextName.
+     */
+    public com.google.protobuf.ByteString
+        getTestContextNameBytes() {
+      java.lang.Object ref = testContextName_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        testContextName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string test_context_name = 11;</code>
+     * @param value The testContextName to set.
+     * @return This builder for chaining.
+     */
+    public Builder setTestContextName(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      testContextName_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string test_context_name = 11;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearTestContextName() {
+      
+      testContextName_ = getDefaultInstance().getTestContextName();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string test_context_name = 11;</code>
+     * @param value The bytes for testContextName to set.
+     * @return This builder for chaining.
+     */
+    public Builder setTestContextNameBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      testContextName_ = value;
+      onChanged();
+      return this;
+    }
+
     private boolean merged_ ;
     /**
-     * <pre>
-     *string testerra_class_context = 11;
-     * </pre>
-     *
-     * <code>bool merged = 12;</code>
+     * <code>bool merged = 12 [deprecated = true];</code>
      * @return The merged.
      */
-    public boolean getMerged() {
+    @java.lang.Deprecated public boolean getMerged() {
       return merged_;
     }
     /**
-     * <pre>
-     *string testerra_class_context = 11;
-     * </pre>
-     *
-     * <code>bool merged = 12;</code>
+     * <code>bool merged = 12 [deprecated = true];</code>
      * @param value The merged to set.
      * @return This builder for chaining.
      */
-    public Builder setMerged(boolean value) {
+    @java.lang.Deprecated public Builder setMerged(boolean value) {
       
       merged_ = value;
       onChanged();
       return this;
     }
     /**
-     * <pre>
-     *string testerra_class_context = 11;
-     * </pre>
-     *
-     * <code>bool merged = 12;</code>
+     * <code>bool merged = 12 [deprecated = true];</code>
      * @return This builder for chaining.
      */
-    public Builder clearMerged() {
+    @java.lang.Deprecated public Builder clearMerged() {
       
       merged_ = false;
       onChanged();

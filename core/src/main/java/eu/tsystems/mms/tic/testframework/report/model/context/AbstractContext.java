@@ -41,6 +41,7 @@ import org.apache.commons.lang3.time.DurationFormatUtils;
 
 public abstract class AbstractContext implements SynchronizableContext, Loggable {
     public String name;
+    @Deprecated
     public final String id = IDUtils.getB64encXID();
     public AbstractContext parentContext;
     public String swi; // system-wide identifier
@@ -58,6 +59,10 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
     protected static void fillBasicContextValues(AbstractContext context, AbstractContext parentContext, String name) {
         context.name = name;
         context.swi = parentContext.swi + "_" + name;
+    }
+
+    public String getId() {
+        return this.id;
     }
 
     /**

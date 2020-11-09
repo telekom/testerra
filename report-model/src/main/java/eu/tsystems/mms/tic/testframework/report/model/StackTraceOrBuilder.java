@@ -23,14 +23,14 @@ public interface StackTraceOrBuilder extends
   eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder getCauseOrBuilder();
 
   /**
-   * <code>string additional_error_message = 2;</code>
+   * <code>string additional_error_message = 2 [deprecated = true];</code>
    * @return The additionalErrorMessage.
    */
-  java.lang.String getAdditionalErrorMessage();
+  @java.lang.Deprecated java.lang.String getAdditionalErrorMessage();
   /**
-   * <code>string additional_error_message = 2;</code>
+   * <code>string additional_error_message = 2 [deprecated = true];</code>
    * @return The bytes for additionalErrorMessage.
    */
-  com.google.protobuf.ByteString
+  @java.lang.Deprecated com.google.protobuf.ByteString
       getAdditionalErrorMessageBytes();
 }

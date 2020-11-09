@@ -24,7 +24,6 @@ import {DataLoader} from "./data-loader";
 import {ClassStatistics, ExecutionStatistics} from "./statistic-models";
 import {CacheService} from "t-systems-aurelia-components/src/services/cache-service";
 
-
 @autoinject()
 export class StatisticsGenerator {
     constructor(
@@ -44,36 +43,28 @@ export class StatisticsGenerator {
                 const loadingPromises = [];
                 executionAggregate.testContexts.forEach(testContext => {
                     testContext.classContextIds.forEach(classContextId => {
-                        const loadingPromise = this.getClassStatistics(classContextId).then(classStatistics => {
-                            executionStatistics.addClassStatistics(classStatistics);
+                        const loadingPromise = this._dataLoader.getClassContextAggregate(classContextId).then(classContextAggregate => {
+                            let classStatistics:ClassStatistics;
+                            if (classContextAggregate.classContext.testContextName) {
+                                classStatistics = executionStatistics.classStatistics.find(value => value.classAggregate.classContext.testContextName == classContextAggregate.classContext.testContextName);
+                            }
+                            if (!classStatistics) {
+                                classStatistics = new ClassStatistics();
+                                executionStatistics.addClassStatistics(classStatistics);
+                            }
+                            classStatistics.addClassAggregate(classContextAggregate);
                         });
+
                         loadingPromises.push(loadingPromise);
                     })
                 });
 
                 return Promise.all(loadingPromises).then(() => {
+                    executionStatistics.updateStatistics();
                     return Promise.resolve(executionStatistics);
                 })
             });
         })
     }
-
-    getClassStatistics(id: string): Promise<ClassStatistics> {
-        return this._cacheService.getForKeyWithLoadingFunction("classStatistics:"+id, () => {
-            return this._dataLoader.getClassContextAggregate(id).then(classContextAggregate => {
-                const classStatistics = new ClassStatistics();
-                classStatistics.setClassAggregate(classContextAggregate);
-
-                classContextAggregate.methodContexts.forEach(methodContext => {
-                    classStatistics.addResultStatus(methodContext.contextValues.resultStatus);
-                });
-                return Promise.resolve(classStatistics);
-            });
-        })
-    }
-
-
-
-
 }
 

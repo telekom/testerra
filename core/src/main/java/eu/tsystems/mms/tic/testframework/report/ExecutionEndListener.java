@@ -96,16 +96,21 @@ final class ExecutionEndListener implements
 
                     if (methodContext.isPresent()) {
 
-                        final Fails failsAnnotation =
-                                methodContext.get().testResult.getMethod().getConstructorOrMethod().getMethod().getAnnotation(Fails.class);
+                        final Fails failsAnnotation = methodContext.get().testResult.getMethod().getConstructorOrMethod().getMethod().getAnnotation(Fails.class);
                         String additionalErrorMessage = "Failure aspect matches known issue:";
 
                         if (StringUtils.isNotBlank(failsAnnotation.description())) {
                             additionalErrorMessage += " Description: " + failsAnnotation.description();
+                            context.errorContext().setDescription(failsAnnotation.description());
                         }
 
                         if (failsAnnotation.ticketId() > 0) {
                             additionalErrorMessage += " Ticket: " + failsAnnotation.ticketId();
+                            context.errorContext().setTicketId(failsAnnotation.ticketId());
+                        }
+
+                        if (!failsAnnotation.ticketString().isEmpty()) {
+                            context.errorContext().setTicketId(failsAnnotation.ticketString());
                         }
 
                         context.errorContext().additionalErrorMessage = additionalErrorMessage;
@@ -170,7 +175,7 @@ final class ExecutionEndListener implements
                     /*
                     get exit points (this is the fingerprint)
                      */
-                    final String fingerprint = methodContext.errorContext().errorFingerprint;
+                    final String fingerprint = methodContext.errorContext().buildExitFingerprint();
                     final String failuresMapKey;
                     if (StringUtils.isStringEmpty(fingerprint)) {
                         // fingerprint unknown -> "others"

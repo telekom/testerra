@@ -3,18 +3,40 @@
   <require from="../test-results-card/test-results-card"></require>
   <require from="../test-classes-card/test-classes-card"></require>
 
-  <div>
-<!--    <div mdc-headline4 class="headline">Test: ${_executionContext.contextValues.name}</div>-->
-    <div class="layout-grid">
-      <div class="grid-cell grid-cell-medium">
-        <test-results-card></test-results-card>
-      </div>
-      <div class="grid-cell">
-        <test-duration-card></test-duration-card>
-      </div>
-      <div class="grid-cell grid-cell-large">
-        <test-classes-card></test-classes-card>
-      </div>
-    </div>
-  </div>
+    <mdc-layout-grid>
+        <!--mdc-layout-grid-inner-->
+            <mdc-layout-grid-cell span="3">
+                <mdc-card outlined="true">
+                    <div mdc-subtitle2 class="card-headline">${_executionStatistics.testsTotal} Tests</div>
+                    <mdc-list-divider></mdc-list-divider>
+                    <mdc-list two-line avatar class="card-content">
+                        <mdc-list-item>
+                            <mdc-icon mdc-list-item-graphic class="colored-icon status-${4|statusClass} big-icon">${4|statusIconName}</mdc-icon>
+                            <mdc-list-item-primary-text>${_executionStatistics.overallPassed}</mdc-list-item-primary-text>
+                            <mdc-list-item-secondary-text>${4|statusName}</mdc-list-item-secondary-text>
+                        </mdc-list-item>
+                        <mdc-list-item>
+                            <mdc-icon mdc-list-item-graphic class="colored-icon status-${3|statusClass} big-icon">${3|statusIconName}</mdc-icon>
+                            <mdc-list-item-primary-text>${_executionStatistics.overallSkipped}</mdc-list-item-primary-text>
+                            <mdc-list-item-secondary-text>${3|statusName}</mdc-list-item-secondary-text>
+                        </mdc-list-item>
+                        <mdc-list-item>
+                            <mdc-icon mdc-list-item-graphic class="colored-icon status-${7|statusClass} big-icon">${7|statusIconName}</mdc-icon>
+                            <mdc-list-item-primary-text>${_executionStatistics.overallFailed}</mdc-list-item-primary-text>
+                            <mdc-list-item-secondary-text>${7|statusName}</mdc-list-item-secondary-text>
+                        </mdc-list-item>
+                    </mdc-list>
+                </mdc-card>
+            </mdc-layout-grid-cell>
+            <mdc-layout-grid-cell span="6">
+                <test-results-card></test-results-card>
+            </mdc-layout-grid-cell>
+            <mdc-layout-grid-cell span="3">
+                <test-duration-card></test-duration-card>
+            </mdc-layout-grid-cell>
+            <mdc-layout-grid-cell span="12">
+                <test-classes-card></test-classes-card>
+            </mdc-layout-grid-cell>
+        <!--/mdc-layout-grid-inner-->
+    </mdc-layout-grid>
 </template>

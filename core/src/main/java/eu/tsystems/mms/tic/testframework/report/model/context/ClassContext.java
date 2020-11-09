@@ -59,8 +59,15 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
     public final TestContextModel testContextModel;
     public final ExecutionContext executionContext;
     public TestContext testContext = null;
-    public boolean merged = false;
-    public ClassContext mergedIntoClassContext = null;
+
+    public TestContext getTestContext() {
+        return testContext;
+    }
+
+    public ClassContext setTestContext(TestContext testContext) {
+        this.testContext = testContext;
+        return this;
+    }
 
     public ClassContext(TestContextModel testContextModel, ExecutionContext executionContext) {
         this.parentContext = this.testContextModel = testContextModel;
@@ -109,10 +116,10 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
 
             TestContextModel correctTestContextModel = testContextModel;
             SuiteContext correctSuiteContext = testContextModel.suiteContext;
-            if (merged) {
-                correctSuiteContext = executionContext.getSuiteContext(iTestContext);
-                correctTestContextModel = correctSuiteContext.getTestContext(iTestContext);
-            }
+//            if (isMerged()) {
+//                correctSuiteContext = executionContext.getSuiteContext(iTestContext);
+//                correctTestContextModel = correctSuiteContext.getTestContext(iTestContext);
+//            }
 
             methodContext = new MethodContext(name, methodType, this, correctTestContextModel, correctSuiteContext, executionContext);
             fillBasicContextValues(methodContext, this, name);
@@ -133,13 +140,11 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
                 /*
                 link to merged context
                  */
-            if (merged) {
-                mergedIntoClassContext.methodContexts.add(methodContext);
-            }
+//            if (isMerged()) {
+//                mergedIntoClassContext.methodContexts.add(methodContext);
+//            }
 
-                /*
-                also check for annotations
-                 */
+            // also check for annotations
             Method method = iTestNGMethod.getConstructorOrMethod().getMethod();
             if (method.isAnnotationPresent(FailureCorridor.High.class)) {
                 methodContext.failureCorridorValue = FailureCorridor.Value.HIGH;

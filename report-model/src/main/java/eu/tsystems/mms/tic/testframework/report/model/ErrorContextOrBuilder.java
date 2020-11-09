@@ -8,27 +8,27 @@ public interface ErrorContextOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>string readable_error_message = 1;</code>
+   * <code>string readable_error_message = 1 [deprecated = true];</code>
    * @return The readableErrorMessage.
    */
-  java.lang.String getReadableErrorMessage();
+  @java.lang.Deprecated java.lang.String getReadableErrorMessage();
   /**
-   * <code>string readable_error_message = 1;</code>
+   * <code>string readable_error_message = 1 [deprecated = true];</code>
    * @return The bytes for readableErrorMessage.
    */
-  com.google.protobuf.ByteString
+  @java.lang.Deprecated com.google.protobuf.ByteString
       getReadableErrorMessageBytes();
 
   /**
-   * <code>string additional_error_message = 2;</code>
+   * <code>string additional_error_message = 2 [deprecated = true];</code>
    * @return The additionalErrorMessage.
    */
-  java.lang.String getAdditionalErrorMessage();
+  @java.lang.Deprecated java.lang.String getAdditionalErrorMessage();
   /**
-   * <code>string additional_error_message = 2;</code>
+   * <code>string additional_error_message = 2 [deprecated = true];</code>
    * @return The bytes for additionalErrorMessage.
    */
-  com.google.protobuf.ByteString
+  @java.lang.Deprecated com.google.protobuf.ByteString
       getAdditionalErrorMessageBytes();
 
   /**
@@ -47,15 +47,15 @@ public interface ErrorContextOrBuilder extends
   eu.tsystems.mms.tic.testframework.report.model.StackTraceOrBuilder getStackTraceOrBuilder();
 
   /**
-   * <code>string error_fingerprint = 6;</code>
+   * <code>string error_fingerprint = 6 [deprecated = true];</code>
    * @return The errorFingerprint.
    */
-  java.lang.String getErrorFingerprint();
+  @java.lang.Deprecated java.lang.String getErrorFingerprint();
   /**
-   * <code>string error_fingerprint = 6;</code>
+   * <code>string error_fingerprint = 6 [deprecated = true];</code>
    * @return The bytes for errorFingerprint.
    */
-  com.google.protobuf.ByteString
+  @java.lang.Deprecated com.google.protobuf.ByteString
       getErrorFingerprintBytes();
 
   /**
@@ -87,4 +87,28 @@ public interface ErrorContextOrBuilder extends
    * <code>.data.ScriptSource execution_object_source = 8;</code>
    */
   eu.tsystems.mms.tic.testframework.report.model.ScriptSourceOrBuilder getExecutionObjectSourceOrBuilder();
+
+  /**
+   * <code>string ticketId = 9;</code>
+   * @return The ticketId.
+   */
+  java.lang.String getTicketId();
+  /**
+   * <code>string ticketId = 9;</code>
+   * @return The bytes for ticketId.
+   */
+  com.google.protobuf.ByteString
+      getTicketIdBytes();
+
+  /**
+   * <code>string description = 10;</code>
+   * @return The description.
+   */
+  java.lang.String getDescription();
+  /**
+   * <code>string description = 10;</code>
+   * @return The bytes for description.
+   */
+  com.google.protobuf.ByteString
+      getDescriptionBytes();
 }

@@ -14,10 +14,6 @@
         <br>
     #end
 
-    #if ($testMethod.classContext.merged)
-        (in $testMethod.suiteContext.name - $testMethod.testContextModel.name)
-    #end
-
     #parse("methodTags.vm")
 
 </td>

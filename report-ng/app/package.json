@@ -26,7 +26,7 @@
     "@aurelia-mdc-web/text-field": "^1.1.6",
     "@aurelia-mdc-web/top-app-bar": "^1.1.6",
     "@types/moment-duration-format": "^2.2.2",
-    "apexcharts": "^3.22.1",
+    "apexcharts": "^3.22.2",
     "aurelia-animator-css": "^1.0.4",
     "aurelia-binding": "^2.5.4",
     "aurelia-bootstrapper": "^2.3.3",
@@ -39,7 +39,7 @@
     "t-systems-aurelia-components": "^1.0.1"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.164",
+    "@types/lodash": "^4.14.165",
     "@types/node": "^13.13.30",
     "@types/webpack": "^4.41.24",
     "app-settings-loader": "^1.0.3",

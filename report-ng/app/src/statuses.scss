@@ -37,6 +37,18 @@
     border-color: $passed;
 }
 
+.status-passed-retry {
+    @extend .status-passed;
+}
+
+.status-minor {
+    @extend .status-passed;
+}
+
+.status-minor-retry {
+    @extend .status-passed;
+}
+
 .status-skipped {
     background: $skipped;
     border-color: $skipped;
@@ -55,6 +67,10 @@
 .status-failed-expected {
     background: $failedExpected;
     border-color: $failedExpected;
+}
+
+.status-failed-retry {
+    @extend .status-failed
 }
 
 .badge {

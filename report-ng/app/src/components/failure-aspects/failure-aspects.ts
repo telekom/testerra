@@ -1,20 +1,20 @@
-import {DataLoader} from "../../services/data-loader";
-import {data} from "../../services/report-model";
 import {autoinject} from 'aurelia-framework';
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import {AbstractViewModel} from "../abstract-view-model";
-import IContextClip = data.IContextClip;
+import {StatisticsGenerator} from "../../services/statistics-generator";
+import {FailureAspect} from "../../services/models";
+import {StatusConverter} from "../../services/status-converter";
 
 @autoinject()
-export class FailureAspects extends AbstractViewModel{
+export class FailureAspects extends AbstractViewModel {
 
-    private _failureAspects: IContextClip[];
-    private _searchQuery:string;
-    private _searchRegexp:RegExp;
-    private _queryParams:any = {};
+    private _filteredFailureAspects: FailureAspect[];
+    private _searchQuery: string;
+    private _searchRegexp: RegExp;
 
     constructor(
-        private _dataLoader: DataLoader
+        private _statistics: StatisticsGenerator,
+        private _statusConverter:StatusConverter
     ) {
         super();
     }
@@ -28,25 +28,44 @@ export class FailureAspects extends AbstractViewModel{
     }
 
     private _filter() {
+        const queryParams: any = {};
         if (this._searchQuery?.length > 0) {
             this._searchRegexp = new RegExp("(" + this._searchQuery + ")", "ig");
-            this._queryParams.q = this._searchQuery;
+            queryParams.q = this._searchQuery;
         } else {
             this._searchRegexp = null;
-            delete this._queryParams.q;
         }
-        this._dataLoader.getExecutionAggregate().then(executionAggregate => {
-            if (this._searchRegexp) {
-                this._failureAspects = executionAggregate.executionContext.failureAscpects.filter(failureAspect => {
-                    return failureAspect.key.match(this._searchRegexp);
-                });
-            } else {
-                this._failureAspects = executionAggregate.executionContext.failureAscpects;
-            }
-        })
 
-        this.updateUrl(this._queryParams);
+        this._filteredFailureAspects = [];
+        this._statistics.getExecutionStatistics().then(executionStatistics => {
+            executionStatistics.classStatistics.forEach(classStatistic => {
+                classStatistic.classAggregate.methodContexts
+                    .filter(methodContext => {
+                        return this._statusConverter.failedStatuses.indexOf(methodContext.contextValues.resultStatus) >= 0;
+                    })
+                    .map(methodContext => {
+                        return new FailureAspect().setMethodContext(methodContext)
+                    })
+                    .filter(failureAspect => {
+                        return (!this._searchRegexp || failureAspect.name.match(this._searchRegexp));
+                    })
+                    .forEach(failureAspect => {
+                        console.log(failureAspect)
+                        const existingFailureAspect = this._filteredFailureAspects.find(existingFailureAspect => {
+                            return existingFailureAspect.name == failureAspect.name;
+                        });
+                        if (existingFailureAspect) {
+                            existingFailureAspect.incrementMethodCount();
+                        } else {
+                            this._filteredFailureAspects.push(failureAspect);
+                        }
+                    });
+            });
 
+            console.log(this._filteredFailureAspects);
 
+        });
+
+        this.updateUrl(queryParams);
     }
 }

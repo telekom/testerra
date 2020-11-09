@@ -46,40 +46,8 @@
       </mdc-drawer>
 
       <mdc-drawer-app-content>
-        <router-view class="router-content"></router-view>
+        <router-view class="full-width"></router-view>
       </mdc-drawer-app-content>
     </div>
-
-
-  <!--
-  <div class="mdc-tab-bar" role="tablist">
-    <div class="mdc-tab-scroller">
-      <div class="mdc-tab-scroller__scroll-area">
-        <div class="mdc-tab-scroller__scroll-content" repeat.for="nav of router.navigation" >
-
-            <button class="mdc-tab ${nav.isActive ? 'mdc-tab--active' : ''} " role="tab" aria-selected="true" tabindex="0"  >
-
-              <span class="mdc-tab__content">
-                <span class="mdc-tab__text-label">${nav.title}</span>
-              </span>
-
-              <span class="mdc-tab-indicator ${nav.isActive ? 'mdc-tab-indicator--active' : ''}">
-                <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
-              </span>
-              <span class="mdc-tab__ripple"></span>
-              </a>
-            </button>
-
-
-        </div>
-      </div>
-    </div>
-  </div>
--->
-  <!-- Just proof of concept, but I'd still like to be able to bind hrefs to a button, without resorting to history.push-->
-
-
-
-
   </body>
 </template>

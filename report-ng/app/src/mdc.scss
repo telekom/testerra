@@ -76,7 +76,18 @@
 }
 
 .card-content {
+    @extend .default-padding;
     margin: auto 0;
-    padding: 1em;
 }
+
+//adapt router view size to drawer because it doesn't do that on it's own for some reason
+mdc-drawer-app-content {
+    width:100vw;
+    display: flex;
+    flex: 0 1 auto;
+    box-sizing: content-box;
+    padding: 1.5rem 2rem;
+    background-color: #f5f5f5;
+}
+
 

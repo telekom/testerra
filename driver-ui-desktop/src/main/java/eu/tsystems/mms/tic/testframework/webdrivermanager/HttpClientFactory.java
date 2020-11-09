@@ -22,18 +22,17 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
  * under the License.
  *
  */
+
 import com.google.common.base.Strings;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import java.net.URL;
+import java.time.Duration;
 import okhttp3.ConnectionPool;
 import okhttp3.Credentials;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.openqa.selenium.remote.http.HttpClient;
-
-import java.net.URL;
-import java.time.Duration;
-
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 /**
@@ -45,7 +44,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  *
  * @author Eric Kubenka
  */
-class TesterraHttpClientFactory implements HttpClient.Factory {
+class HttpClientFactory implements HttpClient.Factory {
 
     private static long WDM_TIMEOUT_STUCK_SELENIUM_COMMANDS = PropertyManager.getLongProperty(TesterraProperties.WEBDRIVER_TIMEOUT_SECONDS_STUCK_COMMAND, 300);
 

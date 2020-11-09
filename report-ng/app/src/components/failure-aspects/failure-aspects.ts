@@ -50,7 +50,6 @@ export class FailureAspects extends AbstractViewModel {
                         return (!this._searchRegexp || failureAspect.name.match(this._searchRegexp));
                     })
                     .forEach(failureAspect => {
-                        console.log(failureAspect)
                         const existingFailureAspect = this._filteredFailureAspects.find(existingFailureAspect => {
                             return existingFailureAspect.name == failureAspect.name;
                         });
@@ -61,9 +60,6 @@ export class FailureAspects extends AbstractViewModel {
                         }
                     });
             });
-
-            console.log(this._filteredFailureAspects);
-
         });
 
         this.updateUrl(queryParams);

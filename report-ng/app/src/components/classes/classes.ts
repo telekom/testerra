@@ -77,7 +77,7 @@ export class Classes extends AbstractViewModel {
     private _filter() {
         const queryParams:any = {};
         if (this._searchQuery?.length > 0) {
-            this._searchRegexp = new RegExp("(" + this._searchQuery + ")", "ig");
+            this._searchRegexp = this._statusConverter.createRegexpFromSearchString(this._searchQuery);
             queryParams.q = this._searchQuery;
         } else {
             this._searchRegexp = null;
@@ -133,7 +133,7 @@ export class Classes extends AbstractViewModel {
                     .map(methodContext => {
                         return {
                             classContext: classStatistic.classAggregate.classContext,
-                            failureAspect: this._statusConverter.failedStatuses.indexOf(methodContext.contextValues.resultStatus) > 0 ? new FailureAspect().setMethodContext(methodContext):null,
+                            failureAspect: this._statusConverter.failedStatuses.indexOf(methodContext.contextValues.resultStatus) >= 0 ? new FailureAspect().setMethodContext(methodContext):null,
                             methodContext: methodContext
                         }
                     })

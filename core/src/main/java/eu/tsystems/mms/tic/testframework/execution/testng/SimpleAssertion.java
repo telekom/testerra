@@ -88,6 +88,13 @@ public interface SimpleAssertion {
     default void assertGreaterThan(BigDecimal actual, BigDecimal expected) {
         assertGreaterThan(actual, expected, null);
     }
+    default void assertGreaterThan(Object actual, Object expected, Object subject) {
+        assertGreaterThan(toBigDecimal(actual), toBigDecimal(expected), subject);
+    }
+    default void assertGreaterThan(Object actual, Object expected) {
+        assertGreaterThan(actual, expected, null);
+    }
+
 
     void assertGreaterEqualThan(BigDecimal actual, BigDecimal expected, Object subject);
     default void assertGreaterEqualThan(BigDecimal actual, BigDecimal expected) {
@@ -102,6 +109,12 @@ public interface SimpleAssertion {
 
     void assertLowerThan(BigDecimal actual, BigDecimal expected, Object subject);
     default void assertLowerThan(BigDecimal actual, BigDecimal expected) {
+        assertLowerThan(actual, expected, null);
+    }
+    default void assertLowerThan(Object actual, Object expected, Object subject) {
+        assertLowerThan(toBigDecimal(actual), toBigDecimal(expected), subject);
+    }
+    default void assertLowerThan(Object actual, Object expected) {
         assertLowerThan(actual, expected, null);
     }
 

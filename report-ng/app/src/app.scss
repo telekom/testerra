@@ -15,11 +15,6 @@ body {
   height: 60px;
 }
 
-//Put drawer behind top app bar
-.app-top-bar {
-  z-index: 2;
-}
-
 //prevents app-content overflowing out of screen
 .flex-container {
   display: flex;
@@ -35,17 +30,6 @@ body {
   background-color: #f5f5f5;
 }
 
-#content-router {
+.router-content {
   width: 100%;
-}
-
-
-.card-headline {
-    margin: 0.4em 1em;
-    color: rgba(0, 0, 0, 0.6);
-}
-
-.card-content {
-    margin: auto 0;
-    padding: 1em;
 }

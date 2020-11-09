@@ -69,3 +69,14 @@
 .mdc-card {
     @include card.fill-color(#ffffff);
 }
+
+.card-headline {
+    margin: 0.4em 1em;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.card-content {
+    margin: auto 0;
+    padding: 1em;
+}
+

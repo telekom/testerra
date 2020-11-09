@@ -2,13 +2,13 @@ import {autoinject} from 'aurelia-framework';
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import {AbstractViewModel} from "../abstract-view-model";
 import {StatisticsGenerator} from "../../services/statistics-generator";
-import {FailureAspect} from "../../services/models";
 import {StatusConverter} from "../../services/status-converter";
+import {FailureAspectStatistics} from "../../services/statistic-models";
 
 @autoinject()
 export class FailureAspects extends AbstractViewModel {
 
-    private _filteredFailureAspects: FailureAspect[];
+    private _filteredFailureAspects: FailureAspectStatistics[];
     private _searchQuery: string;
     private _searchRegexp: RegExp;
 
@@ -44,26 +44,22 @@ export class FailureAspects extends AbstractViewModel {
                         return this._statusConverter.failedStatuses.indexOf(methodContext.contextValues.resultStatus) >= 0;
                     })
                     .map(methodContext => {
-                        return new FailureAspect().setMethodContext(methodContext)
+                        return new FailureAspectStatistics().addMethodContext(methodContext)
                     })
-                    .filter(failureAspect => {
-                        return (!this._searchRegexp || failureAspect.name.match(this._searchRegexp));
+                    .filter(failureAspectStatistics => {
+                        return (!this._searchRegexp || failureAspectStatistics.name.match(this._searchRegexp));
                     })
-                    .forEach(failureAspect => {
-                        console.log(failureAspect)
-                        const existingFailureAspect = this._filteredFailureAspects.find(existingFailureAspect => {
-                            return existingFailureAspect.name == failureAspect.name;
+                    .forEach(failureAspectStatistics => {
+                        const foundFailureAspectStatistics = this._filteredFailureAspects.find(existingFailureAspectStatistics => {
+                            return existingFailureAspectStatistics.name == failureAspectStatistics.name;
                         });
-                        if (existingFailureAspect) {
-                            existingFailureAspect.incrementMethodCount();
+                        if (foundFailureAspectStatistics) {
+                            foundFailureAspectStatistics.addMethodContext(failureAspectStatistics.methodContext);
                         } else {
-                            this._filteredFailureAspects.push(failureAspect);
+                            this._filteredFailureAspects.push(failureAspectStatistics);
                         }
                     });
             });
-
-            console.log(this._filteredFailureAspects);
-
         });
 
         this.updateUrl(queryParams);

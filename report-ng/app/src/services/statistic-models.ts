@@ -26,6 +26,7 @@ import ResultStatusType = data.ResultStatusType;
 import ExecutionAggregate = data.ExecutionAggregate;
 import ClassContextAggregate = data.ClassContextAggregate;
 import MethodType = data.MethodType;
+import IMethodContext = data.IMethodContext;
 
 class Statistics {
     private _statusConverter: StatusConverter
@@ -45,7 +46,11 @@ class Statistics {
     }
 
     get availableStatuses() {
-        return Object.keys(this._resultStatuses);
+        const statuses = [];
+        for (const status in this._resultStatuses) {
+            statuses.push(status);
+        }
+        return statuses;
     }
 
     get testsTotal() {
@@ -140,5 +145,33 @@ export class ClassStatistics extends Statistics {
 
     get configStatistics() {
         return this._configStatistics;
+    }
+}
+
+
+export class FailureAspectStatistics extends Statistics {
+    private _methodContext:IMethodContext;
+    private _name:string;
+
+    constructor() {
+        super();
+    }
+
+    addMethodContext(methodContext:IMethodContext) {
+        if (!this._methodContext) {
+            this._methodContext = methodContext;
+            this._name = (methodContext.errorContext?.description
+                || methodContext.errorContext?.stackTrace?.cause.className + (methodContext.errorContext?.stackTrace?.cause?.message ? ": " + methodContext.errorContext?.stackTrace?.cause?.message.trim() : ""));
+        }
+        this.addResultStatus(methodContext.contextValues.resultStatus);
+        return this;
+    }
+
+    get methodContext() {
+        return this._methodContext;
+    }
+
+    get name() {
+        return this._name;
     }
 }

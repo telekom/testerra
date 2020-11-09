@@ -2,11 +2,10 @@ import {DataLoader} from "../../services/data-loader";
 import {StatusConverter} from "../../services/status-converter";
 import {autoinject} from "aurelia-framework";
 import {StatisticsGenerator} from "../../services/statistics-generator";
-import {ExecutionStatistics} from "../../services/statistic-models";
+import {ExecutionStatistics, FailureAspectStatistics} from "../../services/statistic-models";
 import {AbstractViewModel} from "../abstract-view-model";
 import {data} from "../../services/report-model";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
-import {FailureAspect} from "../../services/models";
 import IMethodContext = data.IMethodContext;
 import IClassContext = data.IClassContext;
 import MethodType = data.MethodType;
@@ -15,7 +14,7 @@ import ResultStatusType = data.ResultStatusType;
 interface MethodAggregate {
     methodContext:IMethodContext,
     classContext:IClassContext
-    failureAspect?:FailureAspect,
+    failureAspect?:FailureAspectStatistics,
 }
 
 @autoinject()
@@ -77,7 +76,7 @@ export class Classes extends AbstractViewModel {
     private _filter() {
         const queryParams:any = {};
         if (this._searchQuery?.length > 0) {
-            this._searchRegexp = new RegExp("(" + this._searchQuery + ")", "ig");
+            this._searchRegexp = this._statusConverter.createRegexpFromSearchString(this._searchQuery);
             queryParams.q = this._searchQuery;
         } else {
             this._searchRegexp = null;
@@ -133,7 +132,7 @@ export class Classes extends AbstractViewModel {
                     .map(methodContext => {
                         return {
                             classContext: classStatistic.classAggregate.classContext,
-                            failureAspect: this._statusConverter.failedStatuses.indexOf(methodContext.contextValues.resultStatus) > 0 ? new FailureAspect().setMethodContext(methodContext):null,
+                            failureAspect: this._statusConverter.failedStatuses.indexOf(methodContext.contextValues.resultStatus) >= 0 ? new FailureAspectStatistics().addMethodContext(methodContext):null,
                             methodContext: methodContext
                         }
                     })

@@ -177,6 +177,14 @@ module.exports = ({production} = {}, {analyze, tests, hmr, port, host} = {}) => 
             // load these fonts normally, as files:
             {test: /\.(ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'file-loader'},
             {
+                test: /\.css$/,
+                issuer: /\.ts?$/i,
+                use: [
+                    {loader: MiniCssExtractPlugin.loader},
+                    "css-loader"
+                ],
+            },
+            {
                 test: /\.scss$/,
                 issuer: /\.ts?$/i,
                 use: [

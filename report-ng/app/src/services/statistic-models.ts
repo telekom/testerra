@@ -160,8 +160,10 @@ export class FailureAspectStatistics extends Statistics {
     addMethodContext(methodContext:IMethodContext) {
         if (!this._methodContext) {
             this._methodContext = methodContext;
-            this._name = (methodContext.errorContext?.description
-                || methodContext.errorContext?.stackTrace?.cause.className + (methodContext.errorContext?.stackTrace?.cause?.message ? ": " + methodContext.errorContext?.stackTrace?.cause?.message.trim() : ""));
+            this._name = (
+                methodContext.errorContext?.description
+                || methodContext.errorContext?.stackTrace?.cause.className + (methodContext.errorContext?.stackTrace?.cause?.message ? ": " + methodContext.errorContext?.stackTrace?.cause?.message.trim() : "")
+            );
         }
         this.addResultStatus(methodContext.contextValues.resultStatus);
         return this;
@@ -173,5 +175,35 @@ export class FailureAspectStatistics extends Statistics {
 
     get name() {
         return this._name;
+    }
+}
+
+export class ExitPointStatistics extends Statistics {
+    private _methodContext:IMethodContext;
+    private _fingerprint:string;
+
+    constructor() {
+        super();
+    }
+
+    addMethodContext(methodContext:IMethodContext) {
+        if (!this._methodContext) {
+            this._methodContext = methodContext;
+            this._fingerprint = (
+                methodContext.errorContext?.scriptSource?.lines.map(line => line.line).join("\n")
+                || methodContext.errorContext.stackTrace?.cause.stackTraceElements.join("\n")
+                || "undefined"
+            );
+        }
+        this.addResultStatus(methodContext.contextValues.resultStatus);
+        return this;
+    }
+
+    get methodContext() {
+        return this._methodContext;
+    }
+
+    get fingerprint() {
+        return this._fingerprint;
     }
 }

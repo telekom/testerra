@@ -27,7 +27,7 @@
                 >
                     <mdc-list>
                         <mdc-list-item>(All)</mdc-list-item>
-                        <mdc-list-item value="${classStatistic.classAggregate.classContext.simpleClassName}"
+                        <mdc-list-item value.bind="classStatistic.classAggregate.classContext.simpleClassName"
                                        repeat.for="classStatistic of _executionStatistics.classStatistics"
                         >
                             ${classStatistic.classAggregate.classContext.simpleClassName}
@@ -72,7 +72,9 @@
                             </mdc-data-table-cell>
                             <mdc-data-table-cell innerhtml.bind="methodAggregate.methodContext.contextValues.name|highlightText:_searchRegexp">
                             </mdc-data-table-cell>
-                            <mdc-data-table-cell innerhtml.bind="methodAggregate.failureAspect.name|html|highlightText:_searchRegexp">
+                            <mdc-data-table-cell innerhtml.bind="methodAggregate.failureAspect.name|html|highlightText:_searchRegexp"
+                                                 class="default-padding"
+                            >
                             </mdc-data-table-cell>
                         </mdc-data-table-row>
                     </mdc-data-table-content>

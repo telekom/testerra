@@ -9,6 +9,7 @@ import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import IMethodContext = data.IMethodContext;
 import IClassContext = data.IClassContext;
 import MethodType = data.MethodType;
+import ResultStatusType = data.ResultStatusType;
 
 interface MethodAggregate {
     methodContext:IMethodContext,
@@ -77,6 +78,16 @@ export class Classes extends AbstractViewModel {
         const uniqueStatuses = {};
         const uniqueFailureAspects = {};
 
+        let relevantStatuses:ResultStatusType[] = null;
+
+        if (this._selectedStatus == ResultStatusType.PASSED) {
+            relevantStatuses = this._statusConverter.passedStatuses;
+        } else if (this._selectedStatus == ResultStatusType.FAILED) {
+            relevantStatuses = [ResultStatusType.FAILED, ResultStatusType.FAILED_RETRIED];
+        } else if (this._selectedStatus) {
+            relevantStatuses = [ this._selectedStatus ];
+        }
+
         this._filteredMethodAggregates = [];
         this._executionStatistics.classStatistics
             .map(classStatistics => {
@@ -91,7 +102,7 @@ export class Classes extends AbstractViewModel {
             .forEach(classStatistic => {
                 classStatistic.classAggregate.methodContexts
                     .filter(methodContext => {
-                        return (!this._selectedStatus || methodContext.contextValues.resultStatus == this._selectedStatus)
+                        return (!relevantStatuses || relevantStatuses.indexOf(methodContext.contextValues.resultStatus) >= 0)
                     })
                     .filter(methodContext => {
                         return (this._showConfigurationMethods == true || (this._showConfigurationMethods == false && methodContext.methodType == MethodType.TEST_METHOD))

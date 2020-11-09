@@ -71,8 +71,12 @@ export class TestClassesCard {
             },
             series: series,
             xaxis: {
-                show: true,
-                categories: xlabels
+                labels: {
+                    show: true,
+                    trim: false,    //ignored apparently, documentation: https://apexcharts.com/docs/options/xaxis/#trim
+                    maxHeight: undefined,
+                },
+                categories: xlabels,
             },
             grid: {
                 show: false,
@@ -80,7 +84,7 @@ export class TestClassesCard {
             plotOptions: {
                 bar: {
                     horizontal: true,
-                    barHeight: '75%',
+                    barHeight: '60%',
                 }
             },
             noData: {

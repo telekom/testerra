@@ -45,8 +45,14 @@ export class StatisticsGenerator {
                     testContext.classContextIds.forEach(classContextId => {
                         const loadingPromise = this._dataLoader.getClassContextAggregate(classContextId).then(classContextAggregate => {
                             let classStatistics:ClassStatistics;
+
+                            // Group by test context name
                             if (classContextAggregate.classContext.testContextName) {
                                 classStatistics = executionStatistics.classStatistics.find(value => value.classAggregate.classContext.testContextName == classContextAggregate.classContext.testContextName);
+
+                            // Or by class name
+                            } else {
+                                classStatistics = executionStatistics.classStatistics.find(value => value.classAggregate.classContext.fullClassName == classContextAggregate.classContext.fullClassName);
                             }
                             if (!classStatistics) {
                                 classStatistics = new ClassStatistics();

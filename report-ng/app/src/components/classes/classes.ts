@@ -24,7 +24,7 @@ export class Classes extends AbstractViewModel {
     private _selectedStatus:number;
     private _availableStatuses:number[];
     private _filteredMethodAggregates:MethodAggregate[];
-    private _configurationMethods:boolean = true;
+    private _showConfigurationMethods:boolean = null;
     private _searchQuery:string;
     private _searchRegexp:RegExp;
     private _uniqueFailureAspects = 0;
@@ -55,11 +55,11 @@ export class Classes extends AbstractViewModel {
             this._selectedStatus = this._statusConverter.getStatusForClass(params.status);
         }
 
-        if (params.configurationMethods) {
-            if (params.configurationMethods.toLowerCase() == "true") {
-                this._configurationMethods = true;
+        if (params.config) {
+            if (params.config.toLowerCase() == "true") {
+                this._showConfigurationMethods = true;
             } else {
-                this._configurationMethods = false;
+                this._showConfigurationMethods = false;
             }
         }
     }
@@ -73,33 +73,18 @@ export class Classes extends AbstractViewModel {
     }
 
     private _filter() {
-        const queryParams:any = {};
-        if (this._searchQuery?.length > 0) {
-            this._searchRegexp = new RegExp("(" + this._searchQuery + ")", "ig");
-            queryParams.q = this._searchQuery;
-        } else {
-            this._searchRegexp = null;
-        }
-
-        if (this._selectedClass) {
-            queryParams.class = this._selectedClass;
-        }
-
-        if (this._selectedStatus >= 0) {
-            queryParams.status = this._statusConverter.getClassForStatus(this._selectedStatus);
-        }
-
-        queryParams.configurationMethods = this._configurationMethods;
-
-        console.log("filter", queryParams);
-        this.updateUrl(queryParams);
-
         const uniqueClasses = {};
         const uniqueStatuses = {};
         const uniqueFailureAspects = {};
 
         this._filteredMethodAggregates = [];
         this._executionStatistics.classStatistics
+            .map(classStatistics => {
+                if (this._showConfigurationMethods === null) {
+                    this._showConfigurationMethods = classStatistics.configStatistics.overallFailed > 0;
+                }
+                return classStatistics;
+            })
             .filter(classStatistic => {
                 return (!this._selectedClass || classStatistic.classAggregate.classContext.simpleClassName == this._selectedClass)
             })
@@ -109,7 +94,7 @@ export class Classes extends AbstractViewModel {
                         return (!this._selectedStatus || methodContext.contextValues.resultStatus == this._selectedStatus)
                     })
                     .filter(methodContext => {
-                        return (this._configurationMethods == true || (this._configurationMethods == false && methodContext.methodType == MethodType.TEST_METHOD))
+                        return (this._showConfigurationMethods == true || (this._showConfigurationMethods == false && methodContext.methodType == MethodType.TEST_METHOD))
                     })
                     .map(methodContext => {
                         return {
@@ -133,6 +118,24 @@ export class Classes extends AbstractViewModel {
         this._uniqueFailureAspects = Object.keys(uniqueFailureAspects).length;
         this._uniqueStatuses = Object.keys(uniqueStatuses).length;
 
+        const queryParams:any = {};
+        if (this._searchQuery?.length > 0) {
+            this._searchRegexp = new RegExp("(" + this._searchQuery + ")", "ig");
+            queryParams.q = this._searchQuery;
+        } else {
+            this._searchRegexp = null;
+        }
+
+        if (this._selectedClass) {
+            queryParams.class = this._selectedClass;
+        }
+
+        if (this._selectedStatus >= 0) {
+            queryParams.status = this._statusConverter.getClassForStatus(this._selectedStatus);
+        }
+
+        queryParams.config = this._showConfigurationMethods;
+        this.updateUrl(queryParams);
     }
 }
 

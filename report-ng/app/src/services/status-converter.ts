@@ -35,10 +35,9 @@ class GraphColors {
 
 @autoinject()
 export class StatusConverter {
-
-    private resultStatusValues: Array<ResultStatusType | string> = Object.values(ResultStatusType);
-    private resultStatusKeys = Object.keys(ResultStatusType);
-
+    /**
+     * Status adapted from {@link TestStatusController.java}
+     */
     get failedStatuses() {
         return [
             ResultStatusType.FAILED,
@@ -72,9 +71,15 @@ export class StatusConverter {
             case ResultStatusType.SKIPPED:
                 return "Skipped";
             case ResultStatusType.PASSED:
-            case ResultStatusType.MINOR:
                 return "Passed";
+            case ResultStatusType.MINOR:
+                return "Passed (Minor)";
+            case ResultStatusType.PASSED_RETRY:
+                return "Passed (Retried)";
+            case ResultStatusType.MINOR_RETRY:
+                return "Passed (Minor Retried)";
             case ResultStatusType.FAILED_RETRIED:
+                return "Failed (Retried)";
             case ResultStatusType.FAILED:
                 return "Failed";
             case ResultStatusType.FAILED_EXPECTED:

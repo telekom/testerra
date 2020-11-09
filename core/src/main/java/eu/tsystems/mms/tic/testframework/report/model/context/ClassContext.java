@@ -24,7 +24,6 @@ package eu.tsystems.mms.tic.testframework.report.model.context;
 import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
-import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
@@ -36,6 +35,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
@@ -68,7 +68,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
     }
 
     public MethodContext findTestMethodContainer(String methodName) {
-        return getOrCreateContext(MethodContext.class, methodContexts, methodName, null, null);
+        return getOrCreateContext(methodContexts, methodName, null, null);
     }
 
     public MethodContext getMethodContext(ITestResult testResult, ITestContext iTestContext, IInvokedMethod invokedMethod) {
@@ -82,36 +82,26 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
 
         final List<Object> parametersList = Arrays.stream(parameters).collect(Collectors.toList());
 
-        List<MethodContext> collect;
+        Optional<MethodContext> found;
 
         if (testResult != null) {
-            collect = methodContexts.stream()
+            found = methodContexts.stream()
                     .filter(mc -> testResult == mc.testResult)
-                    .collect(Collectors.toList());
+                    .findFirst();
         } else {
             // TODO: (!!!!) this is not eindeutig
-            collect = methodContexts.stream()
+            found = methodContexts.stream()
                     .filter(mc -> iTestContext == mc.iTestContext)
                     .filter(mc -> iTestNGMethod == mc.iTestNgMethod)
                     .filter(mc -> mc.parameters.containsAll(parametersList))
-                    .collect(Collectors.toList());
+                    .findFirst();
         }
 
         MethodContext methodContext;
-        if (collect.isEmpty()) {
-                /*
-                create new one
-                 */
+        if (!found.isPresent()) {
             MethodContext.Type methodType;
 
-            final boolean isTest;
-            if (iTestNGMethod != null) {
-                isTest = iTestNGMethod.isTest();
-            } else {
-                throw new SystemException("Error getting method infos, seems like a TestNG bug.\n" + String.join("\n", iTestNGMethod.toString(), iTestContext.toString()));
-            }
-
-            if (isTest) {
+            if (iTestNGMethod.isTest()) {
                 methodType = MethodContext.Type.TEST_METHOD;
             } else {
                 methodType = MethodContext.Type.CONFIGURATION_METHOD;
@@ -168,10 +158,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
             eventBus.post(new ContextUpdateEvent().setContext(methodContext));
             eventBus.post(new ContextUpdateEvent().setContext(this));
         } else {
-            if (collect.size() > 1) {
-                log().error("INTERNAL ERROR: Found " + collect.size() + " " + MethodContext.class.getSimpleName() + "s with name " + name + ", picking first one");
-            }
-            methodContext = collect.get(0);
+            methodContext = found.get();
         }
         return methodContext;
     }

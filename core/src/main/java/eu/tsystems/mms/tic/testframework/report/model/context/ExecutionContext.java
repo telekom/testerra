@@ -62,10 +62,9 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
         TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(this));
     }
 
-    public SuiteContext getSuiteContext(ITestResult testResult, ITestContext iTestContext) {
+    public synchronized SuiteContext getSuiteContext(ITestResult testResult, ITestContext iTestContext) {
         final String suiteName = TestNGHelper.getSuiteName(testResult, iTestContext);
         return getOrCreateContext(
-                SuiteContext.class,
                 suiteContexts,
                 suiteName,
                 () -> new SuiteContext(this),

@@ -24,8 +24,8 @@ package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import java.util.Collection;
 import java.util.List;
-import java.util.Queue;
 import java.util.stream.Collectors;
 
 public final class FilterUtils {
@@ -42,8 +42,12 @@ public final class FilterUtils {
     /**
      * Used in methods.vm
      */
-    public List<MethodContext> filterMethodContexts(Queue<MethodContext> methodContexts, boolean configMethods, boolean testMethods,
-                                                    TestStatusController.Status status) {
+    public List<MethodContext> filterMethodContexts(
+            Collection<MethodContext> methodContexts,
+            boolean configMethods,
+            boolean testMethods,
+            TestStatusController.Status status
+    ) {
         return methodContexts.stream()
                 .filter(methodContext -> (methodContext.isConfigMethod() && configMethods) || (methodContext.isTestMethod() && testMethods))
                 .filter(methodContext -> methodContext.status == status)

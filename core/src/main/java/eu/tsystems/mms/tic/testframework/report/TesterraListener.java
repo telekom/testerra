@@ -51,7 +51,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configurator;
@@ -247,8 +246,7 @@ public class TesterraListener implements
         /*
          * store testresult, create method context
          */
-        MethodContext methodContext = ExecutionContextController
-                .setCurrentTestResult(testResult, testContext); // stores the actual testresult, auto-creates the method context
+        MethodContext methodContext = ExecutionContextController.setCurrentTestResult(testResult, testContext); // stores the actual testresult, auto-creates the method context
         ExecutionContextController.setCurrentMethodContext(methodContext);
 
         methodContext.steps().announceTestStep(TestStep.SETUP);
@@ -280,12 +278,15 @@ public class TesterraListener implements
      * @param context    steps of test.
      */
     @Override
-    public void afterInvocation(final IInvokedMethod method, final ITestResult testResult,
-                                final ITestContext context) {
+    public void afterInvocation(
+            IInvokedMethod method,
+            ITestResult testResult,
+            ITestContext context
+    ) {
         pAfterInvocation(method, testResult, context);
     }
 
-    private static final String getMethodName(ITestResult testResult) {
+    private static String getMethodName(ITestResult testResult) {
         ITestNGMethod testMethod = testResult.getMethod();
         String methodName = testMethod.getMethodName();
         Object[] parameters = testResult.getParameters();
@@ -344,13 +345,13 @@ public class TesterraListener implements
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         if (methodContext == null) {
 
-            if (testResult.getStatus() == ITestResult.CREATED) {
+            if (
+                    testResult.getStatus() == ITestResult.CREATED
+                    || testResult.getStatus() == ITestResult.SKIP
+            ) {
                 /*
                  * TestNG bug or whatever ?!?!
                  */
-                ClassContext classContext = ExecutionContextController.getClassContextFromTestResult(testResult, testContext, invokedMethod);
-                methodContext = classContext.safeAddSkipMethod(testResult, invokedMethod);
-            } else if (testResult.getStatus() == ITestResult.SKIP) {
                 ClassContext classContext = ExecutionContextController.getClassContextFromTestResult(testResult, testContext, invokedMethod);
                 methodContext = classContext.safeAddSkipMethod(testResult, invokedMethod);
             } else {
@@ -359,7 +360,7 @@ public class TesterraListener implements
         }
 
         // set method endTime
-        methodContext.endTime = new Date();
+        //methodContext.endTime = new Date();
 
         /*
         add workers in workflow order

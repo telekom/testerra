@@ -73,13 +73,13 @@ export class StatusConverter {
             case ResultStatusType.PASSED:
                 return "Passed";
             case ResultStatusType.MINOR:
-                return "Passed (Minor)";
+                return "Minor Passed";
             case ResultStatusType.PASSED_RETRY:
-                return "Passed (Retried)";
+                return "Passed Retried";
             case ResultStatusType.MINOR_RETRY:
-                return "Passed (Minor Retried)";
+                return "Minor Passed Retried";
             case ResultStatusType.FAILED_RETRIED:
-                return "Failed (Retried)";
+                return "Failed Retried";
             case ResultStatusType.FAILED:
                 return "Failed";
             case ResultStatusType.FAILED_EXPECTED:

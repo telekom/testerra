@@ -27,3 +27,15 @@ body {
 .default-padding {
     padding: 1em;
 }
+
+.default-margin {
+    margin: 1em;
+}
+
+.alert {
+    @extend .full-width;
+    @extend .default-padding;
+    min-height: 10em;
+    text-align: center;
+    vertical-align: center;
+}

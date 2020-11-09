@@ -18,7 +18,7 @@
             <mdc-data-table class="full-width">
                 <mdc-data-table-header>
                     <mdc-data-table-header-cell>Failure Aspect</mdc-data-table-header-cell>
-                    <mdc-data-table-header-cell>Methods</mdc-data-table-header-cell>
+                    <mdc-data-table-header-cell>Statuses</mdc-data-table-header-cell>
                 </mdc-data-table-header>
                 <mdc-data-table-content>
                     <mdc-data-table-row repeat.for="failureAspect of _filteredFailureAspects">
@@ -28,7 +28,7 @@
                             ></a>
                         </mdc-data-table-cell>
                         <mdc-data-table-cell>
-                            ${failureAspect.methodCount}
+                            <div repeat.for="status of failureAspect.availableStatuses" class="default-margin"><span class="badge status-${status|statusClass}">${failureAspect.getStatusCount(status)} ${status|statusName}</span></div>
                         </mdc-data-table-cell>
                     </mdc-data-table-row>
                 </mdc-data-table-content>

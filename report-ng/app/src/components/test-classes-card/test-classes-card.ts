@@ -1,5 +1,6 @@
 import {data} from "../../services/report-model";
 import {autoinject} from "aurelia-framework";
+import {EventAggregator} from 'aurelia-event-aggregator';
 import {StatusConverter} from "../../services/status-converter";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import ResultStatusType = data.ResultStatusType;
@@ -12,6 +13,7 @@ export class TestClassesCard {
     constructor(
         private _statusConverter: StatusConverter,
         private _statisticsGenerator: StatisticsGenerator,
+        private _eventAggregator: EventAggregator
     ) {
     }
 
@@ -19,6 +21,7 @@ export class TestClassesCard {
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
             this._prepareHorizontalBarChart(executionStatistics.classStatistics);
         });
+        this._piePieceClicked();
     }
 
     private _prepareHorizontalBarChart(classStatistics): void {
@@ -98,5 +101,11 @@ export class TestClassesCard {
                 horizontalAlign: 'center'
             }
         }
+    }
+
+    private _piePieceClicked() {
+        this._eventAggregator.subscribe('pie-piece-click', dataLabel => {
+            console.log("Yay! " + dataLabel);
+        });
     }
 }

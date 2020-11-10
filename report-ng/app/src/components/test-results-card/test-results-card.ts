@@ -13,6 +13,7 @@ export class TestResultsCard {
     constructor(
         private _statusConverter: StatusConverter,
         private _statisticsGenerator: StatisticsGenerator,
+        private _element: Element
     ) {
     }
 
@@ -38,11 +39,26 @@ export class TestResultsCard {
             chart: {
                 type: 'pie',
                 width: '400px',
-                fontFamily: 'Roboto'
+                fontFamily: 'Roboto',
+                events: {
+                    dataPointSelection: (event, chartContext, config) => {
+                        this._piePieceClicked(labels[config.dataPointIndex]);
+                        event.stopPropagation();
+                    }
+                },
             },
             series: series,
             colors: colors,
             labels: labels
         };
+    }
+
+    private _piePieceClicked(dataLabel: string): void {
+        let pieEvent = new CustomEvent('pie-piece-click', {
+            detail: {dataLabel: dataLabel},
+            bubbles: true
+        });
+        this._element.dispatchEvent(pieEvent);
+        console.log("Event fired. Label:" + dataLabel);
     }
 }

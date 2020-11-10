@@ -6,12 +6,13 @@ npm start
 ```
 
 ## Compile Proto
-
+Generates models into `src/services/report-model.js`
 ```bash
 npm run proto
 ```
 
 ## Build release
+Generates the application into `../src/main/resources/report-ng`
 ```bash
 npm run build
 ```

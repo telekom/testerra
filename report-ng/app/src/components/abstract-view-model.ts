@@ -38,11 +38,11 @@ export abstract class AbstractViewModel {
     }
 
     protected updateUrl(params:object) {
-        this._navInstruction.router.navigateToRoute(this._routeConfig.name, params, {replace: true});
+        window.history.replaceState({}, "", this._navInstruction.router.generate(this._routeConfig.name, params));
     }
 
     protected withQueryParams(params:object) {
-        return Object.assign(params, this.queryParams);
+        return Object.assign({}, this.queryParams, params);
     }
 
     determineActivationStrategy() {

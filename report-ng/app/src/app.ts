@@ -47,11 +47,11 @@ export class App {
                 title: 'Dashboard'
             },
             {
-                route: 'classes',
+                route: 'tests',
                 moduleId: PLATFORM.moduleName('components/classes/classes'),
                 nav: true,
-                name: "classes",
-                title: 'Classes'
+                name: "tests",
+                title: 'Tests'
             },
             // {
             //     route: 'threads',

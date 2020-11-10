@@ -24,7 +24,7 @@
                     <mdc-data-table-content>
                         <mdc-data-table-row repeat.for="failureAspect of _filteredFailureAspects">
                             <mdc-data-table-cell class="default-padding">
-                                <a route-href="route: classes; params.bind: {q: failureAspect.name}"
+                                <a route-href="route: tests; params.bind: {q: failureAspect.name}"
                                    class="error-view"
                                    innerhtml.bind="failureAspect.name|html|highlightText:_searchRegexp"
                                 ></a>

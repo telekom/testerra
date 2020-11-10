@@ -31,6 +31,7 @@ export class Classes extends AbstractViewModel {
     //private _uniqueFailureAspects = 0;
     private _uniqueStatuses = 0;
     private _uniqueClasses = 0;
+    private _loading = false;
 
     constructor(
         private _dataLoader: DataLoader,
@@ -46,6 +47,7 @@ export class Classes extends AbstractViewModel {
         navInstruction: NavigationInstruction
     ) {
         super.activate(params, routeConfig, navInstruction);
+        console.log("activate");
         if (params.q) {
             this._searchQuery = params.q;
         }
@@ -66,11 +68,9 @@ export class Classes extends AbstractViewModel {
         this._filter();
     }
 
-    attached() {
-
-    }
-
     private _filter() {
+        this._loading = true;
+
         const queryParams:any = {};
         if (this._searchQuery?.length > 0) {
             this._searchRegexp = this._statusConverter.createRegexpFromSearchString(this._searchQuery);
@@ -102,8 +102,17 @@ export class Classes extends AbstractViewModel {
         }
 
         this._filteredMethodAggregates = [];
+
+        /**
+         * Workarrounds for https://github.com/aurelia-ui-toolkits/aurelia-mdc-web/issues/26
+         */
+        // this._selectedClass = null;
+        // this._selectedStatus = null;
+
+        console.log("filter", queryParams);
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
             this._executionStatistics = executionStatistics;
+
             executionStatistics.classStatistics
                 .map(classStatistics => {
                     // Determine if we need to enable showing config methods by default if there has any error occured
@@ -153,15 +162,49 @@ export class Classes extends AbstractViewModel {
                             this._filteredMethodAggregates.push(methodAggregate);
                         })
                 });
+
+            this._uniqueClasses = Object.keys(uniqueClasses).length;
+            this._uniqueStatuses = Object.keys(uniqueStatuses).length;
+            //this._uniqueFailureAspects = Object.keys(uniqueFailureAspects).length;
+            queryParams.config = this._showConfigurationMethods;
+
+            /**
+             * Workarrounds for https://github.com/aurelia-ui-toolkits/aurelia-mdc-web/issues/26
+             */
+            // this._selectedClass = queryParams.class;
+            // this._selectedStatus = this._statusConverter.getStatusForClass(queryParams.status);
+
+            this.updateUrl(queryParams);
+            console.log("done loading");
+            this._loading = false;
         });
+    }
 
-        this._uniqueClasses = Object.keys(uniqueClasses).length;
-        this._uniqueStatuses = Object.keys(uniqueStatuses).length;
-        //this._uniqueFailureAspects = Object.keys(uniqueFailureAspects).length;
+    private _filterOnce() {
+        if (!this._loading) {
+            this._filter();
+        }
+    }
 
-        queryParams.config = this._showConfigurationMethods;
-        //this.updateUrl(queryParams);
-        console.log("filter", queryParams);
+    private _statusChanged() {
+        console.log("status changed");
+        this._filterOnce();
+    }
+
+    private _classChanged() {
+        console.log("class changed");
+        this._filterOnce();
+    }
+
+
+    private _showConfigurationChanged() {
+        console.log("show configuration changed");
+        this._filterOnce();
+    }
+
+    private _searchQueryChanged() {
+        console.log("search query changed");
+        this._filterOnce();
     }
 }
 

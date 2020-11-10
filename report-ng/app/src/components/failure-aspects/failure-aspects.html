@@ -30,7 +30,11 @@
                                 ></a>
                             </mdc-data-table-cell>
                             <mdc-data-table-cell>
-                                <div repeat.for="status of failureAspect.availableStatuses" class="default-margin"><span class="badge status-${status|statusClass}">${failureAspect.getStatusCount(status)} ${status|statusName}</span></div>
+                                <div repeat.for="status of failureAspect.availableStatuses" class="default-margin">
+                                    <a class="badge status-${status|statusClass}"
+                                          route-href="route: tests; params.bind: {q: failureAspect.name, status: _statusConverter.getClassForStatus(status)}"
+                                    >${failureAspect.getStatusCount(status)} ${status|statusName}</a>
+                                </div>
                             </mdc-data-table-cell>
                         </mdc-data-table-row>
                     </mdc-data-table-content>

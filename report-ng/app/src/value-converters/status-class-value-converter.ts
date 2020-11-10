@@ -9,9 +9,6 @@ export class StatusClassValueConverter {
     }
 
     toView(value: string|number) {
-        if (typeof value === "string") {
-            value = Number.parseInt(value);
-        }
         return this._statusConverter.getClassForStatus(value);
     }
 }

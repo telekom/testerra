@@ -42,28 +42,10 @@ export class ExitPoints extends AbstractViewModel {
     private _filter() {
         this._filteredExitPoints = [];
         this._statistics.getExecutionStatistics().then(executionStatistics => {
-            executionStatistics.classStatistics.forEach(classStatistics => {
-                classStatistics.classAggregate.methodContexts
-                    .filter(methodContext => {
-                        return this._statusConverter.failedStatuses.indexOf(methodContext.contextValues.resultStatus) >= 0;
-                    })
-                    .map(methodContext => {
-                        return new ExitPointStatistics().addMethodContext(methodContext);
-                    })
-                    .filter(exitPointStatistics => {
-                        return (!this._searchRegexp || exitPointStatistics.fingerprint.match(this._searchRegexp));
-                    })
-                    .forEach(exitPointStatistics => {
-                        const foundExitPointStatistics = this._filteredExitPoints.find(existingExitPointStatistics => {
-                            return existingExitPointStatistics.fingerprint == exitPointStatistics.fingerprint;
-                        });
-                        if (foundExitPointStatistics) {
-                            foundExitPointStatistics.addMethodContext(exitPointStatistics.methodContext);
-                        } else {
-                            this._filteredExitPoints.push(exitPointStatistics);
-                        }
-                    });
-            })
+            this._filteredExitPoints = executionStatistics.exitPointStatistics
+                .filter(exitPointStatistics => {
+                    return (!this._searchRegexp || exitPointStatistics.fingerprint.match(this._searchRegexp));
+                });
         });
     }
 }

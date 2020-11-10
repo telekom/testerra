@@ -5,6 +5,7 @@ import {StatusConverter} from "./services/status-converter";
 import {data} from "./services/report-model";
 import {MdcDrawer} from "@aurelia-mdc-web/drawer";
 import "./app.scss"
+import {StatisticsGenerator} from "./services/statistics-generator";
 import IExecutionContext = data.IExecutionContext;
 
 @autoinject()
@@ -16,19 +17,20 @@ export class App {
 
     constructor(
         private _dataLoader: DataLoader,
+        private _statistics: StatisticsGenerator,
         private _statusConverter: StatusConverter,
     ) {
     }
 
     attached() {
-        this._dataLoader.getExecutionAggregate().then(value => {
-            this._executionContext = value.executionContext;
+        this._statistics.getExecutionStatistics().then(executionStatistics => {
+            this._executionContext = executionStatistics.executionAggregate.executionContext;
             this._routeConfig.title = this._executionContext.runConfig.reportName;
             this._router.routes.filter(route => route.route == "failure-aspects").find(route => {
-                route.settings.count = this._executionContext.failureAscpects.length;
+                route.settings.count = executionStatistics.failureAspectStatistics.length;
             });
             this._router.routes.filter(route => route.route == "exit-points").find(route => {
-                route.settings.count = this._executionContext.exitPoints.length;
+                route.settings.count = executionStatistics.exitPointStatistics.length;
             });
         })
     }
@@ -67,16 +69,16 @@ export class App {
                     count: 0
                 }
             },
-            {
-                route: 'exit-points',
-                moduleId: PLATFORM.moduleName('components/exit-points/exit-points'),
-                nav: true,
-                name: "exit-points",
-                title: 'Exit Points',
-                settings: {
-                    count: 0
-                }
-            },
+            // {
+            //     route: 'exit-points',
+            //     moduleId: PLATFORM.moduleName('components/exit-points/exit-points'),
+            //     nav: true,
+            //     name: "exit-points",
+            //     title: 'Exit Points',
+            //     settings: {
+            //         count: 0
+            //     }
+            // },
             // {
             //     route: 'logs',
             //     name: 'Logs',

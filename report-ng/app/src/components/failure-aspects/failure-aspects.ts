@@ -38,28 +38,10 @@ export class FailureAspects extends AbstractViewModel {
 
         this._filteredFailureAspects = [];
         this._statistics.getExecutionStatistics().then(executionStatistics => {
-            executionStatistics.classStatistics.forEach(classStatistic => {
-                classStatistic.classAggregate.methodContexts
-                    .filter(methodContext => {
-                        return this._statusConverter.failedStatuses.indexOf(methodContext.contextValues.resultStatus) >= 0;
-                    })
-                    .map(methodContext => {
-                        return new FailureAspectStatistics().addMethodContext(methodContext)
-                    })
-                    .filter(failureAspectStatistics => {
-                        return (!this._searchRegexp || failureAspectStatistics.name.match(this._searchRegexp));
-                    })
-                    .forEach(failureAspectStatistics => {
-                        const foundFailureAspectStatistics = this._filteredFailureAspects.find(existingFailureAspectStatistics => {
-                            return existingFailureAspectStatistics.name == failureAspectStatistics.name;
-                        });
-                        if (foundFailureAspectStatistics) {
-                            foundFailureAspectStatistics.addMethodContext(failureAspectStatistics.methodContext);
-                        } else {
-                            this._filteredFailureAspects.push(failureAspectStatistics);
-                        }
-                    });
-            });
+            this._filteredFailureAspects = executionStatistics.failureAspectStatistics
+                .filter(failureAspectStatistics => {
+                    return (!this._searchRegexp || failureAspectStatistics.name.match(this._searchRegexp));
+                });
         });
 
         this.updateUrl(queryParams);

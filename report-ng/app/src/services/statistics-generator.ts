@@ -56,9 +56,11 @@ export class StatisticsGenerator {
                             }
                             if (!classStatistics) {
                                 classStatistics = new ClassStatistics();
+                                classStatistics.addClassAggregate(classContextAggregate);
                                 executionStatistics.addClassStatistics(classStatistics);
+                            } else {
+                                classStatistics.addClassAggregate(classContextAggregate);
                             }
-                            classStatistics.addClassAggregate(classContextAggregate);
                         });
 
                         loadingPromises.push(loadingPromise);

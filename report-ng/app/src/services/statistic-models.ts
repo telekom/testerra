@@ -90,11 +90,17 @@ class Statistics {
         }
         this._testsTotal += statistics._testsTotal;
     }
+
+    get statusConverter() {
+        return this._statusConverter;
+    }
 }
 
 export class ExecutionStatistics extends Statistics {
     private _executionAggregate: ExecutionAggregate;
     private _classStatistics: ClassStatistics[] = [];
+    private _failureAspectStatistics:FailureAspectStatistics[] = [];
+    private _exitPointStatistics:ExitPointStatistics[] = [];
 
     setExecutionAggregate(executionAggregate: ExecutionAggregate) {
         this._executionAggregate = executionAggregate;
@@ -103,6 +109,33 @@ export class ExecutionStatistics extends Statistics {
 
     addClassStatistics(statistics: ClassStatistics) {
         this._classStatistics.push(statistics);
+        statistics.classAggregate.methodContexts
+            .filter(methodContext => {
+                return this.statusConverter.failedStatuses.indexOf(methodContext.contextValues.resultStatus) >= 0;
+            })
+            .forEach(methodContext => {
+                const failureAspectStatistics = new FailureAspectStatistics().addMethodContext(methodContext);
+
+                const foundFailureAspectStatistics = this._failureAspectStatistics.find(existingFailureAspectStatistics => {
+                    return existingFailureAspectStatistics.name == failureAspectStatistics.name;
+                });
+                if (foundFailureAspectStatistics) {
+                    foundFailureAspectStatistics.addMethodContext(failureAspectStatistics.methodContext);
+                } else {
+                    this._failureAspectStatistics.push(failureAspectStatistics);
+                }
+
+                const exitPointStatistics = new ExitPointStatistics().addMethodContext(methodContext);
+
+                const foundExitPointStatistics = this._exitPointStatistics.find(existingExitPointStatistics => {
+                    return existingExitPointStatistics.fingerprint == exitPointStatistics.fingerprint;
+                });
+                if (foundExitPointStatistics) {
+                    foundExitPointStatistics.addMethodContext(exitPointStatistics.methodContext);
+                } else {
+                    this._exitPointStatistics.push(exitPointStatistics);
+                }
+            })
     }
 
     updateStatistics() {
@@ -115,6 +148,14 @@ export class ExecutionStatistics extends Statistics {
 
     get classStatistics() {
         return this._classStatistics;
+    }
+
+    get exitPointStatistics() {
+        return this._exitPointStatistics;
+    }
+
+    get failureAspectStatistics() {
+        return this._failureAspectStatistics;
     }
 }
 

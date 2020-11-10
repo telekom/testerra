@@ -69,6 +69,13 @@ export class App {
                     count: 0
                 }
             },
+            {
+                route: 'method',
+                moduleId: PLATFORM.moduleName('components/method-details/method-details'),
+                nav: false,
+                title: 'Method',
+                name: "method",
+            },
             // {
             //     route: 'exit-points',
             //     moduleId: PLATFORM.moduleName('components/exit-points/exit-points'),

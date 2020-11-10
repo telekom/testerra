@@ -49,6 +49,7 @@
                     outlined
                     value.bind="_searchQuery"
                     keydown.delegate="_filter() & debounce"
+                    change.delegate="_filter()"
                     class="full-width"
                 >
                     <mdc-icon mdc-text-field-icon leading>search</mdc-icon>
@@ -60,22 +61,30 @@
                         <mdc-data-table-header-cell>Status (${_uniqueStatuses})</mdc-data-table-header-cell>
                         <mdc-data-table-header-cell>Class (${_uniqueClasses})</mdc-data-table-header-cell>
                         <mdc-data-table-header-cell>Method (${_filteredMethodAggregates.length})</mdc-data-table-header-cell>
-                        <mdc-data-table-header-cell>Failure Aspect (${_uniqueFailureAspects})</mdc-data-table-header-cell>
+<!--                        <mdc-data-table-header-cell>Failure Aspect (${_uniqueFailureAspects})</mdc-data-table-header-cell>-->
                     </mdc-data-table-header>
                     <mdc-data-table-content>
                         <mdc-data-table-row repeat.for="methodAggregate of _filteredMethodAggregates">
                             <mdc-data-table-cell>
-                                <span class="badge status-${methodAggregate.methodContext.contextValues.resultStatus|statusClass}">${methodAggregate.methodContext.contextValues.resultStatus|statusName}</span>
+                                <!-- route-href="route: classes; params.bind: withQueryParams({status: methodAggregate.methodContext.contextValues.resultStatus})" -->
+                                <a class="badge status-${methodAggregate.methodContext.contextValues.resultStatus|statusClass}"
+                                >${methodAggregate.methodContext.contextValues.resultStatus|statusName}</a>
                             </mdc-data-table-cell>
-                            <mdc-data-table-cell >
-                                ${methodAggregate.classContext.simpleClassName}
+                            <mdc-data-table-cell>
+                                <a route-href="route: classes; params.bind: withQueryParams({class: methodAggregate.classContext.simpleClassName})"
+                                >${methodAggregate.classContext.simpleClassName}</a>
                             </mdc-data-table-cell>
-                            <mdc-data-table-cell innerhtml.bind="methodAggregate.methodContext.contextValues.name|highlightText:_searchRegexp">
+                            <mdc-data-table-cell class="default-padding">
+                                <a route-href="route: method; params.bind: {id: methodAggregate.methodContext.contextValues.id}">
+                                    <span innerhtml.bind="methodAggregate.methodContext.contextValues.name|highlightText:_searchRegexp"></span>
+                                    <!--mdc-icon>read_more</mdc-icon-->
+                                </a>
+                                <pre class="mb-0 mt-0 error-view" innerhtml.bind="methodAggregate.failureAspect.name|html|highlightText:_searchRegexp"></pre>
                             </mdc-data-table-cell>
-                            <mdc-data-table-cell innerhtml.bind="methodAggregate.failureAspect.name|html|highlightText:_searchRegexp"
-                                                 class="default-padding"
-                            >
-                            </mdc-data-table-cell>
+<!--                            <mdc-data-table-cell innerhtml.bind="methodAggregate.failureAspect.name|html|highlightText:_searchRegexp"-->
+<!--                                                 class="default-padding"-->
+<!--                            >-->
+<!--                            </mdc-data-table-cell>-->
                         </mdc-data-table-row>
                     </mdc-data-table-content>
                 </mdc-data-table>

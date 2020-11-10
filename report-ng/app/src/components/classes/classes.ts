@@ -23,12 +23,12 @@ export class Classes extends AbstractViewModel {
     private _executionStatistics: ExecutionStatistics;
     private _selectedClass:string;
     private _selectedStatus:number;
-    private _availableStatuses:number[];
+    private _availableStatuses = this._statusConverter.relevantStatuses;
     private _filteredMethodAggregates:MethodAggregate[];
     private _showConfigurationMethods:boolean = null;
     private _searchQuery:string;
     private _searchRegexp:RegExp;
-    private _uniqueFailureAspects = 0;
+    //private _uniqueFailureAspects = 0;
     private _uniqueStatuses = 0;
     private _uniqueClasses = 0;
 
@@ -63,14 +63,11 @@ export class Classes extends AbstractViewModel {
                 this._showConfigurationMethods = false;
             }
         }
+        this._filter();
     }
 
     attached() {
-        this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
-            this._availableStatuses = this._statusConverter.relevantStatuses;
-            this._executionStatistics = executionStatistics;
-            this._filter();
-        });
+
     }
 
     private _filter() {
@@ -92,7 +89,7 @@ export class Classes extends AbstractViewModel {
 
         const uniqueClasses = {};
         const uniqueStatuses = {};
-        const uniqueFailureAspects = {};
+        //const uniqueFailureAspects = {};
 
         let relevantStatuses:ResultStatusType[] = null;
 
@@ -105,62 +102,66 @@ export class Classes extends AbstractViewModel {
         }
 
         this._filteredMethodAggregates = [];
-        this._executionStatistics.classStatistics
-            .map(classStatistics => {
-                // Determine if we need to enable showing config methods by default if there has any error occured
-                if (this._showConfigurationMethods === null) {
-                    this._showConfigurationMethods = classStatistics.configStatistics.overallFailed > 0;
-                }
-                return classStatistics;
-            })
-            .filter(classStatistic => {
-                return (!this._selectedClass || classStatistic.classAggregate.classContext.simpleClassName == this._selectedClass)
-            })
-            .forEach(classStatistic => {
-                classStatistic.classAggregate.methodContexts
-                    .filter(methodContext => {
-                        return (!relevantStatuses || relevantStatuses.indexOf(methodContext.contextValues.resultStatus) >= 0)
-                    })
-                    .filter(methodContext => {
-                        return (this._showConfigurationMethods == true
-                            || (
-                                this._showConfigurationMethods == false
-                                && methodContext.methodType == MethodType.TEST_METHOD
+        this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
+            this._executionStatistics = executionStatistics;
+            executionStatistics.classStatistics
+                .map(classStatistics => {
+                    // Determine if we need to enable showing config methods by default if there has any error occured
+                    if (this._showConfigurationMethods === null) {
+                        this._showConfigurationMethods = classStatistics.configStatistics.overallFailed > 0;
+                    }
+                    return classStatistics;
+                })
+                .filter(classStatistic => {
+                    return (!this._selectedClass || classStatistic.classAggregate.classContext.simpleClassName == this._selectedClass)
+                })
+                .forEach(classStatistic => {
+                    classStatistic.classAggregate.methodContexts
+                        .filter(methodContext => {
+                            return (!relevantStatuses || relevantStatuses.indexOf(methodContext.contextValues.resultStatus) >= 0)
+                        })
+                        .filter(methodContext => {
+                            return (this._showConfigurationMethods == true
+                                || (
+                                    this._showConfigurationMethods == false
+                                    && methodContext.methodType == MethodType.TEST_METHOD
+                                )
                             )
-                        )
-                    })
-                    .map(methodContext => {
-                        return {
-                            classContext: classStatistic.classAggregate.classContext,
-                            failureAspect: this._statusConverter.failedStatuses.indexOf(methodContext.contextValues.resultStatus) >= 0 ? new FailureAspectStatistics().addMethodContext(methodContext):null,
-                            methodContext: methodContext
-                        }
-                    })
-                    .filter(methodAggregate => {
-                        return (
-                            !this._searchRegexp
-                            || (
-                                methodAggregate.failureAspect?.name.match(this._searchRegexp)
-                                || methodAggregate.methodContext.contextValues.name.match(this._searchRegexp)
-                            )
-                        );
-                    })
-                    .forEach(methodAggregate => {
-                        uniqueClasses[classStatistic.classAggregate.classContext.simpleClassName] = true;
-                        uniqueStatuses[methodAggregate.methodContext.contextValues.resultStatus] = true;
-                        if (methodAggregate.failureAspect) {
-                            uniqueFailureAspects[methodAggregate.failureAspect.name] = true;
-                        }
-                        this._filteredMethodAggregates.push(methodAggregate);
-                    })
-            })
+                        })
+                        .map(methodContext => {
+                            return {
+                                classContext: classStatistic.classAggregate.classContext,
+                                failureAspect: this._statusConverter.failedStatuses.indexOf(methodContext.contextValues.resultStatus) >= 0 ? new FailureAspectStatistics().addMethodContext(methodContext) : null,
+                                methodContext: methodContext
+                            }
+                        })
+                        .filter(methodAggregate => {
+                            return (
+                                !this._searchRegexp
+                                || (
+                                    methodAggregate.failureAspect?.name.match(this._searchRegexp)
+                                    || methodAggregate.methodContext.contextValues.name.match(this._searchRegexp)
+                                )
+                            );
+                        })
+                        .forEach(methodAggregate => {
+                            uniqueClasses[classStatistic.classAggregate.classContext.simpleClassName] = true;
+                            uniqueStatuses[methodAggregate.methodContext.contextValues.resultStatus] = true;
+                            // if (methodAggregate.failureAspect) {
+                            //     uniqueFailureAspects[methodAggregate.failureAspect.name] = true;
+                            // }
+                            this._filteredMethodAggregates.push(methodAggregate);
+                        })
+                });
+        });
 
         this._uniqueClasses = Object.keys(uniqueClasses).length;
-        this._uniqueFailureAspects = Object.keys(uniqueFailureAspects).length;
         this._uniqueStatuses = Object.keys(uniqueStatuses).length;
+        //this._uniqueFailureAspects = Object.keys(uniqueFailureAspects).length;
 
         queryParams.config = this._showConfigurationMethods;
-        this.updateUrl(queryParams);
+        //this.updateUrl(queryParams);
+        console.log("filter", queryParams);
     }
 }
 

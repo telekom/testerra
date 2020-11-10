@@ -19,12 +19,13 @@
  * under the License.
  */
 
-import {NavigationInstruction, RouteConfig} from "aurelia-router";
+import {activationStrategy, NavigationInstruction, RouteConfig} from "aurelia-router";
 
 export abstract class AbstractViewModel {
 
     private _routeConfig:RouteConfig;
-    private _navInstruction:NavigationInstruction
+    private _navInstruction:NavigationInstruction;
+    protected queryParams:any = {};
 
     activate(
         params: any,
@@ -33,9 +34,18 @@ export abstract class AbstractViewModel {
     ) {
         this._routeConfig = routeConfig;
         this._navInstruction = navInstruction;
+        this.queryParams = params;
     }
 
     protected updateUrl(params:object) {
         this._navInstruction.router.navigateToRoute(this._routeConfig.name, params, {replace: true});
+    }
+
+    protected withQueryParams(params:object) {
+        return Object.assign(params, this.queryParams);
+    }
+
+    determineActivationStrategy() {
+        return activationStrategy.invokeLifecycle;
     }
 }

@@ -8,9 +8,8 @@
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true,
-        // Required for momentjs
         "lib": [
-            "es2017",
+            "es2019",
             "dom"
         ],
         "moduleResolution": "node",

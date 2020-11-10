@@ -201,9 +201,10 @@ export class FailureAspectStatistics extends Statistics {
     addMethodContext(methodContext:IMethodContext) {
         if (!this._methodContext) {
             this._methodContext = methodContext;
+            const packageRegexp = new RegExp(".*\\.");
             this._name = (
                 methodContext.errorContext?.description
-                || methodContext.errorContext?.stackTrace?.cause.className + (methodContext.errorContext?.stackTrace?.cause?.message ? ": " + methodContext.errorContext?.stackTrace?.cause?.message.trim() : "")
+                || methodContext.errorContext?.stackTrace?.cause.className.replace(packageRegexp,"") + (methodContext.errorContext?.stackTrace?.cause?.message ? ": " + methodContext.errorContext?.stackTrace?.cause?.message.trim() : "")
             );
         }
         this.addResultStatus(methodContext.contextValues.resultStatus);

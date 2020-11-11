@@ -8,6 +8,8 @@ import ResultStatusType = data.ResultStatusType;
 @autoinject
 export class TestClassesCard {
     private _apexBarOptions: any = undefined;
+    private _classStats;
+    private _selectedPiece: string;
 
 
     constructor(
@@ -20,8 +22,12 @@ export class TestClassesCard {
     attached() {
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
             this._prepareHorizontalBarChart(executionStatistics.classStatistics);
+            this._classStats = executionStatistics.classStatistics;
         });
-        this._piePieceClicked();
+
+        this._eventAggregator.subscribe('pie-piece-click', dataLabel => {
+            this._piePieceClicked(dataLabel);
+        });
     }
 
     private _prepareHorizontalBarChart(classStatistics): void {
@@ -103,9 +109,17 @@ export class TestClassesCard {
         }
     }
 
-    private _piePieceClicked() {
-        this._eventAggregator.subscribe('pie-piece-click', dataLabel => {
-            console.log("Yay! " + dataLabel);
-        });
+    private _piePieceClicked(dataLabel) {
+        if (dataLabel == this._selectedPiece) {
+            this._prepareHorizontalBarChart(this._classStats);
+        } else {
+            let filteredSeries =this._apexBarOptions.series.filter(series => {
+                return series.name == dataLabel
+            })
+            this._apexBarOptions.series = filteredSeries;
+            console.log(this._apexBarOptions.series);
+        }
+
+        this._selectedPiece = dataLabel;
     }
 }

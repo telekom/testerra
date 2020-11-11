@@ -38,49 +38,44 @@ public interface PTestStepActionOrBuilder extends
   long getTimestamp();
 
   /**
-   * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
-   * @return A list containing the screenshotNames.
-   */
-  @java.lang.Deprecated java.util.List<java.lang.String>
-      getScreenshotNamesList();
-  /**
-   * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
-   * @return The count of screenshotNames.
-   */
-  @java.lang.Deprecated int getScreenshotNamesCount();
-  /**
-   * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
-   * @param index The index of the element to return.
-   * @return The screenshotNames at the given index.
-   */
-  @java.lang.Deprecated java.lang.String getScreenshotNames(int index);
-  /**
-   * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
-   * @param index The index of the value to return.
-   * @return The bytes of the screenshotNames at the given index.
-   */
-  @java.lang.Deprecated com.google.protobuf.ByteString
-      getScreenshotNamesBytes(int index);
-
-  /**
+   * <pre>
+   *    repeated string screenshot_names = 4 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
    */
   java.util.List<eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent> 
       getClickpathEventsList();
   /**
+   * <pre>
+   *    repeated string screenshot_names = 4 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
    */
   eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent getClickpathEvents(int index);
   /**
+   * <pre>
+   *    repeated string screenshot_names = 4 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
    */
   int getClickpathEventsCount();
   /**
+   * <pre>
+   *    repeated string screenshot_names = 4 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
    */
   java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.PClickPathEventOrBuilder> 
       getClickpathEventsOrBuilderList();
   /**
+   * <pre>
+   *    repeated string screenshot_names = 4 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
    */
   eu.tsystems.mms.tic.testframework.report.model.PClickPathEventOrBuilder getClickpathEventsOrBuilder(

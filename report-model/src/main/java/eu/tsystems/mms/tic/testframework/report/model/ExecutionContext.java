@@ -16,9 +16,6 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private ExecutionContext() {
-    mergedClassContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    exitPoints_ = java.util.Collections.emptyList();
-    failureAscpects_ = java.util.Collections.emptyList();
     suiteContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     projectId_ = "";
     jobId_ = "";
@@ -71,38 +68,11 @@ private static final long serialVersionUID = 0L;
 
             break;
           }
-          case 26: {
-            java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-              mergedClassContextIds_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000001;
-            }
-            mergedClassContextIds_.add(s);
-            break;
-          }
-          case 34: {
-            if (!((mutable_bitField0_ & 0x00000002) != 0)) {
-              exitPoints_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.ContextClip>();
-              mutable_bitField0_ |= 0x00000002;
-            }
-            exitPoints_.add(
-                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.ContextClip.parser(), extensionRegistry));
-            break;
-          }
-          case 42: {
-            if (!((mutable_bitField0_ & 0x00000004) != 0)) {
-              failureAscpects_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.ContextClip>();
-              mutable_bitField0_ |= 0x00000004;
-            }
-            failureAscpects_.add(
-                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.ContextClip.parser(), extensionRegistry));
-            break;
-          }
           case 50: {
             java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000008) != 0)) {
+            if (!((mutable_bitField0_ & 0x00000001) != 0)) {
               suiteContextIds_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000008;
+              mutable_bitField0_ |= 0x00000001;
             }
             suiteContextIds_.add(s);
             break;
@@ -146,9 +116,9 @@ private static final long serialVersionUID = 0L;
           }
           case 98: {
             java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000010) != 0)) {
+            if (!((mutable_bitField0_ & 0x00000002) != 0)) {
               exclusiveSessionContextIds_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000010;
+              mutable_bitField0_ |= 0x00000002;
             }
             exclusiveSessionContextIds_.add(s);
             break;
@@ -174,18 +144,9 @@ private static final long serialVersionUID = 0L;
           e).setUnfinishedMessage(this);
     } finally {
       if (((mutable_bitField0_ & 0x00000001) != 0)) {
-        mergedClassContextIds_ = mergedClassContextIds_.getUnmodifiableView();
-      }
-      if (((mutable_bitField0_ & 0x00000002) != 0)) {
-        exitPoints_ = java.util.Collections.unmodifiableList(exitPoints_);
-      }
-      if (((mutable_bitField0_ & 0x00000004) != 0)) {
-        failureAscpects_ = java.util.Collections.unmodifiableList(failureAscpects_);
-      }
-      if (((mutable_bitField0_ & 0x00000008) != 0)) {
         suiteContextIds_ = suiteContextIds_.getUnmodifiableView();
       }
-      if (((mutable_bitField0_ & 0x00000010) != 0)) {
+      if (((mutable_bitField0_ & 0x00000002) != 0)) {
         exclusiveSessionContextIds_ = exclusiveSessionContextIds_.getUnmodifiableView();
       }
       this.unknownFields = unknownFields.build();
@@ -228,114 +189,15 @@ private static final long serialVersionUID = 0L;
     return getContextValues();
   }
 
-  public static final int MERGED_CLASS_CONTEXT_IDS_FIELD_NUMBER = 3;
-  private com.google.protobuf.LazyStringList mergedClassContextIds_;
-  /**
-   * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
-   * @return A list containing the mergedClassContextIds.
-   */
-  @java.lang.Deprecated public com.google.protobuf.ProtocolStringList
-      getMergedClassContextIdsList() {
-    return mergedClassContextIds_;
-  }
-  /**
-   * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
-   * @return The count of mergedClassContextIds.
-   */
-  @java.lang.Deprecated public int getMergedClassContextIdsCount() {
-    return mergedClassContextIds_.size();
-  }
-  /**
-   * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
-   * @param index The index of the element to return.
-   * @return The mergedClassContextIds at the given index.
-   */
-  @java.lang.Deprecated public java.lang.String getMergedClassContextIds(int index) {
-    return mergedClassContextIds_.get(index);
-  }
-  /**
-   * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
-   * @param index The index of the value to return.
-   * @return The bytes of the mergedClassContextIds at the given index.
-   */
-  @java.lang.Deprecated public com.google.protobuf.ByteString
-      getMergedClassContextIdsBytes(int index) {
-    return mergedClassContextIds_.getByteString(index);
-  }
-
-  public static final int EXIT_POINTS_FIELD_NUMBER = 4;
-  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> exitPoints_;
-  /**
-   * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
-   */
-  @java.lang.Deprecated public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> getExitPointsList() {
-    return exitPoints_;
-  }
-  /**
-   * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
-   */
-  @java.lang.Deprecated public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> 
-      getExitPointsOrBuilderList() {
-    return exitPoints_;
-  }
-  /**
-   * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
-   */
-  @java.lang.Deprecated public int getExitPointsCount() {
-    return exitPoints_.size();
-  }
-  /**
-   * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
-   */
-  @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ContextClip getExitPoints(int index) {
-    return exitPoints_.get(index);
-  }
-  /**
-   * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
-   */
-  @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder getExitPointsOrBuilder(
-      int index) {
-    return exitPoints_.get(index);
-  }
-
-  public static final int FAILURE_ASCPECTS_FIELD_NUMBER = 5;
-  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> failureAscpects_;
-  /**
-   * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
-   */
-  @java.lang.Deprecated public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> getFailureAscpectsList() {
-    return failureAscpects_;
-  }
-  /**
-   * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
-   */
-  @java.lang.Deprecated public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> 
-      getFailureAscpectsOrBuilderList() {
-    return failureAscpects_;
-  }
-  /**
-   * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
-   */
-  @java.lang.Deprecated public int getFailureAscpectsCount() {
-    return failureAscpects_.size();
-  }
-  /**
-   * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
-   */
-  @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ContextClip getFailureAscpects(int index) {
-    return failureAscpects_.get(index);
-  }
-  /**
-   * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
-   */
-  @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder getFailureAscpectsOrBuilder(
-      int index) {
-    return failureAscpects_.get(index);
-  }
-
   public static final int SUITE_CONTEXT_IDS_FIELD_NUMBER = 6;
   private com.google.protobuf.LazyStringList suiteContextIds_;
   /**
+   * <pre>
+   *    repeated string merged_class_context_ids = 3 [deprecated = true];
+   *    repeated ContextClip exit_points = 4 [deprecated = true];
+   *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string suite_context_ids = 6;</code>
    * @return A list containing the suiteContextIds.
    */
@@ -344,6 +206,12 @@ private static final long serialVersionUID = 0L;
     return suiteContextIds_;
   }
   /**
+   * <pre>
+   *    repeated string merged_class_context_ids = 3 [deprecated = true];
+   *    repeated ContextClip exit_points = 4 [deprecated = true];
+   *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string suite_context_ids = 6;</code>
    * @return The count of suiteContextIds.
    */
@@ -351,6 +219,12 @@ private static final long serialVersionUID = 0L;
     return suiteContextIds_.size();
   }
   /**
+   * <pre>
+   *    repeated string merged_class_context_ids = 3 [deprecated = true];
+   *    repeated ContextClip exit_points = 4 [deprecated = true];
+   *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string suite_context_ids = 6;</code>
    * @param index The index of the element to return.
    * @return The suiteContextIds at the given index.
@@ -359,6 +233,12 @@ private static final long serialVersionUID = 0L;
     return suiteContextIds_.get(index);
   }
   /**
+   * <pre>
+   *    repeated string merged_class_context_ids = 3 [deprecated = true];
+   *    repeated ContextClip exit_points = 4 [deprecated = true];
+   *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string suite_context_ids = 6;</code>
    * @param index The index of the value to return.
    * @return The bytes of the suiteContextIds at the given index.
@@ -597,15 +477,6 @@ private static final long serialVersionUID = 0L;
     if (contextValues_ != null) {
       output.writeMessage(1, getContextValues());
     }
-    for (int i = 0; i < mergedClassContextIds_.size(); i++) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 3, mergedClassContextIds_.getRaw(i));
-    }
-    for (int i = 0; i < exitPoints_.size(); i++) {
-      output.writeMessage(4, exitPoints_.get(i));
-    }
-    for (int i = 0; i < failureAscpects_.size(); i++) {
-      output.writeMessage(5, failureAscpects_.get(i));
-    }
     for (int i = 0; i < suiteContextIds_.size(); i++) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 6, suiteContextIds_.getRaw(i));
     }
@@ -642,22 +513,6 @@ private static final long serialVersionUID = 0L;
     if (contextValues_ != null) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(1, getContextValues());
-    }
-    {
-      int dataSize = 0;
-      for (int i = 0; i < mergedClassContextIds_.size(); i++) {
-        dataSize += computeStringSizeNoTag(mergedClassContextIds_.getRaw(i));
-      }
-      size += dataSize;
-      size += 1 * getMergedClassContextIdsList().size();
-    }
-    for (int i = 0; i < exitPoints_.size(); i++) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(4, exitPoints_.get(i));
-    }
-    for (int i = 0; i < failureAscpects_.size(); i++) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(5, failureAscpects_.get(i));
     }
     {
       int dataSize = 0;
@@ -715,12 +570,6 @@ private static final long serialVersionUID = 0L;
       if (!getContextValues()
           .equals(other.getContextValues())) return false;
     }
-    if (!getMergedClassContextIdsList()
-        .equals(other.getMergedClassContextIdsList())) return false;
-    if (!getExitPointsList()
-        .equals(other.getExitPointsList())) return false;
-    if (!getFailureAscpectsList()
-        .equals(other.getFailureAscpectsList())) return false;
     if (!getSuiteContextIdsList()
         .equals(other.getSuiteContextIdsList())) return false;
     if (hasRunConfig() != other.hasRunConfig()) return false;
@@ -754,18 +603,6 @@ private static final long serialVersionUID = 0L;
     if (hasContextValues()) {
       hash = (37 * hash) + CONTEXT_VALUES_FIELD_NUMBER;
       hash = (53 * hash) + getContextValues().hashCode();
-    }
-    if (getMergedClassContextIdsCount() > 0) {
-      hash = (37 * hash) + MERGED_CLASS_CONTEXT_IDS_FIELD_NUMBER;
-      hash = (53 * hash) + getMergedClassContextIdsList().hashCode();
-    }
-    if (getExitPointsCount() > 0) {
-      hash = (37 * hash) + EXIT_POINTS_FIELD_NUMBER;
-      hash = (53 * hash) + getExitPointsList().hashCode();
-    }
-    if (getFailureAscpectsCount() > 0) {
-      hash = (37 * hash) + FAILURE_ASCPECTS_FIELD_NUMBER;
-      hash = (53 * hash) + getFailureAscpectsList().hashCode();
     }
     if (getSuiteContextIdsCount() > 0) {
       hash = (37 * hash) + SUITE_CONTEXT_IDS_FIELD_NUMBER;
@@ -917,8 +754,6 @@ private static final long serialVersionUID = 0L;
     private void maybeForceBuilderInitialization() {
       if (com.google.protobuf.GeneratedMessageV3
               .alwaysUseFieldBuilders) {
-        getExitPointsFieldBuilder();
-        getFailureAscpectsFieldBuilder();
       }
     }
     @java.lang.Override
@@ -930,22 +765,8 @@ private static final long serialVersionUID = 0L;
         contextValues_ = null;
         contextValuesBuilder_ = null;
       }
-      mergedClassContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000001);
-      if (exitPointsBuilder_ == null) {
-        exitPoints_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000002);
-      } else {
-        exitPointsBuilder_.clear();
-      }
-      if (failureAscpectsBuilder_ == null) {
-        failureAscpects_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000004);
-      } else {
-        failureAscpectsBuilder_.clear();
-      }
       suiteContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000008);
+      bitField0_ = (bitField0_ & ~0x00000001);
       if (runConfigBuilder_ == null) {
         runConfig_ = null;
       } else {
@@ -961,7 +782,7 @@ private static final long serialVersionUID = 0L;
       taskId_ = "";
 
       exclusiveSessionContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000010);
+      bitField0_ = (bitField0_ & ~0x00000002);
       estimatedTestMethodCount_ = 0;
 
       return this;
@@ -997,31 +818,8 @@ private static final long serialVersionUID = 0L;
         result.contextValues_ = contextValuesBuilder_.build();
       }
       if (((bitField0_ & 0x00000001) != 0)) {
-        mergedClassContextIds_ = mergedClassContextIds_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000001);
-      }
-      result.mergedClassContextIds_ = mergedClassContextIds_;
-      if (exitPointsBuilder_ == null) {
-        if (((bitField0_ & 0x00000002) != 0)) {
-          exitPoints_ = java.util.Collections.unmodifiableList(exitPoints_);
-          bitField0_ = (bitField0_ & ~0x00000002);
-        }
-        result.exitPoints_ = exitPoints_;
-      } else {
-        result.exitPoints_ = exitPointsBuilder_.build();
-      }
-      if (failureAscpectsBuilder_ == null) {
-        if (((bitField0_ & 0x00000004) != 0)) {
-          failureAscpects_ = java.util.Collections.unmodifiableList(failureAscpects_);
-          bitField0_ = (bitField0_ & ~0x00000004);
-        }
-        result.failureAscpects_ = failureAscpects_;
-      } else {
-        result.failureAscpects_ = failureAscpectsBuilder_.build();
-      }
-      if (((bitField0_ & 0x00000008) != 0)) {
         suiteContextIds_ = suiteContextIds_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000001);
       }
       result.suiteContextIds_ = suiteContextIds_;
       if (runConfigBuilder_ == null) {
@@ -1033,9 +831,9 @@ private static final long serialVersionUID = 0L;
       result.jobId_ = jobId_;
       result.runId_ = runId_;
       result.taskId_ = taskId_;
-      if (((bitField0_ & 0x00000010) != 0)) {
+      if (((bitField0_ & 0x00000002) != 0)) {
         exclusiveSessionContextIds_ = exclusiveSessionContextIds_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000010);
+        bitField0_ = (bitField0_ & ~0x00000002);
       }
       result.exclusiveSessionContextIds_ = exclusiveSessionContextIds_;
       result.estimatedTestMethodCount_ = estimatedTestMethodCount_;
@@ -1090,72 +888,10 @@ private static final long serialVersionUID = 0L;
       if (other.hasContextValues()) {
         mergeContextValues(other.getContextValues());
       }
-      if (!other.mergedClassContextIds_.isEmpty()) {
-        if (mergedClassContextIds_.isEmpty()) {
-          mergedClassContextIds_ = other.mergedClassContextIds_;
-          bitField0_ = (bitField0_ & ~0x00000001);
-        } else {
-          ensureMergedClassContextIdsIsMutable();
-          mergedClassContextIds_.addAll(other.mergedClassContextIds_);
-        }
-        onChanged();
-      }
-      if (exitPointsBuilder_ == null) {
-        if (!other.exitPoints_.isEmpty()) {
-          if (exitPoints_.isEmpty()) {
-            exitPoints_ = other.exitPoints_;
-            bitField0_ = (bitField0_ & ~0x00000002);
-          } else {
-            ensureExitPointsIsMutable();
-            exitPoints_.addAll(other.exitPoints_);
-          }
-          onChanged();
-        }
-      } else {
-        if (!other.exitPoints_.isEmpty()) {
-          if (exitPointsBuilder_.isEmpty()) {
-            exitPointsBuilder_.dispose();
-            exitPointsBuilder_ = null;
-            exitPoints_ = other.exitPoints_;
-            bitField0_ = (bitField0_ & ~0x00000002);
-            exitPointsBuilder_ = 
-              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                 getExitPointsFieldBuilder() : null;
-          } else {
-            exitPointsBuilder_.addAllMessages(other.exitPoints_);
-          }
-        }
-      }
-      if (failureAscpectsBuilder_ == null) {
-        if (!other.failureAscpects_.isEmpty()) {
-          if (failureAscpects_.isEmpty()) {
-            failureAscpects_ = other.failureAscpects_;
-            bitField0_ = (bitField0_ & ~0x00000004);
-          } else {
-            ensureFailureAscpectsIsMutable();
-            failureAscpects_.addAll(other.failureAscpects_);
-          }
-          onChanged();
-        }
-      } else {
-        if (!other.failureAscpects_.isEmpty()) {
-          if (failureAscpectsBuilder_.isEmpty()) {
-            failureAscpectsBuilder_.dispose();
-            failureAscpectsBuilder_ = null;
-            failureAscpects_ = other.failureAscpects_;
-            bitField0_ = (bitField0_ & ~0x00000004);
-            failureAscpectsBuilder_ = 
-              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                 getFailureAscpectsFieldBuilder() : null;
-          } else {
-            failureAscpectsBuilder_.addAllMessages(other.failureAscpects_);
-          }
-        }
-      }
       if (!other.suiteContextIds_.isEmpty()) {
         if (suiteContextIds_.isEmpty()) {
           suiteContextIds_ = other.suiteContextIds_;
-          bitField0_ = (bitField0_ & ~0x00000008);
+          bitField0_ = (bitField0_ & ~0x00000001);
         } else {
           ensureSuiteContextIdsIsMutable();
           suiteContextIds_.addAll(other.suiteContextIds_);
@@ -1184,7 +920,7 @@ private static final long serialVersionUID = 0L;
       if (!other.exclusiveSessionContextIds_.isEmpty()) {
         if (exclusiveSessionContextIds_.isEmpty()) {
           exclusiveSessionContextIds_ = other.exclusiveSessionContextIds_;
-          bitField0_ = (bitField0_ & ~0x00000010);
+          bitField0_ = (bitField0_ & ~0x00000002);
         } else {
           ensureExclusiveSessionContextIdsIsMutable();
           exclusiveSessionContextIds_.addAll(other.exclusiveSessionContextIds_);
@@ -1343,604 +1079,20 @@ private static final long serialVersionUID = 0L;
       return contextValuesBuilder_;
     }
 
-    private com.google.protobuf.LazyStringList mergedClassContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    private void ensureMergedClassContextIdsIsMutable() {
+    private com.google.protobuf.LazyStringList suiteContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private void ensureSuiteContextIdsIsMutable() {
       if (!((bitField0_ & 0x00000001) != 0)) {
-        mergedClassContextIds_ = new com.google.protobuf.LazyStringArrayList(mergedClassContextIds_);
+        suiteContextIds_ = new com.google.protobuf.LazyStringArrayList(suiteContextIds_);
         bitField0_ |= 0x00000001;
        }
     }
     /**
-     * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
-     * @return A list containing the mergedClassContextIds.
-     */
-    @java.lang.Deprecated public com.google.protobuf.ProtocolStringList
-        getMergedClassContextIdsList() {
-      return mergedClassContextIds_.getUnmodifiableView();
-    }
-    /**
-     * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
-     * @return The count of mergedClassContextIds.
-     */
-    @java.lang.Deprecated public int getMergedClassContextIdsCount() {
-      return mergedClassContextIds_.size();
-    }
-    /**
-     * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
-     * @param index The index of the element to return.
-     * @return The mergedClassContextIds at the given index.
-     */
-    @java.lang.Deprecated public java.lang.String getMergedClassContextIds(int index) {
-      return mergedClassContextIds_.get(index);
-    }
-    /**
-     * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
-     * @param index The index of the value to return.
-     * @return The bytes of the mergedClassContextIds at the given index.
-     */
-    @java.lang.Deprecated public com.google.protobuf.ByteString
-        getMergedClassContextIdsBytes(int index) {
-      return mergedClassContextIds_.getByteString(index);
-    }
-    /**
-     * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
-     * @param index The index to set the value at.
-     * @param value The mergedClassContextIds to set.
-     * @return This builder for chaining.
-     */
-    @java.lang.Deprecated public Builder setMergedClassContextIds(
-        int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureMergedClassContextIdsIsMutable();
-      mergedClassContextIds_.set(index, value);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
-     * @param value The mergedClassContextIds to add.
-     * @return This builder for chaining.
-     */
-    @java.lang.Deprecated public Builder addMergedClassContextIds(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureMergedClassContextIdsIsMutable();
-      mergedClassContextIds_.add(value);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
-     * @param values The mergedClassContextIds to add.
-     * @return This builder for chaining.
-     */
-    @java.lang.Deprecated public Builder addAllMergedClassContextIds(
-        java.lang.Iterable<java.lang.String> values) {
-      ensureMergedClassContextIdsIsMutable();
-      com.google.protobuf.AbstractMessageLite.Builder.addAll(
-          values, mergedClassContextIds_);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
-     * @return This builder for chaining.
-     */
-    @java.lang.Deprecated public Builder clearMergedClassContextIds() {
-      mergedClassContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000001);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
-     * @param value The bytes of the mergedClassContextIds to add.
-     * @return This builder for chaining.
-     */
-    @java.lang.Deprecated public Builder addMergedClassContextIdsBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      ensureMergedClassContextIdsIsMutable();
-      mergedClassContextIds_.add(value);
-      onChanged();
-      return this;
-    }
-
-    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> exitPoints_ =
-      java.util.Collections.emptyList();
-    private void ensureExitPointsIsMutable() {
-      if (!((bitField0_ & 0x00000002) != 0)) {
-        exitPoints_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.ContextClip>(exitPoints_);
-        bitField0_ |= 0x00000002;
-       }
-    }
-
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.ContextClip, eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder, eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> exitPointsBuilder_;
-
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> getExitPointsList() {
-      if (exitPointsBuilder_ == null) {
-        return java.util.Collections.unmodifiableList(exitPoints_);
-      } else {
-        return exitPointsBuilder_.getMessageList();
-      }
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public int getExitPointsCount() {
-      if (exitPointsBuilder_ == null) {
-        return exitPoints_.size();
-      } else {
-        return exitPointsBuilder_.getCount();
-      }
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ContextClip getExitPoints(int index) {
-      if (exitPointsBuilder_ == null) {
-        return exitPoints_.get(index);
-      } else {
-        return exitPointsBuilder_.getMessage(index);
-      }
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public Builder setExitPoints(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ContextClip value) {
-      if (exitPointsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureExitPointsIsMutable();
-        exitPoints_.set(index, value);
-        onChanged();
-      } else {
-        exitPointsBuilder_.setMessage(index, value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public Builder setExitPoints(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder builderForValue) {
-      if (exitPointsBuilder_ == null) {
-        ensureExitPointsIsMutable();
-        exitPoints_.set(index, builderForValue.build());
-        onChanged();
-      } else {
-        exitPointsBuilder_.setMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public Builder addExitPoints(eu.tsystems.mms.tic.testframework.report.model.ContextClip value) {
-      if (exitPointsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureExitPointsIsMutable();
-        exitPoints_.add(value);
-        onChanged();
-      } else {
-        exitPointsBuilder_.addMessage(value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public Builder addExitPoints(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ContextClip value) {
-      if (exitPointsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureExitPointsIsMutable();
-        exitPoints_.add(index, value);
-        onChanged();
-      } else {
-        exitPointsBuilder_.addMessage(index, value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public Builder addExitPoints(
-        eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder builderForValue) {
-      if (exitPointsBuilder_ == null) {
-        ensureExitPointsIsMutable();
-        exitPoints_.add(builderForValue.build());
-        onChanged();
-      } else {
-        exitPointsBuilder_.addMessage(builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public Builder addExitPoints(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder builderForValue) {
-      if (exitPointsBuilder_ == null) {
-        ensureExitPointsIsMutable();
-        exitPoints_.add(index, builderForValue.build());
-        onChanged();
-      } else {
-        exitPointsBuilder_.addMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public Builder addAllExitPoints(
-        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.ContextClip> values) {
-      if (exitPointsBuilder_ == null) {
-        ensureExitPointsIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, exitPoints_);
-        onChanged();
-      } else {
-        exitPointsBuilder_.addAllMessages(values);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public Builder clearExitPoints() {
-      if (exitPointsBuilder_ == null) {
-        exitPoints_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000002);
-        onChanged();
-      } else {
-        exitPointsBuilder_.clear();
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public Builder removeExitPoints(int index) {
-      if (exitPointsBuilder_ == null) {
-        ensureExitPointsIsMutable();
-        exitPoints_.remove(index);
-        onChanged();
-      } else {
-        exitPointsBuilder_.remove(index);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder getExitPointsBuilder(
-        int index) {
-      return getExitPointsFieldBuilder().getBuilder(index);
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder getExitPointsOrBuilder(
-        int index) {
-      if (exitPointsBuilder_ == null) {
-        return exitPoints_.get(index);  } else {
-        return exitPointsBuilder_.getMessageOrBuilder(index);
-      }
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> 
-         getExitPointsOrBuilderList() {
-      if (exitPointsBuilder_ != null) {
-        return exitPointsBuilder_.getMessageOrBuilderList();
-      } else {
-        return java.util.Collections.unmodifiableList(exitPoints_);
-      }
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder addExitPointsBuilder() {
-      return getExitPointsFieldBuilder().addBuilder(
-          eu.tsystems.mms.tic.testframework.report.model.ContextClip.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder addExitPointsBuilder(
-        int index) {
-      return getExitPointsFieldBuilder().addBuilder(
-          index, eu.tsystems.mms.tic.testframework.report.model.ContextClip.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder> 
-         getExitPointsBuilderList() {
-      return getExitPointsFieldBuilder().getBuilderList();
-    }
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.ContextClip, eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder, eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> 
-        getExitPointsFieldBuilder() {
-      if (exitPointsBuilder_ == null) {
-        exitPointsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            eu.tsystems.mms.tic.testframework.report.model.ContextClip, eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder, eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder>(
-                exitPoints_,
-                ((bitField0_ & 0x00000002) != 0),
-                getParentForChildren(),
-                isClean());
-        exitPoints_ = null;
-      }
-      return exitPointsBuilder_;
-    }
-
-    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> failureAscpects_ =
-      java.util.Collections.emptyList();
-    private void ensureFailureAscpectsIsMutable() {
-      if (!((bitField0_ & 0x00000004) != 0)) {
-        failureAscpects_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.ContextClip>(failureAscpects_);
-        bitField0_ |= 0x00000004;
-       }
-    }
-
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.ContextClip, eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder, eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> failureAscpectsBuilder_;
-
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> getFailureAscpectsList() {
-      if (failureAscpectsBuilder_ == null) {
-        return java.util.Collections.unmodifiableList(failureAscpects_);
-      } else {
-        return failureAscpectsBuilder_.getMessageList();
-      }
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public int getFailureAscpectsCount() {
-      if (failureAscpectsBuilder_ == null) {
-        return failureAscpects_.size();
-      } else {
-        return failureAscpectsBuilder_.getCount();
-      }
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ContextClip getFailureAscpects(int index) {
-      if (failureAscpectsBuilder_ == null) {
-        return failureAscpects_.get(index);
-      } else {
-        return failureAscpectsBuilder_.getMessage(index);
-      }
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public Builder setFailureAscpects(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ContextClip value) {
-      if (failureAscpectsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureFailureAscpectsIsMutable();
-        failureAscpects_.set(index, value);
-        onChanged();
-      } else {
-        failureAscpectsBuilder_.setMessage(index, value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public Builder setFailureAscpects(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder builderForValue) {
-      if (failureAscpectsBuilder_ == null) {
-        ensureFailureAscpectsIsMutable();
-        failureAscpects_.set(index, builderForValue.build());
-        onChanged();
-      } else {
-        failureAscpectsBuilder_.setMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public Builder addFailureAscpects(eu.tsystems.mms.tic.testframework.report.model.ContextClip value) {
-      if (failureAscpectsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureFailureAscpectsIsMutable();
-        failureAscpects_.add(value);
-        onChanged();
-      } else {
-        failureAscpectsBuilder_.addMessage(value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public Builder addFailureAscpects(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ContextClip value) {
-      if (failureAscpectsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureFailureAscpectsIsMutable();
-        failureAscpects_.add(index, value);
-        onChanged();
-      } else {
-        failureAscpectsBuilder_.addMessage(index, value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public Builder addFailureAscpects(
-        eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder builderForValue) {
-      if (failureAscpectsBuilder_ == null) {
-        ensureFailureAscpectsIsMutable();
-        failureAscpects_.add(builderForValue.build());
-        onChanged();
-      } else {
-        failureAscpectsBuilder_.addMessage(builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public Builder addFailureAscpects(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder builderForValue) {
-      if (failureAscpectsBuilder_ == null) {
-        ensureFailureAscpectsIsMutable();
-        failureAscpects_.add(index, builderForValue.build());
-        onChanged();
-      } else {
-        failureAscpectsBuilder_.addMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public Builder addAllFailureAscpects(
-        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.ContextClip> values) {
-      if (failureAscpectsBuilder_ == null) {
-        ensureFailureAscpectsIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, failureAscpects_);
-        onChanged();
-      } else {
-        failureAscpectsBuilder_.addAllMessages(values);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public Builder clearFailureAscpects() {
-      if (failureAscpectsBuilder_ == null) {
-        failureAscpects_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000004);
-        onChanged();
-      } else {
-        failureAscpectsBuilder_.clear();
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public Builder removeFailureAscpects(int index) {
-      if (failureAscpectsBuilder_ == null) {
-        ensureFailureAscpectsIsMutable();
-        failureAscpects_.remove(index);
-        onChanged();
-      } else {
-        failureAscpectsBuilder_.remove(index);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder getFailureAscpectsBuilder(
-        int index) {
-      return getFailureAscpectsFieldBuilder().getBuilder(index);
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder getFailureAscpectsOrBuilder(
-        int index) {
-      if (failureAscpectsBuilder_ == null) {
-        return failureAscpects_.get(index);  } else {
-        return failureAscpectsBuilder_.getMessageOrBuilder(index);
-      }
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> 
-         getFailureAscpectsOrBuilderList() {
-      if (failureAscpectsBuilder_ != null) {
-        return failureAscpectsBuilder_.getMessageOrBuilderList();
-      } else {
-        return java.util.Collections.unmodifiableList(failureAscpects_);
-      }
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder addFailureAscpectsBuilder() {
-      return getFailureAscpectsFieldBuilder().addBuilder(
-          eu.tsystems.mms.tic.testframework.report.model.ContextClip.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder addFailureAscpectsBuilder(
-        int index) {
-      return getFailureAscpectsFieldBuilder().addBuilder(
-          index, eu.tsystems.mms.tic.testframework.report.model.ContextClip.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
-     */
-    @java.lang.Deprecated public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder> 
-         getFailureAscpectsBuilderList() {
-      return getFailureAscpectsFieldBuilder().getBuilderList();
-    }
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.ContextClip, eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder, eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> 
-        getFailureAscpectsFieldBuilder() {
-      if (failureAscpectsBuilder_ == null) {
-        failureAscpectsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            eu.tsystems.mms.tic.testframework.report.model.ContextClip, eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder, eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder>(
-                failureAscpects_,
-                ((bitField0_ & 0x00000004) != 0),
-                getParentForChildren(),
-                isClean());
-        failureAscpects_ = null;
-      }
-      return failureAscpectsBuilder_;
-    }
-
-    private com.google.protobuf.LazyStringList suiteContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    private void ensureSuiteContextIdsIsMutable() {
-      if (!((bitField0_ & 0x00000008) != 0)) {
-        suiteContextIds_ = new com.google.protobuf.LazyStringArrayList(suiteContextIds_);
-        bitField0_ |= 0x00000008;
-       }
-    }
-    /**
+     * <pre>
+     *    repeated string merged_class_context_ids = 3 [deprecated = true];
+     *    repeated ContextClip exit_points = 4 [deprecated = true];
+     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string suite_context_ids = 6;</code>
      * @return A list containing the suiteContextIds.
      */
@@ -1949,6 +1101,12 @@ private static final long serialVersionUID = 0L;
       return suiteContextIds_.getUnmodifiableView();
     }
     /**
+     * <pre>
+     *    repeated string merged_class_context_ids = 3 [deprecated = true];
+     *    repeated ContextClip exit_points = 4 [deprecated = true];
+     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string suite_context_ids = 6;</code>
      * @return The count of suiteContextIds.
      */
@@ -1956,6 +1114,12 @@ private static final long serialVersionUID = 0L;
       return suiteContextIds_.size();
     }
     /**
+     * <pre>
+     *    repeated string merged_class_context_ids = 3 [deprecated = true];
+     *    repeated ContextClip exit_points = 4 [deprecated = true];
+     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string suite_context_ids = 6;</code>
      * @param index The index of the element to return.
      * @return The suiteContextIds at the given index.
@@ -1964,6 +1128,12 @@ private static final long serialVersionUID = 0L;
       return suiteContextIds_.get(index);
     }
     /**
+     * <pre>
+     *    repeated string merged_class_context_ids = 3 [deprecated = true];
+     *    repeated ContextClip exit_points = 4 [deprecated = true];
+     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string suite_context_ids = 6;</code>
      * @param index The index of the value to return.
      * @return The bytes of the suiteContextIds at the given index.
@@ -1973,6 +1143,12 @@ private static final long serialVersionUID = 0L;
       return suiteContextIds_.getByteString(index);
     }
     /**
+     * <pre>
+     *    repeated string merged_class_context_ids = 3 [deprecated = true];
+     *    repeated ContextClip exit_points = 4 [deprecated = true];
+     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string suite_context_ids = 6;</code>
      * @param index The index to set the value at.
      * @param value The suiteContextIds to set.
@@ -1989,6 +1165,12 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    repeated string merged_class_context_ids = 3 [deprecated = true];
+     *    repeated ContextClip exit_points = 4 [deprecated = true];
+     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string suite_context_ids = 6;</code>
      * @param value The suiteContextIds to add.
      * @return This builder for chaining.
@@ -2004,6 +1186,12 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    repeated string merged_class_context_ids = 3 [deprecated = true];
+     *    repeated ContextClip exit_points = 4 [deprecated = true];
+     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string suite_context_ids = 6;</code>
      * @param values The suiteContextIds to add.
      * @return This builder for chaining.
@@ -2017,16 +1205,28 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    repeated string merged_class_context_ids = 3 [deprecated = true];
+     *    repeated ContextClip exit_points = 4 [deprecated = true];
+     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string suite_context_ids = 6;</code>
      * @return This builder for chaining.
      */
     public Builder clearSuiteContextIds() {
       suiteContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000008);
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
     /**
+     * <pre>
+     *    repeated string merged_class_context_ids = 3 [deprecated = true];
+     *    repeated ContextClip exit_points = 4 [deprecated = true];
+     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string suite_context_ids = 6;</code>
      * @param value The bytes of the suiteContextIds to add.
      * @return This builder for chaining.
@@ -2468,9 +1668,9 @@ private static final long serialVersionUID = 0L;
 
     private com.google.protobuf.LazyStringList exclusiveSessionContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     private void ensureExclusiveSessionContextIdsIsMutable() {
-      if (!((bitField0_ & 0x00000010) != 0)) {
+      if (!((bitField0_ & 0x00000002) != 0)) {
         exclusiveSessionContextIds_ = new com.google.protobuf.LazyStringArrayList(exclusiveSessionContextIds_);
-        bitField0_ |= 0x00000010;
+        bitField0_ |= 0x00000002;
        }
     }
     /**
@@ -2555,7 +1755,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder clearExclusiveSessionContextIds() {
       exclusiveSessionContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000010);
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }

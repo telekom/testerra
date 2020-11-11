@@ -24,6 +24,10 @@
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @todo Replace by {@link StackTrace.Cause}
+ */
+@Deprecated
 public class StackTrace {
 
     public static class Cause {
@@ -43,9 +47,15 @@ public class StackTrace {
         }
     }
 
+    @Deprecated
     public Cause stackTrace;
+
     @Deprecated
     public String additionalErrorMessage;
+
+    public Cause getCause() {
+        return this.stackTrace;
+    }
 
     @Override
     public String toString() {
@@ -57,6 +67,7 @@ public class StackTrace {
         return msg;
     }
 
+    @Deprecated
     public String getFirstLine() {
         return stackTrace.className + ": " + stackTrace.message;
     }

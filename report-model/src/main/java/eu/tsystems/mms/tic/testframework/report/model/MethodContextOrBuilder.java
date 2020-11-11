@@ -399,36 +399,19 @@ public interface MethodContextOrBuilder extends
       getVideoIdsBytes(int index);
 
   /**
-   * <code>repeated string screenshot_ids = 31 [deprecated = true];</code>
-   * @return A list containing the screenshotIds.
-   */
-  @java.lang.Deprecated java.util.List<java.lang.String>
-      getScreenshotIdsList();
-  /**
-   * <code>repeated string screenshot_ids = 31 [deprecated = true];</code>
-   * @return The count of screenshotIds.
-   */
-  @java.lang.Deprecated int getScreenshotIdsCount();
-  /**
-   * <code>repeated string screenshot_ids = 31 [deprecated = true];</code>
-   * @param index The index of the element to return.
-   * @return The screenshotIds at the given index.
-   */
-  @java.lang.Deprecated java.lang.String getScreenshotIds(int index);
-  /**
-   * <code>repeated string screenshot_ids = 31 [deprecated = true];</code>
-   * @param index The index of the value to return.
-   * @return The bytes of the screenshotIds at the given index.
-   */
-  @java.lang.Deprecated com.google.protobuf.ByteString
-      getScreenshotIdsBytes(int index);
-
-  /**
+   * <pre>
+   *    repeated string screenshot_ids = 31 [deprecated = true];
+   * </pre>
+   *
    * <code>string custom_context_json = 32;</code>
    * @return The customContextJson.
    */
   java.lang.String getCustomContextJson();
   /**
+   * <pre>
+   *    repeated string screenshot_ids = 31 [deprecated = true];
+   * </pre>
+   *
    * <code>string custom_context_json = 32;</code>
    * @return The bytes for customContextJson.
    */

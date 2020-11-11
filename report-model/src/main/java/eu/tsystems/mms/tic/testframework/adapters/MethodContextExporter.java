@@ -33,7 +33,6 @@ import eu.tsystems.mms.tic.testframework.report.model.PTestStep;
 import eu.tsystems.mms.tic.testframework.report.model.PTestStepAction;
 import eu.tsystems.mms.tic.testframework.report.model.ScriptSource;
 import eu.tsystems.mms.tic.testframework.report.model.ScriptSourceLine;
-import eu.tsystems.mms.tic.testframework.report.model.StackTrace;
 import eu.tsystems.mms.tic.testframework.report.model.StackTraceCause;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
@@ -157,7 +156,7 @@ public class MethodContextExporter extends AbstractContextExporter {
             final String sourcesRefId = IDUtils.getB64encXID();
 
             // create ref link
-            builder.addScreenshotIds(screenshotId);
+            //builder.addScreenshotIds(screenshotId);
 
             // add screenshot data
             final File.Builder fileBuilderScreenshot = File.newBuilder();
@@ -193,15 +192,15 @@ public class MethodContextExporter extends AbstractContextExporter {
         // file size
         builder.setSize(file.length());
     }
-
-    public StackTrace.Builder prepareStackTrace(eu.tsystems.mms.tic.testframework.report.model.context.StackTrace stackTrace) {
-        StackTrace.Builder builder = StackTrace.newBuilder();
-
-        //apply(stackTrace.additionalErrorMessage, builder::setAdditionalErrorMessage);
-        map(stackTrace.stackTrace, this::prepareStackTraceCause, builder::setCause);
-
-        return builder;
-    }
+//
+//    public StackTrace.Builder prepareStackTrace(eu.tsystems.mms.tic.testframework.report.model.context.StackTrace stackTrace) {
+//        StackTrace.Builder builder = StackTrace.newBuilder();
+//
+//        //apply(stackTrace.additionalErrorMessage, builder::setAdditionalErrorMessage);
+//        map(stackTrace.stackTrace, this::prepareStackTraceCause, builder::setCause);
+//
+//        return builder;
+//    }
 
     public StackTraceCause.Builder prepareStackTraceCause(eu.tsystems.mms.tic.testframework.report.model.context.StackTrace.Cause cause) {
         StackTraceCause.Builder builder = StackTraceCause.newBuilder();
@@ -239,7 +238,9 @@ public class MethodContextExporter extends AbstractContextExporter {
 
 //        apply(errorContext.getReadableErrorMessage(), builder::setReadableErrorMessage);
 //        apply(errorContext.getAdditionalErrorMessage(), builder::setAdditionalErrorMessage);
-        map(errorContext.getStackTrace(), this::prepareStackTrace, builder::setStackTrace);
+        if (errorContext.getStackTrace() != null) {
+            map(errorContext.getStackTrace().getCause(), this::prepareStackTraceCause, builder::setCause);
+        }
 //        apply(errorContext.errorFingerprint, builder::setErrorFingerprint);
         map(errorContext.getScriptSource(), this::prepareScriptSource, builder::setScriptSource);
         map(errorContext.getExecutionObjectSource(), this::prepareScriptSource, builder::setExecutionObjectSource);
@@ -291,7 +292,7 @@ public class MethodContextExporter extends AbstractContextExporter {
                 testStepBuilder.addClickpathEvents(clickPathBuilder.build());
             }
             if (testStepActionEntry.screenshot != null) {
-                testStepBuilder.addScreenshotNames(testStepActionEntry.screenshot.filename);
+                //testStepBuilder.addScreenshotNames(testStepActionEntry.screenshot.filename);
                 testStepBuilder.addScreenshotIds(testStepActionEntry.screenshot.errorContextId);
             }
         });

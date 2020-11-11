@@ -171,15 +171,6 @@ export namespace data {
         /** ExecutionContext contextValues */
         contextValues?: (data.IContextValues|null);
 
-        /** ExecutionContext mergedClassContextIds */
-        mergedClassContextIds?: (string[]|null);
-
-        /** ExecutionContext exitPoints */
-        exitPoints?: (data.IContextClip[]|null);
-
-        /** ExecutionContext failureAscpects */
-        failureAscpects?: (data.IContextClip[]|null);
-
         /** ExecutionContext suiteContextIds */
         suiteContextIds?: (string[]|null);
 
@@ -217,15 +208,6 @@ export namespace data {
         /** ExecutionContext contextValues. */
         public contextValues?: (data.IContextValues|null);
 
-        /** ExecutionContext mergedClassContextIds. */
-        public mergedClassContextIds: string[];
-
-        /** ExecutionContext exitPoints. */
-        public exitPoints: data.IContextClip[];
-
-        /** ExecutionContext failureAscpects. */
-        public failureAscpects: data.IContextClip[];
-
         /** ExecutionContext suiteContextIds. */
         public suiteContextIds: string[];
 
@@ -259,42 +241,6 @@ export namespace data {
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
         public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.ExecutionContext;
-    }
-
-    /** Properties of a ContextClip. */
-    interface IContextClip {
-
-        /** ContextClip key */
-        key?: (string|null);
-
-        /** ContextClip methodContextIds */
-        methodContextIds?: (string[]|null);
-    }
-
-    /** Represents a ContextClip. */
-    class ContextClip implements IContextClip {
-
-        /**
-         * Constructs a new ContextClip.
-         * @param [p] Properties to set
-         */
-        constructor(p?: data.IContextClip);
-
-        /** ContextClip key. */
-        public key: string;
-
-        /** ContextClip methodContextIds. */
-        public methodContextIds: string[];
-
-        /**
-         * Decodes a ContextClip message from the specified reader or buffer.
-         * @param r Reader or buffer to decode from
-         * @param [l] Message length if known beforehand
-         * @returns ContextClip
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.ContextClip;
     }
 
     /** Properties of a MethodContext. */
@@ -365,9 +311,6 @@ export namespace data {
 
         /** MethodContext videoIds */
         videoIds?: (string[]|null);
-
-        /** MethodContext screenshotIds */
-        screenshotIds?: (string[]|null);
 
         /** MethodContext customContextJson */
         customContextJson?: (string|null);
@@ -447,9 +390,6 @@ export namespace data {
 
         /** MethodContext videoIds. */
         public videoIds: string[];
-
-        /** MethodContext screenshotIds. */
-        public screenshotIds: string[];
 
         /** MethodContext customContextJson. */
         public customContextJson: string;
@@ -591,9 +531,6 @@ export namespace data {
         /** PTestStepAction timestamp */
         timestamp?: (number|Long|null);
 
-        /** PTestStepAction screenshotNames */
-        screenshotNames?: (string[]|null);
-
         /** PTestStepAction clickpathEvents */
         clickpathEvents?: (data.IPClickPathEvent[]|null);
 
@@ -618,9 +555,6 @@ export namespace data {
 
         /** PTestStepAction timestamp. */
         public timestamp: (number|Long);
-
-        /** PTestStepAction screenshotNames. */
-        public screenshotNames: string[];
 
         /** PTestStepAction clickpathEvents. */
         public clickpathEvents: data.IPClickPathEvent[];
@@ -694,18 +628,6 @@ export namespace data {
     /** Properties of an ErrorContext. */
     interface IErrorContext {
 
-        /** ErrorContext readableErrorMessage */
-        readableErrorMessage?: (string|null);
-
-        /** ErrorContext additionalErrorMessage */
-        additionalErrorMessage?: (string|null);
-
-        /** ErrorContext stackTrace */
-        stackTrace?: (data.IStackTrace|null);
-
-        /** ErrorContext errorFingerprint */
-        errorFingerprint?: (string|null);
-
         /** ErrorContext scriptSource */
         scriptSource?: (data.IScriptSource|null);
 
@@ -717,6 +639,9 @@ export namespace data {
 
         /** ErrorContext description */
         description?: (string|null);
+
+        /** ErrorContext cause */
+        cause?: (data.IStackTraceCause|null);
     }
 
     /** Represents an ErrorContext. */
@@ -727,18 +652,6 @@ export namespace data {
          * @param [p] Properties to set
          */
         constructor(p?: data.IErrorContext);
-
-        /** ErrorContext readableErrorMessage. */
-        public readableErrorMessage: string;
-
-        /** ErrorContext additionalErrorMessage. */
-        public additionalErrorMessage: string;
-
-        /** ErrorContext stackTrace. */
-        public stackTrace?: (data.IStackTrace|null);
-
-        /** ErrorContext errorFingerprint. */
-        public errorFingerprint: string;
 
         /** ErrorContext scriptSource. */
         public scriptSource?: (data.IScriptSource|null);
@@ -751,6 +664,9 @@ export namespace data {
 
         /** ErrorContext description. */
         public description: string;
+
+        /** ErrorContext cause. */
+        public cause?: (data.IStackTraceCause|null);
 
         /**
          * Decodes an ErrorContext message from the specified reader or buffer.
@@ -932,42 +848,6 @@ export namespace data {
         MT_NOT_SET = 0,
         TEST_METHOD = 1,
         CONFIGURATION_METHOD = 2
-    }
-
-    /** Properties of a StackTrace. */
-    interface IStackTrace {
-
-        /** StackTrace cause */
-        cause?: (data.IStackTraceCause|null);
-
-        /** StackTrace additionalErrorMessage */
-        additionalErrorMessage?: (string|null);
-    }
-
-    /** Represents a StackTrace. */
-    class StackTrace implements IStackTrace {
-
-        /**
-         * Constructs a new StackTrace.
-         * @param [p] Properties to set
-         */
-        constructor(p?: data.IStackTrace);
-
-        /** StackTrace cause. */
-        public cause?: (data.IStackTraceCause|null);
-
-        /** StackTrace additionalErrorMessage. */
-        public additionalErrorMessage: string;
-
-        /**
-         * Decodes a StackTrace message from the specified reader or buffer.
-         * @param r Reader or buffer to decode from
-         * @param [l] Message length if known beforehand
-         * @returns StackTrace
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.StackTrace;
     }
 
     /** Properties of a StackTraceCause. */

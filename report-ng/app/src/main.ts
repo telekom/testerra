@@ -1,7 +1,11 @@
 import {Aurelia} from 'aurelia-framework';
 import {PLATFORM} from 'aurelia-pal';
+import {Config} from "./services/config";
 
 export function configure(aurelia: Aurelia) {
+
+    const config:Config = aurelia.container.get(Config);
+
     aurelia.use
         .standardConfiguration()
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/all'))
@@ -14,9 +18,11 @@ export function configure(aurelia: Aurelia) {
             PLATFORM.moduleName('value-converters/status-class-value-converter'),
             PLATFORM.moduleName('value-converters/duration-format-value-converter'),
             PLATFORM.moduleName('value-converters/html-value-converter'),
-        ])
+        ]);
 
-    aurelia.use.developmentLogging("debug");
+    if (config.developmentMode) {
+        aurelia.use.developmentLogging("debug");
+    }
 
     aurelia.start().then(() => aurelia.setRoot(PLATFORM.moduleName('app')));
 }

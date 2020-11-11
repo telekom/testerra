@@ -71,12 +71,15 @@
 }
 
 .card-headline {
-    margin: 0.4em 1em;
-    color: rgba(0, 0, 0, 0.6);
+    @include theme.property(color, text-secondary-on-light);
+
+    padding: 8px 16px;
+    //margin: 0.4em 1em;
+    //color: rgba(0, 0, 0, 0.6);
 }
 
 .card-content {
-    @extend .default-padding;
+    @extend .p1;
     margin: auto 0;
 }
 

@@ -9,28 +9,28 @@
                                 outlined
                                 value.bind="_searchQuery"
                                 keydown.delegate="_filter() & debounce"
-                                class="full-width"
+                                class="w100"
                 >
                     <mdc-icon mdc-text-field-icon leading>search</mdc-icon>
                 </mdc-text-field>
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="4"></mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="12">
-                <mdc-data-table class="full-width">
+                <mdc-data-table class="w100">
                     <mdc-data-table-header>
                         <mdc-data-table-header-cell>Failure Aspect</mdc-data-table-header-cell>
                         <mdc-data-table-header-cell>Statuses</mdc-data-table-header-cell>
                     </mdc-data-table-header>
                     <mdc-data-table-content>
                         <mdc-data-table-row repeat.for="failureAspect of _filteredFailureAspects">
-                            <mdc-data-table-cell class="default-padding">
+                            <mdc-data-table-cell class="p1">
                                 <a route-href="route: tests; params.bind: {q: failureAspect.name}"
                                    class="error-view"
                                    innerhtml.bind="failureAspect.name|html|highlightText:_searchRegexp"
                                 ></a>
                             </mdc-data-table-cell>
                             <mdc-data-table-cell>
-                                <div repeat.for="status of failureAspect.availableStatuses" class="default-margin">
+                                <div repeat.for="status of failureAspect.availableStatuses" class="m1">
                                     <a class="badge status-${status|statusClass}"
                                           route-href="route: tests; params.bind: {q: failureAspect.name, status: _statusConverter.getClassForStatus(status)}"
                                     >${failureAspect.getStatusCount(status)} ${status|statusName}</a>

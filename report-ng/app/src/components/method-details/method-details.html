@@ -1,8 +1,37 @@
 <template>
-
+    <require from="components/test-duration-card/test-duration-card"></require>
     <mdc-layout-grid>
         <mdc-layout-grid-inner>
-            <mdc-layout-grid-cell span="4">${_methodContext.contextValues.name}</mdc-layout-grid-cell>
+            <mdc-layout-grid-cell span="6">
+                <mdc-card>
+                    <div class="card-content">
+                        <div mdc-headline5>
+                            <span class="badge status-${_methodContext.contextValues.resultStatus|statusClass}"
+                            >${_methodContext.contextValues.resultStatus|statusName}</span>
+                            ${_methodContext.contextValues.name}
+                        </div>
+                    </div>
+                </mdc-card>
+            </mdc-layout-grid-cell>
+            <mdc-layout-grid-cell span="6">
+                <test-duration-card start.bind="_methodContext.contextValues.startTime"
+                                    end.bind="_methodContext.contextValues.endTime"
+                ></test-duration-card>
+<!--                <mdc-card>-->
+<!--                    <div mdc-body1 class="card-content">-->
+<!--                        Started: ${_methodContext.contextValues.startTime|dateFormat:"LLL"}-->
+<!--&lt;!&ndash;                        <div mdc-headline4>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <mdc-icon>timer</mdc-icon> Duration: ${_testDuration |durationFormat}&ndash;&gt;-->
+<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+<!--                        <p if.bind="_hasFinished">-->
+<!--                            Ended: ${_methodContext.contextValues.endTime|dateFormat:"LLL"} <br>-->
+<!--                        </p>-->
+<!--                        <p else>-->
+<!--                            Running...-->
+<!--                        </p>-->
+<!--                    </div>-->
+<!--                </mdc-card>-->
+            </mdc-layout-grid-cell>
         </mdc-layout-grid-inner>
     </mdc-layout-grid>
 </template>

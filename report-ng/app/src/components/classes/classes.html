@@ -6,7 +6,7 @@
                             value.bind="_selectedStatus"
                             change.delegate="_statusChanged()"
                             outlined
-                            class="full-width"
+                            class="w100"
                 >
                     <mdc-list>
                         <mdc-list-item>(All)</mdc-list-item>
@@ -23,7 +23,7 @@
                             value.bind="_selectedClass"
                             change.delegate="_classChanged()"
                             outlined
-                            class="full-width"
+                            class="w100"
                 >
                     <mdc-list>
                         <mdc-list-item>(All)</mdc-list-item>
@@ -42,13 +42,13 @@
                     value.bind="_searchQuery"
                     keydown.delegate="_searchQueryChanged() & debounce"
                     change.delegate="_searchQueryChanged()"
-                    class="full-width"
+                    class="w100"
                 >
                     <mdc-icon mdc-text-field-icon leading>search</mdc-icon>
                 </mdc-text-field>
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="2" position="middle">
-                <mdc-form-field class="full-width">
+                <mdc-form-field class="w100">
                     <mdc-switch checked.bind="_showConfigurationMethods"
                                 change.delegate="_showConfigurationChanged()"
                     ></mdc-switch>
@@ -56,7 +56,7 @@
                 </mdc-form-field>
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="12">
-                <mdc-data-table class="full-width"
+                <mdc-data-table class="w100"
                 if.bind="!_loading && _filteredMethodAggregates.length > 0"
                 >
                     <mdc-data-table-header>
@@ -76,12 +76,12 @@
                                 <a route-href="route: tests; params.bind: withQueryParams({class: methodAggregate.classContext.simpleClassName})"
                                 >${methodAggregate.classContext.simpleClassName}</a>
                             </mdc-data-table-cell>
-                            <mdc-data-table-cell class="default-padding">
+                            <mdc-data-table-cell class="p1">
                                 <a route-href="route: method; params.bind: {id: methodAggregate.methodContext.contextValues.id}">
                                     <span innerhtml.bind="methodAggregate.methodContext.contextValues.name|highlightText:_searchRegexp"></span>
                                     <!--mdc-icon>read_more</mdc-icon-->
                                 </a>
-                                <pre class="mb-0 mt-0 error-view" innerhtml.bind="methodAggregate.failureAspect.name|html|highlightText:_searchRegexp"></pre>
+                                <pre class="mb0 mt0 error-view" innerhtml.bind="methodAggregate.failureAspect.name|html|highlightText:_searchRegexp"></pre>
                             </mdc-data-table-cell>
 <!--                            <mdc-data-table-cell innerhtml.bind="methodAggregate.failureAspect.name|html|highlightText:_searchRegexp"-->
 <!--                                                 class="default-padding"-->

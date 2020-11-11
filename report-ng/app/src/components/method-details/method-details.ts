@@ -14,6 +14,8 @@ import {StatusConverter} from "../../services/status-converter";
 import {data} from "../../services/report-model";
 import IMethodContext = data.IMethodContext;
 import IClassContext = data.IClassContext;
+import ITestContext = data.ITestContext;
+import ISuiteContext = data.ISuiteContext;
 
 @autoinject()
 export class MethodDetails extends AbstractViewModel {
@@ -21,6 +23,8 @@ export class MethodDetails extends AbstractViewModel {
     private _hljs = hljs;
     private _methodContext:IMethodContext;
     private _classContext:IClassContext;
+    private _testContext:ITestContext;
+    private _suiteContext:ISuiteContext;
 
     constructor(
         private _statistics: StatisticsGenerator,
@@ -39,6 +43,8 @@ export class MethodDetails extends AbstractViewModel {
             this._methodContext = executionStatistics.classStatistics
                 .flatMap(classStatistic => {
                     this._classContext = classStatistic.classAggregate.classContext;
+                    this._testContext = executionStatistics.executionAggregate.testContexts.find(testContext => testContext.classContextIds.find(id => this._classContext.contextValues.id == id));
+                    this._suiteContext = executionStatistics.executionAggregate.suiteContexts.find(suiteContext => suiteContext.testContextIds.find(id => this._testContext.contextValues.id));
                     return classStatistic.classAggregate.methodContexts
                 })
                 .find(methodContext => methodContext.contextValues.id == this.queryParams.id);

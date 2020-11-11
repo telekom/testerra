@@ -1,3 +1,24 @@
+/*!
+ * Testerra
+ *
+ * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 @use "~@material/theme" with (
   $primary: #e63946,
   $secondary: #a8dadc,
@@ -65,13 +86,23 @@
 .btn-secondary {
     @include button.filled-accessible(theme.$secondary);
 }
+//
+//.mdc-card {
+//    @include card.fill-color(#ffffff);
+//}
 
-.mdc-card {
-    @include card.fill-color(#ffffff);
+.secondary {
+    @include theme.property(color, text-secondary-on-background);
+}
+
+.list-label {
+    @extend .mr1;
+    min-width: 10em;
 }
 
 .card-headline {
-    @include theme.property(color, text-secondary-on-light);
+    @extend .secondary;
+    //@include theme.property(color, text-secondary-on-light);
 
     padding: 8px 16px;
     //margin: 0.4em 1em;
@@ -80,7 +111,7 @@
 
 .card-content {
     @extend .p1;
-    margin: auto 0;
+    //margin: auto 0;
 }
 
 //adapt router view size to drawer because it doesn't do that on it's own for some reason

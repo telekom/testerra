@@ -12,10 +12,12 @@ import {AbstractViewModel} from "../abstract-view-model";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {StatusConverter} from "../../services/status-converter";
 import {data} from "../../services/report-model";
+import {FailureAspectStatistics} from "../../services/statistic-models";
 import IMethodContext = data.IMethodContext;
 import IClassContext = data.IClassContext;
 import ITestContext = data.ITestContext;
 import ISuiteContext = data.ISuiteContext;
+import IStackTraceCause = data.IStackTraceCause;
 
 @autoinject()
 export class MethodDetails extends AbstractViewModel {
@@ -25,6 +27,8 @@ export class MethodDetails extends AbstractViewModel {
     private _classContext:IClassContext;
     private _testContext:ITestContext;
     private _suiteContext:ISuiteContext;
+    private _stackTrace:IStackTraceCause[];
+    private _failureAspect:FailureAspectStatistics;
 
     constructor(
         private _statistics: StatisticsGenerator,
@@ -48,6 +52,17 @@ export class MethodDetails extends AbstractViewModel {
                     this._classContext = classStatistic.classAggregate.classContext;
                     this._testContext = executionStatistics.executionAggregate.testContexts.find(testContext => testContext.classContextIds.find(id => this._classContext.contextValues.id == id));
                     this._suiteContext = executionStatistics.executionAggregate.suiteContexts.find(suiteContext => suiteContext.testContextIds.find(id => this._testContext.contextValues.id));
+                    if (this._methodContext.errorContext?.cause) {
+                        this._stackTrace = [];
+                        let cause = this._methodContext.errorContext.cause;
+                        do {
+                            this._stackTrace.push(cause);
+                            cause = cause.cause;
+                        } while (cause);
+                    }
+
+                    this._failureAspect = new FailureAspectStatistics().addMethodContext(this._methodContext);
+
                     break;
                 }
             }

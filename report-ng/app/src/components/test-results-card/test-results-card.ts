@@ -1,5 +1,4 @@
 import {autoinject} from "aurelia-framework";
-import {EventAggregator} from 'aurelia-event-aggregator';
 import "./test-results-card.scss";
 import {StatusConverter} from "../../services/status-converter";
 import {StatisticsGenerator} from "../../services/statistics-generator";
@@ -14,7 +13,6 @@ export class TestResultsCard {
     constructor(
         private _statusConverter: StatusConverter,
         private _statisticsGenerator: StatisticsGenerator,
-        private _eventAggregator: EventAggregator,
         private _element: Element
     ) {
     }
@@ -29,11 +27,13 @@ export class TestResultsCard {
     private _preparePieChart(executionStatistics: ExecutionStatistics): void {
         const series = [];
         const labels = [];
+        const labelStatus = [];
         const colors = [];
 
         for (const status of this._statusConverter.relevantStatuses) {
             series.push(executionStatistics.getStatusCount(status));
             labels.push(this._statusConverter.getLabelForStatus(status));
+            labelStatus.push(status)
             colors.push(this._statusConverter.getColorForStatus(status));
         }
 
@@ -44,7 +44,8 @@ export class TestResultsCard {
                 fontFamily: 'Roboto',
                 events: {
                     dataPointSelection: (event, chartContext, config) => {
-                        this._piePieceClicked(labels[config.dataPointIndex]);
+                        this._piePieceClicked(labelStatus[config.dataPointIndex]);
+                        console.log(chartContext, config);
                         event.stopPropagation();
                     }
                 },
@@ -55,17 +56,10 @@ export class TestResultsCard {
         };
     }
 
-    private _piePieceClicked(dataLabel: string): void {
-        /*let pieEvent = new CustomEvent('pie-piece-click', {
-            detail: {dataLabel: dataLabel},
-            bubbles: true
-        });
-        this._element.dispatchEvent(pieEvent);*/
-        console.log("Event fired. Label:" + dataLabel);
-        //this._eventAggregator.publish('pie-piece-click', dataLabel);
+    private _piePieceClicked(status: number): void {
         const event = new CustomEvent("piece-clicked", {
             detail: {
-                katze: "maus",
+                status: status
             },
             bubbles: true
         });

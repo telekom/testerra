@@ -1,51 +1,40 @@
-@import "mdc";
-@import "statuses";
+@import "styles/mdc";
+@import "styles/statuses";
+@import "styles/spaces";
 
 /*General style settings______________________________________________________________________________________________*/
 
 //Body has a native margin for some reason
 body {
-  margin: 0;
+    margin: 0;
 }
 
-#logo{
-  margin-top: -18px;
-  margin-left: -20px;
-  width: 60px;
-  height: 60px;
+#logo {
+    margin-top: -18px;
+    margin-left: -20px;
+    width: 60px;
+    height: 60px;
 }
 
 //prevents app-content overflowing out of screen
 .flex-container {
-  display: flex;
-}
-
-.full-width {
-  width: 100%;
-}
-
-.default-padding {
-    padding: 1em;
-}
-
-.default-margin {
-    margin: 1em;
+    display: flex;
 }
 
 .alert {
-    @extend .full-width;
-    @extend .default-padding;
+    @extend .w100;
+    @extend .p1;
     min-height: 10em;
     text-align: center;
     vertical-align: center;
 }
 
 .code-view {
-    @extend .default-padding;
+    @extend .p1;
     background-color: #2b2b2b;
     border: 2px solid #495561; /*gray-300*/
     border-radius: 2px;
-    color:#a9b7c6;
+    color: #a9b7c6;
 }
 
 .error-view {
@@ -53,9 +42,12 @@ body {
     font-size: 1.1rem;
 }
 
-.mb-0 {
-    margin-bottom: 0;
+.sr1 {
+   margin-right: 8px;
 }
-.mt-0 {
-    margin-top: 0;
+.sb1 {
+    margin-bottom: 8px;
+}
+.st1 {
+    margin-top: 8px;
 }

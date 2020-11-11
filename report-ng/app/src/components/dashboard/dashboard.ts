@@ -20,4 +20,8 @@ export class Dashboard {
         })
 
     };
+
+    private _pieceClicked(ev:CustomEvent) {
+        console.log("piece clicked", ev);
+    }
 }

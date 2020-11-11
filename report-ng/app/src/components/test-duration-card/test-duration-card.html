@@ -1,21 +1,17 @@
 <template>
   <mdc-card outlined="true">
-    <div mdc-subtitle2 class="card-headline">Test Duration</div>
+    <div mdc-subtitle2 class="card-headline">Started: ${start | dateFormat:"LLLL"}</div>
     <mdc-list-divider></mdc-list-divider>
 
     <div class="card-content">
-      <div mdc-body1>
-        <p>Started: ${_executionContext.contextValues.startTime|dateFormat:"LLL"}</p>
-        <div mdc-headline4>
-          <mdc-icon>timer</mdc-icon> Duration: ${_testDuration |durationFormat}
-        </div>
-        <p if.bind="_hasFinished">
-          Ended: ${_executionContext.contextValues.endTime|dateFormat:"LLL"} <br>
-        </p>
-        <p else>
-          Running...
-        </p>
+      <div mdc-headline5>
+          <mdc-icon>timer</mdc-icon> Duration: ${_duration|durationFormat}
       </div>
     </div>
+      <mdc-list-divider></mdc-list-divider>
+      <div mdc-subtitle2 class="card-headline">
+          <span if.bind="_hasEnded">Ended: ${end | dateFormat:"LLLL"}</span>
+          <span else>Running...</span>
+      </div>
   </mdc-card>
 </template>

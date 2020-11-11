@@ -25,7 +25,7 @@ export class App {
     attached() {
         this._statistics.getExecutionStatistics().then(executionStatistics => {
             this._executionContext = executionStatistics.executionAggregate.executionContext;
-            this._routeConfig.title = this._executionContext.runConfig.reportName;
+            this._router.title = "Report: " + this._executionContext.runConfig.reportName;
             this._router.routes.filter(route => route.route == "failure-aspects").find(route => {
                 route.settings.count = executionStatistics.failureAspectStatistics.length;
             });
@@ -36,6 +36,7 @@ export class App {
     }
 
     configureRouter(config: RouterConfiguration, router: Router) {
+        router.title = "Report NG";
         this._router = router;
         this._routeConfig = config;
         config.map([
@@ -47,11 +48,11 @@ export class App {
                 title: 'Dashboard'
             },
             {
-                route: 'classes',
+                route: 'tests',
                 moduleId: PLATFORM.moduleName('components/classes/classes'),
                 nav: true,
-                name: "classes",
-                title: 'Classes'
+                name: "tests",
+                title: 'Tests'
             },
             // {
             //     route: 'threads',

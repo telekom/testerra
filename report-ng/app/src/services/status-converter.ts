@@ -66,8 +66,15 @@ export class StatusConverter {
         ];
     }
 
-    getLabelForStatus(value: ResultStatusType | number): string {
-        switch (value) {
+    private _normalizeStatus(status:ResultStatusType|string) {
+        if (typeof status === "string") {
+            status = Number.parseInt(status);
+        }
+        return status;
+    }
+
+    getLabelForStatus(status: ResultStatusType | string): string {
+        switch (this._normalizeStatus(status)) {
             case ResultStatusType.SKIPPED:
                 return "Skipped";
             case ResultStatusType.PASSED:
@@ -89,8 +96,8 @@ export class StatusConverter {
         }
     }
 
-    getIconNameForStatus(status: ResultStatusType) {
-        switch (status) {
+    getIconNameForStatus(status: ResultStatusType|string) {
+        switch (this._normalizeStatus(status)) {
             case ResultStatusType.SKIPPED:
                 return "radio_button_unchecked";
             case ResultStatusType.FAILED_RETRIED:
@@ -105,7 +112,7 @@ export class StatusConverter {
     }
 
     getColorForStatus(status: ResultStatusType): string {
-        switch (status) {
+        switch (this._normalizeStatus(status)) {
             case ResultStatusType.PASSED:
             case ResultStatusType.PASSED_RETRY:
             case ResultStatusType.MINOR_RETRY:
@@ -125,8 +132,8 @@ export class StatusConverter {
         }
     }
 
-    getClassForStatus(status: number): string {
-        switch (status) {
+    getClassForStatus(status: ResultStatusType|string): string {
+        switch (this._normalizeStatus(status)) {
             case ResultStatusType.PASSED:
                 return "passed";
             case ResultStatusType.PASSED_RETRY:
@@ -147,6 +154,8 @@ export class StatusConverter {
                 return "skipped";
             case ResultStatusType.NO_RUN:
                 return "running";
+            default:
+                return "unknown-status";
         }
     }
 

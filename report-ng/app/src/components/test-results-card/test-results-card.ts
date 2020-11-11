@@ -61,6 +61,14 @@ export class TestResultsCard {
             bubbles: true
         });
         this._element.dispatchEvent(pieEvent);*/
-        this._eventAggregator.publish('pie-piece-click', dataLabel);
+        console.log("Event fired. Label:" + dataLabel);
+        //this._eventAggregator.publish('pie-piece-click', dataLabel);
+        const event = new CustomEvent("piece-clicked", {
+            detail: {
+                katze: "maus",
+            },
+            bubbles: true
+        });
+        this._element.dispatchEvent(event)
     }
 }

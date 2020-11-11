@@ -1,47 +1,74 @@
 import {data} from "../../services/report-model";
-import {autoinject} from "aurelia-framework";
-import {EventAggregator} from 'aurelia-event-aggregator';
+import {autoinject, bindable} from "aurelia-framework";
 import {StatusConverter} from "../../services/status-converter";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import ResultStatusType = data.ResultStatusType;
+import {ClassStatistics} from "../../services/statistic-models";
 
 @autoinject
 export class TestClassesCard {
+    @bindable filter;
+    @bindable classStatistics: ClassStatistics[];
     private _apexBarOptions: any = undefined;
+    private _currentFilter;
 
 
     constructor(
         private _statusConverter: StatusConverter,
-        private _statisticsGenerator: StatisticsGenerator,
-        private _eventAggregator: EventAggregator
+        private _statisticsGenerator: StatisticsGenerator
     ) {
     }
 
-    attached() {
+/*    attached() {
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
             this._prepareHorizontalBarChart(executionStatistics.classStatistics);
+            this._classStats = executionStatistics.classStatistics;
         });
-        this._piePieceClicked();
+
+        this._eventAggregator.subscribe('pie-piece-click', dataLabel => {
+            this._piePieceClicked(dataLabel);
+        });
+    }*/
+
+    classStatisticsChanged() {
+        console.log("stats changed.");
+        this._prepareHorizontalBarChart(this.classStatistics);
     }
 
-    private _prepareHorizontalBarChart(classStatistics): void {
+    filterChanged(){
+        console.log("filter changed. ", this.filter);
+        if (this.filter.status == this._currentFilter){
+            this.filter = "";
+        }
+        if (this.classStatistics?.length > 0 ) {
+            this._prepareHorizontalBarChart(this.classStatistics);
+        }
+        this._currentFilter = this.filter.status;
+    }
+
+    private _prepareHorizontalBarChart(classStatistics: ClassStatistics[]): void {
         let data: Map<ResultStatusType, Array<number>> = new Map();
         let xlabels: Array<string> = [];
 
-        for (const status of this._statusConverter.relevantStatuses) {
+        const series = [];
+        const filteredStatuses = this._statusConverter.relevantStatuses.filter(status => (!this.filter?.status || status == this.filter.status) );
+        for (const status of filteredStatuses) {
             data.set(status, []);
+            series.push({
+                name: this._statusConverter.getLabelForStatus(status),
+                data: data.get(status),
+                color: this._statusConverter.getColorForStatus(status)
+            })
         }
 
         //Iterate through classStatistics array to fill map with data for series
         classStatistics.forEach(classStats => {
-            for (const status of this._statusConverter.relevantStatuses) {
+            for (const status of filteredStatuses) {
                 data.get(status).push(classStats.getStatusCount(status));
             }
             //Push Class Names in array for x-axis labels
             xlabels.push(classStats.classAggregate.classContext.testContextName||classStats.classAggregate.classContext.simpleClassName);
         });
-
-
 
         //Display at least 10 rows in bar chart even if there are less classes
         // if (xlabels.length < 10) {
@@ -52,16 +79,6 @@ export class TestClassesCard {
         //         }
         //     }
         // }
-
-        const series = [];
-
-        for (const status of this._statusConverter.relevantStatuses) {
-            series.push({
-                name: this._statusConverter.getLabelForStatus(status),
-                data: data.get(status),
-                color: this._statusConverter.getColorForStatus(status)
-            })
-        }
 
         this._apexBarOptions = {
             chart: {
@@ -101,11 +118,5 @@ export class TestClassesCard {
                 horizontalAlign: 'center'
             }
         }
-    }
-
-    private _piePieceClicked() {
-        this._eventAggregator.subscribe('pie-piece-click', dataLabel => {
-            console.log("Yay! " + dataLabel);
-        });
     }
 }

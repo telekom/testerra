@@ -8,7 +8,7 @@ export class TestDurationCard {
     private _duration:number;
     private _hasEnded = false;
 
-    starChanged() {
+    startChanged() {
         this._updateDuration();
     }
 
@@ -24,6 +24,5 @@ export class TestDurationCard {
             this._hasEnded = true;
         }
         this._duration = this.end-this.start;
-        console.log(this.end, this.start, this._duration);
     }
 }

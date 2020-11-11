@@ -6,6 +6,7 @@ import {ExecutionStatistics} from "services/statistic-models";
 @autoinject()
 export class Dashboard {
     private _executionStatistics: ExecutionStatistics;
+    private _filter: any = {status: ""};
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -23,5 +24,6 @@ export class Dashboard {
 
     private _pieceClicked(ev:CustomEvent) {
         console.log("piece clicked", ev);
+        this._filter = ev.detail
     }
 }

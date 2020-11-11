@@ -4,7 +4,7 @@ import * as moment from "moment";
 export class DurationFormatValueConverter {
 
     toView(value: number | string, format:string) {
-        const duration = moment.duration(DurationFormatValueConverter.normalizeValue(value));
+        const duration = moment.duration(DurationFormatValueConverter.normalizeValue(value), "ms")
         return duration.format(format);
     }
 

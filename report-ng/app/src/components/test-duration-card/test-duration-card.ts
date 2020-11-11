@@ -9,22 +9,21 @@ export class TestDurationCard {
     private _hasEnded = false;
 
     starChanged() {
-        console.log("start" , this.start);
         this._updateDuration();
     }
 
     endChanged() {
-        console.log("end" , this.end);
         this._updateDuration();
     }
 
     private _updateDuration() {
         if (!this.end) {
             this._hasEnded = false;
-            this.end = new Date().getDate();
+            this.end = new Date().getMilliseconds();
         } else {
             this._hasEnded = true;
         }
         this._duration = this.end-this.start;
+        console.log(this.end, this.start, this._duration);
     }
 }

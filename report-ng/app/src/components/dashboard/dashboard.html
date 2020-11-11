@@ -29,7 +29,7 @@
                 </mdc-card>
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="4">
-                <test-results-card piece-clicked.delegate="_pieceClicked($event)"></test-results-card>
+                <test-results-card execution-statistics.bind="_executionStatistics" piece-clicked.delegate="_pieceClicked($event)"></test-results-card>
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="4">
                 <test-duration-card start.bind="_executionStatistics.executionAggregate.executionContext.contextValues.startTime"

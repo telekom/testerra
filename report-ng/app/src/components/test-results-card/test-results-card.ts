@@ -1,4 +1,4 @@
-import {autoinject} from "aurelia-framework";
+import {autoinject, bindable} from "aurelia-framework";
 import "./test-results-card.scss";
 import {StatusConverter} from "../../services/status-converter";
 import {StatisticsGenerator} from "../../services/statistics-generator";
@@ -7,8 +7,9 @@ import ApexOptions = ApexCharts.ApexOptions;
 
 @autoinject
 export class TestResultsCard {
+    @bindable executionStatistics: ExecutionStatistics;
     private _apexPieOptions: ApexOptions = undefined;
-    private _executionStatistics;
+
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -17,11 +18,8 @@ export class TestResultsCard {
     ) {
     }
 
-    attached() {
-        this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
-            this._executionStatistics = executionStatistics;
-            this._preparePieChart(executionStatistics);
-        });
+    executionStatisticsChanged() {
+        this._preparePieChart(this.executionStatistics);
     }
 
     private _preparePieChart(executionStatistics: ExecutionStatistics): void {

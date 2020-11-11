@@ -12,18 +12,18 @@
                         </div>
                     </mdc-card-primary-action>
                     <mdc-list-divider></mdc-list-divider>
-                    <mdc-list nonInteractive="true" two-line>
+                    <mdc-list nonInteractive dense>
                         <mdc-list-item>
-                            <mdc-list-item-primary-text>${_classContext.simpleClassName} <span if.bind="_classContext.testContextName">(${_classContext.testContextName})</span></mdc-list-item-primary-text>
-                            <mdc-list-item-secondary-text>Class</mdc-list-item-secondary-text>
+                            <span class="secondary sr1">Class</span>${_classContext.simpleClassName} <span if.bind="_classContext.testContextName">(${_classContext.testContextName})</span>
                         </mdc-list-item>
                         <mdc-list-item>
-                            <mdc-list-item-primary-text>${_testContext.contextValues.name}</mdc-list-item-primary-text>
-                            <mdc-list-item-secondary-text>Test Context</mdc-list-item-secondary-text>
+                            <span class="secondary sr1">Test Context</span>${_suiteContext.contextValues.name}
                         </mdc-list-item>
                         <mdc-list-item>
-                            <mdc-list-item-primary-text>${_suiteContext.contextValues.name}</mdc-list-item-primary-text>
-                            <mdc-list-item-secondary-text>Suite</mdc-list-item-secondary-text>
+                            <span class="secondary sr1">Suite</span>${_suiteContext.contextValues.name}
+                        </mdc-list-item>
+                        <mdc-list-item>
+                            <span class="secondary sr1">Thread</span>${_methodContext.threadName}
                         </mdc-list-item>
                     </mdc-list>
                 </mdc-card>
@@ -32,20 +32,22 @@
                 <test-duration-card start.bind="_methodContext.contextValues.startTime"
                                     end.bind="_methodContext.contextValues.endTime"
                 ></test-duration-card>
-<!--                <mdc-card>-->
-<!--                    <div mdc-body1 class="card-content">-->
-<!--                        Started: ${_methodContext.contextValues.startTime|dateFormat:"LLL"}-->
-<!--&lt;!&ndash;                        <div mdc-headline4>&ndash;&gt;-->
-<!--&lt;!&ndash;                            <mdc-icon>timer</mdc-icon> Duration: ${_testDuration |durationFormat}&ndash;&gt;-->
-<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
-<!--                        <p if.bind="_hasFinished">-->
-<!--                            Ended: ${_methodContext.contextValues.endTime|dateFormat:"LLL"} <br>-->
-<!--                        </p>-->
-<!--                        <p else>-->
-<!--                            Running...-->
-<!--                        </p>-->
-<!--                    </div>-->
-<!--                </mdc-card>-->
+            </mdc-layout-grid-cell>
+
+            <mdc-layout-grid-cell span="12" if.bind="_methodContext.priorityMessage">
+                <mdc-card>
+                    <div mdc-subtitle2 class="card-headline">Priority Message</div>
+                    <mdc-list-divider></mdc-list-divider>
+                    <div class="card-content" mdc-body1>${_methodContext.priorityMessage}</div>
+                </mdc-card>
+            </mdc-layout-grid-cell>
+
+            <mdc-layout-grid-cell span="12" if.bind="_methodContext.errorContext.description">
+                <mdc-card>
+                    <div mdc-subtitle2 class="card-headline">Description</div>
+                    <mdc-list-divider></mdc-list-divider>
+                    <div class="card-content" mdc-body1>${_methodContext.errorContext.description}</div>
+                </mdc-card>
             </mdc-layout-grid-cell>
         </mdc-layout-grid-inner>
     </mdc-layout-grid>

@@ -28,6 +28,10 @@ body {
     text-align: center;
     vertical-align: center;
 }
+.centered {
+    @extend .flex-container;
+    align-items: center;
+}
 
 .code-view {
     @extend .p1;

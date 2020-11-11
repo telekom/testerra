@@ -7,6 +7,7 @@ const {AureliaPlugin} = require('aurelia-webpack-plugin');
 const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const {IgnorePlugin} = require('webpack');
+const webpack = require('webpack');
 
 // config helpers:
 const ensureArray = (config) => config && (Array.isArray(config) ? config : [config]) || [];

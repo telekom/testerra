@@ -40,14 +40,17 @@ export class MethodDetails extends AbstractViewModel {
         super.activate(params, routeConfig, navInstruction);
 
         this._statistics.getExecutionStatistics().then(executionStatistics => {
-            this._methodContext = executionStatistics.classStatistics
-                .flatMap(classStatistic => {
+            for (const classStatistic of executionStatistics.classStatistics) {
+                this._methodContext = classStatistic.classAggregate.methodContexts
+                    .find(methodContext => methodContext.contextValues.id == this.queryParams.id);
+
+                if (this._methodContext) {
                     this._classContext = classStatistic.classAggregate.classContext;
                     this._testContext = executionStatistics.executionAggregate.testContexts.find(testContext => testContext.classContextIds.find(id => this._classContext.contextValues.id == id));
                     this._suiteContext = executionStatistics.executionAggregate.suiteContexts.find(suiteContext => suiteContext.testContextIds.find(id => this._testContext.contextValues.id));
-                    return classStatistic.classAggregate.methodContexts
-                })
-                .find(methodContext => methodContext.contextValues.id == this.queryParams.id);
+                    break;
+                }
+            }
         });
     }
 }

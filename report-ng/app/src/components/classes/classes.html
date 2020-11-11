@@ -74,7 +74,7 @@
                             </mdc-data-table-cell>
                             <mdc-data-table-cell>
                                 <a route-href="route: tests; params.bind: withQueryParams({class: methodAggregate.classContext.simpleClassName})"
-                                >${methodAggregate.classContext.simpleClassName}</a>
+                                >${methodAggregate.classContext.testContextName||methodAggregate.classContext.simpleClassName}</a>
                             </mdc-data-table-cell>
                             <mdc-data-table-cell class="p1">
                                 <a route-href="route: method; params.bind: {id: methodAggregate.methodContext.contextValues.id}">

@@ -1,22 +1,17 @@
 import 'moment-duration-format';
-import moment, {Duration} from "moment";
+import * as moment from "moment";
 
 export class DurationFormatValueConverter {
 
-    toView(value: number | string | Date) {
-        const duration: Duration = moment.duration(DurationFormatValueConverter.normalizeValue(value));
-        return duration.format();
-        //return moment.utc(duration.asMilliseconds()).format("HH:mm:ss");
-        //return duration.asSeconds() >= 3600 ? moment.format("h[h] m[min]", {trim: true}) : moment.format("m[min] s[s]", {trim: true})
+    toView(value: number | string, format:string) {
+        const duration = moment.duration(DurationFormatValueConverter.normalizeValue(value));
+        return duration.format(format);
     }
 
-    static normalizeValue(value: number | string | Date) {
+    static normalizeValue(value: number | string) {
         if (typeof value === "string") {
             value = Number.parseInt(value);
-        } else if (value instanceof Date) {
-            value = value.getDate();
         }
         return value;
     }
-
 }

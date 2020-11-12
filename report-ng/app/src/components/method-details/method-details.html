@@ -10,22 +10,20 @@
                         ${_methodContext.contextValues.name}
                     </div>
                     <mdc-list-divider></mdc-list-divider>
-                    <mdc-list nonInteractive dense>
-                        <mdc-list-item>
-                            <div class="vcenter">
-                                <span class="secondary sr1">Class</span><mdc-icon class="sr1">read_more</mdc-icon><a route-href="route: tests; params.bind: {class: _classContext.simpleClassName}">${_classContext.simpleClassName} <span if.bind="_classContext.testContextName">(${_classContext.testContextName})</span></a>
-                            </div>
-                        </mdc-list-item>
-                        <mdc-list-item>
+                    <ul class="mdc-list mdc-list--dense">
+                        <li class="mdc-list-item reset-cursor vcenter">
+                            <span class="secondary sr1">Class</span><mdc-icon class="sr1">read_more</mdc-icon><a route-href="route: tests; params.bind: {class: _classContext.simpleClassName}">${_classContext.simpleClassName} <span if.bind="_classContext.testContextName">(${_classContext.testContextName})</span></a>
+                        </li>
+                        <li class="mdc-list-item reset-cursor">
                             <span class="secondary sr1">Test Context</span>${_suiteContext.contextValues.name}
-                        </mdc-list-item>
-                        <mdc-list-item>
+                        </li>
+                        <li class="mdc-list-item reset-cursor">
                             <span class="secondary sr1">Suite</span>${_suiteContext.contextValues.name}
-                        </mdc-list-item>
-                        <mdc-list-item>
+                        </li>
+                        <li class="mdc-list-item reset-cursor">
                             <span class="secondary sr1">Thread</span>${_methodContext.threadName}
-                        </mdc-list-item>
-                    </mdc-list>
+                        </li>
+                    </ul>
                 </mdc-card>
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="3" position="right">

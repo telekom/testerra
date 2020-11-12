@@ -111,6 +111,10 @@
     @include theme.property(color, text-secondary-on-background);
 }
 
+.reset-cursor {
+    cursor: initial !important;
+}
+
 .list-label {
     @extend .mr1;
     min-width: 10em;

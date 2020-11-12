@@ -338,7 +338,7 @@
 
     <!-- Test classes dashboard snippets for the detail view of bar graph -->
 #foreach ($testClass in $classContexts)
-<template id="${testClass.name}_dashboard">
+<template id="${testClass.name.replace(" ", "_")}_dashboard">
     #parse("methodsDashboard.vm")
 </template>
 #end

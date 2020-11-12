@@ -1,4 +1,7 @@
 export class ProductionConfig {
     readonly enableServiceWorker = true;
     readonly developmentMode = false;
+    correctRelativePath(path:string) {
+        return "../"+path.replace("\\","/");
+    }
 }

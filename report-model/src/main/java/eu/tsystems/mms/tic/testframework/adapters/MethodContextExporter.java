@@ -34,6 +34,7 @@ import eu.tsystems.mms.tic.testframework.report.model.PTestStepAction;
 import eu.tsystems.mms.tic.testframework.report.model.ScriptSource;
 import eu.tsystems.mms.tic.testframework.report.model.ScriptSourceLine;
 import eu.tsystems.mms.tic.testframework.report.model.StackTraceCause;
+import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
@@ -44,8 +45,18 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class MethodContextExporter extends AbstractContextExporter {
-    private Report report = new Report();
-    private Gson jsonEncoder = new Gson();
+    private final Report report = new Report();
+    private final Gson jsonEncoder = new Gson();
+    private final java.io.File targetVideoDir = report.getFinalReportDirectory(Report.VIDEO_FOLDER_NAME);
+    private final java.io.File targetScreenshotDir = report.getFinalReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
+    private final java.io.File currentVideoDir = report.getFinalReportDirectory(Report.VIDEO_FOLDER_NAME);
+    private final java.io.File currentScreenshotDir = report.getFinalReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
+    private Consumer<File.Builder> fileConsumer;
+
+    public MethodContextExporter setFileConsumer(Consumer<File.Builder> fileConsumer) {
+        this.fileConsumer = fileConsumer;
+        return this;
+    }
 
     private static String annotationToString(Annotation annotation) {
         String json = "\"" + annotation.annotationType().getSimpleName() + "\"";
@@ -82,7 +93,7 @@ public class MethodContextExporter extends AbstractContextExporter {
         return path;
     }
 
-    public MethodContext.Builder prepareMethodContext(eu.tsystems.mms.tic.testframework.report.model.context.MethodContext methodContext, Consumer<File.Builder> fileConsumer) {
+    public MethodContext.Builder prepareMethodContext(eu.tsystems.mms.tic.testframework.report.model.context.MethodContext methodContext) {
         MethodContext.Builder builder = MethodContext.newBuilder();
 
         apply(createContextValues(methodContext), builder::setContextValues);
@@ -96,35 +107,26 @@ public class MethodContextExporter extends AbstractContextExporter {
         apply(methodContext.threadName, builder::setThreadName);
 
         // test steps
-        forEach(methodContext.steps().getTestSteps(), testStep -> builder.addTestSteps(prepareTestStep(testStep)));
+        forEach(methodContext.getTestSteps(), testStep -> builder.addTestSteps(prepareTestStep(testStep)));
         //value(methodContext.failedStep, MethodContextExporter::createPTestStep, builder::setFailedStep);
 
         map(methodContext.failureCorridorValue, value -> FailureCorridorValue.valueOf(value.name()), builder::setFailureCorridorValue);
-        apply(methodContext.suiteContext.id, builder::setSuiteContextId);
-        apply(methodContext.testContextModel.id, builder::setTestContextId);
+        apply(methodContext.suiteContext.getId(), builder::setSuiteContextId);
+        apply(methodContext.testContextModel.getId(), builder::setTestContextId);
         apply(methodContext.getClassContext().getId(), builder::setClassContextId);
-        apply(methodContext.executionContext.id, builder::setExecutionContextId);
+        apply(methodContext.executionContext.getId(), builder::setExecutionContextId);
 
         forEach(methodContext.infos, builder::addInfos);
         forEach(methodContext.relatedMethodContexts, m -> builder.addRelatedMethodContextIds(m.id));
         forEach(methodContext.dependsOnMethodContexts, m -> builder.addDependsOnMethodContextIds(m.id));
 
         // build context
-        map(methodContext.errorContext(), this::prepareErrorContext, builder::setErrorContext);
+        map(methodContext.getErrorContext(), this::prepareErrorContext, builder::setErrorContext);
         forEach(methodContext.nonFunctionalInfos, assertionInfo -> builder.addNonFunctionalInfos(prepareErrorContext(assertionInfo)));
         forEach(methodContext.collectedAssertions, assertionInfo -> builder.addCollectedAssertions(prepareErrorContext(assertionInfo)));
-        forEach(methodContext.sessionContexts, sessionContext -> builder.addSessionContextIds(sessionContext.id));
+        forEach(methodContext.sessionContexts, sessionContext -> builder.addSessionContextIds(sessionContext.getId()));
 
-        /**
-         * The report is already moved to the target directory at this point.
-         */
-        final Report report = new Report();
-        final java.io.File targetVideoDir = report.getFinalReportDirectory(Report.VIDEO_FOLDER_NAME);
-        final java.io.File targetScreenshotDir = report.getFinalReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
-        final java.io.File currentVideoDir = report.getFinalReportDirectory(Report.VIDEO_FOLDER_NAME);
-        final java.io.File currentScreenshotDir = report.getFinalReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
-
-        forEach(methodContext.videos, video -> {
+        forEach(methodContext.getVideos(), video -> {
             final java.io.File targetVideoFile = new java.io.File(targetVideoDir, video.filename);
             final java.io.File currentVideoFile = new java.io.File(currentVideoDir, video.filename);
 
@@ -139,42 +141,7 @@ public class MethodContextExporter extends AbstractContextExporter {
             fileBuilderVideo.setRelativePath(targetVideoFile.getPath());
             fileBuilderVideo.setMimetype(MediaType.WEBM_VIDEO.toString());
             fillFileBasicData(fileBuilderVideo, currentVideoFile);
-            fileConsumer.accept(fileBuilderVideo);
-        });
-
-        forEach(methodContext.screenshots, screenshot -> {
-            // build screenshot and sources files
-            final java.io.File targetScreenshotFile = new java.io.File(targetScreenshotDir, screenshot.filename);
-            final java.io.File currentScreenshotFile = new java.io.File(currentScreenshotDir, screenshot.filename);
-
-            //final java.io.File realSourceFile = new java.io.File(Report.SCREENSHOTS_DIRECTORY, screenshot.sourceFilename);
-            final java.io.File targetSourceFile = new java.io.File(targetScreenshotDir, screenshot.filename);
-            final java.io.File currentSourceFile = new java.io.File(currentScreenshotDir, screenshot.filename);
-            final String mappedSourcePath = mapArtifactsPath(targetSourceFile.getAbsolutePath());
-
-            final String screenshotId = IDUtils.getB64encXID();
-            final String sourcesRefId = IDUtils.getB64encXID();
-
-            // create ref link
-            //builder.addScreenshotIds(screenshotId);
-
-            // add screenshot data
-            final File.Builder fileBuilderScreenshot = File.newBuilder();
-            fileBuilderScreenshot.setId(screenshotId);
-            fileBuilderScreenshot.setRelativePath(targetScreenshotFile.getPath());
-            fileBuilderScreenshot.setMimetype(MediaType.PNG.toString());
-            fileBuilderScreenshot.putAllMeta(screenshot.meta());
-            fileBuilderScreenshot.putMeta("sourcesRefId", sourcesRefId);
-            fillFileBasicData(fileBuilderScreenshot, currentScreenshotFile);
-            fileConsumer.accept(fileBuilderScreenshot);
-
-            // add sources data
-            final File.Builder fileBuilderSources = File.newBuilder();
-            fileBuilderSources.setId(sourcesRefId);
-            fileBuilderSources.setRelativePath(mappedSourcePath);
-            fileBuilderSources.setMimetype(MediaType.PLAIN_TEXT_UTF_8.toString());
-            fillFileBasicData(fileBuilderSources, currentSourceFile);
-            fileConsumer.accept(fileBuilderSources);
+            this.fileConsumer.accept(fileBuilderVideo);
         });
 
         map(methodContext.customContexts, jsonEncoder::toJson, builder::setCustomContextJson);
@@ -291,9 +258,43 @@ public class MethodContextExporter extends AbstractContextExporter {
                 clickPathBuilder.setSessionId(testStepActionEntry.clickPathEvent.getSessionId());
                 testStepBuilder.addClickpathEvents(clickPathBuilder.build());
             }
+
             if (testStepActionEntry.screenshot != null) {
-                //testStepBuilder.addScreenshotNames(testStepActionEntry.screenshot.filename);
-                testStepBuilder.addScreenshotIds(testStepActionEntry.screenshot.errorContextId);
+                Screenshot screenshot = testStepActionEntry.screenshot;
+                // build screenshot and sources files
+                final java.io.File targetScreenshotFile = new java.io.File(targetScreenshotDir, screenshot.filename);
+                final java.io.File currentScreenshotFile = new java.io.File(currentScreenshotDir, screenshot.filename);
+
+                //final java.io.File realSourceFile = new java.io.File(Report.SCREENSHOTS_DIRECTORY, screenshot.sourceFilename);
+                final java.io.File targetSourceFile = new java.io.File(targetScreenshotDir, screenshot.filename);
+                final java.io.File currentSourceFile = new java.io.File(currentScreenshotDir, screenshot.filename);
+                final String mappedSourcePath = mapArtifactsPath(targetSourceFile.getAbsolutePath());
+
+                final String screenshotId = IDUtils.getB64encXID();
+                final String sourcesRefId = IDUtils.getB64encXID();
+
+                // create ref link
+                //builder.addScreenshotIds(screenshotId);
+
+                // add screenshot data
+                final File.Builder fileBuilderScreenshot = File.newBuilder();
+                fileBuilderScreenshot.setId(screenshotId);
+                fileBuilderScreenshot.setRelativePath(targetScreenshotFile.getPath());
+                fileBuilderScreenshot.setMimetype(MediaType.PNG.toString());
+                fileBuilderScreenshot.putAllMeta(screenshot.meta());
+                fileBuilderScreenshot.putMeta("sourcesRefId", sourcesRefId);
+                fillFileBasicData(fileBuilderScreenshot, currentScreenshotFile);
+                this.fileConsumer.accept(fileBuilderScreenshot);
+
+                // add sources data
+                final File.Builder fileBuilderSources = File.newBuilder();
+                fileBuilderSources.setId(sourcesRefId);
+                fileBuilderSources.setRelativePath(mappedSourcePath);
+                fileBuilderSources.setMimetype(MediaType.PLAIN_TEXT_UTF_8.toString());
+                fillFileBasicData(fileBuilderSources, currentSourceFile);
+                this.fileConsumer.accept(fileBuilderSources);
+
+                testStepBuilder.addScreenshotIds(screenshotId);
             }
         });
         return testStepBuilder;

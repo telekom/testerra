@@ -26,7 +26,6 @@ import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-
 import java.util.List;
 
 public class TakeInSessionEvidencesWorker extends AbstractEvidencesWorker {
@@ -37,8 +36,7 @@ public class TakeInSessionEvidencesWorker extends AbstractEvidencesWorker {
             List<Screenshot> screenshots = TestEvidenceCollector.collectScreenshots();
 
             if (screenshots != null) {
-                screenshots.forEach(s -> s.errorContextId = event.getMethodContext().id);
-                event.getMethodContext().screenshots.addAll(screenshots);
+                event.getMethodContext().addScreenshots(screenshots.stream());
             }
         }
     }

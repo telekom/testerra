@@ -46,17 +46,25 @@ public class GenerateReportModelListener implements
         FinalizeExecutionEvent.Listener
 {
 
-    private MethodContextExporter methodContextExporter = new MethodContextExporter();
-    private ClassContextExporter classContextExporter = new ClassContextExporter();
-    private SuiteContextExporter suiteContextExporter = new SuiteContextExporter();
-    private TestContextExporter testContextExporter = new TestContextExporter();
-    private ExecutionContextExporter executionContextExporter = new ExecutionContextExporter();
+    private final MethodContextExporter methodContextExporter = new MethodContextExporter();
+    private final ClassContextExporter classContextExporter = new ClassContextExporter();
+    private final SuiteContextExporter suiteContextExporter = new SuiteContextExporter();
+    private final TestContextExporter testContextExporter = new TestContextExporter();
+    private final ExecutionContextExporter executionContextExporter = new ExecutionContextExporter();
     protected final File baseDir;
     private File classesDir;
     private File filesDir;
     private File methodsDir;
     private File testsDir;
     private File suitesDir;
+
+    public GenerateReportModelListener(File baseDir) {
+        this.baseDir = baseDir;
+        baseDir.mkdirs();
+        this.methodContextExporter.setFileConsumer(fileBuilder -> {
+            writeBuilderToFile(fileBuilder, new File(getFilesDir(), fileBuilder.getId()));
+        });
+    }
 
     protected MethodContextExporter getMethodContextExporter() {
         return methodContextExporter;
@@ -122,11 +130,6 @@ public class GenerateReportModelListener implements
         return suitesDir;
     }
 
-    public GenerateReportModelListener(File baseDir) {
-        this.baseDir = baseDir;
-        baseDir.mkdirs();
-    }
-
     protected void writeBuilderToFile(Message.Builder builder, File file) {
         try {
             FileOutputStream stream = new FileOutputStream(file);
@@ -141,10 +144,8 @@ public class GenerateReportModelListener implements
     @Subscribe
     public void onMethodEnd(MethodEndEvent event) {
         MethodContext methodContext = event.getMethodContext();
-        eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder methodContextBuilder = methodContextExporter.prepareMethodContext(methodContext, fileBuilder -> {
-            writeBuilderToFile(fileBuilder, new File(getFilesDir(), fileBuilder.getId()));
-        });
-        writeBuilderToFile(methodContextBuilder, new File(getMethodsDir(), methodContext.id));
+        eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder methodContextBuilder = methodContextExporter.prepareMethodContext(methodContext);
+        writeBuilderToFile(methodContextBuilder, new File(getMethodsDir(), methodContext.getId()));
     }
 
     @Override

@@ -27,11 +27,10 @@ import eu.tsystems.mms.tic.testframework.report.model.context.CustomContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.LinkedList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class CollectedAssertions {
 
@@ -59,8 +58,7 @@ public final class CollectedAssertions {
         // take scrennshots
         List<Screenshot> screenshots = TestEvidenceCollector.collectScreenshots();
         if (screenshots != null) {
-            screenshots.forEach(s -> s.errorContextId = assertionInfo.id);
-            currentMethodContext.screenshots.addAll(screenshots);
+            currentMethodContext.addScreenshots(screenshots.stream());
         }
 
         // get custom error contexts in queue

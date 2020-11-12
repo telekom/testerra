@@ -26,7 +26,6 @@ import eu.tsystems.mms.tic.testframework.events.FinalizeExecutionEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 
 public class CopyReportAppListener implements FinalizeExecutionEvent.Listener, Loggable {
@@ -39,11 +38,14 @@ public class CopyReportAppListener implements FinalizeExecutionEvent.Listener, L
     @Subscribe
     @Override
     public void onFinalizeExecution(FinalizeExecutionEvent event) {
-        URL resource = getClass().getClassLoader().getResource("report-ng");
-        File resourceDir = new File(resource.getPath());
         try {
+            URL resource = getClass().getClassLoader().getResource("report-ng");
+            if (resource == null) {
+                throw new Exception("App resource doesn't exists");
+            }
+            File resourceDir = new File(resource.getPath());
             FileUtils.copyDirectory(resourceDir, this.targetDir);
-        } catch (IOException e) {
+        } catch (Exception e) {
             log().error("Unable to copy app resource", e);
         }
     }

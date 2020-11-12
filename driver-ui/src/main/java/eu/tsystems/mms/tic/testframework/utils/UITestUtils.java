@@ -51,6 +51,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 import org.apache.commons.codec.binary.Base64;
 import org.openqa.selenium.WebDriver;
@@ -203,25 +204,7 @@ public class UITestUtils {
      */
     private static void addScreenshotsToMethodContext(MethodContext methodContext, List<Screenshot> screenshots) {
         if (methodContext != null) {
-            /*
-            only add if we can NOT find any screenshots for this error context
-             */
-            long count = methodContext.screenshots.stream().filter(s -> s.errorContextId != null && s.errorContextId.equals(methodContext.id)).count();
-
-            if (count == 0) {
-                methodContext.screenshots.addAll(screenshots);
-
-                /*
-                 * add AFTER path to action log
-                 */
-                for (Screenshot screenshot : screenshots) {
-                    methodContext.steps().getCurrentTestStep().getCurrentTestStepAction().addScreenshot(screenshot);
-                }
-
-                LOGGER.info("Linked screenshots: " + screenshots);
-            } else {
-                LOGGER.warn("Skipped linking screenshot, because we already have " + count + " screenshots for this ErrorContext");
-            }
+            methodContext.addScreenshots(screenshots.stream());
         }
     }
 
@@ -339,7 +322,7 @@ public class UITestUtils {
             if (methodContext != null) {
                 Screenshot screenshot1 = new Screenshot();
                 screenshot1.filename = filename;
-                methodContext.screenshots.add(screenshot1);
+                methodContext.addScreenshots(Stream.of(screenshot1));
             }
         } else {
             LOGGER.error("Could not take native screenshot, screen region is missing");

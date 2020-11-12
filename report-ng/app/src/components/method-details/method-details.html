@@ -2,7 +2,7 @@
     <require from="components/test-duration-card/test-duration-card"></require>
     <mdc-layout-grid>
         <mdc-layout-grid-inner>
-            <mdc-layout-grid-cell span="6">
+            <mdc-layout-grid-cell span="8">
                 <mdc-card>
                     <div class="card-content" mdc-body1>
                         <span class="badge status-${_methodContext.contextValues.resultStatus|statusClass} sr1"
@@ -26,7 +26,7 @@
                     </ul>
                 </mdc-card>
             </mdc-layout-grid-cell>
-            <mdc-layout-grid-cell span="3" position="right">
+            <mdc-layout-grid-cell span="4" position="right">
                 <test-duration-card start.bind="_methodContext.contextValues.startTime"
                                     end.bind="_methodContext.contextValues.endTime"
                 ></test-duration-card>
@@ -45,6 +45,21 @@
                     <div mdc-subtitle2 class="card-headline">Failure Aspect</div>
                     <mdc-list-divider></mdc-list-divider>
                     <div class="card-content status-${_methodContext.contextValues.resultStatus|statusClass}" mdc-headline5 innerhtml="${_failureAspect.name|html}"></div>
+                </mdc-card>
+            </mdc-layout-grid-cell>
+            <mdc-layout-grid-cell span="12" if.bind="_screenshots.length>0">
+                <mdc-card>
+                    <div mdc-subtitle2 class="card-headline">Screenshots</div>
+                    <mdc-list-divider></mdc-list-divider>
+                    <mdc-image-list text-protection
+                                    class="w100"
+                                    columns.bind="[{count: 5}, {media: 'max-width: 1023px', count: 2}]"
+                    >
+                        <mdc-image-list-item repeat.for="file of _screenshots"
+                                             src="${file.relativePath}"
+                                             label="${file.meta.Title}"
+                        ></mdc-image-list-item>
+                    </mdc-image-list>
                 </mdc-card>
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="12"

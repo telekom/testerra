@@ -75,6 +75,8 @@
 @use '@material/typography';
 @use '@material/chips/mdc-chips';
 @use '@aurelia-mdc-web/chips';
+@use '@material/image-list/mdc-image-list';
+@use '@material/image-list';
 
 @include drawer.core-styles;
 @include drawer.dismissible-core-styles;

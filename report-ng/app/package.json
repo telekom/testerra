@@ -18,6 +18,7 @@
         "@aurelia-mdc-web/elevation": "^2.0.2",
         "@aurelia-mdc-web/expandable": "^2.0.2",
         "@aurelia-mdc-web/form-field": "^2.0.2",
+        "@aurelia-mdc-web/image-list": "^2.0.2",
         "@aurelia-mdc-web/menu": "^2.0.2",
         "@aurelia-mdc-web/radio": "^2.0.2",
         "@aurelia-mdc-web/ripple": "^2.0.2",

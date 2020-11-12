@@ -96,9 +96,11 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return dependsOnMethodContexts;
     }
 
+    @Deprecated
     public final List<Video> videos = new LinkedList<>();
     @Deprecated
     public final List<Screenshot> screenshots = new LinkedList<>();
+
     public final List<CustomContext> customContexts = new LinkedList<>();
 
     private ErrorContext errorContext;
@@ -364,6 +366,21 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     @Deprecated
     public ClassContext getEffectiveClassContext() {
         return classContext;
+    }
+
+    /**
+     * Publish the screenshots to the report into the current errorContext.
+     */
+    public MethodContext addScreenshots(Stream<Screenshot> screenshots) {
+        TestStepAction currentTestStepAction = steps().getCurrentTestStep().getCurrentTestStepAction();
+        screenshots.forEach(screenshot -> {
+            if (screenshot.errorContextId == null) {
+                screenshot.errorContextId = this.getErrorContext().getId();
+            }
+            this.screenshots.add(screenshot);
+            currentTestStepAction.addScreenshot(screenshot);
+        });
+        return this;
     }
 
     public List<Video> getVideos() {

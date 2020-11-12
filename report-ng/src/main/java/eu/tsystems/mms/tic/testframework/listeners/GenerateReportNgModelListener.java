@@ -54,9 +54,7 @@ public class GenerateReportNgModelListener extends GenerateReportModelListener {
                     classContextAggregateBuilder.setClassContext(getClassContextExporter().prepareClassContext(classContext));
 
                     classContext.methodContexts.forEach(methodContext -> {
-                        classContextAggregateBuilder.addMethodContexts(getMethodContextExporter().prepareMethodContext(methodContext, fileBuilder -> {
-                            writeBuilderToFile(fileBuilder, new File(getFilesDir(), fileBuilder.getId()));
-                        }));
+                        classContextAggregateBuilder.addMethodContexts(getMethodContextExporter().prepareMethodContext(methodContext));
                     });
                     writeBuilderToFile(classContextAggregateBuilder, new File(getClassesDir(), classContext.getId()));
                 });

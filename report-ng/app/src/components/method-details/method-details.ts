@@ -13,6 +13,8 @@ import {StatisticsGenerator} from "../../services/statistics-generator";
 import {StatusConverter} from "../../services/status-converter";
 import {data} from "../../services/report-model";
 import {FailureAspectStatistics} from "../../services/statistic-models";
+import {DataLoader} from "../../services/data-loader";
+import {Config} from "../../services/config";
 import IMethodContext = data.IMethodContext;
 import IClassContext = data.IClassContext;
 import ITestContext = data.ITestContext;
@@ -29,10 +31,13 @@ export class MethodDetails extends AbstractViewModel {
     private _suiteContext:ISuiteContext;
     private _stackTrace:IStackTraceCause[];
     private _failureAspect:FailureAspectStatistics;
+    private _screenshots:data.File[];
 
     constructor(
         private _statistics: StatisticsGenerator,
         private _statusConverter: StatusConverter,
+        private _dataLoader:DataLoader,
+        private _config:Config,
     ) {
         super();
         this._hljs.registerLanguage("java", java);
@@ -62,6 +67,18 @@ export class MethodDetails extends AbstractViewModel {
                     }
 
                     this._failureAspect = new FailureAspectStatistics().addMethodContext(this._methodContext);
+
+                    this._screenshots = [];
+                    this._methodContext.testSteps
+                        .flatMap(testStep => testStep.testStepActions)
+                        .flatMap(testStepAction => testStepAction.screenshotIds)
+                        .forEach(id => {
+                            this._dataLoader.getFile(id).then(file => {
+                                file.relativePath = this._config.correctRelativePath(file.relativePath);
+                                console.log(file);
+                                this._screenshots.push(file);
+                            })
+                        })
 
                     console.log(this._methodContext);
 

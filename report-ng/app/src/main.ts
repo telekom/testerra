@@ -13,10 +13,10 @@ export function configure(aurelia: Aurelia) {
             PLATFORM.moduleName('components/apex-chart/apex-chart'),
             PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/date-format-value-converter'),
             PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/highlight-text-value-converter'),
+            PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/duration-format-value-converter'),
             PLATFORM.moduleName('value-converters/status-icon-name-value-converter'),
             PLATFORM.moduleName('value-converters/status-name-value-converter'),
             PLATFORM.moduleName('value-converters/status-class-value-converter'),
-            PLATFORM.moduleName('value-converters/duration-format-value-converter'),
             PLATFORM.moduleName('value-converters/html-value-converter'),
         ]);
 

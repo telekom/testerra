@@ -38,7 +38,7 @@
         "moment": "^2.29.1",
         "moment-duration-format": "^2.3.2",
         "protobufjs": "^6.10.1",
-        "t-systems-aurelia-components": "^1.0.1",
+        "t-systems-aurelia-components": "^1.0.2",
         "ts-replace-all": "^1.0.0"
     },
     "devDependencies": {

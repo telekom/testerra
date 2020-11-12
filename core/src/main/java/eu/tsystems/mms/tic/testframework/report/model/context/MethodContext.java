@@ -34,6 +34,8 @@ import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.lang.annotation.Annotation;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
@@ -132,6 +134,15 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         this.methodType = methodType;
     }
 
+    public Stream<Screenshot> getAllScreenshotsFromTestSteps() {
+        return this.testStepController.getTestSteps().stream()
+                .flatMap(testStep -> testStep.getTestStepActions().stream())
+                .flatMap(testStepAction -> testStepAction.getTestStepActionEntries().stream())
+                .map(testStepActionEntry -> testStepActionEntry.screenshot)
+                .filter(Objects::nonNull);
+
+    }
+
     public TestStepAction addLogMessage(LogMessage logMessage) {
         return testStepController.addLogMessage(logMessage);
     }
@@ -149,11 +160,22 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return this;
     }
 
-    public ErrorContext errorContext() {
+    public boolean hasErrorContext() {
+        return this.errorContext != null;
+    }
+
+    public ErrorContext getErrorContext() {
         if (errorContext == null) {
             errorContext = new ErrorContext();
         }
         return errorContext;
+    }
+
+    /**
+     * @deprecated Use {@link #getErrorContext()} instead
+     */
+    public ErrorContext errorContext() {
+       return this.getErrorContext();
     }
 
     @Override

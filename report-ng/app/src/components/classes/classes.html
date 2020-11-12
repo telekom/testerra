@@ -77,11 +77,17 @@
                                 >${methodAggregate.classContext.testContextName||methodAggregate.classContext.simpleClassName}</a>
                             </mdc-data-table-cell>
                             <mdc-data-table-cell class="p1" mdc-body1>
-                                <a route-href="route: method; params.bind: {id: methodAggregate.methodContext.contextValues.id}">
-                                    <span innerhtml.bind="methodAggregate.methodContext.contextValues.name|highlightText:_searchRegexp"></span>
-                                    <!--mdc-icon>read_more</mdc-icon-->
-                                </a>
-                                <div mdc-body2 innerhtml.bind="methodAggregate.failureAspect.name|html|highlightText:_searchRegexp"></div>
+                                <div class="vcenter">
+                                    <mdc-icon class="sr1">read_more</mdc-icon>
+                                    <a route-href="route: method; params.bind: {id: methodAggregate.methodContext.contextValues.id}">
+                                        <span innerhtml.bind="methodAggregate.methodContext.contextValues.name|highlightText:_searchRegexp"></span>
+                                    </a>
+                                </div>
+                                <div if.bind="methodAggregate.failureAspect"
+                                     mdc-body2
+                                     class="st1"
+                                     innerhtml.bind="methodAggregate.failureAspect.name|html|highlightText:_searchRegexp"
+                                ></div>
                             </mdc-data-table-cell>
 <!--                            <mdc-data-table-cell innerhtml.bind="methodAggregate.failureAspect.name|html|highlightText:_searchRegexp"-->
 <!--                                                 class="default-padding"-->

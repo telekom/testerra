@@ -29,6 +29,9 @@ export class App {
             this._router.routes.filter(route => route.route == "failure-aspects").find(route => {
                 route.settings.count = executionStatistics.failureAspectStatistics.length;
             });
+            this._router.routes.filter(route => route.route == "tests").find(route => {
+                route.settings.count = executionStatistics.testsTotal;
+            });
             this._router.routes.filter(route => route.route == "exit-points").find(route => {
                 route.settings.count = executionStatistics.exitPointStatistics.length;
             });

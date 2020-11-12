@@ -114,6 +114,16 @@ export class ExecutionStatistics extends Statistics {
                 return this.statusConverter.failedStatuses.indexOf(methodContext.contextValues.resultStatus) >= 0;
             })
             .forEach(methodContext => {
+
+                methodContext.testSteps.forEach(testStep => {
+                    testStep.testStepActions.forEach(testStepAction => {
+                        if (testStepAction.screenshotIds?.length > 0) {
+                            console.log("has screenshots", methodContext.contextValues.name)
+                        }
+                    })
+                })
+
+
                 const failureAspectStatistics = new FailureAspectStatistics().addMethodContext(methodContext);
 
                 const foundFailureAspectStatistics = this._failureAspectStatistics.find(existingFailureAspectStatistics => {

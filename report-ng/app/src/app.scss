@@ -1,6 +1,6 @@
 @import "styles/mdc";
 @import "styles/statuses";
-@import "styles/spaces";
+@import "src/styles/layout";
 
 /*General style settings______________________________________________________________________________________________*/
 
@@ -16,11 +16,6 @@ body {
     height: 60px;
 }
 
-//prevents app-content overflowing out of screen
-.flex-container {
-    display: flex;
-}
-
 .alert {
     @extend .w100;
     @extend .p1;
@@ -28,10 +23,7 @@ body {
     text-align: center;
     vertical-align: center;
 }
-.centered {
-    @extend .flex-container;
-    align-items: center;
-}
+
 
 .code-view {
     @extend .p1;
@@ -59,19 +51,4 @@ body {
     }
 
 
-}
-//
-//.error-view {
-//    font-family: monospace;
-//    font-size: 1.1rem;
-//}
-
-.sr1 {
-   margin-right: 8px;
-}
-.sb1 {
-    margin-bottom: 8px;
-}
-.st1 {
-    margin-top: 8px;
 }

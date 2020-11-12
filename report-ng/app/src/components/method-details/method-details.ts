@@ -63,6 +63,8 @@ export class MethodDetails extends AbstractViewModel {
 
                     this._failureAspect = new FailureAspectStatistics().addMethodContext(this._methodContext);
 
+                    console.log(this._methodContext);
+
                     break;
                 }
             }

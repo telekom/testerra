@@ -62,3 +62,33 @@
 .w100 {
     width: 100%;
 }
+
+//prevents app-content overflowing out of screen
+.flex {
+    display: flex;
+}
+
+.vcenter {
+    @extend .flex;
+    align-items: center;
+}
+
+.hcenter {
+    @extend .flex;
+    justify-content: center;
+}
+
+// Space right
+.sr1 {
+    margin-right: 8px;
+}
+
+// Space bottom
+.sb1 {
+    margin-bottom: 8px;
+}
+
+// Space top
+.st1 {
+    margin-top: 8px;
+}

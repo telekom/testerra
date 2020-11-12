@@ -58,7 +58,7 @@ public class GenerateReportNgModelListener extends GenerateReportModelListener {
                             writeBuilderToFile(fileBuilder, new File(getFilesDir(), fileBuilder.getId()));
                         }));
                     });
-                    writeBuilderToFile(classContextAggregateBuilder, new File(getClassesDir(), classContext.id));
+                    writeBuilderToFile(classContextAggregateBuilder, new File(getClassesDir(), classContext.getId()));
                 });
             });
         });

@@ -152,11 +152,11 @@ public class GenerateReportModelListener implements
     public void onFinalizeExecution(FinalizeExecutionEvent event) {
         ExecutionContext executionContext = event.getExecutionContext();
         executionContext.suiteContexts.forEach(suiteContext -> {
-            writeBuilderToFile(suiteContextExporter.prepareSuiteContext(suiteContext), new File(getSuitesDir(), suiteContext.id));
+            writeBuilderToFile(suiteContextExporter.prepareSuiteContext(suiteContext), new File(getSuitesDir(), suiteContext.getId()));
             suiteContext.testContextModels.forEach(testContextModel -> {
-                writeBuilderToFile(testContextExporter.prepareTestContext(testContextModel), new File(getTestsDir(), testContextModel.id));
+                writeBuilderToFile(testContextExporter.prepareTestContext(testContextModel), new File(getTestsDir(), testContextModel.getId()));
                 testContextModel.classContexts.forEach(classContext -> {
-                    writeBuilderToFile(classContextExporter.prepareClassContext(classContext), new File(getClassesDir(), classContext.id));
+                    writeBuilderToFile(classContextExporter.prepareClassContext(classContext), new File(getClassesDir(), classContext.getId()));
                 });
             });
         });

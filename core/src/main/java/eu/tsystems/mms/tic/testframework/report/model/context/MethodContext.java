@@ -97,6 +97,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     public final List<Video> videos = new LinkedList<>();
+    @Deprecated
     public final List<Screenshot> screenshots = new LinkedList<>();
     public final List<CustomContext> customContexts = new LinkedList<>();
 
@@ -147,8 +148,19 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return testStepController.addLogMessage(logMessage);
     }
 
+    /**
+     * @deprecated Use {@link #getTestSteps()} instead
+     */
     public TestStepController steps() {
         return testStepController;
+    }
+
+    public List<TestStep> getTestSteps() {
+        return this.testStepController.getTestSteps();
+    }
+
+    public TestStep getCurrentTestStep() {
+        return this.testStepController.getCurrentTestStep();
     }
 
     public TestStep getLastFailedStep() {

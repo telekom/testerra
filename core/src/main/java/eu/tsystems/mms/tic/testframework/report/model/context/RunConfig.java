@@ -26,41 +26,20 @@ import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.internal.BuildInformation;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 
-import java.io.File;
-
 public final class RunConfig {
 
     public final String RUNCFG = (Flags.DRY_RUN ? "DRY RUN " : "") + PropertyManager.getProperty(TesterraProperties.RUNCFG, "DEFAULT");
     public final BuildInformation buildInformation = new BuildInformation();
 
-    public static String getModuleFolderName() {
-        return new File(".").getAbsoluteFile().getParentFile().getName();
-    }
-
-    private String reportName = null;
-
-    public void resetReportName() {
-        String defaultName = "";
-        try {
-            defaultName = getModuleFolderName();
-        } catch (Exception e) {
-            // nothing
-        }
-        reportName = PropertyManager.getProperty(TesterraProperties.REPORTNAME, defaultName);
-    }
-
     public String getReportName() {
-        if (reportName == null) {
-            resetReportName();
-        }
-        return reportName;
+        return PropertyManager.getProperty(TesterraProperties.REPORTNAME, "Test Report");
     }
 
     @Override
     public String toString() {
         return "RunConfig{" +
                 "RUNCFG='" + RUNCFG + '\'' +
-                ", reportName='" + reportName + '\'' +
+                ", reportName='" + getReportName() + '\'' +
                 '}';
     }
 }

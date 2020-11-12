@@ -23,96 +23,47 @@ public interface ExecutionContextOrBuilder extends
   eu.tsystems.mms.tic.testframework.report.model.ContextValuesOrBuilder getContextValuesOrBuilder();
 
   /**
-   * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
-   * @return A list containing the mergedClassContextIds.
-   */
-  @java.lang.Deprecated java.util.List<java.lang.String>
-      getMergedClassContextIdsList();
-  /**
-   * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
-   * @return The count of mergedClassContextIds.
-   */
-  @java.lang.Deprecated int getMergedClassContextIdsCount();
-  /**
-   * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
-   * @param index The index of the element to return.
-   * @return The mergedClassContextIds at the given index.
-   */
-  @java.lang.Deprecated java.lang.String getMergedClassContextIds(int index);
-  /**
-   * <code>repeated string merged_class_context_ids = 3 [deprecated = true];</code>
-   * @param index The index of the value to return.
-   * @return The bytes of the mergedClassContextIds at the given index.
-   */
-  @java.lang.Deprecated com.google.protobuf.ByteString
-      getMergedClassContextIdsBytes(int index);
-
-  /**
-   * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
-   */
-  @java.lang.Deprecated java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> 
-      getExitPointsList();
-  /**
-   * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
-   */
-  @java.lang.Deprecated eu.tsystems.mms.tic.testframework.report.model.ContextClip getExitPoints(int index);
-  /**
-   * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
-   */
-  @java.lang.Deprecated int getExitPointsCount();
-  /**
-   * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
-   */
-  @java.lang.Deprecated java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> 
-      getExitPointsOrBuilderList();
-  /**
-   * <code>repeated .data.ContextClip exit_points = 4 [deprecated = true];</code>
-   */
-  @java.lang.Deprecated eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder getExitPointsOrBuilder(
-      int index);
-
-  /**
-   * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
-   */
-  @java.lang.Deprecated java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> 
-      getFailureAscpectsList();
-  /**
-   * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
-   */
-  @java.lang.Deprecated eu.tsystems.mms.tic.testframework.report.model.ContextClip getFailureAscpects(int index);
-  /**
-   * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
-   */
-  @java.lang.Deprecated int getFailureAscpectsCount();
-  /**
-   * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
-   */
-  @java.lang.Deprecated java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> 
-      getFailureAscpectsOrBuilderList();
-  /**
-   * <code>repeated .data.ContextClip failure_ascpects = 5 [deprecated = true];</code>
-   */
-  @java.lang.Deprecated eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder getFailureAscpectsOrBuilder(
-      int index);
-
-  /**
+   * <pre>
+   *    repeated string merged_class_context_ids = 3 [deprecated = true];
+   *    repeated ContextClip exit_points = 4 [deprecated = true];
+   *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string suite_context_ids = 6;</code>
    * @return A list containing the suiteContextIds.
    */
   java.util.List<java.lang.String>
       getSuiteContextIdsList();
   /**
+   * <pre>
+   *    repeated string merged_class_context_ids = 3 [deprecated = true];
+   *    repeated ContextClip exit_points = 4 [deprecated = true];
+   *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string suite_context_ids = 6;</code>
    * @return The count of suiteContextIds.
    */
   int getSuiteContextIdsCount();
   /**
+   * <pre>
+   *    repeated string merged_class_context_ids = 3 [deprecated = true];
+   *    repeated ContextClip exit_points = 4 [deprecated = true];
+   *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string suite_context_ids = 6;</code>
    * @param index The index of the element to return.
    * @return The suiteContextIds at the given index.
    */
   java.lang.String getSuiteContextIds(int index);
   /**
+   * <pre>
+   *    repeated string merged_class_context_ids = 3 [deprecated = true];
+   *    repeated ContextClip exit_points = 4 [deprecated = true];
+   *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string suite_context_ids = 6;</code>
    * @param index The index of the value to return.
    * @return The bytes of the suiteContextIds at the given index.

@@ -18,7 +18,6 @@ private static final long serialVersionUID = 0L;
   private PTestStepAction() {
     name_ = "";
     id_ = "";
-    screenshotNames_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     clickpathEvents_ = java.util.Collections.emptyList();
     screenshotIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
   }
@@ -71,19 +70,10 @@ private static final long serialVersionUID = 0L;
             timestamp_ = input.readInt64();
             break;
           }
-          case 34: {
-            java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-              screenshotNames_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000001;
-            }
-            screenshotNames_.add(s);
-            break;
-          }
           case 42: {
-            if (!((mutable_bitField0_ & 0x00000002) != 0)) {
+            if (!((mutable_bitField0_ & 0x00000001) != 0)) {
               clickpathEvents_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent>();
-              mutable_bitField0_ |= 0x00000002;
+              mutable_bitField0_ |= 0x00000001;
             }
             clickpathEvents_.add(
                 input.readMessage(eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent.parser(), extensionRegistry));
@@ -91,9 +81,9 @@ private static final long serialVersionUID = 0L;
           }
           case 50: {
             java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000004) != 0)) {
+            if (!((mutable_bitField0_ & 0x00000002) != 0)) {
               screenshotIds_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000004;
+              mutable_bitField0_ |= 0x00000002;
             }
             screenshotIds_.add(s);
             break;
@@ -114,12 +104,9 @@ private static final long serialVersionUID = 0L;
           e).setUnfinishedMessage(this);
     } finally {
       if (((mutable_bitField0_ & 0x00000001) != 0)) {
-        screenshotNames_ = screenshotNames_.getUnmodifiableView();
-      }
-      if (((mutable_bitField0_ & 0x00000002) != 0)) {
         clickpathEvents_ = java.util.Collections.unmodifiableList(clickpathEvents_);
       }
-      if (((mutable_bitField0_ & 0x00000004) != 0)) {
+      if (((mutable_bitField0_ & 0x00000002) != 0)) {
         screenshotIds_ = screenshotIds_.getUnmodifiableView();
       }
       this.unknownFields = unknownFields.build();
@@ -221,50 +208,23 @@ private static final long serialVersionUID = 0L;
     return timestamp_;
   }
 
-  public static final int SCREENSHOT_NAMES_FIELD_NUMBER = 4;
-  private com.google.protobuf.LazyStringList screenshotNames_;
-  /**
-   * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
-   * @return A list containing the screenshotNames.
-   */
-  @java.lang.Deprecated public com.google.protobuf.ProtocolStringList
-      getScreenshotNamesList() {
-    return screenshotNames_;
-  }
-  /**
-   * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
-   * @return The count of screenshotNames.
-   */
-  @java.lang.Deprecated public int getScreenshotNamesCount() {
-    return screenshotNames_.size();
-  }
-  /**
-   * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
-   * @param index The index of the element to return.
-   * @return The screenshotNames at the given index.
-   */
-  @java.lang.Deprecated public java.lang.String getScreenshotNames(int index) {
-    return screenshotNames_.get(index);
-  }
-  /**
-   * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
-   * @param index The index of the value to return.
-   * @return The bytes of the screenshotNames at the given index.
-   */
-  @java.lang.Deprecated public com.google.protobuf.ByteString
-      getScreenshotNamesBytes(int index) {
-    return screenshotNames_.getByteString(index);
-  }
-
   public static final int CLICKPATH_EVENTS_FIELD_NUMBER = 5;
   private java.util.List<eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent> clickpathEvents_;
   /**
+   * <pre>
+   *    repeated string screenshot_names = 4 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
    */
   public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent> getClickpathEventsList() {
     return clickpathEvents_;
   }
   /**
+   * <pre>
+   *    repeated string screenshot_names = 4 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
    */
   public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.PClickPathEventOrBuilder> 
@@ -272,18 +232,30 @@ private static final long serialVersionUID = 0L;
     return clickpathEvents_;
   }
   /**
+   * <pre>
+   *    repeated string screenshot_names = 4 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
    */
   public int getClickpathEventsCount() {
     return clickpathEvents_.size();
   }
   /**
+   * <pre>
+   *    repeated string screenshot_names = 4 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
    */
   public eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent getClickpathEvents(int index) {
     return clickpathEvents_.get(index);
   }
   /**
+   * <pre>
+   *    repeated string screenshot_names = 4 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
    */
   public eu.tsystems.mms.tic.testframework.report.model.PClickPathEventOrBuilder getClickpathEventsOrBuilder(
@@ -349,9 +321,6 @@ private static final long serialVersionUID = 0L;
     if (timestamp_ != 0L) {
       output.writeInt64(3, timestamp_);
     }
-    for (int i = 0; i < screenshotNames_.size(); i++) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 4, screenshotNames_.getRaw(i));
-    }
     for (int i = 0; i < clickpathEvents_.size(); i++) {
       output.writeMessage(5, clickpathEvents_.get(i));
     }
@@ -376,14 +345,6 @@ private static final long serialVersionUID = 0L;
     if (timestamp_ != 0L) {
       size += com.google.protobuf.CodedOutputStream
         .computeInt64Size(3, timestamp_);
-    }
-    {
-      int dataSize = 0;
-      for (int i = 0; i < screenshotNames_.size(); i++) {
-        dataSize += computeStringSizeNoTag(screenshotNames_.getRaw(i));
-      }
-      size += dataSize;
-      size += 1 * getScreenshotNamesList().size();
     }
     for (int i = 0; i < clickpathEvents_.size(); i++) {
       size += com.google.protobuf.CodedOutputStream
@@ -418,8 +379,6 @@ private static final long serialVersionUID = 0L;
         .equals(other.getId())) return false;
     if (getTimestamp()
         != other.getTimestamp()) return false;
-    if (!getScreenshotNamesList()
-        .equals(other.getScreenshotNamesList())) return false;
     if (!getClickpathEventsList()
         .equals(other.getClickpathEventsList())) return false;
     if (!getScreenshotIdsList()
@@ -442,10 +401,6 @@ private static final long serialVersionUID = 0L;
     hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
         getTimestamp());
-    if (getScreenshotNamesCount() > 0) {
-      hash = (37 * hash) + SCREENSHOT_NAMES_FIELD_NUMBER;
-      hash = (53 * hash) + getScreenshotNamesList().hashCode();
-    }
     if (getClickpathEventsCount() > 0) {
       hash = (37 * hash) + CLICKPATH_EVENTS_FIELD_NUMBER;
       hash = (53 * hash) + getClickpathEventsList().hashCode();
@@ -594,16 +549,14 @@ private static final long serialVersionUID = 0L;
 
       timestamp_ = 0L;
 
-      screenshotNames_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000001);
       if (clickpathEventsBuilder_ == null) {
         clickpathEvents_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000001);
       } else {
         clickpathEventsBuilder_.clear();
       }
       screenshotIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000004);
+      bitField0_ = (bitField0_ & ~0x00000002);
       return this;
     }
 
@@ -634,23 +587,18 @@ private static final long serialVersionUID = 0L;
       result.name_ = name_;
       result.id_ = id_;
       result.timestamp_ = timestamp_;
-      if (((bitField0_ & 0x00000001) != 0)) {
-        screenshotNames_ = screenshotNames_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000001);
-      }
-      result.screenshotNames_ = screenshotNames_;
       if (clickpathEventsBuilder_ == null) {
-        if (((bitField0_ & 0x00000002) != 0)) {
+        if (((bitField0_ & 0x00000001) != 0)) {
           clickpathEvents_ = java.util.Collections.unmodifiableList(clickpathEvents_);
-          bitField0_ = (bitField0_ & ~0x00000002);
+          bitField0_ = (bitField0_ & ~0x00000001);
         }
         result.clickpathEvents_ = clickpathEvents_;
       } else {
         result.clickpathEvents_ = clickpathEventsBuilder_.build();
       }
-      if (((bitField0_ & 0x00000004) != 0)) {
+      if (((bitField0_ & 0x00000002) != 0)) {
         screenshotIds_ = screenshotIds_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000002);
       }
       result.screenshotIds_ = screenshotIds_;
       onBuilt();
@@ -712,21 +660,11 @@ private static final long serialVersionUID = 0L;
       if (other.getTimestamp() != 0L) {
         setTimestamp(other.getTimestamp());
       }
-      if (!other.screenshotNames_.isEmpty()) {
-        if (screenshotNames_.isEmpty()) {
-          screenshotNames_ = other.screenshotNames_;
-          bitField0_ = (bitField0_ & ~0x00000001);
-        } else {
-          ensureScreenshotNamesIsMutable();
-          screenshotNames_.addAll(other.screenshotNames_);
-        }
-        onChanged();
-      }
       if (clickpathEventsBuilder_ == null) {
         if (!other.clickpathEvents_.isEmpty()) {
           if (clickpathEvents_.isEmpty()) {
             clickpathEvents_ = other.clickpathEvents_;
-            bitField0_ = (bitField0_ & ~0x00000002);
+            bitField0_ = (bitField0_ & ~0x00000001);
           } else {
             ensureClickpathEventsIsMutable();
             clickpathEvents_.addAll(other.clickpathEvents_);
@@ -739,7 +677,7 @@ private static final long serialVersionUID = 0L;
             clickpathEventsBuilder_.dispose();
             clickpathEventsBuilder_ = null;
             clickpathEvents_ = other.clickpathEvents_;
-            bitField0_ = (bitField0_ & ~0x00000002);
+            bitField0_ = (bitField0_ & ~0x00000001);
             clickpathEventsBuilder_ = 
               com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                  getClickpathEventsFieldBuilder() : null;
@@ -751,7 +689,7 @@ private static final long serialVersionUID = 0L;
       if (!other.screenshotIds_.isEmpty()) {
         if (screenshotIds_.isEmpty()) {
           screenshotIds_ = other.screenshotIds_;
-          bitField0_ = (bitField0_ & ~0x00000004);
+          bitField0_ = (bitField0_ & ~0x00000002);
         } else {
           ensureScreenshotIdsIsMutable();
           screenshotIds_.addAll(other.screenshotIds_);
@@ -970,122 +908,12 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private com.google.protobuf.LazyStringList screenshotNames_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    private void ensureScreenshotNamesIsMutable() {
-      if (!((bitField0_ & 0x00000001) != 0)) {
-        screenshotNames_ = new com.google.protobuf.LazyStringArrayList(screenshotNames_);
-        bitField0_ |= 0x00000001;
-       }
-    }
-    /**
-     * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
-     * @return A list containing the screenshotNames.
-     */
-    @java.lang.Deprecated public com.google.protobuf.ProtocolStringList
-        getScreenshotNamesList() {
-      return screenshotNames_.getUnmodifiableView();
-    }
-    /**
-     * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
-     * @return The count of screenshotNames.
-     */
-    @java.lang.Deprecated public int getScreenshotNamesCount() {
-      return screenshotNames_.size();
-    }
-    /**
-     * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
-     * @param index The index of the element to return.
-     * @return The screenshotNames at the given index.
-     */
-    @java.lang.Deprecated public java.lang.String getScreenshotNames(int index) {
-      return screenshotNames_.get(index);
-    }
-    /**
-     * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
-     * @param index The index of the value to return.
-     * @return The bytes of the screenshotNames at the given index.
-     */
-    @java.lang.Deprecated public com.google.protobuf.ByteString
-        getScreenshotNamesBytes(int index) {
-      return screenshotNames_.getByteString(index);
-    }
-    /**
-     * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
-     * @param index The index to set the value at.
-     * @param value The screenshotNames to set.
-     * @return This builder for chaining.
-     */
-    @java.lang.Deprecated public Builder setScreenshotNames(
-        int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureScreenshotNamesIsMutable();
-      screenshotNames_.set(index, value);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
-     * @param value The screenshotNames to add.
-     * @return This builder for chaining.
-     */
-    @java.lang.Deprecated public Builder addScreenshotNames(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureScreenshotNamesIsMutable();
-      screenshotNames_.add(value);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
-     * @param values The screenshotNames to add.
-     * @return This builder for chaining.
-     */
-    @java.lang.Deprecated public Builder addAllScreenshotNames(
-        java.lang.Iterable<java.lang.String> values) {
-      ensureScreenshotNamesIsMutable();
-      com.google.protobuf.AbstractMessageLite.Builder.addAll(
-          values, screenshotNames_);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
-     * @return This builder for chaining.
-     */
-    @java.lang.Deprecated public Builder clearScreenshotNames() {
-      screenshotNames_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000001);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string screenshot_names = 4 [deprecated = true];</code>
-     * @param value The bytes of the screenshotNames to add.
-     * @return This builder for chaining.
-     */
-    @java.lang.Deprecated public Builder addScreenshotNamesBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      ensureScreenshotNamesIsMutable();
-      screenshotNames_.add(value);
-      onChanged();
-      return this;
-    }
-
     private java.util.List<eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent> clickpathEvents_ =
       java.util.Collections.emptyList();
     private void ensureClickpathEventsIsMutable() {
-      if (!((bitField0_ & 0x00000002) != 0)) {
+      if (!((bitField0_ & 0x00000001) != 0)) {
         clickpathEvents_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent>(clickpathEvents_);
-        bitField0_ |= 0x00000002;
+        bitField0_ |= 0x00000001;
        }
     }
 
@@ -1093,6 +921,10 @@ private static final long serialVersionUID = 0L;
         eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent, eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent.Builder, eu.tsystems.mms.tic.testframework.report.model.PClickPathEventOrBuilder> clickpathEventsBuilder_;
 
     /**
+     * <pre>
+     *    repeated string screenshot_names = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
      */
     public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent> getClickpathEventsList() {
@@ -1103,6 +935,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     *    repeated string screenshot_names = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
      */
     public int getClickpathEventsCount() {
@@ -1113,6 +949,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     *    repeated string screenshot_names = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
      */
     public eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent getClickpathEvents(int index) {
@@ -1123,6 +963,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     *    repeated string screenshot_names = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
      */
     public Builder setClickpathEvents(
@@ -1140,6 +984,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    repeated string screenshot_names = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
      */
     public Builder setClickpathEvents(
@@ -1154,6 +1002,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    repeated string screenshot_names = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
      */
     public Builder addClickpathEvents(eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent value) {
@@ -1170,6 +1022,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    repeated string screenshot_names = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
      */
     public Builder addClickpathEvents(
@@ -1187,6 +1043,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    repeated string screenshot_names = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
      */
     public Builder addClickpathEvents(
@@ -1201,6 +1061,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    repeated string screenshot_names = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
      */
     public Builder addClickpathEvents(
@@ -1215,6 +1079,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    repeated string screenshot_names = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
      */
     public Builder addAllClickpathEvents(
@@ -1230,12 +1098,16 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    repeated string screenshot_names = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
      */
     public Builder clearClickpathEvents() {
       if (clickpathEventsBuilder_ == null) {
         clickpathEvents_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
       } else {
         clickpathEventsBuilder_.clear();
@@ -1243,6 +1115,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    repeated string screenshot_names = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
      */
     public Builder removeClickpathEvents(int index) {
@@ -1256,6 +1132,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    repeated string screenshot_names = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
      */
     public eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent.Builder getClickpathEventsBuilder(
@@ -1263,6 +1143,10 @@ private static final long serialVersionUID = 0L;
       return getClickpathEventsFieldBuilder().getBuilder(index);
     }
     /**
+     * <pre>
+     *    repeated string screenshot_names = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
      */
     public eu.tsystems.mms.tic.testframework.report.model.PClickPathEventOrBuilder getClickpathEventsOrBuilder(
@@ -1273,6 +1157,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     *    repeated string screenshot_names = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
      */
     public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.PClickPathEventOrBuilder> 
@@ -1284,6 +1172,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     *    repeated string screenshot_names = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
      */
     public eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent.Builder addClickpathEventsBuilder() {
@@ -1291,6 +1183,10 @@ private static final long serialVersionUID = 0L;
           eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent.getDefaultInstance());
     }
     /**
+     * <pre>
+     *    repeated string screenshot_names = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
      */
     public eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent.Builder addClickpathEventsBuilder(
@@ -1299,6 +1195,10 @@ private static final long serialVersionUID = 0L;
           index, eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent.getDefaultInstance());
     }
     /**
+     * <pre>
+     *    repeated string screenshot_names = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
      */
     public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent.Builder> 
@@ -1312,7 +1212,7 @@ private static final long serialVersionUID = 0L;
         clickpathEventsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
             eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent, eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent.Builder, eu.tsystems.mms.tic.testframework.report.model.PClickPathEventOrBuilder>(
                 clickpathEvents_,
-                ((bitField0_ & 0x00000002) != 0),
+                ((bitField0_ & 0x00000001) != 0),
                 getParentForChildren(),
                 isClean());
         clickpathEvents_ = null;
@@ -1322,9 +1222,9 @@ private static final long serialVersionUID = 0L;
 
     private com.google.protobuf.LazyStringList screenshotIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     private void ensureScreenshotIdsIsMutable() {
-      if (!((bitField0_ & 0x00000004) != 0)) {
+      if (!((bitField0_ & 0x00000002) != 0)) {
         screenshotIds_ = new com.google.protobuf.LazyStringArrayList(screenshotIds_);
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000002;
        }
     }
     /**
@@ -1409,7 +1309,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder clearScreenshotIds() {
       screenshotIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000004);
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }

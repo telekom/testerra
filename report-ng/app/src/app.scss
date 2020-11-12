@@ -1,6 +1,6 @@
 @import "styles/mdc";
 @import "styles/statuses";
-@import "styles/spaces";
+@import "src/styles/layout";
 
 /*General style settings______________________________________________________________________________________________*/
 
@@ -16,11 +16,6 @@ body {
     height: 60px;
 }
 
-//prevents app-content overflowing out of screen
-.flex-container {
-    display: flex;
-}
-
 .alert {
     @extend .w100;
     @extend .p1;
@@ -29,25 +24,37 @@ body {
     vertical-align: center;
 }
 
+
 .code-view {
     @extend .p1;
     background-color: #2b2b2b;
-    border: 2px solid #495561; /*gray-300*/
-    border-radius: 2px;
-    color: #a9b7c6;
+    //@extend .secondary;
+    //border: 2px solid #495561; /*gray-300*/
+    //border-radius: 2px;
+    //word-break: break-all;
+    overflow-x: auto;
+    color: #c0dee0;
+    line-height: 1.5em;
+    //
+    //.line {
+    //    padding: 0.3em;
+    //}
+
+    .highlighted {
+        background: $failedExpected;
+    }
+
+    .number {
+        //padding-left: 2rem;
+        padding-right: 0.5rem;
+        color: #808080 !important;
+    }
+
+
 }
 
-.error-view {
-    font-family: monospace;
-    font-size: 1.1rem;
-}
-
-.sr1 {
-   margin-right: 8px;
-}
-.sb1 {
-    margin-bottom: 8px;
-}
-.st1 {
-    margin-top: 8px;
-}
+//a {
+//    mdc-icon {
+//        text-decoration: none !important;
+//    }
+//}

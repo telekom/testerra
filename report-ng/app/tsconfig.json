@@ -13,8 +13,7 @@
             "dom"
         ],
         "moduleResolution": "node",
-        "baseUrl": "src",
-        "resolveJsonModule": true
+        "baseUrl": "src"
     },
     "atom": {
         "rewriteTsconfig": false

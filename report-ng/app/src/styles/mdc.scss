@@ -91,8 +91,28 @@
 //    @include card.fill-color(#ffffff);
 //}
 
+/**
+ * @todo Make this only available in .card-expandable
+ */
+.mdc-expandable.mdc-expandable--open {
+    @extend .m0;
+}
+
+.card-expandable {
+    .mdc-expandable__content-container {
+        .mdc-expandable__content {
+            @extend .m0;
+            @extend .p0;
+        }
+    }
+}
+
 .secondary {
     @include theme.property(color, text-secondary-on-background);
+}
+
+.reset-cursor {
+    cursor: initial !important;
 }
 
 .list-label {
@@ -123,5 +143,3 @@ mdc-drawer-app-content {
     padding: 1.5rem 2rem;
     background-color: #f5f5f5;
 }
-
-

@@ -34,7 +34,6 @@ private static final long serialVersionUID = 0L;
     suiteContextId_ = "";
     sessionContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     videoIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    screenshotIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     customContextJson_ = "";
   }
 
@@ -243,15 +242,6 @@ private static final long serialVersionUID = 0L;
             videoIds_.add(s);
             break;
           }
-          case 250: {
-            java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000400) != 0)) {
-              screenshotIds_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000400;
-            }
-            screenshotIds_.add(s);
-            break;
-          }
           case 258: {
             java.lang.String s = input.readStringRequireUtf8();
 
@@ -302,9 +292,6 @@ private static final long serialVersionUID = 0L;
       }
       if (((mutable_bitField0_ & 0x00000200) != 0)) {
         videoIds_ = videoIds_.getUnmodifiableView();
-      }
-      if (((mutable_bitField0_ & 0x00000400) != 0)) {
-        screenshotIds_ = screenshotIds_.getUnmodifiableView();
       }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
@@ -1001,44 +988,13 @@ private static final long serialVersionUID = 0L;
     return videoIds_.getByteString(index);
   }
 
-  public static final int SCREENSHOT_IDS_FIELD_NUMBER = 31;
-  private com.google.protobuf.LazyStringList screenshotIds_;
-  /**
-   * <code>repeated string screenshot_ids = 31 [deprecated = true];</code>
-   * @return A list containing the screenshotIds.
-   */
-  @java.lang.Deprecated public com.google.protobuf.ProtocolStringList
-      getScreenshotIdsList() {
-    return screenshotIds_;
-  }
-  /**
-   * <code>repeated string screenshot_ids = 31 [deprecated = true];</code>
-   * @return The count of screenshotIds.
-   */
-  @java.lang.Deprecated public int getScreenshotIdsCount() {
-    return screenshotIds_.size();
-  }
-  /**
-   * <code>repeated string screenshot_ids = 31 [deprecated = true];</code>
-   * @param index The index of the element to return.
-   * @return The screenshotIds at the given index.
-   */
-  @java.lang.Deprecated public java.lang.String getScreenshotIds(int index) {
-    return screenshotIds_.get(index);
-  }
-  /**
-   * <code>repeated string screenshot_ids = 31 [deprecated = true];</code>
-   * @param index The index of the value to return.
-   * @return The bytes of the screenshotIds at the given index.
-   */
-  @java.lang.Deprecated public com.google.protobuf.ByteString
-      getScreenshotIdsBytes(int index) {
-    return screenshotIds_.getByteString(index);
-  }
-
   public static final int CUSTOM_CONTEXT_JSON_FIELD_NUMBER = 32;
   private volatile java.lang.Object customContextJson_;
   /**
+   * <pre>
+   *    repeated string screenshot_ids = 31 [deprecated = true];
+   * </pre>
+   *
    * <code>string custom_context_json = 32;</code>
    * @return The customContextJson.
    */
@@ -1055,6 +1011,10 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
+   * <pre>
+   *    repeated string screenshot_ids = 31 [deprecated = true];
+   * </pre>
+   *
    * <code>string custom_context_json = 32;</code>
    * @return The bytes for customContextJson.
    */
@@ -1151,9 +1111,6 @@ private static final long serialVersionUID = 0L;
     }
     for (int i = 0; i < videoIds_.size(); i++) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 30, videoIds_.getRaw(i));
-    }
-    for (int i = 0; i < screenshotIds_.size(); i++) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 31, screenshotIds_.getRaw(i));
     }
     if (!getCustomContextJsonBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 32, customContextJson_);
@@ -1277,14 +1234,6 @@ private static final long serialVersionUID = 0L;
       size += dataSize;
       size += 2 * getVideoIdsList().size();
     }
-    {
-      int dataSize = 0;
-      for (int i = 0; i < screenshotIds_.size(); i++) {
-        dataSize += computeStringSizeNoTag(screenshotIds_.getRaw(i));
-      }
-      size += dataSize;
-      size += 2 * getScreenshotIdsList().size();
-    }
     if (!getCustomContextJsonBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(32, customContextJson_);
     }
@@ -1351,8 +1300,6 @@ private static final long serialVersionUID = 0L;
         .equals(other.getSessionContextIdsList())) return false;
     if (!getVideoIdsList()
         .equals(other.getVideoIdsList())) return false;
-    if (!getScreenshotIdsList()
-        .equals(other.getScreenshotIdsList())) return false;
     if (!getCustomContextJson()
         .equals(other.getCustomContextJson())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
@@ -1433,10 +1380,6 @@ private static final long serialVersionUID = 0L;
     if (getVideoIdsCount() > 0) {
       hash = (37 * hash) + VIDEO_IDS_FIELD_NUMBER;
       hash = (53 * hash) + getVideoIdsList().hashCode();
-    }
-    if (getScreenshotIdsCount() > 0) {
-      hash = (37 * hash) + SCREENSHOT_IDS_FIELD_NUMBER;
-      hash = (53 * hash) + getScreenshotIdsList().hashCode();
     }
     hash = (37 * hash) + CUSTOM_CONTEXT_JSON_FIELD_NUMBER;
     hash = (53 * hash) + getCustomContextJson().hashCode();
@@ -1640,8 +1583,6 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000100);
       videoIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       bitField0_ = (bitField0_ & ~0x00000200);
-      screenshotIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000400);
       customContextJson_ = "";
 
       return this;
@@ -1753,11 +1694,6 @@ private static final long serialVersionUID = 0L;
         bitField0_ = (bitField0_ & ~0x00000200);
       }
       result.videoIds_ = videoIds_;
-      if (((bitField0_ & 0x00000400) != 0)) {
-        screenshotIds_ = screenshotIds_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000400);
-      }
-      result.screenshotIds_ = screenshotIds_;
       result.customContextJson_ = customContextJson_;
       onBuilt();
       return result;
@@ -1994,16 +1930,6 @@ private static final long serialVersionUID = 0L;
         } else {
           ensureVideoIdsIsMutable();
           videoIds_.addAll(other.videoIds_);
-        }
-        onChanged();
-      }
-      if (!other.screenshotIds_.isEmpty()) {
-        if (screenshotIds_.isEmpty()) {
-          screenshotIds_ = other.screenshotIds_;
-          bitField0_ = (bitField0_ & ~0x00000400);
-        } else {
-          ensureScreenshotIdsIsMutable();
-          screenshotIds_.addAll(other.screenshotIds_);
         }
         onChanged();
       }
@@ -4409,118 +4335,12 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private com.google.protobuf.LazyStringList screenshotIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    private void ensureScreenshotIdsIsMutable() {
-      if (!((bitField0_ & 0x00000400) != 0)) {
-        screenshotIds_ = new com.google.protobuf.LazyStringArrayList(screenshotIds_);
-        bitField0_ |= 0x00000400;
-       }
-    }
-    /**
-     * <code>repeated string screenshot_ids = 31 [deprecated = true];</code>
-     * @return A list containing the screenshotIds.
-     */
-    @java.lang.Deprecated public com.google.protobuf.ProtocolStringList
-        getScreenshotIdsList() {
-      return screenshotIds_.getUnmodifiableView();
-    }
-    /**
-     * <code>repeated string screenshot_ids = 31 [deprecated = true];</code>
-     * @return The count of screenshotIds.
-     */
-    @java.lang.Deprecated public int getScreenshotIdsCount() {
-      return screenshotIds_.size();
-    }
-    /**
-     * <code>repeated string screenshot_ids = 31 [deprecated = true];</code>
-     * @param index The index of the element to return.
-     * @return The screenshotIds at the given index.
-     */
-    @java.lang.Deprecated public java.lang.String getScreenshotIds(int index) {
-      return screenshotIds_.get(index);
-    }
-    /**
-     * <code>repeated string screenshot_ids = 31 [deprecated = true];</code>
-     * @param index The index of the value to return.
-     * @return The bytes of the screenshotIds at the given index.
-     */
-    @java.lang.Deprecated public com.google.protobuf.ByteString
-        getScreenshotIdsBytes(int index) {
-      return screenshotIds_.getByteString(index);
-    }
-    /**
-     * <code>repeated string screenshot_ids = 31 [deprecated = true];</code>
-     * @param index The index to set the value at.
-     * @param value The screenshotIds to set.
-     * @return This builder for chaining.
-     */
-    @java.lang.Deprecated public Builder setScreenshotIds(
-        int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureScreenshotIdsIsMutable();
-      screenshotIds_.set(index, value);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string screenshot_ids = 31 [deprecated = true];</code>
-     * @param value The screenshotIds to add.
-     * @return This builder for chaining.
-     */
-    @java.lang.Deprecated public Builder addScreenshotIds(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureScreenshotIdsIsMutable();
-      screenshotIds_.add(value);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string screenshot_ids = 31 [deprecated = true];</code>
-     * @param values The screenshotIds to add.
-     * @return This builder for chaining.
-     */
-    @java.lang.Deprecated public Builder addAllScreenshotIds(
-        java.lang.Iterable<java.lang.String> values) {
-      ensureScreenshotIdsIsMutable();
-      com.google.protobuf.AbstractMessageLite.Builder.addAll(
-          values, screenshotIds_);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string screenshot_ids = 31 [deprecated = true];</code>
-     * @return This builder for chaining.
-     */
-    @java.lang.Deprecated public Builder clearScreenshotIds() {
-      screenshotIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000400);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string screenshot_ids = 31 [deprecated = true];</code>
-     * @param value The bytes of the screenshotIds to add.
-     * @return This builder for chaining.
-     */
-    @java.lang.Deprecated public Builder addScreenshotIdsBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      ensureScreenshotIdsIsMutable();
-      screenshotIds_.add(value);
-      onChanged();
-      return this;
-    }
-
     private java.lang.Object customContextJson_ = "";
     /**
+     * <pre>
+     *    repeated string screenshot_ids = 31 [deprecated = true];
+     * </pre>
+     *
      * <code>string custom_context_json = 32;</code>
      * @return The customContextJson.
      */
@@ -4537,6 +4357,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     *    repeated string screenshot_ids = 31 [deprecated = true];
+     * </pre>
+     *
      * <code>string custom_context_json = 32;</code>
      * @return The bytes for customContextJson.
      */
@@ -4554,6 +4378,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     *    repeated string screenshot_ids = 31 [deprecated = true];
+     * </pre>
+     *
      * <code>string custom_context_json = 32;</code>
      * @param value The customContextJson to set.
      * @return This builder for chaining.
@@ -4569,6 +4397,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    repeated string screenshot_ids = 31 [deprecated = true];
+     * </pre>
+     *
      * <code>string custom_context_json = 32;</code>
      * @return This builder for chaining.
      */
@@ -4579,6 +4411,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    repeated string screenshot_ids = 31 [deprecated = true];
+     * </pre>
+     *
      * <code>string custom_context_json = 32;</code>
      * @param value The bytes for customContextJson to set.
      * @return This builder for chaining.

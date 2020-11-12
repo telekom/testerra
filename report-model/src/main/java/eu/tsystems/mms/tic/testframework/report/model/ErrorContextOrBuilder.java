@@ -8,67 +8,37 @@ public interface ErrorContextOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>string readable_error_message = 1 [deprecated = true];</code>
-   * @return The readableErrorMessage.
-   */
-  @java.lang.Deprecated java.lang.String getReadableErrorMessage();
-  /**
-   * <code>string readable_error_message = 1 [deprecated = true];</code>
-   * @return The bytes for readableErrorMessage.
-   */
-  @java.lang.Deprecated com.google.protobuf.ByteString
-      getReadableErrorMessageBytes();
-
-  /**
-   * <code>string additional_error_message = 2 [deprecated = true];</code>
-   * @return The additionalErrorMessage.
-   */
-  @java.lang.Deprecated java.lang.String getAdditionalErrorMessage();
-  /**
-   * <code>string additional_error_message = 2 [deprecated = true];</code>
-   * @return The bytes for additionalErrorMessage.
-   */
-  @java.lang.Deprecated com.google.protobuf.ByteString
-      getAdditionalErrorMessageBytes();
-
-  /**
-   * <code>.data.StackTrace stack_trace = 3;</code>
-   * @return Whether the stackTrace field is set.
-   */
-  boolean hasStackTrace();
-  /**
-   * <code>.data.StackTrace stack_trace = 3;</code>
-   * @return The stackTrace.
-   */
-  eu.tsystems.mms.tic.testframework.report.model.StackTrace getStackTrace();
-  /**
-   * <code>.data.StackTrace stack_trace = 3;</code>
-   */
-  eu.tsystems.mms.tic.testframework.report.model.StackTraceOrBuilder getStackTraceOrBuilder();
-
-  /**
-   * <code>string error_fingerprint = 6 [deprecated = true];</code>
-   * @return The errorFingerprint.
-   */
-  @java.lang.Deprecated java.lang.String getErrorFingerprint();
-  /**
-   * <code>string error_fingerprint = 6 [deprecated = true];</code>
-   * @return The bytes for errorFingerprint.
-   */
-  @java.lang.Deprecated com.google.protobuf.ByteString
-      getErrorFingerprintBytes();
-
-  /**
+   * <pre>
+   *    string readable_error_message = 1 [deprecated = true];
+   *    string additional_error_message = 2 [deprecated = true];
+   *    StackTrace stack_trace = 3  [deprecated = true];
+   *    string error_fingerprint = 6 [deprecated = true];
+   * </pre>
+   *
    * <code>.data.ScriptSource script_source = 7;</code>
    * @return Whether the scriptSource field is set.
    */
   boolean hasScriptSource();
   /**
+   * <pre>
+   *    string readable_error_message = 1 [deprecated = true];
+   *    string additional_error_message = 2 [deprecated = true];
+   *    StackTrace stack_trace = 3  [deprecated = true];
+   *    string error_fingerprint = 6 [deprecated = true];
+   * </pre>
+   *
    * <code>.data.ScriptSource script_source = 7;</code>
    * @return The scriptSource.
    */
   eu.tsystems.mms.tic.testframework.report.model.ScriptSource getScriptSource();
   /**
+   * <pre>
+   *    string readable_error_message = 1 [deprecated = true];
+   *    string additional_error_message = 2 [deprecated = true];
+   *    StackTrace stack_trace = 3  [deprecated = true];
+   *    string error_fingerprint = 6 [deprecated = true];
+   * </pre>
+   *
    * <code>.data.ScriptSource script_source = 7;</code>
    */
   eu.tsystems.mms.tic.testframework.report.model.ScriptSourceOrBuilder getScriptSourceOrBuilder();
@@ -111,4 +81,19 @@ public interface ErrorContextOrBuilder extends
    */
   com.google.protobuf.ByteString
       getDescriptionBytes();
+
+  /**
+   * <code>.data.StackTraceCause cause = 11;</code>
+   * @return Whether the cause field is set.
+   */
+  boolean hasCause();
+  /**
+   * <code>.data.StackTraceCause cause = 11;</code>
+   * @return The cause.
+   */
+  eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getCause();
+  /**
+   * <code>.data.StackTraceCause cause = 11;</code>
+   */
+  eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder getCauseOrBuilder();
 }

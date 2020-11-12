@@ -7,6 +7,7 @@ const {AureliaPlugin} = require('aurelia-webpack-plugin');
 const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const {IgnorePlugin} = require('webpack');
+const webpack = require('webpack');
 
 // config helpers:
 const ensureArray = (config) => config && (Array.isArray(config) ? config : [config]) || [];
@@ -208,6 +209,9 @@ module.exports = ({production} = {}, {analyze, tests, hmr, port, host} = {}) => 
         plugins: [
             ...when(!tests, new DuplicatePackageCheckerPlugin()),
             new AureliaPlugin(),
+            ...when(production,  new webpack.NormalModuleReplacementPlugin(/config/gi, (resource) => {
+                resource.request = resource.request.replace(/config/, 'production-config');
+            })),
             new HtmlWebpackPlugin({
                 template: 'index.ejs',
                 metadata: {

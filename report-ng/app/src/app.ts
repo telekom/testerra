@@ -25,9 +25,12 @@ export class App {
     attached() {
         this._statistics.getExecutionStatistics().then(executionStatistics => {
             this._executionContext = executionStatistics.executionAggregate.executionContext;
-            this._router.title = "Report: " + this._executionContext.runConfig.reportName;
+            this._router.title = this._executionContext.runConfig.reportName;
             this._router.routes.filter(route => route.route == "failure-aspects").find(route => {
                 route.settings.count = executionStatistics.failureAspectStatistics.length;
+            });
+            this._router.routes.filter(route => route.route == "tests").find(route => {
+                route.settings.count = executionStatistics.testsTotal;
             });
             this._router.routes.filter(route => route.route == "exit-points").find(route => {
                 route.settings.count = executionStatistics.exitPointStatistics.length;

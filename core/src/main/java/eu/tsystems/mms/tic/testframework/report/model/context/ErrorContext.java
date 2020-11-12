@@ -28,6 +28,7 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 
 public class ErrorContext extends AbstractContext {
+    @Deprecated
     private String readableErrorMessage;
     @Deprecated
     public String additionalErrorMessage;

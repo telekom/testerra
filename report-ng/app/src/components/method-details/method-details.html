@@ -4,48 +4,73 @@
         <mdc-layout-grid-inner>
             <mdc-layout-grid-cell span="6">
                 <mdc-card>
-                    <mdc-card-primary-action class="card-content">
-                        <div mdc-headline5>
-                            <span class="badge status-${_methodContext.contextValues.resultStatus|statusClass} sr1"
-                            >${_methodContext.contextValues.resultStatus|statusName}</span>
-                            ${_methodContext.contextValues.name}
-                        </div>
-                    </mdc-card-primary-action>
+                    <div class="card-content" mdc-body1>
+                        <span class="badge status-${_methodContext.contextValues.resultStatus|statusClass} sr1"
+                        >${_methodContext.contextValues.resultStatus|statusName}</span>
+                        ${_methodContext.contextValues.name}
+                    </div>
                     <mdc-list-divider></mdc-list-divider>
-                    <mdc-list nonInteractive="true" two-line>
-                        <mdc-list-item>
-                            <mdc-list-item-primary-text>${_classContext.simpleClassName} <span if.bind="_classContext.testContextName">(${_classContext.testContextName})</span></mdc-list-item-primary-text>
-                            <mdc-list-item-secondary-text>Class</mdc-list-item-secondary-text>
-                        </mdc-list-item>
-                        <mdc-list-item>
-                            <mdc-list-item-primary-text>${_testContext.contextValues.name}</mdc-list-item-primary-text>
-                            <mdc-list-item-secondary-text>Test Context</mdc-list-item-secondary-text>
-                        </mdc-list-item>
-                        <mdc-list-item>
-                            <mdc-list-item-primary-text>${_suiteContext.contextValues.name}</mdc-list-item-primary-text>
-                            <mdc-list-item-secondary-text>Suite</mdc-list-item-secondary-text>
-                        </mdc-list-item>
-                    </mdc-list>
+                    <ul class="mdc-list mdc-list--dense">
+                        <li class="mdc-list-item reset-cursor vcenter">
+                            <span class="secondary sr1">Class</span><mdc-icon class="sr1">read_more</mdc-icon><a route-href="route: tests; params.bind: {class: _classContext.simpleClassName}">${_classContext.simpleClassName} <span if.bind="_classContext.testContextName">(${_classContext.testContextName})</span></a>
+                        </li>
+                        <li class="mdc-list-item reset-cursor">
+                            <span class="secondary sr1">Test Context</span>${_suiteContext.contextValues.name}
+                        </li>
+                        <li class="mdc-list-item reset-cursor">
+                            <span class="secondary sr1">Suite</span>${_suiteContext.contextValues.name}
+                        </li>
+                        <li class="mdc-list-item reset-cursor">
+                            <span class="secondary sr1">Thread</span>${_methodContext.threadName}
+                        </li>
+                    </ul>
                 </mdc-card>
             </mdc-layout-grid-cell>
-            <mdc-layout-grid-cell span="4">
+            <mdc-layout-grid-cell span="3" position="right">
                 <test-duration-card start.bind="_methodContext.contextValues.startTime"
                                     end.bind="_methodContext.contextValues.endTime"
                 ></test-duration-card>
-<!--                <mdc-card>-->
-<!--                    <div mdc-body1 class="card-content">-->
-<!--                        Started: ${_methodContext.contextValues.startTime|dateFormat:"LLL"}-->
-<!--&lt;!&ndash;                        <div mdc-headline4>&ndash;&gt;-->
-<!--&lt;!&ndash;                            <mdc-icon>timer</mdc-icon> Duration: ${_testDuration |durationFormat}&ndash;&gt;-->
-<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
-<!--                        <p if.bind="_hasFinished">-->
-<!--                            Ended: ${_methodContext.contextValues.endTime|dateFormat:"LLL"} <br>-->
-<!--                        </p>-->
-<!--                        <p else>-->
-<!--                            Running...-->
-<!--                        </p>-->
-<!--                    </div>-->
-<!--                </mdc-card>-->
+            </mdc-layout-grid-cell>
+
+            <mdc-layout-grid-cell span="12" if.bind="_methodContext.priorityMessage">
+                <mdc-card>
+                    <div mdc-subtitle2 class="card-headline vcenter"><mdc-icon>priority_high</mdc-icon>Priority Message</div>
+                    <mdc-list-divider></mdc-list-divider>
+                    <div class="card-content" mdc-body1 innerhtml="${_methodContext.priorityMessage|html}"></div>
+                </mdc-card>
+            </mdc-layout-grid-cell>
+
+            <mdc-layout-grid-cell span="12" if.bind="_failureAspect">
+                <mdc-card mdc-elevation="4">
+                    <div mdc-subtitle2 class="card-headline">Failure Aspect</div>
+                    <mdc-list-divider></mdc-list-divider>
+                    <div class="card-content status-${_methodContext.contextValues.resultStatus|statusClass}" mdc-headline5 innerhtml="${_failureAspect.name|html}"></div>
+                </mdc-card>
+            </mdc-layout-grid-cell>
+            <mdc-layout-grid-cell span="12"
+                                  if.bind="_methodContext.errorContext.scriptSource">
+                <mdc-card>
+                    <div mdc-subtitle2 class="card-headline">Origin (${_methodContext.errorContext.scriptSource.fileName})</div>
+                    <mdc-list-divider></mdc-list-divider>
+                    <div class="code-view m0">
+                        <pre class="m0"
+                             repeat.for="line of _methodContext.errorContext.scriptSource.lines"
+                             class.bind="line.mark?'highlighted':''"
+                        ><span class="number">${line.lineNumber}</span><span innerhtml="${_hljs.highlight('java', line.line).value}"></span></pre>
+                    </div>
+                </mdc-card>
+            </mdc-layout-grid-cell>
+            <mdc-layout-grid-cell span="12" if.bind="_stackTrace">
+                <mdc-card>
+                    <div mdc-subtitle2 class="card-headline">Stacktrace</div>
+                    <mdc-list-divider></mdc-list-divider>
+                    <mdc-expandable repeat.for="cause of _stackTrace"
+                                    class="card-expandable"
+                    >
+                        <div slot="caption"><span class="secondary sr1" mdc-body2>${cause.className}</span><span mdc-body1 if.bind="cause.message">${cause.message}</span></div>
+                        <pre class="code-view m0" innerhtml="${_hljs.highlight('java', cause.stackTraceElements.join('\n')).value}"></pre>
+                    </mdc-expandable>
+                </mdc-card>
             </mdc-layout-grid-cell>
         </mdc-layout-grid-inner>
     </mdc-layout-grid>

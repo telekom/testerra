@@ -38,6 +38,7 @@ export abstract class AbstractViewModel {
     }
 
     protected updateUrl(params:object) {
+        console.log("update url", params);
         window.history.replaceState({}, "", this._navInstruction.router.generate(this._routeConfig.name, params));
     }
 

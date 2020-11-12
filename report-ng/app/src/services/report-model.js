@@ -368,9 +368,6 @@ export const data = $root.data = (() => {
          * @memberof data
          * @interface IExecutionContext
          * @property {data.IContextValues|null} [contextValues] ExecutionContext contextValues
-         * @property {Array.<string>|null} [mergedClassContextIds] ExecutionContext mergedClassContextIds
-         * @property {Array.<data.IContextClip>|null} [exitPoints] ExecutionContext exitPoints
-         * @property {Array.<data.IContextClip>|null} [failureAscpects] ExecutionContext failureAscpects
          * @property {Array.<string>|null} [suiteContextIds] ExecutionContext suiteContextIds
          * @property {data.IRunConfig|null} [runConfig] ExecutionContext runConfig
          * @property {string|null} [project_Id] ExecutionContext project_Id
@@ -390,9 +387,6 @@ export const data = $root.data = (() => {
          * @param {data.IExecutionContext=} [p] Properties to set
          */
         function ExecutionContext(p) {
-            this.mergedClassContextIds = [];
-            this.exitPoints = [];
-            this.failureAscpects = [];
             this.suiteContextIds = [];
             this.exclusiveSessionContextIds = [];
             if (p)
@@ -408,30 +402,6 @@ export const data = $root.data = (() => {
          * @instance
          */
         ExecutionContext.prototype.contextValues = null;
-
-        /**
-         * ExecutionContext mergedClassContextIds.
-         * @member {Array.<string>} mergedClassContextIds
-         * @memberof data.ExecutionContext
-         * @instance
-         */
-        ExecutionContext.prototype.mergedClassContextIds = $util.emptyArray;
-
-        /**
-         * ExecutionContext exitPoints.
-         * @member {Array.<data.IContextClip>} exitPoints
-         * @memberof data.ExecutionContext
-         * @instance
-         */
-        ExecutionContext.prototype.exitPoints = $util.emptyArray;
-
-        /**
-         * ExecutionContext failureAscpects.
-         * @member {Array.<data.IContextClip>} failureAscpects
-         * @memberof data.ExecutionContext
-         * @instance
-         */
-        ExecutionContext.prototype.failureAscpects = $util.emptyArray;
 
         /**
          * ExecutionContext suiteContextIds.
@@ -518,21 +488,6 @@ export const data = $root.data = (() => {
                 case 1:
                     m.contextValues = $root.data.ContextValues.decode(r, r.uint32());
                     break;
-                case 3:
-                    if (!(m.mergedClassContextIds && m.mergedClassContextIds.length))
-                        m.mergedClassContextIds = [];
-                    m.mergedClassContextIds.push(r.string());
-                    break;
-                case 4:
-                    if (!(m.exitPoints && m.exitPoints.length))
-                        m.exitPoints = [];
-                    m.exitPoints.push($root.data.ContextClip.decode(r, r.uint32()));
-                    break;
-                case 5:
-                    if (!(m.failureAscpects && m.failureAscpects.length))
-                        m.failureAscpects = [];
-                    m.failureAscpects.push($root.data.ContextClip.decode(r, r.uint32()));
-                    break;
                 case 6:
                     if (!(m.suiteContextIds && m.suiteContextIds.length))
                         m.suiteContextIds = [];
@@ -572,85 +527,6 @@ export const data = $root.data = (() => {
         return ExecutionContext;
     })();
 
-    data.ContextClip = (function() {
-
-        /**
-         * Properties of a ContextClip.
-         * @memberof data
-         * @interface IContextClip
-         * @property {string|null} [key] ContextClip key
-         * @property {Array.<string>|null} [methodContextIds] ContextClip methodContextIds
-         */
-
-        /**
-         * Constructs a new ContextClip.
-         * @memberof data
-         * @classdesc Represents a ContextClip.
-         * @implements IContextClip
-         * @constructor
-         * @param {data.IContextClip=} [p] Properties to set
-         */
-        function ContextClip(p) {
-            this.methodContextIds = [];
-            if (p)
-                for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
-                    if (p[ks[i]] != null)
-                        this[ks[i]] = p[ks[i]];
-        }
-
-        /**
-         * ContextClip key.
-         * @member {string} key
-         * @memberof data.ContextClip
-         * @instance
-         */
-        ContextClip.prototype.key = "";
-
-        /**
-         * ContextClip methodContextIds.
-         * @member {Array.<string>} methodContextIds
-         * @memberof data.ContextClip
-         * @instance
-         */
-        ContextClip.prototype.methodContextIds = $util.emptyArray;
-
-        /**
-         * Decodes a ContextClip message from the specified reader or buffer.
-         * @function decode
-         * @memberof data.ContextClip
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
-         * @param {number} [l] Message length if known beforehand
-         * @returns {data.ContextClip} ContextClip
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        ContextClip.decode = function decode(r, l) {
-            if (!(r instanceof $Reader))
-                r = $Reader.create(r);
-            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.ContextClip();
-            while (r.pos < c) {
-                var t = r.uint32();
-                switch (t >>> 3) {
-                case 1:
-                    m.key = r.string();
-                    break;
-                case 2:
-                    if (!(m.methodContextIds && m.methodContextIds.length))
-                        m.methodContextIds = [];
-                    m.methodContextIds.push(r.string());
-                    break;
-                default:
-                    r.skipType(t & 7);
-                    break;
-                }
-            }
-            return m;
-        };
-
-        return ContextClip;
-    })();
-
     data.MethodContext = (function() {
 
         /**
@@ -679,7 +555,6 @@ export const data = $root.data = (() => {
          * @property {string|null} [suiteContextId] MethodContext suiteContextId
          * @property {Array.<string>|null} [sessionContextIds] MethodContext sessionContextIds
          * @property {Array.<string>|null} [videoIds] MethodContext videoIds
-         * @property {Array.<string>|null} [screenshotIds] MethodContext screenshotIds
          * @property {string|null} [customContextJson] MethodContext customContextJson
          */
 
@@ -702,7 +577,6 @@ export const data = $root.data = (() => {
             this.testSteps = [];
             this.sessionContextIds = [];
             this.videoIds = [];
-            this.screenshotIds = [];
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -886,14 +760,6 @@ export const data = $root.data = (() => {
         MethodContext.prototype.videoIds = $util.emptyArray;
 
         /**
-         * MethodContext screenshotIds.
-         * @member {Array.<string>} screenshotIds
-         * @memberof data.MethodContext
-         * @instance
-         */
-        MethodContext.prototype.screenshotIds = $util.emptyArray;
-
-        /**
          * MethodContext customContextJson.
          * @member {string} customContextJson
          * @memberof data.MethodContext
@@ -1004,11 +870,6 @@ export const data = $root.data = (() => {
                     if (!(m.videoIds && m.videoIds.length))
                         m.videoIds = [];
                     m.videoIds.push(r.string());
-                    break;
-                case 31:
-                    if (!(m.screenshotIds && m.screenshotIds.length))
-                        m.screenshotIds = [];
-                    m.screenshotIds.push(r.string());
                     break;
                 case 32:
                     m.customContextJson = r.string();
@@ -1272,7 +1133,6 @@ export const data = $root.data = (() => {
          * @property {string|null} [name] PTestStepAction name
          * @property {string|null} [id] PTestStepAction id
          * @property {number|Long|null} [timestamp] PTestStepAction timestamp
-         * @property {Array.<string>|null} [screenshotNames] PTestStepAction screenshotNames
          * @property {Array.<data.IPClickPathEvent>|null} [clickpathEvents] PTestStepAction clickpathEvents
          * @property {Array.<string>|null} [screenshotIds] PTestStepAction screenshotIds
          */
@@ -1286,7 +1146,6 @@ export const data = $root.data = (() => {
          * @param {data.IPTestStepAction=} [p] Properties to set
          */
         function PTestStepAction(p) {
-            this.screenshotNames = [];
             this.clickpathEvents = [];
             this.screenshotIds = [];
             if (p)
@@ -1318,14 +1177,6 @@ export const data = $root.data = (() => {
          * @instance
          */
         PTestStepAction.prototype.timestamp = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * PTestStepAction screenshotNames.
-         * @member {Array.<string>} screenshotNames
-         * @memberof data.PTestStepAction
-         * @instance
-         */
-        PTestStepAction.prototype.screenshotNames = $util.emptyArray;
 
         /**
          * PTestStepAction clickpathEvents.
@@ -1369,11 +1220,6 @@ export const data = $root.data = (() => {
                     break;
                 case 3:
                     m.timestamp = r.int64();
-                    break;
-                case 4:
-                    if (!(m.screenshotNames && m.screenshotNames.length))
-                        m.screenshotNames = [];
-                    m.screenshotNames.push(r.string());
                     break;
                 case 5:
                     if (!(m.clickpathEvents && m.clickpathEvents.length))
@@ -1512,14 +1358,11 @@ export const data = $root.data = (() => {
          * Properties of an ErrorContext.
          * @memberof data
          * @interface IErrorContext
-         * @property {string|null} [readableErrorMessage] ErrorContext readableErrorMessage
-         * @property {string|null} [additionalErrorMessage] ErrorContext additionalErrorMessage
-         * @property {data.IStackTrace|null} [stackTrace] ErrorContext stackTrace
-         * @property {string|null} [errorFingerprint] ErrorContext errorFingerprint
          * @property {data.IScriptSource|null} [scriptSource] ErrorContext scriptSource
          * @property {data.IScriptSource|null} [executionObjectSource] ErrorContext executionObjectSource
          * @property {string|null} [ticketId] ErrorContext ticketId
          * @property {string|null} [description] ErrorContext description
+         * @property {data.IStackTraceCause|null} [cause] ErrorContext cause
          */
 
         /**
@@ -1536,38 +1379,6 @@ export const data = $root.data = (() => {
                     if (p[ks[i]] != null)
                         this[ks[i]] = p[ks[i]];
         }
-
-        /**
-         * ErrorContext readableErrorMessage.
-         * @member {string} readableErrorMessage
-         * @memberof data.ErrorContext
-         * @instance
-         */
-        ErrorContext.prototype.readableErrorMessage = "";
-
-        /**
-         * ErrorContext additionalErrorMessage.
-         * @member {string} additionalErrorMessage
-         * @memberof data.ErrorContext
-         * @instance
-         */
-        ErrorContext.prototype.additionalErrorMessage = "";
-
-        /**
-         * ErrorContext stackTrace.
-         * @member {data.IStackTrace|null|undefined} stackTrace
-         * @memberof data.ErrorContext
-         * @instance
-         */
-        ErrorContext.prototype.stackTrace = null;
-
-        /**
-         * ErrorContext errorFingerprint.
-         * @member {string} errorFingerprint
-         * @memberof data.ErrorContext
-         * @instance
-         */
-        ErrorContext.prototype.errorFingerprint = "";
 
         /**
          * ErrorContext scriptSource.
@@ -1602,6 +1413,14 @@ export const data = $root.data = (() => {
         ErrorContext.prototype.description = "";
 
         /**
+         * ErrorContext cause.
+         * @member {data.IStackTraceCause|null|undefined} cause
+         * @memberof data.ErrorContext
+         * @instance
+         */
+        ErrorContext.prototype.cause = null;
+
+        /**
          * Decodes an ErrorContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.ErrorContext
@@ -1619,18 +1438,6 @@ export const data = $root.data = (() => {
             while (r.pos < c) {
                 var t = r.uint32();
                 switch (t >>> 3) {
-                case 1:
-                    m.readableErrorMessage = r.string();
-                    break;
-                case 2:
-                    m.additionalErrorMessage = r.string();
-                    break;
-                case 3:
-                    m.stackTrace = $root.data.StackTrace.decode(r, r.uint32());
-                    break;
-                case 6:
-                    m.errorFingerprint = r.string();
-                    break;
                 case 7:
                     m.scriptSource = $root.data.ScriptSource.decode(r, r.uint32());
                     break;
@@ -1642,6 +1449,9 @@ export const data = $root.data = (() => {
                     break;
                 case 10:
                     m.description = r.string();
+                    break;
+                case 11:
+                    m.cause = $root.data.StackTraceCause.decode(r, r.uint32());
                     break;
                 default:
                     r.skipType(t & 7);
@@ -2030,82 +1840,6 @@ export const data = $root.data = (() => {
         values[valuesById[1] = "TEST_METHOD"] = 1;
         values[valuesById[2] = "CONFIGURATION_METHOD"] = 2;
         return values;
-    })();
-
-    data.StackTrace = (function() {
-
-        /**
-         * Properties of a StackTrace.
-         * @memberof data
-         * @interface IStackTrace
-         * @property {data.IStackTraceCause|null} [cause] StackTrace cause
-         * @property {string|null} [additionalErrorMessage] StackTrace additionalErrorMessage
-         */
-
-        /**
-         * Constructs a new StackTrace.
-         * @memberof data
-         * @classdesc Represents a StackTrace.
-         * @implements IStackTrace
-         * @constructor
-         * @param {data.IStackTrace=} [p] Properties to set
-         */
-        function StackTrace(p) {
-            if (p)
-                for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
-                    if (p[ks[i]] != null)
-                        this[ks[i]] = p[ks[i]];
-        }
-
-        /**
-         * StackTrace cause.
-         * @member {data.IStackTraceCause|null|undefined} cause
-         * @memberof data.StackTrace
-         * @instance
-         */
-        StackTrace.prototype.cause = null;
-
-        /**
-         * StackTrace additionalErrorMessage.
-         * @member {string} additionalErrorMessage
-         * @memberof data.StackTrace
-         * @instance
-         */
-        StackTrace.prototype.additionalErrorMessage = "";
-
-        /**
-         * Decodes a StackTrace message from the specified reader or buffer.
-         * @function decode
-         * @memberof data.StackTrace
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
-         * @param {number} [l] Message length if known beforehand
-         * @returns {data.StackTrace} StackTrace
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        StackTrace.decode = function decode(r, l) {
-            if (!(r instanceof $Reader))
-                r = $Reader.create(r);
-            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.StackTrace();
-            while (r.pos < c) {
-                var t = r.uint32();
-                switch (t >>> 3) {
-                case 1:
-                    m.cause = $root.data.StackTraceCause.decode(r, r.uint32());
-                    break;
-                case 2:
-                    m.additionalErrorMessage = r.string();
-                    break;
-                default:
-                    r.skipType(t & 7);
-                    break;
-                }
-            }
-            return m;
-        };
-
-        return StackTrace;
     })();
 
     data.StackTraceCause = (function() {

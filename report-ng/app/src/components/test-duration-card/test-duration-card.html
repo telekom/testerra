@@ -1,17 +1,20 @@
 <template>
-  <mdc-card outlined="true">
-    <div mdc-subtitle2 class="card-headline">Started: ${start | dateFormat:"LLLL"}</div>
-    <mdc-list-divider></mdc-list-divider>
+    <mdc-card>
+        <div mdc-subtitle2 class="card-headline">Duration</div>
+        <mdc-list-divider></mdc-list-divider>
 
-    <div class="card-content">
-      <div mdc-headline5>
-          <mdc-icon>timer</mdc-icon> Duration: ${_duration|durationFormat}
-      </div>
-    </div>
-      <mdc-list-divider></mdc-list-divider>
-      <div mdc-subtitle2 class="card-headline">
-          <span if.bind="_hasEnded">Ended: ${end | dateFormat:"LLLL"}</span>
-          <span else>Running...</span>
-      </div>
-  </mdc-card>
+        <div class="card-content vcenter hcenter" mdc-headline5>
+          <mdc-icon class="sr1">timer</mdc-icon>${_duration|durationFormat:"h[h] m[min] s[s] S[ms]"}
+        </div>
+        <mdc-list-divider></mdc-list-divider>
+        <ul class="mdc-list mdc-list--dense">
+            <li class="mdc-list-item reset-cursor">
+                <span class="secondary sr1">Started</span>${start | dateFormat:"ddd MMM D Y LTS Z"}
+            </li>
+            <li class="mdc-list-item reset-cursor">
+                <div if.bind="_hasEnded"><span class="secondary sr1">Ended</span> ${end | dateFormat:"ddd MMM D Y LTS Z"}</div>
+                <span else class="secondary sr1">Running...</span>
+            </li>
+        </ul>
+    </mdc-card>
 </template>

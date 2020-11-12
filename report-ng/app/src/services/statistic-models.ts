@@ -114,6 +114,16 @@ export class ExecutionStatistics extends Statistics {
                 return this.statusConverter.failedStatuses.indexOf(methodContext.contextValues.resultStatus) >= 0;
             })
             .forEach(methodContext => {
+
+                methodContext.testSteps.forEach(testStep => {
+                    testStep.testStepActions.forEach(testStepAction => {
+                        if (testStepAction.screenshotIds?.length > 0) {
+                            console.log("has screenshots", methodContext.contextValues.name)
+                        }
+                    })
+                })
+
+
                 const failureAspectStatistics = new FailureAspectStatistics().addMethodContext(methodContext);
 
                 const foundFailureAspectStatistics = this._failureAspectStatistics.find(existingFailureAspectStatistics => {
@@ -204,7 +214,7 @@ export class FailureAspectStatistics extends Statistics {
             const packageRegexp = new RegExp(".*\\.");
             this._name = (
                 methodContext.errorContext?.description
-                || methodContext.errorContext?.stackTrace?.cause.className.replace(packageRegexp,"") + (methodContext.errorContext?.stackTrace?.cause?.message ? ": " + methodContext.errorContext?.stackTrace?.cause?.message.trim() : "")
+                || methodContext.errorContext?.cause.className.replace(packageRegexp,"") + (methodContext.errorContext?.cause?.message ? ": " + methodContext.errorContext?.cause?.message.trim() : "")
             );
         }
         this.addResultStatus(methodContext.contextValues.resultStatus);
@@ -233,7 +243,7 @@ export class ExitPointStatistics extends Statistics {
             this._methodContext = methodContext;
             this._fingerprint = (
                 methodContext.errorContext?.scriptSource?.lines.map(line => line.line).join("\n")
-                || methodContext.errorContext.stackTrace?.cause.stackTraceElements.join("\n")
+                || methodContext.errorContext.cause.stackTraceElements.join("\n")
                 || "undefined"
             );
         }

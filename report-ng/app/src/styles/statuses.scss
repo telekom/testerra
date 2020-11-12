@@ -21,6 +21,10 @@
 
 @import "variables.scss";
 
+.status {
+    color: #ffffff;
+}
+
 .colored-icon {
     color: #ffffff;
     border-radius: 25px;
@@ -33,6 +37,7 @@
 }
 
 .status-passed {
+    @extend .status;
     background: $passed;
     border-color: $passed;
 }
@@ -50,21 +55,25 @@
 }
 
 .status-skipped {
+    @extend .status;
     background: $skipped;
     border-color: $skipped;
 }
 
 .status-failed {
+    @extend .status;
     background: $failed;
     border-color: $failed;
 }
 
 .status-failed-minor {
+    @extend .status;
     background: $failedMinor;
     border-color: $failedMinor;
 }
 
 .status-failed-expected {
+    @extend .status;
     background: $failedExpected;
     border-color: $failedExpected;
 }
@@ -74,7 +83,6 @@
 }
 
 .badge {
-    color: #ffffff;
     padding: 4px 10px;
     border-radius: 25px;
     //text-decoration: none;

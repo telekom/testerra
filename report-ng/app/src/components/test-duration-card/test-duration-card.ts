@@ -9,19 +9,17 @@ export class TestDurationCard {
     private _hasEnded = false;
 
     startChanged() {
-        console.log("start" , this.start);
         this._updateDuration();
     }
 
     endChanged() {
-        console.log("end" , this.end);
         this._updateDuration();
     }
 
     private _updateDuration() {
         if (!this.end) {
             this._hasEnded = false;
-            this.end = new Date().getDate();
+            this.end = new Date().getMilliseconds();
         } else {
             this._hasEnded = true;
         }

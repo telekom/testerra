@@ -23,14 +23,13 @@
                     </mdc-data-table-header>
                     <mdc-data-table-content>
                         <mdc-data-table-row repeat.for="failureAspect of _filteredFailureAspects">
-                            <mdc-data-table-cell class="p1">
+                            <mdc-data-table-cell class="p1" mdc-body1>
                                 <a route-href="route: tests; params.bind: {q: failureAspect.name}"
-                                   class="error-view"
                                    innerhtml.bind="failureAspect.name|html|highlightText:_searchRegexp"
                                 ></a>
                             </mdc-data-table-cell>
                             <mdc-data-table-cell>
-                                <div repeat.for="status of failureAspect.availableStatuses" class="m1">
+                                <div repeat.for="status of failureAspect.availableStatuses" class="mt1 mb1">
                                     <a class="badge status-${status|statusClass}"
                                           route-href="route: tests; params.bind: {q: failureAspect.name, status: _statusConverter.getClassForStatus(status)}"
                                     >${failureAspect.getStatusCount(status)} ${status|statusName}</a>

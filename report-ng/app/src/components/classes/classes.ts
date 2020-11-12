@@ -47,15 +47,19 @@ export class Classes extends AbstractViewModel {
         navInstruction: NavigationInstruction
     ) {
         super.activate(params, routeConfig, navInstruction);
-        console.log("activate");
+        console.log("activate", params);
         if (params.q) {
             this._searchQuery = params.q;
         }
         if (params.class) {
             this._selectedClass = params.class;
+        } else {
+            this._selectedClass = null;
         }
         if (params.status) {
             this._selectedStatus = this._statusConverter.getStatusForClass(params.status);
+        } else {
+            this._selectedStatus = null;
         }
 
         if (params.config) {
@@ -83,7 +87,7 @@ export class Classes extends AbstractViewModel {
             queryParams.class = this._selectedClass;
         }
 
-        if (this._selectedStatus >= 0) {
+        if (this._selectedStatus && this._selectedStatus >= 0) {
             queryParams.status = this._statusConverter.getClassForStatus(this._selectedStatus);
         }
 

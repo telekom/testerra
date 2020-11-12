@@ -20,10 +20,10 @@
  */
 
 @use "~@material/theme" with (
-  $primary: #e63946,
-  $secondary: #a8dadc,
-  $on-primary: #f1faee,
-  $on-secondary: #1d3557,
+  $primary: #4b4b4b,
+  $secondary: #f6a821,
+  $on-primary: #ffffff,
+  $on-secondary: #ffffff,
 );
 @use '@material/button/mdc-button';
 @use '@material/button';

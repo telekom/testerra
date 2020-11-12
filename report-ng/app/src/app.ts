@@ -6,6 +6,7 @@ import {data} from "./services/report-model";
 import {MdcDrawer} from "@aurelia-mdc-web/drawer";
 import "./app.scss"
 import {StatisticsGenerator} from "./services/statistics-generator";
+import Logo from 'assets/logo.png'
 import IExecutionContext = data.IExecutionContext;
 
 @autoinject()
@@ -14,6 +15,7 @@ export class App {
     private _drawer:MdcDrawer;
     private _executionContext: IExecutionContext;
     private _routeConfig: RouterConfiguration;
+    private _logo = Logo;
 
     constructor(
         private _dataLoader: DataLoader,
@@ -35,7 +37,9 @@ export class App {
             this._router.routes.filter(route => route.route == "exit-points").find(route => {
                 route.settings.count = executionStatistics.exitPointStatistics.length;
             });
-        })
+        });
+
+        console.log(Logo);
     }
 
     configureRouter(config: RouterConfiguration, router: Router) {

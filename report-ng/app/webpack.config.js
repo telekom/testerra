@@ -106,10 +106,15 @@ module.exports = ({production} = {}, {analyze, tests, hmr, port, host} = {}) => 
                         allowTsInNodeModules: true
                     }
                 },
-                // embed small images and fonts as Data Urls and larger ones as files:
+                /**
+                 * Import images from source code
+                 * @see https://stackoverflow.com/questions/43638454/webpack-typescript-image-import
+                 */
                 {
-                    test: /\.(png|gif|jpg|cur)$/i,
-                    loader: 'file-loader'
+                    test: /\.(jpg|png)$/,
+                    use: {
+                        loader: 'file-loader'
+                    },
                 },
                 {
                     test: /\.css$/,

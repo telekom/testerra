@@ -4,6 +4,7 @@ import {StatusConverter} from "../../services/status-converter";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import ResultStatusType = data.ResultStatusType;
 import {ClassStatistics} from "../../services/statistic-models";
+import _ from "lodash";
 
 @autoinject
 export class TestClassesCard {
@@ -52,6 +53,23 @@ export class TestClassesCard {
 
         const series = [];
         const filteredStatuses = this._statusConverter.relevantStatuses.filter(status => (!this.filter?.status || status == this.filter.status) );
+
+        //changing classStatistics changes local variable "classStatistics"
+        let filteredClassStatistics = _.cloneDeep(classStatistics);
+        for (let i = filteredClassStatistics.length-1; i >= 0; i--){
+            let isEmpty: boolean = true;
+
+            for (const status of filteredStatuses) {
+                if (filteredClassStatistics[i].getStatusCount(status) != 0) {
+                    isEmpty = false;
+                }
+            }
+            if (isEmpty == true) {
+                filteredClassStatistics.splice(i,1);
+            }
+        }
+
+
         for (const status of filteredStatuses) {
             data.set(status, []);
             series.push({
@@ -62,7 +80,7 @@ export class TestClassesCard {
         }
 
         //Iterate through classStatistics array to fill map with data for series
-        classStatistics.forEach(classStats => {
+        filteredClassStatistics.forEach(classStats => {
             for (const status of filteredStatuses) {
                 data.get(status).push(classStats.getStatusCount(status));
             }

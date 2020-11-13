@@ -18,10 +18,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import {autoinject, PLATFORM, useView} from 'aurelia-framework';
 import {data} from "../../services/report-model";
 import {MdcDialog} from '@aurelia-mdc-web/dialog';
 import './screenshot-dialog.scss'
 
+@autoinject
+@useView(PLATFORM.moduleName('components/screenshots-dialog/screenshots-dialog.html'))
 export class ScreenshotsDialog {
     private _screenshots:data.File[];
     private _current:data.File;

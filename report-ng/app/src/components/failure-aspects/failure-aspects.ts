@@ -7,10 +7,9 @@ import {FailureAspectStatistics} from "../../services/statistic-models";
 
 @autoinject()
 export class FailureAspects extends AbstractViewModel {
-
     private _filteredFailureAspects: FailureAspectStatistics[];
-    private _searchQuery: string;
     private _searchRegexp: RegExp;
+    private _loading = false;
 
     constructor(
         private _statistics: StatisticsGenerator,
@@ -21,29 +20,25 @@ export class FailureAspects extends AbstractViewModel {
 
     activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
         super.activate(params, routeConfig, navInstruction);
-        if (params.q) {
-            this._searchQuery = params.q;
-        }
         this._filter();
     }
 
     private _filter() {
-        const queryParams: any = {};
-        if (this._searchQuery?.length > 0) {
-            this._searchRegexp = new RegExp("(" + this._searchQuery + ")", "ig");
-            queryParams.q = this._searchQuery;
+        if (this.queryParams?.q?.trim().length > 0) {
+            this._searchRegexp = this._statusConverter.createRegexpFromSearchString(this.queryParams.q);
         } else {
             this._searchRegexp = null;
         }
 
         this._filteredFailureAspects = [];
+        this._loading = true;
         this._statistics.getExecutionStatistics().then(executionStatistics => {
             this._filteredFailureAspects = executionStatistics.failureAspectStatistics
                 .filter(failureAspectStatistics => {
                     return (!this._searchRegexp || failureAspectStatistics.name.match(this._searchRegexp));
                 });
+            this._loading = false;
+            this.updateUrl(this.queryParams);
         });
-
-        this.updateUrl(queryParams);
     }
 }

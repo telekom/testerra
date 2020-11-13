@@ -56,8 +56,9 @@
                 </mdc-form-field>
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="12">
+                <mdc-linear-progress if.bind="_loading"></mdc-linear-progress>
                 <mdc-data-table class="w100"
-                if.bind="!_loading && _filteredMethodAggregates.length > 0"
+                                if.bind="_filteredMethodAggregates.length > 0"
                 >
                     <mdc-data-table-header>
                         <mdc-data-table-header-cell style="width:160px">Status (${_uniqueStatuses})</mdc-data-table-header-cell>
@@ -89,21 +90,16 @@
                                      innerhtml.bind="methodAggregate.failureAspect.name|html|highlightText:_searchRegexp"
                                 ></div>
                             </mdc-data-table-cell>
-<!--                            <mdc-data-table-cell innerhtml.bind="methodAggregate.failureAspect.name|html|highlightText:_searchRegexp"-->
-<!--                                                 class="default-padding"-->
-<!--                            >-->
-<!--                            </mdc-data-table-cell>-->
                         </mdc-data-table-row>
                     </mdc-data-table-content>
                 </mdc-data-table>
-                <div if.bind="!_loading && _filteredMethodAggregates.length == 0"
+                <div if.bind="!_loading && !_filteredMethodAggregates.length"
                      mdc-ripple
                      class="alert vcenter hcenter"
                 >
                     <mdc-icon class="big-icon sr1">find_in_page</mdc-icon>
                     <div mdc-headline4>No methods matching this criteria</div>
                 </div>
-                <mdc-linear-progress if.bind="_loading"></mdc-linear-progress>
             </mdc-layout-grid-cell>
         </mdc-layout-grid-inner>
     </mdc-layout-grid>

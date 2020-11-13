@@ -34,6 +34,7 @@ export class MethodDetails extends AbstractViewModel {
     private _stackTrace:IStackTraceCause[];
     private _failureAspect:FailureAspectStatistics;
     private _screenshots:data.File[];
+    private _loading = false;
 
     constructor(
         private _statistics: StatisticsGenerator,
@@ -50,7 +51,7 @@ export class MethodDetails extends AbstractViewModel {
 
     activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
         super.activate(params, routeConfig, navInstruction);
-
+        this._loading = true;
         this._statistics.getExecutionStatistics().then(executionStatistics => {
             for (const classStatistic of executionStatistics.classStatistics) {
                 this._methodContext = classStatistic.classAggregate.methodContexts
@@ -78,7 +79,6 @@ export class MethodDetails extends AbstractViewModel {
                         .forEach(id => {
                             this._dataLoader.getFile(id).then(file => {
                                 file.relativePath = this._config.correctRelativePath(file.relativePath);
-                                console.log(file);
                                 this._screenshots.push(file);
                             })
                         })
@@ -88,6 +88,7 @@ export class MethodDetails extends AbstractViewModel {
                     break;
                 }
             }
+            this._loading = false;
         });
     }
 

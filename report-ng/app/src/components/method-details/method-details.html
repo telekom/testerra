@@ -1,8 +1,21 @@
 <template>
     <require from="components/test-duration-card/test-duration-card"></require>
     <require from="components/image-card/image-card"></require>
+
     <mdc-layout-grid>
-        <mdc-layout-grid-inner>
+        <mdc-layout-grid-inner if.bind="!_methodContext">
+            <mdc-layout-grid-cell span="12">
+                <mdc-linear-progress if.bind="_loading"></mdc-linear-progress>
+                <div else
+                     mdc-ripple
+                     class="alert vcenter hcenter"
+                >
+                    <mdc-icon class="big-icon sr1">find_in_page</mdc-icon>
+                    <div mdc-headline4>Method not found</div>
+                </div>
+            </mdc-layout-grid-cell>
+        </mdc-layout-grid-inner>
+        <mdc-layout-grid-inner else>
             <mdc-layout-grid-cell span="8">
                 <mdc-card>
                     <div class="card-content" mdc-body1>

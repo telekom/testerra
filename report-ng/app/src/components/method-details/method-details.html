@@ -83,7 +83,12 @@
                                     class="card-expandable"
                     >
                         <div slot="caption"><span class="secondary sr1" mdc-body2>${cause.className}</span><span mdc-body1 if.bind="cause.message">${cause.message}</span></div>
-                        <pre class="code-view m0" innerhtml="${_hljs.highlight('java', cause.stackTraceElements.join('\n')).value}"></pre>
+                        <div class="code-view m0">
+                            <pre class="m0"
+                                 repeat.for="line of cause.stackTraceElements"
+                                 class.bind="line.indexOf(_methodContext.contextValues.name)>=0?'highlighted':''"
+                                 innerhtml="${_hljs.highlight('java', line).value}"></pre>
+                        </div>
                     </mdc-expandable>
                 </mdc-card>
             </mdc-layout-grid-cell>

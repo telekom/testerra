@@ -82,6 +82,11 @@
     justify-content: center;
 }
 
+.spread {
+    @extend .flex;
+    justify-content: space-between;
+}
+
 // Space right
 .sr1 {
     margin-right: 8px;

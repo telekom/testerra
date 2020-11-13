@@ -23,18 +23,17 @@
     <require from="components/image-card/image-card"></require>
 
     <mdc-dialog-content>
-        <div class="flex">
-            <div class="vcenter">
-                <button mdc-icon-button icon="keyboard_arrow_left"></button>
-                <image-card repeat.for="file of _screenshots"
-                            click.delegate="_showScreenshot(file)"
-                            src.bind="file.relativePath"
-                            title.bind="file.meta.Title"
-                            class="ml1"
-                ></image-card>
-                <button mdc-icon-button icon="keyboard_arrow_right" class="ml1"></button>
-            </div>
-            <ul class="mdc-list mdc-list--dense">
+        <div class="flex vcenter spread">
+            <button mdc-icon-button icon="keyboard_arrow_left"></button>
+<!--            <div class="vcenter">-->
+<!--                <image-card repeat.for="file of _screenshots"-->
+<!--                            click.delegate="_showScreenshot(file)"-->
+<!--                            src.bind="file.relativePath"-->
+<!--                            title.bind="file.meta.Title"-->
+<!--                            class="ml1"-->
+<!--                ></image-card>-->
+<!--            </div>-->
+            <ul class="mdc-list mdc-list--dense ml1 mr1">
                 <li class="mdc-list-item reset-cursor">
                     <span class="secondary sr1">Title</span>${_current.meta.Title}
                 </li>
@@ -48,6 +47,7 @@
                     <span class="secondary sr1">Session</span>${_current.meta.SessionKey}
                 </li>
             </ul>
+            <button mdc-icon-button icon="keyboard_arrow_right"></button>
         </div>
 
         <mdc-list-divider></mdc-list-divider>

@@ -2,9 +2,8 @@ import {data} from "../../services/report-model";
 import {autoinject, bindable} from "aurelia-framework";
 import {StatusConverter} from "../../services/status-converter";
 import {StatisticsGenerator} from "../../services/statistics-generator";
-import ResultStatusType = data.ResultStatusType;
 import {ClassStatistics} from "../../services/statistic-models";
-import _ from "lodash";
+import ResultStatusType = data.ResultStatusType;
 
 @autoinject
 export class TestClassesCard {
@@ -54,22 +53,6 @@ export class TestClassesCard {
         const series = [];
         const filteredStatuses = this._statusConverter.relevantStatuses.filter(status => (!this.filter?.status || status == this.filter.status) );
 
-        //changing classStatistics changes local variable "classStatistics"
-        let filteredClassStatistics = _.cloneDeep(classStatistics);
-        for (let i = filteredClassStatistics.length-1; i >= 0; i--){
-            let isEmpty: boolean = true;
-
-            for (const status of filteredStatuses) {
-                if (filteredClassStatistics[i].getStatusCount(status) != 0) {
-                    isEmpty = false;
-                }
-            }
-            if (isEmpty == true) {
-                filteredClassStatistics.splice(i,1);
-            }
-        }
-
-
         for (const status of filteredStatuses) {
             data.set(status, []);
             series.push({
@@ -80,13 +63,21 @@ export class TestClassesCard {
         }
 
         //Iterate through classStatistics array to fill map with data for series
-        filteredClassStatistics.forEach(classStats => {
-            for (const status of filteredStatuses) {
-                data.get(status).push(classStats.getStatusCount(status));
-            }
-            //Push Class Names in array for x-axis labels
-            xlabels.push(classStats.classAggregate.classContext.testContextName||classStats.classAggregate.classContext.simpleClassName);
-        });
+        classStatistics
+            .filter(classStatistic => {
+                for (let status of filteredStatuses) {
+                    if (classStatistic.getStatusCount(status) > 0) {
+                        return true;
+                    }
+                }
+            })
+            .forEach(classStats => {
+                for (const status of filteredStatuses) {
+                    data.get(status).push(classStats.getStatusCount(status));
+                }
+                //Push Class Names in array for x-axis labels
+                xlabels.push(classStats.classAggregate.classContext.testContextName||classStats.classAggregate.classContext.simpleClassName);
+            });
 
         //Display at least 10 rows in bar chart even if there are less classes
         // if (xlabels.length < 10) {

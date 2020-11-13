@@ -38,8 +38,6 @@ export class App {
                 route.settings.count = executionStatistics.exitPointStatistics.length;
             });
         });
-
-        console.log(Logo);
     }
 
     configureRouter(config: RouterConfiguration, router: Router) {
@@ -78,7 +76,7 @@ export class App {
                 }
             },
             {
-                route: 'method',
+                route: 'method/:id',
                 moduleId: PLATFORM.moduleName('components/method-details/method-details'),
                 nav: false,
                 title: 'Method',

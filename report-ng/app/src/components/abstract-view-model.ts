@@ -49,4 +49,12 @@ export abstract class AbstractViewModel {
     determineActivationStrategy() {
         return activationStrategy.invokeLifecycle;
     }
+
+    get routeConfig() {
+        return this._routeConfig;
+    }
+
+    get navInstruction() {
+        return this._navInstruction;
+    }
 }

@@ -2,17 +2,19 @@ import {autoinject} from "aurelia-framework";
 import {StatusConverter} from "services/status-converter";
 import {StatisticsGenerator} from "services/statistics-generator";
 import {ExecutionStatistics} from "services/statistic-models";
+import {AbstractViewModel} from "../abstract-view-model";
 
 @autoinject()
-export class Dashboard {
+export class Dashboard extends AbstractViewModel {
     private _executionStatistics: ExecutionStatistics;
-    private _filter: any = {status: ""};
 
     constructor(
         private _statusConverter: StatusConverter,
         private _statisticsGenerator: StatisticsGenerator,
     ) {
+        super();
     }
+
 
     attached() {
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
@@ -24,6 +26,10 @@ export class Dashboard {
 
     private _pieceClicked(ev:CustomEvent) {
         console.log("piece clicked", ev);
-        this._filter = ev.detail
+        this.queryParams = ev.detail
+    }
+
+    private _gotoTests(params:any) {
+        this.navInstruction.router.navigateToRoute("tests", params);
     }
 }

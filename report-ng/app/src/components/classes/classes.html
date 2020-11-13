@@ -98,12 +98,10 @@
                 </mdc-data-table>
                 <div if.bind="!_loading && _filteredMethodAggregates.length == 0"
                      mdc-ripple
-                     class="alert"
+                     class="alert vcenter hcenter"
                 >
-                    <mdc-icon class="big-icon">find_in_page</mdc-icon>
-                    <div mdc-headline4>
-                        No methods matching this criteria
-                    </div>
+                    <mdc-icon class="big-icon sr1">find_in_page</mdc-icon>
+                    <div mdc-headline4>No methods matching this criteria</div>
                 </div>
                 <mdc-linear-progress if.bind="_loading"></mdc-linear-progress>
             </mdc-layout-grid-cell>

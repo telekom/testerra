@@ -107,12 +107,6 @@ export class Classes extends AbstractViewModel {
 
         this._filteredMethodAggregates = [];
 
-        /**
-         * Workarrounds for https://github.com/aurelia-ui-toolkits/aurelia-mdc-web/issues/26
-         */
-        // this._selectedClass = null;
-        // this._selectedStatus = null;
-
         console.log("filter", queryParams);
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
             this._executionStatistics = executionStatistics;
@@ -170,13 +164,9 @@ export class Classes extends AbstractViewModel {
             this._uniqueClasses = Object.keys(uniqueClasses).length;
             this._uniqueStatuses = Object.keys(uniqueStatuses).length;
             //this._uniqueFailureAspects = Object.keys(uniqueFailureAspects).length;
-            queryParams.config = this._showConfigurationMethods;
-
-            /**
-             * Workarrounds for https://github.com/aurelia-ui-toolkits/aurelia-mdc-web/issues/26
-             */
-            // this._selectedClass = queryParams.class;
-            // this._selectedStatus = this._statusConverter.getStatusForClass(queryParams.status);
+            if (this._showConfigurationMethods) {
+                queryParams.config = this._showConfigurationMethods;
+            }
 
             this.updateUrl(queryParams);
             console.log("done loading");

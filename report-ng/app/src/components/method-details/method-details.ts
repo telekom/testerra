@@ -15,6 +15,8 @@ import {data} from "../../services/report-model";
 import {FailureAspectStatistics} from "../../services/statistic-models";
 import {DataLoader} from "../../services/data-loader";
 import {Config} from "../../services/config";
+import {MdcDialogService} from '@aurelia-mdc-web/dialog';
+import {ScreenshotsDialog} from "../screenshots-dialog/screenshots-dialog";
 import IMethodContext = data.IMethodContext;
 import IClassContext = data.IClassContext;
 import ITestContext = data.ITestContext;
@@ -38,6 +40,7 @@ export class MethodDetails extends AbstractViewModel {
         private _statusConverter: StatusConverter,
         private _dataLoader:DataLoader,
         private _config:Config,
+        private _dialogService:MdcDialogService,
     ) {
         super();
         this._hljs.registerLanguage("java", java);
@@ -85,6 +88,17 @@ export class MethodDetails extends AbstractViewModel {
                     break;
                 }
             }
+        });
+    }
+
+    private _showScreenshot(file:data.File) {
+        this._dialogService.open({
+            viewModel: ScreenshotsDialog,
+            model: {
+                current: file,
+                screenshots: this._screenshots
+            },
+            class: "screenshot-dialog"
         });
     }
 }

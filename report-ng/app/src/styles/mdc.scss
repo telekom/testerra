@@ -19,7 +19,7 @@
  * under the License.
  */
 
-@use "~@material/theme" with (
+@use "@material/theme" with (
   $primary: #4b4b4b,
   $secondary: #f6a821,
   $on-primary: #ffffff,
@@ -75,8 +75,8 @@
 @use '@material/typography';
 @use '@material/chips/mdc-chips';
 @use '@aurelia-mdc-web/chips';
-@use '@material/image-list/mdc-image-list';
-@use '@material/image-list';
+//@use '@material/image-list/mdc-image-list';
+//@use '@material/image-list';
 
 @include drawer.core-styles;
 @include drawer.dismissible-core-styles;
@@ -144,4 +144,10 @@ mdc-drawer-app-content {
     box-sizing: content-box;
     padding: 1.5rem 2rem;
     background-color: #f5f5f5;
+}
+
+.mdc-list--dense {
+    .mdc-list-item {
+        height:30px;
+    }
 }

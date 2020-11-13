@@ -19,80 +19,10 @@
  * under the License.
  */
 
-.mb0 {
-    margin-bottom: 0;
-}
-
-.mb1 {
-    margin-bottom: 1em;
-}
-
-.mt0 {
-    margin-top: 0;
-}
-
-.mt1 {
-    margin-top: 1em;
-}
-
-.m0 {
-    margin: 0;
-}
-
-.m1 {
-    margin: 1em;
-}
-
-.ml1 {
-    margin-left: 1em;
-}
-
-.mr1 {
-    margin-right: 1em;
-}
-
-.p0 {
-    padding: 0;
-}
-
-.p1 {
-    padding: 1em;
-}
-
-.pt0 {
-    padding-top: 0;
-}
-
-.w100 {
-    width: 100%;
-}
-
-//prevents app-content overflowing out of screen
-.flex {
-    display: flex;
-}
-
-.vcenter {
-    @extend .flex;
-    align-items: center;
-}
-
-.hcenter {
-    @extend .flex;
-    justify-content: center;
-}
-
-// Space right
-.sr1 {
-    margin-right: 8px;
-}
-
-// Space bottom
-.sb1 {
-    margin-bottom: 8px;
-}
-
-// Space top
-.st1 {
-    margin-top: 8px;
+.screenshot-dialog {
+    .mdc-dialog__container {
+        .mdc-dialog__surface {
+            max-width: 100%;
+        }
+    }
 }

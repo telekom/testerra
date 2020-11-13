@@ -9,6 +9,7 @@ export function configure(aurelia: Aurelia) {
     aurelia.use
         .standardConfiguration()
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/all'))
+        .plugin(PLATFORM.moduleName('@aurelia-mdc-web/dialog'))
         .globalResources([
             PLATFORM.moduleName('components/apex-chart/apex-chart'),
             PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/date-format-value-converter'),

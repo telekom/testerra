@@ -1,4 +1,4 @@
-/*!
+/*
  * Testerra
  *
  * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
@@ -18,81 +18,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import './image-card.scss'
+import {bindable} from "aurelia-templating";
 
-.mb0 {
-    margin-bottom: 0;
-}
+export class ImageCard {
+    @bindable()
+    public src:string;
 
-.mb1 {
-    margin-bottom: 1em;
-}
+    @bindable()
+    public title:string;
 
-.mt0 {
-    margin-top: 0;
-}
-
-.mt1 {
-    margin-top: 1em;
-}
-
-.m0 {
-    margin: 0;
-}
-
-.m1 {
-    margin: 1em;
-}
-
-.ml1 {
-    margin-left: 1em;
-}
-
-.mr1 {
-    margin-right: 1em;
-}
-
-.p0 {
-    padding: 0;
-}
-
-.p1 {
-    padding: 1em;
-}
-
-.pt0 {
-    padding-top: 0;
-}
-
-.w100 {
-    width: 100%;
-}
-
-//prevents app-content overflowing out of screen
-.flex {
-    display: flex;
-}
-
-.vcenter {
-    @extend .flex;
-    align-items: center;
-}
-
-.hcenter {
-    @extend .flex;
-    justify-content: center;
-}
-
-// Space right
-.sr1 {
-    margin-right: 8px;
-}
-
-// Space bottom
-.sb1 {
-    margin-bottom: 8px;
-}
-
-// Space top
-.st1 {
-    margin-top: 8px;
 }

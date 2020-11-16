@@ -33,28 +33,40 @@ export class Method extends AbstractMethod {
                 moduleId: PLATFORM.moduleName('./details'),
                 nav: true,
                 name: "details",
-                title: 'Details'
+                title: 'Details',
+                settings: {
+                    icon: "timeline"
+                }
             },
             {
                 route: 'steps',
                 moduleId: PLATFORM.moduleName('./details'),
                 nav: true,
                 name: "steps",
-                title: 'Steps'
+                title: 'Steps',
+                settings: {
+                    icon: "reorder"
+                }
             },
             {
                 route: 'videos',
                 moduleId: PLATFORM.moduleName('./details'),
                 nav: true,
                 name: "videos",
-                title: 'Videos'
+                title: 'Videos',
+                settings: {
+                    icon: "videocam"
+                }
             },
             {
                 route: 'dependencies',
                 moduleId: PLATFORM.moduleName('./details'),
                 nav: true,
                 name: "dependencies",
-                title: 'Dependencies'
+                title: 'Dependencies',
+                settings: {
+                    icon: "sync_alt"
+                }
             },
         ]);
     }

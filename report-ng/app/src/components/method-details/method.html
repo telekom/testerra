@@ -50,9 +50,10 @@
                 <mdc-tab-bar>
                     <mdc-tab repeat.for="route of _router.routes"
                              if.bind="route.nav"
+                             icon.bind="route.settings.icon"
+                             label.bind="route.title"
                              active.bind="route.navModel.isActive"
-                             click.delegate="_tabClicked(route)"
-                    >${route.title}</mdc-tab>
+                             click.delegate="_tabClicked(route)"></mdc-tab>
                 </mdc-tab-bar>
             </mdc-layout-grid-cell>
         </mdc-layout-grid-inner>

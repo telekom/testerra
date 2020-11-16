@@ -120,7 +120,13 @@ export class Classes extends AbstractViewModel {
                     return classStatistics;
                 })
                 .filter(classStatistic => {
-                    return (!this._selectedClass || classStatistic.classAggregate.classContext.simpleClassName == this._selectedClass)
+                    return (
+                        !this._selectedClass
+                        || (
+                            this._selectedClass == classStatistic.classAggregate.classContext.simpleClassName
+                            || this._selectedClass == classStatistic.classAggregate.classContext.testContextName
+                        )
+                    )
                 })
                 .forEach(classStatistic => {
                     classStatistic.classAggregate.methodContexts

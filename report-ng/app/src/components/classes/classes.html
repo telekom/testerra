@@ -27,11 +27,9 @@
                 >
                     <mdc-list>
                         <mdc-list-item>(All)</mdc-list-item>
-                        <mdc-list-item value.bind="classStatistic.classAggregate.classContext.simpleClassName"
+                        <mdc-list-item value="${classStatistic.classAggregate.classContext.testContextName||classStatistic.classAggregate.classContext.simpleClassName}"
                                        repeat.for="classStatistic of _executionStatistics.classStatistics"
-                        >
-                            ${classStatistic.classAggregate.classContext.simpleClassName}
-                        </mdc-list-item>
+                        >${classStatistic.classAggregate.classContext.testContextName||classStatistic.classAggregate.classContext.simpleClassName}</mdc-list-item>
                     </mdc-list>
                 </mdc-select>
             </mdc-layout-grid-cell>

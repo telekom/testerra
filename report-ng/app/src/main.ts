@@ -23,6 +23,7 @@ export function configure(aurelia: Aurelia) {
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/select'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/switch'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/text-field'))
+        .plugin(PLATFORM.moduleName('@aurelia-mdc-web/tab-bar'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/top-app-bar'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/typography'))
         .globalResources([

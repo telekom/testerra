@@ -43,7 +43,6 @@ export class TestResultsCard {
                 events: {
                     dataPointSelection: (event, chartContext, config) => {
                         this._piePieceClicked(labelStatus[config.dataPointIndex]);
-                        console.log(chartContext, config);
                         event.stopPropagation();
                     }
                 },

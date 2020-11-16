@@ -31,5 +31,6 @@ export class Dashboard extends AbstractViewModel {
 
     private _gotoTests(params:any) {
         this.navInstruction.router.navigateToRoute("tests", params);
+        console.log(params);
     }
 }

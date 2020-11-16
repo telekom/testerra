@@ -98,6 +98,19 @@ export class TestClassesCard {
                     show: false,
                 }
             },
+            dataLabels: {
+                style: {
+                    fontSize: '12px',
+                    fontFamily: 'Roboto',
+                    fontWeight: 400
+                },
+                dropShadow: {
+                    enabled: false
+                }
+            },
+            fill: {
+                opacity: 1.0
+            },
             series: series,
             xaxis: {
                 labels: {
@@ -118,9 +131,6 @@ export class TestClassesCard {
             },
             noData: {
                 text: "There is no data available at the moment. Please be patient!"
-            },
-            dataLabels: {
-                enable: false,
             },
             legend: {
                 position: 'top',

@@ -48,6 +48,26 @@ export class TestResultsCard {
                     }
                 },
             },
+            dataLabels: {
+                style: {
+                    fontSize: '12px',
+                    fontFamily: 'Roboto',
+                    fontWeight: 400
+                },
+                background: {
+                    enabled: true,
+                    dropShadow: {
+                        enabled:false
+                    },
+                    opacity: 0.2
+                },
+                dropShadow: {
+                    enabled: false
+                }
+            },
+            stroke: {
+                show: false
+            },
             series: series,
             colors: colors,
             labels: labels

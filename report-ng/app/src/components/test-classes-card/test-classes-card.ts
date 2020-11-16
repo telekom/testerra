@@ -15,7 +15,8 @@ export class TestClassesCard {
 
     constructor(
         private _statusConverter: StatusConverter,
-        private _statisticsGenerator: StatisticsGenerator
+        private _statisticsGenerator: StatisticsGenerator,
+        private _element: Element
     ) {
     }
 
@@ -96,7 +97,30 @@ export class TestClassesCard {
                 stacked: true,
                 toolbar: {
                     show: false,
+                },
+                events: {
+                    dataPointSelection: (event, chartContext, config) => {
+                        let statusNames = ["passed", "failed", "failed-expected", "skipped", "failed-minor"]
+                        this._barClicked({
+                            class: xlabels[config.dataPointIndex],
+                            status: statusNames[config.seriesIndex]
+                        });
+                        event.stopPropagation();
+                    }
+                },
+            },
+            dataLabels: {
+                style: {
+                    fontSize: '12px',
+                    fontFamily: 'Roboto',
+                    fontWeight: 400
+                },
+                dropShadow: {
+                    enabled: false
                 }
+            },
+            fill: {
+                opacity: 1.0
             },
             series: series,
             xaxis: {
@@ -119,13 +143,20 @@ export class TestClassesCard {
             noData: {
                 text: "There is no data available at the moment. Please be patient!"
             },
-            dataLabels: {
-                enable: false,
-            },
             legend: {
                 position: 'top',
                 horizontalAlign: 'center'
             }
         }
+    }
+
+    private _barClicked(params: any): void {
+        const event = new CustomEvent("bar-clicked", {
+            detail: {
+                params: params
+            },
+            bubbles: true
+        });
+        this._element.dispatchEvent(event)
     }
 }

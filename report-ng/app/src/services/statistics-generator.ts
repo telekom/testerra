@@ -23,14 +23,20 @@ import {autoinject} from "aurelia-framework";
 import {DataLoader} from "./data-loader";
 import {ClassStatistics, ExecutionStatistics} from "./statistic-models";
 import {CacheService} from "t-systems-aurelia-components/src/services/cache-service";
+import {Config} from "./config";
+import {data} from "./report-model";
+import IFile = data.IFile;
+import IMethodContext = data.IMethodContext;
 
 @autoinject()
 export class StatisticsGenerator {
     constructor(
         private _dataLoader: DataLoader,
-        private _cacheService:CacheService
+        private _cacheService:CacheService,
+        private _config:Config,
     ) {
         this._cacheService.setDefaultCacheTtl(120);
+
     }
 
     getExecutionStatistics(): Promise<ExecutionStatistics> {
@@ -97,6 +103,21 @@ export class StatisticsGenerator {
                 }
             });
         })
+    }
+
+    getScreenshotsFromMethodContext(methodContext:IMethodContext) {
+        const screenshots:{[key:string]:IFile} = {};
+        const allFilePromises = [];
+        methodContext.testSteps
+            .flatMap(testStep => testStep.testStepActions)
+            .flatMap(testStepAction => testStepAction.screenshotIds)
+            .forEach(id => {
+                allFilePromises.push(this._dataLoader.getFile(id).then(file => {
+                    file.relativePath = this._config.correctRelativePath(file.relativePath);
+                    screenshots[file.id] = file;
+                }));
+            })
+        return Promise.all(allFilePromises).then(()=>screenshots);
     }
 }
 

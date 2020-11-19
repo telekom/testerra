@@ -12,8 +12,6 @@ import {data} from "../../services/report-model";
 import {FailureAspectStatistics} from "../../services/statistic-models";
 import {DataLoader} from "../../services/data-loader";
 import {Config} from "../../services/config";
-import {MdcDialogService} from '@aurelia-mdc-web/dialog';
-import {ScreenshotsDialog} from "../screenshots-dialog/screenshots-dialog";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import IStackTraceCause = data.IStackTraceCause;
 import IMethodContext = data.IMethodContext;
@@ -23,14 +21,12 @@ export class Details {
     private _hljs = hljs;
     private _stackTrace:IStackTraceCause[];
     private _failureAspect:FailureAspectStatistics;
-    private _screenshots:data.File[];
     private _methodContext:IMethodContext;
 
     constructor(
         private _statistics: StatisticsGenerator,
         private _dataLoader:DataLoader,
         private _config:Config,
-        private _dialogService:MdcDialogService,
     ) {
         this._hljs.registerLanguage("java", java);
         this._hljs.registerLanguage("plaintext", plaintext);
@@ -54,28 +50,8 @@ export class Details {
             }
 
             this._failureAspect = new FailureAspectStatistics().addMethodContext(this._methodContext);
-
-            this._screenshots = [];
-            this._methodContext.testSteps
-                .flatMap(testStep => testStep.testStepActions)
-                .flatMap(testStepAction => testStepAction.screenshotIds)
-                .forEach(id => {
-                    this._dataLoader.getFile(id).then(file => {
-                        file.relativePath = this._config.correctRelativePath(file.relativePath);
-                        this._screenshots.push(file);
-                    })
-                })
         });
     }
 
-    private _showScreenshot(file:data.File) {
-        this._dialogService.open({
-            viewModel: ScreenshotsDialog,
-            model: {
-                current: file,
-                screenshots: this._screenshots
-            },
-            class: "screenshot-dialog"
-        });
-    }
+
 }

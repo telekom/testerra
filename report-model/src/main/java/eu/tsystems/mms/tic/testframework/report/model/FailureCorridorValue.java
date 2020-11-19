@@ -99,7 +99,7 @@ public enum FailureCorridorValue
   }
   public static final com.google.protobuf.Descriptors.EnumDescriptor
       getDescriptor() {
-    return eu.tsystems.mms.tic.testframework.report.model.Framework.getDescriptor().getEnumTypes().get(1);
+    return eu.tsystems.mms.tic.testframework.report.model.Framework.getDescriptor().getEnumTypes().get(2);
   }
 
   private static final FailureCorridorValue[] VALUES = values();

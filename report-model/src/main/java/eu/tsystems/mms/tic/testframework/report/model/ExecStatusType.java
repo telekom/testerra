@@ -246,7 +246,7 @@ public enum ExecStatusType
   }
   public static final com.google.protobuf.Descriptors.EnumDescriptor
       getDescriptor() {
-    return eu.tsystems.mms.tic.testframework.report.model.Framework.getDescriptor().getEnumTypes().get(3);
+    return eu.tsystems.mms.tic.testframework.report.model.Framework.getDescriptor().getEnumTypes().get(4);
   }
 
   private static final ExecStatusType[] VALUES = values();

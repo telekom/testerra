@@ -105,4 +105,28 @@ public interface PTestStepActionOrBuilder extends
    */
   com.google.protobuf.ByteString
       getScreenshotIdsBytes(int index);
+
+  /**
+   * <code>repeated .data.PLogMessage log_messages = 7;</code>
+   */
+  java.util.List<eu.tsystems.mms.tic.testframework.report.model.PLogMessage> 
+      getLogMessagesList();
+  /**
+   * <code>repeated .data.PLogMessage log_messages = 7;</code>
+   */
+  eu.tsystems.mms.tic.testframework.report.model.PLogMessage getLogMessages(int index);
+  /**
+   * <code>repeated .data.PLogMessage log_messages = 7;</code>
+   */
+  int getLogMessagesCount();
+  /**
+   * <code>repeated .data.PLogMessage log_messages = 7;</code>
+   */
+  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder> 
+      getLogMessagesOrBuilderList();
+  /**
+   * <code>repeated .data.PLogMessage log_messages = 7;</code>
+   */
+  eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder getLogMessagesOrBuilder(
+      int index);
 }

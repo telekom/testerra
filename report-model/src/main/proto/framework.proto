@@ -121,6 +121,7 @@ message PTestStepAction {
 //    repeated string screenshot_names = 4 [deprecated = true];
     repeated PClickPathEvent clickpath_events = 5;
     repeated string screenshot_ids = 6;
+    repeated PLogMessage log_messages = 7;
 }
 
 enum PClickPathEventType {
@@ -136,6 +137,20 @@ message PClickPathEvent {
     PClickPathEventType type = 1;
     string subject = 2;
     string session_id = 3;
+}
+
+enum PLogMessageType {
+    LMT_OFF = 0;
+    LMT_ERROR = 1;
+    LMT_WARN = 2;
+    LMT_INFO = 3;
+    LMT_DEBUG = 4;
+}
+
+message PLogMessage {
+    PLogMessageType type = 1;
+    string logger_name = 2;
+    string message = 3;
 }
 
 message ErrorContext {

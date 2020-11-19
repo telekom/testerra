@@ -25,10 +25,13 @@ import eu.tsystems.mms.tic.testframework.internal.IDUtils;
 import eu.tsystems.mms.tic.testframework.report.model.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.FailureCorridorValue;
 import eu.tsystems.mms.tic.testframework.report.model.File;
+import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.MethodType;
 import eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent;
 import eu.tsystems.mms.tic.testframework.report.model.PClickPathEventType;
+import eu.tsystems.mms.tic.testframework.report.model.PLogMessage;
+import eu.tsystems.mms.tic.testframework.report.model.PLogMessageType;
 import eu.tsystems.mms.tic.testframework.report.model.PTestStep;
 import eu.tsystems.mms.tic.testframework.report.model.PTestStepAction;
 import eu.tsystems.mms.tic.testframework.report.model.ScriptSource;
@@ -43,6 +46,7 @@ import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
+import org.apache.logging.log4j.Level;
 
 public class MethodContextExporter extends AbstractContextExporter {
     private final Report report = new Report();
@@ -295,6 +299,23 @@ public class MethodContextExporter extends AbstractContextExporter {
                 this.fileConsumer.accept(fileBuilderSources);
 
                 testStepBuilder.addScreenshotIds(screenshotId);
+            }
+
+            if (testStepActionEntry.logMessage != null) {
+                LogMessage logMessage = testStepActionEntry.logMessage;
+                PLogMessage.Builder plogMessageBuilder = PLogMessage.newBuilder();
+                plogMessageBuilder.setLoggerName(logMessage.getLoggerName());
+                plogMessageBuilder.setMessage(logMessage.getMessage());
+                if (logMessage.getLogLevel() == Level.ERROR) {
+                    plogMessageBuilder.setType(PLogMessageType.LMT_ERROR);
+                } else if (logMessage.getLogLevel() == Level.WARN) {
+                    plogMessageBuilder.setType(PLogMessageType.LMT_WARN);
+                } else if (logMessage.getLogLevel() == Level.INFO) {
+                    plogMessageBuilder.setType(PLogMessageType.LMT_INFO);
+                } else if (logMessage.getLogLevel() == Level.DEBUG) {
+                    plogMessageBuilder.setType(PLogMessageType.LMT_DEBUG);
+                }
+                testStepBuilder.addLogMessages(plogMessageBuilder);
             }
         });
         return testStepBuilder;

@@ -1,0 +1,14 @@
+<template>
+    <require from="components/image-card/image-card"></require>
+
+    <mdc-layout-grid class="pt0">
+        <mdc-layout-grid-inner>
+            <mdc-layout-grid-cell span="12" repeat.for="testStep of _methodContext.testSteps">
+                <div mdc-headline5 class="mb1 mt1">${testStep.name}</div>
+                <mdc-expandable repeat.for="testStepAction of testStep.testStepActions">
+                    <div slot="caption" mdc-body1>${testStepAction.name}</div>
+                </mdc-expandable>
+            </mdc-layout-grid-cell>
+        </mdc-layout-grid-inner>
+    </mdc-layout-grid>
+</template>

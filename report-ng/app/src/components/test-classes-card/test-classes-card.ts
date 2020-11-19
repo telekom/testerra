@@ -20,17 +20,6 @@ export class TestClassesCard {
     ) {
     }
 
-/*    attached() {
-        this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
-            this._prepareHorizontalBarChart(executionStatistics.classStatistics);
-            this._classStats = executionStatistics.classStatistics;
-        });
-
-        this._eventAggregator.subscribe('pie-piece-click', dataLabel => {
-            this._piePieceClicked(dataLabel);
-        });
-    }*/
-
     classStatisticsChanged() {
         console.log("stats changed.");
         this._prepareHorizontalBarChart(this.classStatistics);
@@ -90,11 +79,16 @@ export class TestClassesCard {
         //     }
         // }
 
+        //set size by amount of bars to have consistent bar height
+        //amount of classes * 60px + offset due to legend and labels
+        let height: string = xlabels.length * 60 + 67.65 + 'px'
+
         this._apexBarOptions = {
             chart: {
                 type: 'bar',
                 fontFamily: 'Roboto',
                 stacked: true,
+                height: height,
                 toolbar: {
                     show: false,
                 },

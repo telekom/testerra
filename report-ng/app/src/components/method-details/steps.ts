@@ -29,6 +29,7 @@ export class Steps {
     ) {
         this._statistics.getMethodDetails(params.id).then(methodDetails => {
             this._methodContext = methodDetails.methodContext;
+            // this._methodContext.testSteps[0].testStepActions[0].
             this._statistics.getScreenshotsFromMethodContext(this._methodContext).then(screenshots => {
                 this._screenshots = screenshots;
             })

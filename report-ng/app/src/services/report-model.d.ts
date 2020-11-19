@@ -536,6 +536,9 @@ export namespace data {
 
         /** PTestStepAction screenshotIds */
         screenshotIds?: (string[]|null);
+
+        /** PTestStepAction logMessages */
+        logMessages?: (data.IPLogMessage[]|null);
     }
 
     /** Represents a PTestStepAction. */
@@ -561,6 +564,9 @@ export namespace data {
 
         /** PTestStepAction screenshotIds. */
         public screenshotIds: string[];
+
+        /** PTestStepAction logMessages. */
+        public logMessages: data.IPLogMessage[];
 
         /**
          * Decodes a PTestStepAction message from the specified reader or buffer.
@@ -623,6 +629,57 @@ export namespace data {
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
         public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.PClickPathEvent;
+    }
+
+    /** PLogMessageType enum. */
+    enum PLogMessageType {
+        LMT_OFF = 0,
+        LMT_ERROR = 1,
+        LMT_WARN = 2,
+        LMT_INFO = 3,
+        LMT_DEBUG = 4
+    }
+
+    /** Properties of a PLogMessage. */
+    interface IPLogMessage {
+
+        /** PLogMessage type */
+        type?: (data.PLogMessageType|null);
+
+        /** PLogMessage loggerName */
+        loggerName?: (string|null);
+
+        /** PLogMessage message */
+        message?: (string|null);
+    }
+
+    /** Represents a PLogMessage. */
+    class PLogMessage implements IPLogMessage {
+
+        /**
+         * Constructs a new PLogMessage.
+         * @param [p] Properties to set
+         */
+        constructor(p?: data.IPLogMessage);
+
+        /** PLogMessage type. */
+        public type: data.PLogMessageType;
+
+        /** PLogMessage loggerName. */
+        public loggerName: string;
+
+        /** PLogMessage message. */
+        public message: string;
+
+        /**
+         * Decodes a PLogMessage message from the specified reader or buffer.
+         * @param r Reader or buffer to decode from
+         * @param [l] Message length if known beforehand
+         * @returns PLogMessage
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.PLogMessage;
     }
 
     /** Properties of an ErrorContext. */

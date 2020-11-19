@@ -20,6 +20,7 @@ private static final long serialVersionUID = 0L;
     id_ = "";
     clickpathEvents_ = java.util.Collections.emptyList();
     screenshotIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    logMessages_ = java.util.Collections.emptyList();
   }
 
   @java.lang.Override
@@ -88,6 +89,15 @@ private static final long serialVersionUID = 0L;
             screenshotIds_.add(s);
             break;
           }
+          case 58: {
+            if (!((mutable_bitField0_ & 0x00000004) != 0)) {
+              logMessages_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.PLogMessage>();
+              mutable_bitField0_ |= 0x00000004;
+            }
+            logMessages_.add(
+                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.PLogMessage.parser(), extensionRegistry));
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -108,6 +118,9 @@ private static final long serialVersionUID = 0L;
       }
       if (((mutable_bitField0_ & 0x00000002) != 0)) {
         screenshotIds_ = screenshotIds_.getUnmodifiableView();
+      }
+      if (((mutable_bitField0_ & 0x00000004) != 0)) {
+        logMessages_ = java.util.Collections.unmodifiableList(logMessages_);
       }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
@@ -298,6 +311,41 @@ private static final long serialVersionUID = 0L;
     return screenshotIds_.getByteString(index);
   }
 
+  public static final int LOG_MESSAGES_FIELD_NUMBER = 7;
+  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.PLogMessage> logMessages_;
+  /**
+   * <code>repeated .data.PLogMessage log_messages = 7;</code>
+   */
+  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PLogMessage> getLogMessagesList() {
+    return logMessages_;
+  }
+  /**
+   * <code>repeated .data.PLogMessage log_messages = 7;</code>
+   */
+  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder> 
+      getLogMessagesOrBuilderList() {
+    return logMessages_;
+  }
+  /**
+   * <code>repeated .data.PLogMessage log_messages = 7;</code>
+   */
+  public int getLogMessagesCount() {
+    return logMessages_.size();
+  }
+  /**
+   * <code>repeated .data.PLogMessage log_messages = 7;</code>
+   */
+  public eu.tsystems.mms.tic.testframework.report.model.PLogMessage getLogMessages(int index) {
+    return logMessages_.get(index);
+  }
+  /**
+   * <code>repeated .data.PLogMessage log_messages = 7;</code>
+   */
+  public eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder getLogMessagesOrBuilder(
+      int index) {
+    return logMessages_.get(index);
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -326,6 +374,9 @@ private static final long serialVersionUID = 0L;
     }
     for (int i = 0; i < screenshotIds_.size(); i++) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 6, screenshotIds_.getRaw(i));
+    }
+    for (int i = 0; i < logMessages_.size(); i++) {
+      output.writeMessage(7, logMessages_.get(i));
     }
     unknownFields.writeTo(output);
   }
@@ -358,6 +409,10 @@ private static final long serialVersionUID = 0L;
       size += dataSize;
       size += 1 * getScreenshotIdsList().size();
     }
+    for (int i = 0; i < logMessages_.size(); i++) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(7, logMessages_.get(i));
+    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -383,6 +438,8 @@ private static final long serialVersionUID = 0L;
         .equals(other.getClickpathEventsList())) return false;
     if (!getScreenshotIdsList()
         .equals(other.getScreenshotIdsList())) return false;
+    if (!getLogMessagesList()
+        .equals(other.getLogMessagesList())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -408,6 +465,10 @@ private static final long serialVersionUID = 0L;
     if (getScreenshotIdsCount() > 0) {
       hash = (37 * hash) + SCREENSHOT_IDS_FIELD_NUMBER;
       hash = (53 * hash) + getScreenshotIdsList().hashCode();
+    }
+    if (getLogMessagesCount() > 0) {
+      hash = (37 * hash) + LOG_MESSAGES_FIELD_NUMBER;
+      hash = (53 * hash) + getLogMessagesList().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -538,6 +599,7 @@ private static final long serialVersionUID = 0L;
       if (com.google.protobuf.GeneratedMessageV3
               .alwaysUseFieldBuilders) {
         getClickpathEventsFieldBuilder();
+        getLogMessagesFieldBuilder();
       }
     }
     @java.lang.Override
@@ -557,6 +619,12 @@ private static final long serialVersionUID = 0L;
       }
       screenshotIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       bitField0_ = (bitField0_ & ~0x00000002);
+      if (logMessagesBuilder_ == null) {
+        logMessages_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000004);
+      } else {
+        logMessagesBuilder_.clear();
+      }
       return this;
     }
 
@@ -601,6 +669,15 @@ private static final long serialVersionUID = 0L;
         bitField0_ = (bitField0_ & ~0x00000002);
       }
       result.screenshotIds_ = screenshotIds_;
+      if (logMessagesBuilder_ == null) {
+        if (((bitField0_ & 0x00000004) != 0)) {
+          logMessages_ = java.util.Collections.unmodifiableList(logMessages_);
+          bitField0_ = (bitField0_ & ~0x00000004);
+        }
+        result.logMessages_ = logMessages_;
+      } else {
+        result.logMessages_ = logMessagesBuilder_.build();
+      }
       onBuilt();
       return result;
     }
@@ -695,6 +772,32 @@ private static final long serialVersionUID = 0L;
           screenshotIds_.addAll(other.screenshotIds_);
         }
         onChanged();
+      }
+      if (logMessagesBuilder_ == null) {
+        if (!other.logMessages_.isEmpty()) {
+          if (logMessages_.isEmpty()) {
+            logMessages_ = other.logMessages_;
+            bitField0_ = (bitField0_ & ~0x00000004);
+          } else {
+            ensureLogMessagesIsMutable();
+            logMessages_.addAll(other.logMessages_);
+          }
+          onChanged();
+        }
+      } else {
+        if (!other.logMessages_.isEmpty()) {
+          if (logMessagesBuilder_.isEmpty()) {
+            logMessagesBuilder_.dispose();
+            logMessagesBuilder_ = null;
+            logMessages_ = other.logMessages_;
+            bitField0_ = (bitField0_ & ~0x00000004);
+            logMessagesBuilder_ = 
+              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                 getLogMessagesFieldBuilder() : null;
+          } else {
+            logMessagesBuilder_.addAllMessages(other.logMessages_);
+          }
+        }
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -1328,6 +1431,246 @@ private static final long serialVersionUID = 0L;
       screenshotIds_.add(value);
       onChanged();
       return this;
+    }
+
+    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.PLogMessage> logMessages_ =
+      java.util.Collections.emptyList();
+    private void ensureLogMessagesIsMutable() {
+      if (!((bitField0_ & 0x00000004) != 0)) {
+        logMessages_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.PLogMessage>(logMessages_);
+        bitField0_ |= 0x00000004;
+       }
+    }
+
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        eu.tsystems.mms.tic.testframework.report.model.PLogMessage, eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder, eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder> logMessagesBuilder_;
+
+    /**
+     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     */
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PLogMessage> getLogMessagesList() {
+      if (logMessagesBuilder_ == null) {
+        return java.util.Collections.unmodifiableList(logMessages_);
+      } else {
+        return logMessagesBuilder_.getMessageList();
+      }
+    }
+    /**
+     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     */
+    public int getLogMessagesCount() {
+      if (logMessagesBuilder_ == null) {
+        return logMessages_.size();
+      } else {
+        return logMessagesBuilder_.getCount();
+      }
+    }
+    /**
+     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.PLogMessage getLogMessages(int index) {
+      if (logMessagesBuilder_ == null) {
+        return logMessages_.get(index);
+      } else {
+        return logMessagesBuilder_.getMessage(index);
+      }
+    }
+    /**
+     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     */
+    public Builder setLogMessages(
+        int index, eu.tsystems.mms.tic.testframework.report.model.PLogMessage value) {
+      if (logMessagesBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureLogMessagesIsMutable();
+        logMessages_.set(index, value);
+        onChanged();
+      } else {
+        logMessagesBuilder_.setMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     */
+    public Builder setLogMessages(
+        int index, eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder builderForValue) {
+      if (logMessagesBuilder_ == null) {
+        ensureLogMessagesIsMutable();
+        logMessages_.set(index, builderForValue.build());
+        onChanged();
+      } else {
+        logMessagesBuilder_.setMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     */
+    public Builder addLogMessages(eu.tsystems.mms.tic.testframework.report.model.PLogMessage value) {
+      if (logMessagesBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureLogMessagesIsMutable();
+        logMessages_.add(value);
+        onChanged();
+      } else {
+        logMessagesBuilder_.addMessage(value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     */
+    public Builder addLogMessages(
+        int index, eu.tsystems.mms.tic.testframework.report.model.PLogMessage value) {
+      if (logMessagesBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureLogMessagesIsMutable();
+        logMessages_.add(index, value);
+        onChanged();
+      } else {
+        logMessagesBuilder_.addMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     */
+    public Builder addLogMessages(
+        eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder builderForValue) {
+      if (logMessagesBuilder_ == null) {
+        ensureLogMessagesIsMutable();
+        logMessages_.add(builderForValue.build());
+        onChanged();
+      } else {
+        logMessagesBuilder_.addMessage(builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     */
+    public Builder addLogMessages(
+        int index, eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder builderForValue) {
+      if (logMessagesBuilder_ == null) {
+        ensureLogMessagesIsMutable();
+        logMessages_.add(index, builderForValue.build());
+        onChanged();
+      } else {
+        logMessagesBuilder_.addMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     */
+    public Builder addAllLogMessages(
+        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.PLogMessage> values) {
+      if (logMessagesBuilder_ == null) {
+        ensureLogMessagesIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, logMessages_);
+        onChanged();
+      } else {
+        logMessagesBuilder_.addAllMessages(values);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     */
+    public Builder clearLogMessages() {
+      if (logMessagesBuilder_ == null) {
+        logMessages_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000004);
+        onChanged();
+      } else {
+        logMessagesBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     */
+    public Builder removeLogMessages(int index) {
+      if (logMessagesBuilder_ == null) {
+        ensureLogMessagesIsMutable();
+        logMessages_.remove(index);
+        onChanged();
+      } else {
+        logMessagesBuilder_.remove(index);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder getLogMessagesBuilder(
+        int index) {
+      return getLogMessagesFieldBuilder().getBuilder(index);
+    }
+    /**
+     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder getLogMessagesOrBuilder(
+        int index) {
+      if (logMessagesBuilder_ == null) {
+        return logMessages_.get(index);  } else {
+        return logMessagesBuilder_.getMessageOrBuilder(index);
+      }
+    }
+    /**
+     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     */
+    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder> 
+         getLogMessagesOrBuilderList() {
+      if (logMessagesBuilder_ != null) {
+        return logMessagesBuilder_.getMessageOrBuilderList();
+      } else {
+        return java.util.Collections.unmodifiableList(logMessages_);
+      }
+    }
+    /**
+     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder addLogMessagesBuilder() {
+      return getLogMessagesFieldBuilder().addBuilder(
+          eu.tsystems.mms.tic.testframework.report.model.PLogMessage.getDefaultInstance());
+    }
+    /**
+     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder addLogMessagesBuilder(
+        int index) {
+      return getLogMessagesFieldBuilder().addBuilder(
+          index, eu.tsystems.mms.tic.testframework.report.model.PLogMessage.getDefaultInstance());
+    }
+    /**
+     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     */
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder> 
+         getLogMessagesBuilderList() {
+      return getLogMessagesFieldBuilder().getBuilderList();
+    }
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        eu.tsystems.mms.tic.testframework.report.model.PLogMessage, eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder, eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder> 
+        getLogMessagesFieldBuilder() {
+      if (logMessagesBuilder_ == null) {
+        logMessagesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+            eu.tsystems.mms.tic.testframework.report.model.PLogMessage, eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder, eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder>(
+                logMessages_,
+                ((bitField0_ & 0x00000004) != 0),
+                getParentForChildren(),
+                isClean());
+        logMessages_ = null;
+      }
+      return logMessagesBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

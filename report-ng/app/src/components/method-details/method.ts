@@ -1,24 +1,32 @@
 import {autoinject, PLATFORM} from 'aurelia-framework';
-import {RouteConfig, Router, RouterConfiguration} from "aurelia-router";
+import {NavigationInstruction, RouteConfig, Router, RouterConfiguration} from "aurelia-router";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {data} from "../../services/report-model";
-import {AbstractMethod} from "./abstract-method";
+import {ScreenshotsDialog} from "../screenshots-dialog/screenshots-dialog";
+import {MdcDialogService} from '@aurelia-mdc-web/dialog';
 import IClassContext = data.IClassContext;
 import ITestContext = data.ITestContext;
 import ISuiteContext = data.ISuiteContext;
+import IMethodContext = data.IMethodContext;
+import IFile = data.IFile;
+
 
 @autoinject()
-export class Method extends AbstractMethod {
+export class Method {
 
     private _classContext:IClassContext;
     private _testContext:ITestContext;
     private _suiteContext:ISuiteContext;
     private _router:Router;
+    private _methodContext:IMethodContext;
+    private _screenshots:IFile[];
+    private _lastScreenshot:IFile;
 
     constructor(
-        statistics: StatisticsGenerator,
+        private _statistics: StatisticsGenerator,
+        private _dialogService:MdcDialogService,
+
     ) {
-        super(statistics);
     }
 
     configureRouter(config: RouterConfiguration, router: Router) {
@@ -40,7 +48,7 @@ export class Method extends AbstractMethod {
             },
             {
                 route: 'steps',
-                moduleId: PLATFORM.moduleName('./details'),
+                moduleId: PLATFORM.moduleName('./steps'),
                 nav: true,
                 name: "steps",
                 title: 'Steps',
@@ -71,13 +79,35 @@ export class Method extends AbstractMethod {
         ]);
     }
 
-    protected loaded() {
-        this._classContext = this.classStatistic.classAggregate.classContext;
-        this._testContext = this.executionStatistic.executionAggregate.testContexts.find(testContext => testContext.classContextIds.find(id => this._classContext.contextValues.id == id));
-        this._suiteContext = this.executionStatistic.executionAggregate.suiteContexts.find(suiteContext => suiteContext.testContextIds.find(id => this._testContext.contextValues.id));
+    activate(
+        params: any,
+        routeConfig: RouteConfig,
+        navInstruction: NavigationInstruction
+    ) {
+        this._statistics.getMethodDetails(params.id).then(methodDetails => {
+            this._classContext = methodDetails.classStatistics.classAggregate.classContext;
+            this._methodContext = methodDetails.methodContext;
+            this._testContext = methodDetails.testContext;
+            this._suiteContext = methodDetails.suiteContext;
+            this._statistics.getScreenshotsFromMethodContext(this._methodContext).then(screenshots => {
+                this._screenshots = Object.values(screenshots);
+                this._lastScreenshot = this._screenshots.find(() => true);
+            })
+        });
     }
 
     private _tabClicked(routeConfig:RouteConfig) {
         this._router.navigateToRoute(routeConfig.name);
+    }
+
+    private _showScreenshot(file:data.File) {
+        this._dialogService.open({
+            viewModel: ScreenshotsDialog,
+            model: {
+                current: file,
+                screenshots: this._screenshots
+            },
+            class: "screenshot-dialog"
+        });
     }
 }

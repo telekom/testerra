@@ -1135,6 +1135,7 @@ export const data = $root.data = (() => {
          * @property {number|Long|null} [timestamp] PTestStepAction timestamp
          * @property {Array.<data.IPClickPathEvent>|null} [clickpathEvents] PTestStepAction clickpathEvents
          * @property {Array.<string>|null} [screenshotIds] PTestStepAction screenshotIds
+         * @property {Array.<data.IPLogMessage>|null} [logMessages] PTestStepAction logMessages
          */
 
         /**
@@ -1148,6 +1149,7 @@ export const data = $root.data = (() => {
         function PTestStepAction(p) {
             this.clickpathEvents = [];
             this.screenshotIds = [];
+            this.logMessages = [];
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -1195,6 +1197,14 @@ export const data = $root.data = (() => {
         PTestStepAction.prototype.screenshotIds = $util.emptyArray;
 
         /**
+         * PTestStepAction logMessages.
+         * @member {Array.<data.IPLogMessage>} logMessages
+         * @memberof data.PTestStepAction
+         * @instance
+         */
+        PTestStepAction.prototype.logMessages = $util.emptyArray;
+
+        /**
          * Decodes a PTestStepAction message from the specified reader or buffer.
          * @function decode
          * @memberof data.PTestStepAction
@@ -1230,6 +1240,11 @@ export const data = $root.data = (() => {
                     if (!(m.screenshotIds && m.screenshotIds.length))
                         m.screenshotIds = [];
                     m.screenshotIds.push(r.string());
+                    break;
+                case 7:
+                    if (!(m.logMessages && m.logMessages.length))
+                        m.logMessages = [];
+                    m.logMessages.push($root.data.PLogMessage.decode(r, r.uint32()));
                     break;
                 default:
                     r.skipType(t & 7);
@@ -1350,6 +1365,114 @@ export const data = $root.data = (() => {
         };
 
         return PClickPathEvent;
+    })();
+
+    /**
+     * PLogMessageType enum.
+     * @name data.PLogMessageType
+     * @enum {number}
+     * @property {number} LMT_OFF=0 LMT_OFF value
+     * @property {number} LMT_ERROR=1 LMT_ERROR value
+     * @property {number} LMT_WARN=2 LMT_WARN value
+     * @property {number} LMT_INFO=3 LMT_INFO value
+     * @property {number} LMT_DEBUG=4 LMT_DEBUG value
+     */
+    data.PLogMessageType = (function() {
+        const valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "LMT_OFF"] = 0;
+        values[valuesById[1] = "LMT_ERROR"] = 1;
+        values[valuesById[2] = "LMT_WARN"] = 2;
+        values[valuesById[3] = "LMT_INFO"] = 3;
+        values[valuesById[4] = "LMT_DEBUG"] = 4;
+        return values;
+    })();
+
+    data.PLogMessage = (function() {
+
+        /**
+         * Properties of a PLogMessage.
+         * @memberof data
+         * @interface IPLogMessage
+         * @property {data.PLogMessageType|null} [type] PLogMessage type
+         * @property {string|null} [loggerName] PLogMessage loggerName
+         * @property {string|null} [message] PLogMessage message
+         */
+
+        /**
+         * Constructs a new PLogMessage.
+         * @memberof data
+         * @classdesc Represents a PLogMessage.
+         * @implements IPLogMessage
+         * @constructor
+         * @param {data.IPLogMessage=} [p] Properties to set
+         */
+        function PLogMessage(p) {
+            if (p)
+                for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
+                    if (p[ks[i]] != null)
+                        this[ks[i]] = p[ks[i]];
+        }
+
+        /**
+         * PLogMessage type.
+         * @member {data.PLogMessageType} type
+         * @memberof data.PLogMessage
+         * @instance
+         */
+        PLogMessage.prototype.type = 0;
+
+        /**
+         * PLogMessage loggerName.
+         * @member {string} loggerName
+         * @memberof data.PLogMessage
+         * @instance
+         */
+        PLogMessage.prototype.loggerName = "";
+
+        /**
+         * PLogMessage message.
+         * @member {string} message
+         * @memberof data.PLogMessage
+         * @instance
+         */
+        PLogMessage.prototype.message = "";
+
+        /**
+         * Decodes a PLogMessage message from the specified reader or buffer.
+         * @function decode
+         * @memberof data.PLogMessage
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
+         * @param {number} [l] Message length if known beforehand
+         * @returns {data.PLogMessage} PLogMessage
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        PLogMessage.decode = function decode(r, l) {
+            if (!(r instanceof $Reader))
+                r = $Reader.create(r);
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.PLogMessage();
+            while (r.pos < c) {
+                var t = r.uint32();
+                switch (t >>> 3) {
+                case 1:
+                    m.type = r.int32();
+                    break;
+                case 2:
+                    m.loggerName = r.string();
+                    break;
+                case 3:
+                    m.message = r.string();
+                    break;
+                default:
+                    r.skipType(t & 7);
+                    break;
+                }
+            }
+            return m;
+        };
+
+        return PLogMessage;
     })();
 
     data.ErrorContext = (function() {

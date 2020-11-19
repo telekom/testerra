@@ -23,14 +23,20 @@ import {autoinject} from "aurelia-framework";
 import {DataLoader} from "./data-loader";
 import {ClassStatistics, ExecutionStatistics} from "./statistic-models";
 import {CacheService} from "t-systems-aurelia-components/src/services/cache-service";
+import {Config} from "./config";
+import {data} from "./report-model";
+import IFile = data.IFile;
+import IMethodContext = data.IMethodContext;
 
 @autoinject()
 export class StatisticsGenerator {
     constructor(
         private _dataLoader: DataLoader,
-        private _cacheService:CacheService
+        private _cacheService:CacheService,
+        private _config:Config,
     ) {
         this._cacheService.setDefaultCacheTtl(120);
+
     }
 
     getExecutionStatistics(): Promise<ExecutionStatistics> {
@@ -73,6 +79,45 @@ export class StatisticsGenerator {
                 })
             });
         })
+    }
+
+    getMethodDetails(methodId:string) {
+        return this._cacheService.getForKeyWithLoadingFunction("method:"+methodId, () => {
+            return this.getExecutionStatistics().then(executionStatistics => {
+                for (const classStatistic of executionStatistics.classStatistics) {
+                    const methodContext = classStatistic.classAggregate.methodContexts
+                        .find(methodContext => methodContext.contextValues.id == methodId);
+
+                    if (methodContext) {
+                        const classContext = classStatistic.classAggregate.classContext;
+                        const testContext = executionStatistics.executionAggregate.testContexts.find(testContext => testContext.classContextIds.find(id => classContext.contextValues.id == id));
+                        const suiteContext = executionStatistics.executionAggregate.suiteContexts.find(suiteContext => suiteContext.testContextIds.find(id => testContext.contextValues.id == id));
+                        return {
+                            executionStatistics: executionStatistics,
+                            methodContext: methodContext,
+                            classStatistics: classStatistic,
+                            testContext: testContext,
+                            suiteContext: suiteContext
+                        }
+                    }
+                }
+            });
+        })
+    }
+
+    getScreenshotsFromMethodContext(methodContext:IMethodContext) {
+        const screenshots:{[key:string]:IFile} = {};
+        const allFilePromises = [];
+        methodContext.testSteps
+            .flatMap(testStep => testStep.testStepActions)
+            .flatMap(testStepAction => testStepAction.screenshotIds)
+            .forEach(id => {
+                allFilePromises.push(this._dataLoader.getFile(id).then(file => {
+                    file.relativePath = this._config.correctRelativePath(file.relativePath);
+                    screenshots[file.id] = file;
+                }));
+            })
+        return Promise.all(allFilePromises).then(()=>screenshots);
     }
 }
 

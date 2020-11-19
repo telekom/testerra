@@ -263,7 +263,7 @@ public enum ResultStatusType
   }
   public static final com.google.protobuf.Descriptors.EnumDescriptor
       getDescriptor() {
-    return eu.tsystems.mms.tic.testframework.report.model.Framework.getDescriptor().getEnumTypes().get(4);
+    return eu.tsystems.mms.tic.testframework.report.model.Framework.getDescriptor().getEnumTypes().get(5);
   }
 
   private static final ResultStatusType[] VALUES = values();

@@ -7,6 +7,7 @@ import {AbstractViewModel} from "../abstract-view-model";
 @autoinject()
 export class Dashboard extends AbstractViewModel {
     private _executionStatistics: ExecutionStatistics;
+    private _selectedResult: any = {status: ""};
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -24,9 +25,12 @@ export class Dashboard extends AbstractViewModel {
 
     };
 
+    private _resultClicked(result) {
+        this._selectedResult= {status: result};
+    }
+
     private _pieceClicked(ev:CustomEvent) {
-        console.log("piece clicked", ev);
-        this.queryParams = ev.detail
+        this.queryParams = ev.detail;
     }
 
     private _gotoTests(params:any) {

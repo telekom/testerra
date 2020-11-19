@@ -74,5 +74,29 @@ export class StatisticsGenerator {
             });
         })
     }
+
+    getMethodDetails(methodId:string) {
+        return this._cacheService.getForKeyWithLoadingFunction("method:"+methodId, () => {
+            return this.getExecutionStatistics().then(executionStatistics => {
+                for (const classStatistic of executionStatistics.classStatistics) {
+                    const methodContext = classStatistic.classAggregate.methodContexts
+                        .find(methodContext => methodContext.contextValues.id == methodId);
+
+                    if (methodContext) {
+                        const classContext = classStatistic.classAggregate.classContext;
+                        const testContext = executionStatistics.executionAggregate.testContexts.find(testContext => testContext.classContextIds.find(id => classContext.contextValues.id == id));
+                        const suiteContext = executionStatistics.executionAggregate.suiteContexts.find(suiteContext => suiteContext.testContextIds.find(id => testContext.contextValues.id == id));
+                        return {
+                            executionStatistics: executionStatistics,
+                            methodContext: methodContext,
+                            classStatistics: classStatistic,
+                            testContext: testContext,
+                            suiteContext: suiteContext
+                        }
+                    }
+                }
+            });
+        })
+    }
 }
 

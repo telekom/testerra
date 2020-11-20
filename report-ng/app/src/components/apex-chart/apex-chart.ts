@@ -8,6 +8,7 @@ export class ApexChart {
     private _myApexChart: ApexCharts = undefined;
 
     @bindable data: ApexOptions;
+    @bindable selection: any;
 
     constructor() {
 
@@ -23,6 +24,11 @@ export class ApexChart {
         } else {
             this._createChart();
         }
+    }
+
+    selectionChanged() {
+        console.log("selection changed", this.selection.dataPointIndex);
+        this._myApexChart.toggleDataPointSelection(this.selection.dataPointIndex);
     }
 
     private _createChart() {

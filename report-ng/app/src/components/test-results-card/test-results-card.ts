@@ -7,8 +7,10 @@ import ApexOptions = ApexCharts.ApexOptions;
 
 @autoinject
 export class TestResultsCard {
+    @bindable result;
     @bindable executionStatistics: ExecutionStatistics;
     private _apexPieOptions: ApexOptions = undefined;
+    private _selection;
 
 
     constructor(
@@ -16,6 +18,17 @@ export class TestResultsCard {
         private _statisticsGenerator: StatisticsGenerator,
         private _element: Element
     ) {
+    }
+
+    resultChanged(){
+        if (this.result.status) {
+            console.log("result status selected: " + this._statusConverter.getLabelForStatus(this.result.status));
+            //get datapoint index to select from filter
+            let label: string = this._statusConverter.getLabelForStatus(this.result.status);
+            //pass index to apexchart-element
+            this._selection = { dataPointIndex: this._apexPieOptions.labels.indexOf(label) };
+        }
+
     }
 
     executionStatisticsChanged() {
@@ -43,7 +56,9 @@ export class TestResultsCard {
                 events: {
                     dataPointSelection: (event, chartContext, config) => {
                         this._piePieceClicked(labelStatus[config.dataPointIndex]);
-                        event.stopPropagation();
+                        if (event) {
+                            event.stopPropagation();
+                        }
                     }
                 },
             },
@@ -51,14 +66,17 @@ export class TestResultsCard {
                 style: {
                     fontSize: '12px',
                     fontFamily: 'Roboto',
-                    fontWeight: 400
+                    fontWeight: 400,
+                    colors: colors
                 },
                 background: {
                     enabled: true,
                     dropShadow: {
                         enabled:false
                     },
-                    opacity: 0.2
+                    foreColor: '#fff',
+                    borderWidth: 0,
+                    opacity: 0.6
                 },
                 dropShadow: {
                     enabled: false

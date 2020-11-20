@@ -17,7 +17,6 @@ private static final long serialVersionUID = 0L;
   }
   private PTestStepAction() {
     name_ = "";
-    id_ = "";
     clickpathEvents_ = java.util.Collections.emptyList();
     screenshotIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     logMessages_ = java.util.Collections.emptyList();
@@ -58,12 +57,6 @@ private static final long serialVersionUID = 0L;
             java.lang.String s = input.readStringRequireUtf8();
 
             name_ = s;
-            break;
-          }
-          case 18: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            id_ = s;
             break;
           }
           case 24: {
@@ -175,45 +168,13 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int ID_FIELD_NUMBER = 2;
-  private volatile java.lang.Object id_;
-  /**
-   * <code>string id = 2;</code>
-   * @return The id.
-   */
-  public java.lang.String getId() {
-    java.lang.Object ref = id_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      id_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string id = 2;</code>
-   * @return The bytes for id.
-   */
-  public com.google.protobuf.ByteString
-      getIdBytes() {
-    java.lang.Object ref = id_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      id_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
-
   public static final int TIMESTAMP_FIELD_NUMBER = 3;
   private long timestamp_;
   /**
+   * <pre>
+   *    string id = 2;
+   * </pre>
+   *
    * <code>int64 timestamp = 3;</code>
    * @return The timestamp.
    */
@@ -363,9 +324,6 @@ private static final long serialVersionUID = 0L;
     if (!getNameBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 1, name_);
     }
-    if (!getIdBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, id_);
-    }
     if (timestamp_ != 0L) {
       output.writeInt64(3, timestamp_);
     }
@@ -389,9 +347,6 @@ private static final long serialVersionUID = 0L;
     size = 0;
     if (!getNameBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, name_);
-    }
-    if (!getIdBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, id_);
     }
     if (timestamp_ != 0L) {
       size += com.google.protobuf.CodedOutputStream
@@ -430,8 +385,6 @@ private static final long serialVersionUID = 0L;
 
     if (!getName()
         .equals(other.getName())) return false;
-    if (!getId()
-        .equals(other.getId())) return false;
     if (getTimestamp()
         != other.getTimestamp()) return false;
     if (!getClickpathEventsList()
@@ -453,8 +406,6 @@ private static final long serialVersionUID = 0L;
     hash = (19 * hash) + getDescriptor().hashCode();
     hash = (37 * hash) + NAME_FIELD_NUMBER;
     hash = (53 * hash) + getName().hashCode();
-    hash = (37 * hash) + ID_FIELD_NUMBER;
-    hash = (53 * hash) + getId().hashCode();
     hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
         getTimestamp());
@@ -607,8 +558,6 @@ private static final long serialVersionUID = 0L;
       super.clear();
       name_ = "";
 
-      id_ = "";
-
       timestamp_ = 0L;
 
       if (clickpathEventsBuilder_ == null) {
@@ -653,7 +602,6 @@ private static final long serialVersionUID = 0L;
       eu.tsystems.mms.tic.testframework.report.model.PTestStepAction result = new eu.tsystems.mms.tic.testframework.report.model.PTestStepAction(this);
       int from_bitField0_ = bitField0_;
       result.name_ = name_;
-      result.id_ = id_;
       result.timestamp_ = timestamp_;
       if (clickpathEventsBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0)) {
@@ -728,10 +676,6 @@ private static final long serialVersionUID = 0L;
       if (other == eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.getDefaultInstance()) return this;
       if (!other.getName().isEmpty()) {
         name_ = other.name_;
-        onChanged();
-      }
-      if (!other.getId().isEmpty()) {
-        id_ = other.id_;
         onChanged();
       }
       if (other.getTimestamp() != 0L) {
@@ -905,84 +849,12 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.lang.Object id_ = "";
-    /**
-     * <code>string id = 2;</code>
-     * @return The id.
-     */
-    public java.lang.String getId() {
-      java.lang.Object ref = id_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        id_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <code>string id = 2;</code>
-     * @return The bytes for id.
-     */
-    public com.google.protobuf.ByteString
-        getIdBytes() {
-      java.lang.Object ref = id_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        id_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string id = 2;</code>
-     * @param value The id to set.
-     * @return This builder for chaining.
-     */
-    public Builder setId(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      id_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string id = 2;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearId() {
-      
-      id_ = getDefaultInstance().getId();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string id = 2;</code>
-     * @param value The bytes for id to set.
-     * @return This builder for chaining.
-     */
-    public Builder setIdBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      id_ = value;
-      onChanged();
-      return this;
-    }
-
     private long timestamp_ ;
     /**
+     * <pre>
+     *    string id = 2;
+     * </pre>
+     *
      * <code>int64 timestamp = 3;</code>
      * @return The timestamp.
      */
@@ -990,6 +862,10 @@ private static final long serialVersionUID = 0L;
       return timestamp_;
     }
     /**
+     * <pre>
+     *    string id = 2;
+     * </pre>
+     *
      * <code>int64 timestamp = 3;</code>
      * @param value The timestamp to set.
      * @return This builder for chaining.
@@ -1001,6 +877,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    string id = 2;
+     * </pre>
+     *
      * <code>int64 timestamp = 3;</code>
      * @return This builder for chaining.
      */

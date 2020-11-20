@@ -1,5 +1,4 @@
 import * as $protobuf from "protobufjs";
-
 /** Namespace data. */
 export namespace data {
 
@@ -194,6 +193,9 @@ export namespace data {
 
         /** ExecutionContext estimatedTestMethodCount */
         estimatedTestMethodCount?: (number|null);
+
+        /** ExecutionContext logMessages */
+        logMessages?: (data.IPLogMessage[]|null);
     }
 
     /** Represents an ExecutionContext. */
@@ -231,6 +233,9 @@ export namespace data {
 
         /** ExecutionContext estimatedTestMethodCount. */
         public estimatedTestMethodCount: number;
+
+        /** ExecutionContext logMessages. */
+        public logMessages: data.IPLogMessage[];
 
         /**
          * Decodes an ExecutionContext message from the specified reader or buffer.
@@ -483,9 +488,6 @@ export namespace data {
         /** PTestStep name */
         name?: (string|null);
 
-        /** PTestStep id */
-        id?: (string|null);
-
         /** PTestStep testStepActions */
         testStepActions?: (data.IPTestStepAction[]|null);
     }
@@ -501,9 +503,6 @@ export namespace data {
 
         /** PTestStep name. */
         public name: string;
-
-        /** PTestStep id. */
-        public id: string;
 
         /** PTestStep testStepActions. */
         public testStepActions: data.IPTestStepAction[];
@@ -524,9 +523,6 @@ export namespace data {
 
         /** PTestStepAction name */
         name?: (string|null);
-
-        /** PTestStepAction id */
-        id?: (string|null);
 
         /** PTestStepAction timestamp */
         timestamp?: (number|Long|null);
@@ -552,9 +548,6 @@ export namespace data {
 
         /** PTestStepAction name. */
         public name: string;
-
-        /** PTestStepAction id. */
-        public id: string;
 
         /** PTestStepAction timestamp. */
         public timestamp: (number|Long);
@@ -651,6 +644,9 @@ export namespace data {
 
         /** PLogMessage message */
         message?: (string|null);
+
+        /** PLogMessage timestamp */
+        timestamp?: (number|Long|null);
     }
 
     /** Represents a PLogMessage. */
@@ -670,6 +666,9 @@ export namespace data {
 
         /** PLogMessage message. */
         public message: string;
+
+        /** PLogMessage timestamp. */
+        public timestamp: (number|Long);
 
         /**
          * Decodes a PLogMessage message from the specified reader or buffer.

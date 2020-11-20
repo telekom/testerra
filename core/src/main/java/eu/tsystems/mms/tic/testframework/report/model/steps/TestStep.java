@@ -21,7 +21,6 @@
  */
  package eu.tsystems.mms.tic.testframework.report.model.steps;
 
-import eu.tsystems.mms.tic.testframework.internal.IDUtils;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.Serial;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
@@ -34,7 +33,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * A static wrapper for {@link MethodContext#steps()}
+ * A static wrapper for {@link MethodContext#getTestSteps()}
  * Created by piet on 11.03.16.
  */
 public class TestStep implements Serializable, Loggable {
@@ -83,7 +82,7 @@ public class TestStep implements Serializable, Loggable {
         }
         // if there are no test steps actions yet, create an initial one
         if (testStepActions.size() == 0) {
-            TestStepAction testStepAction = new TestStepAction(this, name);
+            TestStepAction testStepAction = new TestStepAction(name);
             testStepActions.add(testStepAction);
             return testStepAction;
         }
@@ -92,7 +91,7 @@ public class TestStep implements Serializable, Loggable {
 
         // if the last TestStepAction name is NOT the same as the current contextual one, then we have to create a new one
         if (!StringUtils.equals(testStepAction.getName(), name)) {
-            testStepAction = new TestStepAction(this, name);
+            testStepAction = new TestStepAction(name);
             testStepActions.add(testStepAction);
         }
 
@@ -130,7 +129,7 @@ public class TestStep implements Serializable, Loggable {
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         TestStep testStep;
         if (methodContext != null) {
-            testStep = methodContext.steps().announceTestStep(name);
+            testStep = methodContext.getTestStepController().getTestStep(name);
         } else {
             testStep = new TestStep(name);
         }
@@ -144,7 +143,7 @@ public class TestStep implements Serializable, Loggable {
     public static void end() {
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         if (methodContext != null) {
-            TestStep actualTestStep = methodContext.steps().getCurrentTestStep();
+            TestStep actualTestStep = methodContext.getTestStepController().getCurrentTestStep();
             if (actualTestStep != null) {
                 actualTestStep.close();
             }

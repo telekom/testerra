@@ -8,7 +8,7 @@ npm start
 ## Compile Proto
 Generates models into `src/services/report-model.js`
 ```bash
-npm run proto
+npm run generateProto
 ```
 
 ## Build release

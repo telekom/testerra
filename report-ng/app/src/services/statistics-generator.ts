@@ -106,7 +106,8 @@ export class StatisticsGenerator {
     }
 
     getScreenshotsFromMethodContext(methodContext:IMethodContext) {
-        const screenshots:{[key:string]:IFile} = {};
+        //const screenshots:{[key:string]:IFile} = {};
+        const screenshots:IFile[] = [];
         const allFilePromises = [];
         methodContext.testSteps
             .flatMap(testStep => testStep.testStepActions)
@@ -114,7 +115,8 @@ export class StatisticsGenerator {
             .forEach(id => {
                 allFilePromises.push(this._dataLoader.getFile(id).then(file => {
                     file.relativePath = this._config.correctRelativePath(file.relativePath);
-                    screenshots[file.id] = file;
+                    //screenshots[file.id] = file;
+                    screenshots.push(file);
                 }));
             })
         return Promise.all(allFilePromises).then(()=>screenshots);

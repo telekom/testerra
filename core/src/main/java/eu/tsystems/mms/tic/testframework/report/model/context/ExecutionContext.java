@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
+import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -57,10 +58,21 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
 
     public int estimatedTestMethodCount;
 
+    private ConcurrentLinkedQueue<LogMessage> methodContextLessLogs = new ConcurrentLinkedQueue<>();
+
     public ExecutionContext() {
         name = runConfig.RUNCFG;
         swi = name;
         TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(this));
+    }
+
+    public ExecutionContext addLogMessage(LogMessage logMessage) {
+        this.methodContextLessLogs.add(logMessage);
+        return this;
+    }
+
+    public ConcurrentLinkedQueue<LogMessage> getMethodContextLessLogs() {
+        return this.methodContextLessLogs;
     }
 
     public synchronized SuiteContext getSuiteContext(ITestResult testResult, ITestContext iTestContext) {

@@ -376,6 +376,7 @@ export const data = $root.data = (() => {
          * @property {string|null} [task_Id] ExecutionContext task_Id
          * @property {Array.<string>|null} [exclusiveSessionContextIds] ExecutionContext exclusiveSessionContextIds
          * @property {number|null} [estimatedTestMethodCount] ExecutionContext estimatedTestMethodCount
+         * @property {Array.<data.IPLogMessage>|null} [logMessages] ExecutionContext logMessages
          */
 
         /**
@@ -389,6 +390,7 @@ export const data = $root.data = (() => {
         function ExecutionContext(p) {
             this.suiteContextIds = [];
             this.exclusiveSessionContextIds = [];
+            this.logMessages = [];
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -468,6 +470,14 @@ export const data = $root.data = (() => {
         ExecutionContext.prototype.estimatedTestMethodCount = 0;
 
         /**
+         * ExecutionContext logMessages.
+         * @member {Array.<data.IPLogMessage>} logMessages
+         * @memberof data.ExecutionContext
+         * @instance
+         */
+        ExecutionContext.prototype.logMessages = $util.emptyArray;
+
+        /**
          * Decodes an ExecutionContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.ExecutionContext
@@ -515,6 +525,11 @@ export const data = $root.data = (() => {
                     break;
                 case 13:
                     m.estimatedTestMethodCount = r.int32();
+                    break;
+                case 14:
+                    if (!(m.logMessages && m.logMessages.length))
+                        m.logMessages = [];
+                    m.logMessages.push($root.data.PLogMessage.decode(r, r.uint32()));
                     break;
                 default:
                     r.skipType(t & 7);
@@ -1040,7 +1055,6 @@ export const data = $root.data = (() => {
          * @memberof data
          * @interface IPTestStep
          * @property {string|null} [name] PTestStep name
-         * @property {string|null} [id] PTestStep id
          * @property {Array.<data.IPTestStepAction>|null} [testStepActions] PTestStep testStepActions
          */
 
@@ -1067,14 +1081,6 @@ export const data = $root.data = (() => {
          * @instance
          */
         PTestStep.prototype.name = "";
-
-        /**
-         * PTestStep id.
-         * @member {string} id
-         * @memberof data.PTestStep
-         * @instance
-         */
-        PTestStep.prototype.id = "";
 
         /**
          * PTestStep testStepActions.
@@ -1105,9 +1111,6 @@ export const data = $root.data = (() => {
                 case 1:
                     m.name = r.string();
                     break;
-                case 2:
-                    m.id = r.string();
-                    break;
                 case 3:
                     if (!(m.testStepActions && m.testStepActions.length))
                         m.testStepActions = [];
@@ -1131,7 +1134,6 @@ export const data = $root.data = (() => {
          * @memberof data
          * @interface IPTestStepAction
          * @property {string|null} [name] PTestStepAction name
-         * @property {string|null} [id] PTestStepAction id
          * @property {number|Long|null} [timestamp] PTestStepAction timestamp
          * @property {Array.<data.IPClickPathEvent>|null} [clickpathEvents] PTestStepAction clickpathEvents
          * @property {Array.<string>|null} [screenshotIds] PTestStepAction screenshotIds
@@ -1163,14 +1165,6 @@ export const data = $root.data = (() => {
          * @instance
          */
         PTestStepAction.prototype.name = "";
-
-        /**
-         * PTestStepAction id.
-         * @member {string} id
-         * @memberof data.PTestStepAction
-         * @instance
-         */
-        PTestStepAction.prototype.id = "";
 
         /**
          * PTestStepAction timestamp.
@@ -1224,9 +1218,6 @@ export const data = $root.data = (() => {
                 switch (t >>> 3) {
                 case 1:
                     m.name = r.string();
-                    break;
-                case 2:
-                    m.id = r.string();
                     break;
                 case 3:
                     m.timestamp = r.int64();
@@ -1396,6 +1387,7 @@ export const data = $root.data = (() => {
          * @property {data.PLogMessageType|null} [type] PLogMessage type
          * @property {string|null} [loggerName] PLogMessage loggerName
          * @property {string|null} [message] PLogMessage message
+         * @property {number|Long|null} [timestamp] PLogMessage timestamp
          */
 
         /**
@@ -1438,6 +1430,14 @@ export const data = $root.data = (() => {
         PLogMessage.prototype.message = "";
 
         /**
+         * PLogMessage timestamp.
+         * @member {number|Long} timestamp
+         * @memberof data.PLogMessage
+         * @instance
+         */
+        PLogMessage.prototype.timestamp = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
          * Decodes a PLogMessage message from the specified reader or buffer.
          * @function decode
          * @memberof data.PLogMessage
@@ -1463,6 +1463,9 @@ export const data = $root.data = (() => {
                     break;
                 case 3:
                     m.message = r.string();
+                    break;
+                case 4:
+                    m.timestamp = r.int64();
                     break;
                 default:
                     r.skipType(t & 7);

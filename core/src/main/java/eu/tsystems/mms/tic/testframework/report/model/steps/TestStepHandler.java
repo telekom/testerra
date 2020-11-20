@@ -23,7 +23,7 @@
 
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 
-public interface TestStepEventListener {
+public interface TestStepHandler {
 
     String getTestStepActionContext(LogMessage logMessage);
 

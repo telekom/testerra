@@ -21,8 +21,9 @@
                             >${logMessage|logMessageFormat}</pre>
                         </div>
                         <mdc-list-divider></mdc-list-divider>
-                        <div class="m0">
-                            <div repeat.for="file of _getScreenshotsForTestStepAction(testStepAction)">
+                        <div class="m0" if.bind="_screenshots.length>0">
+                            <div repeat.for="screenshotId of testStepAction.screenshotIds">
+                                <let file.bind="_findScreenshot(screenshotId)"></let>
                                 <image-card click.delegate="_showScreenshot(file)"
                                             src.bind="file.relativePath"
                                             title.bind="file.meta.Title"

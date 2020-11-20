@@ -86,7 +86,7 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
                     /*
                      * Enhance step infos
                      */
-                    TestStep failedStep = methodContext.steps().getCurrentTestStep();
+                    TestStep failedStep = methodContext.getTestStepController().getCurrentTestStep();
                     methodContext.setFailedStep(failedStep);
 //                    String msg = "";
 //                    String readableMessage = methodContext.errorContext().getReadableErrorMessage();

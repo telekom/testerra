@@ -90,7 +90,7 @@ export class Method {
             this._testContext = methodDetails.testContext;
             this._suiteContext = methodDetails.suiteContext;
             this._statistics.getScreenshotsFromMethodContext(this._methodContext).then(screenshots => {
-                this._screenshots = Object.values(screenshots);
+                this._screenshots = screenshots;
                 this._lastScreenshot = this._screenshots.find(() => true);
             })
         });

@@ -151,9 +151,13 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     /**
-     * @deprecated Use {@link #getTestSteps()} instead
+     * @deprecated Use {@link #getTestStepController()} instead
      */
     public TestStepController steps() {
+        return testStepController;
+    }
+
+    public TestStepController getTestStepController() {
         return testStepController;
     }
 
@@ -372,7 +376,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
      * Publish the screenshots to the report into the current errorContext.
      */
     public MethodContext addScreenshots(Stream<Screenshot> screenshots) {
-        TestStepAction currentTestStepAction = steps().getCurrentTestStep().getCurrentTestStepAction();
+        TestStepAction currentTestStepAction = getTestStepController().getCurrentTestStep().getCurrentTestStepAction();
         screenshots.forEach(screenshot -> {
             if (screenshot.errorContextId == null) {
                 screenshot.errorContextId = this.getErrorContext().getId();

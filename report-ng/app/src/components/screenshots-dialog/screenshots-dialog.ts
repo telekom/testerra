@@ -22,12 +22,14 @@ import {autoinject, PLATFORM, useView} from 'aurelia-framework';
 import {data} from "../../services/report-model";
 import {MdcDialog} from '@aurelia-mdc-web/dialog';
 import './screenshot-dialog.scss'
+import IFile = data.IFile;
 
 @autoinject
 @useView(PLATFORM.moduleName('components/screenshots-dialog/screenshots-dialog.html'))
 export class ScreenshotsDialog {
-    private _screenshots:data.File[];
-    private _current:data.File;
+    private _screenshots:IFile[];
+    private _current:IFile;
+    private _index = 0;
 
     constructor(
         private _dialog: MdcDialog
@@ -38,10 +40,27 @@ export class ScreenshotsDialog {
     activate(params:any) {
         this._screenshots = params.screenshots;
         this._current = params.current;
+        this._index = this._screenshots.indexOf(this._current);
     }
 
-    private _showScreenshot(file:data.File) {
+    private _showScreenshot(file:IFile) {
         this._current = file;
+    }
+
+    private _left() {
+        this._index--;
+        if (this._index < 0) {
+            this._index = this._screenshots.length-1;
+        }
+        this._current = this._screenshots[this._index];
+    }
+
+    private _right() {
+        this._index++;
+        if (this._index >= this._screenshots.length) {
+            this._index = 0;
+        }
+        this._current = this._screenshots[this._index];
     }
 }
 

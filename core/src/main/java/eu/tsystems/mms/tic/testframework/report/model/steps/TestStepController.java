@@ -23,13 +23,9 @@
 
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.Serial;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,25 +33,25 @@ public class TestStepController implements Serializable {
 
     private static final long serialVersionUID = Serial.SERIAL;
 
-    private static final List<TestStepEventListener> listeners = new LinkedList<>();
+    private static final List<TestStepHandler> handlers = new LinkedList<>();
 
     /*
     Test Steps Contexts
      */
 
-    private final List<TestStep> testSteps = Collections.synchronizedList(new LinkedList<>());
+    private final List<TestStep> testSteps = new LinkedList<>();
 
     public TestStep getCurrentTestStep() {
         // if there are no active test step yet, create a new initial one
         if (testSteps.size() == 0) {
-            return announceTestStep(TestStep.INTERNAL);
+            return getTestStep(TestStep.INTERNAL);
         }
 
         // get the last TestStep
         TestStep testStep = getLastStep();
 
         if (testStep.isClosed()) {
-            return announceTestStep(TestStep.INTERNAL);
+            return getTestStep(TestStep.INTERNAL);
         }
 
         return testStep;
@@ -64,7 +60,7 @@ public class TestStepController implements Serializable {
     public TestStepAction addLogMessage(LogMessage logMessage) {
         String actionContext = null;
 
-        for (TestStepEventListener listener : listeners) {
+        for (TestStepHandler listener : handlers) {
             String context = listener.getTestStepActionContext(logMessage);
             if (context != null) {
                 actionContext = context;
@@ -87,7 +83,7 @@ public class TestStepController implements Serializable {
         return testSteps.get(testSteps.size()-1);
     }
 
-    public TestStep announceTestStep(String name) {
+    public TestStep getTestStep(String name) {
         // create a new one if empty
         TestStep testStep;
         if (testSteps.size() == 0) {
@@ -107,19 +103,11 @@ public class TestStepController implements Serializable {
         return testStep;
     }
 
-    public void announceTestStepAction(String name) {
-        getCurrentTestStep().getTestStepAction(name); // it is basically the same
-    }
-
     public List<TestStep> getTestSteps() {
         return testSteps;
     }
 
-    public enum OnExec {
-        BEFORE, AFTER
-    }
-
-    public static void addEventListener(TestStepEventListener testStepEventListener) {
-        listeners.add(testStepEventListener);
+    public static void addHandler(TestStepHandler handler) {
+        handlers.add(handler);
     }
 }

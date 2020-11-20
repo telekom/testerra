@@ -24,15 +24,7 @@
 
     <mdc-dialog-content>
         <div class="flex vcenter spread">
-            <button mdc-icon-button icon="keyboard_arrow_left"></button>
-<!--            <div class="vcenter">-->
-<!--                <image-card repeat.for="file of _screenshots"-->
-<!--                            click.delegate="_showScreenshot(file)"-->
-<!--                            src.bind="file.relativePath"-->
-<!--                            title.bind="file.meta.Title"-->
-<!--                            class="ml1"-->
-<!--                ></image-card>-->
-<!--            </div>-->
+            <button mdc-icon-button icon="keyboard_arrow_left" click.delegate="_left()"></button>
             <ul class="mdc-list mdc-list--dense ml1 mr1">
                 <li class="mdc-list-item reset-cursor">
                     <span class="secondary sr1">Title</span>${_current.meta.Title}
@@ -47,7 +39,7 @@
                     <span class="secondary sr1">Session</span>${_current.meta.SessionKey}
                 </li>
             </ul>
-            <button mdc-icon-button icon="keyboard_arrow_right"></button>
+            <button mdc-icon-button icon="keyboard_arrow_right" click.delegate="_right()"></button>
         </div>
 
         <mdc-list-divider></mdc-list-divider>

@@ -302,20 +302,7 @@ public class MethodContextExporter extends AbstractContextExporter {
             }
 
             if (testStepActionEntry.logMessage != null) {
-                LogMessage logMessage = testStepActionEntry.logMessage;
-                PLogMessage.Builder plogMessageBuilder = PLogMessage.newBuilder();
-                plogMessageBuilder.setLoggerName(logMessage.getLoggerName());
-                plogMessageBuilder.setMessage(logMessage.getMessage());
-                if (logMessage.getLogLevel() == Level.ERROR) {
-                    plogMessageBuilder.setType(PLogMessageType.LMT_ERROR);
-                } else if (logMessage.getLogLevel() == Level.WARN) {
-                    plogMessageBuilder.setType(PLogMessageType.LMT_WARN);
-                } else if (logMessage.getLogLevel() == Level.INFO) {
-                    plogMessageBuilder.setType(PLogMessageType.LMT_INFO);
-                } else if (logMessage.getLogLevel() == Level.DEBUG) {
-                    plogMessageBuilder.setType(PLogMessageType.LMT_DEBUG);
-                }
-                testStepBuilder.addLogMessages(plogMessageBuilder);
+                testStepBuilder.addLogMessages(prepareLogMessage(testStepActionEntry.logMessage));
             }
         });
         return testStepBuilder;

@@ -63,4 +63,8 @@ export class Steps {
     //     });
     //     return screenshots;
     // }
+
+    private _toggleExpand() {
+
+    }
 }

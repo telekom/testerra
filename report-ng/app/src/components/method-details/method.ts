@@ -53,7 +53,7 @@ export class Method {
                 name: "steps",
                 title: 'Steps',
                 settings: {
-                    icon: "reorder"
+                    icon: "list"
                 }
             },
             {

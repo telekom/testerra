@@ -35,6 +35,8 @@ class GraphColors {
 
 @autoinject()
 export class StatusConverter {
+    private readonly _packageRegexp = new RegExp("^(.+)\\.(\\w+)$");
+
     /**
      * Status adapted from {@link TestStatusController.java}
      */
@@ -188,6 +190,20 @@ export class StatusConverter {
         const specialCharacters = new RegExp("([\\[\\]])", "g");
         searchQuery = searchQuery.replace(specialCharacters, "\\$1");
         return new RegExp("(" + searchQuery + ")", "ig");
+    }
+
+    separateNamespace(namespace:string) {
+        const match = namespace.match(this._packageRegexp);
+        if (match) {
+            return {
+                package: match[1],
+                class: match[2],
+            }
+        } else {
+            return {
+                class: namespace
+            }
+        }
     }
 
 }

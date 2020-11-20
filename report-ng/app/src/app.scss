@@ -38,8 +38,12 @@ body {
     //    padding: 0.3em;
     //}
 
-    .highlighted {
-        background: $failedExpected;
+    .error {
+        background: darken($failed, 36)
+    }
+
+    .warn {
+        background: darken($failedMinor, 36)
     }
 
     .number {

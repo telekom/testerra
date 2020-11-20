@@ -44,12 +44,10 @@
                 <mdc-card>
                     <div mdc-subtitle2 class="card-headline">Last Screenshot</div>
                     <mdc-list-divider></mdc-list-divider>
-                    <div class="flex">
-                        <image-card click.delegate="_showScreenshot(_lastScreenshot)"
-                                    src.bind="_lastScreenshot.relativePath"
-                                    title.bind="_lastScreenshot.meta.Title"
-                        ></image-card>
-                    </div>
+                    <image-card click.delegate="_showScreenshot(_lastScreenshot)"
+                                src.bind="_lastScreenshot.relativePath"
+                                title.bind="_lastScreenshot.meta.Title"
+                    ></image-card>
                 </mdc-card>
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="4" position="right">

@@ -7,6 +7,7 @@ import {MdcDialogService} from '@aurelia-mdc-web/dialog';
 import {ScreenshotsDialog} from "../screenshots-dialog/screenshots-dialog";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import IMethodContext = data.IMethodContext;
+import IPTestStepAction = data.IPTestStepAction;
 
 @autoinject()
 export class Steps {
@@ -29,7 +30,6 @@ export class Steps {
     ) {
         this._statistics.getMethodDetails(params.id).then(methodDetails => {
             this._methodContext = methodDetails.methodContext;
-            // this._methodContext.testSteps[0].testStepActions[0].
             this._statistics.getScreenshotsFromMethodContext(this._methodContext).then(screenshots => {
                 this._screenshots = screenshots;
             })
@@ -41,9 +41,20 @@ export class Steps {
             viewModel: ScreenshotsDialog,
             model: {
                 current: file,
-                screenshots: this._screenshots
+                screenshots: Object.values(this._screenshots)
             },
             class: "screenshot-dialog"
         });
+    }
+
+    private _getScreenshotsForTestStepAction(testStepAction:IPTestStepAction) {
+        console.log(this._screenshots);
+        const screenshots = [];
+        testStepAction.screenshotIds.forEach(id => {
+            if (this._screenshots?.id) {
+                screenshots.push(this._screenshots[id]);
+            }
+        });
+        return screenshots;
     }
 }

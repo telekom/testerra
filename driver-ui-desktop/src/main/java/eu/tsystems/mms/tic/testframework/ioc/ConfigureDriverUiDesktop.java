@@ -30,7 +30,7 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverFactor
 public class ConfigureDriverUiDesktop extends AbstractModule {
     @Override
     protected void configure() {
-        Multibinder<IWebDriverFactory> uriBinder = Multibinder.newSetBinder(binder(), IWebDriverFactory.class);
-        uriBinder.addBinding().to(DesktopWebDriverFactory.class).in(Scopes.SINGLETON);
+        Multibinder<IWebDriverFactory> webDriverFactoryBinder = Multibinder.newSetBinder(binder(), IWebDriverFactory.class);
+        webDriverFactoryBinder.addBinding().to(DesktopWebDriverFactory.class).in(Scopes.SINGLETON);
     }
 }

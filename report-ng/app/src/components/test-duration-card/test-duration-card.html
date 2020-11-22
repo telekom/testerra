@@ -9,10 +9,10 @@
         <mdc-list-divider></mdc-list-divider>
         <ul class="mdc-list mdc-list--dense">
             <li class="mdc-list-item reset-cursor">
-                <span class="secondary sr1">Started</span>${start | dateFormat:"ddd MMM D Y LTS Z"}
+                <span class="secondary sr1">Started</span>${start | dateFormat:"ddd D. MMM YY HH:mm:ss Z"}
             </li>
             <li class="mdc-list-item reset-cursor">
-                <div if.bind="_hasEnded"><span class="secondary sr1">Ended</span> ${end | dateFormat:"ddd MMM D Y LTS Z"}</div>
+                <div if.bind="_hasEnded"><span class="secondary sr1">Ended</span> ${end | dateFormat:"ddd D. MMM YY HH:mm:ss Z"}</div>
                 <span else class="secondary sr1">Running...</span>
             </li>
         </ul>

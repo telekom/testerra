@@ -34,10 +34,10 @@
                         <div mdc-subtitle2 class="card-headline"><span class="sr1">${stepIndex}.${$index+1} ${testStepAction.name}</span></div>
                         <mdc-list-divider></mdc-list-divider>
                         <div class="code-view m0">
-                        <pre class="m0"
-                             repeat.for="logMessage of testStepAction.logMessages"
-                             class.bind="(logMessage.type==1?'error':(logMessage.type==2?'warn':''))"
-                        >${logMessage|logMessageFormat}</pre>
+                            <pre class="m0"
+                                 repeat.for="logMessage of testStepAction.logMessages"
+                                 class.bind="(logMessage.type==1?'error':(logMessage.type==2?'warn':''))"
+                            >${logMessage|logMessageFormat}</pre>
                         </div>
                         <div class="m0" if.bind="_screenshots.length>0">
                             <div repeat.for="screenshotId of testStepAction.screenshotIds">

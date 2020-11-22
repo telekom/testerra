@@ -92,13 +92,20 @@ export class App {
             //         count: 0
             //     }
             // },
-            // {
-            //     route: 'logs',
-            //     name: 'Logs',
-            //     moduleId: PLATFORM.moduleName('components/logs'),
-            //     nav: true,
-            //     title: 'Logs'
-            // },
+            {
+                route: 'logs',
+                name: 'Logs',
+                moduleId: PLATFORM.moduleName('components/logs/logs'),
+                nav: true,
+                title: 'Logs'
+            },
+            {
+                route: 'threads',
+                name: 'Threads',
+                moduleId: PLATFORM.moduleName('components/threads/threads'),
+                nav: true,
+                title: 'Threads'
+            },
             // {
             //     route: 'timings',
             //     name: 'Timings',

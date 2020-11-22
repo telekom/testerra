@@ -417,16 +417,16 @@ export namespace data {
         id?: (string|null);
 
         /** ContextValues created */
-        created?: (number|Long|null);
+        created?: (number|null);
 
         /** ContextValues name */
         name?: (string|null);
 
         /** ContextValues startTime */
-        startTime?: (number|Long|null);
+        startTime?: (number|null);
 
         /** ContextValues endTime */
-        endTime?: (number|Long|null);
+        endTime?: (number|null);
 
         /** ContextValues swi */
         swi?: (string|null);
@@ -451,16 +451,16 @@ export namespace data {
         public id: string;
 
         /** ContextValues created. */
-        public created: (number|Long);
+        public created: number;
 
         /** ContextValues name. */
         public name: string;
 
         /** ContextValues startTime. */
-        public startTime: (number|Long);
+        public startTime: number;
 
         /** ContextValues endTime. */
-        public endTime: (number|Long);
+        public endTime: number;
 
         /** ContextValues swi. */
         public swi: string;
@@ -525,7 +525,7 @@ export namespace data {
         name?: (string|null);
 
         /** PTestStepAction timestamp */
-        timestamp?: (number|Long|null);
+        timestamp?: (number|null);
 
         /** PTestStepAction clickpathEvents */
         clickpathEvents?: (data.IPClickPathEvent[]|null);
@@ -550,7 +550,7 @@ export namespace data {
         public name: string;
 
         /** PTestStepAction timestamp. */
-        public timestamp: (number|Long);
+        public timestamp: number;
 
         /** PTestStepAction clickpathEvents. */
         public clickpathEvents: data.IPClickPathEvent[];
@@ -646,7 +646,7 @@ export namespace data {
         message?: (string|null);
 
         /** PLogMessage timestamp */
-        timestamp?: (number|Long|null);
+        timestamp?: (number|null);
     }
 
     /** Represents a PLogMessage. */
@@ -668,7 +668,7 @@ export namespace data {
         public message: string;
 
         /** PLogMessage timestamp. */
-        public timestamp: (number|Long);
+        public timestamp: number;
 
         /**
          * Decodes a PLogMessage message from the specified reader or buffer.
@@ -1045,7 +1045,7 @@ export namespace data {
         id?: (string|null);
 
         /** File size */
-        size?: (number|Long|null);
+        size?: (number|null);
 
         /** File mimetype */
         mimetype?: (string|null);
@@ -1054,7 +1054,7 @@ export namespace data {
         relativePath?: (string|null);
 
         /** File createdTimestamp */
-        createdTimestamp?: (number|Long|null);
+        createdTimestamp?: (number|null);
 
         /** File sha1Checksum */
         sha1Checksum?: (Uint8Array|null);
@@ -1063,7 +1063,7 @@ export namespace data {
         meta?: ({ [k: string]: string }|null);
 
         /** File lastModified */
-        lastModified?: (number|Long|null);
+        lastModified?: (number|null);
 
         /** File projectId */
         projectId?: (string|null);
@@ -1091,7 +1091,7 @@ export namespace data {
         public id: string;
 
         /** File size. */
-        public size: (number|Long);
+        public size: number;
 
         /** File mimetype. */
         public mimetype: string;
@@ -1100,7 +1100,7 @@ export namespace data {
         public relativePath: string;
 
         /** File createdTimestamp. */
-        public createdTimestamp: (number|Long);
+        public createdTimestamp: number;
 
         /** File sha1Checksum. */
         public sha1Checksum: Uint8Array;
@@ -1109,7 +1109,7 @@ export namespace data {
         public meta: { [k: string]: string };
 
         /** File lastModified. */
-        public lastModified: (number|Long);
+        public lastModified: number;
 
         /** File projectId. */
         public projectId: string;

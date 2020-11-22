@@ -907,10 +907,10 @@ export const data = $root.data = (() => {
          * @memberof data
          * @interface IContextValues
          * @property {string|null} [id] ContextValues id
-         * @property {number|Long|null} [created] ContextValues created
+         * @property {number|null} [created] ContextValues created
          * @property {string|null} [name] ContextValues name
-         * @property {number|Long|null} [startTime] ContextValues startTime
-         * @property {number|Long|null} [endTime] ContextValues endTime
+         * @property {number|null} [startTime] ContextValues startTime
+         * @property {number|null} [endTime] ContextValues endTime
          * @property {string|null} [swi] ContextValues swi
          * @property {data.ResultStatusType|null} [resultStatus] ContextValues resultStatus
          * @property {data.ExecStatusType|null} [execStatus] ContextValues execStatus
@@ -941,7 +941,7 @@ export const data = $root.data = (() => {
 
         /**
          * ContextValues created.
-         * @member {number|Long} created
+         * @member {number} created
          * @memberof data.ContextValues
          * @instance
          */
@@ -957,7 +957,7 @@ export const data = $root.data = (() => {
 
         /**
          * ContextValues startTime.
-         * @member {number|Long} startTime
+         * @member {number} startTime
          * @memberof data.ContextValues
          * @instance
          */
@@ -965,7 +965,7 @@ export const data = $root.data = (() => {
 
         /**
          * ContextValues endTime.
-         * @member {number|Long} endTime
+         * @member {number} endTime
          * @memberof data.ContextValues
          * @instance
          */
@@ -1134,7 +1134,7 @@ export const data = $root.data = (() => {
          * @memberof data
          * @interface IPTestStepAction
          * @property {string|null} [name] PTestStepAction name
-         * @property {number|Long|null} [timestamp] PTestStepAction timestamp
+         * @property {number|null} [timestamp] PTestStepAction timestamp
          * @property {Array.<data.IPClickPathEvent>|null} [clickpathEvents] PTestStepAction clickpathEvents
          * @property {Array.<string>|null} [screenshotIds] PTestStepAction screenshotIds
          * @property {Array.<data.IPLogMessage>|null} [logMessages] PTestStepAction logMessages
@@ -1168,7 +1168,7 @@ export const data = $root.data = (() => {
 
         /**
          * PTestStepAction timestamp.
-         * @member {number|Long} timestamp
+         * @member {number} timestamp
          * @memberof data.PTestStepAction
          * @instance
          */
@@ -1387,7 +1387,7 @@ export const data = $root.data = (() => {
          * @property {data.PLogMessageType|null} [type] PLogMessage type
          * @property {string|null} [loggerName] PLogMessage loggerName
          * @property {string|null} [message] PLogMessage message
-         * @property {number|Long|null} [timestamp] PLogMessage timestamp
+         * @property {number|null} [timestamp] PLogMessage timestamp
          */
 
         /**
@@ -1431,7 +1431,7 @@ export const data = $root.data = (() => {
 
         /**
          * PLogMessage timestamp.
-         * @member {number|Long} timestamp
+         * @member {number} timestamp
          * @memberof data.PLogMessage
          * @instance
          */
@@ -2257,13 +2257,13 @@ export const data = $root.data = (() => {
          * @memberof data
          * @interface IFile
          * @property {string|null} [id] File id
-         * @property {number|Long|null} [size] File size
+         * @property {number|null} [size] File size
          * @property {string|null} [mimetype] File mimetype
          * @property {string|null} [relativePath] File relativePath
-         * @property {number|Long|null} [createdTimestamp] File createdTimestamp
+         * @property {number|null} [createdTimestamp] File createdTimestamp
          * @property {Uint8Array|null} [sha1Checksum] File sha1Checksum
          * @property {Object.<string,string>|null} [meta] File meta
-         * @property {number|Long|null} [lastModified] File lastModified
+         * @property {number|null} [lastModified] File lastModified
          * @property {string|null} [projectId] File projectId
          * @property {string|null} [jobId] File jobId
          * @property {boolean|null} [isDirectory] File isDirectory
@@ -2296,7 +2296,7 @@ export const data = $root.data = (() => {
 
         /**
          * File size.
-         * @member {number|Long} size
+         * @member {number} size
          * @memberof data.File
          * @instance
          */
@@ -2320,7 +2320,7 @@ export const data = $root.data = (() => {
 
         /**
          * File createdTimestamp.
-         * @member {number|Long} createdTimestamp
+         * @member {number} createdTimestamp
          * @memberof data.File
          * @instance
          */
@@ -2344,7 +2344,7 @@ export const data = $root.data = (() => {
 
         /**
          * File lastModified.
-         * @member {number|Long} lastModified
+         * @member {number} lastModified
          * @memberof data.File
          * @instance
          */

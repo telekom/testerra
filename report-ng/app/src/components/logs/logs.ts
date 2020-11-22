@@ -69,11 +69,13 @@ export class Logs extends AbstractViewModel {
 
             this._logMessages = logMessages.sort((a, b) => a.timestamp-b.timestamp);
 
-            this._availableLogLevels = [];
-            for (const level in logLevels) {
-                this._availableLogLevels.push({
-                    level: Number.parseInt(level),
-                });
+            if (!this._availableLogLevels) {
+                this._availableLogLevels = [];
+                for (const level in logLevels) {
+                    this._availableLogLevels.push({
+                        level: Number.parseInt(level),
+                    });
+                }
             }
 
             this._loading = false;

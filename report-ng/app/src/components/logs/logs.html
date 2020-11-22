@@ -20,7 +20,7 @@
                 <mdc-text-field label="Search"
                                 outlined
                                 value.bind="queryParams.q"
-                                keydown.delegate="_filter() & debounce"
+                                keydown.delegate="_filter() & debounce:300"
                                 class="w100"
                 >
                     <mdc-icon mdc-text-field-icon leading>search</mdc-icon>

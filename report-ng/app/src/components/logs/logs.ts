@@ -41,10 +41,19 @@ export class Logs extends AbstractViewModel {
             const logMessages:IPLogMessage[] = [];
             const logLevels = {};
 
-            executionStatistics.executionAggregate.executionContext.logMessages.forEach(value => {
-                logLevels[value.type] = 1;
-                logMessages.push(value);
-            });
+            const filterPredicate = (value:IPLogMessage) => {
+                return (
+                    (!this._selectedLogLevel || (this._selectedLogLevel == value.type))
+                    && (!this._searchRegexp || value.message.match(this._searchRegexp))
+                )
+            }
+
+            executionStatistics.executionAggregate.executionContext.logMessages
+                .filter(filterPredicate)
+                .forEach(value => {
+                    logLevels[value.type] = 1;
+                    logMessages.push(value);
+                });
 
             executionStatistics.classStatistics
                 .flatMap(value => value.classAggregate)
@@ -52,15 +61,13 @@ export class Logs extends AbstractViewModel {
                 .flatMap(value => value.testSteps)
                 .flatMap(value => value.testStepActions)
                 .flatMap(value => value.logMessages)
+                .filter(filterPredicate)
                 .forEach(value => {
                     logLevels[value.type] = 1;
                     logMessages.push(value)
                 });
 
-            this._logMessages = logMessages
-                .filter(value => !this._selectedLogLevel || (this._selectedLogLevel == value.type))
-                .filter(value => !this._searchRegexp || value.message.match(this._searchRegexp))
-                .sort((a, b) => a.timestamp-b.timestamp);
+            this._logMessages = logMessages.sort((a, b) => a.timestamp-b.timestamp);
 
             this._availableLogLevels = [];
             for (const level in logLevels) {

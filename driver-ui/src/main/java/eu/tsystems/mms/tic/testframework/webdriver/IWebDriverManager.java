@@ -39,4 +39,5 @@ public interface IWebDriverManager extends WebDriverRetainer {
         this.shutdownAllSessions(false);
     }
     WebDriverRequest getWebDriverRequestByWebDriver(WebDriver webDriver);
+    WebDriver getWebDriver(WebDriverRequest request);
 }

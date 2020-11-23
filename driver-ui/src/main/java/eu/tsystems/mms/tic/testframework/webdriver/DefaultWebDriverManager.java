@@ -65,4 +65,9 @@ public class DefaultWebDriverManager implements IWebDriverManager {
     public WebDriverRequest getWebDriverRequestByWebDriver(WebDriver webDriver) {
         return WebDriverManager.getRelatedWebDriverRequest(webDriver);
     }
+
+    @Override
+    public WebDriver getWebDriver(WebDriverRequest request) {
+        return WebDriverManager.getWebDriver(request);
+    }
 }

@@ -127,7 +127,7 @@ public final class PropertyManager {
             InputStreamReader inputStreamReader = new InputStreamReader(propertiesInputStream, charset);
             properties.load(inputStreamReader);
         } catch (FileNotFoundException e) {
-            LOGGER.error(e.getMessage());
+            // ignore
         } catch (final IOException ioEx) {
             throw new IllegalStateException(String.format("An error occurred during reading from properties file %s.", resourceFile), ioEx);
         } catch (final IllegalArgumentException illArgEx) {

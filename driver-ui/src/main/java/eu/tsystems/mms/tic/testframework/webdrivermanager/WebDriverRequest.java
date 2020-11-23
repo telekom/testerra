@@ -22,6 +22,7 @@
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
+import java.net.URL;
 
 public abstract class WebDriverRequest {
     /*
@@ -87,6 +88,11 @@ public abstract class WebDriverRequest {
 
     public WebDriverRequest setBaseUrl(String baseUrl) {
         this.baseUrl = baseUrl;
+        return this;
+    }
+
+    public WebDriverRequest setBaseUrl(URL baseUrl) {
+        this.baseUrl = baseUrl.toExternalForm();
         return this;
     }
 

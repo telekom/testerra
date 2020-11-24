@@ -24,13 +24,14 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementLabelLocator;
+import eu.tsystems.mms.tic.testframework.webdriver.WebDriverRetainer;
 import org.openqa.selenium.By;
 
 /**
  * Interface for finding {@link UiElement}
  * @author Mike Reiche
  */
-public interface UiElementFinder extends LocatorFactoryProvider, Loggable {
+public interface UiElementFinder extends LocatorFactoryProvider, Loggable, WebDriverRetainer {
     UiElement find(Locator locator);
     default UiElement findById(Object id) {
         return find(Locate.by(By.id(id.toString())));

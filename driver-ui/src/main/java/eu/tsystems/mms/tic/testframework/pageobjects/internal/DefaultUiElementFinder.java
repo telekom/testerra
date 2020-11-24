@@ -43,4 +43,9 @@ public class DefaultUiElementFinder implements UiElementFinder {
     public UiElement find(Locator locator) {
         return uiElementFactory.createWithWebDriver(this.webDriver, locator);
     }
+
+    @Override
+    public WebDriver getWebDriver() {
+        return this.webDriver;
+    }
 }

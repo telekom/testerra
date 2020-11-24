@@ -451,7 +451,7 @@ public final class WebDriverSessionsManager {
             }
             return eventFiringWebDriver;
         } else {
-            throw new SystemException("No webdriver factory registered for browser " + browser);
+            throw new SystemException("No webdriver factory registered for browser: '" + browser + "'");
         }
     }
 

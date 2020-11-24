@@ -23,6 +23,7 @@ package eu.tsystems.mms.tic.testframework.execution.testng.worker.start;
 
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.annotations.NoRetry;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.MethodStartEvent;
 import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
@@ -35,7 +36,7 @@ import org.testng.internal.annotations.DisabledRetryAnalyzer;
 
 public class MethodStartWorker implements Loggable, MethodStartEvent.Listener {
 
-    private final Formatter formatter = new DefaultFormatter();
+    private final Formatter formatter = Testerra.injector.getInstance(Formatter.class);
 
     @Override
     @Subscribe

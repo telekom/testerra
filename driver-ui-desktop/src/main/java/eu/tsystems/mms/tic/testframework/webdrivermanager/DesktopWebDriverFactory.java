@@ -379,21 +379,6 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             String sessionKey
     ) {
 
-
-        /*
-         * This is the standard way of setting the browser locale for Selenoid based sessions
-         * @see https://aerokube.com/selenoid/latest/#_per_session_environment_variables_env
-         */
-        //        final Locale browserLocale = Locale.getDefault();
-        //        desiredCapabilities.setCapability("env",
-        //            String.format(
-        //                "[\"LANG=%s.UTF-8\", \"LANGUAGE=%s\", \"LC_ALL=%s.UTF-8\"]",
-        //                browserLocale,
-        //                browserLocale.getLanguage(),
-        //                browserLocale
-        //            )
-        //        );
-
         UserAgentConfig userAgentConfig = WebDriverManager.getUserAgentConfig(browser);
         Capabilities finalCapabilities;
         Class<? extends RemoteWebDriver> driverClass;
@@ -409,7 +394,6 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                     userAgentConfig.configure(firefoxOptions);
                 }
                 firefoxOptions.merge(capabilities);
-                //firefoxOptions.addPreference("intl.accept_languages", String.format("%s-%s", browserLocale.getLanguage(), browserLocale.getCountry()));
                 finalCapabilities = firefoxOptions;
                 driverClass = FirefoxDriver.class;
                 break;
@@ -436,9 +420,6 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 }
 
                 chromeOptions.merge(capabilities);
-                //Map<String, Object> prefs = new HashMap<>();
-                //prefs.put("intl.accept_languages", String.format("%s_%s", browserLocale.getLanguage(), browserLocale.getCountry()));
-                //chromeOptions.setExperimentalOption("prefs", prefs);
                 chromeOptions.addArguments("--no-sandbox");
                 if (browser.equals(Browsers.chromeHeadless)) {
                     chromeOptions.setHeadless(true);

@@ -25,13 +25,15 @@ import eu.tsystems.mms.tic.testframework.report.context.ErrorContext;
 
 /**
  * Internal class for non functional infos.
+ * @deprecated Migrate to {@link ErrorContext}
  */
+@Deprecated
 public class AssertionInfo extends ErrorContext {
 
     /**
      * Constructor.
      */
     public AssertionInfo(Throwable throwable) {
-        setThrowable(null, throwable);
+        setThrowable(throwable);
     }
 }

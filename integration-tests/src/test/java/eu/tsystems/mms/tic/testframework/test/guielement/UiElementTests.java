@@ -98,6 +98,19 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     }
 
     @Test
+    public void test_UiElement_nonfunctional_assert() {
+        try {
+            Control.nonFunctionalAssertions(() -> {
+                Control.withTimeout(1, () -> {
+                    getPage().notDisplayedElement().expectThat().displayed(true);
+                });
+            });
+        } catch (Exception e) {
+            log().error("Catched", e);
+        }
+    }
+
+    @Test
     public void test_UiElement_expectThat_followedBy_waitFor() {
         WebTestPage page = getPage();
         try {

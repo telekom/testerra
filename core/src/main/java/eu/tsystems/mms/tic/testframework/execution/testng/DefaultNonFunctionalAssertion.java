@@ -21,14 +21,32 @@
 
 package eu.tsystems.mms.tic.testframework.execution.testng;
 
-import eu.tsystems.mms.tic.testframework.internal.AssertionChecker;
+import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.report.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.context.Screenshot;
+import eu.tsystems.mms.tic.testframework.report.model.AssertionInfo;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import java.util.List;
 
 /**
  * Default implementation of {@link NonFunctionalAssertion}
  */
-public class DefaultNonFunctionalAssertion extends AbstractAssertion implements NonFunctionalAssertion {
+public class DefaultNonFunctionalAssertion extends AbstractAssertion implements
+        NonFunctionalAssertion,
+        Loggable
+{
     @Override
     public void fail(AssertionError error) {
-        AssertionChecker.storeNonFunctionalInfo(error);
+        log().warn("Found non-functional error", error);
+        MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
+        if (methodContext != null) {
+            // add nf info
+            AssertionInfo assertionInfo = methodContext.addNonFunctionalInfo(error);
+
+            // get screenshots and videos
+            List<Screenshot> screenshots = TestEvidenceCollector.collectScreenshots();
+            methodContext.addScreenshots(screenshots.stream().peek(screenshot -> screenshot.setErrorContextId(assertionInfo.id)));
+        }
     }
 }

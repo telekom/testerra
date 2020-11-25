@@ -19,7 +19,8 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.webdrivermanager;
+
+package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -54,6 +55,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 import net.anthavio.phanbedder.Phanbedder;
 import org.openqa.selenium.Capabilities;
@@ -318,13 +320,14 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 }
             } catch (final SetupException e) {
                 int ms = Constants.WEBDRIVER_START_RETRY_TIME_IN_MS;
-                log().error(String.format("Error starting WebDriver. Trying again in %d seconds", (ms/1000)), e);
+                log().error(String.format("Error starting WebDriver. Trying again in %d seconds", (ms / 1000)), e);
                 TimerUtils.sleep(ms);
                 newDriver = startNewWebDriverSession(browser, capabilities, remoteAddress, sessionKey);
             }
 
         } else {
-            log().warn("Local WebDriver setups may cause side effects. It's highly recommended to use a remote Selenium configurations for all environments!");
+            log().warn(
+                    "Local WebDriver setups may cause side effects. It's highly recommended to use a remote Selenium configurations for all environments!");
             /*
              ##### Local
              */
@@ -348,13 +351,13 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
 
         BrowserInformation browserInformation = WebDriverManagerUtils.getBrowserInformation(newDriver);
         log().info(String.format(
-            "Started %s (session key=%s, remote session id=%s, node=%s, user agent=%s) in %s",
-            newDriver.getClass().getSimpleName(),
-            sessionKey,
-            webDriverSessionId,
-            nodeInfo.toString(),
-            browserInformation.getUserAgent(),
-            sw.toString()
+                "Started %s (session key=%s, remote session id=%s, node=%s, user agent=%s) in %s",
+                newDriver.getClass().getSimpleName(),
+                sessionKey,
+                webDriverSessionId,
+                nodeInfo.toString(),
+                browserInformation.getUserAgent(),
+                sw.toString()
         ));
         STARTUP_TIME_COLLECTOR.add(new TimingInfo("SessionStartup", "", sw.getTime(TimeUnit.MILLISECONDS), System.currentTimeMillis()));
 
@@ -398,7 +401,13 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         switch (browser) {
             case Browsers.firefox:
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
-                if (userAgentConfig != null) userAgentConfig.configure(firefoxOptions);
+                if (capabilities.getCapabilityNames().contains(FirefoxOptions.FIREFOX_OPTIONS)) {
+                    final TreeMap predefinedFirefoxOptions = (TreeMap) capabilities.getCapability(FirefoxOptions.FIREFOX_OPTIONS);
+                    predefinedFirefoxOptions.forEach((s, o) -> firefoxOptions.setCapability(s.toString(), o));
+                }
+                if (userAgentConfig != null) {
+                    userAgentConfig.configure(firefoxOptions);
+                }
                 firefoxOptions.merge(capabilities);
                 //firefoxOptions.addPreference("intl.accept_languages", String.format("%s-%s", browserLocale.getLanguage(), browserLocale.getCountry()));
                 finalCapabilities = firefoxOptions;
@@ -406,7 +415,9 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 break;
             case Browsers.ie:
                 InternetExplorerOptions ieOptions = new InternetExplorerOptions();
-                if (userAgentConfig != null) userAgentConfig.configure(ieOptions);
+                if (userAgentConfig != null) {
+                    userAgentConfig.configure(ieOptions);
+                }
                 ieOptions.merge(capabilities);
                 ieOptions.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
                 finalCapabilities = ieOptions;
@@ -415,7 +426,15 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             case Browsers.chrome:
             case Browsers.chromeHeadless:
                 ChromeOptions chromeOptions = new ChromeOptions();
-                if (userAgentConfig != null) userAgentConfig.configure(chromeOptions);
+                if (capabilities.getCapabilityNames().contains(ChromeOptions.CAPABILITY)) {
+                    final TreeMap predefinedChromeOptions = (TreeMap) capabilities.getCapability(ChromeOptions.CAPABILITY);
+                    predefinedChromeOptions.forEach((s, o) -> chromeOptions.setCapability(s.toString(), o));
+                }
+
+                if (userAgentConfig != null) {
+                    userAgentConfig.configure(chromeOptions);
+                }
+
                 chromeOptions.merge(capabilities);
                 //Map<String, Object> prefs = new HashMap<>();
                 //prefs.put("intl.accept_languages", String.format("%s_%s", browserLocale.getLanguage(), browserLocale.getCountry()));
@@ -442,14 +461,18 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 break;
             case Browsers.safari:
                 SafariOptions safariOptions = new SafariOptions();
-                if (userAgentConfig != null) userAgentConfig.configure(safariOptions);
+                if (userAgentConfig != null) {
+                    userAgentConfig.configure(safariOptions);
+                }
                 safariOptions.merge(capabilities);
                 finalCapabilities = safariOptions;
                 driverClass = SafariDriver.class;
                 break;
             case Browsers.edge:
                 EdgeOptions edgeOptions = new EdgeOptions();
-                if (userAgentConfig != null) userAgentConfig.configure(edgeOptions);
+                if (userAgentConfig != null) {
+                    userAgentConfig.configure(edgeOptions);
+                }
                 edgeOptions.merge(capabilities);
                 /**
                  * @todo What is this platform capability for?

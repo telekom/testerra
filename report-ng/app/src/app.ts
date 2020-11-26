@@ -32,7 +32,7 @@ export class App {
                 route.settings.count = executionStatistics.failureAspectStatistics.length;
             });
             this._router.routes.filter(route => route.route == "tests").find(route => {
-                route.settings.count = executionStatistics.testsTotal;
+                route.settings.count = executionStatistics.overallTestCases;
             });
             this._router.routes.filter(route => route.route == "exit-points").find(route => {
                 route.settings.count = executionStatistics.exitPointStatistics.length;
@@ -57,7 +57,7 @@ export class App {
                 moduleId: PLATFORM.moduleName('components/classes/classes'),
                 nav: true,
                 name: "tests",
-                title: 'Tests'
+                title: 'Test Cases'
             },
             // {
             //     route: 'threads',

@@ -46,13 +46,13 @@
     @extend .status-passed;
 }
 
-.status-minor {
-    @extend .status-passed;
-}
-
-.status-minor-retry {
-    @extend .status-passed;
-}
+//.status-minor {
+//    @extend .status-passed;
+//}
+//
+//.status-minor-retry {
+//    @extend .status-passed;
+//}
 
 .status-skipped {
     @extend .status;
@@ -66,11 +66,11 @@
     border-color: $failed;
 }
 
-.status-failed-minor {
-    @extend .status;
-    background: $failedMinor;
-    border-color: $failedMinor;
-}
+//.status-failed-minor {
+//    @extend .status;
+//    background: $failedMinor;
+//    border-color: $failedMinor;
+//}
 
 .status-failed-expected {
     @extend .status;

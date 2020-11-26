@@ -35,14 +35,12 @@ class Statistics {
     }
 
     private _resultStatuses: { [key: number]: number } = {};
-    private _testsTotal: number = 0;
 
     addResultStatus(status: ResultStatusType) {
         if (!this._resultStatuses[status]) {
             this._resultStatuses[status] = 0;
         }
         this._resultStatuses[status]++;
-        this._testsTotal++;
     }
 
     get availableStatuses() {
@@ -53,16 +51,12 @@ class Statistics {
         return statuses;
     }
 
-    get testsTotal() {
-        return this._testsTotal;
+    get overallTestCases() {
+        return this.getStatusesCount(this._statusConverter.relevantStatuses);
     }
 
     get overallPassed() {
-        let count = 0;
-        this._statusConverter.passedStatuses.forEach(value => {
-            count += this.getStatusCount(value);
-        })
-        return count;
+        return this.getStatusesCount(this._statusConverter.passedStatuses);
     }
 
     get overallSkipped() {
@@ -70,15 +64,19 @@ class Statistics {
     }
 
     get overallFailed() {
-        let count = 0;
-        this._statusConverter.failedStatuses.forEach(value => {
-            count += this.getStatusCount(value);
-        })
-        return count;
+       return this.getStatusesCount(this._statusConverter.failedStatuses);
     }
 
     getStatusCount(status: ResultStatusType) {
         return this._resultStatuses[status] | 0;
+    }
+
+    getStatusesCount(statuses:number[]) {
+        let count = 0;
+        statuses.forEach(value => {
+            count += this.getStatusCount(value);
+        })
+        return count;
     }
 
     protected addStatistics(statistics: Statistics) {
@@ -88,7 +86,6 @@ class Statistics {
             }
             this._resultStatuses[status] += statistics._resultStatuses[status];
         }
-        this._testsTotal += statistics._testsTotal;
     }
 
     get statusConverter() {

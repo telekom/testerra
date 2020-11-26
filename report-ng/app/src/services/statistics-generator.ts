@@ -27,6 +27,7 @@ import {Config} from "./config";
 import {data} from "./report-model";
 import IFile = data.IFile;
 import IMethodContext = data.IMethodContext;
+import {StatusConverter} from "./status-converter";
 
 @autoinject()
 export class StatisticsGenerator {
@@ -34,6 +35,7 @@ export class StatisticsGenerator {
         private _dataLoader: DataLoader,
         private _cacheService:CacheService,
         private _config:Config,
+        private _statusConverter:StatusConverter,
     ) {
         this._cacheService.setDefaultCacheTtl(120);
 
@@ -67,6 +69,7 @@ export class StatisticsGenerator {
 
                         classContext.methodContextIds.forEach(methodContextId => {
                             const methodContext = executionAggregate.methodContexts.find(methodContext => methodContext.contextValues.id == methodContextId);
+                            methodContext.contextValues.resultStatus = this._statusConverter.correctStatus(methodContext.contextValues.resultStatus);
                             classStatistics.addMethodContext(methodContext);
                         });
                     })

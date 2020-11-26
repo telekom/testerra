@@ -7,23 +7,23 @@
         <mdc-layout-grid-inner>
             <mdc-layout-grid-cell span="3">
                 <mdc-card>
-                    <div mdc-subtitle2 class="card-headline">${_executionStatistics.testsTotal} Tests</div>
+                    <div mdc-subtitle2 class="card-headline">${_executionStatistics.overallTestCases} Test cases</div>
                     <mdc-list-divider></mdc-list-divider>
                     <mdc-list two-line avatar class="card-content">
-                        <mdc-list-item click.delegate="_resultClicked(4)">
-                            <mdc-icon mdc-list-item-graphic class="colored-icon status-passed big-icon">${4|statusIconName}</mdc-icon>
-                            <mdc-list-item-primary-text>${_executionStatistics.overallPassed}</mdc-list-item-primary-text>
-                            <mdc-list-item-secondary-text>${4|statusName}</mdc-list-item-secondary-text>
+                        <mdc-list-item  click.delegate="_resultClicked(7)">
+                            <mdc-icon mdc-list-item-graphic class="colored-icon status-failed big-icon">${7|statusIconName}</mdc-icon>
+                            <mdc-list-item-primary-text>${_executionStatistics.overallFailed}</mdc-list-item-primary-text>
+                            <mdc-list-item-secondary-text>${7|statusName}</mdc-list-item-secondary-text>
                         </mdc-list-item>
                         <mdc-list-item click.delegate="_resultClicked(3)">
                             <mdc-icon mdc-list-item-graphic class="colored-icon status-skipped big-icon">${3|statusIconName}</mdc-icon>
                             <mdc-list-item-primary-text>${_executionStatistics.overallSkipped}</mdc-list-item-primary-text>
                             <mdc-list-item-secondary-text>${3|statusName}</mdc-list-item-secondary-text>
                         </mdc-list-item>
-                        <mdc-list-item  click.delegate="_resultClicked(7)">
-                            <mdc-icon mdc-list-item-graphic class="colored-icon status-failed big-icon">${7|statusIconName}</mdc-icon>
-                            <mdc-list-item-primary-text>${_executionStatistics.overallFailed}</mdc-list-item-primary-text>
-                            <mdc-list-item-secondary-text>${7|statusName}</mdc-list-item-secondary-text>
+                        <mdc-list-item click.delegate="_resultClicked(4)">
+                            <mdc-icon mdc-list-item-graphic class="colored-icon status-passed big-icon">${4|statusIconName}</mdc-icon>
+                            <mdc-list-item-primary-text>${_executionStatistics.overallPassed}</mdc-list-item-primary-text>
+                            <mdc-list-item-secondary-text>${4|statusName}</mdc-list-item-secondary-text>
                         </mdc-list-item>
                     </mdc-list>
                 </mdc-card>

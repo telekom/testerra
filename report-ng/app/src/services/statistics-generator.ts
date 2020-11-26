@@ -48,7 +48,6 @@ export class StatisticsGenerator {
                 const executionStatistics = new ExecutionStatistics();
                 executionStatistics.setExecutionAggregate(executionAggregate);
 
-                const loadingPromises = [];
                 executionAggregate.testContexts.forEach(testContext => {
                     testContext.classContextIds.forEach(classContextId => {
                         const classContext = executionAggregate.classContexts.find(classContext => classContext.contextValues.id == classContextId);
@@ -75,10 +74,8 @@ export class StatisticsGenerator {
                     })
                 });
 
-                return Promise.all(loadingPromises).then(() => {
-                    executionStatistics.updateStatistics();
-                    return Promise.resolve(executionStatistics);
-                })
+                executionStatistics.updateStatistics();
+                return executionStatistics;
             });
         })
     }

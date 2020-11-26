@@ -96,7 +96,7 @@ class Statistics {
 export class ExecutionStatistics extends Statistics {
     private _executionAggregate: ExecutionAggregate;
     private _classStatistics: ClassStatistics[] = [];
-    private _failureAspectStatistics:FailureAspectStatistics[] = [];
+    private _majorFailureAspectStatistics:FailureAspectStatistics[] = [];
     private _exitPointStatistics:ExitPointStatistics[] = [];
 
     setExecutionAggregate(executionAggregate: ExecutionAggregate) {
@@ -104,39 +104,43 @@ export class ExecutionStatistics extends Statistics {
         return this;
     }
 
-    addClassStatistics(statistics: ClassStatistics) {
-        this._classStatistics.push(statistics);
-        statistics.methodContexts
+    addClassStatistics(classStatistics: ClassStatistics) {
+        this._classStatistics.push(classStatistics);
+    }
+
+    updateStatistics() {
+        this._classStatistics.forEach(classStatistics => this.addStatistics(classStatistics));
+    }
+
+    protected  addStatistics(classStatistics: ClassStatistics) {
+        super.addStatistics(classStatistics);
+        classStatistics.methodContexts
             .filter(methodContext => {
                 return this.statusConverter.failedStatuses.indexOf(methodContext.contextValues.resultStatus) >= 0;
             })
             .forEach(methodContext => {
                 const failureAspectStatistics = new FailureAspectStatistics().addMethodContext(methodContext);
 
-                const foundFailureAspectStatistics = this._failureAspectStatistics.find(existingFailureAspectStatistics => {
+                const foundFailureAspectStatistics = this._majorFailureAspectStatistics.find(existingFailureAspectStatistics => {
                     return existingFailureAspectStatistics.name == failureAspectStatistics.name;
                 });
                 if (foundFailureAspectStatistics) {
                     foundFailureAspectStatistics.addMethodContext(failureAspectStatistics.methodContext);
                 } else {
-                    this._failureAspectStatistics.push(failureAspectStatistics);
+                    this._majorFailureAspectStatistics.push(failureAspectStatistics);
                 }
 
-                const exitPointStatistics = new ExitPointStatistics().addMethodContext(methodContext);
-
-                const foundExitPointStatistics = this._exitPointStatistics.find(existingExitPointStatistics => {
-                    return existingExitPointStatistics.fingerprint == exitPointStatistics.fingerprint;
-                });
-                if (foundExitPointStatistics) {
-                    foundExitPointStatistics.addMethodContext(exitPointStatistics.methodContext);
-                } else {
-                    this._exitPointStatistics.push(exitPointStatistics);
-                }
+                // const exitPointStatistics = new ExitPointStatistics().addMethodContext(methodContext);
+                //
+                // const foundExitPointStatistics = this._exitPointStatistics.find(existingExitPointStatistics => {
+                //     return existingExitPointStatistics.fingerprint == exitPointStatistics.fingerprint;
+                // });
+                // if (foundExitPointStatistics) {
+                //     foundExitPointStatistics.addMethodContext(exitPointStatistics.methodContext);
+                // } else {
+                //     this._exitPointStatistics.push(exitPointStatistics);
+                // }
             })
-    }
-
-    updateStatistics() {
-        this._classStatistics.forEach(value => this.addStatistics(value));
     }
 
     get executionAggregate() {
@@ -151,8 +155,11 @@ export class ExecutionStatistics extends Statistics {
         return this._exitPointStatistics;
     }
 
-    get failureAspectStatistics() {
-        return this._failureAspectStatistics;
+    get majorFailureAspectStatistics() {
+        return this._majorFailureAspectStatistics;
+    }
+    get minorFailureAspectStatistics() {
+        return this._majorFailureAspectStatistics;
     }
 }
 

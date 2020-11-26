@@ -33,7 +33,7 @@ export class FailureAspects extends AbstractViewModel {
         this._filteredFailureAspects = [];
         this._loading = true;
         this._statistics.getExecutionStatistics().then(executionStatistics => {
-            this._filteredFailureAspects = executionStatistics.failureAspectStatistics
+            this._filteredFailureAspects = executionStatistics.majorFailureAspectStatistics
                 .filter(failureAspectStatistics => {
                     return (!this._searchRegexp || failureAspectStatistics.name.match(this._searchRegexp));
                 });

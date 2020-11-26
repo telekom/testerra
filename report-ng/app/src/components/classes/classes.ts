@@ -123,13 +123,13 @@ export class Classes extends AbstractViewModel {
                     return (
                         !this._selectedClass
                         || (
-                            this._selectedClass == classStatistic.classAggregate.classContext.simpleClassName
-                            || this._selectedClass == classStatistic.classAggregate.classContext.testContextName
+                            this._selectedClass == classStatistic.classContext.simpleClassName
+                            || this._selectedClass == classStatistic.classContext.testContextName
                         )
                     )
                 })
                 .forEach(classStatistic => {
-                    classStatistic.classAggregate.methodContexts
+                    classStatistic.methodContexts
                         .filter(methodContext => {
                             return (!relevantStatuses || relevantStatuses.indexOf(methodContext.contextValues.resultStatus) >= 0)
                         })
@@ -143,7 +143,7 @@ export class Classes extends AbstractViewModel {
                         })
                         .map(methodContext => {
                             return {
-                                classContext: classStatistic.classAggregate.classContext,
+                                classContext: classStatistic.classContext,
                                 failureAspect: this._statusConverter.failedStatuses.indexOf(methodContext.contextValues.resultStatus) >= 0 ? new FailureAspectStatistics().addMethodContext(methodContext) : null,
                                 methodContext: methodContext
                             }
@@ -158,7 +158,7 @@ export class Classes extends AbstractViewModel {
                             );
                         })
                         .forEach(methodAggregate => {
-                            uniqueClasses[classStatistic.classAggregate.classContext.simpleClassName] = true;
+                            uniqueClasses[classStatistic.classContext.simpleClassName] = true;
                             uniqueStatuses[methodAggregate.methodContext.contextValues.resultStatus] = true;
                             // if (methodAggregate.failureAspect) {
                             //     uniqueFailureAspects[methodAggregate.failureAspect.name] = true;

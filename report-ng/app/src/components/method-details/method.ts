@@ -85,7 +85,7 @@ export class Method {
         navInstruction: NavigationInstruction
     ) {
         this._statistics.getMethodDetails(params.id).then(methodDetails => {
-            this._classContext = methodDetails.classStatistics.classAggregate.classContext;
+            this._classContext = methodDetails.classStatistics.classContext;
             this._methodContext = methodDetails.methodContext;
             this._testContext = methodDetails.testContext;
             this._suiteContext = methodDetails.suiteContext;

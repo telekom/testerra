@@ -571,6 +571,7 @@ export const data = $root.data = (() => {
          * @property {Array.<string>|null} [sessionContextIds] MethodContext sessionContextIds
          * @property {Array.<string>|null} [videoIds] MethodContext videoIds
          * @property {string|null} [customContextJson] MethodContext customContextJson
+         * @property {Array.<data.IErrorContext>|null} [optionalAssertions] MethodContext optionalAssertions
          */
 
         /**
@@ -592,6 +593,7 @@ export const data = $root.data = (() => {
             this.testSteps = [];
             this.sessionContextIds = [];
             this.videoIds = [];
+            this.optionalAssertions = [];
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -783,6 +785,14 @@ export const data = $root.data = (() => {
         MethodContext.prototype.customContextJson = "";
 
         /**
+         * MethodContext optionalAssertions.
+         * @member {Array.<data.IErrorContext>} optionalAssertions
+         * @memberof data.MethodContext
+         * @instance
+         */
+        MethodContext.prototype.optionalAssertions = $util.emptyArray;
+
+        /**
          * Decodes a MethodContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.MethodContext
@@ -888,6 +898,11 @@ export const data = $root.data = (() => {
                     break;
                 case 32:
                     m.customContextJson = r.string();
+                    break;
+                case 33:
+                    if (!(m.optionalAssertions && m.optionalAssertions.length))
+                        m.optionalAssertions = [];
+                    m.optionalAssertions.push($root.data.ErrorContext.decode(r, r.uint32()));
                     break;
                 default:
                     r.skipType(t & 7);
@@ -2532,85 +2547,6 @@ export const data = $root.data = (() => {
         return values;
     })();
 
-    data.ClassContextAggregate = (function() {
-
-        /**
-         * Properties of a ClassContextAggregate.
-         * @memberof data
-         * @interface IClassContextAggregate
-         * @property {data.IClassContext|null} [classContext] ClassContextAggregate classContext
-         * @property {Array.<data.IMethodContext>|null} [methodContexts] ClassContextAggregate methodContexts
-         */
-
-        /**
-         * Constructs a new ClassContextAggregate.
-         * @memberof data
-         * @classdesc Represents a ClassContextAggregate.
-         * @implements IClassContextAggregate
-         * @constructor
-         * @param {data.IClassContextAggregate=} [p] Properties to set
-         */
-        function ClassContextAggregate(p) {
-            this.methodContexts = [];
-            if (p)
-                for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
-                    if (p[ks[i]] != null)
-                        this[ks[i]] = p[ks[i]];
-        }
-
-        /**
-         * ClassContextAggregate classContext.
-         * @member {data.IClassContext|null|undefined} classContext
-         * @memberof data.ClassContextAggregate
-         * @instance
-         */
-        ClassContextAggregate.prototype.classContext = null;
-
-        /**
-         * ClassContextAggregate methodContexts.
-         * @member {Array.<data.IMethodContext>} methodContexts
-         * @memberof data.ClassContextAggregate
-         * @instance
-         */
-        ClassContextAggregate.prototype.methodContexts = $util.emptyArray;
-
-        /**
-         * Decodes a ClassContextAggregate message from the specified reader or buffer.
-         * @function decode
-         * @memberof data.ClassContextAggregate
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
-         * @param {number} [l] Message length if known beforehand
-         * @returns {data.ClassContextAggregate} ClassContextAggregate
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        ClassContextAggregate.decode = function decode(r, l) {
-            if (!(r instanceof $Reader))
-                r = $Reader.create(r);
-            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.ClassContextAggregate();
-            while (r.pos < c) {
-                var t = r.uint32();
-                switch (t >>> 3) {
-                case 1:
-                    m.classContext = $root.data.ClassContext.decode(r, r.uint32());
-                    break;
-                case 2:
-                    if (!(m.methodContexts && m.methodContexts.length))
-                        m.methodContexts = [];
-                    m.methodContexts.push($root.data.MethodContext.decode(r, r.uint32()));
-                    break;
-                default:
-                    r.skipType(t & 7);
-                    break;
-                }
-            }
-            return m;
-        };
-
-        return ClassContextAggregate;
-    })();
-
     data.ExecutionAggregate = (function() {
 
         /**
@@ -2620,6 +2556,8 @@ export const data = $root.data = (() => {
          * @property {data.IExecutionContext|null} [executionContext] ExecutionAggregate executionContext
          * @property {Array.<data.ISuiteContext>|null} [suiteContexts] ExecutionAggregate suiteContexts
          * @property {Array.<data.ITestContext>|null} [testContexts] ExecutionAggregate testContexts
+         * @property {Array.<data.IClassContext>|null} [classContexts] ExecutionAggregate classContexts
+         * @property {Array.<data.IMethodContext>|null} [methodContexts] ExecutionAggregate methodContexts
          */
 
         /**
@@ -2633,6 +2571,8 @@ export const data = $root.data = (() => {
         function ExecutionAggregate(p) {
             this.suiteContexts = [];
             this.testContexts = [];
+            this.classContexts = [];
+            this.methodContexts = [];
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -2664,6 +2604,22 @@ export const data = $root.data = (() => {
         ExecutionAggregate.prototype.testContexts = $util.emptyArray;
 
         /**
+         * ExecutionAggregate classContexts.
+         * @member {Array.<data.IClassContext>} classContexts
+         * @memberof data.ExecutionAggregate
+         * @instance
+         */
+        ExecutionAggregate.prototype.classContexts = $util.emptyArray;
+
+        /**
+         * ExecutionAggregate methodContexts.
+         * @member {Array.<data.IMethodContext>} methodContexts
+         * @memberof data.ExecutionAggregate
+         * @instance
+         */
+        ExecutionAggregate.prototype.methodContexts = $util.emptyArray;
+
+        /**
          * Decodes an ExecutionAggregate message from the specified reader or buffer.
          * @function decode
          * @memberof data.ExecutionAggregate
@@ -2693,6 +2649,16 @@ export const data = $root.data = (() => {
                     if (!(m.testContexts && m.testContexts.length))
                         m.testContexts = [];
                     m.testContexts.push($root.data.TestContext.decode(r, r.uint32()));
+                    break;
+                case 4:
+                    if (!(m.classContexts && m.classContexts.length))
+                        m.classContexts = [];
+                    m.classContexts.push($root.data.ClassContext.decode(r, r.uint32()));
+                    break;
+                case 5:
+                    if (!(m.methodContexts && m.methodContexts.length))
+                        m.methodContexts = [];
+                    m.methodContexts.push($root.data.MethodContext.decode(r, r.uint32()));
                     break;
                 default:
                     r.skipType(t & 7);

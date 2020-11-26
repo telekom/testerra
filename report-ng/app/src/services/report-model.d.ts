@@ -319,6 +319,9 @@ export namespace data {
 
         /** MethodContext customContextJson */
         customContextJson?: (string|null);
+
+        /** MethodContext optionalAssertions */
+        optionalAssertions?: (data.IErrorContext[]|null);
     }
 
     /** Represents a MethodContext. */
@@ -398,6 +401,9 @@ export namespace data {
 
         /** MethodContext customContextJson. */
         public customContextJson: string;
+
+        /** MethodContext optionalAssertions. */
+        public optionalAssertions: data.IErrorContext[];
 
         /**
          * Decodes a MethodContext message from the specified reader or buffer.
@@ -1165,42 +1171,6 @@ export namespace data {
         MINOR_RETRY = 12
     }
 
-    /** Properties of a ClassContextAggregate. */
-    interface IClassContextAggregate {
-
-        /** ClassContextAggregate classContext */
-        classContext?: (data.IClassContext|null);
-
-        /** ClassContextAggregate methodContexts */
-        methodContexts?: (data.IMethodContext[]|null);
-    }
-
-    /** Represents a ClassContextAggregate. */
-    class ClassContextAggregate implements IClassContextAggregate {
-
-        /**
-         * Constructs a new ClassContextAggregate.
-         * @param [p] Properties to set
-         */
-        constructor(p?: data.IClassContextAggregate);
-
-        /** ClassContextAggregate classContext. */
-        public classContext?: (data.IClassContext|null);
-
-        /** ClassContextAggregate methodContexts. */
-        public methodContexts: data.IMethodContext[];
-
-        /**
-         * Decodes a ClassContextAggregate message from the specified reader or buffer.
-         * @param r Reader or buffer to decode from
-         * @param [l] Message length if known beforehand
-         * @returns ClassContextAggregate
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.ClassContextAggregate;
-    }
-
     /** Properties of an ExecutionAggregate. */
     interface IExecutionAggregate {
 
@@ -1212,6 +1182,12 @@ export namespace data {
 
         /** ExecutionAggregate testContexts */
         testContexts?: (data.ITestContext[]|null);
+
+        /** ExecutionAggregate classContexts */
+        classContexts?: (data.IClassContext[]|null);
+
+        /** ExecutionAggregate methodContexts */
+        methodContexts?: (data.IMethodContext[]|null);
     }
 
     /** Represents an ExecutionAggregate. */
@@ -1231,6 +1207,12 @@ export namespace data {
 
         /** ExecutionAggregate testContexts. */
         public testContexts: data.ITestContext[];
+
+        /** ExecutionAggregate classContexts. */
+        public classContexts: data.IClassContext[];
+
+        /** ExecutionAggregate methodContexts. */
+        public methodContexts: data.IMethodContext[];
 
         /**
          * Decodes an ExecutionAggregate message from the specified reader or buffer.

@@ -80,7 +80,7 @@ message MethodContext {
     string class_context_id = 15;
     string execution_context_id = 16;
 
-    repeated ErrorContext non_functional_infos = 17;
+    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
     repeated ErrorContext collected_assertions = 18;
     repeated string infos = 19;
     string priority_message = 21;
@@ -96,6 +96,7 @@ message MethodContext {
     repeated string video_ids = 30;
 //    repeated string screenshot_ids = 31 [deprecated = true];
     string custom_context_json = 32;
+    repeated ErrorContext optional_assertions = 33;
 }
 
 message ContextValues {
@@ -104,7 +105,7 @@ message ContextValues {
     string name = 3;
     int64 start_time = 4;
     int64 end_time = 5;
-    string swi = 6;
+    string swi = 6 [deprecated = true];
 
     ResultStatusType result_status = 7;
     ExecStatusType exec_status = 8;
@@ -269,13 +270,13 @@ enum ResultStatusType {
     SKIPPED = 3; // skipped
 
     PASSED = 4; // passed status, without any issue
-    MINOR = 5; // passed, but with minor, non-blocking issues
+    MINOR = 5 [deprecated = true]; // passed, but with minor, non-blocking issues
 
     FAILED = 7; // failed status, with hard failing issues
-    FAILED_MINOR = 8; // failed with additional minor issues
+    FAILED_MINOR = 8 [deprecated = true]; // failed with additional minor issues
     FAILED_RETRIED = 9; // failed and retry is triggered
     FAILED_EXPECTED = 10; // entity was expected to fail (with or without an explicit issue), it may or may not be representative
 
     PASSED_RETRY = 11; // passed after a retry
-    MINOR_RETRY = 12; // minor after a retry
+    MINOR_RETRY = 12 [deprecated = true]; // minor after a retry
 }

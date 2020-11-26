@@ -68,7 +68,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     /**
      * @deprecated Use {@link #getClassContext()} instead
      */
-    @Deprecated
     public final ClassContext classContext;
     public TestContextModel testContextModel;
     public SuiteContext suiteContext;
@@ -76,38 +75,42 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
 
     private int hashCodeOfTestResult = 0;
 
+    /**
+     * @deprecated Use {@link #getOptionalAssertions()} instead
+     */
     public final List<AssertionInfo> nonFunctionalInfos = new LinkedList<>();
+    /**
+     * @deprecated Use {@link #getCollectedAssertions()} instead
+     */
     public final List<AssertionInfo> collectedAssertions = new LinkedList<>();
     public final List<String> infos = new LinkedList<>();
 
     public final List<SessionContext> sessionContexts = new LinkedList<>();
     public String priorityMessage = null;
     private final TestStepController testStepController = new TestStepController();
+    /**
+     * @deprecated Use {@link #getRelatedMethodContexts()} instead
+     */
     public List<MethodContext> relatedMethodContexts;
+
+    /**
+     * @deprecated Us {@link #getDependsOnMethodContexts()} instead
+     */
     public List<MethodContext> dependsOnMethodContexts;
 
-    // Used in methodDependencies.vm
-    public List<MethodContext> getRelatedMethodContexts() {
-        return relatedMethodContexts;
-    }
-
-    // Used in methodDependencies.vm
-    public List<MethodContext> getDependsOnMethodContexts() {
-        return dependsOnMethodContexts;
-    }
-
-    @Deprecated
+    /**
+     * @deprecated Use {@link #getVideos()} instead
+     */
     public final List<Video> videos = new LinkedList<>();
-    @Deprecated
+
+    /**
+     * @deprecated Use {@link #getAllScreenshotsFromTestSteps()} instead
+     */
     public final List<Screenshot> screenshots = new LinkedList<>();
 
     public final List<CustomContext> customContexts = new LinkedList<>();
 
     private ErrorContext errorContext;
-
-    public ClassContext getClassContext() {
-        return classContext;
-    }
 
     /**
      * Public constructor. Creates a new <code>MethodContext</code> object.
@@ -135,6 +138,38 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         this.parentContext = this.classContext = classContext;
         this.methodRunIndex = Counters.increaseMethodExecutionCounter();
         this.methodType = methodType;
+    }
+
+    public ClassContext getClassContext() {
+        return classContext;
+    }
+
+    public List<AssertionInfo> getOptionalAssertions() {
+        return this.nonFunctionalInfos;
+    }
+
+    public List<AssertionInfo> getCollectedAssertions() {
+        return this.collectedAssertions;
+    }
+
+    // Used in methodDependencies.vm
+    public List<MethodContext> getRelatedMethodContexts() {
+        return this.relatedMethodContexts;
+    }
+
+    // Used in methodDependencies.vm
+    public List<MethodContext> getDependsOnMethodContexts() {
+        return this.dependsOnMethodContexts;
+    }
+
+    public MethodContext setRelatedMethodContexts(List<MethodContext> relatedMethodContexts) {
+        this.relatedMethodContexts = relatedMethodContexts;
+        return this;
+    }
+
+    public MethodContext setDependsOnMethodContexts(List<MethodContext> dependsOnMethodContexts) {
+        this.dependsOnMethodContexts = dependsOnMethodContexts;
+        return this;
     }
 
     public Stream<Screenshot> getAllScreenshotsFromTestSteps() {
@@ -234,15 +269,15 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     /**
-     * Add non functional infos.
-     *
-     * @param throwable .
+     * @deprecated Use {@link #addOptionalAssertion(Throwable)} instead
      */
     public AssertionInfo addNonFunctionalInfo(final Throwable throwable) {
+        return this.addOptionalAssertion(throwable);
+    }
+
+    public AssertionInfo addOptionalAssertion(Throwable throwable) {
         AssertionInfo assertionInfo = new AssertionInfo(throwable);
-
         this.nonFunctionalInfos.add(assertionInfo);
-
         return assertionInfo;
     }
 
@@ -303,10 +338,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
 
     public boolean isTestMethod() {
         return !isConfigMethod();
-    }
-
-    public boolean hasNonFunctionalErrors() {
-        return !nonFunctionalInfos.isEmpty();
     }
 
     public boolean isExpectedFailed() {

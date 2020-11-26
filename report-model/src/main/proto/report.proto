@@ -6,13 +6,10 @@ import "framework.proto";
 
 package data;
 
-message ClassContextAggregate {
-    ClassContext class_context = 1;
-    repeated MethodContext method_contexts = 2;
-}
-
 message ExecutionAggregate {
     ExecutionContext execution_context = 1;
     repeated SuiteContext suite_contexts = 2;
     repeated TestContext test_contexts = 3;
+    repeated ClassContext class_contexts = 4;
+    repeated MethodContext method_contexts = 5;
 }

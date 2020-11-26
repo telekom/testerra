@@ -235,10 +235,10 @@ private static final long serialVersionUID = 0L;
   public static final int SWI_FIELD_NUMBER = 6;
   private volatile java.lang.Object swi_;
   /**
-   * <code>string swi = 6;</code>
+   * <code>string swi = 6 [deprecated = true];</code>
    * @return The swi.
    */
-  public java.lang.String getSwi() {
+  @java.lang.Deprecated public java.lang.String getSwi() {
     java.lang.Object ref = swi_;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
@@ -251,10 +251,10 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string swi = 6;</code>
+   * <code>string swi = 6 [deprecated = true];</code>
    * @return The bytes for swi.
    */
-  public com.google.protobuf.ByteString
+  @java.lang.Deprecated public com.google.protobuf.ByteString
       getSwiBytes() {
     java.lang.Object ref = swi_;
     if (ref instanceof java.lang.String) {
@@ -972,10 +972,10 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object swi_ = "";
     /**
-     * <code>string swi = 6;</code>
+     * <code>string swi = 6 [deprecated = true];</code>
      * @return The swi.
      */
-    public java.lang.String getSwi() {
+    @java.lang.Deprecated public java.lang.String getSwi() {
       java.lang.Object ref = swi_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
@@ -988,10 +988,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string swi = 6;</code>
+     * <code>string swi = 6 [deprecated = true];</code>
      * @return The bytes for swi.
      */
-    public com.google.protobuf.ByteString
+    @java.lang.Deprecated public com.google.protobuf.ByteString
         getSwiBytes() {
       java.lang.Object ref = swi_;
       if (ref instanceof String) {
@@ -1005,11 +1005,11 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string swi = 6;</code>
+     * <code>string swi = 6 [deprecated = true];</code>
      * @param value The swi to set.
      * @return This builder for chaining.
      */
-    public Builder setSwi(
+    @java.lang.Deprecated public Builder setSwi(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
@@ -1020,21 +1020,21 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string swi = 6;</code>
+     * <code>string swi = 6 [deprecated = true];</code>
      * @return This builder for chaining.
      */
-    public Builder clearSwi() {
+    @java.lang.Deprecated public Builder clearSwi() {
       
       swi_ = getDefaultInstance().getSwi();
       onChanged();
       return this;
     }
     /**
-     * <code>string swi = 6;</code>
+     * <code>string swi = 6 [deprecated = true];</code>
      * @param value The bytes for swi to set.
      * @return This builder for chaining.
      */
-    public Builder setSwiBytes(
+    @java.lang.Deprecated public Builder setSwiBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();

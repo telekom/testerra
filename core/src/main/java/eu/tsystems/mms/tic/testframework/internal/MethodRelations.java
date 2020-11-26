@@ -105,7 +105,7 @@ public class MethodRelations {
         }
 
         if (containers.size() > 0) {
-            methodContext.dependsOnMethodContexts = containers;
+            methodContext.setDependsOnMethodContexts(containers);
         }
     }
 
@@ -175,7 +175,7 @@ public class MethodRelations {
 
             synchronized (containerList) {
                 for (MethodContext methodContainer : containerList) {
-                    methodContainer.relatedMethodContexts = relatedContainers;
+                    methodContainer.setRelatedMethodContexts(relatedContainers);
                 }
             }
         }

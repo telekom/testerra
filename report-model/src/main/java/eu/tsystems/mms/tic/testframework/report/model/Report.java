@@ -15,11 +15,6 @@ public final class Report {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_data_ClassContextAggregate_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_data_ClassContextAggregate_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_ExecutionAggregate_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -33,34 +28,27 @@ public final class Report {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\014report.proto\022\004data\032\017framework.proto\"p\n" +
-      "\025ClassContextAggregate\022)\n\rclass_context\030" +
-      "\001 \001(\0132\022.data.ClassContext\022,\n\017method_cont" +
-      "exts\030\002 \003(\0132\023.data.MethodContext\"\235\001\n\022Exec" +
-      "utionAggregate\0221\n\021execution_context\030\001 \001(" +
-      "\0132\026.data.ExecutionContext\022*\n\016suite_conte" +
-      "xts\030\002 \003(\0132\022.data.SuiteContext\022(\n\rtest_co" +
-      "ntexts\030\003 \003(\0132\021.data.TestContextB2\n.eu.ts" +
-      "ystems.mms.tic.testframework.report.mode" +
-      "lP\001b\006proto3"
+      "\n\014report.proto\022\004data\032\017framework.proto\"\367\001" +
+      "\n\022ExecutionAggregate\0221\n\021execution_contex" +
+      "t\030\001 \001(\0132\026.data.ExecutionContext\022*\n\016suite" +
+      "_contexts\030\002 \003(\0132\022.data.SuiteContext\022(\n\rt" +
+      "est_contexts\030\003 \003(\0132\021.data.TestContext\022*\n" +
+      "\016class_contexts\030\004 \003(\0132\022.data.ClassContex" +
+      "t\022,\n\017method_contexts\030\005 \003(\0132\023.data.Method" +
+      "ContextB2\n.eu.tsystems.mms.tic.testframe" +
+      "work.report.modelP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           eu.tsystems.mms.tic.testframework.report.model.Framework.getDescriptor(),
         });
-    internal_static_data_ClassContextAggregate_descriptor =
-      getDescriptor().getMessageTypes().get(0);
-    internal_static_data_ClassContextAggregate_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_data_ClassContextAggregate_descriptor,
-        new java.lang.String[] { "ClassContext", "MethodContexts", });
     internal_static_data_ExecutionAggregate_descriptor =
-      getDescriptor().getMessageTypes().get(1);
+      getDescriptor().getMessageTypes().get(0);
     internal_static_data_ExecutionAggregate_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_data_ExecutionAggregate_descriptor,
-        new java.lang.String[] { "ExecutionContext", "SuiteContexts", "TestContexts", });
+        new java.lang.String[] { "ExecutionContext", "SuiteContexts", "TestContexts", "ClassContexts", "MethodContexts", });
     eu.tsystems.mms.tic.testframework.report.model.Framework.getDescriptor();
   }
 

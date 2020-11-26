@@ -35,6 +35,7 @@ private static final long serialVersionUID = 0L;
     sessionContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     videoIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     customContextJson_ = "";
+    optionalAssertions_ = java.util.Collections.emptyList();
   }
 
   @java.lang.Override
@@ -248,6 +249,15 @@ private static final long serialVersionUID = 0L;
             customContextJson_ = s;
             break;
           }
+          case 266: {
+            if (!((mutable_bitField0_ & 0x00000400) != 0)) {
+              optionalAssertions_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.ErrorContext>();
+              mutable_bitField0_ |= 0x00000400;
+            }
+            optionalAssertions_.add(
+                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.ErrorContext.parser(), extensionRegistry));
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -292,6 +302,9 @@ private static final long serialVersionUID = 0L;
       }
       if (((mutable_bitField0_ & 0x00000200) != 0)) {
         videoIds_ = videoIds_.getUnmodifiableView();
+      }
+      if (((mutable_bitField0_ & 0x00000400) != 0)) {
+        optionalAssertions_ = java.util.Collections.unmodifiableList(optionalAssertions_);
       }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
@@ -580,34 +593,34 @@ private static final long serialVersionUID = 0L;
   public static final int NON_FUNCTIONAL_INFOS_FIELD_NUMBER = 17;
   private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> nonFunctionalInfos_;
   /**
-   * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
+   * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
    */
-  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> getNonFunctionalInfosList() {
+  @java.lang.Deprecated public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> getNonFunctionalInfosList() {
     return nonFunctionalInfos_;
   }
   /**
-   * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
+   * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
    */
-  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
+  @java.lang.Deprecated public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
       getNonFunctionalInfosOrBuilderList() {
     return nonFunctionalInfos_;
   }
   /**
-   * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
+   * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
    */
-  public int getNonFunctionalInfosCount() {
+  @java.lang.Deprecated public int getNonFunctionalInfosCount() {
     return nonFunctionalInfos_.size();
   }
   /**
-   * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
+   * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
    */
-  public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getNonFunctionalInfos(int index) {
+  @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getNonFunctionalInfos(int index) {
     return nonFunctionalInfos_.get(index);
   }
   /**
-   * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
+   * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
    */
-  public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getNonFunctionalInfosOrBuilder(
+  @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getNonFunctionalInfosOrBuilder(
       int index) {
     return nonFunctionalInfos_.get(index);
   }
@@ -1032,6 +1045,41 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int OPTIONAL_ASSERTIONS_FIELD_NUMBER = 33;
+  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> optionalAssertions_;
+  /**
+   * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
+   */
+  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> getOptionalAssertionsList() {
+    return optionalAssertions_;
+  }
+  /**
+   * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
+   */
+  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
+      getOptionalAssertionsOrBuilderList() {
+    return optionalAssertions_;
+  }
+  /**
+   * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
+   */
+  public int getOptionalAssertionsCount() {
+    return optionalAssertions_.size();
+  }
+  /**
+   * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
+   */
+  public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getOptionalAssertions(int index) {
+    return optionalAssertions_.get(index);
+  }
+  /**
+   * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
+   */
+  public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getOptionalAssertionsOrBuilder(
+      int index) {
+    return optionalAssertions_.get(index);
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -1114,6 +1162,9 @@ private static final long serialVersionUID = 0L;
     }
     if (!getCustomContextJsonBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 32, customContextJson_);
+    }
+    for (int i = 0; i < optionalAssertions_.size(); i++) {
+      output.writeMessage(33, optionalAssertions_.get(i));
     }
     unknownFields.writeTo(output);
   }
@@ -1237,6 +1288,10 @@ private static final long serialVersionUID = 0L;
     if (!getCustomContextJsonBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(32, customContextJson_);
     }
+    for (int i = 0; i < optionalAssertions_.size(); i++) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(33, optionalAssertions_.get(i));
+    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -1302,6 +1357,8 @@ private static final long serialVersionUID = 0L;
         .equals(other.getVideoIdsList())) return false;
     if (!getCustomContextJson()
         .equals(other.getCustomContextJson())) return false;
+    if (!getOptionalAssertionsList()
+        .equals(other.getOptionalAssertionsList())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -1383,6 +1440,10 @@ private static final long serialVersionUID = 0L;
     }
     hash = (37 * hash) + CUSTOM_CONTEXT_JSON_FIELD_NUMBER;
     hash = (53 * hash) + getCustomContextJson().hashCode();
+    if (getOptionalAssertionsCount() > 0) {
+      hash = (37 * hash) + OPTIONAL_ASSERTIONS_FIELD_NUMBER;
+      hash = (53 * hash) + getOptionalAssertionsList().hashCode();
+    }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -1514,6 +1575,7 @@ private static final long serialVersionUID = 0L;
         getNonFunctionalInfosFieldBuilder();
         getCollectedAssertionsFieldBuilder();
         getTestStepsFieldBuilder();
+        getOptionalAssertionsFieldBuilder();
       }
     }
     @java.lang.Override
@@ -1585,6 +1647,12 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000200);
       customContextJson_ = "";
 
+      if (optionalAssertionsBuilder_ == null) {
+        optionalAssertions_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000400);
+      } else {
+        optionalAssertionsBuilder_.clear();
+      }
       return this;
     }
 
@@ -1695,6 +1763,15 @@ private static final long serialVersionUID = 0L;
       }
       result.videoIds_ = videoIds_;
       result.customContextJson_ = customContextJson_;
+      if (optionalAssertionsBuilder_ == null) {
+        if (((bitField0_ & 0x00000400) != 0)) {
+          optionalAssertions_ = java.util.Collections.unmodifiableList(optionalAssertions_);
+          bitField0_ = (bitField0_ & ~0x00000400);
+        }
+        result.optionalAssertions_ = optionalAssertions_;
+      } else {
+        result.optionalAssertions_ = optionalAssertionsBuilder_.build();
+      }
       onBuilt();
       return result;
     }
@@ -1936,6 +2013,32 @@ private static final long serialVersionUID = 0L;
       if (!other.getCustomContextJson().isEmpty()) {
         customContextJson_ = other.customContextJson_;
         onChanged();
+      }
+      if (optionalAssertionsBuilder_ == null) {
+        if (!other.optionalAssertions_.isEmpty()) {
+          if (optionalAssertions_.isEmpty()) {
+            optionalAssertions_ = other.optionalAssertions_;
+            bitField0_ = (bitField0_ & ~0x00000400);
+          } else {
+            ensureOptionalAssertionsIsMutable();
+            optionalAssertions_.addAll(other.optionalAssertions_);
+          }
+          onChanged();
+        }
+      } else {
+        if (!other.optionalAssertions_.isEmpty()) {
+          if (optionalAssertionsBuilder_.isEmpty()) {
+            optionalAssertionsBuilder_.dispose();
+            optionalAssertionsBuilder_ = null;
+            optionalAssertions_ = other.optionalAssertions_;
+            bitField0_ = (bitField0_ & ~0x00000400);
+            optionalAssertionsBuilder_ = 
+              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                 getOptionalAssertionsFieldBuilder() : null;
+          } else {
+            optionalAssertionsBuilder_.addAllMessages(other.optionalAssertions_);
+          }
+        }
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -2731,9 +2834,9 @@ private static final long serialVersionUID = 0L;
         eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> nonFunctionalInfosBuilder_;
 
     /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
+     * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
      */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> getNonFunctionalInfosList() {
+    @java.lang.Deprecated public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> getNonFunctionalInfosList() {
       if (nonFunctionalInfosBuilder_ == null) {
         return java.util.Collections.unmodifiableList(nonFunctionalInfos_);
       } else {
@@ -2741,9 +2844,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
+     * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
      */
-    public int getNonFunctionalInfosCount() {
+    @java.lang.Deprecated public int getNonFunctionalInfosCount() {
       if (nonFunctionalInfosBuilder_ == null) {
         return nonFunctionalInfos_.size();
       } else {
@@ -2751,9 +2854,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
+     * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getNonFunctionalInfos(int index) {
+    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getNonFunctionalInfos(int index) {
       if (nonFunctionalInfosBuilder_ == null) {
         return nonFunctionalInfos_.get(index);
       } else {
@@ -2761,9 +2864,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
+     * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
      */
-    public Builder setNonFunctionalInfos(
+    @java.lang.Deprecated public Builder setNonFunctionalInfos(
         int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
       if (nonFunctionalInfosBuilder_ == null) {
         if (value == null) {
@@ -2778,9 +2881,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
+     * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
      */
-    public Builder setNonFunctionalInfos(
+    @java.lang.Deprecated public Builder setNonFunctionalInfos(
         int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder builderForValue) {
       if (nonFunctionalInfosBuilder_ == null) {
         ensureNonFunctionalInfosIsMutable();
@@ -2792,9 +2895,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
+     * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
      */
-    public Builder addNonFunctionalInfos(eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
+    @java.lang.Deprecated public Builder addNonFunctionalInfos(eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
       if (nonFunctionalInfosBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -2808,9 +2911,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
+     * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
      */
-    public Builder addNonFunctionalInfos(
+    @java.lang.Deprecated public Builder addNonFunctionalInfos(
         int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
       if (nonFunctionalInfosBuilder_ == null) {
         if (value == null) {
@@ -2825,9 +2928,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
+     * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
      */
-    public Builder addNonFunctionalInfos(
+    @java.lang.Deprecated public Builder addNonFunctionalInfos(
         eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder builderForValue) {
       if (nonFunctionalInfosBuilder_ == null) {
         ensureNonFunctionalInfosIsMutable();
@@ -2839,9 +2942,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
+     * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
      */
-    public Builder addNonFunctionalInfos(
+    @java.lang.Deprecated public Builder addNonFunctionalInfos(
         int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder builderForValue) {
       if (nonFunctionalInfosBuilder_ == null) {
         ensureNonFunctionalInfosIsMutable();
@@ -2853,9 +2956,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
+     * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
      */
-    public Builder addAllNonFunctionalInfos(
+    @java.lang.Deprecated public Builder addAllNonFunctionalInfos(
         java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContext> values) {
       if (nonFunctionalInfosBuilder_ == null) {
         ensureNonFunctionalInfosIsMutable();
@@ -2868,9 +2971,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
+     * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
      */
-    public Builder clearNonFunctionalInfos() {
+    @java.lang.Deprecated public Builder clearNonFunctionalInfos() {
       if (nonFunctionalInfosBuilder_ == null) {
         nonFunctionalInfos_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000004);
@@ -2881,9 +2984,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
+     * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
      */
-    public Builder removeNonFunctionalInfos(int index) {
+    @java.lang.Deprecated public Builder removeNonFunctionalInfos(int index) {
       if (nonFunctionalInfosBuilder_ == null) {
         ensureNonFunctionalInfosIsMutable();
         nonFunctionalInfos_.remove(index);
@@ -2894,16 +2997,16 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
+     * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder getNonFunctionalInfosBuilder(
+    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder getNonFunctionalInfosBuilder(
         int index) {
       return getNonFunctionalInfosFieldBuilder().getBuilder(index);
     }
     /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
+     * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getNonFunctionalInfosOrBuilder(
+    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getNonFunctionalInfosOrBuilder(
         int index) {
       if (nonFunctionalInfosBuilder_ == null) {
         return nonFunctionalInfos_.get(index);  } else {
@@ -2911,9 +3014,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
+     * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
      */
-    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
+    @java.lang.Deprecated public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
          getNonFunctionalInfosOrBuilderList() {
       if (nonFunctionalInfosBuilder_ != null) {
         return nonFunctionalInfosBuilder_.getMessageOrBuilderList();
@@ -2922,24 +3025,24 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
+     * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder addNonFunctionalInfosBuilder() {
+    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder addNonFunctionalInfosBuilder() {
       return getNonFunctionalInfosFieldBuilder().addBuilder(
           eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance());
     }
     /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
+     * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder addNonFunctionalInfosBuilder(
+    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder addNonFunctionalInfosBuilder(
         int index) {
       return getNonFunctionalInfosFieldBuilder().addBuilder(
           index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance());
     }
     /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
+     * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
      */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder> 
+    @java.lang.Deprecated public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder> 
          getNonFunctionalInfosBuilderList() {
       return getNonFunctionalInfosFieldBuilder().getBuilderList();
     }
@@ -4429,6 +4532,246 @@ private static final long serialVersionUID = 0L;
       customContextJson_ = value;
       onChanged();
       return this;
+    }
+
+    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> optionalAssertions_ =
+      java.util.Collections.emptyList();
+    private void ensureOptionalAssertionsIsMutable() {
+      if (!((bitField0_ & 0x00000400) != 0)) {
+        optionalAssertions_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.ErrorContext>(optionalAssertions_);
+        bitField0_ |= 0x00000400;
+       }
+    }
+
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> optionalAssertionsBuilder_;
+
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
+     */
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> getOptionalAssertionsList() {
+      if (optionalAssertionsBuilder_ == null) {
+        return java.util.Collections.unmodifiableList(optionalAssertions_);
+      } else {
+        return optionalAssertionsBuilder_.getMessageList();
+      }
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
+     */
+    public int getOptionalAssertionsCount() {
+      if (optionalAssertionsBuilder_ == null) {
+        return optionalAssertions_.size();
+      } else {
+        return optionalAssertionsBuilder_.getCount();
+      }
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getOptionalAssertions(int index) {
+      if (optionalAssertionsBuilder_ == null) {
+        return optionalAssertions_.get(index);
+      } else {
+        return optionalAssertionsBuilder_.getMessage(index);
+      }
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
+     */
+    public Builder setOptionalAssertions(
+        int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
+      if (optionalAssertionsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureOptionalAssertionsIsMutable();
+        optionalAssertions_.set(index, value);
+        onChanged();
+      } else {
+        optionalAssertionsBuilder_.setMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
+     */
+    public Builder setOptionalAssertions(
+        int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder builderForValue) {
+      if (optionalAssertionsBuilder_ == null) {
+        ensureOptionalAssertionsIsMutable();
+        optionalAssertions_.set(index, builderForValue.build());
+        onChanged();
+      } else {
+        optionalAssertionsBuilder_.setMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
+     */
+    public Builder addOptionalAssertions(eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
+      if (optionalAssertionsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureOptionalAssertionsIsMutable();
+        optionalAssertions_.add(value);
+        onChanged();
+      } else {
+        optionalAssertionsBuilder_.addMessage(value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
+     */
+    public Builder addOptionalAssertions(
+        int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
+      if (optionalAssertionsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureOptionalAssertionsIsMutable();
+        optionalAssertions_.add(index, value);
+        onChanged();
+      } else {
+        optionalAssertionsBuilder_.addMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
+     */
+    public Builder addOptionalAssertions(
+        eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder builderForValue) {
+      if (optionalAssertionsBuilder_ == null) {
+        ensureOptionalAssertionsIsMutable();
+        optionalAssertions_.add(builderForValue.build());
+        onChanged();
+      } else {
+        optionalAssertionsBuilder_.addMessage(builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
+     */
+    public Builder addOptionalAssertions(
+        int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder builderForValue) {
+      if (optionalAssertionsBuilder_ == null) {
+        ensureOptionalAssertionsIsMutable();
+        optionalAssertions_.add(index, builderForValue.build());
+        onChanged();
+      } else {
+        optionalAssertionsBuilder_.addMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
+     */
+    public Builder addAllOptionalAssertions(
+        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContext> values) {
+      if (optionalAssertionsBuilder_ == null) {
+        ensureOptionalAssertionsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, optionalAssertions_);
+        onChanged();
+      } else {
+        optionalAssertionsBuilder_.addAllMessages(values);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
+     */
+    public Builder clearOptionalAssertions() {
+      if (optionalAssertionsBuilder_ == null) {
+        optionalAssertions_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000400);
+        onChanged();
+      } else {
+        optionalAssertionsBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
+     */
+    public Builder removeOptionalAssertions(int index) {
+      if (optionalAssertionsBuilder_ == null) {
+        ensureOptionalAssertionsIsMutable();
+        optionalAssertions_.remove(index);
+        onChanged();
+      } else {
+        optionalAssertionsBuilder_.remove(index);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder getOptionalAssertionsBuilder(
+        int index) {
+      return getOptionalAssertionsFieldBuilder().getBuilder(index);
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getOptionalAssertionsOrBuilder(
+        int index) {
+      if (optionalAssertionsBuilder_ == null) {
+        return optionalAssertions_.get(index);  } else {
+        return optionalAssertionsBuilder_.getMessageOrBuilder(index);
+      }
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
+     */
+    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
+         getOptionalAssertionsOrBuilderList() {
+      if (optionalAssertionsBuilder_ != null) {
+        return optionalAssertionsBuilder_.getMessageOrBuilderList();
+      } else {
+        return java.util.Collections.unmodifiableList(optionalAssertions_);
+      }
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder addOptionalAssertionsBuilder() {
+      return getOptionalAssertionsFieldBuilder().addBuilder(
+          eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance());
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder addOptionalAssertionsBuilder(
+        int index) {
+      return getOptionalAssertionsFieldBuilder().addBuilder(
+          index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance());
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
+     */
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder> 
+         getOptionalAssertionsBuilderList() {
+      return getOptionalAssertionsFieldBuilder().getBuilderList();
+    }
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
+        getOptionalAssertionsFieldBuilder() {
+      if (optionalAssertionsBuilder_ == null) {
+        optionalAssertionsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+            eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder>(
+                optionalAssertions_,
+                ((bitField0_ & 0x00000400) != 0),
+                getParentForChildren(),
+                isClean());
+        optionalAssertions_ = null;
+      }
+      return optionalAssertionsBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

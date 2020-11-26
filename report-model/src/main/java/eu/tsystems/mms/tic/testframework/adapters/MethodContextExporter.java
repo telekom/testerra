@@ -121,13 +121,13 @@ public class MethodContextExporter extends AbstractContextExporter {
         apply(methodContext.executionContext.getId(), builder::setExecutionContextId);
 
         forEach(methodContext.infos, builder::addInfos);
-        forEach(methodContext.relatedMethodContexts, m -> builder.addRelatedMethodContextIds(m.id));
-        forEach(methodContext.dependsOnMethodContexts, m -> builder.addDependsOnMethodContextIds(m.id));
+        forEach(methodContext.getRelatedMethodContexts(), m -> builder.addRelatedMethodContextIds(m.getId()));
+        forEach(methodContext.getDependsOnMethodContexts(), m -> builder.addDependsOnMethodContextIds(m.getId()));
 
         // build context
         map(methodContext.getErrorContext(), this::prepareErrorContext, builder::setErrorContext);
-        forEach(methodContext.nonFunctionalInfos, assertionInfo -> builder.addNonFunctionalInfos(prepareErrorContext(assertionInfo)));
-        forEach(methodContext.collectedAssertions, assertionInfo -> builder.addCollectedAssertions(prepareErrorContext(assertionInfo)));
+        methodContext.getOptionalAssertions().forEach(assertionInfo -> builder.addOptionalAssertions(prepareErrorContext(assertionInfo)));
+        methodContext.getCollectedAssertions().forEach(assertionInfo -> builder.addCollectedAssertions(prepareErrorContext(assertionInfo)));
         forEach(methodContext.sessionContexts, sessionContext -> builder.addSessionContextIds(sessionContext.getId()));
 
         forEach(methodContext.getVideos(), video -> {

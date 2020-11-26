@@ -68,8 +68,8 @@ public abstract class AbstractContextExporter {
     protected ContextValues createContextValues(AbstractContext context) {
         ContextValues.Builder builder = ContextValues.newBuilder();
 
-        apply(context.id, builder::setId);
-        apply(context.swi, builder::setSwi);
+        apply(context.getId(), builder::setId);
+        //apply(context.swi, builder::setSwi);
         apply(System.currentTimeMillis(), builder::setCreated);
         apply(context.name, builder::setName);
         map(context.getStartTime(), Date::getTime, builder::setStartTime);

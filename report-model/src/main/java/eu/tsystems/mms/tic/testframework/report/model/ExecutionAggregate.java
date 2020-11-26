@@ -18,6 +18,8 @@ private static final long serialVersionUID = 0L;
   private ExecutionAggregate() {
     suiteContexts_ = java.util.Collections.emptyList();
     testContexts_ = java.util.Collections.emptyList();
+    classContexts_ = java.util.Collections.emptyList();
+    methodContexts_ = java.util.Collections.emptyList();
   }
 
   @java.lang.Override
@@ -82,6 +84,24 @@ private static final long serialVersionUID = 0L;
                 input.readMessage(eu.tsystems.mms.tic.testframework.report.model.TestContext.parser(), extensionRegistry));
             break;
           }
+          case 34: {
+            if (!((mutable_bitField0_ & 0x00000004) != 0)) {
+              classContexts_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.ClassContext>();
+              mutable_bitField0_ |= 0x00000004;
+            }
+            classContexts_.add(
+                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.ClassContext.parser(), extensionRegistry));
+            break;
+          }
+          case 42: {
+            if (!((mutable_bitField0_ & 0x00000008) != 0)) {
+              methodContexts_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.MethodContext>();
+              mutable_bitField0_ |= 0x00000008;
+            }
+            methodContexts_.add(
+                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.MethodContext.parser(), extensionRegistry));
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -102,6 +122,12 @@ private static final long serialVersionUID = 0L;
       }
       if (((mutable_bitField0_ & 0x00000002) != 0)) {
         testContexts_ = java.util.Collections.unmodifiableList(testContexts_);
+      }
+      if (((mutable_bitField0_ & 0x00000004) != 0)) {
+        classContexts_ = java.util.Collections.unmodifiableList(classContexts_);
+      }
+      if (((mutable_bitField0_ & 0x00000008) != 0)) {
+        methodContexts_ = java.util.Collections.unmodifiableList(methodContexts_);
       }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
@@ -213,6 +239,76 @@ private static final long serialVersionUID = 0L;
     return testContexts_.get(index);
   }
 
+  public static final int CLASS_CONTEXTS_FIELD_NUMBER = 4;
+  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ClassContext> classContexts_;
+  /**
+   * <code>repeated .data.ClassContext class_contexts = 4;</code>
+   */
+  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ClassContext> getClassContextsList() {
+    return classContexts_;
+  }
+  /**
+   * <code>repeated .data.ClassContext class_contexts = 4;</code>
+   */
+  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ClassContextOrBuilder> 
+      getClassContextsOrBuilderList() {
+    return classContexts_;
+  }
+  /**
+   * <code>repeated .data.ClassContext class_contexts = 4;</code>
+   */
+  public int getClassContextsCount() {
+    return classContexts_.size();
+  }
+  /**
+   * <code>repeated .data.ClassContext class_contexts = 4;</code>
+   */
+  public eu.tsystems.mms.tic.testframework.report.model.ClassContext getClassContexts(int index) {
+    return classContexts_.get(index);
+  }
+  /**
+   * <code>repeated .data.ClassContext class_contexts = 4;</code>
+   */
+  public eu.tsystems.mms.tic.testframework.report.model.ClassContextOrBuilder getClassContextsOrBuilder(
+      int index) {
+    return classContexts_.get(index);
+  }
+
+  public static final int METHOD_CONTEXTS_FIELD_NUMBER = 5;
+  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.MethodContext> methodContexts_;
+  /**
+   * <code>repeated .data.MethodContext method_contexts = 5;</code>
+   */
+  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.MethodContext> getMethodContextsList() {
+    return methodContexts_;
+  }
+  /**
+   * <code>repeated .data.MethodContext method_contexts = 5;</code>
+   */
+  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.MethodContextOrBuilder> 
+      getMethodContextsOrBuilderList() {
+    return methodContexts_;
+  }
+  /**
+   * <code>repeated .data.MethodContext method_contexts = 5;</code>
+   */
+  public int getMethodContextsCount() {
+    return methodContexts_.size();
+  }
+  /**
+   * <code>repeated .data.MethodContext method_contexts = 5;</code>
+   */
+  public eu.tsystems.mms.tic.testframework.report.model.MethodContext getMethodContexts(int index) {
+    return methodContexts_.get(index);
+  }
+  /**
+   * <code>repeated .data.MethodContext method_contexts = 5;</code>
+   */
+  public eu.tsystems.mms.tic.testframework.report.model.MethodContextOrBuilder getMethodContextsOrBuilder(
+      int index) {
+    return methodContexts_.get(index);
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -236,6 +332,12 @@ private static final long serialVersionUID = 0L;
     for (int i = 0; i < testContexts_.size(); i++) {
       output.writeMessage(3, testContexts_.get(i));
     }
+    for (int i = 0; i < classContexts_.size(); i++) {
+      output.writeMessage(4, classContexts_.get(i));
+    }
+    for (int i = 0; i < methodContexts_.size(); i++) {
+      output.writeMessage(5, methodContexts_.get(i));
+    }
     unknownFields.writeTo(output);
   }
 
@@ -256,6 +358,14 @@ private static final long serialVersionUID = 0L;
     for (int i = 0; i < testContexts_.size(); i++) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(3, testContexts_.get(i));
+    }
+    for (int i = 0; i < classContexts_.size(); i++) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(4, classContexts_.get(i));
+    }
+    for (int i = 0; i < methodContexts_.size(); i++) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(5, methodContexts_.get(i));
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -281,6 +391,10 @@ private static final long serialVersionUID = 0L;
         .equals(other.getSuiteContextsList())) return false;
     if (!getTestContextsList()
         .equals(other.getTestContextsList())) return false;
+    if (!getClassContextsList()
+        .equals(other.getClassContextsList())) return false;
+    if (!getMethodContextsList()
+        .equals(other.getMethodContextsList())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -303,6 +417,14 @@ private static final long serialVersionUID = 0L;
     if (getTestContextsCount() > 0) {
       hash = (37 * hash) + TEST_CONTEXTS_FIELD_NUMBER;
       hash = (53 * hash) + getTestContextsList().hashCode();
+    }
+    if (getClassContextsCount() > 0) {
+      hash = (37 * hash) + CLASS_CONTEXTS_FIELD_NUMBER;
+      hash = (53 * hash) + getClassContextsList().hashCode();
+    }
+    if (getMethodContextsCount() > 0) {
+      hash = (37 * hash) + METHOD_CONTEXTS_FIELD_NUMBER;
+      hash = (53 * hash) + getMethodContextsList().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -434,6 +556,8 @@ private static final long serialVersionUID = 0L;
               .alwaysUseFieldBuilders) {
         getSuiteContextsFieldBuilder();
         getTestContextsFieldBuilder();
+        getClassContextsFieldBuilder();
+        getMethodContextsFieldBuilder();
       }
     }
     @java.lang.Override
@@ -456,6 +580,18 @@ private static final long serialVersionUID = 0L;
         bitField0_ = (bitField0_ & ~0x00000002);
       } else {
         testContextsBuilder_.clear();
+      }
+      if (classContextsBuilder_ == null) {
+        classContexts_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000004);
+      } else {
+        classContextsBuilder_.clear();
+      }
+      if (methodContextsBuilder_ == null) {
+        methodContexts_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000008);
+      } else {
+        methodContextsBuilder_.clear();
       }
       return this;
     }
@@ -506,6 +642,24 @@ private static final long serialVersionUID = 0L;
         result.testContexts_ = testContexts_;
       } else {
         result.testContexts_ = testContextsBuilder_.build();
+      }
+      if (classContextsBuilder_ == null) {
+        if (((bitField0_ & 0x00000004) != 0)) {
+          classContexts_ = java.util.Collections.unmodifiableList(classContexts_);
+          bitField0_ = (bitField0_ & ~0x00000004);
+        }
+        result.classContexts_ = classContexts_;
+      } else {
+        result.classContexts_ = classContextsBuilder_.build();
+      }
+      if (methodContextsBuilder_ == null) {
+        if (((bitField0_ & 0x00000008) != 0)) {
+          methodContexts_ = java.util.Collections.unmodifiableList(methodContexts_);
+          bitField0_ = (bitField0_ & ~0x00000008);
+        }
+        result.methodContexts_ = methodContexts_;
+      } else {
+        result.methodContexts_ = methodContextsBuilder_.build();
       }
       onBuilt();
       return result;
@@ -607,6 +761,58 @@ private static final long serialVersionUID = 0L;
                  getTestContextsFieldBuilder() : null;
           } else {
             testContextsBuilder_.addAllMessages(other.testContexts_);
+          }
+        }
+      }
+      if (classContextsBuilder_ == null) {
+        if (!other.classContexts_.isEmpty()) {
+          if (classContexts_.isEmpty()) {
+            classContexts_ = other.classContexts_;
+            bitField0_ = (bitField0_ & ~0x00000004);
+          } else {
+            ensureClassContextsIsMutable();
+            classContexts_.addAll(other.classContexts_);
+          }
+          onChanged();
+        }
+      } else {
+        if (!other.classContexts_.isEmpty()) {
+          if (classContextsBuilder_.isEmpty()) {
+            classContextsBuilder_.dispose();
+            classContextsBuilder_ = null;
+            classContexts_ = other.classContexts_;
+            bitField0_ = (bitField0_ & ~0x00000004);
+            classContextsBuilder_ = 
+              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                 getClassContextsFieldBuilder() : null;
+          } else {
+            classContextsBuilder_.addAllMessages(other.classContexts_);
+          }
+        }
+      }
+      if (methodContextsBuilder_ == null) {
+        if (!other.methodContexts_.isEmpty()) {
+          if (methodContexts_.isEmpty()) {
+            methodContexts_ = other.methodContexts_;
+            bitField0_ = (bitField0_ & ~0x00000008);
+          } else {
+            ensureMethodContextsIsMutable();
+            methodContexts_.addAll(other.methodContexts_);
+          }
+          onChanged();
+        }
+      } else {
+        if (!other.methodContexts_.isEmpty()) {
+          if (methodContextsBuilder_.isEmpty()) {
+            methodContextsBuilder_.dispose();
+            methodContextsBuilder_ = null;
+            methodContexts_ = other.methodContexts_;
+            bitField0_ = (bitField0_ & ~0x00000008);
+            methodContextsBuilder_ = 
+              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                 getMethodContextsFieldBuilder() : null;
+          } else {
+            methodContextsBuilder_.addAllMessages(other.methodContexts_);
           }
         }
       }
@@ -1237,6 +1443,486 @@ private static final long serialVersionUID = 0L;
         testContexts_ = null;
       }
       return testContextsBuilder_;
+    }
+
+    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ClassContext> classContexts_ =
+      java.util.Collections.emptyList();
+    private void ensureClassContextsIsMutable() {
+      if (!((bitField0_ & 0x00000004) != 0)) {
+        classContexts_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.ClassContext>(classContexts_);
+        bitField0_ |= 0x00000004;
+       }
+    }
+
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        eu.tsystems.mms.tic.testframework.report.model.ClassContext, eu.tsystems.mms.tic.testframework.report.model.ClassContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ClassContextOrBuilder> classContextsBuilder_;
+
+    /**
+     * <code>repeated .data.ClassContext class_contexts = 4;</code>
+     */
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ClassContext> getClassContextsList() {
+      if (classContextsBuilder_ == null) {
+        return java.util.Collections.unmodifiableList(classContexts_);
+      } else {
+        return classContextsBuilder_.getMessageList();
+      }
+    }
+    /**
+     * <code>repeated .data.ClassContext class_contexts = 4;</code>
+     */
+    public int getClassContextsCount() {
+      if (classContextsBuilder_ == null) {
+        return classContexts_.size();
+      } else {
+        return classContextsBuilder_.getCount();
+      }
+    }
+    /**
+     * <code>repeated .data.ClassContext class_contexts = 4;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.ClassContext getClassContexts(int index) {
+      if (classContextsBuilder_ == null) {
+        return classContexts_.get(index);
+      } else {
+        return classContextsBuilder_.getMessage(index);
+      }
+    }
+    /**
+     * <code>repeated .data.ClassContext class_contexts = 4;</code>
+     */
+    public Builder setClassContexts(
+        int index, eu.tsystems.mms.tic.testframework.report.model.ClassContext value) {
+      if (classContextsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureClassContextsIsMutable();
+        classContexts_.set(index, value);
+        onChanged();
+      } else {
+        classContextsBuilder_.setMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ClassContext class_contexts = 4;</code>
+     */
+    public Builder setClassContexts(
+        int index, eu.tsystems.mms.tic.testframework.report.model.ClassContext.Builder builderForValue) {
+      if (classContextsBuilder_ == null) {
+        ensureClassContextsIsMutable();
+        classContexts_.set(index, builderForValue.build());
+        onChanged();
+      } else {
+        classContextsBuilder_.setMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ClassContext class_contexts = 4;</code>
+     */
+    public Builder addClassContexts(eu.tsystems.mms.tic.testframework.report.model.ClassContext value) {
+      if (classContextsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureClassContextsIsMutable();
+        classContexts_.add(value);
+        onChanged();
+      } else {
+        classContextsBuilder_.addMessage(value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ClassContext class_contexts = 4;</code>
+     */
+    public Builder addClassContexts(
+        int index, eu.tsystems.mms.tic.testframework.report.model.ClassContext value) {
+      if (classContextsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureClassContextsIsMutable();
+        classContexts_.add(index, value);
+        onChanged();
+      } else {
+        classContextsBuilder_.addMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ClassContext class_contexts = 4;</code>
+     */
+    public Builder addClassContexts(
+        eu.tsystems.mms.tic.testframework.report.model.ClassContext.Builder builderForValue) {
+      if (classContextsBuilder_ == null) {
+        ensureClassContextsIsMutable();
+        classContexts_.add(builderForValue.build());
+        onChanged();
+      } else {
+        classContextsBuilder_.addMessage(builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ClassContext class_contexts = 4;</code>
+     */
+    public Builder addClassContexts(
+        int index, eu.tsystems.mms.tic.testframework.report.model.ClassContext.Builder builderForValue) {
+      if (classContextsBuilder_ == null) {
+        ensureClassContextsIsMutable();
+        classContexts_.add(index, builderForValue.build());
+        onChanged();
+      } else {
+        classContextsBuilder_.addMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ClassContext class_contexts = 4;</code>
+     */
+    public Builder addAllClassContexts(
+        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.ClassContext> values) {
+      if (classContextsBuilder_ == null) {
+        ensureClassContextsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, classContexts_);
+        onChanged();
+      } else {
+        classContextsBuilder_.addAllMessages(values);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ClassContext class_contexts = 4;</code>
+     */
+    public Builder clearClassContexts() {
+      if (classContextsBuilder_ == null) {
+        classContexts_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000004);
+        onChanged();
+      } else {
+        classContextsBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ClassContext class_contexts = 4;</code>
+     */
+    public Builder removeClassContexts(int index) {
+      if (classContextsBuilder_ == null) {
+        ensureClassContextsIsMutable();
+        classContexts_.remove(index);
+        onChanged();
+      } else {
+        classContextsBuilder_.remove(index);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ClassContext class_contexts = 4;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.ClassContext.Builder getClassContextsBuilder(
+        int index) {
+      return getClassContextsFieldBuilder().getBuilder(index);
+    }
+    /**
+     * <code>repeated .data.ClassContext class_contexts = 4;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.ClassContextOrBuilder getClassContextsOrBuilder(
+        int index) {
+      if (classContextsBuilder_ == null) {
+        return classContexts_.get(index);  } else {
+        return classContextsBuilder_.getMessageOrBuilder(index);
+      }
+    }
+    /**
+     * <code>repeated .data.ClassContext class_contexts = 4;</code>
+     */
+    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ClassContextOrBuilder> 
+         getClassContextsOrBuilderList() {
+      if (classContextsBuilder_ != null) {
+        return classContextsBuilder_.getMessageOrBuilderList();
+      } else {
+        return java.util.Collections.unmodifiableList(classContexts_);
+      }
+    }
+    /**
+     * <code>repeated .data.ClassContext class_contexts = 4;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.ClassContext.Builder addClassContextsBuilder() {
+      return getClassContextsFieldBuilder().addBuilder(
+          eu.tsystems.mms.tic.testframework.report.model.ClassContext.getDefaultInstance());
+    }
+    /**
+     * <code>repeated .data.ClassContext class_contexts = 4;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.ClassContext.Builder addClassContextsBuilder(
+        int index) {
+      return getClassContextsFieldBuilder().addBuilder(
+          index, eu.tsystems.mms.tic.testframework.report.model.ClassContext.getDefaultInstance());
+    }
+    /**
+     * <code>repeated .data.ClassContext class_contexts = 4;</code>
+     */
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ClassContext.Builder> 
+         getClassContextsBuilderList() {
+      return getClassContextsFieldBuilder().getBuilderList();
+    }
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        eu.tsystems.mms.tic.testframework.report.model.ClassContext, eu.tsystems.mms.tic.testframework.report.model.ClassContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ClassContextOrBuilder> 
+        getClassContextsFieldBuilder() {
+      if (classContextsBuilder_ == null) {
+        classContextsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+            eu.tsystems.mms.tic.testframework.report.model.ClassContext, eu.tsystems.mms.tic.testframework.report.model.ClassContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ClassContextOrBuilder>(
+                classContexts_,
+                ((bitField0_ & 0x00000004) != 0),
+                getParentForChildren(),
+                isClean());
+        classContexts_ = null;
+      }
+      return classContextsBuilder_;
+    }
+
+    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.MethodContext> methodContexts_ =
+      java.util.Collections.emptyList();
+    private void ensureMethodContextsIsMutable() {
+      if (!((bitField0_ & 0x00000008) != 0)) {
+        methodContexts_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.MethodContext>(methodContexts_);
+        bitField0_ |= 0x00000008;
+       }
+    }
+
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        eu.tsystems.mms.tic.testframework.report.model.MethodContext, eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder, eu.tsystems.mms.tic.testframework.report.model.MethodContextOrBuilder> methodContextsBuilder_;
+
+    /**
+     * <code>repeated .data.MethodContext method_contexts = 5;</code>
+     */
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.MethodContext> getMethodContextsList() {
+      if (methodContextsBuilder_ == null) {
+        return java.util.Collections.unmodifiableList(methodContexts_);
+      } else {
+        return methodContextsBuilder_.getMessageList();
+      }
+    }
+    /**
+     * <code>repeated .data.MethodContext method_contexts = 5;</code>
+     */
+    public int getMethodContextsCount() {
+      if (methodContextsBuilder_ == null) {
+        return methodContexts_.size();
+      } else {
+        return methodContextsBuilder_.getCount();
+      }
+    }
+    /**
+     * <code>repeated .data.MethodContext method_contexts = 5;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.MethodContext getMethodContexts(int index) {
+      if (methodContextsBuilder_ == null) {
+        return methodContexts_.get(index);
+      } else {
+        return methodContextsBuilder_.getMessage(index);
+      }
+    }
+    /**
+     * <code>repeated .data.MethodContext method_contexts = 5;</code>
+     */
+    public Builder setMethodContexts(
+        int index, eu.tsystems.mms.tic.testframework.report.model.MethodContext value) {
+      if (methodContextsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureMethodContextsIsMutable();
+        methodContexts_.set(index, value);
+        onChanged();
+      } else {
+        methodContextsBuilder_.setMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.MethodContext method_contexts = 5;</code>
+     */
+    public Builder setMethodContexts(
+        int index, eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder builderForValue) {
+      if (methodContextsBuilder_ == null) {
+        ensureMethodContextsIsMutable();
+        methodContexts_.set(index, builderForValue.build());
+        onChanged();
+      } else {
+        methodContextsBuilder_.setMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.MethodContext method_contexts = 5;</code>
+     */
+    public Builder addMethodContexts(eu.tsystems.mms.tic.testframework.report.model.MethodContext value) {
+      if (methodContextsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureMethodContextsIsMutable();
+        methodContexts_.add(value);
+        onChanged();
+      } else {
+        methodContextsBuilder_.addMessage(value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.MethodContext method_contexts = 5;</code>
+     */
+    public Builder addMethodContexts(
+        int index, eu.tsystems.mms.tic.testframework.report.model.MethodContext value) {
+      if (methodContextsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureMethodContextsIsMutable();
+        methodContexts_.add(index, value);
+        onChanged();
+      } else {
+        methodContextsBuilder_.addMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.MethodContext method_contexts = 5;</code>
+     */
+    public Builder addMethodContexts(
+        eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder builderForValue) {
+      if (methodContextsBuilder_ == null) {
+        ensureMethodContextsIsMutable();
+        methodContexts_.add(builderForValue.build());
+        onChanged();
+      } else {
+        methodContextsBuilder_.addMessage(builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.MethodContext method_contexts = 5;</code>
+     */
+    public Builder addMethodContexts(
+        int index, eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder builderForValue) {
+      if (methodContextsBuilder_ == null) {
+        ensureMethodContextsIsMutable();
+        methodContexts_.add(index, builderForValue.build());
+        onChanged();
+      } else {
+        methodContextsBuilder_.addMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.MethodContext method_contexts = 5;</code>
+     */
+    public Builder addAllMethodContexts(
+        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.MethodContext> values) {
+      if (methodContextsBuilder_ == null) {
+        ensureMethodContextsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, methodContexts_);
+        onChanged();
+      } else {
+        methodContextsBuilder_.addAllMessages(values);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.MethodContext method_contexts = 5;</code>
+     */
+    public Builder clearMethodContexts() {
+      if (methodContextsBuilder_ == null) {
+        methodContexts_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000008);
+        onChanged();
+      } else {
+        methodContextsBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.MethodContext method_contexts = 5;</code>
+     */
+    public Builder removeMethodContexts(int index) {
+      if (methodContextsBuilder_ == null) {
+        ensureMethodContextsIsMutable();
+        methodContexts_.remove(index);
+        onChanged();
+      } else {
+        methodContextsBuilder_.remove(index);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.MethodContext method_contexts = 5;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder getMethodContextsBuilder(
+        int index) {
+      return getMethodContextsFieldBuilder().getBuilder(index);
+    }
+    /**
+     * <code>repeated .data.MethodContext method_contexts = 5;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.MethodContextOrBuilder getMethodContextsOrBuilder(
+        int index) {
+      if (methodContextsBuilder_ == null) {
+        return methodContexts_.get(index);  } else {
+        return methodContextsBuilder_.getMessageOrBuilder(index);
+      }
+    }
+    /**
+     * <code>repeated .data.MethodContext method_contexts = 5;</code>
+     */
+    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.MethodContextOrBuilder> 
+         getMethodContextsOrBuilderList() {
+      if (methodContextsBuilder_ != null) {
+        return methodContextsBuilder_.getMessageOrBuilderList();
+      } else {
+        return java.util.Collections.unmodifiableList(methodContexts_);
+      }
+    }
+    /**
+     * <code>repeated .data.MethodContext method_contexts = 5;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder addMethodContextsBuilder() {
+      return getMethodContextsFieldBuilder().addBuilder(
+          eu.tsystems.mms.tic.testframework.report.model.MethodContext.getDefaultInstance());
+    }
+    /**
+     * <code>repeated .data.MethodContext method_contexts = 5;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder addMethodContextsBuilder(
+        int index) {
+      return getMethodContextsFieldBuilder().addBuilder(
+          index, eu.tsystems.mms.tic.testframework.report.model.MethodContext.getDefaultInstance());
+    }
+    /**
+     * <code>repeated .data.MethodContext method_contexts = 5;</code>
+     */
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder> 
+         getMethodContextsBuilderList() {
+      return getMethodContextsFieldBuilder().getBuilderList();
+    }
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        eu.tsystems.mms.tic.testframework.report.model.MethodContext, eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder, eu.tsystems.mms.tic.testframework.report.model.MethodContextOrBuilder> 
+        getMethodContextsFieldBuilder() {
+      if (methodContextsBuilder_ == null) {
+        methodContextsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+            eu.tsystems.mms.tic.testframework.report.model.MethodContext, eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder, eu.tsystems.mms.tic.testframework.report.model.MethodContextOrBuilder>(
+                methodContexts_,
+                ((bitField0_ & 0x00000008) != 0),
+                getParentForChildren(),
+                isClean());
+        methodContexts_ = null;
+      }
+      return methodContextsBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

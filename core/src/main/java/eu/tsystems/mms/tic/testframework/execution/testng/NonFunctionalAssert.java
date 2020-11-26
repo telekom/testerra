@@ -31,11 +31,7 @@ import java.util.*;
 import static org.testng.internal.EclipseInterface.*;
 
 /**
- * Created with IntelliJ IDEA.
- * User: pele
- * Date: 23.07.13
- * Time: 15:15
- * To change this template use File | Settings | File Templates.
+ * @deprecated Use {@link OptionalAssert} instead
  */
 public class NonFunctionalAssert {
 

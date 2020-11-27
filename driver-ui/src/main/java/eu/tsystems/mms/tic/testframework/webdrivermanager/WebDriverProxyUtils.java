@@ -22,8 +22,6 @@
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -46,11 +44,7 @@ public class WebDriverProxyUtils {
         ExecutionContextController.setCurrentSessionContext(sessionContext);
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         if (methodContext != null) {
-            if (!methodContext.sessionContexts.contains(sessionContext)) {
-                methodContext.sessionContexts.add(sessionContext);
-
-                TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(methodContext));
-            }
+            methodContext.addSessionContext(sessionContext);
         }
     }
 

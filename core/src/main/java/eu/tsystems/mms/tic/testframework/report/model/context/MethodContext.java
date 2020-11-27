@@ -21,10 +21,12 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
+import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.Counters;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.AssertionInfo;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
@@ -32,6 +34,7 @@ import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.lang.annotation.Annotation;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -84,8 +87,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
      */
     public final List<AssertionInfo> collectedAssertions = new LinkedList<>();
     public final List<String> infos = new LinkedList<>();
-
-    public final List<SessionContext> sessionContexts = new LinkedList<>();
+    private List<SessionContext> sessionContexts = new LinkedList<>();
     public String priorityMessage = null;
     private final TestStepController testStepController = new TestStepController();
     /**
@@ -98,10 +100,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
      */
     public List<MethodContext> dependsOnMethodContexts;
 
-    /**
-     * @deprecated Use {@link #getVideos()} instead
-     */
-    public final List<Video> videos = new LinkedList<>();
+    private List<Video> videos;
 
     /**
      * @deprecated Use {@link #getAllScreenshotsFromTestSteps()} instead
@@ -138,6 +137,18 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         this.parentContext = this.classContext = classContext;
         this.methodRunIndex = Counters.increaseMethodExecutionCounter();
         this.methodType = methodType;
+    }
+
+    public Stream<SessionContext> getSessionContexts() {
+        return sessionContexts.stream();
+    }
+
+    public MethodContext addSessionContext(SessionContext sessionContext) {
+        if (!this.sessionContexts.contains(sessionContext)) {
+            this.sessionContexts.add(sessionContext);
+            TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(this));
+        }
+        return this;
     }
 
     public ClassContext getClassContext() {
@@ -418,7 +429,19 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return this;
     }
 
-    public List<Video> getVideos() {
-        return this.videos;
+    public Stream<Video> getVideos() {
+        if (this.videos == null) {
+            return Stream.empty();
+        } else {
+            return this.videos.stream();
+        }
+    }
+
+    public MethodContext addVideos(Collection<Video> videos) {
+        if (this.videos == null) {
+             this.videos = new LinkedList<>();
+        }
+        this.videos.addAll(videos);
+        return this;
     }
 }

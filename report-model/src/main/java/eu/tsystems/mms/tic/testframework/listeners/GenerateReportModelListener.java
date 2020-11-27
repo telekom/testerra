@@ -27,6 +27,7 @@ import com.google.protobuf.Message;
 import eu.tsystems.mms.tic.testframework.adapters.ClassContextExporter;
 import eu.tsystems.mms.tic.testframework.adapters.ExecutionContextExporter;
 import eu.tsystems.mms.tic.testframework.adapters.MethodContextExporter;
+import eu.tsystems.mms.tic.testframework.adapters.SessionContextExporter;
 import eu.tsystems.mms.tic.testframework.adapters.SuiteContextExporter;
 import eu.tsystems.mms.tic.testframework.adapters.TestContextExporter;
 import eu.tsystems.mms.tic.testframework.events.FinalizeExecutionEvent;
@@ -51,6 +52,7 @@ public class GenerateReportModelListener implements
     private final SuiteContextExporter suiteContextExporter = new SuiteContextExporter();
     private final TestContextExporter testContextExporter = new TestContextExporter();
     private final ExecutionContextExporter executionContextExporter = new ExecutionContextExporter();
+    private final SessionContextExporter sessionContextExporter = new SessionContextExporter();
     protected final File baseDir;
     private File classesDir;
     private File filesDir;
@@ -85,6 +87,8 @@ public class GenerateReportModelListener implements
     protected ExecutionContextExporter getExecutionContextExporter() {
         return executionContextExporter;
     }
+
+    protected SessionContextExporter getSessionContextExporter() { return sessionContextExporter; }
 
     protected File getBaseDir() {
         return baseDir;

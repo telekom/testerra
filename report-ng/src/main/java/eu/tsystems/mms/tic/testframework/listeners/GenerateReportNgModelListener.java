@@ -25,6 +25,7 @@ import eu.tsystems.mms.tic.testframework.events.FinalizeExecutionEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.report.model.ExecutionAggregate;
 import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import java.io.File;
 
 public class GenerateReportNgModelListener extends GenerateReportModelListener {
@@ -37,7 +38,9 @@ public class GenerateReportNgModelListener extends GenerateReportModelListener {
 
     @Override
     public void onMethodEnd(MethodEndEvent event) {
-        executionAggregateBuilder.addMethodContexts(getMethodContextExporter().prepareMethodContext(event.getMethodContext()));
+        MethodContext methodContext = event.getMethodContext();
+        executionAggregateBuilder.addMethodContexts(getMethodContextExporter().prepareMethodContext(methodContext));
+        methodContext.getSessionContexts().forEach(sessionContext -> executionAggregateBuilder.addSessionContexts(getSessionContextExporter().prepareSessionContext(sessionContext)));
     }
     @Override
     public void onFinalizeExecution(FinalizeExecutionEvent event) {
@@ -54,6 +57,7 @@ public class GenerateReportNgModelListener extends GenerateReportModelListener {
                 });
             });
         });
+        executionContext.getExclusiveSessionContexts().forEach(sessionContext -> executionAggregateBuilder.addSessionContexts(getSessionContextExporter().prepareSessionContext(sessionContext)));
         executionAggregateBuilder.setExecutionContext(getExecutionContextExporter().prepareExecutionContext(executionContext));
         writeBuilderToFile(executionAggregateBuilder, new File(baseDir, "execution"));
     }

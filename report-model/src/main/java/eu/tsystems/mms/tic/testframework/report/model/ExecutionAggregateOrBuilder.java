@@ -117,4 +117,28 @@ public interface ExecutionAggregateOrBuilder extends
    */
   eu.tsystems.mms.tic.testframework.report.model.MethodContextOrBuilder getMethodContextsOrBuilder(
       int index);
+
+  /**
+   * <code>repeated .data.SessionContext session_contexts = 6;</code>
+   */
+  java.util.List<eu.tsystems.mms.tic.testframework.report.model.SessionContext> 
+      getSessionContextsList();
+  /**
+   * <code>repeated .data.SessionContext session_contexts = 6;</code>
+   */
+  eu.tsystems.mms.tic.testframework.report.model.SessionContext getSessionContexts(int index);
+  /**
+   * <code>repeated .data.SessionContext session_contexts = 6;</code>
+   */
+  int getSessionContextsCount();
+  /**
+   * <code>repeated .data.SessionContext session_contexts = 6;</code>
+   */
+  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.SessionContextOrBuilder> 
+      getSessionContextsOrBuilderList();
+  /**
+   * <code>repeated .data.SessionContext session_contexts = 6;</code>
+   */
+  eu.tsystems.mms.tic.testframework.report.model.SessionContextOrBuilder getSessionContextsOrBuilder(
+      int index);
 }

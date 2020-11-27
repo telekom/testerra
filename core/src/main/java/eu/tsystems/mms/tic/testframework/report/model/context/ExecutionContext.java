@@ -39,6 +39,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 
@@ -54,7 +55,7 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
     public final Map<String, String> metaData = new LinkedHashMap<>();
     public boolean crashed = false;
 
-    public final Queue<SessionContext> exclusiveSessionContexts = new ConcurrentLinkedQueue<>();
+    private Queue<SessionContext> exclusiveSessionContexts;
 
     public int estimatedTestMethodCount;
 
@@ -64,6 +65,24 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
         name = runConfig.RUNCFG;
         swi = name;
         TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(this));
+    }
+
+    public Stream<SessionContext> getExclusiveSessionContexts() {
+        if (this.exclusiveSessionContexts == null) {
+            return Stream.empty();
+        } else {
+            return exclusiveSessionContexts.stream();
+        }
+    }
+
+    public ExecutionContext addExclusiveSessionContext(SessionContext sessionContext) {
+        if (this.exclusiveSessionContexts == null) {
+            this.exclusiveSessionContexts = new ConcurrentLinkedQueue<>();
+        }
+        if (!this.exclusiveSessionContexts.contains(sessionContext)) {
+            this.exclusiveSessionContexts.add(sessionContext);
+        }
+        return this;
     }
 
     public ExecutionContext addLogMessage(LogMessage logMessage) {

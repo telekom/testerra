@@ -28,15 +28,16 @@ public final class Report {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\014report.proto\022\004data\032\017framework.proto\"\367\001" +
+      "\n\014report.proto\022\004data\032\017framework.proto\"\247\002" +
       "\n\022ExecutionAggregate\0221\n\021execution_contex" +
       "t\030\001 \001(\0132\026.data.ExecutionContext\022*\n\016suite" +
       "_contexts\030\002 \003(\0132\022.data.SuiteContext\022(\n\rt" +
       "est_contexts\030\003 \003(\0132\021.data.TestContext\022*\n" +
       "\016class_contexts\030\004 \003(\0132\022.data.ClassContex" +
       "t\022,\n\017method_contexts\030\005 \003(\0132\023.data.Method" +
-      "ContextB2\n.eu.tsystems.mms.tic.testframe" +
-      "work.report.modelP\001b\006proto3"
+      "Context\022.\n\020session_contexts\030\006 \003(\0132\024.data" +
+      ".SessionContextB2\n.eu.tsystems.mms.tic.t" +
+      "estframework.report.modelP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -48,7 +49,7 @@ public final class Report {
     internal_static_data_ExecutionAggregate_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_data_ExecutionAggregate_descriptor,
-        new java.lang.String[] { "ExecutionContext", "SuiteContexts", "TestContexts", "ClassContexts", "MethodContexts", });
+        new java.lang.String[] { "ExecutionContext", "SuiteContexts", "TestContexts", "ClassContexts", "MethodContexts", "SessionContexts", });
     eu.tsystems.mms.tic.testframework.report.model.Framework.getDescriptor();
   }
 

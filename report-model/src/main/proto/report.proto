@@ -12,4 +12,5 @@ message ExecutionAggregate {
     repeated TestContext test_contexts = 3;
     repeated ClassContext class_contexts = 4;
     repeated MethodContext method_contexts = 5;
+    repeated SessionContext session_contexts = 6;
 }

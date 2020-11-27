@@ -20,6 +20,7 @@ private static final long serialVersionUID = 0L;
     testContexts_ = java.util.Collections.emptyList();
     classContexts_ = java.util.Collections.emptyList();
     methodContexts_ = java.util.Collections.emptyList();
+    sessionContexts_ = java.util.Collections.emptyList();
   }
 
   @java.lang.Override
@@ -102,6 +103,15 @@ private static final long serialVersionUID = 0L;
                 input.readMessage(eu.tsystems.mms.tic.testframework.report.model.MethodContext.parser(), extensionRegistry));
             break;
           }
+          case 50: {
+            if (!((mutable_bitField0_ & 0x00000010) != 0)) {
+              sessionContexts_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.SessionContext>();
+              mutable_bitField0_ |= 0x00000010;
+            }
+            sessionContexts_.add(
+                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.SessionContext.parser(), extensionRegistry));
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -128,6 +138,9 @@ private static final long serialVersionUID = 0L;
       }
       if (((mutable_bitField0_ & 0x00000008) != 0)) {
         methodContexts_ = java.util.Collections.unmodifiableList(methodContexts_);
+      }
+      if (((mutable_bitField0_ & 0x00000010) != 0)) {
+        sessionContexts_ = java.util.Collections.unmodifiableList(sessionContexts_);
       }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
@@ -309,6 +322,41 @@ private static final long serialVersionUID = 0L;
     return methodContexts_.get(index);
   }
 
+  public static final int SESSION_CONTEXTS_FIELD_NUMBER = 6;
+  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.SessionContext> sessionContexts_;
+  /**
+   * <code>repeated .data.SessionContext session_contexts = 6;</code>
+   */
+  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.SessionContext> getSessionContextsList() {
+    return sessionContexts_;
+  }
+  /**
+   * <code>repeated .data.SessionContext session_contexts = 6;</code>
+   */
+  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.SessionContextOrBuilder> 
+      getSessionContextsOrBuilderList() {
+    return sessionContexts_;
+  }
+  /**
+   * <code>repeated .data.SessionContext session_contexts = 6;</code>
+   */
+  public int getSessionContextsCount() {
+    return sessionContexts_.size();
+  }
+  /**
+   * <code>repeated .data.SessionContext session_contexts = 6;</code>
+   */
+  public eu.tsystems.mms.tic.testframework.report.model.SessionContext getSessionContexts(int index) {
+    return sessionContexts_.get(index);
+  }
+  /**
+   * <code>repeated .data.SessionContext session_contexts = 6;</code>
+   */
+  public eu.tsystems.mms.tic.testframework.report.model.SessionContextOrBuilder getSessionContextsOrBuilder(
+      int index) {
+    return sessionContexts_.get(index);
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -337,6 +385,9 @@ private static final long serialVersionUID = 0L;
     }
     for (int i = 0; i < methodContexts_.size(); i++) {
       output.writeMessage(5, methodContexts_.get(i));
+    }
+    for (int i = 0; i < sessionContexts_.size(); i++) {
+      output.writeMessage(6, sessionContexts_.get(i));
     }
     unknownFields.writeTo(output);
   }
@@ -367,6 +418,10 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(5, methodContexts_.get(i));
     }
+    for (int i = 0; i < sessionContexts_.size(); i++) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(6, sessionContexts_.get(i));
+    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -395,6 +450,8 @@ private static final long serialVersionUID = 0L;
         .equals(other.getClassContextsList())) return false;
     if (!getMethodContextsList()
         .equals(other.getMethodContextsList())) return false;
+    if (!getSessionContextsList()
+        .equals(other.getSessionContextsList())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -425,6 +482,10 @@ private static final long serialVersionUID = 0L;
     if (getMethodContextsCount() > 0) {
       hash = (37 * hash) + METHOD_CONTEXTS_FIELD_NUMBER;
       hash = (53 * hash) + getMethodContextsList().hashCode();
+    }
+    if (getSessionContextsCount() > 0) {
+      hash = (37 * hash) + SESSION_CONTEXTS_FIELD_NUMBER;
+      hash = (53 * hash) + getSessionContextsList().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -558,6 +619,7 @@ private static final long serialVersionUID = 0L;
         getTestContextsFieldBuilder();
         getClassContextsFieldBuilder();
         getMethodContextsFieldBuilder();
+        getSessionContextsFieldBuilder();
       }
     }
     @java.lang.Override
@@ -592,6 +654,12 @@ private static final long serialVersionUID = 0L;
         bitField0_ = (bitField0_ & ~0x00000008);
       } else {
         methodContextsBuilder_.clear();
+      }
+      if (sessionContextsBuilder_ == null) {
+        sessionContexts_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000010);
+      } else {
+        sessionContextsBuilder_.clear();
       }
       return this;
     }
@@ -660,6 +728,15 @@ private static final long serialVersionUID = 0L;
         result.methodContexts_ = methodContexts_;
       } else {
         result.methodContexts_ = methodContextsBuilder_.build();
+      }
+      if (sessionContextsBuilder_ == null) {
+        if (((bitField0_ & 0x00000010) != 0)) {
+          sessionContexts_ = java.util.Collections.unmodifiableList(sessionContexts_);
+          bitField0_ = (bitField0_ & ~0x00000010);
+        }
+        result.sessionContexts_ = sessionContexts_;
+      } else {
+        result.sessionContexts_ = sessionContextsBuilder_.build();
       }
       onBuilt();
       return result;
@@ -813,6 +890,32 @@ private static final long serialVersionUID = 0L;
                  getMethodContextsFieldBuilder() : null;
           } else {
             methodContextsBuilder_.addAllMessages(other.methodContexts_);
+          }
+        }
+      }
+      if (sessionContextsBuilder_ == null) {
+        if (!other.sessionContexts_.isEmpty()) {
+          if (sessionContexts_.isEmpty()) {
+            sessionContexts_ = other.sessionContexts_;
+            bitField0_ = (bitField0_ & ~0x00000010);
+          } else {
+            ensureSessionContextsIsMutable();
+            sessionContexts_.addAll(other.sessionContexts_);
+          }
+          onChanged();
+        }
+      } else {
+        if (!other.sessionContexts_.isEmpty()) {
+          if (sessionContextsBuilder_.isEmpty()) {
+            sessionContextsBuilder_.dispose();
+            sessionContextsBuilder_ = null;
+            sessionContexts_ = other.sessionContexts_;
+            bitField0_ = (bitField0_ & ~0x00000010);
+            sessionContextsBuilder_ = 
+              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                 getSessionContextsFieldBuilder() : null;
+          } else {
+            sessionContextsBuilder_.addAllMessages(other.sessionContexts_);
           }
         }
       }
@@ -1923,6 +2026,246 @@ private static final long serialVersionUID = 0L;
         methodContexts_ = null;
       }
       return methodContextsBuilder_;
+    }
+
+    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.SessionContext> sessionContexts_ =
+      java.util.Collections.emptyList();
+    private void ensureSessionContextsIsMutable() {
+      if (!((bitField0_ & 0x00000010) != 0)) {
+        sessionContexts_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.SessionContext>(sessionContexts_);
+        bitField0_ |= 0x00000010;
+       }
+    }
+
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        eu.tsystems.mms.tic.testframework.report.model.SessionContext, eu.tsystems.mms.tic.testframework.report.model.SessionContext.Builder, eu.tsystems.mms.tic.testframework.report.model.SessionContextOrBuilder> sessionContextsBuilder_;
+
+    /**
+     * <code>repeated .data.SessionContext session_contexts = 6;</code>
+     */
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.SessionContext> getSessionContextsList() {
+      if (sessionContextsBuilder_ == null) {
+        return java.util.Collections.unmodifiableList(sessionContexts_);
+      } else {
+        return sessionContextsBuilder_.getMessageList();
+      }
+    }
+    /**
+     * <code>repeated .data.SessionContext session_contexts = 6;</code>
+     */
+    public int getSessionContextsCount() {
+      if (sessionContextsBuilder_ == null) {
+        return sessionContexts_.size();
+      } else {
+        return sessionContextsBuilder_.getCount();
+      }
+    }
+    /**
+     * <code>repeated .data.SessionContext session_contexts = 6;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.SessionContext getSessionContexts(int index) {
+      if (sessionContextsBuilder_ == null) {
+        return sessionContexts_.get(index);
+      } else {
+        return sessionContextsBuilder_.getMessage(index);
+      }
+    }
+    /**
+     * <code>repeated .data.SessionContext session_contexts = 6;</code>
+     */
+    public Builder setSessionContexts(
+        int index, eu.tsystems.mms.tic.testframework.report.model.SessionContext value) {
+      if (sessionContextsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureSessionContextsIsMutable();
+        sessionContexts_.set(index, value);
+        onChanged();
+      } else {
+        sessionContextsBuilder_.setMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.SessionContext session_contexts = 6;</code>
+     */
+    public Builder setSessionContexts(
+        int index, eu.tsystems.mms.tic.testframework.report.model.SessionContext.Builder builderForValue) {
+      if (sessionContextsBuilder_ == null) {
+        ensureSessionContextsIsMutable();
+        sessionContexts_.set(index, builderForValue.build());
+        onChanged();
+      } else {
+        sessionContextsBuilder_.setMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.SessionContext session_contexts = 6;</code>
+     */
+    public Builder addSessionContexts(eu.tsystems.mms.tic.testframework.report.model.SessionContext value) {
+      if (sessionContextsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureSessionContextsIsMutable();
+        sessionContexts_.add(value);
+        onChanged();
+      } else {
+        sessionContextsBuilder_.addMessage(value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.SessionContext session_contexts = 6;</code>
+     */
+    public Builder addSessionContexts(
+        int index, eu.tsystems.mms.tic.testframework.report.model.SessionContext value) {
+      if (sessionContextsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureSessionContextsIsMutable();
+        sessionContexts_.add(index, value);
+        onChanged();
+      } else {
+        sessionContextsBuilder_.addMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.SessionContext session_contexts = 6;</code>
+     */
+    public Builder addSessionContexts(
+        eu.tsystems.mms.tic.testframework.report.model.SessionContext.Builder builderForValue) {
+      if (sessionContextsBuilder_ == null) {
+        ensureSessionContextsIsMutable();
+        sessionContexts_.add(builderForValue.build());
+        onChanged();
+      } else {
+        sessionContextsBuilder_.addMessage(builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.SessionContext session_contexts = 6;</code>
+     */
+    public Builder addSessionContexts(
+        int index, eu.tsystems.mms.tic.testframework.report.model.SessionContext.Builder builderForValue) {
+      if (sessionContextsBuilder_ == null) {
+        ensureSessionContextsIsMutable();
+        sessionContexts_.add(index, builderForValue.build());
+        onChanged();
+      } else {
+        sessionContextsBuilder_.addMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.SessionContext session_contexts = 6;</code>
+     */
+    public Builder addAllSessionContexts(
+        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.SessionContext> values) {
+      if (sessionContextsBuilder_ == null) {
+        ensureSessionContextsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, sessionContexts_);
+        onChanged();
+      } else {
+        sessionContextsBuilder_.addAllMessages(values);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.SessionContext session_contexts = 6;</code>
+     */
+    public Builder clearSessionContexts() {
+      if (sessionContextsBuilder_ == null) {
+        sessionContexts_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000010);
+        onChanged();
+      } else {
+        sessionContextsBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.SessionContext session_contexts = 6;</code>
+     */
+    public Builder removeSessionContexts(int index) {
+      if (sessionContextsBuilder_ == null) {
+        ensureSessionContextsIsMutable();
+        sessionContexts_.remove(index);
+        onChanged();
+      } else {
+        sessionContextsBuilder_.remove(index);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.SessionContext session_contexts = 6;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.SessionContext.Builder getSessionContextsBuilder(
+        int index) {
+      return getSessionContextsFieldBuilder().getBuilder(index);
+    }
+    /**
+     * <code>repeated .data.SessionContext session_contexts = 6;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.SessionContextOrBuilder getSessionContextsOrBuilder(
+        int index) {
+      if (sessionContextsBuilder_ == null) {
+        return sessionContexts_.get(index);  } else {
+        return sessionContextsBuilder_.getMessageOrBuilder(index);
+      }
+    }
+    /**
+     * <code>repeated .data.SessionContext session_contexts = 6;</code>
+     */
+    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.SessionContextOrBuilder> 
+         getSessionContextsOrBuilderList() {
+      if (sessionContextsBuilder_ != null) {
+        return sessionContextsBuilder_.getMessageOrBuilderList();
+      } else {
+        return java.util.Collections.unmodifiableList(sessionContexts_);
+      }
+    }
+    /**
+     * <code>repeated .data.SessionContext session_contexts = 6;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.SessionContext.Builder addSessionContextsBuilder() {
+      return getSessionContextsFieldBuilder().addBuilder(
+          eu.tsystems.mms.tic.testframework.report.model.SessionContext.getDefaultInstance());
+    }
+    /**
+     * <code>repeated .data.SessionContext session_contexts = 6;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.SessionContext.Builder addSessionContextsBuilder(
+        int index) {
+      return getSessionContextsFieldBuilder().addBuilder(
+          index, eu.tsystems.mms.tic.testframework.report.model.SessionContext.getDefaultInstance());
+    }
+    /**
+     * <code>repeated .data.SessionContext session_contexts = 6;</code>
+     */
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.SessionContext.Builder> 
+         getSessionContextsBuilderList() {
+      return getSessionContextsFieldBuilder().getBuilderList();
+    }
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        eu.tsystems.mms.tic.testframework.report.model.SessionContext, eu.tsystems.mms.tic.testframework.report.model.SessionContext.Builder, eu.tsystems.mms.tic.testframework.report.model.SessionContextOrBuilder> 
+        getSessionContextsFieldBuilder() {
+      if (sessionContextsBuilder_ == null) {
+        sessionContextsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+            eu.tsystems.mms.tic.testframework.report.model.SessionContext, eu.tsystems.mms.tic.testframework.report.model.SessionContext.Builder, eu.tsystems.mms.tic.testframework.report.model.SessionContextOrBuilder>(
+                sessionContexts_,
+                ((bitField0_ & 0x00000010) != 0),
+                getParentForChildren(),
+                isClean());
+        sessionContexts_ = null;
+      }
+      return sessionContextsBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessio
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
+import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -178,7 +179,7 @@ public final class WebDriverSessionsManager {
         SessionContext sessionContext = new SessionContext(sessionKey, "external");
 
         // store to method context
-        ExecutionContextController.getCurrentMethodContext().sessionContexts.add(sessionContext);
+        ExecutionContextController.getCurrentMethodContext().addSessionContext(sessionContext);
 
         UnspecificWebDriverRequest r = new UnspecificWebDriverRequest();
         r.setSessionKey(sessionKey);
@@ -301,8 +302,9 @@ public final class WebDriverSessionsManager {
          */
         String sessionId = WebDriverUtils.getSessionId(eventFiringWebDriver);
         SessionContext sessionContext = ALL_EVENTFIRING_WEBDRIVER_SESSIONS_CONTEXTS.get(sessionId);
-        ExecutionContextController.getCurrentExecutionContext().exclusiveSessionContexts.add(sessionContext);
-        sessionContext.parentContext = ExecutionContextController.getCurrentExecutionContext();
+        ExecutionContext currentExecutionContext = ExecutionContextController.getCurrentExecutionContext();
+        currentExecutionContext.addExclusiveSessionContext(sessionContext);
+        sessionContext.parentContext = currentExecutionContext;
         // fire sync
         TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(sessionContext));
 
@@ -411,7 +413,7 @@ public final class WebDriverSessionsManager {
             SessionContext sessionContext = new SessionContext(sessionKey, webDriverFactory.getClass().getSimpleName());
             MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
             if (methodContext != null) {
-                methodContext.sessionContexts.add(sessionContext);
+                methodContext.addSessionContext(sessionContext);
             }
             sessionContext.parentContext = methodContext;
             ExecutionContextController.setCurrentSessionContext(sessionContext);

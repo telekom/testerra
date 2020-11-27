@@ -35,7 +35,7 @@ public class ExecutionContextExporter extends AbstractContextExporter {
 //        map(executionContext.exitPoints, this::createContextClip, builder::addAllExitPoints);
 //        map(executionContext.failureAspects, this::createContextClip, builder::addAllFailureAscpects);
         map(executionContext.runConfig, this::prepareRunConfig, builder::setRunConfig);
-        forEach(executionContext.exclusiveSessionContexts, sessionContext -> builder.addExclusiveSessionContextIds(sessionContext.getId()));
+        executionContext.getExclusiveSessionContexts().forEach(sessionContext -> builder.addExclusiveSessionContextIds(sessionContext.getId()));
         apply(executionContext.estimatedTestMethodCount, builder::setEstimatedTestMethodCount);
         forEach(executionContext.getMethodContextLessLogs(), logMessage -> builder.addLogMessages(prepareLogMessage(logMessage)));
 

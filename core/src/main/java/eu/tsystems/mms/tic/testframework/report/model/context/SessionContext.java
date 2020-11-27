@@ -28,9 +28,21 @@ import java.util.Map;
 
 public class SessionContext extends AbstractContext implements SynchronizableContext {
 
+    /**
+     * @deprecated Use {@link #getSessionKey()} instead
+     */
     public String sessionKey;
+    /**
+     * @deprecated Use {@link #getProvider()} instead
+     */
     public String provider;
+    /**
+     * @deprecated Use {@link #getMetaData()} instead
+     */
     public Map<String, Object> metaData = new LinkedHashMap<>();
+    /**
+     * @deprecated Use {@link #getSessionId()} instead
+     */
     public String sessionId;
 
     public SessionContext(String sessionKey, String provider) {
@@ -46,7 +58,35 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
         this.name += sessionKey;
     }
 
-    private SessionContext() {
+    public String getSessionKey() {
+        return sessionKey;
+    }
+
+    public Map<String, Object> getMetaData() {
+        return metaData;
+    }
+
+    public SessionContext setSessionKey(String sessionKey) {
+        this.sessionKey = sessionKey;
+        return this;
+    }
+
+    public String getProvider() {
+        return provider;
+    }
+
+    public SessionContext setProvider(String provider) {
+        this.provider = provider;
+        return this;
+    }
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public SessionContext setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+        return this;
     }
 
     @Override

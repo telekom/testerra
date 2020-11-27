@@ -30,10 +30,10 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController
 import java.util.List;
 
 /**
- * Default implementation of {@link NonFunctionalAssertion}
+ * Default implementation of {@link OptionalAssertion}
  */
-public class DefaultNonFunctionalAssertion extends AbstractAssertion implements
-        NonFunctionalAssertion,
+public class DefaultOptionalAssertion extends AbstractAssertion implements
+        OptionalAssertion,
         Loggable
 {
     @Override

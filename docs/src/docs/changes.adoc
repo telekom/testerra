@@ -489,11 +489,11 @@ tt.guielement.default.assertcollector=true
 ```
 ====
 
-=== Non Functional Assertions
+=== Optional Assertions
 
-The new standard way for non functional assertions works like <<Collected Assertions>>
+The new standard way for optional assertions works like <<Collected Assertions>>
 ```java
-Control.nonFunctionalAssertions(() -> uiElement.displayed(true));
+Control.optionalAssertions(() -> uiElement.displayed(true));
 ```
 
 [NOTE]
@@ -536,11 +536,11 @@ Force performing explicit assertions
 public MyClass {
     @Inject
     public MyClass(
-        NonFunctionalAssertion nonFunctional,
+        OptionalAssertion optional,
         CollectedAssertion collected,
         InstantAssertion instant
     ) {
-        nonFunctional.assertTrue(false);
+        optional.assertTrue(false);
         collected.assertTrue(false);
         instant.assertTrue(false);
     }

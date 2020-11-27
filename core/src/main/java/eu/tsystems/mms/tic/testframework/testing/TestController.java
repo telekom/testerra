@@ -73,7 +73,7 @@ public interface TestController {
     /**
      * Runs a {@link Runnable} with non-functional assertions
      */
-    void nonFunctionalAssertions(Runnable runnable);
+    void optionalAssertions(Runnable runnable);
 
     /**
      * Runs a {@link Runnable} with a specified timeout

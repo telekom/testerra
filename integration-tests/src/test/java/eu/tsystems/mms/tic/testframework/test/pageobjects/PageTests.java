@@ -94,7 +94,7 @@ public class PageTests extends AbstractTestSitesTest implements Loggable, PageFa
     @Test
     public void test_Page_title_length_fails_nonFunctional() {
         WebTestPage page = getPage();
-        Control.nonFunctionalAssertions(()-> page.expectThat().title().length().isGreaterThan(10));
+        Control.optionalAssertions(()-> page.expectThat().title().length().isGreaterThan(10));
     }
 
     @Test

@@ -25,7 +25,7 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
-import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssertion;
 import eu.tsystems.mms.tic.testframework.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.internal.NameableChild;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
@@ -645,7 +645,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     @Deprecated
     public GuiElementAssert nonFunctionalAsserts() {
         if (nonFunctionalAssert==null) {
-            NonFunctionalAssertion assertion = Testerra.injector.getInstance(NonFunctionalAssertion.class);
+            OptionalAssertion assertion = Testerra.injector.getInstance(OptionalAssertion.class);
             nonFunctionalAssert = createAssertDecorators(core, guiElementData, assertion, waits());
         }
         return nonFunctionalAssert;

@@ -25,7 +25,7 @@ import com.google.inject.Inject;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
-import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssertion;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.Sequence;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -52,8 +52,8 @@ public class DefaultTestController implements TestController, Loggable {
     }
 
     @Override
-    public void nonFunctionalAssertions(Runnable runnable) {
-        Class<? extends Assertion> prevClass = overrides.setAssertionClass(NonFunctionalAssertion.class);
+    public void optionalAssertions(Runnable runnable) {
+        Class<? extends Assertion> prevClass = overrides.setAssertionClass(OptionalAssertion.class);
         runnable.run();
         overrides.setAssertionClass(prevClass);
     }

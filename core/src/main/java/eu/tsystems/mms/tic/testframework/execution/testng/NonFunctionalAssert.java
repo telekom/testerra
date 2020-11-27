@@ -29,13 +29,13 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * A class to perform {@link NonFunctionalAssertion} in a static context
- * @deprecated Use {@link TestController#nonFunctionalAssertions()} instead
+ * A class to perform {@link OptionalAssertion} in a static context
+ * @deprecated Use {@link TestController#optionalAssertions(Runnable)} ()} instead
  */
 @Deprecated
 public class NonFunctionalAssert {
 
-    private static Assertion assertion = Testerra.injector.getInstance(NonFunctionalAssertion.class);
+    private static Assertion assertion = Testerra.injector.getInstance(OptionalAssertion.class);
 
     /**
      * Protect constructor since it is a static only class

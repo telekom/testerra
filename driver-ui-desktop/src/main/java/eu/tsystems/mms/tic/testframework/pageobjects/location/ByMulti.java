@@ -2,40 +2,49 @@ package eu.tsystems.mms.tic.testframework.pageobjects.location;
 
 import org.openqa.selenium.*;
 
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 public class ByMulti extends By {
 
     private final WebDriver driver;
-    private final String selector;
 
-    private String xpath;
-    private Rectangle boundingBox;
+    private final MultiDimSelector selector;
 
-    public ByMulti(WebDriver driver, String selector) {
-        this.selector = selector;
+    public ByMulti(WebDriver driver, String encodedSelector) {
         this.driver = driver;
 
-        deserialize();
+        this.selector = deserialize(encodedSelector);
     }
 
-    private void deserialize() {
-        String[] splits = selector.split(" ");
-
-        xpath = splits[0];
-
-        if (splits.length >= 5) {
-            int minX = Integer.parseInt(splits[1]);
-            int minY = Integer.parseInt(splits[2]);
-            int width = Integer.parseInt(splits[3]);
-            int height = Integer.parseInt(splits[4]);
-
-            boundingBox = new Rectangle(minX, minY, height, width);
-            System.out.println("Found bounding box: " + boundingBox);
-        } else {
-            boundingBox = null;
+    public static String serialize(Serializable data) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(data);
+            oos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
+        return Base64.getEncoder().encodeToString(baos.toByteArray());
+    }
+
+    public static MultiDimSelector deserialize(String s) {
+        byte [] data = Base64.getDecoder().decode(s);
+        Object o;
+        try {
+            ObjectInputStream ois = new ObjectInputStream(
+                    new ByteArrayInputStream(data));
+            o = ois.readObject();
+            ois.close();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return (MultiDimSelector) o;
     }
 
     private static class ByBoundingBox extends By {
@@ -57,7 +66,7 @@ public class ByMulti extends By {
                     rect.y + rect.height / 2).findElements(searchContext);
 
             List<WebElement> overlappingElements = new ArrayList<>();
-
+            System.out.println("aha");
             for (WebElement element : webElements) {
                 Rectangle rect2 = element.getRect();
                 int intersection = Math.max(0, Math.min(rect.x+rect.width,  rect2.x+rect2.width)  - Math.max(rect.x, rect2.x)) *
@@ -78,14 +87,14 @@ public class ByMulti extends By {
 
     @Override
     public List<WebElement> findElements(SearchContext searchContext) {
-        List<WebElement> xpathElements = new ByXPath(xpath).findElements(searchContext);
+        List<WebElement> xpathElements = new ByXPath(selector.getXpath()).findElements(searchContext);
 
         if (xpathElements.size() > 0) {
             return xpathElements;
         }
 
-        if (boundingBox != null) {
-            return new ByBoundingBox(driver, boundingBox).findElements(searchContext);
+        if (selector.getRect() != null) {
+            return new ByBoundingBox(driver, selector.getRect()).findElements(searchContext);
         } else {
             return new ArrayList<>();
         }

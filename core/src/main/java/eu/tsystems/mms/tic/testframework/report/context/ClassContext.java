@@ -18,6 +18,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package eu.tsystems.mms.tic.testframework.report.context;
 
 import com.google.common.eventbus.EventBus;
@@ -124,7 +125,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
                 enhance swi with parameters, set parameters into context
                  */
             if (parameters.length > 0) {
-                methodContext.parameters = Arrays.stream(parameters).map(Object::toString).collect(Collectors.toList());
+                methodContext.parameters = Arrays.stream(parameters).map(o -> o == null ? "" : o.toString()).collect(Collectors.toList());
                 String swiSuffix = methodContext.parameters.stream().map(Object::toString).collect(Collectors.joining("_"));
                 methodContext.swi += "_" + swiSuffix;
             }
@@ -176,8 +177,8 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
 
     public Stream<MethodContext> getRepresentationalMethods() {
         return methodContexts.stream().filter(MethodContext::isRepresentationalTestMethod);
-//        AbstractContext[] contexts = methodContexts.stream().filter(MethodContext::isRepresentationalTestMethod);
-//        return contexts;
+        //        AbstractContext[] contexts = methodContexts.stream().filter(MethodContext::isRepresentationalTestMethod);
+        //        return contexts;
     }
 
     public Map<TestStatusController.Status, Integer> getMethodStats(boolean includeTestMethods, boolean includeConfigMethods) {
@@ -186,15 +187,16 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
         // initialize with 0
         Arrays.stream(TestStatusController.Status.values()).forEach(status -> counts.put(status, 0));
 
-        methodContexts.stream().filter(mc -> (includeTestMethods && mc.isTestMethod()) || (includeConfigMethods && mc.isConfigMethod())).forEach(methodContext -> {
-            TestStatusController.Status status = methodContext.getStatus();
-            int value = 0;
-            if (counts.containsKey(status)) {
-                value = counts.get(status);
-            }
+        methodContexts.stream().filter(mc -> (includeTestMethods && mc.isTestMethod()) || (includeConfigMethods && mc.isConfigMethod()))
+                .forEach(methodContext -> {
+                    TestStatusController.Status status = methodContext.getStatus();
+                    int value = 0;
+                    if (counts.containsKey(status)) {
+                        value = counts.get(status);
+                    }
 
-            counts.put(status, value + 1);
-        });
+                    counts.put(status, value + 1);
+                });
 
         return counts;
     }

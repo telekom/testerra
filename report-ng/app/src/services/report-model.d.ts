@@ -1188,6 +1188,9 @@ export namespace data {
 
         /** ExecutionAggregate methodContexts */
         methodContexts?: (data.IMethodContext[]|null);
+
+        /** ExecutionAggregate sessionContexts */
+        sessionContexts?: (data.ISessionContext[]|null);
     }
 
     /** Represents an ExecutionAggregate. */
@@ -1213,6 +1216,9 @@ export namespace data {
 
         /** ExecutionAggregate methodContexts. */
         public methodContexts: data.IMethodContext[];
+
+        /** ExecutionAggregate sessionContexts. */
+        public sessionContexts: data.ISessionContext[];
 
         /**
          * Decodes an ExecutionAggregate message from the specified reader or buffer.

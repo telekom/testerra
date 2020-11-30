@@ -2558,6 +2558,7 @@ export const data = $root.data = (() => {
          * @property {Array.<data.ITestContext>|null} [testContexts] ExecutionAggregate testContexts
          * @property {Array.<data.IClassContext>|null} [classContexts] ExecutionAggregate classContexts
          * @property {Array.<data.IMethodContext>|null} [methodContexts] ExecutionAggregate methodContexts
+         * @property {Array.<data.ISessionContext>|null} [sessionContexts] ExecutionAggregate sessionContexts
          */
 
         /**
@@ -2573,6 +2574,7 @@ export const data = $root.data = (() => {
             this.testContexts = [];
             this.classContexts = [];
             this.methodContexts = [];
+            this.sessionContexts = [];
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -2620,6 +2622,14 @@ export const data = $root.data = (() => {
         ExecutionAggregate.prototype.methodContexts = $util.emptyArray;
 
         /**
+         * ExecutionAggregate sessionContexts.
+         * @member {Array.<data.ISessionContext>} sessionContexts
+         * @memberof data.ExecutionAggregate
+         * @instance
+         */
+        ExecutionAggregate.prototype.sessionContexts = $util.emptyArray;
+
+        /**
          * Decodes an ExecutionAggregate message from the specified reader or buffer.
          * @function decode
          * @memberof data.ExecutionAggregate
@@ -2659,6 +2669,11 @@ export const data = $root.data = (() => {
                     if (!(m.methodContexts && m.methodContexts.length))
                         m.methodContexts = [];
                     m.methodContexts.push($root.data.MethodContext.decode(r, r.uint32()));
+                    break;
+                case 6:
+                    if (!(m.sessionContexts && m.sessionContexts.length))
+                        m.sessionContexts = [];
+                    m.sessionContexts.push($root.data.SessionContext.decode(r, r.uint32()));
                     break;
                 default:
                     r.skipType(t & 7);

@@ -7,11 +7,12 @@ import {MdcDialogService} from '@aurelia-mdc-web/dialog';
 import {ScreenshotsDialog} from "../screenshots-dialog/screenshots-dialog";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import IMethodContext = data.IMethodContext;
+import IFile = data.IFile;
 
 @autoinject()
 export class Steps {
     private _methodContext:IMethodContext;
-    private _screenshots;
+    private _screenshots:IFile[] = [];
 
     constructor(
         private _statistics: StatisticsGenerator,
@@ -29,9 +30,10 @@ export class Steps {
     ) {
         this._statistics.getMethodDetails(params.id).then(methodDetails => {
             this._methodContext = methodDetails.methodContext;
-            // this._methodContext.testSteps[0].testStepActions[0].
             this._statistics.getScreenshotsFromMethodContext(this._methodContext).then(screenshots => {
-                this._screenshots = screenshots;
+                screenshots.forEach(screenshot => {
+                    this._screenshots.push(screenshot);
+                })
             })
         });
     }
@@ -45,5 +47,24 @@ export class Steps {
             },
             class: "screenshot-dialog"
         });
+    }
+
+    private _findScreenshot(id:string) {
+        return this._screenshots?.find(value => value.id == id);
+    }
+    //
+    // private _getScreenshotsForTestStepAction(testStepAction:IPTestStepAction) {
+    //     console.log(this._screenshots);
+    //     const screenshots = [];
+    //     testStepAction.screenshotIds.forEach(id => {
+    //         if (this._screenshots?.id) {
+    //             screenshots.push(this._screenshots[id]);
+    //         }
+    //     });
+    //     return screenshots;
+    // }
+
+    private _toggleExpand() {
+
     }
 }

@@ -21,17 +21,21 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
+import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.Counters;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.AssertionInfo;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
+import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepActionEntry;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.lang.annotation.Annotation;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -68,7 +72,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     /**
      * @deprecated Use {@link #getClassContext()} instead
      */
-    @Deprecated
     public final ClassContext classContext;
     public TestContextModel testContextModel;
     public SuiteContext suiteContext;
@@ -76,38 +79,38 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
 
     private int hashCodeOfTestResult = 0;
 
+    /**
+     * @deprecated Use {@link #getOptionalAssertions()} instead
+     */
     public final List<AssertionInfo> nonFunctionalInfos = new LinkedList<>();
+    /**
+     * @deprecated Use {@link #getCollectedAssertions()} instead
+     */
     public final List<AssertionInfo> collectedAssertions = new LinkedList<>();
     public final List<String> infos = new LinkedList<>();
-
-    public final List<SessionContext> sessionContexts = new LinkedList<>();
+    private List<SessionContext> sessionContexts = new LinkedList<>();
     public String priorityMessage = null;
     private final TestStepController testStepController = new TestStepController();
+    /**
+     * @deprecated Use {@link #getRelatedMethodContexts()} instead
+     */
     public List<MethodContext> relatedMethodContexts;
+
+    /**
+     * @deprecated Us {@link #getDependsOnMethodContexts()} instead
+     */
     public List<MethodContext> dependsOnMethodContexts;
 
-    // Used in methodDependencies.vm
-    public List<MethodContext> getRelatedMethodContexts() {
-        return relatedMethodContexts;
-    }
+    private List<Video> videos;
 
-    // Used in methodDependencies.vm
-    public List<MethodContext> getDependsOnMethodContexts() {
-        return dependsOnMethodContexts;
-    }
-
-    @Deprecated
-    public final List<Video> videos = new LinkedList<>();
-    @Deprecated
+    /**
+     * @deprecated Use {@link #readScreenshots()} instead
+     */
     public final List<Screenshot> screenshots = new LinkedList<>();
 
     public final List<CustomContext> customContexts = new LinkedList<>();
 
     private ErrorContext errorContext;
-
-    public ClassContext getClassContext() {
-        return classContext;
-    }
 
     /**
      * Public constructor. Creates a new <code>MethodContext</code> object.
@@ -137,13 +140,60 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         this.methodType = methodType;
     }
 
-    public Stream<Screenshot> getAllScreenshotsFromTestSteps() {
+    public Stream<SessionContext> getSessionContexts() {
+        return sessionContexts.stream();
+    }
+
+    public MethodContext addSessionContext(SessionContext sessionContext) {
+        if (!this.sessionContexts.contains(sessionContext)) {
+            this.sessionContexts.add(sessionContext);
+            TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(this));
+        }
+        return this;
+    }
+
+    public ClassContext getClassContext() {
+        return classContext;
+    }
+
+    public List<AssertionInfo> getOptionalAssertions() {
+        return this.nonFunctionalInfos;
+    }
+
+    public List<AssertionInfo> getCollectedAssertions() {
+        return this.collectedAssertions;
+    }
+
+    // Used in methodDependencies.vm
+    public List<MethodContext> getRelatedMethodContexts() {
+        return this.relatedMethodContexts;
+    }
+
+    // Used in methodDependencies.vm
+    public List<MethodContext> getDependsOnMethodContexts() {
+        return this.dependsOnMethodContexts;
+    }
+
+    public MethodContext setRelatedMethodContexts(List<MethodContext> relatedMethodContexts) {
+        this.relatedMethodContexts = relatedMethodContexts;
+        return this;
+    }
+
+    public MethodContext setDependsOnMethodContexts(List<MethodContext> dependsOnMethodContexts) {
+        this.dependsOnMethodContexts = dependsOnMethodContexts;
+        return this;
+    }
+
+    public Stream<TestStepActionEntry> readTestStepActions() {
         return this.testStepController.getTestSteps().stream()
                 .flatMap(testStep -> testStep.getTestStepActions().stream())
-                .flatMap(testStepAction -> testStepAction.getTestStepActionEntries().stream())
+                .flatMap(testStepAction -> testStepAction.getTestStepActionEntries().stream());
+    }
+
+    public Stream<Screenshot> readScreenshots() {
+        return this.readTestStepActions()
                 .map(testStepActionEntry -> testStepActionEntry.screenshot)
                 .filter(Objects::nonNull);
-
     }
 
     public TestStepAction addLogMessage(LogMessage logMessage) {
@@ -151,9 +201,13 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     /**
-     * @deprecated Use {@link #getTestSteps()} instead
+     * @deprecated Use {@link #getTestStepController()} instead
      */
     public TestStepController steps() {
+        return testStepController;
+    }
+
+    public TestStepController getTestStepController() {
         return testStepController;
     }
 
@@ -230,15 +284,15 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     /**
-     * Add non functional infos.
-     *
-     * @param throwable .
+     * @deprecated Use {@link #addOptionalAssertion(Throwable)} instead
      */
     public AssertionInfo addNonFunctionalInfo(final Throwable throwable) {
+        return this.addOptionalAssertion(throwable);
+    }
+
+    public AssertionInfo addOptionalAssertion(Throwable throwable) {
         AssertionInfo assertionInfo = new AssertionInfo(throwable);
-
         this.nonFunctionalInfos.add(assertionInfo);
-
         return assertionInfo;
     }
 
@@ -299,10 +353,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
 
     public boolean isTestMethod() {
         return !isConfigMethod();
-    }
-
-    public boolean hasNonFunctionalErrors() {
-        return !nonFunctionalInfos.isEmpty();
     }
 
     public boolean isExpectedFailed() {
@@ -372,7 +422,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
      * Publish the screenshots to the report into the current errorContext.
      */
     public MethodContext addScreenshots(Stream<Screenshot> screenshots) {
-        TestStepAction currentTestStepAction = steps().getCurrentTestStep().getCurrentTestStepAction();
+        TestStepAction currentTestStepAction = getTestStepController().getCurrentTestStep().getCurrentTestStepAction();
         screenshots.forEach(screenshot -> {
             if (screenshot.errorContextId == null) {
                 screenshot.errorContextId = this.getErrorContext().getId();
@@ -383,7 +433,26 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return this;
     }
 
-    public List<Video> getVideos() {
+    /**
+     * @deprecated Use {@link #readVideos()} instead
+     */
+    public Collection<Video> getVideos() {
+        if (this.videos == null) {
+            this.videos = new LinkedList<>();
+        }
         return this.videos;
+    }
+
+    public Stream<Video> readVideos() {
+        if (this.videos == null) {
+            return Stream.empty();
+        } else {
+            return this.videos.stream();
+        }
+    }
+
+    public MethodContext addVideos(Collection<Video> videos) {
+        this.getVideos().addAll(videos);
+        return this;
     }
 }

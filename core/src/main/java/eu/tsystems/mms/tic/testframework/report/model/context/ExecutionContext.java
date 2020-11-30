@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
+import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -38,6 +39,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 
@@ -53,14 +55,43 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
     public final Map<String, String> metaData = new LinkedHashMap<>();
     public boolean crashed = false;
 
-    public final Queue<SessionContext> exclusiveSessionContexts = new ConcurrentLinkedQueue<>();
+    private Queue<SessionContext> exclusiveSessionContexts;
 
     public int estimatedTestMethodCount;
+
+    private final ConcurrentLinkedQueue<LogMessage> methodContextLessLogs = new ConcurrentLinkedQueue<>();
 
     public ExecutionContext() {
         name = runConfig.RUNCFG;
         swi = name;
         TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(this));
+    }
+
+    public Stream<SessionContext> getExclusiveSessionContexts() {
+        if (this.exclusiveSessionContexts == null) {
+            return Stream.empty();
+        } else {
+            return exclusiveSessionContexts.stream();
+        }
+    }
+
+    public ExecutionContext addExclusiveSessionContext(SessionContext sessionContext) {
+        if (this.exclusiveSessionContexts == null) {
+            this.exclusiveSessionContexts = new ConcurrentLinkedQueue<>();
+        }
+        if (!this.exclusiveSessionContexts.contains(sessionContext)) {
+            this.exclusiveSessionContexts.add(sessionContext);
+        }
+        return this;
+    }
+
+    public ExecutionContext addLogMessage(LogMessage logMessage) {
+        this.methodContextLessLogs.add(logMessage);
+        return this;
+    }
+
+    public ConcurrentLinkedQueue<LogMessage> getMethodContextLessLogs() {
+        return this.methodContextLessLogs;
     }
 
     public synchronized SuiteContext getSuiteContext(ITestResult testResult, ITestContext iTestContext) {

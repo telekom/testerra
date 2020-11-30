@@ -38,8 +38,12 @@ body {
     //    padding: 0.3em;
     //}
 
-    .highlighted {
-        background: $failedExpected;
+    .error {
+        background: darken($failed, 36)
+    }
+
+    .warn {
+        background: darken($skipped, 36)
     }
 
     .number {
@@ -48,7 +52,9 @@ body {
         color: #808080 !important;
     }
 
-
+    pre {
+        word-break: break-word;
+    }
 }
 
 //a {

@@ -164,4 +164,28 @@ public interface ExecutionContextOrBuilder extends
    * @return The estimatedTestMethodCount.
    */
   int getEstimatedTestMethodCount();
+
+  /**
+   * <code>repeated .data.PLogMessage log_messages = 14;</code>
+   */
+  java.util.List<eu.tsystems.mms.tic.testframework.report.model.PLogMessage> 
+      getLogMessagesList();
+  /**
+   * <code>repeated .data.PLogMessage log_messages = 14;</code>
+   */
+  eu.tsystems.mms.tic.testframework.report.model.PLogMessage getLogMessages(int index);
+  /**
+   * <code>repeated .data.PLogMessage log_messages = 14;</code>
+   */
+  int getLogMessagesCount();
+  /**
+   * <code>repeated .data.PLogMessage log_messages = 14;</code>
+   */
+  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder> 
+      getLogMessagesOrBuilderList();
+  /**
+   * <code>repeated .data.PLogMessage log_messages = 14;</code>
+   */
+  eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder getLogMessagesOrBuilder(
+      int index);
 }

@@ -24,9 +24,9 @@ import {Container} from "aurelia-framework";
 import {StatusConverter} from "./status-converter";
 import ResultStatusType = data.ResultStatusType;
 import ExecutionAggregate = data.ExecutionAggregate;
-import ClassContextAggregate = data.ClassContextAggregate;
 import MethodType = data.MethodType;
 import IMethodContext = data.IMethodContext;
+import IClassContext = data.IClassContext;
 
 class Statistics {
     private _statusConverter: StatusConverter
@@ -35,14 +35,12 @@ class Statistics {
     }
 
     private _resultStatuses: { [key: number]: number } = {};
-    private _testsTotal: number = 0;
 
     addResultStatus(status: ResultStatusType) {
         if (!this._resultStatuses[status]) {
             this._resultStatuses[status] = 0;
         }
         this._resultStatuses[status]++;
-        this._testsTotal++;
     }
 
     get availableStatuses() {
@@ -53,16 +51,12 @@ class Statistics {
         return statuses;
     }
 
-    get testsTotal() {
-        return this._testsTotal;
+    get overallTestCases() {
+        return this.getStatusesCount(this._statusConverter.relevantStatuses);
     }
 
     get overallPassed() {
-        let count = 0;
-        this._statusConverter.passedStatuses.forEach(value => {
-            count += this.getStatusCount(value);
-        })
-        return count;
+        return this.getStatusesCount(this._statusConverter.passedStatuses);
     }
 
     get overallSkipped() {
@@ -70,15 +64,19 @@ class Statistics {
     }
 
     get overallFailed() {
-        let count = 0;
-        this._statusConverter.failedStatuses.forEach(value => {
-            count += this.getStatusCount(value);
-        })
-        return count;
+       return this.getStatusesCount(this._statusConverter.failedStatuses);
     }
 
     getStatusCount(status: ResultStatusType) {
         return this._resultStatuses[status] | 0;
+    }
+
+    getStatusesCount(statuses:number[]) {
+        let count = 0;
+        statuses.forEach(value => {
+            count += this.getStatusCount(value);
+        })
+        return count;
     }
 
     protected addStatistics(statistics: Statistics) {
@@ -88,7 +86,6 @@ class Statistics {
             }
             this._resultStatuses[status] += statistics._resultStatuses[status];
         }
-        this._testsTotal += statistics._testsTotal;
     }
 
     get statusConverter() {
@@ -99,7 +96,7 @@ class Statistics {
 export class ExecutionStatistics extends Statistics {
     private _executionAggregate: ExecutionAggregate;
     private _classStatistics: ClassStatistics[] = [];
-    private _failureAspectStatistics:FailureAspectStatistics[] = [];
+    private _majorFailureAspectStatistics:FailureAspectStatistics[] = [];
     private _exitPointStatistics:ExitPointStatistics[] = [];
 
     setExecutionAggregate(executionAggregate: ExecutionAggregate) {
@@ -107,39 +104,43 @@ export class ExecutionStatistics extends Statistics {
         return this;
     }
 
-    addClassStatistics(statistics: ClassStatistics) {
-        this._classStatistics.push(statistics);
-        statistics.classAggregate.methodContexts
+    addClassStatistics(classStatistics: ClassStatistics) {
+        this._classStatistics.push(classStatistics);
+    }
+
+    updateStatistics() {
+        this._classStatistics.forEach(classStatistics => this.addStatistics(classStatistics));
+    }
+
+    protected  addStatistics(classStatistics: ClassStatistics) {
+        super.addStatistics(classStatistics);
+        classStatistics.methodContexts
             .filter(methodContext => {
                 return this.statusConverter.failedStatuses.indexOf(methodContext.contextValues.resultStatus) >= 0;
             })
             .forEach(methodContext => {
                 const failureAspectStatistics = new FailureAspectStatistics().addMethodContext(methodContext);
 
-                const foundFailureAspectStatistics = this._failureAspectStatistics.find(existingFailureAspectStatistics => {
+                const foundFailureAspectStatistics = this._majorFailureAspectStatistics.find(existingFailureAspectStatistics => {
                     return existingFailureAspectStatistics.name == failureAspectStatistics.name;
                 });
                 if (foundFailureAspectStatistics) {
                     foundFailureAspectStatistics.addMethodContext(failureAspectStatistics.methodContext);
                 } else {
-                    this._failureAspectStatistics.push(failureAspectStatistics);
+                    this._majorFailureAspectStatistics.push(failureAspectStatistics);
                 }
 
-                const exitPointStatistics = new ExitPointStatistics().addMethodContext(methodContext);
-
-                const foundExitPointStatistics = this._exitPointStatistics.find(existingExitPointStatistics => {
-                    return existingExitPointStatistics.fingerprint == exitPointStatistics.fingerprint;
-                });
-                if (foundExitPointStatistics) {
-                    foundExitPointStatistics.addMethodContext(exitPointStatistics.methodContext);
-                } else {
-                    this._exitPointStatistics.push(exitPointStatistics);
-                }
+                // const exitPointStatistics = new ExitPointStatistics().addMethodContext(methodContext);
+                //
+                // const foundExitPointStatistics = this._exitPointStatistics.find(existingExitPointStatistics => {
+                //     return existingExitPointStatistics.fingerprint == exitPointStatistics.fingerprint;
+                // });
+                // if (foundExitPointStatistics) {
+                //     foundExitPointStatistics.addMethodContext(exitPointStatistics.methodContext);
+                // } else {
+                //     this._exitPointStatistics.push(exitPointStatistics);
+                // }
             })
-    }
-
-    updateStatistics() {
-        this._classStatistics.forEach(value => this.addStatistics(value));
     }
 
     get executionAggregate() {
@@ -154,34 +155,40 @@ export class ExecutionStatistics extends Statistics {
         return this._exitPointStatistics;
     }
 
-    get failureAspectStatistics() {
-        return this._failureAspectStatistics;
+    get majorFailureAspectStatistics() {
+        return this._majorFailureAspectStatistics;
+    }
+    get minorFailureAspectStatistics() {
+        return this._majorFailureAspectStatistics;
     }
 }
 
 export class ClassStatistics extends Statistics {
-    private _classAggregate: ClassContextAggregate;
     private _configStatistics = new Statistics();
+    private _methodContexts:IMethodContext[] = [];
+    private _classContext;
 
-    addClassAggregate(classAggregate: ClassContextAggregate) {
-        if (!this._classAggregate) {
-            this._classAggregate = classAggregate;
-        } else {
-            this._classAggregate.methodContexts = this._classAggregate.methodContexts.concat(classAggregate.methodContexts);
-        }
-        classAggregate.methodContexts
-            .forEach(methodContext => {
-                if (methodContext.methodType == MethodType.CONFIGURATION_METHOD) {
-                    this._configStatistics.addResultStatus(methodContext.contextValues.resultStatus);
-                } else {
-                    this.addResultStatus(methodContext.contextValues.resultStatus);
-                }
-            });
+    setClassContext(classContext : IClassContext) {
+        this._classContext = classContext;
         return this;
     }
 
-    get classAggregate() {
-        return this._classAggregate;
+    addMethodContext(methodContext : IMethodContext) {
+        if (methodContext.methodType == MethodType.CONFIGURATION_METHOD) {
+            this._configStatistics.addResultStatus(methodContext.contextValues.resultStatus);
+        } else {
+            this.addResultStatus(methodContext.contextValues.resultStatus);
+        }
+        this._methodContexts.push(methodContext);
+        return this;
+    }
+
+    get classContext() {
+        return this._classContext;
+    }
+
+    get methodContexts() {
+        return this._methodContexts;
     }
 
     get configStatistics() {
@@ -201,10 +208,10 @@ export class FailureAspectStatistics extends Statistics {
     addMethodContext(methodContext:IMethodContext) {
         if (!this._methodContext) {
             this._methodContext = methodContext;
-            const packageRegexp = new RegExp(".*\\.");
+            const namespace = this.statusConverter.separateNamespace(methodContext.errorContext?.cause.className);
             this._name = (
                 methodContext.errorContext?.description
-                || methodContext.errorContext?.cause.className.replace(packageRegexp,"") + (methodContext.errorContext?.cause?.message ? ": " + methodContext.errorContext?.cause?.message.trim() : "")
+                || namespace.class + (methodContext.errorContext?.cause?.message ? ": " + methodContext.errorContext?.cause?.message.trim() : "")
             );
         }
         this.addResultStatus(methodContext.contextValues.resultStatus);

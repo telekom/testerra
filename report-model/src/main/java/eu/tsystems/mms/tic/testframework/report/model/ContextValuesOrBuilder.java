@@ -50,15 +50,15 @@ public interface ContextValuesOrBuilder extends
   long getEndTime();
 
   /**
-   * <code>string swi = 6;</code>
+   * <code>string swi = 6 [deprecated = true];</code>
    * @return The swi.
    */
-  java.lang.String getSwi();
+  @java.lang.Deprecated java.lang.String getSwi();
   /**
-   * <code>string swi = 6;</code>
+   * <code>string swi = 6 [deprecated = true];</code>
    * @return The bytes for swi.
    */
-  com.google.protobuf.ByteString
+  @java.lang.Deprecated com.google.protobuf.ByteString
       getSwiBytes();
 
   /**

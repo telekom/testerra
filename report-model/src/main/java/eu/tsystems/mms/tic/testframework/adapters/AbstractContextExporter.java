@@ -3,6 +3,9 @@ package eu.tsystems.mms.tic.testframework.adapters;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.ContextValues;
 import eu.tsystems.mms.tic.testframework.report.model.ExecStatusType;
+import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
+import eu.tsystems.mms.tic.testframework.report.model.PLogMessage;
+import eu.tsystems.mms.tic.testframework.report.model.PLogMessageType;
 import eu.tsystems.mms.tic.testframework.report.model.ResultStatusType;
 import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
@@ -12,6 +15,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import org.apache.logging.log4j.Level;
 
 public abstract class AbstractContextExporter {
 
@@ -64,8 +68,8 @@ public abstract class AbstractContextExporter {
     protected ContextValues createContextValues(AbstractContext context) {
         ContextValues.Builder builder = ContextValues.newBuilder();
 
-        apply(context.id, builder::setId);
-        apply(context.swi, builder::setSwi);
+        apply(context.getId(), builder::setId);
+        //apply(context.swi, builder::setSwi);
         apply(System.currentTimeMillis(), builder::setCreated);
         apply(context.name, builder::setName);
         map(context.getStartTime(), Date::getTime, builder::setStartTime);
@@ -112,5 +116,22 @@ public abstract class AbstractContextExporter {
             }
         }
         return builder.build();
+    }
+
+    protected PLogMessage.Builder prepareLogMessage(LogMessage logMessage) {
+        PLogMessage.Builder plogMessageBuilder = PLogMessage.newBuilder();
+        plogMessageBuilder.setLoggerName(logMessage.getLoggerName());
+        plogMessageBuilder.setMessage(logMessage.getMessage());
+        if (logMessage.getLogLevel() == Level.ERROR) {
+            plogMessageBuilder.setType(PLogMessageType.LMT_ERROR);
+        } else if (logMessage.getLogLevel() == Level.WARN) {
+            plogMessageBuilder.setType(PLogMessageType.LMT_WARN);
+        } else if (logMessage.getLogLevel() == Level.INFO) {
+            plogMessageBuilder.setType(PLogMessageType.LMT_INFO);
+        } else if (logMessage.getLogLevel() == Level.DEBUG) {
+            plogMessageBuilder.setType(PLogMessageType.LMT_DEBUG);
+        }
+        plogMessageBuilder.setTimestamp(logMessage.getTimestamp());
+        return plogMessageBuilder;
     }
 }

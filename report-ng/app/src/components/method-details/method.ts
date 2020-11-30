@@ -53,7 +53,7 @@ export class Method {
                 name: "steps",
                 title: 'Steps',
                 settings: {
-                    icon: "reorder"
+                    icon: "list"
                 }
             },
             {
@@ -85,12 +85,12 @@ export class Method {
         navInstruction: NavigationInstruction
     ) {
         this._statistics.getMethodDetails(params.id).then(methodDetails => {
-            this._classContext = methodDetails.classStatistics.classAggregate.classContext;
+            this._classContext = methodDetails.classStatistics.classContext;
             this._methodContext = methodDetails.methodContext;
             this._testContext = methodDetails.testContext;
             this._suiteContext = methodDetails.suiteContext;
             this._statistics.getScreenshotsFromMethodContext(this._methodContext).then(screenshots => {
-                this._screenshots = Object.values(screenshots);
+                this._screenshots = screenshots;
                 this._lastScreenshot = this._screenshots.find(() => true);
             })
         });

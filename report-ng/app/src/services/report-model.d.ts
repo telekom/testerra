@@ -1,5 +1,4 @@
 import * as $protobuf from "protobufjs";
-
 /** Namespace data. */
 export namespace data {
 
@@ -194,6 +193,9 @@ export namespace data {
 
         /** ExecutionContext estimatedTestMethodCount */
         estimatedTestMethodCount?: (number|null);
+
+        /** ExecutionContext logMessages */
+        logMessages?: (data.IPLogMessage[]|null);
     }
 
     /** Represents an ExecutionContext. */
@@ -231,6 +233,9 @@ export namespace data {
 
         /** ExecutionContext estimatedTestMethodCount. */
         public estimatedTestMethodCount: number;
+
+        /** ExecutionContext logMessages. */
+        public logMessages: data.IPLogMessage[];
 
         /**
          * Decodes an ExecutionContext message from the specified reader or buffer.
@@ -314,6 +319,9 @@ export namespace data {
 
         /** MethodContext customContextJson */
         customContextJson?: (string|null);
+
+        /** MethodContext optionalAssertions */
+        optionalAssertions?: (data.IErrorContext[]|null);
     }
 
     /** Represents a MethodContext. */
@@ -394,6 +402,9 @@ export namespace data {
         /** MethodContext customContextJson. */
         public customContextJson: string;
 
+        /** MethodContext optionalAssertions. */
+        public optionalAssertions: data.IErrorContext[];
+
         /**
          * Decodes a MethodContext message from the specified reader or buffer.
          * @param r Reader or buffer to decode from
@@ -412,16 +423,16 @@ export namespace data {
         id?: (string|null);
 
         /** ContextValues created */
-        created?: (number|Long|null);
+        created?: (number|null);
 
         /** ContextValues name */
         name?: (string|null);
 
         /** ContextValues startTime */
-        startTime?: (number|Long|null);
+        startTime?: (number|null);
 
         /** ContextValues endTime */
-        endTime?: (number|Long|null);
+        endTime?: (number|null);
 
         /** ContextValues swi */
         swi?: (string|null);
@@ -446,16 +457,16 @@ export namespace data {
         public id: string;
 
         /** ContextValues created. */
-        public created: (number|Long);
+        public created: number;
 
         /** ContextValues name. */
         public name: string;
 
         /** ContextValues startTime. */
-        public startTime: (number|Long);
+        public startTime: number;
 
         /** ContextValues endTime. */
-        public endTime: (number|Long);
+        public endTime: number;
 
         /** ContextValues swi. */
         public swi: string;
@@ -483,9 +494,6 @@ export namespace data {
         /** PTestStep name */
         name?: (string|null);
 
-        /** PTestStep id */
-        id?: (string|null);
-
         /** PTestStep testStepActions */
         testStepActions?: (data.IPTestStepAction[]|null);
     }
@@ -501,9 +509,6 @@ export namespace data {
 
         /** PTestStep name. */
         public name: string;
-
-        /** PTestStep id. */
-        public id: string;
 
         /** PTestStep testStepActions. */
         public testStepActions: data.IPTestStepAction[];
@@ -525,11 +530,8 @@ export namespace data {
         /** PTestStepAction name */
         name?: (string|null);
 
-        /** PTestStepAction id */
-        id?: (string|null);
-
         /** PTestStepAction timestamp */
-        timestamp?: (number|Long|null);
+        timestamp?: (number|null);
 
         /** PTestStepAction clickpathEvents */
         clickpathEvents?: (data.IPClickPathEvent[]|null);
@@ -553,11 +555,8 @@ export namespace data {
         /** PTestStepAction name. */
         public name: string;
 
-        /** PTestStepAction id. */
-        public id: string;
-
         /** PTestStepAction timestamp. */
-        public timestamp: (number|Long);
+        public timestamp: number;
 
         /** PTestStepAction clickpathEvents. */
         public clickpathEvents: data.IPClickPathEvent[];
@@ -651,6 +650,9 @@ export namespace data {
 
         /** PLogMessage message */
         message?: (string|null);
+
+        /** PLogMessage timestamp */
+        timestamp?: (number|null);
     }
 
     /** Represents a PLogMessage. */
@@ -670,6 +672,9 @@ export namespace data {
 
         /** PLogMessage message. */
         public message: string;
+
+        /** PLogMessage timestamp. */
+        public timestamp: number;
 
         /**
          * Decodes a PLogMessage message from the specified reader or buffer.
@@ -1046,7 +1051,7 @@ export namespace data {
         id?: (string|null);
 
         /** File size */
-        size?: (number|Long|null);
+        size?: (number|null);
 
         /** File mimetype */
         mimetype?: (string|null);
@@ -1055,7 +1060,7 @@ export namespace data {
         relativePath?: (string|null);
 
         /** File createdTimestamp */
-        createdTimestamp?: (number|Long|null);
+        createdTimestamp?: (number|null);
 
         /** File sha1Checksum */
         sha1Checksum?: (Uint8Array|null);
@@ -1064,7 +1069,7 @@ export namespace data {
         meta?: ({ [k: string]: string }|null);
 
         /** File lastModified */
-        lastModified?: (number|Long|null);
+        lastModified?: (number|null);
 
         /** File projectId */
         projectId?: (string|null);
@@ -1092,7 +1097,7 @@ export namespace data {
         public id: string;
 
         /** File size. */
-        public size: (number|Long);
+        public size: number;
 
         /** File mimetype. */
         public mimetype: string;
@@ -1101,7 +1106,7 @@ export namespace data {
         public relativePath: string;
 
         /** File createdTimestamp. */
-        public createdTimestamp: (number|Long);
+        public createdTimestamp: number;
 
         /** File sha1Checksum. */
         public sha1Checksum: Uint8Array;
@@ -1110,7 +1115,7 @@ export namespace data {
         public meta: { [k: string]: string };
 
         /** File lastModified. */
-        public lastModified: (number|Long);
+        public lastModified: number;
 
         /** File projectId. */
         public projectId: string;
@@ -1166,42 +1171,6 @@ export namespace data {
         MINOR_RETRY = 12
     }
 
-    /** Properties of a ClassContextAggregate. */
-    interface IClassContextAggregate {
-
-        /** ClassContextAggregate classContext */
-        classContext?: (data.IClassContext|null);
-
-        /** ClassContextAggregate methodContexts */
-        methodContexts?: (data.IMethodContext[]|null);
-    }
-
-    /** Represents a ClassContextAggregate. */
-    class ClassContextAggregate implements IClassContextAggregate {
-
-        /**
-         * Constructs a new ClassContextAggregate.
-         * @param [p] Properties to set
-         */
-        constructor(p?: data.IClassContextAggregate);
-
-        /** ClassContextAggregate classContext. */
-        public classContext?: (data.IClassContext|null);
-
-        /** ClassContextAggregate methodContexts. */
-        public methodContexts: data.IMethodContext[];
-
-        /**
-         * Decodes a ClassContextAggregate message from the specified reader or buffer.
-         * @param r Reader or buffer to decode from
-         * @param [l] Message length if known beforehand
-         * @returns ClassContextAggregate
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.ClassContextAggregate;
-    }
-
     /** Properties of an ExecutionAggregate. */
     interface IExecutionAggregate {
 
@@ -1213,6 +1182,15 @@ export namespace data {
 
         /** ExecutionAggregate testContexts */
         testContexts?: (data.ITestContext[]|null);
+
+        /** ExecutionAggregate classContexts */
+        classContexts?: (data.IClassContext[]|null);
+
+        /** ExecutionAggregate methodContexts */
+        methodContexts?: (data.IMethodContext[]|null);
+
+        /** ExecutionAggregate sessionContexts */
+        sessionContexts?: (data.ISessionContext[]|null);
     }
 
     /** Represents an ExecutionAggregate. */
@@ -1232,6 +1210,15 @@ export namespace data {
 
         /** ExecutionAggregate testContexts. */
         public testContexts: data.ITestContext[];
+
+        /** ExecutionAggregate classContexts. */
+        public classContexts: data.IClassContext[];
+
+        /** ExecutionAggregate methodContexts. */
+        public methodContexts: data.IMethodContext[];
+
+        /** ExecutionAggregate sessionContexts. */
+        public sessionContexts: data.ISessionContext[];
 
         /**
          * Decodes an ExecutionAggregate message from the specified reader or buffer.

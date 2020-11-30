@@ -7,25 +7,43 @@
         <mdc-layout-grid-inner>
             <mdc-layout-grid-cell span="3">
                 <mdc-card>
-                    <div mdc-subtitle2 class="card-headline">${_executionStatistics.testsTotal} Tests</div>
+                    <div mdc-subtitle2 class="card-headline">${_executionStatistics.overallTestCases} Test cases</div>
                     <mdc-list-divider></mdc-list-divider>
-                    <mdc-list two-line avatar class="card-content">
-                        <mdc-list-item click.delegate="_resultClicked(4)">
-                            <mdc-icon mdc-list-item-graphic class="colored-icon status-passed big-icon">${4|statusIconName}</mdc-icon>
-                            <mdc-list-item-primary-text>${_executionStatistics.overallPassed}</mdc-list-item-primary-text>
-                            <mdc-list-item-secondary-text>${4|statusName}</mdc-list-item-secondary-text>
-                        </mdc-list-item>
-                        <mdc-list-item click.delegate="_resultClicked(3)">
-                            <mdc-icon mdc-list-item-graphic class="colored-icon status-skipped big-icon">${3|statusIconName}</mdc-icon>
-                            <mdc-list-item-primary-text>${_executionStatistics.overallSkipped}</mdc-list-item-primary-text>
-                            <mdc-list-item-secondary-text>${3|statusName}</mdc-list-item-secondary-text>
-                        </mdc-list-item>
-                        <mdc-list-item  click.delegate="_resultClicked(7)">
-                            <mdc-icon mdc-list-item-graphic class="colored-icon status-failed big-icon">${7|statusIconName}</mdc-icon>
-                            <mdc-list-item-primary-text>${_executionStatistics.overallFailed}</mdc-list-item-primary-text>
-                            <mdc-list-item-secondary-text>${7|statusName}</mdc-list-item-secondary-text>
-                        </mdc-list-item>
-                    </mdc-list>
+                    <div class="flex card-content">
+                        <mdc-list two-line avatar class="w75 p0">
+                            <mdc-list-item  click.delegate="_resultClicked(7)">
+                                <mdc-icon mdc-list-item-graphic class="colored-icon status-failed big-icon">${7|statusIconName}</mdc-icon>
+                                <mdc-list-item-primary-text>${_executionStatistics.overallFailed}</mdc-list-item-primary-text>
+                                <mdc-list-item-secondary-text>${7|statusName}</mdc-list-item-secondary-text>
+                            </mdc-list-item>
+                            <mdc-list-item click.delegate="_resultClicked(3)">
+                                <mdc-icon mdc-list-item-graphic class="colored-icon status-skipped big-icon">${3|statusIconName}</mdc-icon>
+                                <mdc-list-item-primary-text>${_executionStatistics.overallSkipped}</mdc-list-item-primary-text>
+                                <mdc-list-item-secondary-text>${3|statusName}</mdc-list-item-secondary-text>
+                            </mdc-list-item>
+                            <mdc-list-item click.delegate="_resultClicked(4)">
+                                <mdc-icon mdc-list-item-graphic class="colored-icon status-passed big-icon">${4|statusIconName}</mdc-icon>
+                                <mdc-list-item-primary-text>${_executionStatistics.overallPassed}</mdc-list-item-primary-text>
+                                <mdc-list-item-secondary-text>${4|statusName}</mdc-list-item-secondary-text>
+                            </mdc-list-item>
+                        </mdc-list>
+                        <ul class="mdc-list mdc-list--two-line mdc-list--avatar-list w50 p0">
+                            <li class="mdc-list-item reset-cursor">
+                                <span class="mdc-list-item__text" if.bind="_failedRetried>0">
+                                    <div class="mdc-list-item__primary-text">+ ${_failedRetried}</div>
+                                    <div class="mdc-list-item__secondary-text">Retried</div>
+                                </span>
+                            </li>
+                            <li class="mdc-list-item"></li>
+                            <li class="mdc-list-item reset-cursor">
+                                <span class="mdc-list-item__text"  if.bind="_passedRetried>0">
+                                    <div class="mdc-list-item__primary-text">+ ${_passedRetried}</div>
+                                    <div class="mdc-list-item__secondary-text">Retried</div>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="hcenter vcenter card-content"><span mdc-body2 class="secondary sr1">Failure Aspects</span><span mdc-body1><a href="#">${_executionStatistics.majorFailureAspectStatistics.length} Major</a> and <a href="#">${_executionStatistics.minorFailureAspectStatistics.length} Minor</a></span></div>
                 </mdc-card>
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="6">

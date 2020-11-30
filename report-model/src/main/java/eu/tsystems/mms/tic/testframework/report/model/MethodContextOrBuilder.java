@@ -151,27 +151,27 @@ public interface MethodContextOrBuilder extends
       getExecutionContextIdBytes();
 
   /**
-   * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
+   * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
    */
-  java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> 
+  @java.lang.Deprecated java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> 
       getNonFunctionalInfosList();
   /**
-   * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
+   * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.ErrorContext getNonFunctionalInfos(int index);
+  @java.lang.Deprecated eu.tsystems.mms.tic.testframework.report.model.ErrorContext getNonFunctionalInfos(int index);
   /**
-   * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
+   * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
    */
-  int getNonFunctionalInfosCount();
+  @java.lang.Deprecated int getNonFunctionalInfosCount();
   /**
-   * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
+   * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
    */
-  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
+  @java.lang.Deprecated java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
       getNonFunctionalInfosOrBuilderList();
   /**
-   * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
+   * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getNonFunctionalInfosOrBuilder(
+  @java.lang.Deprecated eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getNonFunctionalInfosOrBuilder(
       int index);
 
   /**
@@ -417,4 +417,28 @@ public interface MethodContextOrBuilder extends
    */
   com.google.protobuf.ByteString
       getCustomContextJsonBytes();
+
+  /**
+   * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
+   */
+  java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> 
+      getOptionalAssertionsList();
+  /**
+   * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
+   */
+  eu.tsystems.mms.tic.testframework.report.model.ErrorContext getOptionalAssertions(int index);
+  /**
+   * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
+   */
+  int getOptionalAssertionsCount();
+  /**
+   * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
+   */
+  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
+      getOptionalAssertionsOrBuilderList();
+  /**
+   * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
+   */
+  eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getOptionalAssertionsOrBuilder(
+      int index);
 }

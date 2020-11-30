@@ -58,8 +58,8 @@ public class LogMessage implements Serializable, Loggable {
 
     /**
      * Required by velocity templates
-     * @return
      */
+    @Deprecated
     public Date getDate() {
         return new Date(getTimestamp());
     }

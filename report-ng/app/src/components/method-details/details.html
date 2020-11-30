@@ -26,7 +26,7 @@
                     <div class="code-view m0">
                         <pre class="m0"
                              repeat.for="line of _methodContext.errorContext.scriptSource.lines"
-                             class.bind="line.mark?'highlighted':''"
+                             class.bind="line.mark?'error':''"
                         ><span class="number">${line.lineNumber}</span><span innerhtml="${_hljs.highlight('java', line.line).value}"></span></pre>
                     </div>
                 </mdc-card>
@@ -42,7 +42,7 @@
                         <div class="code-view m0">
                             <pre class="m0"
                                  repeat.for="line of cause.stackTraceElements"
-                                 class.bind="line.indexOf(_methodContext.contextValues.name)>=0?'highlighted':''"
+                                 class.bind="line.indexOf(_methodContext.contextValues.name)>=0?'error':''"
                                  innerhtml="${_hljs.highlight('java', line).value}"></pre>
                         </div>
                     </mdc-expandable>

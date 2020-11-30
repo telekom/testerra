@@ -17,7 +17,6 @@ private static final long serialVersionUID = 0L;
   }
   private PTestStep() {
     name_ = "";
-    id_ = "";
     testStepActions_ = java.util.Collections.emptyList();
   }
 
@@ -56,12 +55,6 @@ private static final long serialVersionUID = 0L;
             java.lang.String s = input.readStringRequireUtf8();
 
             name_ = s;
-            break;
-          }
-          case 18: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            id_ = s;
             break;
           }
           case 26: {
@@ -144,51 +137,23 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int ID_FIELD_NUMBER = 2;
-  private volatile java.lang.Object id_;
-  /**
-   * <code>string id = 2;</code>
-   * @return The id.
-   */
-  public java.lang.String getId() {
-    java.lang.Object ref = id_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      id_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string id = 2;</code>
-   * @return The bytes for id.
-   */
-  public com.google.protobuf.ByteString
-      getIdBytes() {
-    java.lang.Object ref = id_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      id_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
-
   public static final int TEST_STEP_ACTIONS_FIELD_NUMBER = 3;
   private java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStepAction> testStepActions_;
   /**
+   * <pre>
+   *    string id = 2;
+   * </pre>
+   *
    * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
    */
   public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStepAction> getTestStepActionsList() {
     return testStepActions_;
   }
   /**
+   * <pre>
+   *    string id = 2;
+   * </pre>
+   *
    * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
    */
   public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.PTestStepActionOrBuilder> 
@@ -196,18 +161,30 @@ private static final long serialVersionUID = 0L;
     return testStepActions_;
   }
   /**
+   * <pre>
+   *    string id = 2;
+   * </pre>
+   *
    * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
    */
   public int getTestStepActionsCount() {
     return testStepActions_.size();
   }
   /**
+   * <pre>
+   *    string id = 2;
+   * </pre>
+   *
    * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
    */
   public eu.tsystems.mms.tic.testframework.report.model.PTestStepAction getTestStepActions(int index) {
     return testStepActions_.get(index);
   }
   /**
+   * <pre>
+   *    string id = 2;
+   * </pre>
+   *
    * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
    */
   public eu.tsystems.mms.tic.testframework.report.model.PTestStepActionOrBuilder getTestStepActionsOrBuilder(
@@ -232,9 +209,6 @@ private static final long serialVersionUID = 0L;
     if (!getNameBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 1, name_);
     }
-    if (!getIdBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, id_);
-    }
     for (int i = 0; i < testStepActions_.size(); i++) {
       output.writeMessage(3, testStepActions_.get(i));
     }
@@ -249,9 +223,6 @@ private static final long serialVersionUID = 0L;
     size = 0;
     if (!getNameBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, name_);
-    }
-    if (!getIdBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, id_);
     }
     for (int i = 0; i < testStepActions_.size(); i++) {
       size += com.google.protobuf.CodedOutputStream
@@ -274,8 +245,6 @@ private static final long serialVersionUID = 0L;
 
     if (!getName()
         .equals(other.getName())) return false;
-    if (!getId()
-        .equals(other.getId())) return false;
     if (!getTestStepActionsList()
         .equals(other.getTestStepActionsList())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
@@ -291,8 +260,6 @@ private static final long serialVersionUID = 0L;
     hash = (19 * hash) + getDescriptor().hashCode();
     hash = (37 * hash) + NAME_FIELD_NUMBER;
     hash = (53 * hash) + getName().hashCode();
-    hash = (37 * hash) + ID_FIELD_NUMBER;
-    hash = (53 * hash) + getId().hashCode();
     if (getTestStepActionsCount() > 0) {
       hash = (37 * hash) + TEST_STEP_ACTIONS_FIELD_NUMBER;
       hash = (53 * hash) + getTestStepActionsList().hashCode();
@@ -433,8 +400,6 @@ private static final long serialVersionUID = 0L;
       super.clear();
       name_ = "";
 
-      id_ = "";
-
       if (testStepActionsBuilder_ == null) {
         testStepActions_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000001);
@@ -469,7 +434,6 @@ private static final long serialVersionUID = 0L;
       eu.tsystems.mms.tic.testframework.report.model.PTestStep result = new eu.tsystems.mms.tic.testframework.report.model.PTestStep(this);
       int from_bitField0_ = bitField0_;
       result.name_ = name_;
-      result.id_ = id_;
       if (testStepActionsBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0)) {
           testStepActions_ = java.util.Collections.unmodifiableList(testStepActions_);
@@ -529,10 +493,6 @@ private static final long serialVersionUID = 0L;
       if (other == eu.tsystems.mms.tic.testframework.report.model.PTestStep.getDefaultInstance()) return this;
       if (!other.getName().isEmpty()) {
         name_ = other.name_;
-        onChanged();
-      }
-      if (!other.getId().isEmpty()) {
-        id_ = other.id_;
         onChanged();
       }
       if (testStepActionsBuilder_ == null) {
@@ -667,82 +627,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.lang.Object id_ = "";
-    /**
-     * <code>string id = 2;</code>
-     * @return The id.
-     */
-    public java.lang.String getId() {
-      java.lang.Object ref = id_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        id_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <code>string id = 2;</code>
-     * @return The bytes for id.
-     */
-    public com.google.protobuf.ByteString
-        getIdBytes() {
-      java.lang.Object ref = id_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        id_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string id = 2;</code>
-     * @param value The id to set.
-     * @return This builder for chaining.
-     */
-    public Builder setId(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      id_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string id = 2;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearId() {
-      
-      id_ = getDefaultInstance().getId();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string id = 2;</code>
-     * @param value The bytes for id to set.
-     * @return This builder for chaining.
-     */
-    public Builder setIdBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      id_ = value;
-      onChanged();
-      return this;
-    }
-
     private java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStepAction> testStepActions_ =
       java.util.Collections.emptyList();
     private void ensureTestStepActionsIsMutable() {
@@ -756,6 +640,10 @@ private static final long serialVersionUID = 0L;
         eu.tsystems.mms.tic.testframework.report.model.PTestStepAction, eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.Builder, eu.tsystems.mms.tic.testframework.report.model.PTestStepActionOrBuilder> testStepActionsBuilder_;
 
     /**
+     * <pre>
+     *    string id = 2;
+     * </pre>
+     *
      * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
     public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStepAction> getTestStepActionsList() {
@@ -766,6 +654,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     *    string id = 2;
+     * </pre>
+     *
      * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
     public int getTestStepActionsCount() {
@@ -776,6 +668,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     *    string id = 2;
+     * </pre>
+     *
      * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
     public eu.tsystems.mms.tic.testframework.report.model.PTestStepAction getTestStepActions(int index) {
@@ -786,6 +682,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     *    string id = 2;
+     * </pre>
+     *
      * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
     public Builder setTestStepActions(
@@ -803,6 +703,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    string id = 2;
+     * </pre>
+     *
      * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
     public Builder setTestStepActions(
@@ -817,6 +721,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    string id = 2;
+     * </pre>
+     *
      * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
     public Builder addTestStepActions(eu.tsystems.mms.tic.testframework.report.model.PTestStepAction value) {
@@ -833,6 +741,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    string id = 2;
+     * </pre>
+     *
      * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
     public Builder addTestStepActions(
@@ -850,6 +762,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    string id = 2;
+     * </pre>
+     *
      * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
     public Builder addTestStepActions(
@@ -864,6 +780,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    string id = 2;
+     * </pre>
+     *
      * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
     public Builder addTestStepActions(
@@ -878,6 +798,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    string id = 2;
+     * </pre>
+     *
      * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
     public Builder addAllTestStepActions(
@@ -893,6 +817,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    string id = 2;
+     * </pre>
+     *
      * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
     public Builder clearTestStepActions() {
@@ -906,6 +834,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    string id = 2;
+     * </pre>
+     *
      * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
     public Builder removeTestStepActions(int index) {
@@ -919,6 +851,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    string id = 2;
+     * </pre>
+     *
      * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
     public eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.Builder getTestStepActionsBuilder(
@@ -926,6 +862,10 @@ private static final long serialVersionUID = 0L;
       return getTestStepActionsFieldBuilder().getBuilder(index);
     }
     /**
+     * <pre>
+     *    string id = 2;
+     * </pre>
+     *
      * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
     public eu.tsystems.mms.tic.testframework.report.model.PTestStepActionOrBuilder getTestStepActionsOrBuilder(
@@ -936,6 +876,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     *    string id = 2;
+     * </pre>
+     *
      * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
     public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.PTestStepActionOrBuilder> 
@@ -947,6 +891,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     *    string id = 2;
+     * </pre>
+     *
      * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
     public eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.Builder addTestStepActionsBuilder() {
@@ -954,6 +902,10 @@ private static final long serialVersionUID = 0L;
           eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.getDefaultInstance());
     }
     /**
+     * <pre>
+     *    string id = 2;
+     * </pre>
+     *
      * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
     public eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.Builder addTestStepActionsBuilder(
@@ -962,6 +914,10 @@ private static final long serialVersionUID = 0L;
           index, eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.getDefaultInstance());
     }
     /**
+     * <pre>
+     *    string id = 2;
+     * </pre>
+     *
      * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
     public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.Builder> 

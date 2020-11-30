@@ -20,18 +20,10 @@ public interface PTestStepActionOrBuilder extends
       getNameBytes();
 
   /**
-   * <code>string id = 2;</code>
-   * @return The id.
-   */
-  java.lang.String getId();
-  /**
-   * <code>string id = 2;</code>
-   * @return The bytes for id.
-   */
-  com.google.protobuf.ByteString
-      getIdBytes();
-
-  /**
+   * <pre>
+   *    string id = 2;
+   * </pre>
+   *
    * <code>int64 timestamp = 3;</code>
    * @return The timestamp.
    */

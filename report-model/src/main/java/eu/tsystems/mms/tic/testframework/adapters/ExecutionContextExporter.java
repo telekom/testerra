@@ -30,13 +30,14 @@ public class ExecutionContextExporter extends AbstractContextExporter {
         ExecutionContext.Builder builder = ExecutionContext.newBuilder();
 
         apply(createContextValues(executionContext), builder::setContextValues);
-        forEach(executionContext.suiteContexts, suiteContext -> builder.addSuiteContextIds(suiteContext.id));
+        forEach(executionContext.suiteContexts, suiteContext -> builder.addSuiteContextIds(suiteContext.getId()));
         //forEach(executionContext.mergedClassContexts, classContext -> builder.addMergedClassContextIds(classContext.id));
 //        map(executionContext.exitPoints, this::createContextClip, builder::addAllExitPoints);
 //        map(executionContext.failureAspects, this::createContextClip, builder::addAllFailureAscpects);
         map(executionContext.runConfig, this::prepareRunConfig, builder::setRunConfig);
-        forEach(executionContext.exclusiveSessionContexts, sessionContext -> builder.addExclusiveSessionContextIds(sessionContext.id));
+        executionContext.getExclusiveSessionContexts().forEach(sessionContext -> builder.addExclusiveSessionContextIds(sessionContext.getId()));
         apply(executionContext.estimatedTestMethodCount, builder::setEstimatedTestMethodCount);
+        forEach(executionContext.getMethodContextLessLogs(), logMessage -> builder.addLogMessages(prepareLogMessage(logMessage)));
 
         return builder;
     }

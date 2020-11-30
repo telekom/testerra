@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Eric Kubenka, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2020,  Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -19,16 +19,12 @@
  * under the License.
  *
  */
-package eu.tsystems.mms.tic.testframework.testmanagement.annotation;
+ package eu.tsystems.mms.tic.testframework.report.model.steps;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 
-@Target({ElementType.METHOD})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface XrayTest {
+public interface TestStepHandler {
 
-    String key();
+    String getTestStepActionContext(LogMessage logMessage);
+
 }

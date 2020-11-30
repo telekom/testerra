@@ -8,6 +8,8 @@ import {AbstractViewModel} from "../abstract-view-model";
 export class Dashboard extends AbstractViewModel {
     private _executionStatistics: ExecutionStatistics;
     private _selectedResult: any = {status: ""};
+    private _failedRetried = 0;
+    private _passedRetried = 0;
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -21,6 +23,8 @@ export class Dashboard extends AbstractViewModel {
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
             this._executionStatistics = executionStatistics;
             console.log(executionStatistics);
+            this._failedRetried = this._executionStatistics.getStatusCount(9);
+            this._passedRetried = this._executionStatistics.getStatusesCount([11,12]);
         })
 
     };

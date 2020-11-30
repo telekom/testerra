@@ -59,12 +59,25 @@
     padding: 1em;
 }
 
+.pl1 {
+    padding-left: 1em;
+}
+
 .pt0 {
     padding-top: 0;
 }
 
 .w100 {
     width: 100%;
+}
+.w75 {
+    width: 75%;
+}
+.w50 {
+    width: 50%;
+}
+.w25 {
+    width: 25%;
 }
 
 //prevents app-content overflowing out of screen

@@ -121,16 +121,16 @@ public class MethodContextExporter extends AbstractContextExporter {
         apply(methodContext.executionContext.getId(), builder::setExecutionContextId);
 
         forEach(methodContext.infos, builder::addInfos);
-        forEach(methodContext.relatedMethodContexts, m -> builder.addRelatedMethodContextIds(m.id));
-        forEach(methodContext.dependsOnMethodContexts, m -> builder.addDependsOnMethodContextIds(m.id));
+        forEach(methodContext.getRelatedMethodContexts(), m -> builder.addRelatedMethodContextIds(m.getId()));
+        forEach(methodContext.getDependsOnMethodContexts(), m -> builder.addDependsOnMethodContextIds(m.getId()));
 
         // build context
         map(methodContext.getErrorContext(), this::prepareErrorContext, builder::setErrorContext);
-        forEach(methodContext.nonFunctionalInfos, assertionInfo -> builder.addNonFunctionalInfos(prepareErrorContext(assertionInfo)));
-        forEach(methodContext.collectedAssertions, assertionInfo -> builder.addCollectedAssertions(prepareErrorContext(assertionInfo)));
-        forEach(methodContext.sessionContexts, sessionContext -> builder.addSessionContextIds(sessionContext.getId()));
+        methodContext.getOptionalAssertions().forEach(assertionInfo -> builder.addOptionalAssertions(prepareErrorContext(assertionInfo)));
+        methodContext.getCollectedAssertions().forEach(assertionInfo -> builder.addCollectedAssertions(prepareErrorContext(assertionInfo)));
+        methodContext.getSessionContexts().forEach(sessionContext -> builder.addSessionContextIds(sessionContext.getId()));
 
-        forEach(methodContext.getVideos(), video -> {
+        methodContext.readVideos().forEach(video -> {
             final java.io.File targetVideoFile = new java.io.File(targetVideoDir, video.filename);
             final java.io.File currentVideoFile = new java.io.File(currentVideoDir, video.filename);
 
@@ -302,20 +302,7 @@ public class MethodContextExporter extends AbstractContextExporter {
             }
 
             if (testStepActionEntry.logMessage != null) {
-                LogMessage logMessage = testStepActionEntry.logMessage;
-                PLogMessage.Builder plogMessageBuilder = PLogMessage.newBuilder();
-                plogMessageBuilder.setLoggerName(logMessage.getLoggerName());
-                plogMessageBuilder.setMessage(logMessage.getMessage());
-                if (logMessage.getLogLevel() == Level.ERROR) {
-                    plogMessageBuilder.setType(PLogMessageType.LMT_ERROR);
-                } else if (logMessage.getLogLevel() == Level.WARN) {
-                    plogMessageBuilder.setType(PLogMessageType.LMT_WARN);
-                } else if (logMessage.getLogLevel() == Level.INFO) {
-                    plogMessageBuilder.setType(PLogMessageType.LMT_INFO);
-                } else if (logMessage.getLogLevel() == Level.DEBUG) {
-                    plogMessageBuilder.setType(PLogMessageType.LMT_DEBUG);
-                }
-                testStepBuilder.addLogMessages(plogMessageBuilder);
+                testStepBuilder.addLogMessages(prepareLogMessage(testStepActionEntry.logMessage));
             }
         });
         return testStepBuilder;

@@ -88,7 +88,7 @@ public class MethodRelations {
             Test test = method.getAnnotation(Test.class);
             String[] dependsOnMethods = test.dependsOnMethods();
             for (String dependsOnMethod : dependsOnMethods) {
-                MethodContext methodContext1 = methodContext.classContext.findTestMethodContainer(dependsOnMethod);
+                MethodContext methodContext1 = methodContext.getClassContext().findTestMethodContainer(dependsOnMethod);
                 if (methodContext1 != null) {
                     containers.add(methodContext1);
                 }
@@ -105,7 +105,7 @@ public class MethodRelations {
         }
 
         if (containers.size() > 0) {
-            methodContext.dependsOnMethodContexts = containers;
+            methodContext.setDependsOnMethodContexts(containers);
         }
     }
 
@@ -175,7 +175,7 @@ public class MethodRelations {
 
             synchronized (containerList) {
                 for (MethodContext methodContainer : containerList) {
-                    methodContainer.relatedMethodContexts = relatedContainers;
+                    methodContainer.setRelatedMethodContexts(relatedContainers);
                 }
             }
         }

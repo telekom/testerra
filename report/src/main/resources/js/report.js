@@ -555,7 +555,7 @@ function showMethodsViewOnDashboard(classname, status) {
     }
 
     var filter = ".filter" + status;
-    var templateHtml = $('#'+classname+'_dashboard').html();
+    var templateHtml = $('#' + classname.replace(" ", "_") + '_dashboard').html();
     $(e).html(templateHtml);
     $('.filterMethods').hide();
     $(filter).show();

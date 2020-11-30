@@ -92,7 +92,7 @@ public class ReportFormatter {
      * @param template      The template file to use.
      */
     public static void createTestClassesView(final File logFile, final Collection<ClassContext> testClassList,
-                                             final String template, final List<LogMessage> unrelatedLogs, final ReportInfo.RunInfo runInfo) {
+                                             final String template, final Collection<LogMessage> unrelatedLogs, final ReportInfo.RunInfo runInfo) {
 
         try {
             pCreateTestClassesView(logFile, testClassList, template, unrelatedLogs, runInfo);
@@ -159,7 +159,7 @@ public class ReportFormatter {
      * @param unrelatedLogs List of log messages that could not be mapped to a test.
      */
     private static void pCreateTestClassesView(final File logFile, final Collection<ClassContext> testClassList,
-                                               final String template, final List<LogMessage> unrelatedLogs, final ReportInfo.RunInfo runInfo)
+                                               final String template, final Collection<LogMessage> unrelatedLogs, final ReportInfo.RunInfo runInfo)
             throws IOException {
 
         Template htmlLogTemplate = Velocity.getTemplate(template, "UTF-8");

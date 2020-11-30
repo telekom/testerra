@@ -69,4 +69,76 @@ public interface ExecutionAggregateOrBuilder extends
    */
   eu.tsystems.mms.tic.testframework.report.model.TestContextOrBuilder getTestContextsOrBuilder(
       int index);
+
+  /**
+   * <code>repeated .data.ClassContext class_contexts = 4;</code>
+   */
+  java.util.List<eu.tsystems.mms.tic.testframework.report.model.ClassContext> 
+      getClassContextsList();
+  /**
+   * <code>repeated .data.ClassContext class_contexts = 4;</code>
+   */
+  eu.tsystems.mms.tic.testframework.report.model.ClassContext getClassContexts(int index);
+  /**
+   * <code>repeated .data.ClassContext class_contexts = 4;</code>
+   */
+  int getClassContextsCount();
+  /**
+   * <code>repeated .data.ClassContext class_contexts = 4;</code>
+   */
+  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ClassContextOrBuilder> 
+      getClassContextsOrBuilderList();
+  /**
+   * <code>repeated .data.ClassContext class_contexts = 4;</code>
+   */
+  eu.tsystems.mms.tic.testframework.report.model.ClassContextOrBuilder getClassContextsOrBuilder(
+      int index);
+
+  /**
+   * <code>repeated .data.MethodContext method_contexts = 5;</code>
+   */
+  java.util.List<eu.tsystems.mms.tic.testframework.report.model.MethodContext> 
+      getMethodContextsList();
+  /**
+   * <code>repeated .data.MethodContext method_contexts = 5;</code>
+   */
+  eu.tsystems.mms.tic.testframework.report.model.MethodContext getMethodContexts(int index);
+  /**
+   * <code>repeated .data.MethodContext method_contexts = 5;</code>
+   */
+  int getMethodContextsCount();
+  /**
+   * <code>repeated .data.MethodContext method_contexts = 5;</code>
+   */
+  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.MethodContextOrBuilder> 
+      getMethodContextsOrBuilderList();
+  /**
+   * <code>repeated .data.MethodContext method_contexts = 5;</code>
+   */
+  eu.tsystems.mms.tic.testframework.report.model.MethodContextOrBuilder getMethodContextsOrBuilder(
+      int index);
+
+  /**
+   * <code>repeated .data.SessionContext session_contexts = 6;</code>
+   */
+  java.util.List<eu.tsystems.mms.tic.testframework.report.model.SessionContext> 
+      getSessionContextsList();
+  /**
+   * <code>repeated .data.SessionContext session_contexts = 6;</code>
+   */
+  eu.tsystems.mms.tic.testframework.report.model.SessionContext getSessionContexts(int index);
+  /**
+   * <code>repeated .data.SessionContext session_contexts = 6;</code>
+   */
+  int getSessionContextsCount();
+  /**
+   * <code>repeated .data.SessionContext session_contexts = 6;</code>
+   */
+  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.SessionContextOrBuilder> 
+      getSessionContextsOrBuilderList();
+  /**
+   * <code>repeated .data.SessionContext session_contexts = 6;</code>
+   */
+  eu.tsystems.mms.tic.testframework.report.model.SessionContextOrBuilder getSessionContextsOrBuilder(
+      int index);
 }

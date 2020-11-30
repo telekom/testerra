@@ -6,8 +6,7 @@ import {StatusConverter} from "../../services/status-converter";
 import {FailureAspectStatistics} from "../../services/statistic-models";
 
 @autoinject()
-export class FailureAspects extends AbstractViewModel {
-    private _filteredFailureAspects: FailureAspectStatistics[];
+export class Threads extends AbstractViewModel {
     private _searchRegexp: RegExp;
     private _loading = false;
 
@@ -30,13 +29,8 @@ export class FailureAspects extends AbstractViewModel {
             this._searchRegexp = null;
         }
 
-        this._filteredFailureAspects = [];
         this._loading = true;
         this._statistics.getExecutionStatistics().then(executionStatistics => {
-            this._filteredFailureAspects = executionStatistics.majorFailureAspectStatistics
-                .filter(failureAspectStatistics => {
-                    return (!this._searchRegexp || failureAspectStatistics.name.match(this._searchRegexp));
-                });
             this._loading = false;
             this.updateUrl(this.queryParams);
         });

@@ -36,19 +36,13 @@ public class TestStepAction implements Serializable {
     private static final long serialVersionUID = Serial.SERIAL;
 
     private final String name;
-    private final TestStep testStep;
     private long timestamp;
 
     private final List<TestStepActionEntry> testStepActionEntries = Collections.synchronizedList(new LinkedList<>());
 
-    public TestStepAction(TestStep testStep, String name) {
-        this.testStep = testStep;
+    public TestStepAction(String name) {
         this.name = name;
         this.timestamp = System.currentTimeMillis();
-    }
-
-    public TestStep getTestStep() {
-        return testStep;
     }
 
     /**

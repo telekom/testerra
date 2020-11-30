@@ -20,36 +20,44 @@ public interface PTestStepOrBuilder extends
       getNameBytes();
 
   /**
-   * <code>string id = 2;</code>
-   * @return The id.
-   */
-  java.lang.String getId();
-  /**
-   * <code>string id = 2;</code>
-   * @return The bytes for id.
-   */
-  com.google.protobuf.ByteString
-      getIdBytes();
-
-  /**
+   * <pre>
+   *    string id = 2;
+   * </pre>
+   *
    * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
    */
   java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStepAction> 
       getTestStepActionsList();
   /**
+   * <pre>
+   *    string id = 2;
+   * </pre>
+   *
    * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
    */
   eu.tsystems.mms.tic.testframework.report.model.PTestStepAction getTestStepActions(int index);
   /**
+   * <pre>
+   *    string id = 2;
+   * </pre>
+   *
    * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
    */
   int getTestStepActionsCount();
   /**
+   * <pre>
+   *    string id = 2;
+   * </pre>
+   *
    * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
    */
   java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.PTestStepActionOrBuilder> 
       getTestStepActionsOrBuilderList();
   /**
+   * <pre>
+   *    string id = 2;
+   * </pre>
+   *
    * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
    */
   eu.tsystems.mms.tic.testframework.report.model.PTestStepActionOrBuilder getTestStepActionsOrBuilder(

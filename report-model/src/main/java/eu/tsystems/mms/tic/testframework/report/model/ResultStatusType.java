@@ -53,8 +53,9 @@ public enum ResultStatusType
    * passed, but with minor, non-blocking issues
    * </pre>
    *
-   * <code>MINOR = 5;</code>
+   * <code>MINOR = 5 [deprecated = true];</code>
    */
+  @java.lang.Deprecated
   MINOR(5),
   /**
    * <pre>
@@ -69,8 +70,9 @@ public enum ResultStatusType
    * failed with additional minor issues
    * </pre>
    *
-   * <code>FAILED_MINOR = 8;</code>
+   * <code>FAILED_MINOR = 8 [deprecated = true];</code>
    */
+  @java.lang.Deprecated
   FAILED_MINOR(8),
   /**
    * <pre>
@@ -101,8 +103,9 @@ public enum ResultStatusType
    * minor after a retry
    * </pre>
    *
-   * <code>MINOR_RETRY = 12;</code>
+   * <code>MINOR_RETRY = 12 [deprecated = true];</code>
    */
+  @java.lang.Deprecated
   MINOR_RETRY(12),
   UNRECOGNIZED(-1),
   ;
@@ -148,7 +151,7 @@ public enum ResultStatusType
    * passed, but with minor, non-blocking issues
    * </pre>
    *
-   * <code>MINOR = 5;</code>
+   * <code>MINOR = 5 [deprecated = true];</code>
    */
   public static final int MINOR_VALUE = 5;
   /**
@@ -164,7 +167,7 @@ public enum ResultStatusType
    * failed with additional minor issues
    * </pre>
    *
-   * <code>FAILED_MINOR = 8;</code>
+   * <code>FAILED_MINOR = 8 [deprecated = true];</code>
    */
   public static final int FAILED_MINOR_VALUE = 8;
   /**
@@ -196,7 +199,7 @@ public enum ResultStatusType
    * minor after a retry
    * </pre>
    *
-   * <code>MINOR_RETRY = 12;</code>
+   * <code>MINOR_RETRY = 12 [deprecated = true];</code>
    */
   public static final int MINOR_RETRY_VALUE = 12;
 

@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Eric Kubenka, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -17,18 +17,18 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
-package eu.tsystems.mms.tic.testframework.testmanagement.annotation;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import {data} from "../services/report-model";
 
-@Target({ElementType.TYPE})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface XrayTestSet {
-
-    String key() default "";
+export class LogLevelValueConverter {
+    toView(value: data.PLogMessageType) {
+        switch (value) {
+            case data.PLogMessageType.LMT_DEBUG: return "DEBUG";
+            case data.PLogMessageType.LMT_ERROR: return "ERROR";
+            case data.PLogMessageType.LMT_INFO: return "INFO";
+            case data.PLogMessageType.LMT_WARN: return "WARN";
+            default: return "UNKNOWN";
+        }
+    }
 }

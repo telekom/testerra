@@ -719,10 +719,16 @@ public class GuiElement implements
      * Provides access to all non-functional assert methods.
      *
      * @return GuiElementAssert object for non-functional assertions
+     * @deprecated Use {@link #optionalAsserts()} instead
      */
     public GuiElementAssert nonFunctionalAsserts() {
         return nonFunctionalAssertReplacement;
     }
+
+    /**
+     * Provides access to optional assert methods
+     */
+    public GuiElementAssert optionalAsserts() { return nonFunctionalAssertReplacement; }
 
     /**
      * Provides access to all non-functional assert methods. If an assertion fails, the assertDescription will be
@@ -731,11 +737,19 @@ public class GuiElement implements
      * @param errorMessage Cause returned on assertion error.
      *
      * @return GuiElementAssert object for non-functional assertions
+     * @deprecated Use {@link #optionalAsserts(String)} instead
      */
     public GuiElementAssert nonFunctionalAsserts(String errorMessage) {
         GuiElementAssertDescriptionDecorator guiElementAssertDescriptionDecorator
                 = new GuiElementAssertDescriptionDecorator(errorMessage, nonFunctionalAssertReplacement);
         return guiElementAssertDescriptionDecorator;
+    }
+
+    /**
+     * Provides access to optional assert methods
+     */
+    public GuiElementAssert optionalAsserts(String errorMessage) {
+        return nonFunctionalAsserts(errorMessage);
     }
 
     /**

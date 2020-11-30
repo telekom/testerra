@@ -23,24 +23,27 @@ package eu.tsystems.mms.tic.testframework.listeners;
 
 import eu.tsystems.mms.tic.testframework.events.FinalizeExecutionEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
-import eu.tsystems.mms.tic.testframework.report.model.ClassContextAggregate;
 import eu.tsystems.mms.tic.testframework.report.model.ExecutionAggregate;
 import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import java.io.File;
 
 public class GenerateReportNgModelListener extends GenerateReportModelListener {
+
+    private ExecutionAggregate.Builder executionAggregateBuilder = ExecutionAggregate.newBuilder();
+
     public GenerateReportNgModelListener(File baseDir) {
         super(baseDir);
     }
 
     @Override
     public void onMethodEnd(MethodEndEvent event) {
-        // ignore
+        MethodContext methodContext = event.getMethodContext();
+        executionAggregateBuilder.addMethodContexts(getMethodContextExporter().prepareMethodContext(methodContext));
+        methodContext.getSessionContexts().forEach(sessionContext -> executionAggregateBuilder.addSessionContexts(getSessionContextExporter().prepareSessionContext(sessionContext)));
     }
     @Override
     public void onFinalizeExecution(FinalizeExecutionEvent event) {
-
-        ExecutionAggregate.Builder executionAggregateBuilder = ExecutionAggregate.newBuilder();
 
         ExecutionContext executionContext = event.getExecutionContext();
         executionContext.suiteContexts.forEach(suiteContext -> {
@@ -50,16 +53,11 @@ public class GenerateReportNgModelListener extends GenerateReportModelListener {
                 executionAggregateBuilder.addTestContexts(getTestContextExporter().prepareTestContext(testContextModel));
 
                 testContextModel.classContexts.forEach(classContext -> {
-                    ClassContextAggregate.Builder classContextAggregateBuilder = ClassContextAggregate.newBuilder();
-                    classContextAggregateBuilder.setClassContext(getClassContextExporter().prepareClassContext(classContext));
-
-                    classContext.methodContexts.forEach(methodContext -> {
-                        classContextAggregateBuilder.addMethodContexts(getMethodContextExporter().prepareMethodContext(methodContext));
-                    });
-                    writeBuilderToFile(classContextAggregateBuilder, new File(getClassesDir(), classContext.getId()));
+                    executionAggregateBuilder.addClassContexts(getClassContextExporter().prepareClassContext(classContext));
                 });
             });
         });
+        executionContext.getExclusiveSessionContexts().forEach(sessionContext -> executionAggregateBuilder.addSessionContexts(getSessionContextExporter().prepareSessionContext(sessionContext)));
         executionAggregateBuilder.setExecutionContext(getExecutionContextExporter().prepareExecutionContext(executionContext));
         writeBuilderToFile(executionAggregateBuilder, new File(baseDir, "execution"));
     }

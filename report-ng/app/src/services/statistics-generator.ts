@@ -27,6 +27,7 @@ import {Config} from "./config";
 import {data} from "./report-model";
 import IFile = data.IFile;
 import IMethodContext = data.IMethodContext;
+import {StatusConverter} from "./status-converter";
 
 @autoinject()
 export class StatisticsGenerator {
@@ -34,6 +35,7 @@ export class StatisticsGenerator {
         private _dataLoader: DataLoader,
         private _cacheService:CacheService,
         private _config:Config,
+        private _statusConverter:StatusConverter,
     ) {
         this._cacheService.setDefaultCacheTtl(120);
 
@@ -46,37 +48,34 @@ export class StatisticsGenerator {
                 const executionStatistics = new ExecutionStatistics();
                 executionStatistics.setExecutionAggregate(executionAggregate);
 
-                const loadingPromises = [];
                 executionAggregate.testContexts.forEach(testContext => {
                     testContext.classContextIds.forEach(classContextId => {
-                        const loadingPromise = this._dataLoader.getClassContextAggregate(classContextId).then(classContextAggregate => {
-                            let classStatistics:ClassStatistics;
+                        const classContext = executionAggregate.classContexts.find(classContext => classContext.contextValues.id == classContextId);
+                        let classStatistics:ClassStatistics;
 
-                            // Group by test context name
-                            if (classContextAggregate.classContext.testContextName) {
-                                classStatistics = executionStatistics.classStatistics.find(value => value.classAggregate.classContext.testContextName == classContextAggregate.classContext.testContextName);
+                        // Group by test context name
+                        if (classContext.testContextName) {
+                            classStatistics = executionStatistics.classStatistics.find(classStatistics => classStatistics.classContext.testContextName == classContext.testContextName);
 
                             // Or by class name
-                            } else {
-                                classStatistics = executionStatistics.classStatistics.find(value => value.classAggregate.classContext.fullClassName == classContextAggregate.classContext.fullClassName);
-                            }
-                            if (!classStatistics) {
-                                classStatistics = new ClassStatistics();
-                                classStatistics.addClassAggregate(classContextAggregate);
-                                executionStatistics.addClassStatistics(classStatistics);
-                            } else {
-                                classStatistics.addClassAggregate(classContextAggregate);
-                            }
-                        });
+                        } else {
+                            classStatistics = executionStatistics.classStatistics.find(classStatistics => classStatistics.classContext.fullClassName == classContext.fullClassName);
+                        }
+                        if (!classStatistics) {
+                            classStatistics = new ClassStatistics().setClassContext(classContext);
+                            executionStatistics.addClassStatistics(classStatistics);
+                        }
 
-                        loadingPromises.push(loadingPromise);
+                        classContext.methodContextIds.forEach(methodContextId => {
+                            const methodContext = executionAggregate.methodContexts.find(methodContext => methodContext.contextValues.id == methodContextId);
+                            methodContext.contextValues.resultStatus = this._statusConverter.correctStatus(methodContext.contextValues.resultStatus);
+                            classStatistics.addMethodContext(methodContext);
+                        });
                     })
                 });
 
-                return Promise.all(loadingPromises).then(() => {
-                    executionStatistics.updateStatistics();
-                    return Promise.resolve(executionStatistics);
-                })
+                executionStatistics.updateStatistics();
+                return executionStatistics;
             });
         })
     }
@@ -85,11 +84,11 @@ export class StatisticsGenerator {
         return this._cacheService.getForKeyWithLoadingFunction("method:"+methodId, () => {
             return this.getExecutionStatistics().then(executionStatistics => {
                 for (const classStatistic of executionStatistics.classStatistics) {
-                    const methodContext = classStatistic.classAggregate.methodContexts
+                    const methodContext = classStatistic.methodContexts
                         .find(methodContext => methodContext.contextValues.id == methodId);
 
                     if (methodContext) {
-                        const classContext = classStatistic.classAggregate.classContext;
+                        const classContext = classStatistic.classContext;
                         const testContext = executionStatistics.executionAggregate.testContexts.find(testContext => testContext.classContextIds.find(id => classContext.contextValues.id == id));
                         const suiteContext = executionStatistics.executionAggregate.suiteContexts.find(suiteContext => suiteContext.testContextIds.find(id => testContext.contextValues.id == id));
                         return {
@@ -106,7 +105,8 @@ export class StatisticsGenerator {
     }
 
     getScreenshotsFromMethodContext(methodContext:IMethodContext) {
-        const screenshots:{[key:string]:IFile} = {};
+        //const screenshots:{[key:string]:IFile} = {};
+        const screenshots:IFile[] = [];
         const allFilePromises = [];
         methodContext.testSteps
             .flatMap(testStep => testStep.testStepActions)
@@ -114,7 +114,8 @@ export class StatisticsGenerator {
             .forEach(id => {
                 allFilePromises.push(this._dataLoader.getFile(id).then(file => {
                     file.relativePath = this._config.correctRelativePath(file.relativePath);
-                    screenshots[file.id] = file;
+                    //screenshots[file.id] = file;
+                    screenshots.push(file);
                 }));
             })
         return Promise.all(allFilePromises).then(()=>screenshots);

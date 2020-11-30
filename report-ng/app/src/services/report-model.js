@@ -376,6 +376,7 @@ export const data = $root.data = (() => {
          * @property {string|null} [task_Id] ExecutionContext task_Id
          * @property {Array.<string>|null} [exclusiveSessionContextIds] ExecutionContext exclusiveSessionContextIds
          * @property {number|null} [estimatedTestMethodCount] ExecutionContext estimatedTestMethodCount
+         * @property {Array.<data.IPLogMessage>|null} [logMessages] ExecutionContext logMessages
          */
 
         /**
@@ -389,6 +390,7 @@ export const data = $root.data = (() => {
         function ExecutionContext(p) {
             this.suiteContextIds = [];
             this.exclusiveSessionContextIds = [];
+            this.logMessages = [];
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -468,6 +470,14 @@ export const data = $root.data = (() => {
         ExecutionContext.prototype.estimatedTestMethodCount = 0;
 
         /**
+         * ExecutionContext logMessages.
+         * @member {Array.<data.IPLogMessage>} logMessages
+         * @memberof data.ExecutionContext
+         * @instance
+         */
+        ExecutionContext.prototype.logMessages = $util.emptyArray;
+
+        /**
          * Decodes an ExecutionContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.ExecutionContext
@@ -516,6 +526,11 @@ export const data = $root.data = (() => {
                 case 13:
                     m.estimatedTestMethodCount = r.int32();
                     break;
+                case 14:
+                    if (!(m.logMessages && m.logMessages.length))
+                        m.logMessages = [];
+                    m.logMessages.push($root.data.PLogMessage.decode(r, r.uint32()));
+                    break;
                 default:
                     r.skipType(t & 7);
                     break;
@@ -556,6 +571,7 @@ export const data = $root.data = (() => {
          * @property {Array.<string>|null} [sessionContextIds] MethodContext sessionContextIds
          * @property {Array.<string>|null} [videoIds] MethodContext videoIds
          * @property {string|null} [customContextJson] MethodContext customContextJson
+         * @property {Array.<data.IErrorContext>|null} [optionalAssertions] MethodContext optionalAssertions
          */
 
         /**
@@ -577,6 +593,7 @@ export const data = $root.data = (() => {
             this.testSteps = [];
             this.sessionContextIds = [];
             this.videoIds = [];
+            this.optionalAssertions = [];
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -768,6 +785,14 @@ export const data = $root.data = (() => {
         MethodContext.prototype.customContextJson = "";
 
         /**
+         * MethodContext optionalAssertions.
+         * @member {Array.<data.IErrorContext>} optionalAssertions
+         * @memberof data.MethodContext
+         * @instance
+         */
+        MethodContext.prototype.optionalAssertions = $util.emptyArray;
+
+        /**
          * Decodes a MethodContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.MethodContext
@@ -874,6 +899,11 @@ export const data = $root.data = (() => {
                 case 32:
                     m.customContextJson = r.string();
                     break;
+                case 33:
+                    if (!(m.optionalAssertions && m.optionalAssertions.length))
+                        m.optionalAssertions = [];
+                    m.optionalAssertions.push($root.data.ErrorContext.decode(r, r.uint32()));
+                    break;
                 default:
                     r.skipType(t & 7);
                     break;
@@ -892,10 +922,10 @@ export const data = $root.data = (() => {
          * @memberof data
          * @interface IContextValues
          * @property {string|null} [id] ContextValues id
-         * @property {number|Long|null} [created] ContextValues created
+         * @property {number|null} [created] ContextValues created
          * @property {string|null} [name] ContextValues name
-         * @property {number|Long|null} [startTime] ContextValues startTime
-         * @property {number|Long|null} [endTime] ContextValues endTime
+         * @property {number|null} [startTime] ContextValues startTime
+         * @property {number|null} [endTime] ContextValues endTime
          * @property {string|null} [swi] ContextValues swi
          * @property {data.ResultStatusType|null} [resultStatus] ContextValues resultStatus
          * @property {data.ExecStatusType|null} [execStatus] ContextValues execStatus
@@ -926,7 +956,7 @@ export const data = $root.data = (() => {
 
         /**
          * ContextValues created.
-         * @member {number|Long} created
+         * @member {number} created
          * @memberof data.ContextValues
          * @instance
          */
@@ -942,7 +972,7 @@ export const data = $root.data = (() => {
 
         /**
          * ContextValues startTime.
-         * @member {number|Long} startTime
+         * @member {number} startTime
          * @memberof data.ContextValues
          * @instance
          */
@@ -950,7 +980,7 @@ export const data = $root.data = (() => {
 
         /**
          * ContextValues endTime.
-         * @member {number|Long} endTime
+         * @member {number} endTime
          * @memberof data.ContextValues
          * @instance
          */
@@ -1040,7 +1070,6 @@ export const data = $root.data = (() => {
          * @memberof data
          * @interface IPTestStep
          * @property {string|null} [name] PTestStep name
-         * @property {string|null} [id] PTestStep id
          * @property {Array.<data.IPTestStepAction>|null} [testStepActions] PTestStep testStepActions
          */
 
@@ -1067,14 +1096,6 @@ export const data = $root.data = (() => {
          * @instance
          */
         PTestStep.prototype.name = "";
-
-        /**
-         * PTestStep id.
-         * @member {string} id
-         * @memberof data.PTestStep
-         * @instance
-         */
-        PTestStep.prototype.id = "";
 
         /**
          * PTestStep testStepActions.
@@ -1105,9 +1126,6 @@ export const data = $root.data = (() => {
                 case 1:
                     m.name = r.string();
                     break;
-                case 2:
-                    m.id = r.string();
-                    break;
                 case 3:
                     if (!(m.testStepActions && m.testStepActions.length))
                         m.testStepActions = [];
@@ -1131,8 +1149,7 @@ export const data = $root.data = (() => {
          * @memberof data
          * @interface IPTestStepAction
          * @property {string|null} [name] PTestStepAction name
-         * @property {string|null} [id] PTestStepAction id
-         * @property {number|Long|null} [timestamp] PTestStepAction timestamp
+         * @property {number|null} [timestamp] PTestStepAction timestamp
          * @property {Array.<data.IPClickPathEvent>|null} [clickpathEvents] PTestStepAction clickpathEvents
          * @property {Array.<string>|null} [screenshotIds] PTestStepAction screenshotIds
          * @property {Array.<data.IPLogMessage>|null} [logMessages] PTestStepAction logMessages
@@ -1165,16 +1182,8 @@ export const data = $root.data = (() => {
         PTestStepAction.prototype.name = "";
 
         /**
-         * PTestStepAction id.
-         * @member {string} id
-         * @memberof data.PTestStepAction
-         * @instance
-         */
-        PTestStepAction.prototype.id = "";
-
-        /**
          * PTestStepAction timestamp.
-         * @member {number|Long} timestamp
+         * @member {number} timestamp
          * @memberof data.PTestStepAction
          * @instance
          */
@@ -1224,9 +1233,6 @@ export const data = $root.data = (() => {
                 switch (t >>> 3) {
                 case 1:
                     m.name = r.string();
-                    break;
-                case 2:
-                    m.id = r.string();
                     break;
                 case 3:
                     m.timestamp = r.int64();
@@ -1396,6 +1402,7 @@ export const data = $root.data = (() => {
          * @property {data.PLogMessageType|null} [type] PLogMessage type
          * @property {string|null} [loggerName] PLogMessage loggerName
          * @property {string|null} [message] PLogMessage message
+         * @property {number|null} [timestamp] PLogMessage timestamp
          */
 
         /**
@@ -1438,6 +1445,14 @@ export const data = $root.data = (() => {
         PLogMessage.prototype.message = "";
 
         /**
+         * PLogMessage timestamp.
+         * @member {number} timestamp
+         * @memberof data.PLogMessage
+         * @instance
+         */
+        PLogMessage.prototype.timestamp = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
          * Decodes a PLogMessage message from the specified reader or buffer.
          * @function decode
          * @memberof data.PLogMessage
@@ -1463,6 +1478,9 @@ export const data = $root.data = (() => {
                     break;
                 case 3:
                     m.message = r.string();
+                    break;
+                case 4:
+                    m.timestamp = r.int64();
                     break;
                 default:
                     r.skipType(t & 7);
@@ -2254,13 +2272,13 @@ export const data = $root.data = (() => {
          * @memberof data
          * @interface IFile
          * @property {string|null} [id] File id
-         * @property {number|Long|null} [size] File size
+         * @property {number|null} [size] File size
          * @property {string|null} [mimetype] File mimetype
          * @property {string|null} [relativePath] File relativePath
-         * @property {number|Long|null} [createdTimestamp] File createdTimestamp
+         * @property {number|null} [createdTimestamp] File createdTimestamp
          * @property {Uint8Array|null} [sha1Checksum] File sha1Checksum
          * @property {Object.<string,string>|null} [meta] File meta
-         * @property {number|Long|null} [lastModified] File lastModified
+         * @property {number|null} [lastModified] File lastModified
          * @property {string|null} [projectId] File projectId
          * @property {string|null} [jobId] File jobId
          * @property {boolean|null} [isDirectory] File isDirectory
@@ -2293,7 +2311,7 @@ export const data = $root.data = (() => {
 
         /**
          * File size.
-         * @member {number|Long} size
+         * @member {number} size
          * @memberof data.File
          * @instance
          */
@@ -2317,7 +2335,7 @@ export const data = $root.data = (() => {
 
         /**
          * File createdTimestamp.
-         * @member {number|Long} createdTimestamp
+         * @member {number} createdTimestamp
          * @memberof data.File
          * @instance
          */
@@ -2341,7 +2359,7 @@ export const data = $root.data = (() => {
 
         /**
          * File lastModified.
-         * @member {number|Long} lastModified
+         * @member {number} lastModified
          * @memberof data.File
          * @instance
          */
@@ -2529,85 +2547,6 @@ export const data = $root.data = (() => {
         return values;
     })();
 
-    data.ClassContextAggregate = (function() {
-
-        /**
-         * Properties of a ClassContextAggregate.
-         * @memberof data
-         * @interface IClassContextAggregate
-         * @property {data.IClassContext|null} [classContext] ClassContextAggregate classContext
-         * @property {Array.<data.IMethodContext>|null} [methodContexts] ClassContextAggregate methodContexts
-         */
-
-        /**
-         * Constructs a new ClassContextAggregate.
-         * @memberof data
-         * @classdesc Represents a ClassContextAggregate.
-         * @implements IClassContextAggregate
-         * @constructor
-         * @param {data.IClassContextAggregate=} [p] Properties to set
-         */
-        function ClassContextAggregate(p) {
-            this.methodContexts = [];
-            if (p)
-                for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
-                    if (p[ks[i]] != null)
-                        this[ks[i]] = p[ks[i]];
-        }
-
-        /**
-         * ClassContextAggregate classContext.
-         * @member {data.IClassContext|null|undefined} classContext
-         * @memberof data.ClassContextAggregate
-         * @instance
-         */
-        ClassContextAggregate.prototype.classContext = null;
-
-        /**
-         * ClassContextAggregate methodContexts.
-         * @member {Array.<data.IMethodContext>} methodContexts
-         * @memberof data.ClassContextAggregate
-         * @instance
-         */
-        ClassContextAggregate.prototype.methodContexts = $util.emptyArray;
-
-        /**
-         * Decodes a ClassContextAggregate message from the specified reader or buffer.
-         * @function decode
-         * @memberof data.ClassContextAggregate
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
-         * @param {number} [l] Message length if known beforehand
-         * @returns {data.ClassContextAggregate} ClassContextAggregate
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        ClassContextAggregate.decode = function decode(r, l) {
-            if (!(r instanceof $Reader))
-                r = $Reader.create(r);
-            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.ClassContextAggregate();
-            while (r.pos < c) {
-                var t = r.uint32();
-                switch (t >>> 3) {
-                case 1:
-                    m.classContext = $root.data.ClassContext.decode(r, r.uint32());
-                    break;
-                case 2:
-                    if (!(m.methodContexts && m.methodContexts.length))
-                        m.methodContexts = [];
-                    m.methodContexts.push($root.data.MethodContext.decode(r, r.uint32()));
-                    break;
-                default:
-                    r.skipType(t & 7);
-                    break;
-                }
-            }
-            return m;
-        };
-
-        return ClassContextAggregate;
-    })();
-
     data.ExecutionAggregate = (function() {
 
         /**
@@ -2617,6 +2556,9 @@ export const data = $root.data = (() => {
          * @property {data.IExecutionContext|null} [executionContext] ExecutionAggregate executionContext
          * @property {Array.<data.ISuiteContext>|null} [suiteContexts] ExecutionAggregate suiteContexts
          * @property {Array.<data.ITestContext>|null} [testContexts] ExecutionAggregate testContexts
+         * @property {Array.<data.IClassContext>|null} [classContexts] ExecutionAggregate classContexts
+         * @property {Array.<data.IMethodContext>|null} [methodContexts] ExecutionAggregate methodContexts
+         * @property {Array.<data.ISessionContext>|null} [sessionContexts] ExecutionAggregate sessionContexts
          */
 
         /**
@@ -2630,6 +2572,9 @@ export const data = $root.data = (() => {
         function ExecutionAggregate(p) {
             this.suiteContexts = [];
             this.testContexts = [];
+            this.classContexts = [];
+            this.methodContexts = [];
+            this.sessionContexts = [];
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -2661,6 +2606,30 @@ export const data = $root.data = (() => {
         ExecutionAggregate.prototype.testContexts = $util.emptyArray;
 
         /**
+         * ExecutionAggregate classContexts.
+         * @member {Array.<data.IClassContext>} classContexts
+         * @memberof data.ExecutionAggregate
+         * @instance
+         */
+        ExecutionAggregate.prototype.classContexts = $util.emptyArray;
+
+        /**
+         * ExecutionAggregate methodContexts.
+         * @member {Array.<data.IMethodContext>} methodContexts
+         * @memberof data.ExecutionAggregate
+         * @instance
+         */
+        ExecutionAggregate.prototype.methodContexts = $util.emptyArray;
+
+        /**
+         * ExecutionAggregate sessionContexts.
+         * @member {Array.<data.ISessionContext>} sessionContexts
+         * @memberof data.ExecutionAggregate
+         * @instance
+         */
+        ExecutionAggregate.prototype.sessionContexts = $util.emptyArray;
+
+        /**
          * Decodes an ExecutionAggregate message from the specified reader or buffer.
          * @function decode
          * @memberof data.ExecutionAggregate
@@ -2690,6 +2659,21 @@ export const data = $root.data = (() => {
                     if (!(m.testContexts && m.testContexts.length))
                         m.testContexts = [];
                     m.testContexts.push($root.data.TestContext.decode(r, r.uint32()));
+                    break;
+                case 4:
+                    if (!(m.classContexts && m.classContexts.length))
+                        m.classContexts = [];
+                    m.classContexts.push($root.data.ClassContext.decode(r, r.uint32()));
+                    break;
+                case 5:
+                    if (!(m.methodContexts && m.methodContexts.length))
+                        m.methodContexts = [];
+                    m.methodContexts.push($root.data.MethodContext.decode(r, r.uint32()));
+                    break;
+                case 6:
+                    if (!(m.sessionContexts && m.sessionContexts.length))
+                        m.sessionContexts = [];
+                    m.sessionContexts.push($root.data.SessionContext.decode(r, r.uint32()));
                     break;
                 default:
                     r.skipType(t & 7);

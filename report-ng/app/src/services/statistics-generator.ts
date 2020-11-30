@@ -105,7 +105,6 @@ export class StatisticsGenerator {
     }
 
     getScreenshotsFromMethodContext(methodContext:IMethodContext) {
-        //const screenshots:{[key:string]:IFile} = {};
         const screenshots:IFile[] = [];
         const allFilePromises = [];
         methodContext.testSteps

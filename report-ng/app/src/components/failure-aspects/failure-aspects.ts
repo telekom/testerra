@@ -43,9 +43,19 @@ export class FailureAspects extends AbstractViewModel {
                 })
                 .filter(failureAspectStatistics => {
                     return (!this._searchRegexp || failureAspectStatistics.name.match(this._searchRegexp));
-                });
+                })
+
             this._loading = false;
             this.updateUrl(this.queryParams);
         });
+    }
+
+    private _calcFontSize(index:number) {
+        const min = 1;
+        const max = 3;
+        const count = this._filteredFailureAspects.length;
+        let size = ((count-index)/count) * max;
+        if (size < min) size = min;
+        return size;
     }
 }

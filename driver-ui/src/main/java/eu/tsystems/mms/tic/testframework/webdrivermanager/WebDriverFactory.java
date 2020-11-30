@@ -52,24 +52,21 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> implements Lo
          */
         R finalRequest = buildRequest(request);
 
-        // link session context
-        finalRequest.setSessionId(sessionContext.getId());
-
         /*
         fill the session context
          */
-        sessionContext.metaData.put("requested.browser", finalRequest.getBrowser());
-        sessionContext.metaData.put("requested.browserVersion", finalRequest.getBrowserVersion());
+        sessionContext.getMetaData().put("requested.browser", finalRequest.getBrowser());
+        sessionContext.getMetaData().put("requested.browserVersion", finalRequest.getBrowserVersion());
 
         /*
         create basic capabilities
          */
-        final DesiredCapabilities caps = new DesiredCapabilities();
+        DesiredCapabilities caps = new DesiredCapabilities();
         DesiredCapabilities tapOptions = new DesiredCapabilities();
         ExecutionContextController.getCurrentExecutionContext().metaData.forEach(tapOptions::setCapability);
-        tapOptions.setCapability("scid", finalRequest.getSessionId());
-        sessionContext.metaData.forEach(tapOptions::setCapability);
-        tapOptions.setCapability("sessionKey", sessionContext.sessionKey);
+        sessionContext.getMetaData().forEach(tapOptions::setCapability);
+        tapOptions.setCapability("scid", sessionContext.id);
+        tapOptions.setCapability("sessionKey", finalRequest.getSessionKey());
         caps.setCapability("tapOptions", tapOptions);
 
         /*

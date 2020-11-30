@@ -2,10 +2,6 @@
   <mdc-card>
     <div mdc-subtitle2 class="card-headline">Test Results</div>
     <mdc-list-divider></mdc-list-divider>
-
-    <div class="card-content">
-      <apex-chart data.bind="_apexPieOptions" selection.bind="_selection" id="pie-chart"></apex-chart>
-        <div mdc-body1> ${_overallExitPoints} Exitpoints and <a route-href="failure-aspects">${_overallFailureAspects} Failure Aspects</a></div>
-    </div>
+    <apex-chart data.bind="_apexPieOptions" selection.bind="_selection" class="card-content"></apex-chart>
   </mdc-card>
 </template>

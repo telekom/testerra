@@ -51,7 +51,8 @@ export class TestResultsCard {
         this._apexPieOptions = {
             chart: {
                 type: 'pie',
-                width: '400px',
+                //width: '400px',
+                height:'300px',
                 fontFamily: 'Roboto',
                 events: {
                     dataPointSelection: (event, chartContext, config) => {

@@ -27,7 +27,7 @@ import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 
-public class ErrorContext extends AbstractContext {
+public class ErrorContext {
     @Deprecated
     private String readableErrorMessage;
     @Deprecated
@@ -36,6 +36,7 @@ public class ErrorContext extends AbstractContext {
     @Deprecated
     private transient StackTrace stacktraceForReadableMessage = null;
     private StackTrace stackTrace;
+    @Deprecated
     private String errorFingerprint;
 
     private ScriptSource scriptSource;
@@ -282,8 +283,8 @@ public class ErrorContext extends AbstractContext {
         return errorFingerprint;
     }
 
-    @Override
-    public TestStatusController.Status getStatus() {
-        return TestStatusController.Status.FAILED;
-    }
+//    @Override
+//    public TestStatusController.Status getStatus() {
+//        return TestStatusController.Status.FAILED;
+//    }
 }

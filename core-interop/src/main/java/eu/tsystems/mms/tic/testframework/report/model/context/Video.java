@@ -29,17 +29,11 @@ public class Video {
     public String filename;
     public List<String> infos = new LinkedList<>();
 
-    /*
-    Refers to the errorContext the screenshot belongs to.
-     */
-    public String errorContextId;
-
     @Override
     public String toString() {
         return "Video{" +
                 "filename='" + filename + '\'' +
                 ", infos=" + infos +
-                ", errorContextId='" + errorContextId + '\'' +
                 '}';
     }
 }

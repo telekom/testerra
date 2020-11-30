@@ -51,11 +51,6 @@ public class Screenshot {
     public String sourceFilename;
     final private Map<String, String> meta = new HashMap<>();
 
-    /*
-    Refers to the errorContext the screenshot belongs to.
-     */
-    public String errorContextId;
-
     @Override
     public String toString() {
         return "Screenshot{" +

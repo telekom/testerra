@@ -39,6 +39,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
@@ -102,11 +103,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     public List<MethodContext> dependsOnMethodContexts;
 
     private List<Video> videos;
-
-    /**
-     * @deprecated Use {@link #readScreenshots()} instead
-     */
-    public final List<Screenshot> screenshots = new LinkedList<>();
 
     public final List<CustomContext> customContexts = new LinkedList<>();
 
@@ -194,6 +190,13 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return this.readTestStepActions()
                 .map(testStepActionEntry -> testStepActionEntry.screenshot)
                 .filter(Objects::nonNull);
+    }
+
+    /**
+     * @deprecated Use {@link #readScreenshots()} instead
+     */
+    public Collection<Screenshot> getScreenshots() {
+        return readScreenshots().collect(Collectors.toList());
     }
 
     public TestStepAction addLogMessage(LogMessage logMessage) {
@@ -367,6 +370,9 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return name;
     }
 
+    /**
+     * @todo What is this?
+     */
     public boolean isSame(MethodContext methodContext) {
         return methodContext.hashCodeOfTestResult == hashCodeOfTestResult;
     }
@@ -424,10 +430,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     public MethodContext addScreenshots(Stream<Screenshot> screenshots) {
         TestStepAction currentTestStepAction = getTestStepController().getCurrentTestStep().getCurrentTestStepAction();
         screenshots.forEach(screenshot -> {
-            if (screenshot.errorContextId == null) {
-                screenshot.errorContextId = this.getErrorContext().getId();
-            }
-            this.screenshots.add(screenshot);
             currentTestStepAction.addScreenshot(screenshot);
         });
         return this;

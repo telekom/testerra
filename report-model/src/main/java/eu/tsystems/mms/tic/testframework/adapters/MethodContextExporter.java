@@ -125,7 +125,7 @@ public class MethodContextExporter extends AbstractContextExporter {
         forEach(methodContext.getDependsOnMethodContexts(), m -> builder.addDependsOnMethodContextIds(m.getId()));
 
         // build context
-        map(methodContext.getErrorContext(), this::prepareErrorContext, builder::setErrorContext);
+        if (methodContext.hasErrorContext()) builder.setErrorContext(this.prepareErrorContext(methodContext.getErrorContext()));
         methodContext.getOptionalAssertions().forEach(assertionInfo -> builder.addOptionalAssertions(prepareErrorContext(assertionInfo)));
         methodContext.getCollectedAssertions().forEach(assertionInfo -> builder.addCollectedAssertions(prepareErrorContext(assertionInfo)));
         methodContext.getSessionContexts().forEach(sessionContext -> builder.addSessionContextIds(sessionContext.getId()));

@@ -352,11 +352,6 @@ public class UITestUtils {
         }
 
         if (methodContext != null) {
-            // which means we have to publish the screenshots
-            if (explicitly) {
-                screenshots.forEach(screenshot -> screenshot.errorContextId = methodContext.id);
-            }
-
             addScreenshotsToMethodContext(methodContext, screenshots);
         }
 

@@ -22,6 +22,7 @@ npm run build
 - Material Framework: https://github.com/aurelia-ui-toolkits/aurelia-mdc-web
 - Charts Framework: https://apexcharts.com/
     - Timeline: https://apexcharts.com/javascript-chart-demos/timeline-charts/
+    - VIS.js Timeline: https://visjs.github.io/vis-timeline/examples/timeline/
 - Time and Date: https://momentjs.com/
 - Duration Format: https://github.com/jsmreese/moment-duration-format
 - Aurelia Value Converters: https://aurelia.io/docs/binding/value-converters#converter-parameters

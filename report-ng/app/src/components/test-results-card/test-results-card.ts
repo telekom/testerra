@@ -11,6 +11,8 @@ export class TestResultsCard {
     @bindable executionStatistics: ExecutionStatistics;
     private _apexPieOptions: ApexOptions = undefined;
     private _selection;
+    private _overallExitPoints;
+    private _overallFailureAspects;
 
 
     constructor(
@@ -33,6 +35,8 @@ export class TestResultsCard {
 
     executionStatisticsChanged() {
         this._preparePieChart(this.executionStatistics);
+        this._overallExitPoints = this.executionStatistics.exitPointStatistics.length;
+        this._overallFailureAspects = this.executionStatistics.failureAspectStatistics.length;
     }
 
     private _preparePieChart(executionStatistics: ExecutionStatistics): void {

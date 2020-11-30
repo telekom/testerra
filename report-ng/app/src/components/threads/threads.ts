@@ -31,6 +31,9 @@ export class Threads extends AbstractViewModel {
 
         this._loading = true;
         this._statistics.getExecutionStatistics().then(executionStatistics => {
+            executionStatistics.executionAggregate.methodContexts.forEach(value => {
+                console.log(value.threadName, value.contextValues.startTime, value.contextValues.endTime);
+            })
             this._loading = false;
             this.updateUrl(this.queryParams);
         });

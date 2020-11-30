@@ -292,6 +292,6 @@ public class GenerateHtmlReportListener implements
         ReportUtils.createReport(reportingData);
         long stop = System.currentTimeMillis();
         String formattedDuration = DateUtils.getFormattedDuration(stop - start, false);
-        log().info("Took " + formattedDuration + " to create the report.");
+        log().debug("Took " + formattedDuration + " to create the report.");
     }
 }

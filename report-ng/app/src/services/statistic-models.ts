@@ -27,6 +27,7 @@ import ExecutionAggregate = data.ExecutionAggregate;
 import MethodType = data.MethodType;
 import IMethodContext = data.IMethodContext;
 import IClassContext = data.IClassContext;
+import IErrorContext = data.IErrorContext;
 
 class Statistics {
     private _statusConverter: StatusConverter
@@ -96,7 +97,10 @@ class Statistics {
 export class ExecutionStatistics extends Statistics {
     private _executionAggregate: ExecutionAggregate;
     private _classStatistics: ClassStatistics[] = [];
-    private _majorFailureAspectStatistics:FailureAspectStatistics[] = [];
+    private _failureAspectStatistics:FailureAspectStatistics[] = [];
+    /**
+     * @todo This might be an orphaned feature which can be removed completely
+     */
     private _exitPointStatistics:ExitPointStatistics[] = [];
 
     setExecutionAggregate(executionAggregate: ExecutionAggregate) {
@@ -112,23 +116,44 @@ export class ExecutionStatistics extends Statistics {
         this._classStatistics.forEach(classStatistics => this.addStatistics(classStatistics));
     }
 
-    protected  addStatistics(classStatistics: ClassStatistics) {
+    protected addStatistics(classStatistics: ClassStatistics) {
         super.addStatistics(classStatistics);
         classStatistics.methodContexts
-            .filter(methodContext => {
-                return this.statusConverter.failedStatuses.indexOf(methodContext.contextValues.resultStatus) >= 0;
-            })
+            // .filter(methodContext => {
+            //     return this.statusConverter.failedStatuses.indexOf(methodContext.contextValues.resultStatus) >= 0;
+            // })
             .forEach(methodContext => {
-                const failureAspectStatistics = new FailureAspectStatistics().addMethodContext(methodContext);
 
-                const foundFailureAspectStatistics = this._majorFailureAspectStatistics.find(existingFailureAspectStatistics => {
-                    return existingFailureAspectStatistics.name == failureAspectStatistics.name;
-                });
-                if (foundFailureAspectStatistics) {
-                    foundFailureAspectStatistics.addMethodContext(failureAspectStatistics.methodContext);
-                } else {
-                    this._majorFailureAspectStatistics.push(failureAspectStatistics);
+                if (methodContext.errorContext) {
+                    let failureAspectStatistics = new FailureAspectStatistics().setErrorContext(methodContext.errorContext);
+
+                    const foundFailureAspectStatistics = this._failureAspectStatistics.find(existingFailureAspectStatistics => {
+                        return existingFailureAspectStatistics.name == failureAspectStatistics.name;
+                    });
+
+                    if (foundFailureAspectStatistics) {
+                        failureAspectStatistics = foundFailureAspectStatistics;
+                    } else {
+                        this._failureAspectStatistics.push(failureAspectStatistics);
+                    }
+                    failureAspectStatistics.addResultStatus(methodContext.contextValues.resultStatus);
                 }
+
+                methodContext.optionalAssertions.forEach(errorContext => {
+                    let failureAspectStatistics = new FailureAspectStatistics().setErrorContext(errorContext);
+
+                    const foundFailureAspectStatistics = this._failureAspectStatistics.find(existingFailureAspectStatistics => {
+                        return existingFailureAspectStatistics.name == failureAspectStatistics.name;
+                    });
+
+                    if (foundFailureAspectStatistics) {
+                        failureAspectStatistics = foundFailureAspectStatistics;
+                    } else {
+                        this._failureAspectStatistics.push(failureAspectStatistics);
+                    }
+                    failureAspectStatistics.addResultStatus(methodContext.contextValues.resultStatus);
+                })
+
 
                 // const exitPointStatistics = new ExitPointStatistics().addMethodContext(methodContext);
                 //
@@ -155,11 +180,8 @@ export class ExecutionStatistics extends Statistics {
         return this._exitPointStatistics;
     }
 
-    get majorFailureAspectStatistics() {
-        return this._majorFailureAspectStatistics;
-    }
-    get minorFailureAspectStatistics() {
-        return this._majorFailureAspectStatistics;
+    get failureAspectStatistics() {
+        return this._failureAspectStatistics;
     }
 }
 
@@ -198,28 +220,27 @@ export class ClassStatistics extends Statistics {
 
 
 export class FailureAspectStatistics extends Statistics {
-    private _methodContext:IMethodContext;
+
     private _name:string;
 
     constructor() {
         super();
     }
 
-    addMethodContext(methodContext:IMethodContext) {
-        if (!this._methodContext) {
-            this._methodContext = methodContext;
-            const namespace = this.statusConverter.separateNamespace(methodContext.errorContext?.cause.className);
-            this._name = (
-                methodContext.errorContext?.description
-                || namespace.class + (methodContext.errorContext?.cause?.message ? ": " + methodContext.errorContext?.cause?.message.trim() : "")
-            );
-        }
-        this.addResultStatus(methodContext.contextValues.resultStatus);
+    setErrorContext(errorContext:IErrorContext) {
+        const namespace = this.statusConverter.separateNamespace(errorContext.cause.className);
+        this._name = (
+            errorContext.description
+            || namespace.class + (errorContext.cause?.message ? ": " + errorContext.cause?.message.trim() : "")
+        );
         return this;
     }
 
-    get methodContext() {
-        return this._methodContext;
+    /**
+     * A failure aspect is minor when it has no statuses in failed state
+     */
+    get isMinor() {
+        return this.getStatusesCount(this.statusConverter.failedStatuses) == 0;
     }
 
     get name() {

@@ -28,12 +28,19 @@ export class FailureAspects extends AbstractViewModel {
             this._searchRegexp = this._statusConverter.createRegexpFromSearchString(this.queryParams.q);
         } else {
             this._searchRegexp = null;
+            delete this.queryParams.q;
         }
 
         this._filteredFailureAspects = [];
         this._loading = true;
         this._statistics.getExecutionStatistics().then(executionStatistics => {
-            this._filteredFailureAspects = executionStatistics.majorFailureAspectStatistics
+            this._filteredFailureAspects = executionStatistics.failureAspectStatistics
+                .filter(failureAspectStatistics => {
+                    return (!this.queryParams.type || (
+                        (this.queryParams.type == "major" && !failureAspectStatistics.isMinor)
+                        || (this.queryParams.type == "minor" && failureAspectStatistics.isMinor)
+                    ));
+                })
                 .filter(failureAspectStatistics => {
                     return (!this._searchRegexp || failureAspectStatistics.name.match(this._searchRegexp));
                 });

@@ -1,5 +1,4 @@
 import {autoinject, bindable} from "aurelia-framework";
-import "./test-results-card.scss";
 import {StatusConverter} from "../../services/status-converter";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {ExecutionStatistics} from "../../services/statistic-models";
@@ -36,7 +35,7 @@ export class TestResultsCard {
     executionStatisticsChanged() {
         this._preparePieChart(this.executionStatistics);
         this._overallExitPoints = this.executionStatistics.exitPointStatistics.length;
-        this._overallFailureAspects = this.executionStatistics.majorFailureAspectStatistics.length;
+        this._overallFailureAspects = this.executionStatistics.failureAspectStatistics.length;
     }
 
     private _preparePieChart(executionStatistics: ExecutionStatistics): void {

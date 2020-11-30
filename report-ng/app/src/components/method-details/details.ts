@@ -40,16 +40,17 @@ export class Details {
     ) {
         this._statistics.getMethodDetails(params.id).then(methodDetails => {
             this._methodContext = methodDetails.methodContext;
-            if (this._methodContext.errorContext?.cause) {
-                this._stackTrace = [];
-                let cause = this._methodContext.errorContext.cause;
-                do {
-                    this._stackTrace.push(cause);
-                    cause = cause.cause;
-                } while (cause);
+            if (this._methodContext.errorContext) {
+                if (this._methodContext.errorContext?.cause) {
+                    this._stackTrace = [];
+                    let cause = this._methodContext.errorContext.cause;
+                    do {
+                        this._stackTrace.push(cause);
+                        cause = cause.cause;
+                    } while (cause);
+                }
+                this._failureAspect = new FailureAspectStatistics().setErrorContext(this._methodContext.errorContext);
             }
-
-            this._failureAspect = new FailureAspectStatistics().addMethodContext(this._methodContext);
         });
     }
 

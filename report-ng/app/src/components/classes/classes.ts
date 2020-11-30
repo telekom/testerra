@@ -144,7 +144,7 @@ export class Classes extends AbstractViewModel {
                         .map(methodContext => {
                             return {
                                 classContext: classStatistic.classContext,
-                                failureAspect: this._statusConverter.failedStatuses.indexOf(methodContext.contextValues.resultStatus) >= 0 ? new FailureAspectStatistics().addMethodContext(methodContext) : null,
+                                failureAspect: methodContext.errorContext ? new FailureAspectStatistics().setErrorContext(methodContext.errorContext) : null,
                                 methodContext: methodContext
                             }
                         })

@@ -31,6 +31,7 @@ import eu.tsystems.mms.tic.testframework.report.model.AssertionInfo;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
+import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepActionEntry;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.lang.annotation.Annotation;
@@ -103,7 +104,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     private List<Video> videos;
 
     /**
-     * @deprecated Use {@link #getAllScreenshotsFromTestSteps()} instead
+     * @deprecated Use {@link #readScreenshots()} instead
      */
     public final List<Screenshot> screenshots = new LinkedList<>();
 
@@ -183,13 +184,16 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return this;
     }
 
-    public Stream<Screenshot> getAllScreenshotsFromTestSteps() {
+    public Stream<TestStepActionEntry> readTestStepActions() {
         return this.testStepController.getTestSteps().stream()
                 .flatMap(testStep -> testStep.getTestStepActions().stream())
-                .flatMap(testStepAction -> testStepAction.getTestStepActionEntries().stream())
+                .flatMap(testStepAction -> testStepAction.getTestStepActionEntries().stream());
+    }
+
+    public Stream<Screenshot> readScreenshots() {
+        return this.readTestStepActions()
                 .map(testStepActionEntry -> testStepActionEntry.screenshot)
                 .filter(Objects::nonNull);
-
     }
 
     public TestStepAction addLogMessage(LogMessage logMessage) {
@@ -429,7 +433,17 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return this;
     }
 
-    public Stream<Video> getVideos() {
+    /**
+     * @deprecated Use {@link #readVideos()} instead
+     */
+    public Collection<Video> getVideos() {
+        if (this.videos == null) {
+            this.videos = new LinkedList<>();
+        }
+        return this.videos;
+    }
+
+    public Stream<Video> readVideos() {
         if (this.videos == null) {
             return Stream.empty();
         } else {
@@ -438,10 +452,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     public MethodContext addVideos(Collection<Video> videos) {
-        if (this.videos == null) {
-             this.videos = new LinkedList<>();
-        }
-        this.videos.addAll(videos);
+        this.getVideos().addAll(videos);
         return this;
     }
 }

@@ -130,7 +130,7 @@ public class MethodContextExporter extends AbstractContextExporter {
         methodContext.getCollectedAssertions().forEach(assertionInfo -> builder.addCollectedAssertions(prepareErrorContext(assertionInfo)));
         methodContext.getSessionContexts().forEach(sessionContext -> builder.addSessionContextIds(sessionContext.getId()));
 
-        methodContext.getVideos().forEach(video -> {
+        methodContext.readVideos().forEach(video -> {
             final java.io.File targetVideoFile = new java.io.File(targetVideoDir, video.filename);
             final java.io.File currentVideoFile = new java.io.File(currentVideoDir, video.filename);
 

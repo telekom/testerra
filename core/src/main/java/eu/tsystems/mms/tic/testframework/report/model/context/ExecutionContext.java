@@ -59,7 +59,7 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
 
     public int estimatedTestMethodCount;
 
-    private ConcurrentLinkedQueue<LogMessage> methodContextLessLogs = new ConcurrentLinkedQueue<>();
+    private final ConcurrentLinkedQueue<LogMessage> methodContextLessLogs = new ConcurrentLinkedQueue<>();
 
     public ExecutionContext() {
         name = runConfig.RUNCFG;

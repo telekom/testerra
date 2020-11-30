@@ -32,6 +32,7 @@ import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -54,6 +55,10 @@ import org.testng.SkipException;
  */
 public class ClassContext extends AbstractContext implements SynchronizableContext, Loggable {
 
+    /**
+     * @deprecated Use {@link #getMethodContexts()} instead
+     */
+    @Deprecated
     public final Queue<MethodContext> methodContexts = new ConcurrentLinkedQueue<>();
     public String fullClassName;
     public String simpleClassName;
@@ -63,6 +68,10 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
 
     public TestContext getTestContext() {
         return testContext;
+    }
+
+    public Collection<MethodContext> getMethodContexts() {
+        return methodContexts;
     }
 
     public ClassContext setTestContext(TestContext testContext) {
@@ -171,7 +180,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
 
     public MethodContext safeAddSkipMethod(ITestResult testResult, IInvokedMethod invokedMethod) {
         MethodContext methodContext = getMethodContext(testResult, testResult.getTestContext(), invokedMethod);
-        methodContext.errorContext().setThrowable(null, new SkipException("Skipped"));
+        methodContext.getErrorContext().setThrowable(null, new SkipException("Skipped"));
         methodContext.status = TestStatusController.Status.SKIPPED;
         return methodContext;
     }

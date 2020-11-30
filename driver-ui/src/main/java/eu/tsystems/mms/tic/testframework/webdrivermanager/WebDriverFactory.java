@@ -53,7 +53,7 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> implements Lo
         R finalRequest = buildRequest(request);
 
         // link session context
-        finalRequest.setSessionId(sessionContext.id);
+        finalRequest.setSessionId(sessionContext.getId());
 
         /*
         fill the session context

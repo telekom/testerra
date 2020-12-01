@@ -1,6 +1,7 @@
 import {Aurelia} from 'aurelia-framework';
 import {PLATFORM} from 'aurelia-pal';
 import {Config} from "./services/config";
+import {DateFormatValueConverter} from "t-systems-aurelia-components/src/value-converters/date-format-value-converter";
 
 export function configure(aurelia: Aurelia) {
 
@@ -44,6 +45,8 @@ export function configure(aurelia: Aurelia) {
     if (config.developmentMode) {
         aurelia.use.developmentLogging("debug");
     }
+
+    DateFormatValueConverter.setDefaultFormat("ddd D.MMM YY HH:mm:ss ZZ");
 
     aurelia.start().then(() => aurelia.setRoot(PLATFORM.moduleName('app')));
 }

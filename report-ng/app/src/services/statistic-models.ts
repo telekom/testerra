@@ -143,8 +143,6 @@ export class ExecutionStatistics extends Statistics {
                     this._addUniqueFailureAspect(methodContext.errorContext, methodContext);
                 }
 
-                console.log(methodContext.testSteps);
-
                 methodContext.testSteps
                     .flatMap(testStep => testStep.testStepActions)
                     .flatMap(testStepAction => testStepAction.optionalAssertions)

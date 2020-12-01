@@ -11,7 +11,7 @@
                         <mdc-list-item repeat.for="testStepAction of testStep.testStepActions">
                             <mdc-icon mdc-list-item-graphic>read_more</mdc-icon>
                             <mdc-list-item-primary-text>${stepIndex}.${$index+1} ${testStepAction.name}</mdc-list-item-primary-text>
-                            <mdc-list-item-secondary-text>${testStepAction.timestamp|dateFormat:"ddd MMM D Y LTS Z"}</mdc-list-item-secondary-text>
+                            <mdc-list-item-secondary-text>${testStepAction.timestamp|dateFormat}</mdc-list-item-secondary-text>
                         </mdc-list-item>
                     </mdc-list>
                 </mdc-list-group>

@@ -13,14 +13,10 @@ import IFile = data.IFile;
 
 @autoinject()
 export class Method {
-
-    private _classContext:IClassContext;
-    private _testContext:ITestContext;
-    private _suiteContext:ISuiteContext;
     private _router:Router;
-    private _methodContext:IMethodContext;
     private _screenshots:IFile[];
     private _lastScreenshot:IFile;
+    private _methodDetails;
 
     constructor(
         private _statistics: StatisticsGenerator,
@@ -85,19 +81,16 @@ export class Method {
         navInstruction: NavigationInstruction
     ) {
         this._statistics.getMethodDetails(params.id).then(methodDetails => {
-            this._classContext = methodDetails.classStatistics.classContext;
-            this._methodContext = methodDetails.methodContext;
-            this._testContext = methodDetails.testContext;
-            this._suiteContext = methodDetails.suiteContext;
-            this._statistics.getScreenshotsFromMethodContext(this._methodContext).then(screenshots => {
+            this._methodDetails = methodDetails;
+            this._statistics.getScreenshotsFromMethodContext(methodDetails.methodContext).then(screenshots => {
                 this._screenshots = screenshots;
                 this._lastScreenshot = this._screenshots.find(() => true);
             })
 
-            if (!this._methodContext.errorContext) {
-                this._router.navigateToRoute("steps");
-            } else {
+            if (methodDetails.hasDetails) {
                 this._router.navigateToRoute("details");
+            } else {
+                this._router.navigateToRoute("steps");
             }
         });
     }

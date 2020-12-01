@@ -34,6 +34,7 @@ import eu.tsystems.mms.tic.testframework.report.model.PTestStepAction;
 import eu.tsystems.mms.tic.testframework.report.model.ScriptSource;
 import eu.tsystems.mms.tic.testframework.report.model.ScriptSourceLine;
 import eu.tsystems.mms.tic.testframework.report.model.StackTraceCause;
+import eu.tsystems.mms.tic.testframework.report.model.context.CustomContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
@@ -42,6 +43,7 @@ import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class MethodContextExporter extends AbstractContextExporter {
     private final Report report = new Report();
@@ -120,6 +122,11 @@ public class MethodContextExporter extends AbstractContextExporter {
         if (methodContext.hasErrorContext()) builder.setErrorContext(this.prepareErrorContext(methodContext.getErrorContext()));
         methodContext.readSessionContexts().forEach(sessionContext -> builder.addSessionContextIds(sessionContext.getId()));
 
+        List<CustomContext> customContexts = methodContext.readCustomContexts().collect(Collectors.toList());
+        if (customContexts.size()>0) {
+            builder.setCustomContextJson(jsonEncoder.toJson(customContexts));
+        }
+
         methodContext.readVideos().forEach(video -> {
             final java.io.File targetVideoFile = new java.io.File(targetVideoDir, video.filename);
             final java.io.File currentVideoFile = new java.io.File(currentVideoDir, video.filename);
@@ -138,9 +145,6 @@ public class MethodContextExporter extends AbstractContextExporter {
             this.fileConsumer.accept(fileBuilderVideo);
         });
 
-        map(methodContext.customContexts, jsonEncoder::toJson, builder::setCustomContextJson);
-
-        // return
         return builder;
     }
 

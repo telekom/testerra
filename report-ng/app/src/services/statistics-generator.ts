@@ -91,7 +91,8 @@ export class StatisticsGenerator {
                             methodContext: methodContext,
                             classStatistics: classStatistic,
                             testContext: testContext,
-                            suiteContext: suiteContext
+                            suiteContext: suiteContext,
+                            hasDetails: methodContext.errorContext || methodContext.customContextJson
                         }
                     }
                 }

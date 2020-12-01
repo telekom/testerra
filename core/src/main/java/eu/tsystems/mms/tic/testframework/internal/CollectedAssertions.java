@@ -58,11 +58,6 @@ public final class CollectedAssertions {
             currentMethodContext.addScreenshots(screenshots.stream());
         }
 
-        // get custom error contexts in queue
-        List<CustomContext> customContexts = ExecutionContextController.getCurrentMethodContext().customContexts;
-        currentMethodContext.customContexts.addAll(customContexts);
-        customContexts.clear();
-
         // and store
         assertionInfos.add(assertionInfo);
     }

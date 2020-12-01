@@ -7,7 +7,6 @@ import {AbstractViewModel} from "../abstract-view-model";
 import {data} from "../../services/report-model";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import IMethodContext = data.IMethodContext;
-import IClassContext = data.IClassContext;
 import MethodType = data.MethodType;
 import ResultStatusType = data.ResultStatusType;
 
@@ -21,13 +20,11 @@ interface MethodAggregate {
 export class Classes extends AbstractViewModel {
 
     private _executionStatistics: ExecutionStatistics;
-    private _selectedClass:string;
     private _selectedStatus:number;
     private _availableStatuses = this._statusConverter.relevantStatuses;
     private _filteredMethodAggregates:MethodAggregate[];
     private _showConfigurationMethods:boolean = null;
     private _searchRegexp:RegExp;
-    //private _uniqueFailureAspects = 0;
     private _uniqueStatuses = 0;
     private _uniqueClasses = 0;
     private _loading = false;
@@ -108,9 +105,13 @@ export class Classes extends AbstractViewModel {
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
 
             let relevantFailureAspect:FailureAspectStatistics;
+            let filterByFailureAspect = false;
             if (this.queryParams.failureAspect > 0) {
                 relevantFailureAspect = executionStatistics.failureAspectStatistics[this.queryParams.failureAspect-1];
+                filterByFailureAspect = true;
             }
+            console.log("filer by", relevantFailureAspect);
+
 
             this._executionStatistics = executionStatistics;
 
@@ -131,14 +132,11 @@ export class Classes extends AbstractViewModel {
                             return (!relevantStatuses || relevantStatuses.indexOf(methodContext.contextValues.resultStatus) >= 0)
                         })
                         .filter(methodContext => {
-                            return (!relevantFailureAspect || relevantFailureAspect.methodContexts.indexOf(methodContext) >= 0);
+                            return (!filterByFailureAspect || relevantFailureAspect.methodContexts.indexOf(methodContext) >= 0);
                         })
                         .filter(methodContext => {
                             return (this._showConfigurationMethods == true
-                                || (
-                                    this._showConfigurationMethods == false
-                                    && methodContext.methodType == MethodType.TEST_METHOD
-                                )
+                                || (this._showConfigurationMethods == false && methodContext.methodType == MethodType.TEST_METHOD)
                             )
                         })
                         .map(methodContext => {

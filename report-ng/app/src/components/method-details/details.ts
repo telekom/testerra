@@ -22,6 +22,7 @@ export class Details {
     private _stackTrace:IStackTraceCause[];
     private _failureAspect:FailureAspectStatistics;
     private _methodContext:IMethodContext;
+    private _methodDetails;
 
     constructor(
         private _statistics: StatisticsGenerator,
@@ -39,6 +40,8 @@ export class Details {
         navInstruction: NavigationInstruction
     ) {
         this._statistics.getMethodDetails(params.id).then(methodDetails => {
+            console.log(methodDetails);
+            this._methodDetails = methodDetails;
             this._methodContext = methodDetails.methodContext;
             if (this._methodContext.errorContext) {
                 if (this._methodContext.errorContext?.cause) {

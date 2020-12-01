@@ -76,19 +76,10 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     private List<SessionContext> sessionContexts = new LinkedList<>();
     public String priorityMessage = null;
     private final TestStepController testStepController = new TestStepController();
-    /**
-     * @deprecated Use {@link #getRelatedMethodContexts()} instead
-     */
-    public List<MethodContext> relatedMethodContexts;
-
-    /**
-     * @deprecated Us {@link #getDependsOnMethodContexts()} instead
-     */
-    public List<MethodContext> dependsOnMethodContexts;
-
+    private List<MethodContext> relatedMethodContexts;
+    private List<MethodContext> dependsOnMethodContexts;
     private List<Video> videos;
-
-    public final List<CustomContext> customContexts = new LinkedList<>();
+    private List<CustomContext> customContexts;
 
     private ErrorContext errorContext;
 
@@ -110,6 +101,28 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         this.methodType = methodType;
     }
 
+    /**
+     * @deprecated Use {@link #readCustomContexts()} instead
+     */
+    public List<CustomContext> getCustomContexts() {
+        if (this.customContexts == null) {
+            this.customContexts = new LinkedList<>();
+        }
+        return customContexts;
+    }
+
+    public void addCustomContext(CustomContext customContext) {
+        this.getCustomContexts().add(customContext);
+    }
+
+    public Stream<CustomContext> readCustomContexts() {
+        if (this.customContexts == null) {
+            return Stream.empty();
+        } else {
+            return this.customContexts.stream();
+        }
+    }
+
     public Type getMethodType() {
         return this.methodType;
     }
@@ -118,13 +131,12 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return sessionContexts.stream();
     }
 
-    public MethodContext addSessionContext(SessionContext sessionContext) {
+    public void addSessionContext(SessionContext sessionContext) {
         if (!this.sessionContexts.contains(sessionContext)) {
             this.sessionContexts.add(sessionContext);
             sessionContext.parentContext = this;
             TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(this));
         }
-        return this;
     }
 
     public ClassContext getClassContext() {
@@ -200,14 +212,12 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         }
     }
 
-    public MethodContext setRelatedMethodContexts(List<MethodContext> relatedMethodContexts) {
+    public void setRelatedMethodContexts(List<MethodContext> relatedMethodContexts) {
         this.relatedMethodContexts = relatedMethodContexts;
-        return this;
     }
 
-    public MethodContext setDependsOnMethodContexts(List<MethodContext> dependsOnMethodContexts) {
+    public void setDependsOnMethodContexts(List<MethodContext> dependsOnMethodContexts) {
         this.dependsOnMethodContexts = dependsOnMethodContexts;
-        return this;
     }
 
     public Stream<TestStepAction> readTestStepActions() {
@@ -254,9 +264,8 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return this.lastFailedStep;
     }
 
-    public MethodContext setFailedStep(TestStep step) {
+    public void setFailedStep(TestStep step) {
         this.lastFailedStep = step;
-        return this;
     }
 
     public boolean hasErrorContext() {
@@ -347,6 +356,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         }
     }
 
+    @Deprecated
     public void addPriorityMessage(String msg) {
         final String extraMessageToAdd = StringUtils.prepareStringForHTML(msg + "\n");
 
@@ -392,9 +402,8 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return status;
     }
 
-    public MethodContext setStatus(TestStatusController.Status status) {
+    public void setStatus(TestStatusController.Status status) {
         this.status = status;
-        return this;
     }
 
     public boolean isRepresentationalTestMethod() {
@@ -442,12 +451,9 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     /**
      * Publish the screenshots to the report into the current errorContext.
      */
-    public MethodContext addScreenshots(Stream<Screenshot> screenshots) {
+    public void addScreenshots(Stream<Screenshot> screenshots) {
         TestStepAction currentTestStepAction = this.testStepController.getCurrentTestStep().getCurrentTestStepAction();
-        screenshots.forEach(screenshot -> {
-            currentTestStepAction.addScreenshot(screenshot);
-        });
-        return this;
+        screenshots.forEach(currentTestStepAction::addScreenshot);
     }
 
     /**
@@ -468,8 +474,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         }
     }
 
-    public MethodContext addVideos(Collection<Video> videos) {
+    public void addVideos(Collection<Video> videos) {
         this.getVideos().addAll(videos);
-        return this;
     }
 }

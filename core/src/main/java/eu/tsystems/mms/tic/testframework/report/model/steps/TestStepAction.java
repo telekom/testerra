@@ -24,12 +24,15 @@
 import eu.tsystems.mms.tic.testframework.clickpath.ClickPathEvent;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.Serial;
+import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 
 import java.io.Serializable;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class TestStepAction implements Serializable {
 
@@ -37,8 +40,11 @@ public class TestStepAction implements Serializable {
 
     private final String name;
     private long timestamp;
-
-    private final List<TestStepActionEntry> testStepActionEntries = Collections.synchronizedList(new LinkedList<>());
+    private List<ErrorContext> optionalAssertions;
+    private List<ErrorContext> collectedAssertions;
+    private final List<LogMessage> logMessages = new LinkedList<>();
+    private List<Screenshot> screenshots;
+    private List<ClickPathEvent> clickPathEvents;
 
     public TestStepAction(String name) {
         this.name = name;
@@ -46,7 +52,7 @@ public class TestStepAction implements Serializable {
     }
 
     /**
-     * Usually, a TestStep already contains a {@link TestStepActionEntry} which contains a {@link LogMessage},
+     * Usually, a TestStep already contains a {@link LogMessage},
      * where the timestamp can be retrieved by calling {@link LogMessage#getTimestamp()}
      * But when running under platform, the log messages are handled differently and not stored to the database within entities.
      * In this case, the TestSteps are stored WITHOUT log messages and WITHOUT timestamp, which is still required to find log messages according to time ranges.
@@ -60,37 +66,86 @@ public class TestStepAction implements Serializable {
         return name;
     }
 
-    public List<TestStepActionEntry> getTestStepActionEntries() {
-        return testStepActionEntries;
+    public void addOptionalAssertion(ErrorContext errorContext) {
+        if (this.optionalAssertions == null) {
+            this.optionalAssertions = new LinkedList<>();
+        }
+        this.optionalAssertions.add(errorContext);
+    }
+
+    public Stream<ErrorContext> readOptionalAssertions() {
+        if (this.optionalAssertions == null) {
+            return Stream.empty();
+        } else {
+            return this.optionalAssertions.stream();
+        }
+    }
+
+    public void addCollectedAssertions(List<ErrorContext> errorContexts) {
+        if (this.collectedAssertions == null) {
+            this.collectedAssertions = new LinkedList<>();
+        }
+        this.collectedAssertions.addAll(errorContexts);
+    }
+
+    public Stream<ErrorContext> readCollectedAssertions() {
+        if (this.collectedAssertions == null) {
+            return Stream.empty();
+        } else {
+            return this.collectedAssertions.stream();
+        }
     }
 
     public void addLogMessage(LogMessage logMessage) {
-        // We take the first real log message timestamp here
-        if (testStepActionEntries.size()==0) {
-            this.timestamp = logMessage.getTimestamp();
-        }
-        testStepActionEntries.add(new TestStepActionEntry(logMessage));
+        this.logMessages.add(logMessage);
+    }
+
+    /**
+     * @deprecated Use {@link #readLogMessages()} instead
+     */
+    public Collection<LogMessage> getLogMessages() {
+        return this.logMessages;
+    }
+
+    public Stream<LogMessage> readLogMessages() {
+        return this.logMessages.stream();
     }
 
     public void addClickPathEvent(ClickPathEvent event) {
-        testStepActionEntries.add(new TestStepActionEntry(event));
+        if (this.clickPathEvents == null) {
+            this.clickPathEvents = new LinkedList<>();
+        }
+        this.clickPathEvents.add(event);
+    }
+
+    public Stream<ClickPathEvent> readClickPathEvents() {
+        if (this.clickPathEvents == null) {
+            return Stream.empty();
+        } else {
+            return this.clickPathEvents.stream();
+        }
     }
 
     public void addScreenshot(Screenshot screenshot) {
-        testStepActionEntries.add(new TestStepActionEntry(screenshot));
+        if (this.screenshots == null) {
+            this.screenshots = new LinkedList<>();
+        }
+        this.screenshots.add(screenshot);
     }
-//
-//    public void addFailingLogMessage(final String msg) {
-//        LogMessage logMessage = new LogMessage(
-//            Level.ERROR,
-//            System.currentTimeMillis(),
-//            Thread.currentThread().getName(),
-//            "Test Failed",
-//            msg
-//        );
-//        final TestStepActionEntry testStepActionEntry = new TestStepActionEntry();
-//        testStepActionEntry.logMessage = logMessage;
-//        testStepActionEntries.add(testStepActionEntry);
-//    }
+
+    public Stream<Screenshot> readScreenshots() {
+        if (this.screenshots == null) {
+            return Stream.empty();
+        } else {
+            return this.screenshots.stream();
+        }
+    }
+
+    /**
+     * @deprecated Use {@link #readScreenshots()} ()} instead
+     */
+    public Collection<Screenshot> getScreenshots() {
+        return this.readScreenshots().collect(Collectors.toList());
+    }
 }
 

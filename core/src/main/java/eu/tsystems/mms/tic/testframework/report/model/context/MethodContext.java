@@ -27,11 +27,9 @@ import eu.tsystems.mms.tic.testframework.internal.Counters;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
-import eu.tsystems.mms.tic.testframework.report.model.AssertionInfo;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
-import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepActionEntry;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.lang.annotation.Annotation;
@@ -74,8 +72,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     private TestStep lastFailedStep;
     public FailureCorridor.Value failureCorridorValue = FailureCorridor.Value.HIGH;
     private int hashCodeOfTestResult = 0;
-    private final List<AssertionInfo> optionalAssertions = new LinkedList<>();
-    private final List<AssertionInfo> collectedAssertions = new LinkedList<>();
     public final List<String> infos = new LinkedList<>();
     private List<SessionContext> sessionContexts = new LinkedList<>();
     public String priorityMessage = null;
@@ -152,25 +148,24 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
 
     /**
      * @deprecated Use {@link #readOptionalAssertions()} instead
-     * @return
      */
-    public List<AssertionInfo> getNonFunctionalInfos() {
-        return this.optionalAssertions;
+    public List<ErrorContext> getNonFunctionalInfos() {
+        return this.readOptionalAssertions().collect(Collectors.toList());
     }
 
-    public List<AssertionInfo> readOptionalAssertions() {
-        return this.optionalAssertions;
+    public Stream<ErrorContext> readOptionalAssertions() {
+        return this.readTestStepActions().flatMap(TestStepAction::readOptionalAssertions);
     }
 
     /**
      * @deprecated Use {@link #readCollectedAssertions()} insted
      */
-    public List<AssertionInfo> getCollectedAssertions() {
-        return this.collectedAssertions;
+    public List<ErrorContext> getCollectedAssertions() {
+        return readCollectedAssertions().collect(Collectors.toList());
     }
 
-    public Stream<AssertionInfo> readCollectedAssertions() {
-        return this.collectedAssertions.stream();
+    public Stream<ErrorContext> readCollectedAssertions() {
+        return this.readTestStepActions().flatMap(TestStepAction::readCollectedAssertions);
     }
 
     /**
@@ -182,7 +177,11 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     public Stream<MethodContext> readRelatedMethodContexts() {
-        return this.relatedMethodContexts.stream();
+        if (this.relatedMethodContexts == null) {
+            return Stream.empty();
+        } else {
+            return this.relatedMethodContexts.stream();
+        }
     }
 
     /**
@@ -211,15 +210,13 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return this;
     }
 
-    public Stream<TestStepActionEntry> readTestStepActions() {
-        return this.readTestSteps()
-                .flatMap(testStep -> testStep.getTestStepActions().stream())
-                .flatMap(testStepAction -> testStepAction.getTestStepActionEntries().stream());
+    public Stream<TestStepAction> readTestStepActions() {
+        return this.readTestSteps().flatMap(testStep -> testStep.getTestStepActions().stream());
     }
 
     public Stream<Screenshot> readScreenshots() {
         return this.readTestStepActions()
-                .map(testStepActionEntry -> testStepActionEntry.screenshot)
+                .flatMap(TestStepAction::readScreenshots)
                 .filter(Objects::nonNull);
     }
 
@@ -235,21 +232,14 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     /**
-     * @deprecated Use {@link #getTestStepController()} instead
-     */
-    public TestStepController steps() {
-        return testStepController;
-    }
-
-    public TestStepController getTestStepController() {
-        return testStepController;
-    }
-
-    /**
      * @deprecated Use {@link #readTestSteps()} instead
      */
     public List<TestStep> getTestSteps() {
         return this.testStepController.getTestSteps();
+    }
+
+    public TestStep getTestStep(String name) {
+        return this.testStepController.getTestStep(name);
     }
 
     public Stream<TestStep> readTestSteps() {
@@ -278,13 +268,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
             errorContext = new ErrorContext();
         }
         return errorContext;
-    }
-
-    /**
-     * @deprecated Use {@link #getErrorContext()} instead
-     */
-    public ErrorContext errorContext() {
-       return this.getErrorContext();
     }
 
     @Override
@@ -324,21 +307,14 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return status == TestStatusController.Status.PASSED || status == TestStatusController.Status.MINOR;
     }
 
-    /**
-     * @deprecated Use {@link #addOptionalAssertion(Throwable)} instead
-     */
-    public AssertionInfo addNonFunctionalInfo(final Throwable throwable) {
-        return this.addOptionalAssertion(throwable);
-    }
-
-    public AssertionInfo addOptionalAssertion(Throwable throwable) {
-        AssertionInfo assertionInfo = new AssertionInfo(throwable);
-        this.optionalAssertions.add(assertionInfo);
+    public ErrorContext addOptionalAssertion(Throwable throwable) {
+        ErrorContext assertionInfo = new ErrorContext(throwable);
+        getCurrentTestStep().getCurrentTestStepAction().addOptionalAssertion(assertionInfo);
         return assertionInfo;
     }
 
-    public void addCollectedAssertions(final List<AssertionInfo> collectedAssertions) {
-        this.collectedAssertions.addAll(collectedAssertions);
+    public void addCollectedAssertions(List<ErrorContext> collectedAssertions) {
+        getCurrentTestStep().getCurrentTestStepAction().addCollectedAssertions(collectedAssertions);
     }
 
     public boolean isRetry() {
@@ -467,7 +443,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
      * Publish the screenshots to the report into the current errorContext.
      */
     public MethodContext addScreenshots(Stream<Screenshot> screenshots) {
-        TestStepAction currentTestStepAction = getTestStepController().getCurrentTestStep().getCurrentTestStepAction();
+        TestStepAction currentTestStepAction = this.testStepController.getCurrentTestStep().getCurrentTestStepAction();
         screenshots.forEach(screenshot -> {
             currentTestStepAction.addScreenshot(screenshot);
         });

@@ -98,7 +98,7 @@
                         <tr class="header $type">
                             <td class="" colspan="3" style="font-size: 15px; color: black; background-color: #DDDDDD; font-weight: normal;">
                                 <div class="error">
-                                    $testMethod.errorContext().readableErrorMessage
+                                    $testMethod.getErrorContext().readableErrorMessage
                                 </div>
                             </td>
                         </tr>

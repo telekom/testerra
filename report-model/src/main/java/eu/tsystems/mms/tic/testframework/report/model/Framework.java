@@ -138,7 +138,7 @@ public final class Framework {
       "\n\006run_Id\030\n \001(\t\022\017\n\007task_Id\030\013 \001(\t\022%\n\035exclu" +
       "sive_session_context_ids\030\014 \003(\t\022\'\n\014log_me" +
       "ssages\030\016 \003(\0132\021.data.PLogMessage\022\035\n\025estim" +
-      "ated_tests_count\030\017 \001(\005\"\233\005\n\rMethodContext" +
+      "ated_tests_count\030\017 \001(\005\"\270\004\n\rMethodContext" +
       "\022+\n\016context_values\030\001 \001(\0132\023.data.ContextV" +
       "alues\022%\n\013method_type\030\007 \001(\0162\020.data.Method" +
       "Type\022\022\n\nparameters\030\010 \003(\t\022\023\n\013method_tags\030" +
@@ -146,27 +146,27 @@ public final class Framework {
       "n_index\030\013 \001(\005\022\023\n\013thread_name\030\014 \001(\t\022:\n\026fa" +
       "ilure_corridor_value\030\016 \001(\0162\032.data.Failur" +
       "eCorridorValue\022\030\n\020class_context_id\030\017 \001(\t" +
-      "\0220\n\024collected_assertions\030\022 \003(\0132\022.data.Er" +
-      "rorContext\022\r\n\005infos\030\023 \003(\t\022\030\n\020priority_me" +
-      "ssage\030\025 \001(\t\022\"\n\032related_method_context_id" +
-      "s\030\027 \003(\t\022%\n\035depends_on_method_context_ids" +
-      "\030\030 \003(\t\022)\n\rerror_context\030\031 \001(\0132\022.data.Err" +
-      "orContext\022#\n\ntest_steps\030\032 \003(\0132\017.data.PTe" +
-      "stStep\022\033\n\023session_context_ids\030\035 \003(\t\022\021\n\tv" +
-      "ideo_ids\030\036 \003(\t\022\033\n\023custom_context_json\030  " +
-      "\001(\t\022/\n\023optional_assertions\030! \003(\0132\022.data." +
-      "ErrorContext\"\313\001\n\rContextValues\022\n\n\002id\030\001 \001" +
-      "(\t\022\017\n\007created\030\002 \001(\003\022\014\n\004name\030\003 \001(\t\022\022\n\nsta" +
-      "rt_time\030\004 \001(\003\022\020\n\010end_time\030\005 \001(\003\022\017\n\003swi\030\006" +
-      " \001(\tB\002\030\001\022-\n\rresult_status\030\007 \001(\0162\026.data.R" +
-      "esultStatusType\022)\n\013exec_status\030\010 \001(\0162\024.d" +
-      "ata.ExecStatusType\"K\n\tPTestStep\022\014\n\004name\030" +
-      "\001 \001(\t\0220\n\021test_step_actions\030\003 \003(\0132\025.data." +
-      "PTestStepAction\"\244\001\n\017PTestStepAction\022\014\n\004n" +
-      "ame\030\001 \001(\t\022\021\n\ttimestamp\030\003 \001(\003\022/\n\020clickpat" +
-      "h_events\030\005 \003(\0132\025.data.PClickPathEvent\022\026\n" +
-      "\016screenshot_ids\030\006 \003(\t\022\'\n\014log_messages\030\007 " +
-      "\003(\0132\021.data.PLogMessage\"_\n\017PClickPathEven" +
+      "\022\r\n\005infos\030\023 \003(\t\022\030\n\020priority_message\030\025 \001(" +
+      "\t\022\"\n\032related_method_context_ids\030\027 \003(\t\022%\n" +
+      "\035depends_on_method_context_ids\030\030 \003(\t\022)\n\r" +
+      "error_context\030\031 \001(\0132\022.data.ErrorContext\022" +
+      "#\n\ntest_steps\030\032 \003(\0132\017.data.PTestStep\022\033\n\023" +
+      "session_context_ids\030\035 \003(\t\022\021\n\tvideo_ids\030\036" +
+      " \003(\t\022\033\n\023custom_context_json\030  \001(\t\"\313\001\n\rCo" +
+      "ntextValues\022\n\n\002id\030\001 \001(\t\022\017\n\007created\030\002 \001(\003" +
+      "\022\014\n\004name\030\003 \001(\t\022\022\n\nstart_time\030\004 \001(\003\022\020\n\010en" +
+      "d_time\030\005 \001(\003\022\017\n\003swi\030\006 \001(\tB\002\030\001\022-\n\rresult_" +
+      "status\030\007 \001(\0162\026.data.ResultStatusType\022)\n\013" +
+      "exec_status\030\010 \001(\0162\024.data.ExecStatusType\"" +
+      "K\n\tPTestStep\022\014\n\004name\030\001 \001(\t\0220\n\021test_step_" +
+      "actions\030\003 \003(\0132\025.data.PTestStepAction\"\207\002\n" +
+      "\017PTestStepAction\022\014\n\004name\030\001 \001(\t\022\021\n\ttimest" +
+      "amp\030\003 \001(\003\022/\n\020clickpath_events\030\005 \003(\0132\025.da" +
+      "ta.PClickPathEvent\022\026\n\016screenshot_ids\030\006 \003" +
+      "(\t\022\'\n\014log_messages\030\007 \003(\0132\021.data.PLogMess" +
+      "age\022/\n\023optional_assertions\030\010 \003(\0132\022.data." +
+      "ErrorContext\0220\n\024collected_assertions\030\t \003" +
+      "(\0132\022.data.ErrorContext\"_\n\017PClickPathEven" +
       "t\022\'\n\004type\030\001 \001(\0162\031.data.PClickPathEventTy" +
       "pe\022\017\n\007subject\030\002 \001(\t\022\022\n\nsession_id\030\003 \001(\t\"" +
       "k\n\013PLogMessage\022#\n\004type\030\001 \001(\0162\025.data.PLog" +
@@ -257,7 +257,7 @@ public final class Framework {
     internal_static_data_MethodContext_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_data_MethodContext_descriptor,
-        new java.lang.String[] { "ContextValues", "MethodType", "Parameters", "MethodTags", "RetryNumber", "MethodRunIndex", "ThreadName", "FailureCorridorValue", "ClassContextId", "CollectedAssertions", "Infos", "PriorityMessage", "RelatedMethodContextIds", "DependsOnMethodContextIds", "ErrorContext", "TestSteps", "SessionContextIds", "VideoIds", "CustomContextJson", "OptionalAssertions", });
+        new java.lang.String[] { "ContextValues", "MethodType", "Parameters", "MethodTags", "RetryNumber", "MethodRunIndex", "ThreadName", "FailureCorridorValue", "ClassContextId", "Infos", "PriorityMessage", "RelatedMethodContextIds", "DependsOnMethodContextIds", "ErrorContext", "TestSteps", "SessionContextIds", "VideoIds", "CustomContextJson", });
     internal_static_data_ContextValues_descriptor =
       getDescriptor().getMessageTypes().get(5);
     internal_static_data_ContextValues_fieldAccessorTable = new
@@ -275,7 +275,7 @@ public final class Framework {
     internal_static_data_PTestStepAction_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_data_PTestStepAction_descriptor,
-        new java.lang.String[] { "Name", "Timestamp", "ClickpathEvents", "ScreenshotIds", "LogMessages", });
+        new java.lang.String[] { "Name", "Timestamp", "ClickpathEvents", "ScreenshotIds", "LogMessages", "OptionalAssertions", "CollectedAssertions", });
     internal_static_data_PClickPathEvent_descriptor =
       getDescriptor().getMessageTypes().get(8);
     internal_static_data_PClickPathEvent_fieldAccessorTable = new

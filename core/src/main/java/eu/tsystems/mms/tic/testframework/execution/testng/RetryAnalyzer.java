@@ -193,13 +193,13 @@ public class RetryAnalyzer implements IRetryAnalyzer {
             TestStatusController.setMethodStatus(methodContext, TestStatusController.Status.FAILED_RETRIED, realMethod);
 
             // explicitly set status if it is not set atm
-            if (methodContext.errorContext().getThrowable() == null) {
+            if (methodContext.getErrorContext().getThrowable() == null) {
                 final Throwable throwable = testResult.getThrowable();
                 final String message = "Retrying this method " + retryMessageString;
                 if (throwable != null) {
-                    methodContext.errorContext().setThrowable(message, throwable);
+                    methodContext.getErrorContext().setThrowable(message, throwable);
                 } else {
-                    methodContext.errorContext().setThrowable(message, new SystemException(message));
+                    methodContext.getErrorContext().setThrowable(message, new SystemException(message));
                 }
             }
 

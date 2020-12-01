@@ -127,7 +127,7 @@ private static final long serialVersionUID = 0L;
   private volatile java.lang.Object suiteContextId_;
   /**
    * <pre>
-   *repeated string class_context_ids = 6 [deprecated = true];
+   *    repeated string class_context_ids = 6 [deprecated = true];
    * </pre>
    *
    * <code>string suite_context_id = 7;</code>
@@ -147,7 +147,7 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   *repeated string class_context_ids = 6 [deprecated = true];
+   *    repeated string class_context_ids = 6 [deprecated = true];
    * </pre>
    *
    * <code>string suite_context_id = 7;</code>
@@ -621,7 +621,7 @@ private static final long serialVersionUID = 0L;
     private java.lang.Object suiteContextId_ = "";
     /**
      * <pre>
-     *repeated string class_context_ids = 6 [deprecated = true];
+     *    repeated string class_context_ids = 6 [deprecated = true];
      * </pre>
      *
      * <code>string suite_context_id = 7;</code>
@@ -641,7 +641,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     *repeated string class_context_ids = 6 [deprecated = true];
+     *    repeated string class_context_ids = 6 [deprecated = true];
      * </pre>
      *
      * <code>string suite_context_id = 7;</code>
@@ -662,7 +662,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     *repeated string class_context_ids = 6 [deprecated = true];
+     *    repeated string class_context_ids = 6 [deprecated = true];
      * </pre>
      *
      * <code>string suite_context_id = 7;</code>
@@ -681,7 +681,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     *repeated string class_context_ids = 6 [deprecated = true];
+     *    repeated string class_context_ids = 6 [deprecated = true];
      * </pre>
      *
      * <code>string suite_context_id = 7;</code>
@@ -695,7 +695,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     *repeated string class_context_ids = 6 [deprecated = true];
+     *    repeated string class_context_ids = 6 [deprecated = true];
      * </pre>
      *
      * <code>string suite_context_id = 7;</code>

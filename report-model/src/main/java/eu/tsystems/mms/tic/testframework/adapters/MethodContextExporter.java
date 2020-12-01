@@ -34,7 +34,6 @@ import eu.tsystems.mms.tic.testframework.report.model.PTestStepAction;
 import eu.tsystems.mms.tic.testframework.report.model.ScriptSource;
 import eu.tsystems.mms.tic.testframework.report.model.ScriptSourceLine;
 import eu.tsystems.mms.tic.testframework.report.model.StackTraceCause;
-import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
@@ -119,8 +118,6 @@ public class MethodContextExporter extends AbstractContextExporter {
 
         // build context
         if (methodContext.hasErrorContext()) builder.setErrorContext(this.prepareErrorContext(methodContext.getErrorContext()));
-        methodContext.readOptionalAssertions().forEach(assertionInfo -> builder.addOptionalAssertions(prepareErrorContext(assertionInfo)));
-        methodContext.readCollectedAssertions().forEach(assertionInfo -> builder.addCollectedAssertions(prepareErrorContext(assertionInfo)));
         methodContext.readSessionContexts().forEach(sessionContext -> builder.addSessionContextIds(sessionContext.getId()));
 
         methodContext.readVideos().forEach(video -> {
@@ -229,75 +226,81 @@ public class MethodContextExporter extends AbstractContextExporter {
         apply(testStepAction.getName(), testStepBuilder::setName);
         apply(testStepAction.getTimestamp(), testStepBuilder::setTimestamp);
 
-        forEach(testStepAction.getTestStepActionEntries(), testStepActionEntry -> {
-            if (testStepActionEntry.clickPathEvent != null) {
-                PClickPathEvent.Builder clickPathBuilder = PClickPathEvent.newBuilder();
-                switch (testStepActionEntry.clickPathEvent.getType()) {
-                    case WINDOW:
-                        clickPathBuilder.setType(PClickPathEventType.WINDOW);
-                        break;
-                    case CLICK:
-                        clickPathBuilder.setType(PClickPathEventType.CLICK);
-                        break;
-                    case VALUE:
-                        clickPathBuilder.setType(PClickPathEventType.VALUE);
-                        break;
-                    case PAGE:
-                        clickPathBuilder.setType(PClickPathEventType.PAGE);
-                        break;
-                    case URL:
-                        clickPathBuilder.setType(PClickPathEventType.URL);
-                        break;
-                    default:
-                        clickPathBuilder.setType(PClickPathEventType.NOT_SET);
-                }
-                clickPathBuilder.setSubject(testStepActionEntry.clickPathEvent.getSubject());
-                clickPathBuilder.setSessionId(testStepActionEntry.clickPathEvent.getSessionId());
-                testStepBuilder.addClickpathEvents(clickPathBuilder.build());
+        testStepAction.readClickPathEvents().forEach(clickPathEvent -> {
+            PClickPathEvent.Builder clickPathBuilder = PClickPathEvent.newBuilder();
+            switch (clickPathEvent.getType()) {
+                case WINDOW:
+                    clickPathBuilder.setType(PClickPathEventType.WINDOW);
+                    break;
+                case CLICK:
+                    clickPathBuilder.setType(PClickPathEventType.CLICK);
+                    break;
+                case VALUE:
+                    clickPathBuilder.setType(PClickPathEventType.VALUE);
+                    break;
+                case PAGE:
+                    clickPathBuilder.setType(PClickPathEventType.PAGE);
+                    break;
+                case URL:
+                    clickPathBuilder.setType(PClickPathEventType.URL);
+                    break;
+                default:
+                    clickPathBuilder.setType(PClickPathEventType.NOT_SET);
             }
-
-            if (testStepActionEntry.screenshot != null) {
-                Screenshot screenshot = testStepActionEntry.screenshot;
-                // build screenshot and sources files
-                final java.io.File targetScreenshotFile = new java.io.File(targetScreenshotDir, screenshot.filename);
-                final java.io.File currentScreenshotFile = new java.io.File(currentScreenshotDir, screenshot.filename);
-
-                //final java.io.File realSourceFile = new java.io.File(Report.SCREENSHOTS_DIRECTORY, screenshot.sourceFilename);
-                final java.io.File targetSourceFile = new java.io.File(targetScreenshotDir, screenshot.filename);
-                final java.io.File currentSourceFile = new java.io.File(currentScreenshotDir, screenshot.filename);
-                final String mappedSourcePath = mapArtifactsPath(targetSourceFile.getAbsolutePath());
-
-                final String screenshotId = IDUtils.getB64encXID();
-                final String sourcesRefId = IDUtils.getB64encXID();
-
-                // create ref link
-                //builder.addScreenshotIds(screenshotId);
-
-                // add screenshot data
-                final File.Builder fileBuilderScreenshot = File.newBuilder();
-                fileBuilderScreenshot.setId(screenshotId);
-                fileBuilderScreenshot.setRelativePath(targetScreenshotFile.getPath());
-                fileBuilderScreenshot.setMimetype(MediaType.PNG.toString());
-                fileBuilderScreenshot.putAllMeta(screenshot.meta());
-                fileBuilderScreenshot.putMeta("sourcesRefId", sourcesRefId);
-                fillFileBasicData(fileBuilderScreenshot, currentScreenshotFile);
-                this.fileConsumer.accept(fileBuilderScreenshot);
-
-                // add sources data
-                final File.Builder fileBuilderSources = File.newBuilder();
-                fileBuilderSources.setId(sourcesRefId);
-                fileBuilderSources.setRelativePath(mappedSourcePath);
-                fileBuilderSources.setMimetype(MediaType.PLAIN_TEXT_UTF_8.toString());
-                fillFileBasicData(fileBuilderSources, currentSourceFile);
-                this.fileConsumer.accept(fileBuilderSources);
-
-                testStepBuilder.addScreenshotIds(screenshotId);
-            }
-
-            if (testStepActionEntry.logMessage != null) {
-                testStepBuilder.addLogMessages(prepareLogMessage(testStepActionEntry.logMessage));
-            }
+            clickPathBuilder.setSubject(clickPathEvent.getSubject());
+            clickPathBuilder.setSessionId(clickPathEvent.getSessionId());
+            testStepBuilder.addClickpathEvents(clickPathBuilder.build());
         });
+
+        testStepAction.readScreenshots().forEach(screenshot -> {
+            // build screenshot and sources files
+            final java.io.File targetScreenshotFile = new java.io.File(targetScreenshotDir, screenshot.filename);
+            final java.io.File currentScreenshotFile = new java.io.File(currentScreenshotDir, screenshot.filename);
+
+            //final java.io.File realSourceFile = new java.io.File(Report.SCREENSHOTS_DIRECTORY, screenshot.sourceFilename);
+            final java.io.File targetSourceFile = new java.io.File(targetScreenshotDir, screenshot.filename);
+            final java.io.File currentSourceFile = new java.io.File(currentScreenshotDir, screenshot.filename);
+            final String mappedSourcePath = mapArtifactsPath(targetSourceFile.getAbsolutePath());
+
+            final String screenshotId = IDUtils.getB64encXID();
+            final String sourcesRefId = IDUtils.getB64encXID();
+
+            // create ref link
+            //builder.addScreenshotIds(screenshotId);
+
+            // add screenshot data
+            final File.Builder fileBuilderScreenshot = File.newBuilder();
+            fileBuilderScreenshot.setId(screenshotId);
+            fileBuilderScreenshot.setRelativePath(targetScreenshotFile.getPath());
+            fileBuilderScreenshot.setMimetype(MediaType.PNG.toString());
+            fileBuilderScreenshot.putAllMeta(screenshot.meta());
+            fileBuilderScreenshot.putMeta("sourcesRefId", sourcesRefId);
+            fillFileBasicData(fileBuilderScreenshot, currentScreenshotFile);
+            this.fileConsumer.accept(fileBuilderScreenshot);
+
+            // add sources data
+            final File.Builder fileBuilderSources = File.newBuilder();
+            fileBuilderSources.setId(sourcesRefId);
+            fileBuilderSources.setRelativePath(mappedSourcePath);
+            fileBuilderSources.setMimetype(MediaType.PLAIN_TEXT_UTF_8.toString());
+            fillFileBasicData(fileBuilderSources, currentSourceFile);
+            this.fileConsumer.accept(fileBuilderSources);
+
+            testStepBuilder.addScreenshotIds(screenshotId);
+        });
+
+        testStepAction.readLogMessages().forEach(logMessage -> {
+            testStepBuilder.addLogMessages(prepareLogMessage(logMessage));
+        });
+
+        testStepAction.readOptionalAssertions().forEach(assertionInfo -> {
+            testStepBuilder.addOptionalAssertions(prepareErrorContext(assertionInfo));
+        });
+
+        testStepAction.readCollectedAssertions().forEach(assertionInfo -> {
+            testStepBuilder.addCollectedAssertions(prepareErrorContext(assertionInfo));
+        });
+
         return testStepBuilder;
     }
 }

@@ -24,7 +24,7 @@ public interface TestContextOrBuilder extends
 
   /**
    * <pre>
-   *repeated string class_context_ids = 6 [deprecated = true];
+   *    repeated string class_context_ids = 6 [deprecated = true];
    * </pre>
    *
    * <code>string suite_context_id = 7;</code>
@@ -33,7 +33,7 @@ public interface TestContextOrBuilder extends
   java.lang.String getSuiteContextId();
   /**
    * <pre>
-   *repeated string class_context_ids = 6 [deprecated = true];
+   *    repeated string class_context_ids = 6 [deprecated = true];
    * </pre>
    *
    * <code>string suite_context_id = 7;</code>

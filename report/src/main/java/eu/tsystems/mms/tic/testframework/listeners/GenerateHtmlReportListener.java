@@ -166,19 +166,19 @@ public class GenerateHtmlReportListener implements
 
                         if (StringUtils.isNotBlank(failsAnnotation.description())) {
                             additionalErrorMessage += " Description: " + failsAnnotation.description();
-                            context.errorContext().setDescription(failsAnnotation.description());
+                            context.getErrorContext().setDescription(failsAnnotation.description());
                         }
 
                         if (failsAnnotation.ticketId() > 0) {
                             additionalErrorMessage += " Ticket: " + failsAnnotation.ticketId();
-                            context.errorContext().setTicketId(failsAnnotation.ticketId());
+                            context.getErrorContext().setTicketId(failsAnnotation.ticketId());
                         }
 
                         if (!failsAnnotation.ticketString().isEmpty()) {
-                            context.errorContext().setTicketId(failsAnnotation.ticketString());
+                            context.getErrorContext().setTicketId(failsAnnotation.ticketString());
                         }
 
-                        context.errorContext().additionalErrorMessage = additionalErrorMessage;
+                        context.getErrorContext().additionalErrorMessage = additionalErrorMessage;
                     }
                 });
     }
@@ -189,10 +189,10 @@ public class GenerateHtmlReportListener implements
         return methodContexts.stream()
                 .filter(expectedFailedMethodContext ->
                         expectedFailedMethodContext.isExpectedFailed()
-                                && context.errorContext().getThrowable().getMessage() != null
-                                && expectedFailedMethodContext.errorContext().getThrowable().getCause().getMessage() != null
-                                && expectedFailedMethodContext.errorContext().getThrowable().getCause().getMessage()
-                                .equals(context.errorContext().getThrowable().getMessage()))
+                                && context.getErrorContext().getThrowable().getMessage() != null
+                                && expectedFailedMethodContext.getErrorContext().getThrowable().getCause().getMessage() != null
+                                && expectedFailedMethodContext.getErrorContext().getThrowable().getCause().getMessage()
+                                .equals(context.getErrorContext().getThrowable().getMessage()))
                 .findFirst();
     }
 
@@ -224,7 +224,7 @@ public class GenerateHtmlReportListener implements
                     /*
                     get exit points (this is the fingerprint)
                      */
-                    final String fingerprint = methodContext.errorContext().getExitFingerprint();
+                    final String fingerprint = methodContext.getErrorContext().getExitFingerprint();
                     final String failuresMapKey;
                     if (StringUtils.isStringEmpty(fingerprint)) {
                         // fingerprint unknown -> "others"
@@ -244,7 +244,7 @@ public class GenerateHtmlReportListener implements
                     /*
                     get failure aspects (this is the error message)
                      */
-                    final String readableMessage = methodContext.errorContext().getReadableErrorMessage();
+                    final String readableMessage = methodContext.getErrorContext().getReadableErrorMessage();
                     if (!failureAspects.containsKey(readableMessage)) {
                         failureAspects.put(readableMessage, new LinkedList<>());
                     }

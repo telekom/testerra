@@ -129,7 +129,7 @@ public class TestStep implements Serializable, Loggable {
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         TestStep testStep;
         if (methodContext != null) {
-            testStep = methodContext.getTestStepController().getTestStep(name);
+            testStep = methodContext.getTestStep(name);
         } else {
             testStep = new TestStep(name);
         }
@@ -143,7 +143,7 @@ public class TestStep implements Serializable, Loggable {
     public static void end() {
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         if (methodContext != null) {
-            TestStep actualTestStep = methodContext.getTestStepController().getCurrentTestStep();
+            TestStep actualTestStep = methodContext.getCurrentTestStep();
             if (actualTestStep != null) {
                 actualTestStep.close();
             }

@@ -209,7 +209,7 @@
                                 <div id="context" class="dashboardTextVerySmall hidden" style="line-height: 22px; color:#888;">
                                     Class: <a href="../classes/${testMethod.getEffectiveClassContext().id}.html"
                                               title="Jump to class">${testMethod.getEffectiveClassContext().name}</a><br/>
-                                    Test: ${testMethod.testContextModel.name}<br/>
+                                    Test: ${testMethod.getTextClassContext().name}<br/>
                                     Suite: ${testMethod.suiteContext.name}<br/>
                                     <br/>
                                     Thread: $testMethod.threadName<br/>

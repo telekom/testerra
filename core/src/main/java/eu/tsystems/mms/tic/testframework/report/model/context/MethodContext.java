@@ -70,14 +70,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     public String threadName = "unrelated";
     private TestStep lastFailedStep;
     public FailureCorridor.Value failureCorridorValue = FailureCorridor.Value.HIGH;
-    /**
-     * @deprecated Use {@link #getClassContext()} instead
-     */
-    public final ClassContext classContext;
-    public TestContextModel testContextModel;
-    public SuiteContext suiteContext;
-    public final ExecutionContext executionContext;
-
     private int hashCodeOfTestResult = 0;
 
     /**
@@ -114,24 +106,14 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
      * @param name             The test method name.
      * @param methodType       method type.
      * @param classContext     .
-     * @param suiteContext     .
-     * @param testContextModel .
-     * @param executionContext .
      */
     public MethodContext(
             final String name,
             final Type methodType,
-            final ClassContext classContext,
-            final TestContextModel testContextModel,
-            final SuiteContext suiteContext,
-            final ExecutionContext executionContext
+            final ClassContext classContext
     ) {
-        this.testContextModel = testContextModel;
-        this.suiteContext = suiteContext;
-        this.executionContext = executionContext;
-
         this.name = name;
-        this.parentContext = this.classContext = classContext;
+        this.parentContext = classContext;
         this.methodRunIndex = Counters.increaseMethodExecutionCounter();
         this.methodType = methodType;
     }
@@ -143,13 +125,29 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     public MethodContext addSessionContext(SessionContext sessionContext) {
         if (!this.sessionContexts.contains(sessionContext)) {
             this.sessionContexts.add(sessionContext);
+            sessionContext.parentContext = this;
             TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(this));
         }
         return this;
     }
 
     public ClassContext getClassContext() {
-        return classContext;
+        return (ClassContext)this.parentContext;
+    }
+
+    @Deprecated
+    public TestContext getTestContext() {
+        return this.getClassContext().getTestContext();
+    }
+
+    @Deprecated
+    public SuiteContext getSuiteContext() {
+        return this.getTestContext().getSuiteContext();
+    }
+
+    @Deprecated
+    public ExecutionContext getExecutionContext() {
+        return this.getSuiteContext().getExecutionContext();
     }
 
     public List<AssertionInfo> getOptionalAssertions() {
@@ -421,7 +419,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
      */
     @Deprecated
     public ClassContext getEffectiveClassContext() {
-        return classContext;
+        return getClassContext();
     }
 
     /**

@@ -97,7 +97,7 @@ public class GenerateHtmlReportListener implements
         ExecutionContextController.getCurrentExecutionContext().suiteContexts.forEach(
                 suiteContext -> {
                     System.out.println("Suite: " + suiteContext.name);
-                    suiteContext.testContextModels.forEach(
+                    suiteContext.testContexts.forEach(
                             testContext -> {
                                 System.out.println("Test: " + testContext.name);
                                 testContext.classContexts.forEach(

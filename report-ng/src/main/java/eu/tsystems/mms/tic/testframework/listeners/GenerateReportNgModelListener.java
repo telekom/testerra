@@ -41,6 +41,7 @@ public class GenerateReportNgModelListener extends GenerateReportModelListener {
         MethodContext methodContext = event.getMethodContext();
         executionAggregateBuilder.addMethodContexts(getMethodContextExporter().prepareMethodContext(methodContext));
         methodContext.getSessionContexts().forEach(sessionContext -> executionAggregateBuilder.addSessionContexts(getSessionContextExporter().prepareSessionContext(sessionContext)));
+        log().info("written " + event.getMethodContext().getName());
     }
     @Override
     public void onFinalizeExecution(FinalizeExecutionEvent event) {
@@ -49,7 +50,7 @@ public class GenerateReportNgModelListener extends GenerateReportModelListener {
         executionContext.suiteContexts.forEach(suiteContext -> {
             executionAggregateBuilder.addSuiteContexts(getSuiteContextExporter().prepareSuiteContext(suiteContext));
 
-            suiteContext.testContextModels.forEach(testContextModel -> {
+            suiteContext.testContexts.forEach(testContextModel -> {
                 executionAggregateBuilder.addTestContexts(getTestContextExporter().prepareTestContext(testContextModel));
 
                 testContextModel.classContexts.forEach(classContext -> {
@@ -57,7 +58,7 @@ public class GenerateReportNgModelListener extends GenerateReportModelListener {
                 });
             });
         });
-        executionContext.getExclusiveSessionContexts().forEach(sessionContext -> executionAggregateBuilder.addSessionContexts(getSessionContextExporter().prepareSessionContext(sessionContext)));
+        executionContext.readExclusiveSessionContexts().forEach(sessionContext -> executionAggregateBuilder.addSessionContexts(getSessionContextExporter().prepareSessionContext(sessionContext)));
         executionAggregateBuilder.setExecutionContext(getExecutionContextExporter().prepareExecutionContext(executionContext));
         writeBuilderToFile(executionAggregateBuilder, new File(baseDir, "execution"));
     }

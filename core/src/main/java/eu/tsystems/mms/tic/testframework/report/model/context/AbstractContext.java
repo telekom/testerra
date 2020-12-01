@@ -40,13 +40,27 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
 public abstract class AbstractContext implements SynchronizableContext, Loggable {
+    @Deprecated
     public String name;
     @Deprecated
     public final String id = IDUtils.getB64encXID();
-    public AbstractContext parentContext;
+    protected AbstractContext parentContext;
+    @Deprecated
     public String swi; // system-wide identifier
     private final Date startTime = new Date();
     private Date endTime;
+
+    public AbstractContext getParentContext() {
+        return this.parentContext;
+    }
+
+    public String getSwi() {
+        return this.swi;
+    }
+
+    public String getName() {
+        return this.name;
+    }
 
     public Date getStartTime() {
         return startTime;

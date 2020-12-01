@@ -8,9 +8,6 @@ export namespace data {
         /** SuiteContext contextValues */
         contextValues?: (data.IContextValues|null);
 
-        /** SuiteContext testContextIds */
-        testContextIds?: (string[]|null);
-
         /** SuiteContext executionContextId */
         executionContextId?: (string|null);
     }
@@ -26,9 +23,6 @@ export namespace data {
 
         /** SuiteContext contextValues. */
         public contextValues?: (data.IContextValues|null);
-
-        /** SuiteContext testContextIds. */
-        public testContextIds: string[];
 
         /** SuiteContext executionContextId. */
         public executionContextId: string;
@@ -50,26 +44,14 @@ export namespace data {
         /** ClassContext contextValues */
         contextValues?: (data.IContextValues|null);
 
-        /** ClassContext methodContextIds */
-        methodContextIds?: (string[]|null);
-
         /** ClassContext fullClassName */
         fullClassName?: (string|null);
-
-        /** ClassContext simpleClassName */
-        simpleClassName?: (string|null);
 
         /** ClassContext testContextId */
         testContextId?: (string|null);
 
-        /** ClassContext executionContextId */
-        executionContextId?: (string|null);
-
         /** ClassContext testContextName */
         testContextName?: (string|null);
-
-        /** ClassContext merged */
-        merged?: (boolean|null);
     }
 
     /** Represents a ClassContext. */
@@ -84,26 +66,14 @@ export namespace data {
         /** ClassContext contextValues. */
         public contextValues?: (data.IContextValues|null);
 
-        /** ClassContext methodContextIds. */
-        public methodContextIds: string[];
-
         /** ClassContext fullClassName. */
         public fullClassName: string;
-
-        /** ClassContext simpleClassName. */
-        public simpleClassName: string;
 
         /** ClassContext testContextId. */
         public testContextId: string;
 
-        /** ClassContext executionContextId. */
-        public executionContextId: string;
-
         /** ClassContext testContextName. */
         public testContextName: string;
-
-        /** ClassContext merged. */
-        public merged: boolean;
 
         /**
          * Decodes a ClassContext message from the specified reader or buffer.
@@ -122,14 +92,8 @@ export namespace data {
         /** TestContext contextValues */
         contextValues?: (data.IContextValues|null);
 
-        /** TestContext classContextIds */
-        classContextIds?: (string[]|null);
-
         /** TestContext suiteContextId */
         suiteContextId?: (string|null);
-
-        /** TestContext executionContextId */
-        executionContextId?: (string|null);
     }
 
     /** Represents a TestContext. */
@@ -144,14 +108,8 @@ export namespace data {
         /** TestContext contextValues. */
         public contextValues?: (data.IContextValues|null);
 
-        /** TestContext classContextIds. */
-        public classContextIds: string[];
-
         /** TestContext suiteContextId. */
         public suiteContextId: string;
-
-        /** TestContext executionContextId. */
-        public executionContextId: string;
 
         /**
          * Decodes a TestContext message from the specified reader or buffer.
@@ -169,9 +127,6 @@ export namespace data {
 
         /** ExecutionContext contextValues */
         contextValues?: (data.IContextValues|null);
-
-        /** ExecutionContext suiteContextIds */
-        suiteContextIds?: (string[]|null);
 
         /** ExecutionContext runConfig */
         runConfig?: (data.IRunConfig|null);
@@ -191,11 +146,11 @@ export namespace data {
         /** ExecutionContext exclusiveSessionContextIds */
         exclusiveSessionContextIds?: (string[]|null);
 
-        /** ExecutionContext estimatedTestMethodCount */
-        estimatedTestMethodCount?: (number|null);
-
         /** ExecutionContext logMessages */
         logMessages?: (data.IPLogMessage[]|null);
+
+        /** ExecutionContext estimatedTestsCount */
+        estimatedTestsCount?: (number|null);
     }
 
     /** Represents an ExecutionContext. */
@@ -209,9 +164,6 @@ export namespace data {
 
         /** ExecutionContext contextValues. */
         public contextValues?: (data.IContextValues|null);
-
-        /** ExecutionContext suiteContextIds. */
-        public suiteContextIds: string[];
 
         /** ExecutionContext runConfig. */
         public runConfig?: (data.IRunConfig|null);
@@ -231,11 +183,11 @@ export namespace data {
         /** ExecutionContext exclusiveSessionContextIds. */
         public exclusiveSessionContextIds: string[];
 
-        /** ExecutionContext estimatedTestMethodCount. */
-        public estimatedTestMethodCount: number;
-
         /** ExecutionContext logMessages. */
         public logMessages: data.IPLogMessage[];
+
+        /** ExecutionContext estimatedTestsCount. */
+        public estimatedTestsCount: number;
 
         /**
          * Decodes an ExecutionContext message from the specified reader or buffer.
@@ -278,12 +230,6 @@ export namespace data {
         /** MethodContext classContextId */
         classContextId?: (string|null);
 
-        /** MethodContext executionContextId */
-        executionContextId?: (string|null);
-
-        /** MethodContext nonFunctionalInfos */
-        nonFunctionalInfos?: (data.IErrorContext[]|null);
-
         /** MethodContext collectedAssertions */
         collectedAssertions?: (data.IErrorContext[]|null);
 
@@ -304,12 +250,6 @@ export namespace data {
 
         /** MethodContext testSteps */
         testSteps?: (data.IPTestStep[]|null);
-
-        /** MethodContext testContextId */
-        testContextId?: (string|null);
-
-        /** MethodContext suiteContextId */
-        suiteContextId?: (string|null);
 
         /** MethodContext sessionContextIds */
         sessionContextIds?: (string[]|null);
@@ -360,12 +300,6 @@ export namespace data {
         /** MethodContext classContextId. */
         public classContextId: string;
 
-        /** MethodContext executionContextId. */
-        public executionContextId: string;
-
-        /** MethodContext nonFunctionalInfos. */
-        public nonFunctionalInfos: data.IErrorContext[];
-
         /** MethodContext collectedAssertions. */
         public collectedAssertions: data.IErrorContext[];
 
@@ -386,12 +320,6 @@ export namespace data {
 
         /** MethodContext testSteps. */
         public testSteps: data.IPTestStep[];
-
-        /** MethodContext testContextId. */
-        public testContextId: string;
-
-        /** MethodContext suiteContextId. */
-        public suiteContextId: string;
 
         /** MethodContext sessionContextIds. */
         public sessionContextIds: string[];

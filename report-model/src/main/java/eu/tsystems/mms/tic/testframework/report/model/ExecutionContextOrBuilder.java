@@ -27,61 +27,33 @@ public interface ExecutionContextOrBuilder extends
    *    repeated string merged_class_context_ids = 3 [deprecated = true];
    *    repeated ContextClip exit_points = 4 [deprecated = true];
    *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+   *repeated string suite_context_ids = 6 [deprecated = true];
    * </pre>
    *
-   * <code>repeated string suite_context_ids = 6;</code>
-   * @return A list containing the suiteContextIds.
-   */
-  java.util.List<java.lang.String>
-      getSuiteContextIdsList();
-  /**
-   * <pre>
-   *    repeated string merged_class_context_ids = 3 [deprecated = true];
-   *    repeated ContextClip exit_points = 4 [deprecated = true];
-   *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
-   * </pre>
-   *
-   * <code>repeated string suite_context_ids = 6;</code>
-   * @return The count of suiteContextIds.
-   */
-  int getSuiteContextIdsCount();
-  /**
-   * <pre>
-   *    repeated string merged_class_context_ids = 3 [deprecated = true];
-   *    repeated ContextClip exit_points = 4 [deprecated = true];
-   *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
-   * </pre>
-   *
-   * <code>repeated string suite_context_ids = 6;</code>
-   * @param index The index of the element to return.
-   * @return The suiteContextIds at the given index.
-   */
-  java.lang.String getSuiteContextIds(int index);
-  /**
-   * <pre>
-   *    repeated string merged_class_context_ids = 3 [deprecated = true];
-   *    repeated ContextClip exit_points = 4 [deprecated = true];
-   *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
-   * </pre>
-   *
-   * <code>repeated string suite_context_ids = 6;</code>
-   * @param index The index of the value to return.
-   * @return The bytes of the suiteContextIds at the given index.
-   */
-  com.google.protobuf.ByteString
-      getSuiteContextIdsBytes(int index);
-
-  /**
    * <code>.data.RunConfig run_config = 7;</code>
    * @return Whether the runConfig field is set.
    */
   boolean hasRunConfig();
   /**
+   * <pre>
+   *    repeated string merged_class_context_ids = 3 [deprecated = true];
+   *    repeated ContextClip exit_points = 4 [deprecated = true];
+   *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+   *repeated string suite_context_ids = 6 [deprecated = true];
+   * </pre>
+   *
    * <code>.data.RunConfig run_config = 7;</code>
    * @return The runConfig.
    */
   eu.tsystems.mms.tic.testframework.report.model.RunConfig getRunConfig();
   /**
+   * <pre>
+   *    repeated string merged_class_context_ids = 3 [deprecated = true];
+   *    repeated ContextClip exit_points = 4 [deprecated = true];
+   *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+   *repeated string suite_context_ids = 6 [deprecated = true];
+   * </pre>
+   *
    * <code>.data.RunConfig run_config = 7;</code>
    */
   eu.tsystems.mms.tic.testframework.report.model.RunConfigOrBuilder getRunConfigOrBuilder();
@@ -160,12 +132,6 @@ public interface ExecutionContextOrBuilder extends
       getExclusiveSessionContextIdsBytes(int index);
 
   /**
-   * <code>int32 estimatedTestMethodCount = 13;</code>
-   * @return The estimatedTestMethodCount.
-   */
-  int getEstimatedTestMethodCount();
-
-  /**
    * <code>repeated .data.PLogMessage log_messages = 14;</code>
    */
   java.util.List<eu.tsystems.mms.tic.testframework.report.model.PLogMessage> 
@@ -188,4 +154,10 @@ public interface ExecutionContextOrBuilder extends
    */
   eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder getLogMessagesOrBuilder(
       int index);
+
+  /**
+   * <code>int32 estimated_tests_count = 15;</code>
+   * @return The estimatedTestsCount.
+   */
+  int getEstimatedTestsCount();
 }

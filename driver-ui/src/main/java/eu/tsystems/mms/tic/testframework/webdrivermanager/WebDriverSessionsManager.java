@@ -305,7 +305,6 @@ public final class WebDriverSessionsManager {
         SessionContext sessionContext = ALL_EVENTFIRING_WEBDRIVER_SESSIONS_CONTEXTS.get(sessionId);
         ExecutionContext currentExecutionContext = ExecutionContextController.getCurrentExecutionContext();
         currentExecutionContext.addExclusiveSessionContext(sessionContext);
-        sessionContext.parentContext = currentExecutionContext;
         // fire sync
         TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(sessionContext));
 
@@ -416,7 +415,6 @@ public final class WebDriverSessionsManager {
             if (methodContext != null) {
                 methodContext.addSessionContext(sessionContext);
             }
-            sessionContext.parentContext = methodContext;
             ExecutionContextController.setCurrentSessionContext(sessionContext);
 
             /*

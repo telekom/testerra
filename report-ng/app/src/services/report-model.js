@@ -23,7 +23,6 @@ export const data = $root.data = (() => {
          * @memberof data
          * @interface ISuiteContext
          * @property {data.IContextValues|null} [contextValues] SuiteContext contextValues
-         * @property {Array.<string>|null} [testContextIds] SuiteContext testContextIds
          * @property {string|null} [executionContextId] SuiteContext executionContextId
          */
 
@@ -36,7 +35,6 @@ export const data = $root.data = (() => {
          * @param {data.ISuiteContext=} [p] Properties to set
          */
         function SuiteContext(p) {
-            this.testContextIds = [];
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -50,14 +48,6 @@ export const data = $root.data = (() => {
          * @instance
          */
         SuiteContext.prototype.contextValues = null;
-
-        /**
-         * SuiteContext testContextIds.
-         * @member {Array.<string>} testContextIds
-         * @memberof data.SuiteContext
-         * @instance
-         */
-        SuiteContext.prototype.testContextIds = $util.emptyArray;
 
         /**
          * SuiteContext executionContextId.
@@ -88,11 +78,6 @@ export const data = $root.data = (() => {
                 case 1:
                     m.contextValues = $root.data.ContextValues.decode(r, r.uint32());
                     break;
-                case 6:
-                    if (!(m.testContextIds && m.testContextIds.length))
-                        m.testContextIds = [];
-                    m.testContextIds.push(r.string());
-                    break;
                 case 7:
                     m.executionContextId = r.string();
                     break;
@@ -114,13 +99,9 @@ export const data = $root.data = (() => {
          * @memberof data
          * @interface IClassContext
          * @property {data.IContextValues|null} [contextValues] ClassContext contextValues
-         * @property {Array.<string>|null} [methodContextIds] ClassContext methodContextIds
          * @property {string|null} [fullClassName] ClassContext fullClassName
-         * @property {string|null} [simpleClassName] ClassContext simpleClassName
          * @property {string|null} [testContextId] ClassContext testContextId
-         * @property {string|null} [executionContextId] ClassContext executionContextId
          * @property {string|null} [testContextName] ClassContext testContextName
-         * @property {boolean|null} [merged] ClassContext merged
          */
 
         /**
@@ -132,7 +113,6 @@ export const data = $root.data = (() => {
          * @param {data.IClassContext=} [p] Properties to set
          */
         function ClassContext(p) {
-            this.methodContextIds = [];
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -148,28 +128,12 @@ export const data = $root.data = (() => {
         ClassContext.prototype.contextValues = null;
 
         /**
-         * ClassContext methodContextIds.
-         * @member {Array.<string>} methodContextIds
-         * @memberof data.ClassContext
-         * @instance
-         */
-        ClassContext.prototype.methodContextIds = $util.emptyArray;
-
-        /**
          * ClassContext fullClassName.
          * @member {string} fullClassName
          * @memberof data.ClassContext
          * @instance
          */
         ClassContext.prototype.fullClassName = "";
-
-        /**
-         * ClassContext simpleClassName.
-         * @member {string} simpleClassName
-         * @memberof data.ClassContext
-         * @instance
-         */
-        ClassContext.prototype.simpleClassName = "";
 
         /**
          * ClassContext testContextId.
@@ -180,28 +144,12 @@ export const data = $root.data = (() => {
         ClassContext.prototype.testContextId = "";
 
         /**
-         * ClassContext executionContextId.
-         * @member {string} executionContextId
-         * @memberof data.ClassContext
-         * @instance
-         */
-        ClassContext.prototype.executionContextId = "";
-
-        /**
          * ClassContext testContextName.
          * @member {string} testContextName
          * @memberof data.ClassContext
          * @instance
          */
         ClassContext.prototype.testContextName = "";
-
-        /**
-         * ClassContext merged.
-         * @member {boolean} merged
-         * @memberof data.ClassContext
-         * @instance
-         */
-        ClassContext.prototype.merged = false;
 
         /**
          * Decodes a ClassContext message from the specified reader or buffer.
@@ -224,28 +172,14 @@ export const data = $root.data = (() => {
                 case 1:
                     m.contextValues = $root.data.ContextValues.decode(r, r.uint32());
                     break;
-                case 6:
-                    if (!(m.methodContextIds && m.methodContextIds.length))
-                        m.methodContextIds = [];
-                    m.methodContextIds.push(r.string());
-                    break;
                 case 7:
                     m.fullClassName = r.string();
-                    break;
-                case 8:
-                    m.simpleClassName = r.string();
                     break;
                 case 9:
                     m.testContextId = r.string();
                     break;
-                case 10:
-                    m.executionContextId = r.string();
-                    break;
                 case 11:
                     m.testContextName = r.string();
-                    break;
-                case 12:
-                    m.merged = r.bool();
                     break;
                 default:
                     r.skipType(t & 7);
@@ -265,9 +199,7 @@ export const data = $root.data = (() => {
          * @memberof data
          * @interface ITestContext
          * @property {data.IContextValues|null} [contextValues] TestContext contextValues
-         * @property {Array.<string>|null} [classContextIds] TestContext classContextIds
          * @property {string|null} [suiteContextId] TestContext suiteContextId
-         * @property {string|null} [executionContextId] TestContext executionContextId
          */
 
         /**
@@ -279,7 +211,6 @@ export const data = $root.data = (() => {
          * @param {data.ITestContext=} [p] Properties to set
          */
         function TestContext(p) {
-            this.classContextIds = [];
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -295,28 +226,12 @@ export const data = $root.data = (() => {
         TestContext.prototype.contextValues = null;
 
         /**
-         * TestContext classContextIds.
-         * @member {Array.<string>} classContextIds
-         * @memberof data.TestContext
-         * @instance
-         */
-        TestContext.prototype.classContextIds = $util.emptyArray;
-
-        /**
          * TestContext suiteContextId.
          * @member {string} suiteContextId
          * @memberof data.TestContext
          * @instance
          */
         TestContext.prototype.suiteContextId = "";
-
-        /**
-         * TestContext executionContextId.
-         * @member {string} executionContextId
-         * @memberof data.TestContext
-         * @instance
-         */
-        TestContext.prototype.executionContextId = "";
 
         /**
          * Decodes a TestContext message from the specified reader or buffer.
@@ -339,16 +254,8 @@ export const data = $root.data = (() => {
                 case 1:
                     m.contextValues = $root.data.ContextValues.decode(r, r.uint32());
                     break;
-                case 6:
-                    if (!(m.classContextIds && m.classContextIds.length))
-                        m.classContextIds = [];
-                    m.classContextIds.push(r.string());
-                    break;
                 case 7:
                     m.suiteContextId = r.string();
-                    break;
-                case 8:
-                    m.executionContextId = r.string();
                     break;
                 default:
                     r.skipType(t & 7);
@@ -368,15 +275,14 @@ export const data = $root.data = (() => {
          * @memberof data
          * @interface IExecutionContext
          * @property {data.IContextValues|null} [contextValues] ExecutionContext contextValues
-         * @property {Array.<string>|null} [suiteContextIds] ExecutionContext suiteContextIds
          * @property {data.IRunConfig|null} [runConfig] ExecutionContext runConfig
          * @property {string|null} [project_Id] ExecutionContext project_Id
          * @property {string|null} [job_Id] ExecutionContext job_Id
          * @property {string|null} [run_Id] ExecutionContext run_Id
          * @property {string|null} [task_Id] ExecutionContext task_Id
          * @property {Array.<string>|null} [exclusiveSessionContextIds] ExecutionContext exclusiveSessionContextIds
-         * @property {number|null} [estimatedTestMethodCount] ExecutionContext estimatedTestMethodCount
          * @property {Array.<data.IPLogMessage>|null} [logMessages] ExecutionContext logMessages
+         * @property {number|null} [estimatedTestsCount] ExecutionContext estimatedTestsCount
          */
 
         /**
@@ -388,7 +294,6 @@ export const data = $root.data = (() => {
          * @param {data.IExecutionContext=} [p] Properties to set
          */
         function ExecutionContext(p) {
-            this.suiteContextIds = [];
             this.exclusiveSessionContextIds = [];
             this.logMessages = [];
             if (p)
@@ -404,14 +309,6 @@ export const data = $root.data = (() => {
          * @instance
          */
         ExecutionContext.prototype.contextValues = null;
-
-        /**
-         * ExecutionContext suiteContextIds.
-         * @member {Array.<string>} suiteContextIds
-         * @memberof data.ExecutionContext
-         * @instance
-         */
-        ExecutionContext.prototype.suiteContextIds = $util.emptyArray;
 
         /**
          * ExecutionContext runConfig.
@@ -462,20 +359,20 @@ export const data = $root.data = (() => {
         ExecutionContext.prototype.exclusiveSessionContextIds = $util.emptyArray;
 
         /**
-         * ExecutionContext estimatedTestMethodCount.
-         * @member {number} estimatedTestMethodCount
-         * @memberof data.ExecutionContext
-         * @instance
-         */
-        ExecutionContext.prototype.estimatedTestMethodCount = 0;
-
-        /**
          * ExecutionContext logMessages.
          * @member {Array.<data.IPLogMessage>} logMessages
          * @memberof data.ExecutionContext
          * @instance
          */
         ExecutionContext.prototype.logMessages = $util.emptyArray;
+
+        /**
+         * ExecutionContext estimatedTestsCount.
+         * @member {number} estimatedTestsCount
+         * @memberof data.ExecutionContext
+         * @instance
+         */
+        ExecutionContext.prototype.estimatedTestsCount = 0;
 
         /**
          * Decodes an ExecutionContext message from the specified reader or buffer.
@@ -498,11 +395,6 @@ export const data = $root.data = (() => {
                 case 1:
                     m.contextValues = $root.data.ContextValues.decode(r, r.uint32());
                     break;
-                case 6:
-                    if (!(m.suiteContextIds && m.suiteContextIds.length))
-                        m.suiteContextIds = [];
-                    m.suiteContextIds.push(r.string());
-                    break;
                 case 7:
                     m.runConfig = $root.data.RunConfig.decode(r, r.uint32());
                     break;
@@ -523,13 +415,13 @@ export const data = $root.data = (() => {
                         m.exclusiveSessionContextIds = [];
                     m.exclusiveSessionContextIds.push(r.string());
                     break;
-                case 13:
-                    m.estimatedTestMethodCount = r.int32();
-                    break;
                 case 14:
                     if (!(m.logMessages && m.logMessages.length))
                         m.logMessages = [];
                     m.logMessages.push($root.data.PLogMessage.decode(r, r.uint32()));
+                    break;
+                case 15:
+                    m.estimatedTestsCount = r.int32();
                     break;
                 default:
                     r.skipType(t & 7);
@@ -557,8 +449,6 @@ export const data = $root.data = (() => {
          * @property {string|null} [threadName] MethodContext threadName
          * @property {data.FailureCorridorValue|null} [failureCorridorValue] MethodContext failureCorridorValue
          * @property {string|null} [classContextId] MethodContext classContextId
-         * @property {string|null} [executionContextId] MethodContext executionContextId
-         * @property {Array.<data.IErrorContext>|null} [nonFunctionalInfos] MethodContext nonFunctionalInfos
          * @property {Array.<data.IErrorContext>|null} [collectedAssertions] MethodContext collectedAssertions
          * @property {Array.<string>|null} [infos] MethodContext infos
          * @property {string|null} [priorityMessage] MethodContext priorityMessage
@@ -566,8 +456,6 @@ export const data = $root.data = (() => {
          * @property {Array.<string>|null} [dependsOnMethodContextIds] MethodContext dependsOnMethodContextIds
          * @property {data.IErrorContext|null} [errorContext] MethodContext errorContext
          * @property {Array.<data.IPTestStep>|null} [testSteps] MethodContext testSteps
-         * @property {string|null} [testContextId] MethodContext testContextId
-         * @property {string|null} [suiteContextId] MethodContext suiteContextId
          * @property {Array.<string>|null} [sessionContextIds] MethodContext sessionContextIds
          * @property {Array.<string>|null} [videoIds] MethodContext videoIds
          * @property {string|null} [customContextJson] MethodContext customContextJson
@@ -585,7 +473,6 @@ export const data = $root.data = (() => {
         function MethodContext(p) {
             this.parameters = [];
             this.methodTags = [];
-            this.nonFunctionalInfos = [];
             this.collectedAssertions = [];
             this.infos = [];
             this.relatedMethodContextIds = [];
@@ -673,22 +560,6 @@ export const data = $root.data = (() => {
         MethodContext.prototype.classContextId = "";
 
         /**
-         * MethodContext executionContextId.
-         * @member {string} executionContextId
-         * @memberof data.MethodContext
-         * @instance
-         */
-        MethodContext.prototype.executionContextId = "";
-
-        /**
-         * MethodContext nonFunctionalInfos.
-         * @member {Array.<data.IErrorContext>} nonFunctionalInfos
-         * @memberof data.MethodContext
-         * @instance
-         */
-        MethodContext.prototype.nonFunctionalInfos = $util.emptyArray;
-
-        /**
          * MethodContext collectedAssertions.
          * @member {Array.<data.IErrorContext>} collectedAssertions
          * @memberof data.MethodContext
@@ -743,22 +614,6 @@ export const data = $root.data = (() => {
          * @instance
          */
         MethodContext.prototype.testSteps = $util.emptyArray;
-
-        /**
-         * MethodContext testContextId.
-         * @member {string} testContextId
-         * @memberof data.MethodContext
-         * @instance
-         */
-        MethodContext.prototype.testContextId = "";
-
-        /**
-         * MethodContext suiteContextId.
-         * @member {string} suiteContextId
-         * @memberof data.MethodContext
-         * @instance
-         */
-        MethodContext.prototype.suiteContextId = "";
 
         /**
          * MethodContext sessionContextIds.
@@ -841,14 +696,6 @@ export const data = $root.data = (() => {
                 case 15:
                     m.classContextId = r.string();
                     break;
-                case 16:
-                    m.executionContextId = r.string();
-                    break;
-                case 17:
-                    if (!(m.nonFunctionalInfos && m.nonFunctionalInfos.length))
-                        m.nonFunctionalInfos = [];
-                    m.nonFunctionalInfos.push($root.data.ErrorContext.decode(r, r.uint32()));
-                    break;
                 case 18:
                     if (!(m.collectedAssertions && m.collectedAssertions.length))
                         m.collectedAssertions = [];
@@ -879,12 +726,6 @@ export const data = $root.data = (() => {
                     if (!(m.testSteps && m.testSteps.length))
                         m.testSteps = [];
                     m.testSteps.push($root.data.PTestStep.decode(r, r.uint32()));
-                    break;
-                case 27:
-                    m.testContextId = r.string();
-                    break;
-                case 28:
-                    m.suiteContextId = r.string();
                     break;
                 case 29:
                     if (!(m.sessionContextIds && m.sessionContextIds.length))

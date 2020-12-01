@@ -158,7 +158,7 @@ public class GenerateReportModelListener implements
         ExecutionContext executionContext = event.getExecutionContext();
         executionContext.suiteContexts.forEach(suiteContext -> {
             writeBuilderToFile(suiteContextExporter.prepareSuiteContext(suiteContext), new File(getSuitesDir(), suiteContext.getId()));
-            suiteContext.testContextModels.forEach(testContextModel -> {
+            suiteContext.testContexts.forEach(testContextModel -> {
                 writeBuilderToFile(testContextExporter.prepareTestContext(testContextModel), new File(getTestsDir(), testContextModel.getId()));
                 testContextModel.classContexts.forEach(classContext -> {
                     writeBuilderToFile(classContextExporter.prepareClassContext(classContext), new File(getClassesDir(), classContext.getId()));

@@ -23,7 +23,7 @@
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import com.google.common.eventbus.EventBus;
-import eu.tsystems.mms.tic.testframework.annotations.TestContext;
+import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
@@ -56,32 +56,54 @@ import org.testng.SkipException;
 public class ClassContext extends AbstractContext implements SynchronizableContext, Loggable {
 
     /**
-     * @deprecated Use {@link #getMethodContexts()} instead
+     * @deprecated Use {@link #readMethodContexts()} instead
      */
     @Deprecated
     public final Queue<MethodContext> methodContexts = new ConcurrentLinkedQueue<>();
-    public String fullClassName;
-    public String simpleClassName;
-    public final TestContextModel testContextModel;
-    public final ExecutionContext executionContext;
-    public TestContext testContext = null;
+    private Class testClass;
+    private TestClassContext testClassContext = null;
 
-    public TestContext getTestContext() {
-        return testContext;
+    public ClassContext(Class testClass, TestContext testContext) {
+        this.testClass = testClass;
+        this.parentContext = testContext;
     }
 
+    @Deprecated
+    public String getFullClassName() {
+        return getTestClass().getName();
+    }
+
+    @Deprecated
+    public String getSimpleClassName() {
+        return getTestClass().getSimpleName();
+    }
+
+    /**
+     * @deprecated Use {@link #readMethodContexts()} instead
+     */
     public Collection<MethodContext> getMethodContexts() {
         return methodContexts;
     }
 
-    public ClassContext setTestContext(TestContext testContext) {
-        this.testContext = testContext;
+    public Stream<MethodContext> readMethodContexts() {
+        return this.methodContexts.stream();
+    }
+
+    public ClassContext setTestClassContext(TestClassContext testContext) {
+        this.testClassContext = testContext;
         return this;
     }
 
-    public ClassContext(TestContextModel testContextModel, ExecutionContext executionContext) {
-        this.parentContext = this.testContextModel = testContextModel;
-        this.executionContext = executionContext;
+    public TestClassContext getTestClassContext() {
+        return this.testClassContext;
+    }
+
+    public TestContext getTestContext() {
+        return (TestContext)this.parentContext;
+    }
+
+    public Class getTestClass() {
+        return testClass;
     }
 
     public MethodContext findTestMethodContainer(String methodName) {
@@ -124,14 +146,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
                 methodType = MethodContext.Type.CONFIGURATION_METHOD;
             }
 
-            TestContextModel correctTestContextModel = testContextModel;
-            SuiteContext correctSuiteContext = testContextModel.suiteContext;
-//            if (isMerged()) {
-//                correctSuiteContext = executionContext.getSuiteContext(iTestContext);
-//                correctTestContextModel = correctSuiteContext.getTestContext(iTestContext);
-//            }
-
-            methodContext = new MethodContext(name, methodType, this, correctTestContextModel, correctSuiteContext, executionContext);
+            methodContext = new MethodContext(name, methodType, this);
             fillBasicContextValues(methodContext, this, name);
 
             methodContext.testResult = testResult;
@@ -232,7 +247,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
     }
 
     protected void setExplicitName() {
-        name = simpleClassName + "_" + testContextModel.suiteContext.name + "_" + testContextModel.name;
+        this.name = getTestClass().getSimpleName() + "_" + getTestContext().getSuiteContext().getName() + "_" + getTestContext().getName();
     }
 
 }

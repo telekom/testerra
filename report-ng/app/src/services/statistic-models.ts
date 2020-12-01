@@ -187,10 +187,12 @@ export class ExecutionStatistics extends Statistics {
 export class ClassStatistics extends Statistics {
     private _configStatistics = new Statistics();
     private _methodContexts:IMethodContext[] = [];
-    private _classContext;
+    private _classContext:IClassContext;
+    private _classIdentifier;
 
     setClassContext(classContext : IClassContext) {
         this._classContext = classContext;
+        this._classIdentifier = classContext.testContextName || this.statusConverter.separateNamespace(classContext.fullClassName).class;
         return this;
     }
 
@@ -214,6 +216,10 @@ export class ClassStatistics extends Statistics {
 
     get configStatistics() {
         return this._configStatistics;
+    }
+
+    get classIdentifier() {
+        return this._classIdentifier;
     }
 }
 

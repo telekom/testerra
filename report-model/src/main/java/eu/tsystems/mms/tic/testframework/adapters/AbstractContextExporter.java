@@ -71,7 +71,7 @@ public abstract class AbstractContextExporter {
         apply(context.getId(), builder::setId);
         //apply(context.swi, builder::setSwi);
         apply(System.currentTimeMillis(), builder::setCreated);
-        apply(context.name, builder::setName);
+        apply(context.getName(), builder::setName);
         map(context.getStartTime(), Date::getTime, builder::setStartTime);
         map(context.getEndTime(), Date::getTime, builder::setEndTime);
 

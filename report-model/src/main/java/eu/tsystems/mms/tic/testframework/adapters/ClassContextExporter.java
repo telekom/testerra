@@ -27,16 +27,11 @@ public class ClassContextExporter extends AbstractContextExporter {
         ClassContext.Builder builder = ClassContext.newBuilder();
 
         apply(createContextValues(classContext), builder::setContextValues);
-        forEach(classContext.methodContexts, methodContext -> builder.addMethodContextIds(methodContext.getId()));
+        apply(classContext.getClass().getName(), builder::setFullClassName);
+        apply(classContext.getTestContext().getId(), builder::setTestContextId);
 
-        apply(classContext.fullClassName, builder::setFullClassName);
-        apply(classContext.simpleClassName, builder::setSimpleClassName);
-
-        apply(classContext.testContextModel.getId(), builder::setTestContextId);
-        apply(classContext.executionContext.getId(), builder::setExecutionContextId);
-
-        if (classContext.getTestContext() != null) {
-            apply(classContext.getTestContext().name(), builder::setTestContextName);
+        if (classContext.getTestClassContext() != null) {
+            builder.setTestContextName(classContext.getTestClassContext().name());
         }
         return builder;
     }

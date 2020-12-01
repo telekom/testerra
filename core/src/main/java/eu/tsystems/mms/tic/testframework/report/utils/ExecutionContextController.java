@@ -29,7 +29,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SuiteContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.TestContextModel;
+import eu.tsystems.mms.tic.testframework.report.model.context.TestContext;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -78,15 +78,15 @@ public class ExecutionContextController {
      */
     public static ClassContext getClassContextFromTestResult(ITestResult testResult, ITestContext iTestContext, IInvokedMethod invokedMethod) {
         SuiteContext suiteContext = getCurrentExecutionContext().getSuiteContext(testResult, iTestContext);
-        TestContextModel testContextModel = suiteContext.getTestContext(testResult, iTestContext);
-        ClassContext classContext = testContextModel.getClassContext(testResult, iTestContext, invokedMethod);
+        TestContext testContext = suiteContext.getTestContext(testResult, iTestContext);
+        ClassContext classContext = testContext.getClassContext(testResult, iTestContext, invokedMethod);
         return classContext;
     }
 
     public static ClassContext getClassContextFromTestContextAndMethod(final ITestContext iTestContext, final ITestNGMethod iTestNgMethod) {
         SuiteContext suiteContext = getCurrentExecutionContext().getSuiteContext(iTestContext);
-        TestContextModel testContextModel = suiteContext.getTestContext(iTestContext);
-        ClassContext classContext = testContextModel.getClassContext(iTestNgMethod);
+        TestContext testContext = suiteContext.getTestContext(iTestContext);
+        ClassContext classContext = testContext.getClassContext(iTestNgMethod);
         return classContext;
     }
 
@@ -154,10 +154,10 @@ public class ExecutionContextController {
 
         LOGGER.info(prefix + "ExecutionContext: " + executionContext.name);
         LOGGER.info(prefix + "SuiteContexts:  " + executionContext.suiteContexts.size());
-        LOGGER.info(prefix + "TestContexts:   " + executionContext.suiteContexts.stream().mapToInt(s -> s.testContextModels.size()).sum());
-        LOGGER.info(prefix + "ClassContexts:  " + executionContext.suiteContexts.stream().flatMap(s -> s.testContextModels.stream()).mapToInt(t -> t.classContexts.size()).sum());
+        LOGGER.info(prefix + "TestContexts:   " + executionContext.suiteContexts.stream().mapToInt(s -> s.testContexts.size()).sum());
+        LOGGER.info(prefix + "ClassContexts:  " + executionContext.suiteContexts.stream().flatMap(s -> s.testContexts.stream()).mapToInt(t -> t.classContexts.size()).sum());
 
-        List<MethodContext> allMethodContexts = executionContext.suiteContexts.stream().flatMap(s -> s.testContextModels.stream()).flatMap(t -> t.classContexts.stream()).flatMap(c -> c.methodContexts.stream()).collect(Collectors.toList());
+        List<MethodContext> allMethodContexts = executionContext.suiteContexts.stream().flatMap(s -> s.testContexts.stream()).flatMap(t -> t.classContexts.stream()).flatMap(c -> c.methodContexts.stream()).collect(Collectors.toList());
 
         LOGGER.info(prefix + "MethodContexts: " + allMethodContexts.size());
 

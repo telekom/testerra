@@ -67,7 +67,7 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
         TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(this));
     }
 
-    public Stream<SessionContext> getExclusiveSessionContexts() {
+    public Stream<SessionContext> readExclusiveSessionContexts() {
         if (this.exclusiveSessionContexts == null) {
             return Stream.empty();
         } else {
@@ -81,6 +81,7 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
         }
         if (!this.exclusiveSessionContexts.contains(sessionContext)) {
             this.exclusiveSessionContexts.add(sessionContext);
+            sessionContext.parentContext = this;
         }
         return this;
     }
@@ -90,8 +91,15 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
         return this;
     }
 
+    /**
+     * @deprecated Use {@link #readMethodContextLessLogs()} instead
+     */
     public ConcurrentLinkedQueue<LogMessage> getMethodContextLessLogs() {
         return this.methodContextLessLogs;
+    }
+
+    public Stream<LogMessage> readMethodContextLessLogs() {
+        return this.methodContextLessLogs.stream();
     }
 
     public synchronized SuiteContext getSuiteContext(ITestResult testResult, ITestContext iTestContext) {
@@ -131,7 +139,7 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
         AtomicLong i = new AtomicLong();
         i.set(0);
         suiteContexts.forEach(suiteContext -> {
-            suiteContext.testContextModels.forEach(testContext -> {
+            suiteContext.testContexts.forEach(testContext -> {
                 testContext.classContexts.forEach(classContext -> {
                     i.set(i.get() + classContext.getRepresentationalMethods().count());
                 });
@@ -151,7 +159,7 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
         Arrays.stream(TestStatusController.Status.values()).forEach(status -> counts.put(status, 0));
 
         suiteContexts.forEach(suiteContext -> {
-            suiteContext.testContextModels.forEach(testContext -> {
+            suiteContext.testContexts.forEach(testContext -> {
                 testContext.classContexts.forEach(classContext -> {
                     Map<TestStatusController.Status, Integer> methodStats = classContext.getMethodStats(includeTestMethods, includeConfigMethods);
                     methodStats.keySet().forEach(status -> {
@@ -178,11 +186,11 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
     public Map<ClassContext, Map> getMethodStatsPerClass(boolean includeTestMethods, boolean includeConfigMethods) {
         final Map<ClassContext, Map> methodStatsPerClass = new LinkedHashMap<>();
         suiteContexts.forEach(suiteContext -> {
-            suiteContext.testContextModels.forEach(testContext -> {
+            suiteContext.testContexts.forEach(testContext -> {
                 testContext.classContexts.forEach(classContext -> {
                     //if (!classContext.isMerged()) {
                         /**
-                         * @todo We may have to group by {@link ClassContext#testContext}
+                         * @todo We may have to group by {@link ClassContext#getTestClassContext()}
                          */
                         Map<TestStatusController.Status, Integer> methodStats = classContext.getMethodStats(includeTestMethods, includeConfigMethods);
                         methodStatsPerClass.put(classContext, methodStats);

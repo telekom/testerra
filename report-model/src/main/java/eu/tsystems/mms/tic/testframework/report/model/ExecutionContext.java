@@ -16,7 +16,6 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private ExecutionContext() {
-    suiteContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     projectId_ = "";
     jobId_ = "";
     runId_ = "";
@@ -69,15 +68,6 @@ private static final long serialVersionUID = 0L;
 
             break;
           }
-          case 50: {
-            java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-              suiteContextIds_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000001;
-            }
-            suiteContextIds_.add(s);
-            break;
-          }
           case 58: {
             eu.tsystems.mms.tic.testframework.report.model.RunConfig.Builder subBuilder = null;
             if (runConfig_ != null) {
@@ -117,25 +107,25 @@ private static final long serialVersionUID = 0L;
           }
           case 98: {
             java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000002) != 0)) {
+            if (!((mutable_bitField0_ & 0x00000001) != 0)) {
               exclusiveSessionContextIds_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000002;
+              mutable_bitField0_ |= 0x00000001;
             }
             exclusiveSessionContextIds_.add(s);
             break;
           }
-          case 104: {
-
-            estimatedTestMethodCount_ = input.readInt32();
-            break;
-          }
           case 114: {
-            if (!((mutable_bitField0_ & 0x00000004) != 0)) {
+            if (!((mutable_bitField0_ & 0x00000002) != 0)) {
               logMessages_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.PLogMessage>();
-              mutable_bitField0_ |= 0x00000004;
+              mutable_bitField0_ |= 0x00000002;
             }
             logMessages_.add(
                 input.readMessage(eu.tsystems.mms.tic.testframework.report.model.PLogMessage.parser(), extensionRegistry));
+            break;
+          }
+          case 120: {
+
+            estimatedTestsCount_ = input.readInt32();
             break;
           }
           default: {
@@ -154,12 +144,9 @@ private static final long serialVersionUID = 0L;
           e).setUnfinishedMessage(this);
     } finally {
       if (((mutable_bitField0_ & 0x00000001) != 0)) {
-        suiteContextIds_ = suiteContextIds_.getUnmodifiableView();
-      }
-      if (((mutable_bitField0_ & 0x00000002) != 0)) {
         exclusiveSessionContextIds_ = exclusiveSessionContextIds_.getUnmodifiableView();
       }
-      if (((mutable_bitField0_ & 0x00000004) != 0)) {
+      if (((mutable_bitField0_ & 0x00000002) != 0)) {
         logMessages_ = java.util.Collections.unmodifiableList(logMessages_);
       }
       this.unknownFields = unknownFields.build();
@@ -202,68 +189,16 @@ private static final long serialVersionUID = 0L;
     return getContextValues();
   }
 
-  public static final int SUITE_CONTEXT_IDS_FIELD_NUMBER = 6;
-  private com.google.protobuf.LazyStringList suiteContextIds_;
-  /**
-   * <pre>
-   *    repeated string merged_class_context_ids = 3 [deprecated = true];
-   *    repeated ContextClip exit_points = 4 [deprecated = true];
-   *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
-   * </pre>
-   *
-   * <code>repeated string suite_context_ids = 6;</code>
-   * @return A list containing the suiteContextIds.
-   */
-  public com.google.protobuf.ProtocolStringList
-      getSuiteContextIdsList() {
-    return suiteContextIds_;
-  }
-  /**
-   * <pre>
-   *    repeated string merged_class_context_ids = 3 [deprecated = true];
-   *    repeated ContextClip exit_points = 4 [deprecated = true];
-   *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
-   * </pre>
-   *
-   * <code>repeated string suite_context_ids = 6;</code>
-   * @return The count of suiteContextIds.
-   */
-  public int getSuiteContextIdsCount() {
-    return suiteContextIds_.size();
-  }
-  /**
-   * <pre>
-   *    repeated string merged_class_context_ids = 3 [deprecated = true];
-   *    repeated ContextClip exit_points = 4 [deprecated = true];
-   *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
-   * </pre>
-   *
-   * <code>repeated string suite_context_ids = 6;</code>
-   * @param index The index of the element to return.
-   * @return The suiteContextIds at the given index.
-   */
-  public java.lang.String getSuiteContextIds(int index) {
-    return suiteContextIds_.get(index);
-  }
-  /**
-   * <pre>
-   *    repeated string merged_class_context_ids = 3 [deprecated = true];
-   *    repeated ContextClip exit_points = 4 [deprecated = true];
-   *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
-   * </pre>
-   *
-   * <code>repeated string suite_context_ids = 6;</code>
-   * @param index The index of the value to return.
-   * @return The bytes of the suiteContextIds at the given index.
-   */
-  public com.google.protobuf.ByteString
-      getSuiteContextIdsBytes(int index) {
-    return suiteContextIds_.getByteString(index);
-  }
-
   public static final int RUN_CONFIG_FIELD_NUMBER = 7;
   private eu.tsystems.mms.tic.testframework.report.model.RunConfig runConfig_;
   /**
+   * <pre>
+   *    repeated string merged_class_context_ids = 3 [deprecated = true];
+   *    repeated ContextClip exit_points = 4 [deprecated = true];
+   *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+   *repeated string suite_context_ids = 6 [deprecated = true];
+   * </pre>
+   *
    * <code>.data.RunConfig run_config = 7;</code>
    * @return Whether the runConfig field is set.
    */
@@ -271,6 +206,13 @@ private static final long serialVersionUID = 0L;
     return runConfig_ != null;
   }
   /**
+   * <pre>
+   *    repeated string merged_class_context_ids = 3 [deprecated = true];
+   *    repeated ContextClip exit_points = 4 [deprecated = true];
+   *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+   *repeated string suite_context_ids = 6 [deprecated = true];
+   * </pre>
+   *
    * <code>.data.RunConfig run_config = 7;</code>
    * @return The runConfig.
    */
@@ -278,6 +220,13 @@ private static final long serialVersionUID = 0L;
     return runConfig_ == null ? eu.tsystems.mms.tic.testframework.report.model.RunConfig.getDefaultInstance() : runConfig_;
   }
   /**
+   * <pre>
+   *    repeated string merged_class_context_ids = 3 [deprecated = true];
+   *    repeated ContextClip exit_points = 4 [deprecated = true];
+   *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+   *repeated string suite_context_ids = 6 [deprecated = true];
+   * </pre>
+   *
    * <code>.data.RunConfig run_config = 7;</code>
    */
   public eu.tsystems.mms.tic.testframework.report.model.RunConfigOrBuilder getRunConfigOrBuilder() {
@@ -463,16 +412,6 @@ private static final long serialVersionUID = 0L;
     return exclusiveSessionContextIds_.getByteString(index);
   }
 
-  public static final int ESTIMATEDTESTMETHODCOUNT_FIELD_NUMBER = 13;
-  private int estimatedTestMethodCount_;
-  /**
-   * <code>int32 estimatedTestMethodCount = 13;</code>
-   * @return The estimatedTestMethodCount.
-   */
-  public int getEstimatedTestMethodCount() {
-    return estimatedTestMethodCount_;
-  }
-
   public static final int LOG_MESSAGES_FIELD_NUMBER = 14;
   private java.util.List<eu.tsystems.mms.tic.testframework.report.model.PLogMessage> logMessages_;
   /**
@@ -508,6 +447,16 @@ private static final long serialVersionUID = 0L;
     return logMessages_.get(index);
   }
 
+  public static final int ESTIMATED_TESTS_COUNT_FIELD_NUMBER = 15;
+  private int estimatedTestsCount_;
+  /**
+   * <code>int32 estimated_tests_count = 15;</code>
+   * @return The estimatedTestsCount.
+   */
+  public int getEstimatedTestsCount() {
+    return estimatedTestsCount_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -524,9 +473,6 @@ private static final long serialVersionUID = 0L;
                       throws java.io.IOException {
     if (contextValues_ != null) {
       output.writeMessage(1, getContextValues());
-    }
-    for (int i = 0; i < suiteContextIds_.size(); i++) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 6, suiteContextIds_.getRaw(i));
     }
     if (runConfig_ != null) {
       output.writeMessage(7, getRunConfig());
@@ -546,11 +492,11 @@ private static final long serialVersionUID = 0L;
     for (int i = 0; i < exclusiveSessionContextIds_.size(); i++) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 12, exclusiveSessionContextIds_.getRaw(i));
     }
-    if (estimatedTestMethodCount_ != 0) {
-      output.writeInt32(13, estimatedTestMethodCount_);
-    }
     for (int i = 0; i < logMessages_.size(); i++) {
       output.writeMessage(14, logMessages_.get(i));
+    }
+    if (estimatedTestsCount_ != 0) {
+      output.writeInt32(15, estimatedTestsCount_);
     }
     unknownFields.writeTo(output);
   }
@@ -564,14 +510,6 @@ private static final long serialVersionUID = 0L;
     if (contextValues_ != null) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(1, getContextValues());
-    }
-    {
-      int dataSize = 0;
-      for (int i = 0; i < suiteContextIds_.size(); i++) {
-        dataSize += computeStringSizeNoTag(suiteContextIds_.getRaw(i));
-      }
-      size += dataSize;
-      size += 1 * getSuiteContextIdsList().size();
     }
     if (runConfig_ != null) {
       size += com.google.protobuf.CodedOutputStream
@@ -597,13 +535,13 @@ private static final long serialVersionUID = 0L;
       size += dataSize;
       size += 1 * getExclusiveSessionContextIdsList().size();
     }
-    if (estimatedTestMethodCount_ != 0) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(13, estimatedTestMethodCount_);
-    }
     for (int i = 0; i < logMessages_.size(); i++) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(14, logMessages_.get(i));
+    }
+    if (estimatedTestsCount_ != 0) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(15, estimatedTestsCount_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -625,8 +563,6 @@ private static final long serialVersionUID = 0L;
       if (!getContextValues()
           .equals(other.getContextValues())) return false;
     }
-    if (!getSuiteContextIdsList()
-        .equals(other.getSuiteContextIdsList())) return false;
     if (hasRunConfig() != other.hasRunConfig()) return false;
     if (hasRunConfig()) {
       if (!getRunConfig()
@@ -642,10 +578,10 @@ private static final long serialVersionUID = 0L;
         .equals(other.getTaskId())) return false;
     if (!getExclusiveSessionContextIdsList()
         .equals(other.getExclusiveSessionContextIdsList())) return false;
-    if (getEstimatedTestMethodCount()
-        != other.getEstimatedTestMethodCount()) return false;
     if (!getLogMessagesList()
         .equals(other.getLogMessagesList())) return false;
+    if (getEstimatedTestsCount()
+        != other.getEstimatedTestsCount()) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -660,10 +596,6 @@ private static final long serialVersionUID = 0L;
     if (hasContextValues()) {
       hash = (37 * hash) + CONTEXT_VALUES_FIELD_NUMBER;
       hash = (53 * hash) + getContextValues().hashCode();
-    }
-    if (getSuiteContextIdsCount() > 0) {
-      hash = (37 * hash) + SUITE_CONTEXT_IDS_FIELD_NUMBER;
-      hash = (53 * hash) + getSuiteContextIdsList().hashCode();
     }
     if (hasRunConfig()) {
       hash = (37 * hash) + RUN_CONFIG_FIELD_NUMBER;
@@ -681,12 +613,12 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + EXCLUSIVE_SESSION_CONTEXT_IDS_FIELD_NUMBER;
       hash = (53 * hash) + getExclusiveSessionContextIdsList().hashCode();
     }
-    hash = (37 * hash) + ESTIMATEDTESTMETHODCOUNT_FIELD_NUMBER;
-    hash = (53 * hash) + getEstimatedTestMethodCount();
     if (getLogMessagesCount() > 0) {
       hash = (37 * hash) + LOG_MESSAGES_FIELD_NUMBER;
       hash = (53 * hash) + getLogMessagesList().hashCode();
     }
+    hash = (37 * hash) + ESTIMATED_TESTS_COUNT_FIELD_NUMBER;
+    hash = (53 * hash) + getEstimatedTestsCount();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -827,8 +759,6 @@ private static final long serialVersionUID = 0L;
         contextValues_ = null;
         contextValuesBuilder_ = null;
       }
-      suiteContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000001);
       if (runConfigBuilder_ == null) {
         runConfig_ = null;
       } else {
@@ -844,15 +774,15 @@ private static final long serialVersionUID = 0L;
       taskId_ = "";
 
       exclusiveSessionContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000002);
-      estimatedTestMethodCount_ = 0;
-
+      bitField0_ = (bitField0_ & ~0x00000001);
       if (logMessagesBuilder_ == null) {
         logMessages_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000002);
       } else {
         logMessagesBuilder_.clear();
       }
+      estimatedTestsCount_ = 0;
+
       return this;
     }
 
@@ -885,11 +815,6 @@ private static final long serialVersionUID = 0L;
       } else {
         result.contextValues_ = contextValuesBuilder_.build();
       }
-      if (((bitField0_ & 0x00000001) != 0)) {
-        suiteContextIds_ = suiteContextIds_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000001);
-      }
-      result.suiteContextIds_ = suiteContextIds_;
       if (runConfigBuilder_ == null) {
         result.runConfig_ = runConfig_;
       } else {
@@ -899,21 +824,21 @@ private static final long serialVersionUID = 0L;
       result.jobId_ = jobId_;
       result.runId_ = runId_;
       result.taskId_ = taskId_;
-      if (((bitField0_ & 0x00000002) != 0)) {
+      if (((bitField0_ & 0x00000001) != 0)) {
         exclusiveSessionContextIds_ = exclusiveSessionContextIds_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000001);
       }
       result.exclusiveSessionContextIds_ = exclusiveSessionContextIds_;
-      result.estimatedTestMethodCount_ = estimatedTestMethodCount_;
       if (logMessagesBuilder_ == null) {
-        if (((bitField0_ & 0x00000004) != 0)) {
+        if (((bitField0_ & 0x00000002) != 0)) {
           logMessages_ = java.util.Collections.unmodifiableList(logMessages_);
-          bitField0_ = (bitField0_ & ~0x00000004);
+          bitField0_ = (bitField0_ & ~0x00000002);
         }
         result.logMessages_ = logMessages_;
       } else {
         result.logMessages_ = logMessagesBuilder_.build();
       }
+      result.estimatedTestsCount_ = estimatedTestsCount_;
       onBuilt();
       return result;
     }
@@ -965,16 +890,6 @@ private static final long serialVersionUID = 0L;
       if (other.hasContextValues()) {
         mergeContextValues(other.getContextValues());
       }
-      if (!other.suiteContextIds_.isEmpty()) {
-        if (suiteContextIds_.isEmpty()) {
-          suiteContextIds_ = other.suiteContextIds_;
-          bitField0_ = (bitField0_ & ~0x00000001);
-        } else {
-          ensureSuiteContextIdsIsMutable();
-          suiteContextIds_.addAll(other.suiteContextIds_);
-        }
-        onChanged();
-      }
       if (other.hasRunConfig()) {
         mergeRunConfig(other.getRunConfig());
       }
@@ -997,21 +912,18 @@ private static final long serialVersionUID = 0L;
       if (!other.exclusiveSessionContextIds_.isEmpty()) {
         if (exclusiveSessionContextIds_.isEmpty()) {
           exclusiveSessionContextIds_ = other.exclusiveSessionContextIds_;
-          bitField0_ = (bitField0_ & ~0x00000002);
+          bitField0_ = (bitField0_ & ~0x00000001);
         } else {
           ensureExclusiveSessionContextIdsIsMutable();
           exclusiveSessionContextIds_.addAll(other.exclusiveSessionContextIds_);
         }
         onChanged();
       }
-      if (other.getEstimatedTestMethodCount() != 0) {
-        setEstimatedTestMethodCount(other.getEstimatedTestMethodCount());
-      }
       if (logMessagesBuilder_ == null) {
         if (!other.logMessages_.isEmpty()) {
           if (logMessages_.isEmpty()) {
             logMessages_ = other.logMessages_;
-            bitField0_ = (bitField0_ & ~0x00000004);
+            bitField0_ = (bitField0_ & ~0x00000002);
           } else {
             ensureLogMessagesIsMutable();
             logMessages_.addAll(other.logMessages_);
@@ -1024,7 +936,7 @@ private static final long serialVersionUID = 0L;
             logMessagesBuilder_.dispose();
             logMessagesBuilder_ = null;
             logMessages_ = other.logMessages_;
-            bitField0_ = (bitField0_ & ~0x00000004);
+            bitField0_ = (bitField0_ & ~0x00000002);
             logMessagesBuilder_ = 
               com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                  getLogMessagesFieldBuilder() : null;
@@ -1032,6 +944,9 @@ private static final long serialVersionUID = 0L;
             logMessagesBuilder_.addAllMessages(other.logMessages_);
           }
         }
+      }
+      if (other.getEstimatedTestsCount() != 0) {
+        setEstimatedTestsCount(other.getEstimatedTestsCount());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -1182,174 +1097,17 @@ private static final long serialVersionUID = 0L;
       return contextValuesBuilder_;
     }
 
-    private com.google.protobuf.LazyStringList suiteContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    private void ensureSuiteContextIdsIsMutable() {
-      if (!((bitField0_ & 0x00000001) != 0)) {
-        suiteContextIds_ = new com.google.protobuf.LazyStringArrayList(suiteContextIds_);
-        bitField0_ |= 0x00000001;
-       }
-    }
-    /**
-     * <pre>
-     *    repeated string merged_class_context_ids = 3 [deprecated = true];
-     *    repeated ContextClip exit_points = 4 [deprecated = true];
-     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
-     * </pre>
-     *
-     * <code>repeated string suite_context_ids = 6;</code>
-     * @return A list containing the suiteContextIds.
-     */
-    public com.google.protobuf.ProtocolStringList
-        getSuiteContextIdsList() {
-      return suiteContextIds_.getUnmodifiableView();
-    }
-    /**
-     * <pre>
-     *    repeated string merged_class_context_ids = 3 [deprecated = true];
-     *    repeated ContextClip exit_points = 4 [deprecated = true];
-     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
-     * </pre>
-     *
-     * <code>repeated string suite_context_ids = 6;</code>
-     * @return The count of suiteContextIds.
-     */
-    public int getSuiteContextIdsCount() {
-      return suiteContextIds_.size();
-    }
-    /**
-     * <pre>
-     *    repeated string merged_class_context_ids = 3 [deprecated = true];
-     *    repeated ContextClip exit_points = 4 [deprecated = true];
-     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
-     * </pre>
-     *
-     * <code>repeated string suite_context_ids = 6;</code>
-     * @param index The index of the element to return.
-     * @return The suiteContextIds at the given index.
-     */
-    public java.lang.String getSuiteContextIds(int index) {
-      return suiteContextIds_.get(index);
-    }
-    /**
-     * <pre>
-     *    repeated string merged_class_context_ids = 3 [deprecated = true];
-     *    repeated ContextClip exit_points = 4 [deprecated = true];
-     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
-     * </pre>
-     *
-     * <code>repeated string suite_context_ids = 6;</code>
-     * @param index The index of the value to return.
-     * @return The bytes of the suiteContextIds at the given index.
-     */
-    public com.google.protobuf.ByteString
-        getSuiteContextIdsBytes(int index) {
-      return suiteContextIds_.getByteString(index);
-    }
-    /**
-     * <pre>
-     *    repeated string merged_class_context_ids = 3 [deprecated = true];
-     *    repeated ContextClip exit_points = 4 [deprecated = true];
-     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
-     * </pre>
-     *
-     * <code>repeated string suite_context_ids = 6;</code>
-     * @param index The index to set the value at.
-     * @param value The suiteContextIds to set.
-     * @return This builder for chaining.
-     */
-    public Builder setSuiteContextIds(
-        int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureSuiteContextIdsIsMutable();
-      suiteContextIds_.set(index, value);
-      onChanged();
-      return this;
-    }
-    /**
-     * <pre>
-     *    repeated string merged_class_context_ids = 3 [deprecated = true];
-     *    repeated ContextClip exit_points = 4 [deprecated = true];
-     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
-     * </pre>
-     *
-     * <code>repeated string suite_context_ids = 6;</code>
-     * @param value The suiteContextIds to add.
-     * @return This builder for chaining.
-     */
-    public Builder addSuiteContextIds(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureSuiteContextIdsIsMutable();
-      suiteContextIds_.add(value);
-      onChanged();
-      return this;
-    }
-    /**
-     * <pre>
-     *    repeated string merged_class_context_ids = 3 [deprecated = true];
-     *    repeated ContextClip exit_points = 4 [deprecated = true];
-     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
-     * </pre>
-     *
-     * <code>repeated string suite_context_ids = 6;</code>
-     * @param values The suiteContextIds to add.
-     * @return This builder for chaining.
-     */
-    public Builder addAllSuiteContextIds(
-        java.lang.Iterable<java.lang.String> values) {
-      ensureSuiteContextIdsIsMutable();
-      com.google.protobuf.AbstractMessageLite.Builder.addAll(
-          values, suiteContextIds_);
-      onChanged();
-      return this;
-    }
-    /**
-     * <pre>
-     *    repeated string merged_class_context_ids = 3 [deprecated = true];
-     *    repeated ContextClip exit_points = 4 [deprecated = true];
-     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
-     * </pre>
-     *
-     * <code>repeated string suite_context_ids = 6;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearSuiteContextIds() {
-      suiteContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000001);
-      onChanged();
-      return this;
-    }
-    /**
-     * <pre>
-     *    repeated string merged_class_context_ids = 3 [deprecated = true];
-     *    repeated ContextClip exit_points = 4 [deprecated = true];
-     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
-     * </pre>
-     *
-     * <code>repeated string suite_context_ids = 6;</code>
-     * @param value The bytes of the suiteContextIds to add.
-     * @return This builder for chaining.
-     */
-    public Builder addSuiteContextIdsBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      ensureSuiteContextIdsIsMutable();
-      suiteContextIds_.add(value);
-      onChanged();
-      return this;
-    }
-
     private eu.tsystems.mms.tic.testframework.report.model.RunConfig runConfig_;
     private com.google.protobuf.SingleFieldBuilderV3<
         eu.tsystems.mms.tic.testframework.report.model.RunConfig, eu.tsystems.mms.tic.testframework.report.model.RunConfig.Builder, eu.tsystems.mms.tic.testframework.report.model.RunConfigOrBuilder> runConfigBuilder_;
     /**
+     * <pre>
+     *    repeated string merged_class_context_ids = 3 [deprecated = true];
+     *    repeated ContextClip exit_points = 4 [deprecated = true];
+     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+     *repeated string suite_context_ids = 6 [deprecated = true];
+     * </pre>
+     *
      * <code>.data.RunConfig run_config = 7;</code>
      * @return Whether the runConfig field is set.
      */
@@ -1357,6 +1115,13 @@ private static final long serialVersionUID = 0L;
       return runConfigBuilder_ != null || runConfig_ != null;
     }
     /**
+     * <pre>
+     *    repeated string merged_class_context_ids = 3 [deprecated = true];
+     *    repeated ContextClip exit_points = 4 [deprecated = true];
+     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+     *repeated string suite_context_ids = 6 [deprecated = true];
+     * </pre>
+     *
      * <code>.data.RunConfig run_config = 7;</code>
      * @return The runConfig.
      */
@@ -1368,6 +1133,13 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     *    repeated string merged_class_context_ids = 3 [deprecated = true];
+     *    repeated ContextClip exit_points = 4 [deprecated = true];
+     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+     *repeated string suite_context_ids = 6 [deprecated = true];
+     * </pre>
+     *
      * <code>.data.RunConfig run_config = 7;</code>
      */
     public Builder setRunConfig(eu.tsystems.mms.tic.testframework.report.model.RunConfig value) {
@@ -1384,6 +1156,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    repeated string merged_class_context_ids = 3 [deprecated = true];
+     *    repeated ContextClip exit_points = 4 [deprecated = true];
+     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+     *repeated string suite_context_ids = 6 [deprecated = true];
+     * </pre>
+     *
      * <code>.data.RunConfig run_config = 7;</code>
      */
     public Builder setRunConfig(
@@ -1398,6 +1177,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    repeated string merged_class_context_ids = 3 [deprecated = true];
+     *    repeated ContextClip exit_points = 4 [deprecated = true];
+     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+     *repeated string suite_context_ids = 6 [deprecated = true];
+     * </pre>
+     *
      * <code>.data.RunConfig run_config = 7;</code>
      */
     public Builder mergeRunConfig(eu.tsystems.mms.tic.testframework.report.model.RunConfig value) {
@@ -1416,6 +1202,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    repeated string merged_class_context_ids = 3 [deprecated = true];
+     *    repeated ContextClip exit_points = 4 [deprecated = true];
+     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+     *repeated string suite_context_ids = 6 [deprecated = true];
+     * </pre>
+     *
      * <code>.data.RunConfig run_config = 7;</code>
      */
     public Builder clearRunConfig() {
@@ -1430,6 +1223,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    repeated string merged_class_context_ids = 3 [deprecated = true];
+     *    repeated ContextClip exit_points = 4 [deprecated = true];
+     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+     *repeated string suite_context_ids = 6 [deprecated = true];
+     * </pre>
+     *
      * <code>.data.RunConfig run_config = 7;</code>
      */
     public eu.tsystems.mms.tic.testframework.report.model.RunConfig.Builder getRunConfigBuilder() {
@@ -1438,6 +1238,13 @@ private static final long serialVersionUID = 0L;
       return getRunConfigFieldBuilder().getBuilder();
     }
     /**
+     * <pre>
+     *    repeated string merged_class_context_ids = 3 [deprecated = true];
+     *    repeated ContextClip exit_points = 4 [deprecated = true];
+     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+     *repeated string suite_context_ids = 6 [deprecated = true];
+     * </pre>
+     *
      * <code>.data.RunConfig run_config = 7;</code>
      */
     public eu.tsystems.mms.tic.testframework.report.model.RunConfigOrBuilder getRunConfigOrBuilder() {
@@ -1449,6 +1256,13 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     *    repeated string merged_class_context_ids = 3 [deprecated = true];
+     *    repeated ContextClip exit_points = 4 [deprecated = true];
+     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+     *repeated string suite_context_ids = 6 [deprecated = true];
+     * </pre>
+     *
      * <code>.data.RunConfig run_config = 7;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
@@ -1771,9 +1585,9 @@ private static final long serialVersionUID = 0L;
 
     private com.google.protobuf.LazyStringList exclusiveSessionContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     private void ensureExclusiveSessionContextIdsIsMutable() {
-      if (!((bitField0_ & 0x00000002) != 0)) {
+      if (!((bitField0_ & 0x00000001) != 0)) {
         exclusiveSessionContextIds_ = new com.google.protobuf.LazyStringArrayList(exclusiveSessionContextIds_);
-        bitField0_ |= 0x00000002;
+        bitField0_ |= 0x00000001;
        }
     }
     /**
@@ -1858,7 +1672,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder clearExclusiveSessionContextIds() {
       exclusiveSessionContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000002);
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -1879,42 +1693,12 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private int estimatedTestMethodCount_ ;
-    /**
-     * <code>int32 estimatedTestMethodCount = 13;</code>
-     * @return The estimatedTestMethodCount.
-     */
-    public int getEstimatedTestMethodCount() {
-      return estimatedTestMethodCount_;
-    }
-    /**
-     * <code>int32 estimatedTestMethodCount = 13;</code>
-     * @param value The estimatedTestMethodCount to set.
-     * @return This builder for chaining.
-     */
-    public Builder setEstimatedTestMethodCount(int value) {
-      
-      estimatedTestMethodCount_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>int32 estimatedTestMethodCount = 13;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearEstimatedTestMethodCount() {
-      
-      estimatedTestMethodCount_ = 0;
-      onChanged();
-      return this;
-    }
-
     private java.util.List<eu.tsystems.mms.tic.testframework.report.model.PLogMessage> logMessages_ =
       java.util.Collections.emptyList();
     private void ensureLogMessagesIsMutable() {
-      if (!((bitField0_ & 0x00000004) != 0)) {
+      if (!((bitField0_ & 0x00000002) != 0)) {
         logMessages_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.PLogMessage>(logMessages_);
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000002;
        }
     }
 
@@ -2064,7 +1848,7 @@ private static final long serialVersionUID = 0L;
     public Builder clearLogMessages() {
       if (logMessagesBuilder_ == null) {
         logMessages_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000002);
         onChanged();
       } else {
         logMessagesBuilder_.clear();
@@ -2141,12 +1925,42 @@ private static final long serialVersionUID = 0L;
         logMessagesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
             eu.tsystems.mms.tic.testframework.report.model.PLogMessage, eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder, eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder>(
                 logMessages_,
-                ((bitField0_ & 0x00000004) != 0),
+                ((bitField0_ & 0x00000002) != 0),
                 getParentForChildren(),
                 isClean());
         logMessages_ = null;
       }
       return logMessagesBuilder_;
+    }
+
+    private int estimatedTestsCount_ ;
+    /**
+     * <code>int32 estimated_tests_count = 15;</code>
+     * @return The estimatedTestsCount.
+     */
+    public int getEstimatedTestsCount() {
+      return estimatedTestsCount_;
+    }
+    /**
+     * <code>int32 estimated_tests_count = 15;</code>
+     * @param value The estimatedTestsCount to set.
+     * @return This builder for chaining.
+     */
+    public Builder setEstimatedTestsCount(int value) {
+      
+      estimatedTestsCount_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>int32 estimated_tests_count = 15;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearEstimatedTestsCount() {
+      
+      estimatedTestsCount_ = 0;
+      onChanged();
+      return this;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

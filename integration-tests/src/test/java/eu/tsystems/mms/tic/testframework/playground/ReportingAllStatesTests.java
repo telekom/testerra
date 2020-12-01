@@ -28,7 +28,7 @@ import eu.tsystems.mms.tic.testframework.annotations.InfoMethod;
 import eu.tsystems.mms.tic.testframework.annotations.New;
 import eu.tsystems.mms.tic.testframework.annotations.ReadyForApproval;
 import eu.tsystems.mms.tic.testframework.annotations.SupportMethod;
-import eu.tsystems.mms.tic.testframework.annotations.TestContext;
+import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
@@ -46,7 +46,7 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-@TestContext(name = "MyClass")
+@TestClassContext(name = "MyClass")
 public class ReportingAllStatesTests extends AbstractWebDriverTest {
 
     static {

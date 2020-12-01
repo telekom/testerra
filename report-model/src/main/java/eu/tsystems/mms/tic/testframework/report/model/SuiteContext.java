@@ -16,7 +16,6 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private SuiteContext() {
-    testContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     executionContextId_ = "";
   }
 
@@ -40,7 +39,6 @@ private static final long serialVersionUID = 0L;
     if (extensionRegistry == null) {
       throw new java.lang.NullPointerException();
     }
-    int mutable_bitField0_ = 0;
     com.google.protobuf.UnknownFieldSet.Builder unknownFields =
         com.google.protobuf.UnknownFieldSet.newBuilder();
     try {
@@ -64,15 +62,6 @@ private static final long serialVersionUID = 0L;
 
             break;
           }
-          case 50: {
-            java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-              testContextIds_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000001;
-            }
-            testContextIds_.add(s);
-            break;
-          }
           case 58: {
             java.lang.String s = input.readStringRequireUtf8();
 
@@ -94,9 +83,6 @@ private static final long serialVersionUID = 0L;
       throw new com.google.protobuf.InvalidProtocolBufferException(
           e).setUnfinishedMessage(this);
     } finally {
-      if (((mutable_bitField0_ & 0x00000001) != 0)) {
-        testContextIds_ = testContextIds_.getUnmodifiableView();
-      }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
     }
@@ -137,62 +123,11 @@ private static final long serialVersionUID = 0L;
     return getContextValues();
   }
 
-  public static final int TEST_CONTEXT_IDS_FIELD_NUMBER = 6;
-  private com.google.protobuf.LazyStringList testContextIds_;
-  /**
-   * <pre>
-   * list of all test
-   * </pre>
-   *
-   * <code>repeated string test_context_ids = 6;</code>
-   * @return A list containing the testContextIds.
-   */
-  public com.google.protobuf.ProtocolStringList
-      getTestContextIdsList() {
-    return testContextIds_;
-  }
-  /**
-   * <pre>
-   * list of all test
-   * </pre>
-   *
-   * <code>repeated string test_context_ids = 6;</code>
-   * @return The count of testContextIds.
-   */
-  public int getTestContextIdsCount() {
-    return testContextIds_.size();
-  }
-  /**
-   * <pre>
-   * list of all test
-   * </pre>
-   *
-   * <code>repeated string test_context_ids = 6;</code>
-   * @param index The index of the element to return.
-   * @return The testContextIds at the given index.
-   */
-  public java.lang.String getTestContextIds(int index) {
-    return testContextIds_.get(index);
-  }
-  /**
-   * <pre>
-   * list of all test
-   * </pre>
-   *
-   * <code>repeated string test_context_ids = 6;</code>
-   * @param index The index of the value to return.
-   * @return The bytes of the testContextIds at the given index.
-   */
-  public com.google.protobuf.ByteString
-      getTestContextIdsBytes(int index) {
-    return testContextIds_.getByteString(index);
-  }
-
   public static final int EXECUTION_CONTEXT_ID_FIELD_NUMBER = 7;
   private volatile java.lang.Object executionContextId_;
   /**
    * <pre>
-   * reference
+   *repeated string test_context_ids = 6 [deprecated = true]; // list of all test
    * </pre>
    *
    * <code>string execution_context_id = 7;</code>
@@ -212,7 +147,7 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * reference
+   *repeated string test_context_ids = 6 [deprecated = true]; // list of all test
    * </pre>
    *
    * <code>string execution_context_id = 7;</code>
@@ -249,9 +184,6 @@ private static final long serialVersionUID = 0L;
     if (contextValues_ != null) {
       output.writeMessage(1, getContextValues());
     }
-    for (int i = 0; i < testContextIds_.size(); i++) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 6, testContextIds_.getRaw(i));
-    }
     if (!getExecutionContextIdBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 7, executionContextId_);
     }
@@ -267,14 +199,6 @@ private static final long serialVersionUID = 0L;
     if (contextValues_ != null) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(1, getContextValues());
-    }
-    {
-      int dataSize = 0;
-      for (int i = 0; i < testContextIds_.size(); i++) {
-        dataSize += computeStringSizeNoTag(testContextIds_.getRaw(i));
-      }
-      size += dataSize;
-      size += 1 * getTestContextIdsList().size();
     }
     if (!getExecutionContextIdBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, executionContextId_);
@@ -299,8 +223,6 @@ private static final long serialVersionUID = 0L;
       if (!getContextValues()
           .equals(other.getContextValues())) return false;
     }
-    if (!getTestContextIdsList()
-        .equals(other.getTestContextIdsList())) return false;
     if (!getExecutionContextId()
         .equals(other.getExecutionContextId())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
@@ -317,10 +239,6 @@ private static final long serialVersionUID = 0L;
     if (hasContextValues()) {
       hash = (37 * hash) + CONTEXT_VALUES_FIELD_NUMBER;
       hash = (53 * hash) + getContextValues().hashCode();
-    }
-    if (getTestContextIdsCount() > 0) {
-      hash = (37 * hash) + TEST_CONTEXT_IDS_FIELD_NUMBER;
-      hash = (53 * hash) + getTestContextIdsList().hashCode();
     }
     hash = (37 * hash) + EXECUTION_CONTEXT_ID_FIELD_NUMBER;
     hash = (53 * hash) + getExecutionContextId().hashCode();
@@ -463,8 +381,6 @@ private static final long serialVersionUID = 0L;
         contextValues_ = null;
         contextValuesBuilder_ = null;
       }
-      testContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000001);
       executionContextId_ = "";
 
       return this;
@@ -493,17 +409,11 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public eu.tsystems.mms.tic.testframework.report.model.SuiteContext buildPartial() {
       eu.tsystems.mms.tic.testframework.report.model.SuiteContext result = new eu.tsystems.mms.tic.testframework.report.model.SuiteContext(this);
-      int from_bitField0_ = bitField0_;
       if (contextValuesBuilder_ == null) {
         result.contextValues_ = contextValues_;
       } else {
         result.contextValues_ = contextValuesBuilder_.build();
       }
-      if (((bitField0_ & 0x00000001) != 0)) {
-        testContextIds_ = testContextIds_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000001);
-      }
-      result.testContextIds_ = testContextIds_;
       result.executionContextId_ = executionContextId_;
       onBuilt();
       return result;
@@ -556,16 +466,6 @@ private static final long serialVersionUID = 0L;
       if (other.hasContextValues()) {
         mergeContextValues(other.getContextValues());
       }
-      if (!other.testContextIds_.isEmpty()) {
-        if (testContextIds_.isEmpty()) {
-          testContextIds_ = other.testContextIds_;
-          bitField0_ = (bitField0_ & ~0x00000001);
-        } else {
-          ensureTestContextIdsIsMutable();
-          testContextIds_.addAll(other.testContextIds_);
-        }
-        onChanged();
-      }
       if (!other.getExecutionContextId().isEmpty()) {
         executionContextId_ = other.executionContextId_;
         onChanged();
@@ -598,7 +498,6 @@ private static final long serialVersionUID = 0L;
       }
       return this;
     }
-    private int bitField0_;
 
     private eu.tsystems.mms.tic.testframework.report.model.ContextValues contextValues_;
     private com.google.protobuf.SingleFieldBuilderV3<
@@ -719,156 +618,10 @@ private static final long serialVersionUID = 0L;
       return contextValuesBuilder_;
     }
 
-    private com.google.protobuf.LazyStringList testContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    private void ensureTestContextIdsIsMutable() {
-      if (!((bitField0_ & 0x00000001) != 0)) {
-        testContextIds_ = new com.google.protobuf.LazyStringArrayList(testContextIds_);
-        bitField0_ |= 0x00000001;
-       }
-    }
-    /**
-     * <pre>
-     * list of all test
-     * </pre>
-     *
-     * <code>repeated string test_context_ids = 6;</code>
-     * @return A list containing the testContextIds.
-     */
-    public com.google.protobuf.ProtocolStringList
-        getTestContextIdsList() {
-      return testContextIds_.getUnmodifiableView();
-    }
-    /**
-     * <pre>
-     * list of all test
-     * </pre>
-     *
-     * <code>repeated string test_context_ids = 6;</code>
-     * @return The count of testContextIds.
-     */
-    public int getTestContextIdsCount() {
-      return testContextIds_.size();
-    }
-    /**
-     * <pre>
-     * list of all test
-     * </pre>
-     *
-     * <code>repeated string test_context_ids = 6;</code>
-     * @param index The index of the element to return.
-     * @return The testContextIds at the given index.
-     */
-    public java.lang.String getTestContextIds(int index) {
-      return testContextIds_.get(index);
-    }
-    /**
-     * <pre>
-     * list of all test
-     * </pre>
-     *
-     * <code>repeated string test_context_ids = 6;</code>
-     * @param index The index of the value to return.
-     * @return The bytes of the testContextIds at the given index.
-     */
-    public com.google.protobuf.ByteString
-        getTestContextIdsBytes(int index) {
-      return testContextIds_.getByteString(index);
-    }
-    /**
-     * <pre>
-     * list of all test
-     * </pre>
-     *
-     * <code>repeated string test_context_ids = 6;</code>
-     * @param index The index to set the value at.
-     * @param value The testContextIds to set.
-     * @return This builder for chaining.
-     */
-    public Builder setTestContextIds(
-        int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureTestContextIdsIsMutable();
-      testContextIds_.set(index, value);
-      onChanged();
-      return this;
-    }
-    /**
-     * <pre>
-     * list of all test
-     * </pre>
-     *
-     * <code>repeated string test_context_ids = 6;</code>
-     * @param value The testContextIds to add.
-     * @return This builder for chaining.
-     */
-    public Builder addTestContextIds(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureTestContextIdsIsMutable();
-      testContextIds_.add(value);
-      onChanged();
-      return this;
-    }
-    /**
-     * <pre>
-     * list of all test
-     * </pre>
-     *
-     * <code>repeated string test_context_ids = 6;</code>
-     * @param values The testContextIds to add.
-     * @return This builder for chaining.
-     */
-    public Builder addAllTestContextIds(
-        java.lang.Iterable<java.lang.String> values) {
-      ensureTestContextIdsIsMutable();
-      com.google.protobuf.AbstractMessageLite.Builder.addAll(
-          values, testContextIds_);
-      onChanged();
-      return this;
-    }
-    /**
-     * <pre>
-     * list of all test
-     * </pre>
-     *
-     * <code>repeated string test_context_ids = 6;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearTestContextIds() {
-      testContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000001);
-      onChanged();
-      return this;
-    }
-    /**
-     * <pre>
-     * list of all test
-     * </pre>
-     *
-     * <code>repeated string test_context_ids = 6;</code>
-     * @param value The bytes of the testContextIds to add.
-     * @return This builder for chaining.
-     */
-    public Builder addTestContextIdsBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      ensureTestContextIdsIsMutable();
-      testContextIds_.add(value);
-      onChanged();
-      return this;
-    }
-
     private java.lang.Object executionContextId_ = "";
     /**
      * <pre>
-     * reference
+     *repeated string test_context_ids = 6 [deprecated = true]; // list of all test
      * </pre>
      *
      * <code>string execution_context_id = 7;</code>
@@ -888,7 +641,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * reference
+     *repeated string test_context_ids = 6 [deprecated = true]; // list of all test
      * </pre>
      *
      * <code>string execution_context_id = 7;</code>
@@ -909,7 +662,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * reference
+     *repeated string test_context_ids = 6 [deprecated = true]; // list of all test
      * </pre>
      *
      * <code>string execution_context_id = 7;</code>
@@ -928,7 +681,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * reference
+     *repeated string test_context_ids = 6 [deprecated = true]; // list of all test
      * </pre>
      *
      * <code>string execution_context_id = 7;</code>
@@ -942,7 +695,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * reference
+     *repeated string test_context_ids = 6 [deprecated = true]; // list of all test
      * </pre>
      *
      * <code>string execution_context_id = 7;</code>

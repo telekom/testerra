@@ -66,7 +66,7 @@ export class TestClassesCard {
                     data.get(status).push(classStats.getStatusCount(status));
                 }
                 //Push Class Names in array for x-axis labels
-                xlabels.push(classStats.classContext.testContextName||classStats.classContext.simpleClassName);
+                xlabels.push(classStats.classIdentifier);
             });
 
         //Display at least 10 rows in bar chart even if there are less classes

@@ -25,13 +25,10 @@ import eu.tsystems.mms.tic.testframework.internal.IDUtils;
 import eu.tsystems.mms.tic.testframework.report.model.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.FailureCorridorValue;
 import eu.tsystems.mms.tic.testframework.report.model.File;
-import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.MethodType;
 import eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent;
 import eu.tsystems.mms.tic.testframework.report.model.PClickPathEventType;
-import eu.tsystems.mms.tic.testframework.report.model.PLogMessage;
-import eu.tsystems.mms.tic.testframework.report.model.PLogMessageType;
 import eu.tsystems.mms.tic.testframework.report.model.PTestStep;
 import eu.tsystems.mms.tic.testframework.report.model.PTestStepAction;
 import eu.tsystems.mms.tic.testframework.report.model.ScriptSource;
@@ -46,7 +43,6 @@ import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
-import org.apache.logging.log4j.Level;
 
 public class MethodContextExporter extends AbstractContextExporter {
     private final Report report = new Report();
@@ -115,10 +111,7 @@ public class MethodContextExporter extends AbstractContextExporter {
         //value(methodContext.failedStep, MethodContextExporter::createPTestStep, builder::setFailedStep);
 
         map(methodContext.failureCorridorValue, value -> FailureCorridorValue.valueOf(value.name()), builder::setFailureCorridorValue);
-        apply(methodContext.suiteContext.getId(), builder::setSuiteContextId);
-        apply(methodContext.testContextModel.getId(), builder::setTestContextId);
-        apply(methodContext.getClassContext().getId(), builder::setClassContextId);
-        apply(methodContext.executionContext.getId(), builder::setExecutionContextId);
+        builder.setClassContextId(methodContext.getClassContext().getId());
 
         forEach(methodContext.infos, builder::addInfos);
         forEach(methodContext.getRelatedMethodContexts(), m -> builder.addRelatedMethodContextIds(m.getId()));

@@ -83,15 +83,7 @@ public class TestStatusController {
 //        return new JSONObject(statusMap);
 //    }
 
-    public static synchronized void setMethodStatus(MethodContext methodContext, Status status, Method method) {
-        /*
-        synchronized for safely raising counters...
-         */
-
-        if (methodContext == null) {
-            throw new SystemException("Test method object is null");
-        }
-
+    public static void setMethodStatus(MethodContext methodContext, Status status, Method method) {
         /*
         check for additional marker annotations
          */
@@ -159,6 +151,7 @@ public class TestStatusController {
                 break;
 
             case FAILED_RETRIED:
+                LOGGER.info("failed retried: " + methodContext.name);
                 testsFailedRetried++;
                 testsFailed--;
 

@@ -48,33 +48,28 @@ export class StatisticsGenerator {
                 const executionStatistics = new ExecutionStatistics();
                 executionStatistics.setExecutionAggregate(executionAggregate);
 
-                executionAggregate.testContexts.forEach(testContext => {
-                    testContext.classContextIds.forEach(classContextId => {
-                        const classContext = executionAggregate.classContexts.find(classContext => classContext.contextValues.id == classContextId);
-                        let classStatistics:ClassStatistics;
+                executionAggregate.methodContexts.forEach(methodContext => {
+                    const classContext = executionAggregate.classContexts.find(classContext => classContext.contextValues.id == methodContext.classContextId);
+                    let classStatistics:ClassStatistics;
 
-                        // Group by test context name
-                        if (classContext.testContextName) {
-                            classStatistics = executionStatistics.classStatistics.find(classStatistics => classStatistics.classContext.testContextName == classContext.testContextName);
+                    // Group by test context name
+                    if (classContext.testContextName) {
+                        classStatistics = executionStatistics.classStatistics.find(classStatistics => classStatistics.classContext.testContextName == classContext.testContextName);
 
-                            // Or by class name
-                        } else {
-                            classStatistics = executionStatistics.classStatistics.find(classStatistics => classStatistics.classContext.fullClassName == classContext.fullClassName);
-                        }
-                        if (!classStatistics) {
-                            classStatistics = new ClassStatistics().setClassContext(classContext);
-                            executionStatistics.addClassStatistics(classStatistics);
-                        }
+                        // Or by class name
+                    } else {
+                        classStatistics = executionStatistics.classStatistics.find(classStatistics => classStatistics.classContext.fullClassName == classContext.fullClassName);
+                    }
+                    if (!classStatistics) {
+                        classStatistics = new ClassStatistics().setClassContext(classContext);
+                        executionStatistics.addClassStatistics(classStatistics);
+                    }
 
-                        classContext.methodContextIds.forEach(methodContextId => {
-                            const methodContext = executionAggregate.methodContexts.find(methodContext => methodContext.contextValues.id == methodContextId);
-                            methodContext.contextValues.resultStatus = this._statusConverter.correctStatus(methodContext.contextValues.resultStatus);
-                            classStatistics.addMethodContext(methodContext);
-                        });
-                    })
-                });
-
+                    methodContext.contextValues.resultStatus = this._statusConverter.correctStatus(methodContext.contextValues.resultStatus);
+                    classStatistics.addMethodContext(methodContext);
+                })
                 executionStatistics.updateStatistics();
+                console.log(executionStatistics);
                 return executionStatistics;
             });
         })
@@ -89,8 +84,8 @@ export class StatisticsGenerator {
 
                     if (methodContext) {
                         const classContext = classStatistic.classContext;
-                        const testContext = executionStatistics.executionAggregate.testContexts.find(testContext => testContext.classContextIds.find(id => classContext.contextValues.id == id));
-                        const suiteContext = executionStatistics.executionAggregate.suiteContexts.find(suiteContext => suiteContext.testContextIds.find(id => testContext.contextValues.id == id));
+                        const testContext = executionStatistics.executionAggregate.testContexts.find(testContext => testContext.contextValues.id == classContext.testContextId);
+                        const suiteContext = executionStatistics.executionAggregate.suiteContexts.find(suiteContext => suiteContext.contextValues.id == testContext.suiteContextId);
                         return {
                             executionStatistics: executionStatistics,
                             methodContext: methodContext,

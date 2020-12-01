@@ -2,7 +2,7 @@ import {DataLoader} from "../../services/data-loader";
 import {StatusConverter} from "../../services/status-converter";
 import {autoinject} from "aurelia-framework";
 import {StatisticsGenerator} from "../../services/statistics-generator";
-import {ExecutionStatistics, FailureAspectStatistics} from "../../services/statistic-models";
+import {ClassStatistics, ExecutionStatistics, FailureAspectStatistics} from "../../services/statistic-models";
 import {AbstractViewModel} from "../abstract-view-model";
 import {data} from "../../services/report-model";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
@@ -13,7 +13,7 @@ import ResultStatusType = data.ResultStatusType;
 
 interface MethodAggregate {
     methodContext:IMethodContext,
-    classContext:IClassContext
+    classStatistics:ClassStatistics
     failureAspect?:FailureAspectStatistics,
 }
 
@@ -120,13 +120,7 @@ export class Classes extends AbstractViewModel {
                     return classStatistics;
                 })
                 .filter(classStatistic => {
-                    return (
-                        !this._selectedClass
-                        || (
-                            this._selectedClass == classStatistic.classContext.simpleClassName
-                            || this._selectedClass == classStatistic.classContext.testContextName
-                        )
-                    )
+                    return !this._selectedClass || this._selectedClass == classStatistic.classIdentifier
                 })
                 .forEach(classStatistic => {
                     classStatistic.methodContexts
@@ -143,7 +137,7 @@ export class Classes extends AbstractViewModel {
                         })
                         .map(methodContext => {
                             return {
-                                classContext: classStatistic.classContext,
+                                classStatistics: classStatistic,
                                 failureAspect: methodContext.errorContext ? new FailureAspectStatistics().setErrorContext(methodContext.errorContext) : null,
                                 methodContext: methodContext
                             }
@@ -158,7 +152,7 @@ export class Classes extends AbstractViewModel {
                             );
                         })
                         .forEach(methodAggregate => {
-                            uniqueClasses[classStatistic.classContext.simpleClassName] = true;
+                            uniqueClasses[classStatistic.classContext.fullClassName] = true;
                             uniqueStatuses[methodAggregate.methodContext.contextValues.resultStatus] = true;
                             // if (methodAggregate.failureAspect) {
                             //     uniqueFailureAspects[methodAggregate.failureAspect.name] = true;

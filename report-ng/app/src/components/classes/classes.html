@@ -27,9 +27,9 @@
                 >
                     <mdc-list>
                         <mdc-list-item>(All)</mdc-list-item>
-                        <mdc-list-item value="${classStatistic.classContext.testContextName||classStatistic.classContext.simpleClassName}"
+                        <mdc-list-item value.bind="classStatistic.classIdentifier"
                                        repeat.for="classStatistic of _executionStatistics.classStatistics"
-                        >${classStatistic.classContext.testContextName||classStatistic.classContext.simpleClassName}</mdc-list-item>
+                        >${classStatistic.classIdentifier}</mdc-list-item>
                     </mdc-list>
                 </mdc-select>
             </mdc-layout-grid-cell>
@@ -72,8 +72,8 @@
                                 >${methodAggregate.methodContext.contextValues.resultStatus|statusName}</a>
                             </mdc-data-table-cell>
                             <mdc-data-table-cell>
-                                <a route-href="route: tests; params.bind: withQueryParams({class: methodAggregate.classContext.simpleClassName})"
-                                >${methodAggregate.classContext.testContextName||methodAggregate.classContext.simpleClassName}</a>
+                                <a route-href="route: tests; params.bind: withQueryParams({class: methodAggregate.classStatistics.classIdentifier})"
+                                >${methodAggregate.classStatistics.classIdentifier}</a>
                             </mdc-data-table-cell>
                             <mdc-data-table-cell class="p1" mdc-body1>
                                 <div class="vcenter">

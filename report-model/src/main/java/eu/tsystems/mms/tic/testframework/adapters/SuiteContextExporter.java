@@ -27,8 +27,7 @@ public class SuiteContextExporter extends AbstractContextExporter {
         SuiteContext.Builder builder = SuiteContext.newBuilder();
 
         apply(createContextValues(suiteContext), builder::setContextValues);
-        forEach(suiteContext.testContextModels, testContextModel -> builder.addTestContextIds(testContextModel.getId()));
-        apply(suiteContext.executionContext.getId(), builder::setExecutionContextId);
+        builder.setExecutionContextId(suiteContext.getExecutionContext().getId());
 
         return builder;
     }

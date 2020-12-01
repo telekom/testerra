@@ -127,11 +127,19 @@ public interface MethodContextOrBuilder extends
   eu.tsystems.mms.tic.testframework.report.model.FailureCorridorValue getFailureCorridorValue();
 
   /**
+   * <pre>
+   *string execution_context_id = 16 [deprecated = true];
+   * </pre>
+   *
    * <code>string class_context_id = 15;</code>
    * @return The classContextId.
    */
   java.lang.String getClassContextId();
   /**
+   * <pre>
+   *string execution_context_id = 16 [deprecated = true];
+   * </pre>
+   *
    * <code>string class_context_id = 15;</code>
    * @return The bytes for classContextId.
    */
@@ -139,60 +147,44 @@ public interface MethodContextOrBuilder extends
       getClassContextIdBytes();
 
   /**
-   * <code>string execution_context_id = 16;</code>
-   * @return The executionContextId.
-   */
-  java.lang.String getExecutionContextId();
-  /**
-   * <code>string execution_context_id = 16;</code>
-   * @return The bytes for executionContextId.
-   */
-  com.google.protobuf.ByteString
-      getExecutionContextIdBytes();
-
-  /**
-   * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
-   */
-  @java.lang.Deprecated java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> 
-      getNonFunctionalInfosList();
-  /**
-   * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
-   */
-  @java.lang.Deprecated eu.tsystems.mms.tic.testframework.report.model.ErrorContext getNonFunctionalInfos(int index);
-  /**
-   * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
-   */
-  @java.lang.Deprecated int getNonFunctionalInfosCount();
-  /**
-   * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
-   */
-  @java.lang.Deprecated java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
-      getNonFunctionalInfosOrBuilderList();
-  /**
-   * <code>repeated .data.ErrorContext non_functional_infos = 17 [deprecated = true];</code>
-   */
-  @java.lang.Deprecated eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getNonFunctionalInfosOrBuilder(
-      int index);
-
-  /**
+   * <pre>
+   *repeated ErrorContext non_functional_infos = 17 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
    */
   java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> 
       getCollectedAssertionsList();
   /**
+   * <pre>
+   *repeated ErrorContext non_functional_infos = 17 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
    */
   eu.tsystems.mms.tic.testframework.report.model.ErrorContext getCollectedAssertions(int index);
   /**
+   * <pre>
+   *repeated ErrorContext non_functional_infos = 17 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
    */
   int getCollectedAssertionsCount();
   /**
+   * <pre>
+   *repeated ErrorContext non_functional_infos = 17 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
    */
   java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
       getCollectedAssertionsOrBuilderList();
   /**
+   * <pre>
+   *repeated ErrorContext non_functional_infos = 17 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
    */
   eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getCollectedAssertionsOrBuilder(
@@ -323,30 +315,6 @@ public interface MethodContextOrBuilder extends
    */
   eu.tsystems.mms.tic.testframework.report.model.PTestStepOrBuilder getTestStepsOrBuilder(
       int index);
-
-  /**
-   * <code>string test_context_id = 27;</code>
-   * @return The testContextId.
-   */
-  java.lang.String getTestContextId();
-  /**
-   * <code>string test_context_id = 27;</code>
-   * @return The bytes for testContextId.
-   */
-  com.google.protobuf.ByteString
-      getTestContextIdBytes();
-
-  /**
-   * <code>string suite_context_id = 28;</code>
-   * @return The suiteContextId.
-   */
-  java.lang.String getSuiteContextId();
-  /**
-   * <code>string suite_context_id = 28;</code>
-   * @return The bytes for suiteContextId.
-   */
-  com.google.protobuf.ByteString
-      getSuiteContextIdBytes();
 
   /**
    * <code>repeated string session_context_ids = 29;</code>

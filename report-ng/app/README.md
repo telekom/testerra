@@ -17,6 +17,12 @@ Generates the application into `../src/main/resources/report-ng`
 npm run build
 ```
 
+## Analyze package sizes
+Generates visualization of package sizes
+```bash
+npm run analyze
+```
+
 ## References
 
 - Material Framework: https://github.com/aurelia-ui-toolkits/aurelia-mdc-web

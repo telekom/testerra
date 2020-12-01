@@ -20,6 +20,8 @@ private static final long serialVersionUID = 0L;
     clickpathEvents_ = java.util.Collections.emptyList();
     screenshotIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     logMessages_ = java.util.Collections.emptyList();
+    optionalAssertions_ = java.util.Collections.emptyList();
+    collectedAssertions_ = java.util.Collections.emptyList();
   }
 
   @java.lang.Override
@@ -91,6 +93,24 @@ private static final long serialVersionUID = 0L;
                 input.readMessage(eu.tsystems.mms.tic.testframework.report.model.PLogMessage.parser(), extensionRegistry));
             break;
           }
+          case 66: {
+            if (!((mutable_bitField0_ & 0x00000008) != 0)) {
+              optionalAssertions_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.ErrorContext>();
+              mutable_bitField0_ |= 0x00000008;
+            }
+            optionalAssertions_.add(
+                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.ErrorContext.parser(), extensionRegistry));
+            break;
+          }
+          case 74: {
+            if (!((mutable_bitField0_ & 0x00000010) != 0)) {
+              collectedAssertions_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.ErrorContext>();
+              mutable_bitField0_ |= 0x00000010;
+            }
+            collectedAssertions_.add(
+                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.ErrorContext.parser(), extensionRegistry));
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -114,6 +134,12 @@ private static final long serialVersionUID = 0L;
       }
       if (((mutable_bitField0_ & 0x00000004) != 0)) {
         logMessages_ = java.util.Collections.unmodifiableList(logMessages_);
+      }
+      if (((mutable_bitField0_ & 0x00000008) != 0)) {
+        optionalAssertions_ = java.util.Collections.unmodifiableList(optionalAssertions_);
+      }
+      if (((mutable_bitField0_ & 0x00000010) != 0)) {
+        collectedAssertions_ = java.util.Collections.unmodifiableList(collectedAssertions_);
       }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
@@ -307,6 +333,76 @@ private static final long serialVersionUID = 0L;
     return logMessages_.get(index);
   }
 
+  public static final int OPTIONAL_ASSERTIONS_FIELD_NUMBER = 8;
+  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> optionalAssertions_;
+  /**
+   * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
+   */
+  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> getOptionalAssertionsList() {
+    return optionalAssertions_;
+  }
+  /**
+   * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
+   */
+  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
+      getOptionalAssertionsOrBuilderList() {
+    return optionalAssertions_;
+  }
+  /**
+   * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
+   */
+  public int getOptionalAssertionsCount() {
+    return optionalAssertions_.size();
+  }
+  /**
+   * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
+   */
+  public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getOptionalAssertions(int index) {
+    return optionalAssertions_.get(index);
+  }
+  /**
+   * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
+   */
+  public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getOptionalAssertionsOrBuilder(
+      int index) {
+    return optionalAssertions_.get(index);
+  }
+
+  public static final int COLLECTED_ASSERTIONS_FIELD_NUMBER = 9;
+  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> collectedAssertions_;
+  /**
+   * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
+   */
+  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> getCollectedAssertionsList() {
+    return collectedAssertions_;
+  }
+  /**
+   * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
+   */
+  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
+      getCollectedAssertionsOrBuilderList() {
+    return collectedAssertions_;
+  }
+  /**
+   * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
+   */
+  public int getCollectedAssertionsCount() {
+    return collectedAssertions_.size();
+  }
+  /**
+   * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
+   */
+  public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getCollectedAssertions(int index) {
+    return collectedAssertions_.get(index);
+  }
+  /**
+   * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
+   */
+  public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getCollectedAssertionsOrBuilder(
+      int index) {
+    return collectedAssertions_.get(index);
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -335,6 +431,12 @@ private static final long serialVersionUID = 0L;
     }
     for (int i = 0; i < logMessages_.size(); i++) {
       output.writeMessage(7, logMessages_.get(i));
+    }
+    for (int i = 0; i < optionalAssertions_.size(); i++) {
+      output.writeMessage(8, optionalAssertions_.get(i));
+    }
+    for (int i = 0; i < collectedAssertions_.size(); i++) {
+      output.writeMessage(9, collectedAssertions_.get(i));
     }
     unknownFields.writeTo(output);
   }
@@ -368,6 +470,14 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(7, logMessages_.get(i));
     }
+    for (int i = 0; i < optionalAssertions_.size(); i++) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(8, optionalAssertions_.get(i));
+    }
+    for (int i = 0; i < collectedAssertions_.size(); i++) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(9, collectedAssertions_.get(i));
+    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -393,6 +503,10 @@ private static final long serialVersionUID = 0L;
         .equals(other.getScreenshotIdsList())) return false;
     if (!getLogMessagesList()
         .equals(other.getLogMessagesList())) return false;
+    if (!getOptionalAssertionsList()
+        .equals(other.getOptionalAssertionsList())) return false;
+    if (!getCollectedAssertionsList()
+        .equals(other.getCollectedAssertionsList())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -420,6 +534,14 @@ private static final long serialVersionUID = 0L;
     if (getLogMessagesCount() > 0) {
       hash = (37 * hash) + LOG_MESSAGES_FIELD_NUMBER;
       hash = (53 * hash) + getLogMessagesList().hashCode();
+    }
+    if (getOptionalAssertionsCount() > 0) {
+      hash = (37 * hash) + OPTIONAL_ASSERTIONS_FIELD_NUMBER;
+      hash = (53 * hash) + getOptionalAssertionsList().hashCode();
+    }
+    if (getCollectedAssertionsCount() > 0) {
+      hash = (37 * hash) + COLLECTED_ASSERTIONS_FIELD_NUMBER;
+      hash = (53 * hash) + getCollectedAssertionsList().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -551,6 +673,8 @@ private static final long serialVersionUID = 0L;
               .alwaysUseFieldBuilders) {
         getClickpathEventsFieldBuilder();
         getLogMessagesFieldBuilder();
+        getOptionalAssertionsFieldBuilder();
+        getCollectedAssertionsFieldBuilder();
       }
     }
     @java.lang.Override
@@ -573,6 +697,18 @@ private static final long serialVersionUID = 0L;
         bitField0_ = (bitField0_ & ~0x00000004);
       } else {
         logMessagesBuilder_.clear();
+      }
+      if (optionalAssertionsBuilder_ == null) {
+        optionalAssertions_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000008);
+      } else {
+        optionalAssertionsBuilder_.clear();
+      }
+      if (collectedAssertionsBuilder_ == null) {
+        collectedAssertions_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000010);
+      } else {
+        collectedAssertionsBuilder_.clear();
       }
       return this;
     }
@@ -625,6 +761,24 @@ private static final long serialVersionUID = 0L;
         result.logMessages_ = logMessages_;
       } else {
         result.logMessages_ = logMessagesBuilder_.build();
+      }
+      if (optionalAssertionsBuilder_ == null) {
+        if (((bitField0_ & 0x00000008) != 0)) {
+          optionalAssertions_ = java.util.Collections.unmodifiableList(optionalAssertions_);
+          bitField0_ = (bitField0_ & ~0x00000008);
+        }
+        result.optionalAssertions_ = optionalAssertions_;
+      } else {
+        result.optionalAssertions_ = optionalAssertionsBuilder_.build();
+      }
+      if (collectedAssertionsBuilder_ == null) {
+        if (((bitField0_ & 0x00000010) != 0)) {
+          collectedAssertions_ = java.util.Collections.unmodifiableList(collectedAssertions_);
+          bitField0_ = (bitField0_ & ~0x00000010);
+        }
+        result.collectedAssertions_ = collectedAssertions_;
+      } else {
+        result.collectedAssertions_ = collectedAssertionsBuilder_.build();
       }
       onBuilt();
       return result;
@@ -740,6 +894,58 @@ private static final long serialVersionUID = 0L;
                  getLogMessagesFieldBuilder() : null;
           } else {
             logMessagesBuilder_.addAllMessages(other.logMessages_);
+          }
+        }
+      }
+      if (optionalAssertionsBuilder_ == null) {
+        if (!other.optionalAssertions_.isEmpty()) {
+          if (optionalAssertions_.isEmpty()) {
+            optionalAssertions_ = other.optionalAssertions_;
+            bitField0_ = (bitField0_ & ~0x00000008);
+          } else {
+            ensureOptionalAssertionsIsMutable();
+            optionalAssertions_.addAll(other.optionalAssertions_);
+          }
+          onChanged();
+        }
+      } else {
+        if (!other.optionalAssertions_.isEmpty()) {
+          if (optionalAssertionsBuilder_.isEmpty()) {
+            optionalAssertionsBuilder_.dispose();
+            optionalAssertionsBuilder_ = null;
+            optionalAssertions_ = other.optionalAssertions_;
+            bitField0_ = (bitField0_ & ~0x00000008);
+            optionalAssertionsBuilder_ = 
+              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                 getOptionalAssertionsFieldBuilder() : null;
+          } else {
+            optionalAssertionsBuilder_.addAllMessages(other.optionalAssertions_);
+          }
+        }
+      }
+      if (collectedAssertionsBuilder_ == null) {
+        if (!other.collectedAssertions_.isEmpty()) {
+          if (collectedAssertions_.isEmpty()) {
+            collectedAssertions_ = other.collectedAssertions_;
+            bitField0_ = (bitField0_ & ~0x00000010);
+          } else {
+            ensureCollectedAssertionsIsMutable();
+            collectedAssertions_.addAll(other.collectedAssertions_);
+          }
+          onChanged();
+        }
+      } else {
+        if (!other.collectedAssertions_.isEmpty()) {
+          if (collectedAssertionsBuilder_.isEmpty()) {
+            collectedAssertionsBuilder_.dispose();
+            collectedAssertionsBuilder_ = null;
+            collectedAssertions_ = other.collectedAssertions_;
+            bitField0_ = (bitField0_ & ~0x00000010);
+            collectedAssertionsBuilder_ = 
+              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                 getCollectedAssertionsFieldBuilder() : null;
+          } else {
+            collectedAssertionsBuilder_.addAllMessages(other.collectedAssertions_);
           }
         }
       }
@@ -1551,6 +1757,486 @@ private static final long serialVersionUID = 0L;
         logMessages_ = null;
       }
       return logMessagesBuilder_;
+    }
+
+    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> optionalAssertions_ =
+      java.util.Collections.emptyList();
+    private void ensureOptionalAssertionsIsMutable() {
+      if (!((bitField0_ & 0x00000008) != 0)) {
+        optionalAssertions_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.ErrorContext>(optionalAssertions_);
+        bitField0_ |= 0x00000008;
+       }
+    }
+
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> optionalAssertionsBuilder_;
+
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
+     */
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> getOptionalAssertionsList() {
+      if (optionalAssertionsBuilder_ == null) {
+        return java.util.Collections.unmodifiableList(optionalAssertions_);
+      } else {
+        return optionalAssertionsBuilder_.getMessageList();
+      }
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
+     */
+    public int getOptionalAssertionsCount() {
+      if (optionalAssertionsBuilder_ == null) {
+        return optionalAssertions_.size();
+      } else {
+        return optionalAssertionsBuilder_.getCount();
+      }
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getOptionalAssertions(int index) {
+      if (optionalAssertionsBuilder_ == null) {
+        return optionalAssertions_.get(index);
+      } else {
+        return optionalAssertionsBuilder_.getMessage(index);
+      }
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
+     */
+    public Builder setOptionalAssertions(
+        int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
+      if (optionalAssertionsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureOptionalAssertionsIsMutable();
+        optionalAssertions_.set(index, value);
+        onChanged();
+      } else {
+        optionalAssertionsBuilder_.setMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
+     */
+    public Builder setOptionalAssertions(
+        int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder builderForValue) {
+      if (optionalAssertionsBuilder_ == null) {
+        ensureOptionalAssertionsIsMutable();
+        optionalAssertions_.set(index, builderForValue.build());
+        onChanged();
+      } else {
+        optionalAssertionsBuilder_.setMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
+     */
+    public Builder addOptionalAssertions(eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
+      if (optionalAssertionsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureOptionalAssertionsIsMutable();
+        optionalAssertions_.add(value);
+        onChanged();
+      } else {
+        optionalAssertionsBuilder_.addMessage(value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
+     */
+    public Builder addOptionalAssertions(
+        int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
+      if (optionalAssertionsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureOptionalAssertionsIsMutable();
+        optionalAssertions_.add(index, value);
+        onChanged();
+      } else {
+        optionalAssertionsBuilder_.addMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
+     */
+    public Builder addOptionalAssertions(
+        eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder builderForValue) {
+      if (optionalAssertionsBuilder_ == null) {
+        ensureOptionalAssertionsIsMutable();
+        optionalAssertions_.add(builderForValue.build());
+        onChanged();
+      } else {
+        optionalAssertionsBuilder_.addMessage(builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
+     */
+    public Builder addOptionalAssertions(
+        int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder builderForValue) {
+      if (optionalAssertionsBuilder_ == null) {
+        ensureOptionalAssertionsIsMutable();
+        optionalAssertions_.add(index, builderForValue.build());
+        onChanged();
+      } else {
+        optionalAssertionsBuilder_.addMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
+     */
+    public Builder addAllOptionalAssertions(
+        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContext> values) {
+      if (optionalAssertionsBuilder_ == null) {
+        ensureOptionalAssertionsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, optionalAssertions_);
+        onChanged();
+      } else {
+        optionalAssertionsBuilder_.addAllMessages(values);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
+     */
+    public Builder clearOptionalAssertions() {
+      if (optionalAssertionsBuilder_ == null) {
+        optionalAssertions_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000008);
+        onChanged();
+      } else {
+        optionalAssertionsBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
+     */
+    public Builder removeOptionalAssertions(int index) {
+      if (optionalAssertionsBuilder_ == null) {
+        ensureOptionalAssertionsIsMutable();
+        optionalAssertions_.remove(index);
+        onChanged();
+      } else {
+        optionalAssertionsBuilder_.remove(index);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder getOptionalAssertionsBuilder(
+        int index) {
+      return getOptionalAssertionsFieldBuilder().getBuilder(index);
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getOptionalAssertionsOrBuilder(
+        int index) {
+      if (optionalAssertionsBuilder_ == null) {
+        return optionalAssertions_.get(index);  } else {
+        return optionalAssertionsBuilder_.getMessageOrBuilder(index);
+      }
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
+     */
+    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
+         getOptionalAssertionsOrBuilderList() {
+      if (optionalAssertionsBuilder_ != null) {
+        return optionalAssertionsBuilder_.getMessageOrBuilderList();
+      } else {
+        return java.util.Collections.unmodifiableList(optionalAssertions_);
+      }
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder addOptionalAssertionsBuilder() {
+      return getOptionalAssertionsFieldBuilder().addBuilder(
+          eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance());
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder addOptionalAssertionsBuilder(
+        int index) {
+      return getOptionalAssertionsFieldBuilder().addBuilder(
+          index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance());
+    }
+    /**
+     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
+     */
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder> 
+         getOptionalAssertionsBuilderList() {
+      return getOptionalAssertionsFieldBuilder().getBuilderList();
+    }
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
+        getOptionalAssertionsFieldBuilder() {
+      if (optionalAssertionsBuilder_ == null) {
+        optionalAssertionsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+            eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder>(
+                optionalAssertions_,
+                ((bitField0_ & 0x00000008) != 0),
+                getParentForChildren(),
+                isClean());
+        optionalAssertions_ = null;
+      }
+      return optionalAssertionsBuilder_;
+    }
+
+    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> collectedAssertions_ =
+      java.util.Collections.emptyList();
+    private void ensureCollectedAssertionsIsMutable() {
+      if (!((bitField0_ & 0x00000010) != 0)) {
+        collectedAssertions_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.ErrorContext>(collectedAssertions_);
+        bitField0_ |= 0x00000010;
+       }
+    }
+
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> collectedAssertionsBuilder_;
+
+    /**
+     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
+     */
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> getCollectedAssertionsList() {
+      if (collectedAssertionsBuilder_ == null) {
+        return java.util.Collections.unmodifiableList(collectedAssertions_);
+      } else {
+        return collectedAssertionsBuilder_.getMessageList();
+      }
+    }
+    /**
+     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
+     */
+    public int getCollectedAssertionsCount() {
+      if (collectedAssertionsBuilder_ == null) {
+        return collectedAssertions_.size();
+      } else {
+        return collectedAssertionsBuilder_.getCount();
+      }
+    }
+    /**
+     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getCollectedAssertions(int index) {
+      if (collectedAssertionsBuilder_ == null) {
+        return collectedAssertions_.get(index);
+      } else {
+        return collectedAssertionsBuilder_.getMessage(index);
+      }
+    }
+    /**
+     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
+     */
+    public Builder setCollectedAssertions(
+        int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
+      if (collectedAssertionsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureCollectedAssertionsIsMutable();
+        collectedAssertions_.set(index, value);
+        onChanged();
+      } else {
+        collectedAssertionsBuilder_.setMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
+     */
+    public Builder setCollectedAssertions(
+        int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder builderForValue) {
+      if (collectedAssertionsBuilder_ == null) {
+        ensureCollectedAssertionsIsMutable();
+        collectedAssertions_.set(index, builderForValue.build());
+        onChanged();
+      } else {
+        collectedAssertionsBuilder_.setMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
+     */
+    public Builder addCollectedAssertions(eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
+      if (collectedAssertionsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureCollectedAssertionsIsMutable();
+        collectedAssertions_.add(value);
+        onChanged();
+      } else {
+        collectedAssertionsBuilder_.addMessage(value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
+     */
+    public Builder addCollectedAssertions(
+        int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
+      if (collectedAssertionsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureCollectedAssertionsIsMutable();
+        collectedAssertions_.add(index, value);
+        onChanged();
+      } else {
+        collectedAssertionsBuilder_.addMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
+     */
+    public Builder addCollectedAssertions(
+        eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder builderForValue) {
+      if (collectedAssertionsBuilder_ == null) {
+        ensureCollectedAssertionsIsMutable();
+        collectedAssertions_.add(builderForValue.build());
+        onChanged();
+      } else {
+        collectedAssertionsBuilder_.addMessage(builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
+     */
+    public Builder addCollectedAssertions(
+        int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder builderForValue) {
+      if (collectedAssertionsBuilder_ == null) {
+        ensureCollectedAssertionsIsMutable();
+        collectedAssertions_.add(index, builderForValue.build());
+        onChanged();
+      } else {
+        collectedAssertionsBuilder_.addMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
+     */
+    public Builder addAllCollectedAssertions(
+        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContext> values) {
+      if (collectedAssertionsBuilder_ == null) {
+        ensureCollectedAssertionsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, collectedAssertions_);
+        onChanged();
+      } else {
+        collectedAssertionsBuilder_.addAllMessages(values);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
+     */
+    public Builder clearCollectedAssertions() {
+      if (collectedAssertionsBuilder_ == null) {
+        collectedAssertions_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000010);
+        onChanged();
+      } else {
+        collectedAssertionsBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
+     */
+    public Builder removeCollectedAssertions(int index) {
+      if (collectedAssertionsBuilder_ == null) {
+        ensureCollectedAssertionsIsMutable();
+        collectedAssertions_.remove(index);
+        onChanged();
+      } else {
+        collectedAssertionsBuilder_.remove(index);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder getCollectedAssertionsBuilder(
+        int index) {
+      return getCollectedAssertionsFieldBuilder().getBuilder(index);
+    }
+    /**
+     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getCollectedAssertionsOrBuilder(
+        int index) {
+      if (collectedAssertionsBuilder_ == null) {
+        return collectedAssertions_.get(index);  } else {
+        return collectedAssertionsBuilder_.getMessageOrBuilder(index);
+      }
+    }
+    /**
+     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
+     */
+    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
+         getCollectedAssertionsOrBuilderList() {
+      if (collectedAssertionsBuilder_ != null) {
+        return collectedAssertionsBuilder_.getMessageOrBuilderList();
+      } else {
+        return java.util.Collections.unmodifiableList(collectedAssertions_);
+      }
+    }
+    /**
+     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder addCollectedAssertionsBuilder() {
+      return getCollectedAssertionsFieldBuilder().addBuilder(
+          eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance());
+    }
+    /**
+     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder addCollectedAssertionsBuilder(
+        int index) {
+      return getCollectedAssertionsFieldBuilder().addBuilder(
+          index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance());
+    }
+    /**
+     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
+     */
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder> 
+         getCollectedAssertionsBuilderList() {
+      return getCollectedAssertionsFieldBuilder().getBuilderList();
+    }
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
+        getCollectedAssertionsFieldBuilder() {
+      if (collectedAssertionsBuilder_ == null) {
+        collectedAssertionsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+            eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder>(
+                collectedAssertions_,
+                ((bitField0_ & 0x00000010) != 0),
+                getParentForChildren(),
+                isClean());
+        collectedAssertions_ = null;
+      }
+      return collectedAssertionsBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

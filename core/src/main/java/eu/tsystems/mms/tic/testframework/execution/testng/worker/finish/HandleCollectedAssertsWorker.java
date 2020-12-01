@@ -25,7 +25,7 @@ import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.SharedTestResultAttributes;
 import eu.tsystems.mms.tic.testframework.internal.CollectedAssertions;
-import eu.tsystems.mms.tic.testframework.report.model.AssertionInfo;
+import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import org.testng.ITestResult;
 
@@ -38,7 +38,7 @@ public class HandleCollectedAssertsWorker implements MethodEndEvent.Listener {
     public void onMethodEnd(MethodEndEvent event) {
         if (CollectedAssertions.hasEntries()) {
             // add all collected assertions
-            List<AssertionInfo> entries = CollectedAssertions.getEntries();
+            List<ErrorContext> entries = CollectedAssertions.getEntries();
             event.getMethodContext().addCollectedAssertions(entries);
             ITestResult testResult = event.getTestResult();
             MethodContext methodContext = event.getMethodContext();
@@ -47,7 +47,7 @@ public class HandleCollectedAssertsWorker implements MethodEndEvent.Listener {
                 testResult.setStatus(ITestResult.FAILURE);
                 String msg = "The following assertions failed:";
                 int i = 0;
-                for (AssertionInfo entry : entries) {
+                for (ErrorContext entry : entries) {
                     i++;
                     msg += "\n" + i + ") " + entry.getReadableErrorMessage();
                 }
@@ -56,7 +56,7 @@ public class HandleCollectedAssertsWorker implements MethodEndEvent.Listener {
                 testResult.setThrowable(testMethodContainerError);
 
                 // update test method container
-                methodContext.errorContext().setThrowable(null, testMethodContainerError);
+                methodContext.getErrorContext().setThrowable(null, testMethodContainerError);
                 testResult.setAttribute(SharedTestResultAttributes.failsFromCollectedAssertsOnly, Boolean.TRUE);
             }
         }

@@ -84,7 +84,7 @@
                 <h6><i class="symbols fa fa-file-text-o fa-2x"></i>Steps</h6>
             </div>
 
-            #if ($testMethod.errorContext().stackTrace)
+            #if ($testMethod.getErrorContext().stackTrace)
                 <div id="buttonstack" onclick="toggleDetailsView('exception', 'toggleview', 'buttonstack', 'togglebutton');"
                      title="Show Stacktrace" class="detailsmenu togglebutton">
                     <h6><i class="symbols fa fa-align-left fa-2x fa-flip-vertical"></i>Stack</h6>
@@ -240,7 +240,7 @@
                                 <div>
                                     <!-- error infos -->
                                     <div>
-                                        #set($fingerprint = $testMethod.errorContext().getExitFingerprint())
+                                        #set($fingerprint = $testMethod.getErrorContext().getExitFingerprint())
                                         <div>
                                             <h5 style="position:relative;">
                                                 <a href="#" onclick="toggleElement('fingerprint');" title="Show Fingerprint">
@@ -254,12 +254,12 @@
                                             <div style="color: red; font-size: 30px; padding: 25px; line-height: 40px;">
                                             #end
 
-                                            #if ($testMethod.errorContext().getReadableMessageFormatted())
-                                                $testMethod.errorContext().getReadableMessageFormatted()
+                                            #if ($testMethod.getErrorContext().getReadableMessageFormatted())
+                                                $testMethod.getErrorContext().getReadableMessageFormatted()
                                             #end
-                                            #if ($testMethod.errorContext().getAdditionalErrorMessageFormatted())
+                                            #if ($testMethod.getErrorContext().getAdditionalErrorMessageFormatted())
                                                 <div style="color: Grey; font-size: 30px; padding: 25px; line-height: 40px;">
-                                                    $testMethod.errorContext().getAdditionalErrorMessageFormatted()
+                                                    $testMethod.getErrorContext().getAdditionalErrorMessageFormatted()
                                                 </div>
                                             #end
                                             #if ($testMethod.priorityMessage)
@@ -317,10 +317,10 @@
                                                     </thead>
                                                     <tr>
                                                         <td width="50%">
-                                                            #displayLines($testMethod.errorContext().scriptSource, "scriptSource")
+                                                            #displayLines($testMethod.getErrorContext().scriptSource, "scriptSource")
                                                         </td>
                                                         <td width="50%">
-                                                            #displayLines($testMethod.errorContext().executionObjectSource,
+                                                            #displayLines($testMethod.getErrorContext().executionObjectSource,
                                                                 "executionObjectSource")
                                                         </td>
                                                     </tr>
@@ -456,8 +456,8 @@
             <!-- stacktrace -->
             <div>
                 <div id="st" class="textLeft" style="padding:30px !important; text-align: left !important; margin-left: 20px;">
-                    #if($testMethod.errorContext().stackTrace)
-                        #set($stackTrace = $testMethod.errorContext().stackTrace)
+                    #if($testMethod.getErrorContext().stackTrace)
+                        #set($stackTrace = $testMethod.getErrorContext().stackTrace)
                         #parse("stackTrace.vm")
                     #end
                 </div>

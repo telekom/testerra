@@ -100,14 +100,14 @@ public class MethodEndWorker implements MethodEndEvent.Listener, Loggable {
 
             // calculate fingerprint
             if (event.isFailed()) {
-                Throwable throwable = methodContext.errorContext().getThrowable();
+                Throwable throwable = methodContext.getErrorContext().getThrowable();
                 if (throwable != null) {
                     // look for script source
                     ScriptSource scriptSourceForThrowable = SourceUtils.findScriptSourceForThrowable(throwable);
                     if (scriptSourceForThrowable != null) {
-                        methodContext.errorContext().setScriptSource(scriptSourceForThrowable);
+                        methodContext.getErrorContext().setScriptSource(scriptSourceForThrowable);
                     }
-                    methodContext.errorContext().setExecutionObjectSource(TestEvidenceCollector.getSourceFor(throwable));
+                    methodContext.getErrorContext().setExecutionObjectSource(TestEvidenceCollector.getSourceFor(throwable));
                 }
             }
 

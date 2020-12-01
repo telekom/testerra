@@ -109,7 +109,7 @@ public interface MethodContextOrBuilder extends
 
   /**
    * <pre>
-   *TestStep failed_step = 13;
+   *    TestStep failed_step = 13;
    * </pre>
    *
    * <code>.data.FailureCorridorValue failure_corridor_value = 14;</code>
@@ -118,7 +118,7 @@ public interface MethodContextOrBuilder extends
   int getFailureCorridorValueValue();
   /**
    * <pre>
-   *TestStep failed_step = 13;
+   *    TestStep failed_step = 13;
    * </pre>
    *
    * <code>.data.FailureCorridorValue failure_corridor_value = 14;</code>
@@ -127,19 +127,11 @@ public interface MethodContextOrBuilder extends
   eu.tsystems.mms.tic.testframework.report.model.FailureCorridorValue getFailureCorridorValue();
 
   /**
-   * <pre>
-   *string execution_context_id = 16 [deprecated = true];
-   * </pre>
-   *
    * <code>string class_context_id = 15;</code>
    * @return The classContextId.
    */
   java.lang.String getClassContextId();
   /**
-   * <pre>
-   *string execution_context_id = 16 [deprecated = true];
-   * </pre>
-   *
    * <code>string class_context_id = 15;</code>
    * @return The bytes for classContextId.
    */
@@ -148,66 +140,46 @@ public interface MethodContextOrBuilder extends
 
   /**
    * <pre>
-   *repeated ErrorContext non_functional_infos = 17 [deprecated = true];
+   *    string execution_context_id = 16 [deprecated = true];
+   *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
+   *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
    * </pre>
    *
-   * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-   */
-  java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> 
-      getCollectedAssertionsList();
-  /**
-   * <pre>
-   *repeated ErrorContext non_functional_infos = 17 [deprecated = true];
-   * </pre>
-   *
-   * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-   */
-  eu.tsystems.mms.tic.testframework.report.model.ErrorContext getCollectedAssertions(int index);
-  /**
-   * <pre>
-   *repeated ErrorContext non_functional_infos = 17 [deprecated = true];
-   * </pre>
-   *
-   * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-   */
-  int getCollectedAssertionsCount();
-  /**
-   * <pre>
-   *repeated ErrorContext non_functional_infos = 17 [deprecated = true];
-   * </pre>
-   *
-   * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-   */
-  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
-      getCollectedAssertionsOrBuilderList();
-  /**
-   * <pre>
-   *repeated ErrorContext non_functional_infos = 17 [deprecated = true];
-   * </pre>
-   *
-   * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-   */
-  eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getCollectedAssertionsOrBuilder(
-      int index);
-
-  /**
    * <code>repeated string infos = 19;</code>
    * @return A list containing the infos.
    */
   java.util.List<java.lang.String>
       getInfosList();
   /**
+   * <pre>
+   *    string execution_context_id = 16 [deprecated = true];
+   *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
+   *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string infos = 19;</code>
    * @return The count of infos.
    */
   int getInfosCount();
   /**
+   * <pre>
+   *    string execution_context_id = 16 [deprecated = true];
+   *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
+   *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string infos = 19;</code>
    * @param index The index of the element to return.
    * @return The infos at the given index.
    */
   java.lang.String getInfos(int index);
   /**
+   * <pre>
+   *    string execution_context_id = 16 [deprecated = true];
+   *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
+   *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string infos = 19;</code>
    * @param index The index of the value to return.
    * @return The bytes of the infos at the given index.
@@ -385,28 +357,4 @@ public interface MethodContextOrBuilder extends
    */
   com.google.protobuf.ByteString
       getCustomContextJsonBytes();
-
-  /**
-   * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
-   */
-  java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> 
-      getOptionalAssertionsList();
-  /**
-   * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
-   */
-  eu.tsystems.mms.tic.testframework.report.model.ErrorContext getOptionalAssertions(int index);
-  /**
-   * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
-   */
-  int getOptionalAssertionsCount();
-  /**
-   * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
-   */
-  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
-      getOptionalAssertionsOrBuilderList();
-  /**
-   * <code>repeated .data.ErrorContext optional_assertions = 33;</code>
-   */
-  eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getOptionalAssertionsOrBuilder(
-      int index);
 }

@@ -27,7 +27,7 @@ public interface ExecutionContextOrBuilder extends
    *    repeated string merged_class_context_ids = 3 [deprecated = true];
    *    repeated ContextClip exit_points = 4 [deprecated = true];
    *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
-   *repeated string suite_context_ids = 6 [deprecated = true];
+   *    repeated string suite_context_ids = 6 [deprecated = true];
    * </pre>
    *
    * <code>.data.RunConfig run_config = 7;</code>
@@ -39,7 +39,7 @@ public interface ExecutionContextOrBuilder extends
    *    repeated string merged_class_context_ids = 3 [deprecated = true];
    *    repeated ContextClip exit_points = 4 [deprecated = true];
    *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
-   *repeated string suite_context_ids = 6 [deprecated = true];
+   *    repeated string suite_context_ids = 6 [deprecated = true];
    * </pre>
    *
    * <code>.data.RunConfig run_config = 7;</code>
@@ -51,7 +51,7 @@ public interface ExecutionContextOrBuilder extends
    *    repeated string merged_class_context_ids = 3 [deprecated = true];
    *    repeated ContextClip exit_points = 4 [deprecated = true];
    *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
-   *repeated string suite_context_ids = 6 [deprecated = true];
+   *    repeated string suite_context_ids = 6 [deprecated = true];
    * </pre>
    *
    * <code>.data.RunConfig run_config = 7;</code>

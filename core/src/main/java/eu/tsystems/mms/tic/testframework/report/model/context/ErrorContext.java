@@ -42,6 +42,13 @@ public class ErrorContext {
     private ScriptSource scriptSource;
     private ScriptSource executionObjectSource;
     private Object ticketId;
+    public ErrorContext() {
+
+    }
+
+    public ErrorContext(Throwable throwable) {
+        this.setThrowable(null, throwable);
+    }
 
     public ScriptSource getScriptSource() {
         return scriptSource;

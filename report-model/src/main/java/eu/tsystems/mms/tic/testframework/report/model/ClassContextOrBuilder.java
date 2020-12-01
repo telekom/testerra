@@ -24,7 +24,7 @@ public interface ClassContextOrBuilder extends
 
   /**
    * <pre>
-   *repeated string method_context_ids = 6 [deprecated = true];
+   *    repeated string method_context_ids = 6 [deprecated = true];
    * </pre>
    *
    * <code>string full_class_name = 7;</code>
@@ -33,7 +33,7 @@ public interface ClassContextOrBuilder extends
   java.lang.String getFullClassName();
   /**
    * <pre>
-   *repeated string method_context_ids = 6 [deprecated = true];
+   *    repeated string method_context_ids = 6 [deprecated = true];
    * </pre>
    *
    * <code>string full_class_name = 7;</code>
@@ -44,7 +44,7 @@ public interface ClassContextOrBuilder extends
 
   /**
    * <pre>
-   *string simple_class_name = 8 [deprecated = true];
+   *    string simple_class_name = 8 [deprecated = true];
    * </pre>
    *
    * <code>string test_context_id = 9;</code>
@@ -53,7 +53,7 @@ public interface ClassContextOrBuilder extends
   java.lang.String getTestContextId();
   /**
    * <pre>
-   *string simple_class_name = 8 [deprecated = true];
+   *    string simple_class_name = 8 [deprecated = true];
    * </pre>
    *
    * <code>string test_context_id = 9;</code>
@@ -64,7 +64,7 @@ public interface ClassContextOrBuilder extends
 
   /**
    * <pre>
-   *string execution_context_id = 10 [deprecated = true];
+   *    string execution_context_id = 10 [deprecated = true];
    * </pre>
    *
    * <code>string test_context_name = 11;</code>
@@ -73,7 +73,7 @@ public interface ClassContextOrBuilder extends
   java.lang.String getTestContextName();
   /**
    * <pre>
-   *string execution_context_id = 10 [deprecated = true];
+   *    string execution_context_id = 10 [deprecated = true];
    * </pre>
    *
    * <code>string test_context_name = 11;</code>

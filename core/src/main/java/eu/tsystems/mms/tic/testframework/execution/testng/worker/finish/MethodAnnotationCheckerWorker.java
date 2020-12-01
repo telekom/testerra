@@ -106,10 +106,10 @@ public class MethodAnnotationCheckerWorker implements MethodEndEvent.Listener {
                     testResult.setThrowable(testFailureException);
 
                     // set readable message
-                    methodContext.errorContext().setThrowable(null, throwable, true);
-                    String formerReadableMessage = methodContext.errorContext().getReadableErrorMessage();
+                    methodContext.getErrorContext().setThrowable(null, throwable, true);
+                    String formerReadableMessage = methodContext.getErrorContext().getReadableErrorMessage();
                     methodContext.addPriorityMessage(formerReadableMessage);
-                    methodContext.errorContext().setThrowable(message, throwable, true);
+                    methodContext.getErrorContext().setThrowable(message, throwable, true);
 
                     // flag testresult as expected failed
                     if (fails.intoReport()) {

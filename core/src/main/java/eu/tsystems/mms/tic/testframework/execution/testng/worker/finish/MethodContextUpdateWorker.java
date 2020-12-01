@@ -60,7 +60,7 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
                      * set throwable
                      */
                     Throwable throwable = testResult.getThrowable();
-                    methodContext.errorContext().setThrowable(null, throwable);
+                    methodContext.getErrorContext().setThrowable(null, throwable);
 
                     /*
                      * set status
@@ -73,7 +73,7 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
                         } else {
                             // regular failed
                             TestStatusController.Status status = TestStatusController.Status.FAILED;
-                            if (methodContext.readOptionalAssertions().size() > 0) {
+                            if (methodContext.readOptionalAssertions().findAny().isPresent()) {
                                 status = TestStatusController.Status.FAILED_MINOR;
                             }
 
@@ -86,7 +86,7 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
                     /*
                      * Enhance step infos
                      */
-                    TestStep failedStep = methodContext.getTestStepController().getCurrentTestStep();
+                    TestStep failedStep = methodContext.getCurrentTestStep();
                     methodContext.setFailedStep(failedStep);
 //                    String msg = "";
 //                    String readableMessage = methodContext.errorContext().getReadableErrorMessage();
@@ -102,7 +102,7 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
                 } else if (testResult.isSuccess()) {
                     TestStatusController.Status status = TestStatusController.Status.PASSED;
 
-                    boolean hasOptionalAssertion = methodContext.readOptionalAssertions().size() > 0;
+                    boolean hasOptionalAssertion = methodContext.readOptionalAssertions().findAny().isPresent();
 
                     // is it a retried test?
                     if (RetryAnalyzer.hasMethodBeenRetried(methodContext)) {

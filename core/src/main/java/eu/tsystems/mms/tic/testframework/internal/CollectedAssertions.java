@@ -22,20 +22,17 @@
  package eu.tsystems.mms.tic.testframework.internal;
 
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
-import eu.tsystems.mms.tic.testframework.report.model.AssertionInfo;
 import eu.tsystems.mms.tic.testframework.report.model.context.CustomContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import java.util.LinkedList;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public final class CollectedAssertions {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger("AssertCollector");
-    private static final ThreadLocal<List<AssertionInfo>> ASSERTION_INFOS = new ThreadLocal<>();
+    private static final ThreadLocal<List<ErrorContext>> ASSERTION_INFOS = new ThreadLocal<>();
 
     private CollectedAssertions() {
 
@@ -46,12 +43,12 @@ public final class CollectedAssertions {
             ASSERTION_INFOS.set(new LinkedList<>());
         }
 
-        List<AssertionInfo> assertionInfos = ASSERTION_INFOS.get();
+        List<ErrorContext> assertionInfos = ASSERTION_INFOS.get();
 
         /*
         add info
          */
-        AssertionInfo assertionInfo = new AssertionInfo(throwable);
+        ErrorContext assertionInfo = new ErrorContext(throwable);
 
         MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
 
@@ -84,7 +81,7 @@ public final class CollectedAssertions {
         return false;
     }
 
-    public static List<AssertionInfo> getEntries() {
+    public static List<ErrorContext> getEntries() {
         return ASSERTION_INFOS.get();
     }
 

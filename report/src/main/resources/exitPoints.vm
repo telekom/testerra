@@ -103,11 +103,11 @@
                             style="font-size: 15px; color: black; background-color: #DDDDDD; font-weight: normal;">
                             #set ($testMethod = $exitPointMap.get($exitPoint).get(0))
 
-                            #if ($testMethod.errorContext().scriptSource)
-                                #displayLines($testMethod.errorContext().scriptSource, "scriptSource")
-                            #elseif ($testMethod.errorContext().getExitFingerprint())
+                            #if ($testMethod.getErrorContext().scriptSource)
+                                #displayLines($testMethod.getErrorContext().scriptSource, "scriptSource")
+                            #elseif ($testMethod.getErrorContext().getExitFingerprint())
                                 <div class="error">
-                                    $testMethod.errorContext().getExitFingerprint()
+                                    $testMethod.getErrorContext().getExitFingerprint()
                                 </div>
                             #end
                         </td>

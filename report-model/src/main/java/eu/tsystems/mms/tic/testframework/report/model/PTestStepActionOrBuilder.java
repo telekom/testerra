@@ -121,4 +121,52 @@ public interface PTestStepActionOrBuilder extends
    */
   eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder getLogMessagesOrBuilder(
       int index);
+
+  /**
+   * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
+   */
+  java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> 
+      getOptionalAssertionsList();
+  /**
+   * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
+   */
+  eu.tsystems.mms.tic.testframework.report.model.ErrorContext getOptionalAssertions(int index);
+  /**
+   * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
+   */
+  int getOptionalAssertionsCount();
+  /**
+   * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
+   */
+  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
+      getOptionalAssertionsOrBuilderList();
+  /**
+   * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
+   */
+  eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getOptionalAssertionsOrBuilder(
+      int index);
+
+  /**
+   * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
+   */
+  java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> 
+      getCollectedAssertionsList();
+  /**
+   * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
+   */
+  eu.tsystems.mms.tic.testframework.report.model.ErrorContext getCollectedAssertions(int index);
+  /**
+   * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
+   */
+  int getCollectedAssertionsCount();
+  /**
+   * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
+   */
+  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
+      getCollectedAssertionsOrBuilderList();
+  /**
+   * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
+   */
+  eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getCollectedAssertionsOrBuilder(
+      int index);
 }

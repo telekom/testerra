@@ -57,7 +57,7 @@ export class App {
                 moduleId: PLATFORM.moduleName('components/classes/classes'),
                 nav: true,
                 name: "tests",
-                title: 'Test Cases'
+                title: 'Tests'
             },
             // {
             //     route: 'threads',

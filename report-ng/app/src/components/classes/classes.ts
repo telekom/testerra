@@ -26,7 +26,6 @@ export class Classes extends AbstractViewModel {
     private _availableStatuses = this._statusConverter.relevantStatuses;
     private _filteredMethodAggregates:MethodAggregate[];
     private _showConfigurationMethods:boolean = null;
-    private _searchQuery:string;
     private _searchRegexp:RegExp;
     //private _uniqueFailureAspects = 0;
     private _uniqueStatuses = 0;
@@ -48,14 +47,14 @@ export class Classes extends AbstractViewModel {
     ) {
         super.activate(params, routeConfig, navInstruction);
         console.log("activate", params);
-        if (params.q) {
-            this._searchQuery = params.q;
-        }
-        if (params.class) {
-            this._selectedClass = params.class;
-        } else {
-            this._selectedClass = null;
-        }
+        // if (params.q) {
+        //     this._searchQuery = params.q;
+        // }
+        // if (params.class) {
+        //     this._selectedClass = params.class;
+        // } else {
+        //     this._selectedClass = null;
+        // }
         if (params.status) {
             this._selectedStatus = this._statusConverter.getStatusForClass(params.status);
         } else {
@@ -75,20 +74,17 @@ export class Classes extends AbstractViewModel {
     private _filter() {
         this._loading = true;
 
-        const queryParams:any = {};
-        if (this._searchQuery?.length > 0) {
-            this._searchRegexp = this._statusConverter.createRegexpFromSearchString(this._searchQuery);
-            queryParams.q = this._searchQuery;
+        if (this.queryParams.q?.length > 0) {
+            this._searchRegexp = this._statusConverter.createRegexpFromSearchString(this.queryParams.q);
         } else {
             this._searchRegexp = null;
-        }
-
-        if (this._selectedClass) {
-            queryParams.class = this._selectedClass;
+            delete this.queryParams.q;
         }
 
         if (this._selectedStatus && this._selectedStatus >= 0) {
-            queryParams.status = this._statusConverter.getClassForStatus(this._selectedStatus);
+            this.queryParams.status = this._statusConverter.getClassForStatus(this._selectedStatus);
+        } else {
+            delete this.queryParams.status;
         }
 
         const uniqueClasses = {};
@@ -100,6 +96,7 @@ export class Classes extends AbstractViewModel {
         if (this._selectedStatus == ResultStatusType.PASSED) {
             relevantStatuses = this._statusConverter.passedStatuses;
         } else if (this._selectedStatus == ResultStatusType.FAILED) {
+            // Failed status without expected failed, because its handled extra
             relevantStatuses = [ResultStatusType.FAILED, ResultStatusType.FAILED_RETRIED];
         } else if (this._selectedStatus) {
             relevantStatuses = [ this._selectedStatus ];
@@ -107,8 +104,14 @@ export class Classes extends AbstractViewModel {
 
         this._filteredMethodAggregates = [];
 
-        console.log("filter", queryParams);
+        console.log("filter", this.queryParams);
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
+
+            let relevantFailureAspect:FailureAspectStatistics;
+            if (this.queryParams.failureAspect > 0) {
+                relevantFailureAspect = executionStatistics.failureAspectStatistics[this.queryParams.failureAspect-1];
+            }
+
             this._executionStatistics = executionStatistics;
 
             executionStatistics.classStatistics
@@ -120,12 +123,15 @@ export class Classes extends AbstractViewModel {
                     return classStatistics;
                 })
                 .filter(classStatistic => {
-                    return !this._selectedClass || this._selectedClass == classStatistic.classIdentifier
+                    return !this.queryParams.class || this.queryParams.class == classStatistic.classIdentifier
                 })
                 .forEach(classStatistic => {
                     classStatistic.methodContexts
                         .filter(methodContext => {
                             return (!relevantStatuses || relevantStatuses.indexOf(methodContext.contextValues.resultStatus) >= 0)
+                        })
+                        .filter(methodContext => {
+                            return (!relevantFailureAspect || relevantFailureAspect.methodContexts.indexOf(methodContext) >= 0);
                         })
                         .filter(methodContext => {
                             return (this._showConfigurationMethods == true
@@ -136,9 +142,12 @@ export class Classes extends AbstractViewModel {
                             )
                         })
                         .map(methodContext => {
+                            if (!relevantFailureAspect) {
+                                relevantFailureAspect = methodContext.errorContext ? new FailureAspectStatistics().setErrorContext(methodContext.errorContext) : null;
+                            }
                             return {
                                 classStatistics: classStatistic,
-                                failureAspect: methodContext.errorContext ? new FailureAspectStatistics().setErrorContext(methodContext.errorContext) : null,
+                                failureAspect: relevantFailureAspect,
                                 methodContext: methodContext
                             }
                         })
@@ -161,14 +170,19 @@ export class Classes extends AbstractViewModel {
                         })
                 });
 
+            // Sort by method name
+            this._filteredMethodAggregates = this._filteredMethodAggregates.sort((a, b) => a.methodContext.contextValues.name.localeCompare(b.methodContext.contextValues.name));
+
             this._uniqueClasses = Object.keys(uniqueClasses).length;
             this._uniqueStatuses = Object.keys(uniqueStatuses).length;
             //this._uniqueFailureAspects = Object.keys(uniqueFailureAspects).length;
             if (this._showConfigurationMethods) {
-                queryParams.config = this._showConfigurationMethods;
+                this.queryParams.config = this._showConfigurationMethods;
+            } else {
+                delete this.queryParams.config;
             }
 
-            this.updateUrl(queryParams);
+            this.updateUrl(this.queryParams);
             console.log("done loading");
             this._loading = false;
         });

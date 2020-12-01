@@ -230,9 +230,6 @@ export namespace data {
         /** MethodContext classContextId */
         classContextId?: (string|null);
 
-        /** MethodContext collectedAssertions */
-        collectedAssertions?: (data.IErrorContext[]|null);
-
         /** MethodContext infos */
         infos?: (string[]|null);
 
@@ -259,9 +256,6 @@ export namespace data {
 
         /** MethodContext customContextJson */
         customContextJson?: (string|null);
-
-        /** MethodContext optionalAssertions */
-        optionalAssertions?: (data.IErrorContext[]|null);
     }
 
     /** Represents a MethodContext. */
@@ -300,9 +294,6 @@ export namespace data {
         /** MethodContext classContextId. */
         public classContextId: string;
 
-        /** MethodContext collectedAssertions. */
-        public collectedAssertions: data.IErrorContext[];
-
         /** MethodContext infos. */
         public infos: string[];
 
@@ -329,9 +320,6 @@ export namespace data {
 
         /** MethodContext customContextJson. */
         public customContextJson: string;
-
-        /** MethodContext optionalAssertions. */
-        public optionalAssertions: data.IErrorContext[];
 
         /**
          * Decodes a MethodContext message from the specified reader or buffer.
@@ -469,6 +457,12 @@ export namespace data {
 
         /** PTestStepAction logMessages */
         logMessages?: (data.IPLogMessage[]|null);
+
+        /** PTestStepAction optionalAssertions */
+        optionalAssertions?: (data.IErrorContext[]|null);
+
+        /** PTestStepAction collectedAssertions */
+        collectedAssertions?: (data.IErrorContext[]|null);
     }
 
     /** Represents a PTestStepAction. */
@@ -494,6 +488,12 @@ export namespace data {
 
         /** PTestStepAction logMessages. */
         public logMessages: data.IPLogMessage[];
+
+        /** PTestStepAction optionalAssertions. */
+        public optionalAssertions: data.IErrorContext[];
+
+        /** PTestStepAction collectedAssertions. */
+        public collectedAssertions: data.IErrorContext[];
 
         /**
          * Decodes a PTestStepAction message from the specified reader or buffer.

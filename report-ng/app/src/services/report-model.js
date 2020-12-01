@@ -449,7 +449,6 @@ export const data = $root.data = (() => {
          * @property {string|null} [threadName] MethodContext threadName
          * @property {data.FailureCorridorValue|null} [failureCorridorValue] MethodContext failureCorridorValue
          * @property {string|null} [classContextId] MethodContext classContextId
-         * @property {Array.<data.IErrorContext>|null} [collectedAssertions] MethodContext collectedAssertions
          * @property {Array.<string>|null} [infos] MethodContext infos
          * @property {string|null} [priorityMessage] MethodContext priorityMessage
          * @property {Array.<string>|null} [relatedMethodContextIds] MethodContext relatedMethodContextIds
@@ -459,7 +458,6 @@ export const data = $root.data = (() => {
          * @property {Array.<string>|null} [sessionContextIds] MethodContext sessionContextIds
          * @property {Array.<string>|null} [videoIds] MethodContext videoIds
          * @property {string|null} [customContextJson] MethodContext customContextJson
-         * @property {Array.<data.IErrorContext>|null} [optionalAssertions] MethodContext optionalAssertions
          */
 
         /**
@@ -473,14 +471,12 @@ export const data = $root.data = (() => {
         function MethodContext(p) {
             this.parameters = [];
             this.methodTags = [];
-            this.collectedAssertions = [];
             this.infos = [];
             this.relatedMethodContextIds = [];
             this.dependsOnMethodContextIds = [];
             this.testSteps = [];
             this.sessionContextIds = [];
             this.videoIds = [];
-            this.optionalAssertions = [];
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -560,14 +556,6 @@ export const data = $root.data = (() => {
         MethodContext.prototype.classContextId = "";
 
         /**
-         * MethodContext collectedAssertions.
-         * @member {Array.<data.IErrorContext>} collectedAssertions
-         * @memberof data.MethodContext
-         * @instance
-         */
-        MethodContext.prototype.collectedAssertions = $util.emptyArray;
-
-        /**
          * MethodContext infos.
          * @member {Array.<string>} infos
          * @memberof data.MethodContext
@@ -640,14 +628,6 @@ export const data = $root.data = (() => {
         MethodContext.prototype.customContextJson = "";
 
         /**
-         * MethodContext optionalAssertions.
-         * @member {Array.<data.IErrorContext>} optionalAssertions
-         * @memberof data.MethodContext
-         * @instance
-         */
-        MethodContext.prototype.optionalAssertions = $util.emptyArray;
-
-        /**
          * Decodes a MethodContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.MethodContext
@@ -696,11 +676,6 @@ export const data = $root.data = (() => {
                 case 15:
                     m.classContextId = r.string();
                     break;
-                case 18:
-                    if (!(m.collectedAssertions && m.collectedAssertions.length))
-                        m.collectedAssertions = [];
-                    m.collectedAssertions.push($root.data.ErrorContext.decode(r, r.uint32()));
-                    break;
                 case 19:
                     if (!(m.infos && m.infos.length))
                         m.infos = [];
@@ -739,11 +714,6 @@ export const data = $root.data = (() => {
                     break;
                 case 32:
                     m.customContextJson = r.string();
-                    break;
-                case 33:
-                    if (!(m.optionalAssertions && m.optionalAssertions.length))
-                        m.optionalAssertions = [];
-                    m.optionalAssertions.push($root.data.ErrorContext.decode(r, r.uint32()));
                     break;
                 default:
                     r.skipType(t & 7);
@@ -994,6 +964,8 @@ export const data = $root.data = (() => {
          * @property {Array.<data.IPClickPathEvent>|null} [clickpathEvents] PTestStepAction clickpathEvents
          * @property {Array.<string>|null} [screenshotIds] PTestStepAction screenshotIds
          * @property {Array.<data.IPLogMessage>|null} [logMessages] PTestStepAction logMessages
+         * @property {Array.<data.IErrorContext>|null} [optionalAssertions] PTestStepAction optionalAssertions
+         * @property {Array.<data.IErrorContext>|null} [collectedAssertions] PTestStepAction collectedAssertions
          */
 
         /**
@@ -1008,6 +980,8 @@ export const data = $root.data = (() => {
             this.clickpathEvents = [];
             this.screenshotIds = [];
             this.logMessages = [];
+            this.optionalAssertions = [];
+            this.collectedAssertions = [];
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -1055,6 +1029,22 @@ export const data = $root.data = (() => {
         PTestStepAction.prototype.logMessages = $util.emptyArray;
 
         /**
+         * PTestStepAction optionalAssertions.
+         * @member {Array.<data.IErrorContext>} optionalAssertions
+         * @memberof data.PTestStepAction
+         * @instance
+         */
+        PTestStepAction.prototype.optionalAssertions = $util.emptyArray;
+
+        /**
+         * PTestStepAction collectedAssertions.
+         * @member {Array.<data.IErrorContext>} collectedAssertions
+         * @memberof data.PTestStepAction
+         * @instance
+         */
+        PTestStepAction.prototype.collectedAssertions = $util.emptyArray;
+
+        /**
          * Decodes a PTestStepAction message from the specified reader or buffer.
          * @function decode
          * @memberof data.PTestStepAction
@@ -1092,6 +1082,16 @@ export const data = $root.data = (() => {
                     if (!(m.logMessages && m.logMessages.length))
                         m.logMessages = [];
                     m.logMessages.push($root.data.PLogMessage.decode(r, r.uint32()));
+                    break;
+                case 8:
+                    if (!(m.optionalAssertions && m.optionalAssertions.length))
+                        m.optionalAssertions = [];
+                    m.optionalAssertions.push($root.data.ErrorContext.decode(r, r.uint32()));
+                    break;
+                case 9:
+                    if (!(m.collectedAssertions && m.collectedAssertions.length))
+                        m.collectedAssertions = [];
+                    m.collectedAssertions.push($root.data.ErrorContext.decode(r, r.uint32()));
                     break;
                 default:
                     r.skipType(t & 7);

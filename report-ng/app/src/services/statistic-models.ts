@@ -143,9 +143,14 @@ export class ExecutionStatistics extends Statistics {
                     this._addUniqueFailureAspect(methodContext.errorContext, methodContext);
                 }
 
-                methodContext.optionalAssertions.forEach(errorContext => {
-                    this._addUniqueFailureAspect(errorContext, methodContext);
-                })
+                console.log(methodContext.testSteps);
+
+                methodContext.testSteps
+                    .flatMap(testStep => testStep.testStepActions)
+                    .flatMap(testStepAction => testStepAction.optionalAssertions)
+                    .forEach(errorContext => {
+                        this._addUniqueFailureAspect(errorContext, methodContext);
+                    })
 
                 // const exitPointStatistics = new ExitPointStatistics().addMethodContext(methodContext);
                 //

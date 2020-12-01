@@ -34,7 +34,7 @@ export class Method {
         config.map([
             {
                 route: '',
-                redirect: 'details',
+                moduleId: PLATFORM.moduleName('t-systems-aurelia-components/src/components/empty/empty'),
             },
             {
                 route: 'details',
@@ -43,7 +43,7 @@ export class Method {
                 name: "details",
                 title: 'Details',
                 settings: {
-                    icon: "timeline"
+                    icon: "center_focus_strong"
                 }
             },
             {
@@ -93,6 +93,12 @@ export class Method {
                 this._screenshots = screenshots;
                 this._lastScreenshot = this._screenshots.find(() => true);
             })
+
+            if (!this._methodContext.errorContext) {
+                this._router.navigateToRoute("steps");
+            } else {
+                this._router.navigateToRoute("details");
+            }
         });
     }
 

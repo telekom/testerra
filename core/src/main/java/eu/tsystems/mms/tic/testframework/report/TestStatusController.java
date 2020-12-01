@@ -87,8 +87,8 @@ public class TestStatusController {
         /*
         check for additional marker annotations
          */
-        Annotation[] annotations = method.getAnnotations();
-        methodContext.methodTags = Arrays.stream(annotations).collect(Collectors.toList());
+        //Annotation[] annotations = method.getAnnotations();
+        //methodContext.methodTags = Arrays.stream(annotations).collect(Collectors.toList());
 
         /*
         set status
@@ -151,7 +151,6 @@ public class TestStatusController {
                 break;
 
             case FAILED_RETRIED:
-                LOGGER.info("failed retried: " + methodContext.name);
                 testsFailedRetried++;
                 testsFailed--;
 

@@ -97,7 +97,7 @@ public class MethodContextExporter extends AbstractContextExporter {
         MethodContext.Builder builder = MethodContext.newBuilder();
 
         apply(createContextValues(methodContext), builder::setContextValues);
-        map(methodContext.methodType, type -> MethodType.valueOf(type.name()), builder::setMethodType);
+        map(methodContext.getMethodType(), type -> MethodType.valueOf(type.name()), builder::setMethodType);
         forEach(methodContext.parameters, parameter -> builder.addParameters(parameter.toString()));
         forEach(methodContext.methodTags, annotation -> builder.addMethodTags(MethodContextExporter.annotationToString(annotation)));
         apply(methodContext.retryNumber, builder::setRetryNumber);
@@ -107,21 +107,21 @@ public class MethodContextExporter extends AbstractContextExporter {
         apply(methodContext.threadName, builder::setThreadName);
 
         // test steps
-        forEach(methodContext.getTestSteps(), testStep -> builder.addTestSteps(prepareTestStep(testStep)));
+        methodContext.readTestSteps().forEach(testStep -> builder.addTestSteps(prepareTestStep(testStep)));
         //value(methodContext.failedStep, MethodContextExporter::createPTestStep, builder::setFailedStep);
 
         map(methodContext.failureCorridorValue, value -> FailureCorridorValue.valueOf(value.name()), builder::setFailureCorridorValue);
         builder.setClassContextId(methodContext.getClassContext().getId());
 
         forEach(methodContext.infos, builder::addInfos);
-        forEach(methodContext.getRelatedMethodContexts(), m -> builder.addRelatedMethodContextIds(m.getId()));
-        forEach(methodContext.getDependsOnMethodContexts(), m -> builder.addDependsOnMethodContextIds(m.getId()));
+        methodContext.readRelatedMethodContexts().forEach(m -> builder.addRelatedMethodContextIds(m.getId()));
+        methodContext.readDependsOnMethodContexts().forEach(m -> builder.addDependsOnMethodContextIds(m.getId()));
 
         // build context
         if (methodContext.hasErrorContext()) builder.setErrorContext(this.prepareErrorContext(methodContext.getErrorContext()));
-        methodContext.getOptionalAssertions().forEach(assertionInfo -> builder.addOptionalAssertions(prepareErrorContext(assertionInfo)));
-        methodContext.getCollectedAssertions().forEach(assertionInfo -> builder.addCollectedAssertions(prepareErrorContext(assertionInfo)));
-        methodContext.getSessionContexts().forEach(sessionContext -> builder.addSessionContextIds(sessionContext.getId()));
+        methodContext.readOptionalAssertions().forEach(assertionInfo -> builder.addOptionalAssertions(prepareErrorContext(assertionInfo)));
+        methodContext.readCollectedAssertions().forEach(assertionInfo -> builder.addCollectedAssertions(prepareErrorContext(assertionInfo)));
+        methodContext.readSessionContexts().forEach(sessionContext -> builder.addSessionContextIds(sessionContext.getId()));
 
         methodContext.readVideos().forEach(video -> {
             final java.io.File targetVideoFile = new java.io.File(targetVideoDir, video.filename);

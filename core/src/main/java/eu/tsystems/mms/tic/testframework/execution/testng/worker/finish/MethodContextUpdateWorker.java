@@ -73,7 +73,7 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
                         } else {
                             // regular failed
                             TestStatusController.Status status = TestStatusController.Status.FAILED;
-                            if (methodContext.getOptionalAssertions().size() > 0) {
+                            if (methodContext.readOptionalAssertions().size() > 0) {
                                 status = TestStatusController.Status.FAILED_MINOR;
                             }
 
@@ -102,7 +102,7 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
                 } else if (testResult.isSuccess()) {
                     TestStatusController.Status status = TestStatusController.Status.PASSED;
 
-                    boolean hasOptionalAssertion = methodContext.getOptionalAssertions().size() > 0;
+                    boolean hasOptionalAssertion = methodContext.readOptionalAssertions().size() > 0;
 
                     // is it a retried test?
                     if (RetryAnalyzer.hasMethodBeenRetried(methodContext)) {

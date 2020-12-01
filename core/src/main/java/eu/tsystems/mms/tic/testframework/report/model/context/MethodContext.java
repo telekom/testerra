@@ -61,8 +61,11 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     public ITestContext iTestContext;
     public ITestNGMethod iTestNgMethod;
 
+    /**
+     * @deprecated Use {@link #getStatus()} instead
+     */
     public TestStatusController.Status status = TestStatusController.Status.NO_RUN;
-    public final Type methodType;
+    private final Type methodType;
     public List<Object> parameters = new LinkedList<>();
     public List<Annotation> methodTags = new LinkedList<>();
     public int retryNumber = 0;
@@ -71,15 +74,8 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     private TestStep lastFailedStep;
     public FailureCorridor.Value failureCorridorValue = FailureCorridor.Value.HIGH;
     private int hashCodeOfTestResult = 0;
-
-    /**
-     * @deprecated Use {@link #getOptionalAssertions()} instead
-     */
-    public final List<AssertionInfo> nonFunctionalInfos = new LinkedList<>();
-    /**
-     * @deprecated Use {@link #getCollectedAssertions()} instead
-     */
-    public final List<AssertionInfo> collectedAssertions = new LinkedList<>();
+    private final List<AssertionInfo> optionalAssertions = new LinkedList<>();
+    private final List<AssertionInfo> collectedAssertions = new LinkedList<>();
     public final List<String> infos = new LinkedList<>();
     private List<SessionContext> sessionContexts = new LinkedList<>();
     public String priorityMessage = null;
@@ -118,7 +114,11 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         this.methodType = methodType;
     }
 
-    public Stream<SessionContext> getSessionContexts() {
+    public Type getMethodType() {
+        return this.methodType;
+    }
+
+    public Stream<SessionContext> readSessionContexts() {
         return sessionContexts.stream();
     }
 
@@ -150,22 +150,55 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return this.getSuiteContext().getExecutionContext();
     }
 
-    public List<AssertionInfo> getOptionalAssertions() {
-        return this.nonFunctionalInfos;
+    /**
+     * @deprecated Use {@link #readOptionalAssertions()} instead
+     * @return
+     */
+    public List<AssertionInfo> getNonFunctionalInfos() {
+        return this.optionalAssertions;
     }
 
+    public List<AssertionInfo> readOptionalAssertions() {
+        return this.optionalAssertions;
+    }
+
+    /**
+     * @deprecated Use {@link #readCollectedAssertions()} insted
+     */
     public List<AssertionInfo> getCollectedAssertions() {
         return this.collectedAssertions;
     }
 
-    // Used in methodDependencies.vm
+    public Stream<AssertionInfo> readCollectedAssertions() {
+        return this.collectedAssertions.stream();
+    }
+
+    /**
+     * Used in methodDependencies.vm
+     * @deprecated Use {@link #readRelatedMethodContexts()} instead
+     */
     public List<MethodContext> getRelatedMethodContexts() {
         return this.relatedMethodContexts;
     }
 
-    // Used in methodDependencies.vm
+    public Stream<MethodContext> readRelatedMethodContexts() {
+        return this.relatedMethodContexts.stream();
+    }
+
+    /**
+     * Used in methodDependencies.vm
+     * @deprecated Use {@link #readDependsOnMethodContexts()} instead
+     */
     public List<MethodContext> getDependsOnMethodContexts() {
         return this.dependsOnMethodContexts;
+    }
+
+    public Stream<MethodContext> readDependsOnMethodContexts() {
+        if (this.dependsOnMethodContexts == null) {
+            return Stream.empty();
+        } else {
+            return this.dependsOnMethodContexts.stream();
+        }
     }
 
     public MethodContext setRelatedMethodContexts(List<MethodContext> relatedMethodContexts) {
@@ -179,7 +212,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     public Stream<TestStepActionEntry> readTestStepActions() {
-        return this.testStepController.getTestSteps().stream()
+        return this.readTestSteps()
                 .flatMap(testStep -> testStep.getTestStepActions().stream())
                 .flatMap(testStepAction -> testStepAction.getTestStepActionEntries().stream());
     }
@@ -212,8 +245,15 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return testStepController;
     }
 
+    /**
+     * @deprecated Use {@link #readTestSteps()} instead
+     */
     public List<TestStep> getTestSteps() {
         return this.testStepController.getTestSteps();
+    }
+
+    public Stream<TestStep> readTestSteps() {
+        return this.testStepController.getTestSteps().stream();
     }
 
     public TestStep getCurrentTestStep() {
@@ -230,7 +270,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     public boolean hasErrorContext() {
-        return this.errorContext != null;
+        return this.errorContext != null && this.errorContext.getThrowable() != null;
     }
 
     public ErrorContext getErrorContext() {
@@ -293,7 +333,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
 
     public AssertionInfo addOptionalAssertion(Throwable throwable) {
         AssertionInfo assertionInfo = new AssertionInfo(throwable);
-        this.nonFunctionalInfos.add(assertionInfo);
+        this.optionalAssertions.add(assertionInfo);
         return assertionInfo;
     }
 
@@ -364,10 +404,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return retryNumber > 0;
     }
 
-    public String getName() {
-        return name;
-    }
-
     /**
      * @todo What is this?
      */
@@ -378,6 +414,11 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     @Override
     public TestStatusController.Status getStatus() {
         return status;
+    }
+
+    public MethodContext setStatus(TestStatusController.Status status) {
+        this.status = status;
+        return this;
     }
 
     public boolean isRepresentationalTestMethod() {

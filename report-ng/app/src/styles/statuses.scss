@@ -42,7 +42,7 @@
     border-color: $passed;
 }
 
-.status-passed-retry {
+.status-passed-retried {
     @extend .status-passed;
 }
 
@@ -78,7 +78,7 @@
     border-color: $failedExpected;
 }
 
-.status-failed-retry {
+.status-failed-retried {
     @extend .status-failed
 }
 

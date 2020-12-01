@@ -23,7 +23,7 @@ public class SessionContextExporter extends AbstractContextExporter implements L
         for (String key : sessionContext.getMetaData().keySet()) {
             Object value = sessionContext.getMetaData().get(key);
             if (StringUtils.isStringEmpty(key) || value == null || StringUtils.isStringEmpty(value.toString())) {
-                log().error("Not exporting sessionContext.metaData[" + key + "]=" + value);
+                log().warn("Not exporting sessionContext.metaData[" + key + "]=" + value);
             } else {
                 newMap.put(key, value.toString());
             }

@@ -45,6 +45,9 @@ import org.testng.ITestResult;
 
 public class ExecutionContext extends AbstractContext implements SynchronizableContext {
 
+    /**
+     * @deprecated Use {@link #readSuiteContexts()} instead
+     */
     public final Queue<SuiteContext> suiteContexts = new ConcurrentLinkedQueue<>();
     @Deprecated
     public Map<String, List<MethodContext>> failureAspects;
@@ -65,6 +68,10 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
         name = runConfig.RUNCFG;
         swi = name;
         TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(this));
+    }
+
+    public Stream<SuiteContext> readSuiteContexts() {
+        return this.suiteContexts.stream();
     }
 
     public Stream<SessionContext> readExclusiveSessionContexts() {

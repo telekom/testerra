@@ -28,11 +28,15 @@ import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.stream.Stream;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 
 public class SuiteContext extends AbstractContext implements SynchronizableContext {
 
+    /**
+     * @deprecated Use {@link #readTestContexts()} instead
+     */
     public final Queue<TestContext> testContexts = new ConcurrentLinkedQueue<>();
 
     public SuiteContext(ExecutionContext executionContext) {
@@ -41,6 +45,10 @@ public class SuiteContext extends AbstractContext implements SynchronizableConte
 
     public ExecutionContext getExecutionContext() {
         return (ExecutionContext)this.parentContext;
+    }
+
+    public Stream<TestContext> readTestContexts() {
+        return testContexts.stream();
     }
 
     public synchronized TestContext getTestContext(ITestResult testResult, ITestContext iTestContext) {

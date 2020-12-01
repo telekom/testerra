@@ -136,12 +136,12 @@ export class StatusConverter {
                 return "passed";
             case ResultStatusType.MINOR_RETRY:
             case ResultStatusType.PASSED_RETRY:
-                return "passed-retry";
+                return "passed-retried";
             case ResultStatusType.FAILED_MINOR:
             case ResultStatusType.FAILED:
                 return "failed";
             case ResultStatusType.FAILED_RETRIED:
-                return "failed-retry";
+                return "failed-retried";
             case ResultStatusType.FAILED_EXPECTED:
                 return "failed-expected";
             case ResultStatusType.SKIPPED:
@@ -163,11 +163,11 @@ export class StatusConverter {
                 return ResultStatusType.SKIPPED;
             case "failed-expected":
                 return ResultStatusType.FAILED_EXPECTED;
-            case "failed-retry":
+            case "failed-retried":
                 return ResultStatusType.FAILED_RETRIED;
             case "failed":
                 return ResultStatusType.FAILED;
-            case "passed-retry":
+            case "passed-retried":
                 return ResultStatusType.PASSED_RETRY;
         }
     }

@@ -86,13 +86,16 @@ export class Method {
                 this._screenshots = screenshots;
                 this._lastScreenshot = this._screenshots.find(() => true);
             })
-
-            if (methodDetails.hasDetails) {
-                this._router.navigateToRoute("details");
-            } else {
-                this._router.navigateToRoute("steps");
-            }
         });
+        if (!routeConfig.hasChildRouter) {
+            console.log("route to default content");
+            const navOptions = {replace:true};
+            if (this._methodDetails.hasDetails) {
+                this._router.navigateToRoute("details", {}, navOptions);
+            } else {
+                this._router.navigateToRoute("steps", {}, navOptions);
+            }
+        }
     }
 
     private _tabClicked(routeConfig:RouteConfig) {

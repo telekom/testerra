@@ -5,7 +5,7 @@ import {DataLoader} from "../../services/data-loader";
 import {Config} from "../../services/config";
 import {MdcDialogService} from '@aurelia-mdc-web/dialog';
 import {ScreenshotsDialog} from "../screenshots-dialog/screenshots-dialog";
-import {NavigationInstruction, RouteConfig} from "aurelia-router";
+import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
 import IMethodContext = data.IMethodContext;
 import IFile = data.IFile;
 
@@ -13,6 +13,7 @@ import IFile = data.IFile;
 export class Steps {
     private _methodContext:IMethodContext;
     private _screenshots:IFile[] = [];
+    private _router:Router;
 
     constructor(
         private _statistics: StatisticsGenerator,
@@ -28,6 +29,7 @@ export class Steps {
         routeConfig: RouteConfig,
         navInstruction: NavigationInstruction
     ) {
+        this._router = navInstruction.router;
         this._statistics.getMethodDetails(params.id).then(methodDetails => {
             this._methodContext = methodDetails.methodContext;
             this._statistics.getScreenshotsFromMethodContext(this._methodContext).then(screenshots => {
@@ -52,19 +54,18 @@ export class Steps {
     private _findScreenshot(id:string) {
         return this._screenshots?.find(value => value.id == id);
     }
-    //
-    // private _getScreenshotsForTestStepAction(testStepAction:IPTestStepAction) {
-    //     console.log(this._screenshots);
-    //     const screenshots = [];
-    //     testStepAction.screenshotIds.forEach(id => {
-    //         if (this._screenshots?.id) {
-    //             screenshots.push(this._screenshots[id]);
-    //         }
-    //     });
-    //     return screenshots;
-    // }
 
-    private _toggleExpand() {
+    private _gotoStep(stepIndex:number, actionIndex:number) {
+        let elementsByName = window.document.getElementsByName(stepIndex+"."+actionIndex);
+        if (elementsByName.length > 0) {
+            elementsByName[0].scrollIntoView()
+        }
+    }
+
+    private _stepVisibility($event:Event) {
+        const anchor = $event.target as HTMLAnchorElement;
+        const parts = anchor.getAttribute("name").split(".");
+        console.log("enable", parts);
 
     }
 }

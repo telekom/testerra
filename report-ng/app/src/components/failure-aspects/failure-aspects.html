@@ -38,7 +38,7 @@
                     </mdc-data-table-header>
                     <mdc-data-table-content>
                         <mdc-data-table-row repeat.for="failureAspect of _filteredFailureAspects">
-                            <mdc-data-table-cell mdc-body1 css="font-size: ${_calcFontSize(failureAspect.index)}rem;">${failureAspect.index+1}</mdc-data-table-cell>
+                            <mdc-data-table-cell mdc-body1 class="rank-column" css="font-size: ${_calcFontSize(failureAspect.index)}rem;">${failureAspect.index+1}</mdc-data-table-cell>
                             <mdc-data-table-cell class="p1" mdc-body1>
                                 <a route-href="route: tests; params.bind: {failureAspect: failureAspect.index+1}"
                                    innerhtml.bind="failureAspect.name|html|highlightText:_searchRegexp"

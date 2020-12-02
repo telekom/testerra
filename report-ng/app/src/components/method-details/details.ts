@@ -40,7 +40,6 @@ export class Details {
         navInstruction: NavigationInstruction
     ) {
         this._statistics.getMethodDetails(params.id).then(methodDetails => {
-            console.log(methodDetails);
             this._methodDetails = methodDetails;
             this._methodContext = methodDetails.methodContext;
             if (this._methodContext.errorContext) {
@@ -56,6 +55,4 @@ export class Details {
             }
         });
     }
-
-
 }

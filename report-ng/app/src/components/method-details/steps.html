@@ -8,7 +8,7 @@
                     <let step-index.bind="$index+1"></let>
                     <h3>${stepIndex} ${testStep.name}</h3>
                     <mdc-list two-line single-selection>
-                        <mdc-list-item repeat.for="testStepAction of testStep.testStepActions">
+                        <mdc-list-item repeat.for="testStepAction of testStep.testStepActions" click.delegate="_gotoStep(stepIndex, $index+1)">
                             <mdc-icon mdc-list-item-graphic>read_more</mdc-icon>
                             <mdc-list-item-primary-text>${stepIndex}.${$index+1} ${testStepAction.name}</mdc-list-item-primary-text>
                             <mdc-list-item-secondary-text>${testStepAction.timestamp|dateFormat}</mdc-list-item-secondary-text>
@@ -27,27 +27,49 @@
 <!--                </mdc-text-field>-->
                 <div repeat.for="testStep of _methodContext.testSteps">
                     <let step-index.bind="$index+1"></let>
-                    <mdc-card repeat.for="testStepAction of testStep.testStepActions"
-                                class="mt1"
-                    >
-                        <div mdc-subtitle2 class="card-headline"><span class="sr1">${stepIndex}.${$index+1} ${testStepAction.name}</span></div>
-                        <mdc-list-divider></mdc-list-divider>
-                        <div class="code-view m0">
-                            <pre class="m0"
-                                 repeat.for="logMessage of testStepAction.logMessages"
-                                 class.bind="(logMessage.type==1?'error':(logMessage.type==2?'warn':''))"
-                            >${logMessage|logMessageFormat}</pre>
-                        </div>
-                        <div class="m0" if.bind="_screenshots.length>0">
-                            <div repeat.for="screenshotId of testStepAction.screenshotIds">
-                                <let file.bind="_findScreenshot(screenshotId)"></let>
-                                <image-card click.delegate="_showScreenshot(file)"
-                                            src.bind="file.relativePath"
-                                            title.bind="file.meta.Title"
-                                ></image-card>
+                    <div repeat.for="testStepAction of testStep.testStepActions">
+                        <a name="${stepIndex}.${$index+1}" visible.delegate="_stepVisibility($event)" become-visible></a>
+                        <div mdc-body1 class.bind="stepIndex!=1?'mt2':''">${stepIndex}.${$index+1} ${testStepAction.name}</div>
+                        <mdc-card class="mt1" if.bind="testStepAction.optionalAssertions.length > 0">
+                            <div mdc-subtitle2 class="card-headline">Optional assertions</div>
+                            <mdc-list-divider></mdc-list-divider>
+                            <mdc-expandable repeat.for="errorContext of testStepAction.optionalAssertions"
+                                            class="card-expandable"
+                            >
+                                <div slot="caption"><class-name class="secondary" mdc-body2 namespace.bind="errorContext.cause.className">:</class-name><span mdc-body1 if.bind="errorContext.cause.message">${errorContext.cause.message}</span></div>
+                                <div class="code-view m0">
+                                <pre class="m0"
+                                     repeat.for="line of errorContext.scriptSource.lines"
+                                     class.bind="line.mark?'warn':''"
+                                ><span class="number">${line.lineNumber}</span><span innerhtml="${_hljs.highlight('java', line.line).value}"></span></pre>
+                                </div>
+                            </mdc-expandable>
+                        </mdc-card>
+                        <mdc-card class="mt1">
+                            <div mdc-subtitle2 class="card-headline">Logs</div>
+                            <mdc-list-divider></mdc-list-divider>
+                            <div class="code-view m0">
+                                <pre class="m0"
+                                     repeat.for="logMessage of testStepAction.logMessages"
+                                     class.bind="(logMessage.type==1?'error':(logMessage.type==2?'warn':''))"
+                                >${logMessage|logMessageFormat}</pre>
                             </div>
-                        </div>
-                    </mdc-card>
+                        </mdc-card>
+                        <mdc-card class="mt1" if.bind="_screenshots.length>0">
+                            <div mdc-subtitle2 class="card-headline">Screenshots</div>
+                            <mdc-list-divider></mdc-list-divider>
+                            <div class="m0">
+                                <div repeat.for="screenshotId of testStepAction.screenshotIds">
+                                    <let file.bind="_findScreenshot(screenshotId)"></let>
+                                    <image-card click.delegate="_showScreenshot(file)"
+                                                src.bind="file.relativePath"
+                                                title.bind="file.meta.Title"
+                                    ></image-card>
+                                </div>
+                            </div>
+                        </mdc-card>
+                    </div>
+
                 </div>
             </mdc-layout-grid-cell>
         </mdc-layout-grid-inner>

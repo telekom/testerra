@@ -157,9 +157,8 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
                 enhance swi with parameters, set parameters into context
                  */
             if (parameters.length > 0) {
+                // TODO HERE :: SWI was enhanced with these parameters to get a unqiue method context
                 methodContext.parameters = Arrays.stream(parameters).map(o -> o == null ? "" : o.toString()).collect(Collectors.toList());
-                String swiSuffix = methodContext.parameters.stream().map(Object::toString).collect(Collectors.joining("_"));
-                methodContext.swi += "_" + swiSuffix;
             }
 
                 /*

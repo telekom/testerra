@@ -160,4 +160,38 @@ public interface ExecutionContextOrBuilder extends
    * @return The estimatedTestsCount.
    */
   int getEstimatedTestsCount();
+
+  /**
+   * <code>map&lt;string, .data.StackTraceCause&gt; causes = 16;</code>
+   */
+  int getCausesCount();
+  /**
+   * <code>map&lt;string, .data.StackTraceCause&gt; causes = 16;</code>
+   */
+  boolean containsCauses(
+      java.lang.String key);
+  /**
+   * Use {@link #getCausesMap()} instead.
+   */
+  @java.lang.Deprecated
+  java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause>
+  getCauses();
+  /**
+   * <code>map&lt;string, .data.StackTraceCause&gt; causes = 16;</code>
+   */
+  java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause>
+  getCausesMap();
+  /**
+   * <code>map&lt;string, .data.StackTraceCause&gt; causes = 16;</code>
+   */
+
+  eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getCausesOrDefault(
+      java.lang.String key,
+      eu.tsystems.mms.tic.testframework.report.model.StackTraceCause defaultValue);
+  /**
+   * <code>map&lt;string, .data.StackTraceCause&gt; causes = 16;</code>
+   */
+
+  eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getCausesOrThrow(
+      java.lang.String key);
 }

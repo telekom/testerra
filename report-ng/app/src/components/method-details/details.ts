@@ -7,7 +7,7 @@ import plaintext from 'highlight.js/lib/languages/plaintext';
 import java from 'highlight.js/lib/languages/java';
 import 'highlight.js/styles/darcula.css';
 import {autoinject} from 'aurelia-framework';
-import {StatisticsGenerator} from "../../services/statistics-generator";
+import {IMethodDetails, StatisticsGenerator} from "../../services/statistics-generator";
 import {data} from "../../services/report-model";
 import {FailureAspectStatistics} from "../../services/statistic-models";
 import {DataLoader} from "../../services/data-loader";
@@ -15,19 +15,24 @@ import {Config} from "../../services/config";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import IStackTraceCause = data.IStackTraceCause;
 import IMethodContext = data.IMethodContext;
+import {StatusConverter} from "../../services/status-converter";
 
 @autoinject()
 export class Details {
     private _hljs = hljs;
     private _stackTrace:IStackTraceCause[];
     private _failureAspect:FailureAspectStatistics;
+    /**
+     * @deprecated
+     */
     private _methodContext:IMethodContext;
-    private _methodDetails;
+    private _methodDetails:IMethodDetails;
 
     constructor(
         private _statistics: StatisticsGenerator,
         private _dataLoader:DataLoader,
         private _config:Config,
+        private _statusConverter:StatusConverter,
     ) {
         this._hljs.registerLanguage("java", java);
         this._hljs.registerLanguage("plaintext", plaintext);
@@ -41,17 +46,9 @@ export class Details {
     ) {
         this._statistics.getMethodDetails(params.id).then(methodDetails => {
             this._methodDetails = methodDetails;
-            this._methodContext = methodDetails.methodContext;
-            if (this._methodContext.errorContext) {
-                if (this._methodContext.errorContext?.cause) {
-                    this._stackTrace = [];
-                    let cause = this._methodContext.errorContext.cause;
-                    do {
-                        this._stackTrace.push(cause);
-                        cause = cause.cause;
-                    } while (cause);
-                }
-                this._failureAspect = new FailureAspectStatistics().setErrorContext(this._methodContext.errorContext);
+            if (methodDetails.methodContext.errorContext?.causeId) {
+                this._stackTrace = this._statusConverter.flattenStackTrace(methodDetails.methodContext.errorContext.causeId, methodDetails.executionStatistics.executionAggregate.executionContext);
+                this._failureAspect = new FailureAspectStatistics().setErrorContext(methodDetails.methodContext.errorContext, methodDetails.executionStatistics.executionAggregate.executionContext);
             }
         });
     }

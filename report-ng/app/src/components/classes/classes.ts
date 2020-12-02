@@ -110,9 +110,6 @@ export class Classes extends AbstractViewModel {
                 relevantFailureAspect = executionStatistics.failureAspectStatistics[this.queryParams.failureAspect-1];
                 filterByFailureAspect = true;
             }
-            console.log("filer by", relevantFailureAspect);
-
-
             this._executionStatistics = executionStatistics;
 
             executionStatistics.classStatistics
@@ -141,7 +138,7 @@ export class Classes extends AbstractViewModel {
                         })
                         .map(methodContext => {
                             if (!relevantFailureAspect) {
-                                relevantFailureAspect = methodContext.errorContext ? new FailureAspectStatistics().setErrorContext(methodContext.errorContext) : null;
+                                relevantFailureAspect = methodContext.errorContext ? new FailureAspectStatistics().setErrorContext(methodContext.errorContext, executionStatistics.executionAggregate.executionContext) : null;
                             }
                             return {
                                 classStatistics: classStatistic,

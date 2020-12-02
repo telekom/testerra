@@ -1,13 +1,9 @@
 import {autoinject, PLATFORM} from 'aurelia-framework';
 import {NavigationInstruction, RouteConfig, Router, RouterConfiguration} from "aurelia-router";
-import {StatisticsGenerator} from "../../services/statistics-generator";
+import {IMethodDetails, StatisticsGenerator} from "../../services/statistics-generator";
 import {data} from "../../services/report-model";
 import {ScreenshotsDialog} from "../screenshots-dialog/screenshots-dialog";
 import {MdcDialogService} from '@aurelia-mdc-web/dialog';
-import IClassContext = data.IClassContext;
-import ITestContext = data.ITestContext;
-import ISuiteContext = data.ISuiteContext;
-import IMethodContext = data.IMethodContext;
 import IFile = data.IFile;
 
 
@@ -16,7 +12,7 @@ export class Method {
     private _router:Router;
     private _screenshots:IFile[];
     private _lastScreenshot:IFile;
-    private _methodDetails;
+    private _methodDetails:IMethodDetails;
 
     constructor(
         private _statistics: StatisticsGenerator,
@@ -86,16 +82,18 @@ export class Method {
                 this._screenshots = screenshots;
                 this._lastScreenshot = this._screenshots.find(() => true);
             })
-        });
-        if (!routeConfig.hasChildRouter) {
-            console.log("route to default content");
-            const navOptions = {replace:true};
-            if (this._methodDetails.hasDetails) {
-                this._router.navigateToRoute("details", {}, navOptions);
-            } else {
-                this._router.navigateToRoute("steps", {}, navOptions);
+
+            if (!routeConfig.hasChildRouter) {
+                console.log("route to default content");
+                const navOptions = {replace:true};
+                if (this._methodDetails.hasDetails) {
+                    this._router.navigateToRoute("details", {}, navOptions);
+                } else {
+                    this._router.navigateToRoute("steps", {}, navOptions);
+                }
             }
-        }
+        });
+
     }
 
     private _tabClicked(routeConfig:RouteConfig) {

@@ -22,6 +22,8 @@
 import {data} from "./report-model";
 import {autoinject} from "aurelia-framework";
 import ResultStatusType = data.ResultStatusType;
+import IExecutionContext = data.IExecutionContext;
+import IStackTraceCause = data.IStackTraceCause;
 
 class GraphColors {
     static readonly PASSED = '#417336'; // $success
@@ -204,4 +206,13 @@ export class StatusConverter {
         }
     }
 
+    flattenStackTrace(causeId:string, executionContext:IExecutionContext) {
+        const stackTrace:IStackTraceCause[] = [];
+        let cause = executionContext.causes[causeId];
+        while (cause) {
+            stackTrace.push(cause);
+            cause = executionContext.causes[cause.causeId];
+        }
+        return stackTrace;
+    }
 }

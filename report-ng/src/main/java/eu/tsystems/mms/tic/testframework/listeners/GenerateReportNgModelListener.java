@@ -21,46 +21,52 @@
 
 package eu.tsystems.mms.tic.testframework.listeners;
 
+import com.google.common.eventbus.Subscribe;
+import eu.tsystems.mms.tic.testframework.adapters.ContextExporter;
 import eu.tsystems.mms.tic.testframework.events.FinalizeExecutionEvent;
-import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.report.model.ExecutionAggregate;
 import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import java.io.File;
 
-public class GenerateReportNgModelListener extends GenerateReportModelListener {
-
+public class GenerateReportNgModelListener extends AbstractReportModelListener implements FinalizeExecutionEvent.Listener{
     private ExecutionAggregate.Builder executionAggregateBuilder = ExecutionAggregate.newBuilder();
+    private final ContextExporter contextExporter = new ContextExporter() {
+        @Override
+        protected void addFile(eu.tsystems.mms.tic.testframework.report.model.File.Builder fileBuilder) {
+            writeBuilderToFile(fileBuilder, new File(getFilesDir(), fileBuilder.getId()));
+        }
+    };
 
     public GenerateReportNgModelListener(File baseDir) {
         super(baseDir);
     }
 
     @Override
-    public void onMethodEnd(MethodEndEvent event) {
-        // ignore
-    }
-    @Override
+    @Subscribe
     public void onFinalizeExecution(FinalizeExecutionEvent event) {
         ExecutionContext executionContext = event.getExecutionContext();
+
         executionContext.readSuiteContexts().forEach(suiteContext -> {
-            executionAggregateBuilder.addSuiteContexts(getSuiteContextExporter().prepareSuiteContext(suiteContext));
+            executionAggregateBuilder.addSuiteContexts(contextExporter.prepareSuiteContext(suiteContext));
 
             suiteContext.readTestContexts().forEach(testContext -> {
-                executionAggregateBuilder.addTestContexts(getTestContextExporter().prepareTestContext(testContext));
+                executionAggregateBuilder.addTestContexts(contextExporter.prepareTestContext(testContext));
 
                 testContext.readClassContexts().forEach(classContext -> {
-                    executionAggregateBuilder.addClassContexts(getClassContextExporter().prepareClassContext(classContext));
+                    executionAggregateBuilder.addClassContexts(contextExporter.prepareClassContext(classContext));
 
                     classContext.readMethodContexts().forEach(methodContext -> {
-                        executionAggregateBuilder.addMethodContexts(getMethodContextExporter().prepareMethodContext(methodContext));
-                        methodContext.readSessionContexts().forEach(sessionContext -> executionAggregateBuilder.addSessionContexts(getSessionContextExporter().prepareSessionContext(sessionContext)));
+                        executionAggregateBuilder.addMethodContexts(contextExporter.prepareMethodContext(methodContext));
+                        methodContext.readSessionContexts().forEach(sessionContext -> executionAggregateBuilder.addSessionContexts(contextExporter.prepareSessionContext(sessionContext)));
                     });
                 });
 
             });
         });
-        executionContext.readExclusiveSessionContexts().forEach(sessionContext -> executionAggregateBuilder.addSessionContexts(getSessionContextExporter().prepareSessionContext(sessionContext)));
-        executionAggregateBuilder.setExecutionContext(getExecutionContextExporter().prepareExecutionContext(executionContext));
+        executionContext.readExclusiveSessionContexts().forEach(sessionContext -> executionAggregateBuilder.addSessionContexts(contextExporter.prepareSessionContext(sessionContext)));
+
+        eu.tsystems.mms.tic.testframework.report.model.ExecutionContext.Builder executionContextBuilder = contextExporter.prepareExecutionContext(executionContext);
+        executionAggregateBuilder.setExecutionContext(executionContextBuilder);
         writeBuilderToFile(executionAggregateBuilder, new File(baseDir, "execution"));
     }
 }

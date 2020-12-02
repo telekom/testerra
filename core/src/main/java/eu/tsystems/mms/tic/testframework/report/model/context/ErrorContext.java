@@ -102,19 +102,10 @@ public class ErrorContext {
      * Gets the stack trace.
      *
      * @return the stacktrace of the method. Can be null, if method has no stacktrace.
-     * @deprecated Use {@link #getCause()} instead
+     * @deprecated Use {@link #getThrowable()} instead
      */
     public StackTrace getStackTrace() {
         return stackTrace;
-    }
-
-    /**
-     * Gets the stack trace.
-     *
-     * @return the stacktrace of the method. Can be null, if method has no stacktrace.
-     */
-    public Optional<Cause> getCause() {
-        return Optional.ofNullable(stackTrace.getCause());
     }
 
     @Deprecated

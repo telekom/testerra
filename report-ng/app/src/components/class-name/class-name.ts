@@ -32,7 +32,7 @@ export class ClassName {
     ) {
     }
 
-    @bindable({ defaultBindingMode: bindingMode.oneTime })
+    @bindable({ defaultBindingMode: bindingMode.toView })
     namespace: string;
 
     private _parts;

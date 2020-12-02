@@ -28,9 +28,21 @@ import {data} from "./report-model";
 import IFile = data.IFile;
 import IMethodContext = data.IMethodContext;
 import {StatusConverter} from "./status-converter";
+import ITestContext = data.ITestContext;
+import ISuiteContext = data.ISuiteContext;
+
+export interface IMethodDetails {
+    executionStatistics: ExecutionStatistics,
+    methodContext: IMethodContext,
+    classStatistics: ClassStatistics,
+    testContext: ITestContext,
+    suiteContext: ISuiteContext,
+    hasDetails: boolean
+}
 
 @autoinject()
 export class StatisticsGenerator {
+
     constructor(
         private _dataLoader: DataLoader,
         private _cacheService:CacheService,
@@ -75,7 +87,7 @@ export class StatisticsGenerator {
         })
     }
 
-    getMethodDetails(methodId:string) {
+    getMethodDetails(methodId:string):Promise<IMethodDetails> {
         return this._cacheService.getForKeyWithLoadingFunction("method:"+methodId, () => {
             return this.getExecutionStatistics().then(executionStatistics => {
                 for (const classStatistic of executionStatistics.classStatistics) {
@@ -92,7 +104,7 @@ export class StatisticsGenerator {
                             classStatistics: classStatistic,
                             testContext: testContext,
                             suiteContext: suiteContext,
-                            hasDetails: methodContext.errorContext || methodContext.customContextJson
+                            hasDetails: (methodContext.errorContext != null && methodContext.customContextJson != null)
                         }
                     }
                 }

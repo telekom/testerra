@@ -28,6 +28,8 @@ import MethodType = data.MethodType;
 import IMethodContext = data.IMethodContext;
 import IClassContext = data.IClassContext;
 import IErrorContext = data.IErrorContext;
+import IExecutionContext = data.IExecutionContext;
+import StackTraceCause = data.StackTraceCause;
 
 class Statistics {
     private _statusConverter: StatusConverter
@@ -101,7 +103,7 @@ export class ExecutionStatistics extends Statistics {
     /**
      * @todo This might be an orphaned feature which can be removed completely
      */
-    private _exitPointStatistics:ExitPointStatistics[] = [];
+    //private _exitPointStatistics:ExitPointStatistics[] = [];
 
     setExecutionAggregate(executionAggregate: ExecutionAggregate) {
         this._executionAggregate = executionAggregate;
@@ -117,7 +119,7 @@ export class ExecutionStatistics extends Statistics {
     }
 
     private _addUniqueFailureAspect(errorContext:IErrorContext, methodContext:IMethodContext) {
-        let failureAspectStatistics = new FailureAspectStatistics().setErrorContext(errorContext);
+        let failureAspectStatistics = new FailureAspectStatistics().setErrorContext(errorContext, this._executionAggregate.executionContext);
 
         const foundFailureAspectStatistics = this._failureAspectStatistics.find(existingFailureAspectStatistics => {
             return existingFailureAspectStatistics.name == failureAspectStatistics.name;
@@ -177,10 +179,10 @@ export class ExecutionStatistics extends Statistics {
     get classStatistics() {
         return this._classStatistics;
     }
-
-    get exitPointStatistics() {
-        return this._exitPointStatistics;
-    }
+    //
+    // get exitPointStatistics() {
+    //     return this._exitPointStatistics;
+    // }
 
     get failureAspectStatistics() {
         return this._failureAspectStatistics;
@@ -237,12 +239,15 @@ export class FailureAspectStatistics extends Statistics {
         super();
     }
 
-    setErrorContext(errorContext:IErrorContext) {
-        const namespace = this.statusConverter.separateNamespace(errorContext.cause.className);
-        this._name = (
-            errorContext.description
-            || namespace.class + (errorContext.cause?.message ? ": " + errorContext.cause?.message.trim() : "")
-        );
+    setErrorContext(errorContext:IErrorContext, executionContext:IExecutionContext) {
+        if (errorContext.description) {
+            this._name = errorContext.description;
+        } else {
+            const cause = executionContext.causes[errorContext.causeId];
+            const namespace = this.statusConverter.separateNamespace(cause.className);
+            this._name = namespace.class + (cause.message ? ": " + cause.message.trim() : "");
+        }
+
         return this;
     }
 
@@ -267,33 +272,33 @@ export class FailureAspectStatistics extends Statistics {
         return this._methodContexts;
     }
 }
-
-export class ExitPointStatistics extends Statistics {
-    private _methodContext:IMethodContext;
-    private _fingerprint:string;
-
-    constructor() {
-        super();
-    }
-
-    addMethodContext(methodContext:IMethodContext) {
-        if (!this._methodContext) {
-            this._methodContext = methodContext;
-            this._fingerprint = (
-                methodContext.errorContext?.scriptSource?.lines.map(line => line.line).join("\n")
-                || methodContext.errorContext.cause.stackTraceElements.join("\n")
-                || "undefined"
-            );
-        }
-        this.addResultStatus(methodContext.contextValues.resultStatus);
-        return this;
-    }
-
-    get methodContext() {
-        return this._methodContext;
-    }
-
-    get fingerprint() {
-        return this._fingerprint;
-    }
-}
+//
+// export class ExitPointStatistics extends Statistics {
+//     private _methodContext:IMethodContext;
+//     private _fingerprint:string;
+//
+//     constructor() {
+//         super();
+//     }
+//
+//     addMethodContext(methodContext:IMethodContext) {
+//         if (!this._methodContext) {
+//             this._methodContext = methodContext;
+//             this._fingerprint = (
+//                 methodContext.errorContext?.scriptSource?.lines.map(line => line.line).join("\n")
+//                 || methodContext.errorContext.cause.stackTraceElements.join("\n")
+//                 || "undefined"
+//             );
+//         }
+//         this.addResultStatus(methodContext.contextValues.resultStatus);
+//         return this;
+//     }
+//
+//     get methodContext() {
+//         return this._methodContext;
+//     }
+//
+//     get fingerprint() {
+//         return this._fingerprint;
+//     }
+// }

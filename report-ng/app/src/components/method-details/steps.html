@@ -4,7 +4,7 @@
     <mdc-layout-grid class="pt0">
         <mdc-layout-grid-inner>
             <mdc-layout-grid-cell span="3">
-                <mdc-list-group repeat.for="testStep of _methodContext.testSteps">
+                <mdc-list-group repeat.for="testStep of _methodDetails.methodContext.testSteps">
                     <let step-index.bind="$index+1"></let>
                     <h3>${stepIndex} ${testStep.name}</h3>
                     <mdc-list two-line single-selection>
@@ -25,7 +25,7 @@
 <!--                >-->
 <!--                    <mdc-icon mdc-text-field-icon leading>search</mdc-icon>-->
 <!--                </mdc-text-field>-->
-                <div repeat.for="testStep of _methodContext.testSteps">
+                <div repeat.for="testStep of _methodDetails.methodContext.testSteps">
                     <let step-index.bind="$index+1"></let>
                     <div repeat.for="testStepAction of testStep.testStepActions">
                         <a name="${stepIndex}.${$index+1}" visible.delegate="_stepVisibility($event)" become-visible></a>
@@ -36,7 +36,8 @@
                             <mdc-expandable repeat.for="errorContext of testStepAction.optionalAssertions"
                                             class="card-expandable"
                             >
-                                <div slot="caption"><class-name class="secondary" mdc-body2 namespace.bind="errorContext.cause.className">:</class-name><span mdc-body1 if.bind="errorContext.cause.message">${errorContext.cause.message}</span></div>
+                                <let cause.bind="_getCause(errorContext)"></let>
+                                <div slot="caption" mdc-body2><class-name namespace.bind="cause.className"><span if.bind="cause.message">: ${cause.message}</span></class-name></div>
                                 <div class="code-view m0">
                                 <pre class="m0"
                                      repeat.for="line of errorContext.scriptSource.lines"
@@ -52,7 +53,7 @@
                                 <pre class="m0"
                                      repeat.for="logMessage of testStepAction.logMessages"
                                      class.bind="(logMessage.type==1?'error':(logMessage.type==2?'warn':''))"
-                                >${logMessage|logMessageFormat}</pre>
+                                >${logMessage.timestamp|dateFormat:"HH:mm:ss.SSS"} [${logMessage.type|logLevel}] ${logMessage.message}</pre>
                             </div>
                         </mdc-card>
                         <mdc-card class="mt1" if.bind="_screenshots.length>0">

@@ -19,6 +19,8 @@ private static final long serialVersionUID = 0L;
     type_ = 0;
     loggerName_ = "";
     message_ = "";
+    threadName_ = "";
+    causeId_ = "";
   }
 
   @java.lang.Override
@@ -75,16 +77,15 @@ private static final long serialVersionUID = 0L;
             break;
           }
           case 42: {
-            eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder subBuilder = null;
-            if (cause_ != null) {
-              subBuilder = cause_.toBuilder();
-            }
-            cause_ = input.readMessage(eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(cause_);
-              cause_ = subBuilder.buildPartial();
-            }
+            java.lang.String s = input.readStringRequireUtf8();
 
+            threadName_ = s;
+            break;
+          }
+          case 50: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            causeId_ = s;
             break;
           }
           default: {
@@ -220,27 +221,76 @@ private static final long serialVersionUID = 0L;
     return timestamp_;
   }
 
-  public static final int CAUSE_FIELD_NUMBER = 5;
-  private eu.tsystems.mms.tic.testframework.report.model.StackTraceCause cause_;
+  public static final int THREAD_NAME_FIELD_NUMBER = 5;
+  private volatile java.lang.Object threadName_;
   /**
-   * <code>.data.StackTraceCause cause = 5;</code>
-   * @return Whether the cause field is set.
+   * <code>string thread_name = 5;</code>
+   * @return The threadName.
    */
-  public boolean hasCause() {
-    return cause_ != null;
+  public java.lang.String getThreadName() {
+    java.lang.Object ref = threadName_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      threadName_ = s;
+      return s;
+    }
   }
   /**
-   * <code>.data.StackTraceCause cause = 5;</code>
-   * @return The cause.
+   * <code>string thread_name = 5;</code>
+   * @return The bytes for threadName.
    */
-  public eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getCause() {
-    return cause_ == null ? eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.getDefaultInstance() : cause_;
+  public com.google.protobuf.ByteString
+      getThreadNameBytes() {
+    java.lang.Object ref = threadName_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      threadName_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int CAUSE_ID_FIELD_NUMBER = 6;
+  private volatile java.lang.Object causeId_;
+  /**
+   * <code>string cause_id = 6;</code>
+   * @return The causeId.
+   */
+  public java.lang.String getCauseId() {
+    java.lang.Object ref = causeId_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      causeId_ = s;
+      return s;
+    }
   }
   /**
-   * <code>.data.StackTraceCause cause = 5;</code>
+   * <code>string cause_id = 6;</code>
+   * @return The bytes for causeId.
    */
-  public eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder getCauseOrBuilder() {
-    return getCause();
+  public com.google.protobuf.ByteString
+      getCauseIdBytes() {
+    java.lang.Object ref = causeId_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      causeId_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
   }
 
   private byte memoizedIsInitialized = -1;
@@ -269,8 +319,11 @@ private static final long serialVersionUID = 0L;
     if (timestamp_ != 0L) {
       output.writeInt64(4, timestamp_);
     }
-    if (cause_ != null) {
-      output.writeMessage(5, getCause());
+    if (!getThreadNameBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 5, threadName_);
+    }
+    if (!getCauseIdBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 6, causeId_);
     }
     unknownFields.writeTo(output);
   }
@@ -295,9 +348,11 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeInt64Size(4, timestamp_);
     }
-    if (cause_ != null) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(5, getCause());
+    if (!getThreadNameBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, threadName_);
+    }
+    if (!getCauseIdBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, causeId_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -321,11 +376,10 @@ private static final long serialVersionUID = 0L;
         .equals(other.getMessage())) return false;
     if (getTimestamp()
         != other.getTimestamp()) return false;
-    if (hasCause() != other.hasCause()) return false;
-    if (hasCause()) {
-      if (!getCause()
-          .equals(other.getCause())) return false;
-    }
+    if (!getThreadName()
+        .equals(other.getThreadName())) return false;
+    if (!getCauseId()
+        .equals(other.getCauseId())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -346,10 +400,10 @@ private static final long serialVersionUID = 0L;
     hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
         getTimestamp());
-    if (hasCause()) {
-      hash = (37 * hash) + CAUSE_FIELD_NUMBER;
-      hash = (53 * hash) + getCause().hashCode();
-    }
+    hash = (37 * hash) + THREAD_NAME_FIELD_NUMBER;
+    hash = (53 * hash) + getThreadName().hashCode();
+    hash = (37 * hash) + CAUSE_ID_FIELD_NUMBER;
+    hash = (53 * hash) + getCauseId().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -491,12 +545,10 @@ private static final long serialVersionUID = 0L;
 
       timestamp_ = 0L;
 
-      if (causeBuilder_ == null) {
-        cause_ = null;
-      } else {
-        cause_ = null;
-        causeBuilder_ = null;
-      }
+      threadName_ = "";
+
+      causeId_ = "";
+
       return this;
     }
 
@@ -527,11 +579,8 @@ private static final long serialVersionUID = 0L;
       result.loggerName_ = loggerName_;
       result.message_ = message_;
       result.timestamp_ = timestamp_;
-      if (causeBuilder_ == null) {
-        result.cause_ = cause_;
-      } else {
-        result.cause_ = causeBuilder_.build();
-      }
+      result.threadName_ = threadName_;
+      result.causeId_ = causeId_;
       onBuilt();
       return result;
     }
@@ -594,8 +643,13 @@ private static final long serialVersionUID = 0L;
       if (other.getTimestamp() != 0L) {
         setTimestamp(other.getTimestamp());
       }
-      if (other.hasCause()) {
-        mergeCause(other.getCause());
+      if (!other.getThreadName().isEmpty()) {
+        threadName_ = other.threadName_;
+        onChanged();
+      }
+      if (!other.getCauseId().isEmpty()) {
+        causeId_ = other.causeId_;
+        onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -860,123 +914,156 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private eu.tsystems.mms.tic.testframework.report.model.StackTraceCause cause_;
-    private com.google.protobuf.SingleFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.StackTraceCause, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder, eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder> causeBuilder_;
+    private java.lang.Object threadName_ = "";
     /**
-     * <code>.data.StackTraceCause cause = 5;</code>
-     * @return Whether the cause field is set.
+     * <code>string thread_name = 5;</code>
+     * @return The threadName.
      */
-    public boolean hasCause() {
-      return causeBuilder_ != null || cause_ != null;
-    }
-    /**
-     * <code>.data.StackTraceCause cause = 5;</code>
-     * @return The cause.
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getCause() {
-      if (causeBuilder_ == null) {
-        return cause_ == null ? eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.getDefaultInstance() : cause_;
+    public java.lang.String getThreadName() {
+      java.lang.Object ref = threadName_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        threadName_ = s;
+        return s;
       } else {
-        return causeBuilder_.getMessage();
+        return (java.lang.String) ref;
       }
     }
     /**
-     * <code>.data.StackTraceCause cause = 5;</code>
+     * <code>string thread_name = 5;</code>
+     * @return The bytes for threadName.
      */
-    public Builder setCause(eu.tsystems.mms.tic.testframework.report.model.StackTraceCause value) {
-      if (causeBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        cause_ = value;
-        onChanged();
+    public com.google.protobuf.ByteString
+        getThreadNameBytes() {
+      java.lang.Object ref = threadName_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        threadName_ = b;
+        return b;
       } else {
-        causeBuilder_.setMessage(value);
+        return (com.google.protobuf.ByteString) ref;
       }
-
-      return this;
     }
     /**
-     * <code>.data.StackTraceCause cause = 5;</code>
+     * <code>string thread_name = 5;</code>
+     * @param value The threadName to set.
+     * @return This builder for chaining.
      */
-    public Builder setCause(
-        eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder builderForValue) {
-      if (causeBuilder_ == null) {
-        cause_ = builderForValue.build();
-        onChanged();
-      } else {
-        causeBuilder_.setMessage(builderForValue.build());
-      }
-
-      return this;
-    }
-    /**
-     * <code>.data.StackTraceCause cause = 5;</code>
-     */
-    public Builder mergeCause(eu.tsystems.mms.tic.testframework.report.model.StackTraceCause value) {
-      if (causeBuilder_ == null) {
-        if (cause_ != null) {
-          cause_ =
-            eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.newBuilder(cause_).mergeFrom(value).buildPartial();
-        } else {
-          cause_ = value;
-        }
-        onChanged();
-      } else {
-        causeBuilder_.mergeFrom(value);
-      }
-
-      return this;
-    }
-    /**
-     * <code>.data.StackTraceCause cause = 5;</code>
-     */
-    public Builder clearCause() {
-      if (causeBuilder_ == null) {
-        cause_ = null;
-        onChanged();
-      } else {
-        cause_ = null;
-        causeBuilder_ = null;
-      }
-
-      return this;
-    }
-    /**
-     * <code>.data.StackTraceCause cause = 5;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder getCauseBuilder() {
-      
+    public Builder setThreadName(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      threadName_ = value;
       onChanged();
-      return getCauseFieldBuilder().getBuilder();
+      return this;
     }
     /**
-     * <code>.data.StackTraceCause cause = 5;</code>
+     * <code>string thread_name = 5;</code>
+     * @return This builder for chaining.
      */
-    public eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder getCauseOrBuilder() {
-      if (causeBuilder_ != null) {
-        return causeBuilder_.getMessageOrBuilder();
+    public Builder clearThreadName() {
+      
+      threadName_ = getDefaultInstance().getThreadName();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string thread_name = 5;</code>
+     * @param value The bytes for threadName to set.
+     * @return This builder for chaining.
+     */
+    public Builder setThreadNameBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      threadName_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object causeId_ = "";
+    /**
+     * <code>string cause_id = 6;</code>
+     * @return The causeId.
+     */
+    public java.lang.String getCauseId() {
+      java.lang.Object ref = causeId_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        causeId_ = s;
+        return s;
       } else {
-        return cause_ == null ?
-            eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.getDefaultInstance() : cause_;
+        return (java.lang.String) ref;
       }
     }
     /**
-     * <code>.data.StackTraceCause cause = 5;</code>
+     * <code>string cause_id = 6;</code>
+     * @return The bytes for causeId.
      */
-    private com.google.protobuf.SingleFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.StackTraceCause, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder, eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder> 
-        getCauseFieldBuilder() {
-      if (causeBuilder_ == null) {
-        causeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            eu.tsystems.mms.tic.testframework.report.model.StackTraceCause, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder, eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder>(
-                getCause(),
-                getParentForChildren(),
-                isClean());
-        cause_ = null;
+    public com.google.protobuf.ByteString
+        getCauseIdBytes() {
+      java.lang.Object ref = causeId_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        causeId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
       }
-      return causeBuilder_;
+    }
+    /**
+     * <code>string cause_id = 6;</code>
+     * @param value The causeId to set.
+     * @return This builder for chaining.
+     */
+    public Builder setCauseId(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      causeId_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string cause_id = 6;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearCauseId() {
+      
+      causeId_ = getDefaultInstance().getCauseId();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string cause_id = 6;</code>
+     * @param value The bytes for causeId to set.
+     * @return This builder for chaining.
+     */
+    public Builder setCauseIdBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      causeId_ = value;
+      onChanged();
+      return this;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

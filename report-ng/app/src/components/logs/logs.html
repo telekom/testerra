@@ -31,7 +31,7 @@
                         <pre class="m0"
                              repeat.for="logMessage of _logMessages"
                              class.bind="(logMessage.type==1?'error':(logMessage.type==2?'warn':''))"
-                        >${logMessage.timestamp|dateFormat:"HH:mm:ss.SSS"} [${logMessage.type|logLevel}] <span innerhtml.bind="logMessage.message|highlightText:_searchRegexp"></span></pre>
+                        >${logMessage.timestamp|dateFormat:"HH:mm:ss.SSS"} [${logMessage.threadName}] [${logMessage.type|logLevel}] <span innerhtml.bind="logMessage.message|highlightText:_searchRegexp"></span></pre>
                 </div>
                 <div if.bind="!_loading && !_logMessages.length"
                      mdc-ripple

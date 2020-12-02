@@ -51,6 +51,7 @@ message ExecutionContext {
 
     repeated PLogMessage log_messages = 14;
     int32 estimated_tests_count = 15;
+    map<string, StackTraceCause> causes = 16;
 }
 
 //message ContextClip {
@@ -148,6 +149,8 @@ message PLogMessage {
     string logger_name = 2;
     string message = 3;
     int64 timestamp = 4;
+    string thread_name = 5;
+    string cause_id = 6;
 }
 
 message ErrorContext {
@@ -159,7 +162,7 @@ message ErrorContext {
     ScriptSource execution_object_source = 8;
     string ticketId = 9;
     string description = 10;
-    StackTraceCause cause = 11;
+    string cause_id = 11;
 }
 
 message SessionContext {
@@ -207,7 +210,9 @@ message StackTraceCause {
     string class_name = 1;
     string message = 2;
     repeated string stack_trace_elements = 3;
-    StackTraceCause cause = 4;
+//    StackTraceCause cause = 4;
+    string id = 5;
+    string cause_id = 6;
 }
 
 message ScriptSource {

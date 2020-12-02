@@ -34,7 +34,7 @@ export class TestResultsCard {
 
     executionStatisticsChanged() {
         this._preparePieChart(this.executionStatistics);
-        this._overallExitPoints = this.executionStatistics.exitPointStatistics.length;
+        //this._overallExitPoints = this.executionStatistics.exitPointStatistics.length;
         this._overallFailureAspects = this.executionStatistics.failureAspectStatistics.length;
     }
 

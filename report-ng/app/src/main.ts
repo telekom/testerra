@@ -40,7 +40,6 @@ export function configure(aurelia: Aurelia) {
             PLATFORM.moduleName('value-converters/status-name-value-converter'),
             PLATFORM.moduleName('value-converters/status-class-value-converter'),
             PLATFORM.moduleName('value-converters/html-value-converter'),
-            PLATFORM.moduleName('value-converters/log-message-format-value-converter'),
             PLATFORM.moduleName('value-converters/log-level-value-converter'),
         ]);
 

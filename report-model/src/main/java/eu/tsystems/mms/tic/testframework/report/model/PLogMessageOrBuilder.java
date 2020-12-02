@@ -49,17 +49,26 @@ public interface PLogMessageOrBuilder extends
   long getTimestamp();
 
   /**
-   * <code>.data.StackTraceCause cause = 5;</code>
-   * @return Whether the cause field is set.
+   * <code>string thread_name = 5;</code>
+   * @return The threadName.
    */
-  boolean hasCause();
+  java.lang.String getThreadName();
   /**
-   * <code>.data.StackTraceCause cause = 5;</code>
-   * @return The cause.
+   * <code>string thread_name = 5;</code>
+   * @return The bytes for threadName.
    */
-  eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getCause();
+  com.google.protobuf.ByteString
+      getThreadNameBytes();
+
   /**
-   * <code>.data.StackTraceCause cause = 5;</code>
+   * <code>string cause_id = 6;</code>
+   * @return The causeId.
    */
-  eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder getCauseOrBuilder();
+  java.lang.String getCauseId();
+  /**
+   * <code>string cause_id = 6;</code>
+   * @return The bytes for causeId.
+   */
+  com.google.protobuf.ByteString
+      getCauseIdBytes();
 }

@@ -1,17 +1,17 @@
 import {autoinject} from 'aurelia-framework';
-import {StatisticsGenerator} from "../../services/statistics-generator";
+import {IMethodDetails, StatisticsGenerator} from "../../services/statistics-generator";
 import {data} from "../../services/report-model";
 import {DataLoader} from "../../services/data-loader";
 import {Config} from "../../services/config";
 import {MdcDialogService} from '@aurelia-mdc-web/dialog';
 import {ScreenshotsDialog} from "../screenshots-dialog/screenshots-dialog";
 import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
-import IMethodContext = data.IMethodContext;
 import IFile = data.IFile;
+import IErrorContext = data.IErrorContext;
 
 @autoinject()
 export class Steps {
-    private _methodContext:IMethodContext;
+    private _methodDetails:IMethodDetails;
     private _screenshots:IFile[] = [];
     private _router:Router;
 
@@ -31,8 +31,8 @@ export class Steps {
     ) {
         this._router = navInstruction.router;
         this._statistics.getMethodDetails(params.id).then(methodDetails => {
-            this._methodContext = methodDetails.methodContext;
-            this._statistics.getScreenshotsFromMethodContext(this._methodContext).then(screenshots => {
+            this._methodDetails = methodDetails;
+            this._statistics.getScreenshotsFromMethodContext(methodDetails.methodContext).then(screenshots => {
                 screenshots.forEach(screenshot => {
                     this._screenshots.push(screenshot);
                 })
@@ -66,6 +66,10 @@ export class Steps {
         const anchor = $event.target as HTMLAnchorElement;
         const parts = anchor.getAttribute("name").split(".");
         console.log("enable", parts);
+    }
 
+    private _getCause(errorContext:IErrorContext) {
+        console.log(this._methodDetails.executionStatistics.executionAggregate.executionContext.causes[errorContext.causeId]);
+        return this._methodDetails.executionStatistics.executionAggregate.executionContext.causes[errorContext.causeId];
     }
 }

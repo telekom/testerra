@@ -22,10 +22,13 @@
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
+import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
+import eu.tsystems.mms.tic.testframework.utils.SourceUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import java.util.Optional;
 
 public class ErrorContext {
     @Deprecated
@@ -39,9 +42,10 @@ public class ErrorContext {
     @Deprecated
     private String errorFingerprint;
 
-    private ScriptSource scriptSource;
-    private ScriptSource executionObjectSource;
+    private Optional<ScriptSource> scriptSource;
+    private Optional<ScriptSource> executionObjectSource;
     private Object ticketId;
+
     public ErrorContext() {
 
     }
@@ -50,22 +54,24 @@ public class ErrorContext {
         this.setThrowable(null, throwable);
     }
 
-    public ScriptSource getScriptSource() {
-        return scriptSource;
+    /**
+     * The script source is the test script source
+     */
+    public Optional<ScriptSource> getScriptSource() {
+        if (this.scriptSource == null) {
+            this.scriptSource = Optional.ofNullable(SourceUtils.findScriptSourceForThrowable(this.throwable));
+        }
+        return this.scriptSource;
     }
 
-    public ErrorContext setScriptSource(ScriptSource scriptSource) {
-        this.scriptSource = scriptSource;
-        return this;
-    }
-
-    public ScriptSource getExecutionObjectSource() {
-        return executionObjectSource;
-    }
-
-    public ErrorContext setExecutionObjectSource(ScriptSource executionObjectSource) {
-        this.executionObjectSource = executionObjectSource;
-        return this;
+    /**
+     * The execution object source is the trigger of the assertion
+     */
+    public Optional<ScriptSource> getExecutionObjectSource() {
+        if (this.executionObjectSource == null) {
+            this.executionObjectSource = Optional.ofNullable(TestEvidenceCollector.getSourceFor(throwable));
+        }
+        return this.executionObjectSource;
     }
 
     public Object getTicketId() {
@@ -96,9 +102,19 @@ public class ErrorContext {
      * Gets the stack trace.
      *
      * @return the stacktrace of the method. Can be null, if method has no stacktrace.
+     * @deprecated Use {@link #getCause()} instead
      */
     public StackTrace getStackTrace() {
         return stackTrace;
+    }
+
+    /**
+     * Gets the stack trace.
+     *
+     * @return the stacktrace of the method. Can be null, if method has no stacktrace.
+     */
+    public Optional<Cause> getCause() {
+        return Optional.ofNullable(stackTrace.getCause());
     }
 
     @Deprecated
@@ -231,8 +247,8 @@ public class ErrorContext {
         }
 
         // use first cause in strackTrace as additionalErrorMessage for report
-        if(stacktrace.stackTrace.cause != null) {
-            this.additionalErrorMessage = "caused by: " + stacktrace.stackTrace.cause.className + " " + stacktrace.stackTrace.cause.message;
+        if(stacktrace.stackTrace.getCause() != null) {
+            this.additionalErrorMessage = "caused by: " + stacktrace.stackTrace.getCause().getClassName() + " " + stacktrace.stackTrace.getCause().getMessage();
         }
 
         this.readableErrorMessage = readableErrorMessage;

@@ -21,13 +21,13 @@
  */
  package eu.tsystems.mms.tic.testframework.report.model.steps;
 
-import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.Serial;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+import org.apache.logging.log4j.core.LogEvent;
 
 public class TestStepController implements Serializable {
 
@@ -57,11 +57,11 @@ public class TestStepController implements Serializable {
         return testStep;
     }
 
-    public TestStepAction addLogMessage(LogMessage logMessage) {
+    public TestStepAction addLogEvent(LogEvent logEvent) {
         String actionContext = null;
 
         for (TestStepHandler listener : handlers) {
-            String context = listener.getTestStepActionContext(logMessage);
+            String context = listener.getTestStepActionContext(logEvent);
             if (context != null) {
                 actionContext = context;
                 break;
@@ -75,7 +75,7 @@ public class TestStepController implements Serializable {
         } else {
             testStepAction = currentTestStep.getTestStepAction(actionContext);
         }
-        testStepAction.addLogMessage(logMessage);
+        testStepAction.addLogEvent(logEvent);
         return testStepAction;
     }
 

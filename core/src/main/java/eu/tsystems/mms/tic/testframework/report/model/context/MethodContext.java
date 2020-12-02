@@ -27,7 +27,6 @@ import eu.tsystems.mms.tic.testframework.internal.Counters;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
-import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepController;
@@ -39,6 +38,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.apache.logging.log4j.core.LogEvent;
 import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
@@ -237,8 +237,8 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return readScreenshots().collect(Collectors.toList());
     }
 
-    public TestStepAction addLogMessage(LogMessage logMessage) {
-        return testStepController.addLogMessage(logMessage);
+    public TestStepAction addLogEvent(LogEvent logEvent) {
+        return testStepController.addLogEvent(logEvent);
     }
 
     /**

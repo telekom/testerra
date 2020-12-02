@@ -54,7 +54,7 @@ export class Method {
             },
             {
                 route: 'videos',
-                moduleId: PLATFORM.moduleName('./details'),
+                moduleId: PLATFORM.moduleName('./videos'),
                 nav: true,
                 name: "videos",
                 title: 'Videos',
@@ -64,7 +64,7 @@ export class Method {
             },
             {
                 route: 'dependencies',
-                moduleId: PLATFORM.moduleName('./details'),
+                moduleId: PLATFORM.moduleName('./dependencies'),
                 nav: true,
                 name: "dependencies",
                 title: 'Dependencies',

@@ -37,7 +37,7 @@ public class ExecutionContextExporter extends AbstractContextExporter {
         map(executionContext.runConfig, this::prepareRunConfig, builder::setRunConfig);
         executionContext.readExclusiveSessionContexts().forEach(sessionContext -> builder.addExclusiveSessionContextIds(sessionContext.getId()));
         apply(executionContext.estimatedTestMethodCount, builder::setEstimatedTestsCount);
-        executionContext.readMethodContextLessLogs().forEach(logMessage -> builder.addLogMessages(prepareLogMessage(logMessage)));
+        executionContext.readMethodContextLessLogs().forEach(logEvent -> builder.addLogMessages(prepareLogEvent(logEvent)));
 
         return builder;
     }

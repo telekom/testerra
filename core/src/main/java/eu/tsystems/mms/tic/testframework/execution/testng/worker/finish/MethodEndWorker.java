@@ -97,21 +97,6 @@ public class MethodEndWorker implements MethodEndEvent.Listener, Loggable {
                     methodContext.infos.add(key + " = " + infos.get(key));
                 }
             }
-
-            // calculate fingerprint
-            if (event.isFailed()) {
-                Throwable throwable = methodContext.getErrorContext().getThrowable();
-                if (throwable != null) {
-                    // look for script source
-                    ScriptSource scriptSourceForThrowable = SourceUtils.findScriptSourceForThrowable(throwable);
-                    if (scriptSourceForThrowable != null) {
-                        methodContext.getErrorContext().setScriptSource(scriptSourceForThrowable);
-                    }
-                    methodContext.getErrorContext().setExecutionObjectSource(TestEvidenceCollector.getSourceFor(throwable));
-                }
-            }
-
-
         } finally {
             TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(event.getMethodContext()));
 

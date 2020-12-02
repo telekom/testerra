@@ -34,6 +34,7 @@ import eu.tsystems.mms.tic.testframework.report.model.PTestStepAction;
 import eu.tsystems.mms.tic.testframework.report.model.ScriptSource;
 import eu.tsystems.mms.tic.testframework.report.model.ScriptSourceLine;
 import eu.tsystems.mms.tic.testframework.report.model.StackTraceCause;
+import eu.tsystems.mms.tic.testframework.report.model.context.Cause;
 import eu.tsystems.mms.tic.testframework.report.model.context.CustomContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
@@ -167,13 +168,13 @@ public class MethodContextExporter extends AbstractContextExporter {
 //        return builder;
 //    }
 
-    public StackTraceCause.Builder prepareStackTraceCause(eu.tsystems.mms.tic.testframework.report.model.context.StackTrace.Cause cause) {
+    public StackTraceCause.Builder prepareStackTraceCause(Cause cause) {
         StackTraceCause.Builder builder = StackTraceCause.newBuilder();
 
-        apply(cause.className, builder::setClassName);
-        apply(cause.message, builder::setMessage);
-        apply(cause.stackTraceElements, builder::addAllStackTraceElements);
-        map(cause.cause, this::prepareStackTraceCause, builder::setCause);
+        apply(cause.getClassName(), builder::setClassName);
+        apply(cause.getMessage(), builder::setMessage);
+        apply(cause.getStackTraceElements(), builder::addAllStackTraceElements);
+        map(cause.getCause(), this::prepareStackTraceCause, builder::setCause);
 
         return builder;
     }
@@ -203,12 +204,10 @@ public class MethodContextExporter extends AbstractContextExporter {
 
 //        apply(errorContext.getReadableErrorMessage(), builder::setReadableErrorMessage);
 //        apply(errorContext.getAdditionalErrorMessage(), builder::setAdditionalErrorMessage);
-        if (errorContext.getStackTrace() != null) {
-            map(errorContext.getStackTrace().getCause(), this::prepareStackTraceCause, builder::setCause);
-        }
+        errorContext.getCause().ifPresent(cause -> builder.setCause(prepareStackTraceCause(cause)));
 //        apply(errorContext.errorFingerprint, builder::setErrorFingerprint);
-        map(errorContext.getScriptSource(), this::prepareScriptSource, builder::setScriptSource);
-        map(errorContext.getExecutionObjectSource(), this::prepareScriptSource, builder::setExecutionObjectSource);
+        errorContext.getScriptSource().ifPresent(scriptSource -> builder.setScriptSource(this.prepareScriptSource(scriptSource)));
+        errorContext.getExecutionObjectSource().ifPresent(scriptSource -> builder.setExecutionObjectSource(this.prepareScriptSource(scriptSource)));
         if (errorContext.getTicketId() != null) builder.setTicketId(errorContext.getTicketId().toString());
         apply(errorContext.getDescription(), builder::setDescription);
 
@@ -293,8 +292,8 @@ public class MethodContextExporter extends AbstractContextExporter {
             testStepBuilder.addScreenshotIds(screenshotId);
         });
 
-        testStepAction.readLogMessages().forEach(logMessage -> {
-            testStepBuilder.addLogMessages(prepareLogMessage(logMessage));
+        testStepAction.readLogEvents().forEach(logEvent -> {
+            testStepBuilder.addLogMessages(prepareLogEvent(logEvent));
         });
 
         testStepAction.readOptionalAssertions().forEach(assertionInfo -> {

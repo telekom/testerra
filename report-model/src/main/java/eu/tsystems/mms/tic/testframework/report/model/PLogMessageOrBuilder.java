@@ -47,4 +47,19 @@ public interface PLogMessageOrBuilder extends
    * @return The timestamp.
    */
   long getTimestamp();
+
+  /**
+   * <code>.data.StackTraceCause cause = 5;</code>
+   * @return Whether the cause field is set.
+   */
+  boolean hasCause();
+  /**
+   * <code>.data.StackTraceCause cause = 5;</code>
+   * @return The cause.
+   */
+  eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getCause();
+  /**
+   * <code>.data.StackTraceCause cause = 5;</code>
+   */
+  eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder getCauseOrBuilder();
 }

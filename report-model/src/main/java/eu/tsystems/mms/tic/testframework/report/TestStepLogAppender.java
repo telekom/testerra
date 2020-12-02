@@ -21,7 +21,6 @@
 
 package eu.tsystems.mms.tic.testframework.report;
 
-import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -42,12 +41,11 @@ public class TestStepLogAppender extends AbstractAppender {
          * which may result in a callstack loop.
          */
         //if (!event.getLoggerName().startsWith(TestStep.class.getPackage().getName())) {
-            LogMessage logMessage = new LogMessage(event);
             MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
             if (currentMethodContext != null) {
-                currentMethodContext.addLogMessage(logMessage);
+                currentMethodContext.addLogEvent(event);
             } else {
-                ExecutionContextController.getCurrentExecutionContext().addLogMessage(logMessage);
+                ExecutionContextController.getCurrentExecutionContext().addLogEvent(event);
             }
         //}
     }

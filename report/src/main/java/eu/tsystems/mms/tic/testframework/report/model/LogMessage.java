@@ -28,32 +28,28 @@ import org.apache.logging.log4j.core.LogEvent;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * Wrapper for {@link LogEvent}
+ * @deprecated Only required for report
+ */
+@Deprecated
 public class LogMessage implements Serializable, Loggable {
-
-    private String threadName;
-    private String loggerName;
-    private String message;
-    private Level level;
-    private long timestamp;
-
-    public LogMessage(Level logLevel, long timestamp, String threadName, String loggerName, String message) {
-        this.level = logLevel;
-        this.timestamp = timestamp;
-        this.threadName = threadName;
-        this.loggerName = loggerName;
-        this.message = message;
-    }
+    private LogEvent logEvent;
+//
+//    public LogMessage(Level logLevel, long timestamp, String threadName, String loggerName, String message) {
+//        this.level = logLevel;
+//        this.timestamp = timestamp;
+//        this.threadName = threadName;
+//        this.loggerName = loggerName;
+//        this.message = message;
+//    }
 
     public LogMessage(LogEvent event) {
-        this.level = event.getLevel();
-        this.threadName = event.getThreadName();
-        this.timestamp = event.getTimeMillis();
-        this.loggerName = event.getLoggerName();
-        this.message = event.getMessage().getFormattedMessage();
+        this.logEvent = event;
     }
 
     public Level getLogLevel() {
-        return level;
+        return this.logEvent.getLevel();
     }
 
     /**
@@ -61,22 +57,22 @@ public class LogMessage implements Serializable, Loggable {
      */
     @Deprecated
     public Date getDate() {
-        return new Date(getTimestamp());
+        return new Date(logEvent.getTimeMillis());
     }
 
     public long getTimestamp() {
-        return this.timestamp;
+        return this.logEvent.getTimeMillis();
     }
 
     public String getThreadName() {
-        return threadName;
+        return this.logEvent.getThreadName();
     }
 
     public String getLoggerName() {
-        return loggerName;
+        return this.logEvent.getLoggerName();
     }
 
     public String getMessage() {
-        return message;
+        return this.logEvent.getMessage().getFormattedMessage();
     }
 }

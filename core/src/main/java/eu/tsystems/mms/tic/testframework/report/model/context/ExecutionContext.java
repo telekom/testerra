@@ -27,7 +27,6 @@ import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
-import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -40,6 +39,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.apache.logging.log4j.core.LogEvent;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 
@@ -62,7 +62,7 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
 
     public int estimatedTestMethodCount;
 
-    private final ConcurrentLinkedQueue<LogMessage> methodContextLessLogs = new ConcurrentLinkedQueue<>();
+    private final ConcurrentLinkedQueue<LogEvent> methodContextLessLogs = new ConcurrentLinkedQueue<>();
 
     public ExecutionContext() {
         name = runConfig.RUNCFG;
@@ -93,19 +93,12 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
         return this;
     }
 
-    public ExecutionContext addLogMessage(LogMessage logMessage) {
-        this.methodContextLessLogs.add(logMessage);
+    public ExecutionContext addLogEvent(LogEvent logEvent) {
+        this.methodContextLessLogs.add(logEvent);
         return this;
     }
 
-    /**
-     * @deprecated Use {@link #readMethodContextLessLogs()} instead
-     */
-    public ConcurrentLinkedQueue<LogMessage> getMethodContextLessLogs() {
-        return this.methodContextLessLogs;
-    }
-
-    public Stream<LogMessage> readMethodContextLessLogs() {
+    public Stream<LogEvent> readMethodContextLessLogs() {
         return this.methodContextLessLogs.stream();
     }
 

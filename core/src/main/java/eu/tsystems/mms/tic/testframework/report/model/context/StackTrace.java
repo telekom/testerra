@@ -19,33 +19,13 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.report.model.context;
-
-import java.util.List;
-import java.util.stream.Collectors;
+package eu.tsystems.mms.tic.testframework.report.model.context;
 
 /**
- * @todo Replace by {@link StackTrace.Cause}
+ * @todo Replace by {@link Cause}
  */
 @Deprecated
 public class StackTrace {
-
-    public static class Cause {
-
-        public String className;
-        public String message;
-        public List<String> stackTraceElements;
-        public Cause cause;
-
-        @Override
-        public String toString() {
-            String s = className + ": " + message + "\n" + stackTraceElements.stream().collect(Collectors.joining("\n"));
-            if (cause != null) {
-                s += "\ncaused by: " + cause;
-            }
-            return s;
-        }
-    }
 
     @Deprecated
     public Cause stackTrace;
@@ -53,6 +33,7 @@ public class StackTrace {
     @Deprecated
     public String additionalErrorMessage;
 
+    @Deprecated
     public Cause getCause() {
         return this.stackTrace;
     }
@@ -69,6 +50,6 @@ public class StackTrace {
 
     @Deprecated
     public String getFirstLine() {
-        return stackTrace.className + ": " + stackTrace.message;
+        return stackTrace.getClassName() + ": " + stackTrace.getMessage();
     }
 }

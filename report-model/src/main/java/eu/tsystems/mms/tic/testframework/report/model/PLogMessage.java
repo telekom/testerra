@@ -74,6 +74,19 @@ private static final long serialVersionUID = 0L;
             timestamp_ = input.readInt64();
             break;
           }
+          case 42: {
+            eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder subBuilder = null;
+            if (cause_ != null) {
+              subBuilder = cause_.toBuilder();
+            }
+            cause_ = input.readMessage(eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.parser(), extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(cause_);
+              cause_ = subBuilder.buildPartial();
+            }
+
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -207,6 +220,29 @@ private static final long serialVersionUID = 0L;
     return timestamp_;
   }
 
+  public static final int CAUSE_FIELD_NUMBER = 5;
+  private eu.tsystems.mms.tic.testframework.report.model.StackTraceCause cause_;
+  /**
+   * <code>.data.StackTraceCause cause = 5;</code>
+   * @return Whether the cause field is set.
+   */
+  public boolean hasCause() {
+    return cause_ != null;
+  }
+  /**
+   * <code>.data.StackTraceCause cause = 5;</code>
+   * @return The cause.
+   */
+  public eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getCause() {
+    return cause_ == null ? eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.getDefaultInstance() : cause_;
+  }
+  /**
+   * <code>.data.StackTraceCause cause = 5;</code>
+   */
+  public eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder getCauseOrBuilder() {
+    return getCause();
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -233,6 +269,9 @@ private static final long serialVersionUID = 0L;
     if (timestamp_ != 0L) {
       output.writeInt64(4, timestamp_);
     }
+    if (cause_ != null) {
+      output.writeMessage(5, getCause());
+    }
     unknownFields.writeTo(output);
   }
 
@@ -256,6 +295,10 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeInt64Size(4, timestamp_);
     }
+    if (cause_ != null) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(5, getCause());
+    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -278,6 +321,11 @@ private static final long serialVersionUID = 0L;
         .equals(other.getMessage())) return false;
     if (getTimestamp()
         != other.getTimestamp()) return false;
+    if (hasCause() != other.hasCause()) return false;
+    if (hasCause()) {
+      if (!getCause()
+          .equals(other.getCause())) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -298,6 +346,10 @@ private static final long serialVersionUID = 0L;
     hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
         getTimestamp());
+    if (hasCause()) {
+      hash = (37 * hash) + CAUSE_FIELD_NUMBER;
+      hash = (53 * hash) + getCause().hashCode();
+    }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -439,6 +491,12 @@ private static final long serialVersionUID = 0L;
 
       timestamp_ = 0L;
 
+      if (causeBuilder_ == null) {
+        cause_ = null;
+      } else {
+        cause_ = null;
+        causeBuilder_ = null;
+      }
       return this;
     }
 
@@ -469,6 +527,11 @@ private static final long serialVersionUID = 0L;
       result.loggerName_ = loggerName_;
       result.message_ = message_;
       result.timestamp_ = timestamp_;
+      if (causeBuilder_ == null) {
+        result.cause_ = cause_;
+      } else {
+        result.cause_ = causeBuilder_.build();
+      }
       onBuilt();
       return result;
     }
@@ -530,6 +593,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.getTimestamp() != 0L) {
         setTimestamp(other.getTimestamp());
+      }
+      if (other.hasCause()) {
+        mergeCause(other.getCause());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -792,6 +858,125 @@ private static final long serialVersionUID = 0L;
       timestamp_ = 0L;
       onChanged();
       return this;
+    }
+
+    private eu.tsystems.mms.tic.testframework.report.model.StackTraceCause cause_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        eu.tsystems.mms.tic.testframework.report.model.StackTraceCause, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder, eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder> causeBuilder_;
+    /**
+     * <code>.data.StackTraceCause cause = 5;</code>
+     * @return Whether the cause field is set.
+     */
+    public boolean hasCause() {
+      return causeBuilder_ != null || cause_ != null;
+    }
+    /**
+     * <code>.data.StackTraceCause cause = 5;</code>
+     * @return The cause.
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getCause() {
+      if (causeBuilder_ == null) {
+        return cause_ == null ? eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.getDefaultInstance() : cause_;
+      } else {
+        return causeBuilder_.getMessage();
+      }
+    }
+    /**
+     * <code>.data.StackTraceCause cause = 5;</code>
+     */
+    public Builder setCause(eu.tsystems.mms.tic.testframework.report.model.StackTraceCause value) {
+      if (causeBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        cause_ = value;
+        onChanged();
+      } else {
+        causeBuilder_.setMessage(value);
+      }
+
+      return this;
+    }
+    /**
+     * <code>.data.StackTraceCause cause = 5;</code>
+     */
+    public Builder setCause(
+        eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder builderForValue) {
+      if (causeBuilder_ == null) {
+        cause_ = builderForValue.build();
+        onChanged();
+      } else {
+        causeBuilder_.setMessage(builderForValue.build());
+      }
+
+      return this;
+    }
+    /**
+     * <code>.data.StackTraceCause cause = 5;</code>
+     */
+    public Builder mergeCause(eu.tsystems.mms.tic.testframework.report.model.StackTraceCause value) {
+      if (causeBuilder_ == null) {
+        if (cause_ != null) {
+          cause_ =
+            eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.newBuilder(cause_).mergeFrom(value).buildPartial();
+        } else {
+          cause_ = value;
+        }
+        onChanged();
+      } else {
+        causeBuilder_.mergeFrom(value);
+      }
+
+      return this;
+    }
+    /**
+     * <code>.data.StackTraceCause cause = 5;</code>
+     */
+    public Builder clearCause() {
+      if (causeBuilder_ == null) {
+        cause_ = null;
+        onChanged();
+      } else {
+        cause_ = null;
+        causeBuilder_ = null;
+      }
+
+      return this;
+    }
+    /**
+     * <code>.data.StackTraceCause cause = 5;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder getCauseBuilder() {
+      
+      onChanged();
+      return getCauseFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>.data.StackTraceCause cause = 5;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder getCauseOrBuilder() {
+      if (causeBuilder_ != null) {
+        return causeBuilder_.getMessageOrBuilder();
+      } else {
+        return cause_ == null ?
+            eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.getDefaultInstance() : cause_;
+      }
+    }
+    /**
+     * <code>.data.StackTraceCause cause = 5;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        eu.tsystems.mms.tic.testframework.report.model.StackTraceCause, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder, eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder> 
+        getCauseFieldBuilder() {
+      if (causeBuilder_ == null) {
+        causeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            eu.tsystems.mms.tic.testframework.report.model.StackTraceCause, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder, eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder>(
+                getCause(),
+                getParentForChildren(),
+                isClean());
+        cause_ = null;
+      }
+      return causeBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

@@ -366,8 +366,6 @@ public class RetryAnalyzer implements IRetryAnalyzer {
     }
 
     public static boolean hasMethodBeenRetried(MethodContext methodContext) {
-        //        return RETRIED_METHODS.stream().anyMatch(m -> m.swi.equals(methodContext.swi));
-
         return RETRIED_METHODS.stream().anyMatch(m -> {
 
             if (m.getName().equals(methodContext.getName())) {

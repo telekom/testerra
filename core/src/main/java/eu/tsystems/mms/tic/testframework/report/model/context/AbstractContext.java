@@ -40,11 +40,16 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
 public abstract class AbstractContext implements SynchronizableContext, Loggable {
+
     @Deprecated
     public String name;
     @Deprecated
     public final String id = IDUtils.getB64encXID();
     protected AbstractContext parentContext;
+
+    /**
+     * This is deprecated and will not be replaced!
+     */
     @Deprecated
     public String swi; // system-wide identifier
     private final Date startTime = new Date();
@@ -52,10 +57,6 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
 
     public AbstractContext getParentContext() {
         return this.parentContext;
-    }
-
-    public String getSwi() {
-        return this.swi;
     }
 
     public String getName() {
@@ -72,7 +73,6 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
 
     protected static void fillBasicContextValues(AbstractContext context, AbstractContext parentContext, String name) {
         context.name = name;
-        context.swi = parentContext.swi + "_" + name;
     }
 
     public String getId() {
@@ -82,9 +82,10 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
     /**
      * Gets an context for a specified name.
      * If it not exists, it will be created by a supplier, preconfigured, added to the given queue of contexts and supplied to a consumer
-     * @param contexts The queue to add the context when created
+     *
+     * @param contexts           The queue to add the context when created
      * @param newContextSupplier Supplier for the new context
-     * @param whenAddedToQueue Consumer when added to the queue
+     * @param whenAddedToQueue   Consumer when added to the queue
      * @return {@link AbstractContext} or NULL if the context doesn't exists or should not be created
      */
     protected <T extends AbstractContext> T getOrCreateContext(

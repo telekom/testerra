@@ -19,6 +19,7 @@
  * under the License.
  *
  */
+
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import com.google.common.eventbus.EventBus;
@@ -28,6 +29,7 @@ import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -42,6 +44,7 @@ import org.testng.ITestResult;
  * Representation of a TestNG {@link ITestContext}
  */
 public class TestContext extends AbstractContext implements SynchronizableContext {
+
     /**
      * @deprecated Use {@link #readClassContexts()} instead
      */
@@ -59,7 +62,7 @@ public class TestContext extends AbstractContext implements SynchronizableContex
     }
 
     public SuiteContext getSuiteContext() {
-        return (SuiteContext)this.parentContext;
+        return (SuiteContext) this.parentContext;
     }
 
     public Stream<ClassContext> readClassContexts() {
@@ -106,56 +109,42 @@ public class TestContext extends AbstractContext implements SynchronizableContex
     }
 
     private synchronized ClassContext createAndAddClassContext(Class realClass) {
+
         /*
         create a new class context, maybe this is later thrown away
          */
-        final ClassContext newClassContext = new ClassContext(realClass,this);
+        final ClassContext newClassContext = new ClassContext(realClass, this);
         fillBasicContextValues(newClassContext, this, newClassContext.getTestClass().getSimpleName());
 
         // lets check if we already know about it
-        if (CLASS_CONTEXT_MARKS.containsKey(newClassContext.getTestClass().getName())) {
+        if (readClassContexts().anyMatch(classContext -> classContext.getTestClass().getName().equals(realClass.getName()))) {
+
             // a context for this class is already present
 
             // Does a marker entry with this swi exist?
-            if (CLASS_CONTEXT_MARKS.containsKey(newClassContext.swi)) { // A'++ HIT
+            Optional<ClassContext> optionalFoundClassContext = readClassContexts().filter(classContext -> {
+                if (classContext.getTestClass().getName().equals(realClass.getName())) {
+                    AbstractContext context = newClassContext;
+                    AbstractContext cContext = classContext;
+                    while (context.getParentContext() != null) {
+                        if (!context.getParentContext().equals(cContext.getParentContext())) {
+                            return false;
+                        }
+                        context = context.getParentContext();
+                        cContext = cContext.getParentContext();
+                    }
+                }
+                return true;
+            }).findFirst();
+
+            if (optionalFoundClassContext.isPresent()) {
                 // this must be our class context
-                return CLASS_CONTEXT_MARKS.get(newClassContext.swi);
+                return optionalFoundClassContext.get();
             }
-
-            // now A can be the matching one, or this is a completely new context
-
-            final ClassContext defaultStoredClassContext = CLASS_CONTEXT_MARKS.get(newClassContext.getTestClass().getName());
-            if (newClassContext.swi.equals(defaultStoredClassContext.swi)) { // A HIT
-                // it is the exact same class
-                return defaultStoredClassContext;
-            }
-
-                /*
-                 A is present but not matching.
-                 creating A'' and setting A to dummy
-                  */
-            newClassContext.setExplicitName();
-            CLASS_CONTEXT_MARKS.put(newClassContext.getSwi(), newClassContext);
-            classContexts.add(newClassContext);
-
-//            final String dummySWI = "dummy";
-//            if (!dummySWI.equals(defaultStoredClassContext.getSwi())) {
-//                    /*
-//                    the defaultStoredClassContext is NOT a dummy already, set it to dummy
-//                     */
-//                defaultStoredClassContext.setExplicitName();
-//                CLASS_CONTEXT_MARKS.put(defaultStoredClassContext.swi, defaultStoredClassContext);
-//
-//                final ClassContext dummy = new ClassContext(null, executionContext);
-//                dummy.swi = "dummy";
-//                CLASS_CONTEXT_MARKS.put(defaultStoredClassContext.fullClassName, dummy);
-//            }
-        } else {
-            // Our new class is the first time coming up.
-            CLASS_CONTEXT_MARKS.put(newClassContext.getTestClass().getName(), newClassContext);
-            classContexts.add(newClassContext);
         }
 
+        // Our new class is the first time coming up.
+        classContexts.add(newClassContext);
         return newClassContext;
     }
 

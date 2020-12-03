@@ -5,7 +5,7 @@ import {StatisticsGenerator} from "../../services/statistics-generator";
 import {StatusConverter} from "../../services/status-converter";
 import {FailureAspectStatistics} from "../../services/statistic-models";
 import {data} from "../../services/report-model";
-import IPLogMessage = data.IPLogMessage;
+import ILogMessage = data.ILogMessage;
 import {util} from "protobufjs";
 import float = util.float;
 
@@ -13,7 +13,7 @@ import float = util.float;
 export class Logs extends AbstractViewModel {
     private _searchRegexp: RegExp;
     private _loading = false;
-    private _logMessages:IPLogMessage[];
+    private _logMessages:ILogMessage[];
     private _availableLogLevels;
     private _selectedLogLevel;
 
@@ -38,10 +38,10 @@ export class Logs extends AbstractViewModel {
 
         this._loading = true;
         this._statistics.getExecutionStatistics().then(executionStatistics => {
-            const logMessages:IPLogMessage[] = [];
+            const logMessages:ILogMessage[] = [];
             const logLevels = {};
 
-            const filterPredicate = (value:IPLogMessage) => {
+            const filterPredicate = (value:ILogMessage) => {
                 return (
                     (!this._selectedLogLevel || (this._selectedLogLevel == value.type))
                     && (!this._searchRegexp || value.message.match(this._searchRegexp))

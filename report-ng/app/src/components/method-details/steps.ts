@@ -55,8 +55,8 @@ export class Steps {
         return this._screenshots?.find(value => value.id == id);
     }
 
-    private _gotoStep(stepIndex:number, actionIndex:number) {
-        let elementsByName = window.document.getElementsByName(stepIndex+"."+actionIndex);
+    private _gotoStep(stepIndex:number, actionIndex:number=0) {
+        let elementsByName = window.document.getElementsByName(stepIndex+(actionIndex>0?"."+actionIndex:""));
         if (elementsByName.length > 0) {
             elementsByName[0].scrollIntoView()
         }

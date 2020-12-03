@@ -12,12 +12,12 @@ import eu.tsystems.mms.tic.testframework.report.model.ExecStatusType;
 import eu.tsystems.mms.tic.testframework.report.model.FailureCorridorValue;
 import eu.tsystems.mms.tic.testframework.report.model.File;
 import eu.tsystems.mms.tic.testframework.report.model.MethodType;
-import eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent;
-import eu.tsystems.mms.tic.testframework.report.model.PClickPathEventType;
-import eu.tsystems.mms.tic.testframework.report.model.PLogMessage;
-import eu.tsystems.mms.tic.testframework.report.model.PLogMessageType;
-import eu.tsystems.mms.tic.testframework.report.model.PTestStep;
-import eu.tsystems.mms.tic.testframework.report.model.PTestStepAction;
+import eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent;
+import eu.tsystems.mms.tic.testframework.report.model.ClickPathEventType;
+import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
+import eu.tsystems.mms.tic.testframework.report.model.LogMessageType;
+import eu.tsystems.mms.tic.testframework.report.model.TestStep;
+import eu.tsystems.mms.tic.testframework.report.model.TestStepAction;
 import eu.tsystems.mms.tic.testframework.report.model.ResultStatusType;
 import eu.tsystems.mms.tic.testframework.report.model.RunConfig;
 import eu.tsystems.mms.tic.testframework.report.model.ScriptSource;
@@ -31,8 +31,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.CustomContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
-import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
-import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -110,7 +108,7 @@ public class ContextExporter {
 
         // test steps
         methodContext.readTestSteps().forEach(testStep -> builder.addTestSteps(prepareTestStep(testStep)));
-        //value(methodContext.failedStep, MethodContextExporter::createPTestStep, builder::setFailedStep);
+        //value(methodContext.failedStep, MethodContextExporter::createTestStep, builder::setFailedStep);
 
         map(methodContext.failureCorridorValue, value -> FailureCorridorValue.valueOf(value.name()), builder::setFailureCorridorValue);
         builder.setClassContextId(methodContext.getClassContext().getId());
@@ -210,8 +208,8 @@ public class ContextExporter {
         return builder;
     }
 
-    public PTestStep.Builder prepareTestStep(TestStep testStep) {
-        PTestStep.Builder builder = PTestStep.newBuilder();
+    public TestStep.Builder prepareTestStep(eu.tsystems.mms.tic.testframework.report.model.steps.TestStep testStep) {
+        TestStep.Builder builder = TestStep.newBuilder();
 
         apply(testStep.getName(), builder::setName);
         forEach(testStep.getTestStepActions(), testStepAction -> builder.addTestStepActions(prepareTestStepAction(testStepAction)));
@@ -219,32 +217,32 @@ public class ContextExporter {
         return builder;
     }
 
-    public PTestStepAction.Builder prepareTestStepAction(TestStepAction testStepAction) {
-        PTestStepAction.Builder testStepBuilder = PTestStepAction.newBuilder();
+    public TestStepAction.Builder prepareTestStepAction(eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction testStepAction) {
+        TestStepAction.Builder testStepBuilder = TestStepAction.newBuilder();
 
         apply(testStepAction.getName(), testStepBuilder::setName);
         apply(testStepAction.getTimestamp(), testStepBuilder::setTimestamp);
 
         testStepAction.readClickPathEvents().forEach(clickPathEvent -> {
-            PClickPathEvent.Builder clickPathBuilder = PClickPathEvent.newBuilder();
+            ClickPathEvent.Builder clickPathBuilder = ClickPathEvent.newBuilder();
             switch (clickPathEvent.getType()) {
                 case WINDOW:
-                    clickPathBuilder.setType(PClickPathEventType.WINDOW);
+                    clickPathBuilder.setType(ClickPathEventType.CPET_WINDOW);
                     break;
                 case CLICK:
-                    clickPathBuilder.setType(PClickPathEventType.CLICK);
+                    clickPathBuilder.setType(ClickPathEventType.CPET_CLICK);
                     break;
                 case VALUE:
-                    clickPathBuilder.setType(PClickPathEventType.VALUE);
+                    clickPathBuilder.setType(ClickPathEventType.CPET_VALUE);
                     break;
                 case PAGE:
-                    clickPathBuilder.setType(PClickPathEventType.PAGE);
+                    clickPathBuilder.setType(ClickPathEventType.CPET_PAGE);
                     break;
                 case URL:
-                    clickPathBuilder.setType(PClickPathEventType.URL);
+                    clickPathBuilder.setType(ClickPathEventType.CPET_URL);
                     break;
                 default:
-                    clickPathBuilder.setType(PClickPathEventType.NOT_SET);
+                    clickPathBuilder.setType(ClickPathEventType.CPET_NOT_SET);
             }
             clickPathBuilder.setSubject(clickPathEvent.getSubject());
             clickPathBuilder.setSessionId(clickPathEvent.getSessionId());
@@ -401,28 +399,28 @@ public class ContextExporter {
         return builder.build();
     }
 
-    protected PLogMessage.Builder prepareLogEvent(LogEvent logEvent) {
-        PLogMessage.Builder plogMessageBuilder = PLogMessage.newBuilder();
-        plogMessageBuilder.setLoggerName(logEvent.getLoggerName());
-        plogMessageBuilder.setMessage(logEvent.getMessage().getFormattedMessage());
+    protected LogMessage.Builder prepareLogEvent(LogEvent logEvent) {
+        LogMessage.Builder LogMessageBuilder = LogMessage.newBuilder();
+        LogMessageBuilder.setLoggerName(logEvent.getLoggerName());
+        LogMessageBuilder.setMessage(logEvent.getMessage().getFormattedMessage());
         if (logEvent.getLevel() == Level.ERROR) {
-            plogMessageBuilder.setType(PLogMessageType.LMT_ERROR);
+            LogMessageBuilder.setType(LogMessageType.LMT_ERROR);
         } else if (logEvent.getLevel() == Level.WARN) {
-            plogMessageBuilder.setType(PLogMessageType.LMT_WARN);
+            LogMessageBuilder.setType(LogMessageType.LMT_WARN);
         } else if (logEvent.getLevel() == Level.INFO) {
-            plogMessageBuilder.setType(PLogMessageType.LMT_INFO);
+            LogMessageBuilder.setType(LogMessageType.LMT_INFO);
         } else if (logEvent.getLevel() == Level.DEBUG) {
-            plogMessageBuilder.setType(PLogMessageType.LMT_DEBUG);
+            LogMessageBuilder.setType(LogMessageType.LMT_DEBUG);
         }
-        plogMessageBuilder.setTimestamp(logEvent.getTimeMillis());
-        plogMessageBuilder.setThreadName(logEvent.getThreadName());
+        LogMessageBuilder.setTimestamp(logEvent.getTimeMillis());
+        LogMessageBuilder.setThreadName(logEvent.getThreadName());
 
         if (logEvent.getThrown() != null) {
             StackTraceCause.Builder stackTraceCause = prepareStackTraceCause(logEvent.getThrown());
-            plogMessageBuilder.setCauseId(stackTraceCause.getId());
+            LogMessageBuilder.setCauseId(stackTraceCause.getId());
         }
 
-        return plogMessageBuilder;
+        return LogMessageBuilder;
     }
 
     protected StackTraceCause.Builder prepareStackTraceCause(Throwable throwable) {

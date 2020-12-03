@@ -4,17 +4,26 @@
     <mdc-layout-grid class="pt0">
         <mdc-layout-grid-inner>
             <mdc-layout-grid-cell span="3">
-                <mdc-list-group repeat.for="testStep of _methodDetails.methodContext.testSteps">
-                    <let step-index.bind="$index+1"></let>
-                    <h3>${stepIndex} ${testStep.name}</h3>
+                <mdc-card>
                     <mdc-list two-line single-selection>
-                        <mdc-list-item repeat.for="testStepAction of testStep.testStepActions" click.delegate="_gotoStep(stepIndex, $index+1)">
-                            <mdc-icon mdc-list-item-graphic>read_more</mdc-icon>
-                            <mdc-list-item-primary-text>${stepIndex}.${$index+1} ${testStepAction.name}</mdc-list-item-primary-text>
-                            <mdc-list-item-secondary-text>${testStepAction.timestamp|dateFormat}</mdc-list-item-secondary-text>
+                        <mdc-list-item repeat.for="testStep of _methodDetails.methodContext.testSteps" click.delegate="_gotoStep($index+1)">
+                            <!--mdc-icon mdc-list-item-graphic>read_more</mdc-icon-->
+                            <mdc-list-item-primary-text>${$index+1} ${testStep.name}</mdc-list-item-primary-text>
+                            <mdc-list-item-secondary-text>${testStep.testStepActions[0].timestamp|dateFormat}</mdc-list-item-secondary-text>
                         </mdc-list-item>
                     </mdc-list>
-                </mdc-list-group>
+                </mdc-card>
+<!--                <mdc-list-group repeat.for="testStep of _methodDetails.methodContext.testSteps">-->
+<!--                    <let step-index.bind="$index+1"></let>-->
+<!--                    <h3>${stepIndex} ${testStep.name}</h3>-->
+<!--                    <mdc-list two-line single-selection>-->
+<!--                        <mdc-list-item repeat.for="testStepAction of testStep.testStepActions" click.delegate="_gotoStep(stepIndex, $index+1)">-->
+<!--                            <mdc-icon mdc-list-item-graphic>read_more</mdc-icon>-->
+<!--                            <mdc-list-item-primary-text>${stepIndex}.${$index+1} ${testStepAction.name}</mdc-list-item-primary-text>-->
+<!--                            <mdc-list-item-secondary-text>${testStepAction.timestamp|dateFormat}</mdc-list-item-secondary-text>-->
+<!--                        </mdc-list-item>-->
+<!--                    </mdc-list>-->
+<!--                </mdc-list-group>-->
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="9">
 <!--                <mdc-text-field label="Search"-->
@@ -27,9 +36,12 @@
 <!--                </mdc-text-field>-->
                 <div repeat.for="testStep of _methodDetails.methodContext.testSteps">
                     <let step-index.bind="$index+1"></let>
+                    <a name="${stepIndex}" visible.delegate="_stepVisibility($event)" become-visible></a>
+                    <div mdc-headline4 class.bind="stepIndex!=1?'mt2':''">${stepIndex} ${testStep.name}</div>
+
                     <div repeat.for="testStepAction of testStep.testStepActions">
-                        <a name="${stepIndex}.${$index+1}" visible.delegate="_stepVisibility($event)" become-visible></a>
-                        <div mdc-body1 class.bind="stepIndex!=1?'mt2':''">${stepIndex}.${$index+1} ${testStepAction.name}</div>
+                        <!-- if.bind="!$first&&!$last" -->
+                        <div mdc-headline5 class="mt1">${stepIndex}.${$index+1} ${testStepAction.name}</div>
                         <mdc-card class="mt1" if.bind="testStepAction.optionalAssertions.length > 0">
                             <div mdc-subtitle2 class="card-headline">Optional assertions</div>
                             <mdc-list-divider></mdc-list-divider>
@@ -49,12 +61,7 @@
                         <mdc-card class="mt1">
                             <div mdc-subtitle2 class="card-headline">Logs</div>
                             <mdc-list-divider></mdc-list-divider>
-                            <div class="code-view m0">
-                                <pre class="m0"
-                                     repeat.for="logMessage of testStepAction.logMessages"
-                                     class.bind="(logMessage.type==1?'error':(logMessage.type==2?'warn':''))"
-                                >${logMessage.timestamp|dateFormat:"HH:mm:ss.SSS"} [${logMessage.type|logLevel}] ${logMessage.message}</pre>
-                            </div>
+                            <log-view log-messages.bind="testStepAction.logMessages"></log-view>
                         </mdc-card>
                         <mdc-card class="mt1" if.bind="_screenshots.length>0">
                             <div mdc-subtitle2 class="card-headline">Screenshots</div>

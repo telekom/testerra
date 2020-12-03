@@ -19,16 +19,18 @@
  * under the License.
  */
 
-import {data} from "../services/report-model";
+import {bindable} from "aurelia-templating";
+import {bindingMode} from "aurelia-binding";
+import {data} from "../../services/report-model";
+import ILogMessage = data.ILogMessage;
 
-export class LogLevelValueConverter {
-    toView(value: data.LogMessageType) {
-        switch (value) {
-            case data.LogMessageType.LMT_DEBUG: return "DEBUG";
-            case data.LogMessageType.LMT_ERROR: return "ERROR";
-            case data.LogMessageType.LMT_INFO: return "INFO";
-            case data.LogMessageType.LMT_WARN: return "WARN";
-            default: return "UNKNOWN";
-        }
-    }
+export class LogView {
+    @bindable({bindingMode: bindingMode.toView})
+    logMessages:ILogMessage[];
+
+    @bindable({bindingMode: bindingMode.toView})
+    showThreads;
+
+    @bindable({bindingMode: bindingMode.toView})
+    highlight:RegExp;
 }

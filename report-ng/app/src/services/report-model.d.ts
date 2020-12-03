@@ -151,9 +151,6 @@ export namespace data {
 
         /** ExecutionContext estimatedTestsCount */
         estimatedTestsCount?: (number|null);
-
-        /** ExecutionContext causes */
-        causes?: ({ [k: string]: data.IStackTraceCause }|null);
     }
 
     /** Represents an ExecutionContext. */
@@ -191,9 +188,6 @@ export namespace data {
 
         /** ExecutionContext estimatedTestsCount. */
         public estimatedTestsCount: number;
-
-        /** ExecutionContext causes. */
-        public causes: { [k: string]: data.IStackTraceCause };
 
         /**
          * Decodes an ExecutionContext message from the specified reader or buffer.
@@ -591,8 +585,8 @@ export namespace data {
         /** LogMessage threadName */
         threadName?: (string|null);
 
-        /** LogMessage causeId */
-        causeId?: (string|null);
+        /** LogMessage cause */
+        cause?: (data.IStackTraceCause|null);
     }
 
     /** Represents a LogMessage. */
@@ -619,8 +613,8 @@ export namespace data {
         /** LogMessage threadName. */
         public threadName: string;
 
-        /** LogMessage causeId. */
-        public causeId: string;
+        /** LogMessage cause. */
+        public cause?: (data.IStackTraceCause|null);
 
         /**
          * Decodes a LogMessage message from the specified reader or buffer.
@@ -648,8 +642,8 @@ export namespace data {
         /** ErrorContext description */
         description?: (string|null);
 
-        /** ErrorContext causeId */
-        causeId?: (string|null);
+        /** ErrorContext cause */
+        cause?: (data.IStackTraceCause|null);
     }
 
     /** Represents an ErrorContext. */
@@ -673,8 +667,8 @@ export namespace data {
         /** ErrorContext description. */
         public description: string;
 
-        /** ErrorContext causeId. */
-        public causeId: string;
+        /** ErrorContext cause. */
+        public cause?: (data.IStackTraceCause|null);
 
         /**
          * Decodes an ErrorContext message from the specified reader or buffer.
@@ -870,11 +864,8 @@ export namespace data {
         /** StackTraceCause stackTraceElements */
         stackTraceElements?: (string[]|null);
 
-        /** StackTraceCause id */
-        id?: (string|null);
-
-        /** StackTraceCause causeId */
-        causeId?: (string|null);
+        /** StackTraceCause cause */
+        cause?: (data.IStackTraceCause|null);
     }
 
     /** Represents a StackTraceCause. */
@@ -895,11 +886,8 @@ export namespace data {
         /** StackTraceCause stackTraceElements. */
         public stackTraceElements: string[];
 
-        /** StackTraceCause id. */
-        public id: string;
-
-        /** StackTraceCause causeId. */
-        public causeId: string;
+        /** StackTraceCause cause. */
+        public cause?: (data.IStackTraceCause|null);
 
         /**
          * Decodes a StackTraceCause message from the specified reader or buffer.

@@ -19,12 +19,24 @@
  * under the License.
  */
 
+import {autoinject} from "aurelia-framework";
 import {bindable} from "aurelia-templating";
 import {bindingMode} from "aurelia-binding";
 import {data} from "../../services/report-model";
 import ILogMessage = data.ILogMessage;
+import {StatusConverter} from "../../services/status-converter";
 
+@autoinject()
 export class LogView {
+
+    private _causes:{[key:number]:string} = {};
+
+    constructor(
+        private _statusConverter:StatusConverter,
+    ) {
+
+    }
+
     @bindable({bindingMode: bindingMode.toView})
     logMessages:ILogMessage[];
 
@@ -32,5 +44,23 @@ export class LogView {
     showThreads;
 
     @bindable({bindingMode: bindingMode.toView})
-    highlight:RegExp;
+    search:RegExp;
+
+    private _toggleCause(logMessage:ILogMessage) {
+        const index = this.logMessages.indexOf(logMessage);
+        if (this._causes[index]) {
+            this._causes[index] = null;
+        } else {
+            let msg = "";
+            const stackTrace = this._statusConverter.flattenStackTrace(logMessage.cause);
+            stackTrace.forEach(cause => {
+                if (msg.length > 0) {
+                    msg += "<br>"
+                }
+                msg += cause.message + "<br>" + cause.stackTraceElements.join("<br>");
+            });
+            this._statusConverter.flattenStackTrace(logMessage.cause)
+            this._causes[index] = msg;
+        }
+    }
 }

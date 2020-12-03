@@ -48,8 +48,7 @@
                             <mdc-expandable repeat.for="errorContext of testStepAction.optionalAssertions"
                                             class="card-expandable"
                             >
-                                <let cause.bind="_getCause(errorContext)"></let>
-                                <div slot="caption" mdc-body2><class-name namespace.bind="cause.className"><span if.bind="cause.message">: ${cause.message}</span></class-name></div>
+                                <div slot="caption" mdc-body2><class-name namespace.bind="errorContext.cause.className"><span if.bind="errorContext.cause.message">: ${errorContext.cause.message}</span></class-name></div>
                                 <div class="code-view m0">
                                 <pre class="m0"
                                      repeat.for="line of errorContext.scriptSource.lines"

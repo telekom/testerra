@@ -3,6 +3,7 @@ package eu.tsystems.mms.tic.testframework.adapters;
 import com.google.common.net.MediaType;
 import com.google.gson.Gson;
 import eu.tsystems.mms.tic.testframework.internal.IDUtils;
+import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.BuildInformation;
 import eu.tsystems.mms.tic.testframework.report.model.ClassContext;
@@ -36,7 +37,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -56,7 +56,6 @@ public class ContextExporter {
     private final java.io.File targetScreenshotDir = report.getFinalReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
     private final java.io.File currentVideoDir = report.getFinalReportDirectory(Report.VIDEO_FOLDER_NAME);
     private final java.io.File currentScreenshotDir = report.getFinalReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
-    private Map<Integer, StackTraceCause.Builder> uniqueStackTraces = new HashMap();
 
     private static String annotationToString(Annotation annotation) {
         String json = "\"" + annotation.annotationType().getSimpleName() + "\"";
@@ -110,9 +109,15 @@ public class ContextExporter {
         methodContext.readTestSteps().forEach(testStep -> builder.addTestSteps(prepareTestStep(testStep)));
         //value(methodContext.failedStep, MethodContextExporter::createTestStep, builder::setFailedStep);
 
-        map(methodContext.failureCorridorValue, value -> FailureCorridorValue.valueOf(value.name()), builder::setFailureCorridorValue);
+        Class failureCorridorClass = methodContext.getFailureCorridorClass();
+        if (failureCorridorClass.equals(FailureCorridor.High.class)) {
+            builder.setFailureCorridorValue(FailureCorridorValue.FCV_HIGH);
+        } else if (failureCorridorClass.equals(FailureCorridor.Mid.class)) {
+            builder.setFailureCorridorValue(FailureCorridorValue.FCV_MID);
+        } else {
+            builder.setFailureCorridorValue(FailureCorridorValue.FCV_LOW);
+        }
         builder.setClassContextId(methodContext.getClassContext().getId());
-
         forEach(methodContext.infos, builder::addInfos);
         methodContext.readRelatedMethodContexts().forEach(m -> builder.addRelatedMethodContextIds(m.getId()));
         methodContext.readDependsOnMethodContexts().forEach(m -> builder.addDependsOnMethodContextIds(m.getId()));
@@ -195,10 +200,7 @@ public class ContextExporter {
 
 //        apply(errorContext.getReadableErrorMessage(), builder::setReadableErrorMessage);
 //        apply(errorContext.getAdditionalErrorMessage(), builder::setAdditionalErrorMessage);
-        if (errorContext.getThrowable() != null) {
-            StackTraceCause.Builder stackTraceCause = this.prepareStackTraceCause(errorContext.getThrowable());
-            builder.setCauseId(stackTraceCause.getId());
-        }
+        map(errorContext.getThrowable(), this::prepareStackTraceCause, builder::setCause);
 //        apply(errorContext.errorFingerprint, builder::setErrorFingerprint);
         errorContext.getScriptSource().ifPresent(scriptSource -> builder.setScriptSource(this.prepareScriptSource(scriptSource)));
         errorContext.getExecutionObjectSource().ifPresent(scriptSource -> builder.setExecutionObjectSource(this.prepareScriptSource(scriptSource)));
@@ -400,46 +402,33 @@ public class ContextExporter {
     }
 
     protected LogMessage.Builder prepareLogEvent(LogEvent logEvent) {
-        LogMessage.Builder LogMessageBuilder = LogMessage.newBuilder();
-        LogMessageBuilder.setLoggerName(logEvent.getLoggerName());
-        LogMessageBuilder.setMessage(logEvent.getMessage().getFormattedMessage());
+        LogMessage.Builder builder = LogMessage.newBuilder();
+        builder.setLoggerName(logEvent.getLoggerName());
+        builder.setMessage(logEvent.getMessage().getFormattedMessage());
         if (logEvent.getLevel() == Level.ERROR) {
-            LogMessageBuilder.setType(LogMessageType.LMT_ERROR);
+            builder.setType(LogMessageType.LMT_ERROR);
         } else if (logEvent.getLevel() == Level.WARN) {
-            LogMessageBuilder.setType(LogMessageType.LMT_WARN);
+            builder.setType(LogMessageType.LMT_WARN);
         } else if (logEvent.getLevel() == Level.INFO) {
-            LogMessageBuilder.setType(LogMessageType.LMT_INFO);
+            builder.setType(LogMessageType.LMT_INFO);
         } else if (logEvent.getLevel() == Level.DEBUG) {
-            LogMessageBuilder.setType(LogMessageType.LMT_DEBUG);
+            builder.setType(LogMessageType.LMT_DEBUG);
         }
-        LogMessageBuilder.setTimestamp(logEvent.getTimeMillis());
-        LogMessageBuilder.setThreadName(logEvent.getThreadName());
+        builder.setTimestamp(logEvent.getTimeMillis());
+        builder.setThreadName(logEvent.getThreadName());
 
-        if (logEvent.getThrown() != null) {
-            StackTraceCause.Builder stackTraceCause = prepareStackTraceCause(logEvent.getThrown());
-            LogMessageBuilder.setCauseId(stackTraceCause.getId());
-        }
-
-        return LogMessageBuilder;
+        map(logEvent.getThrown(), this::prepareStackTraceCause, builder::setCause);
+        return builder;
     }
 
-    protected StackTraceCause.Builder prepareStackTraceCause(Throwable throwable) {
-//        StackTraceElement stackTraceElement = throwable.getStackTrace()[0];
-//        String uniqueKey = throwable.getMessage()+stackTraceElement.getFileName()+stackTraceElement.getLineNumber();
-        uniqueStackTraces.putIfAbsent(throwable.hashCode(), this._prepareStackTraceCause(throwable));
-        return uniqueStackTraces.get(throwable.hashCode());
-    }
-
-    private StackTraceCause.Builder _prepareStackTraceCause(Throwable throwable) {
+    public StackTraceCause.Builder prepareStackTraceCause(Throwable throwable) {
         StackTraceCause.Builder builder = StackTraceCause.newBuilder();
-        builder.setId(Integer.toString(throwable.hashCode()));
         apply(throwable.getClass().getName(), builder::setClassName);
         apply(throwable.getMessage(), builder::setMessage);
         builder.addAllStackTraceElements(Arrays.stream(throwable.getStackTrace()).map(StackTraceElement::toString).collect(Collectors.toList()));
 
         if ((throwable.getCause() != null) && (throwable.getCause() != throwable)) {
-            StackTraceCause.Builder stackTraceCause = this.prepareStackTraceCause(throwable.getCause());
-            builder.setCauseId(stackTraceCause.getId());
+            builder.setCause(this.prepareStackTraceCause(throwable.getCause()));
         }
         return builder;
     }
@@ -469,10 +458,6 @@ public class ContextExporter {
         executionContext.readExclusiveSessionContexts().forEach(sessionContext -> builder.addExclusiveSessionContextIds(sessionContext.getId()));
         apply(executionContext.estimatedTestMethodCount, builder::setEstimatedTestsCount);
         executionContext.readMethodContextLessLogs().forEach(logEvent -> builder.addLogMessages(prepareLogEvent(logEvent)));
-
-        this.uniqueStackTraces.values().forEach(stackTraceCauseBuilder -> {
-            builder.putCauses(stackTraceCauseBuilder.getId(), stackTraceCauseBuilder.build());
-        });
         return builder;
     }
 //

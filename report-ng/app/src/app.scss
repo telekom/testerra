@@ -37,6 +37,7 @@ html {
     overflow-x: auto;
     color: #c0dee0;
     line-height: 1.5em;
+    font-family: monospace;
     //
     //.line {
     //    padding: 0.3em;
@@ -51,20 +52,21 @@ html {
     }
 
     .indicator {
-        padding-right: 0.5rem;
+        width:1rem;
+        display: inline-block;
     }
 
     .number {
         @extend .indicator;
-        //padding-left: 2rem;
+        padding-right: 2rem;
         color: #808080 !important;
     }
 
-    pre {
-        margin: 0;
-        padding-left: 0.4rem;
-        padding-right: 0.4rem;
-        word-break: break-word;
+    .line {
+        padding: 0.1rem 0.4rem;
+    }
+    .clickable {
+        cursor: pointer;
     }
 }
 

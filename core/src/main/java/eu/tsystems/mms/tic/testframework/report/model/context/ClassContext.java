@@ -172,11 +172,11 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
             // also check for annotations
             Method method = iTestNGMethod.getConstructorOrMethod().getMethod();
             if (method.isAnnotationPresent(FailureCorridor.High.class)) {
-                methodContext.failureCorridorValue = FailureCorridor.Value.HIGH;
+                methodContext.setFailureCorridorClass(FailureCorridor.High.class);
             } else if (method.isAnnotationPresent(FailureCorridor.Mid.class)) {
-                methodContext.failureCorridorValue = FailureCorridor.Value.MID;
+                methodContext.setFailureCorridorClass(FailureCorridor.Mid.class);
             } else if (method.isAnnotationPresent(FailureCorridor.Low.class)) {
-                methodContext.failureCorridorValue = FailureCorridor.Value.LOW;
+                methodContext.setFailureCorridorClass(FailureCorridor.Low.class);
             }
 
             /*

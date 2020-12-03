@@ -29,7 +29,7 @@ import eu.tsystems.mms.tic.testframework.internal.TimingInfo;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
-import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
+import eu.tsystems.mms.tic.testframework.report.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.ReportingData;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;

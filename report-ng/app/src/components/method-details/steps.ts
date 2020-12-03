@@ -67,9 +67,4 @@ export class Steps {
         const parts = anchor.getAttribute("name").split(".");
         console.log("enable", parts);
     }
-
-    private _getCause(errorContext:IErrorContext) {
-        console.log(this._methodDetails.executionStatistics.executionAggregate.executionContext.causes[errorContext.causeId]);
-        return this._methodDetails.executionStatistics.executionAggregate.executionContext.causes[errorContext.causeId];
-    }
 }

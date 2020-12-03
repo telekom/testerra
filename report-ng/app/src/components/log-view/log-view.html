@@ -20,8 +20,12 @@
   -->
 <template>
     <div class="code-view">
-        <pre repeat.for="logMessage of logMessages"
+        <div repeat.for="logMessage of logMessages"
+             class="line"
              class.bind="(logMessage.type==1?'error':(logMessage.type==2?'warn':''))"
-        >${logMessage.timestamp|dateFormat:"HH:mm:ss.SSS"}<span if.bind="showThreads"> [${logMessage.threadName}]</span> [${logMessage.type|logLevel}] <span innerhtml.bind="logMessage.message|highlightText:highlight"></span></pre>
+        >
+            <div class="indicator"><span if.bind="logMessage.cause" click.delegate="_toggleCause(logMessage)" class="clickable">+</span></div>${logMessage.timestamp|dateFormat:"HH:mm:ss.SSS"}<span if.bind="showThreads"> [${logMessage.threadName}]</span> [${logMessage.type|logLevel}] <span innerhtml.bind="logMessage.message|highlightText:search"></span>
+            <div if.bind="_causes[$index]" innerhtml.bind="_causes[$index]|highlightText:search"></div>
+        </div>
     </div>
 </template>

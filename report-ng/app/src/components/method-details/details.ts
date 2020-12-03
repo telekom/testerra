@@ -46,9 +46,9 @@ export class Details {
     ) {
         this._statistics.getMethodDetails(params.id).then(methodDetails => {
             this._methodDetails = methodDetails;
-            if (methodDetails.methodContext.errorContext?.causeId) {
-                this._stackTrace = this._statusConverter.flattenStackTrace(methodDetails.methodContext.errorContext.causeId, methodDetails.executionStatistics.executionAggregate.executionContext);
-                this._failureAspect = new FailureAspectStatistics().setErrorContext(methodDetails.methodContext.errorContext, methodDetails.executionStatistics.executionAggregate.executionContext);
+            if (methodDetails.methodContext.errorContext?.cause) {
+                this._stackTrace = this._statusConverter.flattenStackTrace(methodDetails.methodContext.errorContext.cause);
+                this._failureAspect = new FailureAspectStatistics().setErrorContext(methodDetails.methodContext.errorContext);
             }
         });
     }

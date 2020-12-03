@@ -28,11 +28,11 @@
                 <mdc-card>
                     <div mdc-subtitle2 class="card-headline">Origin (${_methodDetails.methodContext.errorContext.scriptSource.fileName})</div>
                     <mdc-list-divider></mdc-list-divider>
-                    <div class="code-view m0">
-                        <pre class="m0"
+                    <div class="code-view">
+                        <div class="line"
                              repeat.for="line of _methodDetails.methodContext.errorContext.scriptSource.lines"
                              class.bind="line.mark?'error':''"
-                        ><span class="number">${line.lineNumber}</span><span innerhtml="${_hljs.highlight('java', line.line).value}"></span></pre>
+                        ><span class="number">${line.lineNumber}</span><span innerhtml="${_hljs.highlight('java', line.line).value}"></span></div>
                     </div>
                 </mdc-card>
             </mdc-layout-grid-cell>
@@ -44,11 +44,11 @@
                                     class="card-expandable"
                     >
                         <div slot="caption" mdc-body2><class-name namespace.bind="cause.className"><span if.bind="cause.message">: ${cause.message}</span></class-name></div>
-                        <div class="code-view m0">
-                            <pre class="m0"
+                        <div class="code-view">
+                            <div class="line"
                                  repeat.for="line of cause.stackTraceElements"
                                  class.bind="line.indexOf(_methodDetails.methodContext.contextValues.name)>=0?'error':''"
-                                 innerhtml="${_hljs.highlight('java', line).value}"></pre>
+                                 innerhtml="${_hljs.highlight('java', line).value}"></div>
                         </div>
                     </mdc-expandable>
                 </mdc-card>

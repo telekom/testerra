@@ -21,7 +21,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.test;
 
-import eu.tsystems.mms.tic.testframework.annotations.TestContext;
+import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.general.AbstractAnnotationMarkerTest;
@@ -47,7 +47,7 @@ import java.util.List;
 import org.openqa.selenium.Dimension;
 import org.testng.annotations.Test;
 
-@TestContext(name = "View-ClassesDetails")
+@TestClassContext(name = "View-ClassesDetails")
 public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
 
     /**
@@ -121,7 +121,7 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
                 WebDriverManager.getWebDriver(),
                 PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.getReportDirectory()),
-                classWithFailedMethods.getAnnotation(TestContext.class).name());
+                classWithFailedMethods.getAnnotation(TestClassContext.class).name());
 
         final String testmethodName = "test_FailedMinor1";
         classesDetailsPage.assertMethodNameIsDisplayedForTestMethod(testmethodName,

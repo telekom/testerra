@@ -23,7 +23,7 @@
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import com.google.common.eventbus.EventBus;
-import eu.tsystems.mms.tic.testframework.annotations.TestContext;
+import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
@@ -59,7 +59,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
     public String simpleClassName;
     public final TestContextModel testContextModel;
     public final ExecutionContext executionContext;
-    public TestContext testContext = null;
+    public TestClassContext testContext = null;
     public boolean merged = false;
     public ClassContext mergedIntoClassContext = null;
 

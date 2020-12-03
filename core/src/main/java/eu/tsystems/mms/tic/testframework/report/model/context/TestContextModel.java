@@ -22,7 +22,7 @@
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import com.google.common.eventbus.EventBus;
-import eu.tsystems.mms.tic.testframework.annotations.TestContext;
+import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
@@ -99,16 +99,16 @@ public class TestContextModel extends AbstractContext implements SynchronizableC
         final ClassContext newClassContext = createAndAddClassContext(realClass);
 
         /**
-         * check if {@link TestContext} is present on class
+         * check if {@link TestClassContext} is present on class
          */
-        if (realClass.isAnnotationPresent(TestContext.class)) {
+        if (realClass.isAnnotationPresent(TestClassContext.class)) {
 
             /*
             hook into executionContext mergedContexts
              */
-            final TestContext actualTestContext = realClass.getAnnotation(TestContext.class);
+            final TestClassContext actualTestContext = realClass.getAnnotation(TestClassContext.class);
 
-            if (actualTestContext.mode() == TestContext.Mode.ONE_FOR_ALL) {
+            if (actualTestContext.mode() == TestClassContext.Mode.ONE_FOR_ALL) {
                 synchronized (executionContext.mergedClassContexts) {
                     final ClassContext mergedClassContext;
 

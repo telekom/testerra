@@ -22,7 +22,7 @@
  package eu.tsystems.mms.tic.testframework.test.utils;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.annotations.TestContext;
+import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverKeepAliveSequence;
@@ -33,7 +33,7 @@ import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-@TestContext(name = "WebDriverUtilsTest")
+@TestClassContext(name = "WebDriverUtilsTest")
 public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
     private final String msgSwitchSuccessfully = "Find and switch to window successful";

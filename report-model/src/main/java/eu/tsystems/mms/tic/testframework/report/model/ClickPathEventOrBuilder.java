@@ -3,20 +3,20 @@
 
 package eu.tsystems.mms.tic.testframework.report.model;
 
-public interface PClickPathEventOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:data.PClickPathEvent)
+public interface ClickPathEventOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:data.ClickPathEvent)
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>.data.PClickPathEventType type = 1;</code>
+   * <code>.data.ClickPathEventType type = 1;</code>
    * @return The enum numeric value on the wire for type.
    */
   int getTypeValue();
   /**
-   * <code>.data.PClickPathEventType type = 1;</code>
+   * <code>.data.ClickPathEventType type = 1;</code>
    * @return The type.
    */
-  eu.tsystems.mms.tic.testframework.report.model.PClickPathEventType getType();
+  eu.tsystems.mms.tic.testframework.report.model.ClickPathEventType getType();
 
   /**
    * <code>string subject = 2;</code>

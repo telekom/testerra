@@ -3,8 +3,8 @@
 
 package eu.tsystems.mms.tic.testframework.report.model;
 
-public interface PTestStepActionOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:data.PTestStepAction)
+public interface TestStepActionOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:data.TestStepAction)
     com.google.protobuf.MessageOrBuilder {
 
   /**
@@ -34,24 +34,24 @@ public interface PTestStepActionOrBuilder extends
    *    repeated string screenshot_names = 4 [deprecated = true];
    * </pre>
    *
-   * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
+   * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
    */
-  java.util.List<eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent> 
+  java.util.List<eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent> 
       getClickpathEventsList();
   /**
    * <pre>
    *    repeated string screenshot_names = 4 [deprecated = true];
    * </pre>
    *
-   * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
+   * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent getClickpathEvents(int index);
+  eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent getClickpathEvents(int index);
   /**
    * <pre>
    *    repeated string screenshot_names = 4 [deprecated = true];
    * </pre>
    *
-   * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
+   * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
    */
   int getClickpathEventsCount();
   /**
@@ -59,18 +59,18 @@ public interface PTestStepActionOrBuilder extends
    *    repeated string screenshot_names = 4 [deprecated = true];
    * </pre>
    *
-   * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
+   * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
    */
-  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.PClickPathEventOrBuilder> 
+  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ClickPathEventOrBuilder> 
       getClickpathEventsOrBuilderList();
   /**
    * <pre>
    *    repeated string screenshot_names = 4 [deprecated = true];
    * </pre>
    *
-   * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
+   * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.PClickPathEventOrBuilder getClickpathEventsOrBuilder(
+  eu.tsystems.mms.tic.testframework.report.model.ClickPathEventOrBuilder getClickpathEventsOrBuilder(
       int index);
 
   /**
@@ -99,27 +99,27 @@ public interface PTestStepActionOrBuilder extends
       getScreenshotIdsBytes(int index);
 
   /**
-   * <code>repeated .data.PLogMessage log_messages = 7;</code>
+   * <code>repeated .data.LogMessage log_messages = 7;</code>
    */
-  java.util.List<eu.tsystems.mms.tic.testframework.report.model.PLogMessage> 
+  java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage> 
       getLogMessagesList();
   /**
-   * <code>repeated .data.PLogMessage log_messages = 7;</code>
+   * <code>repeated .data.LogMessage log_messages = 7;</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.PLogMessage getLogMessages(int index);
+  eu.tsystems.mms.tic.testframework.report.model.LogMessage getLogMessages(int index);
   /**
-   * <code>repeated .data.PLogMessage log_messages = 7;</code>
+   * <code>repeated .data.LogMessage log_messages = 7;</code>
    */
   int getLogMessagesCount();
   /**
-   * <code>repeated .data.PLogMessage log_messages = 7;</code>
+   * <code>repeated .data.LogMessage log_messages = 7;</code>
    */
-  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder> 
+  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder> 
       getLogMessagesOrBuilderList();
   /**
-   * <code>repeated .data.PLogMessage log_messages = 7;</code>
+   * <code>repeated .data.LogMessage log_messages = 7;</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder getLogMessagesOrBuilder(
+  eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder getLogMessagesOrBuilder(
       int index);
 
   /**

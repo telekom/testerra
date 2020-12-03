@@ -116,29 +116,16 @@ private static final long serialVersionUID = 0L;
           }
           case 114: {
             if (!((mutable_bitField0_ & 0x00000002) != 0)) {
-              logMessages_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.PLogMessage>();
+              logMessages_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.LogMessage>();
               mutable_bitField0_ |= 0x00000002;
             }
             logMessages_.add(
-                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.PLogMessage.parser(), extensionRegistry));
+                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.LogMessage.parser(), extensionRegistry));
             break;
           }
           case 120: {
 
             estimatedTestsCount_ = input.readInt32();
-            break;
-          }
-          case 130: {
-            if (!((mutable_bitField0_ & 0x00000004) != 0)) {
-              causes_ = com.google.protobuf.MapField.newMapField(
-                  CausesDefaultEntryHolder.defaultEntry);
-              mutable_bitField0_ |= 0x00000004;
-            }
-            com.google.protobuf.MapEntry<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause>
-            causes__ = input.readMessage(
-                CausesDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
-            causes_.getMutableMap().put(
-                causes__.getKey(), causes__.getValue());
             break;
           }
           default: {
@@ -171,18 +158,6 @@ private static final long serialVersionUID = 0L;
     return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_ExecutionContext_descriptor;
   }
 
-  @SuppressWarnings({"rawtypes"})
-  @java.lang.Override
-  protected com.google.protobuf.MapField internalGetMapField(
-      int number) {
-    switch (number) {
-      case 16:
-        return internalGetCauses();
-      default:
-        throw new RuntimeException(
-            "Invalid map field number: " + number);
-    }
-  }
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
@@ -438,36 +413,36 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LOG_MESSAGES_FIELD_NUMBER = 14;
-  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.PLogMessage> logMessages_;
+  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage> logMessages_;
   /**
-   * <code>repeated .data.PLogMessage log_messages = 14;</code>
+   * <code>repeated .data.LogMessage log_messages = 14;</code>
    */
-  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PLogMessage> getLogMessagesList() {
+  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage> getLogMessagesList() {
     return logMessages_;
   }
   /**
-   * <code>repeated .data.PLogMessage log_messages = 14;</code>
+   * <code>repeated .data.LogMessage log_messages = 14;</code>
    */
-  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder> 
+  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder> 
       getLogMessagesOrBuilderList() {
     return logMessages_;
   }
   /**
-   * <code>repeated .data.PLogMessage log_messages = 14;</code>
+   * <code>repeated .data.LogMessage log_messages = 14;</code>
    */
   public int getLogMessagesCount() {
     return logMessages_.size();
   }
   /**
-   * <code>repeated .data.PLogMessage log_messages = 14;</code>
+   * <code>repeated .data.LogMessage log_messages = 14;</code>
    */
-  public eu.tsystems.mms.tic.testframework.report.model.PLogMessage getLogMessages(int index) {
+  public eu.tsystems.mms.tic.testframework.report.model.LogMessage getLogMessages(int index) {
     return logMessages_.get(index);
   }
   /**
-   * <code>repeated .data.PLogMessage log_messages = 14;</code>
+   * <code>repeated .data.LogMessage log_messages = 14;</code>
    */
-  public eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder getLogMessagesOrBuilder(
+  public eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder getLogMessagesOrBuilder(
       int index) {
     return logMessages_.get(index);
   }
@@ -480,82 +455,6 @@ private static final long serialVersionUID = 0L;
    */
   public int getEstimatedTestsCount() {
     return estimatedTestsCount_;
-  }
-
-  public static final int CAUSES_FIELD_NUMBER = 16;
-  private static final class CausesDefaultEntryHolder {
-    static final com.google.protobuf.MapEntry<
-        java.lang.String, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause> defaultEntry =
-            com.google.protobuf.MapEntry
-            .<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause>newDefaultInstance(
-                eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_ExecutionContext_CausesEntry_descriptor, 
-                com.google.protobuf.WireFormat.FieldType.STRING,
-                "",
-                com.google.protobuf.WireFormat.FieldType.MESSAGE,
-                eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.getDefaultInstance());
-  }
-  private com.google.protobuf.MapField<
-      java.lang.String, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause> causes_;
-  private com.google.protobuf.MapField<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause>
-  internalGetCauses() {
-    if (causes_ == null) {
-      return com.google.protobuf.MapField.emptyMapField(
-          CausesDefaultEntryHolder.defaultEntry);
-    }
-    return causes_;
-  }
-
-  public int getCausesCount() {
-    return internalGetCauses().getMap().size();
-  }
-  /**
-   * <code>map&lt;string, .data.StackTraceCause&gt; causes = 16;</code>
-   */
-
-  public boolean containsCauses(
-      java.lang.String key) {
-    if (key == null) { throw new java.lang.NullPointerException(); }
-    return internalGetCauses().getMap().containsKey(key);
-  }
-  /**
-   * Use {@link #getCausesMap()} instead.
-   */
-  @java.lang.Deprecated
-  public java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause> getCauses() {
-    return getCausesMap();
-  }
-  /**
-   * <code>map&lt;string, .data.StackTraceCause&gt; causes = 16;</code>
-   */
-
-  public java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause> getCausesMap() {
-    return internalGetCauses().getMap();
-  }
-  /**
-   * <code>map&lt;string, .data.StackTraceCause&gt; causes = 16;</code>
-   */
-
-  public eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getCausesOrDefault(
-      java.lang.String key,
-      eu.tsystems.mms.tic.testframework.report.model.StackTraceCause defaultValue) {
-    if (key == null) { throw new java.lang.NullPointerException(); }
-    java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause> map =
-        internalGetCauses().getMap();
-    return map.containsKey(key) ? map.get(key) : defaultValue;
-  }
-  /**
-   * <code>map&lt;string, .data.StackTraceCause&gt; causes = 16;</code>
-   */
-
-  public eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getCausesOrThrow(
-      java.lang.String key) {
-    if (key == null) { throw new java.lang.NullPointerException(); }
-    java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause> map =
-        internalGetCauses().getMap();
-    if (!map.containsKey(key)) {
-      throw new java.lang.IllegalArgumentException();
-    }
-    return map.get(key);
   }
 
   private byte memoizedIsInitialized = -1;
@@ -599,12 +498,6 @@ private static final long serialVersionUID = 0L;
     if (estimatedTestsCount_ != 0) {
       output.writeInt32(15, estimatedTestsCount_);
     }
-    com.google.protobuf.GeneratedMessageV3
-      .serializeStringMapTo(
-        output,
-        internalGetCauses(),
-        CausesDefaultEntryHolder.defaultEntry,
-        16);
     unknownFields.writeTo(output);
   }
 
@@ -650,16 +543,6 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(15, estimatedTestsCount_);
     }
-    for (java.util.Map.Entry<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause> entry
-         : internalGetCauses().getMap().entrySet()) {
-      com.google.protobuf.MapEntry<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause>
-      causes__ = CausesDefaultEntryHolder.defaultEntry.newBuilderForType()
-          .setKey(entry.getKey())
-          .setValue(entry.getValue())
-          .build();
-      size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(16, causes__);
-    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -699,8 +582,6 @@ private static final long serialVersionUID = 0L;
         .equals(other.getLogMessagesList())) return false;
     if (getEstimatedTestsCount()
         != other.getEstimatedTestsCount()) return false;
-    if (!internalGetCauses().equals(
-        other.internalGetCauses())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -738,10 +619,6 @@ private static final long serialVersionUID = 0L;
     }
     hash = (37 * hash) + ESTIMATED_TESTS_COUNT_FIELD_NUMBER;
     hash = (53 * hash) + getEstimatedTestsCount();
-    if (!internalGetCauses().getMap().isEmpty()) {
-      hash = (37 * hash) + CAUSES_FIELD_NUMBER;
-      hash = (53 * hash) + internalGetCauses().hashCode();
-    }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -849,28 +726,6 @@ private static final long serialVersionUID = 0L;
       return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_ExecutionContext_descriptor;
     }
 
-    @SuppressWarnings({"rawtypes"})
-    protected com.google.protobuf.MapField internalGetMapField(
-        int number) {
-      switch (number) {
-        case 16:
-          return internalGetCauses();
-        default:
-          throw new RuntimeException(
-              "Invalid map field number: " + number);
-      }
-    }
-    @SuppressWarnings({"rawtypes"})
-    protected com.google.protobuf.MapField internalGetMutableMapField(
-        int number) {
-      switch (number) {
-        case 16:
-          return internalGetMutableCauses();
-        default:
-          throw new RuntimeException(
-              "Invalid map field number: " + number);
-      }
-    }
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
@@ -928,7 +783,6 @@ private static final long serialVersionUID = 0L;
       }
       estimatedTestsCount_ = 0;
 
-      internalGetMutableCauses().clear();
       return this;
     }
 
@@ -985,8 +839,6 @@ private static final long serialVersionUID = 0L;
         result.logMessages_ = logMessagesBuilder_.build();
       }
       result.estimatedTestsCount_ = estimatedTestsCount_;
-      result.causes_ = internalGetCauses();
-      result.causes_.makeImmutable();
       onBuilt();
       return result;
     }
@@ -1096,8 +948,6 @@ private static final long serialVersionUID = 0L;
       if (other.getEstimatedTestsCount() != 0) {
         setEstimatedTestsCount(other.getEstimatedTestsCount());
       }
-      internalGetMutableCauses().mergeFrom(
-          other.internalGetCauses());
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
       return this;
@@ -1843,22 +1693,22 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.PLogMessage> logMessages_ =
+    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage> logMessages_ =
       java.util.Collections.emptyList();
     private void ensureLogMessagesIsMutable() {
       if (!((bitField0_ & 0x00000002) != 0)) {
-        logMessages_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.PLogMessage>(logMessages_);
+        logMessages_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.LogMessage>(logMessages_);
         bitField0_ |= 0x00000002;
        }
     }
 
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.PLogMessage, eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder, eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder> logMessagesBuilder_;
+        eu.tsystems.mms.tic.testframework.report.model.LogMessage, eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder, eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder> logMessagesBuilder_;
 
     /**
-     * <code>repeated .data.PLogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
      */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PLogMessage> getLogMessagesList() {
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage> getLogMessagesList() {
       if (logMessagesBuilder_ == null) {
         return java.util.Collections.unmodifiableList(logMessages_);
       } else {
@@ -1866,7 +1716,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
      */
     public int getLogMessagesCount() {
       if (logMessagesBuilder_ == null) {
@@ -1876,9 +1726,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PLogMessage getLogMessages(int index) {
+    public eu.tsystems.mms.tic.testframework.report.model.LogMessage getLogMessages(int index) {
       if (logMessagesBuilder_ == null) {
         return logMessages_.get(index);
       } else {
@@ -1886,10 +1736,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
      */
     public Builder setLogMessages(
-        int index, eu.tsystems.mms.tic.testframework.report.model.PLogMessage value) {
+        int index, eu.tsystems.mms.tic.testframework.report.model.LogMessage value) {
       if (logMessagesBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -1903,10 +1753,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
      */
     public Builder setLogMessages(
-        int index, eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder builderForValue) {
+        int index, eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder builderForValue) {
       if (logMessagesBuilder_ == null) {
         ensureLogMessagesIsMutable();
         logMessages_.set(index, builderForValue.build());
@@ -1917,9 +1767,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
      */
-    public Builder addLogMessages(eu.tsystems.mms.tic.testframework.report.model.PLogMessage value) {
+    public Builder addLogMessages(eu.tsystems.mms.tic.testframework.report.model.LogMessage value) {
       if (logMessagesBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -1933,10 +1783,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
      */
     public Builder addLogMessages(
-        int index, eu.tsystems.mms.tic.testframework.report.model.PLogMessage value) {
+        int index, eu.tsystems.mms.tic.testframework.report.model.LogMessage value) {
       if (logMessagesBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -1950,10 +1800,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
      */
     public Builder addLogMessages(
-        eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder builderForValue) {
+        eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder builderForValue) {
       if (logMessagesBuilder_ == null) {
         ensureLogMessagesIsMutable();
         logMessages_.add(builderForValue.build());
@@ -1964,10 +1814,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
      */
     public Builder addLogMessages(
-        int index, eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder builderForValue) {
+        int index, eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder builderForValue) {
       if (logMessagesBuilder_ == null) {
         ensureLogMessagesIsMutable();
         logMessages_.add(index, builderForValue.build());
@@ -1978,10 +1828,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
      */
     public Builder addAllLogMessages(
-        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.PLogMessage> values) {
+        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.LogMessage> values) {
       if (logMessagesBuilder_ == null) {
         ensureLogMessagesIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -1993,7 +1843,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
      */
     public Builder clearLogMessages() {
       if (logMessagesBuilder_ == null) {
@@ -2006,7 +1856,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
      */
     public Builder removeLogMessages(int index) {
       if (logMessagesBuilder_ == null) {
@@ -2019,16 +1869,16 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder getLogMessagesBuilder(
+    public eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder getLogMessagesBuilder(
         int index) {
       return getLogMessagesFieldBuilder().getBuilder(index);
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder getLogMessagesOrBuilder(
+    public eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder getLogMessagesOrBuilder(
         int index) {
       if (logMessagesBuilder_ == null) {
         return logMessages_.get(index);  } else {
@@ -2036,9 +1886,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
      */
-    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder> 
+    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder> 
          getLogMessagesOrBuilderList() {
       if (logMessagesBuilder_ != null) {
         return logMessagesBuilder_.getMessageOrBuilderList();
@@ -2047,33 +1897,33 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder addLogMessagesBuilder() {
+    public eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder addLogMessagesBuilder() {
       return getLogMessagesFieldBuilder().addBuilder(
-          eu.tsystems.mms.tic.testframework.report.model.PLogMessage.getDefaultInstance());
+          eu.tsystems.mms.tic.testframework.report.model.LogMessage.getDefaultInstance());
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder addLogMessagesBuilder(
+    public eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder addLogMessagesBuilder(
         int index) {
       return getLogMessagesFieldBuilder().addBuilder(
-          index, eu.tsystems.mms.tic.testframework.report.model.PLogMessage.getDefaultInstance());
+          index, eu.tsystems.mms.tic.testframework.report.model.LogMessage.getDefaultInstance());
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
      */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder> 
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder> 
          getLogMessagesBuilderList() {
       return getLogMessagesFieldBuilder().getBuilderList();
     }
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.PLogMessage, eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder, eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder> 
+        eu.tsystems.mms.tic.testframework.report.model.LogMessage, eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder, eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder> 
         getLogMessagesFieldBuilder() {
       if (logMessagesBuilder_ == null) {
         logMessagesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            eu.tsystems.mms.tic.testframework.report.model.PLogMessage, eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder, eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder>(
+            eu.tsystems.mms.tic.testframework.report.model.LogMessage, eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder, eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder>(
                 logMessages_,
                 ((bitField0_ & 0x00000002) != 0),
                 getParentForChildren(),
@@ -2110,129 +1960,6 @@ private static final long serialVersionUID = 0L;
       
       estimatedTestsCount_ = 0;
       onChanged();
-      return this;
-    }
-
-    private com.google.protobuf.MapField<
-        java.lang.String, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause> causes_;
-    private com.google.protobuf.MapField<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause>
-    internalGetCauses() {
-      if (causes_ == null) {
-        return com.google.protobuf.MapField.emptyMapField(
-            CausesDefaultEntryHolder.defaultEntry);
-      }
-      return causes_;
-    }
-    private com.google.protobuf.MapField<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause>
-    internalGetMutableCauses() {
-      onChanged();;
-      if (causes_ == null) {
-        causes_ = com.google.protobuf.MapField.newMapField(
-            CausesDefaultEntryHolder.defaultEntry);
-      }
-      if (!causes_.isMutable()) {
-        causes_ = causes_.copy();
-      }
-      return causes_;
-    }
-
-    public int getCausesCount() {
-      return internalGetCauses().getMap().size();
-    }
-    /**
-     * <code>map&lt;string, .data.StackTraceCause&gt; causes = 16;</code>
-     */
-
-    public boolean containsCauses(
-        java.lang.String key) {
-      if (key == null) { throw new java.lang.NullPointerException(); }
-      return internalGetCauses().getMap().containsKey(key);
-    }
-    /**
-     * Use {@link #getCausesMap()} instead.
-     */
-    @java.lang.Deprecated
-    public java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause> getCauses() {
-      return getCausesMap();
-    }
-    /**
-     * <code>map&lt;string, .data.StackTraceCause&gt; causes = 16;</code>
-     */
-
-    public java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause> getCausesMap() {
-      return internalGetCauses().getMap();
-    }
-    /**
-     * <code>map&lt;string, .data.StackTraceCause&gt; causes = 16;</code>
-     */
-
-    public eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getCausesOrDefault(
-        java.lang.String key,
-        eu.tsystems.mms.tic.testframework.report.model.StackTraceCause defaultValue) {
-      if (key == null) { throw new java.lang.NullPointerException(); }
-      java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause> map =
-          internalGetCauses().getMap();
-      return map.containsKey(key) ? map.get(key) : defaultValue;
-    }
-    /**
-     * <code>map&lt;string, .data.StackTraceCause&gt; causes = 16;</code>
-     */
-
-    public eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getCausesOrThrow(
-        java.lang.String key) {
-      if (key == null) { throw new java.lang.NullPointerException(); }
-      java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause> map =
-          internalGetCauses().getMap();
-      if (!map.containsKey(key)) {
-        throw new java.lang.IllegalArgumentException();
-      }
-      return map.get(key);
-    }
-
-    public Builder clearCauses() {
-      internalGetMutableCauses().getMutableMap()
-          .clear();
-      return this;
-    }
-    /**
-     * <code>map&lt;string, .data.StackTraceCause&gt; causes = 16;</code>
-     */
-
-    public Builder removeCauses(
-        java.lang.String key) {
-      if (key == null) { throw new java.lang.NullPointerException(); }
-      internalGetMutableCauses().getMutableMap()
-          .remove(key);
-      return this;
-    }
-    /**
-     * Use alternate mutation accessors instead.
-     */
-    @java.lang.Deprecated
-    public java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause>
-    getMutableCauses() {
-      return internalGetMutableCauses().getMutableMap();
-    }
-    /**
-     * <code>map&lt;string, .data.StackTraceCause&gt; causes = 16;</code>
-     */
-    public Builder putCauses(
-        java.lang.String key,
-        eu.tsystems.mms.tic.testframework.report.model.StackTraceCause value) {
-      if (key == null) { throw new java.lang.NullPointerException(); }
-      if (value == null) { throw new java.lang.NullPointerException(); }
-      internalGetMutableCauses().getMutableMap()
-          .put(key, value);
-      return this;
-    }
-    /**
-     * <code>map&lt;string, .data.StackTraceCause&gt; causes = 16;</code>
-     */
-
-    public Builder putAllCauses(
-        java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause> values) {
-      internalGetMutableCauses().getMutableMap()
-          .putAll(values);
       return this;
     }
     @java.lang.Override

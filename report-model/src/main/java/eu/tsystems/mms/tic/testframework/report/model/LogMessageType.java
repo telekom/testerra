@@ -4,61 +4,53 @@
 package eu.tsystems.mms.tic.testframework.report.model;
 
 /**
- * Protobuf enum {@code data.PClickPathEventType}
+ * Protobuf enum {@code data.LogMessageType}
  */
-public enum PClickPathEventType
+public enum LogMessageType
     implements com.google.protobuf.ProtocolMessageEnum {
   /**
-   * <code>NOT_SET = 0;</code>
+   * <code>LMT_OFF = 0;</code>
    */
-  NOT_SET(0),
+  LMT_OFF(0),
   /**
-   * <code>WINDOW = 1;</code>
+   * <code>LMT_ERROR = 1;</code>
    */
-  WINDOW(1),
+  LMT_ERROR(1),
   /**
-   * <code>CLICK = 2;</code>
+   * <code>LMT_WARN = 2;</code>
    */
-  CLICK(2),
+  LMT_WARN(2),
   /**
-   * <code>VALUE = 3;</code>
+   * <code>LMT_INFO = 3;</code>
    */
-  VALUE(3),
+  LMT_INFO(3),
   /**
-   * <code>PAGE = 4;</code>
+   * <code>LMT_DEBUG = 4;</code>
    */
-  PAGE(4),
-  /**
-   * <code>URL = 5;</code>
-   */
-  URL(5),
+  LMT_DEBUG(4),
   UNRECOGNIZED(-1),
   ;
 
   /**
-   * <code>NOT_SET = 0;</code>
+   * <code>LMT_OFF = 0;</code>
    */
-  public static final int NOT_SET_VALUE = 0;
+  public static final int LMT_OFF_VALUE = 0;
   /**
-   * <code>WINDOW = 1;</code>
+   * <code>LMT_ERROR = 1;</code>
    */
-  public static final int WINDOW_VALUE = 1;
+  public static final int LMT_ERROR_VALUE = 1;
   /**
-   * <code>CLICK = 2;</code>
+   * <code>LMT_WARN = 2;</code>
    */
-  public static final int CLICK_VALUE = 2;
+  public static final int LMT_WARN_VALUE = 2;
   /**
-   * <code>VALUE = 3;</code>
+   * <code>LMT_INFO = 3;</code>
    */
-  public static final int VALUE_VALUE = 3;
+  public static final int LMT_INFO_VALUE = 3;
   /**
-   * <code>PAGE = 4;</code>
+   * <code>LMT_DEBUG = 4;</code>
    */
-  public static final int PAGE_VALUE = 4;
-  /**
-   * <code>URL = 5;</code>
-   */
-  public static final int URL_VALUE = 5;
+  public static final int LMT_DEBUG_VALUE = 4;
 
 
   public final int getNumber() {
@@ -75,7 +67,7 @@ public enum PClickPathEventType
    * @deprecated Use {@link #forNumber(int)} instead.
    */
   @java.lang.Deprecated
-  public static PClickPathEventType valueOf(int value) {
+  public static LogMessageType valueOf(int value) {
     return forNumber(value);
   }
 
@@ -83,27 +75,26 @@ public enum PClickPathEventType
    * @param value The numeric wire value of the corresponding enum entry.
    * @return The enum associated with the given numeric wire value.
    */
-  public static PClickPathEventType forNumber(int value) {
+  public static LogMessageType forNumber(int value) {
     switch (value) {
-      case 0: return NOT_SET;
-      case 1: return WINDOW;
-      case 2: return CLICK;
-      case 3: return VALUE;
-      case 4: return PAGE;
-      case 5: return URL;
+      case 0: return LMT_OFF;
+      case 1: return LMT_ERROR;
+      case 2: return LMT_WARN;
+      case 3: return LMT_INFO;
+      case 4: return LMT_DEBUG;
       default: return null;
     }
   }
 
-  public static com.google.protobuf.Internal.EnumLiteMap<PClickPathEventType>
+  public static com.google.protobuf.Internal.EnumLiteMap<LogMessageType>
       internalGetValueMap() {
     return internalValueMap;
   }
   private static final com.google.protobuf.Internal.EnumLiteMap<
-      PClickPathEventType> internalValueMap =
-        new com.google.protobuf.Internal.EnumLiteMap<PClickPathEventType>() {
-          public PClickPathEventType findValueByNumber(int number) {
-            return PClickPathEventType.forNumber(number);
+      LogMessageType> internalValueMap =
+        new com.google.protobuf.Internal.EnumLiteMap<LogMessageType>() {
+          public LogMessageType findValueByNumber(int number) {
+            return LogMessageType.forNumber(number);
           }
         };
 
@@ -117,12 +108,12 @@ public enum PClickPathEventType
   }
   public static final com.google.protobuf.Descriptors.EnumDescriptor
       getDescriptor() {
-    return eu.tsystems.mms.tic.testframework.report.model.Framework.getDescriptor().getEnumTypes().get(0);
+    return eu.tsystems.mms.tic.testframework.report.model.Framework.getDescriptor().getEnumTypes().get(1);
   }
 
-  private static final PClickPathEventType[] VALUES = values();
+  private static final LogMessageType[] VALUES = values();
 
-  public static PClickPathEventType valueOf(
+  public static LogMessageType valueOf(
       com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
     if (desc.getType() != getDescriptor()) {
       throw new java.lang.IllegalArgumentException(
@@ -136,10 +127,10 @@ public enum PClickPathEventType
 
   private final int value;
 
-  private PClickPathEventType(int value) {
+  private LogMessageType(int value) {
     this.value = value;
   }
 
-  // @@protoc_insertion_point(enum_scope:data.PClickPathEventType)
+  // @@protoc_insertion_point(enum_scope:data.LogMessageType)
 }
 

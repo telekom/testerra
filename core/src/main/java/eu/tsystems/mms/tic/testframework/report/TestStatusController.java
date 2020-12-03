@@ -27,13 +27,10 @@ import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.ITestResult;
@@ -43,8 +40,6 @@ import static eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextCon
 public class TestStatusController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TestStatusController.class);
-    private static final String PASSED = "PASSED";
-    private static final String FAILED = "FAILED";
     private static int testsSuccessful = 0;
     private static int testsSkipped = 0;
     private static int testsFailed = 0;
@@ -166,37 +161,26 @@ public class TestStatusController {
     }
 
     private static void levelFC(MethodContext methodContext, boolean raise) {
-        FailureCorridor.Value failureCorridorValue = methodContext.failureCorridorValue;
-
-        if (failureCorridorValue != null) {
-            switch (failureCorridorValue) {
-                case HIGH:
-                    if (raise) {
-                        testsFailedHIGH++;
-                    } else {
-                        testsFailedHIGH--;
-                    }
-                    break;
-                case MID:
-                    if (raise) {
-                        testsFailedMID++;
-                    } else {
-                        testsFailedMID--;
-                    }
-                    break;
-                case LOW:
-                    if (raise) {
-                        testsFailedLOW++;
-                    } else {
-                        testsFailedLOW--;
-                    }
-                    break;
-                default:
-                    throw new SystemException("Could not set explicit Failure Corridor value. Missing state: " + failureCorridorValue);
+        Class failureCorridorClass = methodContext.getFailureCorridorClass();
+        if (failureCorridorClass.equals(FailureCorridor.High.class)) {
+            if (raise) {
+                testsFailedHIGH++;
+            } else {
+                testsFailedHIGH--;
             }
-            LOGGER.debug("FC: " + testsFailedHIGH + "/" + testsFailedMID + "/" + testsFailedLOW);
+        } else if (failureCorridorClass.equals(FailureCorridor.Mid.class)) {
+            if (raise) {
+                testsFailedMID++;
+            } else {
+                testsFailedMID--;
+            }
+        } else {
+            if (raise) {
+                testsFailedLOW++;
+            } else {
+                testsFailedLOW--;
+            }
         }
-
     }
 
     public static String getFinalCountersMessage() {

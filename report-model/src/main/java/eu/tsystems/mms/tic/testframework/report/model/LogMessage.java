@@ -4,30 +4,29 @@
 package eu.tsystems.mms.tic.testframework.report.model;
 
 /**
- * Protobuf type {@code data.PLogMessage}
+ * Protobuf type {@code data.LogMessage}
  */
-public  final class PLogMessage extends
+public  final class LogMessage extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:data.PLogMessage)
-    PLogMessageOrBuilder {
+    // @@protoc_insertion_point(message_implements:data.LogMessage)
+    LogMessageOrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use PLogMessage.newBuilder() to construct.
-  private PLogMessage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+  // Use LogMessage.newBuilder() to construct.
+  private LogMessage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private PLogMessage() {
+  private LogMessage() {
     type_ = 0;
     loggerName_ = "";
     message_ = "";
     threadName_ = "";
-    causeId_ = "";
   }
 
   @java.lang.Override
   @SuppressWarnings({"unused"})
   protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
-    return new PLogMessage();
+    return new LogMessage();
   }
 
   @java.lang.Override
@@ -35,7 +34,7 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private PLogMessage(
+  private LogMessage(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -83,9 +82,16 @@ private static final long serialVersionUID = 0L;
             break;
           }
           case 50: {
-            java.lang.String s = input.readStringRequireUtf8();
+            eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder subBuilder = null;
+            if (cause_ != null) {
+              subBuilder = cause_.toBuilder();
+            }
+            cause_ = input.readMessage(eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.parser(), extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(cause_);
+              cause_ = subBuilder.buildPartial();
+            }
 
-            causeId_ = s;
             break;
           }
           default: {
@@ -109,34 +115,34 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_PLogMessage_descriptor;
+    return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_LogMessage_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_PLogMessage_fieldAccessorTable
+    return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_LogMessage_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            eu.tsystems.mms.tic.testframework.report.model.PLogMessage.class, eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder.class);
+            eu.tsystems.mms.tic.testframework.report.model.LogMessage.class, eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder.class);
   }
 
   public static final int TYPE_FIELD_NUMBER = 1;
   private int type_;
   /**
-   * <code>.data.PLogMessageType type = 1;</code>
+   * <code>.data.LogMessageType type = 1;</code>
    * @return The enum numeric value on the wire for type.
    */
   public int getTypeValue() {
     return type_;
   }
   /**
-   * <code>.data.PLogMessageType type = 1;</code>
+   * <code>.data.LogMessageType type = 1;</code>
    * @return The type.
    */
-  public eu.tsystems.mms.tic.testframework.report.model.PLogMessageType getType() {
+  public eu.tsystems.mms.tic.testframework.report.model.LogMessageType getType() {
     @SuppressWarnings("deprecation")
-    eu.tsystems.mms.tic.testframework.report.model.PLogMessageType result = eu.tsystems.mms.tic.testframework.report.model.PLogMessageType.valueOf(type_);
-    return result == null ? eu.tsystems.mms.tic.testframework.report.model.PLogMessageType.UNRECOGNIZED : result;
+    eu.tsystems.mms.tic.testframework.report.model.LogMessageType result = eu.tsystems.mms.tic.testframework.report.model.LogMessageType.valueOf(type_);
+    return result == null ? eu.tsystems.mms.tic.testframework.report.model.LogMessageType.UNRECOGNIZED : result;
   }
 
   public static final int LOGGER_NAME_FIELD_NUMBER = 2;
@@ -257,40 +263,27 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int CAUSE_ID_FIELD_NUMBER = 6;
-  private volatile java.lang.Object causeId_;
+  public static final int CAUSE_FIELD_NUMBER = 6;
+  private eu.tsystems.mms.tic.testframework.report.model.StackTraceCause cause_;
   /**
-   * <code>string cause_id = 6;</code>
-   * @return The causeId.
+   * <code>.data.StackTraceCause cause = 6;</code>
+   * @return Whether the cause field is set.
    */
-  public java.lang.String getCauseId() {
-    java.lang.Object ref = causeId_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      causeId_ = s;
-      return s;
-    }
+  public boolean hasCause() {
+    return cause_ != null;
   }
   /**
-   * <code>string cause_id = 6;</code>
-   * @return The bytes for causeId.
+   * <code>.data.StackTraceCause cause = 6;</code>
+   * @return The cause.
    */
-  public com.google.protobuf.ByteString
-      getCauseIdBytes() {
-    java.lang.Object ref = causeId_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      causeId_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
+  public eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getCause() {
+    return cause_ == null ? eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.getDefaultInstance() : cause_;
+  }
+  /**
+   * <code>.data.StackTraceCause cause = 6;</code>
+   */
+  public eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder getCauseOrBuilder() {
+    return getCause();
   }
 
   private byte memoizedIsInitialized = -1;
@@ -307,7 +300,7 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (type_ != eu.tsystems.mms.tic.testframework.report.model.PLogMessageType.LMT_OFF.getNumber()) {
+    if (type_ != eu.tsystems.mms.tic.testframework.report.model.LogMessageType.LMT_OFF.getNumber()) {
       output.writeEnum(1, type_);
     }
     if (!getLoggerNameBytes().isEmpty()) {
@@ -322,8 +315,8 @@ private static final long serialVersionUID = 0L;
     if (!getThreadNameBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 5, threadName_);
     }
-    if (!getCauseIdBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 6, causeId_);
+    if (cause_ != null) {
+      output.writeMessage(6, getCause());
     }
     unknownFields.writeTo(output);
   }
@@ -334,7 +327,7 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (type_ != eu.tsystems.mms.tic.testframework.report.model.PLogMessageType.LMT_OFF.getNumber()) {
+    if (type_ != eu.tsystems.mms.tic.testframework.report.model.LogMessageType.LMT_OFF.getNumber()) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(1, type_);
     }
@@ -351,8 +344,9 @@ private static final long serialVersionUID = 0L;
     if (!getThreadNameBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, threadName_);
     }
-    if (!getCauseIdBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, causeId_);
+    if (cause_ != null) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(6, getCause());
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -364,10 +358,10 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof eu.tsystems.mms.tic.testframework.report.model.PLogMessage)) {
+    if (!(obj instanceof eu.tsystems.mms.tic.testframework.report.model.LogMessage)) {
       return super.equals(obj);
     }
-    eu.tsystems.mms.tic.testframework.report.model.PLogMessage other = (eu.tsystems.mms.tic.testframework.report.model.PLogMessage) obj;
+    eu.tsystems.mms.tic.testframework.report.model.LogMessage other = (eu.tsystems.mms.tic.testframework.report.model.LogMessage) obj;
 
     if (type_ != other.type_) return false;
     if (!getLoggerName()
@@ -378,8 +372,11 @@ private static final long serialVersionUID = 0L;
         != other.getTimestamp()) return false;
     if (!getThreadName()
         .equals(other.getThreadName())) return false;
-    if (!getCauseId()
-        .equals(other.getCauseId())) return false;
+    if (hasCause() != other.hasCause()) return false;
+    if (hasCause()) {
+      if (!getCause()
+          .equals(other.getCause())) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -402,76 +399,78 @@ private static final long serialVersionUID = 0L;
         getTimestamp());
     hash = (37 * hash) + THREAD_NAME_FIELD_NUMBER;
     hash = (53 * hash) + getThreadName().hashCode();
-    hash = (37 * hash) + CAUSE_ID_FIELD_NUMBER;
-    hash = (53 * hash) + getCauseId().hashCode();
+    if (hasCause()) {
+      hash = (37 * hash) + CAUSE_FIELD_NUMBER;
+      hash = (53 * hash) + getCause().hashCode();
+    }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
   }
 
-  public static eu.tsystems.mms.tic.testframework.report.model.PLogMessage parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.LogMessage parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PLogMessage parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.LogMessage parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PLogMessage parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.LogMessage parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PLogMessage parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.LogMessage parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PLogMessage parseFrom(byte[] data)
+  public static eu.tsystems.mms.tic.testframework.report.model.LogMessage parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PLogMessage parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.LogMessage parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PLogMessage parseFrom(java.io.InputStream input)
+  public static eu.tsystems.mms.tic.testframework.report.model.LogMessage parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PLogMessage parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.LogMessage parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PLogMessage parseDelimitedFrom(java.io.InputStream input)
+  public static eu.tsystems.mms.tic.testframework.report.model.LogMessage parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PLogMessage parseDelimitedFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.LogMessage parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PLogMessage parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.LogMessage parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PLogMessage parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.LogMessage parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -484,7 +483,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(eu.tsystems.mms.tic.testframework.report.model.PLogMessage prototype) {
+  public static Builder newBuilder(eu.tsystems.mms.tic.testframework.report.model.LogMessage prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -500,26 +499,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code data.PLogMessage}
+   * Protobuf type {@code data.LogMessage}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:data.PLogMessage)
-      eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder {
+      // @@protoc_insertion_point(builder_implements:data.LogMessage)
+      eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_PLogMessage_descriptor;
+      return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_LogMessage_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_PLogMessage_fieldAccessorTable
+      return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_LogMessage_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              eu.tsystems.mms.tic.testframework.report.model.PLogMessage.class, eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder.class);
+              eu.tsystems.mms.tic.testframework.report.model.LogMessage.class, eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder.class);
     }
 
-    // Construct using eu.tsystems.mms.tic.testframework.report.model.PLogMessage.newBuilder()
+    // Construct using eu.tsystems.mms.tic.testframework.report.model.LogMessage.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -547,25 +546,29 @@ private static final long serialVersionUID = 0L;
 
       threadName_ = "";
 
-      causeId_ = "";
-
+      if (causeBuilder_ == null) {
+        cause_ = null;
+      } else {
+        cause_ = null;
+        causeBuilder_ = null;
+      }
       return this;
     }
 
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_PLogMessage_descriptor;
+      return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_LogMessage_descriptor;
     }
 
     @java.lang.Override
-    public eu.tsystems.mms.tic.testframework.report.model.PLogMessage getDefaultInstanceForType() {
-      return eu.tsystems.mms.tic.testframework.report.model.PLogMessage.getDefaultInstance();
+    public eu.tsystems.mms.tic.testframework.report.model.LogMessage getDefaultInstanceForType() {
+      return eu.tsystems.mms.tic.testframework.report.model.LogMessage.getDefaultInstance();
     }
 
     @java.lang.Override
-    public eu.tsystems.mms.tic.testframework.report.model.PLogMessage build() {
-      eu.tsystems.mms.tic.testframework.report.model.PLogMessage result = buildPartial();
+    public eu.tsystems.mms.tic.testframework.report.model.LogMessage build() {
+      eu.tsystems.mms.tic.testframework.report.model.LogMessage result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -573,14 +576,18 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public eu.tsystems.mms.tic.testframework.report.model.PLogMessage buildPartial() {
-      eu.tsystems.mms.tic.testframework.report.model.PLogMessage result = new eu.tsystems.mms.tic.testframework.report.model.PLogMessage(this);
+    public eu.tsystems.mms.tic.testframework.report.model.LogMessage buildPartial() {
+      eu.tsystems.mms.tic.testframework.report.model.LogMessage result = new eu.tsystems.mms.tic.testframework.report.model.LogMessage(this);
       result.type_ = type_;
       result.loggerName_ = loggerName_;
       result.message_ = message_;
       result.timestamp_ = timestamp_;
       result.threadName_ = threadName_;
-      result.causeId_ = causeId_;
+      if (causeBuilder_ == null) {
+        result.cause_ = cause_;
+      } else {
+        result.cause_ = causeBuilder_.build();
+      }
       onBuilt();
       return result;
     }
@@ -619,16 +626,16 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof eu.tsystems.mms.tic.testframework.report.model.PLogMessage) {
-        return mergeFrom((eu.tsystems.mms.tic.testframework.report.model.PLogMessage)other);
+      if (other instanceof eu.tsystems.mms.tic.testframework.report.model.LogMessage) {
+        return mergeFrom((eu.tsystems.mms.tic.testframework.report.model.LogMessage)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(eu.tsystems.mms.tic.testframework.report.model.PLogMessage other) {
-      if (other == eu.tsystems.mms.tic.testframework.report.model.PLogMessage.getDefaultInstance()) return this;
+    public Builder mergeFrom(eu.tsystems.mms.tic.testframework.report.model.LogMessage other) {
+      if (other == eu.tsystems.mms.tic.testframework.report.model.LogMessage.getDefaultInstance()) return this;
       if (other.type_ != 0) {
         setTypeValue(other.getTypeValue());
       }
@@ -647,9 +654,8 @@ private static final long serialVersionUID = 0L;
         threadName_ = other.threadName_;
         onChanged();
       }
-      if (!other.getCauseId().isEmpty()) {
-        causeId_ = other.causeId_;
-        onChanged();
+      if (other.hasCause()) {
+        mergeCause(other.getCause());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -666,11 +672,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      eu.tsystems.mms.tic.testframework.report.model.PLogMessage parsedMessage = null;
+      eu.tsystems.mms.tic.testframework.report.model.LogMessage parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (eu.tsystems.mms.tic.testframework.report.model.PLogMessage) e.getUnfinishedMessage();
+        parsedMessage = (eu.tsystems.mms.tic.testframework.report.model.LogMessage) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -682,14 +688,14 @@ private static final long serialVersionUID = 0L;
 
     private int type_ = 0;
     /**
-     * <code>.data.PLogMessageType type = 1;</code>
+     * <code>.data.LogMessageType type = 1;</code>
      * @return The enum numeric value on the wire for type.
      */
     public int getTypeValue() {
       return type_;
     }
     /**
-     * <code>.data.PLogMessageType type = 1;</code>
+     * <code>.data.LogMessageType type = 1;</code>
      * @param value The enum numeric value on the wire for type to set.
      * @return This builder for chaining.
      */
@@ -699,20 +705,20 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.data.PLogMessageType type = 1;</code>
+     * <code>.data.LogMessageType type = 1;</code>
      * @return The type.
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PLogMessageType getType() {
+    public eu.tsystems.mms.tic.testframework.report.model.LogMessageType getType() {
       @SuppressWarnings("deprecation")
-      eu.tsystems.mms.tic.testframework.report.model.PLogMessageType result = eu.tsystems.mms.tic.testframework.report.model.PLogMessageType.valueOf(type_);
-      return result == null ? eu.tsystems.mms.tic.testframework.report.model.PLogMessageType.UNRECOGNIZED : result;
+      eu.tsystems.mms.tic.testframework.report.model.LogMessageType result = eu.tsystems.mms.tic.testframework.report.model.LogMessageType.valueOf(type_);
+      return result == null ? eu.tsystems.mms.tic.testframework.report.model.LogMessageType.UNRECOGNIZED : result;
     }
     /**
-     * <code>.data.PLogMessageType type = 1;</code>
+     * <code>.data.LogMessageType type = 1;</code>
      * @param value The type to set.
      * @return This builder for chaining.
      */
-    public Builder setType(eu.tsystems.mms.tic.testframework.report.model.PLogMessageType value) {
+    public Builder setType(eu.tsystems.mms.tic.testframework.report.model.LogMessageType value) {
       if (value == null) {
         throw new NullPointerException();
       }
@@ -722,7 +728,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.data.PLogMessageType type = 1;</code>
+     * <code>.data.LogMessageType type = 1;</code>
      * @return This builder for chaining.
      */
     public Builder clearType() {
@@ -990,80 +996,123 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.lang.Object causeId_ = "";
+    private eu.tsystems.mms.tic.testframework.report.model.StackTraceCause cause_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        eu.tsystems.mms.tic.testframework.report.model.StackTraceCause, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder, eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder> causeBuilder_;
     /**
-     * <code>string cause_id = 6;</code>
-     * @return The causeId.
+     * <code>.data.StackTraceCause cause = 6;</code>
+     * @return Whether the cause field is set.
      */
-    public java.lang.String getCauseId() {
-      java.lang.Object ref = causeId_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        causeId_ = s;
-        return s;
+    public boolean hasCause() {
+      return causeBuilder_ != null || cause_ != null;
+    }
+    /**
+     * <code>.data.StackTraceCause cause = 6;</code>
+     * @return The cause.
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getCause() {
+      if (causeBuilder_ == null) {
+        return cause_ == null ? eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.getDefaultInstance() : cause_;
       } else {
-        return (java.lang.String) ref;
+        return causeBuilder_.getMessage();
       }
     }
     /**
-     * <code>string cause_id = 6;</code>
-     * @return The bytes for causeId.
+     * <code>.data.StackTraceCause cause = 6;</code>
      */
-    public com.google.protobuf.ByteString
-        getCauseIdBytes() {
-      java.lang.Object ref = causeId_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        causeId_ = b;
-        return b;
+    public Builder setCause(eu.tsystems.mms.tic.testframework.report.model.StackTraceCause value) {
+      if (causeBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        cause_ = value;
+        onChanged();
       } else {
-        return (com.google.protobuf.ByteString) ref;
+        causeBuilder_.setMessage(value);
+      }
+
+      return this;
+    }
+    /**
+     * <code>.data.StackTraceCause cause = 6;</code>
+     */
+    public Builder setCause(
+        eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder builderForValue) {
+      if (causeBuilder_ == null) {
+        cause_ = builderForValue.build();
+        onChanged();
+      } else {
+        causeBuilder_.setMessage(builderForValue.build());
+      }
+
+      return this;
+    }
+    /**
+     * <code>.data.StackTraceCause cause = 6;</code>
+     */
+    public Builder mergeCause(eu.tsystems.mms.tic.testframework.report.model.StackTraceCause value) {
+      if (causeBuilder_ == null) {
+        if (cause_ != null) {
+          cause_ =
+            eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.newBuilder(cause_).mergeFrom(value).buildPartial();
+        } else {
+          cause_ = value;
+        }
+        onChanged();
+      } else {
+        causeBuilder_.mergeFrom(value);
+      }
+
+      return this;
+    }
+    /**
+     * <code>.data.StackTraceCause cause = 6;</code>
+     */
+    public Builder clearCause() {
+      if (causeBuilder_ == null) {
+        cause_ = null;
+        onChanged();
+      } else {
+        cause_ = null;
+        causeBuilder_ = null;
+      }
+
+      return this;
+    }
+    /**
+     * <code>.data.StackTraceCause cause = 6;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder getCauseBuilder() {
+      
+      onChanged();
+      return getCauseFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>.data.StackTraceCause cause = 6;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder getCauseOrBuilder() {
+      if (causeBuilder_ != null) {
+        return causeBuilder_.getMessageOrBuilder();
+      } else {
+        return cause_ == null ?
+            eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.getDefaultInstance() : cause_;
       }
     }
     /**
-     * <code>string cause_id = 6;</code>
-     * @param value The causeId to set.
-     * @return This builder for chaining.
+     * <code>.data.StackTraceCause cause = 6;</code>
      */
-    public Builder setCauseId(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      causeId_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string cause_id = 6;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearCauseId() {
-      
-      causeId_ = getDefaultInstance().getCauseId();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string cause_id = 6;</code>
-     * @param value The bytes for causeId to set.
-     * @return This builder for chaining.
-     */
-    public Builder setCauseIdBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      causeId_ = value;
-      onChanged();
-      return this;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        eu.tsystems.mms.tic.testframework.report.model.StackTraceCause, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder, eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder> 
+        getCauseFieldBuilder() {
+      if (causeBuilder_ == null) {
+        causeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            eu.tsystems.mms.tic.testframework.report.model.StackTraceCause, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder, eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder>(
+                getCause(),
+                getParentForChildren(),
+                isClean());
+        cause_ = null;
+      }
+      return causeBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(
@@ -1078,41 +1127,41 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:data.PLogMessage)
+    // @@protoc_insertion_point(builder_scope:data.LogMessage)
   }
 
-  // @@protoc_insertion_point(class_scope:data.PLogMessage)
-  private static final eu.tsystems.mms.tic.testframework.report.model.PLogMessage DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:data.LogMessage)
+  private static final eu.tsystems.mms.tic.testframework.report.model.LogMessage DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new eu.tsystems.mms.tic.testframework.report.model.PLogMessage();
+    DEFAULT_INSTANCE = new eu.tsystems.mms.tic.testframework.report.model.LogMessage();
   }
 
-  public static eu.tsystems.mms.tic.testframework.report.model.PLogMessage getDefaultInstance() {
+  public static eu.tsystems.mms.tic.testframework.report.model.LogMessage getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<PLogMessage>
-      PARSER = new com.google.protobuf.AbstractParser<PLogMessage>() {
+  private static final com.google.protobuf.Parser<LogMessage>
+      PARSER = new com.google.protobuf.AbstractParser<LogMessage>() {
     @java.lang.Override
-    public PLogMessage parsePartialFrom(
+    public LogMessage parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new PLogMessage(input, extensionRegistry);
+      return new LogMessage(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<PLogMessage> parser() {
+  public static com.google.protobuf.Parser<LogMessage> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<PLogMessage> getParserForType() {
+  public com.google.protobuf.Parser<LogMessage> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public eu.tsystems.mms.tic.testframework.report.model.PLogMessage getDefaultInstanceForType() {
+  public eu.tsystems.mms.tic.testframework.report.model.LogMessage getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

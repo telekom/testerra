@@ -22,12 +22,12 @@
 import {data} from "../services/report-model";
 
 export class LogLevelValueConverter {
-    toView(value: data.PLogMessageType) {
+    toView(value: data.LogMessageType) {
         switch (value) {
-            case data.PLogMessageType.LMT_DEBUG: return "DEBUG";
-            case data.PLogMessageType.LMT_ERROR: return "ERROR";
-            case data.PLogMessageType.LMT_INFO: return "INFO";
-            case data.PLogMessageType.LMT_WARN: return "WARN";
+            case data.LogMessageType.LMT_DEBUG: return "DEBUG";
+            case data.LogMessageType.LMT_ERROR: return "ERROR";
+            case data.LogMessageType.LMT_INFO: return "INFO";
+            case data.LogMessageType.LMT_WARN: return "WARN";
             default: return "UNKNOWN";
         }
     }

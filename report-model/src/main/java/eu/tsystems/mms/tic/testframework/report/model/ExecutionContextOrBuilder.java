@@ -132,27 +132,27 @@ public interface ExecutionContextOrBuilder extends
       getExclusiveSessionContextIdsBytes(int index);
 
   /**
-   * <code>repeated .data.PLogMessage log_messages = 14;</code>
+   * <code>repeated .data.LogMessage log_messages = 14;</code>
    */
-  java.util.List<eu.tsystems.mms.tic.testframework.report.model.PLogMessage> 
+  java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage> 
       getLogMessagesList();
   /**
-   * <code>repeated .data.PLogMessage log_messages = 14;</code>
+   * <code>repeated .data.LogMessage log_messages = 14;</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.PLogMessage getLogMessages(int index);
+  eu.tsystems.mms.tic.testframework.report.model.LogMessage getLogMessages(int index);
   /**
-   * <code>repeated .data.PLogMessage log_messages = 14;</code>
+   * <code>repeated .data.LogMessage log_messages = 14;</code>
    */
   int getLogMessagesCount();
   /**
-   * <code>repeated .data.PLogMessage log_messages = 14;</code>
+   * <code>repeated .data.LogMessage log_messages = 14;</code>
    */
-  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder> 
+  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder> 
       getLogMessagesOrBuilderList();
   /**
-   * <code>repeated .data.PLogMessage log_messages = 14;</code>
+   * <code>repeated .data.LogMessage log_messages = 14;</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder getLogMessagesOrBuilder(
+  eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder getLogMessagesOrBuilder(
       int index);
 
   /**
@@ -160,38 +160,4 @@ public interface ExecutionContextOrBuilder extends
    * @return The estimatedTestsCount.
    */
   int getEstimatedTestsCount();
-
-  /**
-   * <code>map&lt;string, .data.StackTraceCause&gt; causes = 16;</code>
-   */
-  int getCausesCount();
-  /**
-   * <code>map&lt;string, .data.StackTraceCause&gt; causes = 16;</code>
-   */
-  boolean containsCauses(
-      java.lang.String key);
-  /**
-   * Use {@link #getCausesMap()} instead.
-   */
-  @java.lang.Deprecated
-  java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause>
-  getCauses();
-  /**
-   * <code>map&lt;string, .data.StackTraceCause&gt; causes = 16;</code>
-   */
-  java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause>
-  getCausesMap();
-  /**
-   * <code>map&lt;string, .data.StackTraceCause&gt; causes = 16;</code>
-   */
-
-  eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getCausesOrDefault(
-      java.lang.String key,
-      eu.tsystems.mms.tic.testframework.report.model.StackTraceCause defaultValue);
-  /**
-   * <code>map&lt;string, .data.StackTraceCause&gt; causes = 16;</code>
-   */
-
-  eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getCausesOrThrow(
-      java.lang.String key);
 }

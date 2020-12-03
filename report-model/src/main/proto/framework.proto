@@ -49,9 +49,8 @@ message ExecutionContext {
 
 //    int32 estimatedTestMethodCount = 13 [deprecated = true];
 
-    repeated PLogMessage log_messages = 14;
+    repeated LogMessage log_messages = 14;
     int32 estimated_tests_count = 15;
-    map<string, StackTraceCause> causes = 16;
 }
 
 //message ContextClip {
@@ -80,7 +79,7 @@ message MethodContext {
     repeated string related_method_context_ids = 23;
     repeated string depends_on_method_context_ids = 24;
     ErrorContext error_context = 25;
-    repeated PTestStep test_steps = 26;
+    repeated TestStep test_steps = 26;
 
 //    string test_context_id = 27 [deprecated = true];
 //    string suite_context_id = 28 [deprecated = true];
@@ -103,40 +102,40 @@ message ContextValues {
     ExecStatusType exec_status = 8;
 }
 
-message PTestStep {
+message TestStep {
     string name = 1;
 //    string id = 2;
-    repeated PTestStepAction test_step_actions = 3;
+    repeated TestStepAction test_step_actions = 3;
 }
 
-message PTestStepAction {
+message TestStepAction {
     string name = 1;
 //    string id = 2;
     int64 timestamp = 3;
 //    repeated string screenshot_names = 4 [deprecated = true];
-    repeated PClickPathEvent clickpath_events = 5;
+    repeated ClickPathEvent clickpath_events = 5;
     repeated string screenshot_ids = 6;
-    repeated PLogMessage log_messages = 7;
+    repeated LogMessage log_messages = 7;
     repeated ErrorContext optional_assertions = 8;
     repeated ErrorContext collected_assertions = 9;
 }
 
-enum PClickPathEventType {
-    NOT_SET = 0;
-    WINDOW = 1;
-    CLICK = 2;
-    VALUE = 3;
-    PAGE = 4;
-    URL = 5;
+enum ClickPathEventType {
+    CPET_NOT_SET = 0;
+    CPET_WINDOW = 1;
+    CPET_CLICK = 2;
+    CPET_VALUE = 3;
+    CPET_PAGE = 4;
+    CPET_URL = 5;
 }
 
-message PClickPathEvent {
-    PClickPathEventType type = 1;
+message ClickPathEvent {
+    ClickPathEventType type = 1;
     string subject = 2;
     string session_id = 3;
 }
 
-enum PLogMessageType {
+enum LogMessageType {
     LMT_OFF = 0;
     LMT_ERROR = 1;
     LMT_WARN = 2;
@@ -144,13 +143,13 @@ enum PLogMessageType {
     LMT_DEBUG = 4;
 }
 
-message PLogMessage {
-    PLogMessageType type = 1;
+message LogMessage {
+    LogMessageType type = 1;
     string logger_name = 2;
     string message = 3;
     int64 timestamp = 4;
     string thread_name = 5;
-    string cause_id = 6;
+    StackTraceCause cause = 6;
 }
 
 message ErrorContext {
@@ -162,7 +161,7 @@ message ErrorContext {
     ScriptSource execution_object_source = 8;
     string ticketId = 9;
     string description = 10;
-    string cause_id = 11;
+    StackTraceCause cause = 11;
 }
 
 message SessionContext {
@@ -190,9 +189,9 @@ message BuildInformation {
 
 enum FailureCorridorValue {
     FCV_NOT_SET = 0;
-    HIGH = 1;
-    MID = 2;
-    LOW = 3;
+    FCV_HIGH = 1;
+    FCV_MID = 2;
+    FCV_LOW = 3;
 }
 
 enum MethodType {
@@ -210,9 +209,7 @@ message StackTraceCause {
     string class_name = 1;
     string message = 2;
     repeated string stack_trace_elements = 3;
-//    StackTraceCause cause = 4;
-    string id = 5;
-    string cause_id = 6;
+    StackTraceCause cause = 4;
 }
 
 message ScriptSource {

@@ -35,11 +35,6 @@ public final class Framework {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_ExecutionContext_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_data_ExecutionContext_CausesEntry_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_data_ExecutionContext_CausesEntry_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_MethodContext_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -50,25 +45,25 @@ public final class Framework {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_ContextValues_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_data_PTestStep_descriptor;
+    internal_static_data_TestStep_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_data_PTestStep_fieldAccessorTable;
+      internal_static_data_TestStep_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_data_PTestStepAction_descriptor;
+    internal_static_data_TestStepAction_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_data_PTestStepAction_fieldAccessorTable;
+      internal_static_data_TestStepAction_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_data_PClickPathEvent_descriptor;
+    internal_static_data_ClickPathEvent_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_data_PClickPathEvent_fieldAccessorTable;
+      internal_static_data_ClickPathEvent_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_data_PLogMessage_descriptor;
+    internal_static_data_LogMessage_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_data_PLogMessage_fieldAccessorTable;
+      internal_static_data_LogMessage_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_ErrorContext_descriptor;
   static final 
@@ -136,102 +131,101 @@ public final class Framework {
       "\t\022\027\n\017test_context_id\030\t \001(\t\022\031\n\021test_conte" +
       "xt_name\030\013 \001(\t\"T\n\013TestContext\022+\n\016context_" +
       "values\030\001 \001(\0132\023.data.ContextValues\022\030\n\020sui" +
-      "te_context_id\030\007 \001(\t\"\222\003\n\020ExecutionContext" +
+      "te_context_id\030\007 \001(\t\"\227\002\n\020ExecutionContext" +
       "\022+\n\016context_values\030\001 \001(\0132\023.data.ContextV" +
       "alues\022#\n\nrun_config\030\007 \001(\0132\017.data.RunConf" +
       "ig\022\022\n\nproject_Id\030\010 \001(\t\022\016\n\006job_Id\030\t \001(\t\022\016" +
       "\n\006run_Id\030\n \001(\t\022\017\n\007task_Id\030\013 \001(\t\022%\n\035exclu" +
-      "sive_session_context_ids\030\014 \003(\t\022\'\n\014log_me" +
-      "ssages\030\016 \003(\0132\021.data.PLogMessage\022\035\n\025estim" +
-      "ated_tests_count\030\017 \001(\005\0222\n\006causes\030\020 \003(\0132\"" +
-      ".data.ExecutionContext.CausesEntry\032D\n\013Ca" +
-      "usesEntry\022\013\n\003key\030\001 \001(\t\022$\n\005value\030\002 \001(\0132\025." +
-      "data.StackTraceCause:\0028\001\"\270\004\n\rMethodConte" +
-      "xt\022+\n\016context_values\030\001 \001(\0132\023.data.Contex" +
-      "tValues\022%\n\013method_type\030\007 \001(\0162\020.data.Meth" +
-      "odType\022\022\n\nparameters\030\010 \003(\t\022\023\n\013method_tag" +
-      "s\030\t \003(\t\022\024\n\014retry_number\030\n \001(\005\022\030\n\020method_" +
-      "run_index\030\013 \001(\005\022\023\n\013thread_name\030\014 \001(\t\022:\n\026" +
-      "failure_corridor_value\030\016 \001(\0162\032.data.Fail" +
-      "ureCorridorValue\022\030\n\020class_context_id\030\017 \001" +
-      "(\t\022\r\n\005infos\030\023 \003(\t\022\030\n\020priority_message\030\025 " +
-      "\001(\t\022\"\n\032related_method_context_ids\030\027 \003(\t\022" +
-      "%\n\035depends_on_method_context_ids\030\030 \003(\t\022)" +
-      "\n\rerror_context\030\031 \001(\0132\022.data.ErrorContex" +
-      "t\022#\n\ntest_steps\030\032 \003(\0132\017.data.PTestStep\022\033" +
-      "\n\023session_context_ids\030\035 \003(\t\022\021\n\tvideo_ids" +
-      "\030\036 \003(\t\022\033\n\023custom_context_json\030  \001(\t\"\313\001\n\r" +
-      "ContextValues\022\n\n\002id\030\001 \001(\t\022\017\n\007created\030\002 \001" +
-      "(\003\022\014\n\004name\030\003 \001(\t\022\022\n\nstart_time\030\004 \001(\003\022\020\n\010" +
-      "end_time\030\005 \001(\003\022\017\n\003swi\030\006 \001(\tB\002\030\001\022-\n\rresul" +
-      "t_status\030\007 \001(\0162\026.data.ResultStatusType\022)" +
-      "\n\013exec_status\030\010 \001(\0162\024.data.ExecStatusTyp" +
-      "e\"K\n\tPTestStep\022\014\n\004name\030\001 \001(\t\0220\n\021test_ste" +
-      "p_actions\030\003 \003(\0132\025.data.PTestStepAction\"\207" +
-      "\002\n\017PTestStepAction\022\014\n\004name\030\001 \001(\t\022\021\n\ttime" +
-      "stamp\030\003 \001(\003\022/\n\020clickpath_events\030\005 \003(\0132\025." +
-      "data.PClickPathEvent\022\026\n\016screenshot_ids\030\006" +
-      " \003(\t\022\'\n\014log_messages\030\007 \003(\0132\021.data.PLogMe" +
-      "ssage\022/\n\023optional_assertions\030\010 \003(\0132\022.dat" +
-      "a.ErrorContext\0220\n\024collected_assertions\030\t" +
-      " \003(\0132\022.data.ErrorContext\"_\n\017PClickPathEv" +
-      "ent\022\'\n\004type\030\001 \001(\0162\031.data.PClickPathEvent" +
-      "Type\022\017\n\007subject\030\002 \001(\t\022\022\n\nsession_id\030\003 \001(" +
-      "\t\"\222\001\n\013PLogMessage\022#\n\004type\030\001 \001(\0162\025.data.P" +
-      "LogMessageType\022\023\n\013logger_name\030\002 \001(\t\022\017\n\007m" +
-      "essage\030\003 \001(\t\022\021\n\ttimestamp\030\004 \001(\003\022\023\n\013threa" +
-      "d_name\030\005 \001(\t\022\020\n\010cause_id\030\006 \001(\t\"\247\001\n\014Error" +
-      "Context\022)\n\rscript_source\030\007 \001(\0132\022.data.Sc" +
-      "riptSource\0223\n\027execution_object_source\030\010 " +
-      "\001(\0132\022.data.ScriptSource\022\020\n\010ticketId\030\t \001(" +
-      "\t\022\023\n\013description\030\n \001(\t\022\020\n\010cause_id\030\013 \001(\t" +
-      "\"\337\001\n\016SessionContext\022+\n\016context_values\030\001 " +
-      "\001(\0132\023.data.ContextValues\022\023\n\013session_key\030" +
-      "\002 \001(\t\022\020\n\010provider\030\003 \001(\t\0224\n\010metadata\030\004 \003(" +
-      "\0132\".data.SessionContext.MetadataEntry\022\022\n" +
-      "\nsession_id\030\006 \001(\t\032/\n\rMetadataEntry\022\013\n\003ke" +
-      "y\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"c\n\tRunConfig\022" +
-      "\016\n\006runcfg\030\001 \001(\t\0221\n\021build_information\030\002 \001" +
-      "(\0132\026.data.BuildInformation\022\023\n\013report_nam" +
-      "e\030\003 \001(\t\"\250\001\n\020BuildInformation\022\032\n\022build_ja" +
-      "va_version\030\001 \001(\t\022\025\n\rbuild_os_name\030\002 \001(\t\022" +
-      "\030\n\020build_os_version\030\003 \001(\t\022\027\n\017build_user_" +
-      "name\030\004 \001(\t\022\025\n\rbuild_version\030\005 \001(\t\022\027\n\017bui" +
-      "ld_timestamp\030\006 \001(\t\"r\n\017StackTraceCause\022\022\n" +
-      "\nclass_name\030\001 \001(\t\022\017\n\007message\030\002 \001(\t\022\034\n\024st" +
-      "ack_trace_elements\030\003 \003(\t\022\n\n\002id\030\005 \001(\t\022\020\n\010" +
-      "cause_id\030\006 \001(\t\"]\n\014ScriptSource\022\021\n\tfile_n" +
-      "ame\030\001 \001(\t\022\023\n\013method_name\030\002 \001(\t\022%\n\005lines\030" +
-      "\003 \003(\0132\026.data.ScriptSourceLine\"C\n\020ScriptS" +
-      "ourceLine\022\014\n\004line\030\001 \001(\t\022\023\n\013line_number\030\002" +
-      " \001(\005\022\014\n\004mark\030\003 \001(\010\"\253\002\n\004File\022\n\n\002id\030\001 \001(\t\022" +
-      "\014\n\004size\030\002 \001(\003\022\020\n\010mimetype\030\003 \001(\t\022\025\n\rrelat" +
-      "ive_path\030\004 \001(\t\022\031\n\021created_timestamp\030\005 \001(" +
-      "\003\022\025\n\rsha1_checksum\030\006 \001(\014\022\"\n\004meta\030\007 \003(\0132\024" +
-      ".data.File.MetaEntry\022\025\n\rlast_modified\030\t " +
-      "\001(\003\022\022\n\nproject_id\030\n \001(\t\022\016\n\006job_id\030\013 \001(\t\022" +
-      "\024\n\014is_directory\030\014 \001(\010\022\014\n\004name\030\r \001(\t\032+\n\tM" +
-      "etaEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001" +
-      "*W\n\023PClickPathEventType\022\013\n\007NOT_SET\020\000\022\n\n\006" +
-      "WINDOW\020\001\022\t\n\005CLICK\020\002\022\t\n\005VALUE\020\003\022\010\n\004PAGE\020\004" +
-      "\022\007\n\003URL\020\005*X\n\017PLogMessageType\022\013\n\007LMT_OFF\020" +
-      "\000\022\r\n\tLMT_ERROR\020\001\022\014\n\010LMT_WARN\020\002\022\014\n\010LMT_IN" +
-      "FO\020\003\022\r\n\tLMT_DEBUG\020\004*C\n\024FailureCorridorVa" +
-      "lue\022\017\n\013FCV_NOT_SET\020\000\022\010\n\004HIGH\020\001\022\007\n\003MID\020\002\022" +
-      "\007\n\003LOW\020\003*G\n\nMethodType\022\016\n\nMT_NOT_SET\020\000\022\017" +
-      "\n\013TEST_METHOD\020\001\022\030\n\024CONFIGURATION_METHOD\020" +
-      "\002*\252\001\n\016ExecStatusType\022\017\n\013EST_NOT_SET\020\000\022\007\n" +
-      "\003NEW\020\001\022\013\n\007PENDING\020\002\022\020\n\014PROVISIONING\020\003\022\013\n" +
-      "\007RUNNING\020\004\022\014\n\010FINISHED\020\005\022\013\n\007ABORTED\020\006\022\013\n" +
-      "\007CRASHED\020\007\022\013\n\007INVALID\020\010\022\010\n\004VOID\020\t\022\023\n\017ART" +
-      "IFACT_UPLOAD\020\n*\323\001\n\020ResultStatusType\022\017\n\013R" +
-      "ST_NOT_SET\020\000\022\n\n\006NO_RUN\020\001\022\010\n\004INFO\020\002\022\013\n\007SK" +
-      "IPPED\020\003\022\n\n\006PASSED\020\004\022\r\n\005MINOR\020\005\032\002\010\001\022\n\n\006FA" +
-      "ILED\020\007\022\024\n\014FAILED_MINOR\020\010\032\002\010\001\022\022\n\016FAILED_R" +
-      "ETRIED\020\t\022\023\n\017FAILED_EXPECTED\020\n\022\020\n\014PASSED_" +
-      "RETRY\020\013\022\023\n\013MINOR_RETRY\020\014\032\002\010\001B2\n.eu.tsyst" +
-      "ems.mms.tic.testframework.report.modelP\001" +
-      "b\006proto3"
+      "sive_session_context_ids\030\014 \003(\t\022&\n\014log_me" +
+      "ssages\030\016 \003(\0132\020.data.LogMessage\022\035\n\025estima" +
+      "ted_tests_count\030\017 \001(\005\"\267\004\n\rMethodContext\022" +
+      "+\n\016context_values\030\001 \001(\0132\023.data.ContextVa" +
+      "lues\022%\n\013method_type\030\007 \001(\0162\020.data.MethodT" +
+      "ype\022\022\n\nparameters\030\010 \003(\t\022\023\n\013method_tags\030\t" +
+      " \003(\t\022\024\n\014retry_number\030\n \001(\005\022\030\n\020method_run" +
+      "_index\030\013 \001(\005\022\023\n\013thread_name\030\014 \001(\t\022:\n\026fai" +
+      "lure_corridor_value\030\016 \001(\0162\032.data.Failure" +
+      "CorridorValue\022\030\n\020class_context_id\030\017 \001(\t\022" +
+      "\r\n\005infos\030\023 \003(\t\022\030\n\020priority_message\030\025 \001(\t" +
+      "\022\"\n\032related_method_context_ids\030\027 \003(\t\022%\n\035" +
+      "depends_on_method_context_ids\030\030 \003(\t\022)\n\re" +
+      "rror_context\030\031 \001(\0132\022.data.ErrorContext\022\"" +
+      "\n\ntest_steps\030\032 \003(\0132\016.data.TestStep\022\033\n\023se" +
+      "ssion_context_ids\030\035 \003(\t\022\021\n\tvideo_ids\030\036 \003" +
+      "(\t\022\033\n\023custom_context_json\030  \001(\t\"\313\001\n\rCont" +
+      "extValues\022\n\n\002id\030\001 \001(\t\022\017\n\007created\030\002 \001(\003\022\014" +
+      "\n\004name\030\003 \001(\t\022\022\n\nstart_time\030\004 \001(\003\022\020\n\010end_" +
+      "time\030\005 \001(\003\022\017\n\003swi\030\006 \001(\tB\002\030\001\022-\n\rresult_st" +
+      "atus\030\007 \001(\0162\026.data.ResultStatusType\022)\n\013ex" +
+      "ec_status\030\010 \001(\0162\024.data.ExecStatusType\"I\n" +
+      "\010TestStep\022\014\n\004name\030\001 \001(\t\022/\n\021test_step_act" +
+      "ions\030\003 \003(\0132\024.data.TestStepAction\"\204\002\n\016Tes" +
+      "tStepAction\022\014\n\004name\030\001 \001(\t\022\021\n\ttimestamp\030\003" +
+      " \001(\003\022.\n\020clickpath_events\030\005 \003(\0132\024.data.Cl" +
+      "ickPathEvent\022\026\n\016screenshot_ids\030\006 \003(\t\022&\n\014" +
+      "log_messages\030\007 \003(\0132\020.data.LogMessage\022/\n\023" +
+      "optional_assertions\030\010 \003(\0132\022.data.ErrorCo" +
+      "ntext\0220\n\024collected_assertions\030\t \003(\0132\022.da" +
+      "ta.ErrorContext\"]\n\016ClickPathEvent\022&\n\004typ" +
+      "e\030\001 \001(\0162\030.data.ClickPathEventType\022\017\n\007sub" +
+      "ject\030\002 \001(\t\022\022\n\nsession_id\030\003 \001(\t\"\244\001\n\nLogMe" +
+      "ssage\022\"\n\004type\030\001 \001(\0162\024.data.LogMessageTyp" +
+      "e\022\023\n\013logger_name\030\002 \001(\t\022\017\n\007message\030\003 \001(\t\022" +
+      "\021\n\ttimestamp\030\004 \001(\003\022\023\n\013thread_name\030\005 \001(\t\022" +
+      "$\n\005cause\030\006 \001(\0132\025.data.StackTraceCause\"\273\001" +
+      "\n\014ErrorContext\022)\n\rscript_source\030\007 \001(\0132\022." +
+      "data.ScriptSource\0223\n\027execution_object_so" +
+      "urce\030\010 \001(\0132\022.data.ScriptSource\022\020\n\010ticket" +
+      "Id\030\t \001(\t\022\023\n\013description\030\n \001(\t\022$\n\005cause\030\013" +
+      " \001(\0132\025.data.StackTraceCause\"\337\001\n\016SessionC" +
+      "ontext\022+\n\016context_values\030\001 \001(\0132\023.data.Co" +
+      "ntextValues\022\023\n\013session_key\030\002 \001(\t\022\020\n\010prov" +
+      "ider\030\003 \001(\t\0224\n\010metadata\030\004 \003(\0132\".data.Sess" +
+      "ionContext.MetadataEntry\022\022\n\nsession_id\030\006" +
+      " \001(\t\032/\n\rMetadataEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005va" +
+      "lue\030\002 \001(\t:\0028\001\"c\n\tRunConfig\022\016\n\006runcfg\030\001 \001" +
+      "(\t\0221\n\021build_information\030\002 \001(\0132\026.data.Bui" +
+      "ldInformation\022\023\n\013report_name\030\003 \001(\t\"\250\001\n\020B" +
+      "uildInformation\022\032\n\022build_java_version\030\001 " +
+      "\001(\t\022\025\n\rbuild_os_name\030\002 \001(\t\022\030\n\020build_os_v" +
+      "ersion\030\003 \001(\t\022\027\n\017build_user_name\030\004 \001(\t\022\025\n" +
+      "\rbuild_version\030\005 \001(\t\022\027\n\017build_timestamp\030" +
+      "\006 \001(\t\"z\n\017StackTraceCause\022\022\n\nclass_name\030\001" +
+      " \001(\t\022\017\n\007message\030\002 \001(\t\022\034\n\024stack_trace_ele" +
+      "ments\030\003 \003(\t\022$\n\005cause\030\004 \001(\0132\025.data.StackT" +
+      "raceCause\"]\n\014ScriptSource\022\021\n\tfile_name\030\001" +
+      " \001(\t\022\023\n\013method_name\030\002 \001(\t\022%\n\005lines\030\003 \003(\013" +
+      "2\026.data.ScriptSourceLine\"C\n\020ScriptSource" +
+      "Line\022\014\n\004line\030\001 \001(\t\022\023\n\013line_number\030\002 \001(\005\022" +
+      "\014\n\004mark\030\003 \001(\010\"\253\002\n\004File\022\n\n\002id\030\001 \001(\t\022\014\n\004si" +
+      "ze\030\002 \001(\003\022\020\n\010mimetype\030\003 \001(\t\022\025\n\rrelative_p" +
+      "ath\030\004 \001(\t\022\031\n\021created_timestamp\030\005 \001(\003\022\025\n\r" +
+      "sha1_checksum\030\006 \001(\014\022\"\n\004meta\030\007 \003(\0132\024.data" +
+      ".File.MetaEntry\022\025\n\rlast_modified\030\t \001(\003\022\022" +
+      "\n\nproject_id\030\n \001(\t\022\016\n\006job_id\030\013 \001(\t\022\024\n\014is" +
+      "_directory\030\014 \001(\010\022\014\n\004name\030\r \001(\t\032+\n\tMetaEn" +
+      "try\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001*t\n\022C" +
+      "lickPathEventType\022\020\n\014CPET_NOT_SET\020\000\022\017\n\013C" +
+      "PET_WINDOW\020\001\022\016\n\nCPET_CLICK\020\002\022\016\n\nCPET_VAL" +
+      "UE\020\003\022\r\n\tCPET_PAGE\020\004\022\014\n\010CPET_URL\020\005*W\n\016Log" +
+      "MessageType\022\013\n\007LMT_OFF\020\000\022\r\n\tLMT_ERROR\020\001\022" +
+      "\014\n\010LMT_WARN\020\002\022\014\n\010LMT_INFO\020\003\022\r\n\tLMT_DEBUG" +
+      "\020\004*O\n\024FailureCorridorValue\022\017\n\013FCV_NOT_SE" +
+      "T\020\000\022\014\n\010FCV_HIGH\020\001\022\013\n\007FCV_MID\020\002\022\013\n\007FCV_LO" +
+      "W\020\003*G\n\nMethodType\022\016\n\nMT_NOT_SET\020\000\022\017\n\013TES" +
+      "T_METHOD\020\001\022\030\n\024CONFIGURATION_METHOD\020\002*\252\001\n" +
+      "\016ExecStatusType\022\017\n\013EST_NOT_SET\020\000\022\007\n\003NEW\020" +
+      "\001\022\013\n\007PENDING\020\002\022\020\n\014PROVISIONING\020\003\022\013\n\007RUNN" +
+      "ING\020\004\022\014\n\010FINISHED\020\005\022\013\n\007ABORTED\020\006\022\013\n\007CRAS" +
+      "HED\020\007\022\013\n\007INVALID\020\010\022\010\n\004VOID\020\t\022\023\n\017ARTIFACT" +
+      "_UPLOAD\020\n*\323\001\n\020ResultStatusType\022\017\n\013RST_NO" +
+      "T_SET\020\000\022\n\n\006NO_RUN\020\001\022\010\n\004INFO\020\002\022\013\n\007SKIPPED" +
+      "\020\003\022\n\n\006PASSED\020\004\022\r\n\005MINOR\020\005\032\002\010\001\022\n\n\006FAILED\020" +
+      "\007\022\024\n\014FAILED_MINOR\020\010\032\002\010\001\022\022\n\016FAILED_RETRIE" +
+      "D\020\t\022\023\n\017FAILED_EXPECTED\020\n\022\020\n\014PASSED_RETRY" +
+      "\020\013\022\023\n\013MINOR_RETRY\020\014\032\002\010\001B2\n.eu.tsystems.m" +
+      "ms.tic.testframework.report.modelP\001b\006pro" +
+      "to3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -260,13 +254,7 @@ public final class Framework {
     internal_static_data_ExecutionContext_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_data_ExecutionContext_descriptor,
-        new java.lang.String[] { "ContextValues", "RunConfig", "ProjectId", "JobId", "RunId", "TaskId", "ExclusiveSessionContextIds", "LogMessages", "EstimatedTestsCount", "Causes", });
-    internal_static_data_ExecutionContext_CausesEntry_descriptor =
-      internal_static_data_ExecutionContext_descriptor.getNestedTypes().get(0);
-    internal_static_data_ExecutionContext_CausesEntry_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_data_ExecutionContext_CausesEntry_descriptor,
-        new java.lang.String[] { "Key", "Value", });
+        new java.lang.String[] { "ContextValues", "RunConfig", "ProjectId", "JobId", "RunId", "TaskId", "ExclusiveSessionContextIds", "LogMessages", "EstimatedTestsCount", });
     internal_static_data_MethodContext_descriptor =
       getDescriptor().getMessageTypes().get(4);
     internal_static_data_MethodContext_fieldAccessorTable = new
@@ -279,36 +267,36 @@ public final class Framework {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_data_ContextValues_descriptor,
         new java.lang.String[] { "Id", "Created", "Name", "StartTime", "EndTime", "Swi", "ResultStatus", "ExecStatus", });
-    internal_static_data_PTestStep_descriptor =
+    internal_static_data_TestStep_descriptor =
       getDescriptor().getMessageTypes().get(6);
-    internal_static_data_PTestStep_fieldAccessorTable = new
+    internal_static_data_TestStep_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_data_PTestStep_descriptor,
+        internal_static_data_TestStep_descriptor,
         new java.lang.String[] { "Name", "TestStepActions", });
-    internal_static_data_PTestStepAction_descriptor =
+    internal_static_data_TestStepAction_descriptor =
       getDescriptor().getMessageTypes().get(7);
-    internal_static_data_PTestStepAction_fieldAccessorTable = new
+    internal_static_data_TestStepAction_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_data_PTestStepAction_descriptor,
+        internal_static_data_TestStepAction_descriptor,
         new java.lang.String[] { "Name", "Timestamp", "ClickpathEvents", "ScreenshotIds", "LogMessages", "OptionalAssertions", "CollectedAssertions", });
-    internal_static_data_PClickPathEvent_descriptor =
+    internal_static_data_ClickPathEvent_descriptor =
       getDescriptor().getMessageTypes().get(8);
-    internal_static_data_PClickPathEvent_fieldAccessorTable = new
+    internal_static_data_ClickPathEvent_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_data_PClickPathEvent_descriptor,
+        internal_static_data_ClickPathEvent_descriptor,
         new java.lang.String[] { "Type", "Subject", "SessionId", });
-    internal_static_data_PLogMessage_descriptor =
+    internal_static_data_LogMessage_descriptor =
       getDescriptor().getMessageTypes().get(9);
-    internal_static_data_PLogMessage_fieldAccessorTable = new
+    internal_static_data_LogMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_data_PLogMessage_descriptor,
-        new java.lang.String[] { "Type", "LoggerName", "Message", "Timestamp", "ThreadName", "CauseId", });
+        internal_static_data_LogMessage_descriptor,
+        new java.lang.String[] { "Type", "LoggerName", "Message", "Timestamp", "ThreadName", "Cause", });
     internal_static_data_ErrorContext_descriptor =
       getDescriptor().getMessageTypes().get(10);
     internal_static_data_ErrorContext_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_data_ErrorContext_descriptor,
-        new java.lang.String[] { "ScriptSource", "ExecutionObjectSource", "TicketId", "Description", "CauseId", });
+        new java.lang.String[] { "ScriptSource", "ExecutionObjectSource", "TicketId", "Description", "Cause", });
     internal_static_data_SessionContext_descriptor =
       getDescriptor().getMessageTypes().get(11);
     internal_static_data_SessionContext_fieldAccessorTable = new
@@ -338,7 +326,7 @@ public final class Framework {
     internal_static_data_StackTraceCause_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_data_StackTraceCause_descriptor,
-        new java.lang.String[] { "ClassName", "Message", "StackTraceElements", "Id", "CauseId", });
+        new java.lang.String[] { "ClassName", "Message", "StackTraceElements", "Cause", });
     internal_static_data_ScriptSource_descriptor =
       getDescriptor().getMessageTypes().get(15);
     internal_static_data_ScriptSource_fieldAccessorTable = new

@@ -4,18 +4,18 @@
 package eu.tsystems.mms.tic.testframework.report.model;
 
 /**
- * Protobuf type {@code data.PTestStepAction}
+ * Protobuf type {@code data.TestStepAction}
  */
-public  final class PTestStepAction extends
+public  final class TestStepAction extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:data.PTestStepAction)
-    PTestStepActionOrBuilder {
+    // @@protoc_insertion_point(message_implements:data.TestStepAction)
+    TestStepActionOrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use PTestStepAction.newBuilder() to construct.
-  private PTestStepAction(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+  // Use TestStepAction.newBuilder() to construct.
+  private TestStepAction(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private PTestStepAction() {
+  private TestStepAction() {
     name_ = "";
     clickpathEvents_ = java.util.Collections.emptyList();
     screenshotIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
@@ -28,7 +28,7 @@ private static final long serialVersionUID = 0L;
   @SuppressWarnings({"unused"})
   protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
-    return new PTestStepAction();
+    return new TestStepAction();
   }
 
   @java.lang.Override
@@ -36,7 +36,7 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private PTestStepAction(
+  private TestStepAction(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -68,11 +68,11 @@ private static final long serialVersionUID = 0L;
           }
           case 42: {
             if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-              clickpathEvents_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent>();
+              clickpathEvents_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent>();
               mutable_bitField0_ |= 0x00000001;
             }
             clickpathEvents_.add(
-                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent.parser(), extensionRegistry));
+                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.parser(), extensionRegistry));
             break;
           }
           case 50: {
@@ -86,11 +86,11 @@ private static final long serialVersionUID = 0L;
           }
           case 58: {
             if (!((mutable_bitField0_ & 0x00000004) != 0)) {
-              logMessages_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.PLogMessage>();
+              logMessages_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.LogMessage>();
               mutable_bitField0_ |= 0x00000004;
             }
             logMessages_.add(
-                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.PLogMessage.parser(), extensionRegistry));
+                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.LogMessage.parser(), extensionRegistry));
             break;
           }
           case 66: {
@@ -147,15 +147,15 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_PTestStepAction_descriptor;
+    return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_TestStepAction_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_PTestStepAction_fieldAccessorTable
+    return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_TestStepAction_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.class, eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.Builder.class);
+            eu.tsystems.mms.tic.testframework.report.model.TestStepAction.class, eu.tsystems.mms.tic.testframework.report.model.TestStepAction.Builder.class);
   }
 
   public static final int NAME_FIELD_NUMBER = 1;
@@ -209,15 +209,15 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CLICKPATH_EVENTS_FIELD_NUMBER = 5;
-  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent> clickpathEvents_;
+  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent> clickpathEvents_;
   /**
    * <pre>
    *    repeated string screenshot_names = 4 [deprecated = true];
    * </pre>
    *
-   * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
+   * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
    */
-  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent> getClickpathEventsList() {
+  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent> getClickpathEventsList() {
     return clickpathEvents_;
   }
   /**
@@ -225,9 +225,9 @@ private static final long serialVersionUID = 0L;
    *    repeated string screenshot_names = 4 [deprecated = true];
    * </pre>
    *
-   * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
+   * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
    */
-  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.PClickPathEventOrBuilder> 
+  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ClickPathEventOrBuilder> 
       getClickpathEventsOrBuilderList() {
     return clickpathEvents_;
   }
@@ -236,7 +236,7 @@ private static final long serialVersionUID = 0L;
    *    repeated string screenshot_names = 4 [deprecated = true];
    * </pre>
    *
-   * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
+   * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
    */
   public int getClickpathEventsCount() {
     return clickpathEvents_.size();
@@ -246,9 +246,9 @@ private static final long serialVersionUID = 0L;
    *    repeated string screenshot_names = 4 [deprecated = true];
    * </pre>
    *
-   * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
+   * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
    */
-  public eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent getClickpathEvents(int index) {
+  public eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent getClickpathEvents(int index) {
     return clickpathEvents_.get(index);
   }
   /**
@@ -256,9 +256,9 @@ private static final long serialVersionUID = 0L;
    *    repeated string screenshot_names = 4 [deprecated = true];
    * </pre>
    *
-   * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
+   * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
    */
-  public eu.tsystems.mms.tic.testframework.report.model.PClickPathEventOrBuilder getClickpathEventsOrBuilder(
+  public eu.tsystems.mms.tic.testframework.report.model.ClickPathEventOrBuilder getClickpathEventsOrBuilder(
       int index) {
     return clickpathEvents_.get(index);
   }
@@ -299,36 +299,36 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LOG_MESSAGES_FIELD_NUMBER = 7;
-  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.PLogMessage> logMessages_;
+  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage> logMessages_;
   /**
-   * <code>repeated .data.PLogMessage log_messages = 7;</code>
+   * <code>repeated .data.LogMessage log_messages = 7;</code>
    */
-  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PLogMessage> getLogMessagesList() {
+  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage> getLogMessagesList() {
     return logMessages_;
   }
   /**
-   * <code>repeated .data.PLogMessage log_messages = 7;</code>
+   * <code>repeated .data.LogMessage log_messages = 7;</code>
    */
-  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder> 
+  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder> 
       getLogMessagesOrBuilderList() {
     return logMessages_;
   }
   /**
-   * <code>repeated .data.PLogMessage log_messages = 7;</code>
+   * <code>repeated .data.LogMessage log_messages = 7;</code>
    */
   public int getLogMessagesCount() {
     return logMessages_.size();
   }
   /**
-   * <code>repeated .data.PLogMessage log_messages = 7;</code>
+   * <code>repeated .data.LogMessage log_messages = 7;</code>
    */
-  public eu.tsystems.mms.tic.testframework.report.model.PLogMessage getLogMessages(int index) {
+  public eu.tsystems.mms.tic.testframework.report.model.LogMessage getLogMessages(int index) {
     return logMessages_.get(index);
   }
   /**
-   * <code>repeated .data.PLogMessage log_messages = 7;</code>
+   * <code>repeated .data.LogMessage log_messages = 7;</code>
    */
-  public eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder getLogMessagesOrBuilder(
+  public eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder getLogMessagesOrBuilder(
       int index) {
     return logMessages_.get(index);
   }
@@ -488,10 +488,10 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof eu.tsystems.mms.tic.testframework.report.model.PTestStepAction)) {
+    if (!(obj instanceof eu.tsystems.mms.tic.testframework.report.model.TestStepAction)) {
       return super.equals(obj);
     }
-    eu.tsystems.mms.tic.testframework.report.model.PTestStepAction other = (eu.tsystems.mms.tic.testframework.report.model.PTestStepAction) obj;
+    eu.tsystems.mms.tic.testframework.report.model.TestStepAction other = (eu.tsystems.mms.tic.testframework.report.model.TestStepAction) obj;
 
     if (!getName()
         .equals(other.getName())) return false;
@@ -548,69 +548,69 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static eu.tsystems.mms.tic.testframework.report.model.PTestStepAction parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.TestStepAction parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PTestStepAction parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.TestStepAction parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PTestStepAction parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.TestStepAction parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PTestStepAction parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.TestStepAction parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PTestStepAction parseFrom(byte[] data)
+  public static eu.tsystems.mms.tic.testframework.report.model.TestStepAction parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PTestStepAction parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.TestStepAction parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PTestStepAction parseFrom(java.io.InputStream input)
+  public static eu.tsystems.mms.tic.testframework.report.model.TestStepAction parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PTestStepAction parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.TestStepAction parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PTestStepAction parseDelimitedFrom(java.io.InputStream input)
+  public static eu.tsystems.mms.tic.testframework.report.model.TestStepAction parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PTestStepAction parseDelimitedFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.TestStepAction parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PTestStepAction parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.TestStepAction parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PTestStepAction parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.TestStepAction parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -623,7 +623,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(eu.tsystems.mms.tic.testframework.report.model.PTestStepAction prototype) {
+  public static Builder newBuilder(eu.tsystems.mms.tic.testframework.report.model.TestStepAction prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -639,26 +639,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code data.PTestStepAction}
+   * Protobuf type {@code data.TestStepAction}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:data.PTestStepAction)
-      eu.tsystems.mms.tic.testframework.report.model.PTestStepActionOrBuilder {
+      // @@protoc_insertion_point(builder_implements:data.TestStepAction)
+      eu.tsystems.mms.tic.testframework.report.model.TestStepActionOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_PTestStepAction_descriptor;
+      return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_TestStepAction_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_PTestStepAction_fieldAccessorTable
+      return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_TestStepAction_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.class, eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.Builder.class);
+              eu.tsystems.mms.tic.testframework.report.model.TestStepAction.class, eu.tsystems.mms.tic.testframework.report.model.TestStepAction.Builder.class);
     }
 
-    // Construct using eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.newBuilder()
+    // Construct using eu.tsystems.mms.tic.testframework.report.model.TestStepAction.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -716,17 +716,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_PTestStepAction_descriptor;
+      return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_TestStepAction_descriptor;
     }
 
     @java.lang.Override
-    public eu.tsystems.mms.tic.testframework.report.model.PTestStepAction getDefaultInstanceForType() {
-      return eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.getDefaultInstance();
+    public eu.tsystems.mms.tic.testframework.report.model.TestStepAction getDefaultInstanceForType() {
+      return eu.tsystems.mms.tic.testframework.report.model.TestStepAction.getDefaultInstance();
     }
 
     @java.lang.Override
-    public eu.tsystems.mms.tic.testframework.report.model.PTestStepAction build() {
-      eu.tsystems.mms.tic.testframework.report.model.PTestStepAction result = buildPartial();
+    public eu.tsystems.mms.tic.testframework.report.model.TestStepAction build() {
+      eu.tsystems.mms.tic.testframework.report.model.TestStepAction result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -734,8 +734,8 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public eu.tsystems.mms.tic.testframework.report.model.PTestStepAction buildPartial() {
-      eu.tsystems.mms.tic.testframework.report.model.PTestStepAction result = new eu.tsystems.mms.tic.testframework.report.model.PTestStepAction(this);
+    public eu.tsystems.mms.tic.testframework.report.model.TestStepAction buildPartial() {
+      eu.tsystems.mms.tic.testframework.report.model.TestStepAction result = new eu.tsystems.mms.tic.testframework.report.model.TestStepAction(this);
       int from_bitField0_ = bitField0_;
       result.name_ = name_;
       result.timestamp_ = timestamp_;
@@ -818,16 +818,16 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof eu.tsystems.mms.tic.testframework.report.model.PTestStepAction) {
-        return mergeFrom((eu.tsystems.mms.tic.testframework.report.model.PTestStepAction)other);
+      if (other instanceof eu.tsystems.mms.tic.testframework.report.model.TestStepAction) {
+        return mergeFrom((eu.tsystems.mms.tic.testframework.report.model.TestStepAction)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(eu.tsystems.mms.tic.testframework.report.model.PTestStepAction other) {
-      if (other == eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.getDefaultInstance()) return this;
+    public Builder mergeFrom(eu.tsystems.mms.tic.testframework.report.model.TestStepAction other) {
+      if (other == eu.tsystems.mms.tic.testframework.report.model.TestStepAction.getDefaultInstance()) return this;
       if (!other.getName().isEmpty()) {
         name_ = other.name_;
         onChanged();
@@ -964,11 +964,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      eu.tsystems.mms.tic.testframework.report.model.PTestStepAction parsedMessage = null;
+      eu.tsystems.mms.tic.testframework.report.model.TestStepAction parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (eu.tsystems.mms.tic.testframework.report.model.PTestStepAction) e.getUnfinishedMessage();
+        parsedMessage = (eu.tsystems.mms.tic.testframework.report.model.TestStepAction) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -1097,26 +1097,26 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent> clickpathEvents_ =
+    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent> clickpathEvents_ =
       java.util.Collections.emptyList();
     private void ensureClickpathEventsIsMutable() {
       if (!((bitField0_ & 0x00000001) != 0)) {
-        clickpathEvents_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent>(clickpathEvents_);
+        clickpathEvents_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent>(clickpathEvents_);
         bitField0_ |= 0x00000001;
        }
     }
 
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent, eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent.Builder, eu.tsystems.mms.tic.testframework.report.model.PClickPathEventOrBuilder> clickpathEventsBuilder_;
+        eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent, eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.Builder, eu.tsystems.mms.tic.testframework.report.model.ClickPathEventOrBuilder> clickpathEventsBuilder_;
 
     /**
      * <pre>
      *    repeated string screenshot_names = 4 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
      */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent> getClickpathEventsList() {
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent> getClickpathEventsList() {
       if (clickpathEventsBuilder_ == null) {
         return java.util.Collections.unmodifiableList(clickpathEvents_);
       } else {
@@ -1128,7 +1128,7 @@ private static final long serialVersionUID = 0L;
      *    repeated string screenshot_names = 4 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
      */
     public int getClickpathEventsCount() {
       if (clickpathEventsBuilder_ == null) {
@@ -1142,9 +1142,9 @@ private static final long serialVersionUID = 0L;
      *    repeated string screenshot_names = 4 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent getClickpathEvents(int index) {
+    public eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent getClickpathEvents(int index) {
       if (clickpathEventsBuilder_ == null) {
         return clickpathEvents_.get(index);
       } else {
@@ -1156,10 +1156,10 @@ private static final long serialVersionUID = 0L;
      *    repeated string screenshot_names = 4 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
      */
     public Builder setClickpathEvents(
-        int index, eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent value) {
+        int index, eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent value) {
       if (clickpathEventsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -1177,10 +1177,10 @@ private static final long serialVersionUID = 0L;
      *    repeated string screenshot_names = 4 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
      */
     public Builder setClickpathEvents(
-        int index, eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent.Builder builderForValue) {
+        int index, eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.Builder builderForValue) {
       if (clickpathEventsBuilder_ == null) {
         ensureClickpathEventsIsMutable();
         clickpathEvents_.set(index, builderForValue.build());
@@ -1195,9 +1195,9 @@ private static final long serialVersionUID = 0L;
      *    repeated string screenshot_names = 4 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
      */
-    public Builder addClickpathEvents(eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent value) {
+    public Builder addClickpathEvents(eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent value) {
       if (clickpathEventsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -1215,10 +1215,10 @@ private static final long serialVersionUID = 0L;
      *    repeated string screenshot_names = 4 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
      */
     public Builder addClickpathEvents(
-        int index, eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent value) {
+        int index, eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent value) {
       if (clickpathEventsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -1236,10 +1236,10 @@ private static final long serialVersionUID = 0L;
      *    repeated string screenshot_names = 4 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
      */
     public Builder addClickpathEvents(
-        eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent.Builder builderForValue) {
+        eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.Builder builderForValue) {
       if (clickpathEventsBuilder_ == null) {
         ensureClickpathEventsIsMutable();
         clickpathEvents_.add(builderForValue.build());
@@ -1254,10 +1254,10 @@ private static final long serialVersionUID = 0L;
      *    repeated string screenshot_names = 4 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
      */
     public Builder addClickpathEvents(
-        int index, eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent.Builder builderForValue) {
+        int index, eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.Builder builderForValue) {
       if (clickpathEventsBuilder_ == null) {
         ensureClickpathEventsIsMutable();
         clickpathEvents_.add(index, builderForValue.build());
@@ -1272,10 +1272,10 @@ private static final long serialVersionUID = 0L;
      *    repeated string screenshot_names = 4 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
      */
     public Builder addAllClickpathEvents(
-        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent> values) {
+        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent> values) {
       if (clickpathEventsBuilder_ == null) {
         ensureClickpathEventsIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -1291,7 +1291,7 @@ private static final long serialVersionUID = 0L;
      *    repeated string screenshot_names = 4 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
      */
     public Builder clearClickpathEvents() {
       if (clickpathEventsBuilder_ == null) {
@@ -1308,7 +1308,7 @@ private static final long serialVersionUID = 0L;
      *    repeated string screenshot_names = 4 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
      */
     public Builder removeClickpathEvents(int index) {
       if (clickpathEventsBuilder_ == null) {
@@ -1325,9 +1325,9 @@ private static final long serialVersionUID = 0L;
      *    repeated string screenshot_names = 4 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent.Builder getClickpathEventsBuilder(
+    public eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.Builder getClickpathEventsBuilder(
         int index) {
       return getClickpathEventsFieldBuilder().getBuilder(index);
     }
@@ -1336,9 +1336,9 @@ private static final long serialVersionUID = 0L;
      *    repeated string screenshot_names = 4 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PClickPathEventOrBuilder getClickpathEventsOrBuilder(
+    public eu.tsystems.mms.tic.testframework.report.model.ClickPathEventOrBuilder getClickpathEventsOrBuilder(
         int index) {
       if (clickpathEventsBuilder_ == null) {
         return clickpathEvents_.get(index);  } else {
@@ -1350,9 +1350,9 @@ private static final long serialVersionUID = 0L;
      *    repeated string screenshot_names = 4 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
      */
-    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.PClickPathEventOrBuilder> 
+    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ClickPathEventOrBuilder> 
          getClickpathEventsOrBuilderList() {
       if (clickpathEventsBuilder_ != null) {
         return clickpathEventsBuilder_.getMessageOrBuilderList();
@@ -1365,41 +1365,41 @@ private static final long serialVersionUID = 0L;
      *    repeated string screenshot_names = 4 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent.Builder addClickpathEventsBuilder() {
+    public eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.Builder addClickpathEventsBuilder() {
       return getClickpathEventsFieldBuilder().addBuilder(
-          eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent.getDefaultInstance());
+          eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.getDefaultInstance());
     }
     /**
      * <pre>
      *    repeated string screenshot_names = 4 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent.Builder addClickpathEventsBuilder(
+    public eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.Builder addClickpathEventsBuilder(
         int index) {
       return getClickpathEventsFieldBuilder().addBuilder(
-          index, eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent.getDefaultInstance());
+          index, eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.getDefaultInstance());
     }
     /**
      * <pre>
      *    repeated string screenshot_names = 4 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.PClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
      */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent.Builder> 
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.Builder> 
          getClickpathEventsBuilderList() {
       return getClickpathEventsFieldBuilder().getBuilderList();
     }
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent, eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent.Builder, eu.tsystems.mms.tic.testframework.report.model.PClickPathEventOrBuilder> 
+        eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent, eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.Builder, eu.tsystems.mms.tic.testframework.report.model.ClickPathEventOrBuilder> 
         getClickpathEventsFieldBuilder() {
       if (clickpathEventsBuilder_ == null) {
         clickpathEventsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent, eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent.Builder, eu.tsystems.mms.tic.testframework.report.model.PClickPathEventOrBuilder>(
+            eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent, eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.Builder, eu.tsystems.mms.tic.testframework.report.model.ClickPathEventOrBuilder>(
                 clickpathEvents_,
                 ((bitField0_ & 0x00000001) != 0),
                 getParentForChildren(),
@@ -1519,22 +1519,22 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.PLogMessage> logMessages_ =
+    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage> logMessages_ =
       java.util.Collections.emptyList();
     private void ensureLogMessagesIsMutable() {
       if (!((bitField0_ & 0x00000004) != 0)) {
-        logMessages_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.PLogMessage>(logMessages_);
+        logMessages_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.LogMessage>(logMessages_);
         bitField0_ |= 0x00000004;
        }
     }
 
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.PLogMessage, eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder, eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder> logMessagesBuilder_;
+        eu.tsystems.mms.tic.testframework.report.model.LogMessage, eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder, eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder> logMessagesBuilder_;
 
     /**
-     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     * <code>repeated .data.LogMessage log_messages = 7;</code>
      */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PLogMessage> getLogMessagesList() {
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage> getLogMessagesList() {
       if (logMessagesBuilder_ == null) {
         return java.util.Collections.unmodifiableList(logMessages_);
       } else {
@@ -1542,7 +1542,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     * <code>repeated .data.LogMessage log_messages = 7;</code>
      */
     public int getLogMessagesCount() {
       if (logMessagesBuilder_ == null) {
@@ -1552,9 +1552,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     * <code>repeated .data.LogMessage log_messages = 7;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PLogMessage getLogMessages(int index) {
+    public eu.tsystems.mms.tic.testframework.report.model.LogMessage getLogMessages(int index) {
       if (logMessagesBuilder_ == null) {
         return logMessages_.get(index);
       } else {
@@ -1562,10 +1562,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     * <code>repeated .data.LogMessage log_messages = 7;</code>
      */
     public Builder setLogMessages(
-        int index, eu.tsystems.mms.tic.testframework.report.model.PLogMessage value) {
+        int index, eu.tsystems.mms.tic.testframework.report.model.LogMessage value) {
       if (logMessagesBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -1579,10 +1579,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     * <code>repeated .data.LogMessage log_messages = 7;</code>
      */
     public Builder setLogMessages(
-        int index, eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder builderForValue) {
+        int index, eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder builderForValue) {
       if (logMessagesBuilder_ == null) {
         ensureLogMessagesIsMutable();
         logMessages_.set(index, builderForValue.build());
@@ -1593,9 +1593,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     * <code>repeated .data.LogMessage log_messages = 7;</code>
      */
-    public Builder addLogMessages(eu.tsystems.mms.tic.testframework.report.model.PLogMessage value) {
+    public Builder addLogMessages(eu.tsystems.mms.tic.testframework.report.model.LogMessage value) {
       if (logMessagesBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -1609,10 +1609,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     * <code>repeated .data.LogMessage log_messages = 7;</code>
      */
     public Builder addLogMessages(
-        int index, eu.tsystems.mms.tic.testframework.report.model.PLogMessage value) {
+        int index, eu.tsystems.mms.tic.testframework.report.model.LogMessage value) {
       if (logMessagesBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -1626,10 +1626,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     * <code>repeated .data.LogMessage log_messages = 7;</code>
      */
     public Builder addLogMessages(
-        eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder builderForValue) {
+        eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder builderForValue) {
       if (logMessagesBuilder_ == null) {
         ensureLogMessagesIsMutable();
         logMessages_.add(builderForValue.build());
@@ -1640,10 +1640,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     * <code>repeated .data.LogMessage log_messages = 7;</code>
      */
     public Builder addLogMessages(
-        int index, eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder builderForValue) {
+        int index, eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder builderForValue) {
       if (logMessagesBuilder_ == null) {
         ensureLogMessagesIsMutable();
         logMessages_.add(index, builderForValue.build());
@@ -1654,10 +1654,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     * <code>repeated .data.LogMessage log_messages = 7;</code>
      */
     public Builder addAllLogMessages(
-        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.PLogMessage> values) {
+        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.LogMessage> values) {
       if (logMessagesBuilder_ == null) {
         ensureLogMessagesIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -1669,7 +1669,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     * <code>repeated .data.LogMessage log_messages = 7;</code>
      */
     public Builder clearLogMessages() {
       if (logMessagesBuilder_ == null) {
@@ -1682,7 +1682,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     * <code>repeated .data.LogMessage log_messages = 7;</code>
      */
     public Builder removeLogMessages(int index) {
       if (logMessagesBuilder_ == null) {
@@ -1695,16 +1695,16 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     * <code>repeated .data.LogMessage log_messages = 7;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder getLogMessagesBuilder(
+    public eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder getLogMessagesBuilder(
         int index) {
       return getLogMessagesFieldBuilder().getBuilder(index);
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     * <code>repeated .data.LogMessage log_messages = 7;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder getLogMessagesOrBuilder(
+    public eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder getLogMessagesOrBuilder(
         int index) {
       if (logMessagesBuilder_ == null) {
         return logMessages_.get(index);  } else {
@@ -1712,9 +1712,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     * <code>repeated .data.LogMessage log_messages = 7;</code>
      */
-    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder> 
+    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder> 
          getLogMessagesOrBuilderList() {
       if (logMessagesBuilder_ != null) {
         return logMessagesBuilder_.getMessageOrBuilderList();
@@ -1723,33 +1723,33 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     * <code>repeated .data.LogMessage log_messages = 7;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder addLogMessagesBuilder() {
+    public eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder addLogMessagesBuilder() {
       return getLogMessagesFieldBuilder().addBuilder(
-          eu.tsystems.mms.tic.testframework.report.model.PLogMessage.getDefaultInstance());
+          eu.tsystems.mms.tic.testframework.report.model.LogMessage.getDefaultInstance());
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     * <code>repeated .data.LogMessage log_messages = 7;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder addLogMessagesBuilder(
+    public eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder addLogMessagesBuilder(
         int index) {
       return getLogMessagesFieldBuilder().addBuilder(
-          index, eu.tsystems.mms.tic.testframework.report.model.PLogMessage.getDefaultInstance());
+          index, eu.tsystems.mms.tic.testframework.report.model.LogMessage.getDefaultInstance());
     }
     /**
-     * <code>repeated .data.PLogMessage log_messages = 7;</code>
+     * <code>repeated .data.LogMessage log_messages = 7;</code>
      */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder> 
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder> 
          getLogMessagesBuilderList() {
       return getLogMessagesFieldBuilder().getBuilderList();
     }
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.PLogMessage, eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder, eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder> 
+        eu.tsystems.mms.tic.testframework.report.model.LogMessage, eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder, eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder> 
         getLogMessagesFieldBuilder() {
       if (logMessagesBuilder_ == null) {
         logMessagesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            eu.tsystems.mms.tic.testframework.report.model.PLogMessage, eu.tsystems.mms.tic.testframework.report.model.PLogMessage.Builder, eu.tsystems.mms.tic.testframework.report.model.PLogMessageOrBuilder>(
+            eu.tsystems.mms.tic.testframework.report.model.LogMessage, eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder, eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder>(
                 logMessages_,
                 ((bitField0_ & 0x00000004) != 0),
                 getParentForChildren(),
@@ -2251,41 +2251,41 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:data.PTestStepAction)
+    // @@protoc_insertion_point(builder_scope:data.TestStepAction)
   }
 
-  // @@protoc_insertion_point(class_scope:data.PTestStepAction)
-  private static final eu.tsystems.mms.tic.testframework.report.model.PTestStepAction DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:data.TestStepAction)
+  private static final eu.tsystems.mms.tic.testframework.report.model.TestStepAction DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new eu.tsystems.mms.tic.testframework.report.model.PTestStepAction();
+    DEFAULT_INSTANCE = new eu.tsystems.mms.tic.testframework.report.model.TestStepAction();
   }
 
-  public static eu.tsystems.mms.tic.testframework.report.model.PTestStepAction getDefaultInstance() {
+  public static eu.tsystems.mms.tic.testframework.report.model.TestStepAction getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<PTestStepAction>
-      PARSER = new com.google.protobuf.AbstractParser<PTestStepAction>() {
+  private static final com.google.protobuf.Parser<TestStepAction>
+      PARSER = new com.google.protobuf.AbstractParser<TestStepAction>() {
     @java.lang.Override
-    public PTestStepAction parsePartialFrom(
+    public TestStepAction parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new PTestStepAction(input, extensionRegistry);
+      return new TestStepAction(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<PTestStepAction> parser() {
+  public static com.google.protobuf.Parser<TestStepAction> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<PTestStepAction> getParserForType() {
+  public com.google.protobuf.Parser<TestStepAction> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public eu.tsystems.mms.tic.testframework.report.model.PTestStepAction getDefaultInstanceForType() {
+  public eu.tsystems.mms.tic.testframework.report.model.TestStepAction getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

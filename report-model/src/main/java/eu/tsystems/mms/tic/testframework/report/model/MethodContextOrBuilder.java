@@ -265,27 +265,27 @@ public interface MethodContextOrBuilder extends
   eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getErrorContextOrBuilder();
 
   /**
-   * <code>repeated .data.PTestStep test_steps = 26;</code>
+   * <code>repeated .data.TestStep test_steps = 26;</code>
    */
-  java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStep> 
+  java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestStep> 
       getTestStepsList();
   /**
-   * <code>repeated .data.PTestStep test_steps = 26;</code>
+   * <code>repeated .data.TestStep test_steps = 26;</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.PTestStep getTestSteps(int index);
+  eu.tsystems.mms.tic.testframework.report.model.TestStep getTestSteps(int index);
   /**
-   * <code>repeated .data.PTestStep test_steps = 26;</code>
+   * <code>repeated .data.TestStep test_steps = 26;</code>
    */
   int getTestStepsCount();
   /**
-   * <code>repeated .data.PTestStep test_steps = 26;</code>
+   * <code>repeated .data.TestStep test_steps = 26;</code>
    */
-  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.PTestStepOrBuilder> 
+  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.TestStepOrBuilder> 
       getTestStepsOrBuilderList();
   /**
-   * <code>repeated .data.PTestStep test_steps = 26;</code>
+   * <code>repeated .data.TestStep test_steps = 26;</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.PTestStepOrBuilder getTestStepsOrBuilder(
+  eu.tsystems.mms.tic.testframework.report.model.TestStepOrBuilder getTestStepsOrBuilder(
       int index);
 
   /**

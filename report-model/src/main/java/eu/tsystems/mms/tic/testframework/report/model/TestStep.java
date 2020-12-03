@@ -4,18 +4,18 @@
 package eu.tsystems.mms.tic.testframework.report.model;
 
 /**
- * Protobuf type {@code data.PTestStep}
+ * Protobuf type {@code data.TestStep}
  */
-public  final class PTestStep extends
+public  final class TestStep extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:data.PTestStep)
-    PTestStepOrBuilder {
+    // @@protoc_insertion_point(message_implements:data.TestStep)
+    TestStepOrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use PTestStep.newBuilder() to construct.
-  private PTestStep(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+  // Use TestStep.newBuilder() to construct.
+  private TestStep(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private PTestStep() {
+  private TestStep() {
     name_ = "";
     testStepActions_ = java.util.Collections.emptyList();
   }
@@ -24,7 +24,7 @@ private static final long serialVersionUID = 0L;
   @SuppressWarnings({"unused"})
   protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
-    return new PTestStep();
+    return new TestStep();
   }
 
   @java.lang.Override
@@ -32,7 +32,7 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private PTestStep(
+  private TestStep(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -59,11 +59,11 @@ private static final long serialVersionUID = 0L;
           }
           case 26: {
             if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-              testStepActions_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.PTestStepAction>();
+              testStepActions_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.TestStepAction>();
               mutable_bitField0_ |= 0x00000001;
             }
             testStepActions_.add(
-                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.parser(), extensionRegistry));
+                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.TestStepAction.parser(), extensionRegistry));
             break;
           }
           default: {
@@ -90,15 +90,15 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_PTestStep_descriptor;
+    return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_TestStep_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_PTestStep_fieldAccessorTable
+    return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_TestStep_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            eu.tsystems.mms.tic.testframework.report.model.PTestStep.class, eu.tsystems.mms.tic.testframework.report.model.PTestStep.Builder.class);
+            eu.tsystems.mms.tic.testframework.report.model.TestStep.class, eu.tsystems.mms.tic.testframework.report.model.TestStep.Builder.class);
   }
 
   public static final int NAME_FIELD_NUMBER = 1;
@@ -138,15 +138,15 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TEST_STEP_ACTIONS_FIELD_NUMBER = 3;
-  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStepAction> testStepActions_;
+  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestStepAction> testStepActions_;
   /**
    * <pre>
    *    string id = 2;
    * </pre>
    *
-   * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
+   * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
    */
-  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStepAction> getTestStepActionsList() {
+  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestStepAction> getTestStepActionsList() {
     return testStepActions_;
   }
   /**
@@ -154,9 +154,9 @@ private static final long serialVersionUID = 0L;
    *    string id = 2;
    * </pre>
    *
-   * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
+   * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
    */
-  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.PTestStepActionOrBuilder> 
+  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.TestStepActionOrBuilder> 
       getTestStepActionsOrBuilderList() {
     return testStepActions_;
   }
@@ -165,7 +165,7 @@ private static final long serialVersionUID = 0L;
    *    string id = 2;
    * </pre>
    *
-   * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
+   * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
    */
   public int getTestStepActionsCount() {
     return testStepActions_.size();
@@ -175,9 +175,9 @@ private static final long serialVersionUID = 0L;
    *    string id = 2;
    * </pre>
    *
-   * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
+   * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
    */
-  public eu.tsystems.mms.tic.testframework.report.model.PTestStepAction getTestStepActions(int index) {
+  public eu.tsystems.mms.tic.testframework.report.model.TestStepAction getTestStepActions(int index) {
     return testStepActions_.get(index);
   }
   /**
@@ -185,9 +185,9 @@ private static final long serialVersionUID = 0L;
    *    string id = 2;
    * </pre>
    *
-   * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
+   * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
    */
-  public eu.tsystems.mms.tic.testframework.report.model.PTestStepActionOrBuilder getTestStepActionsOrBuilder(
+  public eu.tsystems.mms.tic.testframework.report.model.TestStepActionOrBuilder getTestStepActionsOrBuilder(
       int index) {
     return testStepActions_.get(index);
   }
@@ -238,10 +238,10 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof eu.tsystems.mms.tic.testframework.report.model.PTestStep)) {
+    if (!(obj instanceof eu.tsystems.mms.tic.testframework.report.model.TestStep)) {
       return super.equals(obj);
     }
-    eu.tsystems.mms.tic.testframework.report.model.PTestStep other = (eu.tsystems.mms.tic.testframework.report.model.PTestStep) obj;
+    eu.tsystems.mms.tic.testframework.report.model.TestStep other = (eu.tsystems.mms.tic.testframework.report.model.TestStep) obj;
 
     if (!getName()
         .equals(other.getName())) return false;
@@ -269,69 +269,69 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static eu.tsystems.mms.tic.testframework.report.model.PTestStep parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.TestStep parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PTestStep parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.TestStep parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PTestStep parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.TestStep parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PTestStep parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.TestStep parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PTestStep parseFrom(byte[] data)
+  public static eu.tsystems.mms.tic.testframework.report.model.TestStep parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PTestStep parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.TestStep parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PTestStep parseFrom(java.io.InputStream input)
+  public static eu.tsystems.mms.tic.testframework.report.model.TestStep parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PTestStep parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.TestStep parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PTestStep parseDelimitedFrom(java.io.InputStream input)
+  public static eu.tsystems.mms.tic.testframework.report.model.TestStep parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PTestStep parseDelimitedFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.TestStep parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PTestStep parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.TestStep parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PTestStep parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.TestStep parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -344,7 +344,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(eu.tsystems.mms.tic.testframework.report.model.PTestStep prototype) {
+  public static Builder newBuilder(eu.tsystems.mms.tic.testframework.report.model.TestStep prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -360,26 +360,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code data.PTestStep}
+   * Protobuf type {@code data.TestStep}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:data.PTestStep)
-      eu.tsystems.mms.tic.testframework.report.model.PTestStepOrBuilder {
+      // @@protoc_insertion_point(builder_implements:data.TestStep)
+      eu.tsystems.mms.tic.testframework.report.model.TestStepOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_PTestStep_descriptor;
+      return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_TestStep_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_PTestStep_fieldAccessorTable
+      return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_TestStep_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              eu.tsystems.mms.tic.testframework.report.model.PTestStep.class, eu.tsystems.mms.tic.testframework.report.model.PTestStep.Builder.class);
+              eu.tsystems.mms.tic.testframework.report.model.TestStep.class, eu.tsystems.mms.tic.testframework.report.model.TestStep.Builder.class);
     }
 
-    // Construct using eu.tsystems.mms.tic.testframework.report.model.PTestStep.newBuilder()
+    // Construct using eu.tsystems.mms.tic.testframework.report.model.TestStep.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -412,17 +412,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_PTestStep_descriptor;
+      return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_TestStep_descriptor;
     }
 
     @java.lang.Override
-    public eu.tsystems.mms.tic.testframework.report.model.PTestStep getDefaultInstanceForType() {
-      return eu.tsystems.mms.tic.testframework.report.model.PTestStep.getDefaultInstance();
+    public eu.tsystems.mms.tic.testframework.report.model.TestStep getDefaultInstanceForType() {
+      return eu.tsystems.mms.tic.testframework.report.model.TestStep.getDefaultInstance();
     }
 
     @java.lang.Override
-    public eu.tsystems.mms.tic.testframework.report.model.PTestStep build() {
-      eu.tsystems.mms.tic.testframework.report.model.PTestStep result = buildPartial();
+    public eu.tsystems.mms.tic.testframework.report.model.TestStep build() {
+      eu.tsystems.mms.tic.testframework.report.model.TestStep result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -430,8 +430,8 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public eu.tsystems.mms.tic.testframework.report.model.PTestStep buildPartial() {
-      eu.tsystems.mms.tic.testframework.report.model.PTestStep result = new eu.tsystems.mms.tic.testframework.report.model.PTestStep(this);
+    public eu.tsystems.mms.tic.testframework.report.model.TestStep buildPartial() {
+      eu.tsystems.mms.tic.testframework.report.model.TestStep result = new eu.tsystems.mms.tic.testframework.report.model.TestStep(this);
       int from_bitField0_ = bitField0_;
       result.name_ = name_;
       if (testStepActionsBuilder_ == null) {
@@ -481,16 +481,16 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof eu.tsystems.mms.tic.testframework.report.model.PTestStep) {
-        return mergeFrom((eu.tsystems.mms.tic.testframework.report.model.PTestStep)other);
+      if (other instanceof eu.tsystems.mms.tic.testframework.report.model.TestStep) {
+        return mergeFrom((eu.tsystems.mms.tic.testframework.report.model.TestStep)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(eu.tsystems.mms.tic.testframework.report.model.PTestStep other) {
-      if (other == eu.tsystems.mms.tic.testframework.report.model.PTestStep.getDefaultInstance()) return this;
+    public Builder mergeFrom(eu.tsystems.mms.tic.testframework.report.model.TestStep other) {
+      if (other == eu.tsystems.mms.tic.testframework.report.model.TestStep.getDefaultInstance()) return this;
       if (!other.getName().isEmpty()) {
         name_ = other.name_;
         onChanged();
@@ -536,11 +536,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      eu.tsystems.mms.tic.testframework.report.model.PTestStep parsedMessage = null;
+      eu.tsystems.mms.tic.testframework.report.model.TestStep parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (eu.tsystems.mms.tic.testframework.report.model.PTestStep) e.getUnfinishedMessage();
+        parsedMessage = (eu.tsystems.mms.tic.testframework.report.model.TestStep) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -627,26 +627,26 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStepAction> testStepActions_ =
+    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestStepAction> testStepActions_ =
       java.util.Collections.emptyList();
     private void ensureTestStepActionsIsMutable() {
       if (!((bitField0_ & 0x00000001) != 0)) {
-        testStepActions_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.PTestStepAction>(testStepActions_);
+        testStepActions_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.TestStepAction>(testStepActions_);
         bitField0_ |= 0x00000001;
        }
     }
 
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.PTestStepAction, eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.Builder, eu.tsystems.mms.tic.testframework.report.model.PTestStepActionOrBuilder> testStepActionsBuilder_;
+        eu.tsystems.mms.tic.testframework.report.model.TestStepAction, eu.tsystems.mms.tic.testframework.report.model.TestStepAction.Builder, eu.tsystems.mms.tic.testframework.report.model.TestStepActionOrBuilder> testStepActionsBuilder_;
 
     /**
      * <pre>
      *    string id = 2;
      * </pre>
      *
-     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
+     * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
      */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStepAction> getTestStepActionsList() {
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestStepAction> getTestStepActionsList() {
       if (testStepActionsBuilder_ == null) {
         return java.util.Collections.unmodifiableList(testStepActions_);
       } else {
@@ -658,7 +658,7 @@ private static final long serialVersionUID = 0L;
      *    string id = 2;
      * </pre>
      *
-     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
+     * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
      */
     public int getTestStepActionsCount() {
       if (testStepActionsBuilder_ == null) {
@@ -672,9 +672,9 @@ private static final long serialVersionUID = 0L;
      *    string id = 2;
      * </pre>
      *
-     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
+     * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PTestStepAction getTestStepActions(int index) {
+    public eu.tsystems.mms.tic.testframework.report.model.TestStepAction getTestStepActions(int index) {
       if (testStepActionsBuilder_ == null) {
         return testStepActions_.get(index);
       } else {
@@ -686,10 +686,10 @@ private static final long serialVersionUID = 0L;
      *    string id = 2;
      * </pre>
      *
-     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
+     * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
      */
     public Builder setTestStepActions(
-        int index, eu.tsystems.mms.tic.testframework.report.model.PTestStepAction value) {
+        int index, eu.tsystems.mms.tic.testframework.report.model.TestStepAction value) {
       if (testStepActionsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -707,10 +707,10 @@ private static final long serialVersionUID = 0L;
      *    string id = 2;
      * </pre>
      *
-     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
+     * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
      */
     public Builder setTestStepActions(
-        int index, eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.Builder builderForValue) {
+        int index, eu.tsystems.mms.tic.testframework.report.model.TestStepAction.Builder builderForValue) {
       if (testStepActionsBuilder_ == null) {
         ensureTestStepActionsIsMutable();
         testStepActions_.set(index, builderForValue.build());
@@ -725,9 +725,9 @@ private static final long serialVersionUID = 0L;
      *    string id = 2;
      * </pre>
      *
-     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
+     * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
      */
-    public Builder addTestStepActions(eu.tsystems.mms.tic.testframework.report.model.PTestStepAction value) {
+    public Builder addTestStepActions(eu.tsystems.mms.tic.testframework.report.model.TestStepAction value) {
       if (testStepActionsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -745,10 +745,10 @@ private static final long serialVersionUID = 0L;
      *    string id = 2;
      * </pre>
      *
-     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
+     * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
      */
     public Builder addTestStepActions(
-        int index, eu.tsystems.mms.tic.testframework.report.model.PTestStepAction value) {
+        int index, eu.tsystems.mms.tic.testframework.report.model.TestStepAction value) {
       if (testStepActionsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -766,10 +766,10 @@ private static final long serialVersionUID = 0L;
      *    string id = 2;
      * </pre>
      *
-     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
+     * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
      */
     public Builder addTestStepActions(
-        eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.Builder builderForValue) {
+        eu.tsystems.mms.tic.testframework.report.model.TestStepAction.Builder builderForValue) {
       if (testStepActionsBuilder_ == null) {
         ensureTestStepActionsIsMutable();
         testStepActions_.add(builderForValue.build());
@@ -784,10 +784,10 @@ private static final long serialVersionUID = 0L;
      *    string id = 2;
      * </pre>
      *
-     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
+     * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
      */
     public Builder addTestStepActions(
-        int index, eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.Builder builderForValue) {
+        int index, eu.tsystems.mms.tic.testframework.report.model.TestStepAction.Builder builderForValue) {
       if (testStepActionsBuilder_ == null) {
         ensureTestStepActionsIsMutable();
         testStepActions_.add(index, builderForValue.build());
@@ -802,10 +802,10 @@ private static final long serialVersionUID = 0L;
      *    string id = 2;
      * </pre>
      *
-     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
+     * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
      */
     public Builder addAllTestStepActions(
-        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.PTestStepAction> values) {
+        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.TestStepAction> values) {
       if (testStepActionsBuilder_ == null) {
         ensureTestStepActionsIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -821,7 +821,7 @@ private static final long serialVersionUID = 0L;
      *    string id = 2;
      * </pre>
      *
-     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
+     * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
      */
     public Builder clearTestStepActions() {
       if (testStepActionsBuilder_ == null) {
@@ -838,7 +838,7 @@ private static final long serialVersionUID = 0L;
      *    string id = 2;
      * </pre>
      *
-     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
+     * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
      */
     public Builder removeTestStepActions(int index) {
       if (testStepActionsBuilder_ == null) {
@@ -855,9 +855,9 @@ private static final long serialVersionUID = 0L;
      *    string id = 2;
      * </pre>
      *
-     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
+     * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.Builder getTestStepActionsBuilder(
+    public eu.tsystems.mms.tic.testframework.report.model.TestStepAction.Builder getTestStepActionsBuilder(
         int index) {
       return getTestStepActionsFieldBuilder().getBuilder(index);
     }
@@ -866,9 +866,9 @@ private static final long serialVersionUID = 0L;
      *    string id = 2;
      * </pre>
      *
-     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
+     * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PTestStepActionOrBuilder getTestStepActionsOrBuilder(
+    public eu.tsystems.mms.tic.testframework.report.model.TestStepActionOrBuilder getTestStepActionsOrBuilder(
         int index) {
       if (testStepActionsBuilder_ == null) {
         return testStepActions_.get(index);  } else {
@@ -880,9 +880,9 @@ private static final long serialVersionUID = 0L;
      *    string id = 2;
      * </pre>
      *
-     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
+     * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
      */
-    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.PTestStepActionOrBuilder> 
+    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.TestStepActionOrBuilder> 
          getTestStepActionsOrBuilderList() {
       if (testStepActionsBuilder_ != null) {
         return testStepActionsBuilder_.getMessageOrBuilderList();
@@ -895,41 +895,41 @@ private static final long serialVersionUID = 0L;
      *    string id = 2;
      * </pre>
      *
-     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
+     * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.Builder addTestStepActionsBuilder() {
+    public eu.tsystems.mms.tic.testframework.report.model.TestStepAction.Builder addTestStepActionsBuilder() {
       return getTestStepActionsFieldBuilder().addBuilder(
-          eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.getDefaultInstance());
+          eu.tsystems.mms.tic.testframework.report.model.TestStepAction.getDefaultInstance());
     }
     /**
      * <pre>
      *    string id = 2;
      * </pre>
      *
-     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
+     * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.Builder addTestStepActionsBuilder(
+    public eu.tsystems.mms.tic.testframework.report.model.TestStepAction.Builder addTestStepActionsBuilder(
         int index) {
       return getTestStepActionsFieldBuilder().addBuilder(
-          index, eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.getDefaultInstance());
+          index, eu.tsystems.mms.tic.testframework.report.model.TestStepAction.getDefaultInstance());
     }
     /**
      * <pre>
      *    string id = 2;
      * </pre>
      *
-     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
+     * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
      */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.Builder> 
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestStepAction.Builder> 
          getTestStepActionsBuilderList() {
       return getTestStepActionsFieldBuilder().getBuilderList();
     }
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.PTestStepAction, eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.Builder, eu.tsystems.mms.tic.testframework.report.model.PTestStepActionOrBuilder> 
+        eu.tsystems.mms.tic.testframework.report.model.TestStepAction, eu.tsystems.mms.tic.testframework.report.model.TestStepAction.Builder, eu.tsystems.mms.tic.testframework.report.model.TestStepActionOrBuilder> 
         getTestStepActionsFieldBuilder() {
       if (testStepActionsBuilder_ == null) {
         testStepActionsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            eu.tsystems.mms.tic.testframework.report.model.PTestStepAction, eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.Builder, eu.tsystems.mms.tic.testframework.report.model.PTestStepActionOrBuilder>(
+            eu.tsystems.mms.tic.testframework.report.model.TestStepAction, eu.tsystems.mms.tic.testframework.report.model.TestStepAction.Builder, eu.tsystems.mms.tic.testframework.report.model.TestStepActionOrBuilder>(
                 testStepActions_,
                 ((bitField0_ & 0x00000001) != 0),
                 getParentForChildren(),
@@ -951,41 +951,41 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:data.PTestStep)
+    // @@protoc_insertion_point(builder_scope:data.TestStep)
   }
 
-  // @@protoc_insertion_point(class_scope:data.PTestStep)
-  private static final eu.tsystems.mms.tic.testframework.report.model.PTestStep DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:data.TestStep)
+  private static final eu.tsystems.mms.tic.testframework.report.model.TestStep DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new eu.tsystems.mms.tic.testframework.report.model.PTestStep();
+    DEFAULT_INSTANCE = new eu.tsystems.mms.tic.testframework.report.model.TestStep();
   }
 
-  public static eu.tsystems.mms.tic.testframework.report.model.PTestStep getDefaultInstance() {
+  public static eu.tsystems.mms.tic.testframework.report.model.TestStep getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<PTestStep>
-      PARSER = new com.google.protobuf.AbstractParser<PTestStep>() {
+  private static final com.google.protobuf.Parser<TestStep>
+      PARSER = new com.google.protobuf.AbstractParser<TestStep>() {
     @java.lang.Override
-    public PTestStep parsePartialFrom(
+    public TestStep parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new PTestStep(input, extensionRegistry);
+      return new TestStep(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<PTestStep> parser() {
+  public static com.google.protobuf.Parser<TestStep> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<PTestStep> getParserForType() {
+  public com.google.protobuf.Parser<TestStep> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public eu.tsystems.mms.tic.testframework.report.model.PTestStep getDefaultInstanceForType() {
+  public eu.tsystems.mms.tic.testframework.report.model.TestStep getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

@@ -4,18 +4,18 @@
 package eu.tsystems.mms.tic.testframework.report.model;
 
 /**
- * Protobuf type {@code data.PClickPathEvent}
+ * Protobuf type {@code data.ClickPathEvent}
  */
-public  final class PClickPathEvent extends
+public  final class ClickPathEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:data.PClickPathEvent)
-    PClickPathEventOrBuilder {
+    // @@protoc_insertion_point(message_implements:data.ClickPathEvent)
+    ClickPathEventOrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use PClickPathEvent.newBuilder() to construct.
-  private PClickPathEvent(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+  // Use ClickPathEvent.newBuilder() to construct.
+  private ClickPathEvent(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private PClickPathEvent() {
+  private ClickPathEvent() {
     type_ = 0;
     subject_ = "";
     sessionId_ = "";
@@ -25,7 +25,7 @@ private static final long serialVersionUID = 0L;
   @SuppressWarnings({"unused"})
   protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
-    return new PClickPathEvent();
+    return new ClickPathEvent();
   }
 
   @java.lang.Override
@@ -33,7 +33,7 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private PClickPathEvent(
+  private ClickPathEvent(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -90,34 +90,34 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_PClickPathEvent_descriptor;
+    return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_ClickPathEvent_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_PClickPathEvent_fieldAccessorTable
+    return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_ClickPathEvent_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent.class, eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent.Builder.class);
+            eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.class, eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.Builder.class);
   }
 
   public static final int TYPE_FIELD_NUMBER = 1;
   private int type_;
   /**
-   * <code>.data.PClickPathEventType type = 1;</code>
+   * <code>.data.ClickPathEventType type = 1;</code>
    * @return The enum numeric value on the wire for type.
    */
   public int getTypeValue() {
     return type_;
   }
   /**
-   * <code>.data.PClickPathEventType type = 1;</code>
+   * <code>.data.ClickPathEventType type = 1;</code>
    * @return The type.
    */
-  public eu.tsystems.mms.tic.testframework.report.model.PClickPathEventType getType() {
+  public eu.tsystems.mms.tic.testframework.report.model.ClickPathEventType getType() {
     @SuppressWarnings("deprecation")
-    eu.tsystems.mms.tic.testframework.report.model.PClickPathEventType result = eu.tsystems.mms.tic.testframework.report.model.PClickPathEventType.valueOf(type_);
-    return result == null ? eu.tsystems.mms.tic.testframework.report.model.PClickPathEventType.UNRECOGNIZED : result;
+    eu.tsystems.mms.tic.testframework.report.model.ClickPathEventType result = eu.tsystems.mms.tic.testframework.report.model.ClickPathEventType.valueOf(type_);
+    return result == null ? eu.tsystems.mms.tic.testframework.report.model.ClickPathEventType.UNRECOGNIZED : result;
   }
 
   public static final int SUBJECT_FIELD_NUMBER = 2;
@@ -206,7 +206,7 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (type_ != eu.tsystems.mms.tic.testframework.report.model.PClickPathEventType.NOT_SET.getNumber()) {
+    if (type_ != eu.tsystems.mms.tic.testframework.report.model.ClickPathEventType.CPET_NOT_SET.getNumber()) {
       output.writeEnum(1, type_);
     }
     if (!getSubjectBytes().isEmpty()) {
@@ -224,7 +224,7 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (type_ != eu.tsystems.mms.tic.testframework.report.model.PClickPathEventType.NOT_SET.getNumber()) {
+    if (type_ != eu.tsystems.mms.tic.testframework.report.model.ClickPathEventType.CPET_NOT_SET.getNumber()) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(1, type_);
     }
@@ -244,10 +244,10 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent)) {
+    if (!(obj instanceof eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent)) {
       return super.equals(obj);
     }
-    eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent other = (eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent) obj;
+    eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent other = (eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent) obj;
 
     if (type_ != other.type_) return false;
     if (!getSubject()
@@ -276,69 +276,69 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent parseFrom(byte[] data)
+  public static eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent parseFrom(java.io.InputStream input)
+  public static eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent parseDelimitedFrom(java.io.InputStream input)
+  public static eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent parseDelimitedFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -351,7 +351,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent prototype) {
+  public static Builder newBuilder(eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -367,26 +367,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code data.PClickPathEvent}
+   * Protobuf type {@code data.ClickPathEvent}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:data.PClickPathEvent)
-      eu.tsystems.mms.tic.testframework.report.model.PClickPathEventOrBuilder {
+      // @@protoc_insertion_point(builder_implements:data.ClickPathEvent)
+      eu.tsystems.mms.tic.testframework.report.model.ClickPathEventOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_PClickPathEvent_descriptor;
+      return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_ClickPathEvent_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_PClickPathEvent_fieldAccessorTable
+      return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_ClickPathEvent_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent.class, eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent.Builder.class);
+              eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.class, eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.Builder.class);
     }
 
-    // Construct using eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent.newBuilder()
+    // Construct using eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -416,17 +416,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_PClickPathEvent_descriptor;
+      return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_ClickPathEvent_descriptor;
     }
 
     @java.lang.Override
-    public eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent getDefaultInstanceForType() {
-      return eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent.getDefaultInstance();
+    public eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent getDefaultInstanceForType() {
+      return eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.getDefaultInstance();
     }
 
     @java.lang.Override
-    public eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent build() {
-      eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent result = buildPartial();
+    public eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent build() {
+      eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -434,8 +434,8 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent buildPartial() {
-      eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent result = new eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent(this);
+    public eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent buildPartial() {
+      eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent result = new eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent(this);
       result.type_ = type_;
       result.subject_ = subject_;
       result.sessionId_ = sessionId_;
@@ -477,16 +477,16 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent) {
-        return mergeFrom((eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent)other);
+      if (other instanceof eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent) {
+        return mergeFrom((eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent other) {
-      if (other == eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent.getDefaultInstance()) return this;
+    public Builder mergeFrom(eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent other) {
+      if (other == eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.getDefaultInstance()) return this;
       if (other.type_ != 0) {
         setTypeValue(other.getTypeValue());
       }
@@ -513,11 +513,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent parsedMessage = null;
+      eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent) e.getUnfinishedMessage();
+        parsedMessage = (eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -529,14 +529,14 @@ private static final long serialVersionUID = 0L;
 
     private int type_ = 0;
     /**
-     * <code>.data.PClickPathEventType type = 1;</code>
+     * <code>.data.ClickPathEventType type = 1;</code>
      * @return The enum numeric value on the wire for type.
      */
     public int getTypeValue() {
       return type_;
     }
     /**
-     * <code>.data.PClickPathEventType type = 1;</code>
+     * <code>.data.ClickPathEventType type = 1;</code>
      * @param value The enum numeric value on the wire for type to set.
      * @return This builder for chaining.
      */
@@ -546,20 +546,20 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.data.PClickPathEventType type = 1;</code>
+     * <code>.data.ClickPathEventType type = 1;</code>
      * @return The type.
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PClickPathEventType getType() {
+    public eu.tsystems.mms.tic.testframework.report.model.ClickPathEventType getType() {
       @SuppressWarnings("deprecation")
-      eu.tsystems.mms.tic.testframework.report.model.PClickPathEventType result = eu.tsystems.mms.tic.testframework.report.model.PClickPathEventType.valueOf(type_);
-      return result == null ? eu.tsystems.mms.tic.testframework.report.model.PClickPathEventType.UNRECOGNIZED : result;
+      eu.tsystems.mms.tic.testframework.report.model.ClickPathEventType result = eu.tsystems.mms.tic.testframework.report.model.ClickPathEventType.valueOf(type_);
+      return result == null ? eu.tsystems.mms.tic.testframework.report.model.ClickPathEventType.UNRECOGNIZED : result;
     }
     /**
-     * <code>.data.PClickPathEventType type = 1;</code>
+     * <code>.data.ClickPathEventType type = 1;</code>
      * @param value The type to set.
      * @return This builder for chaining.
      */
-    public Builder setType(eu.tsystems.mms.tic.testframework.report.model.PClickPathEventType value) {
+    public Builder setType(eu.tsystems.mms.tic.testframework.report.model.ClickPathEventType value) {
       if (value == null) {
         throw new NullPointerException();
       }
@@ -569,7 +569,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.data.PClickPathEventType type = 1;</code>
+     * <code>.data.ClickPathEventType type = 1;</code>
      * @return This builder for chaining.
      */
     public Builder clearType() {
@@ -743,41 +743,41 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:data.PClickPathEvent)
+    // @@protoc_insertion_point(builder_scope:data.ClickPathEvent)
   }
 
-  // @@protoc_insertion_point(class_scope:data.PClickPathEvent)
-  private static final eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:data.ClickPathEvent)
+  private static final eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent();
+    DEFAULT_INSTANCE = new eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent();
   }
 
-  public static eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent getDefaultInstance() {
+  public static eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<PClickPathEvent>
-      PARSER = new com.google.protobuf.AbstractParser<PClickPathEvent>() {
+  private static final com.google.protobuf.Parser<ClickPathEvent>
+      PARSER = new com.google.protobuf.AbstractParser<ClickPathEvent>() {
     @java.lang.Override
-    public PClickPathEvent parsePartialFrom(
+    public ClickPathEvent parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new PClickPathEvent(input, extensionRegistry);
+      return new ClickPathEvent(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<PClickPathEvent> parser() {
+  public static com.google.protobuf.Parser<ClickPathEvent> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<PClickPathEvent> getParserForType() {
+  public com.google.protobuf.Parser<ClickPathEvent> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public eu.tsystems.mms.tic.testframework.report.model.PClickPathEvent getDefaultInstanceForType() {
+  public eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

@@ -83,14 +83,17 @@ public interface ErrorContextOrBuilder extends
       getDescriptionBytes();
 
   /**
-   * <code>string cause_id = 11;</code>
-   * @return The causeId.
+   * <code>.data.StackTraceCause cause = 11;</code>
+   * @return Whether the cause field is set.
    */
-  java.lang.String getCauseId();
+  boolean hasCause();
   /**
-   * <code>string cause_id = 11;</code>
-   * @return The bytes for causeId.
+   * <code>.data.StackTraceCause cause = 11;</code>
+   * @return The cause.
    */
-  com.google.protobuf.ByteString
-      getCauseIdBytes();
+  eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getCause();
+  /**
+   * <code>.data.StackTraceCause cause = 11;</code>
+   */
+  eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder getCauseOrBuilder();
 }

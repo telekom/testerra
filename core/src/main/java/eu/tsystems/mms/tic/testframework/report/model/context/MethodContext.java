@@ -70,7 +70,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     public int methodRunIndex = -1;
     public String threadName = "unrelated";
     private TestStep lastFailedStep;
-    public FailureCorridor.Value failureCorridorValue = FailureCorridor.Value.HIGH;
+    private Class failureCorridorClass = FailureCorridor.High.class;
     private int hashCodeOfTestResult = 0;
     public final List<String> infos = new LinkedList<>();
     private List<SessionContext> sessionContexts = new LinkedList<>();
@@ -99,6 +99,27 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         this.parentContext = classContext;
         this.methodRunIndex = Counters.increaseMethodExecutionCounter();
         this.methodType = methodType;
+    }
+
+    /**
+     * @deprecated Use {@link #getFailureCorridorClass()} instead
+     */
+    public FailureCorridor.Value getFailureCorridorValue() {
+        if (this.failureCorridorClass.equals(FailureCorridor.High.class)) {
+            return FailureCorridor.Value.HIGH;
+        } else if (this.failureCorridorClass.equals(FailureCorridor.Mid.class)) {
+            return FailureCorridor.Value.MID;
+        } else {
+            return FailureCorridor.Value.LOW;
+        }
+    }
+
+    public void setFailureCorridorClass(Class failureCorridorClass) {
+        this.failureCorridorClass = failureCorridorClass;
+    }
+
+    public Class getFailureCorridorClass() {
+        return this.failureCorridorClass;
     }
 
     /**

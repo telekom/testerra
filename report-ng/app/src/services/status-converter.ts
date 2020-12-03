@@ -206,13 +206,12 @@ export class StatusConverter {
         }
     }
 
-    flattenStackTrace(causeId:string, executionContext:IExecutionContext) {
+    flattenStackTrace(cause:IStackTraceCause) {
         const stackTrace:IStackTraceCause[] = [];
-        let cause = executionContext.causes[causeId];
-        while (cause) {
+        do {
             stackTrace.push(cause);
-            cause = executionContext.causes[cause.causeId];
-        }
+            cause = cause.cause;
+        } while (cause != null);
         return stackTrace;
     }
 }

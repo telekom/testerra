@@ -3,20 +3,20 @@
 
 package eu.tsystems.mms.tic.testframework.report.model;
 
-public interface PLogMessageOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:data.PLogMessage)
+public interface LogMessageOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:data.LogMessage)
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>.data.PLogMessageType type = 1;</code>
+   * <code>.data.LogMessageType type = 1;</code>
    * @return The enum numeric value on the wire for type.
    */
   int getTypeValue();
   /**
-   * <code>.data.PLogMessageType type = 1;</code>
+   * <code>.data.LogMessageType type = 1;</code>
    * @return The type.
    */
-  eu.tsystems.mms.tic.testframework.report.model.PLogMessageType getType();
+  eu.tsystems.mms.tic.testframework.report.model.LogMessageType getType();
 
   /**
    * <code>string logger_name = 2;</code>
@@ -61,14 +61,17 @@ public interface PLogMessageOrBuilder extends
       getThreadNameBytes();
 
   /**
-   * <code>string cause_id = 6;</code>
-   * @return The causeId.
+   * <code>.data.StackTraceCause cause = 6;</code>
+   * @return Whether the cause field is set.
    */
-  java.lang.String getCauseId();
+  boolean hasCause();
   /**
-   * <code>string cause_id = 6;</code>
-   * @return The bytes for causeId.
+   * <code>.data.StackTraceCause cause = 6;</code>
+   * @return The cause.
    */
-  com.google.protobuf.ByteString
-      getCauseIdBytes();
+  eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getCause();
+  /**
+   * <code>.data.StackTraceCause cause = 6;</code>
+   */
+  eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder getCauseOrBuilder();
 }

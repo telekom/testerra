@@ -147,13 +147,10 @@ export namespace data {
         exclusiveSessionContextIds?: (string[]|null);
 
         /** ExecutionContext logMessages */
-        logMessages?: (data.IPLogMessage[]|null);
+        logMessages?: (data.ILogMessage[]|null);
 
         /** ExecutionContext estimatedTestsCount */
         estimatedTestsCount?: (number|null);
-
-        /** ExecutionContext causes */
-        causes?: ({ [k: string]: data.IStackTraceCause }|null);
     }
 
     /** Represents an ExecutionContext. */
@@ -187,13 +184,10 @@ export namespace data {
         public exclusiveSessionContextIds: string[];
 
         /** ExecutionContext logMessages. */
-        public logMessages: data.IPLogMessage[];
+        public logMessages: data.ILogMessage[];
 
         /** ExecutionContext estimatedTestsCount. */
         public estimatedTestsCount: number;
-
-        /** ExecutionContext causes. */
-        public causes: { [k: string]: data.IStackTraceCause };
 
         /**
          * Decodes an ExecutionContext message from the specified reader or buffer.
@@ -252,7 +246,7 @@ export namespace data {
         errorContext?: (data.IErrorContext|null);
 
         /** MethodContext testSteps */
-        testSteps?: (data.IPTestStep[]|null);
+        testSteps?: (data.ITestStep[]|null);
 
         /** MethodContext sessionContextIds */
         sessionContextIds?: (string[]|null);
@@ -316,7 +310,7 @@ export namespace data {
         public errorContext?: (data.IErrorContext|null);
 
         /** MethodContext testSteps. */
-        public testSteps: data.IPTestStep[];
+        public testSteps: data.ITestStep[];
 
         /** MethodContext sessionContextIds. */
         public sessionContextIds: string[];
@@ -410,162 +404,162 @@ export namespace data {
         public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.ContextValues;
     }
 
-    /** Properties of a PTestStep. */
-    interface IPTestStep {
+    /** Properties of a TestStep. */
+    interface ITestStep {
 
-        /** PTestStep name */
+        /** TestStep name */
         name?: (string|null);
 
-        /** PTestStep testStepActions */
-        testStepActions?: (data.IPTestStepAction[]|null);
+        /** TestStep testStepActions */
+        testStepActions?: (data.ITestStepAction[]|null);
     }
 
-    /** Represents a PTestStep. */
-    class PTestStep implements IPTestStep {
+    /** Represents a TestStep. */
+    class TestStep implements ITestStep {
 
         /**
-         * Constructs a new PTestStep.
+         * Constructs a new TestStep.
          * @param [p] Properties to set
          */
-        constructor(p?: data.IPTestStep);
+        constructor(p?: data.ITestStep);
 
-        /** PTestStep name. */
+        /** TestStep name. */
         public name: string;
 
-        /** PTestStep testStepActions. */
-        public testStepActions: data.IPTestStepAction[];
+        /** TestStep testStepActions. */
+        public testStepActions: data.ITestStepAction[];
 
         /**
-         * Decodes a PTestStep message from the specified reader or buffer.
+         * Decodes a TestStep message from the specified reader or buffer.
          * @param r Reader or buffer to decode from
          * @param [l] Message length if known beforehand
-         * @returns PTestStep
+         * @returns TestStep
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.PTestStep;
+        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.TestStep;
     }
 
-    /** Properties of a PTestStepAction. */
-    interface IPTestStepAction {
+    /** Properties of a TestStepAction. */
+    interface ITestStepAction {
 
-        /** PTestStepAction name */
+        /** TestStepAction name */
         name?: (string|null);
 
-        /** PTestStepAction timestamp */
+        /** TestStepAction timestamp */
         timestamp?: (number|null);
 
-        /** PTestStepAction clickpathEvents */
-        clickpathEvents?: (data.IPClickPathEvent[]|null);
+        /** TestStepAction clickpathEvents */
+        clickpathEvents?: (data.IClickPathEvent[]|null);
 
-        /** PTestStepAction screenshotIds */
+        /** TestStepAction screenshotIds */
         screenshotIds?: (string[]|null);
 
-        /** PTestStepAction logMessages */
-        logMessages?: (data.IPLogMessage[]|null);
+        /** TestStepAction logMessages */
+        logMessages?: (data.ILogMessage[]|null);
 
-        /** PTestStepAction optionalAssertions */
+        /** TestStepAction optionalAssertions */
         optionalAssertions?: (data.IErrorContext[]|null);
 
-        /** PTestStepAction collectedAssertions */
+        /** TestStepAction collectedAssertions */
         collectedAssertions?: (data.IErrorContext[]|null);
     }
 
-    /** Represents a PTestStepAction. */
-    class PTestStepAction implements IPTestStepAction {
+    /** Represents a TestStepAction. */
+    class TestStepAction implements ITestStepAction {
 
         /**
-         * Constructs a new PTestStepAction.
+         * Constructs a new TestStepAction.
          * @param [p] Properties to set
          */
-        constructor(p?: data.IPTestStepAction);
+        constructor(p?: data.ITestStepAction);
 
-        /** PTestStepAction name. */
+        /** TestStepAction name. */
         public name: string;
 
-        /** PTestStepAction timestamp. */
+        /** TestStepAction timestamp. */
         public timestamp: number;
 
-        /** PTestStepAction clickpathEvents. */
-        public clickpathEvents: data.IPClickPathEvent[];
+        /** TestStepAction clickpathEvents. */
+        public clickpathEvents: data.IClickPathEvent[];
 
-        /** PTestStepAction screenshotIds. */
+        /** TestStepAction screenshotIds. */
         public screenshotIds: string[];
 
-        /** PTestStepAction logMessages. */
-        public logMessages: data.IPLogMessage[];
+        /** TestStepAction logMessages. */
+        public logMessages: data.ILogMessage[];
 
-        /** PTestStepAction optionalAssertions. */
+        /** TestStepAction optionalAssertions. */
         public optionalAssertions: data.IErrorContext[];
 
-        /** PTestStepAction collectedAssertions. */
+        /** TestStepAction collectedAssertions. */
         public collectedAssertions: data.IErrorContext[];
 
         /**
-         * Decodes a PTestStepAction message from the specified reader or buffer.
+         * Decodes a TestStepAction message from the specified reader or buffer.
          * @param r Reader or buffer to decode from
          * @param [l] Message length if known beforehand
-         * @returns PTestStepAction
+         * @returns TestStepAction
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.PTestStepAction;
+        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.TestStepAction;
     }
 
-    /** PClickPathEventType enum. */
-    enum PClickPathEventType {
-        NOT_SET = 0,
-        WINDOW = 1,
-        CLICK = 2,
-        VALUE = 3,
-        PAGE = 4,
-        URL = 5
+    /** ClickPathEventType enum. */
+    enum ClickPathEventType {
+        CPET_NOT_SET = 0,
+        CPET_WINDOW = 1,
+        CPET_CLICK = 2,
+        CPET_VALUE = 3,
+        CPET_PAGE = 4,
+        CPET_URL = 5
     }
 
-    /** Properties of a PClickPathEvent. */
-    interface IPClickPathEvent {
+    /** Properties of a ClickPathEvent. */
+    interface IClickPathEvent {
 
-        /** PClickPathEvent type */
-        type?: (data.PClickPathEventType|null);
+        /** ClickPathEvent type */
+        type?: (data.ClickPathEventType|null);
 
-        /** PClickPathEvent subject */
+        /** ClickPathEvent subject */
         subject?: (string|null);
 
-        /** PClickPathEvent sessionId */
+        /** ClickPathEvent sessionId */
         sessionId?: (string|null);
     }
 
-    /** Represents a PClickPathEvent. */
-    class PClickPathEvent implements IPClickPathEvent {
+    /** Represents a ClickPathEvent. */
+    class ClickPathEvent implements IClickPathEvent {
 
         /**
-         * Constructs a new PClickPathEvent.
+         * Constructs a new ClickPathEvent.
          * @param [p] Properties to set
          */
-        constructor(p?: data.IPClickPathEvent);
+        constructor(p?: data.IClickPathEvent);
 
-        /** PClickPathEvent type. */
-        public type: data.PClickPathEventType;
+        /** ClickPathEvent type. */
+        public type: data.ClickPathEventType;
 
-        /** PClickPathEvent subject. */
+        /** ClickPathEvent subject. */
         public subject: string;
 
-        /** PClickPathEvent sessionId. */
+        /** ClickPathEvent sessionId. */
         public sessionId: string;
 
         /**
-         * Decodes a PClickPathEvent message from the specified reader or buffer.
+         * Decodes a ClickPathEvent message from the specified reader or buffer.
          * @param r Reader or buffer to decode from
          * @param [l] Message length if known beforehand
-         * @returns PClickPathEvent
+         * @returns ClickPathEvent
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.PClickPathEvent;
+        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.ClickPathEvent;
     }
 
-    /** PLogMessageType enum. */
-    enum PLogMessageType {
+    /** LogMessageType enum. */
+    enum LogMessageType {
         LMT_OFF = 0,
         LMT_ERROR = 1,
         LMT_WARN = 2,
@@ -573,64 +567,64 @@ export namespace data {
         LMT_DEBUG = 4
     }
 
-    /** Properties of a PLogMessage. */
-    interface IPLogMessage {
+    /** Properties of a LogMessage. */
+    interface ILogMessage {
 
-        /** PLogMessage type */
-        type?: (data.PLogMessageType|null);
+        /** LogMessage type */
+        type?: (data.LogMessageType|null);
 
-        /** PLogMessage loggerName */
+        /** LogMessage loggerName */
         loggerName?: (string|null);
 
-        /** PLogMessage message */
+        /** LogMessage message */
         message?: (string|null);
 
-        /** PLogMessage timestamp */
+        /** LogMessage timestamp */
         timestamp?: (number|null);
 
-        /** PLogMessage threadName */
+        /** LogMessage threadName */
         threadName?: (string|null);
 
-        /** PLogMessage causeId */
-        causeId?: (string|null);
+        /** LogMessage cause */
+        cause?: (data.IStackTraceCause|null);
     }
 
-    /** Represents a PLogMessage. */
-    class PLogMessage implements IPLogMessage {
+    /** Represents a LogMessage. */
+    class LogMessage implements ILogMessage {
 
         /**
-         * Constructs a new PLogMessage.
+         * Constructs a new LogMessage.
          * @param [p] Properties to set
          */
-        constructor(p?: data.IPLogMessage);
+        constructor(p?: data.ILogMessage);
 
-        /** PLogMessage type. */
-        public type: data.PLogMessageType;
+        /** LogMessage type. */
+        public type: data.LogMessageType;
 
-        /** PLogMessage loggerName. */
+        /** LogMessage loggerName. */
         public loggerName: string;
 
-        /** PLogMessage message. */
+        /** LogMessage message. */
         public message: string;
 
-        /** PLogMessage timestamp. */
+        /** LogMessage timestamp. */
         public timestamp: number;
 
-        /** PLogMessage threadName. */
+        /** LogMessage threadName. */
         public threadName: string;
 
-        /** PLogMessage causeId. */
-        public causeId: string;
+        /** LogMessage cause. */
+        public cause?: (data.IStackTraceCause|null);
 
         /**
-         * Decodes a PLogMessage message from the specified reader or buffer.
+         * Decodes a LogMessage message from the specified reader or buffer.
          * @param r Reader or buffer to decode from
          * @param [l] Message length if known beforehand
-         * @returns PLogMessage
+         * @returns LogMessage
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.PLogMessage;
+        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.LogMessage;
     }
 
     /** Properties of an ErrorContext. */
@@ -648,8 +642,8 @@ export namespace data {
         /** ErrorContext description */
         description?: (string|null);
 
-        /** ErrorContext causeId */
-        causeId?: (string|null);
+        /** ErrorContext cause */
+        cause?: (data.IStackTraceCause|null);
     }
 
     /** Represents an ErrorContext. */
@@ -673,8 +667,8 @@ export namespace data {
         /** ErrorContext description. */
         public description: string;
 
-        /** ErrorContext causeId. */
-        public causeId: string;
+        /** ErrorContext cause. */
+        public cause?: (data.IStackTraceCause|null);
 
         /**
          * Decodes an ErrorContext message from the specified reader or buffer.
@@ -846,9 +840,9 @@ export namespace data {
     /** FailureCorridorValue enum. */
     enum FailureCorridorValue {
         FCV_NOT_SET = 0,
-        HIGH = 1,
-        MID = 2,
-        LOW = 3
+        FCV_HIGH = 1,
+        FCV_MID = 2,
+        FCV_LOW = 3
     }
 
     /** MethodType enum. */
@@ -870,11 +864,8 @@ export namespace data {
         /** StackTraceCause stackTraceElements */
         stackTraceElements?: (string[]|null);
 
-        /** StackTraceCause id */
-        id?: (string|null);
-
-        /** StackTraceCause causeId */
-        causeId?: (string|null);
+        /** StackTraceCause cause */
+        cause?: (data.IStackTraceCause|null);
     }
 
     /** Represents a StackTraceCause. */
@@ -895,11 +886,8 @@ export namespace data {
         /** StackTraceCause stackTraceElements. */
         public stackTraceElements: string[];
 
-        /** StackTraceCause id. */
-        public id: string;
-
-        /** StackTraceCause causeId. */
-        public causeId: string;
+        /** StackTraceCause cause. */
+        public cause?: (data.IStackTraceCause|null);
 
         /**
          * Decodes a StackTraceCause message from the specified reader or buffer.

@@ -57,34 +57,17 @@ public interface StackTraceCauseOrBuilder extends
       getStackTraceElementsBytes(int index);
 
   /**
-   * <pre>
-   *    StackTraceCause cause = 4;
-   * </pre>
-   *
-   * <code>string id = 5;</code>
-   * @return The id.
+   * <code>.data.StackTraceCause cause = 4;</code>
+   * @return Whether the cause field is set.
    */
-  java.lang.String getId();
+  boolean hasCause();
   /**
-   * <pre>
-   *    StackTraceCause cause = 4;
-   * </pre>
-   *
-   * <code>string id = 5;</code>
-   * @return The bytes for id.
+   * <code>.data.StackTraceCause cause = 4;</code>
+   * @return The cause.
    */
-  com.google.protobuf.ByteString
-      getIdBytes();
-
+  eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getCause();
   /**
-   * <code>string cause_id = 6;</code>
-   * @return The causeId.
+   * <code>.data.StackTraceCause cause = 4;</code>
    */
-  java.lang.String getCauseId();
-  /**
-   * <code>string cause_id = 6;</code>
-   * @return The bytes for causeId.
-   */
-  com.google.protobuf.ByteString
-      getCauseIdBytes();
+  eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder getCauseOrBuilder();
 }

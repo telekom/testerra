@@ -119,7 +119,7 @@ export class ExecutionStatistics extends Statistics {
     }
 
     private _addUniqueFailureAspect(errorContext:IErrorContext, methodContext:IMethodContext) {
-        let failureAspectStatistics = new FailureAspectStatistics().setErrorContext(errorContext, this._executionAggregate.executionContext);
+        let failureAspectStatistics = new FailureAspectStatistics().setErrorContext(errorContext);
 
         const foundFailureAspectStatistics = this._failureAspectStatistics.find(existingFailureAspectStatistics => {
             return existingFailureAspectStatistics.name == failureAspectStatistics.name;
@@ -239,11 +239,11 @@ export class FailureAspectStatistics extends Statistics {
         super();
     }
 
-    setErrorContext(errorContext:IErrorContext, executionContext:IExecutionContext) {
+    setErrorContext(errorContext:IErrorContext) {
         if (errorContext.description) {
             this._name = errorContext.description;
         } else {
-            const cause = executionContext.causes[errorContext.causeId];
+            const cause = errorContext.cause;
             const namespace = this.statusConverter.separateNamespace(cause.className);
             this._name = namespace.class + (cause.message ? ": " + cause.message.trim() : "");
         }

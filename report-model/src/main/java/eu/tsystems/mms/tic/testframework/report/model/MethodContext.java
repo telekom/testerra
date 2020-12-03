@@ -176,11 +176,11 @@ private static final long serialVersionUID = 0L;
           }
           case 210: {
             if (!((mutable_bitField0_ & 0x00000020) != 0)) {
-              testSteps_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.PTestStep>();
+              testSteps_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.TestStep>();
               mutable_bitField0_ |= 0x00000020;
             }
             testSteps_.add(
-                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.PTestStep.parser(), extensionRegistry));
+                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.TestStep.parser(), extensionRegistry));
             break;
           }
           case 234: {
@@ -683,36 +683,36 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TEST_STEPS_FIELD_NUMBER = 26;
-  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStep> testSteps_;
+  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestStep> testSteps_;
   /**
-   * <code>repeated .data.PTestStep test_steps = 26;</code>
+   * <code>repeated .data.TestStep test_steps = 26;</code>
    */
-  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStep> getTestStepsList() {
+  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestStep> getTestStepsList() {
     return testSteps_;
   }
   /**
-   * <code>repeated .data.PTestStep test_steps = 26;</code>
+   * <code>repeated .data.TestStep test_steps = 26;</code>
    */
-  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.PTestStepOrBuilder> 
+  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.TestStepOrBuilder> 
       getTestStepsOrBuilderList() {
     return testSteps_;
   }
   /**
-   * <code>repeated .data.PTestStep test_steps = 26;</code>
+   * <code>repeated .data.TestStep test_steps = 26;</code>
    */
   public int getTestStepsCount() {
     return testSteps_.size();
   }
   /**
-   * <code>repeated .data.PTestStep test_steps = 26;</code>
+   * <code>repeated .data.TestStep test_steps = 26;</code>
    */
-  public eu.tsystems.mms.tic.testframework.report.model.PTestStep getTestSteps(int index) {
+  public eu.tsystems.mms.tic.testframework.report.model.TestStep getTestSteps(int index) {
     return testSteps_.get(index);
   }
   /**
-   * <code>repeated .data.PTestStep test_steps = 26;</code>
+   * <code>repeated .data.TestStep test_steps = 26;</code>
    */
-  public eu.tsystems.mms.tic.testframework.report.model.PTestStepOrBuilder getTestStepsOrBuilder(
+  public eu.tsystems.mms.tic.testframework.report.model.TestStepOrBuilder getTestStepsOrBuilder(
       int index) {
     return testSteps_.get(index);
   }
@@ -2859,22 +2859,22 @@ private static final long serialVersionUID = 0L;
       return errorContextBuilder_;
     }
 
-    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStep> testSteps_ =
+    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestStep> testSteps_ =
       java.util.Collections.emptyList();
     private void ensureTestStepsIsMutable() {
       if (!((bitField0_ & 0x00000020) != 0)) {
-        testSteps_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.PTestStep>(testSteps_);
+        testSteps_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.TestStep>(testSteps_);
         bitField0_ |= 0x00000020;
        }
     }
 
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.PTestStep, eu.tsystems.mms.tic.testframework.report.model.PTestStep.Builder, eu.tsystems.mms.tic.testframework.report.model.PTestStepOrBuilder> testStepsBuilder_;
+        eu.tsystems.mms.tic.testframework.report.model.TestStep, eu.tsystems.mms.tic.testframework.report.model.TestStep.Builder, eu.tsystems.mms.tic.testframework.report.model.TestStepOrBuilder> testStepsBuilder_;
 
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStep> getTestStepsList() {
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestStep> getTestStepsList() {
       if (testStepsBuilder_ == null) {
         return java.util.Collections.unmodifiableList(testSteps_);
       } else {
@@ -2882,7 +2882,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
     public int getTestStepsCount() {
       if (testStepsBuilder_ == null) {
@@ -2892,9 +2892,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PTestStep getTestSteps(int index) {
+    public eu.tsystems.mms.tic.testframework.report.model.TestStep getTestSteps(int index) {
       if (testStepsBuilder_ == null) {
         return testSteps_.get(index);
       } else {
@@ -2902,10 +2902,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
     public Builder setTestSteps(
-        int index, eu.tsystems.mms.tic.testframework.report.model.PTestStep value) {
+        int index, eu.tsystems.mms.tic.testframework.report.model.TestStep value) {
       if (testStepsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -2919,10 +2919,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
     public Builder setTestSteps(
-        int index, eu.tsystems.mms.tic.testframework.report.model.PTestStep.Builder builderForValue) {
+        int index, eu.tsystems.mms.tic.testframework.report.model.TestStep.Builder builderForValue) {
       if (testStepsBuilder_ == null) {
         ensureTestStepsIsMutable();
         testSteps_.set(index, builderForValue.build());
@@ -2933,9 +2933,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
-    public Builder addTestSteps(eu.tsystems.mms.tic.testframework.report.model.PTestStep value) {
+    public Builder addTestSteps(eu.tsystems.mms.tic.testframework.report.model.TestStep value) {
       if (testStepsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -2949,10 +2949,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
     public Builder addTestSteps(
-        int index, eu.tsystems.mms.tic.testframework.report.model.PTestStep value) {
+        int index, eu.tsystems.mms.tic.testframework.report.model.TestStep value) {
       if (testStepsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -2966,10 +2966,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
     public Builder addTestSteps(
-        eu.tsystems.mms.tic.testframework.report.model.PTestStep.Builder builderForValue) {
+        eu.tsystems.mms.tic.testframework.report.model.TestStep.Builder builderForValue) {
       if (testStepsBuilder_ == null) {
         ensureTestStepsIsMutable();
         testSteps_.add(builderForValue.build());
@@ -2980,10 +2980,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
     public Builder addTestSteps(
-        int index, eu.tsystems.mms.tic.testframework.report.model.PTestStep.Builder builderForValue) {
+        int index, eu.tsystems.mms.tic.testframework.report.model.TestStep.Builder builderForValue) {
       if (testStepsBuilder_ == null) {
         ensureTestStepsIsMutable();
         testSteps_.add(index, builderForValue.build());
@@ -2994,10 +2994,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
     public Builder addAllTestSteps(
-        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.PTestStep> values) {
+        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.TestStep> values) {
       if (testStepsBuilder_ == null) {
         ensureTestStepsIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -3009,7 +3009,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
     public Builder clearTestSteps() {
       if (testStepsBuilder_ == null) {
@@ -3022,7 +3022,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
     public Builder removeTestSteps(int index) {
       if (testStepsBuilder_ == null) {
@@ -3035,16 +3035,16 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PTestStep.Builder getTestStepsBuilder(
+    public eu.tsystems.mms.tic.testframework.report.model.TestStep.Builder getTestStepsBuilder(
         int index) {
       return getTestStepsFieldBuilder().getBuilder(index);
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PTestStepOrBuilder getTestStepsOrBuilder(
+    public eu.tsystems.mms.tic.testframework.report.model.TestStepOrBuilder getTestStepsOrBuilder(
         int index) {
       if (testStepsBuilder_ == null) {
         return testSteps_.get(index);  } else {
@@ -3052,9 +3052,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
-    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.PTestStepOrBuilder> 
+    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.TestStepOrBuilder> 
          getTestStepsOrBuilderList() {
       if (testStepsBuilder_ != null) {
         return testStepsBuilder_.getMessageOrBuilderList();
@@ -3063,33 +3063,33 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PTestStep.Builder addTestStepsBuilder() {
+    public eu.tsystems.mms.tic.testframework.report.model.TestStep.Builder addTestStepsBuilder() {
       return getTestStepsFieldBuilder().addBuilder(
-          eu.tsystems.mms.tic.testframework.report.model.PTestStep.getDefaultInstance());
+          eu.tsystems.mms.tic.testframework.report.model.TestStep.getDefaultInstance());
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PTestStep.Builder addTestStepsBuilder(
+    public eu.tsystems.mms.tic.testframework.report.model.TestStep.Builder addTestStepsBuilder(
         int index) {
       return getTestStepsFieldBuilder().addBuilder(
-          index, eu.tsystems.mms.tic.testframework.report.model.PTestStep.getDefaultInstance());
+          index, eu.tsystems.mms.tic.testframework.report.model.TestStep.getDefaultInstance());
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStep.Builder> 
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestStep.Builder> 
          getTestStepsBuilderList() {
       return getTestStepsFieldBuilder().getBuilderList();
     }
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.PTestStep, eu.tsystems.mms.tic.testframework.report.model.PTestStep.Builder, eu.tsystems.mms.tic.testframework.report.model.PTestStepOrBuilder> 
+        eu.tsystems.mms.tic.testframework.report.model.TestStep, eu.tsystems.mms.tic.testframework.report.model.TestStep.Builder, eu.tsystems.mms.tic.testframework.report.model.TestStepOrBuilder> 
         getTestStepsFieldBuilder() {
       if (testStepsBuilder_ == null) {
         testStepsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            eu.tsystems.mms.tic.testframework.report.model.PTestStep, eu.tsystems.mms.tic.testframework.report.model.PTestStep.Builder, eu.tsystems.mms.tic.testframework.report.model.PTestStepOrBuilder>(
+            eu.tsystems.mms.tic.testframework.report.model.TestStep, eu.tsystems.mms.tic.testframework.report.model.TestStep.Builder, eu.tsystems.mms.tic.testframework.report.model.TestStepOrBuilder>(
                 testSteps_,
                 ((bitField0_ & 0x00000020) != 0),
                 getParentForChildren(),

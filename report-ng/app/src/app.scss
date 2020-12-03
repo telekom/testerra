@@ -7,10 +7,10 @@
 //Body has a native margin for some reason
 body {
     margin: 0;
-    height: 100%;
+    //height: 100%;
 }
 html {
-    height: 100%;
+    //height: 100%;
 }
 
 .logo {
@@ -28,7 +28,7 @@ html {
 
 
 .code-view {
-    @extend .p1;
+    padding: 0.5rem;
     background-color: #2b2b2b;
     //@extend .secondary;
     //border: 2px solid #495561; /*gray-300*/
@@ -37,6 +37,7 @@ html {
     overflow-x: auto;
     color: #c0dee0;
     line-height: 1.5em;
+    font-family: monospace;
     //
     //.line {
     //    padding: 0.3em;
@@ -50,14 +51,22 @@ html {
         background: darken($skipped, 36)
     }
 
+    .indicator {
+        width:1rem;
+        display: inline-block;
+    }
+
     .number {
-        //padding-left: 2rem;
-        padding-right: 0.5rem;
+        @extend .indicator;
+        padding-right: 2rem;
         color: #808080 !important;
     }
 
-    pre {
-        word-break: break-word;
+    .line {
+        padding: 0.1rem 0.4rem;
+    }
+    .clickable {
+        cursor: pointer;
     }
 }
 

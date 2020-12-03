@@ -4,53 +4,61 @@
 package eu.tsystems.mms.tic.testframework.report.model;
 
 /**
- * Protobuf enum {@code data.PLogMessageType}
+ * Protobuf enum {@code data.ClickPathEventType}
  */
-public enum PLogMessageType
+public enum ClickPathEventType
     implements com.google.protobuf.ProtocolMessageEnum {
   /**
-   * <code>LMT_OFF = 0;</code>
+   * <code>CPET_NOT_SET = 0;</code>
    */
-  LMT_OFF(0),
+  CPET_NOT_SET(0),
   /**
-   * <code>LMT_ERROR = 1;</code>
+   * <code>CPET_WINDOW = 1;</code>
    */
-  LMT_ERROR(1),
+  CPET_WINDOW(1),
   /**
-   * <code>LMT_WARN = 2;</code>
+   * <code>CPET_CLICK = 2;</code>
    */
-  LMT_WARN(2),
+  CPET_CLICK(2),
   /**
-   * <code>LMT_INFO = 3;</code>
+   * <code>CPET_VALUE = 3;</code>
    */
-  LMT_INFO(3),
+  CPET_VALUE(3),
   /**
-   * <code>LMT_DEBUG = 4;</code>
+   * <code>CPET_PAGE = 4;</code>
    */
-  LMT_DEBUG(4),
+  CPET_PAGE(4),
+  /**
+   * <code>CPET_URL = 5;</code>
+   */
+  CPET_URL(5),
   UNRECOGNIZED(-1),
   ;
 
   /**
-   * <code>LMT_OFF = 0;</code>
+   * <code>CPET_NOT_SET = 0;</code>
    */
-  public static final int LMT_OFF_VALUE = 0;
+  public static final int CPET_NOT_SET_VALUE = 0;
   /**
-   * <code>LMT_ERROR = 1;</code>
+   * <code>CPET_WINDOW = 1;</code>
    */
-  public static final int LMT_ERROR_VALUE = 1;
+  public static final int CPET_WINDOW_VALUE = 1;
   /**
-   * <code>LMT_WARN = 2;</code>
+   * <code>CPET_CLICK = 2;</code>
    */
-  public static final int LMT_WARN_VALUE = 2;
+  public static final int CPET_CLICK_VALUE = 2;
   /**
-   * <code>LMT_INFO = 3;</code>
+   * <code>CPET_VALUE = 3;</code>
    */
-  public static final int LMT_INFO_VALUE = 3;
+  public static final int CPET_VALUE_VALUE = 3;
   /**
-   * <code>LMT_DEBUG = 4;</code>
+   * <code>CPET_PAGE = 4;</code>
    */
-  public static final int LMT_DEBUG_VALUE = 4;
+  public static final int CPET_PAGE_VALUE = 4;
+  /**
+   * <code>CPET_URL = 5;</code>
+   */
+  public static final int CPET_URL_VALUE = 5;
 
 
   public final int getNumber() {
@@ -67,7 +75,7 @@ public enum PLogMessageType
    * @deprecated Use {@link #forNumber(int)} instead.
    */
   @java.lang.Deprecated
-  public static PLogMessageType valueOf(int value) {
+  public static ClickPathEventType valueOf(int value) {
     return forNumber(value);
   }
 
@@ -75,26 +83,27 @@ public enum PLogMessageType
    * @param value The numeric wire value of the corresponding enum entry.
    * @return The enum associated with the given numeric wire value.
    */
-  public static PLogMessageType forNumber(int value) {
+  public static ClickPathEventType forNumber(int value) {
     switch (value) {
-      case 0: return LMT_OFF;
-      case 1: return LMT_ERROR;
-      case 2: return LMT_WARN;
-      case 3: return LMT_INFO;
-      case 4: return LMT_DEBUG;
+      case 0: return CPET_NOT_SET;
+      case 1: return CPET_WINDOW;
+      case 2: return CPET_CLICK;
+      case 3: return CPET_VALUE;
+      case 4: return CPET_PAGE;
+      case 5: return CPET_URL;
       default: return null;
     }
   }
 
-  public static com.google.protobuf.Internal.EnumLiteMap<PLogMessageType>
+  public static com.google.protobuf.Internal.EnumLiteMap<ClickPathEventType>
       internalGetValueMap() {
     return internalValueMap;
   }
   private static final com.google.protobuf.Internal.EnumLiteMap<
-      PLogMessageType> internalValueMap =
-        new com.google.protobuf.Internal.EnumLiteMap<PLogMessageType>() {
-          public PLogMessageType findValueByNumber(int number) {
-            return PLogMessageType.forNumber(number);
+      ClickPathEventType> internalValueMap =
+        new com.google.protobuf.Internal.EnumLiteMap<ClickPathEventType>() {
+          public ClickPathEventType findValueByNumber(int number) {
+            return ClickPathEventType.forNumber(number);
           }
         };
 
@@ -108,12 +117,12 @@ public enum PLogMessageType
   }
   public static final com.google.protobuf.Descriptors.EnumDescriptor
       getDescriptor() {
-    return eu.tsystems.mms.tic.testframework.report.model.Framework.getDescriptor().getEnumTypes().get(1);
+    return eu.tsystems.mms.tic.testframework.report.model.Framework.getDescriptor().getEnumTypes().get(0);
   }
 
-  private static final PLogMessageType[] VALUES = values();
+  private static final ClickPathEventType[] VALUES = values();
 
-  public static PLogMessageType valueOf(
+  public static ClickPathEventType valueOf(
       com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
     if (desc.getType() != getDescriptor()) {
       throw new java.lang.IllegalArgumentException(
@@ -127,10 +136,10 @@ public enum PLogMessageType
 
   private final int value;
 
-  private PLogMessageType(int value) {
+  private ClickPathEventType(int value) {
     this.value = value;
   }
 
-  // @@protoc_insertion_point(enum_scope:data.PLogMessageType)
+  // @@protoc_insertion_point(enum_scope:data.ClickPathEventType)
 }
 

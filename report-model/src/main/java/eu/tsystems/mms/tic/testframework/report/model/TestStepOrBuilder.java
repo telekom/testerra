@@ -3,8 +3,8 @@
 
 package eu.tsystems.mms.tic.testframework.report.model;
 
-public interface PTestStepOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:data.PTestStep)
+public interface TestStepOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:data.TestStep)
     com.google.protobuf.MessageOrBuilder {
 
   /**
@@ -24,24 +24,24 @@ public interface PTestStepOrBuilder extends
    *    string id = 2;
    * </pre>
    *
-   * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
+   * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
    */
-  java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStepAction> 
+  java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestStepAction> 
       getTestStepActionsList();
   /**
    * <pre>
    *    string id = 2;
    * </pre>
    *
-   * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
+   * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.PTestStepAction getTestStepActions(int index);
+  eu.tsystems.mms.tic.testframework.report.model.TestStepAction getTestStepActions(int index);
   /**
    * <pre>
    *    string id = 2;
    * </pre>
    *
-   * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
+   * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
    */
   int getTestStepActionsCount();
   /**
@@ -49,17 +49,17 @@ public interface PTestStepOrBuilder extends
    *    string id = 2;
    * </pre>
    *
-   * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
+   * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
    */
-  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.PTestStepActionOrBuilder> 
+  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.TestStepActionOrBuilder> 
       getTestStepActionsOrBuilderList();
   /**
    * <pre>
    *    string id = 2;
    * </pre>
    *
-   * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
+   * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.PTestStepActionOrBuilder getTestStepActionsOrBuilder(
+  eu.tsystems.mms.tic.testframework.report.model.TestStepActionOrBuilder getTestStepActionsOrBuilder(
       int index);
 }

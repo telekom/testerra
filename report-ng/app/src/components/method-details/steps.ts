@@ -55,8 +55,8 @@ export class Steps {
         return this._screenshots?.find(value => value.id == id);
     }
 
-    private _gotoStep(stepIndex:number, actionIndex:number) {
-        let elementsByName = window.document.getElementsByName(stepIndex+"."+actionIndex);
+    private _gotoStep(stepIndex:number, actionIndex:number=0) {
+        let elementsByName = window.document.getElementsByName(stepIndex+(actionIndex>0?"."+actionIndex:""));
         if (elementsByName.length > 0) {
             elementsByName[0].scrollIntoView()
         }
@@ -66,10 +66,5 @@ export class Steps {
         const anchor = $event.target as HTMLAnchorElement;
         const parts = anchor.getAttribute("name").split(".");
         console.log("enable", parts);
-    }
-
-    private _getCause(errorContext:IErrorContext) {
-        console.log(this._methodDetails.executionStatistics.executionAggregate.executionContext.causes[errorContext.causeId]);
-        return this._methodDetails.executionStatistics.executionAggregate.executionContext.causes[errorContext.causeId];
     }
 }

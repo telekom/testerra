@@ -281,9 +281,8 @@ export const data = $root.data = (() => {
          * @property {string|null} [run_Id] ExecutionContext run_Id
          * @property {string|null} [task_Id] ExecutionContext task_Id
          * @property {Array.<string>|null} [exclusiveSessionContextIds] ExecutionContext exclusiveSessionContextIds
-         * @property {Array.<data.IPLogMessage>|null} [logMessages] ExecutionContext logMessages
+         * @property {Array.<data.ILogMessage>|null} [logMessages] ExecutionContext logMessages
          * @property {number|null} [estimatedTestsCount] ExecutionContext estimatedTestsCount
-         * @property {Object.<string,data.IStackTraceCause>|null} [causes] ExecutionContext causes
          */
 
         /**
@@ -297,7 +296,6 @@ export const data = $root.data = (() => {
         function ExecutionContext(p) {
             this.exclusiveSessionContextIds = [];
             this.logMessages = [];
-            this.causes = {};
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -362,7 +360,7 @@ export const data = $root.data = (() => {
 
         /**
          * ExecutionContext logMessages.
-         * @member {Array.<data.IPLogMessage>} logMessages
+         * @member {Array.<data.ILogMessage>} logMessages
          * @memberof data.ExecutionContext
          * @instance
          */
@@ -375,14 +373,6 @@ export const data = $root.data = (() => {
          * @instance
          */
         ExecutionContext.prototype.estimatedTestsCount = 0;
-
-        /**
-         * ExecutionContext causes.
-         * @member {Object.<string,data.IStackTraceCause>} causes
-         * @memberof data.ExecutionContext
-         * @instance
-         */
-        ExecutionContext.prototype.causes = $util.emptyObject;
 
         /**
          * Decodes an ExecutionContext message from the specified reader or buffer.
@@ -398,7 +388,7 @@ export const data = $root.data = (() => {
         ExecutionContext.decode = function decode(r, l) {
             if (!(r instanceof $Reader))
                 r = $Reader.create(r);
-            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.ExecutionContext(), k, value;
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.ExecutionContext();
             while (r.pos < c) {
                 var t = r.uint32();
                 switch (t >>> 3) {
@@ -428,32 +418,10 @@ export const data = $root.data = (() => {
                 case 14:
                     if (!(m.logMessages && m.logMessages.length))
                         m.logMessages = [];
-                    m.logMessages.push($root.data.PLogMessage.decode(r, r.uint32()));
+                    m.logMessages.push($root.data.LogMessage.decode(r, r.uint32()));
                     break;
                 case 15:
                     m.estimatedTestsCount = r.int32();
-                    break;
-                case 16:
-                    if (m.causes === $util.emptyObject)
-                        m.causes = {};
-                    var c2 = r.uint32() + r.pos;
-                    k = "";
-                    value = null;
-                    while (r.pos < c2) {
-                        var tag2 = r.uint32();
-                        switch (tag2 >>> 3) {
-                        case 1:
-                            k = r.string();
-                            break;
-                        case 2:
-                            value = $root.data.StackTraceCause.decode(r, r.uint32());
-                            break;
-                        default:
-                            r.skipType(tag2 & 7);
-                            break;
-                        }
-                    }
-                    m.causes[k] = value;
                     break;
                 default:
                     r.skipType(t & 7);
@@ -486,7 +454,7 @@ export const data = $root.data = (() => {
          * @property {Array.<string>|null} [relatedMethodContextIds] MethodContext relatedMethodContextIds
          * @property {Array.<string>|null} [dependsOnMethodContextIds] MethodContext dependsOnMethodContextIds
          * @property {data.IErrorContext|null} [errorContext] MethodContext errorContext
-         * @property {Array.<data.IPTestStep>|null} [testSteps] MethodContext testSteps
+         * @property {Array.<data.ITestStep>|null} [testSteps] MethodContext testSteps
          * @property {Array.<string>|null} [sessionContextIds] MethodContext sessionContextIds
          * @property {Array.<string>|null} [videoIds] MethodContext videoIds
          * @property {string|null} [customContextJson] MethodContext customContextJson
@@ -629,7 +597,7 @@ export const data = $root.data = (() => {
 
         /**
          * MethodContext testSteps.
-         * @member {Array.<data.IPTestStep>} testSteps
+         * @member {Array.<data.ITestStep>} testSteps
          * @memberof data.MethodContext
          * @instance
          */
@@ -732,7 +700,7 @@ export const data = $root.data = (() => {
                 case 26:
                     if (!(m.testSteps && m.testSteps.length))
                         m.testSteps = [];
-                    m.testSteps.push($root.data.PTestStep.decode(r, r.uint32()));
+                    m.testSteps.push($root.data.TestStep.decode(r, r.uint32()));
                     break;
                 case 29:
                     if (!(m.sessionContextIds && m.sessionContextIds.length))
@@ -906,25 +874,25 @@ export const data = $root.data = (() => {
         return ContextValues;
     })();
 
-    data.PTestStep = (function() {
+    data.TestStep = (function() {
 
         /**
-         * Properties of a PTestStep.
+         * Properties of a TestStep.
          * @memberof data
-         * @interface IPTestStep
-         * @property {string|null} [name] PTestStep name
-         * @property {Array.<data.IPTestStepAction>|null} [testStepActions] PTestStep testStepActions
+         * @interface ITestStep
+         * @property {string|null} [name] TestStep name
+         * @property {Array.<data.ITestStepAction>|null} [testStepActions] TestStep testStepActions
          */
 
         /**
-         * Constructs a new PTestStep.
+         * Constructs a new TestStep.
          * @memberof data
-         * @classdesc Represents a PTestStep.
-         * @implements IPTestStep
+         * @classdesc Represents a TestStep.
+         * @implements ITestStep
          * @constructor
-         * @param {data.IPTestStep=} [p] Properties to set
+         * @param {data.ITestStep=} [p] Properties to set
          */
-        function PTestStep(p) {
+        function TestStep(p) {
             this.testStepActions = [];
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
@@ -933,36 +901,36 @@ export const data = $root.data = (() => {
         }
 
         /**
-         * PTestStep name.
+         * TestStep name.
          * @member {string} name
-         * @memberof data.PTestStep
+         * @memberof data.TestStep
          * @instance
          */
-        PTestStep.prototype.name = "";
+        TestStep.prototype.name = "";
 
         /**
-         * PTestStep testStepActions.
-         * @member {Array.<data.IPTestStepAction>} testStepActions
-         * @memberof data.PTestStep
+         * TestStep testStepActions.
+         * @member {Array.<data.ITestStepAction>} testStepActions
+         * @memberof data.TestStep
          * @instance
          */
-        PTestStep.prototype.testStepActions = $util.emptyArray;
+        TestStep.prototype.testStepActions = $util.emptyArray;
 
         /**
-         * Decodes a PTestStep message from the specified reader or buffer.
+         * Decodes a TestStep message from the specified reader or buffer.
          * @function decode
-         * @memberof data.PTestStep
+         * @memberof data.TestStep
          * @static
          * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
          * @param {number} [l] Message length if known beforehand
-         * @returns {data.PTestStep} PTestStep
+         * @returns {data.TestStep} TestStep
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        PTestStep.decode = function decode(r, l) {
+        TestStep.decode = function decode(r, l) {
             if (!(r instanceof $Reader))
                 r = $Reader.create(r);
-            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.PTestStep();
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.TestStep();
             while (r.pos < c) {
                 var t = r.uint32();
                 switch (t >>> 3) {
@@ -972,7 +940,7 @@ export const data = $root.data = (() => {
                 case 3:
                     if (!(m.testStepActions && m.testStepActions.length))
                         m.testStepActions = [];
-                    m.testStepActions.push($root.data.PTestStepAction.decode(r, r.uint32()));
+                    m.testStepActions.push($root.data.TestStepAction.decode(r, r.uint32()));
                     break;
                 default:
                     r.skipType(t & 7);
@@ -982,33 +950,33 @@ export const data = $root.data = (() => {
             return m;
         };
 
-        return PTestStep;
+        return TestStep;
     })();
 
-    data.PTestStepAction = (function() {
+    data.TestStepAction = (function() {
 
         /**
-         * Properties of a PTestStepAction.
+         * Properties of a TestStepAction.
          * @memberof data
-         * @interface IPTestStepAction
-         * @property {string|null} [name] PTestStepAction name
-         * @property {number|null} [timestamp] PTestStepAction timestamp
-         * @property {Array.<data.IPClickPathEvent>|null} [clickpathEvents] PTestStepAction clickpathEvents
-         * @property {Array.<string>|null} [screenshotIds] PTestStepAction screenshotIds
-         * @property {Array.<data.IPLogMessage>|null} [logMessages] PTestStepAction logMessages
-         * @property {Array.<data.IErrorContext>|null} [optionalAssertions] PTestStepAction optionalAssertions
-         * @property {Array.<data.IErrorContext>|null} [collectedAssertions] PTestStepAction collectedAssertions
+         * @interface ITestStepAction
+         * @property {string|null} [name] TestStepAction name
+         * @property {number|null} [timestamp] TestStepAction timestamp
+         * @property {Array.<data.IClickPathEvent>|null} [clickpathEvents] TestStepAction clickpathEvents
+         * @property {Array.<string>|null} [screenshotIds] TestStepAction screenshotIds
+         * @property {Array.<data.ILogMessage>|null} [logMessages] TestStepAction logMessages
+         * @property {Array.<data.IErrorContext>|null} [optionalAssertions] TestStepAction optionalAssertions
+         * @property {Array.<data.IErrorContext>|null} [collectedAssertions] TestStepAction collectedAssertions
          */
 
         /**
-         * Constructs a new PTestStepAction.
+         * Constructs a new TestStepAction.
          * @memberof data
-         * @classdesc Represents a PTestStepAction.
-         * @implements IPTestStepAction
+         * @classdesc Represents a TestStepAction.
+         * @implements ITestStepAction
          * @constructor
-         * @param {data.IPTestStepAction=} [p] Properties to set
+         * @param {data.ITestStepAction=} [p] Properties to set
          */
-        function PTestStepAction(p) {
+        function TestStepAction(p) {
             this.clickpathEvents = [];
             this.screenshotIds = [];
             this.logMessages = [];
@@ -1021,76 +989,76 @@ export const data = $root.data = (() => {
         }
 
         /**
-         * PTestStepAction name.
+         * TestStepAction name.
          * @member {string} name
-         * @memberof data.PTestStepAction
+         * @memberof data.TestStepAction
          * @instance
          */
-        PTestStepAction.prototype.name = "";
+        TestStepAction.prototype.name = "";
 
         /**
-         * PTestStepAction timestamp.
+         * TestStepAction timestamp.
          * @member {number} timestamp
-         * @memberof data.PTestStepAction
+         * @memberof data.TestStepAction
          * @instance
          */
-        PTestStepAction.prototype.timestamp = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+        TestStepAction.prototype.timestamp = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
         /**
-         * PTestStepAction clickpathEvents.
-         * @member {Array.<data.IPClickPathEvent>} clickpathEvents
-         * @memberof data.PTestStepAction
+         * TestStepAction clickpathEvents.
+         * @member {Array.<data.IClickPathEvent>} clickpathEvents
+         * @memberof data.TestStepAction
          * @instance
          */
-        PTestStepAction.prototype.clickpathEvents = $util.emptyArray;
+        TestStepAction.prototype.clickpathEvents = $util.emptyArray;
 
         /**
-         * PTestStepAction screenshotIds.
+         * TestStepAction screenshotIds.
          * @member {Array.<string>} screenshotIds
-         * @memberof data.PTestStepAction
+         * @memberof data.TestStepAction
          * @instance
          */
-        PTestStepAction.prototype.screenshotIds = $util.emptyArray;
+        TestStepAction.prototype.screenshotIds = $util.emptyArray;
 
         /**
-         * PTestStepAction logMessages.
-         * @member {Array.<data.IPLogMessage>} logMessages
-         * @memberof data.PTestStepAction
+         * TestStepAction logMessages.
+         * @member {Array.<data.ILogMessage>} logMessages
+         * @memberof data.TestStepAction
          * @instance
          */
-        PTestStepAction.prototype.logMessages = $util.emptyArray;
+        TestStepAction.prototype.logMessages = $util.emptyArray;
 
         /**
-         * PTestStepAction optionalAssertions.
+         * TestStepAction optionalAssertions.
          * @member {Array.<data.IErrorContext>} optionalAssertions
-         * @memberof data.PTestStepAction
+         * @memberof data.TestStepAction
          * @instance
          */
-        PTestStepAction.prototype.optionalAssertions = $util.emptyArray;
+        TestStepAction.prototype.optionalAssertions = $util.emptyArray;
 
         /**
-         * PTestStepAction collectedAssertions.
+         * TestStepAction collectedAssertions.
          * @member {Array.<data.IErrorContext>} collectedAssertions
-         * @memberof data.PTestStepAction
+         * @memberof data.TestStepAction
          * @instance
          */
-        PTestStepAction.prototype.collectedAssertions = $util.emptyArray;
+        TestStepAction.prototype.collectedAssertions = $util.emptyArray;
 
         /**
-         * Decodes a PTestStepAction message from the specified reader or buffer.
+         * Decodes a TestStepAction message from the specified reader or buffer.
          * @function decode
-         * @memberof data.PTestStepAction
+         * @memberof data.TestStepAction
          * @static
          * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
          * @param {number} [l] Message length if known beforehand
-         * @returns {data.PTestStepAction} PTestStepAction
+         * @returns {data.TestStepAction} TestStepAction
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        PTestStepAction.decode = function decode(r, l) {
+        TestStepAction.decode = function decode(r, l) {
             if (!(r instanceof $Reader))
                 r = $Reader.create(r);
-            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.PTestStepAction();
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.TestStepAction();
             while (r.pos < c) {
                 var t = r.uint32();
                 switch (t >>> 3) {
@@ -1103,7 +1071,7 @@ export const data = $root.data = (() => {
                 case 5:
                     if (!(m.clickpathEvents && m.clickpathEvents.length))
                         m.clickpathEvents = [];
-                    m.clickpathEvents.push($root.data.PClickPathEvent.decode(r, r.uint32()));
+                    m.clickpathEvents.push($root.data.ClickPathEvent.decode(r, r.uint32()));
                     break;
                 case 6:
                     if (!(m.screenshotIds && m.screenshotIds.length))
@@ -1113,7 +1081,7 @@ export const data = $root.data = (() => {
                 case 7:
                     if (!(m.logMessages && m.logMessages.length))
                         m.logMessages = [];
-                    m.logMessages.push($root.data.PLogMessage.decode(r, r.uint32()));
+                    m.logMessages.push($root.data.LogMessage.decode(r, r.uint32()));
                     break;
                 case 8:
                     if (!(m.optionalAssertions && m.optionalAssertions.length))
@@ -1133,51 +1101,51 @@ export const data = $root.data = (() => {
             return m;
         };
 
-        return PTestStepAction;
+        return TestStepAction;
     })();
 
     /**
-     * PClickPathEventType enum.
-     * @name data.PClickPathEventType
+     * ClickPathEventType enum.
+     * @name data.ClickPathEventType
      * @enum {number}
-     * @property {number} NOT_SET=0 NOT_SET value
-     * @property {number} WINDOW=1 WINDOW value
-     * @property {number} CLICK=2 CLICK value
-     * @property {number} VALUE=3 VALUE value
-     * @property {number} PAGE=4 PAGE value
-     * @property {number} URL=5 URL value
+     * @property {number} CPET_NOT_SET=0 CPET_NOT_SET value
+     * @property {number} CPET_WINDOW=1 CPET_WINDOW value
+     * @property {number} CPET_CLICK=2 CPET_CLICK value
+     * @property {number} CPET_VALUE=3 CPET_VALUE value
+     * @property {number} CPET_PAGE=4 CPET_PAGE value
+     * @property {number} CPET_URL=5 CPET_URL value
      */
-    data.PClickPathEventType = (function() {
+    data.ClickPathEventType = (function() {
         const valuesById = {}, values = Object.create(valuesById);
-        values[valuesById[0] = "NOT_SET"] = 0;
-        values[valuesById[1] = "WINDOW"] = 1;
-        values[valuesById[2] = "CLICK"] = 2;
-        values[valuesById[3] = "VALUE"] = 3;
-        values[valuesById[4] = "PAGE"] = 4;
-        values[valuesById[5] = "URL"] = 5;
+        values[valuesById[0] = "CPET_NOT_SET"] = 0;
+        values[valuesById[1] = "CPET_WINDOW"] = 1;
+        values[valuesById[2] = "CPET_CLICK"] = 2;
+        values[valuesById[3] = "CPET_VALUE"] = 3;
+        values[valuesById[4] = "CPET_PAGE"] = 4;
+        values[valuesById[5] = "CPET_URL"] = 5;
         return values;
     })();
 
-    data.PClickPathEvent = (function() {
+    data.ClickPathEvent = (function() {
 
         /**
-         * Properties of a PClickPathEvent.
+         * Properties of a ClickPathEvent.
          * @memberof data
-         * @interface IPClickPathEvent
-         * @property {data.PClickPathEventType|null} [type] PClickPathEvent type
-         * @property {string|null} [subject] PClickPathEvent subject
-         * @property {string|null} [sessionId] PClickPathEvent sessionId
+         * @interface IClickPathEvent
+         * @property {data.ClickPathEventType|null} [type] ClickPathEvent type
+         * @property {string|null} [subject] ClickPathEvent subject
+         * @property {string|null} [sessionId] ClickPathEvent sessionId
          */
 
         /**
-         * Constructs a new PClickPathEvent.
+         * Constructs a new ClickPathEvent.
          * @memberof data
-         * @classdesc Represents a PClickPathEvent.
-         * @implements IPClickPathEvent
+         * @classdesc Represents a ClickPathEvent.
+         * @implements IClickPathEvent
          * @constructor
-         * @param {data.IPClickPathEvent=} [p] Properties to set
+         * @param {data.IClickPathEvent=} [p] Properties to set
          */
-        function PClickPathEvent(p) {
+        function ClickPathEvent(p) {
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -1185,44 +1153,44 @@ export const data = $root.data = (() => {
         }
 
         /**
-         * PClickPathEvent type.
-         * @member {data.PClickPathEventType} type
-         * @memberof data.PClickPathEvent
+         * ClickPathEvent type.
+         * @member {data.ClickPathEventType} type
+         * @memberof data.ClickPathEvent
          * @instance
          */
-        PClickPathEvent.prototype.type = 0;
+        ClickPathEvent.prototype.type = 0;
 
         /**
-         * PClickPathEvent subject.
+         * ClickPathEvent subject.
          * @member {string} subject
-         * @memberof data.PClickPathEvent
+         * @memberof data.ClickPathEvent
          * @instance
          */
-        PClickPathEvent.prototype.subject = "";
+        ClickPathEvent.prototype.subject = "";
 
         /**
-         * PClickPathEvent sessionId.
+         * ClickPathEvent sessionId.
          * @member {string} sessionId
-         * @memberof data.PClickPathEvent
+         * @memberof data.ClickPathEvent
          * @instance
          */
-        PClickPathEvent.prototype.sessionId = "";
+        ClickPathEvent.prototype.sessionId = "";
 
         /**
-         * Decodes a PClickPathEvent message from the specified reader or buffer.
+         * Decodes a ClickPathEvent message from the specified reader or buffer.
          * @function decode
-         * @memberof data.PClickPathEvent
+         * @memberof data.ClickPathEvent
          * @static
          * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
          * @param {number} [l] Message length if known beforehand
-         * @returns {data.PClickPathEvent} PClickPathEvent
+         * @returns {data.ClickPathEvent} ClickPathEvent
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        PClickPathEvent.decode = function decode(r, l) {
+        ClickPathEvent.decode = function decode(r, l) {
             if (!(r instanceof $Reader))
                 r = $Reader.create(r);
-            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.PClickPathEvent();
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.ClickPathEvent();
             while (r.pos < c) {
                 var t = r.uint32();
                 switch (t >>> 3) {
@@ -1243,12 +1211,12 @@ export const data = $root.data = (() => {
             return m;
         };
 
-        return PClickPathEvent;
+        return ClickPathEvent;
     })();
 
     /**
-     * PLogMessageType enum.
-     * @name data.PLogMessageType
+     * LogMessageType enum.
+     * @name data.LogMessageType
      * @enum {number}
      * @property {number} LMT_OFF=0 LMT_OFF value
      * @property {number} LMT_ERROR=1 LMT_ERROR value
@@ -1256,7 +1224,7 @@ export const data = $root.data = (() => {
      * @property {number} LMT_INFO=3 LMT_INFO value
      * @property {number} LMT_DEBUG=4 LMT_DEBUG value
      */
-    data.PLogMessageType = (function() {
+    data.LogMessageType = (function() {
         const valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "LMT_OFF"] = 0;
         values[valuesById[1] = "LMT_ERROR"] = 1;
@@ -1266,29 +1234,29 @@ export const data = $root.data = (() => {
         return values;
     })();
 
-    data.PLogMessage = (function() {
+    data.LogMessage = (function() {
 
         /**
-         * Properties of a PLogMessage.
+         * Properties of a LogMessage.
          * @memberof data
-         * @interface IPLogMessage
-         * @property {data.PLogMessageType|null} [type] PLogMessage type
-         * @property {string|null} [loggerName] PLogMessage loggerName
-         * @property {string|null} [message] PLogMessage message
-         * @property {number|null} [timestamp] PLogMessage timestamp
-         * @property {string|null} [threadName] PLogMessage threadName
-         * @property {string|null} [causeId] PLogMessage causeId
+         * @interface ILogMessage
+         * @property {data.LogMessageType|null} [type] LogMessage type
+         * @property {string|null} [loggerName] LogMessage loggerName
+         * @property {string|null} [message] LogMessage message
+         * @property {number|null} [timestamp] LogMessage timestamp
+         * @property {string|null} [threadName] LogMessage threadName
+         * @property {data.IStackTraceCause|null} [cause] LogMessage cause
          */
 
         /**
-         * Constructs a new PLogMessage.
+         * Constructs a new LogMessage.
          * @memberof data
-         * @classdesc Represents a PLogMessage.
-         * @implements IPLogMessage
+         * @classdesc Represents a LogMessage.
+         * @implements ILogMessage
          * @constructor
-         * @param {data.IPLogMessage=} [p] Properties to set
+         * @param {data.ILogMessage=} [p] Properties to set
          */
-        function PLogMessage(p) {
+        function LogMessage(p) {
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -1296,68 +1264,68 @@ export const data = $root.data = (() => {
         }
 
         /**
-         * PLogMessage type.
-         * @member {data.PLogMessageType} type
-         * @memberof data.PLogMessage
+         * LogMessage type.
+         * @member {data.LogMessageType} type
+         * @memberof data.LogMessage
          * @instance
          */
-        PLogMessage.prototype.type = 0;
+        LogMessage.prototype.type = 0;
 
         /**
-         * PLogMessage loggerName.
+         * LogMessage loggerName.
          * @member {string} loggerName
-         * @memberof data.PLogMessage
+         * @memberof data.LogMessage
          * @instance
          */
-        PLogMessage.prototype.loggerName = "";
+        LogMessage.prototype.loggerName = "";
 
         /**
-         * PLogMessage message.
+         * LogMessage message.
          * @member {string} message
-         * @memberof data.PLogMessage
+         * @memberof data.LogMessage
          * @instance
          */
-        PLogMessage.prototype.message = "";
+        LogMessage.prototype.message = "";
 
         /**
-         * PLogMessage timestamp.
+         * LogMessage timestamp.
          * @member {number} timestamp
-         * @memberof data.PLogMessage
+         * @memberof data.LogMessage
          * @instance
          */
-        PLogMessage.prototype.timestamp = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+        LogMessage.prototype.timestamp = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
         /**
-         * PLogMessage threadName.
+         * LogMessage threadName.
          * @member {string} threadName
-         * @memberof data.PLogMessage
+         * @memberof data.LogMessage
          * @instance
          */
-        PLogMessage.prototype.threadName = "";
+        LogMessage.prototype.threadName = "";
 
         /**
-         * PLogMessage causeId.
-         * @member {string} causeId
-         * @memberof data.PLogMessage
+         * LogMessage cause.
+         * @member {data.IStackTraceCause|null|undefined} cause
+         * @memberof data.LogMessage
          * @instance
          */
-        PLogMessage.prototype.causeId = "";
+        LogMessage.prototype.cause = null;
 
         /**
-         * Decodes a PLogMessage message from the specified reader or buffer.
+         * Decodes a LogMessage message from the specified reader or buffer.
          * @function decode
-         * @memberof data.PLogMessage
+         * @memberof data.LogMessage
          * @static
          * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
          * @param {number} [l] Message length if known beforehand
-         * @returns {data.PLogMessage} PLogMessage
+         * @returns {data.LogMessage} LogMessage
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        PLogMessage.decode = function decode(r, l) {
+        LogMessage.decode = function decode(r, l) {
             if (!(r instanceof $Reader))
                 r = $Reader.create(r);
-            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.PLogMessage();
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.LogMessage();
             while (r.pos < c) {
                 var t = r.uint32();
                 switch (t >>> 3) {
@@ -1377,7 +1345,7 @@ export const data = $root.data = (() => {
                     m.threadName = r.string();
                     break;
                 case 6:
-                    m.causeId = r.string();
+                    m.cause = $root.data.StackTraceCause.decode(r, r.uint32());
                     break;
                 default:
                     r.skipType(t & 7);
@@ -1387,7 +1355,7 @@ export const data = $root.data = (() => {
             return m;
         };
 
-        return PLogMessage;
+        return LogMessage;
     })();
 
     data.ErrorContext = (function() {
@@ -1400,7 +1368,7 @@ export const data = $root.data = (() => {
          * @property {data.IScriptSource|null} [executionObjectSource] ErrorContext executionObjectSource
          * @property {string|null} [ticketId] ErrorContext ticketId
          * @property {string|null} [description] ErrorContext description
-         * @property {string|null} [causeId] ErrorContext causeId
+         * @property {data.IStackTraceCause|null} [cause] ErrorContext cause
          */
 
         /**
@@ -1451,12 +1419,12 @@ export const data = $root.data = (() => {
         ErrorContext.prototype.description = "";
 
         /**
-         * ErrorContext causeId.
-         * @member {string} causeId
+         * ErrorContext cause.
+         * @member {data.IStackTraceCause|null|undefined} cause
          * @memberof data.ErrorContext
          * @instance
          */
-        ErrorContext.prototype.causeId = "";
+        ErrorContext.prototype.cause = null;
 
         /**
          * Decodes an ErrorContext message from the specified reader or buffer.
@@ -1489,7 +1457,7 @@ export const data = $root.data = (() => {
                     m.description = r.string();
                     break;
                 case 11:
-                    m.causeId = r.string();
+                    m.cause = $root.data.StackTraceCause.decode(r, r.uint32());
                     break;
                 default:
                     r.skipType(t & 7);
@@ -1851,16 +1819,16 @@ export const data = $root.data = (() => {
      * @name data.FailureCorridorValue
      * @enum {number}
      * @property {number} FCV_NOT_SET=0 FCV_NOT_SET value
-     * @property {number} HIGH=1 HIGH value
-     * @property {number} MID=2 MID value
-     * @property {number} LOW=3 LOW value
+     * @property {number} FCV_HIGH=1 FCV_HIGH value
+     * @property {number} FCV_MID=2 FCV_MID value
+     * @property {number} FCV_LOW=3 FCV_LOW value
      */
     data.FailureCorridorValue = (function() {
         const valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "FCV_NOT_SET"] = 0;
-        values[valuesById[1] = "HIGH"] = 1;
-        values[valuesById[2] = "MID"] = 2;
-        values[valuesById[3] = "LOW"] = 3;
+        values[valuesById[1] = "FCV_HIGH"] = 1;
+        values[valuesById[2] = "FCV_MID"] = 2;
+        values[valuesById[3] = "FCV_LOW"] = 3;
         return values;
     })();
 
@@ -1889,8 +1857,7 @@ export const data = $root.data = (() => {
          * @property {string|null} [className] StackTraceCause className
          * @property {string|null} [message] StackTraceCause message
          * @property {Array.<string>|null} [stackTraceElements] StackTraceCause stackTraceElements
-         * @property {string|null} [id] StackTraceCause id
-         * @property {string|null} [causeId] StackTraceCause causeId
+         * @property {data.IStackTraceCause|null} [cause] StackTraceCause cause
          */
 
         /**
@@ -1934,20 +1901,12 @@ export const data = $root.data = (() => {
         StackTraceCause.prototype.stackTraceElements = $util.emptyArray;
 
         /**
-         * StackTraceCause id.
-         * @member {string} id
+         * StackTraceCause cause.
+         * @member {data.IStackTraceCause|null|undefined} cause
          * @memberof data.StackTraceCause
          * @instance
          */
-        StackTraceCause.prototype.id = "";
-
-        /**
-         * StackTraceCause causeId.
-         * @member {string} causeId
-         * @memberof data.StackTraceCause
-         * @instance
-         */
-        StackTraceCause.prototype.causeId = "";
+        StackTraceCause.prototype.cause = null;
 
         /**
          * Decodes a StackTraceCause message from the specified reader or buffer.
@@ -1978,11 +1937,8 @@ export const data = $root.data = (() => {
                         m.stackTraceElements = [];
                     m.stackTraceElements.push(r.string());
                     break;
-                case 5:
-                    m.id = r.string();
-                    break;
-                case 6:
-                    m.causeId = r.string();
+                case 4:
+                    m.cause = $root.data.StackTraceCause.decode(r, r.uint32());
                     break;
                 default:
                     r.skipType(t & 7);

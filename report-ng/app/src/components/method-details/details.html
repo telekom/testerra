@@ -28,12 +28,7 @@
                 <mdc-card>
                     <div mdc-subtitle2 class="card-headline">Origin (${_methodDetails.methodContext.errorContext.scriptSource.fileName})</div>
                     <mdc-list-divider></mdc-list-divider>
-                    <div class="code-view">
-                        <div class="line"
-                             repeat.for="line of _methodDetails.methodContext.errorContext.scriptSource.lines"
-                             class.bind="line.mark?'error':''"
-                        ><span class="number">${line.lineNumber}</span><span innerhtml="${_hljs.highlight('java', line.line).value}"></span></div>
-                    </div>
+                    <code-view lines.bind="_methodDetails.methodContext.errorContext.scriptSource.lines"></code-view>
                 </mdc-card>
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="12" if.bind="_stackTrace">

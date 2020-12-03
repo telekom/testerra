@@ -22,10 +22,6 @@ export class Details {
     private _hljs = hljs;
     private _stackTrace:IStackTraceCause[];
     private _failureAspect:FailureAspectStatistics;
-    /**
-     * @deprecated
-     */
-    private _methodContext:IMethodContext;
     private _methodDetails:IMethodDetails;
 
     constructor(

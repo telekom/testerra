@@ -37,11 +37,10 @@
                 <div repeat.for="testStep of _methodDetails.methodContext.testSteps">
                     <let step-index.bind="$index+1"></let>
                     <a name="${stepIndex}" visible.delegate="_stepVisibility($event)" become-visible></a>
-                    <div mdc-headline4 class.bind="stepIndex!=1?'mt2':''">${stepIndex} ${testStep.name}</div>
+                    <div mdc-headline4 class.bind="stepIndex!=1?'mt1':''">${stepIndex} ${testStep.name}</div>
 
                     <div repeat.for="testStepAction of testStep.testStepActions">
-                        <!-- if.bind="!$first&&!$last" -->
-                        <div mdc-headline5 class="mt1">${stepIndex}.${$index+1} ${testStepAction.name}</div>
+                        <div if.bind="!$first&&!$last" mdc-headline5 class="mt1">${stepIndex}.${$index+1} ${testStepAction.name}</div>
                         <mdc-card class="mt1" if.bind="testStepAction.optionalAssertions.length > 0">
                             <div mdc-subtitle2 class="card-headline">Optional assertions</div>
                             <mdc-list-divider></mdc-list-divider>
@@ -49,12 +48,7 @@
                                             class="card-expandable"
                             >
                                 <div slot="caption" mdc-body2><class-name namespace.bind="errorContext.cause.className"><span if.bind="errorContext.cause.message">: ${errorContext.cause.message}</span></class-name></div>
-                                <div class="code-view m0">
-                                <pre class="m0"
-                                     repeat.for="line of errorContext.scriptSource.lines"
-                                     class.bind="line.mark?'warn':''"
-                                ><span class="number">${line.lineNumber}</span><span innerhtml="${_hljs.highlight('java', line.line).value}"></span></pre>
-                                </div>
+                                <code-view lines.bind="errorContext.scriptSource.lines"></code-view>
                             </mdc-expandable>
                         </mdc-card>
                         <mdc-card class="mt1">

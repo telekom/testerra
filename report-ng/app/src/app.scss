@@ -38,6 +38,7 @@ html {
     color: #c0dee0;
     line-height: 1.5em;
     font-family: monospace;
+    word-break: break-all;
     //
     //.line {
     //    padding: 0.3em;
@@ -57,13 +58,15 @@ html {
     }
 
     .number {
-        @extend .indicator;
-        padding-right: 2rem;
+        width:2rem;
         color: #808080 !important;
     }
 
     .line {
         padding: 0.1rem 0.4rem;
+    }
+    .pre {
+        white-space: pre;
     }
     .clickable {
         cursor: pointer;

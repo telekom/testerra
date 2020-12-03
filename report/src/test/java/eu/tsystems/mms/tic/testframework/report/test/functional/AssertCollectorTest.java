@@ -21,7 +21,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.test.functional;
 
-import eu.tsystems.mms.tic.testframework.annotations.TestContext;
+import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.AbstractReportTest;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
@@ -34,7 +34,7 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-@TestContext(name = "Functional-AssertCollector")
+@TestClassContext(name = "Functional-AssertCollector")
 public class AssertCollectorTest extends AbstractReportTest {
 
     @DataProvider(parallel = true)
@@ -82,7 +82,7 @@ public class AssertCollectorTest extends AbstractReportTest {
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestAssertCollector.class.getSimpleName(), testMethod);
         methodDetailsPage.assertAssertionsTabIsNotDisplayed();
     }
-    
+
     /**
      * Checks whether all the assertions texts will be correctly displayed in the in the assertionsTab
      * in the case of multiple failed assertions of the assertCollector.

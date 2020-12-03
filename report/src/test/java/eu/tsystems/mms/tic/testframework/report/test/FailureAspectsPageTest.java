@@ -21,7 +21,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.test;
 
-import eu.tsystems.mms.tic.testframework.annotations.TestContext;
+import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.general.AbstractReportFailuresTest;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
@@ -38,7 +38,7 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.util.List;
 import org.testng.annotations.BeforeMethod;
 
-@TestContext(name = "View-FailureAspects")
+@TestClassContext(name = "View-FailureAspects")
 public class FailureAspectsPageTest extends AbstractReportFailuresTest {
 
     @BeforeMethod(alwaysRun = true)

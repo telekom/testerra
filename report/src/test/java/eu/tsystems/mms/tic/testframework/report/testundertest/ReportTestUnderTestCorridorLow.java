@@ -21,7 +21,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.testundertest;
 
-import eu.tsystems.mms.tic.testframework.annotations.TestContext;
+import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.general.TestsUnderTestGroup;
@@ -30,7 +30,7 @@ import eu.tsystems.mms.tic.testframework.report.pageobjects.ExitPointCreatorTest
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-@TestContext
+@TestClassContext
 public class ReportTestUnderTestCorridorLow extends AbstractTest {
 
     @FailureCorridor.Low

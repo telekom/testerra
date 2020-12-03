@@ -21,7 +21,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.test;
 
-import eu.tsystems.mms.tic.testframework.annotations.TestContext;
+import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.AbstractReportTest;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
@@ -38,7 +38,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.testng.annotations.Test;
 
-@TestContext(name = "View-Classes")
+@TestClassContext(name = "View-Classes")
 public class ClassesPageTest extends AbstractReportTest {
 
 

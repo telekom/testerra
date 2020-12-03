@@ -16,7 +16,7 @@
     <Loggers>
         <Root level="info">
             <AppenderRef ref="CONSOLE"/>
-            <AppenderRef ref="Async" level="error"/>
+            <AppenderRef ref="Async"/>
         </Root>
     </Loggers>
 </Configuration>

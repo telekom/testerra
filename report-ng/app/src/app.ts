@@ -76,7 +76,7 @@ export class App {
                 }
             },
             {
-                route: 'method/:id',
+                route: 'method/:methodId',
                 moduleId: PLATFORM.moduleName('components/method-details/method'),
                 nav: false,
                 title: 'Method',

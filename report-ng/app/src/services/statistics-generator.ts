@@ -21,7 +21,7 @@
 
 import {autoinject} from "aurelia-framework";
 import {DataLoader} from "./data-loader";
-import {ClassStatistics, ExecutionStatistics} from "./statistic-models";
+import {ClassStatistics, ExecutionStatistics, FailureAspectStatistics} from "./statistic-models";
 import {CacheService} from "t-systems-aurelia-components/src/services/cache-service";
 import {Config} from "./config";
 import {data} from "./report-model";
@@ -32,12 +32,13 @@ import ITestContext = data.ITestContext;
 import ISuiteContext = data.ISuiteContext;
 
 export interface IMethodDetails {
-    executionStatistics: ExecutionStatistics,
+    executionStatistics?: ExecutionStatistics,
     methodContext: IMethodContext,
-    classStatistics: ClassStatistics,
-    testContext: ITestContext,
-    suiteContext: ISuiteContext,
-    hasDetails: boolean
+    classStatistics?: ClassStatistics,
+    testContext?: ITestContext,
+    suiteContext?: ISuiteContext,
+    hasDetails?: boolean,
+    failureAspectStatistics?:FailureAspectStatistics,
 }
 
 @autoinject()

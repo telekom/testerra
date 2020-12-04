@@ -30,7 +30,7 @@ export class Steps {
         navInstruction: NavigationInstruction
     ) {
         this._router = navInstruction.router;
-        this._statistics.getMethodDetails(params.id).then(methodDetails => {
+        this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
             console.log(methodDetails);
             this._methodDetails = methodDetails;
             methodDetails.methodContext.errorContext.scriptSource.lines

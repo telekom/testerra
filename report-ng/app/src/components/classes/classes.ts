@@ -1,7 +1,7 @@
 import {DataLoader} from "../../services/data-loader";
 import {StatusConverter} from "../../services/status-converter";
 import {autoinject} from "aurelia-framework";
-import {StatisticsGenerator} from "../../services/statistics-generator";
+import {IMethodDetails, StatisticsGenerator} from "../../services/statistics-generator";
 import {ClassStatistics, ExecutionStatistics, FailureAspectStatistics} from "../../services/statistic-models";
 import {AbstractViewModel} from "../abstract-view-model";
 import {data} from "../../services/report-model";
@@ -10,19 +10,13 @@ import IMethodContext = data.IMethodContext;
 import MethodType = data.MethodType;
 import ResultStatusType = data.ResultStatusType;
 
-interface MethodAggregate {
-    methodContext:IMethodContext,
-    classStatistics:ClassStatistics
-    failureAspect?:FailureAspectStatistics,
-}
-
 @autoinject()
 export class Classes extends AbstractViewModel {
 
     private _executionStatistics: ExecutionStatistics;
     private _selectedStatus:number;
     private _availableStatuses = this._statusConverter.relevantStatuses;
-    private _filteredMethodAggregates:MethodAggregate[];
+    private _filteredMethodDetails:IMethodDetails[];
     private _showConfigurationMethods:boolean = null;
     private _searchRegexp:RegExp;
     private _uniqueStatuses = 0;
@@ -43,15 +37,6 @@ export class Classes extends AbstractViewModel {
         navInstruction: NavigationInstruction
     ) {
         super.activate(params, routeConfig, navInstruction);
-        console.log("activate", params);
-        // if (params.q) {
-        //     this._searchQuery = params.q;
-        // }
-        // if (params.class) {
-        //     this._selectedClass = params.class;
-        // } else {
-        //     this._selectedClass = null;
-        // }
         if (params.status) {
             this._selectedStatus = this._statusConverter.getStatusForClass(params.status);
         } else {
@@ -86,10 +71,8 @@ export class Classes extends AbstractViewModel {
 
         const uniqueClasses = {};
         const uniqueStatuses = {};
-        //const uniqueFailureAspects = {};
 
         let relevantStatuses:ResultStatusType[] = null;
-
         if (this._selectedStatus == ResultStatusType.PASSED) {
             relevantStatuses = this._statusConverter.passedStatuses;
         } else if (this._selectedStatus == ResultStatusType.FAILED) {
@@ -99,9 +82,8 @@ export class Classes extends AbstractViewModel {
             relevantStatuses = [ this._selectedStatus ];
         }
 
-        this._filteredMethodAggregates = [];
+        this._filteredMethodDetails = [];
 
-        console.log("filter", this.queryParams);
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
 
             let relevantFailureAspect:FailureAspectStatistics;
@@ -140,37 +122,33 @@ export class Classes extends AbstractViewModel {
                             if (!relevantFailureAspect) {
                                 relevantFailureAspect = methodContext.errorContext ? new FailureAspectStatistics().setErrorContext(methodContext.errorContext) : null;
                             }
-                            return {
+                            return <IMethodDetails> {
                                 classStatistics: classStatistic,
-                                failureAspect: relevantFailureAspect,
+                                failureAspectStatistics: relevantFailureAspect,
                                 methodContext: methodContext
-                            }
+                            };
                         })
-                        .filter(methodAggregate => {
+                        .filter(methodDetails => {
                             return (
                                 !this._searchRegexp
                                 || (
-                                    methodAggregate.failureAspect?.name.match(this._searchRegexp)
-                                    || methodAggregate.methodContext.contextValues.name.match(this._searchRegexp)
+                                    methodDetails.failureAspectStatistics?.name.match(this._searchRegexp)
+                                    || methodDetails.methodContext.contextValues.name.match(this._searchRegexp)
                                 )
                             );
                         })
-                        .forEach(methodAggregate => {
+                        .forEach(methodDetails => {
                             uniqueClasses[classStatistic.classContext.fullClassName] = true;
-                            uniqueStatuses[methodAggregate.methodContext.contextValues.resultStatus] = true;
-                            // if (methodAggregate.failureAspect) {
-                            //     uniqueFailureAspects[methodAggregate.failureAspect.name] = true;
-                            // }
-                            this._filteredMethodAggregates.push(methodAggregate);
+                            uniqueStatuses[methodDetails.methodContext.contextValues.resultStatus] = true;
+                            this._filteredMethodDetails.push(methodDetails);
                         })
                 });
 
             // Sort by method name
-            this._filteredMethodAggregates = this._filteredMethodAggregates.sort((a, b) => a.methodContext.contextValues.name.localeCompare(b.methodContext.contextValues.name));
+            this._filteredMethodDetails = this._filteredMethodDetails.sort((a, b) => a.methodContext.contextValues.name.localeCompare(b.methodContext.contextValues.name));
 
             this._uniqueClasses = Object.keys(uniqueClasses).length;
             this._uniqueStatuses = Object.keys(uniqueStatuses).length;
-            //this._uniqueFailureAspects = Object.keys(uniqueFailureAspects).length;
             if (this._showConfigurationMethods) {
                 this.queryParams.config = this._showConfigurationMethods;
             } else {
@@ -178,7 +156,6 @@ export class Classes extends AbstractViewModel {
             }
 
             this.updateUrl(this.queryParams);
-            console.log("done loading");
             this._loading = false;
         });
     }
@@ -190,23 +167,19 @@ export class Classes extends AbstractViewModel {
     }
 
     private _statusChanged() {
-        console.log("status changed");
         this._filterOnce();
     }
 
     private _classChanged() {
-        console.log("class changed");
         this._filterOnce();
     }
 
 
     private _showConfigurationChanged() {
-        console.log("show configuration changed");
         this._filterOnce();
     }
 
     private _searchQueryChanged() {
-        console.log("search query changed");
         this._filterOnce();
     }
 }

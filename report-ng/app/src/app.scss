@@ -19,7 +19,7 @@ html {
 }
 
 .alert {
-    @extend .w100;
+    margin: 0 auto;
     @extend .p1;
     min-height: 10em;
     text-align: center;

@@ -40,7 +40,7 @@ export class Details {
         routeConfig: RouteConfig,
         navInstruction: NavigationInstruction
     ) {
-        this._statistics.getMethodDetails(params.id).then(methodDetails => {
+        this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
             this._methodDetails = methodDetails;
             if (methodDetails.methodContext.errorContext?.cause) {
                 this._stackTrace = this._statusConverter.flattenStackTrace(methodDetails.methodContext.errorContext.cause);

@@ -18,7 +18,7 @@
                     </mdc-list>
                 </mdc-select>
             </mdc-layout-grid-cell>
-            <mdc-layout-grid-cell span="4">
+            <mdc-layout-grid-cell span="2">
                 <mdc-select label="Class"
                             value.bind="queryParams.class"
                             change.delegate="_classChanged()"
@@ -35,7 +35,7 @@
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="4">
                 <mdc-text-field
-                    label="Search Method"
+                    label="Search"
                     outlined
                     value.bind="queryParams.q"
                     keydown.delegate="_searchQueryChanged() & debounce"
@@ -56,42 +56,41 @@
             <mdc-layout-grid-cell span="12">
                 <mdc-linear-progress if.bind="_loading"></mdc-linear-progress>
                 <mdc-data-table class="w100"
-                                if.bind="_filteredMethodAggregates.length > 0"
+                                if.bind="_filteredMethodDetails.length > 0"
                 >
                     <mdc-data-table-header>
                         <mdc-data-table-header-cell class="status-column">Status (${_uniqueStatuses})</mdc-data-table-header-cell>
                         <mdc-data-table-header-cell class="class-column">Class (${_uniqueClasses})</mdc-data-table-header-cell>
-                        <mdc-data-table-header-cell>Method (${_filteredMethodAggregates.length})</mdc-data-table-header-cell>
+                        <mdc-data-table-header-cell>Method (${_filteredMethodDetails.length})</mdc-data-table-header-cell>
 <!--                        <mdc-data-table-header-cell>Failure Aspect (${_uniqueFailureAspects})</mdc-data-table-header-cell>-->
                     </mdc-data-table-header>
                     <mdc-data-table-content>
-                        <mdc-data-table-row repeat.for="methodAggregate of _filteredMethodAggregates">
+                        <mdc-data-table-row repeat.for="methodDetails of _filteredMethodDetails">
                             <mdc-data-table-cell>
-                                <!-- route-href="route: classes; params.bind: withQueryParams({status: methodAggregate.methodContext.contextValues.resultStatus})" -->
-                                <a class="badge status-${methodAggregate.methodContext.contextValues.resultStatus|statusClass}"
-                                >${methodAggregate.methodContext.contextValues.resultStatus|statusName}</a>
+                                <a class="badge status-${methodDetails.methodContext.contextValues.resultStatus|statusClass}"
+                                >${methodDetails.methodContext.contextValues.resultStatus|statusName}</a>
                             </mdc-data-table-cell>
                             <mdc-data-table-cell>
-                                <a route-href="route: tests; params.bind: withQueryParams({class: methodAggregate.classStatistics.classIdentifier})"
-                                >${methodAggregate.classStatistics.classIdentifier}</a>
+                                <a route-href="route: tests; params.bind: withQueryParams({class: methodDetails.classStatistics.classIdentifier})"
+                                >${methodDetails.classStatistics.classIdentifier}</a>
                             </mdc-data-table-cell>
                             <mdc-data-table-cell class="p1" mdc-body1>
                                 <div class="vcenter">
                                     <mdc-icon class="sr1">read_more</mdc-icon>
-                                    <a route-href="route: method; params.bind: {id: methodAggregate.methodContext.contextValues.id}">
-                                        <span innerhtml.bind="methodAggregate.methodContext.contextValues.name|highlightText:_searchRegexp"></span>
-                                    </a>
+                                    <a route-href="route: method; params.bind: {methodId: methodDetails.methodContext.contextValues.id}"
+                                       innerhtml.bind="methodDetails.methodContext.contextValues.name|highlightText:_searchRegexp"
+                                    ></a>
                                 </div>
-                                <div if.bind="methodAggregate.failureAspect"
+                                <div if.bind="methodDetails.failureAspectStatistics"
                                      mdc-body2
                                      class="st1"
-                                     innerhtml.bind="methodAggregate.failureAspect.name|html|highlightText:_searchRegexp"
+                                     innerhtml.bind="methodDetails.failureAspectStatistics.name|html|highlightText:_searchRegexp"
                                 ></div>
                             </mdc-data-table-cell>
                         </mdc-data-table-row>
                     </mdc-data-table-content>
                 </mdc-data-table>
-                <div if.bind="!_loading && !_filteredMethodAggregates.length"
+                <div if.bind="!_loading && !_filteredMethodDetails.length"
                      mdc-ripple
                      class="alert vcenter hcenter"
                 >

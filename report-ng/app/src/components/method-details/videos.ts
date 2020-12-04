@@ -16,7 +16,7 @@ export class Videos {
         routeConfig: RouteConfig,
         navInstruction: NavigationInstruction
     ) {
-        this._statistics.getMethodDetails(params.id).then(methodDetails => {
+        this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
             this._methodDetails = methodDetails;
         });
     }

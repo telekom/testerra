@@ -62,7 +62,7 @@ export class Method {
                 route: 'dependencies',
                 moduleId: PLATFORM.moduleName('./dependencies'),
                 nav: true,
-                name: "dependencies",
+                name: "methodDependencies",
                 title: 'Dependencies',
                 settings: {
                     icon: "sync_alt"
@@ -76,7 +76,7 @@ export class Method {
         routeConfig: RouteConfig,
         navInstruction: NavigationInstruction
     ) {
-        this._statistics.getMethodDetails(params.id).then(methodDetails => {
+        this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
             this._methodDetails = methodDetails;
             this._statistics.getScreenshotsFromMethodContext(methodDetails.methodContext).then(screenshots => {
                 this._screenshots = screenshots;
@@ -93,7 +93,6 @@ export class Method {
                 }
             }
         });
-
     }
 
     private _tabClicked(routeConfig:RouteConfig) {

@@ -9,7 +9,6 @@ For all code examples we assume the following csv files located in your project 
 .TestCsvReader.csv
 [source,csv]
 ----
-;;;
 id;name;firstName
 AH_1;Wussow;Michael
 AH_2;Siemens;Hans
@@ -43,7 +42,6 @@ All other rows are then values of the given key.
 [source,java]
 ----
 final CSVTestDataReader csvTestDataReader = new CSVTestDataReader();
-csvTestDataReader.setHeaderRow(1); // Skipping row with semicolons only (See above)
 
 final List<Map<String, String>> testDataMap = csvTestDataReader.readCsvTestDataFromResource("testfiles/TestCsvReader.csv");
 
@@ -61,7 +59,6 @@ Then you can transform the csv file into a object of the given class by calling 
 [source,java]
 ----
 final CSVTestDataReader csvTestDataReader = new CSVTestDataReader();
-csvTestDataReader.setHeaderRow(1);
 
 final List<TestCsvReaderBean> testDataList = csvTestDataReader.readCsvIntoBeans("testfiles/TestCsvReader.csv", TestCsvReaderBean.class);
 
@@ -74,9 +71,10 @@ Assert.assertEquals(id, "AH_1");
 ----
 
 Further to this approach it is possible to concat objects like you do in your java bean as well.
-Given the following classes and the given csv, you will notice, that `TestCsvReaderWithSubBean` has a property of type `TestCsvReaderSubBean`.
-In order to solve this, the csv reader will try to find a csv file named like your class `TestCsvReaderSubBean` in your resources.
-If it exists, the csv reader will read this "sub-file" as well and will inject the object into the main type.
+
+Given the following classes and the given CSV, you will notice, that `TestCsvReaderWithSubBean` has a property of type `TestCsvReaderSubBean`.
+In order to solve this, the CSV reader will try to find a CSV file named like your class `TestCsvReaderSubBean` in your resources.
+If it exists, the CSV reader will read this "sub-file" as well and will inject the object into the main type.
 
 But how?
 Just ensure that you provide a unique line identifier.
@@ -108,3 +106,15 @@ public class TestCsvReaderSubBean {
     // getter and setter here...
 }
 ----
+
+== Customize the CSV reader
+
+The following table shows how you can customize the CSV reader.
+
+[cols="2,1,2",options="header"]
+|===
+| Method | Default value | Description
+| `setHeaderRow(int headerRow)` | 0 | Set the row of the hedaer in CSV file, beginning with 0.
+| `setSeparator(char separator)` | ; | Set the column separater.
+| setQuoteChar(char quoteChar) | \" | Set the characters, how strings can be quoted.
+|===

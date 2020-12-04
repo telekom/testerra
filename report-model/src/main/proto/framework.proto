@@ -96,7 +96,7 @@ message ContextValues {
     string name = 3;
     int64 start_time = 4;
     int64 end_time = 5;
-    string swi = 6 [deprecated = true];
+//    string swi = 6 [deprecated = true];
 
     ResultStatusType result_status = 7;
     ExecStatusType exec_status = 8;

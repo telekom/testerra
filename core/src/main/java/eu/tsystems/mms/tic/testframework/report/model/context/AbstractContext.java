@@ -46,12 +46,6 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
     @Deprecated
     public final String id = IDUtils.getB64encXID();
     protected AbstractContext parentContext;
-
-    /**
-     * This is deprecated and will not be replaced!
-     */
-    @Deprecated
-    public String swi; // system-wide identifier
     private final Date startTime = new Date();
     private Date endTime;
 

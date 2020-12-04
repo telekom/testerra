@@ -101,6 +101,15 @@ public class TestCsvReaderSubModel {
 }
 ----
 
+[IMPORTANT]
+=====
+Simple data types must be represented by their object data types.
+
+E.g.
+* `int` &#8594; `Integer`
+* `boolean` &#8594; `Boolean`
+=====
+
 == Customize the CSV reader
 
 The following table shows how you can customize the CSV reader.

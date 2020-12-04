@@ -47,11 +47,8 @@ public class TestStep implements Serializable, Loggable {
     private final List<TestStepAction> testStepActions = Collections.synchronizedList(new LinkedList<>());
     private boolean closed = false;
 
-    public TestStep(String name) {
+    TestStep(String name) {
         this.name = name;
-        if (!isInternalTestStep()) {
-            log().info("Begin " + name);
-        }
     }
 
     public boolean isInternalTestStep() {
@@ -96,6 +93,12 @@ public class TestStep implements Serializable, Loggable {
         }
 
         return testStepAction;
+    }
+
+    public void open() {
+        if (!isInternalTestStep()) {
+            log().info("Begin " + name);
+        }
     }
 
     public void close() {

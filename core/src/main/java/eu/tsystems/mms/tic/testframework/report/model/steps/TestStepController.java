@@ -87,19 +87,24 @@ public class TestStepController implements Serializable {
         // create a new one if empty
         TestStep testStep;
         if (testSteps.size() == 0) {
-            testStep = new TestStep(name);
-            testSteps.add(testStep);
+            testStep = createTestStep(name);
         } else {
             // get the last TestStep
             testStep = getLastStep();
 
             // create new step if the steps differs
             if (!StringUtils.equals(testStep.getName(), name)) {
-                testStep = new TestStep(name);
-                testSteps.add(testStep);
+                testStep = createTestStep(name);
             }
         }
 
+        return testStep;
+    }
+
+    private TestStep createTestStep(String name) {
+        TestStep testStep = new TestStep(name);
+        testSteps.add(testStep);
+        testStep.open();
         return testStep;
     }
 

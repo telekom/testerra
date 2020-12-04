@@ -54,13 +54,10 @@
                         </mdc-data-table-row>
                     </mdc-data-table-content>
                 </mdc-data-table>
-                <div if.bind="!_loading && !_filteredFailureAspects.length"
-                     mdc-ripple
-                     class="alert vcenter hcenter"
-                >
+                <alert if.bind="!_loading && !_filteredFailureAspects.length">
                     <mdc-icon class="big-icon sr1">find_in_page</mdc-icon>
                     <div mdc-headline4>No failure aspects matching this criteria</div>
-                </div>
+                </alert>
             </mdc-layout-grid-cell>
         </mdc-layout-grid-inner>
     </mdc-layout-grid>

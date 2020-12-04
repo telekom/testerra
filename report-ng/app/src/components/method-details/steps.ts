@@ -31,9 +31,7 @@ export class Steps {
     ) {
         this._router = navInstruction.router;
         this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
-            console.log(methodDetails);
             this._methodDetails = methodDetails;
-            methodDetails.methodContext.errorContext.scriptSource.lines
             this._statistics.getScreenshotsFromMethodContext(methodDetails.methodContext).then(screenshots => {
                 screenshots.forEach(screenshot => {
                     this._screenshots.push(screenshot);

@@ -19,10 +19,8 @@
   ~ under the License.
   -->
 <template>
-    <div class="code-view">
-        <div class="line pre"
-             repeat.for="line of lines"
-             class.bind="line.mark?markClass:''"
-        ><span class="number">${line.lineNumber}</span><span innerhtml="${_hljs.highlight('java', line.line).value}"></span></div>
-    </div>
+    <mdc-card mdc-ripple
+              outlined
+    ><div class="alert vcenter hcenter"><slot></slot></div>
+    </mdc-card>
 </template>

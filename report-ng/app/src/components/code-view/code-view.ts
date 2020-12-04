@@ -38,4 +38,7 @@ export class CodeView {
 
     @bindable({bindingMode: bindingMode.toView})
     lines:IScriptSourceLine[];
+
+    @bindable({bindingMode: bindingMode.toView})
+    markClass:string = "error";
 }

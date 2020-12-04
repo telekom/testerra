@@ -57,7 +57,7 @@ export class LogView {
                 if (msg.length > 0) {
                     msg += "<br>"
                 }
-                msg += cause.message + "<br>" + cause.stackTraceElements.join("<br>");
+                msg += (cause.message?.length>0?cause.message + "<br>":'') + cause.stackTraceElements.join("<br>");
             });
             this._statusConverter.flattenStackTrace(logMessage.cause)
             this._causes[index] = msg;

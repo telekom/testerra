@@ -33,6 +33,7 @@ export function configure(aurelia: Aurelia) {
             PLATFORM.moduleName('components/class-name/class-name'),
             PLATFORM.moduleName('components/log-view/log-view'),
             PLATFORM.moduleName('components/code-view/code-view'),
+            PLATFORM.moduleName('components/alert/alert.html'),
             PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/date-format-value-converter'),
             PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/object-values-value-converter'),
             PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/highlight-text-value-converter'),

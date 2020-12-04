@@ -1,7 +1,6 @@
 import {autoinject} from 'aurelia-framework';
 import {IMethodDetails, StatisticsGenerator} from "../../services/statistics-generator";
 import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
-import {data} from "../../services/report-model";
 import {FailureAspectStatistics} from "../../services/statistic-models";
 
 @autoinject()

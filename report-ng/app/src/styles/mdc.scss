@@ -131,13 +131,13 @@
     //color: rgba(0, 0, 0, 0.6);
 }
 
-.card-headline2 {
-    padding: 8px 16px;
-}
-
 .card-content {
     @extend .p1;
     //margin: auto 0;
+}
+
+.header-card {
+    height:188px;
 }
 
 //adapt router view size to drawer because it doesn't do that on it's own for some reason

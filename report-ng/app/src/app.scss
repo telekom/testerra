@@ -26,6 +26,19 @@ html {
     vertical-align: center;
 }
 
+.thumbnail {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    overflow: hidden;
+}
+
+.thumbnail-fixed {
+    width:120px;
+    height:120px;
+    object-fit: cover;
+    overflow: hidden;
+}
 
 .code-view {
     padding: 0.5rem;
@@ -68,9 +81,10 @@ html {
     .pre {
         white-space: pre;
     }
-    .clickable {
-        cursor: pointer;
-    }
+}
+
+.clickable {
+    cursor: pointer;
 }
 
 //a {

@@ -1,6 +1,5 @@
 <template>
     <require from="components/test-duration-card/test-duration-card"></require>
-    <require from="components/image-card/image-card"></require>
 
     <mdc-layout-grid>
         <mdc-layout-grid-inner if.bind="!_methodDetails">
@@ -41,17 +40,18 @@
                 </mdc-card>
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="2" if.bind="_lastScreenshot">
-                <mdc-card>
+                <mdc-card class="header-card">
                     <div mdc-subtitle2 class="card-headline">Last Screenshot</div>
                     <mdc-list-divider></mdc-list-divider>
-                    <image-card click.delegate="_showScreenshot(_lastScreenshot)"
-                                src.bind="_lastScreenshot.relativePath"
-                                title.bind="_lastScreenshot.meta.Title"
-                    ></image-card>
+                    <img src.bind="_lastScreenshot.relativePath"
+                         class="thumbnail clickable"
+                         click.delegate="_showScreenshot(_lastScreenshot)"
+                         title="${_lastScreenshot.meta.Title}"/>
                 </mdc-card>
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="4" position="right">
-                <test-duration-card start.bind="_methodDetails.methodContext.contextValues.startTime"
+                <test-duration-card class="header-card"
+                                    start.bind="_methodDetails.methodContext.contextValues.startTime"
                                     end.bind="_methodDetails.methodContext.contextValues.endTime"
                 ></test-duration-card>
             </mdc-layout-grid-cell>

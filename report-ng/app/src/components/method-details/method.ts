@@ -6,7 +6,6 @@ import {ScreenshotsDialog} from "../screenshots-dialog/screenshots-dialog";
 import {MdcDialogService} from '@aurelia-mdc-web/dialog';
 import IFile = data.IFile;
 
-
 @autoinject()
 export class Method {
     private _router:Router;

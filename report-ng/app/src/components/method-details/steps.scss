@@ -1,4 +1,4 @@
-/*
+/*!
  * Testerra
  *
  * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
@@ -18,14 +18,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import './image-card.scss'
-import {bindable} from "aurelia-templating";
 
-export class ImageCard {
-    @bindable()
-    public src:string;
-
-    @bindable()
-    public title:string;
-
+.sticky {
+    position: fixed;
+    top: 16px;
 }

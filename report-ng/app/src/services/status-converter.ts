@@ -206,7 +206,7 @@ export class StatusConverter {
         }
     }
 
-    flattenStackTrace(cause:IStackTraceCause) {
+    flatStackTrace(cause:IStackTraceCause) {
         const stackTrace:IStackTraceCause[] = [];
         do {
             stackTrace.push(cause);

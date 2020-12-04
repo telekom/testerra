@@ -52,15 +52,24 @@ export class LogView {
             this._causes[index] = null;
         } else {
             let msg = "";
-            const stackTrace = this._statusConverter.flattenStackTrace(logMessage.cause);
+            const stackTrace = this._statusConverter.flatStackTrace(logMessage.cause);
             stackTrace.forEach(cause => {
                 if (msg.length > 0) {
                     msg += "<br>"
                 }
                 msg += (cause.message?.length>0?cause.message + "<br>":'') + cause.stackTraceElements.join("<br>");
             });
-            this._statusConverter.flattenStackTrace(logMessage.cause)
+            this._statusConverter.flatStackTrace(logMessage.cause)
             this._causes[index] = msg;
         }
     }
+    //
+    // logMessagesChanged() {
+    //     this.logMessages = this.logMessages.filter(logMessage => {
+    //         return (!this.search || (
+    //             logMessage.message.match(this.search)
+    //             || logMessage.cause?.
+    //         ))
+    //     });
+    // }
 }

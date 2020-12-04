@@ -8,6 +8,7 @@ import {data} from "../../services/report-model";
 import ILogMessage = data.ILogMessage;
 import {util} from "protobufjs";
 import float = util.float;
+import LogMessage = data.LogMessage;
 
 @autoinject()
 export class Logs extends AbstractViewModel {
@@ -34,6 +35,7 @@ export class Logs extends AbstractViewModel {
             this._searchRegexp = this._statusConverter.createRegexpFromSearchString(this.queryParams.q);
         } else {
             this._searchRegexp = null;
+            delete this.queryParams.q;
         }
 
         this._loading = true;
@@ -48,10 +50,15 @@ export class Logs extends AbstractViewModel {
                 )
             }
 
+            const addLevel = (value:ILogMessage) => {
+                logLevels[value.type] = 1;
+                return value;
+            }
+
             executionStatistics.executionAggregate.executionContext.logMessages
+                .map(addLevel)
                 .filter(filterPredicate)
                 .forEach(value => {
-                    logLevels[value.type] = 1;
                     logMessages.push(value);
                 });
 
@@ -60,9 +67,9 @@ export class Logs extends AbstractViewModel {
                 .flatMap(value => value.testSteps)
                 .flatMap(value => value.testStepActions)
                 .flatMap(value => value.logMessages)
+                .map(addLevel)
                 .filter(filterPredicate)
                 .forEach(value => {
-                    logLevels[value.type] = 1;
                     logMessages.push(value)
                 });
 

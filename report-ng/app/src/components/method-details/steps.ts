@@ -7,7 +7,6 @@ import {MdcDialogService} from '@aurelia-mdc-web/dialog';
 import {ScreenshotsDialog} from "../screenshots-dialog/screenshots-dialog";
 import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
 import IFile = data.IFile;
-import IErrorContext = data.IErrorContext;
 
 @autoinject()
 export class Steps {

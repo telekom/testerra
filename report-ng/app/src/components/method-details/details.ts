@@ -24,7 +24,6 @@ export class Details {
 
     constructor(
         private _statistics: StatisticsGenerator,
-        private _dataLoader:DataLoader,
         private _config:Config,
         private _statusConverter:StatusConverter,
     ) {

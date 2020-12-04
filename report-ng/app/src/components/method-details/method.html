@@ -61,7 +61,7 @@
                     <mdc-tab repeat.for="route of _router.routes"
                              if.bind="route.nav"
                              icon.bind="route.settings.icon"
-                             label.bind="route.title"
+                             label="${route.title + ' ('+route.settings.count+')'}"
                              active.bind="route.navModel.isActive"
                              click.delegate="_tabClicked(route)"></mdc-tab>
                 </mdc-tab-bar>

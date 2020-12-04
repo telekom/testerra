@@ -17,7 +17,6 @@ export class Method {
     constructor(
         private _statistics: StatisticsGenerator,
         private _dialogService:MdcDialogService,
-
     ) {
     }
 
@@ -45,7 +44,7 @@ export class Method {
                 name: "steps",
                 title: 'Steps',
                 settings: {
-                    icon: "list"
+                    icon: "list",
                 }
             },
             {
@@ -62,7 +61,7 @@ export class Method {
                 route: 'dependencies',
                 moduleId: PLATFORM.moduleName('./dependencies'),
                 nav: true,
-                name: "methodDependencies",
+                name: "dependencies",
                 title: 'Dependencies',
                 settings: {
                     icon: "sync_alt"
@@ -83,10 +82,29 @@ export class Method {
                 this._lastScreenshot = this._screenshots.find(() => true);
             })
 
+            this._router.routes.forEach(routeConfig => {
+                switch (routeConfig.name) {
+                    case "steps": {
+                        routeConfig.settings.count = methodDetails.methodContext.testSteps.length;
+                        break;
+                    }
+                    case "dependencies": {
+                        routeConfig.settings.count = methodDetails.methodContext.relatedMethodContextIds.length + methodDetails.methodContext.dependsOnMethodContextIds.length;
+                        break;
+                    }
+                    case "videos": {
+                        routeConfig.settings.count = methodDetails.methodContext.videoIds.length;
+                    }
+                    case "details": {
+                        routeConfig.settings.count = methodDetails.numDetails;
+                    }
+                }
+            });
+
             if (!routeConfig.hasChildRouter) {
                 console.log("route to default content");
                 const navOptions = {replace:true};
-                if (this._methodDetails.hasDetails) {
+                if (this._methodDetails.numDetails > 0) {
                     this._router.navigateToRoute("details", {}, navOptions);
                 } else {
                     this._router.navigateToRoute("steps", {}, navOptions);

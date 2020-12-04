@@ -37,7 +37,7 @@ export interface IMethodDetails {
     classStatistics?: ClassStatistics,
     testContext?: ITestContext,
     suiteContext?: ISuiteContext,
-    hasDetails?: boolean,
+    numDetails?: number,
     failureAspectStatistics?:FailureAspectStatistics,
 }
 
@@ -105,7 +105,7 @@ export class StatisticsGenerator {
                             classStatistics: classStatistic,
                             testContext: testContext,
                             suiteContext: suiteContext,
-                            hasDetails: (methodContext.errorContext != null && methodContext.customContextJson != null)
+                            numDetails: (methodContext.errorContext?1:0)+(methodContext.customContextJson?1:0)
                         }
                     }
                 }

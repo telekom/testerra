@@ -153,13 +153,8 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
             methodContext.iTestContext = iTestContext;
             methodContext.iTestNgMethod = iTestNGMethod;
 
-                /*
-                enhance swi with parameters, set parameters into context
-                 */
             if (parameters.length > 0) {
                 methodContext.parameters = Arrays.stream(parameters).map(o -> o == null ? "" : o.toString()).collect(Collectors.toList());
-                String swiSuffix = methodContext.parameters.stream().map(Object::toString).collect(Collectors.joining("_"));
-                methodContext.swi += "_" + swiSuffix;
             }
 
                 /*

@@ -19,6 +19,7 @@
  * under the License.
  *
  */
+
 package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
 
 import com.google.common.eventbus.Subscribe;
@@ -46,12 +47,12 @@ public class RemoveTestMethodIfRetryPassedWorker implements MethodEndEvent.Liste
 
         if (testResult.isSuccess()) {
             if (methodContext.getStatus().equals(TestStatusController.Status.PASSED_RETRY)) {
-                for (final MethodContext dependsOnMethodContexts : methodContext.getDependsOnMethodContexts()) {
-                    if (dependsOnMethodContexts.isSame(methodContext) && dependsOnMethodContexts.isRetry()) {
-                        testResult.getTestContext().getFailedTests().removeResult(dependsOnMethodContexts.testResult);
-                        testResult.getTestContext().getSkippedTests().removeResult(dependsOnMethodContexts.testResult);
-                    }
-                }
+                methodContext.readDependsOnMethodContexts()
+                        .filter(dependsOnMethodContexts -> dependsOnMethodContexts.isSame(methodContext) && dependsOnMethodContexts.isRetry())
+                        .forEach(dependsOnMethodContexts -> {
+                            testResult.getTestContext().getFailedTests().removeResult(dependsOnMethodContexts.testResult);
+                            testResult.getTestContext().getSkippedTests().removeResult(dependsOnMethodContexts.testResult);
+                        });
             }
         }
     }

@@ -19,7 +19,8 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.execution.testng;
+
+package eu.tsystems.mms.tic.testframework.execution.testng;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.Retry;
@@ -29,6 +30,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.InheritedFailedException;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
@@ -364,7 +366,27 @@ public class RetryAnalyzer implements IRetryAnalyzer {
     }
 
     public static boolean hasMethodBeenRetried(MethodContext methodContext) {
-        return RETRIED_METHODS.stream().anyMatch(m -> m.swi.equals(methodContext.swi));
+        return RETRIED_METHODS.stream().anyMatch(m -> {
+
+            if (m.getName().equals(methodContext.getName())) {
+
+                if (m.parameters.containsAll(methodContext.parameters)) {
+                    AbstractContext context = methodContext;
+                    AbstractContext mContext = m;
+                    while (context.getParentContext() != null) {
+                        if (!context.getParentContext().equals(mContext.getParentContext())) {
+                            return false;
+                        }
+                        context = context.getParentContext();
+                        mContext = mContext.getParentContext();
+                    }
+                }
+
+                return true;
+            }
+
+            return false;
+        });
     }
 
 }

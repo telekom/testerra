@@ -66,7 +66,6 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
 
     public ExecutionContext() {
         name = runConfig.RUNCFG;
-        swi = name;
         TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(this));
     }
 

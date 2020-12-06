@@ -21,7 +21,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.test;
 
-import eu.tsystems.mms.tic.testframework.annotations.TestContext;
+import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.AbstractReportTest;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
@@ -31,7 +31,7 @@ import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.Test;
 
-@TestContext(name = "View-Logs")
+@TestClassContext(name = "View-Logs")
 public class LogsPageTest extends AbstractReportTest {
 
     /**

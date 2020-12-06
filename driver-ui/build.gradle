@@ -23,7 +23,7 @@ dependencies {
     // </UITestUtils>
 
     // <PageFactory>
-    implementation 'org.glassfish.jersey.core:jersey-common:2.22.2'
+//    implementation 'org.glassfish.jersey.core:jersey-common:2.22.2'
     // </PageFactory>
 
     // <JSUtils>

@@ -34,13 +34,13 @@ See <<New, @New>> for explanation.
 == @InfoMethod
 Methods marked with this annotation are shown in the section `Info` of the report.
 
-== @TestContext
-With this annotation you can set the TestContext for the given test class. There two attributes for adjustments.
+== @TestClassContext
+With this annotation you can set the test context for the given test class. There two attributes for adjustments.
 
-* name: name of the Context, default = `""`
-* mode: TestContext.Mode.ONE_FOR_ALL or TestContext.Mode.ONE_FOR_EACH, default = `TestContext.Mode.ONE_FOR_ALL`
+* name: name of the context, default = `""`
+* mode: `TestClassContext.Mode.ONE_FOR_ALL` or `TestClassContext.Mode.ONE_FOR_EACH`, default = `TestClassContext.Mode.ONE_FOR_ALL`
 
-The Executed tests are then shown in the classes overview of the report as a entry labeled with `name` from <<TestContext, @TestContext>>.
+The Executed tests are then shown in the classes overview of the report as a entry labeled with `name` from `@TestClassContext`.
 
 [#InDevelopment]
 == @InDevelopment

@@ -14,14 +14,14 @@ public class SessionContextExporter extends AbstractContextExporter implements L
         Builder builder = newBuilder();
 
         apply(createContextValues(sessionContext), builder::setContextValues);
-        apply(sessionContext.sessionKey, builder::setSessionKey);
-        apply(sessionContext.provider, builder::setProvider);
-        apply(sessionContext.sessionId, builder::setSessionId);
+        apply(sessionContext.getSessionKey(), builder::setSessionKey);
+        apply(sessionContext.getProvider(), builder::setProvider);
+        apply(sessionContext.getSessionId(), builder::setSessionId);
 
         // translate object map to string map
         Map<String, String> newMap = new LinkedHashMap<>();
-        for (String key : sessionContext.metaData.keySet()) {
-            Object value = sessionContext.metaData.get(key);
+        for (String key : sessionContext.getMetaData().keySet()) {
+            Object value = sessionContext.getMetaData().get(key);
             if (StringUtils.isStringEmpty(key) || value == null || StringUtils.isStringEmpty(value.toString())) {
                 log().error("Not exporting sessionContext.metaData[" + key + "]=" + value);
             } else {

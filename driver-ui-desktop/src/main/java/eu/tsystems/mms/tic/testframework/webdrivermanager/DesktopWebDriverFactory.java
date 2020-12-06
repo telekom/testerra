@@ -334,8 +334,8 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         /*
         Log session id
          */
-        SessionId webDriverSessionId = ((RemoteWebDriver) newDriver).getSessionId();
-        desktopWebDriverRequest.setSessionId(webDriverSessionId.toString());
+        SessionId sessionId = ((RemoteWebDriver) newDriver).getSessionId();
+        desktopWebDriverRequest.setSessionId(sessionId.toString());
 
         /*
         Log User Agent and executing host
@@ -348,10 +348,10 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
 
         BrowserInformation browserInformation = WebDriverManagerUtils.getBrowserInformation(newDriver);
         log().info(String.format(
-                "Started %s (session key=%s, remote session id=%s, node=%s, user agent=%s) in %s",
+                "Started %s (session key=%s, session id=%s, node=%s, user agent=%s) in %s",
                 newDriver.getClass().getSimpleName(),
                 sessionKey,
-                webDriverSessionId,
+                sessionId,
                 nodeInfo.toString(),
                 browserInformation.getUserAgent(),
                 sw.toString()

@@ -21,7 +21,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.test;
 
-import eu.tsystems.mms.tic.testframework.annotations.TestContext;
+import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.AbstractReportTest;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
@@ -34,7 +34,7 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-@TestContext(name = "View-Threads")
+@TestClassContext(name = "View-Threads")
 public class ThreadsPageTest extends AbstractReportTest {
 
     @DataProvider(parallel = true)

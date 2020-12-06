@@ -21,7 +21,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.test.functional;
 
-import eu.tsystems.mms.tic.testframework.annotations.TestContext;
+import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.AbstractReportTest;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
@@ -39,7 +39,7 @@ import org.openqa.selenium.Dimension;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-@TestContext(name = "Functional-TestNGBefore")
+@TestClassContext(name = "Functional-TestNGBefore")
 public class BeforeScenarioTest extends AbstractReportTest {
 
     private final String passedControlMethod = "controlMethodAfterBeforeScenarioPassed";

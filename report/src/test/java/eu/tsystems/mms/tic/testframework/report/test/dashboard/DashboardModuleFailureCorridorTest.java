@@ -21,7 +21,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.test.dashboard;
 
-import eu.tsystems.mms.tic.testframework.annotations.TestContext;
+import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.report.general.AbstractTestDashboard;
@@ -31,7 +31,7 @@ import eu.tsystems.mms.tic.testframework.report.pageobjects.DashboardPage;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.abstracts.AbstractTestReportNumbers;
 import org.testng.annotations.Test;
 
-@TestContext(name = "View-Dashboard-FailureCorridor")
+@TestClassContext(name = "View-Dashboard-FailureCorridor")
 public class DashboardModuleFailureCorridorTest extends AbstractTestDashboard {
 
     /**

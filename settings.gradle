@@ -1,4 +1,5 @@
 rootProject.name = 'testerra'
+include 'logging'
 include 'core'
 include 'surefire-connector'
 include 'driver-ui'

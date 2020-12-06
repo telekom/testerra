@@ -1,0 +1,10 @@
+
+dependencies {
+    // <TesterraLogger>
+    compile 'org.apache.logging.log4j:log4j-slf4j18-impl:2.13.2'
+    compile 'org.apache.logging.log4j:log4j-api:2.13.2'
+    compile 'org.apache.logging.log4j:log4j-core:2.13.2'
+    // </TesterraLogger>
+}
+
+apply from: rootProject.file('release-bintray.gradle')

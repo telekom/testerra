@@ -2,6 +2,8 @@ import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.internal.jvm.Jvm
 
 dependencies {
+    compile project(':logging')
+
     // @see https://github.com/google/guice/issues/1256
     compile 'com.google.inject:guice:4.2.2:no_aop'
     compile 'com.google.inject.extensions:guice-assistedinject:4.2.2'
@@ -49,12 +51,6 @@ dependencies {
         // This will lead to a version clash with selenium and this will produce ImmutableMapErrors on WebDriverManager.getWebDriver
         exclude group: 'com.google.guava', module: 'guava'
     }
-
-    // <TesterraLogger>
-    compile 'org.apache.logging.log4j:log4j-slf4j18-impl:2.13.2'
-    compile 'org.apache.logging.log4j:log4j-api:2.13.2'
-    compile 'org.apache.logging.log4j:log4j-core:2.13.2'
-    // </TesterraLogger>
 
     //implementation 'org.javassist:javassist:3.20.0-GA'
 

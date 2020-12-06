@@ -68,15 +68,18 @@ public class Attachment implements Loggable {
         return this;
     }
 
+    @Deprecated
     public Attachment setErrorContextId(String id) {
         this.errorContextId = id;
         return this;
     }
 
+    @Deprecated
     public String getErrorContextId() {
         return this.errorContextId;
     }
 
+    @Deprecated
     public boolean hasErrorContextId() {
         return this.errorContextId != null;
     }

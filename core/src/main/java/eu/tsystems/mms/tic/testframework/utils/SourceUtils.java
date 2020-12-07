@@ -225,13 +225,14 @@ public final class SourceUtils {
                     /*
                     LINE
                      */
-                    scriptSource.lines.add(new ScriptSource.Line(line, lineCounter, false));
+                    scriptSource.addLine(new ScriptSource.Line(line, lineCounter));
                 }
                 else if (lineCounter == lineNr) {
                     /*
                     LINE WITH ISSUE
                      */
-                    scriptSource.lines.add(new ScriptSource.Line(line, lineCounter, true));
+                    ScriptSource.Line markedLine = new ScriptSource.Line(line, lineCounter);
+                    scriptSource.addLine(markedLine).markLine(markedLine);
                 } else if (lineCounter > lineNr) {
                     // stop
                     br.close();

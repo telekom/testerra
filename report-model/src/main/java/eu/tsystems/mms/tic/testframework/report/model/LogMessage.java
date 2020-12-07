@@ -20,6 +20,7 @@ private static final long serialVersionUID = 0L;
     loggerName_ = "";
     message_ = "";
     threadName_ = "";
+    stackTrace_ = java.util.Collections.emptyList();
   }
 
   @java.lang.Override
@@ -42,6 +43,7 @@ private static final long serialVersionUID = 0L;
     if (extensionRegistry == null) {
       throw new java.lang.NullPointerException();
     }
+    int mutable_bitField0_ = 0;
     com.google.protobuf.UnknownFieldSet.Builder unknownFields =
         com.google.protobuf.UnknownFieldSet.newBuilder();
     try {
@@ -82,16 +84,12 @@ private static final long serialVersionUID = 0L;
             break;
           }
           case 50: {
-            eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder subBuilder = null;
-            if (cause_ != null) {
-              subBuilder = cause_.toBuilder();
+            if (!((mutable_bitField0_ & 0x00000001) != 0)) {
+              stackTrace_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.StackTraceCause>();
+              mutable_bitField0_ |= 0x00000001;
             }
-            cause_ = input.readMessage(eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(cause_);
-              cause_ = subBuilder.buildPartial();
-            }
-
+            stackTrace_.add(
+                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.parser(), extensionRegistry));
             break;
           }
           default: {
@@ -109,6 +107,9 @@ private static final long serialVersionUID = 0L;
       throw new com.google.protobuf.InvalidProtocolBufferException(
           e).setUnfinishedMessage(this);
     } finally {
+      if (((mutable_bitField0_ & 0x00000001) != 0)) {
+        stackTrace_ = java.util.Collections.unmodifiableList(stackTrace_);
+      }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
     }
@@ -263,27 +264,39 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int CAUSE_FIELD_NUMBER = 6;
-  private eu.tsystems.mms.tic.testframework.report.model.StackTraceCause cause_;
+  public static final int STACK_TRACE_FIELD_NUMBER = 6;
+  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.StackTraceCause> stackTrace_;
   /**
-   * <code>.data.StackTraceCause cause = 6;</code>
-   * @return Whether the cause field is set.
+   * <code>repeated .data.StackTraceCause stack_trace = 6;</code>
    */
-  public boolean hasCause() {
-    return cause_ != null;
+  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.StackTraceCause> getStackTraceList() {
+    return stackTrace_;
   }
   /**
-   * <code>.data.StackTraceCause cause = 6;</code>
-   * @return The cause.
+   * <code>repeated .data.StackTraceCause stack_trace = 6;</code>
    */
-  public eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getCause() {
-    return cause_ == null ? eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.getDefaultInstance() : cause_;
+  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder> 
+      getStackTraceOrBuilderList() {
+    return stackTrace_;
   }
   /**
-   * <code>.data.StackTraceCause cause = 6;</code>
+   * <code>repeated .data.StackTraceCause stack_trace = 6;</code>
    */
-  public eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder getCauseOrBuilder() {
-    return getCause();
+  public int getStackTraceCount() {
+    return stackTrace_.size();
+  }
+  /**
+   * <code>repeated .data.StackTraceCause stack_trace = 6;</code>
+   */
+  public eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getStackTrace(int index) {
+    return stackTrace_.get(index);
+  }
+  /**
+   * <code>repeated .data.StackTraceCause stack_trace = 6;</code>
+   */
+  public eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder getStackTraceOrBuilder(
+      int index) {
+    return stackTrace_.get(index);
   }
 
   private byte memoizedIsInitialized = -1;
@@ -315,8 +328,8 @@ private static final long serialVersionUID = 0L;
     if (!getThreadNameBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 5, threadName_);
     }
-    if (cause_ != null) {
-      output.writeMessage(6, getCause());
+    for (int i = 0; i < stackTrace_.size(); i++) {
+      output.writeMessage(6, stackTrace_.get(i));
     }
     unknownFields.writeTo(output);
   }
@@ -344,9 +357,9 @@ private static final long serialVersionUID = 0L;
     if (!getThreadNameBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, threadName_);
     }
-    if (cause_ != null) {
+    for (int i = 0; i < stackTrace_.size(); i++) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(6, getCause());
+        .computeMessageSize(6, stackTrace_.get(i));
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -372,11 +385,8 @@ private static final long serialVersionUID = 0L;
         != other.getTimestamp()) return false;
     if (!getThreadName()
         .equals(other.getThreadName())) return false;
-    if (hasCause() != other.hasCause()) return false;
-    if (hasCause()) {
-      if (!getCause()
-          .equals(other.getCause())) return false;
-    }
+    if (!getStackTraceList()
+        .equals(other.getStackTraceList())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -399,9 +409,9 @@ private static final long serialVersionUID = 0L;
         getTimestamp());
     hash = (37 * hash) + THREAD_NAME_FIELD_NUMBER;
     hash = (53 * hash) + getThreadName().hashCode();
-    if (hasCause()) {
-      hash = (37 * hash) + CAUSE_FIELD_NUMBER;
-      hash = (53 * hash) + getCause().hashCode();
+    if (getStackTraceCount() > 0) {
+      hash = (37 * hash) + STACK_TRACE_FIELD_NUMBER;
+      hash = (53 * hash) + getStackTraceList().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -531,6 +541,7 @@ private static final long serialVersionUID = 0L;
     private void maybeForceBuilderInitialization() {
       if (com.google.protobuf.GeneratedMessageV3
               .alwaysUseFieldBuilders) {
+        getStackTraceFieldBuilder();
       }
     }
     @java.lang.Override
@@ -546,11 +557,11 @@ private static final long serialVersionUID = 0L;
 
       threadName_ = "";
 
-      if (causeBuilder_ == null) {
-        cause_ = null;
+      if (stackTraceBuilder_ == null) {
+        stackTrace_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000001);
       } else {
-        cause_ = null;
-        causeBuilder_ = null;
+        stackTraceBuilder_.clear();
       }
       return this;
     }
@@ -578,15 +589,20 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public eu.tsystems.mms.tic.testframework.report.model.LogMessage buildPartial() {
       eu.tsystems.mms.tic.testframework.report.model.LogMessage result = new eu.tsystems.mms.tic.testframework.report.model.LogMessage(this);
+      int from_bitField0_ = bitField0_;
       result.type_ = type_;
       result.loggerName_ = loggerName_;
       result.message_ = message_;
       result.timestamp_ = timestamp_;
       result.threadName_ = threadName_;
-      if (causeBuilder_ == null) {
-        result.cause_ = cause_;
+      if (stackTraceBuilder_ == null) {
+        if (((bitField0_ & 0x00000001) != 0)) {
+          stackTrace_ = java.util.Collections.unmodifiableList(stackTrace_);
+          bitField0_ = (bitField0_ & ~0x00000001);
+        }
+        result.stackTrace_ = stackTrace_;
       } else {
-        result.cause_ = causeBuilder_.build();
+        result.stackTrace_ = stackTraceBuilder_.build();
       }
       onBuilt();
       return result;
@@ -654,8 +670,31 @@ private static final long serialVersionUID = 0L;
         threadName_ = other.threadName_;
         onChanged();
       }
-      if (other.hasCause()) {
-        mergeCause(other.getCause());
+      if (stackTraceBuilder_ == null) {
+        if (!other.stackTrace_.isEmpty()) {
+          if (stackTrace_.isEmpty()) {
+            stackTrace_ = other.stackTrace_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+          } else {
+            ensureStackTraceIsMutable();
+            stackTrace_.addAll(other.stackTrace_);
+          }
+          onChanged();
+        }
+      } else {
+        if (!other.stackTrace_.isEmpty()) {
+          if (stackTraceBuilder_.isEmpty()) {
+            stackTraceBuilder_.dispose();
+            stackTraceBuilder_ = null;
+            stackTrace_ = other.stackTrace_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+            stackTraceBuilder_ = 
+              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                 getStackTraceFieldBuilder() : null;
+          } else {
+            stackTraceBuilder_.addAllMessages(other.stackTrace_);
+          }
+        }
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -685,6 +724,7 @@ private static final long serialVersionUID = 0L;
       }
       return this;
     }
+    private int bitField0_;
 
     private int type_ = 0;
     /**
@@ -996,123 +1036,244 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private eu.tsystems.mms.tic.testframework.report.model.StackTraceCause cause_;
-    private com.google.protobuf.SingleFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.StackTraceCause, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder, eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder> causeBuilder_;
-    /**
-     * <code>.data.StackTraceCause cause = 6;</code>
-     * @return Whether the cause field is set.
-     */
-    public boolean hasCause() {
-      return causeBuilder_ != null || cause_ != null;
+    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.StackTraceCause> stackTrace_ =
+      java.util.Collections.emptyList();
+    private void ensureStackTraceIsMutable() {
+      if (!((bitField0_ & 0x00000001) != 0)) {
+        stackTrace_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.StackTraceCause>(stackTrace_);
+        bitField0_ |= 0x00000001;
+       }
     }
+
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        eu.tsystems.mms.tic.testframework.report.model.StackTraceCause, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder, eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder> stackTraceBuilder_;
+
     /**
-     * <code>.data.StackTraceCause cause = 6;</code>
-     * @return The cause.
+     * <code>repeated .data.StackTraceCause stack_trace = 6;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getCause() {
-      if (causeBuilder_ == null) {
-        return cause_ == null ? eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.getDefaultInstance() : cause_;
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.StackTraceCause> getStackTraceList() {
+      if (stackTraceBuilder_ == null) {
+        return java.util.Collections.unmodifiableList(stackTrace_);
       } else {
-        return causeBuilder_.getMessage();
+        return stackTraceBuilder_.getMessageList();
       }
     }
     /**
-     * <code>.data.StackTraceCause cause = 6;</code>
+     * <code>repeated .data.StackTraceCause stack_trace = 6;</code>
      */
-    public Builder setCause(eu.tsystems.mms.tic.testframework.report.model.StackTraceCause value) {
-      if (causeBuilder_ == null) {
+    public int getStackTraceCount() {
+      if (stackTraceBuilder_ == null) {
+        return stackTrace_.size();
+      } else {
+        return stackTraceBuilder_.getCount();
+      }
+    }
+    /**
+     * <code>repeated .data.StackTraceCause stack_trace = 6;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getStackTrace(int index) {
+      if (stackTraceBuilder_ == null) {
+        return stackTrace_.get(index);
+      } else {
+        return stackTraceBuilder_.getMessage(index);
+      }
+    }
+    /**
+     * <code>repeated .data.StackTraceCause stack_trace = 6;</code>
+     */
+    public Builder setStackTrace(
+        int index, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause value) {
+      if (stackTraceBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        cause_ = value;
+        ensureStackTraceIsMutable();
+        stackTrace_.set(index, value);
         onChanged();
       } else {
-        causeBuilder_.setMessage(value);
+        stackTraceBuilder_.setMessage(index, value);
       }
-
       return this;
     }
     /**
-     * <code>.data.StackTraceCause cause = 6;</code>
+     * <code>repeated .data.StackTraceCause stack_trace = 6;</code>
      */
-    public Builder setCause(
-        eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder builderForValue) {
-      if (causeBuilder_ == null) {
-        cause_ = builderForValue.build();
+    public Builder setStackTrace(
+        int index, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder builderForValue) {
+      if (stackTraceBuilder_ == null) {
+        ensureStackTraceIsMutable();
+        stackTrace_.set(index, builderForValue.build());
         onChanged();
       } else {
-        causeBuilder_.setMessage(builderForValue.build());
+        stackTraceBuilder_.setMessage(index, builderForValue.build());
       }
-
       return this;
     }
     /**
-     * <code>.data.StackTraceCause cause = 6;</code>
+     * <code>repeated .data.StackTraceCause stack_trace = 6;</code>
      */
-    public Builder mergeCause(eu.tsystems.mms.tic.testframework.report.model.StackTraceCause value) {
-      if (causeBuilder_ == null) {
-        if (cause_ != null) {
-          cause_ =
-            eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.newBuilder(cause_).mergeFrom(value).buildPartial();
-        } else {
-          cause_ = value;
+    public Builder addStackTrace(eu.tsystems.mms.tic.testframework.report.model.StackTraceCause value) {
+      if (stackTraceBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
         }
+        ensureStackTraceIsMutable();
+        stackTrace_.add(value);
         onChanged();
       } else {
-        causeBuilder_.mergeFrom(value);
+        stackTraceBuilder_.addMessage(value);
       }
-
       return this;
     }
     /**
-     * <code>.data.StackTraceCause cause = 6;</code>
+     * <code>repeated .data.StackTraceCause stack_trace = 6;</code>
      */
-    public Builder clearCause() {
-      if (causeBuilder_ == null) {
-        cause_ = null;
+    public Builder addStackTrace(
+        int index, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause value) {
+      if (stackTraceBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureStackTraceIsMutable();
+        stackTrace_.add(index, value);
         onChanged();
       } else {
-        cause_ = null;
-        causeBuilder_ = null;
+        stackTraceBuilder_.addMessage(index, value);
       }
-
       return this;
     }
     /**
-     * <code>.data.StackTraceCause cause = 6;</code>
+     * <code>repeated .data.StackTraceCause stack_trace = 6;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder getCauseBuilder() {
-      
-      onChanged();
-      return getCauseFieldBuilder().getBuilder();
+    public Builder addStackTrace(
+        eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder builderForValue) {
+      if (stackTraceBuilder_ == null) {
+        ensureStackTraceIsMutable();
+        stackTrace_.add(builderForValue.build());
+        onChanged();
+      } else {
+        stackTraceBuilder_.addMessage(builderForValue.build());
+      }
+      return this;
     }
     /**
-     * <code>.data.StackTraceCause cause = 6;</code>
+     * <code>repeated .data.StackTraceCause stack_trace = 6;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder getCauseOrBuilder() {
-      if (causeBuilder_ != null) {
-        return causeBuilder_.getMessageOrBuilder();
+    public Builder addStackTrace(
+        int index, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder builderForValue) {
+      if (stackTraceBuilder_ == null) {
+        ensureStackTraceIsMutable();
+        stackTrace_.add(index, builderForValue.build());
+        onChanged();
       } else {
-        return cause_ == null ?
-            eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.getDefaultInstance() : cause_;
+        stackTraceBuilder_.addMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.StackTraceCause stack_trace = 6;</code>
+     */
+    public Builder addAllStackTrace(
+        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.StackTraceCause> values) {
+      if (stackTraceBuilder_ == null) {
+        ensureStackTraceIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, stackTrace_);
+        onChanged();
+      } else {
+        stackTraceBuilder_.addAllMessages(values);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.StackTraceCause stack_trace = 6;</code>
+     */
+    public Builder clearStackTrace() {
+      if (stackTraceBuilder_ == null) {
+        stackTrace_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000001);
+        onChanged();
+      } else {
+        stackTraceBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.StackTraceCause stack_trace = 6;</code>
+     */
+    public Builder removeStackTrace(int index) {
+      if (stackTraceBuilder_ == null) {
+        ensureStackTraceIsMutable();
+        stackTrace_.remove(index);
+        onChanged();
+      } else {
+        stackTraceBuilder_.remove(index);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.StackTraceCause stack_trace = 6;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder getStackTraceBuilder(
+        int index) {
+      return getStackTraceFieldBuilder().getBuilder(index);
+    }
+    /**
+     * <code>repeated .data.StackTraceCause stack_trace = 6;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder getStackTraceOrBuilder(
+        int index) {
+      if (stackTraceBuilder_ == null) {
+        return stackTrace_.get(index);  } else {
+        return stackTraceBuilder_.getMessageOrBuilder(index);
       }
     }
     /**
-     * <code>.data.StackTraceCause cause = 6;</code>
+     * <code>repeated .data.StackTraceCause stack_trace = 6;</code>
      */
-    private com.google.protobuf.SingleFieldBuilderV3<
+    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder> 
+         getStackTraceOrBuilderList() {
+      if (stackTraceBuilder_ != null) {
+        return stackTraceBuilder_.getMessageOrBuilderList();
+      } else {
+        return java.util.Collections.unmodifiableList(stackTrace_);
+      }
+    }
+    /**
+     * <code>repeated .data.StackTraceCause stack_trace = 6;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder addStackTraceBuilder() {
+      return getStackTraceFieldBuilder().addBuilder(
+          eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.getDefaultInstance());
+    }
+    /**
+     * <code>repeated .data.StackTraceCause stack_trace = 6;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder addStackTraceBuilder(
+        int index) {
+      return getStackTraceFieldBuilder().addBuilder(
+          index, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.getDefaultInstance());
+    }
+    /**
+     * <code>repeated .data.StackTraceCause stack_trace = 6;</code>
+     */
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder> 
+         getStackTraceBuilderList() {
+      return getStackTraceFieldBuilder().getBuilderList();
+    }
+    private com.google.protobuf.RepeatedFieldBuilderV3<
         eu.tsystems.mms.tic.testframework.report.model.StackTraceCause, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder, eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder> 
-        getCauseFieldBuilder() {
-      if (causeBuilder_ == null) {
-        causeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+        getStackTraceFieldBuilder() {
+      if (stackTraceBuilder_ == null) {
+        stackTraceBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
             eu.tsystems.mms.tic.testframework.report.model.StackTraceCause, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder, eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder>(
-                getCause(),
+                stackTrace_,
+                ((bitField0_ & 0x00000001) != 0),
                 getParentForChildren(),
                 isClean());
-        cause_ = null;
+        stackTrace_ = null;
       }
-      return causeBuilder_;
+      return stackTraceBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

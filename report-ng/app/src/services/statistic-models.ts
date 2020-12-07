@@ -243,7 +243,7 @@ export class FailureAspectStatistics extends Statistics {
         if (errorContext.description) {
             this._name = errorContext.description;
         } else {
-            const cause = errorContext.cause;
+            const cause = errorContext.stackTrace[0];
             const namespace = this.statusConverter.separateNamespace(cause.className);
             this._name = namespace.class + (cause.message ? ": " + cause.message.trim() : "");
         }

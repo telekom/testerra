@@ -350,9 +350,6 @@ export namespace data {
         /** ContextValues endTime */
         endTime?: (number|null);
 
-        /** ContextValues swi */
-        swi?: (string|null);
-
         /** ContextValues resultStatus */
         resultStatus?: (data.ResultStatusType|null);
 
@@ -383,9 +380,6 @@ export namespace data {
 
         /** ContextValues endTime. */
         public endTime: number;
-
-        /** ContextValues swi. */
-        public swi: string;
 
         /** ContextValues resultStatus. */
         public resultStatus: data.ResultStatusType;
@@ -585,8 +579,8 @@ export namespace data {
         /** LogMessage threadName */
         threadName?: (string|null);
 
-        /** LogMessage cause */
-        cause?: (data.IStackTraceCause|null);
+        /** LogMessage stackTrace */
+        stackTrace?: (data.IStackTraceCause[]|null);
     }
 
     /** Represents a LogMessage. */
@@ -613,8 +607,8 @@ export namespace data {
         /** LogMessage threadName. */
         public threadName: string;
 
-        /** LogMessage cause. */
-        public cause?: (data.IStackTraceCause|null);
+        /** LogMessage stackTrace. */
+        public stackTrace: data.IStackTraceCause[];
 
         /**
          * Decodes a LogMessage message from the specified reader or buffer.
@@ -642,8 +636,8 @@ export namespace data {
         /** ErrorContext description */
         description?: (string|null);
 
-        /** ErrorContext cause */
-        cause?: (data.IStackTraceCause|null);
+        /** ErrorContext stackTrace */
+        stackTrace?: (data.IStackTraceCause[]|null);
     }
 
     /** Represents an ErrorContext. */
@@ -667,8 +661,8 @@ export namespace data {
         /** ErrorContext description. */
         public description: string;
 
-        /** ErrorContext cause. */
-        public cause?: (data.IStackTraceCause|null);
+        /** ErrorContext stackTrace. */
+        public stackTrace: data.IStackTraceCause[];
 
         /**
          * Decodes an ErrorContext message from the specified reader or buffer.
@@ -863,9 +857,6 @@ export namespace data {
 
         /** StackTraceCause stackTraceElements */
         stackTraceElements?: (string[]|null);
-
-        /** StackTraceCause cause */
-        cause?: (data.IStackTraceCause|null);
     }
 
     /** Represents a StackTraceCause. */
@@ -885,9 +876,6 @@ export namespace data {
 
         /** StackTraceCause stackTraceElements. */
         public stackTraceElements: string[];
-
-        /** StackTraceCause cause. */
-        public cause?: (data.IStackTraceCause|null);
 
         /**
          * Decodes a StackTraceCause message from the specified reader or buffer.
@@ -911,6 +899,9 @@ export namespace data {
 
         /** ScriptSource lines */
         lines?: (data.IScriptSourceLine[]|null);
+
+        /** ScriptSource mark */
+        mark?: (number|null);
     }
 
     /** Represents a ScriptSource. */
@@ -931,6 +922,9 @@ export namespace data {
         /** ScriptSource lines. */
         public lines: data.IScriptSourceLine[];
 
+        /** ScriptSource mark. */
+        public mark: number;
+
         /**
          * Decodes a ScriptSource message from the specified reader or buffer.
          * @param r Reader or buffer to decode from
@@ -950,9 +944,6 @@ export namespace data {
 
         /** ScriptSourceLine lineNumber */
         lineNumber?: (number|null);
-
-        /** ScriptSourceLine mark */
-        mark?: (boolean|null);
     }
 
     /** Represents a ScriptSourceLine. */
@@ -969,9 +960,6 @@ export namespace data {
 
         /** ScriptSourceLine lineNumber. */
         public lineNumber: number;
-
-        /** ScriptSourceLine mark. */
-        public mark: boolean;
 
         /**
          * Decodes a ScriptSourceLine message from the specified reader or buffer.

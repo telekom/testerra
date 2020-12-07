@@ -44,6 +44,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.LogEvent;
 import static eu.tsystems.mms.tic.testframework.report.model.SessionContext.newBuilder;
@@ -178,9 +179,10 @@ public class ContextExporter {
     public ScriptSource.Builder prepareScriptSource(eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource scriptSource) {
         ScriptSource.Builder builder = ScriptSource.newBuilder();
 
-        apply(scriptSource.fileName, builder::setFileName);
-        apply(scriptSource.methodName, builder::setMethodName);
-        forEach(scriptSource.lines, line -> builder.addLines(prepareScriptSourceLine(line)));
+        apply(scriptSource.getFileName(), builder::setFileName);
+        apply(scriptSource.getMethodName(), builder::setMethodName);
+        scriptSource.readLines().forEach(line -> builder.addLines(prepareScriptSourceLine(line)));
+        scriptSource.getMarkedLine().ifPresent(line -> builder.setMark(line.getLineNumber()));
 
         return builder;
     }
@@ -188,9 +190,9 @@ public class ContextExporter {
     public ScriptSourceLine.Builder prepareScriptSourceLine(eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource.Line line) {
         ScriptSourceLine.Builder builder = ScriptSourceLine.newBuilder();
 
-        apply(line.line, builder::setLine);
-        apply(line.lineNumber, builder::setLineNumber);
-        apply(line.mark, builder::setMark);
+        apply(line.getLine(), builder::setLine);
+        apply(line.getLineNumber(), builder::setLineNumber);
+//        apply(line.mark, builder::setMark);
 
         return builder;
     }
@@ -200,7 +202,10 @@ public class ContextExporter {
 
 //        apply(errorContext.getReadableErrorMessage(), builder::setReadableErrorMessage);
 //        apply(errorContext.getAdditionalErrorMessage(), builder::setAdditionalErrorMessage);
-        map(errorContext.getThrowable(), this::prepareStackTraceCause, builder::setCause);
+        traceThrowable(errorContext.getThrowable(), throwable -> {
+            builder.addStackTrace(this.prepareStackTraceCause(throwable));
+        });
+//        map(errorContext.getThrowable(), this::prepareStackTraceCause, builder::addAllCause);
 //        apply(errorContext.errorFingerprint, builder::setErrorFingerprint);
         errorContext.getScriptSource().ifPresent(scriptSource -> builder.setScriptSource(this.prepareScriptSource(scriptSource)));
         errorContext.getExecutionObjectSource().ifPresent(scriptSource -> builder.setExecutionObjectSource(this.prepareScriptSource(scriptSource)));
@@ -417,7 +422,9 @@ public class ContextExporter {
         builder.setTimestamp(logEvent.getTimeMillis());
         builder.setThreadName(logEvent.getThreadName());
 
-        map(logEvent.getThrown(), this::prepareStackTraceCause, builder::setCause);
+        traceThrowable(logEvent.getThrown(), throwable -> {
+            builder.addStackTrace(this.prepareStackTraceCause(throwable));
+        });
         return builder;
     }
 
@@ -426,11 +433,18 @@ public class ContextExporter {
         apply(throwable.getClass().getName(), builder::setClassName);
         apply(throwable.getMessage(), builder::setMessage);
         builder.addAllStackTraceElements(Arrays.stream(throwable.getStackTrace()).map(StackTraceElement::toString).collect(Collectors.toList()));
-
-        if ((throwable.getCause() != null) && (throwable.getCause() != throwable)) {
-            builder.setCause(this.prepareStackTraceCause(throwable.getCause()));
-        }
+//
+//        if ((throwable.getCause() != null) && (throwable.getCause() != throwable)) {
+//            builder.setCause(this.prepareStackTraceCause(throwable.getCause()));
+//        }
         return builder;
+    }
+
+    public void traceThrowable(Throwable throwable, Consumer<Throwable> consumer) {
+        while (throwable != null) {
+            consumer.accept(throwable);
+            throwable = throwable.getCause();
+        }
     }
 
     public ClassContext.Builder prepareClassContext(eu.tsystems.mms.tic.testframework.report.model.context.ClassContext classContext) {

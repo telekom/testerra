@@ -26,7 +26,7 @@ import {data} from "../../services/report-model";
 import hljs from "highlight.js/lib/core";
 import java from 'highlight.js/lib/languages/java';
 import 'highlight.js/styles/darcula.css';
-import IScriptSourceLine = data.IScriptSourceLine;
+import IScriptSource = data.IScriptSource;
 
 @autoinject()
 export class CodeView {
@@ -37,8 +37,12 @@ export class CodeView {
     }
 
     @bindable({bindingMode: bindingMode.toView})
-    lines:IScriptSourceLine[];
+    source:IScriptSource;
 
     @bindable({bindingMode: bindingMode.toView})
     markClass:string = "error";
+
+    sourceChanged() {
+        console.log(this.source);
+    }
 }

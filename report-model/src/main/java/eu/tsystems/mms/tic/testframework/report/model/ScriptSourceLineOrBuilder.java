@@ -20,14 +20,12 @@ public interface ScriptSourceLineOrBuilder extends
       getLineBytes();
 
   /**
+   * <pre>
+   *    bool mark = 3 [deprecated = true];
+   * </pre>
+   *
    * <code>int32 line_number = 2;</code>
    * @return The lineNumber.
    */
   int getLineNumber();
-
-  /**
-   * <code>bool mark = 3;</code>
-   * @return The mark.
-   */
-  boolean getMark();
 }

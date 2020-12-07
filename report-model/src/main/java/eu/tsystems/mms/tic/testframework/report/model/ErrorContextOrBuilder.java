@@ -83,17 +83,26 @@ public interface ErrorContextOrBuilder extends
       getDescriptionBytes();
 
   /**
-   * <code>.data.StackTraceCause cause = 11;</code>
-   * @return Whether the cause field is set.
+   * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
    */
-  boolean hasCause();
+  java.util.List<eu.tsystems.mms.tic.testframework.report.model.StackTraceCause> 
+      getStackTraceList();
   /**
-   * <code>.data.StackTraceCause cause = 11;</code>
-   * @return The cause.
+   * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getCause();
+  eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getStackTrace(int index);
   /**
-   * <code>.data.StackTraceCause cause = 11;</code>
+   * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder getCauseOrBuilder();
+  int getStackTraceCount();
+  /**
+   * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
+   */
+  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder> 
+      getStackTraceOrBuilderList();
+  /**
+   * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
+   */
+  eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder getStackTraceOrBuilder(
+      int index);
 }

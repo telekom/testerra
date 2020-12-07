@@ -52,14 +52,12 @@ export class LogView {
             this._causes[index] = null;
         } else {
             let msg = "";
-            const stackTrace = this._statusConverter.flatStackTrace(logMessage.cause);
-            stackTrace.forEach(cause => {
+            logMessage.stackTrace.forEach(cause => {
                 if (msg.length > 0) {
                     msg += "<br>"
                 }
                 msg += (cause.message?.length>0?cause.message + "<br>":'') + cause.stackTraceElements.join("<br>");
             });
-            this._statusConverter.flatStackTrace(logMessage.cause)
             this._causes[index] = msg;
         }
     }

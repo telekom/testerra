@@ -38,7 +38,7 @@ public class DefaultOptionalAssertion extends AbstractAssertion implements
 {
     @Override
     public void fail(AssertionError error) {
-        log().warn("Failed optional assertion: " + error.getMessage(), error);
+        log().warn("Failed optional assertion: " + error.getMessage());
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         if (methodContext != null) {
             // add nf info

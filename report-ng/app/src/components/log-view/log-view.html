@@ -20,14 +20,14 @@
   -->
 <template>
     <div class="code-view">
-        <div repeat.for="logMessage of logMessages"
-             if.bind="logMessages.length > 0"
+        <div repeat.for="logMessage of _filteredLogMessages"
+             if.bind="_filteredLogMessages.length > 0"
              class="line"
              class.bind="(logMessage.type==1?'error':(logMessage.type==2?'warn':''))"
         >
             <div class="indicator"><span if.bind="logMessage.stackTrace.length>0" click.delegate="_toggleCause(logMessage)" class="clickable" innerhtml.bind="_causes[$index]?'-':'+'"></span></div>${logMessage.timestamp|dateFormat:"HH:mm:ss.SSS"}<span if.bind="showThreads"> [${logMessage.threadName}]</span> [${logMessage.type|logLevel}] <span innerhtml.bind="logMessage.message|highlightText:search"></span>
             <div if.bind="_causes[$index]" innerhtml.bind="_causes[$index]|highlightText:search"></div>
         </div>
-        <div if.bind="logMessages.length == 0" class="line">(No log messages)</div>
+        <div if.bind="_filteredLogMessages.length == 0" class="line">(No log messages matching this criteria)</div>
     </div>
 </template>

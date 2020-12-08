@@ -63,20 +63,32 @@ export class LogView {
         this._causes[index] = msg;
     }
 
-    logMessagesChanged() {
+    private _filter() {
         if (this.search) {
             this._filteredLogMessages = this.logMessages.filter(logMessage => {
                 const foundInMessage = logMessage.message.match(this.search);
                 const foundInStackTrace = logMessage.stackTrace.flatMap(stackTrace => stackTrace.stackTraceElements).filter(line => line.match(this.search));
 
-                if (foundInStackTrace) {
+                if (foundInStackTrace.length>0) {
                     this._open(logMessage);
                 }
 
-                return foundInMessage || foundInStackTrace;
+                return foundInMessage || foundInStackTrace.length>0;
             });
         } else {
             this._filteredLogMessages = this.logMessages;
         }
+    }
+
+    bind() {
+        this._filter();
+    }
+
+    logMessagesChanged() {
+        this._filter();
+    }
+
+    searchChanged() {
+        this._filter();
     }
 }

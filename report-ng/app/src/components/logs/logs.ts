@@ -3,12 +3,8 @@ import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import {AbstractViewModel} from "../abstract-view-model";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {StatusConverter} from "../../services/status-converter";
-import {FailureAspectStatistics} from "../../services/statistic-models";
 import {data} from "../../services/report-model";
 import ILogMessage = data.ILogMessage;
-import {util} from "protobufjs";
-import float = util.float;
-import LogMessage = data.LogMessage;
 
 @autoinject()
 export class Logs extends AbstractViewModel {

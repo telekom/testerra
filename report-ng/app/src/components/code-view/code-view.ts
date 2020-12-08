@@ -41,8 +41,8 @@ export class CodeView {
 
     @bindable({bindingMode: bindingMode.toView})
     markClass:string = "error";
-
-    sourceChanged() {
-        console.log(this.source);
-    }
+    //
+    // sourceChanged() {
+    //     console.log(this.source);
+    // }
 }

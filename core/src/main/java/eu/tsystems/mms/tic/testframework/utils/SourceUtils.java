@@ -231,8 +231,7 @@ public final class SourceUtils {
                     /*
                     LINE WITH ISSUE
                      */
-                    ScriptSource.Line markedLine = new ScriptSource.Line(line, lineCounter);
-                    scriptSource.addLine(markedLine).markLine(markedLine);
+                    scriptSource.addLine(new ScriptSource.Line(line, lineCounter)).markLineNumber(lineCounter);
                 } else if (lineCounter > lineNr) {
                     // stop
                     br.close();

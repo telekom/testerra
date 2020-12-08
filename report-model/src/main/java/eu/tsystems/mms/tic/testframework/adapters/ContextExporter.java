@@ -182,7 +182,7 @@ public class ContextExporter {
         apply(scriptSource.getFileName(), builder::setFileName);
         apply(scriptSource.getMethodName(), builder::setMethodName);
         scriptSource.readLines().forEach(line -> builder.addLines(prepareScriptSourceLine(line)));
-        scriptSource.getMarkedLine().ifPresent(line -> builder.setMark(line.getLineNumber()));
+        builder.setMark(scriptSource.getMarkedLineNumber());
 
         return builder;
     }

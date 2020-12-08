@@ -23,7 +23,6 @@ package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -67,7 +66,7 @@ public class ScriptSource {
      * @deprecated Use {@link #readLines()} instead
      */
     public List<Line> lines = new LinkedList<>();
-    private Line markedLine;
+    private int markedLineNumber;
 
     private final String fileName;
     private final String methodName;
@@ -100,12 +99,12 @@ public class ScriptSource {
         return this;
     }
 
-    public ScriptSource markLine(Line line) {
-        this.markedLine = line;
+    public ScriptSource markLineNumber(int lineNumber) {
+        this.markedLineNumber = lineNumber;
         return this;
     }
 
-    public Optional<Line> getMarkedLine() {
-        return Optional.ofNullable(this.markedLine);
+    public int getMarkedLineNumber() {
+        return this.markedLineNumber;
     }
 }

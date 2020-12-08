@@ -69,15 +69,6 @@ export class TestClassesCard {
                 xlabels.push(classStats.classIdentifier);
             });
 
-        //Display at least 10 rows in bar chart even if there are less classes
-        // if (xlabels.length < 10) {
-        //     for (let i = xlabels.length; i <= 10; i++) {
-        //         xlabels[i] = "";
-        //         for (const status of this._statusConverter.relevantStatuses) {
-        //             data.get(status)[i] = 0;
-        //         }
-        //     }
-        // }
 
         //set size by amount of bars to have consistent bar height
         //amount of classes * 60px + offset due to legend and labels
@@ -94,7 +85,7 @@ export class TestClassesCard {
                 },
                 events: {
                     dataPointSelection: (event, chartContext, config) => {
-                        let statusNames = ["passed", "failed", "failed-expected", "skipped", "failed-minor"]
+                        let statusNames = ["failed", "failed-expected", "skipped", "passed"]
                         this._barClicked({
                             class: xlabels[config.dataPointIndex],
                             status: statusNames[config.seriesIndex]

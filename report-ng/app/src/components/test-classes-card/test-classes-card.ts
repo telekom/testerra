@@ -151,6 +151,7 @@ export class TestClassesCard {
             },
             bubbles: true
         });
+        console.log(params, this._element);
         this._element.dispatchEvent(event)
     }
 }

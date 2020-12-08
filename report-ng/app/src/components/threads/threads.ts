@@ -88,8 +88,7 @@ export class Threads extends AbstractViewModel {
             groupItems.push({id: groupId, content: threadName});
 
             methodContexts.forEach((context: MethodContext, index) => {
-                let style: string = '',
-                    content: string = "";
+                let content: string = ''
 
                 content += "<div class='m0'>" + context.contextValues.name + "</div>";
                 content += "<hr>"
@@ -105,7 +104,8 @@ export class Threads extends AbstractViewModel {
                     end: context.contextValues.endTime,
                     group: groupId,
                     callbackInfos: [context.contextValues.id],
-                    className: style,
+                    style: "background-color: " + this._statusConverter.getColorForStatus(context.contextValues.resultStatus) + ";"
+                        + "color: #fff",
                     title: content
                 });
             });

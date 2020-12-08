@@ -4,4 +4,10 @@
 
 .vis-item {
     cursor: pointer !important;
+    border-color: rgba(0,0,0,0) !important; //invisible border
+    border-radius: 5px !important;
+}
+
+.vis-item-content {
+    width: 100%;
 }

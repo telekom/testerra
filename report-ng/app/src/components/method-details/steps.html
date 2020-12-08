@@ -27,7 +27,7 @@
                                             class="card-expandable status-skipped"
                             >
                                 <div slot="caption" mdc-body2><class-name namespace.bind="errorContext.stackTrace[0].className"><span if.bind="errorContext.stackTrace[0].message">: ${errorContext.stackTrace[0].message}</span></class-name></div>
-                                <code-view lines.bind="errorContext.scriptSource"
+                                <code-view source.bind="errorContext.scriptSource"
                                            mark-class="warn"
                                 ></code-view>
                             </mdc-expandable>

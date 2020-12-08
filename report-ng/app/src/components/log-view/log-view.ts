@@ -24,10 +24,15 @@ import {bindable} from "aurelia-templating";
 import {bindingMode} from "aurelia-binding";
 import {data} from "../../services/report-model";
 import ILogMessage = data.ILogMessage;
-import {filter} from "minimatch";
+import {StatusConverter} from "../../services/status-converter";
 
 @autoinject()
 export class LogView {
+
+    constructor(
+        private _statusConverter:StatusConverter,
+    ) {
+    }
 
     private _causes:{[key:number]:string} = {};
 
@@ -38,6 +43,8 @@ export class LogView {
 
     @bindable({bindingMode: bindingMode.toView})
     showThreads;
+
+    private _showThreads = false;
 
     @bindable({bindingMode: bindingMode.toView})
     search:RegExp;
@@ -64,6 +71,8 @@ export class LogView {
     }
 
     private _filter() {
+        console.log("show threads", this.showThreads)
+
         if (this.search) {
             this._filteredLogMessages = this.logMessages.filter(logMessage => {
                 const foundInMessage = logMessage.message.match(this.search);
@@ -90,5 +99,9 @@ export class LogView {
 
     searchChanged() {
         this._filter();
+    }
+
+    showThreadsChanged() {
+        this._showThreads = this.showThreads.toLowerCase() === "true";
     }
 }

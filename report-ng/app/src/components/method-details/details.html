@@ -23,14 +23,14 @@
                 <mdc-card>
                     <div mdc-subtitle2 class="card-headline">Origin (${_methodDetails.methodContext.errorContext.scriptSource.fileName})</div>
                     <mdc-list-divider></mdc-list-divider>
-                    <code-view lines.bind="_methodDetails.methodContext.errorContext.scriptSource.lines"></code-view>
+                    <code-view source.bind="_methodDetails.methodContext.errorContext.scriptSource"></code-view>
                 </mdc-card>
             </mdc-layout-grid-cell>
-            <mdc-layout-grid-cell span="12" if.bind="_stackTrace">
+            <mdc-layout-grid-cell span="12" if.bind="_methodDetails.methodContext.errorContext.stackTrace">
                 <mdc-card>
                     <div mdc-subtitle2 class="card-headline">Stacktrace</div>
                     <mdc-list-divider></mdc-list-divider>
-                    <mdc-expandable repeat.for="cause of _stackTrace"
+                    <mdc-expandable repeat.for="cause of _methodDetails.methodContext.errorContext.stackTrace"
                                     class="card-expandable"
                     >
                         <div slot="caption" mdc-body2><class-name namespace.bind="cause.className"><span if.bind="cause.message">: ${cause.message}</span></class-name></div>

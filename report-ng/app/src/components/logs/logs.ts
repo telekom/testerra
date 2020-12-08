@@ -3,12 +3,8 @@ import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import {AbstractViewModel} from "../abstract-view-model";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {StatusConverter} from "../../services/status-converter";
-import {FailureAspectStatistics} from "../../services/statistic-models";
 import {data} from "../../services/report-model";
 import ILogMessage = data.ILogMessage;
-import {util} from "protobufjs";
-import float = util.float;
-import LogMessage = data.LogMessage;
 
 @autoinject()
 export class Logs extends AbstractViewModel {
@@ -43,12 +39,7 @@ export class Logs extends AbstractViewModel {
             const logMessages:ILogMessage[] = [];
             const logLevels = {};
 
-            const filterPredicate = (value:ILogMessage) => {
-                return (
-                    (!this._selectedLogLevel || (this._selectedLogLevel == value.type))
-                    && (!this._searchRegexp || value.message.match(this._searchRegexp))
-                )
-            }
+            const filterPredicate = (this._selectedLogLevel?(logMessage:ILogMessage) => this._selectedLogLevel == logMessage.type:(logMessage:ILogMessage) => logMessage);
 
             const addLevel = (value:ILogMessage) => {
                 logLevels[value.type] = 1;

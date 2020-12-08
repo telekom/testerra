@@ -29,19 +29,22 @@ import {StatusConverter} from "../../services/status-converter";
 @autoinject()
 export class LogView {
 
-    private _causes:{[key:number]:string} = {};
-
     constructor(
         private _statusConverter:StatusConverter,
     ) {
-
     }
+
+    private _causes:{[key:number]:string} = {};
 
     @bindable({bindingMode: bindingMode.toView})
     logMessages:ILogMessage[];
 
+    private _filteredLogMessages:ILogMessage[];
+
     @bindable({bindingMode: bindingMode.toView})
     showThreads;
+
+    private _showThreads = false;
 
     @bindable({bindingMode: bindingMode.toView})
     search:RegExp;
@@ -51,25 +54,54 @@ export class LogView {
         if (this._causes[index]) {
             this._causes[index] = null;
         } else {
-            let msg = "";
-            const stackTrace = this._statusConverter.flatStackTrace(logMessage.cause);
-            stackTrace.forEach(cause => {
-                if (msg.length > 0) {
-                    msg += "<br>"
-                }
-                msg += (cause.message?.length>0?cause.message + "<br>":'') + cause.stackTraceElements.join("<br>");
-            });
-            this._statusConverter.flatStackTrace(logMessage.cause)
-            this._causes[index] = msg;
+            this._open(logMessage, index);
         }
     }
-    //
-    // logMessagesChanged() {
-    //     this.logMessages = this.logMessages.filter(logMessage => {
-    //         return (!this.search || (
-    //             logMessage.message.match(this.search)
-    //             || logMessage.cause?.
-    //         ))
-    //     });
-    // }
+
+    private _open(logMessage:ILogMessage, index?:number) {
+        if (!index) index = this.logMessages.indexOf(logMessage);
+        let msg = "";
+        logMessage.stackTrace.forEach(cause => {
+            if (msg.length > 0) {
+                msg += "<br>"
+            }
+            msg += (cause.message?.length>0?cause.message + "<br>":'') + cause.stackTraceElements.join("<br>");
+        });
+        this._causes[index] = msg;
+    }
+
+    private _filter() {
+        console.log("show threads", this.showThreads)
+
+        if (this.search) {
+            this._filteredLogMessages = this.logMessages.filter(logMessage => {
+                const foundInMessage = logMessage.message.match(this.search);
+                const foundInStackTrace = logMessage.stackTrace.flatMap(stackTrace => stackTrace.stackTraceElements).filter(line => line.match(this.search));
+
+                if (foundInStackTrace.length>0) {
+                    this._open(logMessage);
+                }
+
+                return foundInMessage || foundInStackTrace.length>0;
+            });
+        } else {
+            this._filteredLogMessages = this.logMessages;
+        }
+    }
+
+    bind() {
+        this._filter();
+    }
+
+    logMessagesChanged() {
+        this._filter();
+    }
+
+    searchChanged() {
+        this._filter();
+    }
+
+    showThreadsChanged() {
+        this._showThreads = this.showThreads.toLowerCase() === "true";
+    }
 }

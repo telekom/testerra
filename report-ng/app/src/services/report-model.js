@@ -737,7 +737,6 @@ export const data = $root.data = (() => {
          * @property {string|null} [name] ContextValues name
          * @property {number|null} [startTime] ContextValues startTime
          * @property {number|null} [endTime] ContextValues endTime
-         * @property {string|null} [swi] ContextValues swi
          * @property {data.ResultStatusType|null} [resultStatus] ContextValues resultStatus
          * @property {data.ExecStatusType|null} [execStatus] ContextValues execStatus
          */
@@ -798,14 +797,6 @@ export const data = $root.data = (() => {
         ContextValues.prototype.endTime = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
         /**
-         * ContextValues swi.
-         * @member {string} swi
-         * @memberof data.ContextValues
-         * @instance
-         */
-        ContextValues.prototype.swi = "";
-
-        /**
          * ContextValues resultStatus.
          * @member {data.ResultStatusType} resultStatus
          * @memberof data.ContextValues
@@ -853,9 +844,6 @@ export const data = $root.data = (() => {
                     break;
                 case 5:
                     m.endTime = r.int64();
-                    break;
-                case 6:
-                    m.swi = r.string();
                     break;
                 case 7:
                     m.resultStatus = r.int32();
@@ -1245,7 +1233,7 @@ export const data = $root.data = (() => {
          * @property {string|null} [message] LogMessage message
          * @property {number|null} [timestamp] LogMessage timestamp
          * @property {string|null} [threadName] LogMessage threadName
-         * @property {data.IStackTraceCause|null} [cause] LogMessage cause
+         * @property {Array.<data.IStackTraceCause>|null} [stackTrace] LogMessage stackTrace
          */
 
         /**
@@ -1257,6 +1245,7 @@ export const data = $root.data = (() => {
          * @param {data.ILogMessage=} [p] Properties to set
          */
         function LogMessage(p) {
+            this.stackTrace = [];
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -1304,12 +1293,12 @@ export const data = $root.data = (() => {
         LogMessage.prototype.threadName = "";
 
         /**
-         * LogMessage cause.
-         * @member {data.IStackTraceCause|null|undefined} cause
+         * LogMessage stackTrace.
+         * @member {Array.<data.IStackTraceCause>} stackTrace
          * @memberof data.LogMessage
          * @instance
          */
-        LogMessage.prototype.cause = null;
+        LogMessage.prototype.stackTrace = $util.emptyArray;
 
         /**
          * Decodes a LogMessage message from the specified reader or buffer.
@@ -1345,7 +1334,9 @@ export const data = $root.data = (() => {
                     m.threadName = r.string();
                     break;
                 case 6:
-                    m.cause = $root.data.StackTraceCause.decode(r, r.uint32());
+                    if (!(m.stackTrace && m.stackTrace.length))
+                        m.stackTrace = [];
+                    m.stackTrace.push($root.data.StackTraceCause.decode(r, r.uint32()));
                     break;
                 default:
                     r.skipType(t & 7);
@@ -1368,7 +1359,7 @@ export const data = $root.data = (() => {
          * @property {data.IScriptSource|null} [executionObjectSource] ErrorContext executionObjectSource
          * @property {string|null} [ticketId] ErrorContext ticketId
          * @property {string|null} [description] ErrorContext description
-         * @property {data.IStackTraceCause|null} [cause] ErrorContext cause
+         * @property {Array.<data.IStackTraceCause>|null} [stackTrace] ErrorContext stackTrace
          */
 
         /**
@@ -1380,6 +1371,7 @@ export const data = $root.data = (() => {
          * @param {data.IErrorContext=} [p] Properties to set
          */
         function ErrorContext(p) {
+            this.stackTrace = [];
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -1419,12 +1411,12 @@ export const data = $root.data = (() => {
         ErrorContext.prototype.description = "";
 
         /**
-         * ErrorContext cause.
-         * @member {data.IStackTraceCause|null|undefined} cause
+         * ErrorContext stackTrace.
+         * @member {Array.<data.IStackTraceCause>} stackTrace
          * @memberof data.ErrorContext
          * @instance
          */
-        ErrorContext.prototype.cause = null;
+        ErrorContext.prototype.stackTrace = $util.emptyArray;
 
         /**
          * Decodes an ErrorContext message from the specified reader or buffer.
@@ -1457,7 +1449,9 @@ export const data = $root.data = (() => {
                     m.description = r.string();
                     break;
                 case 11:
-                    m.cause = $root.data.StackTraceCause.decode(r, r.uint32());
+                    if (!(m.stackTrace && m.stackTrace.length))
+                        m.stackTrace = [];
+                    m.stackTrace.push($root.data.StackTraceCause.decode(r, r.uint32()));
                     break;
                 default:
                     r.skipType(t & 7);
@@ -1857,7 +1851,6 @@ export const data = $root.data = (() => {
          * @property {string|null} [className] StackTraceCause className
          * @property {string|null} [message] StackTraceCause message
          * @property {Array.<string>|null} [stackTraceElements] StackTraceCause stackTraceElements
-         * @property {data.IStackTraceCause|null} [cause] StackTraceCause cause
          */
 
         /**
@@ -1901,14 +1894,6 @@ export const data = $root.data = (() => {
         StackTraceCause.prototype.stackTraceElements = $util.emptyArray;
 
         /**
-         * StackTraceCause cause.
-         * @member {data.IStackTraceCause|null|undefined} cause
-         * @memberof data.StackTraceCause
-         * @instance
-         */
-        StackTraceCause.prototype.cause = null;
-
-        /**
          * Decodes a StackTraceCause message from the specified reader or buffer.
          * @function decode
          * @memberof data.StackTraceCause
@@ -1937,9 +1922,6 @@ export const data = $root.data = (() => {
                         m.stackTraceElements = [];
                     m.stackTraceElements.push(r.string());
                     break;
-                case 4:
-                    m.cause = $root.data.StackTraceCause.decode(r, r.uint32());
-                    break;
                 default:
                     r.skipType(t & 7);
                     break;
@@ -1960,6 +1942,7 @@ export const data = $root.data = (() => {
          * @property {string|null} [fileName] ScriptSource fileName
          * @property {string|null} [methodName] ScriptSource methodName
          * @property {Array.<data.IScriptSourceLine>|null} [lines] ScriptSource lines
+         * @property {number|null} [mark] ScriptSource mark
          */
 
         /**
@@ -2003,6 +1986,14 @@ export const data = $root.data = (() => {
         ScriptSource.prototype.lines = $util.emptyArray;
 
         /**
+         * ScriptSource mark.
+         * @member {number} mark
+         * @memberof data.ScriptSource
+         * @instance
+         */
+        ScriptSource.prototype.mark = 0;
+
+        /**
          * Decodes a ScriptSource message from the specified reader or buffer.
          * @function decode
          * @memberof data.ScriptSource
@@ -2031,6 +2022,9 @@ export const data = $root.data = (() => {
                         m.lines = [];
                     m.lines.push($root.data.ScriptSourceLine.decode(r, r.uint32()));
                     break;
+                case 4:
+                    m.mark = r.int32();
+                    break;
                 default:
                     r.skipType(t & 7);
                     break;
@@ -2050,7 +2044,6 @@ export const data = $root.data = (() => {
          * @interface IScriptSourceLine
          * @property {string|null} [line] ScriptSourceLine line
          * @property {number|null} [lineNumber] ScriptSourceLine lineNumber
-         * @property {boolean|null} [mark] ScriptSourceLine mark
          */
 
         /**
@@ -2085,14 +2078,6 @@ export const data = $root.data = (() => {
         ScriptSourceLine.prototype.lineNumber = 0;
 
         /**
-         * ScriptSourceLine mark.
-         * @member {boolean} mark
-         * @memberof data.ScriptSourceLine
-         * @instance
-         */
-        ScriptSourceLine.prototype.mark = false;
-
-        /**
          * Decodes a ScriptSourceLine message from the specified reader or buffer.
          * @function decode
          * @memberof data.ScriptSourceLine
@@ -2115,9 +2100,6 @@ export const data = $root.data = (() => {
                     break;
                 case 2:
                     m.lineNumber = r.int32();
-                    break;
-                case 3:
-                    m.mark = r.bool();
                     break;
                 default:
                     r.skipType(t & 7);

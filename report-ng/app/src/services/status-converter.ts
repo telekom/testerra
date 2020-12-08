@@ -205,13 +205,4 @@ export class StatusConverter {
             default: return status;
         }
     }
-
-    flatStackTrace(cause:IStackTraceCause) {
-        const stackTrace:IStackTraceCause[] = [];
-        do {
-            stackTrace.push(cause);
-            cause = cause.cause;
-        } while (cause != null);
-        return stackTrace;
-    }
 }

@@ -21,8 +21,8 @@
 <template>
     <div class="code-view">
         <div class="line pre"
-             repeat.for="line of lines"
-             class.bind="line.mark?markClass:''"
+             repeat.for="line of source.lines"
+             class.bind="line.lineNumber===source.mark?markClass:''"
         ><span class="number">${line.lineNumber}</span><span innerhtml="${_hljs.highlight('java', line.line).value}"></span></div>
     </div>
 </template>

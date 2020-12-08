@@ -18,7 +18,6 @@ private static final long serialVersionUID = 0L;
   private ContextValues() {
     id_ = "";
     name_ = "";
-    swi_ = "";
     resultStatus_ = 0;
     execStatus_ = 0;
   }
@@ -78,12 +77,6 @@ private static final long serialVersionUID = 0L;
           case 40: {
 
             endTime_ = input.readInt64();
-            break;
-          }
-          case 50: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            swi_ = s;
             break;
           }
           case 56: {
@@ -225,47 +218,15 @@ private static final long serialVersionUID = 0L;
   public static final int END_TIME_FIELD_NUMBER = 5;
   private long endTime_;
   /**
+   * <pre>
+   *    string swi = 6 [deprecated = true];
+   * </pre>
+   *
    * <code>int64 end_time = 5;</code>
    * @return The endTime.
    */
   public long getEndTime() {
     return endTime_;
-  }
-
-  public static final int SWI_FIELD_NUMBER = 6;
-  private volatile java.lang.Object swi_;
-  /**
-   * <code>string swi = 6 [deprecated = true];</code>
-   * @return The swi.
-   */
-  @java.lang.Deprecated public java.lang.String getSwi() {
-    java.lang.Object ref = swi_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      swi_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string swi = 6 [deprecated = true];</code>
-   * @return The bytes for swi.
-   */
-  @java.lang.Deprecated public com.google.protobuf.ByteString
-      getSwiBytes() {
-    java.lang.Object ref = swi_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      swi_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
   }
 
   public static final int RESULT_STATUS_FIELD_NUMBER = 7;
@@ -335,9 +296,6 @@ private static final long serialVersionUID = 0L;
     if (endTime_ != 0L) {
       output.writeInt64(5, endTime_);
     }
-    if (!getSwiBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 6, swi_);
-    }
     if (resultStatus_ != eu.tsystems.mms.tic.testframework.report.model.ResultStatusType.RST_NOT_SET.getNumber()) {
       output.writeEnum(7, resultStatus_);
     }
@@ -370,9 +328,6 @@ private static final long serialVersionUID = 0L;
     if (endTime_ != 0L) {
       size += com.google.protobuf.CodedOutputStream
         .computeInt64Size(5, endTime_);
-    }
-    if (!getSwiBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, swi_);
     }
     if (resultStatus_ != eu.tsystems.mms.tic.testframework.report.model.ResultStatusType.RST_NOT_SET.getNumber()) {
       size += com.google.protobuf.CodedOutputStream
@@ -407,8 +362,6 @@ private static final long serialVersionUID = 0L;
         != other.getStartTime()) return false;
     if (getEndTime()
         != other.getEndTime()) return false;
-    if (!getSwi()
-        .equals(other.getSwi())) return false;
     if (resultStatus_ != other.resultStatus_) return false;
     if (execStatus_ != other.execStatus_) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
@@ -435,8 +388,6 @@ private static final long serialVersionUID = 0L;
     hash = (37 * hash) + END_TIME_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
         getEndTime());
-    hash = (37 * hash) + SWI_FIELD_NUMBER;
-    hash = (53 * hash) + getSwi().hashCode();
     hash = (37 * hash) + RESULT_STATUS_FIELD_NUMBER;
     hash = (53 * hash) + resultStatus_;
     hash = (37 * hash) + EXEC_STATUS_FIELD_NUMBER;
@@ -584,8 +535,6 @@ private static final long serialVersionUID = 0L;
 
       endTime_ = 0L;
 
-      swi_ = "";
-
       resultStatus_ = 0;
 
       execStatus_ = 0;
@@ -621,7 +570,6 @@ private static final long serialVersionUID = 0L;
       result.name_ = name_;
       result.startTime_ = startTime_;
       result.endTime_ = endTime_;
-      result.swi_ = swi_;
       result.resultStatus_ = resultStatus_;
       result.execStatus_ = execStatus_;
       onBuilt();
@@ -688,10 +636,6 @@ private static final long serialVersionUID = 0L;
       }
       if (other.getEndTime() != 0L) {
         setEndTime(other.getEndTime());
-      }
-      if (!other.getSwi().isEmpty()) {
-        swi_ = other.swi_;
-        onChanged();
       }
       if (other.resultStatus_ != 0) {
         setResultStatusValue(other.getResultStatusValue());
@@ -942,6 +886,10 @@ private static final long serialVersionUID = 0L;
 
     private long endTime_ ;
     /**
+     * <pre>
+     *    string swi = 6 [deprecated = true];
+     * </pre>
+     *
      * <code>int64 end_time = 5;</code>
      * @return The endTime.
      */
@@ -949,6 +897,10 @@ private static final long serialVersionUID = 0L;
       return endTime_;
     }
     /**
+     * <pre>
+     *    string swi = 6 [deprecated = true];
+     * </pre>
+     *
      * <code>int64 end_time = 5;</code>
      * @param value The endTime to set.
      * @return This builder for chaining.
@@ -960,88 +912,16 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    string swi = 6 [deprecated = true];
+     * </pre>
+     *
      * <code>int64 end_time = 5;</code>
      * @return This builder for chaining.
      */
     public Builder clearEndTime() {
       
       endTime_ = 0L;
-      onChanged();
-      return this;
-    }
-
-    private java.lang.Object swi_ = "";
-    /**
-     * <code>string swi = 6 [deprecated = true];</code>
-     * @return The swi.
-     */
-    @java.lang.Deprecated public java.lang.String getSwi() {
-      java.lang.Object ref = swi_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        swi_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <code>string swi = 6 [deprecated = true];</code>
-     * @return The bytes for swi.
-     */
-    @java.lang.Deprecated public com.google.protobuf.ByteString
-        getSwiBytes() {
-      java.lang.Object ref = swi_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        swi_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string swi = 6 [deprecated = true];</code>
-     * @param value The swi to set.
-     * @return This builder for chaining.
-     */
-    @java.lang.Deprecated public Builder setSwi(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      swi_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string swi = 6 [deprecated = true];</code>
-     * @return This builder for chaining.
-     */
-    @java.lang.Deprecated public Builder clearSwi() {
-      
-      swi_ = getDefaultInstance().getSwi();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string swi = 6 [deprecated = true];</code>
-     * @param value The bytes for swi to set.
-     * @return This builder for chaining.
-     */
-    @java.lang.Deprecated public Builder setSwiBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      swi_ = value;
       onChanged();
       return this;
     }

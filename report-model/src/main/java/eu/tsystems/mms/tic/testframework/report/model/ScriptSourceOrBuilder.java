@@ -54,4 +54,10 @@ public interface ScriptSourceOrBuilder extends
    */
   eu.tsystems.mms.tic.testframework.report.model.ScriptSourceLineOrBuilder getLinesOrBuilder(
       int index);
+
+  /**
+   * <code>int32 mark = 4;</code>
+   * @return The mark.
+   */
+  int getMark();
 }

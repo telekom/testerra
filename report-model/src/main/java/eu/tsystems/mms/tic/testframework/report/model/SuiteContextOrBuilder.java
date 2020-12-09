@@ -24,7 +24,48 @@ public interface SuiteContextOrBuilder extends
 
   /**
    * <pre>
-   *    repeated string test_context_ids = 6 [deprecated = true]; // list of all test
+   * list of all test
+   * </pre>
+   *
+   * <code>repeated string test_context_ids = 6 [deprecated = true];</code>
+   * @return A list containing the testContextIds.
+   */
+  @java.lang.Deprecated java.util.List<java.lang.String>
+      getTestContextIdsList();
+  /**
+   * <pre>
+   * list of all test
+   * </pre>
+   *
+   * <code>repeated string test_context_ids = 6 [deprecated = true];</code>
+   * @return The count of testContextIds.
+   */
+  @java.lang.Deprecated int getTestContextIdsCount();
+  /**
+   * <pre>
+   * list of all test
+   * </pre>
+   *
+   * <code>repeated string test_context_ids = 6 [deprecated = true];</code>
+   * @param index The index of the element to return.
+   * @return The testContextIds at the given index.
+   */
+  @java.lang.Deprecated java.lang.String getTestContextIds(int index);
+  /**
+   * <pre>
+   * list of all test
+   * </pre>
+   *
+   * <code>repeated string test_context_ids = 6 [deprecated = true];</code>
+   * @param index The index of the value to return.
+   * @return The bytes of the testContextIds at the given index.
+   */
+  @java.lang.Deprecated com.google.protobuf.ByteString
+      getTestContextIdsBytes(int index);
+
+  /**
+   * <pre>
+   * reference
    * </pre>
    *
    * <code>string execution_context_id = 7;</code>
@@ -33,7 +74,7 @@ public interface SuiteContextOrBuilder extends
   java.lang.String getExecutionContextId();
   /**
    * <pre>
-   *    repeated string test_context_ids = 6 [deprecated = true]; // list of all test
+   * reference
    * </pre>
    *
    * <code>string execution_context_id = 7;</code>

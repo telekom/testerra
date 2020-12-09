@@ -139,8 +139,19 @@ public interface MethodContextOrBuilder extends
       getClassContextIdBytes();
 
   /**
+   * <code>string execution_context_id = 16 [deprecated = true];</code>
+   * @return The executionContextId.
+   */
+  @java.lang.Deprecated java.lang.String getExecutionContextId();
+  /**
+   * <code>string execution_context_id = 16 [deprecated = true];</code>
+   * @return The bytes for executionContextId.
+   */
+  @java.lang.Deprecated com.google.protobuf.ByteString
+      getExecutionContextIdBytes();
+
+  /**
    * <pre>
-   *    string execution_context_id = 16 [deprecated = true];
    *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
    *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
    * </pre>
@@ -152,7 +163,6 @@ public interface MethodContextOrBuilder extends
       getInfosList();
   /**
    * <pre>
-   *    string execution_context_id = 16 [deprecated = true];
    *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
    *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
    * </pre>
@@ -163,7 +173,6 @@ public interface MethodContextOrBuilder extends
   int getInfosCount();
   /**
    * <pre>
-   *    string execution_context_id = 16 [deprecated = true];
    *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
    *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
    * </pre>
@@ -175,7 +184,6 @@ public interface MethodContextOrBuilder extends
   java.lang.String getInfos(int index);
   /**
    * <pre>
-   *    string execution_context_id = 16 [deprecated = true];
    *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
    *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
    * </pre>
@@ -287,6 +295,30 @@ public interface MethodContextOrBuilder extends
    */
   eu.tsystems.mms.tic.testframework.report.model.TestStepOrBuilder getTestStepsOrBuilder(
       int index);
+
+  /**
+   * <code>string test_context_id = 27 [deprecated = true];</code>
+   * @return The testContextId.
+   */
+  @java.lang.Deprecated java.lang.String getTestContextId();
+  /**
+   * <code>string test_context_id = 27 [deprecated = true];</code>
+   * @return The bytes for testContextId.
+   */
+  @java.lang.Deprecated com.google.protobuf.ByteString
+      getTestContextIdBytes();
+
+  /**
+   * <code>string suite_context_id = 28 [deprecated = true];</code>
+   * @return The suiteContextId.
+   */
+  @java.lang.Deprecated java.lang.String getSuiteContextId();
+  /**
+   * <code>string suite_context_id = 28 [deprecated = true];</code>
+   * @return The bytes for suiteContextId.
+   */
+  @java.lang.Deprecated com.google.protobuf.ByteString
+      getSuiteContextIdBytes();
 
   /**
    * <code>repeated string session_context_ids = 29;</code>

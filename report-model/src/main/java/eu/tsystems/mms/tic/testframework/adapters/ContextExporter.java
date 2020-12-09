@@ -12,6 +12,7 @@ import eu.tsystems.mms.tic.testframework.report.model.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.ExecStatusType;
 import eu.tsystems.mms.tic.testframework.report.model.FailureCorridorValue;
 import eu.tsystems.mms.tic.testframework.report.model.File;
+import eu.tsystems.mms.tic.testframework.report.model.FileOrBuilder;
 import eu.tsystems.mms.tic.testframework.report.model.MethodType;
 import eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent;
 import eu.tsystems.mms.tic.testframework.report.model.ClickPathEventType;
@@ -41,6 +42,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -57,6 +59,12 @@ public class ContextExporter {
     private final java.io.File targetScreenshotDir = report.getFinalReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
     private final java.io.File currentVideoDir = report.getFinalReportDirectory(Report.VIDEO_FOLDER_NAME);
     private final java.io.File currentScreenshotDir = report.getFinalReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
+    private Consumer<File.Builder> fileBuilderConsumer;
+
+    public ContextExporter setFileBuilderConsumer(Consumer<File.Builder> fileBuilderConsumer) {
+        this.fileBuilderConsumer = fileBuilderConsumer;
+        return this;
+    }
 
     private static String annotationToString(Annotation annotation) {
         String json = "\"" + annotation.annotationType().getSimpleName() + "\"";
@@ -147,14 +155,12 @@ public class ContextExporter {
             fileBuilderVideo.setRelativePath(targetVideoFile.getPath());
             fileBuilderVideo.setMimetype(MediaType.WEBM_VIDEO.toString());
             fillFileBasicData(fileBuilderVideo, currentVideoFile);
-            this.addFile(fileBuilderVideo);
+            if (this.fileBuilderConsumer != null) {
+                this.fileBuilderConsumer.accept(fileBuilderVideo);
+            }
         });
 
         return builder;
-    }
-
-    protected void addFile(File.Builder fileBuilder) {
-
     }
 
     private void fillFileBasicData(File.Builder builder, java.io.File file) {
@@ -280,7 +286,10 @@ public class ContextExporter {
             fileBuilderScreenshot.putAllMeta(screenshot.meta());
             fileBuilderScreenshot.putMeta("sourcesRefId", sourcesRefId);
             fillFileBasicData(fileBuilderScreenshot, currentScreenshotFile);
-            this.addFile(fileBuilderScreenshot);
+
+            if (this.fileBuilderConsumer != null) {
+                this.fileBuilderConsumer.accept(fileBuilderScreenshot);
+            }
 
             // add sources data
             final File.Builder fileBuilderSources = File.newBuilder();
@@ -289,13 +298,16 @@ public class ContextExporter {
             fileBuilderSources.setMimetype(MediaType.PLAIN_TEXT_UTF_8.toString());
             fillFileBasicData(fileBuilderSources, currentSourceFile);
 
-            this.addFile(fileBuilderSources);
+            if (this.fileBuilderConsumer != null) {
+                this.fileBuilderConsumer.accept(fileBuilderSources);
+            }
 
             testStepBuilder.addScreenshotIds(screenshotId);
         });
 
         testStepAction.readLogEvents().forEach(logEvent -> {
-            testStepBuilder.addLogMessages(prepareLogEvent(logEvent));
+            Optional<LogMessage.Builder> optional = Optional.ofNullable(prepareLogEvent(logEvent));
+            optional.ifPresent(testStepBuilder::addLogMessages);
         });
 
         testStepAction.readOptionalAssertions().forEach(assertionInfo -> {
@@ -406,7 +418,7 @@ public class ContextExporter {
         return builder.build();
     }
 
-    protected LogMessage.Builder prepareLogEvent(LogEvent logEvent) {
+    public LogMessage.Builder prepareLogEvent(LogEvent logEvent) {
         LogMessage.Builder builder = LogMessage.newBuilder();
         builder.setLoggerName(logEvent.getLoggerName());
         builder.setMessage(logEvent.getMessage().getFormattedMessage());
@@ -440,7 +452,7 @@ public class ContextExporter {
         return builder;
     }
 
-    public void traceThrowable(Throwable throwable, Consumer<Throwable> consumer) {
+    protected void traceThrowable(Throwable throwable, Consumer<Throwable> consumer) {
         while (throwable != null) {
             consumer.accept(throwable);
             throwable = throwable.getCause();
@@ -471,7 +483,10 @@ public class ContextExporter {
         map(executionContext.runConfig, this::prepareRunConfig, builder::setRunConfig);
         executionContext.readExclusiveSessionContexts().forEach(sessionContext -> builder.addExclusiveSessionContextIds(sessionContext.getId()));
         apply(executionContext.estimatedTestMethodCount, builder::setEstimatedTestsCount);
-        executionContext.readMethodContextLessLogs().forEach(logEvent -> builder.addLogMessages(prepareLogEvent(logEvent)));
+        executionContext.readMethodContextLessLogs().forEach(logEvent -> {
+            Optional<LogMessage.Builder> optional = Optional.ofNullable(prepareLogEvent(logEvent));
+            optional.ifPresent(builder::addLogMessages);
+        });
         return builder;
     }
 //

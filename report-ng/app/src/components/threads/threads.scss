@@ -6,8 +6,25 @@
     cursor: pointer !important;
     border-color: rgba(0,0,0,0) !important; //invisible border
     border-radius: 5px !important;
+
 }
 
 .vis-item-content {
     width: 100%;
+
+    .item-content {
+        color: #fff !important;
+        margin: 0;
+
+        .item-content-head {
+            font-weight: 700;
+        }
+        hr {
+            border-color: #fff;
+            margin: 3px 0;
+        }
+        .item-content-body {
+            font-size: 12px;
+        }
+    }
 }

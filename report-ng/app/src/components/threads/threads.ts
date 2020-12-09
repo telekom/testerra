@@ -19,6 +19,7 @@ export class Threads extends AbstractViewModel {
     private _endTime;
     private _startTime;
 
+
     constructor(
         private _statistics: StatisticsGenerator,
         private _statusConverter: StatusConverter,
@@ -71,6 +72,15 @@ export class Threads extends AbstractViewModel {
         // DOM element where the Timeline will be attached
         const container = document.getElementById("container");
 
+        const style = new Map <string,string>();
+        style.set("PASSED", "background-color: " + this._statusConverter.getColorForStatus(ResultStatusType.PASSED) + "; color: #fff;");
+        style.set("PASSED_RETRY", "background-color: " + this._statusConverter.getColorForStatus(ResultStatusType.PASSED_RETRY) + "; color: #fff;");
+        style.set("SKIPPED", "background-color: " + this._statusConverter.getColorForStatus(ResultStatusType.SKIPPED) + "; color: #fff;");
+        style.set("FAILED", "background-color: " + this._statusConverter.getColorForStatus(ResultStatusType.FAILED) + "; color: #fff;");
+        style.set("FAILED_EXPECTED", "background-color: " + this._statusConverter.getColorForStatus(ResultStatusType.FAILED_EXPECTED) + "; color: #fff;");
+        style.set("FAILED_MINOR", "background-color: " + this._statusConverter.getColorForStatus(ResultStatusType.FAILED_MINOR) + "; color: #fff;");
+        style.set("FAILED_RETRIED", "background-color: " + this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED) + "; color: #fff;");
+
         let resultStatusType: ResultStatusType,
             groupItems = [],
             dataItems = [],
@@ -90,12 +100,14 @@ export class Threads extends AbstractViewModel {
             methodContexts.forEach((context: MethodContext, index) => {
                 let content: string = ''
 
-                content += "<div class='m0'>" + context.contextValues.name + "</div>";
+                content += "<div class='item-content'>";
+                content += "<div class='item-content-head'>" + context.contextValues.name + "</div>";
                 content += "<hr>"
                 content += "<div class='item-content-body'>"
                 content += "<p class='m0'>" + this._classNamesMap[context.classContextId] + "</p>";
                 content += "<p class='m0'>(" + context.methodRunIndex + ")</p>";
-                content += "</div>"
+                content += "</div>";
+                content += "</div>";
 
                 dataItems.push({
                     id: context.contextValues.id + "_" + threadName + "_" + index,
@@ -104,8 +116,7 @@ export class Threads extends AbstractViewModel {
                     end: context.contextValues.endTime,
                     group: groupId,
                     callbackInfos: [context.contextValues.id],
-                    style: "background-color: " + this._statusConverter.getColorForStatus(context.contextValues.resultStatus) + ";"
-                        + "color: #fff",
+                    style: "background-color: " + this._statusConverter.getColorForStatus(context.contextValues.resultStatus) + ";",
                     title: content
                 });
             });

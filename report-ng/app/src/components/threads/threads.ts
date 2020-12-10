@@ -15,7 +15,7 @@ import "./threads.scss";
 export class Threads extends AbstractViewModel {
     private _searchRegexp: RegExp;
     private _loading = false;
-    private _classNamesMap: Map <string, string> = undefined;
+    private _classNamesMap:{[key:string]:string};
     private _endTime;
     private _startTime;
 
@@ -47,7 +47,7 @@ export class Threads extends AbstractViewModel {
 
         this._loading = true;
 
-        this._classNamesMap = new Map<string, string>();
+        this._classNamesMap = {};
 
         this._statistics.getExecutionStatistics().then(executionStatistics => {
             this._startTime = executionStatistics.executionAggregate.executionContext.contextValues.startTime - 1000;

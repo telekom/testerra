@@ -18,7 +18,7 @@ export class Threads extends AbstractViewModel {
     private _classNamesMap:{[key:string]:string};
     private _endTime;
     private _startTime;
-
+    private _container:HTMLDivElement;
 
     constructor(
         private _statistics: StatisticsGenerator,
@@ -68,9 +68,9 @@ export class Threads extends AbstractViewModel {
         this._router.navigateToRoute('method', {methodId: methodId})
     }
 
-    _prepareTimelineData(methodContexts) {
+    private _prepareTimelineData(methodContexts) {
         // DOM element where the Timeline will be attached
-        const container = document.getElementById("container");
+        const container = this._container;
 
         const style = new Map <string,string>();
         style.set("PASSED", "background-color: " + this._statusConverter.getColorForStatus(ResultStatusType.PASSED) + "; color: #fff;");

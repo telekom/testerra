@@ -11,20 +11,21 @@
 
 .vis-item-content {
     width: 100%;
+    padding: 0 !important;
+    color: #fff !important;
+    font-size: 12px;
 
     .item-content {
-        color: #fff !important;
-        margin: 0;
+        text-align: center;
 
         .item-content-head {
             font-weight: 700;
+            background-color: rgba(0,0,0,0.15);
+            padding: 3px 0;
         }
-        hr {
-            border-color: #fff;
-            margin: 3px 0;
-        }
+
         .item-content-body {
-            font-size: 12px;
+            padding: 3px;
         }
     }
 }

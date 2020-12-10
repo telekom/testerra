@@ -16,10 +16,9 @@
                 <div repeat.for="testStep of _methodDetails.methodContext.testSteps">
                     <let step-index.bind="$index+1"></let>
                     <a name="${stepIndex}" visible.delegate="_stepVisibility($event)" become-visible></a>
-                    <div mdc-headline4 class.bind="stepIndex!=1?'mt1':''">${stepIndex} ${testStep.name}</div>
-
+                    <div mdc-headline5 class.bind="stepIndex!=1?'mt1':''" class="step-headline">${stepIndex} ${testStep.name}</div>
                     <div repeat.for="testStepAction of testStep.testStepActions">
-                        <div if.bind="!$first&&!$last" mdc-headline5 class="mt1">${stepIndex}.${$index+1} ${testStepAction.name}</div>
+                        <div if.bind="!$first&&!$last" mdc-body1 class="mt1 step-headline">${stepIndex}.${$index+1} ${testStepAction.name}</div>
                         <mdc-card class="mt1" if.bind="testStepAction.optionalAssertions.length > 0">
                             <div mdc-subtitle2 class="card-headline">Failed optional assertions</div>
                             <mdc-list-divider></mdc-list-divider>

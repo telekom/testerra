@@ -68,19 +68,40 @@ module.exports = ({production} = {}, {analyze, tests, hmr, port, host} = {}) => 
                 // sizes are compared against source before minification
                 //maxSize: 200000, // splits chunks if bigger than 200k, adjust as required (maxSize added in webpack v4.15)
                 cacheGroups: {
+                    "vis-timeline": {
+                        test: /[\\/]node_modules[\\/](vis-timeline)[\\/]/,
+                        priority: 20,
+                        minSize:0,
+                    },
+                    "vis-network": {
+                        test: /[\\/]node_modules[\\/](vis-network)[\\/]/,
+                        priority: 21,
+                        minSize:0,
+                    },
+                    apexcharts: {
+                        test: /[\\/]node_modules[\\/](apexcharts)[\\/]/,
+                        priority: 22,
+                        minSize:0,
+                    },
+                    // proto: {
+                    //     test: /[\\/]src[\\/]services[\\/](report-model).+/,
+                    //     priority: 20,
+                    //     minSize:0,
+                    // },
                     default: false, // Disable the built-in groups default & vendors (vendors is redefined below)
                     // This is the HTTP/1.1 optimised cacheGroup configuration
                     vendors: { // picks up everything from node_modules as long as the sum of node modules is larger than minSize
                         test: /[\\/]node_modules[\\/]/,
-                        name: 'vendors',
-                        priority: 19,
+                        priority: -100,
                         enforce: true, // causes maxInitialRequests to be ignored, minSize still respected if specified in cacheGroup
-                        minSize: 30000 // use the default minSize
+                        minSize: 50000
                     },
                 }
-            }
+            },
         },
-        performance: {hints: false},
+        performance: {
+            hints: false
+        },
         devServer: {
             contentBase: outDir,
 

@@ -4,8 +4,8 @@ import ApexCharts from 'apexcharts';
 import ApexOptions = ApexCharts.ApexOptions;
 
 export class ApexChart {
-    private _apex: HTMLDivElement = undefined;
-    private _myApexChart: ApexCharts = undefined;
+    private _apex: HTMLDivElement;
+    private _myApexChart: ApexCharts;
 
     @bindable data: ApexOptions;
     @bindable selection: any;
@@ -27,7 +27,6 @@ export class ApexChart {
     }
 
     selectionChanged() {
-        console.log("selection changed", this.selection.dataPointIndex);
         this._myApexChart.toggleDataPointSelection(this.selection.dataPointIndex);
     }
 

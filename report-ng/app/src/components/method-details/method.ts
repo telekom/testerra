@@ -58,12 +58,13 @@ export class Method {
             },
             {
                 route: 'dependencies',
-                moduleId: PLATFORM.moduleName('./dependencies'),
+                moduleId: PLATFORM.moduleName('./dependency-network'),
                 nav: true,
                 name: "dependencies",
                 title: 'Dependencies',
                 settings: {
-                    icon: "sync_alt"
+                    icon: "account_tree",
+                    // icon: "sync_alt"
                 }
             },
         ]);

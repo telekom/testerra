@@ -28,7 +28,7 @@
         "@aurelia-mdc-web/top-app-bar": "^2.0.3",
         "@aurelia-mdc-web/typography": "^2.0.3",
         "@types/moment-duration-format": "^2.2.2",
-        "apexcharts": "^3.22.2",
+        "apexcharts": "^3.22.3",
         "aurelia-animator-css": "^1.0.4",
         "aurelia-binding": "^2.5.4",
         "aurelia-bootstrapper": "^2.3.3",
@@ -41,6 +41,7 @@
         "protobufjs": "^6.10.1",
         "t-systems-aurelia-components": "^1.0.5",
         "ts-replace-all": "^1.0.0",
+        "vis-network": "^6.5.2",
         "vis-timeline": "^7.4.2"
     },
     "devDependencies": {

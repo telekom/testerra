@@ -18,7 +18,9 @@ export class Threads extends AbstractViewModel {
     private _classNamesMap:{[key:string]:string};
     private _endTime;
     private _startTime;
-    private _container:HTMLDivElement;
+    private _container: HTMLDivElement;
+    private _basicOptions: Array<string> = new Array<string>();
+
 
     constructor(
         private _statistics: StatisticsGenerator,
@@ -57,6 +59,10 @@ export class Threads extends AbstractViewModel {
             executionStatistics.classStatistics.forEach(classStatistic => {
                 this._classNamesMap[classStatistic.classContext.contextValues.id] = classStatistic.classIdentifier;
             });
+            executionStatistics.executionAggregate.methodContexts.forEach(methodContext => {
+                this._basicOptions.push(methodContext.contextValues.name);
+            })
+            console.log(this._basicOptions);
             this._prepareTimelineData(executionStatistics.executionAggregate.methodContexts)
         });
     }
@@ -71,15 +77,6 @@ export class Threads extends AbstractViewModel {
     private _prepareTimelineData(methodContexts) {
         // DOM element where the Timeline will be attached
         const container = this._container;
-
-        const style = new Map <string,string>();
-        style.set("PASSED", "background-color: " + this._statusConverter.getColorForStatus(ResultStatusType.PASSED) + "; color: #fff;");
-        style.set("PASSED_RETRY", "background-color: " + this._statusConverter.getColorForStatus(ResultStatusType.PASSED_RETRY) + "; color: #fff;");
-        style.set("SKIPPED", "background-color: " + this._statusConverter.getColorForStatus(ResultStatusType.SKIPPED) + "; color: #fff;");
-        style.set("FAILED", "background-color: " + this._statusConverter.getColorForStatus(ResultStatusType.FAILED) + "; color: #fff;");
-        style.set("FAILED_EXPECTED", "background-color: " + this._statusConverter.getColorForStatus(ResultStatusType.FAILED_EXPECTED) + "; color: #fff;");
-        style.set("FAILED_MINOR", "background-color: " + this._statusConverter.getColorForStatus(ResultStatusType.FAILED_MINOR) + "; color: #fff;");
-        style.set("FAILED_RETRIED", "background-color: " + this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED) + "; color: #fff;");
 
         let resultStatusType: ResultStatusType,
             groupItems = [],
@@ -145,7 +142,7 @@ export class Threads extends AbstractViewModel {
             //max zoom out to be 1 Day
             zoomMax:8.64e+7,
             //Min Zoom set to be 10 Millisecond
-            zoomMin:10,
+            zoomMin:10
         };
 
         // Create a Timeline

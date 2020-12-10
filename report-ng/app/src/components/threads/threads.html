@@ -1,3 +1,10 @@
 <template>
+    <div mdc-menu-surface-anchor>
+        <mdc-text-field label="Lookup" ref="basicInput"></mdc-text-field>
+        <mdc-text-field-helper-line></mdc-text-field-helper-line>
+        <mdc-lookup options.bind="_basicOptions">
+        </mdc-lookup>
+    </div>
+    <br>
     <div ref="_container"></div>
 </template>

@@ -23,22 +23,51 @@ public interface TestContextOrBuilder extends
   eu.tsystems.mms.tic.testframework.report.model.ContextValuesOrBuilder getContextValuesOrBuilder();
 
   /**
-   * <pre>
-   *    repeated string class_context_ids = 6 [deprecated = true];
-   * </pre>
-   *
+   * <code>repeated string class_context_ids = 6 [deprecated = true];</code>
+   * @return A list containing the classContextIds.
+   */
+  @java.lang.Deprecated java.util.List<java.lang.String>
+      getClassContextIdsList();
+  /**
+   * <code>repeated string class_context_ids = 6 [deprecated = true];</code>
+   * @return The count of classContextIds.
+   */
+  @java.lang.Deprecated int getClassContextIdsCount();
+  /**
+   * <code>repeated string class_context_ids = 6 [deprecated = true];</code>
+   * @param index The index of the element to return.
+   * @return The classContextIds at the given index.
+   */
+  @java.lang.Deprecated java.lang.String getClassContextIds(int index);
+  /**
+   * <code>repeated string class_context_ids = 6 [deprecated = true];</code>
+   * @param index The index of the value to return.
+   * @return The bytes of the classContextIds at the given index.
+   */
+  @java.lang.Deprecated com.google.protobuf.ByteString
+      getClassContextIdsBytes(int index);
+
+  /**
    * <code>string suite_context_id = 7;</code>
    * @return The suiteContextId.
    */
   java.lang.String getSuiteContextId();
   /**
-   * <pre>
-   *    repeated string class_context_ids = 6 [deprecated = true];
-   * </pre>
-   *
    * <code>string suite_context_id = 7;</code>
    * @return The bytes for suiteContextId.
    */
   com.google.protobuf.ByteString
       getSuiteContextIdBytes();
+
+  /**
+   * <code>string execution_context_id = 8 [deprecated = true];</code>
+   * @return The executionContextId.
+   */
+  @java.lang.Deprecated java.lang.String getExecutionContextId();
+  /**
+   * <code>string execution_context_id = 8 [deprecated = true];</code>
+   * @return The bytes for executionContextId.
+   */
+  @java.lang.Deprecated com.google.protobuf.ByteString
+      getExecutionContextIdBytes();
 }

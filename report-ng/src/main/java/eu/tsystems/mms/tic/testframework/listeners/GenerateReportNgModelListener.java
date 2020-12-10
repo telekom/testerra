@@ -29,16 +29,14 @@ import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import java.io.File;
 
 public class GenerateReportNgModelListener extends AbstractReportModelListener implements FinalizeExecutionEvent.Listener{
-    private ExecutionAggregate.Builder executionAggregateBuilder = ExecutionAggregate.newBuilder();
-    private final ContextExporter contextExporter = new ContextExporter() {
-        @Override
-        protected void addFile(eu.tsystems.mms.tic.testframework.report.model.File.Builder fileBuilder) {
-            writeBuilderToFile(fileBuilder, new File(getFilesDir(), fileBuilder.getId()));
-        }
-    };
+    private final ExecutionAggregate.Builder executionAggregateBuilder = ExecutionAggregate.newBuilder();
+    private final ContextExporter contextExporter = new ContextExporter();
 
     public GenerateReportNgModelListener(File baseDir) {
         super(baseDir);
+        this.contextExporter.setFileBuilderConsumer(fileBuilder -> {
+            writeBuilderToFile(fileBuilder, new File(getFilesDir(), fileBuilder.getId()));
+        });
     }
 
     @Override

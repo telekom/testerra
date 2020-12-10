@@ -22,11 +22,14 @@ private static final long serialVersionUID = 0L;
     threadName_ = "";
     failureCorridorValue_ = 0;
     classContextId_ = "";
+    executionContextId_ = "";
     infos_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     priorityMessage_ = "";
     relatedMethodContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     dependsOnMethodContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     testSteps_ = java.util.Collections.emptyList();
+    testContextId_ = "";
+    suiteContextId_ = "";
     sessionContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     videoIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     customContextJson_ = "";
@@ -128,6 +131,12 @@ private static final long serialVersionUID = 0L;
             classContextId_ = s;
             break;
           }
+          case 130: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            executionContextId_ = s;
+            break;
+          }
           case 154: {
             java.lang.String s = input.readStringRequireUtf8();
             if (!((mutable_bitField0_ & 0x00000004) != 0)) {
@@ -181,6 +190,18 @@ private static final long serialVersionUID = 0L;
             }
             testSteps_.add(
                 input.readMessage(eu.tsystems.mms.tic.testframework.report.model.TestStep.parser(), extensionRegistry));
+            break;
+          }
+          case 218: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            testContextId_ = s;
+            break;
+          }
+          case 226: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            suiteContextId_ = s;
             break;
           }
           case 234: {
@@ -494,11 +515,46 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int EXECUTION_CONTEXT_ID_FIELD_NUMBER = 16;
+  private volatile java.lang.Object executionContextId_;
+  /**
+   * <code>string execution_context_id = 16 [deprecated = true];</code>
+   * @return The executionContextId.
+   */
+  @java.lang.Deprecated public java.lang.String getExecutionContextId() {
+    java.lang.Object ref = executionContextId_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      executionContextId_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string execution_context_id = 16 [deprecated = true];</code>
+   * @return The bytes for executionContextId.
+   */
+  @java.lang.Deprecated public com.google.protobuf.ByteString
+      getExecutionContextIdBytes() {
+    java.lang.Object ref = executionContextId_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      executionContextId_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   public static final int INFOS_FIELD_NUMBER = 19;
   private com.google.protobuf.LazyStringList infos_;
   /**
    * <pre>
-   *    string execution_context_id = 16 [deprecated = true];
    *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
    *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
    * </pre>
@@ -512,7 +568,6 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   *    string execution_context_id = 16 [deprecated = true];
    *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
    *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
    * </pre>
@@ -525,7 +580,6 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   *    string execution_context_id = 16 [deprecated = true];
    *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
    *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
    * </pre>
@@ -539,7 +593,6 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   *    string execution_context_id = 16 [deprecated = true];
    *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
    *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
    * </pre>
@@ -717,6 +770,78 @@ private static final long serialVersionUID = 0L;
     return testSteps_.get(index);
   }
 
+  public static final int TEST_CONTEXT_ID_FIELD_NUMBER = 27;
+  private volatile java.lang.Object testContextId_;
+  /**
+   * <code>string test_context_id = 27 [deprecated = true];</code>
+   * @return The testContextId.
+   */
+  @java.lang.Deprecated public java.lang.String getTestContextId() {
+    java.lang.Object ref = testContextId_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      testContextId_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string test_context_id = 27 [deprecated = true];</code>
+   * @return The bytes for testContextId.
+   */
+  @java.lang.Deprecated public com.google.protobuf.ByteString
+      getTestContextIdBytes() {
+    java.lang.Object ref = testContextId_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      testContextId_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int SUITE_CONTEXT_ID_FIELD_NUMBER = 28;
+  private volatile java.lang.Object suiteContextId_;
+  /**
+   * <code>string suite_context_id = 28 [deprecated = true];</code>
+   * @return The suiteContextId.
+   */
+  @java.lang.Deprecated public java.lang.String getSuiteContextId() {
+    java.lang.Object ref = suiteContextId_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      suiteContextId_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string suite_context_id = 28 [deprecated = true];</code>
+   * @return The bytes for suiteContextId.
+   */
+  @java.lang.Deprecated public com.google.protobuf.ByteString
+      getSuiteContextIdBytes() {
+    java.lang.Object ref = suiteContextId_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      suiteContextId_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   public static final int SESSION_CONTEXT_IDS_FIELD_NUMBER = 29;
   private com.google.protobuf.LazyStringList sessionContextIds_;
   /**
@@ -872,6 +997,9 @@ private static final long serialVersionUID = 0L;
     if (!getClassContextIdBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 15, classContextId_);
     }
+    if (!getExecutionContextIdBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 16, executionContextId_);
+    }
     for (int i = 0; i < infos_.size(); i++) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 19, infos_.getRaw(i));
     }
@@ -889,6 +1017,12 @@ private static final long serialVersionUID = 0L;
     }
     for (int i = 0; i < testSteps_.size(); i++) {
       output.writeMessage(26, testSteps_.get(i));
+    }
+    if (!getTestContextIdBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 27, testContextId_);
+    }
+    if (!getSuiteContextIdBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 28, suiteContextId_);
     }
     for (int i = 0; i < sessionContextIds_.size(); i++) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 29, sessionContextIds_.getRaw(i));
@@ -950,6 +1084,9 @@ private static final long serialVersionUID = 0L;
     if (!getClassContextIdBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(15, classContextId_);
     }
+    if (!getExecutionContextIdBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(16, executionContextId_);
+    }
     {
       int dataSize = 0;
       for (int i = 0; i < infos_.size(); i++) {
@@ -984,6 +1121,12 @@ private static final long serialVersionUID = 0L;
     for (int i = 0; i < testSteps_.size(); i++) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(26, testSteps_.get(i));
+    }
+    if (!getTestContextIdBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(27, testContextId_);
+    }
+    if (!getSuiteContextIdBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(28, suiteContextId_);
     }
     {
       int dataSize = 0;
@@ -1038,6 +1181,8 @@ private static final long serialVersionUID = 0L;
     if (failureCorridorValue_ != other.failureCorridorValue_) return false;
     if (!getClassContextId()
         .equals(other.getClassContextId())) return false;
+    if (!getExecutionContextId()
+        .equals(other.getExecutionContextId())) return false;
     if (!getInfosList()
         .equals(other.getInfosList())) return false;
     if (!getPriorityMessage()
@@ -1053,6 +1198,10 @@ private static final long serialVersionUID = 0L;
     }
     if (!getTestStepsList()
         .equals(other.getTestStepsList())) return false;
+    if (!getTestContextId()
+        .equals(other.getTestContextId())) return false;
+    if (!getSuiteContextId()
+        .equals(other.getSuiteContextId())) return false;
     if (!getSessionContextIdsList()
         .equals(other.getSessionContextIdsList())) return false;
     if (!getVideoIdsList()
@@ -1094,6 +1243,8 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + failureCorridorValue_;
     hash = (37 * hash) + CLASS_CONTEXT_ID_FIELD_NUMBER;
     hash = (53 * hash) + getClassContextId().hashCode();
+    hash = (37 * hash) + EXECUTION_CONTEXT_ID_FIELD_NUMBER;
+    hash = (53 * hash) + getExecutionContextId().hashCode();
     if (getInfosCount() > 0) {
       hash = (37 * hash) + INFOS_FIELD_NUMBER;
       hash = (53 * hash) + getInfosList().hashCode();
@@ -1116,6 +1267,10 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + TEST_STEPS_FIELD_NUMBER;
       hash = (53 * hash) + getTestStepsList().hashCode();
     }
+    hash = (37 * hash) + TEST_CONTEXT_ID_FIELD_NUMBER;
+    hash = (53 * hash) + getTestContextId().hashCode();
+    hash = (37 * hash) + SUITE_CONTEXT_ID_FIELD_NUMBER;
+    hash = (53 * hash) + getSuiteContextId().hashCode();
     if (getSessionContextIdsCount() > 0) {
       hash = (37 * hash) + SESSION_CONTEXT_IDS_FIELD_NUMBER;
       hash = (53 * hash) + getSessionContextIdsList().hashCode();
@@ -1282,6 +1437,8 @@ private static final long serialVersionUID = 0L;
 
       classContextId_ = "";
 
+      executionContextId_ = "";
+
       infos_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       bitField0_ = (bitField0_ & ~0x00000004);
       priorityMessage_ = "";
@@ -1302,6 +1459,10 @@ private static final long serialVersionUID = 0L;
       } else {
         testStepsBuilder_.clear();
       }
+      testContextId_ = "";
+
+      suiteContextId_ = "";
+
       sessionContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       bitField0_ = (bitField0_ & ~0x00000040);
       videoIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
@@ -1356,6 +1517,7 @@ private static final long serialVersionUID = 0L;
       result.threadName_ = threadName_;
       result.failureCorridorValue_ = failureCorridorValue_;
       result.classContextId_ = classContextId_;
+      result.executionContextId_ = executionContextId_;
       if (((bitField0_ & 0x00000004) != 0)) {
         infos_ = infos_.getUnmodifiableView();
         bitField0_ = (bitField0_ & ~0x00000004);
@@ -1386,6 +1548,8 @@ private static final long serialVersionUID = 0L;
       } else {
         result.testSteps_ = testStepsBuilder_.build();
       }
+      result.testContextId_ = testContextId_;
+      result.suiteContextId_ = suiteContextId_;
       if (((bitField0_ & 0x00000040) != 0)) {
         sessionContextIds_ = sessionContextIds_.getUnmodifiableView();
         bitField0_ = (bitField0_ & ~0x00000040);
@@ -1488,6 +1652,10 @@ private static final long serialVersionUID = 0L;
         classContextId_ = other.classContextId_;
         onChanged();
       }
+      if (!other.getExecutionContextId().isEmpty()) {
+        executionContextId_ = other.executionContextId_;
+        onChanged();
+      }
       if (!other.infos_.isEmpty()) {
         if (infos_.isEmpty()) {
           infos_ = other.infos_;
@@ -1550,6 +1718,14 @@ private static final long serialVersionUID = 0L;
             testStepsBuilder_.addAllMessages(other.testSteps_);
           }
         }
+      }
+      if (!other.getTestContextId().isEmpty()) {
+        testContextId_ = other.testContextId_;
+        onChanged();
+      }
+      if (!other.getSuiteContextId().isEmpty()) {
+        suiteContextId_ = other.suiteContextId_;
+        onChanged();
       }
       if (!other.sessionContextIds_.isEmpty()) {
         if (sessionContextIds_.isEmpty()) {
@@ -2280,6 +2456,82 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
+    private java.lang.Object executionContextId_ = "";
+    /**
+     * <code>string execution_context_id = 16 [deprecated = true];</code>
+     * @return The executionContextId.
+     */
+    @java.lang.Deprecated public java.lang.String getExecutionContextId() {
+      java.lang.Object ref = executionContextId_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        executionContextId_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string execution_context_id = 16 [deprecated = true];</code>
+     * @return The bytes for executionContextId.
+     */
+    @java.lang.Deprecated public com.google.protobuf.ByteString
+        getExecutionContextIdBytes() {
+      java.lang.Object ref = executionContextId_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        executionContextId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string execution_context_id = 16 [deprecated = true];</code>
+     * @param value The executionContextId to set.
+     * @return This builder for chaining.
+     */
+    @java.lang.Deprecated public Builder setExecutionContextId(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      executionContextId_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string execution_context_id = 16 [deprecated = true];</code>
+     * @return This builder for chaining.
+     */
+    @java.lang.Deprecated public Builder clearExecutionContextId() {
+      
+      executionContextId_ = getDefaultInstance().getExecutionContextId();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string execution_context_id = 16 [deprecated = true];</code>
+     * @param value The bytes for executionContextId to set.
+     * @return This builder for chaining.
+     */
+    @java.lang.Deprecated public Builder setExecutionContextIdBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      executionContextId_ = value;
+      onChanged();
+      return this;
+    }
+
     private com.google.protobuf.LazyStringList infos_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     private void ensureInfosIsMutable() {
       if (!((bitField0_ & 0x00000004) != 0)) {
@@ -2289,7 +2541,6 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     *    string execution_context_id = 16 [deprecated = true];
      *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
      *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
      * </pre>
@@ -2303,7 +2554,6 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     *    string execution_context_id = 16 [deprecated = true];
      *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
      *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
      * </pre>
@@ -2316,7 +2566,6 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     *    string execution_context_id = 16 [deprecated = true];
      *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
      *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
      * </pre>
@@ -2330,7 +2579,6 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     *    string execution_context_id = 16 [deprecated = true];
      *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
      *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
      * </pre>
@@ -2345,7 +2593,6 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     *    string execution_context_id = 16 [deprecated = true];
      *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
      *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
      * </pre>
@@ -2367,7 +2614,6 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     *    string execution_context_id = 16 [deprecated = true];
      *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
      *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
      * </pre>
@@ -2388,7 +2634,6 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     *    string execution_context_id = 16 [deprecated = true];
      *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
      *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
      * </pre>
@@ -2407,7 +2652,6 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     *    string execution_context_id = 16 [deprecated = true];
      *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
      *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
      * </pre>
@@ -2423,7 +2667,6 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     *    string execution_context_id = 16 [deprecated = true];
      *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
      *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
      * </pre>
@@ -3097,6 +3340,158 @@ private static final long serialVersionUID = 0L;
         testSteps_ = null;
       }
       return testStepsBuilder_;
+    }
+
+    private java.lang.Object testContextId_ = "";
+    /**
+     * <code>string test_context_id = 27 [deprecated = true];</code>
+     * @return The testContextId.
+     */
+    @java.lang.Deprecated public java.lang.String getTestContextId() {
+      java.lang.Object ref = testContextId_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        testContextId_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string test_context_id = 27 [deprecated = true];</code>
+     * @return The bytes for testContextId.
+     */
+    @java.lang.Deprecated public com.google.protobuf.ByteString
+        getTestContextIdBytes() {
+      java.lang.Object ref = testContextId_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        testContextId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string test_context_id = 27 [deprecated = true];</code>
+     * @param value The testContextId to set.
+     * @return This builder for chaining.
+     */
+    @java.lang.Deprecated public Builder setTestContextId(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      testContextId_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string test_context_id = 27 [deprecated = true];</code>
+     * @return This builder for chaining.
+     */
+    @java.lang.Deprecated public Builder clearTestContextId() {
+      
+      testContextId_ = getDefaultInstance().getTestContextId();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string test_context_id = 27 [deprecated = true];</code>
+     * @param value The bytes for testContextId to set.
+     * @return This builder for chaining.
+     */
+    @java.lang.Deprecated public Builder setTestContextIdBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      testContextId_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object suiteContextId_ = "";
+    /**
+     * <code>string suite_context_id = 28 [deprecated = true];</code>
+     * @return The suiteContextId.
+     */
+    @java.lang.Deprecated public java.lang.String getSuiteContextId() {
+      java.lang.Object ref = suiteContextId_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        suiteContextId_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string suite_context_id = 28 [deprecated = true];</code>
+     * @return The bytes for suiteContextId.
+     */
+    @java.lang.Deprecated public com.google.protobuf.ByteString
+        getSuiteContextIdBytes() {
+      java.lang.Object ref = suiteContextId_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        suiteContextId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string suite_context_id = 28 [deprecated = true];</code>
+     * @param value The suiteContextId to set.
+     * @return This builder for chaining.
+     */
+    @java.lang.Deprecated public Builder setSuiteContextId(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      suiteContextId_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string suite_context_id = 28 [deprecated = true];</code>
+     * @return This builder for chaining.
+     */
+    @java.lang.Deprecated public Builder clearSuiteContextId() {
+      
+      suiteContextId_ = getDefaultInstance().getSuiteContextId();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string suite_context_id = 28 [deprecated = true];</code>
+     * @param value The bytes for suiteContextId to set.
+     * @return This builder for chaining.
+     */
+    @java.lang.Deprecated public Builder setSuiteContextIdBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      suiteContextId_ = value;
+      onChanged();
+      return this;
     }
 
     private com.google.protobuf.LazyStringList sessionContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;

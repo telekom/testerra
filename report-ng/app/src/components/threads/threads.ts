@@ -15,10 +15,10 @@ import "./threads.scss";
 export class Threads extends AbstractViewModel {
     private _searchRegexp: RegExp;
     private _loading = false;
-    private _classNamesMap: Map <string, string> = undefined;
+    private _classNamesMap:{[key:string]:string};
     private _endTime;
     private _startTime;
-
+    private _container:HTMLDivElement;
 
     constructor(
         private _statistics: StatisticsGenerator,
@@ -47,7 +47,7 @@ export class Threads extends AbstractViewModel {
 
         this._loading = true;
 
-        this._classNamesMap = new Map<string, string>();
+        this._classNamesMap = {};
 
         this._statistics.getExecutionStatistics().then(executionStatistics => {
             this._startTime = executionStatistics.executionAggregate.executionContext.contextValues.startTime - 1000;
@@ -68,9 +68,9 @@ export class Threads extends AbstractViewModel {
         this._router.navigateToRoute('method', {methodId: methodId})
     }
 
-    _prepareTimelineData(methodContexts) {
+    private _prepareTimelineData(methodContexts) {
         // DOM element where the Timeline will be attached
-        const container = document.getElementById("container");
+        const container = this._container;
 
         const style = new Map <string,string>();
         style.set("PASSED", "background-color: " + this._statusConverter.getColorForStatus(ResultStatusType.PASSED) + "; color: #fff;");

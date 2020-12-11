@@ -94,14 +94,14 @@ export class App {
             // },
             {
                 route: 'logs',
-                name: 'Logs',
+                name: 'logs',
                 moduleId: PLATFORM.moduleName('components/logs/logs'),
                 nav: true,
                 title: 'Logs'
             },
             {
                 route: 'threads',
-                name: 'Threads',
+                name: 'threads',
                 moduleId: PLATFORM.moduleName('components/threads/threads'),
                 nav: true,
                 title: 'Threads'

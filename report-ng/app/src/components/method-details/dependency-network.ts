@@ -35,6 +35,7 @@ export class DependencyNetwork {
     }
 
     private _focus() {
+        console.log("focus node");
         this._network?.focus(this._methodDetails.methodContext.contextValues.id, {
             scale: 2
         });
@@ -62,7 +63,6 @@ export class DependencyNetwork {
         routeConfig: RouteConfig,
         navInstruction: NavigationInstruction
     ) {
-        console.log("activate");
         this._router = navInstruction.router;
         this._queryParams = params;
         this._statistics.getMethodDetails(this._queryParams.methodId).then(methodDetails => {
@@ -76,10 +76,7 @@ export class DependencyNetwork {
             return;
         }
 
-        console.log("build graph");
-
         const methodDetails = this._methodDetails;
-
         const nodes:DataSetNodes[] = [];
         const edges:DataSetEdges[] = [];
 
@@ -105,11 +102,13 @@ export class DependencyNetwork {
 
         methodDetails.methodContext.dependsOnMethodContextIds.forEach(methodId => {
             const methodContext = methodDetails.classStatistics.methodContexts.find(methodContext => methodContext.contextValues.id == methodId);
-            addNode(methodContext);
-            edges.push({
-                from: methodContext.contextValues.id,
-                to: methodDetails.methodContext.contextValues.id,
-            })
+            if (methodContext) {
+                addNode(methodContext);
+                edges.push({
+                    from: methodContext.contextValues.id,
+                    to: methodDetails.methodContext.contextValues.id,
+                })
+            }
         })
 
         methodDetails.methodContext.relatedMethodContextIds.forEach(methodId => {
@@ -118,11 +117,13 @@ export class DependencyNetwork {
              */
             if (methodId != methodDetails.methodContext.contextValues.id) {
                 const methodContext = methodDetails.classStatistics.methodContexts.find(methodContext => methodContext.contextValues.id == methodId);
-                addNode(methodContext);
-                edges.push({
-                    from: methodDetails.methodContext.contextValues.id,
-                    to: methodContext.contextValues.id,
-                })
+                if (methodContext) {
+                    addNode(methodContext);
+                    edges.push({
+                        from: methodDetails.methodContext.contextValues.id,
+                        to: methodContext.contextValues.id,
+                    })
+                }
             }
         });
 
@@ -161,6 +162,7 @@ export class DependencyNetwork {
             },
         };
         this._resizeListener(null);
+        console.log("build graph");
         this._network?.destroy();
         this._network = new Network(this._container, data, options);
         this._network.on("click", (params) => {

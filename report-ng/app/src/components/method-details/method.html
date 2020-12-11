@@ -34,7 +34,7 @@
                             <span class="secondary sr1">Suite</span>${_methodDetails.suiteContext.contextValues.name}
                         </li>
                         <li class="mdc-list-item reset-cursor">
-                            <span class="secondary sr1">Thread</span>${_methodDetails.methodContext.threadName}
+                            <span class="secondary sr1">Thread</span><a route-href="route: threads; params.bind: {methodId: _methodDetails.methodContext.contextValues.id}">${_methodDetails.methodContext.threadName}</a>
                         </li>
                     </ul>
                 </mdc-card>

@@ -12,7 +12,6 @@ import ResultStatusType = data.ResultStatusType;
 import "./threads.scss";
 import IMethodContext = data.IMethodContext;
 import IContextValues = data.IContextValues;
-import {ExecutionStatistics} from "../../services/statistic-models";
 
 @autoinject()
 export class Threads extends AbstractViewModel {
@@ -22,13 +21,10 @@ export class Threads extends AbstractViewModel {
     private _startTime;
     private _container:HTMLDivElement;
     private _methodNameInput:HTMLElement;
-    private _executionStatistics:ExecutionStatistics;
-    private _methodLookupOptions:IContextValues[] = [];
 
     constructor(
         private _statistics: StatisticsGenerator,
         private _statusConverter: StatusConverter,
-        private _element: Element,
         private _router: Router
     ) {
         super();
@@ -40,25 +36,10 @@ export class Threads extends AbstractViewModel {
     }
 
     attached() {
-        this._loadData();
-    }
-
-    private _focusOn(methodId:string) {
-        console.log("focus on", methodId);
-    }
-
-    private _loadData() {
-        this._classNamesMap = {};
-
         this._statistics.getExecutionStatistics().then(executionStatistics => {
-            this._executionStatistics = executionStatistics;
+            this._classNamesMap = {};
             this._startTime = executionStatistics.executionAggregate.executionContext.contextValues.startTime - 1000;
             this._endTime = executionStatistics.executionAggregate.executionContext.contextValues.endTime + 1000;
-            this._methodLookupOptions.splice(0,-1);
-            this._methodLookupOptions = this._methodLookupOptions.concat(executionStatistics.executionAggregate.methodContexts.map(methodContext => methodContext.contextValues));
-            if (this.queryParams.methodId) {
-                this._focusOn(this.queryParams.methodId);
-            }
             executionStatistics.classStatistics.forEach(classStatistic => {
                 this._classNamesMap[classStatistic.classContext.contextValues.id] = classStatistic.classIdentifier;
             });
@@ -66,21 +47,28 @@ export class Threads extends AbstractViewModel {
         });
     }
 
+    private _focusOn(methodId:string) {
+        console.log("focus on", methodId);
+    }
+
     private _getLookupOptions = async (filter: string, methodId: string): Promise<IContextValues[]>  => {
-        console.log("filter", filter, "method", methodId);
-        let methodContexts:IMethodContext[];
-        if (methodId) {
-            methodContexts = this._executionStatistics.executionAggregate.methodContexts.filter(methodContext => methodContext.contextValues.id == methodId);
-            this._searchRegexp = null;
-            delete this.queryParams.methodName;
-            this._focusOn(methodId);
-            this.updateUrl({methodId: methodId});
-        } else {
-            this._searchRegexp = this._statusConverter.createRegexpFromSearchString(this.queryParams.methodName);
-            delete this.queryParams.methodId;
-            methodContexts = this._executionStatistics.executionAggregate.methodContexts.filter(methodContext => methodContext.contextValues.name.match(this._searchRegexp));
-        }
-        return methodContexts.map(methodContext => methodContext.contextValues);
+        return this._statistics.getExecutionStatistics().then(executionStatistics => {
+            let methodContexts:IMethodContext[];
+            if (methodId) {
+                methodContexts = executionStatistics.executionAggregate.methodContexts.filter(methodContext => methodContext.contextValues.id == methodId);
+                this._searchRegexp = null;
+                delete this.queryParams.methodName;
+                this._focusOn(methodId);
+                this.updateUrl({methodId: methodId});
+            } else if (filter?.length > 0) {
+                this._searchRegexp = this._statusConverter.createRegexpFromSearchString(filter);
+                delete this.queryParams.methodId;
+                methodContexts = executionStatistics.executionAggregate.methodContexts.filter(methodContext => methodContext.contextValues.name.match(this._searchRegexp));
+            } else {
+                methodContexts = executionStatistics.executionAggregate.methodContexts;
+            }
+            return methodContexts.map(methodContext => methodContext.contextValues);
+        });
     };
 
     private _threadItemClicked(properties) {
@@ -174,6 +162,9 @@ export class Threads extends AbstractViewModel {
         // Create a Timeline
         const timeline = new Timeline(container, dataItems, groupItems, options);
         timeline.on('select',(event)=> { this._threadItemClicked(event); });
+        if (this.queryParams.methodId?.length > 0) {
+            this._focusOn(this.queryParams.methodId);
+        }
     }
 
 }

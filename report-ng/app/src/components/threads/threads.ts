@@ -124,6 +124,7 @@ export class Threads extends AbstractViewModel {
 
                 content += "<div class='item-content'>";
                 content += "<div class='item-content-head'>" + context.contextValues.name + "</div>";
+                content += "<hr>"
                 content += "<div class='item-content-body'>"
                 content += "<p class='m0'>" + this._classNamesMap[context.classContextId] + "</p>";
                 content += "<p class='m0'>(" + context.methodRunIndex + ")</p>";

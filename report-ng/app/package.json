@@ -20,6 +20,7 @@
         "@aurelia-mdc-web/icon-button": "^2.0.3",
         "@aurelia-mdc-web/image-list": "^2.0.3",
         "@aurelia-mdc-web/layout-grid": "^2.0.3",
+        "@aurelia-mdc-web/lookup": "^2.0.6",
         "@aurelia-mdc-web/ripple": "^2.0.3",
         "@aurelia-mdc-web/select": "^2.0.3",
         "@aurelia-mdc-web/switch": "^2.0.3",

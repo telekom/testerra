@@ -28,6 +28,7 @@ export function configure(aurelia: Aurelia) {
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/tab-bar'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/top-app-bar'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/typography'))
+        .plugin(PLATFORM.moduleName('@aurelia-mdc-web/lookup'))
         .globalResources([
             PLATFORM.moduleName('components/apex-chart/apex-chart'),
             PLATFORM.moduleName('components/class-name/class-name'),

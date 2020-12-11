@@ -10,15 +10,20 @@ import {Router} from "aurelia-router";
 import MethodContext = data.MethodContext;
 import ResultStatusType = data.ResultStatusType;
 import "./threads.scss";
+import IMethodContext = data.IMethodContext;
+import IContextValues = data.IContextValues;
+import {ExecutionStatistics} from "../../services/statistic-models";
 
 @autoinject()
 export class Threads extends AbstractViewModel {
     private _searchRegexp: RegExp;
-    private _loading = false;
     private _classNamesMap:{[key:string]:string};
     private _endTime;
     private _startTime;
     private _container:HTMLDivElement;
+    private _methodNameInput:HTMLElement;
+    private _executionStatistics:ExecutionStatistics;
+    private _methodLookupOptions:IContextValues[] = [];
 
     constructor(
         private _statistics: StatisticsGenerator,
@@ -35,31 +40,48 @@ export class Threads extends AbstractViewModel {
     }
 
     attached() {
-        this._filter();
+        this._loadData();
     }
 
-    private _filter() {
-        if (this.queryParams?.q?.trim().length > 0) {
-            this._searchRegexp = this._statusConverter.createRegexpFromSearchString(this.queryParams.q);
-        } else {
-            this._searchRegexp = null;
-        }
+    private _focusOn(methodId:string) {
+        console.log("focus on", methodId);
+    }
 
-        this._loading = true;
-
+    private _loadData() {
         this._classNamesMap = {};
 
         this._statistics.getExecutionStatistics().then(executionStatistics => {
+            this._executionStatistics = executionStatistics;
             this._startTime = executionStatistics.executionAggregate.executionContext.contextValues.startTime - 1000;
             this._endTime = executionStatistics.executionAggregate.executionContext.contextValues.endTime + 1000;
-            this._loading = false;
-            this.updateUrl(this.queryParams);
+            this._methodLookupOptions.splice(0,-1);
+            this._methodLookupOptions = this._methodLookupOptions.concat(executionStatistics.executionAggregate.methodContexts.map(methodContext => methodContext.contextValues));
+            if (this.queryParams.methodId) {
+                this._focusOn(this.queryParams.methodId);
+            }
             executionStatistics.classStatistics.forEach(classStatistic => {
                 this._classNamesMap[classStatistic.classContext.contextValues.id] = classStatistic.classIdentifier;
             });
             this._prepareTimelineData(executionStatistics.executionAggregate.methodContexts)
         });
     }
+
+    private _getLookupOptions = async (filter: string, methodId: string): Promise<IContextValues[]>  => {
+        console.log("filter", filter, "method", methodId);
+        let methodContexts:IMethodContext[];
+        if (methodId) {
+            methodContexts = this._executionStatistics.executionAggregate.methodContexts.filter(methodContext => methodContext.contextValues.id == methodId);
+            this._searchRegexp = null;
+            delete this.queryParams.methodName;
+            this._focusOn(methodId);
+            this.updateUrl({methodId: methodId});
+        } else {
+            this._searchRegexp = this._statusConverter.createRegexpFromSearchString(this.queryParams.methodName);
+            delete this.queryParams.methodId;
+            methodContexts = this._executionStatistics.executionAggregate.methodContexts.filter(methodContext => methodContext.contextValues.name.match(this._searchRegexp));
+        }
+        return methodContexts.map(methodContext => methodContext.contextValues);
+    };
 
     private _threadItemClicked(properties) {
         console.log("timeline element selected.", properties);

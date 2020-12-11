@@ -26,6 +26,7 @@ export abstract class AbstractViewModel {
     private _routeConfig:RouteConfig;
     private _navInstruction:NavigationInstruction;
     protected queryParams:any = {};
+    protected loading = false;
 
     activate(
         params: any,

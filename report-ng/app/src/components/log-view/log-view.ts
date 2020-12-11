@@ -71,8 +71,6 @@ export class LogView {
     }
 
     private _filter() {
-        console.log("show threads", this.showThreads)
-
         if (this.search) {
             this._filteredLogMessages = this.logMessages.filter(logMessage => {
                 const foundInMessage = logMessage.message.match(this.search);

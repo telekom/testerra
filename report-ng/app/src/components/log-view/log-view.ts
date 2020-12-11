@@ -26,6 +26,11 @@ import {data} from "../../services/report-model";
 import ILogMessage = data.ILogMessage;
 import {StatusConverter} from "../../services/status-converter";
 
+interface LogMessage extends ILogMessage {
+    index:number,
+    cause:string;
+}
+
 @autoinject()
 export class LogView {
 
@@ -34,12 +39,10 @@ export class LogView {
     ) {
     }
 
-    private _causes:{[key:number]:string} = {};
-
     @bindable({bindingMode: bindingMode.toView})
-    logMessages:ILogMessage[];
+    logMessages:LogMessage[];
 
-    private _filteredLogMessages:ILogMessage[];
+    private _filteredLogMessages:LogMessage[];
 
     @bindable({bindingMode: bindingMode.toView})
     showThreads;
@@ -49,17 +52,15 @@ export class LogView {
     @bindable({bindingMode: bindingMode.toView})
     search:RegExp;
 
-    private _toggleCause(logMessage:ILogMessage) {
-        const index = this.logMessages.indexOf(logMessage);
-        if (this._causes[index]) {
-            this._causes[index] = null;
+    private _toggleCause(logMessage:LogMessage) {
+        if (logMessage.cause) {
+            logMessage.cause = null;
         } else {
-            this._open(logMessage, index);
+            this._open(logMessage);
         }
     }
 
-    private _open(logMessage:ILogMessage, index?:number) {
-        if (!index) index = this.logMessages.indexOf(logMessage);
+    private _open(logMessage:LogMessage) {
         let msg = "";
         logMessage.stackTrace.forEach(cause => {
             if (msg.length > 0) {
@@ -67,7 +68,7 @@ export class LogView {
             }
             msg += (cause.message?.length>0?cause.message + "<br>":'') + cause.stackTraceElements.join("<br>");
         });
-        this._causes[index] = msg;
+        logMessage.cause = msg;
     }
 
     private _filter() {

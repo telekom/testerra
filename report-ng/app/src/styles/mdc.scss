@@ -54,8 +54,8 @@
 @use '@material/form-field/_index' as form-field;
 @use '@material/ripple/mdc-ripple';
 @use '@material/ripple';
-//@use '@material/menu/mdc-menu';
-//@use '@material/menu';
+@use '@material/menu/mdc-menu';
+@use '@material/menu';
 @use '@material/select/mdc-select';
 @use '@material/select/_index' as select;
 @use '@material/menu-surface/mdc-menu-surface';

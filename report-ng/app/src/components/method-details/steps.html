@@ -94,17 +94,17 @@
                                                               mark-class="warn"
                                     ></expandable-error-context>
                                 </li>
-                                <li mdc-body1 repeat.for="screenshotId of testStepAction.screenshotIds">
+                                <li mdc-body1 repeat.for="screenshot of testStepAction.screenshots">
                                     Screenshot
                                     <mdc-card
-                                        class="m1 thumbnail-fixed"
+                                        class="thumbnail-fixed"
                                         outlined
                                     >
-                                        <let file.bind="_findScreenshot(screenshotId)"></let>
-                                        <img src.bind="file.relativePath"
+<!--                                        <let file.bind="_findScreenshot(screenshotId)"></let>-->
+                                        <img src.bind="screenshot.relativePath"
                                              class="thumbnail-fixed clickable"
-                                             click.delegate="_showScreenshot(file)"
-                                             title="${file.meta.Title}"/>
+                                             click.delegate="_showScreenshot(screenshot)"
+                                             title="${screenshot.meta.Title}"/>
                                     </mdc-card>
                                 </li>
                                 <li mdc-body1>

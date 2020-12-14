@@ -8,11 +8,16 @@ import {ScreenshotsDialog} from "../screenshots-dialog/screenshots-dialog";
 import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
 import IFile = data.IFile;
 import './timeline.scss'
+import ITestStepAction = data.ITestStepAction;
+
+interface TestStepActionDetails extends ITestStepAction {
+    screenshots:IFile[];
+}
 
 @autoinject()
 export class Steps {
     private _methodDetails:IMethodDetails;
-    private _screenshots:IFile[] = [];
+    private _screenshots:IFile[];
     private _router:Router;
 
     constructor(
@@ -21,7 +26,6 @@ export class Steps {
         private _config:Config,
         private _dialogService:MdcDialogService,
     ) {
-
     }
 
     activate(
@@ -32,10 +36,15 @@ export class Steps {
         this._router = navInstruction.router;
         this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
             this._methodDetails = methodDetails;
+            this._screenshots = [];
             this._statistics.getScreenshotsFromMethodContext(methodDetails.methodContext).then(screenshots => {
-                screenshots.forEach(screenshot => {
-                    this._screenshots.push(screenshot);
-                })
+                this._methodDetails.methodContext.testSteps
+                    .flatMap(testStep => testStep.testStepActions)
+                    .forEach(testStepAction => {
+                        const details = testStepAction as TestStepActionDetails;
+                        details.screenshots = screenshots.filter(screenshot => testStepAction.screenshotIds.indexOf(screenshot.id));
+                    });
+                this._screenshots = this._screenshots.concat(screenshots);
             })
         });
     }
@@ -49,9 +58,5 @@ export class Steps {
             },
             class: "screenshot-dialog"
         });
-    }
-
-    private _findScreenshot(id:string) {
-        return this._screenshots?.find(value => value.id == id);
     }
 }

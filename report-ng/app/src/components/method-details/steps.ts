@@ -7,14 +7,13 @@ import {MdcDialogService} from '@aurelia-mdc-web/dialog';
 import {ScreenshotsDialog} from "../screenshots-dialog/screenshots-dialog";
 import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
 import IFile = data.IFile;
-import './steps.scss'
+import './timeline.scss'
 
 @autoinject()
 export class Steps {
     private _methodDetails:IMethodDetails;
     private _screenshots:IFile[] = [];
     private _router:Router;
-    private _sticky:boolean;
 
     constructor(
         private _statistics: StatisticsGenerator,
@@ -54,22 +53,5 @@ export class Steps {
 
     private _findScreenshot(id:string) {
         return this._screenshots?.find(value => value.id == id);
-    }
-
-    private _gotoStep(stepIndex:number, actionIndex:number=0) {
-        let elementsByName = window.document.getElementsByName(stepIndex+(actionIndex>0?"."+actionIndex:""));
-        if (elementsByName.length > 0) {
-            elementsByName[0].scrollIntoView()
-        }
-    }
-
-    private _stepVisibility($event:CustomEvent) {
-        // const anchor = $event.target as HTMLAnchorElement;
-        // const parts = anchor.getAttribute("name").split(".");
-        // console.log("enable", parts);
-    }
-
-    private _stickyStepNav($event:CustomEvent) {
-        this._sticky = $event.detail;
     }
 }

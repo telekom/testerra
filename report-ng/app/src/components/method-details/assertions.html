@@ -1,0 +1,33 @@
+<template>
+    <require from="./expandable-error-context.html"></require>
+    <mdc-layout-grid class="pt0">
+        <mdc-layout-grid-inner>
+            <mdc-layout-grid-cell span="6">
+                <mdc-card if.bind="_collectedAssertions.length>0">
+                    <div mdc-subtitle2 class="card-headline">Collected assertions</div>
+                    <div repeat.for="errorContext of _collectedAssertions">
+                        <mdc-list-divider></mdc-list-divider>
+                        <expandable-error-context error-context.bind="errorContext"
+                                                  status-class="status-failed"
+                                                  mark-class="error"
+                        ></expandable-error-context>
+                    </div>
+
+                </mdc-card>
+                <alert else><div mdc-headline4>No collected assertions</div></alert>
+            </mdc-layout-grid-cell>
+            <mdc-layout-grid-cell span="6">
+                <mdc-card if.bind="_optionalAssertions.length>0">
+                    <div mdc-subtitle2 class="card-headline">Optional assertions</div>
+                    <mdc-list-divider></mdc-list-divider>
+                    <expandable-error-context error-context.bind="errorContext"
+                                              repeat.for="errorContext of _optionalAssertions"
+                                              status-class="status-skipped"
+                                              mark-class="warn"
+                    ></expandable-error-context>
+                </mdc-card>
+                <alert else><div mdc-headline4>No optional assertions</div></alert>
+            </mdc-layout-grid-cell>
+        </mdc-layout-grid-inner>
+    </mdc-layout-grid>
+</template>

@@ -1,4 +1,5 @@
 <template>
+    <require from="./expandable-error-context.html"></require>
     <mdc-layout-grid class="pt0">
         <mdc-layout-grid-inner>
             <mdc-layout-grid-cell span="3">
@@ -19,17 +20,23 @@
                     <div mdc-headline5 class.bind="stepIndex!=1?'mt1':''" class="step-headline">${stepIndex} ${testStep.name}</div>
                     <div repeat.for="testStepAction of testStep.testStepActions">
                         <div if.bind="!$first&&!$last" mdc-body1 class="mt1 step-headline">${stepIndex}.${$index+1} ${testStepAction.name}</div>
-                        <mdc-card class="mt1" if.bind="testStepAction.optionalAssertions.length > 0">
-                            <div mdc-subtitle2 class="card-headline">Failed optional assertions</div>
+                        <mdc-card class="mt1" if.bind="testStepAction.collectedAssertions.length > 0">
+                            <div mdc-subtitle2 class="card-headline">Collected assertions</div>
                             <mdc-list-divider></mdc-list-divider>
-                            <mdc-expandable repeat.for="errorContext of testStepAction.optionalAssertions"
-                                            class="card-expandable status-skipped"
-                            >
-                                <div slot="caption" mdc-body2><class-name namespace.bind="errorContext.stackTrace[0].className"><span if.bind="errorContext.stackTrace[0].message">: ${errorContext.stackTrace[0].message}</span></class-name></div>
-                                <code-view source.bind="errorContext.scriptSource"
-                                           mark-class="warn"
-                                ></code-view>
-                            </mdc-expandable>
+                            <expandable-error-context error-context.bind="errorContext"
+                                                      repeat.for="errorContext of testStepAction.collectedAssertions"
+                                                      status-class="status-failed"
+                                                      mark-class="error"
+                            ></expandable-error-context>
+                        </mdc-card>
+                        <mdc-card class="mt1" if.bind="testStepAction.optionalAssertions.length > 0">
+                            <div mdc-subtitle2 class="card-headline">Optional assertions</div>
+                            <mdc-list-divider></mdc-list-divider>
+                            <expandable-error-context error-context.bind="errorContext"
+                                                      repeat.for="errorContext of testStepAction.optionalAssertions"
+                                                      status-class="status-skipped"
+                                                      mark-class="warn"
+                            ></expandable-error-context>
                         </mdc-card>
                         <mdc-card class="mt1" if.bind="_screenshots.length>0">
                             <div mdc-subtitle2 class="card-headline">Screenshots</div>

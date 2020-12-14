@@ -37,6 +37,16 @@ export class Method {
                 }
             },
             {
+                route: 'assertions',
+                moduleId: PLATFORM.moduleName('./assertions'),
+                nav: true,
+                name: "assertions",
+                title: 'Assertions',
+                settings: {
+                    icon: "rule",
+                }
+            },
+            {
                 route: 'steps',
                 moduleId: PLATFORM.moduleName('./steps'),
                 nav: true,
@@ -89,26 +99,57 @@ export class Method {
                         break;
                     }
                     case "dependencies": {
-                        routeConfig.settings.count = methodDetails.methodContext.relatedMethodContextIds.length + methodDetails.methodContext.dependsOnMethodContextIds.length;
+                        const count = methodDetails.methodContext.relatedMethodContextIds.length + methodDetails.methodContext.dependsOnMethodContextIds.length;
+                        if (count > 0) {
+                            routeConfig.nav = true;
+                            routeConfig.settings.count = count;
+                        } else {
+                            routeConfig.nav = false;
+                        }
                         break;
                     }
                     case "videos": {
-                        routeConfig.settings.count = methodDetails.methodContext.videoIds.length;
+                        if (methodDetails.methodContext.videoIds.length == 0) {
+                            routeConfig.nav = false;
+                        } else {
+                            routeConfig.settings.count = methodDetails.methodContext.videoIds.length;
+                            routeConfig.nav = true;
+                        }
+                        break;
                     }
                     case "details": {
-                        routeConfig.settings.count = methodDetails.numDetails;
+                        if (methodDetails.numDetails > 0) {
+                            routeConfig.nav = true;
+                            routeConfig.settings.count = methodDetails.numDetails;
+                        } else {
+                            routeConfig.nav = false;
+                        }
+                        break;
+                    }
+                    case "assertions": {
+                        let allCollected = 0;
+                        let allOptional = 0;
+                        methodDetails.methodContext.testSteps
+                            .flatMap(testStep => testStep.testStepActions)
+                            .forEach(testStepAction => {
+                                allCollected += testStepAction.collectedAssertions.length;
+                                allOptional += testStepAction.optionalAssertions.length;
+                            });
+                        if (allCollected > 0 ||allOptional > 0) {
+                            routeConfig.nav = true;
+                            routeConfig.settings.count = `${allCollected}/${allOptional}`;
+                        } else {
+                            routeConfig.nav = false;
+                        }
+                        break;
                     }
                 }
             });
 
             if (!routeConfig.hasChildRouter) {
-                console.log("route to default content");
                 const navOptions = {replace:true};
-                if (this._methodDetails.numDetails > 0) {
-                    this._router.navigateToRoute("details", {}, navOptions);
-                } else {
-                    this._router.navigateToRoute("steps", {}, navOptions);
-                }
+                const enabledRouteConfig = this._router.routes.find(routeConfig => routeConfig.nav);
+                this._router.navigateToRoute(enabledRouteConfig.name, {}, navOptions);
             }
         });
     }

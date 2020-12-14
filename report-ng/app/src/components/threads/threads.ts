@@ -25,7 +25,8 @@ export class Threads extends AbstractViewModel {
     constructor(
         private _statistics: StatisticsGenerator,
         private _statusConverter: StatusConverter,
-        private _router: Router
+        private _router: Router,
+        private _timeline
     ) {
         super();
     }
@@ -49,6 +50,8 @@ export class Threads extends AbstractViewModel {
 
     private _focusOn(methodId:string) {
         console.log("focus on", methodId);
+        this._timeline.setSelection(methodId, {focus: "true"});
+        console.log(this._timeline.getSelection());
     }
 
     private _getLookupOptions = async (filter: string, methodId: string): Promise<IContextValues[]>  => {
@@ -73,7 +76,6 @@ export class Threads extends AbstractViewModel {
 
     private _threadItemClicked(properties) {
         console.log("timeline element selected.", properties);
-        console.log(properties.items[0]);
         let methodId = properties.items[0].split("_")[0];
         this._router.navigateToRoute('method', {methodId: methodId})
     }
@@ -112,7 +114,6 @@ export class Threads extends AbstractViewModel {
 
                 content += "<div class='item-content'>";
                 content += "<div class='item-content-head'>" + context.contextValues.name + "</div>";
-                content += "<hr>"
                 content += "<div class='item-content-body'>"
                 content += "<p class='m0'>" + this._classNamesMap[context.classContextId] + "</p>";
                 content += "<p class='m0'>(" + context.methodRunIndex + ")</p>";
@@ -120,7 +121,7 @@ export class Threads extends AbstractViewModel {
                 content += "</div>";
 
                 dataItems.push({
-                    id: context.contextValues.id + "_" + threadName + "_" + index,
+                    id: context.contextValues.id,
                     content: content,
                     start: context.contextValues.startTime,
                     end: context.contextValues.endTime,
@@ -130,6 +131,7 @@ export class Threads extends AbstractViewModel {
                     title: content
                 });
             });
+
         });
 
         groupItems.sort((item1, item2) => {
@@ -160,8 +162,8 @@ export class Threads extends AbstractViewModel {
         };
 
         // Create a Timeline
-        const timeline = new Timeline(container, dataItems, groupItems, options);
-        timeline.on('select',(event)=> { this._threadItemClicked(event); });
+        this._timeline = new Timeline(container, dataItems, groupItems, options);
+        this._timeline.on('select',(event)=> { this._threadItemClicked(event); });
         if (this.queryParams.methodId?.length > 0) {
             this._focusOn(this.queryParams.methodId);
         }

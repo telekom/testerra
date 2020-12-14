@@ -2,7 +2,7 @@ import {autoinject, bindable} from "aurelia-framework";
 import {StatusConverter} from "../../services/status-converter";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {ExecutionStatistics} from "../../services/statistic-models";
-import ApexOptions = ApexCharts.ApexOptions;
+import {ApexOptions} from "apexcharts";
 
 @autoinject
 export class TestResultsCard {

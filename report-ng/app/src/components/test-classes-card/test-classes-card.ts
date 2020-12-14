@@ -4,12 +4,14 @@ import {StatusConverter} from "../../services/status-converter";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {ClassStatistics} from "../../services/statistic-models";
 import ResultStatusType = data.ResultStatusType;
+import {ApexOptions} from "apexcharts";
+
 
 @autoinject
 export class TestClassesCard {
     @bindable filter;
     @bindable classStatistics: ClassStatistics[];
-    private _apexBarOptions: any = undefined;
+    private _apexBarOptions: ApexOptions = undefined;
     private _currentFilter;
 
 

@@ -11,18 +11,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 div.container {
   /*height: 100%;*/
-  display: flex;
-  flex: auto;
-  flex-direction: column;
-  max-height: 100%;
+  //display: flex;
+  //flex: auto;
+  //flex-direction: column;
+  //max-height: 100%;
     margin-left: 24px;
     margin-right: 24px;
 }
 
 #timeline {
   position: relative;
-  display: table;
-  height: 100%;
+  //display: table;
+  //height: 100%;
   //margin-left: auto;
   //margin-right: auto;
   //margin-top: 5rem;
@@ -45,6 +45,7 @@ div.container {
   margin: 0;
     text-align: right;
     width:25%;
+    top: 24px;
   //font-size: 1em;
   //font-weight: 400;
 }

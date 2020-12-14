@@ -1,73 +1,5 @@
 <template>
     <require from="./expandable-error-context.html"></require>
-<!--    <mdc-layout-grid class="pt0">-->
-<!--        <mdc-layout-grid-inner>-->
-<!--            <mdc-layout-grid-cell span="3">-->
-<!--                <mdc-card top-position="offset:16;" class.bind="_sticky?'sticky':''" reached.delegate="_stickyStepNav($event)">-->
-<!--                    <mdc-list two-line single-selection>-->
-<!--                        <mdc-list-item repeat.for="testStep of _methodDetails.methodContext.testSteps" click.delegate="_gotoStep($index+1)">-->
-<!--                            &lt;!&ndash;mdc-icon mdc-list-item-graphic>read_more</mdc-icon&ndash;&gt;-->
-<!--                            <mdc-list-item-primary-text>${$index+1} ${testStep.name}</mdc-list-item-primary-text>-->
-<!--                            <mdc-list-item-secondary-text>${testStep.testStepActions[0].timestamp|dateFormat}</mdc-list-item-secondary-text>-->
-<!--                        </mdc-list-item>-->
-<!--                    </mdc-list>-->
-<!--                </mdc-card>-->
-<!--            </mdc-layout-grid-cell>-->
-<!--            <mdc-layout-grid-cell span="9">-->
-<!--                <div repeat.for="testStep of _methodDetails.methodContext.testSteps">-->
-<!--                    <let step-index.bind="$index+1"></let>-->
-<!--                    <a name="${stepIndex}" visible.delegate="_stepVisibility($event)" become-visible></a>-->
-<!--                    <div mdc-headline5 class.bind="stepIndex!=1?'mt1':''" class="step-headline">${stepIndex} ${testStep.name}</div>-->
-<!--                    <div repeat.for="testStepAction of testStep.testStepActions">-->
-<!--                        <div if.bind="!$first&&!$last" mdc-body1 class="mt1 step-headline">${stepIndex}.${$index+1} ${testStepAction.name}</div>-->
-<!--                        <mdc-card class="mt1" if.bind="testStepAction.collectedAssertions.length > 0">-->
-<!--                            <div mdc-subtitle2 class="card-headline">Collected assertions</div>-->
-<!--                            <mdc-list-divider></mdc-list-divider>-->
-<!--                            <expandable-error-context error-context.bind="errorContext"-->
-<!--                                                      repeat.for="errorContext of testStepAction.collectedAssertions"-->
-<!--                                                      status-class="status-failed"-->
-<!--                                                      mark-class="error"-->
-<!--                            ></expandable-error-context>-->
-<!--                        </mdc-card>-->
-<!--                        <mdc-card class="mt1" if.bind="testStepAction.optionalAssertions.length > 0">-->
-<!--                            <div mdc-subtitle2 class="card-headline">Optional assertions</div>-->
-<!--                            <mdc-list-divider></mdc-list-divider>-->
-<!--                            <expandable-error-context error-context.bind="errorContext"-->
-<!--                                                      repeat.for="errorContext of testStepAction.optionalAssertions"-->
-<!--                                                      status-class="status-skipped"-->
-<!--                                                      mark-class="warn"-->
-<!--                            ></expandable-error-context>-->
-<!--                        </mdc-card>-->
-<!--                        <mdc-card class="mt1" if.bind="_screenshots.length>0">-->
-<!--                            <div mdc-subtitle2 class="card-headline">Screenshots</div>-->
-<!--                            <mdc-list-divider></mdc-list-divider>-->
-<!--                            <mdc-card-->
-<!--                                class="m1 thumbnail-fixed"-->
-<!--                                repeat.for="screenshotId of testStepAction.screenshotIds"-->
-<!--                                outlined-->
-<!--                            >-->
-<!--                                <let file.bind="_findScreenshot(screenshotId)"></let>-->
-<!--                                <img src.bind="file.relativePath"-->
-<!--                                     class="thumbnail-fixed clickable"-->
-<!--                                     click.delegate="_showScreenshot(file)"-->
-<!--                                     title="${file.meta.Title}"/>-->
-<!--                            </mdc-card>-->
-<!--                        </mdc-card>-->
-<!--                        <div class="mt1">-->
-<!--                            <log-view log-messages.bind="testStepAction.logMessages"></log-view>-->
-<!--                        </div>-->
-<!--&lt;!&ndash;                        <mdc-card class="mt1">&ndash;&gt;-->
-<!--&lt;!&ndash;                            <div mdc-subtitle2 class="card-headline">Logs</div>&ndash;&gt;-->
-<!--&lt;!&ndash;                            <mdc-list-divider></mdc-list-divider>&ndash;&gt;-->
-<!--&lt;!&ndash;                            <log-view log-messages.bind="testStepAction.logMessages"></log-view>&ndash;&gt;-->
-<!--&lt;!&ndash;                        </mdc-card>&ndash;&gt;-->
-<!--                    </div>-->
-
-<!--                </div>-->
-<!--            </mdc-layout-grid-cell>-->
-<!--        </mdc-layout-grid-inner>-->
-<!--    </mdc-layout-grid>-->
-
     <div class="container">
         <div id="timeline">
             <div class="timeline">
@@ -94,17 +26,17 @@
                                                               mark-class="warn"
                                     ></expandable-error-context>
                                 </li>
-                                <li mdc-body1 repeat.for="screenshotId of testStepAction.screenshotIds">
+                                <li mdc-body1 repeat.for="screenshot of testStepAction.screenshots">
                                     Screenshot
                                     <mdc-card
-                                        class="m1 thumbnail-fixed"
+                                        class="thumbnail-fixed"
                                         outlined
                                     >
-                                        <let file.bind="_findScreenshot(screenshotId)"></let>
-                                        <img src.bind="file.relativePath"
+<!--                                        <let file.bind="_findScreenshot(screenshotId)"></let>-->
+                                        <img src.bind="screenshot.relativePath"
                                              class="thumbnail-fixed clickable"
-                                             click.delegate="_showScreenshot(file)"
-                                             title="${file.meta.Title}"/>
+                                             click.delegate="_showScreenshot(screenshot)"
+                                             title="${screenshot.meta.Title}"/>
                                     </mdc-card>
                                 </li>
                                 <li mdc-body1>

@@ -20,6 +20,7 @@ export function configure(aurelia: Aurelia) {
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/form-field'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/icon-button'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/layout-grid'))
+        .plugin(PLATFORM.moduleName('@aurelia-mdc-web/linear-progress'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/list'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/lookup'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/ripple'))

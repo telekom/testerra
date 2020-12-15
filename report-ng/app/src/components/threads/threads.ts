@@ -3,15 +3,15 @@ import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import {AbstractViewModel} from "../abstract-view-model";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {StatusConverter} from "../../services/status-converter";
-import { DataSet, Timeline } from "vis-timeline/standalone";
+import { Timeline } from "vis-timeline/standalone";
 import "vis-timeline/styles/vis-timeline-graph2d.css";
 import {data} from "../../services/report-model";
 import {Router} from "aurelia-router";
 import MethodContext = data.MethodContext;
 import ResultStatusType = data.ResultStatusType;
-import "./threads.scss";
 import IMethodContext = data.IMethodContext;
 import IContextValues = data.IContextValues;
+import "./threads.scss";
 
 @autoinject()
 export class Threads extends AbstractViewModel {
@@ -19,14 +19,15 @@ export class Threads extends AbstractViewModel {
     private _classNamesMap:{[key:string]:string};
     private _endTime;
     private _startTime;
+    private _loading: boolean;
     private _container:HTMLDivElement;
     private _methodNameInput:HTMLElement;
+    private _timeline;
 
     constructor(
         private _statistics: StatisticsGenerator,
         private _statusConverter: StatusConverter,
-        private _router: Router,
-        private _timeline
+        private _router: Router
     ) {
         super();
     }
@@ -37,6 +38,7 @@ export class Threads extends AbstractViewModel {
     }
 
     attached() {
+        this._loading = true;
         this._statistics.getExecutionStatistics().then(executionStatistics => {
             this._classNamesMap = {};
             this._startTime = executionStatistics.executionAggregate.executionContext.contextValues.startTime - 1000;
@@ -163,10 +165,14 @@ export class Threads extends AbstractViewModel {
 
         // Create a Timeline
         this._timeline = new Timeline(container, dataItems, groupItems, options);
-        this._timeline.on('select',(event)=> { this._threadItemClicked(event); });
+        this._timeline.on('select',(event) => { this._threadItemClicked(event); });
         if (this.queryParams.methodId?.length > 0) {
             this._focusOn(this.queryParams.methodId);
         }
+
+        this._timeline.on('changed', () => {
+            this._loading = false;
+        })
     }
 
 }

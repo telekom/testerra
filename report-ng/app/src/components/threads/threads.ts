@@ -22,6 +22,7 @@ export class Threads extends AbstractViewModel {
     private _loading: boolean;
     private _container:HTMLDivElement;
     private _methodNameInput:HTMLElement;
+    private _inputValue;
     private _timeline;
 
     constructor(
@@ -48,6 +49,14 @@ export class Threads extends AbstractViewModel {
             });
             this._prepareTimelineData(executionStatistics.executionAggregate.methodContexts)
         });
+    }
+
+    inputValueChanged(){
+        if (this._inputValue.length == 0){
+            console.log("input value is empty");
+            this.updateUrl({});
+            this._timeline.fit();
+        }
     }
 
     private _focusOn(methodId:string) {
@@ -161,6 +170,9 @@ export class Threads extends AbstractViewModel {
             zoomMax:8.64e+7,
             //Min Zoom set to be 10 Millisecond
             zoomMin:10,
+            margin: {
+                item: { horizontal: 2 }
+            }
         };
 
         // Create a Timeline
@@ -168,7 +180,10 @@ export class Threads extends AbstractViewModel {
         this._timeline.on('select',(event) => { this._threadItemClicked(event); });
         if (this.queryParams.methodId?.length > 0) {
             this._focusOn(this.queryParams.methodId);
+        } else {
+            this._timeline.redraw();
         }
+
 
         this._timeline.on('changed', () => {
             this._loading = false;

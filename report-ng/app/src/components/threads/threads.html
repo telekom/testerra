@@ -9,7 +9,8 @@
                                     outlined
                                     ref="_methodNameInput"
                                     class="w100"
-                                    value.bind="queryParams.methodName"
+                                    value.bind="_inputValue"
+                                    input.delegate="inputValueChanged()"
                     ></mdc-text-field>
                     <mdc-text-field-helper-line></mdc-text-field-helper-line>
                     <mdc-lookup options.bind="_getLookupOptions"

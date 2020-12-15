@@ -7,13 +7,14 @@
           <mdc-icon class="sr1">timer</mdc-icon>${_duration|durationFormat:"h[h] m[min] s[s] S[ms]"}
         </div>
         <mdc-list-divider></mdc-list-divider>
-        <ul class="mdc-list mdc-list--dense">
+        <ul class="mdc-list mdc-list--dense timings">
             <li class="mdc-list-item reset-cursor">
-                <span class="secondary sr1">Started</span>${start | dateFormat}
+                <span class="secondary time-column sr1">Started</span>${start | dateFormat}
             </li>
             <li class="mdc-list-item reset-cursor">
-                <div if.bind="_hasEnded"><span class="secondary sr1">Ended</span> ${end | dateFormat}</div>
-                <span else class="secondary sr1">Running...</span>
+                <span class="secondary time-column sr1">Ended</span> ${end | dateFormat}
+<!--                <div if.bind="_hasEnded"><span class="secondary time-column">Ended</span> ${end | dateFormat}</div>-->
+<!--                <span else class="secondary">Running...</span>-->
             </li>
         </ul>
     </mdc-card>

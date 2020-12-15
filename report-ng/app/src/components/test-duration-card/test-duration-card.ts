@@ -1,5 +1,6 @@
 import {autoinject} from "aurelia-framework";
 import {bindable} from "aurelia-templating";
+import './test-duration-card.scss';
 
 @autoinject
 export class TestDurationCard {

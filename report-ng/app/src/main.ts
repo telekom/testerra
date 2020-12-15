@@ -52,7 +52,7 @@ export function configure(aurelia: Aurelia) {
         aurelia.use.developmentLogging("debug");
     }
 
-    DateFormatValueConverter.setDefaultFormat("ddd D. MMM YY HH:mm:ss ZZ");
+    DateFormatValueConverter.setDefaultFormat("ddd MMM D HH:mm:ss ZZ YYYY");
 
     aurelia.start().then(() => aurelia.setRoot(PLATFORM.moduleName('app')));
 }

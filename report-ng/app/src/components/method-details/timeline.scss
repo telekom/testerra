@@ -33,7 +33,7 @@ div.container {
   position: absolute;
   top: .5rem;
   bottom: 0rem;
-  left: 25%;
+  left: 20%;
   z-index: 1;
   background: #C5C5C5;
     margin-left: 21px;
@@ -44,7 +44,7 @@ div.container {
   //top: 5rem;
   margin: 0;
     text-align: right;
-    width:25%;
+    width:20%;
     top: 24px;
   //font-size: 1em;
   //font-weight: 400;
@@ -65,8 +65,8 @@ div.container {
   position: relative;
   padding-bottom: 1.25em;
   margin-bottom: 2.2em;
-    left:25%;
-    width:75%;
+    left:20%;
+    width:60%;
 }
 //#timeline section.step section h4 {
 //  //position: absolute;
@@ -119,11 +119,12 @@ div.container {
 #timeline section.step section ul li {
   margin-left: .5rem;
 }
+
 #timeline section.step section ul li:before {
   content: '·';
   margin-left: -.5rem;
   padding-right: .3rem;
 }
-#timeline section.step section ul li:not(:first-child) {
-  margin-top: .4rem;
+#timeline section.step section ul div li {
+    margin-top: 1em;
 }

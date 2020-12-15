@@ -126,7 +126,6 @@ export class StatisticsGenerator {
                 if (value.screenshotId) {
                     allFilePromises.push(this._dataLoader.getFile(value.screenshotId).then(file => {
                         file.relativePath = this._config.correctRelativePath(file.relativePath);
-                        //screenshots[file.id] = file;
                         screenshots.push(file);
                     }));
                 }

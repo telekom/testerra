@@ -9,7 +9,7 @@ import IFile = data.IFile;
 @autoinject()
 export class Method {
     private _router:Router;
-    private _screenshots:IFile[];
+    private _allScreenshots:IFile[];
     private _lastScreenshot:IFile;
     private _methodDetails:IMethodDetails;
 
@@ -87,10 +87,9 @@ export class Method {
     ) {
         this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
             this._methodDetails = methodDetails;
-            console.log(methodDetails);
             this._statistics.getScreenshotsFromMethodContext(methodDetails.methodContext).then(screenshots => {
-                this._screenshots = screenshots;
-                this._lastScreenshot = this._screenshots.find(() => true);
+                this._allScreenshots = screenshots;
+                this._lastScreenshot = this._allScreenshots.reverse().find(() => true);
             })
 
             this._router.routes.forEach(routeConfig => {
@@ -170,7 +169,7 @@ export class Method {
             viewModel: ScreenshotsDialog,
             model: {
                 current: file,
-                screenshots: this._screenshots
+                screenshots: this._allScreenshots
             },
             class: "screenshot-dialog"
         });

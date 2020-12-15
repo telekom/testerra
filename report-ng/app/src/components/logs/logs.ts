@@ -58,6 +58,7 @@ export class Logs extends AbstractViewModel {
                 .flatMap(value => value.testSteps)
                 .flatMap(value => value.actions)
                 .flatMap(value => value.entries)
+                .filter(value => value.logMessage)
                 .map(value => value.logMessage)
                 .map(addLevel)
                 .filter(filterPredicate)

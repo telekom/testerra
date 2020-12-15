@@ -1,8 +1,8 @@
-<template bindable="errorContext,statusClass,markClass">
-    <mdc-expandable class="card-expandable" class.bind="statusClass">
+<template bindable="errorContext">
+    <mdc-expandable class="card-expandable" class.bind="errorContext.optional?'status-skipped':'status-failed'">
         <div slot="caption" mdc-body2><class-name namespace.bind="errorContext.stackTrace[0].className"><span if.bind="errorContext.stackTrace[0].message">: ${errorContext.stackTrace[0].message}</span></class-name></div>
         <code-view source.bind="errorContext.scriptSource"
-                   mark-class.bind="markClass"
+                   mark-class.bind="errorContext.optional?'warn':'error'"
         ></code-view>
     </mdc-expandable>
 </template>

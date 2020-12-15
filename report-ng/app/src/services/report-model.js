@@ -23,6 +23,7 @@ export const data = $root.data = (() => {
          * @memberof data
          * @interface ISuiteContext
          * @property {data.IContextValues|null} [contextValues] SuiteContext contextValues
+         * @property {Array.<string>|null} [testContextIds] SuiteContext testContextIds
          * @property {string|null} [executionContextId] SuiteContext executionContextId
          */
 
@@ -35,6 +36,7 @@ export const data = $root.data = (() => {
          * @param {data.ISuiteContext=} [p] Properties to set
          */
         function SuiteContext(p) {
+            this.testContextIds = [];
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -48,6 +50,14 @@ export const data = $root.data = (() => {
          * @instance
          */
         SuiteContext.prototype.contextValues = null;
+
+        /**
+         * SuiteContext testContextIds.
+         * @member {Array.<string>} testContextIds
+         * @memberof data.SuiteContext
+         * @instance
+         */
+        SuiteContext.prototype.testContextIds = $util.emptyArray;
 
         /**
          * SuiteContext executionContextId.
@@ -78,6 +88,11 @@ export const data = $root.data = (() => {
                 case 1:
                     m.contextValues = $root.data.ContextValues.decode(r, r.uint32());
                     break;
+                case 6:
+                    if (!(m.testContextIds && m.testContextIds.length))
+                        m.testContextIds = [];
+                    m.testContextIds.push(r.string());
+                    break;
                 case 7:
                     m.executionContextId = r.string();
                     break;
@@ -99,8 +114,10 @@ export const data = $root.data = (() => {
          * @memberof data
          * @interface IClassContext
          * @property {data.IContextValues|null} [contextValues] ClassContext contextValues
+         * @property {Array.<string>|null} [methodContextIds] ClassContext methodContextIds
          * @property {string|null} [fullClassName] ClassContext fullClassName
          * @property {string|null} [testContextId] ClassContext testContextId
+         * @property {string|null} [executionContextId] ClassContext executionContextId
          * @property {string|null} [testContextName] ClassContext testContextName
          */
 
@@ -113,6 +130,7 @@ export const data = $root.data = (() => {
          * @param {data.IClassContext=} [p] Properties to set
          */
         function ClassContext(p) {
+            this.methodContextIds = [];
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -126,6 +144,14 @@ export const data = $root.data = (() => {
          * @instance
          */
         ClassContext.prototype.contextValues = null;
+
+        /**
+         * ClassContext methodContextIds.
+         * @member {Array.<string>} methodContextIds
+         * @memberof data.ClassContext
+         * @instance
+         */
+        ClassContext.prototype.methodContextIds = $util.emptyArray;
 
         /**
          * ClassContext fullClassName.
@@ -142,6 +168,14 @@ export const data = $root.data = (() => {
          * @instance
          */
         ClassContext.prototype.testContextId = "";
+
+        /**
+         * ClassContext executionContextId.
+         * @member {string} executionContextId
+         * @memberof data.ClassContext
+         * @instance
+         */
+        ClassContext.prototype.executionContextId = "";
 
         /**
          * ClassContext testContextName.
@@ -172,11 +206,19 @@ export const data = $root.data = (() => {
                 case 1:
                     m.contextValues = $root.data.ContextValues.decode(r, r.uint32());
                     break;
+                case 6:
+                    if (!(m.methodContextIds && m.methodContextIds.length))
+                        m.methodContextIds = [];
+                    m.methodContextIds.push(r.string());
+                    break;
                 case 7:
                     m.fullClassName = r.string();
                     break;
                 case 9:
                     m.testContextId = r.string();
+                    break;
+                case 10:
+                    m.executionContextId = r.string();
                     break;
                 case 11:
                     m.testContextName = r.string();
@@ -199,7 +241,9 @@ export const data = $root.data = (() => {
          * @memberof data
          * @interface ITestContext
          * @property {data.IContextValues|null} [contextValues] TestContext contextValues
+         * @property {Array.<string>|null} [classContextIds] TestContext classContextIds
          * @property {string|null} [suiteContextId] TestContext suiteContextId
+         * @property {string|null} [executionContextId] TestContext executionContextId
          */
 
         /**
@@ -211,6 +255,7 @@ export const data = $root.data = (() => {
          * @param {data.ITestContext=} [p] Properties to set
          */
         function TestContext(p) {
+            this.classContextIds = [];
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -226,12 +271,28 @@ export const data = $root.data = (() => {
         TestContext.prototype.contextValues = null;
 
         /**
+         * TestContext classContextIds.
+         * @member {Array.<string>} classContextIds
+         * @memberof data.TestContext
+         * @instance
+         */
+        TestContext.prototype.classContextIds = $util.emptyArray;
+
+        /**
          * TestContext suiteContextId.
          * @member {string} suiteContextId
          * @memberof data.TestContext
          * @instance
          */
         TestContext.prototype.suiteContextId = "";
+
+        /**
+         * TestContext executionContextId.
+         * @member {string} executionContextId
+         * @memberof data.TestContext
+         * @instance
+         */
+        TestContext.prototype.executionContextId = "";
 
         /**
          * Decodes a TestContext message from the specified reader or buffer.
@@ -254,8 +315,16 @@ export const data = $root.data = (() => {
                 case 1:
                     m.contextValues = $root.data.ContextValues.decode(r, r.uint32());
                     break;
+                case 6:
+                    if (!(m.classContextIds && m.classContextIds.length))
+                        m.classContextIds = [];
+                    m.classContextIds.push(r.string());
+                    break;
                 case 7:
                     m.suiteContextId = r.string();
+                    break;
+                case 8:
+                    m.executionContextId = r.string();
                     break;
                 default:
                     r.skipType(t & 7);
@@ -275,6 +344,7 @@ export const data = $root.data = (() => {
          * @memberof data
          * @interface IExecutionContext
          * @property {data.IContextValues|null} [contextValues] ExecutionContext contextValues
+         * @property {Array.<string>|null} [suiteContextIds] ExecutionContext suiteContextIds
          * @property {data.IRunConfig|null} [runConfig] ExecutionContext runConfig
          * @property {string|null} [project_Id] ExecutionContext project_Id
          * @property {string|null} [job_Id] ExecutionContext job_Id
@@ -294,6 +364,7 @@ export const data = $root.data = (() => {
          * @param {data.IExecutionContext=} [p] Properties to set
          */
         function ExecutionContext(p) {
+            this.suiteContextIds = [];
             this.exclusiveSessionContextIds = [];
             this.logMessages = [];
             if (p)
@@ -309,6 +380,14 @@ export const data = $root.data = (() => {
          * @instance
          */
         ExecutionContext.prototype.contextValues = null;
+
+        /**
+         * ExecutionContext suiteContextIds.
+         * @member {Array.<string>} suiteContextIds
+         * @memberof data.ExecutionContext
+         * @instance
+         */
+        ExecutionContext.prototype.suiteContextIds = $util.emptyArray;
 
         /**
          * ExecutionContext runConfig.
@@ -395,6 +474,11 @@ export const data = $root.data = (() => {
                 case 1:
                     m.contextValues = $root.data.ContextValues.decode(r, r.uint32());
                     break;
+                case 6:
+                    if (!(m.suiteContextIds && m.suiteContextIds.length))
+                        m.suiteContextIds = [];
+                    m.suiteContextIds.push(r.string());
+                    break;
                 case 7:
                     m.runConfig = $root.data.RunConfig.decode(r, r.uint32());
                     break;
@@ -449,15 +533,19 @@ export const data = $root.data = (() => {
          * @property {string|null} [threadName] MethodContext threadName
          * @property {data.FailureCorridorValue|null} [failureCorridorValue] MethodContext failureCorridorValue
          * @property {string|null} [classContextId] MethodContext classContextId
+         * @property {string|null} [executionContextId] MethodContext executionContextId
          * @property {Array.<string>|null} [infos] MethodContext infos
          * @property {string|null} [priorityMessage] MethodContext priorityMessage
          * @property {Array.<string>|null} [relatedMethodContextIds] MethodContext relatedMethodContextIds
          * @property {Array.<string>|null} [dependsOnMethodContextIds] MethodContext dependsOnMethodContextIds
          * @property {data.IErrorContext|null} [errorContext] MethodContext errorContext
          * @property {Array.<data.ITestStep>|null} [testSteps] MethodContext testSteps
+         * @property {string|null} [testContextId] MethodContext testContextId
+         * @property {string|null} [suiteContextId] MethodContext suiteContextId
          * @property {Array.<string>|null} [sessionContextIds] MethodContext sessionContextIds
          * @property {Array.<string>|null} [videoIds] MethodContext videoIds
          * @property {string|null} [customContextJson] MethodContext customContextJson
+         * @property {number|null} [failedStepIndex] MethodContext failedStepIndex
          */
 
         /**
@@ -556,6 +644,14 @@ export const data = $root.data = (() => {
         MethodContext.prototype.classContextId = "";
 
         /**
+         * MethodContext executionContextId.
+         * @member {string} executionContextId
+         * @memberof data.MethodContext
+         * @instance
+         */
+        MethodContext.prototype.executionContextId = "";
+
+        /**
          * MethodContext infos.
          * @member {Array.<string>} infos
          * @memberof data.MethodContext
@@ -604,6 +700,22 @@ export const data = $root.data = (() => {
         MethodContext.prototype.testSteps = $util.emptyArray;
 
         /**
+         * MethodContext testContextId.
+         * @member {string} testContextId
+         * @memberof data.MethodContext
+         * @instance
+         */
+        MethodContext.prototype.testContextId = "";
+
+        /**
+         * MethodContext suiteContextId.
+         * @member {string} suiteContextId
+         * @memberof data.MethodContext
+         * @instance
+         */
+        MethodContext.prototype.suiteContextId = "";
+
+        /**
          * MethodContext sessionContextIds.
          * @member {Array.<string>} sessionContextIds
          * @memberof data.MethodContext
@@ -626,6 +738,14 @@ export const data = $root.data = (() => {
          * @instance
          */
         MethodContext.prototype.customContextJson = "";
+
+        /**
+         * MethodContext failedStepIndex.
+         * @member {number} failedStepIndex
+         * @memberof data.MethodContext
+         * @instance
+         */
+        MethodContext.prototype.failedStepIndex = 0;
 
         /**
          * Decodes a MethodContext message from the specified reader or buffer.
@@ -676,6 +796,9 @@ export const data = $root.data = (() => {
                 case 15:
                     m.classContextId = r.string();
                     break;
+                case 16:
+                    m.executionContextId = r.string();
+                    break;
                 case 19:
                     if (!(m.infos && m.infos.length))
                         m.infos = [];
@@ -702,6 +825,12 @@ export const data = $root.data = (() => {
                         m.testSteps = [];
                     m.testSteps.push($root.data.TestStep.decode(r, r.uint32()));
                     break;
+                case 27:
+                    m.testContextId = r.string();
+                    break;
+                case 28:
+                    m.suiteContextId = r.string();
+                    break;
                 case 29:
                     if (!(m.sessionContextIds && m.sessionContextIds.length))
                         m.sessionContextIds = [];
@@ -714,6 +843,9 @@ export const data = $root.data = (() => {
                     break;
                 case 32:
                     m.customContextJson = r.string();
+                    break;
+                case 33:
+                    m.failedStepIndex = r.int32();
                     break;
                 default:
                     r.skipType(t & 7);
@@ -869,7 +1001,7 @@ export const data = $root.data = (() => {
          * @memberof data
          * @interface ITestStep
          * @property {string|null} [name] TestStep name
-         * @property {Array.<data.ITestStepAction>|null} [testStepActions] TestStep testStepActions
+         * @property {Array.<data.ITestStepAction>|null} [actions] TestStep actions
          */
 
         /**
@@ -881,7 +1013,7 @@ export const data = $root.data = (() => {
          * @param {data.ITestStep=} [p] Properties to set
          */
         function TestStep(p) {
-            this.testStepActions = [];
+            this.actions = [];
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -897,12 +1029,12 @@ export const data = $root.data = (() => {
         TestStep.prototype.name = "";
 
         /**
-         * TestStep testStepActions.
-         * @member {Array.<data.ITestStepAction>} testStepActions
+         * TestStep actions.
+         * @member {Array.<data.ITestStepAction>} actions
          * @memberof data.TestStep
          * @instance
          */
-        TestStep.prototype.testStepActions = $util.emptyArray;
+        TestStep.prototype.actions = $util.emptyArray;
 
         /**
          * Decodes a TestStep message from the specified reader or buffer.
@@ -926,9 +1058,9 @@ export const data = $root.data = (() => {
                     m.name = r.string();
                     break;
                 case 3:
-                    if (!(m.testStepActions && m.testStepActions.length))
-                        m.testStepActions = [];
-                    m.testStepActions.push($root.data.TestStepAction.decode(r, r.uint32()));
+                    if (!(m.actions && m.actions.length))
+                        m.actions = [];
+                    m.actions.push($root.data.TestStepAction.decode(r, r.uint32()));
                     break;
                 default:
                     r.skipType(t & 7);
@@ -949,11 +1081,7 @@ export const data = $root.data = (() => {
          * @interface ITestStepAction
          * @property {string|null} [name] TestStepAction name
          * @property {number|null} [timestamp] TestStepAction timestamp
-         * @property {Array.<data.IClickPathEvent>|null} [clickpathEvents] TestStepAction clickpathEvents
-         * @property {Array.<string>|null} [screenshotIds] TestStepAction screenshotIds
-         * @property {Array.<data.ILogMessage>|null} [logMessages] TestStepAction logMessages
-         * @property {Array.<data.IErrorContext>|null} [optionalAssertions] TestStepAction optionalAssertions
-         * @property {Array.<data.IErrorContext>|null} [collectedAssertions] TestStepAction collectedAssertions
+         * @property {Array.<data.ITestStepActionEntry>|null} [entries] TestStepAction entries
          */
 
         /**
@@ -965,11 +1093,7 @@ export const data = $root.data = (() => {
          * @param {data.ITestStepAction=} [p] Properties to set
          */
         function TestStepAction(p) {
-            this.clickpathEvents = [];
-            this.screenshotIds = [];
-            this.logMessages = [];
-            this.optionalAssertions = [];
-            this.collectedAssertions = [];
+            this.entries = [];
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -993,44 +1117,12 @@ export const data = $root.data = (() => {
         TestStepAction.prototype.timestamp = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
         /**
-         * TestStepAction clickpathEvents.
-         * @member {Array.<data.IClickPathEvent>} clickpathEvents
+         * TestStepAction entries.
+         * @member {Array.<data.ITestStepActionEntry>} entries
          * @memberof data.TestStepAction
          * @instance
          */
-        TestStepAction.prototype.clickpathEvents = $util.emptyArray;
-
-        /**
-         * TestStepAction screenshotIds.
-         * @member {Array.<string>} screenshotIds
-         * @memberof data.TestStepAction
-         * @instance
-         */
-        TestStepAction.prototype.screenshotIds = $util.emptyArray;
-
-        /**
-         * TestStepAction logMessages.
-         * @member {Array.<data.ILogMessage>} logMessages
-         * @memberof data.TestStepAction
-         * @instance
-         */
-        TestStepAction.prototype.logMessages = $util.emptyArray;
-
-        /**
-         * TestStepAction optionalAssertions.
-         * @member {Array.<data.IErrorContext>} optionalAssertions
-         * @memberof data.TestStepAction
-         * @instance
-         */
-        TestStepAction.prototype.optionalAssertions = $util.emptyArray;
-
-        /**
-         * TestStepAction collectedAssertions.
-         * @member {Array.<data.IErrorContext>} collectedAssertions
-         * @memberof data.TestStepAction
-         * @instance
-         */
-        TestStepAction.prototype.collectedAssertions = $util.emptyArray;
+        TestStepAction.prototype.entries = $util.emptyArray;
 
         /**
          * Decodes a TestStepAction message from the specified reader or buffer.
@@ -1056,30 +1148,10 @@ export const data = $root.data = (() => {
                 case 3:
                     m.timestamp = r.int64();
                     break;
-                case 5:
-                    if (!(m.clickpathEvents && m.clickpathEvents.length))
-                        m.clickpathEvents = [];
-                    m.clickpathEvents.push($root.data.ClickPathEvent.decode(r, r.uint32()));
-                    break;
-                case 6:
-                    if (!(m.screenshotIds && m.screenshotIds.length))
-                        m.screenshotIds = [];
-                    m.screenshotIds.push(r.string());
-                    break;
                 case 7:
-                    if (!(m.logMessages && m.logMessages.length))
-                        m.logMessages = [];
-                    m.logMessages.push($root.data.LogMessage.decode(r, r.uint32()));
-                    break;
-                case 8:
-                    if (!(m.optionalAssertions && m.optionalAssertions.length))
-                        m.optionalAssertions = [];
-                    m.optionalAssertions.push($root.data.ErrorContext.decode(r, r.uint32()));
-                    break;
-                case 9:
-                    if (!(m.collectedAssertions && m.collectedAssertions.length))
-                        m.collectedAssertions = [];
-                    m.collectedAssertions.push($root.data.ErrorContext.decode(r, r.uint32()));
+                    if (!(m.entries && m.entries.length))
+                        m.entries = [];
+                    m.entries.push($root.data.TestStepActionEntry.decode(r, r.uint32()));
                     break;
                 default:
                     r.skipType(t & 7);
@@ -1090,6 +1162,120 @@ export const data = $root.data = (() => {
         };
 
         return TestStepAction;
+    })();
+
+    data.TestStepActionEntry = (function() {
+
+        /**
+         * Properties of a TestStepActionEntry.
+         * @memberof data
+         * @interface ITestStepActionEntry
+         * @property {data.IClickPathEvent|null} [clickPathEvent] TestStepActionEntry clickPathEvent
+         * @property {string|null} [screenshotId] TestStepActionEntry screenshotId
+         * @property {data.ILogMessage|null} [logMessage] TestStepActionEntry logMessage
+         * @property {data.IErrorContext|null} [assertion] TestStepActionEntry assertion
+         */
+
+        /**
+         * Constructs a new TestStepActionEntry.
+         * @memberof data
+         * @classdesc Represents a TestStepActionEntry.
+         * @implements ITestStepActionEntry
+         * @constructor
+         * @param {data.ITestStepActionEntry=} [p] Properties to set
+         */
+        function TestStepActionEntry(p) {
+            if (p)
+                for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
+                    if (p[ks[i]] != null)
+                        this[ks[i]] = p[ks[i]];
+        }
+
+        /**
+         * TestStepActionEntry clickPathEvent.
+         * @member {data.IClickPathEvent|null|undefined} clickPathEvent
+         * @memberof data.TestStepActionEntry
+         * @instance
+         */
+        TestStepActionEntry.prototype.clickPathEvent = null;
+
+        /**
+         * TestStepActionEntry screenshotId.
+         * @member {string} screenshotId
+         * @memberof data.TestStepActionEntry
+         * @instance
+         */
+        TestStepActionEntry.prototype.screenshotId = "";
+
+        /**
+         * TestStepActionEntry logMessage.
+         * @member {data.ILogMessage|null|undefined} logMessage
+         * @memberof data.TestStepActionEntry
+         * @instance
+         */
+        TestStepActionEntry.prototype.logMessage = null;
+
+        /**
+         * TestStepActionEntry assertion.
+         * @member {data.IErrorContext|null|undefined} assertion
+         * @memberof data.TestStepActionEntry
+         * @instance
+         */
+        TestStepActionEntry.prototype.assertion = null;
+
+        // OneOf field names bound to virtual getters and setters
+        let $oneOfFields;
+
+        /**
+         * TestStepActionEntry entry.
+         * @member {"clickPathEvent"|"screenshotId"|"logMessage"|"assertion"|undefined} entry
+         * @memberof data.TestStepActionEntry
+         * @instance
+         */
+        Object.defineProperty(TestStepActionEntry.prototype, "entry", {
+            get: $util.oneOfGetter($oneOfFields = ["clickPathEvent", "screenshotId", "logMessage", "assertion"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        /**
+         * Decodes a TestStepActionEntry message from the specified reader or buffer.
+         * @function decode
+         * @memberof data.TestStepActionEntry
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
+         * @param {number} [l] Message length if known beforehand
+         * @returns {data.TestStepActionEntry} TestStepActionEntry
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        TestStepActionEntry.decode = function decode(r, l) {
+            if (!(r instanceof $Reader))
+                r = $Reader.create(r);
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.TestStepActionEntry();
+            while (r.pos < c) {
+                var t = r.uint32();
+                switch (t >>> 3) {
+                case 1:
+                    m.clickPathEvent = $root.data.ClickPathEvent.decode(r, r.uint32());
+                    break;
+                case 2:
+                    m.screenshotId = r.string();
+                    break;
+                case 3:
+                    m.logMessage = $root.data.LogMessage.decode(r, r.uint32());
+                    break;
+                case 4:
+                    m.assertion = $root.data.ErrorContext.decode(r, r.uint32());
+                    break;
+                default:
+                    r.skipType(t & 7);
+                    break;
+                }
+            }
+            return m;
+        };
+
+        return TestStepActionEntry;
     })();
 
     /**
@@ -1360,6 +1546,7 @@ export const data = $root.data = (() => {
          * @property {string|null} [ticketId] ErrorContext ticketId
          * @property {string|null} [description] ErrorContext description
          * @property {Array.<data.IStackTraceCause>|null} [stackTrace] ErrorContext stackTrace
+         * @property {boolean|null} [optional] ErrorContext optional
          */
 
         /**
@@ -1419,6 +1606,14 @@ export const data = $root.data = (() => {
         ErrorContext.prototype.stackTrace = $util.emptyArray;
 
         /**
+         * ErrorContext optional.
+         * @member {boolean} optional
+         * @memberof data.ErrorContext
+         * @instance
+         */
+        ErrorContext.prototype.optional = false;
+
+        /**
          * Decodes an ErrorContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.ErrorContext
@@ -1452,6 +1647,9 @@ export const data = $root.data = (() => {
                     if (!(m.stackTrace && m.stackTrace.length))
                         m.stackTrace = [];
                     m.stackTrace.push($root.data.StackTraceCause.decode(r, r.uint32()));
+                    break;
+                case 12:
+                    m.optional = r.bool();
                     break;
                 default:
                     r.skipType(t & 7);

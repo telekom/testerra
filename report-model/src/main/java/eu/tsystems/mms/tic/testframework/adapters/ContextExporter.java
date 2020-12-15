@@ -2,6 +2,7 @@ package eu.tsystems.mms.tic.testframework.adapters;
 
 import com.google.common.net.MediaType;
 import com.google.gson.Gson;
+import eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent;
 import eu.tsystems.mms.tic.testframework.internal.IDUtils;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
@@ -14,7 +15,6 @@ import eu.tsystems.mms.tic.testframework.report.model.FailureCorridorValue;
 import eu.tsystems.mms.tic.testframework.report.model.File;
 import eu.tsystems.mms.tic.testframework.report.model.FileOrBuilder;
 import eu.tsystems.mms.tic.testframework.report.model.MethodType;
-import eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent;
 import eu.tsystems.mms.tic.testframework.report.model.ClickPathEventType;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessageType;
@@ -28,10 +28,12 @@ import eu.tsystems.mms.tic.testframework.report.model.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.model.StackTraceCause;
 import eu.tsystems.mms.tic.testframework.report.model.SuiteContext;
 import eu.tsystems.mms.tic.testframework.report.model.TestContext;
+import eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry;
 import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.CustomContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.lang.annotation.Annotation;
@@ -117,6 +119,8 @@ public class ContextExporter {
         // test steps
         methodContext.readTestSteps().forEach(testStep -> builder.addTestSteps(prepareTestStep(testStep)));
         //value(methodContext.failedStep, MethodContextExporter::createTestStep, builder::setFailedStep);
+        int lastFailedTestStepIndex = methodContext.getLastFailedTestStepIndex();
+        if (lastFailedTestStepIndex >= 0) builder.setFailedStepIndex(lastFailedTestStepIndex);
 
         Class failureCorridorClass = methodContext.getFailureCorridorClass();
         if (failureCorridorClass.equals(FailureCorridor.High.class)) {
@@ -217,6 +221,7 @@ public class ContextExporter {
         errorContext.getExecutionObjectSource().ifPresent(scriptSource -> builder.setExecutionObjectSource(this.prepareScriptSource(scriptSource)));
         if (errorContext.getTicketId() != null) builder.setTicketId(errorContext.getTicketId().toString());
         apply(errorContext.getDescription(), builder::setDescription);
+        builder.setOptional(errorContext.isOptional());
 
         return builder;
     }
@@ -225,100 +230,103 @@ public class ContextExporter {
         TestStep.Builder builder = TestStep.newBuilder();
 
         apply(testStep.getName(), builder::setName);
-        forEach(testStep.getTestStepActions(), testStepAction -> builder.addTestStepActions(prepareTestStepAction(testStepAction)));
+        forEach(testStep.getTestStepActions(), testStepAction -> builder.addActions(prepareTestStepAction(testStepAction)));
 
         return builder;
     }
 
+    public ClickPathEvent.Builder prepareClickPathEvent(eu.tsystems.mms.tic.testframework.clickpath.ClickPathEvent clickPathEvent) {
+        ClickPathEvent.Builder builder = eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.newBuilder();
+        switch (clickPathEvent.getType()) {
+            case WINDOW:
+                builder.setType(ClickPathEventType.CPET_WINDOW);
+                break;
+            case CLICK:
+                builder.setType(ClickPathEventType.CPET_CLICK);
+                break;
+            case VALUE:
+                builder.setType(ClickPathEventType.CPET_VALUE);
+                break;
+            case PAGE:
+                builder.setType(ClickPathEventType.CPET_PAGE);
+                break;
+            case URL:
+                builder.setType(ClickPathEventType.CPET_URL);
+                break;
+            default:
+                builder.setType(ClickPathEventType.CPET_NOT_SET);
+        }
+        builder.setSubject(clickPathEvent.getSubject());
+        builder.setSessionId(clickPathEvent.getSessionId());
+        return builder;
+    }
+
     public TestStepAction.Builder prepareTestStepAction(eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction testStepAction) {
-        TestStepAction.Builder testStepBuilder = TestStepAction.newBuilder();
+        TestStepAction.Builder actionBuilder = TestStepAction.newBuilder();
 
-        apply(testStepAction.getName(), testStepBuilder::setName);
-        apply(testStepAction.getTimestamp(), testStepBuilder::setTimestamp);
+        apply(testStepAction.getName(), actionBuilder::setName);
+        apply(testStepAction.getTimestamp(), actionBuilder::setTimestamp);
 
-        testStepAction.readClickPathEvents().forEach(clickPathEvent -> {
-            ClickPathEvent.Builder clickPathBuilder = ClickPathEvent.newBuilder();
-            switch (clickPathEvent.getType()) {
-                case WINDOW:
-                    clickPathBuilder.setType(ClickPathEventType.CPET_WINDOW);
-                    break;
-                case CLICK:
-                    clickPathBuilder.setType(ClickPathEventType.CPET_CLICK);
-                    break;
-                case VALUE:
-                    clickPathBuilder.setType(ClickPathEventType.CPET_VALUE);
-                    break;
-                case PAGE:
-                    clickPathBuilder.setType(ClickPathEventType.CPET_PAGE);
-                    break;
-                case URL:
-                    clickPathBuilder.setType(ClickPathEventType.CPET_URL);
-                    break;
-                default:
-                    clickPathBuilder.setType(ClickPathEventType.CPET_NOT_SET);
-            }
-            clickPathBuilder.setSubject(clickPathEvent.getSubject());
-            clickPathBuilder.setSessionId(clickPathEvent.getSessionId());
-            testStepBuilder.addClickpathEvents(clickPathBuilder.build());
-        });
+        testStepAction.readEntries().forEach(entry -> {
+            TestStepActionEntry.Builder entryBuilder = TestStepActionEntry.newBuilder();
+            if (entry instanceof eu.tsystems.mms.tic.testframework.clickpath.ClickPathEvent) {
+                Optional<ClickPathEvent.Builder> optional = Optional.ofNullable(this.prepareClickPathEvent((eu.tsystems.mms.tic.testframework.clickpath.ClickPathEvent) entry));
+                optional.ifPresent(entryBuilder::setClickPathEvent);
+            } else if (entry instanceof Screenshot) {
+                Screenshot screenshot = (Screenshot) entry;
+                // build screenshot and sources files
+                final java.io.File targetScreenshotFile = new java.io.File(targetScreenshotDir, screenshot.filename);
+                final java.io.File currentScreenshotFile = new java.io.File(currentScreenshotDir, screenshot.filename);
 
-        testStepAction.readScreenshots().forEach(screenshot -> {
-            // build screenshot and sources files
-            final java.io.File targetScreenshotFile = new java.io.File(targetScreenshotDir, screenshot.filename);
-            final java.io.File currentScreenshotFile = new java.io.File(currentScreenshotDir, screenshot.filename);
+                //final java.io.File realSourceFile = new java.io.File(Report.SCREENSHOTS_DIRECTORY, screenshot.sourceFilename);
+                final java.io.File targetSourceFile = new java.io.File(targetScreenshotDir, screenshot.filename);
+                final java.io.File currentSourceFile = new java.io.File(currentScreenshotDir, screenshot.filename);
+                final String mappedSourcePath = mapArtifactsPath(targetSourceFile.getAbsolutePath());
 
-            //final java.io.File realSourceFile = new java.io.File(Report.SCREENSHOTS_DIRECTORY, screenshot.sourceFilename);
-            final java.io.File targetSourceFile = new java.io.File(targetScreenshotDir, screenshot.filename);
-            final java.io.File currentSourceFile = new java.io.File(currentScreenshotDir, screenshot.filename);
-            final String mappedSourcePath = mapArtifactsPath(targetSourceFile.getAbsolutePath());
+                final String screenshotId = IDUtils.getB64encXID();
+                final String sourcesRefId = IDUtils.getB64encXID();
 
-            final String screenshotId = IDUtils.getB64encXID();
-            final String sourcesRefId = IDUtils.getB64encXID();
+                // create ref link
+                //builder.addScreenshotIds(screenshotId);
 
-            // create ref link
-            //builder.addScreenshotIds(screenshotId);
+                // add screenshot data
+                final File.Builder fileBuilderScreenshot = File.newBuilder();
+                fileBuilderScreenshot.setId(screenshotId);
+                fileBuilderScreenshot.setRelativePath(targetScreenshotFile.getPath());
+                fileBuilderScreenshot.setMimetype(MediaType.PNG.toString());
+                fileBuilderScreenshot.putAllMeta(screenshot.meta());
+                fileBuilderScreenshot.putMeta("sourcesRefId", sourcesRefId);
+                fillFileBasicData(fileBuilderScreenshot, currentScreenshotFile);
 
-            // add screenshot data
-            final File.Builder fileBuilderScreenshot = File.newBuilder();
-            fileBuilderScreenshot.setId(screenshotId);
-            fileBuilderScreenshot.setRelativePath(targetScreenshotFile.getPath());
-            fileBuilderScreenshot.setMimetype(MediaType.PNG.toString());
-            fileBuilderScreenshot.putAllMeta(screenshot.meta());
-            fileBuilderScreenshot.putMeta("sourcesRefId", sourcesRefId);
-            fillFileBasicData(fileBuilderScreenshot, currentScreenshotFile);
+                if (this.fileBuilderConsumer != null) {
+                    this.fileBuilderConsumer.accept(fileBuilderScreenshot);
+                }
 
-            if (this.fileBuilderConsumer != null) {
-                this.fileBuilderConsumer.accept(fileBuilderScreenshot);
-            }
+                // add sources data
+                final File.Builder fileBuilderSources = File.newBuilder();
+                fileBuilderSources.setId(sourcesRefId);
+                fileBuilderSources.setRelativePath(mappedSourcePath);
+                fileBuilderSources.setMimetype(MediaType.PLAIN_TEXT_UTF_8.toString());
+                fillFileBasicData(fileBuilderSources, currentSourceFile);
 
-            // add sources data
-            final File.Builder fileBuilderSources = File.newBuilder();
-            fileBuilderSources.setId(sourcesRefId);
-            fileBuilderSources.setRelativePath(mappedSourcePath);
-            fileBuilderSources.setMimetype(MediaType.PLAIN_TEXT_UTF_8.toString());
-            fillFileBasicData(fileBuilderSources, currentSourceFile);
+                if (this.fileBuilderConsumer != null) {
+                    this.fileBuilderConsumer.accept(fileBuilderSources);
+                }
+                entryBuilder.setScreenshotId(screenshotId);
 
-            if (this.fileBuilderConsumer != null) {
-                this.fileBuilderConsumer.accept(fileBuilderSources);
+            } else if (entry instanceof LogEvent) {
+                LogEvent logEvent = (LogEvent)entry;
+                Optional<LogMessage.Builder> optional = Optional.ofNullable(prepareLogEvent(logEvent));
+                optional.ifPresent(entryBuilder::setLogMessage);
+            } else if (entry instanceof eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext) {
+                eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext errorContext = (eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext)entry;
+                Optional<ErrorContext.Builder> optional = Optional.ofNullable(prepareErrorContext(errorContext));
+                optional.ifPresent(entryBuilder::setAssertion);
             }
 
-            testStepBuilder.addScreenshotIds(screenshotId);
+            actionBuilder.addEntries(entryBuilder);
         });
-
-        testStepAction.readLogEvents().forEach(logEvent -> {
-            Optional<LogMessage.Builder> optional = Optional.ofNullable(prepareLogEvent(logEvent));
-            optional.ifPresent(testStepBuilder::addLogMessages);
-        });
-
-        testStepAction.readOptionalAssertions().forEach(assertionInfo -> {
-            testStepBuilder.addOptionalAssertions(prepareErrorContext(assertionInfo));
-        });
-
-        testStepAction.readCollectedAssertions().forEach(assertionInfo -> {
-            testStepBuilder.addCollectedAssertions(prepareErrorContext(assertionInfo));
-        });
-
-        return testStepBuilder;
+        return actionBuilder;
     }
 
     public ContextExporter() {
@@ -379,10 +387,10 @@ public class ContextExporter {
             MethodContext methodContext = (MethodContext) context;
 
             // result status
-            map(methodContext.status, this::getMappedStatus, builder::setResultStatus);
+            map(methodContext.getStatus(), this::getMappedStatus, builder::setResultStatus);
 
             // exec status
-            if (methodContext.status == TestStatusController.Status.NO_RUN) {
+            if (methodContext.getStatus() == TestStatusController.Status.NO_RUN) {
                 builder.setExecStatus(ExecStatusType.RUNNING);
             } else {
                 builder.setExecStatus(ExecStatusType.FINISHED);

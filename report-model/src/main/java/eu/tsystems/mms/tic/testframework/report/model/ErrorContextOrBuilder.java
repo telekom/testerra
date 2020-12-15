@@ -105,4 +105,10 @@ public interface ErrorContextOrBuilder extends
    */
   eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder getStackTraceOrBuilder(
       int index);
+
+  /**
+   * <code>bool optional = 12;</code>
+   * @return The optional.
+   */
+  boolean getOptional();
 }

@@ -39,12 +39,9 @@ public class TestStepAction implements Serializable {
     private static final long serialVersionUID = Serial.SERIAL;
 
     private final String name;
-    private long timestamp;
-    private List<ErrorContext> optionalAssertions;
-    private List<ErrorContext> collectedAssertions;
-    private final List<LogEvent> logEvents = new LinkedList<>();
-    private List<Screenshot> screenshots;
-    private List<ClickPathEvent> clickPathEvents;
+    private final long timestamp;
+    private final List<Object> entries = new LinkedList<>();
+
 
     public TestStepAction(String name) {
         this.name = name;
@@ -66,79 +63,46 @@ public class TestStepAction implements Serializable {
         return name;
     }
 
-    public void addOptionalAssertion(ErrorContext errorContext) {
-        if (this.optionalAssertions == null) {
-            this.optionalAssertions = new LinkedList<>();
-        }
-        this.optionalAssertions.add(errorContext);
+    public <T> Stream<T> readEntries(Class<T> clazz) {
+        return this.entries.stream().filter(clazz::isInstance).map(clazz::cast);
     }
 
+    public void addAssertion(ErrorContext errorContext) {
+        this.entries.add(errorContext);
+    }
+
+    @Deprecated
     public Stream<ErrorContext> readOptionalAssertions() {
-        if (this.optionalAssertions == null) {
-            return Stream.empty();
-        } else {
-            return this.optionalAssertions.stream();
-        }
+        return readEntries(ErrorContext.class).filter(ErrorContext::isOptional);
     }
 
-    public void addCollectedAssertions(List<ErrorContext> errorContexts) {
-        if (this.collectedAssertions == null) {
-            this.collectedAssertions = new LinkedList<>();
-        }
-        this.collectedAssertions.addAll(errorContexts);
-    }
-
+    @Deprecated
     public Stream<ErrorContext> readCollectedAssertions() {
-        if (this.collectedAssertions == null) {
-            return Stream.empty();
-        } else {
-            return this.collectedAssertions.stream();
-        }
+        return readEntries(ErrorContext.class).filter(errorContext -> !errorContext.isOptional());
     }
 
     public void addLogEvent(LogEvent logEvent) {
-        this.logEvents.add(logEvent);
-    }
-
-    public Stream<LogEvent> readLogEvents() {
-        return this.logEvents.stream();
+        this.entries.add(logEvent);
     }
 
     public void addClickPathEvent(ClickPathEvent event) {
-        if (this.clickPathEvents == null) {
-            this.clickPathEvents = new LinkedList<>();
-        }
-        this.clickPathEvents.add(event);
-    }
-
-    public Stream<ClickPathEvent> readClickPathEvents() {
-        if (this.clickPathEvents == null) {
-            return Stream.empty();
-        } else {
-            return this.clickPathEvents.stream();
-        }
+        this.entries.add(event);
     }
 
     public void addScreenshot(Screenshot screenshot) {
-        if (this.screenshots == null) {
-            this.screenshots = new LinkedList<>();
-        }
-        this.screenshots.add(screenshot);
-    }
-
-    public Stream<Screenshot> readScreenshots() {
-        if (this.screenshots == null) {
-            return Stream.empty();
-        } else {
-            return this.screenshots.stream();
-        }
+        this.entries.add(screenshot);
     }
 
     /**
-     * @deprecated Use {@link #readScreenshots()} ()} instead
+     * @deprecated Use {@link #readEntries()} instead
+     * Use in methodDetailsStep.vm
      */
     public Collection<Screenshot> getScreenshots() {
-        return this.readScreenshots().collect(Collectors.toList());
+        return this.readEntries(Screenshot.class).collect(Collectors.toList());
+    }
+
+    public Stream<Object> readEntries() {
+        return this.entries.stream();
     }
 }
 

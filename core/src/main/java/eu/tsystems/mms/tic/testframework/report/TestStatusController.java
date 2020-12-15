@@ -101,7 +101,7 @@ public class TestStatusController {
             }
         }
 
-        methodContext.status = status;
+        methodContext.setStatus(status);
         methodContext.updateEndTimeRecursive(new Date());
 
         // announce to run context
@@ -113,7 +113,7 @@ public class TestStatusController {
         }
 
         // dont count if infoStatusMethod
-        if (methodContext.status == Status.INFO) {
+        if (methodContext.getStatus() == Status.INFO) {
             return;
         }
 

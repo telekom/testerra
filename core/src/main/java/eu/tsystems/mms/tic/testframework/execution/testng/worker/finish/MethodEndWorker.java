@@ -81,9 +81,6 @@ public class MethodEndWorker implements MethodEndEvent.Listener, Loggable {
         if (testMethod.isTest()) {
             // cleanup thread locals from PropertyManager
             PropertyManager.clearThreadlocalProperties();
-
-            // cleanup collected assertions
-            CollectedAssertions.clear();
         }
 
         try {

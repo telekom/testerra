@@ -44,7 +44,7 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
         ITestNGMethod testMethod = event.getTestMethod();
 
         // !!! do nothing when state is RETRY (already set from RetryAnalyzer)
-        if (methodContext.status != TestStatusController.Status.FAILED_RETRIED) {
+        if (methodContext.getStatus() != TestStatusController.Status.FAILED_RETRIED) {
 
             // in case of info method
             if (method.isAnnotationPresent(InfoMethod.class) && (event.isSkipped() || testResult.isSuccess())) {
@@ -73,7 +73,7 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
                         } else {
                             // regular failed
                             TestStatusController.Status status = TestStatusController.Status.FAILED;
-                            if (methodContext.readOptionalAssertions().findAny().isPresent()) {
+                            if (methodContext.getNumAssertions() > 0) {
                                 status = TestStatusController.Status.FAILED_MINOR;
                             }
 
@@ -102,7 +102,7 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
                 } else if (testResult.isSuccess()) {
                     TestStatusController.Status status = TestStatusController.Status.PASSED;
 
-                    boolean hasOptionalAssertion = methodContext.readOptionalAssertions().findAny().isPresent();
+                    boolean hasOptionalAssertion = methodContext.getNumOptionalAssertions() > 0;
 
                     // is it a retried test?
                     if (RetryAnalyzer.hasMethodBeenRetried(methodContext)) {

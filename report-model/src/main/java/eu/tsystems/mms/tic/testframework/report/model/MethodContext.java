@@ -228,6 +228,11 @@ private static final long serialVersionUID = 0L;
             customContextJson_ = s;
             break;
           }
+          case 264: {
+
+            failedStepIndex_ = input.readInt32();
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -956,6 +961,16 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int FAILED_STEP_INDEX_FIELD_NUMBER = 33;
+  private int failedStepIndex_;
+  /**
+   * <code>int32 failed_step_index = 33;</code>
+   * @return The failedStepIndex.
+   */
+  public int getFailedStepIndex() {
+    return failedStepIndex_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -1032,6 +1047,9 @@ private static final long serialVersionUID = 0L;
     }
     if (!getCustomContextJsonBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 32, customContextJson_);
+    }
+    if (failedStepIndex_ != 0) {
+      output.writeInt32(33, failedStepIndex_);
     }
     unknownFields.writeTo(output);
   }
@@ -1147,6 +1165,10 @@ private static final long serialVersionUID = 0L;
     if (!getCustomContextJsonBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(32, customContextJson_);
     }
+    if (failedStepIndex_ != 0) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(33, failedStepIndex_);
+    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -1208,6 +1230,8 @@ private static final long serialVersionUID = 0L;
         .equals(other.getVideoIdsList())) return false;
     if (!getCustomContextJson()
         .equals(other.getCustomContextJson())) return false;
+    if (getFailedStepIndex()
+        != other.getFailedStepIndex()) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -1281,6 +1305,8 @@ private static final long serialVersionUID = 0L;
     }
     hash = (37 * hash) + CUSTOM_CONTEXT_JSON_FIELD_NUMBER;
     hash = (53 * hash) + getCustomContextJson().hashCode();
+    hash = (37 * hash) + FAILED_STEP_INDEX_FIELD_NUMBER;
+    hash = (53 * hash) + getFailedStepIndex();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -1469,6 +1495,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000080);
       customContextJson_ = "";
 
+      failedStepIndex_ = 0;
+
       return this;
     }
 
@@ -1561,6 +1589,7 @@ private static final long serialVersionUID = 0L;
       }
       result.videoIds_ = videoIds_;
       result.customContextJson_ = customContextJson_;
+      result.failedStepIndex_ = failedStepIndex_;
       onBuilt();
       return result;
     }
@@ -1750,6 +1779,9 @@ private static final long serialVersionUID = 0L;
       if (!other.getCustomContextJson().isEmpty()) {
         customContextJson_ = other.customContextJson_;
         onChanged();
+      }
+      if (other.getFailedStepIndex() != 0) {
+        setFailedStepIndex(other.getFailedStepIndex());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -3806,6 +3838,36 @@ private static final long serialVersionUID = 0L;
   checkByteStringIsUtf8(value);
       
       customContextJson_ = value;
+      onChanged();
+      return this;
+    }
+
+    private int failedStepIndex_ ;
+    /**
+     * <code>int32 failed_step_index = 33;</code>
+     * @return The failedStepIndex.
+     */
+    public int getFailedStepIndex() {
+      return failedStepIndex_;
+    }
+    /**
+     * <code>int32 failed_step_index = 33;</code>
+     * @param value The failedStepIndex to set.
+     * @return This builder for chaining.
+     */
+    public Builder setFailedStepIndex(int value) {
+      
+      failedStepIndex_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>int32 failed_step_index = 33;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearFailedStepIndex() {
+      
+      failedStepIndex_ = 0;
       onChanged();
       return this;
     }

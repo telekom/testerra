@@ -8,6 +8,9 @@ export namespace data {
         /** SuiteContext contextValues */
         contextValues?: (data.IContextValues|null);
 
+        /** SuiteContext testContextIds */
+        testContextIds?: (string[]|null);
+
         /** SuiteContext executionContextId */
         executionContextId?: (string|null);
     }
@@ -23,6 +26,9 @@ export namespace data {
 
         /** SuiteContext contextValues. */
         public contextValues?: (data.IContextValues|null);
+
+        /** SuiteContext testContextIds. */
+        public testContextIds: string[];
 
         /** SuiteContext executionContextId. */
         public executionContextId: string;
@@ -44,11 +50,17 @@ export namespace data {
         /** ClassContext contextValues */
         contextValues?: (data.IContextValues|null);
 
+        /** ClassContext methodContextIds */
+        methodContextIds?: (string[]|null);
+
         /** ClassContext fullClassName */
         fullClassName?: (string|null);
 
         /** ClassContext testContextId */
         testContextId?: (string|null);
+
+        /** ClassContext executionContextId */
+        executionContextId?: (string|null);
 
         /** ClassContext testContextName */
         testContextName?: (string|null);
@@ -66,11 +78,17 @@ export namespace data {
         /** ClassContext contextValues. */
         public contextValues?: (data.IContextValues|null);
 
+        /** ClassContext methodContextIds. */
+        public methodContextIds: string[];
+
         /** ClassContext fullClassName. */
         public fullClassName: string;
 
         /** ClassContext testContextId. */
         public testContextId: string;
+
+        /** ClassContext executionContextId. */
+        public executionContextId: string;
 
         /** ClassContext testContextName. */
         public testContextName: string;
@@ -92,8 +110,14 @@ export namespace data {
         /** TestContext contextValues */
         contextValues?: (data.IContextValues|null);
 
+        /** TestContext classContextIds */
+        classContextIds?: (string[]|null);
+
         /** TestContext suiteContextId */
         suiteContextId?: (string|null);
+
+        /** TestContext executionContextId */
+        executionContextId?: (string|null);
     }
 
     /** Represents a TestContext. */
@@ -108,8 +132,14 @@ export namespace data {
         /** TestContext contextValues. */
         public contextValues?: (data.IContextValues|null);
 
+        /** TestContext classContextIds. */
+        public classContextIds: string[];
+
         /** TestContext suiteContextId. */
         public suiteContextId: string;
+
+        /** TestContext executionContextId. */
+        public executionContextId: string;
 
         /**
          * Decodes a TestContext message from the specified reader or buffer.
@@ -127,6 +157,9 @@ export namespace data {
 
         /** ExecutionContext contextValues */
         contextValues?: (data.IContextValues|null);
+
+        /** ExecutionContext suiteContextIds */
+        suiteContextIds?: (string[]|null);
 
         /** ExecutionContext runConfig */
         runConfig?: (data.IRunConfig|null);
@@ -164,6 +197,9 @@ export namespace data {
 
         /** ExecutionContext contextValues. */
         public contextValues?: (data.IContextValues|null);
+
+        /** ExecutionContext suiteContextIds. */
+        public suiteContextIds: string[];
 
         /** ExecutionContext runConfig. */
         public runConfig?: (data.IRunConfig|null);
@@ -230,6 +266,9 @@ export namespace data {
         /** MethodContext classContextId */
         classContextId?: (string|null);
 
+        /** MethodContext executionContextId */
+        executionContextId?: (string|null);
+
         /** MethodContext infos */
         infos?: (string[]|null);
 
@@ -248,6 +287,12 @@ export namespace data {
         /** MethodContext testSteps */
         testSteps?: (data.ITestStep[]|null);
 
+        /** MethodContext testContextId */
+        testContextId?: (string|null);
+
+        /** MethodContext suiteContextId */
+        suiteContextId?: (string|null);
+
         /** MethodContext sessionContextIds */
         sessionContextIds?: (string[]|null);
 
@@ -256,6 +301,9 @@ export namespace data {
 
         /** MethodContext customContextJson */
         customContextJson?: (string|null);
+
+        /** MethodContext failedStepIndex */
+        failedStepIndex?: (number|null);
     }
 
     /** Represents a MethodContext. */
@@ -294,6 +342,9 @@ export namespace data {
         /** MethodContext classContextId. */
         public classContextId: string;
 
+        /** MethodContext executionContextId. */
+        public executionContextId: string;
+
         /** MethodContext infos. */
         public infos: string[];
 
@@ -312,6 +363,12 @@ export namespace data {
         /** MethodContext testSteps. */
         public testSteps: data.ITestStep[];
 
+        /** MethodContext testContextId. */
+        public testContextId: string;
+
+        /** MethodContext suiteContextId. */
+        public suiteContextId: string;
+
         /** MethodContext sessionContextIds. */
         public sessionContextIds: string[];
 
@@ -320,6 +377,9 @@ export namespace data {
 
         /** MethodContext customContextJson. */
         public customContextJson: string;
+
+        /** MethodContext failedStepIndex. */
+        public failedStepIndex: number;
 
         /**
          * Decodes a MethodContext message from the specified reader or buffer.
@@ -404,8 +464,8 @@ export namespace data {
         /** TestStep name */
         name?: (string|null);
 
-        /** TestStep testStepActions */
-        testStepActions?: (data.ITestStepAction[]|null);
+        /** TestStep actions */
+        actions?: (data.ITestStepAction[]|null);
     }
 
     /** Represents a TestStep. */
@@ -420,8 +480,8 @@ export namespace data {
         /** TestStep name. */
         public name: string;
 
-        /** TestStep testStepActions. */
-        public testStepActions: data.ITestStepAction[];
+        /** TestStep actions. */
+        public actions: data.ITestStepAction[];
 
         /**
          * Decodes a TestStep message from the specified reader or buffer.
@@ -443,20 +503,8 @@ export namespace data {
         /** TestStepAction timestamp */
         timestamp?: (number|null);
 
-        /** TestStepAction clickpathEvents */
-        clickpathEvents?: (data.IClickPathEvent[]|null);
-
-        /** TestStepAction screenshotIds */
-        screenshotIds?: (string[]|null);
-
-        /** TestStepAction logMessages */
-        logMessages?: (data.ILogMessage[]|null);
-
-        /** TestStepAction optionalAssertions */
-        optionalAssertions?: (data.IErrorContext[]|null);
-
-        /** TestStepAction collectedAssertions */
-        collectedAssertions?: (data.IErrorContext[]|null);
+        /** TestStepAction entries */
+        entries?: (data.ITestStepActionEntry[]|null);
     }
 
     /** Represents a TestStepAction. */
@@ -474,20 +522,8 @@ export namespace data {
         /** TestStepAction timestamp. */
         public timestamp: number;
 
-        /** TestStepAction clickpathEvents. */
-        public clickpathEvents: data.IClickPathEvent[];
-
-        /** TestStepAction screenshotIds. */
-        public screenshotIds: string[];
-
-        /** TestStepAction logMessages. */
-        public logMessages: data.ILogMessage[];
-
-        /** TestStepAction optionalAssertions. */
-        public optionalAssertions: data.IErrorContext[];
-
-        /** TestStepAction collectedAssertions. */
-        public collectedAssertions: data.IErrorContext[];
+        /** TestStepAction entries. */
+        public entries: data.ITestStepActionEntry[];
 
         /**
          * Decodes a TestStepAction message from the specified reader or buffer.
@@ -498,6 +534,57 @@ export namespace data {
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
         public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.TestStepAction;
+    }
+
+    /** Properties of a TestStepActionEntry. */
+    interface ITestStepActionEntry {
+
+        /** TestStepActionEntry clickPathEvent */
+        clickPathEvent?: (data.IClickPathEvent|null);
+
+        /** TestStepActionEntry screenshotId */
+        screenshotId?: (string|null);
+
+        /** TestStepActionEntry logMessage */
+        logMessage?: (data.ILogMessage|null);
+
+        /** TestStepActionEntry assertion */
+        assertion?: (data.IErrorContext|null);
+    }
+
+    /** Represents a TestStepActionEntry. */
+    class TestStepActionEntry implements ITestStepActionEntry {
+
+        /**
+         * Constructs a new TestStepActionEntry.
+         * @param [p] Properties to set
+         */
+        constructor(p?: data.ITestStepActionEntry);
+
+        /** TestStepActionEntry clickPathEvent. */
+        public clickPathEvent?: (data.IClickPathEvent|null);
+
+        /** TestStepActionEntry screenshotId. */
+        public screenshotId: string;
+
+        /** TestStepActionEntry logMessage. */
+        public logMessage?: (data.ILogMessage|null);
+
+        /** TestStepActionEntry assertion. */
+        public assertion?: (data.IErrorContext|null);
+
+        /** TestStepActionEntry entry. */
+        public entry?: ("clickPathEvent"|"screenshotId"|"logMessage"|"assertion");
+
+        /**
+         * Decodes a TestStepActionEntry message from the specified reader or buffer.
+         * @param r Reader or buffer to decode from
+         * @param [l] Message length if known beforehand
+         * @returns TestStepActionEntry
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.TestStepActionEntry;
     }
 
     /** ClickPathEventType enum. */
@@ -638,6 +725,9 @@ export namespace data {
 
         /** ErrorContext stackTrace */
         stackTrace?: (data.IStackTraceCause[]|null);
+
+        /** ErrorContext optional */
+        optional?: (boolean|null);
     }
 
     /** Represents an ErrorContext. */
@@ -663,6 +753,9 @@ export namespace data {
 
         /** ErrorContext stackTrace. */
         public stackTrace: data.IStackTraceCause[];
+
+        /** ErrorContext optional. */
+        public optional: boolean;
 
         /**
          * Decodes an ErrorContext message from the specified reader or buffer.

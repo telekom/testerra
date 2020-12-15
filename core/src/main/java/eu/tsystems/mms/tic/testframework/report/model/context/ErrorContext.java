@@ -45,13 +45,19 @@ public class ErrorContext {
     private Optional<ScriptSource> scriptSource;
     private Optional<ScriptSource> executionObjectSource;
     private Object ticketId;
+    private boolean optional;
 
     public ErrorContext() {
 
     }
 
-    public ErrorContext(Throwable throwable) {
+    public ErrorContext(Throwable throwable, boolean optional) {
         this.setThrowable(null, throwable);
+        this.optional = optional;
+    }
+
+    public boolean isOptional() {
+        return optional;
     }
 
     /**

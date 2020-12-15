@@ -105,7 +105,7 @@ public class GenerateHtmlReportListener implements
                                             System.out.println("Class: " + classContext.name);
                                             classContext.methodContexts
                                                     .stream()
-                                                    .filter(methodContext -> methodContext.status == TestStatusController.Status.PASSED)
+                                                    .filter(methodContext -> methodContext.getStatus() == TestStatusController.Status.PASSED)
                                                     .forEach(
                                                             methodContext -> {
                                                                 System.out.println("Method: " + methodContext.name);

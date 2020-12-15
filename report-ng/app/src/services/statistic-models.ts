@@ -146,10 +146,12 @@ export class ExecutionStatistics extends Statistics {
                 }
 
                 methodContext.testSteps
-                    .flatMap(testStep => testStep.testStepActions)
-                    .flatMap(testStepAction => testStepAction.optionalAssertions)
-                    .forEach(errorContext => {
-                        this._addUniqueFailureAspect(errorContext, methodContext);
+                    .flatMap(value => value.actions)
+                    .flatMap(value => value.entries)
+                    .filter(value => value.assertion)
+                    .map(value => value.assertion)
+                    .forEach(value => {
+                        this._addUniqueFailureAspect(value, methodContext);
                     })
 
                 // const exitPointStatistics = new ExitPointStatistics().addMethodContext(methodContext);

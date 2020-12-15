@@ -88,6 +88,7 @@ message MethodContext {
     repeated string video_ids = 30;
 //    repeated string screenshot_ids = 31 [deprecated = true];
     string custom_context_json = 32;
+    int32 failed_step_index = 33;
 }
 
 message ContextValues {
@@ -105,7 +106,7 @@ message ContextValues {
 message TestStep {
     string name = 1;
 //    string id = 2;
-    repeated TestStepAction test_step_actions = 3;
+    repeated TestStepAction actions = 3;
 }
 
 message TestStepAction {
@@ -113,11 +114,18 @@ message TestStepAction {
 //    string id = 2;
     int64 timestamp = 3;
 //    repeated string screenshot_names = 4 [deprecated = true];
-    repeated ClickPathEvent clickpath_events = 5;
-    repeated string screenshot_ids = 6;
-    repeated LogMessage log_messages = 7;
-    repeated ErrorContext optional_assertions = 8;
-    repeated ErrorContext collected_assertions = 9;
+//    repeated ClickPathEvent clickpath_events = 5 [deprecated = true];
+//    repeated string screenshot_ids = 6 [deprecated = true];
+    repeated TestStepActionEntry entries = 7;
+}
+
+message TestStepActionEntry {
+    oneof entry {
+        ClickPathEvent click_path_event = 1;
+        string screenshot_id = 2;
+        LogMessage log_message = 3;
+        ErrorContext assertion = 4;
+    }
 }
 
 enum ClickPathEventType {
@@ -162,6 +170,7 @@ message ErrorContext {
     string ticketId = 9;
     string description = 10;
     repeated StackTraceCause stack_trace = 11;
+    bool optional = 12;
 }
 
 message SessionContext {

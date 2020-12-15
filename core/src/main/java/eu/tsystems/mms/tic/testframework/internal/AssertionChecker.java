@@ -55,7 +55,7 @@ public final class AssertionChecker {
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         if (methodContext != null) {
             // add nf info
-            ErrorContext assertionInfo = methodContext.addOptionalAssertion(throwable);
+            methodContext.addOptionalAssertion(throwable);
 
             // get screenshots and videos
             List<Screenshot> screenshots = TestEvidenceCollector.collectScreenshots();

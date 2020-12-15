@@ -24,42 +24,42 @@ public interface TestStepOrBuilder extends
    *    string id = 2;
    * </pre>
    *
-   * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
+   * <code>repeated .data.TestStepAction actions = 3;</code>
    */
   java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestStepAction> 
-      getTestStepActionsList();
+      getActionsList();
   /**
    * <pre>
    *    string id = 2;
    * </pre>
    *
-   * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
+   * <code>repeated .data.TestStepAction actions = 3;</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.TestStepAction getTestStepActions(int index);
+  eu.tsystems.mms.tic.testframework.report.model.TestStepAction getActions(int index);
   /**
    * <pre>
    *    string id = 2;
    * </pre>
    *
-   * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
+   * <code>repeated .data.TestStepAction actions = 3;</code>
    */
-  int getTestStepActionsCount();
+  int getActionsCount();
   /**
    * <pre>
    *    string id = 2;
    * </pre>
    *
-   * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
+   * <code>repeated .data.TestStepAction actions = 3;</code>
    */
   java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.TestStepActionOrBuilder> 
-      getTestStepActionsOrBuilderList();
+      getActionsOrBuilderList();
   /**
    * <pre>
    *    string id = 2;
    * </pre>
    *
-   * <code>repeated .data.TestStepAction test_step_actions = 3;</code>
+   * <code>repeated .data.TestStepAction actions = 3;</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.TestStepActionOrBuilder getTestStepActionsOrBuilder(
+  eu.tsystems.mms.tic.testframework.report.model.TestStepActionOrBuilder getActionsOrBuilder(
       int index);
 }

@@ -30,6 +30,7 @@ import IMethodContext = data.IMethodContext;
 import {StatusConverter} from "./status-converter";
 import ITestContext = data.ITestContext;
 import ISuiteContext = data.ISuiteContext;
+import ISessionContext = data.ISessionContext;
 
 export interface IMethodDetails {
     executionStatistics?: ExecutionStatistics,
@@ -39,6 +40,7 @@ export interface IMethodDetails {
     suiteContext?: ISuiteContext,
     numDetails?: number,
     failureAspectStatistics?:FailureAspectStatistics,
+    sessionContexts?:ISessionContext[],
 }
 
 @autoinject()
@@ -105,7 +107,8 @@ export class StatisticsGenerator {
                             classStatistics: classStatistic,
                             testContext: testContext,
                             suiteContext: suiteContext,
-                            numDetails: (methodContext.errorContext?1:0)+(methodContext.customContextJson?1:0)
+                            numDetails: (methodContext.errorContext?1:0)+(methodContext.customContextJson?1:0),
+                            sessionContexts: executionStatistics.executionAggregate.sessionContexts.filter(sessionContext => methodContext.sessionContextIds.indexOf(sessionContext.contextValues.id) >= 0)
                         }
                     }
                 }
@@ -117,14 +120,16 @@ export class StatisticsGenerator {
         const screenshots:IFile[] = [];
         const allFilePromises = [];
         methodContext.testSteps
-            .flatMap(testStep => testStep.testStepActions)
-            .flatMap(testStepAction => testStepAction.screenshotIds)
-            .forEach(id => {
-                allFilePromises.push(this._dataLoader.getFile(id).then(file => {
-                    file.relativePath = this._config.correctRelativePath(file.relativePath);
-                    //screenshots[file.id] = file;
-                    screenshots.push(file);
-                }));
+            .flatMap(value => value.actions)
+            .flatMap(value => value.entries)
+            .forEach(value => {
+                if (value.screenshotId) {
+                    allFilePromises.push(this._dataLoader.getFile(value.screenshotId).then(file => {
+                        file.relativePath = this._config.correctRelativePath(file.relativePath);
+                        //screenshots[file.id] = file;
+                        screenshots.push(file);
+                    }));
+                }
             })
         return Promise.all(allFilePromises).then(()=>screenshots);
     }

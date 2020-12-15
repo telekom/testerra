@@ -17,11 +17,7 @@ private static final long serialVersionUID = 0L;
   }
   private TestStepAction() {
     name_ = "";
-    clickpathEvents_ = java.util.Collections.emptyList();
-    screenshotIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    logMessages_ = java.util.Collections.emptyList();
-    optionalAssertions_ = java.util.Collections.emptyList();
-    collectedAssertions_ = java.util.Collections.emptyList();
+    entries_ = java.util.Collections.emptyList();
   }
 
   @java.lang.Override
@@ -66,49 +62,13 @@ private static final long serialVersionUID = 0L;
             timestamp_ = input.readInt64();
             break;
           }
-          case 42: {
+          case 58: {
             if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-              clickpathEvents_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent>();
+              entries_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry>();
               mutable_bitField0_ |= 0x00000001;
             }
-            clickpathEvents_.add(
-                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.parser(), extensionRegistry));
-            break;
-          }
-          case 50: {
-            java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000002) != 0)) {
-              screenshotIds_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000002;
-            }
-            screenshotIds_.add(s);
-            break;
-          }
-          case 58: {
-            if (!((mutable_bitField0_ & 0x00000004) != 0)) {
-              logMessages_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.LogMessage>();
-              mutable_bitField0_ |= 0x00000004;
-            }
-            logMessages_.add(
-                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.LogMessage.parser(), extensionRegistry));
-            break;
-          }
-          case 66: {
-            if (!((mutable_bitField0_ & 0x00000008) != 0)) {
-              optionalAssertions_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.ErrorContext>();
-              mutable_bitField0_ |= 0x00000008;
-            }
-            optionalAssertions_.add(
-                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.ErrorContext.parser(), extensionRegistry));
-            break;
-          }
-          case 74: {
-            if (!((mutable_bitField0_ & 0x00000010) != 0)) {
-              collectedAssertions_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.ErrorContext>();
-              mutable_bitField0_ |= 0x00000010;
-            }
-            collectedAssertions_.add(
-                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.ErrorContext.parser(), extensionRegistry));
+            entries_.add(
+                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry.parser(), extensionRegistry));
             break;
           }
           default: {
@@ -127,19 +87,7 @@ private static final long serialVersionUID = 0L;
           e).setUnfinishedMessage(this);
     } finally {
       if (((mutable_bitField0_ & 0x00000001) != 0)) {
-        clickpathEvents_ = java.util.Collections.unmodifiableList(clickpathEvents_);
-      }
-      if (((mutable_bitField0_ & 0x00000002) != 0)) {
-        screenshotIds_ = screenshotIds_.getUnmodifiableView();
-      }
-      if (((mutable_bitField0_ & 0x00000004) != 0)) {
-        logMessages_ = java.util.Collections.unmodifiableList(logMessages_);
-      }
-      if (((mutable_bitField0_ & 0x00000008) != 0)) {
-        optionalAssertions_ = java.util.Collections.unmodifiableList(optionalAssertions_);
-      }
-      if (((mutable_bitField0_ & 0x00000010) != 0)) {
-        collectedAssertions_ = java.util.Collections.unmodifiableList(collectedAssertions_);
+        entries_ = java.util.Collections.unmodifiableList(entries_);
       }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
@@ -208,199 +156,69 @@ private static final long serialVersionUID = 0L;
     return timestamp_;
   }
 
-  public static final int CLICKPATH_EVENTS_FIELD_NUMBER = 5;
-  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent> clickpathEvents_;
+  public static final int ENTRIES_FIELD_NUMBER = 7;
+  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry> entries_;
   /**
    * <pre>
    *    repeated string screenshot_names = 4 [deprecated = true];
+   *    repeated ClickPathEvent clickpath_events = 5 [deprecated = true];
+   *    repeated string screenshot_ids = 6 [deprecated = true];
    * </pre>
    *
-   * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
+   * <code>repeated .data.TestStepActionEntry entries = 7;</code>
    */
-  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent> getClickpathEventsList() {
-    return clickpathEvents_;
+  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry> getEntriesList() {
+    return entries_;
   }
   /**
    * <pre>
    *    repeated string screenshot_names = 4 [deprecated = true];
+   *    repeated ClickPathEvent clickpath_events = 5 [deprecated = true];
+   *    repeated string screenshot_ids = 6 [deprecated = true];
    * </pre>
    *
-   * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
+   * <code>repeated .data.TestStepActionEntry entries = 7;</code>
    */
-  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ClickPathEventOrBuilder> 
-      getClickpathEventsOrBuilderList() {
-    return clickpathEvents_;
+  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntryOrBuilder> 
+      getEntriesOrBuilderList() {
+    return entries_;
   }
   /**
    * <pre>
    *    repeated string screenshot_names = 4 [deprecated = true];
+   *    repeated ClickPathEvent clickpath_events = 5 [deprecated = true];
+   *    repeated string screenshot_ids = 6 [deprecated = true];
    * </pre>
    *
-   * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
+   * <code>repeated .data.TestStepActionEntry entries = 7;</code>
    */
-  public int getClickpathEventsCount() {
-    return clickpathEvents_.size();
+  public int getEntriesCount() {
+    return entries_.size();
   }
   /**
    * <pre>
    *    repeated string screenshot_names = 4 [deprecated = true];
+   *    repeated ClickPathEvent clickpath_events = 5 [deprecated = true];
+   *    repeated string screenshot_ids = 6 [deprecated = true];
    * </pre>
    *
-   * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
+   * <code>repeated .data.TestStepActionEntry entries = 7;</code>
    */
-  public eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent getClickpathEvents(int index) {
-    return clickpathEvents_.get(index);
+  public eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry getEntries(int index) {
+    return entries_.get(index);
   }
   /**
    * <pre>
    *    repeated string screenshot_names = 4 [deprecated = true];
+   *    repeated ClickPathEvent clickpath_events = 5 [deprecated = true];
+   *    repeated string screenshot_ids = 6 [deprecated = true];
    * </pre>
    *
-   * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
+   * <code>repeated .data.TestStepActionEntry entries = 7;</code>
    */
-  public eu.tsystems.mms.tic.testframework.report.model.ClickPathEventOrBuilder getClickpathEventsOrBuilder(
+  public eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntryOrBuilder getEntriesOrBuilder(
       int index) {
-    return clickpathEvents_.get(index);
-  }
-
-  public static final int SCREENSHOT_IDS_FIELD_NUMBER = 6;
-  private com.google.protobuf.LazyStringList screenshotIds_;
-  /**
-   * <code>repeated string screenshot_ids = 6;</code>
-   * @return A list containing the screenshotIds.
-   */
-  public com.google.protobuf.ProtocolStringList
-      getScreenshotIdsList() {
-    return screenshotIds_;
-  }
-  /**
-   * <code>repeated string screenshot_ids = 6;</code>
-   * @return The count of screenshotIds.
-   */
-  public int getScreenshotIdsCount() {
-    return screenshotIds_.size();
-  }
-  /**
-   * <code>repeated string screenshot_ids = 6;</code>
-   * @param index The index of the element to return.
-   * @return The screenshotIds at the given index.
-   */
-  public java.lang.String getScreenshotIds(int index) {
-    return screenshotIds_.get(index);
-  }
-  /**
-   * <code>repeated string screenshot_ids = 6;</code>
-   * @param index The index of the value to return.
-   * @return The bytes of the screenshotIds at the given index.
-   */
-  public com.google.protobuf.ByteString
-      getScreenshotIdsBytes(int index) {
-    return screenshotIds_.getByteString(index);
-  }
-
-  public static final int LOG_MESSAGES_FIELD_NUMBER = 7;
-  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage> logMessages_;
-  /**
-   * <code>repeated .data.LogMessage log_messages = 7;</code>
-   */
-  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage> getLogMessagesList() {
-    return logMessages_;
-  }
-  /**
-   * <code>repeated .data.LogMessage log_messages = 7;</code>
-   */
-  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder> 
-      getLogMessagesOrBuilderList() {
-    return logMessages_;
-  }
-  /**
-   * <code>repeated .data.LogMessage log_messages = 7;</code>
-   */
-  public int getLogMessagesCount() {
-    return logMessages_.size();
-  }
-  /**
-   * <code>repeated .data.LogMessage log_messages = 7;</code>
-   */
-  public eu.tsystems.mms.tic.testframework.report.model.LogMessage getLogMessages(int index) {
-    return logMessages_.get(index);
-  }
-  /**
-   * <code>repeated .data.LogMessage log_messages = 7;</code>
-   */
-  public eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder getLogMessagesOrBuilder(
-      int index) {
-    return logMessages_.get(index);
-  }
-
-  public static final int OPTIONAL_ASSERTIONS_FIELD_NUMBER = 8;
-  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> optionalAssertions_;
-  /**
-   * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
-   */
-  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> getOptionalAssertionsList() {
-    return optionalAssertions_;
-  }
-  /**
-   * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
-   */
-  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
-      getOptionalAssertionsOrBuilderList() {
-    return optionalAssertions_;
-  }
-  /**
-   * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
-   */
-  public int getOptionalAssertionsCount() {
-    return optionalAssertions_.size();
-  }
-  /**
-   * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
-   */
-  public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getOptionalAssertions(int index) {
-    return optionalAssertions_.get(index);
-  }
-  /**
-   * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
-   */
-  public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getOptionalAssertionsOrBuilder(
-      int index) {
-    return optionalAssertions_.get(index);
-  }
-
-  public static final int COLLECTED_ASSERTIONS_FIELD_NUMBER = 9;
-  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> collectedAssertions_;
-  /**
-   * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
-   */
-  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> getCollectedAssertionsList() {
-    return collectedAssertions_;
-  }
-  /**
-   * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
-   */
-  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
-      getCollectedAssertionsOrBuilderList() {
-    return collectedAssertions_;
-  }
-  /**
-   * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
-   */
-  public int getCollectedAssertionsCount() {
-    return collectedAssertions_.size();
-  }
-  /**
-   * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
-   */
-  public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getCollectedAssertions(int index) {
-    return collectedAssertions_.get(index);
-  }
-  /**
-   * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
-   */
-  public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getCollectedAssertionsOrBuilder(
-      int index) {
-    return collectedAssertions_.get(index);
+    return entries_.get(index);
   }
 
   private byte memoizedIsInitialized = -1;
@@ -423,20 +241,8 @@ private static final long serialVersionUID = 0L;
     if (timestamp_ != 0L) {
       output.writeInt64(3, timestamp_);
     }
-    for (int i = 0; i < clickpathEvents_.size(); i++) {
-      output.writeMessage(5, clickpathEvents_.get(i));
-    }
-    for (int i = 0; i < screenshotIds_.size(); i++) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 6, screenshotIds_.getRaw(i));
-    }
-    for (int i = 0; i < logMessages_.size(); i++) {
-      output.writeMessage(7, logMessages_.get(i));
-    }
-    for (int i = 0; i < optionalAssertions_.size(); i++) {
-      output.writeMessage(8, optionalAssertions_.get(i));
-    }
-    for (int i = 0; i < collectedAssertions_.size(); i++) {
-      output.writeMessage(9, collectedAssertions_.get(i));
+    for (int i = 0; i < entries_.size(); i++) {
+      output.writeMessage(7, entries_.get(i));
     }
     unknownFields.writeTo(output);
   }
@@ -454,29 +260,9 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeInt64Size(3, timestamp_);
     }
-    for (int i = 0; i < clickpathEvents_.size(); i++) {
+    for (int i = 0; i < entries_.size(); i++) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(5, clickpathEvents_.get(i));
-    }
-    {
-      int dataSize = 0;
-      for (int i = 0; i < screenshotIds_.size(); i++) {
-        dataSize += computeStringSizeNoTag(screenshotIds_.getRaw(i));
-      }
-      size += dataSize;
-      size += 1 * getScreenshotIdsList().size();
-    }
-    for (int i = 0; i < logMessages_.size(); i++) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(7, logMessages_.get(i));
-    }
-    for (int i = 0; i < optionalAssertions_.size(); i++) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(8, optionalAssertions_.get(i));
-    }
-    for (int i = 0; i < collectedAssertions_.size(); i++) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(9, collectedAssertions_.get(i));
+        .computeMessageSize(7, entries_.get(i));
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -497,16 +283,8 @@ private static final long serialVersionUID = 0L;
         .equals(other.getName())) return false;
     if (getTimestamp()
         != other.getTimestamp()) return false;
-    if (!getClickpathEventsList()
-        .equals(other.getClickpathEventsList())) return false;
-    if (!getScreenshotIdsList()
-        .equals(other.getScreenshotIdsList())) return false;
-    if (!getLogMessagesList()
-        .equals(other.getLogMessagesList())) return false;
-    if (!getOptionalAssertionsList()
-        .equals(other.getOptionalAssertionsList())) return false;
-    if (!getCollectedAssertionsList()
-        .equals(other.getCollectedAssertionsList())) return false;
+    if (!getEntriesList()
+        .equals(other.getEntriesList())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -523,25 +301,9 @@ private static final long serialVersionUID = 0L;
     hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
         getTimestamp());
-    if (getClickpathEventsCount() > 0) {
-      hash = (37 * hash) + CLICKPATH_EVENTS_FIELD_NUMBER;
-      hash = (53 * hash) + getClickpathEventsList().hashCode();
-    }
-    if (getScreenshotIdsCount() > 0) {
-      hash = (37 * hash) + SCREENSHOT_IDS_FIELD_NUMBER;
-      hash = (53 * hash) + getScreenshotIdsList().hashCode();
-    }
-    if (getLogMessagesCount() > 0) {
-      hash = (37 * hash) + LOG_MESSAGES_FIELD_NUMBER;
-      hash = (53 * hash) + getLogMessagesList().hashCode();
-    }
-    if (getOptionalAssertionsCount() > 0) {
-      hash = (37 * hash) + OPTIONAL_ASSERTIONS_FIELD_NUMBER;
-      hash = (53 * hash) + getOptionalAssertionsList().hashCode();
-    }
-    if (getCollectedAssertionsCount() > 0) {
-      hash = (37 * hash) + COLLECTED_ASSERTIONS_FIELD_NUMBER;
-      hash = (53 * hash) + getCollectedAssertionsList().hashCode();
+    if (getEntriesCount() > 0) {
+      hash = (37 * hash) + ENTRIES_FIELD_NUMBER;
+      hash = (53 * hash) + getEntriesList().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -671,10 +433,7 @@ private static final long serialVersionUID = 0L;
     private void maybeForceBuilderInitialization() {
       if (com.google.protobuf.GeneratedMessageV3
               .alwaysUseFieldBuilders) {
-        getClickpathEventsFieldBuilder();
-        getLogMessagesFieldBuilder();
-        getOptionalAssertionsFieldBuilder();
-        getCollectedAssertionsFieldBuilder();
+        getEntriesFieldBuilder();
       }
     }
     @java.lang.Override
@@ -684,31 +443,11 @@ private static final long serialVersionUID = 0L;
 
       timestamp_ = 0L;
 
-      if (clickpathEventsBuilder_ == null) {
-        clickpathEvents_ = java.util.Collections.emptyList();
+      if (entriesBuilder_ == null) {
+        entries_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000001);
       } else {
-        clickpathEventsBuilder_.clear();
-      }
-      screenshotIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000002);
-      if (logMessagesBuilder_ == null) {
-        logMessages_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000004);
-      } else {
-        logMessagesBuilder_.clear();
-      }
-      if (optionalAssertionsBuilder_ == null) {
-        optionalAssertions_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000008);
-      } else {
-        optionalAssertionsBuilder_.clear();
-      }
-      if (collectedAssertionsBuilder_ == null) {
-        collectedAssertions_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000010);
-      } else {
-        collectedAssertionsBuilder_.clear();
+        entriesBuilder_.clear();
       }
       return this;
     }
@@ -739,46 +478,14 @@ private static final long serialVersionUID = 0L;
       int from_bitField0_ = bitField0_;
       result.name_ = name_;
       result.timestamp_ = timestamp_;
-      if (clickpathEventsBuilder_ == null) {
+      if (entriesBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0)) {
-          clickpathEvents_ = java.util.Collections.unmodifiableList(clickpathEvents_);
+          entries_ = java.util.Collections.unmodifiableList(entries_);
           bitField0_ = (bitField0_ & ~0x00000001);
         }
-        result.clickpathEvents_ = clickpathEvents_;
+        result.entries_ = entries_;
       } else {
-        result.clickpathEvents_ = clickpathEventsBuilder_.build();
-      }
-      if (((bitField0_ & 0x00000002) != 0)) {
-        screenshotIds_ = screenshotIds_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000002);
-      }
-      result.screenshotIds_ = screenshotIds_;
-      if (logMessagesBuilder_ == null) {
-        if (((bitField0_ & 0x00000004) != 0)) {
-          logMessages_ = java.util.Collections.unmodifiableList(logMessages_);
-          bitField0_ = (bitField0_ & ~0x00000004);
-        }
-        result.logMessages_ = logMessages_;
-      } else {
-        result.logMessages_ = logMessagesBuilder_.build();
-      }
-      if (optionalAssertionsBuilder_ == null) {
-        if (((bitField0_ & 0x00000008) != 0)) {
-          optionalAssertions_ = java.util.Collections.unmodifiableList(optionalAssertions_);
-          bitField0_ = (bitField0_ & ~0x00000008);
-        }
-        result.optionalAssertions_ = optionalAssertions_;
-      } else {
-        result.optionalAssertions_ = optionalAssertionsBuilder_.build();
-      }
-      if (collectedAssertionsBuilder_ == null) {
-        if (((bitField0_ & 0x00000010) != 0)) {
-          collectedAssertions_ = java.util.Collections.unmodifiableList(collectedAssertions_);
-          bitField0_ = (bitField0_ & ~0x00000010);
-        }
-        result.collectedAssertions_ = collectedAssertions_;
-      } else {
-        result.collectedAssertions_ = collectedAssertionsBuilder_.build();
+        result.entries_ = entriesBuilder_.build();
       }
       onBuilt();
       return result;
@@ -835,117 +542,29 @@ private static final long serialVersionUID = 0L;
       if (other.getTimestamp() != 0L) {
         setTimestamp(other.getTimestamp());
       }
-      if (clickpathEventsBuilder_ == null) {
-        if (!other.clickpathEvents_.isEmpty()) {
-          if (clickpathEvents_.isEmpty()) {
-            clickpathEvents_ = other.clickpathEvents_;
+      if (entriesBuilder_ == null) {
+        if (!other.entries_.isEmpty()) {
+          if (entries_.isEmpty()) {
+            entries_ = other.entries_;
             bitField0_ = (bitField0_ & ~0x00000001);
           } else {
-            ensureClickpathEventsIsMutable();
-            clickpathEvents_.addAll(other.clickpathEvents_);
+            ensureEntriesIsMutable();
+            entries_.addAll(other.entries_);
           }
           onChanged();
         }
       } else {
-        if (!other.clickpathEvents_.isEmpty()) {
-          if (clickpathEventsBuilder_.isEmpty()) {
-            clickpathEventsBuilder_.dispose();
-            clickpathEventsBuilder_ = null;
-            clickpathEvents_ = other.clickpathEvents_;
+        if (!other.entries_.isEmpty()) {
+          if (entriesBuilder_.isEmpty()) {
+            entriesBuilder_.dispose();
+            entriesBuilder_ = null;
+            entries_ = other.entries_;
             bitField0_ = (bitField0_ & ~0x00000001);
-            clickpathEventsBuilder_ = 
+            entriesBuilder_ = 
               com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                 getClickpathEventsFieldBuilder() : null;
+                 getEntriesFieldBuilder() : null;
           } else {
-            clickpathEventsBuilder_.addAllMessages(other.clickpathEvents_);
-          }
-        }
-      }
-      if (!other.screenshotIds_.isEmpty()) {
-        if (screenshotIds_.isEmpty()) {
-          screenshotIds_ = other.screenshotIds_;
-          bitField0_ = (bitField0_ & ~0x00000002);
-        } else {
-          ensureScreenshotIdsIsMutable();
-          screenshotIds_.addAll(other.screenshotIds_);
-        }
-        onChanged();
-      }
-      if (logMessagesBuilder_ == null) {
-        if (!other.logMessages_.isEmpty()) {
-          if (logMessages_.isEmpty()) {
-            logMessages_ = other.logMessages_;
-            bitField0_ = (bitField0_ & ~0x00000004);
-          } else {
-            ensureLogMessagesIsMutable();
-            logMessages_.addAll(other.logMessages_);
-          }
-          onChanged();
-        }
-      } else {
-        if (!other.logMessages_.isEmpty()) {
-          if (logMessagesBuilder_.isEmpty()) {
-            logMessagesBuilder_.dispose();
-            logMessagesBuilder_ = null;
-            logMessages_ = other.logMessages_;
-            bitField0_ = (bitField0_ & ~0x00000004);
-            logMessagesBuilder_ = 
-              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                 getLogMessagesFieldBuilder() : null;
-          } else {
-            logMessagesBuilder_.addAllMessages(other.logMessages_);
-          }
-        }
-      }
-      if (optionalAssertionsBuilder_ == null) {
-        if (!other.optionalAssertions_.isEmpty()) {
-          if (optionalAssertions_.isEmpty()) {
-            optionalAssertions_ = other.optionalAssertions_;
-            bitField0_ = (bitField0_ & ~0x00000008);
-          } else {
-            ensureOptionalAssertionsIsMutable();
-            optionalAssertions_.addAll(other.optionalAssertions_);
-          }
-          onChanged();
-        }
-      } else {
-        if (!other.optionalAssertions_.isEmpty()) {
-          if (optionalAssertionsBuilder_.isEmpty()) {
-            optionalAssertionsBuilder_.dispose();
-            optionalAssertionsBuilder_ = null;
-            optionalAssertions_ = other.optionalAssertions_;
-            bitField0_ = (bitField0_ & ~0x00000008);
-            optionalAssertionsBuilder_ = 
-              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                 getOptionalAssertionsFieldBuilder() : null;
-          } else {
-            optionalAssertionsBuilder_.addAllMessages(other.optionalAssertions_);
-          }
-        }
-      }
-      if (collectedAssertionsBuilder_ == null) {
-        if (!other.collectedAssertions_.isEmpty()) {
-          if (collectedAssertions_.isEmpty()) {
-            collectedAssertions_ = other.collectedAssertions_;
-            bitField0_ = (bitField0_ & ~0x00000010);
-          } else {
-            ensureCollectedAssertionsIsMutable();
-            collectedAssertions_.addAll(other.collectedAssertions_);
-          }
-          onChanged();
-        }
-      } else {
-        if (!other.collectedAssertions_.isEmpty()) {
-          if (collectedAssertionsBuilder_.isEmpty()) {
-            collectedAssertionsBuilder_.dispose();
-            collectedAssertionsBuilder_ = null;
-            collectedAssertions_ = other.collectedAssertions_;
-            bitField0_ = (bitField0_ & ~0x00000010);
-            collectedAssertionsBuilder_ = 
-              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                 getCollectedAssertionsFieldBuilder() : null;
-          } else {
-            collectedAssertionsBuilder_.addAllMessages(other.collectedAssertions_);
+            entriesBuilder_.addAllMessages(other.entries_);
           }
         }
       }
@@ -1097,1146 +716,352 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent> clickpathEvents_ =
+    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry> entries_ =
       java.util.Collections.emptyList();
-    private void ensureClickpathEventsIsMutable() {
+    private void ensureEntriesIsMutable() {
       if (!((bitField0_ & 0x00000001) != 0)) {
-        clickpathEvents_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent>(clickpathEvents_);
+        entries_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry>(entries_);
         bitField0_ |= 0x00000001;
        }
     }
 
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent, eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.Builder, eu.tsystems.mms.tic.testframework.report.model.ClickPathEventOrBuilder> clickpathEventsBuilder_;
+        eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry, eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry.Builder, eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntryOrBuilder> entriesBuilder_;
 
     /**
      * <pre>
      *    repeated string screenshot_names = 4 [deprecated = true];
+     *    repeated ClickPathEvent clickpath_events = 5 [deprecated = true];
+     *    repeated string screenshot_ids = 6 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.TestStepActionEntry entries = 7;</code>
      */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent> getClickpathEventsList() {
-      if (clickpathEventsBuilder_ == null) {
-        return java.util.Collections.unmodifiableList(clickpathEvents_);
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry> getEntriesList() {
+      if (entriesBuilder_ == null) {
+        return java.util.Collections.unmodifiableList(entries_);
       } else {
-        return clickpathEventsBuilder_.getMessageList();
+        return entriesBuilder_.getMessageList();
       }
     }
     /**
      * <pre>
      *    repeated string screenshot_names = 4 [deprecated = true];
+     *    repeated ClickPathEvent clickpath_events = 5 [deprecated = true];
+     *    repeated string screenshot_ids = 6 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.TestStepActionEntry entries = 7;</code>
      */
-    public int getClickpathEventsCount() {
-      if (clickpathEventsBuilder_ == null) {
-        return clickpathEvents_.size();
+    public int getEntriesCount() {
+      if (entriesBuilder_ == null) {
+        return entries_.size();
       } else {
-        return clickpathEventsBuilder_.getCount();
+        return entriesBuilder_.getCount();
       }
     }
     /**
      * <pre>
      *    repeated string screenshot_names = 4 [deprecated = true];
+     *    repeated ClickPathEvent clickpath_events = 5 [deprecated = true];
+     *    repeated string screenshot_ids = 6 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.TestStepActionEntry entries = 7;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent getClickpathEvents(int index) {
-      if (clickpathEventsBuilder_ == null) {
-        return clickpathEvents_.get(index);
+    public eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry getEntries(int index) {
+      if (entriesBuilder_ == null) {
+        return entries_.get(index);
       } else {
-        return clickpathEventsBuilder_.getMessage(index);
+        return entriesBuilder_.getMessage(index);
       }
     }
     /**
      * <pre>
      *    repeated string screenshot_names = 4 [deprecated = true];
+     *    repeated ClickPathEvent clickpath_events = 5 [deprecated = true];
+     *    repeated string screenshot_ids = 6 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.TestStepActionEntry entries = 7;</code>
      */
-    public Builder setClickpathEvents(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent value) {
-      if (clickpathEventsBuilder_ == null) {
+    public Builder setEntries(
+        int index, eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry value) {
+      if (entriesBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        ensureClickpathEventsIsMutable();
-        clickpathEvents_.set(index, value);
+        ensureEntriesIsMutable();
+        entries_.set(index, value);
         onChanged();
       } else {
-        clickpathEventsBuilder_.setMessage(index, value);
+        entriesBuilder_.setMessage(index, value);
       }
       return this;
     }
     /**
      * <pre>
      *    repeated string screenshot_names = 4 [deprecated = true];
+     *    repeated ClickPathEvent clickpath_events = 5 [deprecated = true];
+     *    repeated string screenshot_ids = 6 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.TestStepActionEntry entries = 7;</code>
      */
-    public Builder setClickpathEvents(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.Builder builderForValue) {
-      if (clickpathEventsBuilder_ == null) {
-        ensureClickpathEventsIsMutable();
-        clickpathEvents_.set(index, builderForValue.build());
+    public Builder setEntries(
+        int index, eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry.Builder builderForValue) {
+      if (entriesBuilder_ == null) {
+        ensureEntriesIsMutable();
+        entries_.set(index, builderForValue.build());
         onChanged();
       } else {
-        clickpathEventsBuilder_.setMessage(index, builderForValue.build());
+        entriesBuilder_.setMessage(index, builderForValue.build());
       }
       return this;
     }
     /**
      * <pre>
      *    repeated string screenshot_names = 4 [deprecated = true];
+     *    repeated ClickPathEvent clickpath_events = 5 [deprecated = true];
+     *    repeated string screenshot_ids = 6 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.TestStepActionEntry entries = 7;</code>
      */
-    public Builder addClickpathEvents(eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent value) {
-      if (clickpathEventsBuilder_ == null) {
+    public Builder addEntries(eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry value) {
+      if (entriesBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        ensureClickpathEventsIsMutable();
-        clickpathEvents_.add(value);
+        ensureEntriesIsMutable();
+        entries_.add(value);
         onChanged();
       } else {
-        clickpathEventsBuilder_.addMessage(value);
+        entriesBuilder_.addMessage(value);
       }
       return this;
     }
     /**
      * <pre>
      *    repeated string screenshot_names = 4 [deprecated = true];
+     *    repeated ClickPathEvent clickpath_events = 5 [deprecated = true];
+     *    repeated string screenshot_ids = 6 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.TestStepActionEntry entries = 7;</code>
      */
-    public Builder addClickpathEvents(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent value) {
-      if (clickpathEventsBuilder_ == null) {
+    public Builder addEntries(
+        int index, eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry value) {
+      if (entriesBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        ensureClickpathEventsIsMutable();
-        clickpathEvents_.add(index, value);
+        ensureEntriesIsMutable();
+        entries_.add(index, value);
         onChanged();
       } else {
-        clickpathEventsBuilder_.addMessage(index, value);
+        entriesBuilder_.addMessage(index, value);
       }
       return this;
     }
     /**
      * <pre>
      *    repeated string screenshot_names = 4 [deprecated = true];
+     *    repeated ClickPathEvent clickpath_events = 5 [deprecated = true];
+     *    repeated string screenshot_ids = 6 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.TestStepActionEntry entries = 7;</code>
      */
-    public Builder addClickpathEvents(
-        eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.Builder builderForValue) {
-      if (clickpathEventsBuilder_ == null) {
-        ensureClickpathEventsIsMutable();
-        clickpathEvents_.add(builderForValue.build());
+    public Builder addEntries(
+        eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry.Builder builderForValue) {
+      if (entriesBuilder_ == null) {
+        ensureEntriesIsMutable();
+        entries_.add(builderForValue.build());
         onChanged();
       } else {
-        clickpathEventsBuilder_.addMessage(builderForValue.build());
+        entriesBuilder_.addMessage(builderForValue.build());
       }
       return this;
     }
     /**
      * <pre>
      *    repeated string screenshot_names = 4 [deprecated = true];
+     *    repeated ClickPathEvent clickpath_events = 5 [deprecated = true];
+     *    repeated string screenshot_ids = 6 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.TestStepActionEntry entries = 7;</code>
      */
-    public Builder addClickpathEvents(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.Builder builderForValue) {
-      if (clickpathEventsBuilder_ == null) {
-        ensureClickpathEventsIsMutable();
-        clickpathEvents_.add(index, builderForValue.build());
+    public Builder addEntries(
+        int index, eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry.Builder builderForValue) {
+      if (entriesBuilder_ == null) {
+        ensureEntriesIsMutable();
+        entries_.add(index, builderForValue.build());
         onChanged();
       } else {
-        clickpathEventsBuilder_.addMessage(index, builderForValue.build());
+        entriesBuilder_.addMessage(index, builderForValue.build());
       }
       return this;
     }
     /**
      * <pre>
      *    repeated string screenshot_names = 4 [deprecated = true];
+     *    repeated ClickPathEvent clickpath_events = 5 [deprecated = true];
+     *    repeated string screenshot_ids = 6 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.TestStepActionEntry entries = 7;</code>
      */
-    public Builder addAllClickpathEvents(
-        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent> values) {
-      if (clickpathEventsBuilder_ == null) {
-        ensureClickpathEventsIsMutable();
+    public Builder addAllEntries(
+        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry> values) {
+      if (entriesBuilder_ == null) {
+        ensureEntriesIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, clickpathEvents_);
+            values, entries_);
         onChanged();
       } else {
-        clickpathEventsBuilder_.addAllMessages(values);
+        entriesBuilder_.addAllMessages(values);
       }
       return this;
     }
     /**
      * <pre>
      *    repeated string screenshot_names = 4 [deprecated = true];
+     *    repeated ClickPathEvent clickpath_events = 5 [deprecated = true];
+     *    repeated string screenshot_ids = 6 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.TestStepActionEntry entries = 7;</code>
      */
-    public Builder clearClickpathEvents() {
-      if (clickpathEventsBuilder_ == null) {
-        clickpathEvents_ = java.util.Collections.emptyList();
+    public Builder clearEntries() {
+      if (entriesBuilder_ == null) {
+        entries_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
       } else {
-        clickpathEventsBuilder_.clear();
+        entriesBuilder_.clear();
       }
       return this;
     }
     /**
      * <pre>
      *    repeated string screenshot_names = 4 [deprecated = true];
+     *    repeated ClickPathEvent clickpath_events = 5 [deprecated = true];
+     *    repeated string screenshot_ids = 6 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.TestStepActionEntry entries = 7;</code>
      */
-    public Builder removeClickpathEvents(int index) {
-      if (clickpathEventsBuilder_ == null) {
-        ensureClickpathEventsIsMutable();
-        clickpathEvents_.remove(index);
+    public Builder removeEntries(int index) {
+      if (entriesBuilder_ == null) {
+        ensureEntriesIsMutable();
+        entries_.remove(index);
         onChanged();
       } else {
-        clickpathEventsBuilder_.remove(index);
+        entriesBuilder_.remove(index);
       }
       return this;
     }
     /**
      * <pre>
      *    repeated string screenshot_names = 4 [deprecated = true];
+     *    repeated ClickPathEvent clickpath_events = 5 [deprecated = true];
+     *    repeated string screenshot_ids = 6 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.TestStepActionEntry entries = 7;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.Builder getClickpathEventsBuilder(
+    public eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry.Builder getEntriesBuilder(
         int index) {
-      return getClickpathEventsFieldBuilder().getBuilder(index);
+      return getEntriesFieldBuilder().getBuilder(index);
     }
     /**
      * <pre>
      *    repeated string screenshot_names = 4 [deprecated = true];
+     *    repeated ClickPathEvent clickpath_events = 5 [deprecated = true];
+     *    repeated string screenshot_ids = 6 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.TestStepActionEntry entries = 7;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.ClickPathEventOrBuilder getClickpathEventsOrBuilder(
+    public eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntryOrBuilder getEntriesOrBuilder(
         int index) {
-      if (clickpathEventsBuilder_ == null) {
-        return clickpathEvents_.get(index);  } else {
-        return clickpathEventsBuilder_.getMessageOrBuilder(index);
+      if (entriesBuilder_ == null) {
+        return entries_.get(index);  } else {
+        return entriesBuilder_.getMessageOrBuilder(index);
       }
     }
     /**
      * <pre>
      *    repeated string screenshot_names = 4 [deprecated = true];
+     *    repeated ClickPathEvent clickpath_events = 5 [deprecated = true];
+     *    repeated string screenshot_ids = 6 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.TestStepActionEntry entries = 7;</code>
      */
-    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ClickPathEventOrBuilder> 
-         getClickpathEventsOrBuilderList() {
-      if (clickpathEventsBuilder_ != null) {
-        return clickpathEventsBuilder_.getMessageOrBuilderList();
+    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntryOrBuilder> 
+         getEntriesOrBuilderList() {
+      if (entriesBuilder_ != null) {
+        return entriesBuilder_.getMessageOrBuilderList();
       } else {
-        return java.util.Collections.unmodifiableList(clickpathEvents_);
+        return java.util.Collections.unmodifiableList(entries_);
       }
     }
     /**
      * <pre>
      *    repeated string screenshot_names = 4 [deprecated = true];
+     *    repeated ClickPathEvent clickpath_events = 5 [deprecated = true];
+     *    repeated string screenshot_ids = 6 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.TestStepActionEntry entries = 7;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.Builder addClickpathEventsBuilder() {
-      return getClickpathEventsFieldBuilder().addBuilder(
-          eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.getDefaultInstance());
+    public eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry.Builder addEntriesBuilder() {
+      return getEntriesFieldBuilder().addBuilder(
+          eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry.getDefaultInstance());
     }
     /**
      * <pre>
      *    repeated string screenshot_names = 4 [deprecated = true];
+     *    repeated ClickPathEvent clickpath_events = 5 [deprecated = true];
+     *    repeated string screenshot_ids = 6 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.TestStepActionEntry entries = 7;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.Builder addClickpathEventsBuilder(
+    public eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry.Builder addEntriesBuilder(
         int index) {
-      return getClickpathEventsFieldBuilder().addBuilder(
-          index, eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.getDefaultInstance());
+      return getEntriesFieldBuilder().addBuilder(
+          index, eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry.getDefaultInstance());
     }
     /**
      * <pre>
      *    repeated string screenshot_names = 4 [deprecated = true];
+     *    repeated ClickPathEvent clickpath_events = 5 [deprecated = true];
+     *    repeated string screenshot_ids = 6 [deprecated = true];
      * </pre>
      *
-     * <code>repeated .data.ClickPathEvent clickpath_events = 5;</code>
+     * <code>repeated .data.TestStepActionEntry entries = 7;</code>
      */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.Builder> 
-         getClickpathEventsBuilderList() {
-      return getClickpathEventsFieldBuilder().getBuilderList();
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry.Builder> 
+         getEntriesBuilderList() {
+      return getEntriesFieldBuilder().getBuilderList();
     }
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent, eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.Builder, eu.tsystems.mms.tic.testframework.report.model.ClickPathEventOrBuilder> 
-        getClickpathEventsFieldBuilder() {
-      if (clickpathEventsBuilder_ == null) {
-        clickpathEventsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent, eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.Builder, eu.tsystems.mms.tic.testframework.report.model.ClickPathEventOrBuilder>(
-                clickpathEvents_,
+        eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry, eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry.Builder, eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntryOrBuilder> 
+        getEntriesFieldBuilder() {
+      if (entriesBuilder_ == null) {
+        entriesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+            eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry, eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry.Builder, eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntryOrBuilder>(
+                entries_,
                 ((bitField0_ & 0x00000001) != 0),
                 getParentForChildren(),
                 isClean());
-        clickpathEvents_ = null;
+        entries_ = null;
       }
-      return clickpathEventsBuilder_;
-    }
-
-    private com.google.protobuf.LazyStringList screenshotIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    private void ensureScreenshotIdsIsMutable() {
-      if (!((bitField0_ & 0x00000002) != 0)) {
-        screenshotIds_ = new com.google.protobuf.LazyStringArrayList(screenshotIds_);
-        bitField0_ |= 0x00000002;
-       }
-    }
-    /**
-     * <code>repeated string screenshot_ids = 6;</code>
-     * @return A list containing the screenshotIds.
-     */
-    public com.google.protobuf.ProtocolStringList
-        getScreenshotIdsList() {
-      return screenshotIds_.getUnmodifiableView();
-    }
-    /**
-     * <code>repeated string screenshot_ids = 6;</code>
-     * @return The count of screenshotIds.
-     */
-    public int getScreenshotIdsCount() {
-      return screenshotIds_.size();
-    }
-    /**
-     * <code>repeated string screenshot_ids = 6;</code>
-     * @param index The index of the element to return.
-     * @return The screenshotIds at the given index.
-     */
-    public java.lang.String getScreenshotIds(int index) {
-      return screenshotIds_.get(index);
-    }
-    /**
-     * <code>repeated string screenshot_ids = 6;</code>
-     * @param index The index of the value to return.
-     * @return The bytes of the screenshotIds at the given index.
-     */
-    public com.google.protobuf.ByteString
-        getScreenshotIdsBytes(int index) {
-      return screenshotIds_.getByteString(index);
-    }
-    /**
-     * <code>repeated string screenshot_ids = 6;</code>
-     * @param index The index to set the value at.
-     * @param value The screenshotIds to set.
-     * @return This builder for chaining.
-     */
-    public Builder setScreenshotIds(
-        int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureScreenshotIdsIsMutable();
-      screenshotIds_.set(index, value);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string screenshot_ids = 6;</code>
-     * @param value The screenshotIds to add.
-     * @return This builder for chaining.
-     */
-    public Builder addScreenshotIds(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureScreenshotIdsIsMutable();
-      screenshotIds_.add(value);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string screenshot_ids = 6;</code>
-     * @param values The screenshotIds to add.
-     * @return This builder for chaining.
-     */
-    public Builder addAllScreenshotIds(
-        java.lang.Iterable<java.lang.String> values) {
-      ensureScreenshotIdsIsMutable();
-      com.google.protobuf.AbstractMessageLite.Builder.addAll(
-          values, screenshotIds_);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string screenshot_ids = 6;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearScreenshotIds() {
-      screenshotIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000002);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string screenshot_ids = 6;</code>
-     * @param value The bytes of the screenshotIds to add.
-     * @return This builder for chaining.
-     */
-    public Builder addScreenshotIdsBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      ensureScreenshotIdsIsMutable();
-      screenshotIds_.add(value);
-      onChanged();
-      return this;
-    }
-
-    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage> logMessages_ =
-      java.util.Collections.emptyList();
-    private void ensureLogMessagesIsMutable() {
-      if (!((bitField0_ & 0x00000004) != 0)) {
-        logMessages_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.LogMessage>(logMessages_);
-        bitField0_ |= 0x00000004;
-       }
-    }
-
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.LogMessage, eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder, eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder> logMessagesBuilder_;
-
-    /**
-     * <code>repeated .data.LogMessage log_messages = 7;</code>
-     */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage> getLogMessagesList() {
-      if (logMessagesBuilder_ == null) {
-        return java.util.Collections.unmodifiableList(logMessages_);
-      } else {
-        return logMessagesBuilder_.getMessageList();
-      }
-    }
-    /**
-     * <code>repeated .data.LogMessage log_messages = 7;</code>
-     */
-    public int getLogMessagesCount() {
-      if (logMessagesBuilder_ == null) {
-        return logMessages_.size();
-      } else {
-        return logMessagesBuilder_.getCount();
-      }
-    }
-    /**
-     * <code>repeated .data.LogMessage log_messages = 7;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.LogMessage getLogMessages(int index) {
-      if (logMessagesBuilder_ == null) {
-        return logMessages_.get(index);
-      } else {
-        return logMessagesBuilder_.getMessage(index);
-      }
-    }
-    /**
-     * <code>repeated .data.LogMessage log_messages = 7;</code>
-     */
-    public Builder setLogMessages(
-        int index, eu.tsystems.mms.tic.testframework.report.model.LogMessage value) {
-      if (logMessagesBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureLogMessagesIsMutable();
-        logMessages_.set(index, value);
-        onChanged();
-      } else {
-        logMessagesBuilder_.setMessage(index, value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.LogMessage log_messages = 7;</code>
-     */
-    public Builder setLogMessages(
-        int index, eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder builderForValue) {
-      if (logMessagesBuilder_ == null) {
-        ensureLogMessagesIsMutable();
-        logMessages_.set(index, builderForValue.build());
-        onChanged();
-      } else {
-        logMessagesBuilder_.setMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.LogMessage log_messages = 7;</code>
-     */
-    public Builder addLogMessages(eu.tsystems.mms.tic.testframework.report.model.LogMessage value) {
-      if (logMessagesBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureLogMessagesIsMutable();
-        logMessages_.add(value);
-        onChanged();
-      } else {
-        logMessagesBuilder_.addMessage(value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.LogMessage log_messages = 7;</code>
-     */
-    public Builder addLogMessages(
-        int index, eu.tsystems.mms.tic.testframework.report.model.LogMessage value) {
-      if (logMessagesBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureLogMessagesIsMutable();
-        logMessages_.add(index, value);
-        onChanged();
-      } else {
-        logMessagesBuilder_.addMessage(index, value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.LogMessage log_messages = 7;</code>
-     */
-    public Builder addLogMessages(
-        eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder builderForValue) {
-      if (logMessagesBuilder_ == null) {
-        ensureLogMessagesIsMutable();
-        logMessages_.add(builderForValue.build());
-        onChanged();
-      } else {
-        logMessagesBuilder_.addMessage(builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.LogMessage log_messages = 7;</code>
-     */
-    public Builder addLogMessages(
-        int index, eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder builderForValue) {
-      if (logMessagesBuilder_ == null) {
-        ensureLogMessagesIsMutable();
-        logMessages_.add(index, builderForValue.build());
-        onChanged();
-      } else {
-        logMessagesBuilder_.addMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.LogMessage log_messages = 7;</code>
-     */
-    public Builder addAllLogMessages(
-        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.LogMessage> values) {
-      if (logMessagesBuilder_ == null) {
-        ensureLogMessagesIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, logMessages_);
-        onChanged();
-      } else {
-        logMessagesBuilder_.addAllMessages(values);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.LogMessage log_messages = 7;</code>
-     */
-    public Builder clearLogMessages() {
-      if (logMessagesBuilder_ == null) {
-        logMessages_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000004);
-        onChanged();
-      } else {
-        logMessagesBuilder_.clear();
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.LogMessage log_messages = 7;</code>
-     */
-    public Builder removeLogMessages(int index) {
-      if (logMessagesBuilder_ == null) {
-        ensureLogMessagesIsMutable();
-        logMessages_.remove(index);
-        onChanged();
-      } else {
-        logMessagesBuilder_.remove(index);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.LogMessage log_messages = 7;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder getLogMessagesBuilder(
-        int index) {
-      return getLogMessagesFieldBuilder().getBuilder(index);
-    }
-    /**
-     * <code>repeated .data.LogMessage log_messages = 7;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder getLogMessagesOrBuilder(
-        int index) {
-      if (logMessagesBuilder_ == null) {
-        return logMessages_.get(index);  } else {
-        return logMessagesBuilder_.getMessageOrBuilder(index);
-      }
-    }
-    /**
-     * <code>repeated .data.LogMessage log_messages = 7;</code>
-     */
-    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder> 
-         getLogMessagesOrBuilderList() {
-      if (logMessagesBuilder_ != null) {
-        return logMessagesBuilder_.getMessageOrBuilderList();
-      } else {
-        return java.util.Collections.unmodifiableList(logMessages_);
-      }
-    }
-    /**
-     * <code>repeated .data.LogMessage log_messages = 7;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder addLogMessagesBuilder() {
-      return getLogMessagesFieldBuilder().addBuilder(
-          eu.tsystems.mms.tic.testframework.report.model.LogMessage.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .data.LogMessage log_messages = 7;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder addLogMessagesBuilder(
-        int index) {
-      return getLogMessagesFieldBuilder().addBuilder(
-          index, eu.tsystems.mms.tic.testframework.report.model.LogMessage.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .data.LogMessage log_messages = 7;</code>
-     */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder> 
-         getLogMessagesBuilderList() {
-      return getLogMessagesFieldBuilder().getBuilderList();
-    }
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.LogMessage, eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder, eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder> 
-        getLogMessagesFieldBuilder() {
-      if (logMessagesBuilder_ == null) {
-        logMessagesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            eu.tsystems.mms.tic.testframework.report.model.LogMessage, eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder, eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder>(
-                logMessages_,
-                ((bitField0_ & 0x00000004) != 0),
-                getParentForChildren(),
-                isClean());
-        logMessages_ = null;
-      }
-      return logMessagesBuilder_;
-    }
-
-    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> optionalAssertions_ =
-      java.util.Collections.emptyList();
-    private void ensureOptionalAssertionsIsMutable() {
-      if (!((bitField0_ & 0x00000008) != 0)) {
-        optionalAssertions_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.ErrorContext>(optionalAssertions_);
-        bitField0_ |= 0x00000008;
-       }
-    }
-
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> optionalAssertionsBuilder_;
-
-    /**
-     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
-     */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> getOptionalAssertionsList() {
-      if (optionalAssertionsBuilder_ == null) {
-        return java.util.Collections.unmodifiableList(optionalAssertions_);
-      } else {
-        return optionalAssertionsBuilder_.getMessageList();
-      }
-    }
-    /**
-     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
-     */
-    public int getOptionalAssertionsCount() {
-      if (optionalAssertionsBuilder_ == null) {
-        return optionalAssertions_.size();
-      } else {
-        return optionalAssertionsBuilder_.getCount();
-      }
-    }
-    /**
-     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getOptionalAssertions(int index) {
-      if (optionalAssertionsBuilder_ == null) {
-        return optionalAssertions_.get(index);
-      } else {
-        return optionalAssertionsBuilder_.getMessage(index);
-      }
-    }
-    /**
-     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
-     */
-    public Builder setOptionalAssertions(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
-      if (optionalAssertionsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureOptionalAssertionsIsMutable();
-        optionalAssertions_.set(index, value);
-        onChanged();
-      } else {
-        optionalAssertionsBuilder_.setMessage(index, value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
-     */
-    public Builder setOptionalAssertions(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder builderForValue) {
-      if (optionalAssertionsBuilder_ == null) {
-        ensureOptionalAssertionsIsMutable();
-        optionalAssertions_.set(index, builderForValue.build());
-        onChanged();
-      } else {
-        optionalAssertionsBuilder_.setMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
-     */
-    public Builder addOptionalAssertions(eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
-      if (optionalAssertionsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureOptionalAssertionsIsMutable();
-        optionalAssertions_.add(value);
-        onChanged();
-      } else {
-        optionalAssertionsBuilder_.addMessage(value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
-     */
-    public Builder addOptionalAssertions(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
-      if (optionalAssertionsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureOptionalAssertionsIsMutable();
-        optionalAssertions_.add(index, value);
-        onChanged();
-      } else {
-        optionalAssertionsBuilder_.addMessage(index, value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
-     */
-    public Builder addOptionalAssertions(
-        eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder builderForValue) {
-      if (optionalAssertionsBuilder_ == null) {
-        ensureOptionalAssertionsIsMutable();
-        optionalAssertions_.add(builderForValue.build());
-        onChanged();
-      } else {
-        optionalAssertionsBuilder_.addMessage(builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
-     */
-    public Builder addOptionalAssertions(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder builderForValue) {
-      if (optionalAssertionsBuilder_ == null) {
-        ensureOptionalAssertionsIsMutable();
-        optionalAssertions_.add(index, builderForValue.build());
-        onChanged();
-      } else {
-        optionalAssertionsBuilder_.addMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
-     */
-    public Builder addAllOptionalAssertions(
-        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContext> values) {
-      if (optionalAssertionsBuilder_ == null) {
-        ensureOptionalAssertionsIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, optionalAssertions_);
-        onChanged();
-      } else {
-        optionalAssertionsBuilder_.addAllMessages(values);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
-     */
-    public Builder clearOptionalAssertions() {
-      if (optionalAssertionsBuilder_ == null) {
-        optionalAssertions_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000008);
-        onChanged();
-      } else {
-        optionalAssertionsBuilder_.clear();
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
-     */
-    public Builder removeOptionalAssertions(int index) {
-      if (optionalAssertionsBuilder_ == null) {
-        ensureOptionalAssertionsIsMutable();
-        optionalAssertions_.remove(index);
-        onChanged();
-      } else {
-        optionalAssertionsBuilder_.remove(index);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder getOptionalAssertionsBuilder(
-        int index) {
-      return getOptionalAssertionsFieldBuilder().getBuilder(index);
-    }
-    /**
-     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getOptionalAssertionsOrBuilder(
-        int index) {
-      if (optionalAssertionsBuilder_ == null) {
-        return optionalAssertions_.get(index);  } else {
-        return optionalAssertionsBuilder_.getMessageOrBuilder(index);
-      }
-    }
-    /**
-     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
-     */
-    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
-         getOptionalAssertionsOrBuilderList() {
-      if (optionalAssertionsBuilder_ != null) {
-        return optionalAssertionsBuilder_.getMessageOrBuilderList();
-      } else {
-        return java.util.Collections.unmodifiableList(optionalAssertions_);
-      }
-    }
-    /**
-     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder addOptionalAssertionsBuilder() {
-      return getOptionalAssertionsFieldBuilder().addBuilder(
-          eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder addOptionalAssertionsBuilder(
-        int index) {
-      return getOptionalAssertionsFieldBuilder().addBuilder(
-          index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .data.ErrorContext optional_assertions = 8;</code>
-     */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder> 
-         getOptionalAssertionsBuilderList() {
-      return getOptionalAssertionsFieldBuilder().getBuilderList();
-    }
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
-        getOptionalAssertionsFieldBuilder() {
-      if (optionalAssertionsBuilder_ == null) {
-        optionalAssertionsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder>(
-                optionalAssertions_,
-                ((bitField0_ & 0x00000008) != 0),
-                getParentForChildren(),
-                isClean());
-        optionalAssertions_ = null;
-      }
-      return optionalAssertionsBuilder_;
-    }
-
-    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> collectedAssertions_ =
-      java.util.Collections.emptyList();
-    private void ensureCollectedAssertionsIsMutable() {
-      if (!((bitField0_ & 0x00000010) != 0)) {
-        collectedAssertions_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.ErrorContext>(collectedAssertions_);
-        bitField0_ |= 0x00000010;
-       }
-    }
-
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> collectedAssertionsBuilder_;
-
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
-     */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> getCollectedAssertionsList() {
-      if (collectedAssertionsBuilder_ == null) {
-        return java.util.Collections.unmodifiableList(collectedAssertions_);
-      } else {
-        return collectedAssertionsBuilder_.getMessageList();
-      }
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
-     */
-    public int getCollectedAssertionsCount() {
-      if (collectedAssertionsBuilder_ == null) {
-        return collectedAssertions_.size();
-      } else {
-        return collectedAssertionsBuilder_.getCount();
-      }
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getCollectedAssertions(int index) {
-      if (collectedAssertionsBuilder_ == null) {
-        return collectedAssertions_.get(index);
-      } else {
-        return collectedAssertionsBuilder_.getMessage(index);
-      }
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
-     */
-    public Builder setCollectedAssertions(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
-      if (collectedAssertionsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureCollectedAssertionsIsMutable();
-        collectedAssertions_.set(index, value);
-        onChanged();
-      } else {
-        collectedAssertionsBuilder_.setMessage(index, value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
-     */
-    public Builder setCollectedAssertions(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder builderForValue) {
-      if (collectedAssertionsBuilder_ == null) {
-        ensureCollectedAssertionsIsMutable();
-        collectedAssertions_.set(index, builderForValue.build());
-        onChanged();
-      } else {
-        collectedAssertionsBuilder_.setMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
-     */
-    public Builder addCollectedAssertions(eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
-      if (collectedAssertionsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureCollectedAssertionsIsMutable();
-        collectedAssertions_.add(value);
-        onChanged();
-      } else {
-        collectedAssertionsBuilder_.addMessage(value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
-     */
-    public Builder addCollectedAssertions(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
-      if (collectedAssertionsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureCollectedAssertionsIsMutable();
-        collectedAssertions_.add(index, value);
-        onChanged();
-      } else {
-        collectedAssertionsBuilder_.addMessage(index, value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
-     */
-    public Builder addCollectedAssertions(
-        eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder builderForValue) {
-      if (collectedAssertionsBuilder_ == null) {
-        ensureCollectedAssertionsIsMutable();
-        collectedAssertions_.add(builderForValue.build());
-        onChanged();
-      } else {
-        collectedAssertionsBuilder_.addMessage(builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
-     */
-    public Builder addCollectedAssertions(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder builderForValue) {
-      if (collectedAssertionsBuilder_ == null) {
-        ensureCollectedAssertionsIsMutable();
-        collectedAssertions_.add(index, builderForValue.build());
-        onChanged();
-      } else {
-        collectedAssertionsBuilder_.addMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
-     */
-    public Builder addAllCollectedAssertions(
-        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContext> values) {
-      if (collectedAssertionsBuilder_ == null) {
-        ensureCollectedAssertionsIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, collectedAssertions_);
-        onChanged();
-      } else {
-        collectedAssertionsBuilder_.addAllMessages(values);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
-     */
-    public Builder clearCollectedAssertions() {
-      if (collectedAssertionsBuilder_ == null) {
-        collectedAssertions_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000010);
-        onChanged();
-      } else {
-        collectedAssertionsBuilder_.clear();
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
-     */
-    public Builder removeCollectedAssertions(int index) {
-      if (collectedAssertionsBuilder_ == null) {
-        ensureCollectedAssertionsIsMutable();
-        collectedAssertions_.remove(index);
-        onChanged();
-      } else {
-        collectedAssertionsBuilder_.remove(index);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder getCollectedAssertionsBuilder(
-        int index) {
-      return getCollectedAssertionsFieldBuilder().getBuilder(index);
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getCollectedAssertionsOrBuilder(
-        int index) {
-      if (collectedAssertionsBuilder_ == null) {
-        return collectedAssertions_.get(index);  } else {
-        return collectedAssertionsBuilder_.getMessageOrBuilder(index);
-      }
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
-     */
-    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
-         getCollectedAssertionsOrBuilderList() {
-      if (collectedAssertionsBuilder_ != null) {
-        return collectedAssertionsBuilder_.getMessageOrBuilderList();
-      } else {
-        return java.util.Collections.unmodifiableList(collectedAssertions_);
-      }
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder addCollectedAssertionsBuilder() {
-      return getCollectedAssertionsFieldBuilder().addBuilder(
-          eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder addCollectedAssertionsBuilder(
-        int index) {
-      return getCollectedAssertionsFieldBuilder().addBuilder(
-          index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 9;</code>
-     */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder> 
-         getCollectedAssertionsBuilderList() {
-      return getCollectedAssertionsFieldBuilder().getBuilderList();
-    }
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
-        getCollectedAssertionsFieldBuilder() {
-      if (collectedAssertionsBuilder_ == null) {
-        collectedAssertionsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder>(
-                collectedAssertions_,
-                ((bitField0_ & 0x00000010) != 0),
-                getParentForChildren(),
-                isClean());
-        collectedAssertions_ = null;
-      }
-      return collectedAssertionsBuilder_;
+      return entriesBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

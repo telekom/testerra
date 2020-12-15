@@ -22,62 +22,28 @@
  package eu.tsystems.mms.tic.testframework.internal;
 
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
-import eu.tsystems.mms.tic.testframework.report.model.context.CustomContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import java.util.LinkedList;
 import java.util.List;
 
 public final class CollectedAssertions {
-
-    private static final ThreadLocal<List<ErrorContext>> ASSERTION_INFOS = new ThreadLocal<>();
 
     private CollectedAssertions() {
 
     }
 
     public synchronized static void store(Throwable throwable) {
-        if (ASSERTION_INFOS.get() == null) {
-            ASSERTION_INFOS.set(new LinkedList<>());
-        }
-
-        List<ErrorContext> assertionInfos = ASSERTION_INFOS.get();
-
         /*
         add info
          */
-        ErrorContext assertionInfo = new ErrorContext(throwable);
-
         MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
+        currentMethodContext.addCollectedAssertion(throwable);
 
         // take scrennshots
         List<Screenshot> screenshots = TestEvidenceCollector.collectScreenshots();
         if (screenshots != null) {
             currentMethodContext.addScreenshots(screenshots.stream());
         }
-
-        // and store
-        assertionInfos.add(assertionInfo);
     }
-
-    public static void clear() {
-        ASSERTION_INFOS.remove();
-    }
-
-    public static boolean hasEntries() {
-        if (ASSERTION_INFOS.get() == null) {
-            return false;
-        }
-        if (ASSERTION_INFOS.get().size() > 0) {
-            return true;
-        }
-        return false;
-    }
-
-    public static List<ErrorContext> getEntries() {
-        return ASSERTION_INFOS.get();
-    }
-
 }

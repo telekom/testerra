@@ -28,7 +28,6 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -44,7 +43,7 @@ public class TestStep implements Serializable, Loggable {
     public static final String INTERNAL="Internal";
 
     private final String name;
-    private final List<TestStepAction> testStepActions = Collections.synchronizedList(new LinkedList<>());
+    private final List<TestStepAction> testStepActions = new LinkedList<>();
     private boolean closed = false;
 
     TestStep(String name) {

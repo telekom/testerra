@@ -10,7 +10,7 @@ import IFile = data.IFile;
 import './timeline.scss'
 import ITestStepAction = data.ITestStepAction;
 
-interface TestStepActionDetails extends ITestStepAction {
+interface TestStepActionGroup extends ITestStepAction {
     screenshots:IFile[];
 }
 
@@ -39,10 +39,10 @@ export class Steps {
             this._screenshots = [];
             this._statistics.getScreenshotsFromMethodContext(methodDetails.methodContext).then(screenshots => {
                 this._methodDetails.methodContext.testSteps
-                    .flatMap(testStep => testStep.testStepActions)
-                    .forEach(testStepAction => {
-                        const details = testStepAction as TestStepActionDetails;
-                        details.screenshots = screenshots.filter(screenshot => testStepAction.screenshotIds.indexOf(screenshot.id));
+                    .flatMap(value => value.actions)
+                    .forEach(value => {
+                        const group = value as TestStepActionGroup;
+                        group.screenshots = screenshots.filter(screenshot => value.entries.filter(entry => entry.screenshotId==screenshot.id));
                     });
                 this._screenshots = this._screenshots.concat(screenshots);
             })

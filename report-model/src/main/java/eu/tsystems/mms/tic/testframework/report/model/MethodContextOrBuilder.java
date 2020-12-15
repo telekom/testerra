@@ -389,4 +389,10 @@ public interface MethodContextOrBuilder extends
    */
   com.google.protobuf.ByteString
       getCustomContextJsonBytes();
+
+  /**
+   * <code>int32 failed_step_index = 33;</code>
+   * @return The failedStepIndex.
+   */
+  int getFailedStepIndex();
 }

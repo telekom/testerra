@@ -87,6 +87,7 @@ export class Method {
     ) {
         this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
             this._methodDetails = methodDetails;
+            console.log(methodDetails);
             this._statistics.getScreenshotsFromMethodContext(methodDetails.methodContext).then(screenshots => {
                 this._screenshots = screenshots;
                 this._lastScreenshot = this._screenshots.find(() => true);
@@ -130,12 +131,18 @@ export class Method {
                         let allCollected = 0;
                         let allOptional = 0;
                         methodDetails.methodContext.testSteps
-                            .flatMap(testStep => testStep.testStepActions)
-                            .forEach(testStepAction => {
-                                allCollected += testStepAction.collectedAssertions.length;
-                                allOptional += testStepAction.optionalAssertions.length;
+                            .flatMap(value => value.actions)
+                            .flatMap(value => value.entries)
+                            .filter(value => value.assertion)
+                            .map(value => value.assertion)
+                            .forEach(value => {
+                                if (value.optional) {
+                                    allOptional++;
+                                } else {
+                                    allCollected++;
+                                }
                             });
-                        if (allCollected > 0 ||allOptional > 0) {
+                        if (allCollected > 0 || allOptional > 0) {
                             routeConfig.nav = true;
                             routeConfig.settings.count = `${allCollected}/${allOptional}`;
                         } else {

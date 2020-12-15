@@ -22,10 +22,13 @@ export class Assertions {
             this._collectedAssertions = [];
             this._optionalAssertions = [];
             methodDetails.methodContext.testSteps
-                .flatMap(testStep => testStep.testStepActions)
-                .forEach(testStepAction => {
-                    this._collectedAssertions = this._collectedAssertions.concat(testStepAction.collectedAssertions);
-                    this._optionalAssertions = this._optionalAssertions.concat(testStepAction.optionalAssertions);
+                .flatMap(value => value.actions)
+                .flatMap(value => value.entries)
+                .filter(value => value.assertion)
+                .map(value => value.assertion)
+                .forEach(value => {
+                    if (value.optional) this._optionalAssertions.push(value);
+                    else this._collectedAssertions.push(value);
                 })
         });
     }

@@ -191,7 +191,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
     public MethodContext safeAddSkipMethod(ITestResult testResult, IInvokedMethod invokedMethod) {
         MethodContext methodContext = getMethodContext(testResult, testResult.getTestContext(), invokedMethod);
         methodContext.getErrorContext().setThrowable(null, new SkipException("Skipped"));
-        methodContext.status = TestStatusController.Status.SKIPPED;
+        methodContext.setStatus(TestStatusController.Status.SKIPPED);
         return methodContext;
     }
 
@@ -234,7 +234,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
     public List<MethodContext> getTestMethodsWithStatus(TestStatusController.Status status) {
         List<MethodContext> methodContexts = new LinkedList<>();
         this.methodContexts.forEach(methodContext -> {
-            if (methodContext.isTestMethod() && status == methodContext.status) {
+            if (methodContext.isTestMethod() && status == methodContext.getStatus()) {
                 methodContexts.add(methodContext);
             }
         });

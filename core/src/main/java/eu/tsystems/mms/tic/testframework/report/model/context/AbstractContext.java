@@ -40,11 +40,8 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
 public abstract class AbstractContext implements SynchronizableContext, Loggable {
-
-    @Deprecated
-    public String name;
-    @Deprecated
-    public final String id = IDUtils.getB64encXID();
+    protected String name;
+    private final String id = IDUtils.getB64encXID();
     protected AbstractContext parentContext;
     private final Date startTime = new Date();
     private Date endTime;

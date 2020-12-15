@@ -240,9 +240,4 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
         });
         return methodContexts;
     }
-
-    protected void setExplicitName() {
-        this.name = getTestClass().getSimpleName() + "_" + getTestContext().getSuiteContext().getName() + "_" + getTestContext().getName();
-    }
-
 }

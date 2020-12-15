@@ -152,7 +152,7 @@ public class ExecutionContextController {
 
         LOGGER.info(prefix + "**********************************************");
 
-        LOGGER.info(prefix + "ExecutionContext: " + executionContext.name);
+        LOGGER.info(prefix + "ExecutionContext: " + executionContext.getName());
         LOGGER.info(prefix + "SuiteContexts:  " + executionContext.suiteContexts.size());
         LOGGER.info(prefix + "TestContexts:   " + executionContext.suiteContexts.stream().mapToInt(s -> s.testContexts.size()).sum());
         LOGGER.info(prefix + "ClassContexts:  " + executionContext.suiteContexts.stream().flatMap(s -> s.testContexts.stream()).mapToInt(t -> t.classContexts.size()).sum());

@@ -119,8 +119,7 @@ public class ContextExporter {
         // test steps
         methodContext.readTestSteps().forEach(testStep -> builder.addTestSteps(prepareTestStep(testStep)));
         //value(methodContext.failedStep, MethodContextExporter::createTestStep, builder::setFailedStep);
-        int lastFailedTestStepIndex = methodContext.getLastFailedTestStepIndex();
-        if (lastFailedTestStepIndex >= 0) builder.setFailedStepIndex(lastFailedTestStepIndex);
+        builder.setFailedStepIndex(methodContext.getLastFailedTestStepIndex());
 
         Class failureCorridorClass = methodContext.getFailureCorridorClass();
         if (failureCorridorClass.equals(FailureCorridor.High.class)) {

@@ -4,7 +4,8 @@ import {IMethodDetails, StatisticsGenerator} from "../../services/statistics-gen
 import {data} from "../../services/report-model";
 import {ScreenshotsDialog} from "../screenshots-dialog/screenshots-dialog";
 import {MdcDialogService} from '@aurelia-mdc-web/dialog';
-import IFile = data.IFile;
+import IFile = data.IFile
+import ISessionContext = data.ISessionContext;
 
 @autoinject()
 export class Method {

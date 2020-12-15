@@ -136,9 +136,6 @@ export class ExecutionStatistics extends Statistics {
     protected addStatistics(classStatistics: ClassStatistics) {
         super.addStatistics(classStatistics);
         classStatistics.methodContexts
-            // .filter(methodContext => {
-            //     return this.statusConverter.failedStatuses.indexOf(methodContext.contextValues.resultStatus) >= 0;
-            // })
             .forEach(methodContext => {
 
                 if (methodContext.errorContext) {

@@ -55,6 +55,9 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
     public Map<String, List<MethodContext>> exitPoints;
     public final RunConfig runConfig = new RunConfig();
 
+    /**
+     * @deprecated Use {@link #getMetaData()} instead
+     */
     public final Map<String, String> metaData = new LinkedHashMap<>();
     public boolean crashed = false;
 
@@ -67,6 +70,10 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
     public ExecutionContext() {
         name = runConfig.RUNCFG;
         TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(this));
+    }
+
+    public Map<String, String> getMetaData() {
+        return metaData;
     }
 
     public Stream<SuiteContext> readSuiteContexts() {

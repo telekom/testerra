@@ -96,19 +96,19 @@ public class GenerateHtmlReportListener implements
         testMethodsCount.set(0);
         ExecutionContextController.getCurrentExecutionContext().suiteContexts.forEach(
                 suiteContext -> {
-                    System.out.println("Suite: " + suiteContext.name);
+                    System.out.println("Suite: " + suiteContext.getName());
                     suiteContext.testContexts.forEach(
                             testContext -> {
-                                System.out.println("Test: " + testContext.name);
+                                System.out.println("Test: " + testContext.getName());
                                 testContext.classContexts.forEach(
                                         classContext -> {
-                                            System.out.println("Class: " + classContext.name);
+                                            System.out.println("Class: " + classContext.getName());
                                             classContext.methodContexts
                                                     .stream()
                                                     .filter(methodContext -> methodContext.getStatus() == TestStatusController.Status.PASSED)
                                                     .forEach(
                                                             methodContext -> {
-                                                                System.out.println("Method: " + methodContext.name);
+                                                                System.out.println("Method: " + methodContext.getName());
                                                                 testMethodsCount.set(testMethodsCount.get() + 1);
                                                             }
                                                     );

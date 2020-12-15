@@ -81,7 +81,7 @@ public final class ThreadVisualizerUtils {
         html += LINEBREAK;
         html += "<font size='1' color='grey'>" + methodContext.getStatus().title + "</font>";
         html += LINEBREAK;
-        html += "<font size='1' color='white'>" + methodContext.getEffectiveClassContext().name + "</font>";
+        html += "<font size='1' color='white'>" + methodContext.getEffectiveClassContext().getName() + "</font>";
         html += LINEBREAK;
         html += "<font size='1' color='white'>(" + methodContext.methodRunIndex + ")</font>";
 

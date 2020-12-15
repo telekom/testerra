@@ -46,13 +46,13 @@ public class ContextIdsPatternConverter extends LogEventPatternConverter {
     public void format(LogEvent event, StringBuilder toAppendTo ) {
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         if (methodContext != null) {
-            toAppendTo.append("[MCID:").append(methodContext.id).append("]");
+            toAppendTo.append("[MCID:").append(methodContext.getId()).append("]");
         }
 
         // enhance with method context id
         SessionContext currentSessionContext = ExecutionContextController.getCurrentSessionContext();
         if (currentSessionContext != null) {
-            toAppendTo.append("[SCID:").append(currentSessionContext.id).append("]");
+            toAppendTo.append("[SCID:").append(currentSessionContext.getId()).append("]");
         }
     }
 

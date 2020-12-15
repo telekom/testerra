@@ -27,23 +27,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class SessionContext extends AbstractContext implements SynchronizableContext {
-
-    /**
-     * @deprecated Use {@link #getSessionKey()} instead
-     */
-    public String sessionKey;
-    /**
-     * @deprecated Use {@link #getProvider()} instead
-     */
-    public String provider;
-    /**
-     * @deprecated Use {@link #getMetaData()} instead
-     */
-    public Map<String, Object> metaData = new LinkedHashMap<>();
-    /**
-     * @deprecated Use {@link #getSessionId()} instead
-     */
-    public String sessionId;
+    private String sessionKey;
+    private String provider;
+    private final Map<String, Object> metaData = new LinkedHashMap<>();
+    private String sessionId;
 
     public SessionContext(String sessionKey, String provider) {
         this.sessionKey = sessionKey;
@@ -100,7 +87,7 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
     @Override
     public String toString() {
         return "SessionContext{" +
-                "id='" + id + '\'' +
+                "id='" + getId() + '\'' +
                 ", sessionKey='" + sessionKey + '\'' +
                 ", provider='" + provider + '\'' +
                 ", metaData=" + metaData +

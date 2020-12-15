@@ -38,7 +38,7 @@
                     label="Search"
                     outlined
                     value.bind="queryParams.q"
-                    keydown.delegate="_searchQueryChanged() & debounce"
+                    keydown.delegate="_searchQueryChanged() & debounce:300"
                     change.delegate="_searchQueryChanged()"
                     class="w100"
                 >

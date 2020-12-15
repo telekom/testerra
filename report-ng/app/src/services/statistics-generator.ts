@@ -31,6 +31,7 @@ import {StatusConverter} from "./status-converter";
 import ITestContext = data.ITestContext;
 import ISuiteContext = data.ISuiteContext;
 import ISessionContext = data.ISessionContext;
+import ITestStep = data.ITestStep;
 
 export interface IMethodDetails {
     executionStatistics?: ExecutionStatistics,
@@ -41,6 +42,7 @@ export interface IMethodDetails {
     numDetails?: number,
     failureAspectStatistics?:FailureAspectStatistics,
     sessionContexts?:ISessionContext[],
+    failedStep?:ITestStep,
 }
 
 @autoinject()
@@ -108,7 +110,8 @@ export class StatisticsGenerator {
                             testContext: testContext,
                             suiteContext: suiteContext,
                             numDetails: (methodContext.errorContext?1:0)+(methodContext.customContextJson?1:0),
-                            sessionContexts: executionStatistics.executionAggregate.sessionContexts.filter(sessionContext => methodContext.sessionContextIds.indexOf(sessionContext.contextValues.id) >= 0)
+                            sessionContexts: executionStatistics.executionAggregate.sessionContexts.filter(sessionContext => methodContext.sessionContextIds.indexOf(sessionContext.contextValues.id) >= 0),
+                            failedStep:(methodContext.failedStepIndex>=0?methodContext.testSteps[methodContext.failedStepIndex]:null),
                         }
                     }
                 }

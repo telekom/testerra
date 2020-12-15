@@ -138,7 +138,6 @@ export class Steps {
 
             screenshotsLoadingPromise.then(value => {
                 this._allScreenshots = value;
-                console.log(this._methodDetails.methodContext.testSteps);
             });
         });
     }

@@ -73,7 +73,7 @@ export class Threads extends AbstractViewModel {
         });
     }
 
-    inputValueChanged(){
+    selectionChanged(){
         if (this._inputValue.length == 0){
             this.updateUrl({});
             this._timeline.fit();
@@ -82,8 +82,9 @@ export class Threads extends AbstractViewModel {
 
     private _focusOn(methodId:string) {
         console.log("focus on", methodId);
+        //adjusts timeline zoom to selected method
         this._timeline.setSelection(methodId, {focus: "true"});
-        document.getElementById(methodId).scrollIntoView();
+        document.getElementById(methodId).scrollIntoView(false);
     }
 
     private _getLookupOptions = async (filter: string, methodId: string): Promise<IContextValues[]>  => {
@@ -182,6 +183,11 @@ export class Threads extends AbstractViewModel {
         // Configuration for the Timeline
         const options = {
             onInitialDrawComplete: () => {
+                this._loading = false;
+
+                if (this.queryParams.methodId?.length > 0) {
+                    this._focusOn(this.queryParams.methodId);
+                }
             },
             start:this._startTime,
             end:this._endTime,
@@ -201,17 +207,5 @@ export class Threads extends AbstractViewModel {
             console.log("event: ", event);
             this._threadItemClicked(event);
         });
-
-        if (this.queryParams.methodId?.length > 0) {
-            this._focusOn(this.queryParams.methodId);
-        } else {
-            this._timeline.redraw();
-        }
-
-        //remove loading indicator
-        this._timeline.on('changed', () => {
-            this._loading = false;
-        })
     }
-
 }

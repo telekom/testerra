@@ -81,10 +81,12 @@ export class Threads extends AbstractViewModel {
     }
 
     private _focusOn(methodId:string) {
-        console.log("focus on", methodId);
         //adjusts timeline zoom to selected method
         this._timeline.setSelection(methodId, {focus: "true"});
-        document.getElementById(methodId).scrollIntoView(false);
+        window.setTimeout(() => {
+            const methodElement = document.getElementById(methodId);
+            methodElement?.scrollIntoView(false);
+        }, 500);
     }
 
     private _getLookupOptions = async (filter: string, methodId: string): Promise<IContextValues[]>  => {
@@ -204,7 +206,6 @@ export class Threads extends AbstractViewModel {
         // Create a Timeline
         this._timeline = new Timeline(container, dataItems, groupItems, options);
         this._timeline.on('select',(event) => {
-            console.log("event: ", event);
             this._threadItemClicked(event);
         });
     }

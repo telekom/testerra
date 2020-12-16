@@ -42,18 +42,18 @@ element.assertCollector().assertIsPresent();
 element.assertCollector().assertText("mytext");
 ----
 
-== Non-functional asserts
+== Optional asserts
 
-Non-functional asserts do not let the test fail. But the assertion message will be added to the log with loglevel ERROR.
+Optional asserts do not let the test fail. But the assertion message will be added to the log with loglevel ERROR.
 
-Non-functional asserts provide the same assertation methods like functional asserts.
+Optional asserts provide the same assertion methods like functional asserts.
 
 [source,java]
 ----
 GuiElement element = new GuiElement(driver, By.id("label"));
 
-element.nonFunctionalAsserts().assertIsPresent();
-element.nonFunctionalAsserts().assertText("mytext");
+element.optionalAsserts().assertIsPresent();
+element.optionalAsserts().assertText("mytext");
 ----
 
 == Layout asserts

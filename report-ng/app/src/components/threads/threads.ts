@@ -24,6 +24,7 @@ export class Threads extends AbstractViewModel {
     private _methodNameInput:HTMLElement;
     private _inputValue;
     private _timeline;
+    private _currentSelection;
 
     constructor(
         private _statistics: StatisticsGenerator,
@@ -53,7 +54,6 @@ export class Threads extends AbstractViewModel {
 
     inputValueChanged(){
         if (this._inputValue.length == 0){
-            console.log("input value is empty");
             this.updateUrl({});
             this._timeline.fit();
         }
@@ -62,7 +62,7 @@ export class Threads extends AbstractViewModel {
     private _focusOn(methodId:string) {
         console.log("focus on", methodId);
         this._timeline.setSelection(methodId, {focus: "true"});
-        console.log(this._timeline.getSelection());
+        document.getElementById(methodId).scrollIntoView();
     }
 
     private _getLookupOptions = async (filter: string, methodId: string): Promise<IContextValues[]>  => {
@@ -123,7 +123,7 @@ export class Threads extends AbstractViewModel {
             methodContexts.forEach((context: MethodContext, index) => {
                 let content: string = ''
 
-                content += "<div class='item-content'>";
+                content += "<div class='item-content' id='" + context.contextValues.id + "'>";
                 content += "<div class='item-content-head'>" + context.contextValues.name + "</div>";
                 content += "<div class='item-content-body'>"
                 content += "<p class='m0'>" + this._classNamesMap[context.classContextId] + "</p>";
@@ -177,14 +177,18 @@ export class Threads extends AbstractViewModel {
 
         // Create a Timeline
         this._timeline = new Timeline(container, dataItems, groupItems, options);
-        this._timeline.on('select',(event) => { this._threadItemClicked(event); });
+        this._timeline.on('select',(event) => {
+            console.log("event: ", event);
+            this._threadItemClicked(event);
+        });
+
         if (this.queryParams.methodId?.length > 0) {
             this._focusOn(this.queryParams.methodId);
         } else {
             this._timeline.redraw();
         }
 
-
+        //remove loading indicator
         this._timeline.on('changed', () => {
             this._loading = false;
         })

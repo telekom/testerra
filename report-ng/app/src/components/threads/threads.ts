@@ -125,10 +125,9 @@ export class Threads extends AbstractViewModel {
         style.set("FAILED_MINOR", "background-color: " + this._statusConverter.getColorForStatus(ResultStatusType.FAILED_MINOR) + "; color: #fff;");
         style.set("FAILED_RETRIED", "background-color: " + this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED) + "; color: #fff;");
 
-        let resultStatusType: ResultStatusType,
-            groupItems = [],
-            dataItems = [],
-            dataMap = new Map();
+        const groupItems = [];
+        const dataItems = [];
+        const dataMap = new Map();
 
         methodContexts.forEach(methodContext => {
             if (!dataMap.has(methodContext.threadName)) {

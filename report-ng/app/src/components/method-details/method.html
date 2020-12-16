@@ -61,7 +61,7 @@
                         </ul>
                         <ul class="mdc-list mdc-list--dense w50">
                             <li class="mdc-list-item reset-cursor" if.bind="_methodDetails.failedStep">
-                                <span class="secondary sr1">Failed in</span><a route-href="route: steps;">${_methodDetails.failedStep.name}</a>
+                                <span class="secondary sr1">Failed in</span><a route-href="route: steps; params.bind: {step: _methodDetails.methodContext.failedStepIndex+1}">${_methodDetails.failedStep.name}</a>
                             </li>
                             <li class="mdc-list-item reset-cursor" if.bind="_methodDetails.sessionContexts.length > 0">
                                 <span class="secondary sr1">Sessions</span><span repeat.for="sessionContext of _methodDetails.sessionContexts">${sessionContext.sessionKey} (${sessionContext.metadata.browser}:${sessionContext.metadata.browserVersion})</span>

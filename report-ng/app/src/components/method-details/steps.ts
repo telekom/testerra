@@ -160,6 +160,13 @@ export class Steps {
             screenshotsLoadingPromise.then(value => {
                 this._allScreenshots = value;
             });
+
+            if (params.step) {
+                window.setTimeout(() => {
+                    const stepHeadline = window.document.getElementById("step"+params.step);
+                    stepHeadline?.scrollIntoView();
+                }, 0);
+            }
         });
     }
 

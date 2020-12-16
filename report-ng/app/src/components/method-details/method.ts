@@ -69,7 +69,8 @@ export class Method {
                 }
             },
             {
-                route: 'steps',
+                route: 'steps/:step?',
+                href: "steps",
                 moduleId: PLATFORM.moduleName('./steps'),
                 nav: true,
                 name: "steps",

@@ -25,18 +25,40 @@ import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.adapters.ContextExporter;
 import eu.tsystems.mms.tic.testframework.events.FinalizeExecutionEvent;
 import eu.tsystems.mms.tic.testframework.report.model.ExecutionAggregate;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
+import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import java.io.File;
 
 public class GenerateReportNgModelListener extends AbstractReportModelListener implements FinalizeExecutionEvent.Listener{
     private final ExecutionAggregate.Builder executionAggregateBuilder = ExecutionAggregate.newBuilder();
-    private final ContextExporter contextExporter = new ContextExporter();
+
+    private final ContextExporter contextExporter = new ContextExporter() {
+
+        @Override
+        public eu.tsystems.mms.tic.testframework.report.model.File.Builder buildVideo(Video video) {
+            eu.tsystems.mms.tic.testframework.report.model.File.Builder builder = super.buildVideo(video);
+            writeFileBuilderToFile(builder);
+            return builder;
+        }
+
+        @Override
+        public eu.tsystems.mms.tic.testframework.report.model.File.Builder[] buildScreenshot(Screenshot screenshot) {
+            eu.tsystems.mms.tic.testframework.report.model.File.Builder[] builders = super.buildScreenshot(screenshot);
+            writeFileBuilderToFile(builders[0]);
+            writeFileBuilderToFile(builders[1]);
+            return builders;
+        }
+
+        private void writeFileBuilderToFile(eu.tsystems.mms.tic.testframework.report.model.File.Builder fileBuilder) {
+            writeBuilderToFile(fileBuilder, new File(getFilesDir(), fileBuilder.getId()));
+        }
+    };
 
     public GenerateReportNgModelListener(File baseDir) {
         super(baseDir);
-        this.contextExporter.setFileBuilderConsumer(fileBuilder -> {
-            writeBuilderToFile(fileBuilder, new File(getFilesDir(), fileBuilder.getId()));
-        });
     }
 
     @Override
@@ -45,26 +67,38 @@ public class GenerateReportNgModelListener extends AbstractReportModelListener i
         ExecutionContext executionContext = event.getExecutionContext();
 
         executionContext.readSuiteContexts().forEach(suiteContext -> {
-            executionAggregateBuilder.addSuiteContexts(contextExporter.prepareSuiteContext(suiteContext));
+            executionAggregateBuilder.putSuiteContexts(suiteContext.getId(), contextExporter.buildSuiteContext(suiteContext).build());
 
             suiteContext.readTestContexts().forEach(testContext -> {
-                executionAggregateBuilder.addTestContexts(contextExporter.prepareTestContext(testContext));
+                executionAggregateBuilder.putTestContexts(testContext.getId(), contextExporter.buildTestContext(testContext).build());
 
                 testContext.readClassContexts().forEach(classContext -> {
-                    executionAggregateBuilder.addClassContexts(contextExporter.prepareClassContext(classContext));
+                    executionAggregateBuilder.putClassContexts(classContext.getId(), contextExporter.buildClassContext(classContext).build());
 
                     classContext.readMethodContexts().forEach(methodContext -> {
-                        executionAggregateBuilder.addMethodContexts(contextExporter.prepareMethodContext(methodContext));
-                        methodContext.readSessionContexts().forEach(sessionContext -> executionAggregateBuilder.addSessionContexts(contextExporter.prepareSessionContext(sessionContext)));
+                        this.buildUniqueMethod(methodContext);
+                        methodContext.readSessionContexts().forEach(this::buildUniqueSession);
+                        methodContext.readRelatedMethodContexts().forEach(this::buildUniqueMethod);
                     });
                 });
-
             });
         });
-        executionContext.readExclusiveSessionContexts().forEach(sessionContext -> executionAggregateBuilder.addSessionContexts(contextExporter.prepareSessionContext(sessionContext)));
+        executionContext.readExclusiveSessionContexts().forEach(this::buildUniqueSession);
 
-        eu.tsystems.mms.tic.testframework.report.model.ExecutionContext.Builder executionContextBuilder = contextExporter.prepareExecutionContext(executionContext);
+        eu.tsystems.mms.tic.testframework.report.model.ExecutionContext.Builder executionContextBuilder = contextExporter.buildExecutionContext(executionContext);
         executionAggregateBuilder.setExecutionContext(executionContextBuilder);
         writeBuilderToFile(executionAggregateBuilder, new File(baseDir, "execution"));
+    }
+
+    private void buildUniqueSession(SessionContext sessionContext) {
+        if (!executionAggregateBuilder.containsSessionContexts(sessionContext.getId())) {
+            executionAggregateBuilder.putSessionContexts(sessionContext.getId(), contextExporter.buildSessionContext(sessionContext).build());
+        }
+    }
+
+    private void buildUniqueMethod(MethodContext methodContext) {
+        if (!executionAggregateBuilder.containsMethodContexts(methodContext.getId())) {
+            executionAggregateBuilder.putMethodContexts(methodContext.getId(), contextExporter.buildMethodContext(methodContext).build());
+        }
     }
 }

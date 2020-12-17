@@ -6,7 +6,7 @@ package eu.tsystems.mms.tic.testframework.report.model;
 /**
  * Protobuf type {@code data.ScriptSourceLine}
  */
-public  final class ScriptSourceLine extends
+public final class ScriptSourceLine extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:data.ScriptSourceLine)
     ScriptSourceLineOrBuilder {
@@ -98,6 +98,7 @@ private static final long serialVersionUID = 0L;
    * <code>string line = 1;</code>
    * @return The line.
    */
+  @java.lang.Override
   public java.lang.String getLine() {
     java.lang.Object ref = line_;
     if (ref instanceof java.lang.String) {
@@ -114,6 +115,7 @@ private static final long serialVersionUID = 0L;
    * <code>string line = 1;</code>
    * @return The bytes for line.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getLineBytes() {
     java.lang.Object ref = line_;
@@ -138,6 +140,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 line_number = 2;</code>
    * @return The lineNumber.
    */
+  @java.lang.Override
   public int getLineNumber() {
     return lineNumber_;
   }
@@ -546,6 +549,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 line_number = 2;</code>
      * @return The lineNumber.
      */
+    @java.lang.Override
     public int getLineNumber() {
       return lineNumber_;
     }

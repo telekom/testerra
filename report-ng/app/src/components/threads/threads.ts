@@ -93,7 +93,7 @@ export class Threads extends AbstractViewModel {
         return this._statistics.getExecutionStatistics().then(executionStatistics => {
             let methodContexts:IMethodContext[];
             if (methodId) {
-                methodContexts = executionStatistics.executionAggregate.methodContexts.filter(methodContext => methodContext.contextValues.id == methodId);
+                methodContexts = [executionStatistics.executionAggregate.methodContexts[methodId]];
                 this._searchRegexp = null;
                 delete this.queryParams.methodName;
                 this._focusOn(methodId);
@@ -101,9 +101,9 @@ export class Threads extends AbstractViewModel {
             } else if (filter?.length > 0) {
                 this._searchRegexp = this._statusConverter.createRegexpFromSearchString(filter);
                 delete this.queryParams.methodId;
-                methodContexts = executionStatistics.executionAggregate.methodContexts.filter(methodContext => methodContext.contextValues.name.match(this._searchRegexp));
+                methodContexts = Object.values(executionStatistics.executionAggregate.methodContexts).filter(methodContext => methodContext.contextValues.name.match(this._searchRegexp));
             } else {
-                methodContexts = executionStatistics.executionAggregate.methodContexts;
+                methodContexts = Object.values(executionStatistics.executionAggregate.methodContexts);
             }
             return methodContexts.map(methodContext => methodContext.contextValues);
         });
@@ -161,7 +161,7 @@ export class Threads extends AbstractViewModel {
                     end: context.contextValues.endTime,
                     group: groupId,
                     callbackInfos: [context.contextValues.id],
-                    style: "background-color: " + this._statusConverter.getColorForStatus(context.contextValues.resultStatus) + ";",
+                    style: "background-color: " + this._statusConverter.getColorForStatus(context.resultStatus) + ";",
                     title: content
                 });
             });

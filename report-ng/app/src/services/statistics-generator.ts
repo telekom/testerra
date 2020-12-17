@@ -65,8 +65,9 @@ export class StatisticsGenerator {
                 const executionStatistics = new ExecutionStatistics();
                 executionStatistics.setExecutionAggregate(executionAggregate);
 
-                executionAggregate.methodContexts.forEach(methodContext => {
-                    const classContext = executionAggregate.classContexts.find(classContext => classContext.contextValues.id == methodContext.classContextId);
+                for (const id in executionAggregate.methodContexts) {
+                    const methodContext = executionAggregate.methodContexts[id];
+                    const classContext = executionAggregate.classContexts[methodContext.classContextId];
                     let classStatistics:ClassStatistics;
 
                     // Group by test context name
@@ -82,9 +83,9 @@ export class StatisticsGenerator {
                         executionStatistics.addClassStatistics(classStatistics);
                     }
 
-                    methodContext.contextValues.resultStatus = this._statusConverter.correctStatus(methodContext.contextValues.resultStatus);
+                    methodContext.resultStatus = this._statusConverter.correctStatus(methodContext.resultStatus);
                     classStatistics.addMethodContext(methodContext);
-                })
+                }
                 executionStatistics.updateStatistics();
                 console.log(executionStatistics);
                 return executionStatistics;
@@ -96,27 +97,29 @@ export class StatisticsGenerator {
         return this._cacheService.getForKeyWithLoadingFunction("method:"+methodId, () => {
             return this.getExecutionStatistics().then(executionStatistics => {
                 for (const classStatistic of executionStatistics.classStatistics) {
-                    const methodContext = classStatistic.methodContexts
-                        .find(methodContext => methodContext.contextValues.id == methodId);
-
+                    const methodContext = classStatistic.methodContexts.find(methodContext => methodContext.contextValues.id == methodId);
                     if (methodContext) {
                         const classContext = classStatistic.classContext;
-                        const testContext = executionStatistics.executionAggregate.testContexts.find(testContext => testContext.contextValues.id == classContext.testContextId);
-                        const suiteContext = executionStatistics.executionAggregate.suiteContexts.find(suiteContext => suiteContext.contextValues.id == testContext.suiteContextId);
+                        const testContext = executionStatistics.executionAggregate.testContexts[classContext.testContextId];
+                        const suiteContext = executionStatistics.executionAggregate.suiteContexts[testContext.suiteContextId];
+                        const sessionContexts = [];
+                        methodContext.sessionContextIds.forEach(value => {
+                            sessionContexts.push(executionStatistics.executionAggregate.sessionContexts[value]);
+                        })
                         return {
                             executionStatistics: executionStatistics,
                             methodContext: methodContext,
                             classStatistics: classStatistic,
                             testContext: testContext,
                             suiteContext: suiteContext,
-                            numDetails: (methodContext.errorContext?1:0)+(methodContext.customContextJson?1:0),
-                            sessionContexts: executionStatistics.executionAggregate.sessionContexts.filter(sessionContext => methodContext.sessionContextIds.indexOf(sessionContext.contextValues.id) >= 0),
-                            failedStep:(methodContext.failedStepIndex>=0?methodContext.testSteps[methodContext.failedStepIndex]:null),
+                            numDetails: (methodContext.errorContext ? 1 : 0) + (methodContext.customContextJson ? 1 : 0),
+                            sessionContexts: sessionContexts,
+                            failedStep: (methodContext.failedStepIndex >= 0 ? methodContext.testSteps[methodContext.failedStepIndex] : null),
                         }
                     }
                 }
             });
-        })
+        });
     }
 
     getScreenshotsFromMethodContext(methodContext:IMethodContext) {

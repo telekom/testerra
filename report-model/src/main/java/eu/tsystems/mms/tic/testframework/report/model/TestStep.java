@@ -6,7 +6,7 @@ package eu.tsystems.mms.tic.testframework.report.model;
 /**
  * Protobuf type {@code data.TestStep}
  */
-public  final class TestStep extends
+public final class TestStep extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:data.TestStep)
     TestStepOrBuilder {
@@ -107,6 +107,7 @@ private static final long serialVersionUID = 0L;
    * <code>string name = 1;</code>
    * @return The name.
    */
+  @java.lang.Override
   public java.lang.String getName() {
     java.lang.Object ref = name_;
     if (ref instanceof java.lang.String) {
@@ -123,6 +124,7 @@ private static final long serialVersionUID = 0L;
    * <code>string name = 1;</code>
    * @return The bytes for name.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getNameBytes() {
     java.lang.Object ref = name_;
@@ -146,6 +148,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .data.TestStepAction actions = 3;</code>
    */
+  @java.lang.Override
   public java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestStepAction> getActionsList() {
     return actions_;
   }
@@ -156,6 +159,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .data.TestStepAction actions = 3;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.TestStepActionOrBuilder> 
       getActionsOrBuilderList() {
     return actions_;
@@ -167,6 +171,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .data.TestStepAction actions = 3;</code>
    */
+  @java.lang.Override
   public int getActionsCount() {
     return actions_.size();
   }
@@ -177,6 +182,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .data.TestStepAction actions = 3;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.TestStepAction getActions(int index) {
     return actions_.get(index);
   }
@@ -187,6 +193,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .data.TestStepAction actions = 3;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.TestStepActionOrBuilder getActionsOrBuilder(
       int index) {
     return actions_.get(index);

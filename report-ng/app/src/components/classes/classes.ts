@@ -129,7 +129,7 @@ export class Classes extends AbstractViewModel {
                 .forEach(classStatistic => {
                     classStatistic.methodContexts
                         .filter(methodContext => {
-                            return (!relevantStatuses || relevantStatuses.indexOf(methodContext.contextValues.resultStatus) >= 0)
+                            return (!relevantStatuses || relevantStatuses.indexOf(methodContext.resultStatus) >= 0)
                         })
                         .filter(methodContext => {
                             return (!filterByFailureAspect || relevantFailureAspect.methodContexts.indexOf(methodContext) >= 0);
@@ -160,7 +160,7 @@ export class Classes extends AbstractViewModel {
                         })
                         .forEach(methodDetails => {
                             uniqueClasses[classStatistic.classContext.fullClassName] = true;
-                            uniqueStatuses[methodDetails.methodContext.contextValues.resultStatus] = true;
+                            uniqueStatuses[methodDetails.methodContext.resultStatus] = true;
                             this._filteredMethodDetails.push(methodDetails);
                         })
                 });

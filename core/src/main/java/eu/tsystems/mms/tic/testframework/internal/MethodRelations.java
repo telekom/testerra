@@ -79,8 +79,6 @@ public class MethodRelations {
     }
 
     private static void checkForDependencies(Method method, MethodContext methodContext) {
-        List<MethodContext> containers = new LinkedList<>();
-
         if (method.isAnnotationPresent(Test.class)) {
             /*
             dependsOnMethods
@@ -90,22 +88,18 @@ public class MethodRelations {
             for (String dependsOnMethod : dependsOnMethods) {
                 MethodContext methodContext1 = methodContext.getClassContext().findTestMethodContainer(dependsOnMethod);
                 if (methodContext1 != null) {
-                    containers.add(methodContext1);
+                    methodContext.addDependsOnMethod(methodContext1);
                 }
             }
 
             /*
             check for retries
              */
-            RetryAnalyzer.getRetriedMethods().stream().forEach(retriedMethod -> {
+            RetryAnalyzer.getRetriedMethods().forEach(retriedMethod -> {
                 if (methodContext.isSame(retriedMethod)) {
-                    containers.add(retriedMethod);
+                    methodContext.addDependsOnMethod(retriedMethod);
                 }
             });
-        }
-
-        if (containers.size() > 0) {
-            methodContext.setDependsOnMethodContexts(containers);
         }
     }
 

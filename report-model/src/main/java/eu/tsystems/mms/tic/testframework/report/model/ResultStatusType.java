@@ -153,7 +153,7 @@ public enum ResultStatusType
    *
    * <code>MINOR = 5 [deprecated = true];</code>
    */
-  public static final int MINOR_VALUE = 5;
+  @java.lang.Deprecated public static final int MINOR_VALUE = 5;
   /**
    * <pre>
    * failed status, with hard failing issues
@@ -169,7 +169,7 @@ public enum ResultStatusType
    *
    * <code>FAILED_MINOR = 8 [deprecated = true];</code>
    */
-  public static final int FAILED_MINOR_VALUE = 8;
+  @java.lang.Deprecated public static final int FAILED_MINOR_VALUE = 8;
   /**
    * <pre>
    * failed and retry is triggered
@@ -201,7 +201,7 @@ public enum ResultStatusType
    *
    * <code>MINOR_RETRY = 12 [deprecated = true];</code>
    */
-  public static final int MINOR_RETRY_VALUE = 12;
+  @java.lang.Deprecated public static final int MINOR_RETRY_VALUE = 12;
 
 
   public final int getNumber() {
@@ -258,6 +258,10 @@ public enum ResultStatusType
 
   public final com.google.protobuf.Descriptors.EnumValueDescriptor
       getValueDescriptor() {
+    if (this == UNRECOGNIZED) {
+      throw new java.lang.IllegalStateException(
+          "Can't get the descriptor of an unrecognized enum value.");
+    }
     return getDescriptor().getValues().get(ordinal());
   }
   public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -266,7 +270,7 @@ public enum ResultStatusType
   }
   public static final com.google.protobuf.Descriptors.EnumDescriptor
       getDescriptor() {
-    return eu.tsystems.mms.tic.testframework.report.model.Framework.getDescriptor().getEnumTypes().get(5);
+    return eu.tsystems.mms.tic.testframework.report.model.Framework.getDescriptor().getEnumTypes().get(4);
   }
 
   private static final ResultStatusType[] VALUES = values();

@@ -6,7 +6,7 @@ package eu.tsystems.mms.tic.testframework.report.model;
 /**
  * Protobuf type {@code data.ScriptSource}
  */
-public  final class ScriptSource extends
+public final class ScriptSource extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:data.ScriptSource)
     ScriptSourceOrBuilder {
@@ -119,6 +119,7 @@ private static final long serialVersionUID = 0L;
    * <code>string file_name = 1;</code>
    * @return The fileName.
    */
+  @java.lang.Override
   public java.lang.String getFileName() {
     java.lang.Object ref = fileName_;
     if (ref instanceof java.lang.String) {
@@ -135,6 +136,7 @@ private static final long serialVersionUID = 0L;
    * <code>string file_name = 1;</code>
    * @return The bytes for fileName.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getFileNameBytes() {
     java.lang.Object ref = fileName_;
@@ -155,6 +157,7 @@ private static final long serialVersionUID = 0L;
    * <code>string method_name = 2;</code>
    * @return The methodName.
    */
+  @java.lang.Override
   public java.lang.String getMethodName() {
     java.lang.Object ref = methodName_;
     if (ref instanceof java.lang.String) {
@@ -171,6 +174,7 @@ private static final long serialVersionUID = 0L;
    * <code>string method_name = 2;</code>
    * @return The bytes for methodName.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getMethodNameBytes() {
     java.lang.Object ref = methodName_;
@@ -190,12 +194,14 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>repeated .data.ScriptSourceLine lines = 3;</code>
    */
+  @java.lang.Override
   public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ScriptSourceLine> getLinesList() {
     return lines_;
   }
   /**
    * <code>repeated .data.ScriptSourceLine lines = 3;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ScriptSourceLineOrBuilder> 
       getLinesOrBuilderList() {
     return lines_;
@@ -203,18 +209,21 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>repeated .data.ScriptSourceLine lines = 3;</code>
    */
+  @java.lang.Override
   public int getLinesCount() {
     return lines_.size();
   }
   /**
    * <code>repeated .data.ScriptSourceLine lines = 3;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ScriptSourceLine getLines(int index) {
     return lines_.get(index);
   }
   /**
    * <code>repeated .data.ScriptSourceLine lines = 3;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ScriptSourceLineOrBuilder getLinesOrBuilder(
       int index) {
     return lines_.get(index);
@@ -226,6 +235,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 mark = 4;</code>
    * @return The mark.
    */
+  @java.lang.Override
   public int getMark() {
     return mark_;
   }
@@ -1020,6 +1030,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 mark = 4;</code>
      * @return The mark.
      */
+    @java.lang.Override
     public int getMark() {
       return mark_;
     }

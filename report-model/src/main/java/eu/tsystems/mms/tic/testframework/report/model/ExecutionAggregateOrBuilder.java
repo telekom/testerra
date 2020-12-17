@@ -23,122 +23,172 @@ public interface ExecutionAggregateOrBuilder extends
   eu.tsystems.mms.tic.testframework.report.model.ExecutionContextOrBuilder getExecutionContextOrBuilder();
 
   /**
-   * <code>repeated .data.SuiteContext suite_contexts = 2;</code>
-   */
-  java.util.List<eu.tsystems.mms.tic.testframework.report.model.SuiteContext> 
-      getSuiteContextsList();
-  /**
-   * <code>repeated .data.SuiteContext suite_contexts = 2;</code>
-   */
-  eu.tsystems.mms.tic.testframework.report.model.SuiteContext getSuiteContexts(int index);
-  /**
-   * <code>repeated .data.SuiteContext suite_contexts = 2;</code>
+   * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
    */
   int getSuiteContextsCount();
   /**
-   * <code>repeated .data.SuiteContext suite_contexts = 2;</code>
+   * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
    */
-  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.SuiteContextOrBuilder> 
-      getSuiteContextsOrBuilderList();
+  boolean containsSuiteContexts(
+      java.lang.String key);
   /**
-   * <code>repeated .data.SuiteContext suite_contexts = 2;</code>
+   * Use {@link #getSuiteContextsMap()} instead.
    */
-  eu.tsystems.mms.tic.testframework.report.model.SuiteContextOrBuilder getSuiteContextsOrBuilder(
-      int index);
+  @java.lang.Deprecated
+  java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SuiteContext>
+  getSuiteContexts();
+  /**
+   * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
+   */
+  java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SuiteContext>
+  getSuiteContextsMap();
+  /**
+   * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
+   */
+
+  eu.tsystems.mms.tic.testframework.report.model.SuiteContext getSuiteContextsOrDefault(
+      java.lang.String key,
+      eu.tsystems.mms.tic.testframework.report.model.SuiteContext defaultValue);
+  /**
+   * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
+   */
+
+  eu.tsystems.mms.tic.testframework.report.model.SuiteContext getSuiteContextsOrThrow(
+      java.lang.String key);
 
   /**
-   * <code>repeated .data.TestContext test_contexts = 3;</code>
-   */
-  java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestContext> 
-      getTestContextsList();
-  /**
-   * <code>repeated .data.TestContext test_contexts = 3;</code>
-   */
-  eu.tsystems.mms.tic.testframework.report.model.TestContext getTestContexts(int index);
-  /**
-   * <code>repeated .data.TestContext test_contexts = 3;</code>
+   * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
    */
   int getTestContextsCount();
   /**
-   * <code>repeated .data.TestContext test_contexts = 3;</code>
+   * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
    */
-  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.TestContextOrBuilder> 
-      getTestContextsOrBuilderList();
+  boolean containsTestContexts(
+      java.lang.String key);
   /**
-   * <code>repeated .data.TestContext test_contexts = 3;</code>
+   * Use {@link #getTestContextsMap()} instead.
    */
-  eu.tsystems.mms.tic.testframework.report.model.TestContextOrBuilder getTestContextsOrBuilder(
-      int index);
+  @java.lang.Deprecated
+  java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.TestContext>
+  getTestContexts();
+  /**
+   * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
+   */
+  java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.TestContext>
+  getTestContextsMap();
+  /**
+   * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
+   */
+
+  eu.tsystems.mms.tic.testframework.report.model.TestContext getTestContextsOrDefault(
+      java.lang.String key,
+      eu.tsystems.mms.tic.testframework.report.model.TestContext defaultValue);
+  /**
+   * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
+   */
+
+  eu.tsystems.mms.tic.testframework.report.model.TestContext getTestContextsOrThrow(
+      java.lang.String key);
 
   /**
-   * <code>repeated .data.ClassContext class_contexts = 4;</code>
-   */
-  java.util.List<eu.tsystems.mms.tic.testframework.report.model.ClassContext> 
-      getClassContextsList();
-  /**
-   * <code>repeated .data.ClassContext class_contexts = 4;</code>
-   */
-  eu.tsystems.mms.tic.testframework.report.model.ClassContext getClassContexts(int index);
-  /**
-   * <code>repeated .data.ClassContext class_contexts = 4;</code>
+   * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
    */
   int getClassContextsCount();
   /**
-   * <code>repeated .data.ClassContext class_contexts = 4;</code>
+   * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
    */
-  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ClassContextOrBuilder> 
-      getClassContextsOrBuilderList();
+  boolean containsClassContexts(
+      java.lang.String key);
   /**
-   * <code>repeated .data.ClassContext class_contexts = 4;</code>
+   * Use {@link #getClassContextsMap()} instead.
    */
-  eu.tsystems.mms.tic.testframework.report.model.ClassContextOrBuilder getClassContextsOrBuilder(
-      int index);
+  @java.lang.Deprecated
+  java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.ClassContext>
+  getClassContexts();
+  /**
+   * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
+   */
+  java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.ClassContext>
+  getClassContextsMap();
+  /**
+   * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
+   */
+
+  eu.tsystems.mms.tic.testframework.report.model.ClassContext getClassContextsOrDefault(
+      java.lang.String key,
+      eu.tsystems.mms.tic.testframework.report.model.ClassContext defaultValue);
+  /**
+   * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
+   */
+
+  eu.tsystems.mms.tic.testframework.report.model.ClassContext getClassContextsOrThrow(
+      java.lang.String key);
 
   /**
-   * <code>repeated .data.MethodContext method_contexts = 5;</code>
-   */
-  java.util.List<eu.tsystems.mms.tic.testframework.report.model.MethodContext> 
-      getMethodContextsList();
-  /**
-   * <code>repeated .data.MethodContext method_contexts = 5;</code>
-   */
-  eu.tsystems.mms.tic.testframework.report.model.MethodContext getMethodContexts(int index);
-  /**
-   * <code>repeated .data.MethodContext method_contexts = 5;</code>
+   * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
    */
   int getMethodContextsCount();
   /**
-   * <code>repeated .data.MethodContext method_contexts = 5;</code>
+   * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
    */
-  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.MethodContextOrBuilder> 
-      getMethodContextsOrBuilderList();
+  boolean containsMethodContexts(
+      java.lang.String key);
   /**
-   * <code>repeated .data.MethodContext method_contexts = 5;</code>
+   * Use {@link #getMethodContextsMap()} instead.
    */
-  eu.tsystems.mms.tic.testframework.report.model.MethodContextOrBuilder getMethodContextsOrBuilder(
-      int index);
+  @java.lang.Deprecated
+  java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.MethodContext>
+  getMethodContexts();
+  /**
+   * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
+   */
+  java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.MethodContext>
+  getMethodContextsMap();
+  /**
+   * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
+   */
+
+  eu.tsystems.mms.tic.testframework.report.model.MethodContext getMethodContextsOrDefault(
+      java.lang.String key,
+      eu.tsystems.mms.tic.testframework.report.model.MethodContext defaultValue);
+  /**
+   * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
+   */
+
+  eu.tsystems.mms.tic.testframework.report.model.MethodContext getMethodContextsOrThrow(
+      java.lang.String key);
 
   /**
-   * <code>repeated .data.SessionContext session_contexts = 6;</code>
-   */
-  java.util.List<eu.tsystems.mms.tic.testframework.report.model.SessionContext> 
-      getSessionContextsList();
-  /**
-   * <code>repeated .data.SessionContext session_contexts = 6;</code>
-   */
-  eu.tsystems.mms.tic.testframework.report.model.SessionContext getSessionContexts(int index);
-  /**
-   * <code>repeated .data.SessionContext session_contexts = 6;</code>
+   * <code>map&lt;string, .data.SessionContext&gt; session_contexts = 6;</code>
    */
   int getSessionContextsCount();
   /**
-   * <code>repeated .data.SessionContext session_contexts = 6;</code>
+   * <code>map&lt;string, .data.SessionContext&gt; session_contexts = 6;</code>
    */
-  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.SessionContextOrBuilder> 
-      getSessionContextsOrBuilderList();
+  boolean containsSessionContexts(
+      java.lang.String key);
   /**
-   * <code>repeated .data.SessionContext session_contexts = 6;</code>
+   * Use {@link #getSessionContextsMap()} instead.
    */
-  eu.tsystems.mms.tic.testframework.report.model.SessionContextOrBuilder getSessionContextsOrBuilder(
-      int index);
+  @java.lang.Deprecated
+  java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SessionContext>
+  getSessionContexts();
+  /**
+   * <code>map&lt;string, .data.SessionContext&gt; session_contexts = 6;</code>
+   */
+  java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SessionContext>
+  getSessionContextsMap();
+  /**
+   * <code>map&lt;string, .data.SessionContext&gt; session_contexts = 6;</code>
+   */
+
+  eu.tsystems.mms.tic.testframework.report.model.SessionContext getSessionContextsOrDefault(
+      java.lang.String key,
+      eu.tsystems.mms.tic.testframework.report.model.SessionContext defaultValue);
+  /**
+   * <code>map&lt;string, .data.SessionContext&gt; session_contexts = 6;</code>
+   */
+
+  eu.tsystems.mms.tic.testframework.report.model.SessionContext getSessionContextsOrThrow(
+      java.lang.String key);
 }

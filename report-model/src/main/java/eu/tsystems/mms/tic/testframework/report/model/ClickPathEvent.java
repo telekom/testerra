@@ -6,7 +6,7 @@ package eu.tsystems.mms.tic.testframework.report.model;
 /**
  * Protobuf type {@code data.ClickPathEvent}
  */
-public  final class ClickPathEvent extends
+public final class ClickPathEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:data.ClickPathEvent)
     ClickPathEventOrBuilder {
@@ -107,14 +107,14 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ClickPathEventType type = 1;</code>
    * @return The enum numeric value on the wire for type.
    */
-  public int getTypeValue() {
+  @java.lang.Override public int getTypeValue() {
     return type_;
   }
   /**
    * <code>.data.ClickPathEventType type = 1;</code>
    * @return The type.
    */
-  public eu.tsystems.mms.tic.testframework.report.model.ClickPathEventType getType() {
+  @java.lang.Override public eu.tsystems.mms.tic.testframework.report.model.ClickPathEventType getType() {
     @SuppressWarnings("deprecation")
     eu.tsystems.mms.tic.testframework.report.model.ClickPathEventType result = eu.tsystems.mms.tic.testframework.report.model.ClickPathEventType.valueOf(type_);
     return result == null ? eu.tsystems.mms.tic.testframework.report.model.ClickPathEventType.UNRECOGNIZED : result;
@@ -126,6 +126,7 @@ private static final long serialVersionUID = 0L;
    * <code>string subject = 2;</code>
    * @return The subject.
    */
+  @java.lang.Override
   public java.lang.String getSubject() {
     java.lang.Object ref = subject_;
     if (ref instanceof java.lang.String) {
@@ -142,6 +143,7 @@ private static final long serialVersionUID = 0L;
    * <code>string subject = 2;</code>
    * @return The bytes for subject.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getSubjectBytes() {
     java.lang.Object ref = subject_;
@@ -162,6 +164,7 @@ private static final long serialVersionUID = 0L;
    * <code>string session_id = 3;</code>
    * @return The sessionId.
    */
+  @java.lang.Override
   public java.lang.String getSessionId() {
     java.lang.Object ref = sessionId_;
     if (ref instanceof java.lang.String) {
@@ -178,6 +181,7 @@ private static final long serialVersionUID = 0L;
    * <code>string session_id = 3;</code>
    * @return The bytes for sessionId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getSessionIdBytes() {
     java.lang.Object ref = sessionId_;
@@ -532,7 +536,7 @@ private static final long serialVersionUID = 0L;
      * <code>.data.ClickPathEventType type = 1;</code>
      * @return The enum numeric value on the wire for type.
      */
-    public int getTypeValue() {
+    @java.lang.Override public int getTypeValue() {
       return type_;
     }
     /**
@@ -541,6 +545,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTypeValue(int value) {
+      
       type_ = value;
       onChanged();
       return this;
@@ -549,6 +554,7 @@ private static final long serialVersionUID = 0L;
      * <code>.data.ClickPathEventType type = 1;</code>
      * @return The type.
      */
+    @java.lang.Override
     public eu.tsystems.mms.tic.testframework.report.model.ClickPathEventType getType() {
       @SuppressWarnings("deprecation")
       eu.tsystems.mms.tic.testframework.report.model.ClickPathEventType result = eu.tsystems.mms.tic.testframework.report.model.ClickPathEventType.valueOf(type_);

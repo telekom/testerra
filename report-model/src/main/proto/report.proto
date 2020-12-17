@@ -8,9 +8,9 @@ package data;
 
 message ExecutionAggregate {
     ExecutionContext execution_context = 1;
-    repeated SuiteContext suite_contexts = 2;
-    repeated TestContext test_contexts = 3;
-    repeated ClassContext class_contexts = 4;
-    repeated MethodContext method_contexts = 5;
-    repeated SessionContext session_contexts = 6;
+    map<string, SuiteContext> suite_contexts = 2;
+    map<string, TestContext> test_contexts = 3;
+    map<string, ClassContext> class_contexts = 4;
+    map<string, MethodContext> method_contexts = 5;
+    map<string, SessionContext> session_contexts = 6;
 }

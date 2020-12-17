@@ -6,7 +6,7 @@ package eu.tsystems.mms.tic.testframework.report.model;
 /**
  * Protobuf type {@code data.ErrorContext}
  */
-public  final class ErrorContext extends
+public final class ErrorContext extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:data.ErrorContext)
     ErrorContextOrBuilder {
@@ -152,6 +152,7 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ScriptSource script_source = 7;</code>
    * @return Whether the scriptSource field is set.
    */
+  @java.lang.Override
   public boolean hasScriptSource() {
     return scriptSource_ != null;
   }
@@ -166,6 +167,7 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ScriptSource script_source = 7;</code>
    * @return The scriptSource.
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ScriptSource getScriptSource() {
     return scriptSource_ == null ? eu.tsystems.mms.tic.testframework.report.model.ScriptSource.getDefaultInstance() : scriptSource_;
   }
@@ -179,6 +181,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.data.ScriptSource script_source = 7;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ScriptSourceOrBuilder getScriptSourceOrBuilder() {
     return getScriptSource();
   }
@@ -189,6 +192,7 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ScriptSource execution_object_source = 8;</code>
    * @return Whether the executionObjectSource field is set.
    */
+  @java.lang.Override
   public boolean hasExecutionObjectSource() {
     return executionObjectSource_ != null;
   }
@@ -196,12 +200,14 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ScriptSource execution_object_source = 8;</code>
    * @return The executionObjectSource.
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ScriptSource getExecutionObjectSource() {
     return executionObjectSource_ == null ? eu.tsystems.mms.tic.testframework.report.model.ScriptSource.getDefaultInstance() : executionObjectSource_;
   }
   /**
    * <code>.data.ScriptSource execution_object_source = 8;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ScriptSourceOrBuilder getExecutionObjectSourceOrBuilder() {
     return getExecutionObjectSource();
   }
@@ -212,6 +218,7 @@ private static final long serialVersionUID = 0L;
    * <code>string ticketId = 9;</code>
    * @return The ticketId.
    */
+  @java.lang.Override
   public java.lang.String getTicketId() {
     java.lang.Object ref = ticketId_;
     if (ref instanceof java.lang.String) {
@@ -228,6 +235,7 @@ private static final long serialVersionUID = 0L;
    * <code>string ticketId = 9;</code>
    * @return The bytes for ticketId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getTicketIdBytes() {
     java.lang.Object ref = ticketId_;
@@ -248,6 +256,7 @@ private static final long serialVersionUID = 0L;
    * <code>string description = 10;</code>
    * @return The description.
    */
+  @java.lang.Override
   public java.lang.String getDescription() {
     java.lang.Object ref = description_;
     if (ref instanceof java.lang.String) {
@@ -264,6 +273,7 @@ private static final long serialVersionUID = 0L;
    * <code>string description = 10;</code>
    * @return The bytes for description.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getDescriptionBytes() {
     java.lang.Object ref = description_;
@@ -283,12 +293,14 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
    */
+  @java.lang.Override
   public java.util.List<eu.tsystems.mms.tic.testframework.report.model.StackTraceCause> getStackTraceList() {
     return stackTrace_;
   }
   /**
    * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder> 
       getStackTraceOrBuilderList() {
     return stackTrace_;
@@ -296,18 +308,21 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
    */
+  @java.lang.Override
   public int getStackTraceCount() {
     return stackTrace_.size();
   }
   /**
    * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getStackTrace(int index) {
     return stackTrace_.get(index);
   }
   /**
    * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder getStackTraceOrBuilder(
       int index) {
     return stackTrace_.get(index);
@@ -319,6 +334,7 @@ private static final long serialVersionUID = 0L;
    * <code>bool optional = 12;</code>
    * @return The optional.
    */
+  @java.lang.Override
   public boolean getOptional() {
     return optional_;
   }
@@ -1475,6 +1491,7 @@ private static final long serialVersionUID = 0L;
      * <code>bool optional = 12;</code>
      * @return The optional.
      */
+    @java.lang.Override
     public boolean getOptional() {
       return optional_;
     }

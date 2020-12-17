@@ -546,6 +546,7 @@ export const data = $root.data = (() => {
          * @property {Array.<string>|null} [videoIds] MethodContext videoIds
          * @property {string|null} [customContextJson] MethodContext customContextJson
          * @property {number|null} [failedStepIndex] MethodContext failedStepIndex
+         * @property {data.ResultStatusType|null} [resultStatus] MethodContext resultStatus
          */
 
         /**
@@ -748,6 +749,14 @@ export const data = $root.data = (() => {
         MethodContext.prototype.failedStepIndex = 0;
 
         /**
+         * MethodContext resultStatus.
+         * @member {data.ResultStatusType} resultStatus
+         * @memberof data.MethodContext
+         * @instance
+         */
+        MethodContext.prototype.resultStatus = 0;
+
+        /**
          * Decodes a MethodContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.MethodContext
@@ -847,6 +856,9 @@ export const data = $root.data = (() => {
                 case 33:
                     m.failedStepIndex = r.int32();
                     break;
+                case 34:
+                    m.resultStatus = r.int32();
+                    break;
                 default:
                     r.skipType(t & 7);
                     break;
@@ -869,8 +881,6 @@ export const data = $root.data = (() => {
          * @property {string|null} [name] ContextValues name
          * @property {number|null} [startTime] ContextValues startTime
          * @property {number|null} [endTime] ContextValues endTime
-         * @property {data.ResultStatusType|null} [resultStatus] ContextValues resultStatus
-         * @property {data.ExecStatusType|null} [execStatus] ContextValues execStatus
          */
 
         /**
@@ -929,22 +939,6 @@ export const data = $root.data = (() => {
         ContextValues.prototype.endTime = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
         /**
-         * ContextValues resultStatus.
-         * @member {data.ResultStatusType} resultStatus
-         * @memberof data.ContextValues
-         * @instance
-         */
-        ContextValues.prototype.resultStatus = 0;
-
-        /**
-         * ContextValues execStatus.
-         * @member {data.ExecStatusType} execStatus
-         * @memberof data.ContextValues
-         * @instance
-         */
-        ContextValues.prototype.execStatus = 0;
-
-        /**
          * Decodes a ContextValues message from the specified reader or buffer.
          * @function decode
          * @memberof data.ContextValues
@@ -976,12 +970,6 @@ export const data = $root.data = (() => {
                     break;
                 case 5:
                     m.endTime = r.int64();
-                    break;
-                case 7:
-                    m.resultStatus = r.int32();
-                    break;
-                case 8:
-                    m.execStatus = r.int32();
                     break;
                 default:
                     r.skipType(t & 7);
@@ -2527,38 +2515,6 @@ export const data = $root.data = (() => {
     })();
 
     /**
-     * ExecStatusType enum.
-     * @name data.ExecStatusType
-     * @enum {number}
-     * @property {number} EST_NOT_SET=0 EST_NOT_SET value
-     * @property {number} NEW=1 NEW value
-     * @property {number} PENDING=2 PENDING value
-     * @property {number} PROVISIONING=3 PROVISIONING value
-     * @property {number} RUNNING=4 RUNNING value
-     * @property {number} FINISHED=5 FINISHED value
-     * @property {number} ABORTED=6 ABORTED value
-     * @property {number} CRASHED=7 CRASHED value
-     * @property {number} INVALID=8 INVALID value
-     * @property {number} VOID=9 VOID value
-     * @property {number} ARTIFACT_UPLOAD=10 ARTIFACT_UPLOAD value
-     */
-    data.ExecStatusType = (function() {
-        const valuesById = {}, values = Object.create(valuesById);
-        values[valuesById[0] = "EST_NOT_SET"] = 0;
-        values[valuesById[1] = "NEW"] = 1;
-        values[valuesById[2] = "PENDING"] = 2;
-        values[valuesById[3] = "PROVISIONING"] = 3;
-        values[valuesById[4] = "RUNNING"] = 4;
-        values[valuesById[5] = "FINISHED"] = 5;
-        values[valuesById[6] = "ABORTED"] = 6;
-        values[valuesById[7] = "CRASHED"] = 7;
-        values[valuesById[8] = "INVALID"] = 8;
-        values[valuesById[9] = "VOID"] = 9;
-        values[valuesById[10] = "ARTIFACT_UPLOAD"] = 10;
-        return values;
-    })();
-
-    /**
      * ResultStatusType enum.
      * @name data.ResultStatusType
      * @enum {number}
@@ -2599,11 +2555,11 @@ export const data = $root.data = (() => {
          * @memberof data
          * @interface IExecutionAggregate
          * @property {data.IExecutionContext|null} [executionContext] ExecutionAggregate executionContext
-         * @property {Array.<data.ISuiteContext>|null} [suiteContexts] ExecutionAggregate suiteContexts
-         * @property {Array.<data.ITestContext>|null} [testContexts] ExecutionAggregate testContexts
-         * @property {Array.<data.IClassContext>|null} [classContexts] ExecutionAggregate classContexts
-         * @property {Array.<data.IMethodContext>|null} [methodContexts] ExecutionAggregate methodContexts
-         * @property {Array.<data.ISessionContext>|null} [sessionContexts] ExecutionAggregate sessionContexts
+         * @property {Object.<string,data.ISuiteContext>|null} [suiteContexts] ExecutionAggregate suiteContexts
+         * @property {Object.<string,data.ITestContext>|null} [testContexts] ExecutionAggregate testContexts
+         * @property {Object.<string,data.IClassContext>|null} [classContexts] ExecutionAggregate classContexts
+         * @property {Object.<string,data.IMethodContext>|null} [methodContexts] ExecutionAggregate methodContexts
+         * @property {Object.<string,data.ISessionContext>|null} [sessionContexts] ExecutionAggregate sessionContexts
          */
 
         /**
@@ -2615,11 +2571,11 @@ export const data = $root.data = (() => {
          * @param {data.IExecutionAggregate=} [p] Properties to set
          */
         function ExecutionAggregate(p) {
-            this.suiteContexts = [];
-            this.testContexts = [];
-            this.classContexts = [];
-            this.methodContexts = [];
-            this.sessionContexts = [];
+            this.suiteContexts = {};
+            this.testContexts = {};
+            this.classContexts = {};
+            this.methodContexts = {};
+            this.sessionContexts = {};
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -2636,43 +2592,43 @@ export const data = $root.data = (() => {
 
         /**
          * ExecutionAggregate suiteContexts.
-         * @member {Array.<data.ISuiteContext>} suiteContexts
+         * @member {Object.<string,data.ISuiteContext>} suiteContexts
          * @memberof data.ExecutionAggregate
          * @instance
          */
-        ExecutionAggregate.prototype.suiteContexts = $util.emptyArray;
+        ExecutionAggregate.prototype.suiteContexts = $util.emptyObject;
 
         /**
          * ExecutionAggregate testContexts.
-         * @member {Array.<data.ITestContext>} testContexts
+         * @member {Object.<string,data.ITestContext>} testContexts
          * @memberof data.ExecutionAggregate
          * @instance
          */
-        ExecutionAggregate.prototype.testContexts = $util.emptyArray;
+        ExecutionAggregate.prototype.testContexts = $util.emptyObject;
 
         /**
          * ExecutionAggregate classContexts.
-         * @member {Array.<data.IClassContext>} classContexts
+         * @member {Object.<string,data.IClassContext>} classContexts
          * @memberof data.ExecutionAggregate
          * @instance
          */
-        ExecutionAggregate.prototype.classContexts = $util.emptyArray;
+        ExecutionAggregate.prototype.classContexts = $util.emptyObject;
 
         /**
          * ExecutionAggregate methodContexts.
-         * @member {Array.<data.IMethodContext>} methodContexts
+         * @member {Object.<string,data.IMethodContext>} methodContexts
          * @memberof data.ExecutionAggregate
          * @instance
          */
-        ExecutionAggregate.prototype.methodContexts = $util.emptyArray;
+        ExecutionAggregate.prototype.methodContexts = $util.emptyObject;
 
         /**
          * ExecutionAggregate sessionContexts.
-         * @member {Array.<data.ISessionContext>} sessionContexts
+         * @member {Object.<string,data.ISessionContext>} sessionContexts
          * @memberof data.ExecutionAggregate
          * @instance
          */
-        ExecutionAggregate.prototype.sessionContexts = $util.emptyArray;
+        ExecutionAggregate.prototype.sessionContexts = $util.emptyObject;
 
         /**
          * Decodes an ExecutionAggregate message from the specified reader or buffer.
@@ -2688,7 +2644,7 @@ export const data = $root.data = (() => {
         ExecutionAggregate.decode = function decode(r, l) {
             if (!(r instanceof $Reader))
                 r = $Reader.create(r);
-            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.ExecutionAggregate();
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.ExecutionAggregate(), k, value;
             while (r.pos < c) {
                 var t = r.uint32();
                 switch (t >>> 3) {
@@ -2696,29 +2652,114 @@ export const data = $root.data = (() => {
                     m.executionContext = $root.data.ExecutionContext.decode(r, r.uint32());
                     break;
                 case 2:
-                    if (!(m.suiteContexts && m.suiteContexts.length))
-                        m.suiteContexts = [];
-                    m.suiteContexts.push($root.data.SuiteContext.decode(r, r.uint32()));
+                    if (m.suiteContexts === $util.emptyObject)
+                        m.suiteContexts = {};
+                    var c2 = r.uint32() + r.pos;
+                    k = "";
+                    value = null;
+                    while (r.pos < c2) {
+                        var tag2 = r.uint32();
+                        switch (tag2 >>> 3) {
+                        case 1:
+                            k = r.string();
+                            break;
+                        case 2:
+                            value = $root.data.SuiteContext.decode(r, r.uint32());
+                            break;
+                        default:
+                            r.skipType(tag2 & 7);
+                            break;
+                        }
+                    }
+                    m.suiteContexts[k] = value;
                     break;
                 case 3:
-                    if (!(m.testContexts && m.testContexts.length))
-                        m.testContexts = [];
-                    m.testContexts.push($root.data.TestContext.decode(r, r.uint32()));
+                    if (m.testContexts === $util.emptyObject)
+                        m.testContexts = {};
+                    var c2 = r.uint32() + r.pos;
+                    k = "";
+                    value = null;
+                    while (r.pos < c2) {
+                        var tag2 = r.uint32();
+                        switch (tag2 >>> 3) {
+                        case 1:
+                            k = r.string();
+                            break;
+                        case 2:
+                            value = $root.data.TestContext.decode(r, r.uint32());
+                            break;
+                        default:
+                            r.skipType(tag2 & 7);
+                            break;
+                        }
+                    }
+                    m.testContexts[k] = value;
                     break;
                 case 4:
-                    if (!(m.classContexts && m.classContexts.length))
-                        m.classContexts = [];
-                    m.classContexts.push($root.data.ClassContext.decode(r, r.uint32()));
+                    if (m.classContexts === $util.emptyObject)
+                        m.classContexts = {};
+                    var c2 = r.uint32() + r.pos;
+                    k = "";
+                    value = null;
+                    while (r.pos < c2) {
+                        var tag2 = r.uint32();
+                        switch (tag2 >>> 3) {
+                        case 1:
+                            k = r.string();
+                            break;
+                        case 2:
+                            value = $root.data.ClassContext.decode(r, r.uint32());
+                            break;
+                        default:
+                            r.skipType(tag2 & 7);
+                            break;
+                        }
+                    }
+                    m.classContexts[k] = value;
                     break;
                 case 5:
-                    if (!(m.methodContexts && m.methodContexts.length))
-                        m.methodContexts = [];
-                    m.methodContexts.push($root.data.MethodContext.decode(r, r.uint32()));
+                    if (m.methodContexts === $util.emptyObject)
+                        m.methodContexts = {};
+                    var c2 = r.uint32() + r.pos;
+                    k = "";
+                    value = null;
+                    while (r.pos < c2) {
+                        var tag2 = r.uint32();
+                        switch (tag2 >>> 3) {
+                        case 1:
+                            k = r.string();
+                            break;
+                        case 2:
+                            value = $root.data.MethodContext.decode(r, r.uint32());
+                            break;
+                        default:
+                            r.skipType(tag2 & 7);
+                            break;
+                        }
+                    }
+                    m.methodContexts[k] = value;
                     break;
                 case 6:
-                    if (!(m.sessionContexts && m.sessionContexts.length))
-                        m.sessionContexts = [];
-                    m.sessionContexts.push($root.data.SessionContext.decode(r, r.uint32()));
+                    if (m.sessionContexts === $util.emptyObject)
+                        m.sessionContexts = {};
+                    var c2 = r.uint32() + r.pos;
+                    k = "";
+                    value = null;
+                    while (r.pos < c2) {
+                        var tag2 = r.uint32();
+                        switch (tag2 >>> 3) {
+                        case 1:
+                            k = r.string();
+                            break;
+                        case 2:
+                            value = $root.data.SessionContext.decode(r, r.uint32());
+                            break;
+                        default:
+                            r.skipType(tag2 & 7);
+                            break;
+                        }
+                    }
+                    m.sessionContexts[k] = value;
                     break;
                 default:
                     r.skipType(t & 7);

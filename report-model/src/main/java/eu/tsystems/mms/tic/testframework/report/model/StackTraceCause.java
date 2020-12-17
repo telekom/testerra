@@ -6,7 +6,7 @@ package eu.tsystems.mms.tic.testframework.report.model;
 /**
  * Protobuf type {@code data.StackTraceCause}
  */
-public  final class StackTraceCause extends
+public final class StackTraceCause extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:data.StackTraceCause)
     StackTraceCauseOrBuilder {
@@ -114,6 +114,7 @@ private static final long serialVersionUID = 0L;
    * <code>string class_name = 1;</code>
    * @return The className.
    */
+  @java.lang.Override
   public java.lang.String getClassName() {
     java.lang.Object ref = className_;
     if (ref instanceof java.lang.String) {
@@ -130,6 +131,7 @@ private static final long serialVersionUID = 0L;
    * <code>string class_name = 1;</code>
    * @return The bytes for className.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getClassNameBytes() {
     java.lang.Object ref = className_;
@@ -150,6 +152,7 @@ private static final long serialVersionUID = 0L;
    * <code>string message = 2;</code>
    * @return The message.
    */
+  @java.lang.Override
   public java.lang.String getMessage() {
     java.lang.Object ref = message_;
     if (ref instanceof java.lang.String) {
@@ -166,6 +169,7 @@ private static final long serialVersionUID = 0L;
    * <code>string message = 2;</code>
    * @return The bytes for message.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getMessageBytes() {
     java.lang.Object ref = message_;

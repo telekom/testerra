@@ -6,7 +6,7 @@ package eu.tsystems.mms.tic.testframework.report.model;
 /**
  * Protobuf type {@code data.ExecutionAggregate}
  */
-public  final class ExecutionAggregate extends
+public final class ExecutionAggregate extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:data.ExecutionAggregate)
     ExecutionAggregateOrBuilder {
@@ -16,11 +16,6 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private ExecutionAggregate() {
-    suiteContexts_ = java.util.Collections.emptyList();
-    testContexts_ = java.util.Collections.emptyList();
-    classContexts_ = java.util.Collections.emptyList();
-    methodContexts_ = java.util.Collections.emptyList();
-    sessionContexts_ = java.util.Collections.emptyList();
   }
 
   @java.lang.Override
@@ -69,47 +64,67 @@ private static final long serialVersionUID = 0L;
           }
           case 18: {
             if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-              suiteContexts_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.SuiteContext>();
+              suiteContexts_ = com.google.protobuf.MapField.newMapField(
+                  SuiteContextsDefaultEntryHolder.defaultEntry);
               mutable_bitField0_ |= 0x00000001;
             }
-            suiteContexts_.add(
-                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.SuiteContext.parser(), extensionRegistry));
+            com.google.protobuf.MapEntry<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SuiteContext>
+            suiteContexts__ = input.readMessage(
+                SuiteContextsDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
+            suiteContexts_.getMutableMap().put(
+                suiteContexts__.getKey(), suiteContexts__.getValue());
             break;
           }
           case 26: {
             if (!((mutable_bitField0_ & 0x00000002) != 0)) {
-              testContexts_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.TestContext>();
+              testContexts_ = com.google.protobuf.MapField.newMapField(
+                  TestContextsDefaultEntryHolder.defaultEntry);
               mutable_bitField0_ |= 0x00000002;
             }
-            testContexts_.add(
-                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.TestContext.parser(), extensionRegistry));
+            com.google.protobuf.MapEntry<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.TestContext>
+            testContexts__ = input.readMessage(
+                TestContextsDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
+            testContexts_.getMutableMap().put(
+                testContexts__.getKey(), testContexts__.getValue());
             break;
           }
           case 34: {
             if (!((mutable_bitField0_ & 0x00000004) != 0)) {
-              classContexts_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.ClassContext>();
+              classContexts_ = com.google.protobuf.MapField.newMapField(
+                  ClassContextsDefaultEntryHolder.defaultEntry);
               mutable_bitField0_ |= 0x00000004;
             }
-            classContexts_.add(
-                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.ClassContext.parser(), extensionRegistry));
+            com.google.protobuf.MapEntry<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.ClassContext>
+            classContexts__ = input.readMessage(
+                ClassContextsDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
+            classContexts_.getMutableMap().put(
+                classContexts__.getKey(), classContexts__.getValue());
             break;
           }
           case 42: {
             if (!((mutable_bitField0_ & 0x00000008) != 0)) {
-              methodContexts_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.MethodContext>();
+              methodContexts_ = com.google.protobuf.MapField.newMapField(
+                  MethodContextsDefaultEntryHolder.defaultEntry);
               mutable_bitField0_ |= 0x00000008;
             }
-            methodContexts_.add(
-                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.MethodContext.parser(), extensionRegistry));
+            com.google.protobuf.MapEntry<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.MethodContext>
+            methodContexts__ = input.readMessage(
+                MethodContextsDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
+            methodContexts_.getMutableMap().put(
+                methodContexts__.getKey(), methodContexts__.getValue());
             break;
           }
           case 50: {
             if (!((mutable_bitField0_ & 0x00000010) != 0)) {
-              sessionContexts_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.SessionContext>();
+              sessionContexts_ = com.google.protobuf.MapField.newMapField(
+                  SessionContextsDefaultEntryHolder.defaultEntry);
               mutable_bitField0_ |= 0x00000010;
             }
-            sessionContexts_.add(
-                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.SessionContext.parser(), extensionRegistry));
+            com.google.protobuf.MapEntry<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SessionContext>
+            sessionContexts__ = input.readMessage(
+                SessionContextsDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
+            sessionContexts_.getMutableMap().put(
+                sessionContexts__.getKey(), sessionContexts__.getValue());
             break;
           }
           default: {
@@ -127,21 +142,6 @@ private static final long serialVersionUID = 0L;
       throw new com.google.protobuf.InvalidProtocolBufferException(
           e).setUnfinishedMessage(this);
     } finally {
-      if (((mutable_bitField0_ & 0x00000001) != 0)) {
-        suiteContexts_ = java.util.Collections.unmodifiableList(suiteContexts_);
-      }
-      if (((mutable_bitField0_ & 0x00000002) != 0)) {
-        testContexts_ = java.util.Collections.unmodifiableList(testContexts_);
-      }
-      if (((mutable_bitField0_ & 0x00000004) != 0)) {
-        classContexts_ = java.util.Collections.unmodifiableList(classContexts_);
-      }
-      if (((mutable_bitField0_ & 0x00000008) != 0)) {
-        methodContexts_ = java.util.Collections.unmodifiableList(methodContexts_);
-      }
-      if (((mutable_bitField0_ & 0x00000010) != 0)) {
-        sessionContexts_ = java.util.Collections.unmodifiableList(sessionContexts_);
-      }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
     }
@@ -151,6 +151,26 @@ private static final long serialVersionUID = 0L;
     return eu.tsystems.mms.tic.testframework.report.model.Report.internal_static_data_ExecutionAggregate_descriptor;
   }
 
+  @SuppressWarnings({"rawtypes"})
+  @java.lang.Override
+  protected com.google.protobuf.MapField internalGetMapField(
+      int number) {
+    switch (number) {
+      case 2:
+        return internalGetSuiteContexts();
+      case 3:
+        return internalGetTestContexts();
+      case 4:
+        return internalGetClassContexts();
+      case 5:
+        return internalGetMethodContexts();
+      case 6:
+        return internalGetSessionContexts();
+      default:
+        throw new RuntimeException(
+            "Invalid map field number: " + number);
+    }
+  }
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
@@ -165,6 +185,7 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ExecutionContext execution_context = 1;</code>
    * @return Whether the executionContext field is set.
    */
+  @java.lang.Override
   public boolean hasExecutionContext() {
     return executionContext_ != null;
   }
@@ -172,189 +193,421 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ExecutionContext execution_context = 1;</code>
    * @return The executionContext.
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ExecutionContext getExecutionContext() {
     return executionContext_ == null ? eu.tsystems.mms.tic.testframework.report.model.ExecutionContext.getDefaultInstance() : executionContext_;
   }
   /**
    * <code>.data.ExecutionContext execution_context = 1;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ExecutionContextOrBuilder getExecutionContextOrBuilder() {
     return getExecutionContext();
   }
 
   public static final int SUITE_CONTEXTS_FIELD_NUMBER = 2;
-  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.SuiteContext> suiteContexts_;
-  /**
-   * <code>repeated .data.SuiteContext suite_contexts = 2;</code>
-   */
-  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.SuiteContext> getSuiteContextsList() {
+  private static final class SuiteContextsDefaultEntryHolder {
+    static final com.google.protobuf.MapEntry<
+        java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SuiteContext> defaultEntry =
+            com.google.protobuf.MapEntry
+            .<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SuiteContext>newDefaultInstance(
+                eu.tsystems.mms.tic.testframework.report.model.Report.internal_static_data_ExecutionAggregate_SuiteContextsEntry_descriptor, 
+                com.google.protobuf.WireFormat.FieldType.STRING,
+                "",
+                com.google.protobuf.WireFormat.FieldType.MESSAGE,
+                eu.tsystems.mms.tic.testframework.report.model.SuiteContext.getDefaultInstance());
+  }
+  private com.google.protobuf.MapField<
+      java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SuiteContext> suiteContexts_;
+  private com.google.protobuf.MapField<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SuiteContext>
+  internalGetSuiteContexts() {
+    if (suiteContexts_ == null) {
+      return com.google.protobuf.MapField.emptyMapField(
+          SuiteContextsDefaultEntryHolder.defaultEntry);
+    }
     return suiteContexts_;
   }
-  /**
-   * <code>repeated .data.SuiteContext suite_contexts = 2;</code>
-   */
-  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.SuiteContextOrBuilder> 
-      getSuiteContextsOrBuilderList() {
-    return suiteContexts_;
-  }
-  /**
-   * <code>repeated .data.SuiteContext suite_contexts = 2;</code>
-   */
+
   public int getSuiteContextsCount() {
-    return suiteContexts_.size();
+    return internalGetSuiteContexts().getMap().size();
   }
   /**
-   * <code>repeated .data.SuiteContext suite_contexts = 2;</code>
+   * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
    */
-  public eu.tsystems.mms.tic.testframework.report.model.SuiteContext getSuiteContexts(int index) {
-    return suiteContexts_.get(index);
+
+  @java.lang.Override
+  public boolean containsSuiteContexts(
+      java.lang.String key) {
+    if (key == null) { throw new java.lang.NullPointerException(); }
+    return internalGetSuiteContexts().getMap().containsKey(key);
   }
   /**
-   * <code>repeated .data.SuiteContext suite_contexts = 2;</code>
+   * Use {@link #getSuiteContextsMap()} instead.
    */
-  public eu.tsystems.mms.tic.testframework.report.model.SuiteContextOrBuilder getSuiteContextsOrBuilder(
-      int index) {
-    return suiteContexts_.get(index);
+  @java.lang.Override
+  @java.lang.Deprecated
+  public java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SuiteContext> getSuiteContexts() {
+    return getSuiteContextsMap();
+  }
+  /**
+   * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
+   */
+  @java.lang.Override
+
+  public java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SuiteContext> getSuiteContextsMap() {
+    return internalGetSuiteContexts().getMap();
+  }
+  /**
+   * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
+   */
+  @java.lang.Override
+
+  public eu.tsystems.mms.tic.testframework.report.model.SuiteContext getSuiteContextsOrDefault(
+      java.lang.String key,
+      eu.tsystems.mms.tic.testframework.report.model.SuiteContext defaultValue) {
+    if (key == null) { throw new java.lang.NullPointerException(); }
+    java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SuiteContext> map =
+        internalGetSuiteContexts().getMap();
+    return map.containsKey(key) ? map.get(key) : defaultValue;
+  }
+  /**
+   * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
+   */
+  @java.lang.Override
+
+  public eu.tsystems.mms.tic.testframework.report.model.SuiteContext getSuiteContextsOrThrow(
+      java.lang.String key) {
+    if (key == null) { throw new java.lang.NullPointerException(); }
+    java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SuiteContext> map =
+        internalGetSuiteContexts().getMap();
+    if (!map.containsKey(key)) {
+      throw new java.lang.IllegalArgumentException();
+    }
+    return map.get(key);
   }
 
   public static final int TEST_CONTEXTS_FIELD_NUMBER = 3;
-  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestContext> testContexts_;
-  /**
-   * <code>repeated .data.TestContext test_contexts = 3;</code>
-   */
-  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestContext> getTestContextsList() {
+  private static final class TestContextsDefaultEntryHolder {
+    static final com.google.protobuf.MapEntry<
+        java.lang.String, eu.tsystems.mms.tic.testframework.report.model.TestContext> defaultEntry =
+            com.google.protobuf.MapEntry
+            .<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.TestContext>newDefaultInstance(
+                eu.tsystems.mms.tic.testframework.report.model.Report.internal_static_data_ExecutionAggregate_TestContextsEntry_descriptor, 
+                com.google.protobuf.WireFormat.FieldType.STRING,
+                "",
+                com.google.protobuf.WireFormat.FieldType.MESSAGE,
+                eu.tsystems.mms.tic.testframework.report.model.TestContext.getDefaultInstance());
+  }
+  private com.google.protobuf.MapField<
+      java.lang.String, eu.tsystems.mms.tic.testframework.report.model.TestContext> testContexts_;
+  private com.google.protobuf.MapField<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.TestContext>
+  internalGetTestContexts() {
+    if (testContexts_ == null) {
+      return com.google.protobuf.MapField.emptyMapField(
+          TestContextsDefaultEntryHolder.defaultEntry);
+    }
     return testContexts_;
   }
-  /**
-   * <code>repeated .data.TestContext test_contexts = 3;</code>
-   */
-  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.TestContextOrBuilder> 
-      getTestContextsOrBuilderList() {
-    return testContexts_;
-  }
-  /**
-   * <code>repeated .data.TestContext test_contexts = 3;</code>
-   */
+
   public int getTestContextsCount() {
-    return testContexts_.size();
+    return internalGetTestContexts().getMap().size();
   }
   /**
-   * <code>repeated .data.TestContext test_contexts = 3;</code>
+   * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
    */
-  public eu.tsystems.mms.tic.testframework.report.model.TestContext getTestContexts(int index) {
-    return testContexts_.get(index);
+
+  @java.lang.Override
+  public boolean containsTestContexts(
+      java.lang.String key) {
+    if (key == null) { throw new java.lang.NullPointerException(); }
+    return internalGetTestContexts().getMap().containsKey(key);
   }
   /**
-   * <code>repeated .data.TestContext test_contexts = 3;</code>
+   * Use {@link #getTestContextsMap()} instead.
    */
-  public eu.tsystems.mms.tic.testframework.report.model.TestContextOrBuilder getTestContextsOrBuilder(
-      int index) {
-    return testContexts_.get(index);
+  @java.lang.Override
+  @java.lang.Deprecated
+  public java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.TestContext> getTestContexts() {
+    return getTestContextsMap();
+  }
+  /**
+   * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
+   */
+  @java.lang.Override
+
+  public java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.TestContext> getTestContextsMap() {
+    return internalGetTestContexts().getMap();
+  }
+  /**
+   * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
+   */
+  @java.lang.Override
+
+  public eu.tsystems.mms.tic.testframework.report.model.TestContext getTestContextsOrDefault(
+      java.lang.String key,
+      eu.tsystems.mms.tic.testframework.report.model.TestContext defaultValue) {
+    if (key == null) { throw new java.lang.NullPointerException(); }
+    java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.TestContext> map =
+        internalGetTestContexts().getMap();
+    return map.containsKey(key) ? map.get(key) : defaultValue;
+  }
+  /**
+   * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
+   */
+  @java.lang.Override
+
+  public eu.tsystems.mms.tic.testframework.report.model.TestContext getTestContextsOrThrow(
+      java.lang.String key) {
+    if (key == null) { throw new java.lang.NullPointerException(); }
+    java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.TestContext> map =
+        internalGetTestContexts().getMap();
+    if (!map.containsKey(key)) {
+      throw new java.lang.IllegalArgumentException();
+    }
+    return map.get(key);
   }
 
   public static final int CLASS_CONTEXTS_FIELD_NUMBER = 4;
-  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ClassContext> classContexts_;
-  /**
-   * <code>repeated .data.ClassContext class_contexts = 4;</code>
-   */
-  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ClassContext> getClassContextsList() {
+  private static final class ClassContextsDefaultEntryHolder {
+    static final com.google.protobuf.MapEntry<
+        java.lang.String, eu.tsystems.mms.tic.testframework.report.model.ClassContext> defaultEntry =
+            com.google.protobuf.MapEntry
+            .<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.ClassContext>newDefaultInstance(
+                eu.tsystems.mms.tic.testframework.report.model.Report.internal_static_data_ExecutionAggregate_ClassContextsEntry_descriptor, 
+                com.google.protobuf.WireFormat.FieldType.STRING,
+                "",
+                com.google.protobuf.WireFormat.FieldType.MESSAGE,
+                eu.tsystems.mms.tic.testframework.report.model.ClassContext.getDefaultInstance());
+  }
+  private com.google.protobuf.MapField<
+      java.lang.String, eu.tsystems.mms.tic.testframework.report.model.ClassContext> classContexts_;
+  private com.google.protobuf.MapField<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.ClassContext>
+  internalGetClassContexts() {
+    if (classContexts_ == null) {
+      return com.google.protobuf.MapField.emptyMapField(
+          ClassContextsDefaultEntryHolder.defaultEntry);
+    }
     return classContexts_;
   }
-  /**
-   * <code>repeated .data.ClassContext class_contexts = 4;</code>
-   */
-  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ClassContextOrBuilder> 
-      getClassContextsOrBuilderList() {
-    return classContexts_;
-  }
-  /**
-   * <code>repeated .data.ClassContext class_contexts = 4;</code>
-   */
+
   public int getClassContextsCount() {
-    return classContexts_.size();
+    return internalGetClassContexts().getMap().size();
   }
   /**
-   * <code>repeated .data.ClassContext class_contexts = 4;</code>
+   * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
    */
-  public eu.tsystems.mms.tic.testframework.report.model.ClassContext getClassContexts(int index) {
-    return classContexts_.get(index);
+
+  @java.lang.Override
+  public boolean containsClassContexts(
+      java.lang.String key) {
+    if (key == null) { throw new java.lang.NullPointerException(); }
+    return internalGetClassContexts().getMap().containsKey(key);
   }
   /**
-   * <code>repeated .data.ClassContext class_contexts = 4;</code>
+   * Use {@link #getClassContextsMap()} instead.
    */
-  public eu.tsystems.mms.tic.testframework.report.model.ClassContextOrBuilder getClassContextsOrBuilder(
-      int index) {
-    return classContexts_.get(index);
+  @java.lang.Override
+  @java.lang.Deprecated
+  public java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.ClassContext> getClassContexts() {
+    return getClassContextsMap();
+  }
+  /**
+   * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
+   */
+  @java.lang.Override
+
+  public java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.ClassContext> getClassContextsMap() {
+    return internalGetClassContexts().getMap();
+  }
+  /**
+   * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
+   */
+  @java.lang.Override
+
+  public eu.tsystems.mms.tic.testframework.report.model.ClassContext getClassContextsOrDefault(
+      java.lang.String key,
+      eu.tsystems.mms.tic.testframework.report.model.ClassContext defaultValue) {
+    if (key == null) { throw new java.lang.NullPointerException(); }
+    java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.ClassContext> map =
+        internalGetClassContexts().getMap();
+    return map.containsKey(key) ? map.get(key) : defaultValue;
+  }
+  /**
+   * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
+   */
+  @java.lang.Override
+
+  public eu.tsystems.mms.tic.testframework.report.model.ClassContext getClassContextsOrThrow(
+      java.lang.String key) {
+    if (key == null) { throw new java.lang.NullPointerException(); }
+    java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.ClassContext> map =
+        internalGetClassContexts().getMap();
+    if (!map.containsKey(key)) {
+      throw new java.lang.IllegalArgumentException();
+    }
+    return map.get(key);
   }
 
   public static final int METHOD_CONTEXTS_FIELD_NUMBER = 5;
-  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.MethodContext> methodContexts_;
-  /**
-   * <code>repeated .data.MethodContext method_contexts = 5;</code>
-   */
-  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.MethodContext> getMethodContextsList() {
+  private static final class MethodContextsDefaultEntryHolder {
+    static final com.google.protobuf.MapEntry<
+        java.lang.String, eu.tsystems.mms.tic.testframework.report.model.MethodContext> defaultEntry =
+            com.google.protobuf.MapEntry
+            .<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.MethodContext>newDefaultInstance(
+                eu.tsystems.mms.tic.testframework.report.model.Report.internal_static_data_ExecutionAggregate_MethodContextsEntry_descriptor, 
+                com.google.protobuf.WireFormat.FieldType.STRING,
+                "",
+                com.google.protobuf.WireFormat.FieldType.MESSAGE,
+                eu.tsystems.mms.tic.testframework.report.model.MethodContext.getDefaultInstance());
+  }
+  private com.google.protobuf.MapField<
+      java.lang.String, eu.tsystems.mms.tic.testframework.report.model.MethodContext> methodContexts_;
+  private com.google.protobuf.MapField<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.MethodContext>
+  internalGetMethodContexts() {
+    if (methodContexts_ == null) {
+      return com.google.protobuf.MapField.emptyMapField(
+          MethodContextsDefaultEntryHolder.defaultEntry);
+    }
     return methodContexts_;
   }
-  /**
-   * <code>repeated .data.MethodContext method_contexts = 5;</code>
-   */
-  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.MethodContextOrBuilder> 
-      getMethodContextsOrBuilderList() {
-    return methodContexts_;
-  }
-  /**
-   * <code>repeated .data.MethodContext method_contexts = 5;</code>
-   */
+
   public int getMethodContextsCount() {
-    return methodContexts_.size();
+    return internalGetMethodContexts().getMap().size();
   }
   /**
-   * <code>repeated .data.MethodContext method_contexts = 5;</code>
+   * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
    */
-  public eu.tsystems.mms.tic.testframework.report.model.MethodContext getMethodContexts(int index) {
-    return methodContexts_.get(index);
+
+  @java.lang.Override
+  public boolean containsMethodContexts(
+      java.lang.String key) {
+    if (key == null) { throw new java.lang.NullPointerException(); }
+    return internalGetMethodContexts().getMap().containsKey(key);
   }
   /**
-   * <code>repeated .data.MethodContext method_contexts = 5;</code>
+   * Use {@link #getMethodContextsMap()} instead.
    */
-  public eu.tsystems.mms.tic.testframework.report.model.MethodContextOrBuilder getMethodContextsOrBuilder(
-      int index) {
-    return methodContexts_.get(index);
+  @java.lang.Override
+  @java.lang.Deprecated
+  public java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.MethodContext> getMethodContexts() {
+    return getMethodContextsMap();
+  }
+  /**
+   * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
+   */
+  @java.lang.Override
+
+  public java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.MethodContext> getMethodContextsMap() {
+    return internalGetMethodContexts().getMap();
+  }
+  /**
+   * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
+   */
+  @java.lang.Override
+
+  public eu.tsystems.mms.tic.testframework.report.model.MethodContext getMethodContextsOrDefault(
+      java.lang.String key,
+      eu.tsystems.mms.tic.testframework.report.model.MethodContext defaultValue) {
+    if (key == null) { throw new java.lang.NullPointerException(); }
+    java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.MethodContext> map =
+        internalGetMethodContexts().getMap();
+    return map.containsKey(key) ? map.get(key) : defaultValue;
+  }
+  /**
+   * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
+   */
+  @java.lang.Override
+
+  public eu.tsystems.mms.tic.testframework.report.model.MethodContext getMethodContextsOrThrow(
+      java.lang.String key) {
+    if (key == null) { throw new java.lang.NullPointerException(); }
+    java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.MethodContext> map =
+        internalGetMethodContexts().getMap();
+    if (!map.containsKey(key)) {
+      throw new java.lang.IllegalArgumentException();
+    }
+    return map.get(key);
   }
 
   public static final int SESSION_CONTEXTS_FIELD_NUMBER = 6;
-  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.SessionContext> sessionContexts_;
-  /**
-   * <code>repeated .data.SessionContext session_contexts = 6;</code>
-   */
-  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.SessionContext> getSessionContextsList() {
+  private static final class SessionContextsDefaultEntryHolder {
+    static final com.google.protobuf.MapEntry<
+        java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SessionContext> defaultEntry =
+            com.google.protobuf.MapEntry
+            .<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SessionContext>newDefaultInstance(
+                eu.tsystems.mms.tic.testframework.report.model.Report.internal_static_data_ExecutionAggregate_SessionContextsEntry_descriptor, 
+                com.google.protobuf.WireFormat.FieldType.STRING,
+                "",
+                com.google.protobuf.WireFormat.FieldType.MESSAGE,
+                eu.tsystems.mms.tic.testframework.report.model.SessionContext.getDefaultInstance());
+  }
+  private com.google.protobuf.MapField<
+      java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SessionContext> sessionContexts_;
+  private com.google.protobuf.MapField<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SessionContext>
+  internalGetSessionContexts() {
+    if (sessionContexts_ == null) {
+      return com.google.protobuf.MapField.emptyMapField(
+          SessionContextsDefaultEntryHolder.defaultEntry);
+    }
     return sessionContexts_;
   }
-  /**
-   * <code>repeated .data.SessionContext session_contexts = 6;</code>
-   */
-  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.SessionContextOrBuilder> 
-      getSessionContextsOrBuilderList() {
-    return sessionContexts_;
-  }
-  /**
-   * <code>repeated .data.SessionContext session_contexts = 6;</code>
-   */
+
   public int getSessionContextsCount() {
-    return sessionContexts_.size();
+    return internalGetSessionContexts().getMap().size();
   }
   /**
-   * <code>repeated .data.SessionContext session_contexts = 6;</code>
+   * <code>map&lt;string, .data.SessionContext&gt; session_contexts = 6;</code>
    */
-  public eu.tsystems.mms.tic.testframework.report.model.SessionContext getSessionContexts(int index) {
-    return sessionContexts_.get(index);
+
+  @java.lang.Override
+  public boolean containsSessionContexts(
+      java.lang.String key) {
+    if (key == null) { throw new java.lang.NullPointerException(); }
+    return internalGetSessionContexts().getMap().containsKey(key);
   }
   /**
-   * <code>repeated .data.SessionContext session_contexts = 6;</code>
+   * Use {@link #getSessionContextsMap()} instead.
    */
-  public eu.tsystems.mms.tic.testframework.report.model.SessionContextOrBuilder getSessionContextsOrBuilder(
-      int index) {
-    return sessionContexts_.get(index);
+  @java.lang.Override
+  @java.lang.Deprecated
+  public java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SessionContext> getSessionContexts() {
+    return getSessionContextsMap();
+  }
+  /**
+   * <code>map&lt;string, .data.SessionContext&gt; session_contexts = 6;</code>
+   */
+  @java.lang.Override
+
+  public java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SessionContext> getSessionContextsMap() {
+    return internalGetSessionContexts().getMap();
+  }
+  /**
+   * <code>map&lt;string, .data.SessionContext&gt; session_contexts = 6;</code>
+   */
+  @java.lang.Override
+
+  public eu.tsystems.mms.tic.testframework.report.model.SessionContext getSessionContextsOrDefault(
+      java.lang.String key,
+      eu.tsystems.mms.tic.testframework.report.model.SessionContext defaultValue) {
+    if (key == null) { throw new java.lang.NullPointerException(); }
+    java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SessionContext> map =
+        internalGetSessionContexts().getMap();
+    return map.containsKey(key) ? map.get(key) : defaultValue;
+  }
+  /**
+   * <code>map&lt;string, .data.SessionContext&gt; session_contexts = 6;</code>
+   */
+  @java.lang.Override
+
+  public eu.tsystems.mms.tic.testframework.report.model.SessionContext getSessionContextsOrThrow(
+      java.lang.String key) {
+    if (key == null) { throw new java.lang.NullPointerException(); }
+    java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SessionContext> map =
+        internalGetSessionContexts().getMap();
+    if (!map.containsKey(key)) {
+      throw new java.lang.IllegalArgumentException();
+    }
+    return map.get(key);
   }
 
   private byte memoizedIsInitialized = -1;
@@ -374,21 +627,36 @@ private static final long serialVersionUID = 0L;
     if (executionContext_ != null) {
       output.writeMessage(1, getExecutionContext());
     }
-    for (int i = 0; i < suiteContexts_.size(); i++) {
-      output.writeMessage(2, suiteContexts_.get(i));
-    }
-    for (int i = 0; i < testContexts_.size(); i++) {
-      output.writeMessage(3, testContexts_.get(i));
-    }
-    for (int i = 0; i < classContexts_.size(); i++) {
-      output.writeMessage(4, classContexts_.get(i));
-    }
-    for (int i = 0; i < methodContexts_.size(); i++) {
-      output.writeMessage(5, methodContexts_.get(i));
-    }
-    for (int i = 0; i < sessionContexts_.size(); i++) {
-      output.writeMessage(6, sessionContexts_.get(i));
-    }
+    com.google.protobuf.GeneratedMessageV3
+      .serializeStringMapTo(
+        output,
+        internalGetSuiteContexts(),
+        SuiteContextsDefaultEntryHolder.defaultEntry,
+        2);
+    com.google.protobuf.GeneratedMessageV3
+      .serializeStringMapTo(
+        output,
+        internalGetTestContexts(),
+        TestContextsDefaultEntryHolder.defaultEntry,
+        3);
+    com.google.protobuf.GeneratedMessageV3
+      .serializeStringMapTo(
+        output,
+        internalGetClassContexts(),
+        ClassContextsDefaultEntryHolder.defaultEntry,
+        4);
+    com.google.protobuf.GeneratedMessageV3
+      .serializeStringMapTo(
+        output,
+        internalGetMethodContexts(),
+        MethodContextsDefaultEntryHolder.defaultEntry,
+        5);
+    com.google.protobuf.GeneratedMessageV3
+      .serializeStringMapTo(
+        output,
+        internalGetSessionContexts(),
+        SessionContextsDefaultEntryHolder.defaultEntry,
+        6);
     unknownFields.writeTo(output);
   }
 
@@ -402,25 +670,55 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(1, getExecutionContext());
     }
-    for (int i = 0; i < suiteContexts_.size(); i++) {
+    for (java.util.Map.Entry<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SuiteContext> entry
+         : internalGetSuiteContexts().getMap().entrySet()) {
+      com.google.protobuf.MapEntry<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SuiteContext>
+      suiteContexts__ = SuiteContextsDefaultEntryHolder.defaultEntry.newBuilderForType()
+          .setKey(entry.getKey())
+          .setValue(entry.getValue())
+          .build();
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(2, suiteContexts_.get(i));
+          .computeMessageSize(2, suiteContexts__);
     }
-    for (int i = 0; i < testContexts_.size(); i++) {
+    for (java.util.Map.Entry<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.TestContext> entry
+         : internalGetTestContexts().getMap().entrySet()) {
+      com.google.protobuf.MapEntry<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.TestContext>
+      testContexts__ = TestContextsDefaultEntryHolder.defaultEntry.newBuilderForType()
+          .setKey(entry.getKey())
+          .setValue(entry.getValue())
+          .build();
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(3, testContexts_.get(i));
+          .computeMessageSize(3, testContexts__);
     }
-    for (int i = 0; i < classContexts_.size(); i++) {
+    for (java.util.Map.Entry<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.ClassContext> entry
+         : internalGetClassContexts().getMap().entrySet()) {
+      com.google.protobuf.MapEntry<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.ClassContext>
+      classContexts__ = ClassContextsDefaultEntryHolder.defaultEntry.newBuilderForType()
+          .setKey(entry.getKey())
+          .setValue(entry.getValue())
+          .build();
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(4, classContexts_.get(i));
+          .computeMessageSize(4, classContexts__);
     }
-    for (int i = 0; i < methodContexts_.size(); i++) {
+    for (java.util.Map.Entry<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.MethodContext> entry
+         : internalGetMethodContexts().getMap().entrySet()) {
+      com.google.protobuf.MapEntry<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.MethodContext>
+      methodContexts__ = MethodContextsDefaultEntryHolder.defaultEntry.newBuilderForType()
+          .setKey(entry.getKey())
+          .setValue(entry.getValue())
+          .build();
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(5, methodContexts_.get(i));
+          .computeMessageSize(5, methodContexts__);
     }
-    for (int i = 0; i < sessionContexts_.size(); i++) {
+    for (java.util.Map.Entry<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SessionContext> entry
+         : internalGetSessionContexts().getMap().entrySet()) {
+      com.google.protobuf.MapEntry<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SessionContext>
+      sessionContexts__ = SessionContextsDefaultEntryHolder.defaultEntry.newBuilderForType()
+          .setKey(entry.getKey())
+          .setValue(entry.getValue())
+          .build();
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(6, sessionContexts_.get(i));
+          .computeMessageSize(6, sessionContexts__);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -442,16 +740,16 @@ private static final long serialVersionUID = 0L;
       if (!getExecutionContext()
           .equals(other.getExecutionContext())) return false;
     }
-    if (!getSuiteContextsList()
-        .equals(other.getSuiteContextsList())) return false;
-    if (!getTestContextsList()
-        .equals(other.getTestContextsList())) return false;
-    if (!getClassContextsList()
-        .equals(other.getClassContextsList())) return false;
-    if (!getMethodContextsList()
-        .equals(other.getMethodContextsList())) return false;
-    if (!getSessionContextsList()
-        .equals(other.getSessionContextsList())) return false;
+    if (!internalGetSuiteContexts().equals(
+        other.internalGetSuiteContexts())) return false;
+    if (!internalGetTestContexts().equals(
+        other.internalGetTestContexts())) return false;
+    if (!internalGetClassContexts().equals(
+        other.internalGetClassContexts())) return false;
+    if (!internalGetMethodContexts().equals(
+        other.internalGetMethodContexts())) return false;
+    if (!internalGetSessionContexts().equals(
+        other.internalGetSessionContexts())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -467,25 +765,25 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + EXECUTION_CONTEXT_FIELD_NUMBER;
       hash = (53 * hash) + getExecutionContext().hashCode();
     }
-    if (getSuiteContextsCount() > 0) {
+    if (!internalGetSuiteContexts().getMap().isEmpty()) {
       hash = (37 * hash) + SUITE_CONTEXTS_FIELD_NUMBER;
-      hash = (53 * hash) + getSuiteContextsList().hashCode();
+      hash = (53 * hash) + internalGetSuiteContexts().hashCode();
     }
-    if (getTestContextsCount() > 0) {
+    if (!internalGetTestContexts().getMap().isEmpty()) {
       hash = (37 * hash) + TEST_CONTEXTS_FIELD_NUMBER;
-      hash = (53 * hash) + getTestContextsList().hashCode();
+      hash = (53 * hash) + internalGetTestContexts().hashCode();
     }
-    if (getClassContextsCount() > 0) {
+    if (!internalGetClassContexts().getMap().isEmpty()) {
       hash = (37 * hash) + CLASS_CONTEXTS_FIELD_NUMBER;
-      hash = (53 * hash) + getClassContextsList().hashCode();
+      hash = (53 * hash) + internalGetClassContexts().hashCode();
     }
-    if (getMethodContextsCount() > 0) {
+    if (!internalGetMethodContexts().getMap().isEmpty()) {
       hash = (37 * hash) + METHOD_CONTEXTS_FIELD_NUMBER;
-      hash = (53 * hash) + getMethodContextsList().hashCode();
+      hash = (53 * hash) + internalGetMethodContexts().hashCode();
     }
-    if (getSessionContextsCount() > 0) {
+    if (!internalGetSessionContexts().getMap().isEmpty()) {
       hash = (37 * hash) + SESSION_CONTEXTS_FIELD_NUMBER;
-      hash = (53 * hash) + getSessionContextsList().hashCode();
+      hash = (53 * hash) + internalGetSessionContexts().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -594,6 +892,44 @@ private static final long serialVersionUID = 0L;
       return eu.tsystems.mms.tic.testframework.report.model.Report.internal_static_data_ExecutionAggregate_descriptor;
     }
 
+    @SuppressWarnings({"rawtypes"})
+    protected com.google.protobuf.MapField internalGetMapField(
+        int number) {
+      switch (number) {
+        case 2:
+          return internalGetSuiteContexts();
+        case 3:
+          return internalGetTestContexts();
+        case 4:
+          return internalGetClassContexts();
+        case 5:
+          return internalGetMethodContexts();
+        case 6:
+          return internalGetSessionContexts();
+        default:
+          throw new RuntimeException(
+              "Invalid map field number: " + number);
+      }
+    }
+    @SuppressWarnings({"rawtypes"})
+    protected com.google.protobuf.MapField internalGetMutableMapField(
+        int number) {
+      switch (number) {
+        case 2:
+          return internalGetMutableSuiteContexts();
+        case 3:
+          return internalGetMutableTestContexts();
+        case 4:
+          return internalGetMutableClassContexts();
+        case 5:
+          return internalGetMutableMethodContexts();
+        case 6:
+          return internalGetMutableSessionContexts();
+        default:
+          throw new RuntimeException(
+              "Invalid map field number: " + number);
+      }
+    }
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
@@ -615,11 +951,6 @@ private static final long serialVersionUID = 0L;
     private void maybeForceBuilderInitialization() {
       if (com.google.protobuf.GeneratedMessageV3
               .alwaysUseFieldBuilders) {
-        getSuiteContextsFieldBuilder();
-        getTestContextsFieldBuilder();
-        getClassContextsFieldBuilder();
-        getMethodContextsFieldBuilder();
-        getSessionContextsFieldBuilder();
       }
     }
     @java.lang.Override
@@ -631,36 +962,11 @@ private static final long serialVersionUID = 0L;
         executionContext_ = null;
         executionContextBuilder_ = null;
       }
-      if (suiteContextsBuilder_ == null) {
-        suiteContexts_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000001);
-      } else {
-        suiteContextsBuilder_.clear();
-      }
-      if (testContextsBuilder_ == null) {
-        testContexts_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000002);
-      } else {
-        testContextsBuilder_.clear();
-      }
-      if (classContextsBuilder_ == null) {
-        classContexts_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000004);
-      } else {
-        classContextsBuilder_.clear();
-      }
-      if (methodContextsBuilder_ == null) {
-        methodContexts_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000008);
-      } else {
-        methodContextsBuilder_.clear();
-      }
-      if (sessionContextsBuilder_ == null) {
-        sessionContexts_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000010);
-      } else {
-        sessionContextsBuilder_.clear();
-      }
+      internalGetMutableSuiteContexts().clear();
+      internalGetMutableTestContexts().clear();
+      internalGetMutableClassContexts().clear();
+      internalGetMutableMethodContexts().clear();
+      internalGetMutableSessionContexts().clear();
       return this;
     }
 
@@ -693,51 +999,16 @@ private static final long serialVersionUID = 0L;
       } else {
         result.executionContext_ = executionContextBuilder_.build();
       }
-      if (suiteContextsBuilder_ == null) {
-        if (((bitField0_ & 0x00000001) != 0)) {
-          suiteContexts_ = java.util.Collections.unmodifiableList(suiteContexts_);
-          bitField0_ = (bitField0_ & ~0x00000001);
-        }
-        result.suiteContexts_ = suiteContexts_;
-      } else {
-        result.suiteContexts_ = suiteContextsBuilder_.build();
-      }
-      if (testContextsBuilder_ == null) {
-        if (((bitField0_ & 0x00000002) != 0)) {
-          testContexts_ = java.util.Collections.unmodifiableList(testContexts_);
-          bitField0_ = (bitField0_ & ~0x00000002);
-        }
-        result.testContexts_ = testContexts_;
-      } else {
-        result.testContexts_ = testContextsBuilder_.build();
-      }
-      if (classContextsBuilder_ == null) {
-        if (((bitField0_ & 0x00000004) != 0)) {
-          classContexts_ = java.util.Collections.unmodifiableList(classContexts_);
-          bitField0_ = (bitField0_ & ~0x00000004);
-        }
-        result.classContexts_ = classContexts_;
-      } else {
-        result.classContexts_ = classContextsBuilder_.build();
-      }
-      if (methodContextsBuilder_ == null) {
-        if (((bitField0_ & 0x00000008) != 0)) {
-          methodContexts_ = java.util.Collections.unmodifiableList(methodContexts_);
-          bitField0_ = (bitField0_ & ~0x00000008);
-        }
-        result.methodContexts_ = methodContexts_;
-      } else {
-        result.methodContexts_ = methodContextsBuilder_.build();
-      }
-      if (sessionContextsBuilder_ == null) {
-        if (((bitField0_ & 0x00000010) != 0)) {
-          sessionContexts_ = java.util.Collections.unmodifiableList(sessionContexts_);
-          bitField0_ = (bitField0_ & ~0x00000010);
-        }
-        result.sessionContexts_ = sessionContexts_;
-      } else {
-        result.sessionContexts_ = sessionContextsBuilder_.build();
-      }
+      result.suiteContexts_ = internalGetSuiteContexts();
+      result.suiteContexts_.makeImmutable();
+      result.testContexts_ = internalGetTestContexts();
+      result.testContexts_.makeImmutable();
+      result.classContexts_ = internalGetClassContexts();
+      result.classContexts_.makeImmutable();
+      result.methodContexts_ = internalGetMethodContexts();
+      result.methodContexts_.makeImmutable();
+      result.sessionContexts_ = internalGetSessionContexts();
+      result.sessionContexts_.makeImmutable();
       onBuilt();
       return result;
     }
@@ -789,136 +1060,16 @@ private static final long serialVersionUID = 0L;
       if (other.hasExecutionContext()) {
         mergeExecutionContext(other.getExecutionContext());
       }
-      if (suiteContextsBuilder_ == null) {
-        if (!other.suiteContexts_.isEmpty()) {
-          if (suiteContexts_.isEmpty()) {
-            suiteContexts_ = other.suiteContexts_;
-            bitField0_ = (bitField0_ & ~0x00000001);
-          } else {
-            ensureSuiteContextsIsMutable();
-            suiteContexts_.addAll(other.suiteContexts_);
-          }
-          onChanged();
-        }
-      } else {
-        if (!other.suiteContexts_.isEmpty()) {
-          if (suiteContextsBuilder_.isEmpty()) {
-            suiteContextsBuilder_.dispose();
-            suiteContextsBuilder_ = null;
-            suiteContexts_ = other.suiteContexts_;
-            bitField0_ = (bitField0_ & ~0x00000001);
-            suiteContextsBuilder_ = 
-              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                 getSuiteContextsFieldBuilder() : null;
-          } else {
-            suiteContextsBuilder_.addAllMessages(other.suiteContexts_);
-          }
-        }
-      }
-      if (testContextsBuilder_ == null) {
-        if (!other.testContexts_.isEmpty()) {
-          if (testContexts_.isEmpty()) {
-            testContexts_ = other.testContexts_;
-            bitField0_ = (bitField0_ & ~0x00000002);
-          } else {
-            ensureTestContextsIsMutable();
-            testContexts_.addAll(other.testContexts_);
-          }
-          onChanged();
-        }
-      } else {
-        if (!other.testContexts_.isEmpty()) {
-          if (testContextsBuilder_.isEmpty()) {
-            testContextsBuilder_.dispose();
-            testContextsBuilder_ = null;
-            testContexts_ = other.testContexts_;
-            bitField0_ = (bitField0_ & ~0x00000002);
-            testContextsBuilder_ = 
-              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                 getTestContextsFieldBuilder() : null;
-          } else {
-            testContextsBuilder_.addAllMessages(other.testContexts_);
-          }
-        }
-      }
-      if (classContextsBuilder_ == null) {
-        if (!other.classContexts_.isEmpty()) {
-          if (classContexts_.isEmpty()) {
-            classContexts_ = other.classContexts_;
-            bitField0_ = (bitField0_ & ~0x00000004);
-          } else {
-            ensureClassContextsIsMutable();
-            classContexts_.addAll(other.classContexts_);
-          }
-          onChanged();
-        }
-      } else {
-        if (!other.classContexts_.isEmpty()) {
-          if (classContextsBuilder_.isEmpty()) {
-            classContextsBuilder_.dispose();
-            classContextsBuilder_ = null;
-            classContexts_ = other.classContexts_;
-            bitField0_ = (bitField0_ & ~0x00000004);
-            classContextsBuilder_ = 
-              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                 getClassContextsFieldBuilder() : null;
-          } else {
-            classContextsBuilder_.addAllMessages(other.classContexts_);
-          }
-        }
-      }
-      if (methodContextsBuilder_ == null) {
-        if (!other.methodContexts_.isEmpty()) {
-          if (methodContexts_.isEmpty()) {
-            methodContexts_ = other.methodContexts_;
-            bitField0_ = (bitField0_ & ~0x00000008);
-          } else {
-            ensureMethodContextsIsMutable();
-            methodContexts_.addAll(other.methodContexts_);
-          }
-          onChanged();
-        }
-      } else {
-        if (!other.methodContexts_.isEmpty()) {
-          if (methodContextsBuilder_.isEmpty()) {
-            methodContextsBuilder_.dispose();
-            methodContextsBuilder_ = null;
-            methodContexts_ = other.methodContexts_;
-            bitField0_ = (bitField0_ & ~0x00000008);
-            methodContextsBuilder_ = 
-              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                 getMethodContextsFieldBuilder() : null;
-          } else {
-            methodContextsBuilder_.addAllMessages(other.methodContexts_);
-          }
-        }
-      }
-      if (sessionContextsBuilder_ == null) {
-        if (!other.sessionContexts_.isEmpty()) {
-          if (sessionContexts_.isEmpty()) {
-            sessionContexts_ = other.sessionContexts_;
-            bitField0_ = (bitField0_ & ~0x00000010);
-          } else {
-            ensureSessionContextsIsMutable();
-            sessionContexts_.addAll(other.sessionContexts_);
-          }
-          onChanged();
-        }
-      } else {
-        if (!other.sessionContexts_.isEmpty()) {
-          if (sessionContextsBuilder_.isEmpty()) {
-            sessionContextsBuilder_.dispose();
-            sessionContextsBuilder_ = null;
-            sessionContexts_ = other.sessionContexts_;
-            bitField0_ = (bitField0_ & ~0x00000010);
-            sessionContextsBuilder_ = 
-              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                 getSessionContextsFieldBuilder() : null;
-          } else {
-            sessionContextsBuilder_.addAllMessages(other.sessionContexts_);
-          }
-        }
-      }
+      internalGetMutableSuiteContexts().mergeFrom(
+          other.internalGetSuiteContexts());
+      internalGetMutableTestContexts().mergeFrom(
+          other.internalGetTestContexts());
+      internalGetMutableClassContexts().mergeFrom(
+          other.internalGetClassContexts());
+      internalGetMutableMethodContexts().mergeFrom(
+          other.internalGetMethodContexts());
+      internalGetMutableSessionContexts().mergeFrom(
+          other.internalGetSessionContexts());
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
       return this;
@@ -1068,1204 +1219,644 @@ private static final long serialVersionUID = 0L;
       return executionContextBuilder_;
     }
 
-    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.SuiteContext> suiteContexts_ =
-      java.util.Collections.emptyList();
-    private void ensureSuiteContextsIsMutable() {
-      if (!((bitField0_ & 0x00000001) != 0)) {
-        suiteContexts_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.SuiteContext>(suiteContexts_);
-        bitField0_ |= 0x00000001;
-       }
-    }
-
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.SuiteContext, eu.tsystems.mms.tic.testframework.report.model.SuiteContext.Builder, eu.tsystems.mms.tic.testframework.report.model.SuiteContextOrBuilder> suiteContextsBuilder_;
-
-    /**
-     * <code>repeated .data.SuiteContext suite_contexts = 2;</code>
-     */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.SuiteContext> getSuiteContextsList() {
-      if (suiteContextsBuilder_ == null) {
-        return java.util.Collections.unmodifiableList(suiteContexts_);
-      } else {
-        return suiteContextsBuilder_.getMessageList();
+    private com.google.protobuf.MapField<
+        java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SuiteContext> suiteContexts_;
+    private com.google.protobuf.MapField<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SuiteContext>
+    internalGetSuiteContexts() {
+      if (suiteContexts_ == null) {
+        return com.google.protobuf.MapField.emptyMapField(
+            SuiteContextsDefaultEntryHolder.defaultEntry);
       }
+      return suiteContexts_;
     }
-    /**
-     * <code>repeated .data.SuiteContext suite_contexts = 2;</code>
-     */
+    private com.google.protobuf.MapField<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SuiteContext>
+    internalGetMutableSuiteContexts() {
+      onChanged();;
+      if (suiteContexts_ == null) {
+        suiteContexts_ = com.google.protobuf.MapField.newMapField(
+            SuiteContextsDefaultEntryHolder.defaultEntry);
+      }
+      if (!suiteContexts_.isMutable()) {
+        suiteContexts_ = suiteContexts_.copy();
+      }
+      return suiteContexts_;
+    }
+
     public int getSuiteContextsCount() {
-      if (suiteContextsBuilder_ == null) {
-        return suiteContexts_.size();
-      } else {
-        return suiteContextsBuilder_.getCount();
-      }
+      return internalGetSuiteContexts().getMap().size();
     }
     /**
-     * <code>repeated .data.SuiteContext suite_contexts = 2;</code>
+     * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.SuiteContext getSuiteContexts(int index) {
-      if (suiteContextsBuilder_ == null) {
-        return suiteContexts_.get(index);
-      } else {
-        return suiteContextsBuilder_.getMessage(index);
-      }
+
+    @java.lang.Override
+    public boolean containsSuiteContexts(
+        java.lang.String key) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      return internalGetSuiteContexts().getMap().containsKey(key);
     }
     /**
-     * <code>repeated .data.SuiteContext suite_contexts = 2;</code>
+     * Use {@link #getSuiteContextsMap()} instead.
      */
-    public Builder setSuiteContexts(
-        int index, eu.tsystems.mms.tic.testframework.report.model.SuiteContext value) {
-      if (suiteContextsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureSuiteContextsIsMutable();
-        suiteContexts_.set(index, value);
-        onChanged();
-      } else {
-        suiteContextsBuilder_.setMessage(index, value);
-      }
-      return this;
+    @java.lang.Override
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SuiteContext> getSuiteContexts() {
+      return getSuiteContextsMap();
     }
     /**
-     * <code>repeated .data.SuiteContext suite_contexts = 2;</code>
+     * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
      */
-    public Builder setSuiteContexts(
-        int index, eu.tsystems.mms.tic.testframework.report.model.SuiteContext.Builder builderForValue) {
-      if (suiteContextsBuilder_ == null) {
-        ensureSuiteContextsIsMutable();
-        suiteContexts_.set(index, builderForValue.build());
-        onChanged();
-      } else {
-        suiteContextsBuilder_.setMessage(index, builderForValue.build());
-      }
-      return this;
+    @java.lang.Override
+
+    public java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SuiteContext> getSuiteContextsMap() {
+      return internalGetSuiteContexts().getMap();
     }
     /**
-     * <code>repeated .data.SuiteContext suite_contexts = 2;</code>
+     * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
      */
-    public Builder addSuiteContexts(eu.tsystems.mms.tic.testframework.report.model.SuiteContext value) {
-      if (suiteContextsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureSuiteContextsIsMutable();
-        suiteContexts_.add(value);
-        onChanged();
-      } else {
-        suiteContextsBuilder_.addMessage(value);
-      }
-      return this;
+    @java.lang.Override
+
+    public eu.tsystems.mms.tic.testframework.report.model.SuiteContext getSuiteContextsOrDefault(
+        java.lang.String key,
+        eu.tsystems.mms.tic.testframework.report.model.SuiteContext defaultValue) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SuiteContext> map =
+          internalGetSuiteContexts().getMap();
+      return map.containsKey(key) ? map.get(key) : defaultValue;
     }
     /**
-     * <code>repeated .data.SuiteContext suite_contexts = 2;</code>
+     * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
      */
-    public Builder addSuiteContexts(
-        int index, eu.tsystems.mms.tic.testframework.report.model.SuiteContext value) {
-      if (suiteContextsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureSuiteContextsIsMutable();
-        suiteContexts_.add(index, value);
-        onChanged();
-      } else {
-        suiteContextsBuilder_.addMessage(index, value);
+    @java.lang.Override
+
+    public eu.tsystems.mms.tic.testframework.report.model.SuiteContext getSuiteContextsOrThrow(
+        java.lang.String key) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SuiteContext> map =
+          internalGetSuiteContexts().getMap();
+      if (!map.containsKey(key)) {
+        throw new java.lang.IllegalArgumentException();
       }
-      return this;
+      return map.get(key);
     }
-    /**
-     * <code>repeated .data.SuiteContext suite_contexts = 2;</code>
-     */
-    public Builder addSuiteContexts(
-        eu.tsystems.mms.tic.testframework.report.model.SuiteContext.Builder builderForValue) {
-      if (suiteContextsBuilder_ == null) {
-        ensureSuiteContextsIsMutable();
-        suiteContexts_.add(builderForValue.build());
-        onChanged();
-      } else {
-        suiteContextsBuilder_.addMessage(builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.SuiteContext suite_contexts = 2;</code>
-     */
-    public Builder addSuiteContexts(
-        int index, eu.tsystems.mms.tic.testframework.report.model.SuiteContext.Builder builderForValue) {
-      if (suiteContextsBuilder_ == null) {
-        ensureSuiteContextsIsMutable();
-        suiteContexts_.add(index, builderForValue.build());
-        onChanged();
-      } else {
-        suiteContextsBuilder_.addMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.SuiteContext suite_contexts = 2;</code>
-     */
-    public Builder addAllSuiteContexts(
-        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.SuiteContext> values) {
-      if (suiteContextsBuilder_ == null) {
-        ensureSuiteContextsIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, suiteContexts_);
-        onChanged();
-      } else {
-        suiteContextsBuilder_.addAllMessages(values);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.SuiteContext suite_contexts = 2;</code>
-     */
+
     public Builder clearSuiteContexts() {
-      if (suiteContextsBuilder_ == null) {
-        suiteContexts_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000001);
-        onChanged();
-      } else {
-        suiteContextsBuilder_.clear();
-      }
+      internalGetMutableSuiteContexts().getMutableMap()
+          .clear();
       return this;
     }
     /**
-     * <code>repeated .data.SuiteContext suite_contexts = 2;</code>
+     * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
      */
-    public Builder removeSuiteContexts(int index) {
-      if (suiteContextsBuilder_ == null) {
-        ensureSuiteContextsIsMutable();
-        suiteContexts_.remove(index);
-        onChanged();
-      } else {
-        suiteContextsBuilder_.remove(index);
-      }
+
+    public Builder removeSuiteContexts(
+        java.lang.String key) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      internalGetMutableSuiteContexts().getMutableMap()
+          .remove(key);
       return this;
     }
     /**
-     * <code>repeated .data.SuiteContext suite_contexts = 2;</code>
+     * Use alternate mutation accessors instead.
      */
-    public eu.tsystems.mms.tic.testframework.report.model.SuiteContext.Builder getSuiteContextsBuilder(
-        int index) {
-      return getSuiteContextsFieldBuilder().getBuilder(index);
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SuiteContext>
+    getMutableSuiteContexts() {
+      return internalGetMutableSuiteContexts().getMutableMap();
     }
     /**
-     * <code>repeated .data.SuiteContext suite_contexts = 2;</code>
+     * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.SuiteContextOrBuilder getSuiteContextsOrBuilder(
-        int index) {
-      if (suiteContextsBuilder_ == null) {
-        return suiteContexts_.get(index);  } else {
-        return suiteContextsBuilder_.getMessageOrBuilder(index);
-      }
+    public Builder putSuiteContexts(
+        java.lang.String key,
+        eu.tsystems.mms.tic.testframework.report.model.SuiteContext value) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      if (value == null) { throw new java.lang.NullPointerException(); }
+      internalGetMutableSuiteContexts().getMutableMap()
+          .put(key, value);
+      return this;
     }
     /**
-     * <code>repeated .data.SuiteContext suite_contexts = 2;</code>
+     * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
      */
-    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.SuiteContextOrBuilder> 
-         getSuiteContextsOrBuilderList() {
-      if (suiteContextsBuilder_ != null) {
-        return suiteContextsBuilder_.getMessageOrBuilderList();
-      } else {
-        return java.util.Collections.unmodifiableList(suiteContexts_);
-      }
-    }
-    /**
-     * <code>repeated .data.SuiteContext suite_contexts = 2;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.SuiteContext.Builder addSuiteContextsBuilder() {
-      return getSuiteContextsFieldBuilder().addBuilder(
-          eu.tsystems.mms.tic.testframework.report.model.SuiteContext.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .data.SuiteContext suite_contexts = 2;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.SuiteContext.Builder addSuiteContextsBuilder(
-        int index) {
-      return getSuiteContextsFieldBuilder().addBuilder(
-          index, eu.tsystems.mms.tic.testframework.report.model.SuiteContext.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .data.SuiteContext suite_contexts = 2;</code>
-     */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.SuiteContext.Builder> 
-         getSuiteContextsBuilderList() {
-      return getSuiteContextsFieldBuilder().getBuilderList();
-    }
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.SuiteContext, eu.tsystems.mms.tic.testframework.report.model.SuiteContext.Builder, eu.tsystems.mms.tic.testframework.report.model.SuiteContextOrBuilder> 
-        getSuiteContextsFieldBuilder() {
-      if (suiteContextsBuilder_ == null) {
-        suiteContextsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            eu.tsystems.mms.tic.testframework.report.model.SuiteContext, eu.tsystems.mms.tic.testframework.report.model.SuiteContext.Builder, eu.tsystems.mms.tic.testframework.report.model.SuiteContextOrBuilder>(
-                suiteContexts_,
-                ((bitField0_ & 0x00000001) != 0),
-                getParentForChildren(),
-                isClean());
-        suiteContexts_ = null;
-      }
-      return suiteContextsBuilder_;
+
+    public Builder putAllSuiteContexts(
+        java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SuiteContext> values) {
+      internalGetMutableSuiteContexts().getMutableMap()
+          .putAll(values);
+      return this;
     }
 
-    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestContext> testContexts_ =
-      java.util.Collections.emptyList();
-    private void ensureTestContextsIsMutable() {
-      if (!((bitField0_ & 0x00000002) != 0)) {
-        testContexts_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.TestContext>(testContexts_);
-        bitField0_ |= 0x00000002;
-       }
-    }
-
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.TestContext, eu.tsystems.mms.tic.testframework.report.model.TestContext.Builder, eu.tsystems.mms.tic.testframework.report.model.TestContextOrBuilder> testContextsBuilder_;
-
-    /**
-     * <code>repeated .data.TestContext test_contexts = 3;</code>
-     */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestContext> getTestContextsList() {
-      if (testContextsBuilder_ == null) {
-        return java.util.Collections.unmodifiableList(testContexts_);
-      } else {
-        return testContextsBuilder_.getMessageList();
+    private com.google.protobuf.MapField<
+        java.lang.String, eu.tsystems.mms.tic.testframework.report.model.TestContext> testContexts_;
+    private com.google.protobuf.MapField<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.TestContext>
+    internalGetTestContexts() {
+      if (testContexts_ == null) {
+        return com.google.protobuf.MapField.emptyMapField(
+            TestContextsDefaultEntryHolder.defaultEntry);
       }
+      return testContexts_;
     }
-    /**
-     * <code>repeated .data.TestContext test_contexts = 3;</code>
-     */
+    private com.google.protobuf.MapField<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.TestContext>
+    internalGetMutableTestContexts() {
+      onChanged();;
+      if (testContexts_ == null) {
+        testContexts_ = com.google.protobuf.MapField.newMapField(
+            TestContextsDefaultEntryHolder.defaultEntry);
+      }
+      if (!testContexts_.isMutable()) {
+        testContexts_ = testContexts_.copy();
+      }
+      return testContexts_;
+    }
+
     public int getTestContextsCount() {
-      if (testContextsBuilder_ == null) {
-        return testContexts_.size();
-      } else {
-        return testContextsBuilder_.getCount();
-      }
+      return internalGetTestContexts().getMap().size();
     }
     /**
-     * <code>repeated .data.TestContext test_contexts = 3;</code>
+     * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.TestContext getTestContexts(int index) {
-      if (testContextsBuilder_ == null) {
-        return testContexts_.get(index);
-      } else {
-        return testContextsBuilder_.getMessage(index);
-      }
+
+    @java.lang.Override
+    public boolean containsTestContexts(
+        java.lang.String key) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      return internalGetTestContexts().getMap().containsKey(key);
     }
     /**
-     * <code>repeated .data.TestContext test_contexts = 3;</code>
+     * Use {@link #getTestContextsMap()} instead.
      */
-    public Builder setTestContexts(
-        int index, eu.tsystems.mms.tic.testframework.report.model.TestContext value) {
-      if (testContextsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureTestContextsIsMutable();
-        testContexts_.set(index, value);
-        onChanged();
-      } else {
-        testContextsBuilder_.setMessage(index, value);
-      }
-      return this;
+    @java.lang.Override
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.TestContext> getTestContexts() {
+      return getTestContextsMap();
     }
     /**
-     * <code>repeated .data.TestContext test_contexts = 3;</code>
+     * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
      */
-    public Builder setTestContexts(
-        int index, eu.tsystems.mms.tic.testframework.report.model.TestContext.Builder builderForValue) {
-      if (testContextsBuilder_ == null) {
-        ensureTestContextsIsMutable();
-        testContexts_.set(index, builderForValue.build());
-        onChanged();
-      } else {
-        testContextsBuilder_.setMessage(index, builderForValue.build());
-      }
-      return this;
+    @java.lang.Override
+
+    public java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.TestContext> getTestContextsMap() {
+      return internalGetTestContexts().getMap();
     }
     /**
-     * <code>repeated .data.TestContext test_contexts = 3;</code>
+     * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
      */
-    public Builder addTestContexts(eu.tsystems.mms.tic.testframework.report.model.TestContext value) {
-      if (testContextsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureTestContextsIsMutable();
-        testContexts_.add(value);
-        onChanged();
-      } else {
-        testContextsBuilder_.addMessage(value);
-      }
-      return this;
+    @java.lang.Override
+
+    public eu.tsystems.mms.tic.testframework.report.model.TestContext getTestContextsOrDefault(
+        java.lang.String key,
+        eu.tsystems.mms.tic.testframework.report.model.TestContext defaultValue) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.TestContext> map =
+          internalGetTestContexts().getMap();
+      return map.containsKey(key) ? map.get(key) : defaultValue;
     }
     /**
-     * <code>repeated .data.TestContext test_contexts = 3;</code>
+     * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
      */
-    public Builder addTestContexts(
-        int index, eu.tsystems.mms.tic.testframework.report.model.TestContext value) {
-      if (testContextsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureTestContextsIsMutable();
-        testContexts_.add(index, value);
-        onChanged();
-      } else {
-        testContextsBuilder_.addMessage(index, value);
+    @java.lang.Override
+
+    public eu.tsystems.mms.tic.testframework.report.model.TestContext getTestContextsOrThrow(
+        java.lang.String key) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.TestContext> map =
+          internalGetTestContexts().getMap();
+      if (!map.containsKey(key)) {
+        throw new java.lang.IllegalArgumentException();
       }
-      return this;
+      return map.get(key);
     }
-    /**
-     * <code>repeated .data.TestContext test_contexts = 3;</code>
-     */
-    public Builder addTestContexts(
-        eu.tsystems.mms.tic.testframework.report.model.TestContext.Builder builderForValue) {
-      if (testContextsBuilder_ == null) {
-        ensureTestContextsIsMutable();
-        testContexts_.add(builderForValue.build());
-        onChanged();
-      } else {
-        testContextsBuilder_.addMessage(builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.TestContext test_contexts = 3;</code>
-     */
-    public Builder addTestContexts(
-        int index, eu.tsystems.mms.tic.testframework.report.model.TestContext.Builder builderForValue) {
-      if (testContextsBuilder_ == null) {
-        ensureTestContextsIsMutable();
-        testContexts_.add(index, builderForValue.build());
-        onChanged();
-      } else {
-        testContextsBuilder_.addMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.TestContext test_contexts = 3;</code>
-     */
-    public Builder addAllTestContexts(
-        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.TestContext> values) {
-      if (testContextsBuilder_ == null) {
-        ensureTestContextsIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, testContexts_);
-        onChanged();
-      } else {
-        testContextsBuilder_.addAllMessages(values);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.TestContext test_contexts = 3;</code>
-     */
+
     public Builder clearTestContexts() {
-      if (testContextsBuilder_ == null) {
-        testContexts_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000002);
-        onChanged();
-      } else {
-        testContextsBuilder_.clear();
-      }
+      internalGetMutableTestContexts().getMutableMap()
+          .clear();
       return this;
     }
     /**
-     * <code>repeated .data.TestContext test_contexts = 3;</code>
+     * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
      */
-    public Builder removeTestContexts(int index) {
-      if (testContextsBuilder_ == null) {
-        ensureTestContextsIsMutable();
-        testContexts_.remove(index);
-        onChanged();
-      } else {
-        testContextsBuilder_.remove(index);
-      }
+
+    public Builder removeTestContexts(
+        java.lang.String key) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      internalGetMutableTestContexts().getMutableMap()
+          .remove(key);
       return this;
     }
     /**
-     * <code>repeated .data.TestContext test_contexts = 3;</code>
+     * Use alternate mutation accessors instead.
      */
-    public eu.tsystems.mms.tic.testframework.report.model.TestContext.Builder getTestContextsBuilder(
-        int index) {
-      return getTestContextsFieldBuilder().getBuilder(index);
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.TestContext>
+    getMutableTestContexts() {
+      return internalGetMutableTestContexts().getMutableMap();
     }
     /**
-     * <code>repeated .data.TestContext test_contexts = 3;</code>
+     * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.TestContextOrBuilder getTestContextsOrBuilder(
-        int index) {
-      if (testContextsBuilder_ == null) {
-        return testContexts_.get(index);  } else {
-        return testContextsBuilder_.getMessageOrBuilder(index);
-      }
+    public Builder putTestContexts(
+        java.lang.String key,
+        eu.tsystems.mms.tic.testframework.report.model.TestContext value) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      if (value == null) { throw new java.lang.NullPointerException(); }
+      internalGetMutableTestContexts().getMutableMap()
+          .put(key, value);
+      return this;
     }
     /**
-     * <code>repeated .data.TestContext test_contexts = 3;</code>
+     * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
      */
-    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.TestContextOrBuilder> 
-         getTestContextsOrBuilderList() {
-      if (testContextsBuilder_ != null) {
-        return testContextsBuilder_.getMessageOrBuilderList();
-      } else {
-        return java.util.Collections.unmodifiableList(testContexts_);
-      }
-    }
-    /**
-     * <code>repeated .data.TestContext test_contexts = 3;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.TestContext.Builder addTestContextsBuilder() {
-      return getTestContextsFieldBuilder().addBuilder(
-          eu.tsystems.mms.tic.testframework.report.model.TestContext.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .data.TestContext test_contexts = 3;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.TestContext.Builder addTestContextsBuilder(
-        int index) {
-      return getTestContextsFieldBuilder().addBuilder(
-          index, eu.tsystems.mms.tic.testframework.report.model.TestContext.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .data.TestContext test_contexts = 3;</code>
-     */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestContext.Builder> 
-         getTestContextsBuilderList() {
-      return getTestContextsFieldBuilder().getBuilderList();
-    }
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.TestContext, eu.tsystems.mms.tic.testframework.report.model.TestContext.Builder, eu.tsystems.mms.tic.testframework.report.model.TestContextOrBuilder> 
-        getTestContextsFieldBuilder() {
-      if (testContextsBuilder_ == null) {
-        testContextsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            eu.tsystems.mms.tic.testframework.report.model.TestContext, eu.tsystems.mms.tic.testframework.report.model.TestContext.Builder, eu.tsystems.mms.tic.testframework.report.model.TestContextOrBuilder>(
-                testContexts_,
-                ((bitField0_ & 0x00000002) != 0),
-                getParentForChildren(),
-                isClean());
-        testContexts_ = null;
-      }
-      return testContextsBuilder_;
+
+    public Builder putAllTestContexts(
+        java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.TestContext> values) {
+      internalGetMutableTestContexts().getMutableMap()
+          .putAll(values);
+      return this;
     }
 
-    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ClassContext> classContexts_ =
-      java.util.Collections.emptyList();
-    private void ensureClassContextsIsMutable() {
-      if (!((bitField0_ & 0x00000004) != 0)) {
-        classContexts_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.ClassContext>(classContexts_);
-        bitField0_ |= 0x00000004;
-       }
-    }
-
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.ClassContext, eu.tsystems.mms.tic.testframework.report.model.ClassContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ClassContextOrBuilder> classContextsBuilder_;
-
-    /**
-     * <code>repeated .data.ClassContext class_contexts = 4;</code>
-     */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ClassContext> getClassContextsList() {
-      if (classContextsBuilder_ == null) {
-        return java.util.Collections.unmodifiableList(classContexts_);
-      } else {
-        return classContextsBuilder_.getMessageList();
+    private com.google.protobuf.MapField<
+        java.lang.String, eu.tsystems.mms.tic.testframework.report.model.ClassContext> classContexts_;
+    private com.google.protobuf.MapField<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.ClassContext>
+    internalGetClassContexts() {
+      if (classContexts_ == null) {
+        return com.google.protobuf.MapField.emptyMapField(
+            ClassContextsDefaultEntryHolder.defaultEntry);
       }
+      return classContexts_;
     }
-    /**
-     * <code>repeated .data.ClassContext class_contexts = 4;</code>
-     */
+    private com.google.protobuf.MapField<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.ClassContext>
+    internalGetMutableClassContexts() {
+      onChanged();;
+      if (classContexts_ == null) {
+        classContexts_ = com.google.protobuf.MapField.newMapField(
+            ClassContextsDefaultEntryHolder.defaultEntry);
+      }
+      if (!classContexts_.isMutable()) {
+        classContexts_ = classContexts_.copy();
+      }
+      return classContexts_;
+    }
+
     public int getClassContextsCount() {
-      if (classContextsBuilder_ == null) {
-        return classContexts_.size();
-      } else {
-        return classContextsBuilder_.getCount();
-      }
+      return internalGetClassContexts().getMap().size();
     }
     /**
-     * <code>repeated .data.ClassContext class_contexts = 4;</code>
+     * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.ClassContext getClassContexts(int index) {
-      if (classContextsBuilder_ == null) {
-        return classContexts_.get(index);
-      } else {
-        return classContextsBuilder_.getMessage(index);
-      }
+
+    @java.lang.Override
+    public boolean containsClassContexts(
+        java.lang.String key) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      return internalGetClassContexts().getMap().containsKey(key);
     }
     /**
-     * <code>repeated .data.ClassContext class_contexts = 4;</code>
+     * Use {@link #getClassContextsMap()} instead.
      */
-    public Builder setClassContexts(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ClassContext value) {
-      if (classContextsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureClassContextsIsMutable();
-        classContexts_.set(index, value);
-        onChanged();
-      } else {
-        classContextsBuilder_.setMessage(index, value);
-      }
-      return this;
+    @java.lang.Override
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.ClassContext> getClassContexts() {
+      return getClassContextsMap();
     }
     /**
-     * <code>repeated .data.ClassContext class_contexts = 4;</code>
+     * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
      */
-    public Builder setClassContexts(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ClassContext.Builder builderForValue) {
-      if (classContextsBuilder_ == null) {
-        ensureClassContextsIsMutable();
-        classContexts_.set(index, builderForValue.build());
-        onChanged();
-      } else {
-        classContextsBuilder_.setMessage(index, builderForValue.build());
-      }
-      return this;
+    @java.lang.Override
+
+    public java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.ClassContext> getClassContextsMap() {
+      return internalGetClassContexts().getMap();
     }
     /**
-     * <code>repeated .data.ClassContext class_contexts = 4;</code>
+     * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
      */
-    public Builder addClassContexts(eu.tsystems.mms.tic.testframework.report.model.ClassContext value) {
-      if (classContextsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureClassContextsIsMutable();
-        classContexts_.add(value);
-        onChanged();
-      } else {
-        classContextsBuilder_.addMessage(value);
-      }
-      return this;
+    @java.lang.Override
+
+    public eu.tsystems.mms.tic.testframework.report.model.ClassContext getClassContextsOrDefault(
+        java.lang.String key,
+        eu.tsystems.mms.tic.testframework.report.model.ClassContext defaultValue) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.ClassContext> map =
+          internalGetClassContexts().getMap();
+      return map.containsKey(key) ? map.get(key) : defaultValue;
     }
     /**
-     * <code>repeated .data.ClassContext class_contexts = 4;</code>
+     * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
      */
-    public Builder addClassContexts(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ClassContext value) {
-      if (classContextsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureClassContextsIsMutable();
-        classContexts_.add(index, value);
-        onChanged();
-      } else {
-        classContextsBuilder_.addMessage(index, value);
+    @java.lang.Override
+
+    public eu.tsystems.mms.tic.testframework.report.model.ClassContext getClassContextsOrThrow(
+        java.lang.String key) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.ClassContext> map =
+          internalGetClassContexts().getMap();
+      if (!map.containsKey(key)) {
+        throw new java.lang.IllegalArgumentException();
       }
-      return this;
+      return map.get(key);
     }
-    /**
-     * <code>repeated .data.ClassContext class_contexts = 4;</code>
-     */
-    public Builder addClassContexts(
-        eu.tsystems.mms.tic.testframework.report.model.ClassContext.Builder builderForValue) {
-      if (classContextsBuilder_ == null) {
-        ensureClassContextsIsMutable();
-        classContexts_.add(builderForValue.build());
-        onChanged();
-      } else {
-        classContextsBuilder_.addMessage(builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ClassContext class_contexts = 4;</code>
-     */
-    public Builder addClassContexts(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ClassContext.Builder builderForValue) {
-      if (classContextsBuilder_ == null) {
-        ensureClassContextsIsMutable();
-        classContexts_.add(index, builderForValue.build());
-        onChanged();
-      } else {
-        classContextsBuilder_.addMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ClassContext class_contexts = 4;</code>
-     */
-    public Builder addAllClassContexts(
-        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.ClassContext> values) {
-      if (classContextsBuilder_ == null) {
-        ensureClassContextsIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, classContexts_);
-        onChanged();
-      } else {
-        classContextsBuilder_.addAllMessages(values);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ClassContext class_contexts = 4;</code>
-     */
+
     public Builder clearClassContexts() {
-      if (classContextsBuilder_ == null) {
-        classContexts_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000004);
-        onChanged();
-      } else {
-        classContextsBuilder_.clear();
-      }
+      internalGetMutableClassContexts().getMutableMap()
+          .clear();
       return this;
     }
     /**
-     * <code>repeated .data.ClassContext class_contexts = 4;</code>
+     * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
      */
-    public Builder removeClassContexts(int index) {
-      if (classContextsBuilder_ == null) {
-        ensureClassContextsIsMutable();
-        classContexts_.remove(index);
-        onChanged();
-      } else {
-        classContextsBuilder_.remove(index);
-      }
+
+    public Builder removeClassContexts(
+        java.lang.String key) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      internalGetMutableClassContexts().getMutableMap()
+          .remove(key);
       return this;
     }
     /**
-     * <code>repeated .data.ClassContext class_contexts = 4;</code>
+     * Use alternate mutation accessors instead.
      */
-    public eu.tsystems.mms.tic.testframework.report.model.ClassContext.Builder getClassContextsBuilder(
-        int index) {
-      return getClassContextsFieldBuilder().getBuilder(index);
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.ClassContext>
+    getMutableClassContexts() {
+      return internalGetMutableClassContexts().getMutableMap();
     }
     /**
-     * <code>repeated .data.ClassContext class_contexts = 4;</code>
+     * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.ClassContextOrBuilder getClassContextsOrBuilder(
-        int index) {
-      if (classContextsBuilder_ == null) {
-        return classContexts_.get(index);  } else {
-        return classContextsBuilder_.getMessageOrBuilder(index);
-      }
+    public Builder putClassContexts(
+        java.lang.String key,
+        eu.tsystems.mms.tic.testframework.report.model.ClassContext value) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      if (value == null) { throw new java.lang.NullPointerException(); }
+      internalGetMutableClassContexts().getMutableMap()
+          .put(key, value);
+      return this;
     }
     /**
-     * <code>repeated .data.ClassContext class_contexts = 4;</code>
+     * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
      */
-    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ClassContextOrBuilder> 
-         getClassContextsOrBuilderList() {
-      if (classContextsBuilder_ != null) {
-        return classContextsBuilder_.getMessageOrBuilderList();
-      } else {
-        return java.util.Collections.unmodifiableList(classContexts_);
-      }
-    }
-    /**
-     * <code>repeated .data.ClassContext class_contexts = 4;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ClassContext.Builder addClassContextsBuilder() {
-      return getClassContextsFieldBuilder().addBuilder(
-          eu.tsystems.mms.tic.testframework.report.model.ClassContext.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .data.ClassContext class_contexts = 4;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ClassContext.Builder addClassContextsBuilder(
-        int index) {
-      return getClassContextsFieldBuilder().addBuilder(
-          index, eu.tsystems.mms.tic.testframework.report.model.ClassContext.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .data.ClassContext class_contexts = 4;</code>
-     */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ClassContext.Builder> 
-         getClassContextsBuilderList() {
-      return getClassContextsFieldBuilder().getBuilderList();
-    }
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.ClassContext, eu.tsystems.mms.tic.testframework.report.model.ClassContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ClassContextOrBuilder> 
-        getClassContextsFieldBuilder() {
-      if (classContextsBuilder_ == null) {
-        classContextsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            eu.tsystems.mms.tic.testframework.report.model.ClassContext, eu.tsystems.mms.tic.testframework.report.model.ClassContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ClassContextOrBuilder>(
-                classContexts_,
-                ((bitField0_ & 0x00000004) != 0),
-                getParentForChildren(),
-                isClean());
-        classContexts_ = null;
-      }
-      return classContextsBuilder_;
+
+    public Builder putAllClassContexts(
+        java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.ClassContext> values) {
+      internalGetMutableClassContexts().getMutableMap()
+          .putAll(values);
+      return this;
     }
 
-    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.MethodContext> methodContexts_ =
-      java.util.Collections.emptyList();
-    private void ensureMethodContextsIsMutable() {
-      if (!((bitField0_ & 0x00000008) != 0)) {
-        methodContexts_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.MethodContext>(methodContexts_);
-        bitField0_ |= 0x00000008;
-       }
-    }
-
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.MethodContext, eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder, eu.tsystems.mms.tic.testframework.report.model.MethodContextOrBuilder> methodContextsBuilder_;
-
-    /**
-     * <code>repeated .data.MethodContext method_contexts = 5;</code>
-     */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.MethodContext> getMethodContextsList() {
-      if (methodContextsBuilder_ == null) {
-        return java.util.Collections.unmodifiableList(methodContexts_);
-      } else {
-        return methodContextsBuilder_.getMessageList();
+    private com.google.protobuf.MapField<
+        java.lang.String, eu.tsystems.mms.tic.testframework.report.model.MethodContext> methodContexts_;
+    private com.google.protobuf.MapField<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.MethodContext>
+    internalGetMethodContexts() {
+      if (methodContexts_ == null) {
+        return com.google.protobuf.MapField.emptyMapField(
+            MethodContextsDefaultEntryHolder.defaultEntry);
       }
+      return methodContexts_;
     }
-    /**
-     * <code>repeated .data.MethodContext method_contexts = 5;</code>
-     */
+    private com.google.protobuf.MapField<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.MethodContext>
+    internalGetMutableMethodContexts() {
+      onChanged();;
+      if (methodContexts_ == null) {
+        methodContexts_ = com.google.protobuf.MapField.newMapField(
+            MethodContextsDefaultEntryHolder.defaultEntry);
+      }
+      if (!methodContexts_.isMutable()) {
+        methodContexts_ = methodContexts_.copy();
+      }
+      return methodContexts_;
+    }
+
     public int getMethodContextsCount() {
-      if (methodContextsBuilder_ == null) {
-        return methodContexts_.size();
-      } else {
-        return methodContextsBuilder_.getCount();
-      }
+      return internalGetMethodContexts().getMap().size();
     }
     /**
-     * <code>repeated .data.MethodContext method_contexts = 5;</code>
+     * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.MethodContext getMethodContexts(int index) {
-      if (methodContextsBuilder_ == null) {
-        return methodContexts_.get(index);
-      } else {
-        return methodContextsBuilder_.getMessage(index);
-      }
+
+    @java.lang.Override
+    public boolean containsMethodContexts(
+        java.lang.String key) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      return internalGetMethodContexts().getMap().containsKey(key);
     }
     /**
-     * <code>repeated .data.MethodContext method_contexts = 5;</code>
+     * Use {@link #getMethodContextsMap()} instead.
      */
-    public Builder setMethodContexts(
-        int index, eu.tsystems.mms.tic.testframework.report.model.MethodContext value) {
-      if (methodContextsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureMethodContextsIsMutable();
-        methodContexts_.set(index, value);
-        onChanged();
-      } else {
-        methodContextsBuilder_.setMessage(index, value);
-      }
-      return this;
+    @java.lang.Override
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.MethodContext> getMethodContexts() {
+      return getMethodContextsMap();
     }
     /**
-     * <code>repeated .data.MethodContext method_contexts = 5;</code>
+     * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
      */
-    public Builder setMethodContexts(
-        int index, eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder builderForValue) {
-      if (methodContextsBuilder_ == null) {
-        ensureMethodContextsIsMutable();
-        methodContexts_.set(index, builderForValue.build());
-        onChanged();
-      } else {
-        methodContextsBuilder_.setMessage(index, builderForValue.build());
-      }
-      return this;
+    @java.lang.Override
+
+    public java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.MethodContext> getMethodContextsMap() {
+      return internalGetMethodContexts().getMap();
     }
     /**
-     * <code>repeated .data.MethodContext method_contexts = 5;</code>
+     * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
      */
-    public Builder addMethodContexts(eu.tsystems.mms.tic.testframework.report.model.MethodContext value) {
-      if (methodContextsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureMethodContextsIsMutable();
-        methodContexts_.add(value);
-        onChanged();
-      } else {
-        methodContextsBuilder_.addMessage(value);
-      }
-      return this;
+    @java.lang.Override
+
+    public eu.tsystems.mms.tic.testframework.report.model.MethodContext getMethodContextsOrDefault(
+        java.lang.String key,
+        eu.tsystems.mms.tic.testframework.report.model.MethodContext defaultValue) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.MethodContext> map =
+          internalGetMethodContexts().getMap();
+      return map.containsKey(key) ? map.get(key) : defaultValue;
     }
     /**
-     * <code>repeated .data.MethodContext method_contexts = 5;</code>
+     * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
      */
-    public Builder addMethodContexts(
-        int index, eu.tsystems.mms.tic.testframework.report.model.MethodContext value) {
-      if (methodContextsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureMethodContextsIsMutable();
-        methodContexts_.add(index, value);
-        onChanged();
-      } else {
-        methodContextsBuilder_.addMessage(index, value);
+    @java.lang.Override
+
+    public eu.tsystems.mms.tic.testframework.report.model.MethodContext getMethodContextsOrThrow(
+        java.lang.String key) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.MethodContext> map =
+          internalGetMethodContexts().getMap();
+      if (!map.containsKey(key)) {
+        throw new java.lang.IllegalArgumentException();
       }
-      return this;
+      return map.get(key);
     }
-    /**
-     * <code>repeated .data.MethodContext method_contexts = 5;</code>
-     */
-    public Builder addMethodContexts(
-        eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder builderForValue) {
-      if (methodContextsBuilder_ == null) {
-        ensureMethodContextsIsMutable();
-        methodContexts_.add(builderForValue.build());
-        onChanged();
-      } else {
-        methodContextsBuilder_.addMessage(builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.MethodContext method_contexts = 5;</code>
-     */
-    public Builder addMethodContexts(
-        int index, eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder builderForValue) {
-      if (methodContextsBuilder_ == null) {
-        ensureMethodContextsIsMutable();
-        methodContexts_.add(index, builderForValue.build());
-        onChanged();
-      } else {
-        methodContextsBuilder_.addMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.MethodContext method_contexts = 5;</code>
-     */
-    public Builder addAllMethodContexts(
-        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.MethodContext> values) {
-      if (methodContextsBuilder_ == null) {
-        ensureMethodContextsIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, methodContexts_);
-        onChanged();
-      } else {
-        methodContextsBuilder_.addAllMessages(values);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.MethodContext method_contexts = 5;</code>
-     */
+
     public Builder clearMethodContexts() {
-      if (methodContextsBuilder_ == null) {
-        methodContexts_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000008);
-        onChanged();
-      } else {
-        methodContextsBuilder_.clear();
-      }
+      internalGetMutableMethodContexts().getMutableMap()
+          .clear();
       return this;
     }
     /**
-     * <code>repeated .data.MethodContext method_contexts = 5;</code>
+     * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
      */
-    public Builder removeMethodContexts(int index) {
-      if (methodContextsBuilder_ == null) {
-        ensureMethodContextsIsMutable();
-        methodContexts_.remove(index);
-        onChanged();
-      } else {
-        methodContextsBuilder_.remove(index);
-      }
+
+    public Builder removeMethodContexts(
+        java.lang.String key) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      internalGetMutableMethodContexts().getMutableMap()
+          .remove(key);
       return this;
     }
     /**
-     * <code>repeated .data.MethodContext method_contexts = 5;</code>
+     * Use alternate mutation accessors instead.
      */
-    public eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder getMethodContextsBuilder(
-        int index) {
-      return getMethodContextsFieldBuilder().getBuilder(index);
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.MethodContext>
+    getMutableMethodContexts() {
+      return internalGetMutableMethodContexts().getMutableMap();
     }
     /**
-     * <code>repeated .data.MethodContext method_contexts = 5;</code>
+     * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.MethodContextOrBuilder getMethodContextsOrBuilder(
-        int index) {
-      if (methodContextsBuilder_ == null) {
-        return methodContexts_.get(index);  } else {
-        return methodContextsBuilder_.getMessageOrBuilder(index);
-      }
+    public Builder putMethodContexts(
+        java.lang.String key,
+        eu.tsystems.mms.tic.testframework.report.model.MethodContext value) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      if (value == null) { throw new java.lang.NullPointerException(); }
+      internalGetMutableMethodContexts().getMutableMap()
+          .put(key, value);
+      return this;
     }
     /**
-     * <code>repeated .data.MethodContext method_contexts = 5;</code>
+     * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
      */
-    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.MethodContextOrBuilder> 
-         getMethodContextsOrBuilderList() {
-      if (methodContextsBuilder_ != null) {
-        return methodContextsBuilder_.getMessageOrBuilderList();
-      } else {
-        return java.util.Collections.unmodifiableList(methodContexts_);
-      }
-    }
-    /**
-     * <code>repeated .data.MethodContext method_contexts = 5;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder addMethodContextsBuilder() {
-      return getMethodContextsFieldBuilder().addBuilder(
-          eu.tsystems.mms.tic.testframework.report.model.MethodContext.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .data.MethodContext method_contexts = 5;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder addMethodContextsBuilder(
-        int index) {
-      return getMethodContextsFieldBuilder().addBuilder(
-          index, eu.tsystems.mms.tic.testframework.report.model.MethodContext.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .data.MethodContext method_contexts = 5;</code>
-     */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder> 
-         getMethodContextsBuilderList() {
-      return getMethodContextsFieldBuilder().getBuilderList();
-    }
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.MethodContext, eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder, eu.tsystems.mms.tic.testframework.report.model.MethodContextOrBuilder> 
-        getMethodContextsFieldBuilder() {
-      if (methodContextsBuilder_ == null) {
-        methodContextsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            eu.tsystems.mms.tic.testframework.report.model.MethodContext, eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder, eu.tsystems.mms.tic.testframework.report.model.MethodContextOrBuilder>(
-                methodContexts_,
-                ((bitField0_ & 0x00000008) != 0),
-                getParentForChildren(),
-                isClean());
-        methodContexts_ = null;
-      }
-      return methodContextsBuilder_;
+
+    public Builder putAllMethodContexts(
+        java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.MethodContext> values) {
+      internalGetMutableMethodContexts().getMutableMap()
+          .putAll(values);
+      return this;
     }
 
-    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.SessionContext> sessionContexts_ =
-      java.util.Collections.emptyList();
-    private void ensureSessionContextsIsMutable() {
-      if (!((bitField0_ & 0x00000010) != 0)) {
-        sessionContexts_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.SessionContext>(sessionContexts_);
-        bitField0_ |= 0x00000010;
-       }
-    }
-
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.SessionContext, eu.tsystems.mms.tic.testframework.report.model.SessionContext.Builder, eu.tsystems.mms.tic.testframework.report.model.SessionContextOrBuilder> sessionContextsBuilder_;
-
-    /**
-     * <code>repeated .data.SessionContext session_contexts = 6;</code>
-     */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.SessionContext> getSessionContextsList() {
-      if (sessionContextsBuilder_ == null) {
-        return java.util.Collections.unmodifiableList(sessionContexts_);
-      } else {
-        return sessionContextsBuilder_.getMessageList();
+    private com.google.protobuf.MapField<
+        java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SessionContext> sessionContexts_;
+    private com.google.protobuf.MapField<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SessionContext>
+    internalGetSessionContexts() {
+      if (sessionContexts_ == null) {
+        return com.google.protobuf.MapField.emptyMapField(
+            SessionContextsDefaultEntryHolder.defaultEntry);
       }
+      return sessionContexts_;
     }
-    /**
-     * <code>repeated .data.SessionContext session_contexts = 6;</code>
-     */
+    private com.google.protobuf.MapField<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SessionContext>
+    internalGetMutableSessionContexts() {
+      onChanged();;
+      if (sessionContexts_ == null) {
+        sessionContexts_ = com.google.protobuf.MapField.newMapField(
+            SessionContextsDefaultEntryHolder.defaultEntry);
+      }
+      if (!sessionContexts_.isMutable()) {
+        sessionContexts_ = sessionContexts_.copy();
+      }
+      return sessionContexts_;
+    }
+
     public int getSessionContextsCount() {
-      if (sessionContextsBuilder_ == null) {
-        return sessionContexts_.size();
-      } else {
-        return sessionContextsBuilder_.getCount();
-      }
+      return internalGetSessionContexts().getMap().size();
     }
     /**
-     * <code>repeated .data.SessionContext session_contexts = 6;</code>
+     * <code>map&lt;string, .data.SessionContext&gt; session_contexts = 6;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.SessionContext getSessionContexts(int index) {
-      if (sessionContextsBuilder_ == null) {
-        return sessionContexts_.get(index);
-      } else {
-        return sessionContextsBuilder_.getMessage(index);
-      }
+
+    @java.lang.Override
+    public boolean containsSessionContexts(
+        java.lang.String key) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      return internalGetSessionContexts().getMap().containsKey(key);
     }
     /**
-     * <code>repeated .data.SessionContext session_contexts = 6;</code>
+     * Use {@link #getSessionContextsMap()} instead.
      */
-    public Builder setSessionContexts(
-        int index, eu.tsystems.mms.tic.testframework.report.model.SessionContext value) {
-      if (sessionContextsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureSessionContextsIsMutable();
-        sessionContexts_.set(index, value);
-        onChanged();
-      } else {
-        sessionContextsBuilder_.setMessage(index, value);
-      }
-      return this;
+    @java.lang.Override
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SessionContext> getSessionContexts() {
+      return getSessionContextsMap();
     }
     /**
-     * <code>repeated .data.SessionContext session_contexts = 6;</code>
+     * <code>map&lt;string, .data.SessionContext&gt; session_contexts = 6;</code>
      */
-    public Builder setSessionContexts(
-        int index, eu.tsystems.mms.tic.testframework.report.model.SessionContext.Builder builderForValue) {
-      if (sessionContextsBuilder_ == null) {
-        ensureSessionContextsIsMutable();
-        sessionContexts_.set(index, builderForValue.build());
-        onChanged();
-      } else {
-        sessionContextsBuilder_.setMessage(index, builderForValue.build());
-      }
-      return this;
+    @java.lang.Override
+
+    public java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SessionContext> getSessionContextsMap() {
+      return internalGetSessionContexts().getMap();
     }
     /**
-     * <code>repeated .data.SessionContext session_contexts = 6;</code>
+     * <code>map&lt;string, .data.SessionContext&gt; session_contexts = 6;</code>
      */
-    public Builder addSessionContexts(eu.tsystems.mms.tic.testframework.report.model.SessionContext value) {
-      if (sessionContextsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureSessionContextsIsMutable();
-        sessionContexts_.add(value);
-        onChanged();
-      } else {
-        sessionContextsBuilder_.addMessage(value);
-      }
-      return this;
+    @java.lang.Override
+
+    public eu.tsystems.mms.tic.testframework.report.model.SessionContext getSessionContextsOrDefault(
+        java.lang.String key,
+        eu.tsystems.mms.tic.testframework.report.model.SessionContext defaultValue) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SessionContext> map =
+          internalGetSessionContexts().getMap();
+      return map.containsKey(key) ? map.get(key) : defaultValue;
     }
     /**
-     * <code>repeated .data.SessionContext session_contexts = 6;</code>
+     * <code>map&lt;string, .data.SessionContext&gt; session_contexts = 6;</code>
      */
-    public Builder addSessionContexts(
-        int index, eu.tsystems.mms.tic.testframework.report.model.SessionContext value) {
-      if (sessionContextsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureSessionContextsIsMutable();
-        sessionContexts_.add(index, value);
-        onChanged();
-      } else {
-        sessionContextsBuilder_.addMessage(index, value);
+    @java.lang.Override
+
+    public eu.tsystems.mms.tic.testframework.report.model.SessionContext getSessionContextsOrThrow(
+        java.lang.String key) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SessionContext> map =
+          internalGetSessionContexts().getMap();
+      if (!map.containsKey(key)) {
+        throw new java.lang.IllegalArgumentException();
       }
-      return this;
+      return map.get(key);
     }
-    /**
-     * <code>repeated .data.SessionContext session_contexts = 6;</code>
-     */
-    public Builder addSessionContexts(
-        eu.tsystems.mms.tic.testframework.report.model.SessionContext.Builder builderForValue) {
-      if (sessionContextsBuilder_ == null) {
-        ensureSessionContextsIsMutable();
-        sessionContexts_.add(builderForValue.build());
-        onChanged();
-      } else {
-        sessionContextsBuilder_.addMessage(builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.SessionContext session_contexts = 6;</code>
-     */
-    public Builder addSessionContexts(
-        int index, eu.tsystems.mms.tic.testframework.report.model.SessionContext.Builder builderForValue) {
-      if (sessionContextsBuilder_ == null) {
-        ensureSessionContextsIsMutable();
-        sessionContexts_.add(index, builderForValue.build());
-        onChanged();
-      } else {
-        sessionContextsBuilder_.addMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.SessionContext session_contexts = 6;</code>
-     */
-    public Builder addAllSessionContexts(
-        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.SessionContext> values) {
-      if (sessionContextsBuilder_ == null) {
-        ensureSessionContextsIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, sessionContexts_);
-        onChanged();
-      } else {
-        sessionContextsBuilder_.addAllMessages(values);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.SessionContext session_contexts = 6;</code>
-     */
+
     public Builder clearSessionContexts() {
-      if (sessionContextsBuilder_ == null) {
-        sessionContexts_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000010);
-        onChanged();
-      } else {
-        sessionContextsBuilder_.clear();
-      }
+      internalGetMutableSessionContexts().getMutableMap()
+          .clear();
       return this;
     }
     /**
-     * <code>repeated .data.SessionContext session_contexts = 6;</code>
+     * <code>map&lt;string, .data.SessionContext&gt; session_contexts = 6;</code>
      */
-    public Builder removeSessionContexts(int index) {
-      if (sessionContextsBuilder_ == null) {
-        ensureSessionContextsIsMutable();
-        sessionContexts_.remove(index);
-        onChanged();
-      } else {
-        sessionContextsBuilder_.remove(index);
-      }
+
+    public Builder removeSessionContexts(
+        java.lang.String key) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      internalGetMutableSessionContexts().getMutableMap()
+          .remove(key);
       return this;
     }
     /**
-     * <code>repeated .data.SessionContext session_contexts = 6;</code>
+     * Use alternate mutation accessors instead.
      */
-    public eu.tsystems.mms.tic.testframework.report.model.SessionContext.Builder getSessionContextsBuilder(
-        int index) {
-      return getSessionContextsFieldBuilder().getBuilder(index);
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SessionContext>
+    getMutableSessionContexts() {
+      return internalGetMutableSessionContexts().getMutableMap();
     }
     /**
-     * <code>repeated .data.SessionContext session_contexts = 6;</code>
+     * <code>map&lt;string, .data.SessionContext&gt; session_contexts = 6;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.SessionContextOrBuilder getSessionContextsOrBuilder(
-        int index) {
-      if (sessionContextsBuilder_ == null) {
-        return sessionContexts_.get(index);  } else {
-        return sessionContextsBuilder_.getMessageOrBuilder(index);
-      }
+    public Builder putSessionContexts(
+        java.lang.String key,
+        eu.tsystems.mms.tic.testframework.report.model.SessionContext value) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      if (value == null) { throw new java.lang.NullPointerException(); }
+      internalGetMutableSessionContexts().getMutableMap()
+          .put(key, value);
+      return this;
     }
     /**
-     * <code>repeated .data.SessionContext session_contexts = 6;</code>
+     * <code>map&lt;string, .data.SessionContext&gt; session_contexts = 6;</code>
      */
-    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.SessionContextOrBuilder> 
-         getSessionContextsOrBuilderList() {
-      if (sessionContextsBuilder_ != null) {
-        return sessionContextsBuilder_.getMessageOrBuilderList();
-      } else {
-        return java.util.Collections.unmodifiableList(sessionContexts_);
-      }
-    }
-    /**
-     * <code>repeated .data.SessionContext session_contexts = 6;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.SessionContext.Builder addSessionContextsBuilder() {
-      return getSessionContextsFieldBuilder().addBuilder(
-          eu.tsystems.mms.tic.testframework.report.model.SessionContext.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .data.SessionContext session_contexts = 6;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.SessionContext.Builder addSessionContextsBuilder(
-        int index) {
-      return getSessionContextsFieldBuilder().addBuilder(
-          index, eu.tsystems.mms.tic.testframework.report.model.SessionContext.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .data.SessionContext session_contexts = 6;</code>
-     */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.SessionContext.Builder> 
-         getSessionContextsBuilderList() {
-      return getSessionContextsFieldBuilder().getBuilderList();
-    }
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.SessionContext, eu.tsystems.mms.tic.testframework.report.model.SessionContext.Builder, eu.tsystems.mms.tic.testframework.report.model.SessionContextOrBuilder> 
-        getSessionContextsFieldBuilder() {
-      if (sessionContextsBuilder_ == null) {
-        sessionContextsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            eu.tsystems.mms.tic.testframework.report.model.SessionContext, eu.tsystems.mms.tic.testframework.report.model.SessionContext.Builder, eu.tsystems.mms.tic.testframework.report.model.SessionContextOrBuilder>(
-                sessionContexts_,
-                ((bitField0_ & 0x00000010) != 0),
-                getParentForChildren(),
-                isClean());
-        sessionContexts_ = null;
-      }
-      return sessionContextsBuilder_;
+
+    public Builder putAllSessionContexts(
+        java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SessionContext> values) {
+      internalGetMutableSessionContexts().getMutableMap()
+          .putAll(values);
+      return this;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

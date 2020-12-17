@@ -46,32 +46,12 @@ public interface ContextValuesOrBuilder extends
   /**
    * <pre>
    *    string swi = 6 [deprecated = true];
+   *    ResultStatusType result_status = 7 [deprecated = true];
+   *    ExecStatusType exec_status = 8 [deprecated = true];
    * </pre>
    *
    * <code>int64 end_time = 5;</code>
    * @return The endTime.
    */
   long getEndTime();
-
-  /**
-   * <code>.data.ResultStatusType result_status = 7;</code>
-   * @return The enum numeric value on the wire for resultStatus.
-   */
-  int getResultStatusValue();
-  /**
-   * <code>.data.ResultStatusType result_status = 7;</code>
-   * @return The resultStatus.
-   */
-  eu.tsystems.mms.tic.testframework.report.model.ResultStatusType getResultStatus();
-
-  /**
-   * <code>.data.ExecStatusType exec_status = 8;</code>
-   * @return The enum numeric value on the wire for execStatus.
-   */
-  int getExecStatusValue();
-  /**
-   * <code>.data.ExecStatusType exec_status = 8;</code>
-   * @return The execStatus.
-   */
-  eu.tsystems.mms.tic.testframework.report.model.ExecStatusType getExecStatus();
 }

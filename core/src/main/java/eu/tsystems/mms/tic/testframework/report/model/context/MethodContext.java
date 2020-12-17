@@ -71,8 +71,8 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     private List<SessionContext> sessionContexts = new LinkedList<>();
     public String priorityMessage = null;
     private final TestStepController testStepController = new TestStepController();
-    private List<MethodContext> relatedMethodContexts;
-    private List<MethodContext> dependsOnMethodContexts;
+    private List<MethodContext> relatedMethodContexts = new LinkedList<>();
+    private List<MethodContext> dependsOnMethodContexts = new LinkedList<>();
     private List<Video> videos;
     private List<CustomContext> customContexts;
     private ErrorContext errorContext;
@@ -218,11 +218,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     public Stream<MethodContext> readRelatedMethodContexts() {
-        if (this.relatedMethodContexts == null) {
-            return Stream.empty();
-        } else {
-            return this.relatedMethodContexts.stream();
-        }
+        return this.relatedMethodContexts.stream();
     }
 
     /**
@@ -234,19 +230,15 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     public Stream<MethodContext> readDependsOnMethodContexts() {
-        if (this.dependsOnMethodContexts == null) {
-            return Stream.empty();
-        } else {
-            return this.dependsOnMethodContexts.stream();
-        }
+        return this.dependsOnMethodContexts.stream();
     }
 
     public void setRelatedMethodContexts(List<MethodContext> relatedMethodContexts) {
         this.relatedMethodContexts = relatedMethodContexts;
     }
 
-    public void setDependsOnMethodContexts(List<MethodContext> dependsOnMethodContexts) {
-        this.dependsOnMethodContexts = dependsOnMethodContexts;
+    public void addDependsOnMethod(MethodContext methodContext) {
+        this.dependsOnMethodContexts.add(methodContext);
     }
 
     private Stream<TestStepAction> readTestStepActions() {

@@ -304,6 +304,9 @@ export namespace data {
 
         /** MethodContext failedStepIndex */
         failedStepIndex?: (number|null);
+
+        /** MethodContext resultStatus */
+        resultStatus?: (data.ResultStatusType|null);
     }
 
     /** Represents a MethodContext. */
@@ -381,6 +384,9 @@ export namespace data {
         /** MethodContext failedStepIndex. */
         public failedStepIndex: number;
 
+        /** MethodContext resultStatus. */
+        public resultStatus: data.ResultStatusType;
+
         /**
          * Decodes a MethodContext message from the specified reader or buffer.
          * @param r Reader or buffer to decode from
@@ -409,12 +415,6 @@ export namespace data {
 
         /** ContextValues endTime */
         endTime?: (number|null);
-
-        /** ContextValues resultStatus */
-        resultStatus?: (data.ResultStatusType|null);
-
-        /** ContextValues execStatus */
-        execStatus?: (data.ExecStatusType|null);
     }
 
     /** Represents a ContextValues. */
@@ -440,12 +440,6 @@ export namespace data {
 
         /** ContextValues endTime. */
         public endTime: number;
-
-        /** ContextValues resultStatus. */
-        public resultStatus: data.ResultStatusType;
-
-        /** ContextValues execStatus. */
-        public execStatus: data.ExecStatusType;
 
         /**
          * Decodes a ContextValues message from the specified reader or buffer.
@@ -1161,21 +1155,6 @@ export namespace data {
         public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): data.File;
     }
 
-    /** ExecStatusType enum. */
-    enum ExecStatusType {
-        EST_NOT_SET = 0,
-        NEW = 1,
-        PENDING = 2,
-        PROVISIONING = 3,
-        RUNNING = 4,
-        FINISHED = 5,
-        ABORTED = 6,
-        CRASHED = 7,
-        INVALID = 8,
-        VOID = 9,
-        ARTIFACT_UPLOAD = 10
-    }
-
     /** ResultStatusType enum. */
     enum ResultStatusType {
         RST_NOT_SET = 0,
@@ -1199,19 +1178,19 @@ export namespace data {
         executionContext?: (data.IExecutionContext|null);
 
         /** ExecutionAggregate suiteContexts */
-        suiteContexts?: (data.ISuiteContext[]|null);
+        suiteContexts?: ({ [k: string]: data.ISuiteContext }|null);
 
         /** ExecutionAggregate testContexts */
-        testContexts?: (data.ITestContext[]|null);
+        testContexts?: ({ [k: string]: data.ITestContext }|null);
 
         /** ExecutionAggregate classContexts */
-        classContexts?: (data.IClassContext[]|null);
+        classContexts?: ({ [k: string]: data.IClassContext }|null);
 
         /** ExecutionAggregate methodContexts */
-        methodContexts?: (data.IMethodContext[]|null);
+        methodContexts?: ({ [k: string]: data.IMethodContext }|null);
 
         /** ExecutionAggregate sessionContexts */
-        sessionContexts?: (data.ISessionContext[]|null);
+        sessionContexts?: ({ [k: string]: data.ISessionContext }|null);
     }
 
     /** Represents an ExecutionAggregate. */
@@ -1227,19 +1206,19 @@ export namespace data {
         public executionContext?: (data.IExecutionContext|null);
 
         /** ExecutionAggregate suiteContexts. */
-        public suiteContexts: data.ISuiteContext[];
+        public suiteContexts: { [k: string]: data.ISuiteContext };
 
         /** ExecutionAggregate testContexts. */
-        public testContexts: data.ITestContext[];
+        public testContexts: { [k: string]: data.ITestContext };
 
         /** ExecutionAggregate classContexts. */
-        public classContexts: data.IClassContext[];
+        public classContexts: { [k: string]: data.IClassContext };
 
         /** ExecutionAggregate methodContexts. */
-        public methodContexts: data.IMethodContext[];
+        public methodContexts: { [k: string]: data.IMethodContext };
 
         /** ExecutionAggregate sessionContexts. */
-        public sessionContexts: data.ISessionContext[];
+        public sessionContexts: { [k: string]: data.ISessionContext };
 
         /**
          * Decodes an ExecutionAggregate message from the specified reader or buffer.

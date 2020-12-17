@@ -89,6 +89,7 @@ message MethodContext {
 //    repeated string screenshot_ids = 31 [deprecated = true];
     string custom_context_json = 32;
     int32 failed_step_index = 33;
+    ResultStatusType result_status = 34;
 }
 
 message ContextValues {
@@ -98,9 +99,8 @@ message ContextValues {
     int64 start_time = 4;
     int64 end_time = 5;
 //    string swi = 6 [deprecated = true];
-
-    ResultStatusType result_status = 7;
-    ExecStatusType exec_status = 8;
+//    ResultStatusType result_status = 7 [deprecated = true];
+//    ExecStatusType exec_status = 8 [deprecated = true];
 }
 
 message TestStep {
@@ -253,19 +253,19 @@ message File {
 }
 
 // All status elements for run and job executions
-enum ExecStatusType {
-    EST_NOT_SET = 0;
-    NEW = 1; // Execution is new and hasn't been processed from any agent
-    PENDING = 2; // Execution has been seen by the scheduler and is in waiting position for an executer
-    PROVISIONING = 3; // The scheduler tries to start a Kube container execution
-    RUNNING = 4; // Execution is currently being run by the executer
-    FINISHED = 5; // Execution has been finished, which is: run to completion by the executer
-    ABORTED = 6; // Execution has been shutdown graceful or manually or has never been executed
-    CRASHED = 7; // Execution ended abruptly due to system error, runtime exceptions, kernel bugs, etc.
-    INVALID = 8; // Execution of tests didn't start due to failed prerequisite steps (git clone) or executed command didn't start any (no execution context exists for invalid run)
-    VOID = 9; // Execution of tests started but no new tests were executed (all tests were skipped, or the execution filter didn't match any (all methods were INHERITED))
-    ARTIFACT_UPLOAD = 10; // Execution of tests is finished and artifacts uploading is in progress
-}
+//enum ExecStatusType {
+//    EST_NOT_SET = 0;
+//    NEW = 1; // Execution is new and hasn't been processed from any agent
+//    PENDING = 2; // Execution has been seen by the scheduler and is in waiting position for an executer
+//    PROVISIONING = 3; // The scheduler tries to start a Kube container execution
+//    RUNNING = 4; // Execution is currently being run by the executer
+//    FINISHED = 5; // Execution has been finished, which is: run to completion by the executer
+//    ABORTED = 6; // Execution has been shutdown graceful or manually or has never been executed
+//    CRASHED = 7; // Execution ended abruptly due to system error, runtime exceptions, kernel bugs, etc.
+//    INVALID = 8; // Execution of tests didn't start due to failed prerequisite steps (git clone) or executed command didn't start any (no execution context exists for invalid run)
+//    VOID = 9; // Execution of tests started but no new tests were executed (all tests were skipped, or the execution filter didn't match any (all methods were INHERITED))
+//    ARTIFACT_UPLOAD = 10; // Execution of tests is finished and artifacts uploading is in progress
+//}
 
 // All status elements for an actual executed test method
 enum ResultStatusType {

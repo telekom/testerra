@@ -6,7 +6,7 @@ package eu.tsystems.mms.tic.testframework.report.model;
 /**
  * Protobuf type {@code data.ExecutionContext}
  */
-public  final class ExecutionContext extends
+public final class ExecutionContext extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:data.ExecutionContext)
     ExecutionContextOrBuilder {
@@ -185,6 +185,7 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ContextValues context_values = 1;</code>
    * @return Whether the contextValues field is set.
    */
+  @java.lang.Override
   public boolean hasContextValues() {
     return contextValues_ != null;
   }
@@ -192,12 +193,14 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ContextValues context_values = 1;</code>
    * @return The contextValues.
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ContextValues getContextValues() {
     return contextValues_ == null ? eu.tsystems.mms.tic.testframework.report.model.ContextValues.getDefaultInstance() : contextValues_;
   }
   /**
    * <code>.data.ContextValues context_values = 1;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ContextValuesOrBuilder getContextValuesOrBuilder() {
     return getContextValues();
   }
@@ -267,6 +270,7 @@ private static final long serialVersionUID = 0L;
    * <code>.data.RunConfig run_config = 7;</code>
    * @return Whether the runConfig field is set.
    */
+  @java.lang.Override
   public boolean hasRunConfig() {
     return runConfig_ != null;
   }
@@ -274,12 +278,14 @@ private static final long serialVersionUID = 0L;
    * <code>.data.RunConfig run_config = 7;</code>
    * @return The runConfig.
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.RunConfig getRunConfig() {
     return runConfig_ == null ? eu.tsystems.mms.tic.testframework.report.model.RunConfig.getDefaultInstance() : runConfig_;
   }
   /**
    * <code>.data.RunConfig run_config = 7;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.RunConfigOrBuilder getRunConfigOrBuilder() {
     return getRunConfig();
   }
@@ -290,6 +296,7 @@ private static final long serialVersionUID = 0L;
    * <code>string project_Id = 8;</code>
    * @return The projectId.
    */
+  @java.lang.Override
   public java.lang.String getProjectId() {
     java.lang.Object ref = projectId_;
     if (ref instanceof java.lang.String) {
@@ -306,6 +313,7 @@ private static final long serialVersionUID = 0L;
    * <code>string project_Id = 8;</code>
    * @return The bytes for projectId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getProjectIdBytes() {
     java.lang.Object ref = projectId_;
@@ -326,6 +334,7 @@ private static final long serialVersionUID = 0L;
    * <code>string job_Id = 9;</code>
    * @return The jobId.
    */
+  @java.lang.Override
   public java.lang.String getJobId() {
     java.lang.Object ref = jobId_;
     if (ref instanceof java.lang.String) {
@@ -342,6 +351,7 @@ private static final long serialVersionUID = 0L;
    * <code>string job_Id = 9;</code>
    * @return The bytes for jobId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getJobIdBytes() {
     java.lang.Object ref = jobId_;
@@ -362,6 +372,7 @@ private static final long serialVersionUID = 0L;
    * <code>string run_Id = 10;</code>
    * @return The runId.
    */
+  @java.lang.Override
   public java.lang.String getRunId() {
     java.lang.Object ref = runId_;
     if (ref instanceof java.lang.String) {
@@ -378,6 +389,7 @@ private static final long serialVersionUID = 0L;
    * <code>string run_Id = 10;</code>
    * @return The bytes for runId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getRunIdBytes() {
     java.lang.Object ref = runId_;
@@ -398,6 +410,7 @@ private static final long serialVersionUID = 0L;
    * <code>string task_Id = 11;</code>
    * @return The taskId.
    */
+  @java.lang.Override
   public java.lang.String getTaskId() {
     java.lang.Object ref = taskId_;
     if (ref instanceof java.lang.String) {
@@ -414,6 +427,7 @@ private static final long serialVersionUID = 0L;
    * <code>string task_Id = 11;</code>
    * @return The bytes for taskId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getTaskIdBytes() {
     java.lang.Object ref = taskId_;
@@ -468,12 +482,14 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>repeated .data.LogMessage log_messages = 14;</code>
    */
+  @java.lang.Override
   public java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage> getLogMessagesList() {
     return logMessages_;
   }
   /**
    * <code>repeated .data.LogMessage log_messages = 14;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder> 
       getLogMessagesOrBuilderList() {
     return logMessages_;
@@ -481,18 +497,21 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>repeated .data.LogMessage log_messages = 14;</code>
    */
+  @java.lang.Override
   public int getLogMessagesCount() {
     return logMessages_.size();
   }
   /**
    * <code>repeated .data.LogMessage log_messages = 14;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.LogMessage getLogMessages(int index) {
     return logMessages_.get(index);
   }
   /**
    * <code>repeated .data.LogMessage log_messages = 14;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder getLogMessagesOrBuilder(
       int index) {
     return logMessages_.get(index);
@@ -504,6 +523,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 estimated_tests_count = 15;</code>
    * @return The estimatedTestsCount.
    */
+  @java.lang.Override
   public int getEstimatedTestsCount() {
     return estimatedTestsCount_;
   }
@@ -2124,6 +2144,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 estimated_tests_count = 15;</code>
      * @return The estimatedTestsCount.
      */
+    @java.lang.Override
     public int getEstimatedTestsCount() {
       return estimatedTestsCount_;
     }

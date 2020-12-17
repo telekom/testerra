@@ -6,7 +6,7 @@ package eu.tsystems.mms.tic.testframework.report.model;
 /**
  * Protobuf type {@code data.SessionContext}
  */
-public  final class SessionContext extends
+public final class SessionContext extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:data.SessionContext)
     SessionContextOrBuilder {
@@ -146,6 +146,7 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ContextValues context_values = 1;</code>
    * @return Whether the contextValues field is set.
    */
+  @java.lang.Override
   public boolean hasContextValues() {
     return contextValues_ != null;
   }
@@ -153,12 +154,14 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ContextValues context_values = 1;</code>
    * @return The contextValues.
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ContextValues getContextValues() {
     return contextValues_ == null ? eu.tsystems.mms.tic.testframework.report.model.ContextValues.getDefaultInstance() : contextValues_;
   }
   /**
    * <code>.data.ContextValues context_values = 1;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ContextValuesOrBuilder getContextValuesOrBuilder() {
     return getContextValues();
   }
@@ -169,6 +172,7 @@ private static final long serialVersionUID = 0L;
    * <code>string session_key = 2;</code>
    * @return The sessionKey.
    */
+  @java.lang.Override
   public java.lang.String getSessionKey() {
     java.lang.Object ref = sessionKey_;
     if (ref instanceof java.lang.String) {
@@ -185,6 +189,7 @@ private static final long serialVersionUID = 0L;
    * <code>string session_key = 2;</code>
    * @return The bytes for sessionKey.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getSessionKeyBytes() {
     java.lang.Object ref = sessionKey_;
@@ -205,6 +210,7 @@ private static final long serialVersionUID = 0L;
    * <code>string provider = 3;</code>
    * @return The provider.
    */
+  @java.lang.Override
   public java.lang.String getProvider() {
     java.lang.Object ref = provider_;
     if (ref instanceof java.lang.String) {
@@ -221,6 +227,7 @@ private static final long serialVersionUID = 0L;
    * <code>string provider = 3;</code>
    * @return The bytes for provider.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getProviderBytes() {
     java.lang.Object ref = provider_;
@@ -265,6 +272,7 @@ private static final long serialVersionUID = 0L;
    * <code>map&lt;string, string&gt; metadata = 4;</code>
    */
 
+  @java.lang.Override
   public boolean containsMetadata(
       java.lang.String key) {
     if (key == null) { throw new java.lang.NullPointerException(); }
@@ -273,6 +281,7 @@ private static final long serialVersionUID = 0L;
   /**
    * Use {@link #getMetadataMap()} instead.
    */
+  @java.lang.Override
   @java.lang.Deprecated
   public java.util.Map<java.lang.String, java.lang.String> getMetadata() {
     return getMetadataMap();
@@ -280,6 +289,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>map&lt;string, string&gt; metadata = 4;</code>
    */
+  @java.lang.Override
 
   public java.util.Map<java.lang.String, java.lang.String> getMetadataMap() {
     return internalGetMetadata().getMap();
@@ -287,6 +297,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>map&lt;string, string&gt; metadata = 4;</code>
    */
+  @java.lang.Override
 
   public java.lang.String getMetadataOrDefault(
       java.lang.String key,
@@ -299,6 +310,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>map&lt;string, string&gt; metadata = 4;</code>
    */
+  @java.lang.Override
 
   public java.lang.String getMetadataOrThrow(
       java.lang.String key) {
@@ -317,6 +329,7 @@ private static final long serialVersionUID = 0L;
    * <code>string session_id = 6;</code>
    * @return The sessionId.
    */
+  @java.lang.Override
   public java.lang.String getSessionId() {
     java.lang.Object ref = sessionId_;
     if (ref instanceof java.lang.String) {
@@ -333,6 +346,7 @@ private static final long serialVersionUID = 0L;
    * <code>string session_id = 6;</code>
    * @return The bytes for sessionId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getSessionIdBytes() {
     java.lang.Object ref = sessionId_;
@@ -1065,6 +1079,7 @@ private static final long serialVersionUID = 0L;
      * <code>map&lt;string, string&gt; metadata = 4;</code>
      */
 
+    @java.lang.Override
     public boolean containsMetadata(
         java.lang.String key) {
       if (key == null) { throw new java.lang.NullPointerException(); }
@@ -1073,6 +1088,7 @@ private static final long serialVersionUID = 0L;
     /**
      * Use {@link #getMetadataMap()} instead.
      */
+    @java.lang.Override
     @java.lang.Deprecated
     public java.util.Map<java.lang.String, java.lang.String> getMetadata() {
       return getMetadataMap();
@@ -1080,6 +1096,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>map&lt;string, string&gt; metadata = 4;</code>
      */
+    @java.lang.Override
 
     public java.util.Map<java.lang.String, java.lang.String> getMetadataMap() {
       return internalGetMetadata().getMap();
@@ -1087,6 +1104,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>map&lt;string, string&gt; metadata = 4;</code>
      */
+    @java.lang.Override
 
     public java.lang.String getMetadataOrDefault(
         java.lang.String key,
@@ -1099,6 +1117,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>map&lt;string, string&gt; metadata = 4;</code>
      */
+    @java.lang.Override
 
     public java.lang.String getMetadataOrThrow(
         java.lang.String key) {

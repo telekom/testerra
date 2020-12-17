@@ -6,7 +6,7 @@ package eu.tsystems.mms.tic.testframework.report.model;
 /**
  * Protobuf type {@code data.MethodContext}
  */
-public  final class MethodContext extends
+public final class MethodContext extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:data.MethodContext)
     MethodContextOrBuilder {
@@ -33,6 +33,7 @@ private static final long serialVersionUID = 0L;
     sessionContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     videoIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     customContextJson_ = "";
+    resultStatus_ = 0;
   }
 
   @java.lang.Override
@@ -233,6 +234,12 @@ private static final long serialVersionUID = 0L;
             failedStepIndex_ = input.readInt32();
             break;
           }
+          case 272: {
+            int rawValue = input.readEnum();
+
+            resultStatus_ = rawValue;
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -295,6 +302,7 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ContextValues context_values = 1;</code>
    * @return Whether the contextValues field is set.
    */
+  @java.lang.Override
   public boolean hasContextValues() {
     return contextValues_ != null;
   }
@@ -302,12 +310,14 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ContextValues context_values = 1;</code>
    * @return The contextValues.
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ContextValues getContextValues() {
     return contextValues_ == null ? eu.tsystems.mms.tic.testframework.report.model.ContextValues.getDefaultInstance() : contextValues_;
   }
   /**
    * <code>.data.ContextValues context_values = 1;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ContextValuesOrBuilder getContextValuesOrBuilder() {
     return getContextValues();
   }
@@ -318,14 +328,14 @@ private static final long serialVersionUID = 0L;
    * <code>.data.MethodType method_type = 7;</code>
    * @return The enum numeric value on the wire for methodType.
    */
-  public int getMethodTypeValue() {
+  @java.lang.Override public int getMethodTypeValue() {
     return methodType_;
   }
   /**
    * <code>.data.MethodType method_type = 7;</code>
    * @return The methodType.
    */
-  public eu.tsystems.mms.tic.testframework.report.model.MethodType getMethodType() {
+  @java.lang.Override public eu.tsystems.mms.tic.testframework.report.model.MethodType getMethodType() {
     @SuppressWarnings("deprecation")
     eu.tsystems.mms.tic.testframework.report.model.MethodType result = eu.tsystems.mms.tic.testframework.report.model.MethodType.valueOf(methodType_);
     return result == null ? eu.tsystems.mms.tic.testframework.report.model.MethodType.UNRECOGNIZED : result;
@@ -407,6 +417,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 retry_number = 10;</code>
    * @return The retryNumber.
    */
+  @java.lang.Override
   public int getRetryNumber() {
     return retryNumber_;
   }
@@ -417,6 +428,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 method_run_index = 11;</code>
    * @return The methodRunIndex.
    */
+  @java.lang.Override
   public int getMethodRunIndex() {
     return methodRunIndex_;
   }
@@ -427,6 +439,7 @@ private static final long serialVersionUID = 0L;
    * <code>string thread_name = 12;</code>
    * @return The threadName.
    */
+  @java.lang.Override
   public java.lang.String getThreadName() {
     java.lang.Object ref = threadName_;
     if (ref instanceof java.lang.String) {
@@ -443,6 +456,7 @@ private static final long serialVersionUID = 0L;
    * <code>string thread_name = 12;</code>
    * @return The bytes for threadName.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getThreadNameBytes() {
     java.lang.Object ref = threadName_;
@@ -467,7 +481,7 @@ private static final long serialVersionUID = 0L;
    * <code>.data.FailureCorridorValue failure_corridor_value = 14;</code>
    * @return The enum numeric value on the wire for failureCorridorValue.
    */
-  public int getFailureCorridorValueValue() {
+  @java.lang.Override public int getFailureCorridorValueValue() {
     return failureCorridorValue_;
   }
   /**
@@ -478,7 +492,7 @@ private static final long serialVersionUID = 0L;
    * <code>.data.FailureCorridorValue failure_corridor_value = 14;</code>
    * @return The failureCorridorValue.
    */
-  public eu.tsystems.mms.tic.testframework.report.model.FailureCorridorValue getFailureCorridorValue() {
+  @java.lang.Override public eu.tsystems.mms.tic.testframework.report.model.FailureCorridorValue getFailureCorridorValue() {
     @SuppressWarnings("deprecation")
     eu.tsystems.mms.tic.testframework.report.model.FailureCorridorValue result = eu.tsystems.mms.tic.testframework.report.model.FailureCorridorValue.valueOf(failureCorridorValue_);
     return result == null ? eu.tsystems.mms.tic.testframework.report.model.FailureCorridorValue.UNRECOGNIZED : result;
@@ -490,6 +504,7 @@ private static final long serialVersionUID = 0L;
    * <code>string class_context_id = 15;</code>
    * @return The classContextId.
    */
+  @java.lang.Override
   public java.lang.String getClassContextId() {
     java.lang.Object ref = classContextId_;
     if (ref instanceof java.lang.String) {
@@ -506,6 +521,7 @@ private static final long serialVersionUID = 0L;
    * <code>string class_context_id = 15;</code>
    * @return The bytes for classContextId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getClassContextIdBytes() {
     java.lang.Object ref = classContextId_;
@@ -526,6 +542,7 @@ private static final long serialVersionUID = 0L;
    * <code>string execution_context_id = 16 [deprecated = true];</code>
    * @return The executionContextId.
    */
+  @java.lang.Override
   @java.lang.Deprecated public java.lang.String getExecutionContextId() {
     java.lang.Object ref = executionContextId_;
     if (ref instanceof java.lang.String) {
@@ -542,6 +559,7 @@ private static final long serialVersionUID = 0L;
    * <code>string execution_context_id = 16 [deprecated = true];</code>
    * @return The bytes for executionContextId.
    */
+  @java.lang.Override
   @java.lang.Deprecated public com.google.protobuf.ByteString
       getExecutionContextIdBytes() {
     java.lang.Object ref = executionContextId_;
@@ -617,6 +635,7 @@ private static final long serialVersionUID = 0L;
    * <code>string priority_message = 21;</code>
    * @return The priorityMessage.
    */
+  @java.lang.Override
   public java.lang.String getPriorityMessage() {
     java.lang.Object ref = priorityMessage_;
     if (ref instanceof java.lang.String) {
@@ -633,6 +652,7 @@ private static final long serialVersionUID = 0L;
    * <code>string priority_message = 21;</code>
    * @return The bytes for priorityMessage.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getPriorityMessageBytes() {
     java.lang.Object ref = priorityMessage_;
@@ -723,6 +743,7 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ErrorContext error_context = 25;</code>
    * @return Whether the errorContext field is set.
    */
+  @java.lang.Override
   public boolean hasErrorContext() {
     return errorContext_ != null;
   }
@@ -730,12 +751,14 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ErrorContext error_context = 25;</code>
    * @return The errorContext.
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getErrorContext() {
     return errorContext_ == null ? eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance() : errorContext_;
   }
   /**
    * <code>.data.ErrorContext error_context = 25;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getErrorContextOrBuilder() {
     return getErrorContext();
   }
@@ -745,12 +768,14 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>repeated .data.TestStep test_steps = 26;</code>
    */
+  @java.lang.Override
   public java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestStep> getTestStepsList() {
     return testSteps_;
   }
   /**
    * <code>repeated .data.TestStep test_steps = 26;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.TestStepOrBuilder> 
       getTestStepsOrBuilderList() {
     return testSteps_;
@@ -758,18 +783,21 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>repeated .data.TestStep test_steps = 26;</code>
    */
+  @java.lang.Override
   public int getTestStepsCount() {
     return testSteps_.size();
   }
   /**
    * <code>repeated .data.TestStep test_steps = 26;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.TestStep getTestSteps(int index) {
     return testSteps_.get(index);
   }
   /**
    * <code>repeated .data.TestStep test_steps = 26;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.TestStepOrBuilder getTestStepsOrBuilder(
       int index) {
     return testSteps_.get(index);
@@ -781,6 +809,7 @@ private static final long serialVersionUID = 0L;
    * <code>string test_context_id = 27 [deprecated = true];</code>
    * @return The testContextId.
    */
+  @java.lang.Override
   @java.lang.Deprecated public java.lang.String getTestContextId() {
     java.lang.Object ref = testContextId_;
     if (ref instanceof java.lang.String) {
@@ -797,6 +826,7 @@ private static final long serialVersionUID = 0L;
    * <code>string test_context_id = 27 [deprecated = true];</code>
    * @return The bytes for testContextId.
    */
+  @java.lang.Override
   @java.lang.Deprecated public com.google.protobuf.ByteString
       getTestContextIdBytes() {
     java.lang.Object ref = testContextId_;
@@ -817,6 +847,7 @@ private static final long serialVersionUID = 0L;
    * <code>string suite_context_id = 28 [deprecated = true];</code>
    * @return The suiteContextId.
    */
+  @java.lang.Override
   @java.lang.Deprecated public java.lang.String getSuiteContextId() {
     java.lang.Object ref = suiteContextId_;
     if (ref instanceof java.lang.String) {
@@ -833,6 +864,7 @@ private static final long serialVersionUID = 0L;
    * <code>string suite_context_id = 28 [deprecated = true];</code>
    * @return The bytes for suiteContextId.
    */
+  @java.lang.Override
   @java.lang.Deprecated public com.google.protobuf.ByteString
       getSuiteContextIdBytes() {
     java.lang.Object ref = suiteContextId_;
@@ -927,6 +959,7 @@ private static final long serialVersionUID = 0L;
    * <code>string custom_context_json = 32;</code>
    * @return The customContextJson.
    */
+  @java.lang.Override
   public java.lang.String getCustomContextJson() {
     java.lang.Object ref = customContextJson_;
     if (ref instanceof java.lang.String) {
@@ -947,6 +980,7 @@ private static final long serialVersionUID = 0L;
    * <code>string custom_context_json = 32;</code>
    * @return The bytes for customContextJson.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getCustomContextJsonBytes() {
     java.lang.Object ref = customContextJson_;
@@ -967,8 +1001,28 @@ private static final long serialVersionUID = 0L;
    * <code>int32 failed_step_index = 33;</code>
    * @return The failedStepIndex.
    */
+  @java.lang.Override
   public int getFailedStepIndex() {
     return failedStepIndex_;
+  }
+
+  public static final int RESULT_STATUS_FIELD_NUMBER = 34;
+  private int resultStatus_;
+  /**
+   * <code>.data.ResultStatusType result_status = 34;</code>
+   * @return The enum numeric value on the wire for resultStatus.
+   */
+  @java.lang.Override public int getResultStatusValue() {
+    return resultStatus_;
+  }
+  /**
+   * <code>.data.ResultStatusType result_status = 34;</code>
+   * @return The resultStatus.
+   */
+  @java.lang.Override public eu.tsystems.mms.tic.testframework.report.model.ResultStatusType getResultStatus() {
+    @SuppressWarnings("deprecation")
+    eu.tsystems.mms.tic.testframework.report.model.ResultStatusType result = eu.tsystems.mms.tic.testframework.report.model.ResultStatusType.valueOf(resultStatus_);
+    return result == null ? eu.tsystems.mms.tic.testframework.report.model.ResultStatusType.UNRECOGNIZED : result;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -1050,6 +1104,9 @@ private static final long serialVersionUID = 0L;
     }
     if (failedStepIndex_ != 0) {
       output.writeInt32(33, failedStepIndex_);
+    }
+    if (resultStatus_ != eu.tsystems.mms.tic.testframework.report.model.ResultStatusType.RST_NOT_SET.getNumber()) {
+      output.writeEnum(34, resultStatus_);
     }
     unknownFields.writeTo(output);
   }
@@ -1169,6 +1226,10 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(33, failedStepIndex_);
     }
+    if (resultStatus_ != eu.tsystems.mms.tic.testframework.report.model.ResultStatusType.RST_NOT_SET.getNumber()) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(34, resultStatus_);
+    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -1232,6 +1293,7 @@ private static final long serialVersionUID = 0L;
         .equals(other.getCustomContextJson())) return false;
     if (getFailedStepIndex()
         != other.getFailedStepIndex()) return false;
+    if (resultStatus_ != other.resultStatus_) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -1307,6 +1369,8 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getCustomContextJson().hashCode();
     hash = (37 * hash) + FAILED_STEP_INDEX_FIELD_NUMBER;
     hash = (53 * hash) + getFailedStepIndex();
+    hash = (37 * hash) + RESULT_STATUS_FIELD_NUMBER;
+    hash = (53 * hash) + resultStatus_;
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -1497,6 +1561,8 @@ private static final long serialVersionUID = 0L;
 
       failedStepIndex_ = 0;
 
+      resultStatus_ = 0;
+
       return this;
     }
 
@@ -1590,6 +1656,7 @@ private static final long serialVersionUID = 0L;
       result.videoIds_ = videoIds_;
       result.customContextJson_ = customContextJson_;
       result.failedStepIndex_ = failedStepIndex_;
+      result.resultStatus_ = resultStatus_;
       onBuilt();
       return result;
     }
@@ -1783,6 +1850,9 @@ private static final long serialVersionUID = 0L;
       if (other.getFailedStepIndex() != 0) {
         setFailedStepIndex(other.getFailedStepIndex());
       }
+      if (other.resultStatus_ != 0) {
+        setResultStatusValue(other.getResultStatusValue());
+      }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
       return this;
@@ -1937,7 +2007,7 @@ private static final long serialVersionUID = 0L;
      * <code>.data.MethodType method_type = 7;</code>
      * @return The enum numeric value on the wire for methodType.
      */
-    public int getMethodTypeValue() {
+    @java.lang.Override public int getMethodTypeValue() {
       return methodType_;
     }
     /**
@@ -1946,6 +2016,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setMethodTypeValue(int value) {
+      
       methodType_ = value;
       onChanged();
       return this;
@@ -1954,6 +2025,7 @@ private static final long serialVersionUID = 0L;
      * <code>.data.MethodType method_type = 7;</code>
      * @return The methodType.
      */
+    @java.lang.Override
     public eu.tsystems.mms.tic.testframework.report.model.MethodType getMethodType() {
       @SuppressWarnings("deprecation")
       eu.tsystems.mms.tic.testframework.report.model.MethodType result = eu.tsystems.mms.tic.testframework.report.model.MethodType.valueOf(methodType_);
@@ -2209,6 +2281,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 retry_number = 10;</code>
      * @return The retryNumber.
      */
+    @java.lang.Override
     public int getRetryNumber() {
       return retryNumber_;
     }
@@ -2239,6 +2312,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 method_run_index = 11;</code>
      * @return The methodRunIndex.
      */
+    @java.lang.Override
     public int getMethodRunIndex() {
       return methodRunIndex_;
     }
@@ -2349,7 +2423,7 @@ private static final long serialVersionUID = 0L;
      * <code>.data.FailureCorridorValue failure_corridor_value = 14;</code>
      * @return The enum numeric value on the wire for failureCorridorValue.
      */
-    public int getFailureCorridorValueValue() {
+    @java.lang.Override public int getFailureCorridorValueValue() {
       return failureCorridorValue_;
     }
     /**
@@ -2362,6 +2436,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFailureCorridorValueValue(int value) {
+      
       failureCorridorValue_ = value;
       onChanged();
       return this;
@@ -2374,6 +2449,7 @@ private static final long serialVersionUID = 0L;
      * <code>.data.FailureCorridorValue failure_corridor_value = 14;</code>
      * @return The failureCorridorValue.
      */
+    @java.lang.Override
     public eu.tsystems.mms.tic.testframework.report.model.FailureCorridorValue getFailureCorridorValue() {
       @SuppressWarnings("deprecation")
       eu.tsystems.mms.tic.testframework.report.model.FailureCorridorValue result = eu.tsystems.mms.tic.testframework.report.model.FailureCorridorValue.valueOf(failureCorridorValue_);
@@ -3847,6 +3923,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 failed_step_index = 33;</code>
      * @return The failedStepIndex.
      */
+    @java.lang.Override
     public int getFailedStepIndex() {
       return failedStepIndex_;
     }
@@ -3868,6 +3945,60 @@ private static final long serialVersionUID = 0L;
     public Builder clearFailedStepIndex() {
       
       failedStepIndex_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int resultStatus_ = 0;
+    /**
+     * <code>.data.ResultStatusType result_status = 34;</code>
+     * @return The enum numeric value on the wire for resultStatus.
+     */
+    @java.lang.Override public int getResultStatusValue() {
+      return resultStatus_;
+    }
+    /**
+     * <code>.data.ResultStatusType result_status = 34;</code>
+     * @param value The enum numeric value on the wire for resultStatus to set.
+     * @return This builder for chaining.
+     */
+    public Builder setResultStatusValue(int value) {
+      
+      resultStatus_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>.data.ResultStatusType result_status = 34;</code>
+     * @return The resultStatus.
+     */
+    @java.lang.Override
+    public eu.tsystems.mms.tic.testframework.report.model.ResultStatusType getResultStatus() {
+      @SuppressWarnings("deprecation")
+      eu.tsystems.mms.tic.testframework.report.model.ResultStatusType result = eu.tsystems.mms.tic.testframework.report.model.ResultStatusType.valueOf(resultStatus_);
+      return result == null ? eu.tsystems.mms.tic.testframework.report.model.ResultStatusType.UNRECOGNIZED : result;
+    }
+    /**
+     * <code>.data.ResultStatusType result_status = 34;</code>
+     * @param value The resultStatus to set.
+     * @return This builder for chaining.
+     */
+    public Builder setResultStatus(eu.tsystems.mms.tic.testframework.report.model.ResultStatusType value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      
+      resultStatus_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>.data.ResultStatusType result_status = 34;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearResultStatus() {
+      
+      resultStatus_ = 0;
       onChanged();
       return this;
     }

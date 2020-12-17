@@ -6,7 +6,7 @@ package eu.tsystems.mms.tic.testframework.report.model;
 /**
  * Protobuf type {@code data.LogMessage}
  */
-public  final class LogMessage extends
+public final class LogMessage extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:data.LogMessage)
     LogMessageOrBuilder {
@@ -133,14 +133,14 @@ private static final long serialVersionUID = 0L;
    * <code>.data.LogMessageType type = 1;</code>
    * @return The enum numeric value on the wire for type.
    */
-  public int getTypeValue() {
+  @java.lang.Override public int getTypeValue() {
     return type_;
   }
   /**
    * <code>.data.LogMessageType type = 1;</code>
    * @return The type.
    */
-  public eu.tsystems.mms.tic.testframework.report.model.LogMessageType getType() {
+  @java.lang.Override public eu.tsystems.mms.tic.testframework.report.model.LogMessageType getType() {
     @SuppressWarnings("deprecation")
     eu.tsystems.mms.tic.testframework.report.model.LogMessageType result = eu.tsystems.mms.tic.testframework.report.model.LogMessageType.valueOf(type_);
     return result == null ? eu.tsystems.mms.tic.testframework.report.model.LogMessageType.UNRECOGNIZED : result;
@@ -152,6 +152,7 @@ private static final long serialVersionUID = 0L;
    * <code>string logger_name = 2;</code>
    * @return The loggerName.
    */
+  @java.lang.Override
   public java.lang.String getLoggerName() {
     java.lang.Object ref = loggerName_;
     if (ref instanceof java.lang.String) {
@@ -168,6 +169,7 @@ private static final long serialVersionUID = 0L;
    * <code>string logger_name = 2;</code>
    * @return The bytes for loggerName.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getLoggerNameBytes() {
     java.lang.Object ref = loggerName_;
@@ -188,6 +190,7 @@ private static final long serialVersionUID = 0L;
    * <code>string message = 3;</code>
    * @return The message.
    */
+  @java.lang.Override
   public java.lang.String getMessage() {
     java.lang.Object ref = message_;
     if (ref instanceof java.lang.String) {
@@ -204,6 +207,7 @@ private static final long serialVersionUID = 0L;
    * <code>string message = 3;</code>
    * @return The bytes for message.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getMessageBytes() {
     java.lang.Object ref = message_;
@@ -224,6 +228,7 @@ private static final long serialVersionUID = 0L;
    * <code>int64 timestamp = 4;</code>
    * @return The timestamp.
    */
+  @java.lang.Override
   public long getTimestamp() {
     return timestamp_;
   }
@@ -234,6 +239,7 @@ private static final long serialVersionUID = 0L;
    * <code>string thread_name = 5;</code>
    * @return The threadName.
    */
+  @java.lang.Override
   public java.lang.String getThreadName() {
     java.lang.Object ref = threadName_;
     if (ref instanceof java.lang.String) {
@@ -250,6 +256,7 @@ private static final long serialVersionUID = 0L;
    * <code>string thread_name = 5;</code>
    * @return The bytes for threadName.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getThreadNameBytes() {
     java.lang.Object ref = threadName_;
@@ -269,12 +276,14 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>repeated .data.StackTraceCause stack_trace = 6;</code>
    */
+  @java.lang.Override
   public java.util.List<eu.tsystems.mms.tic.testframework.report.model.StackTraceCause> getStackTraceList() {
     return stackTrace_;
   }
   /**
    * <code>repeated .data.StackTraceCause stack_trace = 6;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder> 
       getStackTraceOrBuilderList() {
     return stackTrace_;
@@ -282,18 +291,21 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>repeated .data.StackTraceCause stack_trace = 6;</code>
    */
+  @java.lang.Override
   public int getStackTraceCount() {
     return stackTrace_.size();
   }
   /**
    * <code>repeated .data.StackTraceCause stack_trace = 6;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getStackTrace(int index) {
     return stackTrace_.get(index);
   }
   /**
    * <code>repeated .data.StackTraceCause stack_trace = 6;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder getStackTraceOrBuilder(
       int index) {
     return stackTrace_.get(index);
@@ -731,7 +743,7 @@ private static final long serialVersionUID = 0L;
      * <code>.data.LogMessageType type = 1;</code>
      * @return The enum numeric value on the wire for type.
      */
-    public int getTypeValue() {
+    @java.lang.Override public int getTypeValue() {
       return type_;
     }
     /**
@@ -740,6 +752,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTypeValue(int value) {
+      
       type_ = value;
       onChanged();
       return this;
@@ -748,6 +761,7 @@ private static final long serialVersionUID = 0L;
      * <code>.data.LogMessageType type = 1;</code>
      * @return The type.
      */
+    @java.lang.Override
     public eu.tsystems.mms.tic.testframework.report.model.LogMessageType getType() {
       @SuppressWarnings("deprecation")
       eu.tsystems.mms.tic.testframework.report.model.LogMessageType result = eu.tsystems.mms.tic.testframework.report.model.LogMessageType.valueOf(type_);
@@ -935,6 +949,7 @@ private static final long serialVersionUID = 0L;
      * <code>int64 timestamp = 4;</code>
      * @return The timestamp.
      */
+    @java.lang.Override
     public long getTimestamp() {
       return timestamp_;
     }

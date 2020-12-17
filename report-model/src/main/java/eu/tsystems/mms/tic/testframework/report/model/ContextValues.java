@@ -6,7 +6,7 @@ package eu.tsystems.mms.tic.testframework.report.model;
 /**
  * Protobuf type {@code data.ContextValues}
  */
-public  final class ContextValues extends
+public final class ContextValues extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:data.ContextValues)
     ContextValuesOrBuilder {
@@ -18,8 +18,6 @@ private static final long serialVersionUID = 0L;
   private ContextValues() {
     id_ = "";
     name_ = "";
-    resultStatus_ = 0;
-    execStatus_ = 0;
   }
 
   @java.lang.Override
@@ -79,18 +77,6 @@ private static final long serialVersionUID = 0L;
             endTime_ = input.readInt64();
             break;
           }
-          case 56: {
-            int rawValue = input.readEnum();
-
-            resultStatus_ = rawValue;
-            break;
-          }
-          case 64: {
-            int rawValue = input.readEnum();
-
-            execStatus_ = rawValue;
-            break;
-          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -129,6 +115,7 @@ private static final long serialVersionUID = 0L;
    * <code>string id = 1;</code>
    * @return The id.
    */
+  @java.lang.Override
   public java.lang.String getId() {
     java.lang.Object ref = id_;
     if (ref instanceof java.lang.String) {
@@ -145,6 +132,7 @@ private static final long serialVersionUID = 0L;
    * <code>string id = 1;</code>
    * @return The bytes for id.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getIdBytes() {
     java.lang.Object ref = id_;
@@ -165,6 +153,7 @@ private static final long serialVersionUID = 0L;
    * <code>int64 created = 2;</code>
    * @return The created.
    */
+  @java.lang.Override
   public long getCreated() {
     return created_;
   }
@@ -175,6 +164,7 @@ private static final long serialVersionUID = 0L;
    * <code>string name = 3;</code>
    * @return The name.
    */
+  @java.lang.Override
   public java.lang.String getName() {
     java.lang.Object ref = name_;
     if (ref instanceof java.lang.String) {
@@ -191,6 +181,7 @@ private static final long serialVersionUID = 0L;
    * <code>string name = 3;</code>
    * @return The bytes for name.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getNameBytes() {
     java.lang.Object ref = name_;
@@ -211,6 +202,7 @@ private static final long serialVersionUID = 0L;
    * <code>int64 start_time = 4;</code>
    * @return The startTime.
    */
+  @java.lang.Override
   public long getStartTime() {
     return startTime_;
   }
@@ -220,51 +212,16 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    *    string swi = 6 [deprecated = true];
+   *    ResultStatusType result_status = 7 [deprecated = true];
+   *    ExecStatusType exec_status = 8 [deprecated = true];
    * </pre>
    *
    * <code>int64 end_time = 5;</code>
    * @return The endTime.
    */
+  @java.lang.Override
   public long getEndTime() {
     return endTime_;
-  }
-
-  public static final int RESULT_STATUS_FIELD_NUMBER = 7;
-  private int resultStatus_;
-  /**
-   * <code>.data.ResultStatusType result_status = 7;</code>
-   * @return The enum numeric value on the wire for resultStatus.
-   */
-  public int getResultStatusValue() {
-    return resultStatus_;
-  }
-  /**
-   * <code>.data.ResultStatusType result_status = 7;</code>
-   * @return The resultStatus.
-   */
-  public eu.tsystems.mms.tic.testframework.report.model.ResultStatusType getResultStatus() {
-    @SuppressWarnings("deprecation")
-    eu.tsystems.mms.tic.testframework.report.model.ResultStatusType result = eu.tsystems.mms.tic.testframework.report.model.ResultStatusType.valueOf(resultStatus_);
-    return result == null ? eu.tsystems.mms.tic.testframework.report.model.ResultStatusType.UNRECOGNIZED : result;
-  }
-
-  public static final int EXEC_STATUS_FIELD_NUMBER = 8;
-  private int execStatus_;
-  /**
-   * <code>.data.ExecStatusType exec_status = 8;</code>
-   * @return The enum numeric value on the wire for execStatus.
-   */
-  public int getExecStatusValue() {
-    return execStatus_;
-  }
-  /**
-   * <code>.data.ExecStatusType exec_status = 8;</code>
-   * @return The execStatus.
-   */
-  public eu.tsystems.mms.tic.testframework.report.model.ExecStatusType getExecStatus() {
-    @SuppressWarnings("deprecation")
-    eu.tsystems.mms.tic.testframework.report.model.ExecStatusType result = eu.tsystems.mms.tic.testframework.report.model.ExecStatusType.valueOf(execStatus_);
-    return result == null ? eu.tsystems.mms.tic.testframework.report.model.ExecStatusType.UNRECOGNIZED : result;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -296,12 +253,6 @@ private static final long serialVersionUID = 0L;
     if (endTime_ != 0L) {
       output.writeInt64(5, endTime_);
     }
-    if (resultStatus_ != eu.tsystems.mms.tic.testframework.report.model.ResultStatusType.RST_NOT_SET.getNumber()) {
-      output.writeEnum(7, resultStatus_);
-    }
-    if (execStatus_ != eu.tsystems.mms.tic.testframework.report.model.ExecStatusType.EST_NOT_SET.getNumber()) {
-      output.writeEnum(8, execStatus_);
-    }
     unknownFields.writeTo(output);
   }
 
@@ -329,14 +280,6 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeInt64Size(5, endTime_);
     }
-    if (resultStatus_ != eu.tsystems.mms.tic.testframework.report.model.ResultStatusType.RST_NOT_SET.getNumber()) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeEnumSize(7, resultStatus_);
-    }
-    if (execStatus_ != eu.tsystems.mms.tic.testframework.report.model.ExecStatusType.EST_NOT_SET.getNumber()) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeEnumSize(8, execStatus_);
-    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -362,8 +305,6 @@ private static final long serialVersionUID = 0L;
         != other.getStartTime()) return false;
     if (getEndTime()
         != other.getEndTime()) return false;
-    if (resultStatus_ != other.resultStatus_) return false;
-    if (execStatus_ != other.execStatus_) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -388,10 +329,6 @@ private static final long serialVersionUID = 0L;
     hash = (37 * hash) + END_TIME_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
         getEndTime());
-    hash = (37 * hash) + RESULT_STATUS_FIELD_NUMBER;
-    hash = (53 * hash) + resultStatus_;
-    hash = (37 * hash) + EXEC_STATUS_FIELD_NUMBER;
-    hash = (53 * hash) + execStatus_;
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -535,10 +472,6 @@ private static final long serialVersionUID = 0L;
 
       endTime_ = 0L;
 
-      resultStatus_ = 0;
-
-      execStatus_ = 0;
-
       return this;
     }
 
@@ -570,8 +503,6 @@ private static final long serialVersionUID = 0L;
       result.name_ = name_;
       result.startTime_ = startTime_;
       result.endTime_ = endTime_;
-      result.resultStatus_ = resultStatus_;
-      result.execStatus_ = execStatus_;
       onBuilt();
       return result;
     }
@@ -636,12 +567,6 @@ private static final long serialVersionUID = 0L;
       }
       if (other.getEndTime() != 0L) {
         setEndTime(other.getEndTime());
-      }
-      if (other.resultStatus_ != 0) {
-        setResultStatusValue(other.getResultStatusValue());
-      }
-      if (other.execStatus_ != 0) {
-        setExecStatusValue(other.getExecStatusValue());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -753,6 +678,7 @@ private static final long serialVersionUID = 0L;
      * <code>int64 created = 2;</code>
      * @return The created.
      */
+    @java.lang.Override
     public long getCreated() {
       return created_;
     }
@@ -859,6 +785,7 @@ private static final long serialVersionUID = 0L;
      * <code>int64 start_time = 4;</code>
      * @return The startTime.
      */
+    @java.lang.Override
     public long getStartTime() {
       return startTime_;
     }
@@ -888,17 +815,22 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      *    string swi = 6 [deprecated = true];
+     *    ResultStatusType result_status = 7 [deprecated = true];
+     *    ExecStatusType exec_status = 8 [deprecated = true];
      * </pre>
      *
      * <code>int64 end_time = 5;</code>
      * @return The endTime.
      */
+    @java.lang.Override
     public long getEndTime() {
       return endTime_;
     }
     /**
      * <pre>
      *    string swi = 6 [deprecated = true];
+     *    ResultStatusType result_status = 7 [deprecated = true];
+     *    ExecStatusType exec_status = 8 [deprecated = true];
      * </pre>
      *
      * <code>int64 end_time = 5;</code>
@@ -914,6 +846,8 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      *    string swi = 6 [deprecated = true];
+     *    ResultStatusType result_status = 7 [deprecated = true];
+     *    ExecStatusType exec_status = 8 [deprecated = true];
      * </pre>
      *
      * <code>int64 end_time = 5;</code>
@@ -922,110 +856,6 @@ private static final long serialVersionUID = 0L;
     public Builder clearEndTime() {
       
       endTime_ = 0L;
-      onChanged();
-      return this;
-    }
-
-    private int resultStatus_ = 0;
-    /**
-     * <code>.data.ResultStatusType result_status = 7;</code>
-     * @return The enum numeric value on the wire for resultStatus.
-     */
-    public int getResultStatusValue() {
-      return resultStatus_;
-    }
-    /**
-     * <code>.data.ResultStatusType result_status = 7;</code>
-     * @param value The enum numeric value on the wire for resultStatus to set.
-     * @return This builder for chaining.
-     */
-    public Builder setResultStatusValue(int value) {
-      resultStatus_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>.data.ResultStatusType result_status = 7;</code>
-     * @return The resultStatus.
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ResultStatusType getResultStatus() {
-      @SuppressWarnings("deprecation")
-      eu.tsystems.mms.tic.testframework.report.model.ResultStatusType result = eu.tsystems.mms.tic.testframework.report.model.ResultStatusType.valueOf(resultStatus_);
-      return result == null ? eu.tsystems.mms.tic.testframework.report.model.ResultStatusType.UNRECOGNIZED : result;
-    }
-    /**
-     * <code>.data.ResultStatusType result_status = 7;</code>
-     * @param value The resultStatus to set.
-     * @return This builder for chaining.
-     */
-    public Builder setResultStatus(eu.tsystems.mms.tic.testframework.report.model.ResultStatusType value) {
-      if (value == null) {
-        throw new NullPointerException();
-      }
-      
-      resultStatus_ = value.getNumber();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>.data.ResultStatusType result_status = 7;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearResultStatus() {
-      
-      resultStatus_ = 0;
-      onChanged();
-      return this;
-    }
-
-    private int execStatus_ = 0;
-    /**
-     * <code>.data.ExecStatusType exec_status = 8;</code>
-     * @return The enum numeric value on the wire for execStatus.
-     */
-    public int getExecStatusValue() {
-      return execStatus_;
-    }
-    /**
-     * <code>.data.ExecStatusType exec_status = 8;</code>
-     * @param value The enum numeric value on the wire for execStatus to set.
-     * @return This builder for chaining.
-     */
-    public Builder setExecStatusValue(int value) {
-      execStatus_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>.data.ExecStatusType exec_status = 8;</code>
-     * @return The execStatus.
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ExecStatusType getExecStatus() {
-      @SuppressWarnings("deprecation")
-      eu.tsystems.mms.tic.testframework.report.model.ExecStatusType result = eu.tsystems.mms.tic.testframework.report.model.ExecStatusType.valueOf(execStatus_);
-      return result == null ? eu.tsystems.mms.tic.testframework.report.model.ExecStatusType.UNRECOGNIZED : result;
-    }
-    /**
-     * <code>.data.ExecStatusType exec_status = 8;</code>
-     * @param value The execStatus to set.
-     * @return This builder for chaining.
-     */
-    public Builder setExecStatus(eu.tsystems.mms.tic.testframework.report.model.ExecStatusType value) {
-      if (value == null) {
-        throw new NullPointerException();
-      }
-      
-      execStatus_ = value.getNumber();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>.data.ExecStatusType exec_status = 8;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearExecStatus() {
-      
-      execStatus_ = 0;
       onChanged();
       return this;
     }

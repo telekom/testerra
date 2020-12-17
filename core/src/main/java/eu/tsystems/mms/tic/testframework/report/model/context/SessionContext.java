@@ -83,14 +83,4 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
          */
         return null;
     }
-
-    @Override
-    public String toString() {
-        return "SessionContext{" +
-                "id='" + getId() + '\'' +
-                ", sessionKey='" + sessionKey + '\'' +
-                ", provider='" + provider + '\'' +
-                ", metaData=" + metaData +
-                '}';
-    }
 }

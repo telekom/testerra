@@ -6,7 +6,7 @@ package eu.tsystems.mms.tic.testframework.report.model;
 /**
  * Protobuf type {@code data.TestContext}
  */
-public  final class TestContext extends
+public final class TestContext extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:data.TestContext)
     TestContextOrBuilder {
@@ -127,6 +127,7 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ContextValues context_values = 1;</code>
    * @return Whether the contextValues field is set.
    */
+  @java.lang.Override
   public boolean hasContextValues() {
     return contextValues_ != null;
   }
@@ -134,12 +135,14 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ContextValues context_values = 1;</code>
    * @return The contextValues.
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ContextValues getContextValues() {
     return contextValues_ == null ? eu.tsystems.mms.tic.testframework.report.model.ContextValues.getDefaultInstance() : contextValues_;
   }
   /**
    * <code>.data.ContextValues context_values = 1;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ContextValuesOrBuilder getContextValuesOrBuilder() {
     return getContextValues();
   }
@@ -185,6 +188,7 @@ private static final long serialVersionUID = 0L;
    * <code>string suite_context_id = 7;</code>
    * @return The suiteContextId.
    */
+  @java.lang.Override
   public java.lang.String getSuiteContextId() {
     java.lang.Object ref = suiteContextId_;
     if (ref instanceof java.lang.String) {
@@ -201,6 +205,7 @@ private static final long serialVersionUID = 0L;
    * <code>string suite_context_id = 7;</code>
    * @return The bytes for suiteContextId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getSuiteContextIdBytes() {
     java.lang.Object ref = suiteContextId_;
@@ -221,6 +226,7 @@ private static final long serialVersionUID = 0L;
    * <code>string execution_context_id = 8 [deprecated = true];</code>
    * @return The executionContextId.
    */
+  @java.lang.Override
   @java.lang.Deprecated public java.lang.String getExecutionContextId() {
     java.lang.Object ref = executionContextId_;
     if (ref instanceof java.lang.String) {
@@ -237,6 +243,7 @@ private static final long serialVersionUID = 0L;
    * <code>string execution_context_id = 8 [deprecated = true];</code>
    * @return The bytes for executionContextId.
    */
+  @java.lang.Override
   @java.lang.Deprecated public com.google.protobuf.ByteString
       getExecutionContextIdBytes() {
     java.lang.Object ref = executionContextId_;

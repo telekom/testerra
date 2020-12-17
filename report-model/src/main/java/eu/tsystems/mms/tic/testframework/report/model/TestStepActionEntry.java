@@ -6,7 +6,7 @@ package eu.tsystems.mms.tic.testframework.report.model;
 /**
  * Protobuf type {@code data.TestStepActionEntry}
  */
-public  final class TestStepActionEntry extends
+public final class TestStepActionEntry extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:data.TestStepActionEntry)
     TestStepActionEntryOrBuilder {
@@ -178,6 +178,7 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ClickPathEvent click_path_event = 1;</code>
    * @return Whether the clickPathEvent field is set.
    */
+  @java.lang.Override
   public boolean hasClickPathEvent() {
     return entryCase_ == 1;
   }
@@ -185,6 +186,7 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ClickPathEvent click_path_event = 1;</code>
    * @return The clickPathEvent.
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent getClickPathEvent() {
     if (entryCase_ == 1) {
        return (eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent) entry_;
@@ -194,6 +196,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>.data.ClickPathEvent click_path_event = 1;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ClickPathEventOrBuilder getClickPathEventOrBuilder() {
     if (entryCase_ == 1) {
        return (eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent) entry_;
@@ -251,6 +254,7 @@ private static final long serialVersionUID = 0L;
    * <code>.data.LogMessage log_message = 3;</code>
    * @return Whether the logMessage field is set.
    */
+  @java.lang.Override
   public boolean hasLogMessage() {
     return entryCase_ == 3;
   }
@@ -258,6 +262,7 @@ private static final long serialVersionUID = 0L;
    * <code>.data.LogMessage log_message = 3;</code>
    * @return The logMessage.
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.LogMessage getLogMessage() {
     if (entryCase_ == 3) {
        return (eu.tsystems.mms.tic.testframework.report.model.LogMessage) entry_;
@@ -267,6 +272,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>.data.LogMessage log_message = 3;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder getLogMessageOrBuilder() {
     if (entryCase_ == 3) {
        return (eu.tsystems.mms.tic.testframework.report.model.LogMessage) entry_;
@@ -279,6 +285,7 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ErrorContext assertion = 4;</code>
    * @return Whether the assertion field is set.
    */
+  @java.lang.Override
   public boolean hasAssertion() {
     return entryCase_ == 4;
   }
@@ -286,6 +293,7 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ErrorContext assertion = 4;</code>
    * @return The assertion.
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getAssertion() {
     if (entryCase_ == 4) {
        return (eu.tsystems.mms.tic.testframework.report.model.ErrorContext) entry_;
@@ -295,6 +303,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>.data.ErrorContext assertion = 4;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getAssertionOrBuilder() {
     if (entryCase_ == 4) {
        return (eu.tsystems.mms.tic.testframework.report.model.ErrorContext) entry_;
@@ -726,6 +735,7 @@ private static final long serialVersionUID = 0L;
      * <code>.data.ClickPathEvent click_path_event = 1;</code>
      * @return Whether the clickPathEvent field is set.
      */
+    @java.lang.Override
     public boolean hasClickPathEvent() {
       return entryCase_ == 1;
     }
@@ -733,6 +743,7 @@ private static final long serialVersionUID = 0L;
      * <code>.data.ClickPathEvent click_path_event = 1;</code>
      * @return The clickPathEvent.
      */
+    @java.lang.Override
     public eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent getClickPathEvent() {
       if (clickPathEventBuilder_ == null) {
         if (entryCase_ == 1) {
@@ -826,6 +837,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>.data.ClickPathEvent click_path_event = 1;</code>
      */
+    @java.lang.Override
     public eu.tsystems.mms.tic.testframework.report.model.ClickPathEventOrBuilder getClickPathEventOrBuilder() {
       if ((entryCase_ == 1) && (clickPathEventBuilder_ != null)) {
         return clickPathEventBuilder_.getMessageOrBuilder();
@@ -862,6 +874,7 @@ private static final long serialVersionUID = 0L;
      * <code>string screenshot_id = 2;</code>
      * @return The screenshotId.
      */
+    @java.lang.Override
     public java.lang.String getScreenshotId() {
       java.lang.Object ref = "";
       if (entryCase_ == 2) {
@@ -883,6 +896,7 @@ private static final long serialVersionUID = 0L;
      * <code>string screenshot_id = 2;</code>
      * @return The bytes for screenshotId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getScreenshotIdBytes() {
       java.lang.Object ref = "";
@@ -951,6 +965,7 @@ private static final long serialVersionUID = 0L;
      * <code>.data.LogMessage log_message = 3;</code>
      * @return Whether the logMessage field is set.
      */
+    @java.lang.Override
     public boolean hasLogMessage() {
       return entryCase_ == 3;
     }
@@ -958,6 +973,7 @@ private static final long serialVersionUID = 0L;
      * <code>.data.LogMessage log_message = 3;</code>
      * @return The logMessage.
      */
+    @java.lang.Override
     public eu.tsystems.mms.tic.testframework.report.model.LogMessage getLogMessage() {
       if (logMessageBuilder_ == null) {
         if (entryCase_ == 3) {
@@ -1051,6 +1067,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>.data.LogMessage log_message = 3;</code>
      */
+    @java.lang.Override
     public eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder getLogMessageOrBuilder() {
       if ((entryCase_ == 3) && (logMessageBuilder_ != null)) {
         return logMessageBuilder_.getMessageOrBuilder();
@@ -1089,6 +1106,7 @@ private static final long serialVersionUID = 0L;
      * <code>.data.ErrorContext assertion = 4;</code>
      * @return Whether the assertion field is set.
      */
+    @java.lang.Override
     public boolean hasAssertion() {
       return entryCase_ == 4;
     }
@@ -1096,6 +1114,7 @@ private static final long serialVersionUID = 0L;
      * <code>.data.ErrorContext assertion = 4;</code>
      * @return The assertion.
      */
+    @java.lang.Override
     public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getAssertion() {
       if (assertionBuilder_ == null) {
         if (entryCase_ == 4) {
@@ -1189,6 +1208,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>.data.ErrorContext assertion = 4;</code>
      */
+    @java.lang.Override
     public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getAssertionOrBuilder() {
       if ((entryCase_ == 4) && (assertionBuilder_ != null)) {
         return assertionBuilder_.getMessageOrBuilder();

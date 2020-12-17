@@ -6,7 +6,7 @@ package eu.tsystems.mms.tic.testframework.report.model;
 /**
  * Protobuf type {@code data.File}
  */
-public  final class File extends
+public final class File extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:data.File)
     FileOrBuilder {
@@ -184,6 +184,7 @@ private static final long serialVersionUID = 0L;
    * <code>string id = 1;</code>
    * @return The id.
    */
+  @java.lang.Override
   public java.lang.String getId() {
     java.lang.Object ref = id_;
     if (ref instanceof java.lang.String) {
@@ -204,6 +205,7 @@ private static final long serialVersionUID = 0L;
    * <code>string id = 1;</code>
    * @return The bytes for id.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getIdBytes() {
     java.lang.Object ref = id_;
@@ -228,6 +230,7 @@ private static final long serialVersionUID = 0L;
    * <code>int64 size = 2;</code>
    * @return The size.
    */
+  @java.lang.Override
   public long getSize() {
     return size_;
   }
@@ -238,6 +241,7 @@ private static final long serialVersionUID = 0L;
    * <code>string mimetype = 3;</code>
    * @return The mimetype.
    */
+  @java.lang.Override
   public java.lang.String getMimetype() {
     java.lang.Object ref = mimetype_;
     if (ref instanceof java.lang.String) {
@@ -254,6 +258,7 @@ private static final long serialVersionUID = 0L;
    * <code>string mimetype = 3;</code>
    * @return The bytes for mimetype.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getMimetypeBytes() {
     java.lang.Object ref = mimetype_;
@@ -278,6 +283,7 @@ private static final long serialVersionUID = 0L;
    * <code>string relative_path = 4;</code>
    * @return The relativePath.
    */
+  @java.lang.Override
   public java.lang.String getRelativePath() {
     java.lang.Object ref = relativePath_;
     if (ref instanceof java.lang.String) {
@@ -298,6 +304,7 @@ private static final long serialVersionUID = 0L;
    * <code>string relative_path = 4;</code>
    * @return The bytes for relativePath.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getRelativePathBytes() {
     java.lang.Object ref = relativePath_;
@@ -318,6 +325,7 @@ private static final long serialVersionUID = 0L;
    * <code>int64 created_timestamp = 5;</code>
    * @return The createdTimestamp.
    */
+  @java.lang.Override
   public long getCreatedTimestamp() {
     return createdTimestamp_;
   }
@@ -328,6 +336,7 @@ private static final long serialVersionUID = 0L;
    * <code>bytes sha1_checksum = 6;</code>
    * @return The sha1Checksum.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString getSha1Checksum() {
     return sha1Checksum_;
   }
@@ -362,6 +371,7 @@ private static final long serialVersionUID = 0L;
    * <code>map&lt;string, string&gt; meta = 7;</code>
    */
 
+  @java.lang.Override
   public boolean containsMeta(
       java.lang.String key) {
     if (key == null) { throw new java.lang.NullPointerException(); }
@@ -370,6 +380,7 @@ private static final long serialVersionUID = 0L;
   /**
    * Use {@link #getMetaMap()} instead.
    */
+  @java.lang.Override
   @java.lang.Deprecated
   public java.util.Map<java.lang.String, java.lang.String> getMeta() {
     return getMetaMap();
@@ -377,6 +388,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>map&lt;string, string&gt; meta = 7;</code>
    */
+  @java.lang.Override
 
   public java.util.Map<java.lang.String, java.lang.String> getMetaMap() {
     return internalGetMeta().getMap();
@@ -384,6 +396,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>map&lt;string, string&gt; meta = 7;</code>
    */
+  @java.lang.Override
 
   public java.lang.String getMetaOrDefault(
       java.lang.String key,
@@ -396,6 +409,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>map&lt;string, string&gt; meta = 7;</code>
    */
+  @java.lang.Override
 
   public java.lang.String getMetaOrThrow(
       java.lang.String key) {
@@ -414,6 +428,7 @@ private static final long serialVersionUID = 0L;
    * <code>int64 last_modified = 9;</code>
    * @return The lastModified.
    */
+  @java.lang.Override
   public long getLastModified() {
     return lastModified_;
   }
@@ -424,6 +439,7 @@ private static final long serialVersionUID = 0L;
    * <code>string project_id = 10;</code>
    * @return The projectId.
    */
+  @java.lang.Override
   public java.lang.String getProjectId() {
     java.lang.Object ref = projectId_;
     if (ref instanceof java.lang.String) {
@@ -440,6 +456,7 @@ private static final long serialVersionUID = 0L;
    * <code>string project_id = 10;</code>
    * @return The bytes for projectId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getProjectIdBytes() {
     java.lang.Object ref = projectId_;
@@ -460,6 +477,7 @@ private static final long serialVersionUID = 0L;
    * <code>string job_id = 11;</code>
    * @return The jobId.
    */
+  @java.lang.Override
   public java.lang.String getJobId() {
     java.lang.Object ref = jobId_;
     if (ref instanceof java.lang.String) {
@@ -476,6 +494,7 @@ private static final long serialVersionUID = 0L;
    * <code>string job_id = 11;</code>
    * @return The bytes for jobId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getJobIdBytes() {
     java.lang.Object ref = jobId_;
@@ -496,6 +515,7 @@ private static final long serialVersionUID = 0L;
    * <code>bool is_directory = 12;</code>
    * @return The isDirectory.
    */
+  @java.lang.Override
   public boolean getIsDirectory() {
     return isDirectory_;
   }
@@ -506,6 +526,7 @@ private static final long serialVersionUID = 0L;
    * <code>string name = 13;</code>
    * @return The name.
    */
+  @java.lang.Override
   public java.lang.String getName() {
     java.lang.Object ref = name_;
     if (ref instanceof java.lang.String) {
@@ -522,6 +543,7 @@ private static final long serialVersionUID = 0L;
    * <code>string name = 13;</code>
    * @return The bytes for name.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getNameBytes() {
     java.lang.Object ref = name_;
@@ -1168,6 +1190,7 @@ private static final long serialVersionUID = 0L;
      * <code>int64 size = 2;</code>
      * @return The size.
      */
+    @java.lang.Override
     public long getSize() {
       return size_;
     }
@@ -1378,6 +1401,7 @@ private static final long serialVersionUID = 0L;
      * <code>int64 created_timestamp = 5;</code>
      * @return The createdTimestamp.
      */
+    @java.lang.Override
     public long getCreatedTimestamp() {
       return createdTimestamp_;
     }
@@ -1408,6 +1432,7 @@ private static final long serialVersionUID = 0L;
      * <code>bytes sha1_checksum = 6;</code>
      * @return The sha1Checksum.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getSha1Checksum() {
       return sha1Checksum_;
     }
@@ -1466,6 +1491,7 @@ private static final long serialVersionUID = 0L;
      * <code>map&lt;string, string&gt; meta = 7;</code>
      */
 
+    @java.lang.Override
     public boolean containsMeta(
         java.lang.String key) {
       if (key == null) { throw new java.lang.NullPointerException(); }
@@ -1474,6 +1500,7 @@ private static final long serialVersionUID = 0L;
     /**
      * Use {@link #getMetaMap()} instead.
      */
+    @java.lang.Override
     @java.lang.Deprecated
     public java.util.Map<java.lang.String, java.lang.String> getMeta() {
       return getMetaMap();
@@ -1481,6 +1508,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>map&lt;string, string&gt; meta = 7;</code>
      */
+    @java.lang.Override
 
     public java.util.Map<java.lang.String, java.lang.String> getMetaMap() {
       return internalGetMeta().getMap();
@@ -1488,6 +1516,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>map&lt;string, string&gt; meta = 7;</code>
      */
+    @java.lang.Override
 
     public java.lang.String getMetaOrDefault(
         java.lang.String key,
@@ -1500,6 +1529,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>map&lt;string, string&gt; meta = 7;</code>
      */
+    @java.lang.Override
 
     public java.lang.String getMetaOrThrow(
         java.lang.String key) {
@@ -1564,6 +1594,7 @@ private static final long serialVersionUID = 0L;
      * <code>int64 last_modified = 9;</code>
      * @return The lastModified.
      */
+    @java.lang.Override
     public long getLastModified() {
       return lastModified_;
     }
@@ -1746,6 +1777,7 @@ private static final long serialVersionUID = 0L;
      * <code>bool is_directory = 12;</code>
      * @return The isDirectory.
      */
+    @java.lang.Override
     public boolean getIsDirectory() {
       return isDirectory_;
     }

@@ -31,10 +31,8 @@ import eu.tsystems.mms.tic.testframework.report.model.BuildInformation;
 import eu.tsystems.mms.tic.testframework.report.model.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.ContextValues;
 import eu.tsystems.mms.tic.testframework.report.model.ErrorContext;
-import eu.tsystems.mms.tic.testframework.report.model.ExecStatusType;
 import eu.tsystems.mms.tic.testframework.report.model.FailureCorridorValue;
 import eu.tsystems.mms.tic.testframework.report.model.File;
-import eu.tsystems.mms.tic.testframework.report.model.FileOrBuilder;
 import eu.tsystems.mms.tic.testframework.report.model.MethodType;
 import eu.tsystems.mms.tic.testframework.report.model.ClickPathEventType;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
@@ -46,15 +44,16 @@ import eu.tsystems.mms.tic.testframework.report.model.RunConfig;
 import eu.tsystems.mms.tic.testframework.report.model.ScriptSource;
 import eu.tsystems.mms.tic.testframework.report.model.ScriptSourceLine;
 import eu.tsystems.mms.tic.testframework.report.model.SessionContext;
+import eu.tsystems.mms.tic.testframework.report.model.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.StackTraceCause;
 import eu.tsystems.mms.tic.testframework.report.model.SuiteContext;
+import eu.tsystems.mms.tic.testframework.report.model.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.TestContext;
 import eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry;
 import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.CustomContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
+import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.lang.annotation.Annotation;
@@ -69,10 +68,8 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.LogEvent;
-import static eu.tsystems.mms.tic.testframework.report.model.SessionContext.newBuilder;
 
 public class ContextExporter {
     private static final Map<TestStatusController.Status, ResultStatusType> STATUS_MAPPING = new LinkedHashMap<>();
@@ -82,12 +79,6 @@ public class ContextExporter {
     private final java.io.File targetScreenshotDir = report.getFinalReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
     private final java.io.File currentVideoDir = report.getFinalReportDirectory(Report.VIDEO_FOLDER_NAME);
     private final java.io.File currentScreenshotDir = report.getFinalReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
-    private Consumer<File.Builder> fileBuilderConsumer;
-
-    public ContextExporter setFileBuilderConsumer(Consumer<File.Builder> fileBuilderConsumer) {
-        this.fileBuilderConsumer = fileBuilderConsumer;
-        return this;
-    }
 
     private static String annotationToString(Annotation annotation) {
         String json = "\"" + annotation.annotationType().getSimpleName() + "\"";
@@ -110,24 +101,11 @@ public class ContextExporter {
         return json;
     }
 
-    private String mapArtifactsPath(String absolutePath) {
-        String path = absolutePath.replace(report.getFinalReportDirectory().toString(), "");
+    public MethodContext.Builder buildMethodContext(eu.tsystems.mms.tic.testframework.report.model.context.MethodContext methodContext) {
+        MethodContext.Builder builder = MethodContext.newBuilder();
 
-        // replace all \ with /
-        path = path.replaceAll("\\\\", "/");
-
-        // remove leading /
-        while (path.startsWith("/")) {
-            path = path.substring(1);
-        }
-
-        return path;
-    }
-
-    public eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder prepareMethodContext(eu.tsystems.mms.tic.testframework.report.model.context.MethodContext methodContext) {
-        eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder builder = eu.tsystems.mms.tic.testframework.report.model.MethodContext.newBuilder();
-
-        apply(createContextValues(methodContext), builder::setContextValues);
+        apply(buildContextValues(methodContext), builder::setContextValues);
+        map(methodContext.getStatus(), this::getMappedStatus, builder::setResultStatus);
         map(methodContext.getMethodType(), type -> MethodType.valueOf(type.name()), builder::setMethodType);
         forEach(methodContext.parameters, parameter -> builder.addParameters(parameter.toString()));
         forEach(methodContext.methodTags, annotation -> builder.addMethodTags(annotationToString(annotation)));
@@ -138,7 +116,7 @@ public class ContextExporter {
         apply(methodContext.threadName, builder::setThreadName);
 
         // test steps
-        methodContext.readTestSteps().forEach(testStep -> builder.addTestSteps(prepareTestStep(testStep)));
+        methodContext.readTestSteps().forEach(testStep -> builder.addTestSteps(buildTestStep(testStep)));
         //value(methodContext.failedStep, MethodContextExporter::createTestStep, builder::setFailedStep);
         builder.setFailedStepIndex(methodContext.getLastFailedTestStepIndex());
 
@@ -156,7 +134,7 @@ public class ContextExporter {
         methodContext.readDependsOnMethodContexts().forEach(m -> builder.addDependsOnMethodContextIds(m.getId()));
 
         // build context
-        if (methodContext.hasErrorContext()) builder.setErrorContext(this.prepareErrorContext(methodContext.getErrorContext()));
+        if (methodContext.hasErrorContext()) builder.setErrorContext(buildErrorContext(methodContext.getErrorContext()));
         methodContext.readSessionContexts().forEach(sessionContext -> builder.addSessionContextIds(sessionContext.getId()));
 
         List<CustomContext> customContexts = methodContext.readCustomContexts().collect(Collectors.toList());
@@ -165,24 +143,50 @@ public class ContextExporter {
         }
 
         methodContext.readVideos().forEach(video -> {
-            final java.io.File targetVideoFile = new java.io.File(targetVideoDir, video.filename);
-            final java.io.File currentVideoFile = new java.io.File(currentVideoDir, video.filename);
-
-            final String videoId = IDUtils.getB64encXID();
-
-            // link file
-            builder.addVideoIds(videoId);
-
-            // add video data
-            final File.Builder fileBuilderVideo = File.newBuilder();
-            fileBuilderVideo.setId(videoId);
-            fileBuilderVideo.setRelativePath(targetVideoFile.getPath());
-            fileBuilderVideo.setMimetype(MediaType.WEBM_VIDEO.toString());
-            fillFileBasicData(fileBuilderVideo, currentVideoFile);
-            if (this.fileBuilderConsumer != null) {
-                this.fileBuilderConsumer.accept(fileBuilderVideo);
-            }
+            Optional<File.Builder> optional = Optional.ofNullable(buildVideo(video));
+            optional.ifPresent(file -> builder.addVideoIds(file.getId()));
         });
+
+        return builder;
+    }
+
+    public File.Builder[] buildScreenshot(Screenshot screenshot) {
+        java.io.File currentScreenshotFile = new java.io.File(currentScreenshotDir, screenshot.filename);
+        java.io.File targetScreenshotFile = new java.io.File(targetScreenshotDir, screenshot.filename);
+        File.Builder screenshotBuilder = prepareFile(currentScreenshotFile);
+        screenshotBuilder.setRelativePath(targetScreenshotFile.getPath());
+        screenshotBuilder.setMimetype(MediaType.PNG.toString());
+        screenshotBuilder.putAllMeta(screenshot.meta());
+
+        java.io.File currentSourceFile = new java.io.File(currentScreenshotDir, screenshot.sourceFilename);
+        java.io.File targetSourceFile = new java.io.File(targetScreenshotDir, screenshot.sourceFilename);
+        File.Builder sourceBuilder = prepareFile(currentSourceFile);
+        sourceBuilder.setRelativePath(targetSourceFile.getPath());
+        sourceBuilder.setMimetype(MediaType.PLAIN_TEXT_UTF_8.toString());
+        screenshotBuilder.putMeta("sourcesRefId", sourceBuilder.getId());
+
+        File.Builder[] fileBuilders = new File.Builder[2];
+        fileBuilders[0] = screenshotBuilder;
+        fileBuilders[1] = sourceBuilder;
+        return fileBuilders;
+    }
+
+    public File.Builder buildVideo(Video video) {
+        java.io.File currentVideoFile = new java.io.File(currentVideoDir, video.filename);
+        java.io.File targetVideoFile = new java.io.File(targetVideoDir, video.filename);
+        File.Builder builder = prepareFile(currentVideoFile);
+        builder.setRelativePath(targetVideoFile.getPath());
+        builder.setMimetype(MediaType.WEBM_VIDEO.toString());
+        return builder;
+    }
+
+    protected File.Builder prepareFile(java.io.File source) {
+        String fileId = IDUtils.getB64encXID();
+
+        // add video data
+        File.Builder builder = File.newBuilder();
+        builder.setId(fileId);
+        fillFileBasicData(builder, source);
 
         return builder;
     }
@@ -206,18 +210,18 @@ public class ContextExporter {
 //        return builder;
 //    }
 
-    public ScriptSource.Builder prepareScriptSource(eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource scriptSource) {
+    public ScriptSource.Builder buildScriptSource(eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource scriptSource) {
         ScriptSource.Builder builder = ScriptSource.newBuilder();
 
         apply(scriptSource.getFileName(), builder::setFileName);
         apply(scriptSource.getMethodName(), builder::setMethodName);
-        scriptSource.readLines().forEach(line -> builder.addLines(prepareScriptSourceLine(line)));
+        scriptSource.readLines().forEach(line -> builder.addLines(buildScriptSourceLine(line)));
         builder.setMark(scriptSource.getMarkedLineNumber());
 
         return builder;
     }
 
-    public ScriptSourceLine.Builder prepareScriptSourceLine(eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource.Line line) {
+    public ScriptSourceLine.Builder buildScriptSourceLine(eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource.Line line) {
         ScriptSourceLine.Builder builder = ScriptSourceLine.newBuilder();
 
         apply(line.getLine(), builder::setLine);
@@ -227,18 +231,18 @@ public class ContextExporter {
         return builder;
     }
 
-    public ErrorContext.Builder prepareErrorContext(eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext errorContext) {
+    public ErrorContext.Builder buildErrorContext(eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext errorContext) {
         ErrorContext.Builder builder = ErrorContext.newBuilder();
 
 //        apply(errorContext.getReadableErrorMessage(), builder::setReadableErrorMessage);
 //        apply(errorContext.getAdditionalErrorMessage(), builder::setAdditionalErrorMessage);
         traceThrowable(errorContext.getThrowable(), throwable -> {
-            builder.addStackTrace(this.prepareStackTraceCause(throwable));
+            builder.addStackTrace(this.buildStackTraceCause(throwable));
         });
 //        map(errorContext.getThrowable(), this::prepareStackTraceCause, builder::addAllCause);
 //        apply(errorContext.errorFingerprint, builder::setErrorFingerprint);
-        errorContext.getScriptSource().ifPresent(scriptSource -> builder.setScriptSource(this.prepareScriptSource(scriptSource)));
-        errorContext.getExecutionObjectSource().ifPresent(scriptSource -> builder.setExecutionObjectSource(this.prepareScriptSource(scriptSource)));
+        errorContext.getScriptSource().ifPresent(scriptSource -> builder.setScriptSource(this.buildScriptSource(scriptSource)));
+        errorContext.getExecutionObjectSource().ifPresent(scriptSource -> builder.setExecutionObjectSource(this.buildScriptSource(scriptSource)));
         if (errorContext.getTicketId() != null) builder.setTicketId(errorContext.getTicketId().toString());
         apply(errorContext.getDescription(), builder::setDescription);
         builder.setOptional(errorContext.isOptional());
@@ -246,16 +250,16 @@ public class ContextExporter {
         return builder;
     }
 
-    public TestStep.Builder prepareTestStep(eu.tsystems.mms.tic.testframework.report.model.steps.TestStep testStep) {
+    public TestStep.Builder buildTestStep(eu.tsystems.mms.tic.testframework.report.model.steps.TestStep testStep) {
         TestStep.Builder builder = TestStep.newBuilder();
 
         apply(testStep.getName(), builder::setName);
-        forEach(testStep.getTestStepActions(), testStepAction -> builder.addActions(prepareTestStepAction(testStepAction)));
+        forEach(testStep.getTestStepActions(), testStepAction -> builder.addActions(buildTestStepAction(testStepAction)));
 
         return builder;
     }
 
-    public ClickPathEvent.Builder prepareClickPathEvent(eu.tsystems.mms.tic.testframework.clickpath.ClickPathEvent clickPathEvent) {
+    public ClickPathEvent.Builder buildClickPathEvent(eu.tsystems.mms.tic.testframework.clickpath.ClickPathEvent clickPathEvent) {
         ClickPathEvent.Builder builder = eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.newBuilder();
         switch (clickPathEvent.getType()) {
             case WINDOW:
@@ -281,7 +285,7 @@ public class ContextExporter {
         return builder;
     }
 
-    public TestStepAction.Builder prepareTestStepAction(eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction testStepAction) {
+    public TestStepAction.Builder buildTestStepAction(eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction testStepAction) {
         TestStepAction.Builder actionBuilder = TestStepAction.newBuilder();
 
         apply(testStepAction.getName(), actionBuilder::setName);
@@ -290,57 +294,19 @@ public class ContextExporter {
         testStepAction.readEntries().forEach(entry -> {
             TestStepActionEntry.Builder entryBuilder = TestStepActionEntry.newBuilder();
             if (entry instanceof eu.tsystems.mms.tic.testframework.clickpath.ClickPathEvent) {
-                Optional<ClickPathEvent.Builder> optional = Optional.ofNullable(this.prepareClickPathEvent((eu.tsystems.mms.tic.testframework.clickpath.ClickPathEvent) entry));
+                Optional<ClickPathEvent.Builder> optional = Optional.ofNullable(this.buildClickPathEvent((eu.tsystems.mms.tic.testframework.clickpath.ClickPathEvent) entry));
                 optional.ifPresent(entryBuilder::setClickPathEvent);
             } else if (entry instanceof Screenshot) {
-                Screenshot screenshot = (Screenshot) entry;
-                // build screenshot and sources files
-                final java.io.File targetScreenshotFile = new java.io.File(targetScreenshotDir, screenshot.filename);
-                final java.io.File currentScreenshotFile = new java.io.File(currentScreenshotDir, screenshot.filename);
-
-                //final java.io.File realSourceFile = new java.io.File(Report.SCREENSHOTS_DIRECTORY, screenshot.sourceFilename);
-                final java.io.File targetSourceFile = new java.io.File(targetScreenshotDir, screenshot.filename);
-                final java.io.File currentSourceFile = new java.io.File(currentScreenshotDir, screenshot.filename);
-                final String mappedSourcePath = mapArtifactsPath(targetSourceFile.getAbsolutePath());
-
-                final String screenshotId = IDUtils.getB64encXID();
-                final String sourcesRefId = IDUtils.getB64encXID();
-
-                // create ref link
-                //builder.addScreenshotIds(screenshotId);
-
-                // add screenshot data
-                final File.Builder fileBuilderScreenshot = File.newBuilder();
-                fileBuilderScreenshot.setId(screenshotId);
-                fileBuilderScreenshot.setRelativePath(targetScreenshotFile.getPath());
-                fileBuilderScreenshot.setMimetype(MediaType.PNG.toString());
-                fileBuilderScreenshot.putAllMeta(screenshot.meta());
-                fileBuilderScreenshot.putMeta("sourcesRefId", sourcesRefId);
-                fillFileBasicData(fileBuilderScreenshot, currentScreenshotFile);
-
-                if (this.fileBuilderConsumer != null) {
-                    this.fileBuilderConsumer.accept(fileBuilderScreenshot);
-                }
-
-                // add sources data
-                final File.Builder fileBuilderSources = File.newBuilder();
-                fileBuilderSources.setId(sourcesRefId);
-                fileBuilderSources.setRelativePath(mappedSourcePath);
-                fileBuilderSources.setMimetype(MediaType.PLAIN_TEXT_UTF_8.toString());
-                fillFileBasicData(fileBuilderSources, currentSourceFile);
-
-                if (this.fileBuilderConsumer != null) {
-                    this.fileBuilderConsumer.accept(fileBuilderSources);
-                }
-                entryBuilder.setScreenshotId(screenshotId);
-
+                File.Builder[] builders = buildScreenshot((Screenshot) entry);
+                Optional<File.Builder> optional = Optional.ofNullable(builders[0]);
+                optional.ifPresent(file -> entryBuilder.setScreenshotId(file.getId()));
             } else if (entry instanceof LogEvent) {
                 LogEvent logEvent = (LogEvent)entry;
-                Optional<LogMessage.Builder> optional = Optional.ofNullable(prepareLogEvent(logEvent));
+                Optional<LogMessage.Builder> optional = Optional.ofNullable(buildLogEvent(logEvent));
                 optional.ifPresent(entryBuilder::setLogMessage);
             } else if (entry instanceof eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext) {
                 eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext errorContext = (eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext)entry;
-                Optional<ErrorContext.Builder> optional = Optional.ofNullable(prepareErrorContext(errorContext));
+                Optional<ErrorContext.Builder> optional = Optional.ofNullable(buildErrorContext(errorContext));
                 optional.ifPresent(entryBuilder::setAssertion);
             }
 
@@ -393,7 +359,7 @@ public class ContextExporter {
         }
     }
 
-    protected ContextValues createContextValues(AbstractContext context) {
+    protected ContextValues.Builder buildContextValues(AbstractContext context) {
         ContextValues.Builder builder = ContextValues.newBuilder();
 
         apply(context.getId(), builder::setId);
@@ -403,50 +369,50 @@ public class ContextExporter {
         map(context.getStartTime(), Date::getTime, builder::setStartTime);
         map(context.getEndTime(), Date::getTime, builder::setEndTime);
 
-        if (context instanceof MethodContext) {
-            MethodContext methodContext = (MethodContext) context;
-
-            // result status
-            map(methodContext.getStatus(), this::getMappedStatus, builder::setResultStatus);
-
-            // exec status
-            if (methodContext.getStatus() == TestStatusController.Status.NO_RUN) {
-                builder.setExecStatus(ExecStatusType.RUNNING);
-            } else {
-                builder.setExecStatus(ExecStatusType.FINISHED);
-            }
-        } else if (context instanceof ExecutionContext) {
-            ExecutionContext executionContext = (ExecutionContext) context;
-            if (executionContext.crashed) {
-                /*
-                crashed state
-                 */
-                builder.setExecStatus(ExecStatusType.CRASHED);
-            } else {
-                if (TestStatusController.getTestsSkipped() == executionContext.estimatedTestMethodCount) {
-                    builder.setResultStatus(ResultStatusType.SKIPPED);
-                    builder.setExecStatus(ExecStatusType.VOID);
-                } else if (TestStatusController.getTestsFailed() + TestStatusController.getTestsSuccessful() == 0) {
-                    builder.setResultStatus(ResultStatusType.NO_RUN);
-                    builder.setExecStatus(ExecStatusType.VOID);
-
-                } else {
-                    ResultStatusType resultStatusType = STATUS_MAPPING.get(executionContext.getStatus());
-                    builder.setResultStatus(resultStatusType);
-
-                    // exec status
-                    if (executionContext.getEndTime() != null) {
-                        builder.setExecStatus(ExecStatusType.FINISHED);
-                    } else {
-                        builder.setExecStatus(ExecStatusType.RUNNING);
-                    }
-                }
-            }
-        }
-        return builder.build();
+//        if (context instanceof eu.tsystems.mms.tic.testframework.report.model.context.MethodContext) {
+//            eu.tsystems.mms.tic.testframework.report.model.context.MethodContext methodContext = (eu.tsystems.mms.tic.testframework.report.model.context.MethodContext) context;
+//
+//            // result status
+//            map(methodContext.getStatus(), this::getMappedStatus, builder::setResultStatus);
+//
+//            // exec status
+//            if (methodContext.getStatus() == TestStatusController.Status.NO_RUN) {
+//                builder.setExecStatus(ExecStatusType.RUNNING);
+//            } else {
+//                builder.setExecStatus(ExecStatusType.FINISHED);
+//            }
+//        } else if (context instanceof eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext) {
+//            eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext executionContext = (eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext) context;
+//            if (executionContext.crashed) {
+//                /*
+//                crashed state
+//                 */
+//                builder.setExecStatus(ExecStatusType.CRASHED);
+//            } else {
+//                if (TestStatusController.getTestsSkipped() == executionContext.estimatedTestMethodCount) {
+//                    builder.setResultStatus(ResultStatusType.SKIPPED);
+//                    builder.setExecStatus(ExecStatusType.VOID);
+//                } else if (TestStatusController.getTestsFailed() + TestStatusController.getTestsSuccessful() == 0) {
+//                    builder.setResultStatus(ResultStatusType.NO_RUN);
+//                    builder.setExecStatus(ExecStatusType.VOID);
+//
+//                } else {
+//                    ResultStatusType resultStatusType = STATUS_MAPPING.get(executionContext.getStatus());
+//                    builder.setResultStatus(resultStatusType);
+//
+//                    // exec status
+//                    if (executionContext.getEndTime() != null) {
+//                        builder.setExecStatus(ExecStatusType.FINISHED);
+//                    } else {
+//                        builder.setExecStatus(ExecStatusType.RUNNING);
+//                    }
+//                }
+//            }
+//        }
+        return builder;
     }
 
-    public LogMessage.Builder prepareLogEvent(LogEvent logEvent) {
+    public LogMessage.Builder buildLogEvent(LogEvent logEvent) {
         LogMessage.Builder builder = LogMessage.newBuilder();
         builder.setLoggerName(logEvent.getLoggerName());
         builder.setMessage(logEvent.getMessage().getFormattedMessage());
@@ -463,12 +429,12 @@ public class ContextExporter {
         builder.setThreadName(logEvent.getThreadName());
 
         traceThrowable(logEvent.getThrown(), throwable -> {
-            builder.addStackTrace(this.prepareStackTraceCause(throwable));
+            builder.addStackTrace(this.buildStackTraceCause(throwable));
         });
         return builder;
     }
 
-    public StackTraceCause.Builder prepareStackTraceCause(Throwable throwable) {
+    public StackTraceCause.Builder buildStackTraceCause(Throwable throwable) {
         StackTraceCause.Builder builder = StackTraceCause.newBuilder();
         apply(throwable.getClass().getName(), builder::setClassName);
         apply(throwable.getMessage(), builder::setMessage);
@@ -480,17 +446,17 @@ public class ContextExporter {
         return builder;
     }
 
-    protected void traceThrowable(Throwable throwable, Consumer<Throwable> consumer) {
+    private void traceThrowable(Throwable throwable, Consumer<Throwable> consumer) {
         while (throwable != null) {
             consumer.accept(throwable);
             throwable = throwable.getCause();
         }
     }
 
-    public ClassContext.Builder prepareClassContext(eu.tsystems.mms.tic.testframework.report.model.context.ClassContext classContext) {
+    public ClassContext.Builder buildClassContext(eu.tsystems.mms.tic.testframework.report.model.context.ClassContext classContext) {
         ClassContext.Builder builder = ClassContext.newBuilder();
 
-        apply(createContextValues(classContext), builder::setContextValues);
+        apply(buildContextValues(classContext), builder::setContextValues);
         apply(classContext.getTestClass().getName(), builder::setFullClassName);
         apply(classContext.getTestContext().getId(), builder::setTestContextId);
 
@@ -500,10 +466,10 @@ public class ContextExporter {
         return builder;
     }
 
-    public eu.tsystems.mms.tic.testframework.report.model.ExecutionContext.Builder prepareExecutionContext(eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext executionContext) {
-        eu.tsystems.mms.tic.testframework.report.model.ExecutionContext.Builder builder = eu.tsystems.mms.tic.testframework.report.model.ExecutionContext.newBuilder();
+    public ExecutionContext.Builder buildExecutionContext(eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext executionContext) {
+        ExecutionContext.Builder builder = ExecutionContext.newBuilder();
 
-        apply(createContextValues(executionContext), builder::setContextValues);
+        apply(buildContextValues(executionContext), builder::setContextValues);
 //        forEach(executionContext.suiteContexts, suiteContext -> builder.addSuiteContextIds(suiteContext.getId()));
 //        forEach(executionContext.mergedClassContexts, classContext -> builder.addMergedClassContextIds(classContext.id));
 //        map(executionContext.exitPoints, this::createContextClip, builder::addAllExitPoints);
@@ -512,7 +478,7 @@ public class ContextExporter {
         executionContext.readExclusiveSessionContexts().forEach(sessionContext -> builder.addExclusiveSessionContextIds(sessionContext.getId()));
         apply(executionContext.estimatedTestMethodCount, builder::setEstimatedTestsCount);
         executionContext.readMethodContextLessLogs().forEach(logEvent -> {
-            Optional<LogMessage.Builder> optional = Optional.ofNullable(prepareLogEvent(logEvent));
+            Optional<LogMessage.Builder> optional = Optional.ofNullable(buildLogEvent(logEvent));
             optional.ifPresent(builder::addLogMessages);
         });
         return builder;
@@ -552,10 +518,10 @@ public class ContextExporter {
         return builder;
     }
 
-    public SessionContext.Builder prepareSessionContext(eu.tsystems.mms.tic.testframework.report.model.context.SessionContext sessionContext) {
-        SessionContext.Builder builder = newBuilder();
+    public SessionContext.Builder buildSessionContext(eu.tsystems.mms.tic.testframework.report.model.context.SessionContext sessionContext) {
+        SessionContext.Builder builder = SessionContext.newBuilder();
 
-        apply(createContextValues(sessionContext), builder::setContextValues);
+        apply(buildContextValues(sessionContext), builder::setContextValues);
         apply(sessionContext.getSessionKey(), builder::setSessionKey);
         apply(sessionContext.getProvider(), builder::setProvider);
         apply(sessionContext.getSessionId(), builder::setSessionId);
@@ -575,19 +541,19 @@ public class ContextExporter {
         return builder;
     }
 
-    public SuiteContext.Builder prepareSuiteContext(eu.tsystems.mms.tic.testframework.report.model.context.SuiteContext suiteContext) {
+    public SuiteContext.Builder buildSuiteContext(eu.tsystems.mms.tic.testframework.report.model.context.SuiteContext suiteContext) {
         SuiteContext.Builder builder = SuiteContext.newBuilder();
 
-        apply(createContextValues(suiteContext), builder::setContextValues);
+        apply(buildContextValues(suiteContext), builder::setContextValues);
         builder.setExecutionContextId(suiteContext.getExecutionContext().getId());
 
         return builder;
     }
 
-    public TestContext.Builder prepareTestContext(eu.tsystems.mms.tic.testframework.report.model.context.TestContext testContext) {
+    public TestContext.Builder buildTestContext(eu.tsystems.mms.tic.testframework.report.model.context.TestContext testContext) {
         TestContext.Builder builder = TestContext.newBuilder();
 
-        apply(createContextValues(testContext), builder::setContextValues);
+        apply(buildContextValues(testContext), builder::setContextValues);
         builder.setSuiteContextId(testContext.getSuiteContext().getId());
 
         return builder;

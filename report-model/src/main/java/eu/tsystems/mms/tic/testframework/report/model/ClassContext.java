@@ -6,7 +6,7 @@ package eu.tsystems.mms.tic.testframework.report.model;
 /**
  * Protobuf type {@code data.ClassContext}
  */
-public  final class ClassContext extends
+public final class ClassContext extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:data.ClassContext)
     ClassContextOrBuilder {
@@ -141,6 +141,7 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ContextValues context_values = 1;</code>
    * @return Whether the contextValues field is set.
    */
+  @java.lang.Override
   public boolean hasContextValues() {
     return contextValues_ != null;
   }
@@ -148,12 +149,14 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ContextValues context_values = 1;</code>
    * @return The contextValues.
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ContextValues getContextValues() {
     return contextValues_ == null ? eu.tsystems.mms.tic.testframework.report.model.ContextValues.getDefaultInstance() : contextValues_;
   }
   /**
    * <code>.data.ContextValues context_values = 1;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ContextValuesOrBuilder getContextValuesOrBuilder() {
     return getContextValues();
   }
@@ -199,6 +202,7 @@ private static final long serialVersionUID = 0L;
    * <code>string full_class_name = 7;</code>
    * @return The fullClassName.
    */
+  @java.lang.Override
   public java.lang.String getFullClassName() {
     java.lang.Object ref = fullClassName_;
     if (ref instanceof java.lang.String) {
@@ -215,6 +219,7 @@ private static final long serialVersionUID = 0L;
    * <code>string full_class_name = 7;</code>
    * @return The bytes for fullClassName.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getFullClassNameBytes() {
     java.lang.Object ref = fullClassName_;
@@ -239,6 +244,7 @@ private static final long serialVersionUID = 0L;
    * <code>string test_context_id = 9;</code>
    * @return The testContextId.
    */
+  @java.lang.Override
   public java.lang.String getTestContextId() {
     java.lang.Object ref = testContextId_;
     if (ref instanceof java.lang.String) {
@@ -259,6 +265,7 @@ private static final long serialVersionUID = 0L;
    * <code>string test_context_id = 9;</code>
    * @return The bytes for testContextId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getTestContextIdBytes() {
     java.lang.Object ref = testContextId_;
@@ -279,6 +286,7 @@ private static final long serialVersionUID = 0L;
    * <code>string execution_context_id = 10 [deprecated = true];</code>
    * @return The executionContextId.
    */
+  @java.lang.Override
   @java.lang.Deprecated public java.lang.String getExecutionContextId() {
     java.lang.Object ref = executionContextId_;
     if (ref instanceof java.lang.String) {
@@ -295,6 +303,7 @@ private static final long serialVersionUID = 0L;
    * <code>string execution_context_id = 10 [deprecated = true];</code>
    * @return The bytes for executionContextId.
    */
+  @java.lang.Override
   @java.lang.Deprecated public com.google.protobuf.ByteString
       getExecutionContextIdBytes() {
     java.lang.Object ref = executionContextId_;
@@ -319,6 +328,7 @@ private static final long serialVersionUID = 0L;
    * <code>string test_context_name = 11;</code>
    * @return The testContextName.
    */
+  @java.lang.Override
   public java.lang.String getTestContextName() {
     java.lang.Object ref = testContextName_;
     if (ref instanceof java.lang.String) {
@@ -339,6 +349,7 @@ private static final long serialVersionUID = 0L;
    * <code>string test_context_name = 11;</code>
    * @return The bytes for testContextName.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getTestContextNameBytes() {
     java.lang.Object ref = testContextName_;

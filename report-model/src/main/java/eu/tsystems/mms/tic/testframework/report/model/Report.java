@@ -19,6 +19,31 @@ public final class Report {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_ExecutionAggregate_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_data_ExecutionAggregate_SuiteContextsEntry_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_data_ExecutionAggregate_SuiteContextsEntry_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_data_ExecutionAggregate_TestContextsEntry_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_data_ExecutionAggregate_TestContextsEntry_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_data_ExecutionAggregate_ClassContextsEntry_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_data_ExecutionAggregate_ClassContextsEntry_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_data_ExecutionAggregate_MethodContextsEntry_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_data_ExecutionAggregate_MethodContextsEntry_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_data_ExecutionAggregate_SessionContextsEntry_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_data_ExecutionAggregate_SessionContextsEntry_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -28,16 +53,29 @@ public final class Report {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\014report.proto\022\004data\032\017framework.proto\"\247\002" +
+      "\n\014report.proto\022\004data\032\017framework.proto\"\232\006" +
       "\n\022ExecutionAggregate\0221\n\021execution_contex" +
-      "t\030\001 \001(\0132\026.data.ExecutionContext\022*\n\016suite" +
-      "_contexts\030\002 \003(\0132\022.data.SuiteContext\022(\n\rt" +
-      "est_contexts\030\003 \003(\0132\021.data.TestContext\022*\n" +
-      "\016class_contexts\030\004 \003(\0132\022.data.ClassContex" +
-      "t\022,\n\017method_contexts\030\005 \003(\0132\023.data.Method" +
-      "Context\022.\n\020session_contexts\030\006 \003(\0132\024.data" +
-      ".SessionContextB2\n.eu.tsystems.mms.tic.t" +
-      "estframework.report.modelP\001b\006proto3"
+      "t\030\001 \001(\0132\026.data.ExecutionContext\022C\n\016suite" +
+      "_contexts\030\002 \003(\0132+.data.ExecutionAggregat" +
+      "e.SuiteContextsEntry\022A\n\rtest_contexts\030\003 " +
+      "\003(\0132*.data.ExecutionAggregate.TestContex" +
+      "tsEntry\022C\n\016class_contexts\030\004 \003(\0132+.data.E" +
+      "xecutionAggregate.ClassContextsEntry\022E\n\017" +
+      "method_contexts\030\005 \003(\0132,.data.ExecutionAg" +
+      "gregate.MethodContextsEntry\022G\n\020session_c" +
+      "ontexts\030\006 \003(\0132-.data.ExecutionAggregate." +
+      "SessionContextsEntry\032H\n\022SuiteContextsEnt" +
+      "ry\022\013\n\003key\030\001 \001(\t\022!\n\005value\030\002 \001(\0132\022.data.Su" +
+      "iteContext:\0028\001\032F\n\021TestContextsEntry\022\013\n\003k" +
+      "ey\030\001 \001(\t\022 \n\005value\030\002 \001(\0132\021.data.TestConte" +
+      "xt:\0028\001\032H\n\022ClassContextsEntry\022\013\n\003key\030\001 \001(" +
+      "\t\022!\n\005value\030\002 \001(\0132\022.data.ClassContext:\0028\001" +
+      "\032J\n\023MethodContextsEntry\022\013\n\003key\030\001 \001(\t\022\"\n\005" +
+      "value\030\002 \001(\0132\023.data.MethodContext:\0028\001\032L\n\024" +
+      "SessionContextsEntry\022\013\n\003key\030\001 \001(\t\022#\n\005val" +
+      "ue\030\002 \001(\0132\024.data.SessionContext:\0028\001B2\n.eu" +
+      ".tsystems.mms.tic.testframework.report.m" +
+      "odelP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -50,6 +88,36 @@ public final class Report {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_data_ExecutionAggregate_descriptor,
         new java.lang.String[] { "ExecutionContext", "SuiteContexts", "TestContexts", "ClassContexts", "MethodContexts", "SessionContexts", });
+    internal_static_data_ExecutionAggregate_SuiteContextsEntry_descriptor =
+      internal_static_data_ExecutionAggregate_descriptor.getNestedTypes().get(0);
+    internal_static_data_ExecutionAggregate_SuiteContextsEntry_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_data_ExecutionAggregate_SuiteContextsEntry_descriptor,
+        new java.lang.String[] { "Key", "Value", });
+    internal_static_data_ExecutionAggregate_TestContextsEntry_descriptor =
+      internal_static_data_ExecutionAggregate_descriptor.getNestedTypes().get(1);
+    internal_static_data_ExecutionAggregate_TestContextsEntry_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_data_ExecutionAggregate_TestContextsEntry_descriptor,
+        new java.lang.String[] { "Key", "Value", });
+    internal_static_data_ExecutionAggregate_ClassContextsEntry_descriptor =
+      internal_static_data_ExecutionAggregate_descriptor.getNestedTypes().get(2);
+    internal_static_data_ExecutionAggregate_ClassContextsEntry_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_data_ExecutionAggregate_ClassContextsEntry_descriptor,
+        new java.lang.String[] { "Key", "Value", });
+    internal_static_data_ExecutionAggregate_MethodContextsEntry_descriptor =
+      internal_static_data_ExecutionAggregate_descriptor.getNestedTypes().get(3);
+    internal_static_data_ExecutionAggregate_MethodContextsEntry_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_data_ExecutionAggregate_MethodContextsEntry_descriptor,
+        new java.lang.String[] { "Key", "Value", });
+    internal_static_data_ExecutionAggregate_SessionContextsEntry_descriptor =
+      internal_static_data_ExecutionAggregate_descriptor.getNestedTypes().get(4);
+    internal_static_data_ExecutionAggregate_SessionContextsEntry_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_data_ExecutionAggregate_SessionContextsEntry_descriptor,
+        new java.lang.String[] { "Key", "Value", });
     eu.tsystems.mms.tic.testframework.report.model.Framework.getDescriptor();
   }
 

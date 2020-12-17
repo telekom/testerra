@@ -6,7 +6,7 @@ package eu.tsystems.mms.tic.testframework.report.model;
 /**
  * Protobuf type {@code data.TestStepAction}
  */
-public  final class TestStepAction extends
+public final class TestStepAction extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:data.TestStepAction)
     TestStepActionOrBuilder {
@@ -112,6 +112,7 @@ private static final long serialVersionUID = 0L;
    * <code>string name = 1;</code>
    * @return The name.
    */
+  @java.lang.Override
   public java.lang.String getName() {
     java.lang.Object ref = name_;
     if (ref instanceof java.lang.String) {
@@ -128,6 +129,7 @@ private static final long serialVersionUID = 0L;
    * <code>string name = 1;</code>
    * @return The bytes for name.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getNameBytes() {
     java.lang.Object ref = name_;
@@ -152,6 +154,7 @@ private static final long serialVersionUID = 0L;
    * <code>int64 timestamp = 3;</code>
    * @return The timestamp.
    */
+  @java.lang.Override
   public long getTimestamp() {
     return timestamp_;
   }
@@ -167,6 +170,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .data.TestStepActionEntry entries = 7;</code>
    */
+  @java.lang.Override
   public java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry> getEntriesList() {
     return entries_;
   }
@@ -179,6 +183,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .data.TestStepActionEntry entries = 7;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntryOrBuilder> 
       getEntriesOrBuilderList() {
     return entries_;
@@ -192,6 +197,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .data.TestStepActionEntry entries = 7;</code>
    */
+  @java.lang.Override
   public int getEntriesCount() {
     return entries_.size();
   }
@@ -204,6 +210,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .data.TestStepActionEntry entries = 7;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry getEntries(int index) {
     return entries_.get(index);
   }
@@ -216,6 +223,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .data.TestStepActionEntry entries = 7;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntryOrBuilder getEntriesOrBuilder(
       int index) {
     return entries_.get(index);
@@ -683,6 +691,7 @@ private static final long serialVersionUID = 0L;
      * <code>int64 timestamp = 3;</code>
      * @return The timestamp.
      */
+    @java.lang.Override
     public long getTimestamp() {
       return timestamp_;
     }

@@ -6,7 +6,7 @@ package eu.tsystems.mms.tic.testframework.report.model;
 /**
  * Protobuf type {@code data.RunConfig}
  */
-public  final class RunConfig extends
+public final class RunConfig extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:data.RunConfig)
     RunConfigOrBuilder {
@@ -113,6 +113,7 @@ private static final long serialVersionUID = 0L;
    * <code>string runcfg = 1;</code>
    * @return The runcfg.
    */
+  @java.lang.Override
   public java.lang.String getRuncfg() {
     java.lang.Object ref = runcfg_;
     if (ref instanceof java.lang.String) {
@@ -129,6 +130,7 @@ private static final long serialVersionUID = 0L;
    * <code>string runcfg = 1;</code>
    * @return The bytes for runcfg.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getRuncfgBytes() {
     java.lang.Object ref = runcfg_;
@@ -149,6 +151,7 @@ private static final long serialVersionUID = 0L;
    * <code>.data.BuildInformation build_information = 2;</code>
    * @return Whether the buildInformation field is set.
    */
+  @java.lang.Override
   public boolean hasBuildInformation() {
     return buildInformation_ != null;
   }
@@ -156,12 +159,14 @@ private static final long serialVersionUID = 0L;
    * <code>.data.BuildInformation build_information = 2;</code>
    * @return The buildInformation.
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.BuildInformation getBuildInformation() {
     return buildInformation_ == null ? eu.tsystems.mms.tic.testframework.report.model.BuildInformation.getDefaultInstance() : buildInformation_;
   }
   /**
    * <code>.data.BuildInformation build_information = 2;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.BuildInformationOrBuilder getBuildInformationOrBuilder() {
     return getBuildInformation();
   }
@@ -172,6 +177,7 @@ private static final long serialVersionUID = 0L;
    * <code>string report_name = 3;</code>
    * @return The reportName.
    */
+  @java.lang.Override
   public java.lang.String getReportName() {
     java.lang.Object ref = reportName_;
     if (ref instanceof java.lang.String) {
@@ -188,6 +194,7 @@ private static final long serialVersionUID = 0L;
    * <code>string report_name = 3;</code>
    * @return The bytes for reportName.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getReportNameBytes() {
     java.lang.Object ref = reportName_;

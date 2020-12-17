@@ -28,8 +28,8 @@
         <mdc-data-table-content>
             <mdc-data-table-row repeat.for="methodDetails of methodDetailsList">
                 <mdc-data-table-cell>
-                    <a class="badge status-${methodDetails.methodContext.contextValues.resultStatus|statusClass}"
-                    >${methodDetails.methodContext.contextValues.resultStatus|statusName}</a>
+                    <a class="badge status-${methodDetails.methodContext.resultStatus|statusClass}"
+                    >${methodDetails.methodContext.resultStatus|statusName}</a>
                 </mdc-data-table-cell>
                 <mdc-data-table-cell class="p1" mdc-body1>
                     <div class="vcenter">

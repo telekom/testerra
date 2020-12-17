@@ -395,4 +395,15 @@ public interface MethodContextOrBuilder extends
    * @return The failedStepIndex.
    */
   int getFailedStepIndex();
+
+  /**
+   * <code>.data.ResultStatusType result_status = 34;</code>
+   * @return The enum numeric value on the wire for resultStatus.
+   */
+  int getResultStatusValue();
+  /**
+   * <code>.data.ResultStatusType result_status = 34;</code>
+   * @return The resultStatus.
+   */
+  eu.tsystems.mms.tic.testframework.report.model.ResultStatusType getResultStatus();
 }

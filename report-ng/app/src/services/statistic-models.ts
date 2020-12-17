@@ -28,8 +28,6 @@ import MethodType = data.MethodType;
 import IMethodContext = data.IMethodContext;
 import IClassContext = data.IClassContext;
 import IErrorContext = data.IErrorContext;
-import IExecutionContext = data.IExecutionContext;
-import StackTraceCause = data.StackTraceCause;
 
 class Statistics {
     private _statusConverter: StatusConverter
@@ -100,10 +98,6 @@ export class ExecutionStatistics extends Statistics {
     private _executionAggregate: ExecutionAggregate;
     private _classStatistics: ClassStatistics[] = [];
     private _failureAspectStatistics:FailureAspectStatistics[] = [];
-    /**
-     * @todo This might be an orphaned feature which can be removed completely
-     */
-    //private _exitPointStatistics:ExitPointStatistics[] = [];
 
     setExecutionAggregate(executionAggregate: ExecutionAggregate) {
         this._executionAggregate = executionAggregate;
@@ -202,9 +196,9 @@ export class ClassStatistics extends Statistics {
 
     addMethodContext(methodContext : IMethodContext) {
         if (methodContext.methodType == MethodType.CONFIGURATION_METHOD) {
-            this._configStatistics.addResultStatus(methodContext.contextValues.resultStatus);
+            this._configStatistics.addResultStatus(methodContext.resultStatus);
         } else {
-            this.addResultStatus(methodContext.contextValues.resultStatus);
+            this.addResultStatus(methodContext.resultStatus);
         }
         this._methodContexts.push(methodContext);
         return this;
@@ -252,7 +246,7 @@ export class FailureAspectStatistics extends Statistics {
 
     addMethodContext(methodContext:IMethodContext) {
         this._methodContexts.push(methodContext);
-        this.addResultStatus(methodContext.contextValues.resultStatus);
+        this.addResultStatus(methodContext.resultStatus);
         return this;
     }
 
@@ -271,33 +265,3 @@ export class FailureAspectStatistics extends Statistics {
         return this._methodContexts;
     }
 }
-//
-// export class ExitPointStatistics extends Statistics {
-//     private _methodContext:IMethodContext;
-//     private _fingerprint:string;
-//
-//     constructor() {
-//         super();
-//     }
-//
-//     addMethodContext(methodContext:IMethodContext) {
-//         if (!this._methodContext) {
-//             this._methodContext = methodContext;
-//             this._fingerprint = (
-//                 methodContext.errorContext?.scriptSource?.lines.map(line => line.line).join("\n")
-//                 || methodContext.errorContext.cause.stackTraceElements.join("\n")
-//                 || "undefined"
-//             );
-//         }
-//         this.addResultStatus(methodContext.contextValues.resultStatus);
-//         return this;
-//     }
-//
-//     get methodContext() {
-//         return this._methodContext;
-//     }
-//
-//     get fingerprint() {
-//         return this._fingerprint;
-//     }
-// }

@@ -106,7 +106,7 @@ export class DependencyNetwork {
                 id: methodContext.contextValues.id,
                 label: methodContext.contextValues.name,
                 physics: false,
-                color: this._statusConverter.getColorForStatus(methodContext.contextValues.resultStatus),
+                color: this._statusConverter.getColorForStatus(methodContext.resultStatus),
                 font: {
                     color: "#fff",
                     face: "Roboto, sans-serif",
@@ -122,7 +122,7 @@ export class DependencyNetwork {
         main.value = 3;
 
         methodDetails.methodContext.dependsOnMethodContextIds.forEach(methodId => {
-            const methodContext = methodDetails.classStatistics.methodContexts.find(methodContext => methodContext.contextValues.id == methodId);
+            const methodContext = methodDetails.executionStatistics.executionAggregate.methodContexts[methodId];
             if (methodContext) {
                 addNode(methodContext);
                 edges.push({
@@ -137,7 +137,7 @@ export class DependencyNetwork {
              * @todo Remove this workaround when data model is fixed
              */
             if (methodId != methodDetails.methodContext.contextValues.id) {
-                const methodContext = methodDetails.classStatistics.methodContexts.find(methodContext => methodContext.contextValues.id == methodId);
+                const methodContext = methodDetails.executionStatistics.executionAggregate.methodContexts[methodId];
                 if (methodContext) {
                     addNode(methodContext);
                     edges.push({

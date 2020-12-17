@@ -74,8 +74,7 @@ export class Logs extends AbstractViewModel {
                     logMessages.push(value);
                 });
 
-            executionStatistics.classStatistics
-                .flatMap(value => value.methodContexts)
+            Object.values(executionStatistics.executionAggregate.methodContexts)
                 .flatMap(value => value.testSteps)
                 .flatMap(value => value.actions)
                 .flatMap(value => value.entries)

@@ -38,8 +38,6 @@ import "./threads.scss";
 export class Threads extends AbstractViewModel {
     private _searchRegexp: RegExp;
     private _classNamesMap:{[key:string]:string};
-    private _endTime;
-    private _startTime;
     private _loading: boolean;
     private _container:HTMLDivElement;
     private _methodNameInput:HTMLElement;
@@ -64,8 +62,6 @@ export class Threads extends AbstractViewModel {
         this._loading = true;
         this._statistics.getExecutionStatistics().then(executionStatistics => {
             this._classNamesMap = {};
-            this._startTime = executionStatistics.executionAggregate.executionContext.contextValues.startTime - 1000;
-            this._endTime = executionStatistics.executionAggregate.executionContext.contextValues.endTime + 1000;
             executionStatistics.classStatistics.forEach(classStatistic => {
                 this._classNamesMap[classStatistic.classContext.contextValues.id] = classStatistic.classIdentifier;
             });
@@ -143,7 +139,7 @@ export class Threads extends AbstractViewModel {
             let groupId: string = "group-" + threadName;
             groupItems.push({id: groupId, content: threadName});
 
-            methodContexts.forEach((context: MethodContext, index) => {
+            methodContexts.forEach((context: MethodContext) => {
                 let content: string = ''
 
                 content += "<div class='item-content' id='" + context.contextValues.id + "'>";
@@ -191,8 +187,6 @@ export class Threads extends AbstractViewModel {
                     this._focusOn(this.queryParams.methodId);
                 }
             },
-            start:this._startTime,
-            end:this._endTime,
             showTooltips:false,
             //max zoom out to be 1 Day
             zoomMax:8.64e+7,

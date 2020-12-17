@@ -144,7 +144,7 @@ public class ContextExporter {
 
         methodContext.readVideos().forEach(video -> {
             Optional<File.Builder> optional = Optional.ofNullable(buildVideo(video));
-            optional.ifPresent(file -> builder.addVideoIds(file.getId()));
+            optional.ifPresent(fileBuilder -> builder.addVideoIds(fileBuilder.getId()));
         });
 
         return builder;

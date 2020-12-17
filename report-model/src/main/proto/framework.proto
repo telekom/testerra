@@ -252,21 +252,6 @@ message File {
     string name = 13;
 }
 
-// All status elements for run and job executions
-//enum ExecStatusType {
-//    EST_NOT_SET = 0;
-//    NEW = 1; // Execution is new and hasn't been processed from any agent
-//    PENDING = 2; // Execution has been seen by the scheduler and is in waiting position for an executer
-//    PROVISIONING = 3; // The scheduler tries to start a Kube container execution
-//    RUNNING = 4; // Execution is currently being run by the executer
-//    FINISHED = 5; // Execution has been finished, which is: run to completion by the executer
-//    ABORTED = 6; // Execution has been shutdown graceful or manually or has never been executed
-//    CRASHED = 7; // Execution ended abruptly due to system error, runtime exceptions, kernel bugs, etc.
-//    INVALID = 8; // Execution of tests didn't start due to failed prerequisite steps (git clone) or executed command didn't start any (no execution context exists for invalid run)
-//    VOID = 9; // Execution of tests started but no new tests were executed (all tests were skipped, or the execution filter didn't match any (all methods were INHERITED))
-//    ARTIFACT_UPLOAD = 10; // Execution of tests is finished and artifacts uploading is in progress
-//}
-
 // All status elements for an actual executed test method
 enum ResultStatusType {
     RST_NOT_SET = 0;

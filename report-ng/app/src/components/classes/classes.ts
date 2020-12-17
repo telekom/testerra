@@ -140,12 +140,9 @@ export class Classes extends AbstractViewModel {
                             )
                         })
                         .map(methodContext => {
-                            if (!relevantFailureAspect) {
-                                relevantFailureAspect = methodContext.errorContext ? new FailureAspectStatistics().setErrorContext(methodContext.errorContext) : null;
-                            }
                             return <IMethodDetails> {
                                 classStatistics: classStatistic,
-                                failureAspectStatistics: relevantFailureAspect,
+                                failureAspectStatistics: (relevantFailureAspect?relevantFailureAspect:(methodContext.errorContext?new FailureAspectStatistics().setErrorContext(methodContext.errorContext):null)),
                                 methodContext: methodContext
                             };
                         })

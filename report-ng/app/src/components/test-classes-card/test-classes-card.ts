@@ -108,10 +108,19 @@ export class TestClassesCard {
                 },
                 events: {
                     dataPointSelection: (event, chartContext, config) => {
-                        let statusNames = ["failed", "failed-expected", "skipped", "passed"]
+                        let selectedStatus: string;
+
+                        if (this.filter.status){
+                            selectedStatus = this._statusConverter.getClassForStatus(this.filter.status);
+                        } else {
+                            let statusNames = ["failed", "failed-expected", "skipped", "passed"];
+                            selectedStatus = statusNames[config.seriesIndex];
+                        }
+
+                        console.log(selectedStatus);
                         this._barClicked({
                             class: xlabels[config.dataPointIndex],
-                            status: statusNames[config.seriesIndex]
+                            status: selectedStatus
                         });
                         event.stopPropagation();
                     }

@@ -21,6 +21,11 @@
 
 .vis-timeline {
     font-family: "Roboto", sans-serif;
+    border-radius: 4px;
+}
+
+.vis-odd {
+    background-color: rgb(240,240,240);
 }
 
 .vis-item {
@@ -51,5 +56,6 @@
 }
 
 .vis-selected {
-    box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.3);
+    border: 2px solid #000 !important;
+    box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.5);
 }

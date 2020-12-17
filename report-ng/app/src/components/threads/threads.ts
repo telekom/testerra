@@ -81,7 +81,7 @@ export class Threads extends AbstractViewModel {
         this._timeline.setSelection(methodId, {focus: "true"});
         window.setTimeout(() => {
             const methodElement = document.getElementById(methodId);
-            methodElement?.scrollIntoView(false);
+            methodElement?.scrollIntoView();
         }, 500);
     }
 

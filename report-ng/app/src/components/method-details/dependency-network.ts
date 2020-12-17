@@ -128,6 +128,17 @@ export class DependencyNetwork {
                 edges.push({
                     from: methodContext.contextValues.id,
                     to: methodDetails.methodContext.contextValues.id,
+                    arrows: {
+                        to: {
+                            type: "arrow",
+                            scaleFactor: 0.7
+                        }
+                    },
+                    label: "depends on",
+                    font: {
+                        align: "middle",
+                        size: 9,
+                    },
                 })
             }
         })
@@ -141,8 +152,20 @@ export class DependencyNetwork {
                 if (methodContext) {
                     addNode(methodContext);
                     edges.push({
-                        from: methodDetails.methodContext.contextValues.id,
-                        to: methodContext.contextValues.id,
+                        from: methodContext.contextValues.id,
+                        to: methodDetails.methodContext.contextValues.id,
+                        arrows: {
+                            to: {
+                                type: "vee",
+                                scaleFactor: 0.7
+                            }
+                        },
+                        label: "before",
+                        font: {
+                            align: "middle",
+                            size: 9,
+                        },
+                        dashes: true,
                     })
                 }
             }
@@ -175,10 +198,15 @@ export class DependencyNetwork {
             },
             layout: {
                 hierarchical: {
-                    //nodeSpacing: 1,
+                    //nodeSpacing: 100,
                     levelSeparation: 100,
                     direction: "UD",
                     sortMethod: "directed",
+                },
+            },
+            physics: {
+                hierarchicalRepulsion: {
+                    avoidOverlap: 1,
                 },
             },
         };

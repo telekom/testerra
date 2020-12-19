@@ -114,7 +114,8 @@ public class TestContext extends AbstractContext implements SynchronizableContex
         create a new class context, maybe this is later thrown away
          */
         final ClassContext newClassContext = new ClassContext(realClass, this);
-        fillBasicContextValues(newClassContext, this, newClassContext.getTestClass().getSimpleName());
+        newClassContext.name = newClassContext.getTestClass().getSimpleName();
+        //fillBasicContextValues(newClassContext, this, newClassContext.getTestClass().getSimpleName());
 
         // lets check if we already know about it
         if (readClassContexts().anyMatch(classContext -> classContext.getTestClass().getName().equals(realClass.getName()))) {

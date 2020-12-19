@@ -459,10 +459,8 @@ public class ContextExporter {
         apply(buildContextValues(classContext), builder::setContextValues);
         apply(classContext.getTestClass().getName(), builder::setFullClassName);
         apply(classContext.getTestContext().getId(), builder::setTestContextId);
-
-        if (classContext.getTestClassContext() != null) {
-            builder.setTestContextName(classContext.getTestClassContext().name());
-        }
+        classContext.getTestClassContext().ifPresent(testClassContext -> builder.setTestContextName(testClassContext.name()));
+        
         return builder;
     }
 

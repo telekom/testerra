@@ -61,10 +61,10 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
     public Date getEndTime() {
         return endTime;
     }
-
-    protected static void fillBasicContextValues(AbstractContext context, AbstractContext parentContext, String name) {
-        context.name = name;
-    }
+//
+//    protected static void fillBasicContextValues(AbstractContext context, AbstractContext parentContext, String name) {
+//        context.name = name;
+//    }
 
     public String getId() {
         return this.id;
@@ -94,7 +94,8 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
             }
             try {
                 T context = newContextSupplier.get();
-                fillBasicContextValues(context, this, name);
+                //fillBasicContextValues(context, this, name);
+                context.name = name;
                 contexts.add(context);
 
                 if (whenAddedToQueue != null) {

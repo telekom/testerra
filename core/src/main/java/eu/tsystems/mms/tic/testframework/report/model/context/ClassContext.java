@@ -94,8 +94,8 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
         return this;
     }
 
-    public TestClassContext getTestClassContext() {
-        return this.testClassContext;
+    public Optional<TestClassContext> getTestClassContext() {
+        return Optional.ofNullable(this.testClassContext);
     }
 
     public TestContext getTestContext() {
@@ -147,7 +147,8 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
             }
 
             methodContext = new MethodContext(name, methodType, this);
-            fillBasicContextValues(methodContext, this, name);
+            methodContext.name = name;
+            //fillBasicContextValues(methodContext, this, name);
 
             methodContext.testResult = testResult;
             methodContext.iTestContext = iTestContext;
@@ -248,5 +249,9 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
     public String getExplicitName() {
         TestContext testContext = getTestContext();
         return this.getTestClass().getSimpleName() + "_" + testContext.getSuiteContext().getName() + "_" + testContext.getName();
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

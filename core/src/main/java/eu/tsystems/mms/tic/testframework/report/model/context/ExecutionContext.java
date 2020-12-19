@@ -22,6 +22,7 @@
  package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import com.google.common.eventbus.EventBus;
+import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
@@ -30,9 +31,11 @@ import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicLong;
@@ -145,8 +148,8 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
         AtomicLong i = new AtomicLong();
         i.set(0);
         suiteContexts.forEach(suiteContext -> {
-            suiteContext.testContexts.forEach(testContext -> {
-                testContext.classContexts.forEach(classContext -> {
+            suiteContext.readTestContexts().forEach(testContext -> {
+                testContext.readClassContexts().forEach(classContext -> {
                     i.set(i.get() + classContext.getRepresentationalMethods().count());
                 });
             });
@@ -165,8 +168,8 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
         Arrays.stream(TestStatusController.Status.values()).forEach(status -> counts.put(status, 0));
 
         suiteContexts.forEach(suiteContext -> {
-            suiteContext.testContexts.forEach(testContext -> {
-                testContext.classContexts.forEach(classContext -> {
+            suiteContext.readTestContexts().forEach(testContext -> {
+                testContext.readClassContexts().forEach(classContext -> {
                     Map<TestStatusController.Status, Integer> methodStats = classContext.getMethodStats(includeTestMethods, includeConfigMethods);
                     methodStats.keySet().forEach(status -> {
                         Integer oldValue = counts.get(status);
@@ -191,20 +194,32 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
      */
     @Deprecated
     public Map<ClassContext, Map> getMethodStatsPerClass(boolean includeTestMethods, boolean includeConfigMethods) {
+        Map<TestClassContext, ClassContext> mergedClassContexts = new HashMap<>();
         final Map<ClassContext, Map> methodStatsPerClass = new LinkedHashMap<>();
         suiteContexts.forEach(suiteContext -> {
-            suiteContext.testContexts.forEach(testContext -> {
-                testContext.classContexts.forEach(classContext -> {
-                    //if (!classContext.isMerged()) {
-                        /**
-                         * @todo We may have to group by {@link ClassContext#getTestClassContext()}
-                         */
+            suiteContext.readTestContexts().forEach(testContext -> {
+                testContext.readClassContexts().forEach(classContext -> {
+                    Optional<TestClassContext> optionalTestClassContext = classContext.getTestClassContext();
+                    if (optionalTestClassContext.isPresent()) {
+                        TestClassContext testClassContext = optionalTestClassContext.get();
+                        ClassContext mergedClassContext;
+                        if (!mergedClassContexts.containsKey(testClassContext)) {
+                            mergedClassContext = new ClassContext(classContext.getTestClass(), testContext);
+                            mergedClassContext.setName(testClassContext.name());
+                            mergedClassContexts.put(testClassContext, mergedClassContext);
+                        } else {
+                            mergedClassContext = mergedClassContexts.get(testClassContext);
+                        }
+                        mergedClassContext.methodContexts.addAll(classContext.readMethodContexts().collect(Collectors.toList()));
+                    } else {
                         Map<TestStatusController.Status, Integer> methodStats = classContext.getMethodStats(includeTestMethods, includeConfigMethods);
                         methodStatsPerClass.put(classContext, methodStats);
-                    //}
+                    }
                 });
             });
         });
+
+        mergedClassContexts.values().forEach(classContext -> methodStatsPerClass.put(classContext, classContext.getMethodStats(includeTestMethods, includeConfigMethods)));
 
         /*
         sort

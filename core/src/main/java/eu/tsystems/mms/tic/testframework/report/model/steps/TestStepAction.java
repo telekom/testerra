@@ -22,6 +22,7 @@
  package eu.tsystems.mms.tic.testframework.report.model.steps;
 
 import eu.tsystems.mms.tic.testframework.clickpath.ClickPathEvent;
+import eu.tsystems.mms.tic.testframework.report.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.Serial;
 import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
@@ -94,8 +95,16 @@ public class TestStepAction implements Serializable {
     }
 
     /**
+     * @deprecated  Use {@link #readEntries()} instead
+     * Used in methodDetailsStep.vm
+     */
+    public Collection<LogMessage> getLogMessages() {
+        return this.readEntries(LogEvent.class).map(LogMessage::new).collect(Collectors.toList());
+    }
+
+    /**
      * @deprecated Use {@link #readEntries()} instead
-     * Use in methodDetailsStep.vm
+     * Used in methodDetailsStep.vm
      */
     public Collection<Screenshot> getScreenshots() {
         return this.readEntries(Screenshot.class).collect(Collectors.toList());

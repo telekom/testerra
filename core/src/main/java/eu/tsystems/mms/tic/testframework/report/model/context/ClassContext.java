@@ -240,4 +240,13 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
         });
         return methodContexts;
     }
+
+    /**
+     * Use in classesStatistics.vm
+     */
+    @Override
+    public String getName() {
+        TestContext testContext = getTestContext();
+        return this.getTestClass().getSimpleName() + "_" + testContext.getSuiteContext().getName() + "_" + testContext.getName();
+    }
 }

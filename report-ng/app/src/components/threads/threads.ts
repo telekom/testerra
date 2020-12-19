@@ -33,6 +33,8 @@ import ResultStatusType = data.ResultStatusType;
 import IMethodContext = data.IMethodContext;
 import IContextValues = data.IContextValues;
 import "./threads.scss";
+import IExecutionAggregate = data.IExecutionAggregate;
+import {ExecutionStatistics} from "../../services/statistic-models";
 
 @autoinject()
 export class Threads extends AbstractViewModel {
@@ -65,7 +67,7 @@ export class Threads extends AbstractViewModel {
             executionStatistics.classStatistics.forEach(classStatistic => {
                 this._classNamesMap[classStatistic.classContext.contextValues.id] = classStatistic.classIdentifier;
             });
-            this._prepareTimelineData(executionStatistics.executionAggregate.methodContexts)
+            this._prepareTimelineData(executionStatistics)
         });
     }
 
@@ -111,7 +113,7 @@ export class Threads extends AbstractViewModel {
         this._router.navigateToRoute('method', {methodId: methodId})
     }
 
-    private _prepareTimelineData(methodContexts) {
+    private _prepareTimelineData(executionStatistics:ExecutionStatistics) {
         // DOM element where the Timeline will be attached
         const container = this._container;
 
@@ -128,7 +130,7 @@ export class Threads extends AbstractViewModel {
         const dataItems = [];
         const dataMap = new Map();
 
-        methodContexts.forEach(methodContext => {
+        Object.values(executionStatistics.executionAggregate.methodContexts).forEach(methodContext => {
             if (!dataMap.has(methodContext.threadName)) {
                 dataMap.set(methodContext.threadName, []);
             }

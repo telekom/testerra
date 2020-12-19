@@ -94,17 +94,16 @@ public class GenerateHtmlReportListener implements
 
         final AtomicReference<Integer> testMethodsCount = new AtomicReference<>();
         testMethodsCount.set(0);
-        ExecutionContextController.getCurrentExecutionContext().suiteContexts.forEach(
+        ExecutionContextController.getCurrentExecutionContext().readSuiteContexts().forEach(
                 suiteContext -> {
                     System.out.println("Suite: " + suiteContext.getName());
-                    suiteContext.testContexts.forEach(
+                    suiteContext.readTestContexts().forEach(
                             testContext -> {
                                 System.out.println("Test: " + testContext.getName());
-                                testContext.classContexts.forEach(
+                                testContext.readClassContexts().forEach(
                                         classContext -> {
                                             System.out.println("Class: " + classContext.getName());
-                                            classContext.methodContexts
-                                                    .stream()
+                                            classContext.readMethodContexts()
                                                     .filter(methodContext -> methodContext.getStatus() == TestStatusController.Status.PASSED)
                                                     .forEach(
                                                             methodContext -> {

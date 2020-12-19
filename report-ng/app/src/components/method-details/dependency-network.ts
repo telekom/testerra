@@ -61,10 +61,10 @@ export class DependencyNetwork {
             scale: 2
         });
     }
-
-    private _generateRoute(methodDetails:IMethodDetails) {
-        return this._router?.generate("method", {methodId:methodDetails.methodContext.contextValues.id})+"/dependencies";
-    }
+    //
+    // private _generateRoute(methodDetails:IMethodDetails) {
+    //     return this._router?.generate("method", {methodId:methodDetails.methodContext.contextValues.id})+"/dependencies";
+    // }
 
     attached() {
         console.log("attached");
@@ -129,7 +129,8 @@ export class DependencyNetwork {
                     from: methodContext.contextValues.id,
                     to: methodDetails.methodContext.contextValues.id,
                     arrows: {
-                        to: {
+                        from: {
+                            enabled: true,
                             type: "arrow",
                             scaleFactor: 0.7
                         }
@@ -156,6 +157,7 @@ export class DependencyNetwork {
                         to: methodDetails.methodContext.contextValues.id,
                         arrows: {
                             to: {
+                                enabled: true,
                                 type: "vee",
                                 scaleFactor: 0.7
                             }
@@ -189,16 +191,16 @@ export class DependencyNetwork {
                     }
                 }
             },
-            edges: {
-                arrows: {
-                    to: {
-                        enabled: true
-                    }
-                }
-            },
+            // edges: {
+            //     arrows: {
+            //         to: {
+            //             enabled: true
+            //         }
+            //     }
+            // },
             layout: {
                 hierarchical: {
-                    //nodeSpacing: 100,
+                    //nodeSpacing: 140,
                     levelSeparation: 100,
                     direction: "UD",
                     sortMethod: "directed",

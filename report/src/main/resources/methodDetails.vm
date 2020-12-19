@@ -294,7 +294,7 @@
                                                     <div id="$id" style="text-align: initial">
 <pre><code>  // $source.fileName
     #foreach($s in $source.lines)
-        #if ($s.mark)
+        #if ($source.getMarkedLineNumber() == $s.lineNumber)
             &#8623; $s.lineNumber : $s.line
         #else
             $s.lineNumber : $s.line
@@ -317,10 +317,10 @@
                                                     </thead>
                                                     <tr>
                                                         <td width="50%">
-                                                            #displayLines($testMethod.getErrorContext().scriptSource, "scriptSource")
+                                                            #displayLines($testMethod.getErrorContext().getScriptSource().orElse(null), "scriptSource")
                                                         </td>
                                                         <td width="50%">
-                                                            #displayLines($testMethod.getErrorContext().executionObjectSource,
+                                                            #displayLines($testMethod.getErrorContext().getExecutionObjectSource().orElse(null),
                                                                 "executionObjectSource")
                                                         </td>
                                                     </tr>

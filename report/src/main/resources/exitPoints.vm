@@ -103,8 +103,8 @@
                             style="font-size: 15px; color: black; background-color: #DDDDDD; font-weight: normal;">
                             #set ($testMethod = $exitPointMap.get($exitPoint).get(0))
 
-                            #if ($testMethod.getErrorContext().scriptSource)
-                                #displayLines($testMethod.getErrorContext().scriptSource, "scriptSource")
+                            #if ($testMethod.getErrorContext().getScriptSource().isPresent())
+                                #displayLines($testMethod.getErrorContext().getScriptSource().get(), "scriptSource")
                             #elseif ($testMethod.getErrorContext().getExitFingerprint())
                                 <div class="error">
                                     $testMethod.getErrorContext().getExitFingerprint()
@@ -146,7 +146,7 @@
 <pre><code>
 // $source.fileName#[[#]]#$source.methodName
 #foreach($s in $source.lines)
-#if ($s.mark)
+#if ($source.getMarkedLineNumber() == $s.lineNumber)
 &#8623; $s.lineNumber : $s.line
 #else
   $s.lineNumber : $s.line

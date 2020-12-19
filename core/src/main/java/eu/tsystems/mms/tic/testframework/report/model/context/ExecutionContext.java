@@ -155,7 +155,7 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
     }
 
     /**
-     * Used in dashboard.vm only
+     * Used in dashboard.vm and methodsDashboard.vm
      */
     @Deprecated
     public Map<TestStatusController.Status, Integer> getMethodStats(boolean includeTestMethods, boolean includeConfigMethods) {
@@ -187,6 +187,7 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
      * @param includeTestMethods   .
      * @param includeConfigMethods .
      * @return a map
+     * Use in dashboard.vm and classesStatistics.vm
      */
     @Deprecated
     public Map<ClassContext, Map> getMethodStatsPerClass(boolean includeTestMethods, boolean includeConfigMethods) {

@@ -207,29 +207,36 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
         //        return contexts;
     }
 
+    public Map<TestStatusController.Status, Integer> createStats() {
+        Map<TestStatusController.Status, Integer> counts = new LinkedHashMap<>();
+        Arrays.stream(TestStatusController.Status.values()).forEach(status -> counts.put(status, 0));
+        return counts;
+    }
+
+    public void addToStats(Map<TestStatusController.Status, Integer> stats, MethodContext methodContext) {
+        TestStatusController.Status status = methodContext.getStatus();
+        int value = stats.getOrDefault(status,0);
+        stats.put(status, value + 1);
+    }
+
+    /**
+     * Used in dashboard.vm and methodsDashboard.vm
+     */
     @Deprecated
     public Map<TestStatusController.Status, Integer> getMethodStats(boolean includeTestMethods, boolean includeConfigMethods) {
-        Map<TestStatusController.Status, Integer> counts = new LinkedHashMap<>();
+        Map<TestStatusController.Status, Integer> counts = createStats();
 
-        // initialize with 0
-        Arrays.stream(TestStatusController.Status.values()).forEach(status -> counts.put(status, 0));
-
-        methodContexts.stream().filter(mc -> (includeTestMethods && mc.isTestMethod()) || (includeConfigMethods && mc.isConfigMethod()))
+        methodContexts.stream()
+                .filter(mc -> (includeTestMethods && mc.isTestMethod()) || (includeConfigMethods && mc.isConfigMethod()))
                 .forEach(methodContext -> {
-                    TestStatusController.Status status = methodContext.getStatus();
-                    int value = 0;
-                    if (counts.containsKey(status)) {
-                        value = counts.get(status);
-                    }
-
-                    counts.put(status, value + 1);
+                    addToStats(counts, methodContext);
                 });
 
         return counts;
     }
 
     /**
-     * Use in methodsDashboard.vm only
+     * Used in methodsDashboard.vm only
      */
     @Deprecated
     public List<MethodContext> getTestMethodsWithStatus(TestStatusController.Status status) {

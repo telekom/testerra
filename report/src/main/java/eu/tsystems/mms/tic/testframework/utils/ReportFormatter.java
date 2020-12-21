@@ -87,15 +87,15 @@ public class ReportFormatter {
      * Writes a new HTML formatted test log file.
      *
      * @param logFile       The log destination file.
-     * @param testClassList A list of the test classes.
+     * @param reportingData A list of the test classes.
      * @param unrelatedLogs List of log messages that could not be mapped to a test.
      * @param template      The template file to use.
      */
-    public static void createTestClassesView(final File logFile, final Collection<ClassContext> testClassList,
+    public static void createTestClassesView(final File logFile, ReportingData reportingData,
                                              final String template, final Collection<LogMessage> unrelatedLogs, final ReportInfo.RunInfo runInfo) {
 
         try {
-            pCreateTestClassesView(logFile, testClassList, template, unrelatedLogs, runInfo);
+            pCreateTestClassesView(logFile, reportingData, template, unrelatedLogs, runInfo);
         } catch (IOException e) {
             out(e);
         }
@@ -154,11 +154,11 @@ public class ReportFormatter {
      * Writes a new HTML formatted test log file.
      *
      * @param logFile       The log destination file.
-     * @param testClassList A list of the test classes.
+     * @param reportingData A list of the test classes.
      * @param template      The template file to use.
      * @param unrelatedLogs List of log messages that could not be mapped to a test.
      */
-    private static void pCreateTestClassesView(final File logFile, final Collection<ClassContext> testClassList,
+    private static void pCreateTestClassesView(final File logFile, ReportingData reportingData,
                                                final String template, final Collection<LogMessage> unrelatedLogs, final ReportInfo.RunInfo runInfo)
             throws IOException {
 
@@ -167,9 +167,10 @@ public class ReportFormatter {
 
         VelocityContext context = getVelocityContext();
         context.put("runInfo", runInfo);
+        context.put("reportingData", reportingData);
 
-        if (testClassList != null) {
-            context.put("testClassList", testClassList);
+        if (reportingData != null) {
+            context.put("testClassList", reportingData.classContexts);
         }
         if (unrelatedLogs != null) {
             context.put("unrelatedLogMessages", unrelatedLogs);
@@ -364,7 +365,7 @@ public class ReportFormatter {
         Template htmlLogTemplate = Velocity.getTemplate(template, "UTF-8");
         htmlLogTemplate.setEncoding("UTF-8");
         VelocityContext context = getVelocityContext();
-
+        context.put("reportingData", reportingData);
         context.put("classContexts", reportingData.classContexts);
         context.put("dashboardInfos", ReportInfo.getDashboardInfo().getInfos());
         context.put("dashboardWarnings", ReportInfo.getDashboardWarning().getInfos());

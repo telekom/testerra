@@ -54,8 +54,6 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
     public final Queue<SuiteContext> suiteContexts = new ConcurrentLinkedQueue<>();
     @Deprecated
     public Map<String, List<MethodContext>> failureAspects;
-    @Deprecated
-    public Map<String, List<MethodContext>> exitPoints;
     public final RunConfig runConfig = new RunConfig();
 
     /**
@@ -181,66 +179,6 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
         });
 
         return counts;
-    }
-
-    /**
-     * Get method statistics for all effective classes.
-     * The classes are all classContext from the context tree (without merged ones) AND mergedClassContexts from executionContext.
-     *
-     * @param includeTestMethods   .
-     * @param includeConfigMethods .
-     * @return a map
-     * Use in dashboard.vm and classesStatistics.vm
-     */
-    @Deprecated
-    public Map<ClassContext, Map> getMethodStatsPerClass(boolean includeTestMethods, boolean includeConfigMethods) {
-        Map<String, ClassContext> mergedClassContexts = new HashMap<>();
-        final Map<ClassContext, Map> methodStatsPerClass = new LinkedHashMap<>();
-        suiteContexts.forEach(suiteContext -> {
-            suiteContext.readTestContexts().forEach(testContext -> {
-                testContext.readClassContexts().forEach(classContext -> {
-                    Optional<TestClassContext> optionalTestClassContext = classContext.getTestClassContext();
-                    if (optionalTestClassContext.isPresent()) {
-                        TestClassContext testClassContext = optionalTestClassContext.get();
-                        log().info("Merge class context " + classContext.getTestClass().getSimpleName() + " to " + testClassContext.name());
-                        ClassContext mergedClassContext;
-                        if (!mergedClassContexts.containsKey(testClassContext.name())) {
-                            mergedClassContext = new ClassContext(classContext.getTestClass(), testContext);
-                            mergedClassContext.setName(testClassContext.name());
-                            mergedClassContexts.put(testClassContext.name(), mergedClassContext);
-                        } else {
-                            mergedClassContext = mergedClassContexts.get(testClassContext.name());
-                        }
-                        mergedClassContext.methodContexts.addAll(classContext.readMethodContexts().collect(Collectors.toList()));
-                    } else {
-                        Map<TestStatusController.Status, Integer> methodStats = classContext.getMethodStats(includeTestMethods, includeConfigMethods);
-                        methodStatsPerClass.put(classContext, methodStats);
-                    }
-                });
-            });
-        });
-
-        mergedClassContexts.values().forEach(classContext -> methodStatsPerClass.put(classContext, classContext.getMethodStats(includeTestMethods, includeConfigMethods)));
-
-        /*
-        sort
-         */
-        final AtomicReference<Integer> i1 = new AtomicReference<>();
-        final AtomicReference<Integer> i2 = new AtomicReference<>();
-        Comparator<? super Map> comp = (Comparator<Map>) (m1, m2) -> {
-            i1.set(0);
-            m1.keySet().forEach(status -> i1.set(i1.get() + ((int) m1.get(status))));
-
-            i2.set(0);
-            m2.keySet().forEach(status -> i2.set(i2.get() + ((int) m2.get(status))));
-
-            return i2.get() - i1.get();
-        };
-        final Map sortedMap = methodStatsPerClass.entrySet().stream().sorted(Map.Entry.comparingByValue(comp))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
-                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
-
-        return sortedMap;
     }
 
     public TestStatusController.Status[] getAvailableStatuses() {

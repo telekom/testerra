@@ -171,7 +171,7 @@ public class ClassesPage extends AbstractReportPage {
         GuiElement classTableRow = getClassTableRowForClass(className);
         GuiElement successIndicator = classTableRow.getSubElement(By.xpath("//*[@class='textleft']/span[@title='Passed']"));
         successIndicator.setName("successIndicator");
-        successIndicator.asserts().assertIsDisplayed();
+        successIndicator.asserts("The success indicator should be displayed.").assertIsDisplayed();
     }
 
     /**
@@ -183,10 +183,10 @@ public class ClassesPage extends AbstractReportPage {
         GuiElement classTableRow = getClassTableRowForClass(className);
         GuiElement brokenIndicator = classTableRow.getSubElement(By.xpath(".//*[@class='textleft']/span[@title='Failed']"));
         brokenIndicator.setName("brokenIndicator");
-        brokenIndicator.asserts().assertIsDisplayed();
+        brokenIndicator.asserts("The broken indicator should be displayed").assertIsDisplayed();
         GuiElement successIndicator = classTableRow.getSubElement(By.xpath(".//*[@class='textleft']/span[@title='Passed']"));
         successIndicator.setName("successIndicator");
-        successIndicator.asserts().assertIsNotDisplayed();
+        successIndicator.asserts("The success indicator should not be displayed anymore when there is a broken indicator.").assertIsNotDisplayed();
     }
 
     /**

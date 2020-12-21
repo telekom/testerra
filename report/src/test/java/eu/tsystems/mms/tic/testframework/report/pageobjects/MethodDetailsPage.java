@@ -347,8 +347,8 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
     }
 
     public void assertCorrectTestMethodIsDisplayed(String methodName, TestResultHelper.TestResult methodResult) {
-        getMethodNameElement().asserts().assertTextContains(methodName);
-        getMethodResultElement().asserts().assertTextContains(methodResult.getXpathClassesDetailsHeader());
+        getMethodNameElement().asserts("The correct element of the method name should be displayed.").assertTextContains(methodName);
+        getMethodResultElement().asserts("The correct result of the element should be displayed.").assertTextContains(methodResult.getXpathClassesDetailsHeader());
     }
 
     //@Override

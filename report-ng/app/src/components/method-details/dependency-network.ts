@@ -49,14 +49,14 @@ export class DependencyNetwork {
         }
 
         this._loadListener = (ev:Event) => {
-            console.log("window load");
+            // console.log("window load");
             this._resizeListener(ev);
             this._focus();
         }
     }
 
     private _focus() {
-        console.log("focus node");
+        // console.log("focus node");
         this._network?.focus(this._methodDetails.methodContext.contextValues.id, {
             scale: 2
         });
@@ -67,7 +67,7 @@ export class DependencyNetwork {
     // }
 
     attached() {
-        console.log("attached");
+        // console.log("attached");
         this._createGraph();
 
         window.addEventListener("resize", this._resizeListener);
@@ -213,7 +213,7 @@ export class DependencyNetwork {
             },
         };
         this._resizeListener(null);
-        console.log("build graph");
+        // console.log("build graph");
         this._network?.destroy();
         this._network = new Network(this._container, data, options);
         this._network.on("click", (params) => {

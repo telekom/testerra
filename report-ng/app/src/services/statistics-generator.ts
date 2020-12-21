@@ -87,7 +87,7 @@ export class StatisticsGenerator {
                     classStatistics.addMethodContext(methodContext);
                 }
                 executionStatistics.updateStatistics();
-                console.log(executionStatistics);
+                // console.log(executionStatistics);
                 return executionStatistics;
             });
         })

@@ -44,12 +44,12 @@ export class TestClassesCard {
     }
 
     classStatisticsChanged() {
-        console.log("stats changed.");
+        // console.log("stats changed.");
         this._prepareHorizontalBarChart(this.classStatistics);
     }
 
     filterChanged(){
-        console.log("filter changed. ", this.filter);
+        // console.log("filter changed. ", this.filter);
         if (this.filter.status == this._currentFilter){
             this.filter = "";
         }
@@ -117,7 +117,7 @@ export class TestClassesCard {
                             selectedStatus = statusNames[config.seriesIndex];
                         }
 
-                        console.log(selectedStatus);
+                        // console.log(selectedStatus);
                         this._barClicked({
                             class: xlabels[config.dataPointIndex],
                             status: selectedStatus
@@ -174,7 +174,7 @@ export class TestClassesCard {
             },
             bubbles: true
         });
-        console.log(params, this._element);
+        // console.log(params, this._element);
         this._element.dispatchEvent(event)
     }
 }

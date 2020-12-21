@@ -20,7 +20,7 @@
  */
 
 import {autoinject} from 'aurelia-framework';
-import {NavigationInstruction, RouteConfig} from "aurelia-router";
+import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
 import {AbstractViewModel} from "../abstract-view-model";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {StatusConverter} from "../../services/status-converter";
@@ -35,6 +35,7 @@ export class FailureAspects extends AbstractViewModel {
     private _searchRegexp: RegExp;
     private _loading = false;
     private _showExpectedFailed = true;
+    private _router:Router;
 
     constructor(
         private _statistics: StatisticsGenerator,

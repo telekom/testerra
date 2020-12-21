@@ -108,7 +108,7 @@ export class Threads extends AbstractViewModel {
     };
 
     private _threadItemClicked(properties) {
-        console.log("timeline element selected.", properties);
+        // console.log("timeline element selected.", properties);
         let methodId = properties.items[0].split("_")[0];
         this._router.navigateToRoute('method', {methodId: methodId})
     }

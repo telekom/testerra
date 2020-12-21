@@ -44,7 +44,7 @@ export class TestResultsCard {
 
     resultChanged(){
         if (this.result.status) {
-            console.log("result status selected: " + this._statusConverter.getLabelForStatus(this.result.status));
+            // console.log("result status selected: " + this._statusConverter.getLabelForStatus(this.result.status));
             //get datapoint index to select from filter
             let label: string = this._statusConverter.getLabelForStatus(this.result.status);
             //pass index to apexchart-element

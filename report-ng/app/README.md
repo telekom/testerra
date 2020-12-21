@@ -32,3 +32,6 @@ npm run analyze
 - Time and Date: https://momentjs.com/
 - Duration Format: https://github.com/jsmreese/moment-duration-format
 - Aurelia Value Converters: https://aurelia.io/docs/binding/value-converters#converter-parameters
+- Image Comparison:
+  - https://www.w3schools.com/howto/howto_js_image_comparison.asp
+  - https://github.com/rsmbl/Resemble.js

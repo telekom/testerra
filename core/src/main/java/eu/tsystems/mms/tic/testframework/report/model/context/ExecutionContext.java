@@ -202,6 +202,7 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
                     Optional<TestClassContext> optionalTestClassContext = classContext.getTestClassContext();
                     if (optionalTestClassContext.isPresent()) {
                         TestClassContext testClassContext = optionalTestClassContext.get();
+                        log().info("Merge class context " + classContext.getTestClass().getSimpleName() + " to " + testClassContext.name());
                         ClassContext mergedClassContext;
                         if (!mergedClassContexts.containsKey(testClassContext.name())) {
                             mergedClassContext = new ClassContext(classContext.getTestClass(), testContext);

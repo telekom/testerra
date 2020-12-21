@@ -73,7 +73,7 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
                         } else {
                             // regular failed
                             TestStatusController.Status status = TestStatusController.Status.FAILED;
-                            if (methodContext.getNumAssertions() > 0) {
+                            if (methodContext.getNumOptionalAssertions() > 0) {
                                 status = TestStatusController.Status.FAILED_MINOR;
                             }
 

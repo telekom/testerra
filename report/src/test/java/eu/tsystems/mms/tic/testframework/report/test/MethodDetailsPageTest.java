@@ -149,11 +149,11 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
         checkAnnotationsAreDisplayed(methodDetailsPage, methodsTestObjects);
 
         //shown tabs: Back, Steps, stack, minor errors and dependencies
-        AssertCollector.assertTrue(methodDetailsPage.getBackTab().isDisplayed());
-        AssertCollector.assertTrue(methodDetailsPage.getStepsTab().isDisplayed());
-        AssertCollector.assertTrue(methodDetailsPage.getMinorErrors().isDisplayed());
-        AssertCollector.assertTrue(methodDetailsPage.getStackTab().isDisplayed());
-        AssertCollector.assertTrue(methodDetailsPage.getDependenciesTab().isDisplayed());
+        AssertCollector.assertTrue(methodDetailsPage.getBackTab().isDisplayed(), "The Back-tab should be displayed.");
+        AssertCollector.assertTrue(methodDetailsPage.getStepsTab().isDisplayed(), "The Steps-tab should be displayed.");
+        AssertCollector.assertTrue(methodDetailsPage.getMinorErrors().isDisplayed(), "The MinorErrors-tab should be displayed.");
+        AssertCollector.assertTrue(methodDetailsPage.getStackTab().isDisplayed(), "The Stack-tab should be displayed.");
+        AssertCollector.assertTrue(methodDetailsPage.getDependenciesTab().isDisplayed(), "The Dependencies-tab should be displayed.");
     }
 
     /**
@@ -201,9 +201,9 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
         checkAnnotationsAreDisplayed(methodDetailsPage, methodsTestObjects);
 
         //shown tabs: Back, Steps and dependencies
-        AssertCollector.assertTrue(methodDetailsPage.getBackTab().isDisplayed());
-        AssertCollector.assertTrue(methodDetailsPage.getStepsTab().isDisplayed());
-        AssertCollector.assertTrue(methodDetailsPage.getDependenciesTab().isDisplayed());
+        AssertCollector.assertTrue(methodDetailsPage.getBackTab().isDisplayed(), "The Back-Tab should be displayed.");
+        AssertCollector.assertTrue(methodDetailsPage.getStepsTab().isDisplayed(), "The Steps-Tab should be displayed.");
+        AssertCollector.assertTrue(methodDetailsPage.getDependenciesTab().isDisplayed(), "The Dependencies-Tab should be displayed.");
 
         //check retry hints
         //TODO add check for retry information
@@ -292,8 +292,8 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
 
         MethodStackPage stackPage = GeneralWorkflow.doOpenReportStracktracePage(methodDetailsPage);
-        AssertCollector.assertTrue(stackPage.getStackTrace().contains("java.lang.AssertionError: expected [true] but found [false]"));
-        AssertCollector.assertTrue(stackPage.getStackTrace().contains("eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestExecutionFilter.test_FailedInheritedFilter(ReportTestUnderTestExecutionFilter.java"));
+        AssertCollector.assertTrue(stackPage.getStackTrace().contains("java.lang.AssertionError: expected [true] but found [false]"), "The stack trace tab should contain the expected message.");
+        AssertCollector.assertTrue(stackPage.getStackTrace().contains("eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestExecutionFilter.test_FailedInheritedFilter(ReportTestUnderTestExecutionFilter.java"), "The stack trace tab should contain the expected message.");
     }
 
     /**
@@ -308,8 +308,8 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
 
         MethodMinorErrorsPage minorErrorsPage = methodDetailsPage.clickMinorErrorsTab();
 
-        AssertCollector.assertTrue(minorErrorsPage.getAssertion().isDisplayed(), "The assertion message button is displayed in a with minor details page.");
-        AssertCollector.assertTrue(minorErrorsPage.getAssertion().getText().equals("Assert: expected [true] but found [false]"), "The assertion message is correct shwon on details page.");
+        AssertCollector.assertTrue(minorErrorsPage.getAssertion().isDisplayed(), "The assertion message button is displayed in the minor details page.");
+        AssertCollector.assertTrue(minorErrorsPage.getAssertion().getText().equals("Assert: expected [true] but found [false]"), "The assertion message is correct shown on the minor details page.");
 
         minorErrorsPage = minorErrorsPage.clickAssertion();
         Assert.assertTrue(minorErrorsPage.getAssertionMessage().contains("eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTest"), "The assertion message is correct shwon on details page.");

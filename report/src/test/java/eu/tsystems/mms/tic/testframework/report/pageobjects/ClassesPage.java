@@ -171,7 +171,7 @@ public class ClassesPage extends AbstractReportPage {
         GuiElement classTableRow = getClassTableRowForClass(className);
         GuiElement successIndicator = classTableRow.getSubElement(By.xpath("//*[@class='textleft']/span[@title='Passed']"));
         successIndicator.setName("successIndicator");
-        successIndicator.asserts("The success indicator should be displayed.").assertIsDisplayed();
+        successIndicator.asserts("The success indicator for class name '" + className + "' should be displayed.").assertIsDisplayed();
     }
 
     /**

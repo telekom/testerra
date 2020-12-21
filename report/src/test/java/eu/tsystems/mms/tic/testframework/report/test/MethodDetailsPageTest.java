@@ -316,7 +316,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
         AssertCollector.assertTrue(minorErrorsPage.getAssertion().getText().equals("Assert: expected [true] but found [false]"), "The assertion message is correct shown on the minor details page.");
 
         minorErrorsPage = minorErrorsPage.clickAssertion();
-        Assert.assertTrue(minorErrorsPage.getAssertionMessage().contains("eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTest"), "The assertion message is correct shwon on details page.");
+        Assert.assertTrue(minorErrorsPage.getAssertionMessage().contains("eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTest"), "The assertion message is correct shown on details page.");
     }
 
     /**

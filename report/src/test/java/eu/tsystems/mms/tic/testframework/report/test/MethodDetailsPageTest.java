@@ -187,12 +187,16 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
         final String methodNameMainPart = "test_FilterFailedNoMinorWithFailedRetry";
 
         final String htmlId = methodNameMainPart + "-" + TestStatusController.Status.FAILED_RETRIED.name();
-        final String methodName = methodNameMainPart + " (1/2)";
+        String retrySuffix = "(1/2)";
+        final String methodName = methodNameMainPart + " " + retrySuffix;
 
         final MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), htmlId);
 
+        String methodNameString = methodDetailsPage.getMethodNameString();
+
         //General Details
-        AssertCollector.assertTrue(methodDetailsPage.getMethodNameString().contains(methodName), "The method name is displayed correctly for " + methodName);
+        AssertCollector.assertTrue(methodNameString.startsWith(methodNameMainPart), "The method name (" + methodNameString + ") startrs with: " + methodName);
+        AssertCollector.assertTrue(methodNameString.contains(retrySuffix), "The method name (" + methodNameString +") contains the retry marker: " + retrySuffix);
         AssertCollector.assertTrue(methodDetailsPage.getMethodResultString().contains(TestResultHelper.TestResult.RETRIED.getXpathClassesDetailsHeader()), "The method status is displayed correctly for " + methodName);
 
         //Annotation

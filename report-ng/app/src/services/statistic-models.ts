@@ -44,7 +44,7 @@ class Statistics {
         this._resultStatuses[status]++;
     }
 
-    get availableStatuses() {
+    get availableStatuses():ResultStatusType[] {
         const statuses = [];
         for (const status in this._resultStatuses) {
             statuses.push(status);

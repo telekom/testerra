@@ -194,7 +194,7 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
      */
     @Deprecated
     public Map<ClassContext, Map> getMethodStatsPerClass(boolean includeTestMethods, boolean includeConfigMethods) {
-        Map<TestClassContext, ClassContext> mergedClassContexts = new HashMap<>();
+        Map<String, ClassContext> mergedClassContexts = new HashMap<>();
         final Map<ClassContext, Map> methodStatsPerClass = new LinkedHashMap<>();
         suiteContexts.forEach(suiteContext -> {
             suiteContext.readTestContexts().forEach(testContext -> {
@@ -203,12 +203,12 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
                     if (optionalTestClassContext.isPresent()) {
                         TestClassContext testClassContext = optionalTestClassContext.get();
                         ClassContext mergedClassContext;
-                        if (!mergedClassContexts.containsKey(testClassContext)) {
+                        if (!mergedClassContexts.containsKey(testClassContext.name())) {
                             mergedClassContext = new ClassContext(classContext.getTestClass(), testContext);
                             mergedClassContext.setName(testClassContext.name());
-                            mergedClassContexts.put(testClassContext, mergedClassContext);
+                            mergedClassContexts.put(testClassContext.name(), mergedClassContext);
                         } else {
-                            mergedClassContext = mergedClassContexts.get(testClassContext);
+                            mergedClassContext = mergedClassContexts.get(testClassContext.name());
                         }
                         mergedClassContext.methodContexts.addAll(classContext.readMethodContexts().collect(Collectors.toList()));
                     } else {

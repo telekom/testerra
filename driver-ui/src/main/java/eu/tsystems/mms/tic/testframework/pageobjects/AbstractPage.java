@@ -161,7 +161,7 @@ public abstract class AbstractPage implements Loggable {
         Logging and demo mode
          */
         String classSimpleName = this.getClass().getSimpleName();
-        log().info("Checking mandatory elements");
+        log().debug("Checking mandatory elements");
 
         handleDemoMode(getWebDriver());
 
@@ -209,8 +209,6 @@ public abstract class AbstractPage implements Loggable {
         }
 
         screenShotOnPageLoad();
-
-        log().info("Page loaded successfully");
     }
 
     protected void checkPagePreparation() {

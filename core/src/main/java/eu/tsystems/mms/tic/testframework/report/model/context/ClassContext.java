@@ -242,15 +242,6 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
         return methodContexts;
     }
 
-    /**
-     * Use in classesStatistics.vm
-     */
-    @Deprecated
-    public String getExplicitName() {
-        TestContext testContext = getTestContext();
-        return this.getTestClass().getSimpleName() + "_" + testContext.getSuiteContext().getName() + "_" + testContext.getName();
-    }
-
     public void setName(String name) {
         this.name = name;
     }

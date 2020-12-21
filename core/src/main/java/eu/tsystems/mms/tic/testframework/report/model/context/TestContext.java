@@ -114,13 +114,14 @@ public class TestContext extends AbstractContext implements SynchronizableContex
         create a new class context, maybe this is later thrown away
          */
         final ClassContext newClassContext = new ClassContext(realClass, this);
-        newClassContext.name = newClassContext.getTestClass().getSimpleName();
+
         //fillBasicContextValues(newClassContext, this, newClassContext.getTestClass().getSimpleName());
 
         // lets check if we already know about it
         if (readClassContexts().anyMatch(classContext -> classContext.getTestClass().getName().equals(realClass.getName()))) {
 
             // a context for this class is already present
+//            newClassContext.setName(realClass.getSimpleName() + "_" + getSuiteContext().getName() + "_" + this.getName());
 
             // Does a marker entry with this swi exist?
             Optional<ClassContext> optionalFoundClassContext = readClassContexts().filter(classContext -> {
@@ -140,8 +141,12 @@ public class TestContext extends AbstractContext implements SynchronizableContex
 
             if (optionalFoundClassContext.isPresent()) {
                 // this must be our class context
-                return optionalFoundClassContext.get();
+                ClassContext classContext = optionalFoundClassContext.get();
+                classContext.setName(realClass.getSimpleName() + "_" + getSuiteContext().getName() + "_" + this.getName());
+                return classContext;
             }
+        } else {
+            newClassContext.setName(realClass.getSimpleName());
         }
 
         // Our new class is the first time coming up.

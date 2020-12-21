@@ -43,7 +43,7 @@
             <tr class="testclassrow hidden test">
                 <td class="textleft">
                     <span class="" style="color:${status.color};" title="${status.title}"><font size="4" style="vertical-align:middle;">${status.symbol}</font></span>
-                    <a href="classes/${class.id}.html" class="tooltip">${class.getExplicitName()}</a>
+                    <a href="classes/${class.id}.html" class="tooltip">${class.getName()}</a>
                 </td>
 
                 #foreach ($s in ${executionContext.getAvailableStatuses()})

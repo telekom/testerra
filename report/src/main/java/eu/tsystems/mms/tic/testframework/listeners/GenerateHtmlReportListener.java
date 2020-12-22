@@ -24,6 +24,7 @@ package eu.tsystems.mms.tic.testframework.listeners;
 
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
+import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
 import eu.tsystems.mms.tic.testframework.events.FinalizeExecutionEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
@@ -33,7 +34,6 @@ import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.ReportingData;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.perf.PerfTestReportUtils;
 import eu.tsystems.mms.tic.testframework.report.threadvisualizer.DataSet;
@@ -44,6 +44,7 @@ import eu.tsystems.mms.tic.testframework.utils.ReportUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -195,16 +196,82 @@ public class GenerateHtmlReportListener implements
                 .findFirst();
     }
 
+    public void addMethodStats(ReportingData reportingData, ClassContext classContext) {
+        Map<TestStatusController.Status, Integer> methodStats = classContext.createStats();
+        Map<TestStatusController.Status, Integer> configMethodStats = classContext.createStats();
+        classContext.readMethodContexts().forEach(methodContext -> {
+            if (methodContext.isTestMethod()) {
+                classContext.addToStats(methodStats, methodContext);
+            } else if (methodContext.isConfigMethod()) {
+                classContext.addToStats(configMethodStats, methodContext);
+            }
+        });
+        reportingData.methodStatsPerClass.put(classContext, methodStats);
+        reportingData.configMethodStatsPerClass.put(classContext, configMethodStats);
+    }
+
+    /**
+     * Get method statistics for all effective classes.
+     * The classes are all classContext from the context tree (without merged ones) AND mergedClassContexts from executionContext.
+     *
+     * Use in dashboard.vm and classesStatistics.vm
+     */
+    public void createMethodStatsPerClass(ReportingData reportingData) {
+        Map<String, ClassContext> mergedClassContexts = new HashMap<>();
+        reportingData.executionContext.readSuiteContexts().forEach(suiteContext -> {
+            suiteContext.readTestContexts().forEach(testContext -> {
+                testContext.readClassContexts().forEach(classContext -> {
+                    Optional<TestClassContext> optionalTestClassContext = classContext.getTestClassContext();
+                    if (optionalTestClassContext.isPresent()) {
+                        TestClassContext testClassContext = optionalTestClassContext.get();
+                        ClassContext mergedClassContext;
+                        if (!mergedClassContexts.containsKey(testClassContext.name())) {
+                            mergedClassContext = new ClassContext(classContext.getTestClass(), testContext);
+                            mergedClassContext.setName(testClassContext.name());
+                            mergedClassContexts.put(testClassContext.name(), mergedClassContext);
+                        } else {
+                            mergedClassContext = mergedClassContexts.get(testClassContext.name());
+                        }
+                        mergedClassContext.methodContexts.addAll(classContext.readMethodContexts().collect(Collectors.toList()));
+                    } else {
+                        addMethodStats(reportingData, classContext);
+                    }
+                });
+            });
+        });
+
+        mergedClassContexts.values().forEach(classContext -> addMethodStats(reportingData, classContext));
+
+        /*
+        sort
+         */
+        final AtomicReference<Integer> i1 = new AtomicReference<>();
+        final AtomicReference<Integer> i2 = new AtomicReference<>();
+        Comparator<? super Map> comp = (Comparator<Map>) (m1, m2) -> {
+            i1.set(0);
+            m1.keySet().forEach(status -> i1.set(i1.get() + ((int) m1.get(status))));
+
+            i2.set(0);
+            m2.keySet().forEach(status -> i2.set(i2.get() + ((int) m2.get(status))));
+
+            return i2.get() - i1.get();
+        };
+        reportingData.methodStatsPerClass = reportingData.methodStatsPerClass.entrySet().stream().sorted(Map.Entry.comparingByValue(comp))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+    }
+
     @Override
     @Subscribe
     public void onFinalizeExecution(FinalizeExecutionEvent event) {
-
         long start = System.currentTimeMillis();
-        ExecutionContext currentExecutionContext = event.getExecutionContext();
+
+        ReportingData reportingData = new ReportingData();
+        reportingData.executionContext = event.getExecutionContext();
+        createMethodStatsPerClass(reportingData);
 
         // get ALL ClassContexts
-        final List<ClassContext> allClassContexts =
-                new ArrayList<>(currentExecutionContext.getMethodStatsPerClass(true, false).keySet());
+        final List<ClassContext> allClassContexts = new ArrayList<>(reportingData.methodStatsPerClass.keySet());
 
         /*
          * Build maps for exit points and failure aspects
@@ -270,16 +337,14 @@ public class GenerateHtmlReportListener implements
         /*
         Store
          */
-        currentExecutionContext.exitPoints = exitPoints;
-        currentExecutionContext.failureAspects = failureAspects;
+        reportingData.exitPoints = exitPoints;
+        reportingData.failureAspects = failureAspects;
 
         PerfTestReportUtils.prepareMeasurementsForReport();
         JVMMonitor.label("Report");
         /*
          * Create report
          */
-        ReportingData reportingData = new ReportingData();
-        reportingData.executionContext = event.getExecutionContext();
         reportingData.failureCorridorMatched = FailureCorridor.isCorridorMatched();
         reportingData.classContexts = allClassContexts;
 

@@ -347,7 +347,7 @@ public final class ReportUtils {
          */
         Report report = new Report();
         final File reportFileIndex = report.getReportDirectory("index.html");
-        ReportFormatter.createTestClassesView(reportFileIndex, reportingData.classContexts, "index.vm", null, null);
+        ReportFormatter.createTestClassesView(reportFileIndex, reportingData, "index.vm", null, null);
 
         /*
         create all tabs that are not base tabs
@@ -389,7 +389,7 @@ public final class ReportUtils {
          */
         final File reportFileClassesStats = new File(FRAMES_DIRECTORY, "classesStatistics.html");
         final ReportInfo.RunInfo runInfo = ReportInfo.getRunInfo();
-        ReportFormatter.createTestClassesView(reportFileClassesStats, reportingData.classContexts, "classesStatistics.vm", null, runInfo);
+        ReportFormatter.createTestClassesView(reportFileClassesStats, reportingData, "classesStatistics.vm", null, runInfo);
 
         /*
         create classes dir
@@ -442,7 +442,7 @@ public final class ReportUtils {
         Logs
          */
         final File reportFileGlobalLogs = new File(FRAMES_DIRECTORY, "logs.html");
-        ReportFormatter.createTestClassesView(reportFileGlobalLogs, reportingData.classContexts, "log.vm", ExecutionContextController.getCurrentExecutionContext().readMethodContextLessLogs().map(LogMessage::new).collect(Collectors.toList()), null);
+        ReportFormatter.createTestClassesView(reportFileGlobalLogs, reportingData, "log.vm", ExecutionContextController.getCurrentExecutionContext().readMethodContextLessLogs().map(LogMessage::new).collect(Collectors.toList()), null);
 
         /*
         Memory consumption

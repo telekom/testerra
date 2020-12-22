@@ -27,11 +27,11 @@ import hljs from 'highlight.js/lib/core';
 import java from 'highlight.js/lib/languages/java';
 import 'highlight.js/styles/darcula.css';
 import {autoinject} from 'aurelia-framework';
-import {IMethodDetails, StatisticsGenerator} from "../../services/statistics-generator";
-import {FailureAspectStatistics} from "../../services/statistic-models";
-import {Config} from "../../services/config";
+import {IMethodDetails, StatisticsGenerator} from "services/statistics-generator";
+import {FailureAspectStatistics} from "services/statistic-models";
+import {Config} from "services/config-dev";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
-import {StatusConverter} from "../../services/status-converter";
+import {StatusConverter} from "services/status-converter";
 
 @autoinject()
 export class Details {

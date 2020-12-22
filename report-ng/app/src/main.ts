@@ -21,7 +21,7 @@
 
 import {Aurelia} from 'aurelia-framework';
 import {PLATFORM} from 'aurelia-pal';
-import {Config} from "./services/config";
+import {Config} from "./services/config-dev";
 import {DateFormatValueConverter} from "t-systems-aurelia-components/src/value-converters/date-format-value-converter";
 
 export function configure(aurelia: Aurelia) {

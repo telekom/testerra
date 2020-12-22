@@ -19,11 +19,12 @@
  * under the License.
  */
 
-export class Config {
-    readonly enableServiceWorker = false;
-    readonly developmentMode = true;
-    private pathRegex = new RegExp("[^\\/]+\\/")
+import {IConfig} from "./iconfig";
+
+export class Config implements IConfig{
+    readonly enableServiceWorker = true;
+    readonly developmentMode = false;
     correctRelativePath(path:string) {
-        return path.replaceAll("\\","/").replace(this.pathRegex,"");
+        return "../../"+path.replaceAll("\\","/");
     }
 }

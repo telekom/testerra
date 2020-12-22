@@ -19,10 +19,8 @@
  * under the License.
  */
 
-export class Config {
-    readonly enableServiceWorker = true;
-    readonly developmentMode = false;
-    correctRelativePath(path:string) {
-        return "../../"+path.replaceAll("\\","/");
-    }
+export interface IConfig {
+    readonly enableServiceWorker:boolean;
+    readonly developmentMode:boolean;
+    correctRelativePath(path:string):string;
 }

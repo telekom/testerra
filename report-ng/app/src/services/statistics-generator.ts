@@ -23,7 +23,7 @@ import {autoinject} from "aurelia-framework";
 import {DataLoader} from "./data-loader";
 import {ClassStatistics, ExecutionStatistics, FailureAspectStatistics} from "./statistic-models";
 import {CacheService} from "t-systems-aurelia-components/src/services/cache-service";
-import {Config} from "./config";
+import {Config} from "./config-dev";
 import {data} from "./report-model";
 import IFile = data.IFile;
 import IMethodContext = data.IMethodContext;

@@ -20,10 +20,10 @@
  */
 
 import {autoinject} from 'aurelia-framework';
-import {IMethodDetails, StatisticsGenerator} from "../../services/statistics-generator";
-import {data} from "../../services/report-model";
-import {DataLoader} from "../../services/data-loader";
-import {Config} from "../../services/config";
+import {IMethodDetails, StatisticsGenerator} from "services/statistics-generator";
+import {data} from "services/report-model";
+import {DataLoader} from "services/data-loader";
+import {Config} from "services/config-dev";
 import {MdcDialogService} from '@aurelia-mdc-web/dialog';
 import {ScreenshotsDialog} from "../screenshots-dialog/screenshots-dialog";
 import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";

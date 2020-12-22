@@ -40,6 +40,7 @@ export function configure(aurelia: Aurelia) {
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/expandable'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/form-field'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/icon-button'))
+        .plugin(PLATFORM.moduleName('@aurelia-mdc-web/image-list'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/layout-grid'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/linear-progress'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/list'))

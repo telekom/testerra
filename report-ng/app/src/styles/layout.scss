@@ -108,6 +108,11 @@
     justify-content: space-between;
 }
 
+.space-evenly {
+    @extend .flex;
+    justify-content: space-evenly;
+}
+
 // Space right
 .sr1 {
     margin-right: 8px;

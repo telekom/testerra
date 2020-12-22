@@ -33,11 +33,17 @@ import {Config} from "../../services/config";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import {StatusConverter} from "../../services/status-converter";
 
+export interface CustomContext{
+    name: string,
+    image, mode, distance, actualScreenshot, annotatedScreenshot, distanceScreenshot, expectedScreenshot
+}
+
 @autoinject()
 export class Details {
     private _hljs = hljs;
     private _failureAspect:FailureAspectStatistics;
     private _methodDetails:IMethodDetails;
+    private _parsedJSON: CustomContext;
 
     constructor(
         private _statistics: StatisticsGenerator,
@@ -54,9 +60,12 @@ export class Details {
     ) {
         this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
             this._methodDetails = methodDetails;
+            this._parsedJSON = JSON.parse(this._methodDetails.methodContext.customContextJson)[0];
+            console.log(this._parsedJSON);
             if (methodDetails.methodContext.errorContext) {
                 this._failureAspect = new FailureAspectStatistics().setErrorContext(methodDetails.methodContext.errorContext);
             }
         });
+
     }
 }

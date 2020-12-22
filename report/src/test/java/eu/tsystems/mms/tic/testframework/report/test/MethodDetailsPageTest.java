@@ -397,19 +397,17 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     public void testT16_checkErrorMessage() {
         TestStep.begin("Checks error Message from a failed test");
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestCorridorLow.class.getSimpleName(), "test_testLowCorridorFailed3");
-        AssertCollector.assertEquals(methodDetailsPage.getErrorMessageString().getText(), "ArithmeticException: / by zero", "Expected another error message.");
-        AssertCollector.assertFalse(methodDetailsPage.getFingerprintString().isDisplayed(), "Expected that the fingerprint link is shown.");
+        methodDetailsPage.getErrorMessageString().assertCollector().assertText("ArithmeticException: / by zero");
         methodDetailsPage = methodDetailsPage.toggleFingerprint();
-        AssertCollector.assertTrue(methodDetailsPage.getFingerprintString().getText().contains("test_testLowCorridorFailed3()"), "Expected that the detailed fingerprint message is shown.");
-        AssertCollector.assertTrue(methodDetailsPage.getFingerprintString().getText().contains("ExitPointCreatorTestClass2.testCreatorForDifferentExitPoints2()"), "Expected that the detailed fingerprint message is shown.");
+        methodDetailsPage.getFingerprintString().assertCollector().assertTextContains("test_testLowCorridorFailed3()");
+        methodDetailsPage.getFingerprintString().assertCollector().assertTextContains("ExitPointCreatorTestClass2.testCreatorForDifferentExitPoints2()");
 
         TestStep.begin("Checks error Message from a failed test with minor errors");
-        methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestCorridorLow.class.getSimpleName(), "test_FailedMinor1");
-        AssertCollector.assertEquals(methodDetailsPage.getErrorMessageString().getText(), "Exception", "Expected another error message.");
-        AssertCollector.assertFalse(methodDetailsPage.getFingerprintString().isDisplayed(), "Expected that the fingerprint link is shown.");
+        methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), "ReportTestUnderTestCorridorLow_Report- TestsUnderTest_Failed Creator", "test_FailedMinor1");
+        methodDetailsPage.getErrorMessageString().assertCollector().assertText("Exception");
         methodDetailsPage = methodDetailsPage.toggleFingerprint();
-        AssertCollector.assertTrue(methodDetailsPage.getFingerprintString().getText().contains("test_FailedMinor1()"), "Expected that the detailed fingerprint message is shown.");
-        AssertCollector.assertTrue(methodDetailsPage.getFingerprintString().getText().contains("NonFunctionalAssert.assertTrue(false)"), "Expected that the detailed fingerprint message is shown.");
+        methodDetailsPage.getFingerprintString().assertCollector().assertTextContains("test_FailedMinor1()");
+        methodDetailsPage.getFingerprintString().assertCollector().assertTextContains("NonFunctionalAssert.assertTrue(false)");
     }
 
     /**

@@ -24,9 +24,22 @@ package eu.tsystems.mms.tic.testframework.listeners;
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.events.FinalizeExecutionEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import org.apache.commons.io.FileUtils;
 
 public class CopyReportAppListener implements FinalizeExecutionEvent.Listener, Loggable {
     private File targetDir;
@@ -39,14 +52,37 @@ public class CopyReportAppListener implements FinalizeExecutionEvent.Listener, L
     @Override
     public void onFinalizeExecution(FinalizeExecutionEvent event) {
         try {
-            URL resource = getClass().getClassLoader().getResource("report-ng");
-            if (resource == null) {
-                throw new Exception("App resource doesn't exists");
+            for (Path resourcePath : getPathsFromResourceJAR("report-ng")) {
+                InputStream resourceStream = getClass().getClassLoader().getResourceAsStream(resourcePath.toString());
+                File targetFile = new File(this.targetDir, resourcePath.toString());
+                FileUtils.copyInputStreamToFile(resourceStream, targetFile);
             }
-            File resourceDir = new File(resource.getPath());
-            FileUtils.copyDirectory(resourceDir, this.targetDir);
-        } catch (Exception e) {
+        }  catch (Exception e) {
             log().error("Unable to copy app resource", e);
         }
+    }
+
+    /**
+     * @see {https://mkyong.com/java/java-read-a-file-from-resources-folder/}
+     */
+    private List<Path> getPathsFromResourceJAR(String folder) throws URISyntaxException, IOException {
+        // get path of the current running JAR
+        String jarPath = getClass().getProtectionDomain()
+                .getCodeSource()
+                .getLocation()
+                .toURI()
+                .getPath();
+
+        List<Path> result;
+
+        // file walks JAR
+        URI uri = URI.create("jar:file:" + jarPath);
+        try (FileSystem fs = FileSystems.newFileSystem(uri, Collections.emptyMap())) {
+            result = Files.walk(fs.getPath(folder))
+                    .filter(Files::isRegularFile)
+                    .collect(Collectors.toList());
+        }
+
+        return result;
     }
 }

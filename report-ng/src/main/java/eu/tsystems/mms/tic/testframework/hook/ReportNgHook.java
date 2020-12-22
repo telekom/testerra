@@ -37,10 +37,9 @@ public class ReportNgHook implements ModuleHook {
         EventBus eventBus = TesterraListener.getEventBus();
 
         Report report = new Report();
-        File reportModelDirectory = report.getReportDirectory("report-ng/model");
 
-        eventBus.register(new CopyReportAppListener(reportModelDirectory.getParentFile()));
-        eventBus.register(new GenerateReportNgModelListener(reportModelDirectory));
+        eventBus.register(new CopyReportAppListener(report.getReportDirectory()));
+        eventBus.register(new GenerateReportNgModelListener(report.getReportDirectory("report-ng/model")));
     }
 
     @Override

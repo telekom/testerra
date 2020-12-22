@@ -49,7 +49,8 @@
                                     columns.bind="[{count: 5}, {media: 'max-width: 899px', count: 3}]">
                         <mdc-image-list-item
                             src.bind="'screenshots/' + _parsedJSON.actualScreenshot.filename"
-                            label="actual Screenshot">
+                            label="actual Screenshot"
+                            click.delegate="_imageClicked()">
                         </mdc-image-list-item>
                         <mdc-image-list-item
                             src.bind="'screenshots/' + _parsedJSON.expectedScreenshot.filename"

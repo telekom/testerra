@@ -32,6 +32,9 @@ import {FailureAspectStatistics} from "../../services/statistic-models";
 import {Config} from "../../services/config";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import {StatusConverter} from "../../services/status-converter";
+import {data} from "../../services/report-model";
+import {ScreenshotComparison} from "../screenshot-comparison/screenshot-comparison";
+import {MdcDialogService} from '@aurelia-mdc-web/dialog';
 
 export interface CustomContext{
     name: string,
@@ -49,6 +52,7 @@ export class Details {
         private _statistics: StatisticsGenerator,
         private _config:Config,
         private _statusConverter:StatusConverter,
+        private _dialogService:MdcDialogService
     ) {
         this._hljs.registerLanguage("java", java);
     }
@@ -67,5 +71,16 @@ export class Details {
             }
         });
 
+    }
+
+    private _imageClicked() {
+        this._dialogService.open({
+            viewModel: ScreenshotComparison,
+            model: {
+                actual: "screenshots/" + this._parsedJSON.actualScreenshot.filename,
+                expected: "screenshots/" + this._parsedJSON.expectedScreenshot.filename
+            },
+            class: "screenshot-comparison"
+        });
     }
 }

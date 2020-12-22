@@ -66,6 +66,12 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
     public ClassContext(Class testClass, TestContext testContext) {
         this.testClass = testClass;
         this.parentContext = testContext;
+        this.name = testClass.getSimpleName();
+    }
+
+    @Override
+    public String getName() {
+        return getTestClassContext().map(TestClassContext::name).orElseGet(super::getName);
     }
 
     @Deprecated
@@ -90,7 +96,9 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
     }
 
     public ClassContext setTestClassContext(TestClassContext testContext) {
-        this.testClassContext = testContext;
+        if (testContext.name().trim().length() > 0) {
+            this.testClassContext = testContext;
+        }
         return this;
     }
 
@@ -249,7 +257,12 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
         return methodContexts;
     }
 
-    public void setName(String name) {
-        this.name = name;
+//    public void setName(String name) {
+//        this.name = name;
+//    }
+
+    public void updateMultiContextualName() {
+        TestContext testContext = getTestContext();
+        this.name = getTestClass().getSimpleName() + "_" + testContext.getSuiteContext().getName() + "_" + testContext.getName();
     }
 }

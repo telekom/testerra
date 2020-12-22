@@ -468,15 +468,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     /**
-     * @deprecated Use {@link #getClassContext()} instead
-     * @return
-     */
-    @Deprecated
-    public ClassContext getEffectiveClassContext() {
-        return getClassContext();
-    }
-
-    /**
      * Publish the screenshots to the report into the current errorContext.
      */
     public void addScreenshots(Stream<Screenshot> screenshots) {

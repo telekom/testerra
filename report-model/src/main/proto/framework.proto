@@ -51,6 +51,7 @@ message ExecutionContext {
 
     repeated LogMessage log_messages = 14;
     int32 estimated_tests_count = 15;
+    map<int32, int32> failure_corridor_limits = 16;
 }
 
 //message ContextClip {

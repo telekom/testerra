@@ -71,12 +71,7 @@
                         </ul>
                     </div>
                 </mdc-card>
-            </mdc-layout-grid-cell>
-            <mdc-layout-grid-cell span="4">
-                <test-results-card result.bind="_selectedResult" execution-statistics.bind="_executionStatistics" piece-clicked.delegate="_pieceClicked($event)"></test-results-card>
-            </mdc-layout-grid-cell>
-            <mdc-layout-grid-cell span="2">
-                <mdc-card>
+                <mdc-card class="mt1">
                     <div mdc-subtitle2 class="card-headline">Failure Aspects</div>
                     <mdc-list-divider></mdc-list-divider>
                     <div class="hcenter vcenter card-content" mdc-body1>
@@ -85,20 +80,24 @@
                         <a route-href="route: failureAspects; params.bind: {type: 'minor'}">${_minorFailures} Minor</a>
                     </div>
                 </mdc-card>
+            </mdc-layout-grid-cell>
+            <mdc-layout-grid-cell span="6">
+                <test-results-card result.bind="_selectedResult" execution-statistics.bind="_executionStatistics" piece-clicked.delegate="_pieceClicked($event)"></test-results-card>
+            </mdc-layout-grid-cell>
+            <mdc-layout-grid-cell span="3">
                 <mdc-card class="mt1">
                     <div mdc-subtitle2 class="card-headline">Failure Corridor</div>
                     <mdc-list-divider></mdc-list-divider>
                     <div class="hcenter vcenter card-content" mdc-body1>
-                        <span>${_highFailures} High</span>
+                        <span class="badge__dense sr1" class.bind="_highCorridor.matched?'status-passed':'status-failed'">${_highCorridor.count} High</span><span class="secondary" mdc-body2>of ${_highCorridor.limit}</span>
                         <span class="secondary ml1 mr1" mdc-body2>|</span>
-                        <span>${_midFailures} Mid</span>
+                        <span class="badge__dense sr1" class.bind="_midCorridor.matched?'status-passed':'status-failed'">${_midCorridor.count} Mid</span><span class="secondary" mdc-body2>of ${_midCorridor.limit}</span>
                         <span class="secondary ml1 mr1" mdc-body2>|</span>
-                        <span>${_lowFailures} Low</span>
+                        <span class="badge__dense sr1" class.bind="_lowCorridor.matched?'status-passed':'status-failed'">${_lowCorridor.count} Low</span><span class="secondary" mdc-body2>of ${_lowCorridor.limit}</span>
                     </div>
                 </mdc-card>
-            </mdc-layout-grid-cell>
-            <mdc-layout-grid-cell span="3">
-                <test-duration-card start.bind="_executionStatistics.executionAggregate.executionContext.contextValues.startTime"
+                <test-duration-card class="mt1"
+                                    start.bind="_executionStatistics.executionAggregate.executionContext.contextValues.startTime"
                                     end.bind="_executionStatistics.executionAggregate.executionContext.contextValues.endTime"
                 ></test-duration-card>
             </mdc-layout-grid-cell>

@@ -184,6 +184,9 @@ export namespace data {
 
         /** ExecutionContext estimatedTestsCount */
         estimatedTestsCount?: (number|null);
+
+        /** ExecutionContext failureCorridorLimits */
+        failureCorridorLimits?: ({ [k: string]: number }|null);
     }
 
     /** Represents an ExecutionContext. */
@@ -224,6 +227,9 @@ export namespace data {
 
         /** ExecutionContext estimatedTestsCount. */
         public estimatedTestsCount: number;
+
+        /** ExecutionContext failureCorridorLimits. */
+        public failureCorridorLimits: { [k: string]: number };
 
         /**
          * Decodes an ExecutionContext message from the specified reader or buffer.

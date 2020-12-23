@@ -460,7 +460,7 @@ public class ContextExporter {
         apply(classContext.getTestClass().getName(), builder::setFullClassName);
         apply(classContext.getTestContext().getId(), builder::setTestContextId);
         classContext.getTestClassContext().ifPresent(testClassContext -> builder.setTestContextName(testClassContext.name()));
-        
+
         return builder;
     }
 
@@ -479,6 +479,9 @@ public class ContextExporter {
             Optional<LogMessage.Builder> optional = Optional.ofNullable(buildLogEvent(logEvent));
             optional.ifPresent(builder::addLogMessages);
         });
+        builder.putFailureCorridorLimits(FailureCorridorValue.FCV_HIGH_VALUE, FailureCorridor.getAllowedTestFailuresHIGH());
+        builder.putFailureCorridorLimits(FailureCorridorValue.FCV_MID_VALUE, FailureCorridor.getAllowedTestFailuresMID());
+        builder.putFailureCorridorLimits(FailureCorridorValue.FCV_LOW_VALUE, FailureCorridor.getAllowedTestFailuresLOW());
         return builder;
     }
 //

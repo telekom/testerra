@@ -45,9 +45,12 @@ export class StatusConverter {
     get failedStatuses() {
         return [
             ResultStatusType.FAILED,
-            //ResultStatusType.FAILED_MINOR,
+            ResultStatusType.FAILED_MINOR,
             ResultStatusType.FAILED_EXPECTED,
-            ResultStatusType.FAILED_RETRIED
+            /**
+             * {@link ResultStatusType.FAILED_RETRIED} is not a statistical relevant status
+             */
+            //ResultStatusType.FAILED_RETRIED
         ]
     }
 

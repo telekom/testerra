@@ -353,6 +353,7 @@ export const data = $root.data = (() => {
          * @property {Array.<string>|null} [exclusiveSessionContextIds] ExecutionContext exclusiveSessionContextIds
          * @property {Array.<data.ILogMessage>|null} [logMessages] ExecutionContext logMessages
          * @property {number|null} [estimatedTestsCount] ExecutionContext estimatedTestsCount
+         * @property {Object.<string,number>|null} [failureCorridorLimits] ExecutionContext failureCorridorLimits
          */
 
         /**
@@ -367,6 +368,7 @@ export const data = $root.data = (() => {
             this.suiteContextIds = [];
             this.exclusiveSessionContextIds = [];
             this.logMessages = [];
+            this.failureCorridorLimits = {};
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -454,6 +456,14 @@ export const data = $root.data = (() => {
         ExecutionContext.prototype.estimatedTestsCount = 0;
 
         /**
+         * ExecutionContext failureCorridorLimits.
+         * @member {Object.<string,number>} failureCorridorLimits
+         * @memberof data.ExecutionContext
+         * @instance
+         */
+        ExecutionContext.prototype.failureCorridorLimits = $util.emptyObject;
+
+        /**
          * Decodes an ExecutionContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.ExecutionContext
@@ -467,7 +477,7 @@ export const data = $root.data = (() => {
         ExecutionContext.decode = function decode(r, l) {
             if (!(r instanceof $Reader))
                 r = $Reader.create(r);
-            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.ExecutionContext();
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.ExecutionContext(), k, value;
             while (r.pos < c) {
                 var t = r.uint32();
                 switch (t >>> 3) {
@@ -506,6 +516,28 @@ export const data = $root.data = (() => {
                     break;
                 case 15:
                     m.estimatedTestsCount = r.int32();
+                    break;
+                case 16:
+                    if (m.failureCorridorLimits === $util.emptyObject)
+                        m.failureCorridorLimits = {};
+                    var c2 = r.uint32() + r.pos;
+                    k = 0;
+                    value = 0;
+                    while (r.pos < c2) {
+                        var tag2 = r.uint32();
+                        switch (tag2 >>> 3) {
+                        case 1:
+                            k = r.int32();
+                            break;
+                        case 2:
+                            value = r.int32();
+                            break;
+                        default:
+                            r.skipType(tag2 & 7);
+                            break;
+                        }
+                    }
+                    m.failureCorridorLimits[k] = value;
                     break;
                 default:
                     r.skipType(t & 7);

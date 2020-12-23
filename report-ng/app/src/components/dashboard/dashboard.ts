@@ -75,7 +75,6 @@ export class Dashboard extends AbstractViewModel {
              * @todo Move this to {@link ExecutionStatistics}?
              */
             const executionAggregate = this._executionStatistics.executionAggregate;
-            console.log(executionAggregate);
             this._highCorridor.limit = executionAggregate.executionContext.failureCorridorLimits[FailureCorridorValue.FCV_MID];
             this._midCorridor.limit = executionAggregate.executionContext.failureCorridorLimits[FailureCorridorValue.FCV_MID];
             this._lowCorridor.limit = executionAggregate.executionContext.failureCorridorLimits[FailureCorridorValue.FCV_LOW];

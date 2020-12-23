@@ -26,6 +26,7 @@ import {ExecutionStatistics} from "services/statistic-models";
 import {AbstractViewModel} from "../abstract-view-model";
 import {data} from "../../services/report-model";
 import ResultStatusType = data.ResultStatusType;
+import MethodType = data.MethodType;
 
 @autoinject()
 export class Dashboard extends AbstractViewModel {
@@ -35,6 +36,9 @@ export class Dashboard extends AbstractViewModel {
     private _passedRetried = 0;
     private _majorFailures = 0;
     private _minorFailures = 0;
+    private _highFailures = 0;
+    private _midFailures = 0;
+    private _lowFailures = 0;
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -58,6 +62,20 @@ export class Dashboard extends AbstractViewModel {
                 }
             })
 
+            /**
+             * @todo Move this to {@link ExecutionStatistics}?
+             */
+            Object.values(this._executionStatistics.executionAggregate.methodContexts)
+                .filter(value => value.methodType==MethodType.TEST_METHOD)
+                .forEach(value => {
+                    if (this._statusConverter.failedStatuses.indexOf(value.resultStatus) >= 0) {
+                        switch (value.failureCorridorValue) {
+                            case data.FailureCorridorValue.FCV_HIGH: this._highFailures++; break;
+                            case data.FailureCorridorValue.FCV_MID: this._midFailures++; break;
+                            case data.FailureCorridorValue.FCV_LOW: this._lowFailures++; break;
+                        }
+                    }
+                });
         });
     };
 

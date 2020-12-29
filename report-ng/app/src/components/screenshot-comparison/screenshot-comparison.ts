@@ -21,7 +21,6 @@
 import {autoinject, PLATFORM, useView} from 'aurelia-framework';
 import {data} from "../../services/report-model";
 import {MdcDialog} from '@aurelia-mdc-web/dialog';
-import {MdcButton} from "@aurelia-mdc-web/button";
 
 @autoinject
 @useView(PLATFORM.moduleName('components/screenshot-comparison/screenshot-comparison.html'))

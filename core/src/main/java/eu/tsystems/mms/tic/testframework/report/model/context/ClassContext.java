@@ -32,6 +32,7 @@ import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -54,18 +55,63 @@ import org.testng.SkipException;
  */
 public class ClassContext extends AbstractContext implements SynchronizableContext, Loggable {
 
+    /**
+     * @deprecated Use {@link #readMethodContexts()} instead
+     */
+    @Deprecated
     public final Queue<MethodContext> methodContexts = new ConcurrentLinkedQueue<>();
-    public String fullClassName;
-    public String simpleClassName;
-    public final TestContextModel testContextModel;
-    public final ExecutionContext executionContext;
-    public TestClassContext testContext = null;
-    public boolean merged = false;
-    public ClassContext mergedIntoClassContext = null;
+    private Class testClass;
+    private TestClassContext testClassContext = null;
 
-    public ClassContext(TestContextModel testContextModel, ExecutionContext executionContext) {
-        this.parentContext = this.testContextModel = testContextModel;
-        this.executionContext = executionContext;
+    public ClassContext(Class testClass, TestContext testContext) {
+        this.testClass = testClass;
+        this.parentContext = testContext;
+        this.name = testClass.getSimpleName();
+    }
+
+    @Override
+    public String getName() {
+        return getTestClassContext().map(TestClassContext::name).orElseGet(super::getName);
+    }
+
+    @Deprecated
+    public String getFullClassName() {
+        return getTestClass().getName();
+    }
+
+    @Deprecated
+    public String getSimpleClassName() {
+        return getTestClass().getSimpleName();
+    }
+
+    /**
+     * @deprecated Use {@link #readMethodContexts()} instead
+     */
+    public Collection<MethodContext> getMethodContexts() {
+        return methodContexts;
+    }
+
+    public Stream<MethodContext> readMethodContexts() {
+        return this.methodContexts.stream();
+    }
+
+    public ClassContext setTestClassContext(TestClassContext testContext) {
+        if (testContext.name().trim().length() > 0) {
+            this.testClassContext = testContext;
+        }
+        return this;
+    }
+
+    public Optional<TestClassContext> getTestClassContext() {
+        return Optional.ofNullable(this.testClassContext);
+    }
+
+    public TestContext getTestContext() {
+        return (TestContext)this.parentContext;
+    }
+
+    public Class getTestClass() {
+        return testClass;
     }
 
     public MethodContext findTestMethodContainer(String methodName) {
@@ -108,46 +154,33 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
                 methodType = MethodContext.Type.CONFIGURATION_METHOD;
             }
 
-            TestContextModel correctTestContextModel = testContextModel;
-            SuiteContext correctSuiteContext = testContextModel.suiteContext;
-            if (merged) {
-                correctSuiteContext = executionContext.getSuiteContext(iTestContext);
-                correctTestContextModel = correctSuiteContext.getTestContext(iTestContext);
-            }
-
-            methodContext = new MethodContext(name, methodType, this, correctTestContextModel, correctSuiteContext, executionContext);
-            fillBasicContextValues(methodContext, this, name);
+            methodContext = new MethodContext(name, methodType, this);
+            methodContext.name = name;
+            //fillBasicContextValues(methodContext, this, name);
 
             methodContext.testResult = testResult;
             methodContext.iTestContext = iTestContext;
             methodContext.iTestNgMethod = iTestNGMethod;
 
-                /*
-                enhance swi with parameters, set parameters into context
-                 */
             if (parameters.length > 0) {
                 methodContext.parameters = Arrays.stream(parameters).map(o -> o == null ? "" : o.toString()).collect(Collectors.toList());
-                String swiSuffix = methodContext.parameters.stream().map(Object::toString).collect(Collectors.joining("_"));
-                methodContext.swi += "_" + swiSuffix;
             }
 
                 /*
                 link to merged context
                  */
-            if (merged) {
-                mergedIntoClassContext.methodContexts.add(methodContext);
-            }
+//            if (isMerged()) {
+//                mergedIntoClassContext.methodContexts.add(methodContext);
+//            }
 
-                /*
-                also check for annotations
-                 */
+            // also check for annotations
             Method method = iTestNGMethod.getConstructorOrMethod().getMethod();
             if (method.isAnnotationPresent(FailureCorridor.High.class)) {
-                methodContext.failureCorridorValue = FailureCorridor.Value.HIGH;
+                methodContext.setFailureCorridorClass(FailureCorridor.High.class);
             } else if (method.isAnnotationPresent(FailureCorridor.Mid.class)) {
-                methodContext.failureCorridorValue = FailureCorridor.Value.MID;
+                methodContext.setFailureCorridorClass(FailureCorridor.Mid.class);
             } else if (method.isAnnotationPresent(FailureCorridor.Low.class)) {
-                methodContext.failureCorridorValue = FailureCorridor.Value.LOW;
+                methodContext.setFailureCorridorClass(FailureCorridor.Low.class);
             }
 
             /*
@@ -166,8 +199,8 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
 
     public MethodContext safeAddSkipMethod(ITestResult testResult, IInvokedMethod invokedMethod) {
         MethodContext methodContext = getMethodContext(testResult, testResult.getTestContext(), invokedMethod);
-        methodContext.errorContext().setThrowable(null, new SkipException("Skipped"));
-        methodContext.status = TestStatusController.Status.SKIPPED;
+        methodContext.getErrorContext().setThrowable(null, new SkipException("Skipped"));
+        methodContext.setStatus(TestStatusController.Status.SKIPPED);
         return methodContext;
     }
 
@@ -182,38 +215,54 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
         //        return contexts;
     }
 
-    public Map<TestStatusController.Status, Integer> getMethodStats(boolean includeTestMethods, boolean includeConfigMethods) {
+    public Map<TestStatusController.Status, Integer> createStats() {
         Map<TestStatusController.Status, Integer> counts = new LinkedHashMap<>();
-
-        // initialize with 0
         Arrays.stream(TestStatusController.Status.values()).forEach(status -> counts.put(status, 0));
+        return counts;
+    }
 
-        methodContexts.stream().filter(mc -> (includeTestMethods && mc.isTestMethod()) || (includeConfigMethods && mc.isConfigMethod()))
+    public void addToStats(Map<TestStatusController.Status, Integer> stats, MethodContext methodContext) {
+        TestStatusController.Status status = methodContext.getStatus();
+        int value = stats.getOrDefault(status,0);
+        stats.put(status, value + 1);
+    }
+
+    /**
+     * Used in dashboard.vm and methodsDashboard.vm
+     */
+    @Deprecated
+    public Map<TestStatusController.Status, Integer> getMethodStats(boolean includeTestMethods, boolean includeConfigMethods) {
+        Map<TestStatusController.Status, Integer> counts = createStats();
+
+        methodContexts.stream()
+                .filter(mc -> (includeTestMethods && mc.isTestMethod()) || (includeConfigMethods && mc.isConfigMethod()))
                 .forEach(methodContext -> {
-                    TestStatusController.Status status = methodContext.getStatus();
-                    int value = 0;
-                    if (counts.containsKey(status)) {
-                        value = counts.get(status);
-                    }
-
-                    counts.put(status, value + 1);
+                    addToStats(counts, methodContext);
                 });
 
         return counts;
     }
 
+    /**
+     * Used in methodsDashboard.vm only
+     */
+    @Deprecated
     public List<MethodContext> getTestMethodsWithStatus(TestStatusController.Status status) {
         List<MethodContext> methodContexts = new LinkedList<>();
         this.methodContexts.forEach(methodContext -> {
-            if (methodContext.isTestMethod() && status == methodContext.status) {
+            if (methodContext.isTestMethod() && status == methodContext.getStatus()) {
                 methodContexts.add(methodContext);
             }
         });
         return methodContexts;
     }
 
-    protected void setExplicitName() {
-        name = simpleClassName + "_" + testContextModel.suiteContext.name + "_" + testContextModel.name;
-    }
+//    public void setName(String name) {
+//        this.name = name;
+//    }
 
+    public void updateMultiContextualName() {
+        TestContext testContext = getTestContext();
+        this.name = getTestClass().getSimpleName() + "_" + testContext.getSuiteContext().getName() + "_" + testContext.getName();
+    }
 }

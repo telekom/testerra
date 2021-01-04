@@ -41,7 +41,7 @@ public abstract class AbstractEvidencesWorker implements MethodEndEvent.Listener
                 collect();
             }
         } else if (event.isSkipped()) {
-            if (event.getMethodContext().status == TestStatusController.Status.FAILED_RETRIED) {
+            if (event.getMethodContext().getStatus() == TestStatusController.Status.FAILED_RETRIED) {
                 collect();
             }
         }

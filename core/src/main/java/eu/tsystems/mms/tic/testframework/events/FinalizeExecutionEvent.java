@@ -21,10 +21,7 @@
 
 package eu.tsystems.mms.tic.testframework.events;
 
-import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Gets fired when the report model has been finalized
@@ -34,7 +31,6 @@ public class FinalizeExecutionEvent {
         void onFinalizeExecution(FinalizeExecutionEvent event);
     }
 
-    private Optional<List<ClassContext>> methodStatsPerClass;
     private ExecutionContext executionContext;
 
     public ExecutionContext getExecutionContext() {
@@ -45,14 +41,4 @@ public class FinalizeExecutionEvent {
         this.executionContext = executionContext;
         return this;
     }
-
-    public Optional<List<ClassContext>> getMethodStatsPerClass() {
-        return methodStatsPerClass;
-    }
-
-    public FinalizeExecutionEvent setMethodStatsPerClass(List<ClassContext> methodStatsPerClass) {
-        this.methodStatsPerClass = Optional.of(methodStatsPerClass);
-        return this;
-    }
-
 }

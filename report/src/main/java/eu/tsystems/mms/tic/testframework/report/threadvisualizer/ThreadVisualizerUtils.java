@@ -51,12 +51,12 @@ public final class ThreadVisualizerUtils {
     public static String getFormattedContent(final MethodContext methodContext) {
         String html = "";
 
-        String style = "background: linear-gradient(to top, " + methodContext.status.color + " 0%, white 100%); ";
+        String style = "background: linear-gradient(to top, " + methodContext.getStatus().color + " 0%, white 100%); ";
 
         if (methodContext.isConfigMethod()) {
             style += "border: 2px solid #ffa500; ";
         } else {
-            style += "border: 1px solid " + methodContext.status.color + "; ";
+            style += "border: 1px solid " + methodContext.getStatus().color + "; ";
         }
 
         style += "border-radius: 6px 6px 6px 6px; " +
@@ -77,11 +77,11 @@ public final class ThreadVisualizerUtils {
         html += "<div class='tooltip' style='" + style + "'>";
 
         html += "<a onclick='showLoadingIn(null);' href='methods/" + methodContext.methodRunIndex + ".html'>";
-        html += "<font size='3' color='black'>" + methodContext.name + "</font>";
+        html += "<font size='3' color='black'>" + methodContext.getName() + "</font>";
         html += LINEBREAK;
-        html += "<font size='1' color='grey'>" + methodContext.status.title + "</font>";
+        html += "<font size='1' color='grey'>" + methodContext.getStatus().title + "</font>";
         html += LINEBREAK;
-        html += "<font size='1' color='white'>" + methodContext.getEffectiveClassContext().name + "</font>";
+        html += "<font size='1' color='white'>" + methodContext.getClassContext().getName() + "</font>";
         html += LINEBREAK;
         html += "<font size='1' color='white'>(" + methodContext.methodRunIndex + ")</font>";
 

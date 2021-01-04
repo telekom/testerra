@@ -46,8 +46,7 @@ public class TakeOutOfSessionsEvidencesWorker extends AbstractEvidencesWorker im
             List<Video> videos = TestEvidenceCollector.collectVideos();
             log().debug("Evidence Videos: " + videos);
             if (videos != null) {
-                videos.forEach(v -> v.errorContextId = event.getMethodContext().id);
-                event.getMethodContext().videos.addAll(videos);
+                event.getMethodContext().addVideos(videos);
             }
         }
     }
@@ -67,7 +66,7 @@ public class TakeOutOfSessionsEvidencesWorker extends AbstractEvidencesWorker im
             collect();
 
         } else if (event.isSkipped()) {
-            if (event.getMethodContext().status == TestStatusController.Status.FAILED_RETRIED) {
+            if (event.getMethodContext().getStatus() == TestStatusController.Status.FAILED_RETRIED) {
                 collect();
             }
         }

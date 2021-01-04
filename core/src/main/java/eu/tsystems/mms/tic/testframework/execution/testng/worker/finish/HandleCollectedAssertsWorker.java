@@ -25,8 +25,10 @@ import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.SharedTestResultAttributes;
 import eu.tsystems.mms.tic.testframework.internal.CollectedAssertions;
-import eu.tsystems.mms.tic.testframework.report.model.AssertionInfo;
+import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 import org.testng.ITestResult;
 
 import java.util.List;
@@ -36,29 +38,25 @@ public class HandleCollectedAssertsWorker implements MethodEndEvent.Listener {
     @Override
     @Subscribe
     public void onMethodEnd(MethodEndEvent event) {
-        if (CollectedAssertions.hasEntries()) {
-            // add all collected assertions
-            List<AssertionInfo> entries = CollectedAssertions.getEntries();
-            event.getMethodContext().addCollectedAssertions(entries);
-            ITestResult testResult = event.getTestResult();
-            MethodContext methodContext = event.getMethodContext();
-            if (testResult.isSuccess()) {
-                // let the test fail
-                testResult.setStatus(ITestResult.FAILURE);
-                String msg = "The following assertions failed:";
-                int i = 0;
-                for (AssertionInfo entry : entries) {
-                    i++;
-                    msg += "\n" + i + ") " + entry.getReadableErrorMessage();
-                }
+        ITestResult testResult = event.getTestResult();
+        MethodContext methodContext = event.getMethodContext();
+        if (testResult.isSuccess() && methodContext.getNumAssertions() > 0) {
+            // let the test fail
+            testResult.setStatus(ITestResult.FAILURE);
+            StringBuilder sb = new StringBuilder();
+            sb.append("The following assertions failed:");
+            AtomicInteger i = new AtomicInteger();
+            methodContext.readCollectedAssertions().forEach(errorContext -> {
+                i.incrementAndGet();
+                sb.append("\n").append(i).append(") ").append(errorContext.getReadableErrorMessage());
+            });
 
-                AssertionError testMethodContainerError = new AssertionError(msg);
-                testResult.setThrowable(testMethodContainerError);
+            AssertionError testMethodContainerError = new AssertionError(sb.toString());
+            testResult.setThrowable(testMethodContainerError);
 
-                // update test method container
-                methodContext.errorContext().setThrowable(null, testMethodContainerError);
-                testResult.setAttribute(SharedTestResultAttributes.failsFromCollectedAssertsOnly, Boolean.TRUE);
-            }
+            // update test method container
+            methodContext.getErrorContext().setThrowable(null, testMethodContainerError);
+            testResult.setAttribute(SharedTestResultAttributes.failsFromCollectedAssertsOnly, Boolean.TRUE);
         }
     }
 }

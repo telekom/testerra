@@ -249,7 +249,7 @@ public class TesterraListener implements
         MethodContext methodContext = ExecutionContextController.setCurrentTestResult(testResult, testContext); // stores the actual testresult, auto-creates the method context
         ExecutionContextController.setCurrentMethodContext(methodContext);
 
-        methodContext.steps().announceTestStep(TestStep.SETUP);
+        methodContext.getTestStep(TestStep.SETUP);
 
         final String infoText = "beforeInvocation: " + invokedMethod.getTestMethod().getTestClass().getName() + "." +
                 methodName +
@@ -365,7 +365,7 @@ public class TesterraListener implements
         /*
         add workers in workflow order
          */
-        methodContext.steps().announceTestStep(TestStep.TEARDOWN);
+        methodContext.getTestStep(TestStep.TEARDOWN);
 
         AbstractMethodEvent event = new MethodEndEvent()
                 .setTestResult(testResult)

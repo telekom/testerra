@@ -148,7 +148,7 @@ public final class PageFactory {
 
             MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
             if (methodContext != null) {
-                methodContext.errorContext().setThrowable(message, overAllThrowable, true);
+                methodContext.getErrorContext().setThrowable(message, overAllThrowable, true);
             }
 
             throw overAllThrowable;

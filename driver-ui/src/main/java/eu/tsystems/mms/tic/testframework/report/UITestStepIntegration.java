@@ -22,11 +22,11 @@
  package eu.tsystems.mms.tic.testframework.report;
 
 import eu.tsystems.mms.tic.testframework.internal.utils.ExceptionUtils;
-import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepController;
-import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepEventListener;
+import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepHandler;
+import org.apache.logging.log4j.core.LogEvent;
 
-public class UITestStepIntegration implements TestStepEventListener {
+public class UITestStepIntegration implements TestStepHandler {
 
     private static boolean init = false;
 
@@ -35,12 +35,12 @@ public class UITestStepIntegration implements TestStepEventListener {
             return;
         }
 
-        TestStepController.addEventListener(new UITestStepIntegration());
+        TestStepController.addHandler(new UITestStepIntegration());
         init = true;
     }
 
     @Override
-    public String getTestStepActionContext(LogMessage logMessage) {
+    public String getTestStepActionContext(LogEvent logEvent) {
         return ExceptionUtils.getPageContextFromThrowable(new Throwable());
     }
 }

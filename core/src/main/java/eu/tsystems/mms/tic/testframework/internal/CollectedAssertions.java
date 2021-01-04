@@ -22,72 +22,28 @@
  package eu.tsystems.mms.tic.testframework.internal;
 
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
-import eu.tsystems.mms.tic.testframework.report.model.AssertionInfo;
-import eu.tsystems.mms.tic.testframework.report.model.context.CustomContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.LinkedList;
 import java.util.List;
 
 public final class CollectedAssertions {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger("AssertCollector");
-    private static final ThreadLocal<List<AssertionInfo>> ASSERTION_INFOS = new ThreadLocal<>();
 
     private CollectedAssertions() {
 
     }
 
     public synchronized static void store(Throwable throwable) {
-        if (ASSERTION_INFOS.get() == null) {
-            ASSERTION_INFOS.set(new LinkedList<>());
-        }
-
-        List<AssertionInfo> assertionInfos = ASSERTION_INFOS.get();
-
         /*
         add info
          */
-        AssertionInfo assertionInfo = new AssertionInfo(throwable);
-
         MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
+        currentMethodContext.addCollectedAssertion(throwable);
 
         // take scrennshots
         List<Screenshot> screenshots = TestEvidenceCollector.collectScreenshots();
         if (screenshots != null) {
-            screenshots.forEach(s -> s.errorContextId = assertionInfo.id);
-            currentMethodContext.screenshots.addAll(screenshots);
+            currentMethodContext.addScreenshots(screenshots.stream());
         }
-
-        // get custom error contexts in queue
-        List<CustomContext> customContexts = ExecutionContextController.getCurrentMethodContext().customContexts;
-        currentMethodContext.customContexts.addAll(customContexts);
-        customContexts.clear();
-
-        // and store
-        assertionInfos.add(assertionInfo);
     }
-
-    public static void clear() {
-        ASSERTION_INFOS.remove();
-    }
-
-    public static boolean hasEntries() {
-        if (ASSERTION_INFOS.get() == null) {
-            return false;
-        }
-        if (ASSERTION_INFOS.get().size() > 0) {
-            return true;
-        }
-        return false;
-    }
-
-    public static List<AssertionInfo> getEntries() {
-        return ASSERTION_INFOS.get();
-    }
-
 }

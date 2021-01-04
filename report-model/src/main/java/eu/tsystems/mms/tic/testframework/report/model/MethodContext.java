@@ -6,7 +6,7 @@ package eu.tsystems.mms.tic.testframework.report.model;
 /**
  * Protobuf type {@code data.MethodContext}
  */
-public  final class MethodContext extends
+public final class MethodContext extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:data.MethodContext)
     MethodContextOrBuilder {
@@ -23,8 +23,6 @@ private static final long serialVersionUID = 0L;
     failureCorridorValue_ = 0;
     classContextId_ = "";
     executionContextId_ = "";
-    nonFunctionalInfos_ = java.util.Collections.emptyList();
-    collectedAssertions_ = java.util.Collections.emptyList();
     infos_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     priorityMessage_ = "";
     relatedMethodContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
@@ -34,8 +32,8 @@ private static final long serialVersionUID = 0L;
     suiteContextId_ = "";
     sessionContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     videoIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    screenshotIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     customContextJson_ = "";
+    resultStatus_ = 0;
   }
 
   @java.lang.Override
@@ -140,29 +138,11 @@ private static final long serialVersionUID = 0L;
             executionContextId_ = s;
             break;
           }
-          case 138: {
-            if (!((mutable_bitField0_ & 0x00000004) != 0)) {
-              nonFunctionalInfos_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.ErrorContext>();
-              mutable_bitField0_ |= 0x00000004;
-            }
-            nonFunctionalInfos_.add(
-                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.ErrorContext.parser(), extensionRegistry));
-            break;
-          }
-          case 146: {
-            if (!((mutable_bitField0_ & 0x00000008) != 0)) {
-              collectedAssertions_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.ErrorContext>();
-              mutable_bitField0_ |= 0x00000008;
-            }
-            collectedAssertions_.add(
-                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.ErrorContext.parser(), extensionRegistry));
-            break;
-          }
           case 154: {
             java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000010) != 0)) {
+            if (!((mutable_bitField0_ & 0x00000004) != 0)) {
               infos_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000010;
+              mutable_bitField0_ |= 0x00000004;
             }
             infos_.add(s);
             break;
@@ -175,18 +155,18 @@ private static final long serialVersionUID = 0L;
           }
           case 186: {
             java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000020) != 0)) {
+            if (!((mutable_bitField0_ & 0x00000008) != 0)) {
               relatedMethodContextIds_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000020;
+              mutable_bitField0_ |= 0x00000008;
             }
             relatedMethodContextIds_.add(s);
             break;
           }
           case 194: {
             java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000040) != 0)) {
+            if (!((mutable_bitField0_ & 0x00000010) != 0)) {
               dependsOnMethodContextIds_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000040;
+              mutable_bitField0_ |= 0x00000010;
             }
             dependsOnMethodContextIds_.add(s);
             break;
@@ -205,12 +185,12 @@ private static final long serialVersionUID = 0L;
             break;
           }
           case 210: {
-            if (!((mutable_bitField0_ & 0x00000080) != 0)) {
-              testSteps_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.PTestStep>();
-              mutable_bitField0_ |= 0x00000080;
+            if (!((mutable_bitField0_ & 0x00000020) != 0)) {
+              testSteps_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.TestStep>();
+              mutable_bitField0_ |= 0x00000020;
             }
             testSteps_.add(
-                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.PTestStep.parser(), extensionRegistry));
+                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.TestStep.parser(), extensionRegistry));
             break;
           }
           case 218: {
@@ -227,35 +207,37 @@ private static final long serialVersionUID = 0L;
           }
           case 234: {
             java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000100) != 0)) {
+            if (!((mutable_bitField0_ & 0x00000040) != 0)) {
               sessionContextIds_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000100;
+              mutable_bitField0_ |= 0x00000040;
             }
             sessionContextIds_.add(s);
             break;
           }
           case 242: {
             java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000200) != 0)) {
+            if (!((mutable_bitField0_ & 0x00000080) != 0)) {
               videoIds_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000200;
+              mutable_bitField0_ |= 0x00000080;
             }
             videoIds_.add(s);
-            break;
-          }
-          case 250: {
-            java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000400) != 0)) {
-              screenshotIds_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000400;
-            }
-            screenshotIds_.add(s);
             break;
           }
           case 258: {
             java.lang.String s = input.readStringRequireUtf8();
 
             customContextJson_ = s;
+            break;
+          }
+          case 264: {
+
+            failedStepIndex_ = input.readInt32();
+            break;
+          }
+          case 272: {
+            int rawValue = input.readEnum();
+
+            resultStatus_ = rawValue;
             break;
           }
           default: {
@@ -280,31 +262,22 @@ private static final long serialVersionUID = 0L;
         methodTags_ = methodTags_.getUnmodifiableView();
       }
       if (((mutable_bitField0_ & 0x00000004) != 0)) {
-        nonFunctionalInfos_ = java.util.Collections.unmodifiableList(nonFunctionalInfos_);
-      }
-      if (((mutable_bitField0_ & 0x00000008) != 0)) {
-        collectedAssertions_ = java.util.Collections.unmodifiableList(collectedAssertions_);
-      }
-      if (((mutable_bitField0_ & 0x00000010) != 0)) {
         infos_ = infos_.getUnmodifiableView();
       }
-      if (((mutable_bitField0_ & 0x00000020) != 0)) {
+      if (((mutable_bitField0_ & 0x00000008) != 0)) {
         relatedMethodContextIds_ = relatedMethodContextIds_.getUnmodifiableView();
       }
-      if (((mutable_bitField0_ & 0x00000040) != 0)) {
+      if (((mutable_bitField0_ & 0x00000010) != 0)) {
         dependsOnMethodContextIds_ = dependsOnMethodContextIds_.getUnmodifiableView();
       }
-      if (((mutable_bitField0_ & 0x00000080) != 0)) {
+      if (((mutable_bitField0_ & 0x00000020) != 0)) {
         testSteps_ = java.util.Collections.unmodifiableList(testSteps_);
       }
-      if (((mutable_bitField0_ & 0x00000100) != 0)) {
+      if (((mutable_bitField0_ & 0x00000040) != 0)) {
         sessionContextIds_ = sessionContextIds_.getUnmodifiableView();
       }
-      if (((mutable_bitField0_ & 0x00000200) != 0)) {
+      if (((mutable_bitField0_ & 0x00000080) != 0)) {
         videoIds_ = videoIds_.getUnmodifiableView();
-      }
-      if (((mutable_bitField0_ & 0x00000400) != 0)) {
-        screenshotIds_ = screenshotIds_.getUnmodifiableView();
       }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
@@ -329,6 +302,7 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ContextValues context_values = 1;</code>
    * @return Whether the contextValues field is set.
    */
+  @java.lang.Override
   public boolean hasContextValues() {
     return contextValues_ != null;
   }
@@ -336,12 +310,14 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ContextValues context_values = 1;</code>
    * @return The contextValues.
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ContextValues getContextValues() {
     return contextValues_ == null ? eu.tsystems.mms.tic.testframework.report.model.ContextValues.getDefaultInstance() : contextValues_;
   }
   /**
    * <code>.data.ContextValues context_values = 1;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ContextValuesOrBuilder getContextValuesOrBuilder() {
     return getContextValues();
   }
@@ -352,14 +328,14 @@ private static final long serialVersionUID = 0L;
    * <code>.data.MethodType method_type = 7;</code>
    * @return The enum numeric value on the wire for methodType.
    */
-  public int getMethodTypeValue() {
+  @java.lang.Override public int getMethodTypeValue() {
     return methodType_;
   }
   /**
    * <code>.data.MethodType method_type = 7;</code>
    * @return The methodType.
    */
-  public eu.tsystems.mms.tic.testframework.report.model.MethodType getMethodType() {
+  @java.lang.Override public eu.tsystems.mms.tic.testframework.report.model.MethodType getMethodType() {
     @SuppressWarnings("deprecation")
     eu.tsystems.mms.tic.testframework.report.model.MethodType result = eu.tsystems.mms.tic.testframework.report.model.MethodType.valueOf(methodType_);
     return result == null ? eu.tsystems.mms.tic.testframework.report.model.MethodType.UNRECOGNIZED : result;
@@ -441,6 +417,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 retry_number = 10;</code>
    * @return The retryNumber.
    */
+  @java.lang.Override
   public int getRetryNumber() {
     return retryNumber_;
   }
@@ -451,6 +428,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 method_run_index = 11;</code>
    * @return The methodRunIndex.
    */
+  @java.lang.Override
   public int getMethodRunIndex() {
     return methodRunIndex_;
   }
@@ -461,6 +439,7 @@ private static final long serialVersionUID = 0L;
    * <code>string thread_name = 12;</code>
    * @return The threadName.
    */
+  @java.lang.Override
   public java.lang.String getThreadName() {
     java.lang.Object ref = threadName_;
     if (ref instanceof java.lang.String) {
@@ -477,6 +456,7 @@ private static final long serialVersionUID = 0L;
    * <code>string thread_name = 12;</code>
    * @return The bytes for threadName.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getThreadNameBytes() {
     java.lang.Object ref = threadName_;
@@ -495,24 +475,24 @@ private static final long serialVersionUID = 0L;
   private int failureCorridorValue_;
   /**
    * <pre>
-   *TestStep failed_step = 13;
+   *    TestStep failed_step = 13;
    * </pre>
    *
    * <code>.data.FailureCorridorValue failure_corridor_value = 14;</code>
    * @return The enum numeric value on the wire for failureCorridorValue.
    */
-  public int getFailureCorridorValueValue() {
+  @java.lang.Override public int getFailureCorridorValueValue() {
     return failureCorridorValue_;
   }
   /**
    * <pre>
-   *TestStep failed_step = 13;
+   *    TestStep failed_step = 13;
    * </pre>
    *
    * <code>.data.FailureCorridorValue failure_corridor_value = 14;</code>
    * @return The failureCorridorValue.
    */
-  public eu.tsystems.mms.tic.testframework.report.model.FailureCorridorValue getFailureCorridorValue() {
+  @java.lang.Override public eu.tsystems.mms.tic.testframework.report.model.FailureCorridorValue getFailureCorridorValue() {
     @SuppressWarnings("deprecation")
     eu.tsystems.mms.tic.testframework.report.model.FailureCorridorValue result = eu.tsystems.mms.tic.testframework.report.model.FailureCorridorValue.valueOf(failureCorridorValue_);
     return result == null ? eu.tsystems.mms.tic.testframework.report.model.FailureCorridorValue.UNRECOGNIZED : result;
@@ -524,6 +504,7 @@ private static final long serialVersionUID = 0L;
    * <code>string class_context_id = 15;</code>
    * @return The classContextId.
    */
+  @java.lang.Override
   public java.lang.String getClassContextId() {
     java.lang.Object ref = classContextId_;
     if (ref instanceof java.lang.String) {
@@ -540,6 +521,7 @@ private static final long serialVersionUID = 0L;
    * <code>string class_context_id = 15;</code>
    * @return The bytes for classContextId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getClassContextIdBytes() {
     java.lang.Object ref = classContextId_;
@@ -557,10 +539,11 @@ private static final long serialVersionUID = 0L;
   public static final int EXECUTION_CONTEXT_ID_FIELD_NUMBER = 16;
   private volatile java.lang.Object executionContextId_;
   /**
-   * <code>string execution_context_id = 16;</code>
+   * <code>string execution_context_id = 16 [deprecated = true];</code>
    * @return The executionContextId.
    */
-  public java.lang.String getExecutionContextId() {
+  @java.lang.Override
+  @java.lang.Deprecated public java.lang.String getExecutionContextId() {
     java.lang.Object ref = executionContextId_;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
@@ -573,10 +556,11 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string execution_context_id = 16;</code>
+   * <code>string execution_context_id = 16 [deprecated = true];</code>
    * @return The bytes for executionContextId.
    */
-  public com.google.protobuf.ByteString
+  @java.lang.Override
+  @java.lang.Deprecated public com.google.protobuf.ByteString
       getExecutionContextIdBytes() {
     java.lang.Object ref = executionContextId_;
     if (ref instanceof java.lang.String) {
@@ -590,79 +574,14 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int NON_FUNCTIONAL_INFOS_FIELD_NUMBER = 17;
-  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> nonFunctionalInfos_;
-  /**
-   * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
-   */
-  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> getNonFunctionalInfosList() {
-    return nonFunctionalInfos_;
-  }
-  /**
-   * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
-   */
-  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
-      getNonFunctionalInfosOrBuilderList() {
-    return nonFunctionalInfos_;
-  }
-  /**
-   * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
-   */
-  public int getNonFunctionalInfosCount() {
-    return nonFunctionalInfos_.size();
-  }
-  /**
-   * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
-   */
-  public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getNonFunctionalInfos(int index) {
-    return nonFunctionalInfos_.get(index);
-  }
-  /**
-   * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
-   */
-  public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getNonFunctionalInfosOrBuilder(
-      int index) {
-    return nonFunctionalInfos_.get(index);
-  }
-
-  public static final int COLLECTED_ASSERTIONS_FIELD_NUMBER = 18;
-  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> collectedAssertions_;
-  /**
-   * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-   */
-  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> getCollectedAssertionsList() {
-    return collectedAssertions_;
-  }
-  /**
-   * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-   */
-  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
-      getCollectedAssertionsOrBuilderList() {
-    return collectedAssertions_;
-  }
-  /**
-   * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-   */
-  public int getCollectedAssertionsCount() {
-    return collectedAssertions_.size();
-  }
-  /**
-   * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-   */
-  public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getCollectedAssertions(int index) {
-    return collectedAssertions_.get(index);
-  }
-  /**
-   * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-   */
-  public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getCollectedAssertionsOrBuilder(
-      int index) {
-    return collectedAssertions_.get(index);
-  }
-
   public static final int INFOS_FIELD_NUMBER = 19;
   private com.google.protobuf.LazyStringList infos_;
   /**
+   * <pre>
+   *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
+   *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string infos = 19;</code>
    * @return A list containing the infos.
    */
@@ -671,6 +590,11 @@ private static final long serialVersionUID = 0L;
     return infos_;
   }
   /**
+   * <pre>
+   *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
+   *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string infos = 19;</code>
    * @return The count of infos.
    */
@@ -678,6 +602,11 @@ private static final long serialVersionUID = 0L;
     return infos_.size();
   }
   /**
+   * <pre>
+   *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
+   *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string infos = 19;</code>
    * @param index The index of the element to return.
    * @return The infos at the given index.
@@ -686,6 +615,11 @@ private static final long serialVersionUID = 0L;
     return infos_.get(index);
   }
   /**
+   * <pre>
+   *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
+   *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string infos = 19;</code>
    * @param index The index of the value to return.
    * @return The bytes of the infos at the given index.
@@ -701,6 +635,7 @@ private static final long serialVersionUID = 0L;
    * <code>string priority_message = 21;</code>
    * @return The priorityMessage.
    */
+  @java.lang.Override
   public java.lang.String getPriorityMessage() {
     java.lang.Object ref = priorityMessage_;
     if (ref instanceof java.lang.String) {
@@ -717,6 +652,7 @@ private static final long serialVersionUID = 0L;
    * <code>string priority_message = 21;</code>
    * @return The bytes for priorityMessage.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getPriorityMessageBytes() {
     java.lang.Object ref = priorityMessage_;
@@ -807,6 +743,7 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ErrorContext error_context = 25;</code>
    * @return Whether the errorContext field is set.
    */
+  @java.lang.Override
   public boolean hasErrorContext() {
     return errorContext_ != null;
   }
@@ -814,47 +751,54 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ErrorContext error_context = 25;</code>
    * @return The errorContext.
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getErrorContext() {
     return errorContext_ == null ? eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance() : errorContext_;
   }
   /**
    * <code>.data.ErrorContext error_context = 25;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getErrorContextOrBuilder() {
     return getErrorContext();
   }
 
   public static final int TEST_STEPS_FIELD_NUMBER = 26;
-  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStep> testSteps_;
+  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestStep> testSteps_;
   /**
-   * <code>repeated .data.PTestStep test_steps = 26;</code>
+   * <code>repeated .data.TestStep test_steps = 26;</code>
    */
-  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStep> getTestStepsList() {
+  @java.lang.Override
+  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestStep> getTestStepsList() {
     return testSteps_;
   }
   /**
-   * <code>repeated .data.PTestStep test_steps = 26;</code>
+   * <code>repeated .data.TestStep test_steps = 26;</code>
    */
-  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.PTestStepOrBuilder> 
+  @java.lang.Override
+  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.TestStepOrBuilder> 
       getTestStepsOrBuilderList() {
     return testSteps_;
   }
   /**
-   * <code>repeated .data.PTestStep test_steps = 26;</code>
+   * <code>repeated .data.TestStep test_steps = 26;</code>
    */
+  @java.lang.Override
   public int getTestStepsCount() {
     return testSteps_.size();
   }
   /**
-   * <code>repeated .data.PTestStep test_steps = 26;</code>
+   * <code>repeated .data.TestStep test_steps = 26;</code>
    */
-  public eu.tsystems.mms.tic.testframework.report.model.PTestStep getTestSteps(int index) {
+  @java.lang.Override
+  public eu.tsystems.mms.tic.testframework.report.model.TestStep getTestSteps(int index) {
     return testSteps_.get(index);
   }
   /**
-   * <code>repeated .data.PTestStep test_steps = 26;</code>
+   * <code>repeated .data.TestStep test_steps = 26;</code>
    */
-  public eu.tsystems.mms.tic.testframework.report.model.PTestStepOrBuilder getTestStepsOrBuilder(
+  @java.lang.Override
+  public eu.tsystems.mms.tic.testframework.report.model.TestStepOrBuilder getTestStepsOrBuilder(
       int index) {
     return testSteps_.get(index);
   }
@@ -862,10 +806,11 @@ private static final long serialVersionUID = 0L;
   public static final int TEST_CONTEXT_ID_FIELD_NUMBER = 27;
   private volatile java.lang.Object testContextId_;
   /**
-   * <code>string test_context_id = 27;</code>
+   * <code>string test_context_id = 27 [deprecated = true];</code>
    * @return The testContextId.
    */
-  public java.lang.String getTestContextId() {
+  @java.lang.Override
+  @java.lang.Deprecated public java.lang.String getTestContextId() {
     java.lang.Object ref = testContextId_;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
@@ -878,10 +823,11 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string test_context_id = 27;</code>
+   * <code>string test_context_id = 27 [deprecated = true];</code>
    * @return The bytes for testContextId.
    */
-  public com.google.protobuf.ByteString
+  @java.lang.Override
+  @java.lang.Deprecated public com.google.protobuf.ByteString
       getTestContextIdBytes() {
     java.lang.Object ref = testContextId_;
     if (ref instanceof java.lang.String) {
@@ -898,10 +844,11 @@ private static final long serialVersionUID = 0L;
   public static final int SUITE_CONTEXT_ID_FIELD_NUMBER = 28;
   private volatile java.lang.Object suiteContextId_;
   /**
-   * <code>string suite_context_id = 28;</code>
+   * <code>string suite_context_id = 28 [deprecated = true];</code>
    * @return The suiteContextId.
    */
-  public java.lang.String getSuiteContextId() {
+  @java.lang.Override
+  @java.lang.Deprecated public java.lang.String getSuiteContextId() {
     java.lang.Object ref = suiteContextId_;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
@@ -914,10 +861,11 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string suite_context_id = 28;</code>
+   * <code>string suite_context_id = 28 [deprecated = true];</code>
    * @return The bytes for suiteContextId.
    */
-  public com.google.protobuf.ByteString
+  @java.lang.Override
+  @java.lang.Deprecated public com.google.protobuf.ByteString
       getSuiteContextIdBytes() {
     java.lang.Object ref = suiteContextId_;
     if (ref instanceof java.lang.String) {
@@ -1001,47 +949,17 @@ private static final long serialVersionUID = 0L;
     return videoIds_.getByteString(index);
   }
 
-  public static final int SCREENSHOT_IDS_FIELD_NUMBER = 31;
-  private com.google.protobuf.LazyStringList screenshotIds_;
-  /**
-   * <code>repeated string screenshot_ids = 31;</code>
-   * @return A list containing the screenshotIds.
-   */
-  public com.google.protobuf.ProtocolStringList
-      getScreenshotIdsList() {
-    return screenshotIds_;
-  }
-  /**
-   * <code>repeated string screenshot_ids = 31;</code>
-   * @return The count of screenshotIds.
-   */
-  public int getScreenshotIdsCount() {
-    return screenshotIds_.size();
-  }
-  /**
-   * <code>repeated string screenshot_ids = 31;</code>
-   * @param index The index of the element to return.
-   * @return The screenshotIds at the given index.
-   */
-  public java.lang.String getScreenshotIds(int index) {
-    return screenshotIds_.get(index);
-  }
-  /**
-   * <code>repeated string screenshot_ids = 31;</code>
-   * @param index The index of the value to return.
-   * @return The bytes of the screenshotIds at the given index.
-   */
-  public com.google.protobuf.ByteString
-      getScreenshotIdsBytes(int index) {
-    return screenshotIds_.getByteString(index);
-  }
-
   public static final int CUSTOM_CONTEXT_JSON_FIELD_NUMBER = 32;
   private volatile java.lang.Object customContextJson_;
   /**
+   * <pre>
+   *    repeated string screenshot_ids = 31 [deprecated = true];
+   * </pre>
+   *
    * <code>string custom_context_json = 32;</code>
    * @return The customContextJson.
    */
+  @java.lang.Override
   public java.lang.String getCustomContextJson() {
     java.lang.Object ref = customContextJson_;
     if (ref instanceof java.lang.String) {
@@ -1055,9 +973,14 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
+   * <pre>
+   *    repeated string screenshot_ids = 31 [deprecated = true];
+   * </pre>
+   *
    * <code>string custom_context_json = 32;</code>
    * @return The bytes for customContextJson.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getCustomContextJsonBytes() {
     java.lang.Object ref = customContextJson_;
@@ -1070,6 +993,36 @@ private static final long serialVersionUID = 0L;
     } else {
       return (com.google.protobuf.ByteString) ref;
     }
+  }
+
+  public static final int FAILED_STEP_INDEX_FIELD_NUMBER = 33;
+  private int failedStepIndex_;
+  /**
+   * <code>int32 failed_step_index = 33;</code>
+   * @return The failedStepIndex.
+   */
+  @java.lang.Override
+  public int getFailedStepIndex() {
+    return failedStepIndex_;
+  }
+
+  public static final int RESULT_STATUS_FIELD_NUMBER = 34;
+  private int resultStatus_;
+  /**
+   * <code>.data.ResultStatusType result_status = 34;</code>
+   * @return The enum numeric value on the wire for resultStatus.
+   */
+  @java.lang.Override public int getResultStatusValue() {
+    return resultStatus_;
+  }
+  /**
+   * <code>.data.ResultStatusType result_status = 34;</code>
+   * @return The resultStatus.
+   */
+  @java.lang.Override public eu.tsystems.mms.tic.testframework.report.model.ResultStatusType getResultStatus() {
+    @SuppressWarnings("deprecation")
+    eu.tsystems.mms.tic.testframework.report.model.ResultStatusType result = eu.tsystems.mms.tic.testframework.report.model.ResultStatusType.valueOf(resultStatus_);
+    return result == null ? eu.tsystems.mms.tic.testframework.report.model.ResultStatusType.UNRECOGNIZED : result;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -1116,12 +1069,6 @@ private static final long serialVersionUID = 0L;
     if (!getExecutionContextIdBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 16, executionContextId_);
     }
-    for (int i = 0; i < nonFunctionalInfos_.size(); i++) {
-      output.writeMessage(17, nonFunctionalInfos_.get(i));
-    }
-    for (int i = 0; i < collectedAssertions_.size(); i++) {
-      output.writeMessage(18, collectedAssertions_.get(i));
-    }
     for (int i = 0; i < infos_.size(); i++) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 19, infos_.getRaw(i));
     }
@@ -1152,11 +1099,14 @@ private static final long serialVersionUID = 0L;
     for (int i = 0; i < videoIds_.size(); i++) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 30, videoIds_.getRaw(i));
     }
-    for (int i = 0; i < screenshotIds_.size(); i++) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 31, screenshotIds_.getRaw(i));
-    }
     if (!getCustomContextJsonBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 32, customContextJson_);
+    }
+    if (failedStepIndex_ != 0) {
+      output.writeInt32(33, failedStepIndex_);
+    }
+    if (resultStatus_ != eu.tsystems.mms.tic.testframework.report.model.ResultStatusType.RST_NOT_SET.getNumber()) {
+      output.writeEnum(34, resultStatus_);
     }
     unknownFields.writeTo(output);
   }
@@ -1211,14 +1161,6 @@ private static final long serialVersionUID = 0L;
     }
     if (!getExecutionContextIdBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(16, executionContextId_);
-    }
-    for (int i = 0; i < nonFunctionalInfos_.size(); i++) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(17, nonFunctionalInfos_.get(i));
-    }
-    for (int i = 0; i < collectedAssertions_.size(); i++) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(18, collectedAssertions_.get(i));
     }
     {
       int dataSize = 0;
@@ -1277,16 +1219,16 @@ private static final long serialVersionUID = 0L;
       size += dataSize;
       size += 2 * getVideoIdsList().size();
     }
-    {
-      int dataSize = 0;
-      for (int i = 0; i < screenshotIds_.size(); i++) {
-        dataSize += computeStringSizeNoTag(screenshotIds_.getRaw(i));
-      }
-      size += dataSize;
-      size += 2 * getScreenshotIdsList().size();
-    }
     if (!getCustomContextJsonBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(32, customContextJson_);
+    }
+    if (failedStepIndex_ != 0) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(33, failedStepIndex_);
+    }
+    if (resultStatus_ != eu.tsystems.mms.tic.testframework.report.model.ResultStatusType.RST_NOT_SET.getNumber()) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(34, resultStatus_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -1324,10 +1266,6 @@ private static final long serialVersionUID = 0L;
         .equals(other.getClassContextId())) return false;
     if (!getExecutionContextId()
         .equals(other.getExecutionContextId())) return false;
-    if (!getNonFunctionalInfosList()
-        .equals(other.getNonFunctionalInfosList())) return false;
-    if (!getCollectedAssertionsList()
-        .equals(other.getCollectedAssertionsList())) return false;
     if (!getInfosList()
         .equals(other.getInfosList())) return false;
     if (!getPriorityMessage()
@@ -1351,10 +1289,11 @@ private static final long serialVersionUID = 0L;
         .equals(other.getSessionContextIdsList())) return false;
     if (!getVideoIdsList()
         .equals(other.getVideoIdsList())) return false;
-    if (!getScreenshotIdsList()
-        .equals(other.getScreenshotIdsList())) return false;
     if (!getCustomContextJson()
         .equals(other.getCustomContextJson())) return false;
+    if (getFailedStepIndex()
+        != other.getFailedStepIndex()) return false;
+    if (resultStatus_ != other.resultStatus_) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -1392,14 +1331,6 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getClassContextId().hashCode();
     hash = (37 * hash) + EXECUTION_CONTEXT_ID_FIELD_NUMBER;
     hash = (53 * hash) + getExecutionContextId().hashCode();
-    if (getNonFunctionalInfosCount() > 0) {
-      hash = (37 * hash) + NON_FUNCTIONAL_INFOS_FIELD_NUMBER;
-      hash = (53 * hash) + getNonFunctionalInfosList().hashCode();
-    }
-    if (getCollectedAssertionsCount() > 0) {
-      hash = (37 * hash) + COLLECTED_ASSERTIONS_FIELD_NUMBER;
-      hash = (53 * hash) + getCollectedAssertionsList().hashCode();
-    }
     if (getInfosCount() > 0) {
       hash = (37 * hash) + INFOS_FIELD_NUMBER;
       hash = (53 * hash) + getInfosList().hashCode();
@@ -1434,12 +1365,12 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + VIDEO_IDS_FIELD_NUMBER;
       hash = (53 * hash) + getVideoIdsList().hashCode();
     }
-    if (getScreenshotIdsCount() > 0) {
-      hash = (37 * hash) + SCREENSHOT_IDS_FIELD_NUMBER;
-      hash = (53 * hash) + getScreenshotIdsList().hashCode();
-    }
     hash = (37 * hash) + CUSTOM_CONTEXT_JSON_FIELD_NUMBER;
     hash = (53 * hash) + getCustomContextJson().hashCode();
+    hash = (37 * hash) + FAILED_STEP_INDEX_FIELD_NUMBER;
+    hash = (53 * hash) + getFailedStepIndex();
+    hash = (37 * hash) + RESULT_STATUS_FIELD_NUMBER;
+    hash = (53 * hash) + resultStatus_;
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -1568,8 +1499,6 @@ private static final long serialVersionUID = 0L;
     private void maybeForceBuilderInitialization() {
       if (com.google.protobuf.GeneratedMessageV3
               .alwaysUseFieldBuilders) {
-        getNonFunctionalInfosFieldBuilder();
-        getCollectedAssertionsFieldBuilder();
         getTestStepsFieldBuilder();
       }
     }
@@ -1600,26 +1529,14 @@ private static final long serialVersionUID = 0L;
 
       executionContextId_ = "";
 
-      if (nonFunctionalInfosBuilder_ == null) {
-        nonFunctionalInfos_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000004);
-      } else {
-        nonFunctionalInfosBuilder_.clear();
-      }
-      if (collectedAssertionsBuilder_ == null) {
-        collectedAssertions_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000008);
-      } else {
-        collectedAssertionsBuilder_.clear();
-      }
       infos_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000010);
+      bitField0_ = (bitField0_ & ~0x00000004);
       priorityMessage_ = "";
 
       relatedMethodContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000020);
+      bitField0_ = (bitField0_ & ~0x00000008);
       dependsOnMethodContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000040);
+      bitField0_ = (bitField0_ & ~0x00000010);
       if (errorContextBuilder_ == null) {
         errorContext_ = null;
       } else {
@@ -1628,7 +1545,7 @@ private static final long serialVersionUID = 0L;
       }
       if (testStepsBuilder_ == null) {
         testSteps_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000080);
+        bitField0_ = (bitField0_ & ~0x00000020);
       } else {
         testStepsBuilder_.clear();
       }
@@ -1637,12 +1554,14 @@ private static final long serialVersionUID = 0L;
       suiteContextId_ = "";
 
       sessionContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000100);
+      bitField0_ = (bitField0_ & ~0x00000040);
       videoIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000200);
-      screenshotIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000400);
+      bitField0_ = (bitField0_ & ~0x00000080);
       customContextJson_ = "";
+
+      failedStepIndex_ = 0;
+
+      resultStatus_ = 0;
 
       return this;
     }
@@ -1693,38 +1612,20 @@ private static final long serialVersionUID = 0L;
       result.failureCorridorValue_ = failureCorridorValue_;
       result.classContextId_ = classContextId_;
       result.executionContextId_ = executionContextId_;
-      if (nonFunctionalInfosBuilder_ == null) {
-        if (((bitField0_ & 0x00000004) != 0)) {
-          nonFunctionalInfos_ = java.util.Collections.unmodifiableList(nonFunctionalInfos_);
-          bitField0_ = (bitField0_ & ~0x00000004);
-        }
-        result.nonFunctionalInfos_ = nonFunctionalInfos_;
-      } else {
-        result.nonFunctionalInfos_ = nonFunctionalInfosBuilder_.build();
-      }
-      if (collectedAssertionsBuilder_ == null) {
-        if (((bitField0_ & 0x00000008) != 0)) {
-          collectedAssertions_ = java.util.Collections.unmodifiableList(collectedAssertions_);
-          bitField0_ = (bitField0_ & ~0x00000008);
-        }
-        result.collectedAssertions_ = collectedAssertions_;
-      } else {
-        result.collectedAssertions_ = collectedAssertionsBuilder_.build();
-      }
-      if (((bitField0_ & 0x00000010) != 0)) {
+      if (((bitField0_ & 0x00000004) != 0)) {
         infos_ = infos_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000010);
+        bitField0_ = (bitField0_ & ~0x00000004);
       }
       result.infos_ = infos_;
       result.priorityMessage_ = priorityMessage_;
-      if (((bitField0_ & 0x00000020) != 0)) {
+      if (((bitField0_ & 0x00000008) != 0)) {
         relatedMethodContextIds_ = relatedMethodContextIds_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000008);
       }
       result.relatedMethodContextIds_ = relatedMethodContextIds_;
-      if (((bitField0_ & 0x00000040) != 0)) {
+      if (((bitField0_ & 0x00000010) != 0)) {
         dependsOnMethodContextIds_ = dependsOnMethodContextIds_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000010);
       }
       result.dependsOnMethodContextIds_ = dependsOnMethodContextIds_;
       if (errorContextBuilder_ == null) {
@@ -1733,9 +1634,9 @@ private static final long serialVersionUID = 0L;
         result.errorContext_ = errorContextBuilder_.build();
       }
       if (testStepsBuilder_ == null) {
-        if (((bitField0_ & 0x00000080) != 0)) {
+        if (((bitField0_ & 0x00000020) != 0)) {
           testSteps_ = java.util.Collections.unmodifiableList(testSteps_);
-          bitField0_ = (bitField0_ & ~0x00000080);
+          bitField0_ = (bitField0_ & ~0x00000020);
         }
         result.testSteps_ = testSteps_;
       } else {
@@ -1743,22 +1644,19 @@ private static final long serialVersionUID = 0L;
       }
       result.testContextId_ = testContextId_;
       result.suiteContextId_ = suiteContextId_;
-      if (((bitField0_ & 0x00000100) != 0)) {
+      if (((bitField0_ & 0x00000040) != 0)) {
         sessionContextIds_ = sessionContextIds_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000100);
+        bitField0_ = (bitField0_ & ~0x00000040);
       }
       result.sessionContextIds_ = sessionContextIds_;
-      if (((bitField0_ & 0x00000200) != 0)) {
+      if (((bitField0_ & 0x00000080) != 0)) {
         videoIds_ = videoIds_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000200);
+        bitField0_ = (bitField0_ & ~0x00000080);
       }
       result.videoIds_ = videoIds_;
-      if (((bitField0_ & 0x00000400) != 0)) {
-        screenshotIds_ = screenshotIds_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000400);
-      }
-      result.screenshotIds_ = screenshotIds_;
       result.customContextJson_ = customContextJson_;
+      result.failedStepIndex_ = failedStepIndex_;
+      result.resultStatus_ = resultStatus_;
       onBuilt();
       return result;
     }
@@ -1854,62 +1752,10 @@ private static final long serialVersionUID = 0L;
         executionContextId_ = other.executionContextId_;
         onChanged();
       }
-      if (nonFunctionalInfosBuilder_ == null) {
-        if (!other.nonFunctionalInfos_.isEmpty()) {
-          if (nonFunctionalInfos_.isEmpty()) {
-            nonFunctionalInfos_ = other.nonFunctionalInfos_;
-            bitField0_ = (bitField0_ & ~0x00000004);
-          } else {
-            ensureNonFunctionalInfosIsMutable();
-            nonFunctionalInfos_.addAll(other.nonFunctionalInfos_);
-          }
-          onChanged();
-        }
-      } else {
-        if (!other.nonFunctionalInfos_.isEmpty()) {
-          if (nonFunctionalInfosBuilder_.isEmpty()) {
-            nonFunctionalInfosBuilder_.dispose();
-            nonFunctionalInfosBuilder_ = null;
-            nonFunctionalInfos_ = other.nonFunctionalInfos_;
-            bitField0_ = (bitField0_ & ~0x00000004);
-            nonFunctionalInfosBuilder_ = 
-              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                 getNonFunctionalInfosFieldBuilder() : null;
-          } else {
-            nonFunctionalInfosBuilder_.addAllMessages(other.nonFunctionalInfos_);
-          }
-        }
-      }
-      if (collectedAssertionsBuilder_ == null) {
-        if (!other.collectedAssertions_.isEmpty()) {
-          if (collectedAssertions_.isEmpty()) {
-            collectedAssertions_ = other.collectedAssertions_;
-            bitField0_ = (bitField0_ & ~0x00000008);
-          } else {
-            ensureCollectedAssertionsIsMutable();
-            collectedAssertions_.addAll(other.collectedAssertions_);
-          }
-          onChanged();
-        }
-      } else {
-        if (!other.collectedAssertions_.isEmpty()) {
-          if (collectedAssertionsBuilder_.isEmpty()) {
-            collectedAssertionsBuilder_.dispose();
-            collectedAssertionsBuilder_ = null;
-            collectedAssertions_ = other.collectedAssertions_;
-            bitField0_ = (bitField0_ & ~0x00000008);
-            collectedAssertionsBuilder_ = 
-              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                 getCollectedAssertionsFieldBuilder() : null;
-          } else {
-            collectedAssertionsBuilder_.addAllMessages(other.collectedAssertions_);
-          }
-        }
-      }
       if (!other.infos_.isEmpty()) {
         if (infos_.isEmpty()) {
           infos_ = other.infos_;
-          bitField0_ = (bitField0_ & ~0x00000010);
+          bitField0_ = (bitField0_ & ~0x00000004);
         } else {
           ensureInfosIsMutable();
           infos_.addAll(other.infos_);
@@ -1923,7 +1769,7 @@ private static final long serialVersionUID = 0L;
       if (!other.relatedMethodContextIds_.isEmpty()) {
         if (relatedMethodContextIds_.isEmpty()) {
           relatedMethodContextIds_ = other.relatedMethodContextIds_;
-          bitField0_ = (bitField0_ & ~0x00000020);
+          bitField0_ = (bitField0_ & ~0x00000008);
         } else {
           ensureRelatedMethodContextIdsIsMutable();
           relatedMethodContextIds_.addAll(other.relatedMethodContextIds_);
@@ -1933,7 +1779,7 @@ private static final long serialVersionUID = 0L;
       if (!other.dependsOnMethodContextIds_.isEmpty()) {
         if (dependsOnMethodContextIds_.isEmpty()) {
           dependsOnMethodContextIds_ = other.dependsOnMethodContextIds_;
-          bitField0_ = (bitField0_ & ~0x00000040);
+          bitField0_ = (bitField0_ & ~0x00000010);
         } else {
           ensureDependsOnMethodContextIdsIsMutable();
           dependsOnMethodContextIds_.addAll(other.dependsOnMethodContextIds_);
@@ -1947,7 +1793,7 @@ private static final long serialVersionUID = 0L;
         if (!other.testSteps_.isEmpty()) {
           if (testSteps_.isEmpty()) {
             testSteps_ = other.testSteps_;
-            bitField0_ = (bitField0_ & ~0x00000080);
+            bitField0_ = (bitField0_ & ~0x00000020);
           } else {
             ensureTestStepsIsMutable();
             testSteps_.addAll(other.testSteps_);
@@ -1960,7 +1806,7 @@ private static final long serialVersionUID = 0L;
             testStepsBuilder_.dispose();
             testStepsBuilder_ = null;
             testSteps_ = other.testSteps_;
-            bitField0_ = (bitField0_ & ~0x00000080);
+            bitField0_ = (bitField0_ & ~0x00000020);
             testStepsBuilder_ = 
               com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                  getTestStepsFieldBuilder() : null;
@@ -1980,7 +1826,7 @@ private static final long serialVersionUID = 0L;
       if (!other.sessionContextIds_.isEmpty()) {
         if (sessionContextIds_.isEmpty()) {
           sessionContextIds_ = other.sessionContextIds_;
-          bitField0_ = (bitField0_ & ~0x00000100);
+          bitField0_ = (bitField0_ & ~0x00000040);
         } else {
           ensureSessionContextIdsIsMutable();
           sessionContextIds_.addAll(other.sessionContextIds_);
@@ -1990,26 +1836,22 @@ private static final long serialVersionUID = 0L;
       if (!other.videoIds_.isEmpty()) {
         if (videoIds_.isEmpty()) {
           videoIds_ = other.videoIds_;
-          bitField0_ = (bitField0_ & ~0x00000200);
+          bitField0_ = (bitField0_ & ~0x00000080);
         } else {
           ensureVideoIdsIsMutable();
           videoIds_.addAll(other.videoIds_);
         }
         onChanged();
       }
-      if (!other.screenshotIds_.isEmpty()) {
-        if (screenshotIds_.isEmpty()) {
-          screenshotIds_ = other.screenshotIds_;
-          bitField0_ = (bitField0_ & ~0x00000400);
-        } else {
-          ensureScreenshotIdsIsMutable();
-          screenshotIds_.addAll(other.screenshotIds_);
-        }
-        onChanged();
-      }
       if (!other.getCustomContextJson().isEmpty()) {
         customContextJson_ = other.customContextJson_;
         onChanged();
+      }
+      if (other.getFailedStepIndex() != 0) {
+        setFailedStepIndex(other.getFailedStepIndex());
+      }
+      if (other.resultStatus_ != 0) {
+        setResultStatusValue(other.getResultStatusValue());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -2165,7 +2007,7 @@ private static final long serialVersionUID = 0L;
      * <code>.data.MethodType method_type = 7;</code>
      * @return The enum numeric value on the wire for methodType.
      */
-    public int getMethodTypeValue() {
+    @java.lang.Override public int getMethodTypeValue() {
       return methodType_;
     }
     /**
@@ -2174,6 +2016,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setMethodTypeValue(int value) {
+      
       methodType_ = value;
       onChanged();
       return this;
@@ -2182,6 +2025,7 @@ private static final long serialVersionUID = 0L;
      * <code>.data.MethodType method_type = 7;</code>
      * @return The methodType.
      */
+    @java.lang.Override
     public eu.tsystems.mms.tic.testframework.report.model.MethodType getMethodType() {
       @SuppressWarnings("deprecation")
       eu.tsystems.mms.tic.testframework.report.model.MethodType result = eu.tsystems.mms.tic.testframework.report.model.MethodType.valueOf(methodType_);
@@ -2437,6 +2281,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 retry_number = 10;</code>
      * @return The retryNumber.
      */
+    @java.lang.Override
     public int getRetryNumber() {
       return retryNumber_;
     }
@@ -2467,6 +2312,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 method_run_index = 11;</code>
      * @return The methodRunIndex.
      */
+    @java.lang.Override
     public int getMethodRunIndex() {
       return methodRunIndex_;
     }
@@ -2571,18 +2417,18 @@ private static final long serialVersionUID = 0L;
     private int failureCorridorValue_ = 0;
     /**
      * <pre>
-     *TestStep failed_step = 13;
+     *    TestStep failed_step = 13;
      * </pre>
      *
      * <code>.data.FailureCorridorValue failure_corridor_value = 14;</code>
      * @return The enum numeric value on the wire for failureCorridorValue.
      */
-    public int getFailureCorridorValueValue() {
+    @java.lang.Override public int getFailureCorridorValueValue() {
       return failureCorridorValue_;
     }
     /**
      * <pre>
-     *TestStep failed_step = 13;
+     *    TestStep failed_step = 13;
      * </pre>
      *
      * <code>.data.FailureCorridorValue failure_corridor_value = 14;</code>
@@ -2590,18 +2436,20 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFailureCorridorValueValue(int value) {
+      
       failureCorridorValue_ = value;
       onChanged();
       return this;
     }
     /**
      * <pre>
-     *TestStep failed_step = 13;
+     *    TestStep failed_step = 13;
      * </pre>
      *
      * <code>.data.FailureCorridorValue failure_corridor_value = 14;</code>
      * @return The failureCorridorValue.
      */
+    @java.lang.Override
     public eu.tsystems.mms.tic.testframework.report.model.FailureCorridorValue getFailureCorridorValue() {
       @SuppressWarnings("deprecation")
       eu.tsystems.mms.tic.testframework.report.model.FailureCorridorValue result = eu.tsystems.mms.tic.testframework.report.model.FailureCorridorValue.valueOf(failureCorridorValue_);
@@ -2609,7 +2457,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     *TestStep failed_step = 13;
+     *    TestStep failed_step = 13;
      * </pre>
      *
      * <code>.data.FailureCorridorValue failure_corridor_value = 14;</code>
@@ -2627,7 +2475,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     *TestStep failed_step = 13;
+     *    TestStep failed_step = 13;
      * </pre>
      *
      * <code>.data.FailureCorridorValue failure_corridor_value = 14;</code>
@@ -2718,10 +2566,10 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object executionContextId_ = "";
     /**
-     * <code>string execution_context_id = 16;</code>
+     * <code>string execution_context_id = 16 [deprecated = true];</code>
      * @return The executionContextId.
      */
-    public java.lang.String getExecutionContextId() {
+    @java.lang.Deprecated public java.lang.String getExecutionContextId() {
       java.lang.Object ref = executionContextId_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
@@ -2734,10 +2582,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string execution_context_id = 16;</code>
+     * <code>string execution_context_id = 16 [deprecated = true];</code>
      * @return The bytes for executionContextId.
      */
-    public com.google.protobuf.ByteString
+    @java.lang.Deprecated public com.google.protobuf.ByteString
         getExecutionContextIdBytes() {
       java.lang.Object ref = executionContextId_;
       if (ref instanceof String) {
@@ -2751,11 +2599,11 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string execution_context_id = 16;</code>
+     * <code>string execution_context_id = 16 [deprecated = true];</code>
      * @param value The executionContextId to set.
      * @return This builder for chaining.
      */
-    public Builder setExecutionContextId(
+    @java.lang.Deprecated public Builder setExecutionContextId(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
@@ -2766,21 +2614,21 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string execution_context_id = 16;</code>
+     * <code>string execution_context_id = 16 [deprecated = true];</code>
      * @return This builder for chaining.
      */
-    public Builder clearExecutionContextId() {
+    @java.lang.Deprecated public Builder clearExecutionContextId() {
       
       executionContextId_ = getDefaultInstance().getExecutionContextId();
       onChanged();
       return this;
     }
     /**
-     * <code>string execution_context_id = 16;</code>
+     * <code>string execution_context_id = 16 [deprecated = true];</code>
      * @param value The bytes for executionContextId to set.
      * @return This builder for chaining.
      */
-    public Builder setExecutionContextIdBytes(
+    @java.lang.Deprecated public Builder setExecutionContextIdBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
@@ -2792,494 +2640,19 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> nonFunctionalInfos_ =
-      java.util.Collections.emptyList();
-    private void ensureNonFunctionalInfosIsMutable() {
+    private com.google.protobuf.LazyStringList infos_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private void ensureInfosIsMutable() {
       if (!((bitField0_ & 0x00000004) != 0)) {
-        nonFunctionalInfos_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.ErrorContext>(nonFunctionalInfos_);
+        infos_ = new com.google.protobuf.LazyStringArrayList(infos_);
         bitField0_ |= 0x00000004;
        }
     }
-
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> nonFunctionalInfosBuilder_;
-
     /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
-     */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> getNonFunctionalInfosList() {
-      if (nonFunctionalInfosBuilder_ == null) {
-        return java.util.Collections.unmodifiableList(nonFunctionalInfos_);
-      } else {
-        return nonFunctionalInfosBuilder_.getMessageList();
-      }
-    }
-    /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
-     */
-    public int getNonFunctionalInfosCount() {
-      if (nonFunctionalInfosBuilder_ == null) {
-        return nonFunctionalInfos_.size();
-      } else {
-        return nonFunctionalInfosBuilder_.getCount();
-      }
-    }
-    /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getNonFunctionalInfos(int index) {
-      if (nonFunctionalInfosBuilder_ == null) {
-        return nonFunctionalInfos_.get(index);
-      } else {
-        return nonFunctionalInfosBuilder_.getMessage(index);
-      }
-    }
-    /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
-     */
-    public Builder setNonFunctionalInfos(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
-      if (nonFunctionalInfosBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureNonFunctionalInfosIsMutable();
-        nonFunctionalInfos_.set(index, value);
-        onChanged();
-      } else {
-        nonFunctionalInfosBuilder_.setMessage(index, value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
-     */
-    public Builder setNonFunctionalInfos(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder builderForValue) {
-      if (nonFunctionalInfosBuilder_ == null) {
-        ensureNonFunctionalInfosIsMutable();
-        nonFunctionalInfos_.set(index, builderForValue.build());
-        onChanged();
-      } else {
-        nonFunctionalInfosBuilder_.setMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
-     */
-    public Builder addNonFunctionalInfos(eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
-      if (nonFunctionalInfosBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureNonFunctionalInfosIsMutable();
-        nonFunctionalInfos_.add(value);
-        onChanged();
-      } else {
-        nonFunctionalInfosBuilder_.addMessage(value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
-     */
-    public Builder addNonFunctionalInfos(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
-      if (nonFunctionalInfosBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureNonFunctionalInfosIsMutable();
-        nonFunctionalInfos_.add(index, value);
-        onChanged();
-      } else {
-        nonFunctionalInfosBuilder_.addMessage(index, value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
-     */
-    public Builder addNonFunctionalInfos(
-        eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder builderForValue) {
-      if (nonFunctionalInfosBuilder_ == null) {
-        ensureNonFunctionalInfosIsMutable();
-        nonFunctionalInfos_.add(builderForValue.build());
-        onChanged();
-      } else {
-        nonFunctionalInfosBuilder_.addMessage(builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
-     */
-    public Builder addNonFunctionalInfos(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder builderForValue) {
-      if (nonFunctionalInfosBuilder_ == null) {
-        ensureNonFunctionalInfosIsMutable();
-        nonFunctionalInfos_.add(index, builderForValue.build());
-        onChanged();
-      } else {
-        nonFunctionalInfosBuilder_.addMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
-     */
-    public Builder addAllNonFunctionalInfos(
-        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContext> values) {
-      if (nonFunctionalInfosBuilder_ == null) {
-        ensureNonFunctionalInfosIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, nonFunctionalInfos_);
-        onChanged();
-      } else {
-        nonFunctionalInfosBuilder_.addAllMessages(values);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
-     */
-    public Builder clearNonFunctionalInfos() {
-      if (nonFunctionalInfosBuilder_ == null) {
-        nonFunctionalInfos_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000004);
-        onChanged();
-      } else {
-        nonFunctionalInfosBuilder_.clear();
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
-     */
-    public Builder removeNonFunctionalInfos(int index) {
-      if (nonFunctionalInfosBuilder_ == null) {
-        ensureNonFunctionalInfosIsMutable();
-        nonFunctionalInfos_.remove(index);
-        onChanged();
-      } else {
-        nonFunctionalInfosBuilder_.remove(index);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder getNonFunctionalInfosBuilder(
-        int index) {
-      return getNonFunctionalInfosFieldBuilder().getBuilder(index);
-    }
-    /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getNonFunctionalInfosOrBuilder(
-        int index) {
-      if (nonFunctionalInfosBuilder_ == null) {
-        return nonFunctionalInfos_.get(index);  } else {
-        return nonFunctionalInfosBuilder_.getMessageOrBuilder(index);
-      }
-    }
-    /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
-     */
-    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
-         getNonFunctionalInfosOrBuilderList() {
-      if (nonFunctionalInfosBuilder_ != null) {
-        return nonFunctionalInfosBuilder_.getMessageOrBuilderList();
-      } else {
-        return java.util.Collections.unmodifiableList(nonFunctionalInfos_);
-      }
-    }
-    /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder addNonFunctionalInfosBuilder() {
-      return getNonFunctionalInfosFieldBuilder().addBuilder(
-          eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder addNonFunctionalInfosBuilder(
-        int index) {
-      return getNonFunctionalInfosFieldBuilder().addBuilder(
-          index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
-     */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder> 
-         getNonFunctionalInfosBuilderList() {
-      return getNonFunctionalInfosFieldBuilder().getBuilderList();
-    }
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
-        getNonFunctionalInfosFieldBuilder() {
-      if (nonFunctionalInfosBuilder_ == null) {
-        nonFunctionalInfosBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder>(
-                nonFunctionalInfos_,
-                ((bitField0_ & 0x00000004) != 0),
-                getParentForChildren(),
-                isClean());
-        nonFunctionalInfos_ = null;
-      }
-      return nonFunctionalInfosBuilder_;
-    }
-
-    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> collectedAssertions_ =
-      java.util.Collections.emptyList();
-    private void ensureCollectedAssertionsIsMutable() {
-      if (!((bitField0_ & 0x00000008) != 0)) {
-        collectedAssertions_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.ErrorContext>(collectedAssertions_);
-        bitField0_ |= 0x00000008;
-       }
-    }
-
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> collectedAssertionsBuilder_;
-
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-     */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> getCollectedAssertionsList() {
-      if (collectedAssertionsBuilder_ == null) {
-        return java.util.Collections.unmodifiableList(collectedAssertions_);
-      } else {
-        return collectedAssertionsBuilder_.getMessageList();
-      }
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-     */
-    public int getCollectedAssertionsCount() {
-      if (collectedAssertionsBuilder_ == null) {
-        return collectedAssertions_.size();
-      } else {
-        return collectedAssertionsBuilder_.getCount();
-      }
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getCollectedAssertions(int index) {
-      if (collectedAssertionsBuilder_ == null) {
-        return collectedAssertions_.get(index);
-      } else {
-        return collectedAssertionsBuilder_.getMessage(index);
-      }
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-     */
-    public Builder setCollectedAssertions(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
-      if (collectedAssertionsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureCollectedAssertionsIsMutable();
-        collectedAssertions_.set(index, value);
-        onChanged();
-      } else {
-        collectedAssertionsBuilder_.setMessage(index, value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-     */
-    public Builder setCollectedAssertions(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder builderForValue) {
-      if (collectedAssertionsBuilder_ == null) {
-        ensureCollectedAssertionsIsMutable();
-        collectedAssertions_.set(index, builderForValue.build());
-        onChanged();
-      } else {
-        collectedAssertionsBuilder_.setMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-     */
-    public Builder addCollectedAssertions(eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
-      if (collectedAssertionsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureCollectedAssertionsIsMutable();
-        collectedAssertions_.add(value);
-        onChanged();
-      } else {
-        collectedAssertionsBuilder_.addMessage(value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-     */
-    public Builder addCollectedAssertions(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
-      if (collectedAssertionsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureCollectedAssertionsIsMutable();
-        collectedAssertions_.add(index, value);
-        onChanged();
-      } else {
-        collectedAssertionsBuilder_.addMessage(index, value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-     */
-    public Builder addCollectedAssertions(
-        eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder builderForValue) {
-      if (collectedAssertionsBuilder_ == null) {
-        ensureCollectedAssertionsIsMutable();
-        collectedAssertions_.add(builderForValue.build());
-        onChanged();
-      } else {
-        collectedAssertionsBuilder_.addMessage(builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-     */
-    public Builder addCollectedAssertions(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder builderForValue) {
-      if (collectedAssertionsBuilder_ == null) {
-        ensureCollectedAssertionsIsMutable();
-        collectedAssertions_.add(index, builderForValue.build());
-        onChanged();
-      } else {
-        collectedAssertionsBuilder_.addMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-     */
-    public Builder addAllCollectedAssertions(
-        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContext> values) {
-      if (collectedAssertionsBuilder_ == null) {
-        ensureCollectedAssertionsIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, collectedAssertions_);
-        onChanged();
-      } else {
-        collectedAssertionsBuilder_.addAllMessages(values);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-     */
-    public Builder clearCollectedAssertions() {
-      if (collectedAssertionsBuilder_ == null) {
-        collectedAssertions_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000008);
-        onChanged();
-      } else {
-        collectedAssertionsBuilder_.clear();
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-     */
-    public Builder removeCollectedAssertions(int index) {
-      if (collectedAssertionsBuilder_ == null) {
-        ensureCollectedAssertionsIsMutable();
-        collectedAssertions_.remove(index);
-        onChanged();
-      } else {
-        collectedAssertionsBuilder_.remove(index);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder getCollectedAssertionsBuilder(
-        int index) {
-      return getCollectedAssertionsFieldBuilder().getBuilder(index);
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getCollectedAssertionsOrBuilder(
-        int index) {
-      if (collectedAssertionsBuilder_ == null) {
-        return collectedAssertions_.get(index);  } else {
-        return collectedAssertionsBuilder_.getMessageOrBuilder(index);
-      }
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-     */
-    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
-         getCollectedAssertionsOrBuilderList() {
-      if (collectedAssertionsBuilder_ != null) {
-        return collectedAssertionsBuilder_.getMessageOrBuilderList();
-      } else {
-        return java.util.Collections.unmodifiableList(collectedAssertions_);
-      }
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder addCollectedAssertionsBuilder() {
-      return getCollectedAssertionsFieldBuilder().addBuilder(
-          eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder addCollectedAssertionsBuilder(
-        int index) {
-      return getCollectedAssertionsFieldBuilder().addBuilder(
-          index, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-     */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder> 
-         getCollectedAssertionsBuilderList() {
-      return getCollectedAssertionsFieldBuilder().getBuilderList();
-    }
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
-        getCollectedAssertionsFieldBuilder() {
-      if (collectedAssertionsBuilder_ == null) {
-        collectedAssertionsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder>(
-                collectedAssertions_,
-                ((bitField0_ & 0x00000008) != 0),
-                getParentForChildren(),
-                isClean());
-        collectedAssertions_ = null;
-      }
-      return collectedAssertionsBuilder_;
-    }
-
-    private com.google.protobuf.LazyStringList infos_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    private void ensureInfosIsMutable() {
-      if (!((bitField0_ & 0x00000010) != 0)) {
-        infos_ = new com.google.protobuf.LazyStringArrayList(infos_);
-        bitField0_ |= 0x00000010;
-       }
-    }
-    /**
+     * <pre>
+     *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
+     *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string infos = 19;</code>
      * @return A list containing the infos.
      */
@@ -3288,6 +2661,11 @@ private static final long serialVersionUID = 0L;
       return infos_.getUnmodifiableView();
     }
     /**
+     * <pre>
+     *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
+     *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string infos = 19;</code>
      * @return The count of infos.
      */
@@ -3295,6 +2673,11 @@ private static final long serialVersionUID = 0L;
       return infos_.size();
     }
     /**
+     * <pre>
+     *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
+     *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string infos = 19;</code>
      * @param index The index of the element to return.
      * @return The infos at the given index.
@@ -3303,6 +2686,11 @@ private static final long serialVersionUID = 0L;
       return infos_.get(index);
     }
     /**
+     * <pre>
+     *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
+     *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string infos = 19;</code>
      * @param index The index of the value to return.
      * @return The bytes of the infos at the given index.
@@ -3312,6 +2700,11 @@ private static final long serialVersionUID = 0L;
       return infos_.getByteString(index);
     }
     /**
+     * <pre>
+     *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
+     *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string infos = 19;</code>
      * @param index The index to set the value at.
      * @param value The infos to set.
@@ -3328,6 +2721,11 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
+     *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string infos = 19;</code>
      * @param value The infos to add.
      * @return This builder for chaining.
@@ -3343,6 +2741,11 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
+     *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string infos = 19;</code>
      * @param values The infos to add.
      * @return This builder for chaining.
@@ -3356,16 +2759,26 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
+     *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string infos = 19;</code>
      * @return This builder for chaining.
      */
     public Builder clearInfos() {
       infos_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000010);
+      bitField0_ = (bitField0_ & ~0x00000004);
       onChanged();
       return this;
     }
     /**
+     * <pre>
+     *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
+     *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string infos = 19;</code>
      * @param value The bytes of the infos to add.
      * @return This builder for chaining.
@@ -3460,9 +2873,9 @@ private static final long serialVersionUID = 0L;
 
     private com.google.protobuf.LazyStringList relatedMethodContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     private void ensureRelatedMethodContextIdsIsMutable() {
-      if (!((bitField0_ & 0x00000020) != 0)) {
+      if (!((bitField0_ & 0x00000008) != 0)) {
         relatedMethodContextIds_ = new com.google.protobuf.LazyStringArrayList(relatedMethodContextIds_);
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000008;
        }
     }
     /**
@@ -3547,7 +2960,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder clearRelatedMethodContextIds() {
       relatedMethodContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000020);
+      bitField0_ = (bitField0_ & ~0x00000008);
       onChanged();
       return this;
     }
@@ -3570,9 +2983,9 @@ private static final long serialVersionUID = 0L;
 
     private com.google.protobuf.LazyStringList dependsOnMethodContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     private void ensureDependsOnMethodContextIdsIsMutable() {
-      if (!((bitField0_ & 0x00000040) != 0)) {
+      if (!((bitField0_ & 0x00000010) != 0)) {
         dependsOnMethodContextIds_ = new com.google.protobuf.LazyStringArrayList(dependsOnMethodContextIds_);
-        bitField0_ |= 0x00000040;
+        bitField0_ |= 0x00000010;
        }
     }
     /**
@@ -3657,7 +3070,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder clearDependsOnMethodContextIds() {
       dependsOnMethodContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000040);
+      bitField0_ = (bitField0_ & ~0x00000010);
       onChanged();
       return this;
     }
@@ -3797,22 +3210,22 @@ private static final long serialVersionUID = 0L;
       return errorContextBuilder_;
     }
 
-    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStep> testSteps_ =
+    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestStep> testSteps_ =
       java.util.Collections.emptyList();
     private void ensureTestStepsIsMutable() {
-      if (!((bitField0_ & 0x00000080) != 0)) {
-        testSteps_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.PTestStep>(testSteps_);
-        bitField0_ |= 0x00000080;
+      if (!((bitField0_ & 0x00000020) != 0)) {
+        testSteps_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.TestStep>(testSteps_);
+        bitField0_ |= 0x00000020;
        }
     }
 
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.PTestStep, eu.tsystems.mms.tic.testframework.report.model.PTestStep.Builder, eu.tsystems.mms.tic.testframework.report.model.PTestStepOrBuilder> testStepsBuilder_;
+        eu.tsystems.mms.tic.testframework.report.model.TestStep, eu.tsystems.mms.tic.testframework.report.model.TestStep.Builder, eu.tsystems.mms.tic.testframework.report.model.TestStepOrBuilder> testStepsBuilder_;
 
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStep> getTestStepsList() {
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestStep> getTestStepsList() {
       if (testStepsBuilder_ == null) {
         return java.util.Collections.unmodifiableList(testSteps_);
       } else {
@@ -3820,7 +3233,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
     public int getTestStepsCount() {
       if (testStepsBuilder_ == null) {
@@ -3830,9 +3243,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PTestStep getTestSteps(int index) {
+    public eu.tsystems.mms.tic.testframework.report.model.TestStep getTestSteps(int index) {
       if (testStepsBuilder_ == null) {
         return testSteps_.get(index);
       } else {
@@ -3840,10 +3253,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
     public Builder setTestSteps(
-        int index, eu.tsystems.mms.tic.testframework.report.model.PTestStep value) {
+        int index, eu.tsystems.mms.tic.testframework.report.model.TestStep value) {
       if (testStepsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -3857,10 +3270,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
     public Builder setTestSteps(
-        int index, eu.tsystems.mms.tic.testframework.report.model.PTestStep.Builder builderForValue) {
+        int index, eu.tsystems.mms.tic.testframework.report.model.TestStep.Builder builderForValue) {
       if (testStepsBuilder_ == null) {
         ensureTestStepsIsMutable();
         testSteps_.set(index, builderForValue.build());
@@ -3871,9 +3284,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
-    public Builder addTestSteps(eu.tsystems.mms.tic.testframework.report.model.PTestStep value) {
+    public Builder addTestSteps(eu.tsystems.mms.tic.testframework.report.model.TestStep value) {
       if (testStepsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -3887,10 +3300,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
     public Builder addTestSteps(
-        int index, eu.tsystems.mms.tic.testframework.report.model.PTestStep value) {
+        int index, eu.tsystems.mms.tic.testframework.report.model.TestStep value) {
       if (testStepsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -3904,10 +3317,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
     public Builder addTestSteps(
-        eu.tsystems.mms.tic.testframework.report.model.PTestStep.Builder builderForValue) {
+        eu.tsystems.mms.tic.testframework.report.model.TestStep.Builder builderForValue) {
       if (testStepsBuilder_ == null) {
         ensureTestStepsIsMutable();
         testSteps_.add(builderForValue.build());
@@ -3918,10 +3331,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
     public Builder addTestSteps(
-        int index, eu.tsystems.mms.tic.testframework.report.model.PTestStep.Builder builderForValue) {
+        int index, eu.tsystems.mms.tic.testframework.report.model.TestStep.Builder builderForValue) {
       if (testStepsBuilder_ == null) {
         ensureTestStepsIsMutable();
         testSteps_.add(index, builderForValue.build());
@@ -3932,10 +3345,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
     public Builder addAllTestSteps(
-        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.PTestStep> values) {
+        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.TestStep> values) {
       if (testStepsBuilder_ == null) {
         ensureTestStepsIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -3947,12 +3360,12 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
     public Builder clearTestSteps() {
       if (testStepsBuilder_ == null) {
         testSteps_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000080);
+        bitField0_ = (bitField0_ & ~0x00000020);
         onChanged();
       } else {
         testStepsBuilder_.clear();
@@ -3960,7 +3373,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
     public Builder removeTestSteps(int index) {
       if (testStepsBuilder_ == null) {
@@ -3973,16 +3386,16 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PTestStep.Builder getTestStepsBuilder(
+    public eu.tsystems.mms.tic.testframework.report.model.TestStep.Builder getTestStepsBuilder(
         int index) {
       return getTestStepsFieldBuilder().getBuilder(index);
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PTestStepOrBuilder getTestStepsOrBuilder(
+    public eu.tsystems.mms.tic.testframework.report.model.TestStepOrBuilder getTestStepsOrBuilder(
         int index) {
       if (testStepsBuilder_ == null) {
         return testSteps_.get(index);  } else {
@@ -3990,9 +3403,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
-    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.PTestStepOrBuilder> 
+    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.TestStepOrBuilder> 
          getTestStepsOrBuilderList() {
       if (testStepsBuilder_ != null) {
         return testStepsBuilder_.getMessageOrBuilderList();
@@ -4001,35 +3414,35 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PTestStep.Builder addTestStepsBuilder() {
+    public eu.tsystems.mms.tic.testframework.report.model.TestStep.Builder addTestStepsBuilder() {
       return getTestStepsFieldBuilder().addBuilder(
-          eu.tsystems.mms.tic.testframework.report.model.PTestStep.getDefaultInstance());
+          eu.tsystems.mms.tic.testframework.report.model.TestStep.getDefaultInstance());
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PTestStep.Builder addTestStepsBuilder(
+    public eu.tsystems.mms.tic.testframework.report.model.TestStep.Builder addTestStepsBuilder(
         int index) {
       return getTestStepsFieldBuilder().addBuilder(
-          index, eu.tsystems.mms.tic.testframework.report.model.PTestStep.getDefaultInstance());
+          index, eu.tsystems.mms.tic.testframework.report.model.TestStep.getDefaultInstance());
     }
     /**
-     * <code>repeated .data.PTestStep test_steps = 26;</code>
+     * <code>repeated .data.TestStep test_steps = 26;</code>
      */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStep.Builder> 
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestStep.Builder> 
          getTestStepsBuilderList() {
       return getTestStepsFieldBuilder().getBuilderList();
     }
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.PTestStep, eu.tsystems.mms.tic.testframework.report.model.PTestStep.Builder, eu.tsystems.mms.tic.testframework.report.model.PTestStepOrBuilder> 
+        eu.tsystems.mms.tic.testframework.report.model.TestStep, eu.tsystems.mms.tic.testframework.report.model.TestStep.Builder, eu.tsystems.mms.tic.testframework.report.model.TestStepOrBuilder> 
         getTestStepsFieldBuilder() {
       if (testStepsBuilder_ == null) {
         testStepsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            eu.tsystems.mms.tic.testframework.report.model.PTestStep, eu.tsystems.mms.tic.testframework.report.model.PTestStep.Builder, eu.tsystems.mms.tic.testframework.report.model.PTestStepOrBuilder>(
+            eu.tsystems.mms.tic.testframework.report.model.TestStep, eu.tsystems.mms.tic.testframework.report.model.TestStep.Builder, eu.tsystems.mms.tic.testframework.report.model.TestStepOrBuilder>(
                 testSteps_,
-                ((bitField0_ & 0x00000080) != 0),
+                ((bitField0_ & 0x00000020) != 0),
                 getParentForChildren(),
                 isClean());
         testSteps_ = null;
@@ -4039,10 +3452,10 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object testContextId_ = "";
     /**
-     * <code>string test_context_id = 27;</code>
+     * <code>string test_context_id = 27 [deprecated = true];</code>
      * @return The testContextId.
      */
-    public java.lang.String getTestContextId() {
+    @java.lang.Deprecated public java.lang.String getTestContextId() {
       java.lang.Object ref = testContextId_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
@@ -4055,10 +3468,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string test_context_id = 27;</code>
+     * <code>string test_context_id = 27 [deprecated = true];</code>
      * @return The bytes for testContextId.
      */
-    public com.google.protobuf.ByteString
+    @java.lang.Deprecated public com.google.protobuf.ByteString
         getTestContextIdBytes() {
       java.lang.Object ref = testContextId_;
       if (ref instanceof String) {
@@ -4072,11 +3485,11 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string test_context_id = 27;</code>
+     * <code>string test_context_id = 27 [deprecated = true];</code>
      * @param value The testContextId to set.
      * @return This builder for chaining.
      */
-    public Builder setTestContextId(
+    @java.lang.Deprecated public Builder setTestContextId(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
@@ -4087,21 +3500,21 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string test_context_id = 27;</code>
+     * <code>string test_context_id = 27 [deprecated = true];</code>
      * @return This builder for chaining.
      */
-    public Builder clearTestContextId() {
+    @java.lang.Deprecated public Builder clearTestContextId() {
       
       testContextId_ = getDefaultInstance().getTestContextId();
       onChanged();
       return this;
     }
     /**
-     * <code>string test_context_id = 27;</code>
+     * <code>string test_context_id = 27 [deprecated = true];</code>
      * @param value The bytes for testContextId to set.
      * @return This builder for chaining.
      */
-    public Builder setTestContextIdBytes(
+    @java.lang.Deprecated public Builder setTestContextIdBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
@@ -4115,10 +3528,10 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object suiteContextId_ = "";
     /**
-     * <code>string suite_context_id = 28;</code>
+     * <code>string suite_context_id = 28 [deprecated = true];</code>
      * @return The suiteContextId.
      */
-    public java.lang.String getSuiteContextId() {
+    @java.lang.Deprecated public java.lang.String getSuiteContextId() {
       java.lang.Object ref = suiteContextId_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
@@ -4131,10 +3544,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string suite_context_id = 28;</code>
+     * <code>string suite_context_id = 28 [deprecated = true];</code>
      * @return The bytes for suiteContextId.
      */
-    public com.google.protobuf.ByteString
+    @java.lang.Deprecated public com.google.protobuf.ByteString
         getSuiteContextIdBytes() {
       java.lang.Object ref = suiteContextId_;
       if (ref instanceof String) {
@@ -4148,11 +3561,11 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string suite_context_id = 28;</code>
+     * <code>string suite_context_id = 28 [deprecated = true];</code>
      * @param value The suiteContextId to set.
      * @return This builder for chaining.
      */
-    public Builder setSuiteContextId(
+    @java.lang.Deprecated public Builder setSuiteContextId(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
@@ -4163,21 +3576,21 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string suite_context_id = 28;</code>
+     * <code>string suite_context_id = 28 [deprecated = true];</code>
      * @return This builder for chaining.
      */
-    public Builder clearSuiteContextId() {
+    @java.lang.Deprecated public Builder clearSuiteContextId() {
       
       suiteContextId_ = getDefaultInstance().getSuiteContextId();
       onChanged();
       return this;
     }
     /**
-     * <code>string suite_context_id = 28;</code>
+     * <code>string suite_context_id = 28 [deprecated = true];</code>
      * @param value The bytes for suiteContextId to set.
      * @return This builder for chaining.
      */
-    public Builder setSuiteContextIdBytes(
+    @java.lang.Deprecated public Builder setSuiteContextIdBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
@@ -4191,9 +3604,9 @@ private static final long serialVersionUID = 0L;
 
     private com.google.protobuf.LazyStringList sessionContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     private void ensureSessionContextIdsIsMutable() {
-      if (!((bitField0_ & 0x00000100) != 0)) {
+      if (!((bitField0_ & 0x00000040) != 0)) {
         sessionContextIds_ = new com.google.protobuf.LazyStringArrayList(sessionContextIds_);
-        bitField0_ |= 0x00000100;
+        bitField0_ |= 0x00000040;
        }
     }
     /**
@@ -4278,7 +3691,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder clearSessionContextIds() {
       sessionContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000100);
+      bitField0_ = (bitField0_ & ~0x00000040);
       onChanged();
       return this;
     }
@@ -4301,9 +3714,9 @@ private static final long serialVersionUID = 0L;
 
     private com.google.protobuf.LazyStringList videoIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     private void ensureVideoIdsIsMutable() {
-      if (!((bitField0_ & 0x00000200) != 0)) {
+      if (!((bitField0_ & 0x00000080) != 0)) {
         videoIds_ = new com.google.protobuf.LazyStringArrayList(videoIds_);
-        bitField0_ |= 0x00000200;
+        bitField0_ |= 0x00000080;
        }
     }
     /**
@@ -4388,7 +3801,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder clearVideoIds() {
       videoIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000200);
+      bitField0_ = (bitField0_ & ~0x00000080);
       onChanged();
       return this;
     }
@@ -4409,118 +3822,12 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private com.google.protobuf.LazyStringList screenshotIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    private void ensureScreenshotIdsIsMutable() {
-      if (!((bitField0_ & 0x00000400) != 0)) {
-        screenshotIds_ = new com.google.protobuf.LazyStringArrayList(screenshotIds_);
-        bitField0_ |= 0x00000400;
-       }
-    }
-    /**
-     * <code>repeated string screenshot_ids = 31;</code>
-     * @return A list containing the screenshotIds.
-     */
-    public com.google.protobuf.ProtocolStringList
-        getScreenshotIdsList() {
-      return screenshotIds_.getUnmodifiableView();
-    }
-    /**
-     * <code>repeated string screenshot_ids = 31;</code>
-     * @return The count of screenshotIds.
-     */
-    public int getScreenshotIdsCount() {
-      return screenshotIds_.size();
-    }
-    /**
-     * <code>repeated string screenshot_ids = 31;</code>
-     * @param index The index of the element to return.
-     * @return The screenshotIds at the given index.
-     */
-    public java.lang.String getScreenshotIds(int index) {
-      return screenshotIds_.get(index);
-    }
-    /**
-     * <code>repeated string screenshot_ids = 31;</code>
-     * @param index The index of the value to return.
-     * @return The bytes of the screenshotIds at the given index.
-     */
-    public com.google.protobuf.ByteString
-        getScreenshotIdsBytes(int index) {
-      return screenshotIds_.getByteString(index);
-    }
-    /**
-     * <code>repeated string screenshot_ids = 31;</code>
-     * @param index The index to set the value at.
-     * @param value The screenshotIds to set.
-     * @return This builder for chaining.
-     */
-    public Builder setScreenshotIds(
-        int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureScreenshotIdsIsMutable();
-      screenshotIds_.set(index, value);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string screenshot_ids = 31;</code>
-     * @param value The screenshotIds to add.
-     * @return This builder for chaining.
-     */
-    public Builder addScreenshotIds(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureScreenshotIdsIsMutable();
-      screenshotIds_.add(value);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string screenshot_ids = 31;</code>
-     * @param values The screenshotIds to add.
-     * @return This builder for chaining.
-     */
-    public Builder addAllScreenshotIds(
-        java.lang.Iterable<java.lang.String> values) {
-      ensureScreenshotIdsIsMutable();
-      com.google.protobuf.AbstractMessageLite.Builder.addAll(
-          values, screenshotIds_);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string screenshot_ids = 31;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearScreenshotIds() {
-      screenshotIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000400);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string screenshot_ids = 31;</code>
-     * @param value The bytes of the screenshotIds to add.
-     * @return This builder for chaining.
-     */
-    public Builder addScreenshotIdsBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      ensureScreenshotIdsIsMutable();
-      screenshotIds_.add(value);
-      onChanged();
-      return this;
-    }
-
     private java.lang.Object customContextJson_ = "";
     /**
+     * <pre>
+     *    repeated string screenshot_ids = 31 [deprecated = true];
+     * </pre>
+     *
      * <code>string custom_context_json = 32;</code>
      * @return The customContextJson.
      */
@@ -4537,6 +3844,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     *    repeated string screenshot_ids = 31 [deprecated = true];
+     * </pre>
+     *
      * <code>string custom_context_json = 32;</code>
      * @return The bytes for customContextJson.
      */
@@ -4554,6 +3865,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     *    repeated string screenshot_ids = 31 [deprecated = true];
+     * </pre>
+     *
      * <code>string custom_context_json = 32;</code>
      * @param value The customContextJson to set.
      * @return This builder for chaining.
@@ -4569,6 +3884,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    repeated string screenshot_ids = 31 [deprecated = true];
+     * </pre>
+     *
      * <code>string custom_context_json = 32;</code>
      * @return This builder for chaining.
      */
@@ -4579,6 +3898,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    repeated string screenshot_ids = 31 [deprecated = true];
+     * </pre>
+     *
      * <code>string custom_context_json = 32;</code>
      * @param value The bytes for customContextJson to set.
      * @return This builder for chaining.
@@ -4591,6 +3914,91 @@ private static final long serialVersionUID = 0L;
   checkByteStringIsUtf8(value);
       
       customContextJson_ = value;
+      onChanged();
+      return this;
+    }
+
+    private int failedStepIndex_ ;
+    /**
+     * <code>int32 failed_step_index = 33;</code>
+     * @return The failedStepIndex.
+     */
+    @java.lang.Override
+    public int getFailedStepIndex() {
+      return failedStepIndex_;
+    }
+    /**
+     * <code>int32 failed_step_index = 33;</code>
+     * @param value The failedStepIndex to set.
+     * @return This builder for chaining.
+     */
+    public Builder setFailedStepIndex(int value) {
+      
+      failedStepIndex_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>int32 failed_step_index = 33;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearFailedStepIndex() {
+      
+      failedStepIndex_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int resultStatus_ = 0;
+    /**
+     * <code>.data.ResultStatusType result_status = 34;</code>
+     * @return The enum numeric value on the wire for resultStatus.
+     */
+    @java.lang.Override public int getResultStatusValue() {
+      return resultStatus_;
+    }
+    /**
+     * <code>.data.ResultStatusType result_status = 34;</code>
+     * @param value The enum numeric value on the wire for resultStatus to set.
+     * @return This builder for chaining.
+     */
+    public Builder setResultStatusValue(int value) {
+      
+      resultStatus_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>.data.ResultStatusType result_status = 34;</code>
+     * @return The resultStatus.
+     */
+    @java.lang.Override
+    public eu.tsystems.mms.tic.testframework.report.model.ResultStatusType getResultStatus() {
+      @SuppressWarnings("deprecation")
+      eu.tsystems.mms.tic.testframework.report.model.ResultStatusType result = eu.tsystems.mms.tic.testframework.report.model.ResultStatusType.valueOf(resultStatus_);
+      return result == null ? eu.tsystems.mms.tic.testframework.report.model.ResultStatusType.UNRECOGNIZED : result;
+    }
+    /**
+     * <code>.data.ResultStatusType result_status = 34;</code>
+     * @param value The resultStatus to set.
+     * @return This builder for chaining.
+     */
+    public Builder setResultStatus(eu.tsystems.mms.tic.testframework.report.model.ResultStatusType value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      
+      resultStatus_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>.data.ResultStatusType result_status = 34;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearResultStatus() {
+      
+      resultStatus_ = 0;
       onChanged();
       return this;
     }

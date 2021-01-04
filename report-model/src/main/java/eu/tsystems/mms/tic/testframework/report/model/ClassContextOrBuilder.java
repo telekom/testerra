@@ -23,28 +23,28 @@ public interface ClassContextOrBuilder extends
   eu.tsystems.mms.tic.testframework.report.model.ContextValuesOrBuilder getContextValuesOrBuilder();
 
   /**
-   * <code>repeated string method_context_ids = 6;</code>
+   * <code>repeated string method_context_ids = 6 [deprecated = true];</code>
    * @return A list containing the methodContextIds.
    */
-  java.util.List<java.lang.String>
+  @java.lang.Deprecated java.util.List<java.lang.String>
       getMethodContextIdsList();
   /**
-   * <code>repeated string method_context_ids = 6;</code>
+   * <code>repeated string method_context_ids = 6 [deprecated = true];</code>
    * @return The count of methodContextIds.
    */
-  int getMethodContextIdsCount();
+  @java.lang.Deprecated int getMethodContextIdsCount();
   /**
-   * <code>repeated string method_context_ids = 6;</code>
+   * <code>repeated string method_context_ids = 6 [deprecated = true];</code>
    * @param index The index of the element to return.
    * @return The methodContextIds at the given index.
    */
-  java.lang.String getMethodContextIds(int index);
+  @java.lang.Deprecated java.lang.String getMethodContextIds(int index);
   /**
-   * <code>repeated string method_context_ids = 6;</code>
+   * <code>repeated string method_context_ids = 6 [deprecated = true];</code>
    * @param index The index of the value to return.
    * @return The bytes of the methodContextIds at the given index.
    */
-  com.google.protobuf.ByteString
+  @java.lang.Deprecated com.google.protobuf.ByteString
       getMethodContextIdsBytes(int index);
 
   /**
@@ -60,23 +60,19 @@ public interface ClassContextOrBuilder extends
       getFullClassNameBytes();
 
   /**
-   * <code>string simple_class_name = 8;</code>
-   * @return The simpleClassName.
-   */
-  java.lang.String getSimpleClassName();
-  /**
-   * <code>string simple_class_name = 8;</code>
-   * @return The bytes for simpleClassName.
-   */
-  com.google.protobuf.ByteString
-      getSimpleClassNameBytes();
-
-  /**
+   * <pre>
+   *    string simple_class_name = 8 [deprecated = true];
+   * </pre>
+   *
    * <code>string test_context_id = 9;</code>
    * @return The testContextId.
    */
   java.lang.String getTestContextId();
   /**
+   * <pre>
+   *    string simple_class_name = 8 [deprecated = true];
+   * </pre>
+   *
    * <code>string test_context_id = 9;</code>
    * @return The bytes for testContextId.
    */
@@ -84,24 +80,34 @@ public interface ClassContextOrBuilder extends
       getTestContextIdBytes();
 
   /**
-   * <code>string execution_context_id = 10;</code>
+   * <code>string execution_context_id = 10 [deprecated = true];</code>
    * @return The executionContextId.
    */
-  java.lang.String getExecutionContextId();
+  @java.lang.Deprecated java.lang.String getExecutionContextId();
   /**
-   * <code>string execution_context_id = 10;</code>
+   * <code>string execution_context_id = 10 [deprecated = true];</code>
    * @return The bytes for executionContextId.
    */
-  com.google.protobuf.ByteString
+  @java.lang.Deprecated com.google.protobuf.ByteString
       getExecutionContextIdBytes();
 
   /**
    * <pre>
-   *string testerra_class_context = 11;
+   *    bool merged = 12 [deprecated = true];
    * </pre>
    *
-   * <code>bool merged = 12;</code>
-   * @return The merged.
+   * <code>string test_context_name = 11;</code>
+   * @return The testContextName.
    */
-  boolean getMerged();
+  java.lang.String getTestContextName();
+  /**
+   * <pre>
+   *    bool merged = 12 [deprecated = true];
+   * </pre>
+   *
+   * <code>string test_context_name = 11;</code>
+   * @return The bytes for testContextName.
+   */
+  com.google.protobuf.ByteString
+      getTestContextNameBytes();
 }

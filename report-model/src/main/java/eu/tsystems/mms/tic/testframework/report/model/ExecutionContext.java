@@ -6,7 +6,7 @@ package eu.tsystems.mms.tic.testframework.report.model;
 /**
  * Protobuf type {@code data.ExecutionContext}
  */
-public  final class ExecutionContext extends
+public final class ExecutionContext extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:data.ExecutionContext)
     ExecutionContextOrBuilder {
@@ -16,15 +16,13 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private ExecutionContext() {
-    mergedClassContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    exitPoints_ = java.util.Collections.emptyList();
-    failureAscpects_ = java.util.Collections.emptyList();
     suiteContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     projectId_ = "";
     jobId_ = "";
     runId_ = "";
     taskId_ = "";
     exclusiveSessionContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    logMessages_ = java.util.Collections.emptyList();
   }
 
   @java.lang.Override
@@ -71,38 +69,11 @@ private static final long serialVersionUID = 0L;
 
             break;
           }
-          case 26: {
-            java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-              mergedClassContextIds_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000001;
-            }
-            mergedClassContextIds_.add(s);
-            break;
-          }
-          case 34: {
-            if (!((mutable_bitField0_ & 0x00000002) != 0)) {
-              exitPoints_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.ContextClip>();
-              mutable_bitField0_ |= 0x00000002;
-            }
-            exitPoints_.add(
-                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.ContextClip.parser(), extensionRegistry));
-            break;
-          }
-          case 42: {
-            if (!((mutable_bitField0_ & 0x00000004) != 0)) {
-              failureAscpects_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.ContextClip>();
-              mutable_bitField0_ |= 0x00000004;
-            }
-            failureAscpects_.add(
-                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.ContextClip.parser(), extensionRegistry));
-            break;
-          }
           case 50: {
             java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000008) != 0)) {
+            if (!((mutable_bitField0_ & 0x00000001) != 0)) {
               suiteContextIds_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000008;
+              mutable_bitField0_ |= 0x00000001;
             }
             suiteContextIds_.add(s);
             break;
@@ -146,16 +117,38 @@ private static final long serialVersionUID = 0L;
           }
           case 98: {
             java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000010) != 0)) {
+            if (!((mutable_bitField0_ & 0x00000002) != 0)) {
               exclusiveSessionContextIds_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000010;
+              mutable_bitField0_ |= 0x00000002;
             }
             exclusiveSessionContextIds_.add(s);
             break;
           }
-          case 104: {
+          case 114: {
+            if (!((mutable_bitField0_ & 0x00000004) != 0)) {
+              logMessages_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.LogMessage>();
+              mutable_bitField0_ |= 0x00000004;
+            }
+            logMessages_.add(
+                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.LogMessage.parser(), extensionRegistry));
+            break;
+          }
+          case 120: {
 
-            estimatedTestMethodCount_ = input.readInt32();
+            estimatedTestsCount_ = input.readInt32();
+            break;
+          }
+          case 130: {
+            if (!((mutable_bitField0_ & 0x00000008) != 0)) {
+              failureCorridorLimits_ = com.google.protobuf.MapField.newMapField(
+                  FailureCorridorLimitsDefaultEntryHolder.defaultEntry);
+              mutable_bitField0_ |= 0x00000008;
+            }
+            com.google.protobuf.MapEntry<java.lang.Integer, java.lang.Integer>
+            failureCorridorLimits__ = input.readMessage(
+                FailureCorridorLimitsDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
+            failureCorridorLimits_.getMutableMap().put(
+                failureCorridorLimits__.getKey(), failureCorridorLimits__.getValue());
             break;
           }
           default: {
@@ -174,19 +167,13 @@ private static final long serialVersionUID = 0L;
           e).setUnfinishedMessage(this);
     } finally {
       if (((mutable_bitField0_ & 0x00000001) != 0)) {
-        mergedClassContextIds_ = mergedClassContextIds_.getUnmodifiableView();
-      }
-      if (((mutable_bitField0_ & 0x00000002) != 0)) {
-        exitPoints_ = java.util.Collections.unmodifiableList(exitPoints_);
-      }
-      if (((mutable_bitField0_ & 0x00000004) != 0)) {
-        failureAscpects_ = java.util.Collections.unmodifiableList(failureAscpects_);
-      }
-      if (((mutable_bitField0_ & 0x00000008) != 0)) {
         suiteContextIds_ = suiteContextIds_.getUnmodifiableView();
       }
-      if (((mutable_bitField0_ & 0x00000010) != 0)) {
+      if (((mutable_bitField0_ & 0x00000002) != 0)) {
         exclusiveSessionContextIds_ = exclusiveSessionContextIds_.getUnmodifiableView();
+      }
+      if (((mutable_bitField0_ & 0x00000004) != 0)) {
+        logMessages_ = java.util.Collections.unmodifiableList(logMessages_);
       }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
@@ -197,6 +184,18 @@ private static final long serialVersionUID = 0L;
     return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_ExecutionContext_descriptor;
   }
 
+  @SuppressWarnings({"rawtypes"})
+  @java.lang.Override
+  protected com.google.protobuf.MapField internalGetMapField(
+      int number) {
+    switch (number) {
+      case 16:
+        return internalGetFailureCorridorLimits();
+      default:
+        throw new RuntimeException(
+            "Invalid map field number: " + number);
+    }
+  }
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
@@ -211,6 +210,7 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ContextValues context_values = 1;</code>
    * @return Whether the contextValues field is set.
    */
+  @java.lang.Override
   public boolean hasContextValues() {
     return contextValues_ != null;
   }
@@ -218,152 +218,73 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ContextValues context_values = 1;</code>
    * @return The contextValues.
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ContextValues getContextValues() {
     return contextValues_ == null ? eu.tsystems.mms.tic.testframework.report.model.ContextValues.getDefaultInstance() : contextValues_;
   }
   /**
    * <code>.data.ContextValues context_values = 1;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ContextValuesOrBuilder getContextValuesOrBuilder() {
     return getContextValues();
-  }
-
-  public static final int MERGED_CLASS_CONTEXT_IDS_FIELD_NUMBER = 3;
-  private com.google.protobuf.LazyStringList mergedClassContextIds_;
-  /**
-   * <code>repeated string merged_class_context_ids = 3;</code>
-   * @return A list containing the mergedClassContextIds.
-   */
-  public com.google.protobuf.ProtocolStringList
-      getMergedClassContextIdsList() {
-    return mergedClassContextIds_;
-  }
-  /**
-   * <code>repeated string merged_class_context_ids = 3;</code>
-   * @return The count of mergedClassContextIds.
-   */
-  public int getMergedClassContextIdsCount() {
-    return mergedClassContextIds_.size();
-  }
-  /**
-   * <code>repeated string merged_class_context_ids = 3;</code>
-   * @param index The index of the element to return.
-   * @return The mergedClassContextIds at the given index.
-   */
-  public java.lang.String getMergedClassContextIds(int index) {
-    return mergedClassContextIds_.get(index);
-  }
-  /**
-   * <code>repeated string merged_class_context_ids = 3;</code>
-   * @param index The index of the value to return.
-   * @return The bytes of the mergedClassContextIds at the given index.
-   */
-  public com.google.protobuf.ByteString
-      getMergedClassContextIdsBytes(int index) {
-    return mergedClassContextIds_.getByteString(index);
-  }
-
-  public static final int EXIT_POINTS_FIELD_NUMBER = 4;
-  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> exitPoints_;
-  /**
-   * <code>repeated .data.ContextClip exit_points = 4;</code>
-   */
-  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> getExitPointsList() {
-    return exitPoints_;
-  }
-  /**
-   * <code>repeated .data.ContextClip exit_points = 4;</code>
-   */
-  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> 
-      getExitPointsOrBuilderList() {
-    return exitPoints_;
-  }
-  /**
-   * <code>repeated .data.ContextClip exit_points = 4;</code>
-   */
-  public int getExitPointsCount() {
-    return exitPoints_.size();
-  }
-  /**
-   * <code>repeated .data.ContextClip exit_points = 4;</code>
-   */
-  public eu.tsystems.mms.tic.testframework.report.model.ContextClip getExitPoints(int index) {
-    return exitPoints_.get(index);
-  }
-  /**
-   * <code>repeated .data.ContextClip exit_points = 4;</code>
-   */
-  public eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder getExitPointsOrBuilder(
-      int index) {
-    return exitPoints_.get(index);
-  }
-
-  public static final int FAILURE_ASCPECTS_FIELD_NUMBER = 5;
-  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> failureAscpects_;
-  /**
-   * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
-   */
-  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> getFailureAscpectsList() {
-    return failureAscpects_;
-  }
-  /**
-   * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
-   */
-  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> 
-      getFailureAscpectsOrBuilderList() {
-    return failureAscpects_;
-  }
-  /**
-   * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
-   */
-  public int getFailureAscpectsCount() {
-    return failureAscpects_.size();
-  }
-  /**
-   * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
-   */
-  public eu.tsystems.mms.tic.testframework.report.model.ContextClip getFailureAscpects(int index) {
-    return failureAscpects_.get(index);
-  }
-  /**
-   * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
-   */
-  public eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder getFailureAscpectsOrBuilder(
-      int index) {
-    return failureAscpects_.get(index);
   }
 
   public static final int SUITE_CONTEXT_IDS_FIELD_NUMBER = 6;
   private com.google.protobuf.LazyStringList suiteContextIds_;
   /**
-   * <code>repeated string suite_context_ids = 6;</code>
+   * <pre>
+   *    repeated string merged_class_context_ids = 3 [deprecated = true];
+   *    repeated ContextClip exit_points = 4 [deprecated = true];
+   *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+   * </pre>
+   *
+   * <code>repeated string suite_context_ids = 6 [deprecated = true];</code>
    * @return A list containing the suiteContextIds.
    */
-  public com.google.protobuf.ProtocolStringList
+  @java.lang.Deprecated public com.google.protobuf.ProtocolStringList
       getSuiteContextIdsList() {
     return suiteContextIds_;
   }
   /**
-   * <code>repeated string suite_context_ids = 6;</code>
+   * <pre>
+   *    repeated string merged_class_context_ids = 3 [deprecated = true];
+   *    repeated ContextClip exit_points = 4 [deprecated = true];
+   *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+   * </pre>
+   *
+   * <code>repeated string suite_context_ids = 6 [deprecated = true];</code>
    * @return The count of suiteContextIds.
    */
-  public int getSuiteContextIdsCount() {
+  @java.lang.Deprecated public int getSuiteContextIdsCount() {
     return suiteContextIds_.size();
   }
   /**
-   * <code>repeated string suite_context_ids = 6;</code>
+   * <pre>
+   *    repeated string merged_class_context_ids = 3 [deprecated = true];
+   *    repeated ContextClip exit_points = 4 [deprecated = true];
+   *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+   * </pre>
+   *
+   * <code>repeated string suite_context_ids = 6 [deprecated = true];</code>
    * @param index The index of the element to return.
    * @return The suiteContextIds at the given index.
    */
-  public java.lang.String getSuiteContextIds(int index) {
+  @java.lang.Deprecated public java.lang.String getSuiteContextIds(int index) {
     return suiteContextIds_.get(index);
   }
   /**
-   * <code>repeated string suite_context_ids = 6;</code>
+   * <pre>
+   *    repeated string merged_class_context_ids = 3 [deprecated = true];
+   *    repeated ContextClip exit_points = 4 [deprecated = true];
+   *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+   * </pre>
+   *
+   * <code>repeated string suite_context_ids = 6 [deprecated = true];</code>
    * @param index The index of the value to return.
    * @return The bytes of the suiteContextIds at the given index.
    */
-  public com.google.protobuf.ByteString
+  @java.lang.Deprecated public com.google.protobuf.ByteString
       getSuiteContextIdsBytes(int index) {
     return suiteContextIds_.getByteString(index);
   }
@@ -374,6 +295,7 @@ private static final long serialVersionUID = 0L;
    * <code>.data.RunConfig run_config = 7;</code>
    * @return Whether the runConfig field is set.
    */
+  @java.lang.Override
   public boolean hasRunConfig() {
     return runConfig_ != null;
   }
@@ -381,12 +303,14 @@ private static final long serialVersionUID = 0L;
    * <code>.data.RunConfig run_config = 7;</code>
    * @return The runConfig.
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.RunConfig getRunConfig() {
     return runConfig_ == null ? eu.tsystems.mms.tic.testframework.report.model.RunConfig.getDefaultInstance() : runConfig_;
   }
   /**
    * <code>.data.RunConfig run_config = 7;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.RunConfigOrBuilder getRunConfigOrBuilder() {
     return getRunConfig();
   }
@@ -397,6 +321,7 @@ private static final long serialVersionUID = 0L;
    * <code>string project_Id = 8;</code>
    * @return The projectId.
    */
+  @java.lang.Override
   public java.lang.String getProjectId() {
     java.lang.Object ref = projectId_;
     if (ref instanceof java.lang.String) {
@@ -413,6 +338,7 @@ private static final long serialVersionUID = 0L;
    * <code>string project_Id = 8;</code>
    * @return The bytes for projectId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getProjectIdBytes() {
     java.lang.Object ref = projectId_;
@@ -433,6 +359,7 @@ private static final long serialVersionUID = 0L;
    * <code>string job_Id = 9;</code>
    * @return The jobId.
    */
+  @java.lang.Override
   public java.lang.String getJobId() {
     java.lang.Object ref = jobId_;
     if (ref instanceof java.lang.String) {
@@ -449,6 +376,7 @@ private static final long serialVersionUID = 0L;
    * <code>string job_Id = 9;</code>
    * @return The bytes for jobId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getJobIdBytes() {
     java.lang.Object ref = jobId_;
@@ -469,6 +397,7 @@ private static final long serialVersionUID = 0L;
    * <code>string run_Id = 10;</code>
    * @return The runId.
    */
+  @java.lang.Override
   public java.lang.String getRunId() {
     java.lang.Object ref = runId_;
     if (ref instanceof java.lang.String) {
@@ -485,6 +414,7 @@ private static final long serialVersionUID = 0L;
    * <code>string run_Id = 10;</code>
    * @return The bytes for runId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getRunIdBytes() {
     java.lang.Object ref = runId_;
@@ -505,6 +435,7 @@ private static final long serialVersionUID = 0L;
    * <code>string task_Id = 11;</code>
    * @return The taskId.
    */
+  @java.lang.Override
   public java.lang.String getTaskId() {
     java.lang.Object ref = taskId_;
     if (ref instanceof java.lang.String) {
@@ -521,6 +452,7 @@ private static final long serialVersionUID = 0L;
    * <code>string task_Id = 11;</code>
    * @return The bytes for taskId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getTaskIdBytes() {
     java.lang.Object ref = taskId_;
@@ -570,14 +502,136 @@ private static final long serialVersionUID = 0L;
     return exclusiveSessionContextIds_.getByteString(index);
   }
 
-  public static final int ESTIMATEDTESTMETHODCOUNT_FIELD_NUMBER = 13;
-  private int estimatedTestMethodCount_;
+  public static final int LOG_MESSAGES_FIELD_NUMBER = 14;
+  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage> logMessages_;
   /**
-   * <code>int32 estimatedTestMethodCount = 13;</code>
-   * @return The estimatedTestMethodCount.
+   * <code>repeated .data.LogMessage log_messages = 14;</code>
    */
-  public int getEstimatedTestMethodCount() {
-    return estimatedTestMethodCount_;
+  @java.lang.Override
+  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage> getLogMessagesList() {
+    return logMessages_;
+  }
+  /**
+   * <code>repeated .data.LogMessage log_messages = 14;</code>
+   */
+  @java.lang.Override
+  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder> 
+      getLogMessagesOrBuilderList() {
+    return logMessages_;
+  }
+  /**
+   * <code>repeated .data.LogMessage log_messages = 14;</code>
+   */
+  @java.lang.Override
+  public int getLogMessagesCount() {
+    return logMessages_.size();
+  }
+  /**
+   * <code>repeated .data.LogMessage log_messages = 14;</code>
+   */
+  @java.lang.Override
+  public eu.tsystems.mms.tic.testframework.report.model.LogMessage getLogMessages(int index) {
+    return logMessages_.get(index);
+  }
+  /**
+   * <code>repeated .data.LogMessage log_messages = 14;</code>
+   */
+  @java.lang.Override
+  public eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder getLogMessagesOrBuilder(
+      int index) {
+    return logMessages_.get(index);
+  }
+
+  public static final int ESTIMATED_TESTS_COUNT_FIELD_NUMBER = 15;
+  private int estimatedTestsCount_;
+  /**
+   * <code>int32 estimated_tests_count = 15;</code>
+   * @return The estimatedTestsCount.
+   */
+  @java.lang.Override
+  public int getEstimatedTestsCount() {
+    return estimatedTestsCount_;
+  }
+
+  public static final int FAILURE_CORRIDOR_LIMITS_FIELD_NUMBER = 16;
+  private static final class FailureCorridorLimitsDefaultEntryHolder {
+    static final com.google.protobuf.MapEntry<
+        java.lang.Integer, java.lang.Integer> defaultEntry =
+            com.google.protobuf.MapEntry
+            .<java.lang.Integer, java.lang.Integer>newDefaultInstance(
+                eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_ExecutionContext_FailureCorridorLimitsEntry_descriptor, 
+                com.google.protobuf.WireFormat.FieldType.INT32,
+                0,
+                com.google.protobuf.WireFormat.FieldType.INT32,
+                0);
+  }
+  private com.google.protobuf.MapField<
+      java.lang.Integer, java.lang.Integer> failureCorridorLimits_;
+  private com.google.protobuf.MapField<java.lang.Integer, java.lang.Integer>
+  internalGetFailureCorridorLimits() {
+    if (failureCorridorLimits_ == null) {
+      return com.google.protobuf.MapField.emptyMapField(
+          FailureCorridorLimitsDefaultEntryHolder.defaultEntry);
+    }
+    return failureCorridorLimits_;
+  }
+
+  public int getFailureCorridorLimitsCount() {
+    return internalGetFailureCorridorLimits().getMap().size();
+  }
+  /**
+   * <code>map&lt;int32, int32&gt; failure_corridor_limits = 16;</code>
+   */
+
+  @java.lang.Override
+  public boolean containsFailureCorridorLimits(
+      int key) {
+    
+    return internalGetFailureCorridorLimits().getMap().containsKey(key);
+  }
+  /**
+   * Use {@link #getFailureCorridorLimitsMap()} instead.
+   */
+  @java.lang.Override
+  @java.lang.Deprecated
+  public java.util.Map<java.lang.Integer, java.lang.Integer> getFailureCorridorLimits() {
+    return getFailureCorridorLimitsMap();
+  }
+  /**
+   * <code>map&lt;int32, int32&gt; failure_corridor_limits = 16;</code>
+   */
+  @java.lang.Override
+
+  public java.util.Map<java.lang.Integer, java.lang.Integer> getFailureCorridorLimitsMap() {
+    return internalGetFailureCorridorLimits().getMap();
+  }
+  /**
+   * <code>map&lt;int32, int32&gt; failure_corridor_limits = 16;</code>
+   */
+  @java.lang.Override
+
+  public int getFailureCorridorLimitsOrDefault(
+      int key,
+      int defaultValue) {
+    
+    java.util.Map<java.lang.Integer, java.lang.Integer> map =
+        internalGetFailureCorridorLimits().getMap();
+    return map.containsKey(key) ? map.get(key) : defaultValue;
+  }
+  /**
+   * <code>map&lt;int32, int32&gt; failure_corridor_limits = 16;</code>
+   */
+  @java.lang.Override
+
+  public int getFailureCorridorLimitsOrThrow(
+      int key) {
+    
+    java.util.Map<java.lang.Integer, java.lang.Integer> map =
+        internalGetFailureCorridorLimits().getMap();
+    if (!map.containsKey(key)) {
+      throw new java.lang.IllegalArgumentException();
+    }
+    return map.get(key);
   }
 
   private byte memoizedIsInitialized = -1;
@@ -596,15 +650,6 @@ private static final long serialVersionUID = 0L;
                       throws java.io.IOException {
     if (contextValues_ != null) {
       output.writeMessage(1, getContextValues());
-    }
-    for (int i = 0; i < mergedClassContextIds_.size(); i++) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 3, mergedClassContextIds_.getRaw(i));
-    }
-    for (int i = 0; i < exitPoints_.size(); i++) {
-      output.writeMessage(4, exitPoints_.get(i));
-    }
-    for (int i = 0; i < failureAscpects_.size(); i++) {
-      output.writeMessage(5, failureAscpects_.get(i));
     }
     for (int i = 0; i < suiteContextIds_.size(); i++) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 6, suiteContextIds_.getRaw(i));
@@ -627,9 +672,18 @@ private static final long serialVersionUID = 0L;
     for (int i = 0; i < exclusiveSessionContextIds_.size(); i++) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 12, exclusiveSessionContextIds_.getRaw(i));
     }
-    if (estimatedTestMethodCount_ != 0) {
-      output.writeInt32(13, estimatedTestMethodCount_);
+    for (int i = 0; i < logMessages_.size(); i++) {
+      output.writeMessage(14, logMessages_.get(i));
     }
+    if (estimatedTestsCount_ != 0) {
+      output.writeInt32(15, estimatedTestsCount_);
+    }
+    com.google.protobuf.GeneratedMessageV3
+      .serializeIntegerMapTo(
+        output,
+        internalGetFailureCorridorLimits(),
+        FailureCorridorLimitsDefaultEntryHolder.defaultEntry,
+        16);
     unknownFields.writeTo(output);
   }
 
@@ -642,22 +696,6 @@ private static final long serialVersionUID = 0L;
     if (contextValues_ != null) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(1, getContextValues());
-    }
-    {
-      int dataSize = 0;
-      for (int i = 0; i < mergedClassContextIds_.size(); i++) {
-        dataSize += computeStringSizeNoTag(mergedClassContextIds_.getRaw(i));
-      }
-      size += dataSize;
-      size += 1 * getMergedClassContextIdsList().size();
-    }
-    for (int i = 0; i < exitPoints_.size(); i++) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(4, exitPoints_.get(i));
-    }
-    for (int i = 0; i < failureAscpects_.size(); i++) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(5, failureAscpects_.get(i));
     }
     {
       int dataSize = 0;
@@ -691,9 +729,23 @@ private static final long serialVersionUID = 0L;
       size += dataSize;
       size += 1 * getExclusiveSessionContextIdsList().size();
     }
-    if (estimatedTestMethodCount_ != 0) {
+    for (int i = 0; i < logMessages_.size(); i++) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(13, estimatedTestMethodCount_);
+        .computeMessageSize(14, logMessages_.get(i));
+    }
+    if (estimatedTestsCount_ != 0) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(15, estimatedTestsCount_);
+    }
+    for (java.util.Map.Entry<java.lang.Integer, java.lang.Integer> entry
+         : internalGetFailureCorridorLimits().getMap().entrySet()) {
+      com.google.protobuf.MapEntry<java.lang.Integer, java.lang.Integer>
+      failureCorridorLimits__ = FailureCorridorLimitsDefaultEntryHolder.defaultEntry.newBuilderForType()
+          .setKey(entry.getKey())
+          .setValue(entry.getValue())
+          .build();
+      size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(16, failureCorridorLimits__);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -715,12 +767,6 @@ private static final long serialVersionUID = 0L;
       if (!getContextValues()
           .equals(other.getContextValues())) return false;
     }
-    if (!getMergedClassContextIdsList()
-        .equals(other.getMergedClassContextIdsList())) return false;
-    if (!getExitPointsList()
-        .equals(other.getExitPointsList())) return false;
-    if (!getFailureAscpectsList()
-        .equals(other.getFailureAscpectsList())) return false;
     if (!getSuiteContextIdsList()
         .equals(other.getSuiteContextIdsList())) return false;
     if (hasRunConfig() != other.hasRunConfig()) return false;
@@ -738,8 +784,12 @@ private static final long serialVersionUID = 0L;
         .equals(other.getTaskId())) return false;
     if (!getExclusiveSessionContextIdsList()
         .equals(other.getExclusiveSessionContextIdsList())) return false;
-    if (getEstimatedTestMethodCount()
-        != other.getEstimatedTestMethodCount()) return false;
+    if (!getLogMessagesList()
+        .equals(other.getLogMessagesList())) return false;
+    if (getEstimatedTestsCount()
+        != other.getEstimatedTestsCount()) return false;
+    if (!internalGetFailureCorridorLimits().equals(
+        other.internalGetFailureCorridorLimits())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -754,18 +804,6 @@ private static final long serialVersionUID = 0L;
     if (hasContextValues()) {
       hash = (37 * hash) + CONTEXT_VALUES_FIELD_NUMBER;
       hash = (53 * hash) + getContextValues().hashCode();
-    }
-    if (getMergedClassContextIdsCount() > 0) {
-      hash = (37 * hash) + MERGED_CLASS_CONTEXT_IDS_FIELD_NUMBER;
-      hash = (53 * hash) + getMergedClassContextIdsList().hashCode();
-    }
-    if (getExitPointsCount() > 0) {
-      hash = (37 * hash) + EXIT_POINTS_FIELD_NUMBER;
-      hash = (53 * hash) + getExitPointsList().hashCode();
-    }
-    if (getFailureAscpectsCount() > 0) {
-      hash = (37 * hash) + FAILURE_ASCPECTS_FIELD_NUMBER;
-      hash = (53 * hash) + getFailureAscpectsList().hashCode();
     }
     if (getSuiteContextIdsCount() > 0) {
       hash = (37 * hash) + SUITE_CONTEXT_IDS_FIELD_NUMBER;
@@ -787,8 +825,16 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + EXCLUSIVE_SESSION_CONTEXT_IDS_FIELD_NUMBER;
       hash = (53 * hash) + getExclusiveSessionContextIdsList().hashCode();
     }
-    hash = (37 * hash) + ESTIMATEDTESTMETHODCOUNT_FIELD_NUMBER;
-    hash = (53 * hash) + getEstimatedTestMethodCount();
+    if (getLogMessagesCount() > 0) {
+      hash = (37 * hash) + LOG_MESSAGES_FIELD_NUMBER;
+      hash = (53 * hash) + getLogMessagesList().hashCode();
+    }
+    hash = (37 * hash) + ESTIMATED_TESTS_COUNT_FIELD_NUMBER;
+    hash = (53 * hash) + getEstimatedTestsCount();
+    if (!internalGetFailureCorridorLimits().getMap().isEmpty()) {
+      hash = (37 * hash) + FAILURE_CORRIDOR_LIMITS_FIELD_NUMBER;
+      hash = (53 * hash) + internalGetFailureCorridorLimits().hashCode();
+    }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -896,6 +942,28 @@ private static final long serialVersionUID = 0L;
       return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_ExecutionContext_descriptor;
     }
 
+    @SuppressWarnings({"rawtypes"})
+    protected com.google.protobuf.MapField internalGetMapField(
+        int number) {
+      switch (number) {
+        case 16:
+          return internalGetFailureCorridorLimits();
+        default:
+          throw new RuntimeException(
+              "Invalid map field number: " + number);
+      }
+    }
+    @SuppressWarnings({"rawtypes"})
+    protected com.google.protobuf.MapField internalGetMutableMapField(
+        int number) {
+      switch (number) {
+        case 16:
+          return internalGetMutableFailureCorridorLimits();
+        default:
+          throw new RuntimeException(
+              "Invalid map field number: " + number);
+      }
+    }
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
@@ -917,8 +985,7 @@ private static final long serialVersionUID = 0L;
     private void maybeForceBuilderInitialization() {
       if (com.google.protobuf.GeneratedMessageV3
               .alwaysUseFieldBuilders) {
-        getExitPointsFieldBuilder();
-        getFailureAscpectsFieldBuilder();
+        getLogMessagesFieldBuilder();
       }
     }
     @java.lang.Override
@@ -930,22 +997,8 @@ private static final long serialVersionUID = 0L;
         contextValues_ = null;
         contextValuesBuilder_ = null;
       }
-      mergedClassContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000001);
-      if (exitPointsBuilder_ == null) {
-        exitPoints_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000002);
-      } else {
-        exitPointsBuilder_.clear();
-      }
-      if (failureAscpectsBuilder_ == null) {
-        failureAscpects_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000004);
-      } else {
-        failureAscpectsBuilder_.clear();
-      }
       suiteContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000008);
+      bitField0_ = (bitField0_ & ~0x00000001);
       if (runConfigBuilder_ == null) {
         runConfig_ = null;
       } else {
@@ -961,9 +1014,16 @@ private static final long serialVersionUID = 0L;
       taskId_ = "";
 
       exclusiveSessionContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000010);
-      estimatedTestMethodCount_ = 0;
+      bitField0_ = (bitField0_ & ~0x00000002);
+      if (logMessagesBuilder_ == null) {
+        logMessages_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000004);
+      } else {
+        logMessagesBuilder_.clear();
+      }
+      estimatedTestsCount_ = 0;
 
+      internalGetMutableFailureCorridorLimits().clear();
       return this;
     }
 
@@ -997,31 +1057,8 @@ private static final long serialVersionUID = 0L;
         result.contextValues_ = contextValuesBuilder_.build();
       }
       if (((bitField0_ & 0x00000001) != 0)) {
-        mergedClassContextIds_ = mergedClassContextIds_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000001);
-      }
-      result.mergedClassContextIds_ = mergedClassContextIds_;
-      if (exitPointsBuilder_ == null) {
-        if (((bitField0_ & 0x00000002) != 0)) {
-          exitPoints_ = java.util.Collections.unmodifiableList(exitPoints_);
-          bitField0_ = (bitField0_ & ~0x00000002);
-        }
-        result.exitPoints_ = exitPoints_;
-      } else {
-        result.exitPoints_ = exitPointsBuilder_.build();
-      }
-      if (failureAscpectsBuilder_ == null) {
-        if (((bitField0_ & 0x00000004) != 0)) {
-          failureAscpects_ = java.util.Collections.unmodifiableList(failureAscpects_);
-          bitField0_ = (bitField0_ & ~0x00000004);
-        }
-        result.failureAscpects_ = failureAscpects_;
-      } else {
-        result.failureAscpects_ = failureAscpectsBuilder_.build();
-      }
-      if (((bitField0_ & 0x00000008) != 0)) {
         suiteContextIds_ = suiteContextIds_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000001);
       }
       result.suiteContextIds_ = suiteContextIds_;
       if (runConfigBuilder_ == null) {
@@ -1033,12 +1070,23 @@ private static final long serialVersionUID = 0L;
       result.jobId_ = jobId_;
       result.runId_ = runId_;
       result.taskId_ = taskId_;
-      if (((bitField0_ & 0x00000010) != 0)) {
+      if (((bitField0_ & 0x00000002) != 0)) {
         exclusiveSessionContextIds_ = exclusiveSessionContextIds_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000010);
+        bitField0_ = (bitField0_ & ~0x00000002);
       }
       result.exclusiveSessionContextIds_ = exclusiveSessionContextIds_;
-      result.estimatedTestMethodCount_ = estimatedTestMethodCount_;
+      if (logMessagesBuilder_ == null) {
+        if (((bitField0_ & 0x00000004) != 0)) {
+          logMessages_ = java.util.Collections.unmodifiableList(logMessages_);
+          bitField0_ = (bitField0_ & ~0x00000004);
+        }
+        result.logMessages_ = logMessages_;
+      } else {
+        result.logMessages_ = logMessagesBuilder_.build();
+      }
+      result.estimatedTestsCount_ = estimatedTestsCount_;
+      result.failureCorridorLimits_ = internalGetFailureCorridorLimits();
+      result.failureCorridorLimits_.makeImmutable();
       onBuilt();
       return result;
     }
@@ -1090,72 +1138,10 @@ private static final long serialVersionUID = 0L;
       if (other.hasContextValues()) {
         mergeContextValues(other.getContextValues());
       }
-      if (!other.mergedClassContextIds_.isEmpty()) {
-        if (mergedClassContextIds_.isEmpty()) {
-          mergedClassContextIds_ = other.mergedClassContextIds_;
-          bitField0_ = (bitField0_ & ~0x00000001);
-        } else {
-          ensureMergedClassContextIdsIsMutable();
-          mergedClassContextIds_.addAll(other.mergedClassContextIds_);
-        }
-        onChanged();
-      }
-      if (exitPointsBuilder_ == null) {
-        if (!other.exitPoints_.isEmpty()) {
-          if (exitPoints_.isEmpty()) {
-            exitPoints_ = other.exitPoints_;
-            bitField0_ = (bitField0_ & ~0x00000002);
-          } else {
-            ensureExitPointsIsMutable();
-            exitPoints_.addAll(other.exitPoints_);
-          }
-          onChanged();
-        }
-      } else {
-        if (!other.exitPoints_.isEmpty()) {
-          if (exitPointsBuilder_.isEmpty()) {
-            exitPointsBuilder_.dispose();
-            exitPointsBuilder_ = null;
-            exitPoints_ = other.exitPoints_;
-            bitField0_ = (bitField0_ & ~0x00000002);
-            exitPointsBuilder_ = 
-              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                 getExitPointsFieldBuilder() : null;
-          } else {
-            exitPointsBuilder_.addAllMessages(other.exitPoints_);
-          }
-        }
-      }
-      if (failureAscpectsBuilder_ == null) {
-        if (!other.failureAscpects_.isEmpty()) {
-          if (failureAscpects_.isEmpty()) {
-            failureAscpects_ = other.failureAscpects_;
-            bitField0_ = (bitField0_ & ~0x00000004);
-          } else {
-            ensureFailureAscpectsIsMutable();
-            failureAscpects_.addAll(other.failureAscpects_);
-          }
-          onChanged();
-        }
-      } else {
-        if (!other.failureAscpects_.isEmpty()) {
-          if (failureAscpectsBuilder_.isEmpty()) {
-            failureAscpectsBuilder_.dispose();
-            failureAscpectsBuilder_ = null;
-            failureAscpects_ = other.failureAscpects_;
-            bitField0_ = (bitField0_ & ~0x00000004);
-            failureAscpectsBuilder_ = 
-              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                 getFailureAscpectsFieldBuilder() : null;
-          } else {
-            failureAscpectsBuilder_.addAllMessages(other.failureAscpects_);
-          }
-        }
-      }
       if (!other.suiteContextIds_.isEmpty()) {
         if (suiteContextIds_.isEmpty()) {
           suiteContextIds_ = other.suiteContextIds_;
-          bitField0_ = (bitField0_ & ~0x00000008);
+          bitField0_ = (bitField0_ & ~0x00000001);
         } else {
           ensureSuiteContextIdsIsMutable();
           suiteContextIds_.addAll(other.suiteContextIds_);
@@ -1184,16 +1170,44 @@ private static final long serialVersionUID = 0L;
       if (!other.exclusiveSessionContextIds_.isEmpty()) {
         if (exclusiveSessionContextIds_.isEmpty()) {
           exclusiveSessionContextIds_ = other.exclusiveSessionContextIds_;
-          bitField0_ = (bitField0_ & ~0x00000010);
+          bitField0_ = (bitField0_ & ~0x00000002);
         } else {
           ensureExclusiveSessionContextIdsIsMutable();
           exclusiveSessionContextIds_.addAll(other.exclusiveSessionContextIds_);
         }
         onChanged();
       }
-      if (other.getEstimatedTestMethodCount() != 0) {
-        setEstimatedTestMethodCount(other.getEstimatedTestMethodCount());
+      if (logMessagesBuilder_ == null) {
+        if (!other.logMessages_.isEmpty()) {
+          if (logMessages_.isEmpty()) {
+            logMessages_ = other.logMessages_;
+            bitField0_ = (bitField0_ & ~0x00000004);
+          } else {
+            ensureLogMessagesIsMutable();
+            logMessages_.addAll(other.logMessages_);
+          }
+          onChanged();
+        }
+      } else {
+        if (!other.logMessages_.isEmpty()) {
+          if (logMessagesBuilder_.isEmpty()) {
+            logMessagesBuilder_.dispose();
+            logMessagesBuilder_ = null;
+            logMessages_ = other.logMessages_;
+            bitField0_ = (bitField0_ & ~0x00000004);
+            logMessagesBuilder_ = 
+              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                 getLogMessagesFieldBuilder() : null;
+          } else {
+            logMessagesBuilder_.addAllMessages(other.logMessages_);
+          }
+        }
       }
+      if (other.getEstimatedTestsCount() != 0) {
+        setEstimatedTestsCount(other.getEstimatedTestsCount());
+      }
+      internalGetMutableFailureCorridorLimits().mergeFrom(
+          other.internalGetFailureCorridorLimits());
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
       return this;
@@ -1343,642 +1357,82 @@ private static final long serialVersionUID = 0L;
       return contextValuesBuilder_;
     }
 
-    private com.google.protobuf.LazyStringList mergedClassContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    private void ensureMergedClassContextIdsIsMutable() {
+    private com.google.protobuf.LazyStringList suiteContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private void ensureSuiteContextIdsIsMutable() {
       if (!((bitField0_ & 0x00000001) != 0)) {
-        mergedClassContextIds_ = new com.google.protobuf.LazyStringArrayList(mergedClassContextIds_);
+        suiteContextIds_ = new com.google.protobuf.LazyStringArrayList(suiteContextIds_);
         bitField0_ |= 0x00000001;
        }
     }
     /**
-     * <code>repeated string merged_class_context_ids = 3;</code>
-     * @return A list containing the mergedClassContextIds.
-     */
-    public com.google.protobuf.ProtocolStringList
-        getMergedClassContextIdsList() {
-      return mergedClassContextIds_.getUnmodifiableView();
-    }
-    /**
-     * <code>repeated string merged_class_context_ids = 3;</code>
-     * @return The count of mergedClassContextIds.
-     */
-    public int getMergedClassContextIdsCount() {
-      return mergedClassContextIds_.size();
-    }
-    /**
-     * <code>repeated string merged_class_context_ids = 3;</code>
-     * @param index The index of the element to return.
-     * @return The mergedClassContextIds at the given index.
-     */
-    public java.lang.String getMergedClassContextIds(int index) {
-      return mergedClassContextIds_.get(index);
-    }
-    /**
-     * <code>repeated string merged_class_context_ids = 3;</code>
-     * @param index The index of the value to return.
-     * @return The bytes of the mergedClassContextIds at the given index.
-     */
-    public com.google.protobuf.ByteString
-        getMergedClassContextIdsBytes(int index) {
-      return mergedClassContextIds_.getByteString(index);
-    }
-    /**
-     * <code>repeated string merged_class_context_ids = 3;</code>
-     * @param index The index to set the value at.
-     * @param value The mergedClassContextIds to set.
-     * @return This builder for chaining.
-     */
-    public Builder setMergedClassContextIds(
-        int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureMergedClassContextIdsIsMutable();
-      mergedClassContextIds_.set(index, value);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string merged_class_context_ids = 3;</code>
-     * @param value The mergedClassContextIds to add.
-     * @return This builder for chaining.
-     */
-    public Builder addMergedClassContextIds(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureMergedClassContextIdsIsMutable();
-      mergedClassContextIds_.add(value);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string merged_class_context_ids = 3;</code>
-     * @param values The mergedClassContextIds to add.
-     * @return This builder for chaining.
-     */
-    public Builder addAllMergedClassContextIds(
-        java.lang.Iterable<java.lang.String> values) {
-      ensureMergedClassContextIdsIsMutable();
-      com.google.protobuf.AbstractMessageLite.Builder.addAll(
-          values, mergedClassContextIds_);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string merged_class_context_ids = 3;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearMergedClassContextIds() {
-      mergedClassContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000001);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string merged_class_context_ids = 3;</code>
-     * @param value The bytes of the mergedClassContextIds to add.
-     * @return This builder for chaining.
-     */
-    public Builder addMergedClassContextIdsBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      ensureMergedClassContextIdsIsMutable();
-      mergedClassContextIds_.add(value);
-      onChanged();
-      return this;
-    }
-
-    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> exitPoints_ =
-      java.util.Collections.emptyList();
-    private void ensureExitPointsIsMutable() {
-      if (!((bitField0_ & 0x00000002) != 0)) {
-        exitPoints_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.ContextClip>(exitPoints_);
-        bitField0_ |= 0x00000002;
-       }
-    }
-
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.ContextClip, eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder, eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> exitPointsBuilder_;
-
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
-     */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> getExitPointsList() {
-      if (exitPointsBuilder_ == null) {
-        return java.util.Collections.unmodifiableList(exitPoints_);
-      } else {
-        return exitPointsBuilder_.getMessageList();
-      }
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
-     */
-    public int getExitPointsCount() {
-      if (exitPointsBuilder_ == null) {
-        return exitPoints_.size();
-      } else {
-        return exitPointsBuilder_.getCount();
-      }
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ContextClip getExitPoints(int index) {
-      if (exitPointsBuilder_ == null) {
-        return exitPoints_.get(index);
-      } else {
-        return exitPointsBuilder_.getMessage(index);
-      }
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
-     */
-    public Builder setExitPoints(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ContextClip value) {
-      if (exitPointsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureExitPointsIsMutable();
-        exitPoints_.set(index, value);
-        onChanged();
-      } else {
-        exitPointsBuilder_.setMessage(index, value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
-     */
-    public Builder setExitPoints(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder builderForValue) {
-      if (exitPointsBuilder_ == null) {
-        ensureExitPointsIsMutable();
-        exitPoints_.set(index, builderForValue.build());
-        onChanged();
-      } else {
-        exitPointsBuilder_.setMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
-     */
-    public Builder addExitPoints(eu.tsystems.mms.tic.testframework.report.model.ContextClip value) {
-      if (exitPointsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureExitPointsIsMutable();
-        exitPoints_.add(value);
-        onChanged();
-      } else {
-        exitPointsBuilder_.addMessage(value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
-     */
-    public Builder addExitPoints(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ContextClip value) {
-      if (exitPointsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureExitPointsIsMutable();
-        exitPoints_.add(index, value);
-        onChanged();
-      } else {
-        exitPointsBuilder_.addMessage(index, value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
-     */
-    public Builder addExitPoints(
-        eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder builderForValue) {
-      if (exitPointsBuilder_ == null) {
-        ensureExitPointsIsMutable();
-        exitPoints_.add(builderForValue.build());
-        onChanged();
-      } else {
-        exitPointsBuilder_.addMessage(builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
-     */
-    public Builder addExitPoints(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder builderForValue) {
-      if (exitPointsBuilder_ == null) {
-        ensureExitPointsIsMutable();
-        exitPoints_.add(index, builderForValue.build());
-        onChanged();
-      } else {
-        exitPointsBuilder_.addMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
-     */
-    public Builder addAllExitPoints(
-        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.ContextClip> values) {
-      if (exitPointsBuilder_ == null) {
-        ensureExitPointsIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, exitPoints_);
-        onChanged();
-      } else {
-        exitPointsBuilder_.addAllMessages(values);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
-     */
-    public Builder clearExitPoints() {
-      if (exitPointsBuilder_ == null) {
-        exitPoints_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000002);
-        onChanged();
-      } else {
-        exitPointsBuilder_.clear();
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
-     */
-    public Builder removeExitPoints(int index) {
-      if (exitPointsBuilder_ == null) {
-        ensureExitPointsIsMutable();
-        exitPoints_.remove(index);
-        onChanged();
-      } else {
-        exitPointsBuilder_.remove(index);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder getExitPointsBuilder(
-        int index) {
-      return getExitPointsFieldBuilder().getBuilder(index);
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder getExitPointsOrBuilder(
-        int index) {
-      if (exitPointsBuilder_ == null) {
-        return exitPoints_.get(index);  } else {
-        return exitPointsBuilder_.getMessageOrBuilder(index);
-      }
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
-     */
-    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> 
-         getExitPointsOrBuilderList() {
-      if (exitPointsBuilder_ != null) {
-        return exitPointsBuilder_.getMessageOrBuilderList();
-      } else {
-        return java.util.Collections.unmodifiableList(exitPoints_);
-      }
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder addExitPointsBuilder() {
-      return getExitPointsFieldBuilder().addBuilder(
-          eu.tsystems.mms.tic.testframework.report.model.ContextClip.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder addExitPointsBuilder(
-        int index) {
-      return getExitPointsFieldBuilder().addBuilder(
-          index, eu.tsystems.mms.tic.testframework.report.model.ContextClip.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .data.ContextClip exit_points = 4;</code>
-     */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder> 
-         getExitPointsBuilderList() {
-      return getExitPointsFieldBuilder().getBuilderList();
-    }
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.ContextClip, eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder, eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> 
-        getExitPointsFieldBuilder() {
-      if (exitPointsBuilder_ == null) {
-        exitPointsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            eu.tsystems.mms.tic.testframework.report.model.ContextClip, eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder, eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder>(
-                exitPoints_,
-                ((bitField0_ & 0x00000002) != 0),
-                getParentForChildren(),
-                isClean());
-        exitPoints_ = null;
-      }
-      return exitPointsBuilder_;
-    }
-
-    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> failureAscpects_ =
-      java.util.Collections.emptyList();
-    private void ensureFailureAscpectsIsMutable() {
-      if (!((bitField0_ & 0x00000004) != 0)) {
-        failureAscpects_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.ContextClip>(failureAscpects_);
-        bitField0_ |= 0x00000004;
-       }
-    }
-
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.ContextClip, eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder, eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> failureAscpectsBuilder_;
-
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
-     */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> getFailureAscpectsList() {
-      if (failureAscpectsBuilder_ == null) {
-        return java.util.Collections.unmodifiableList(failureAscpects_);
-      } else {
-        return failureAscpectsBuilder_.getMessageList();
-      }
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
-     */
-    public int getFailureAscpectsCount() {
-      if (failureAscpectsBuilder_ == null) {
-        return failureAscpects_.size();
-      } else {
-        return failureAscpectsBuilder_.getCount();
-      }
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ContextClip getFailureAscpects(int index) {
-      if (failureAscpectsBuilder_ == null) {
-        return failureAscpects_.get(index);
-      } else {
-        return failureAscpectsBuilder_.getMessage(index);
-      }
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
-     */
-    public Builder setFailureAscpects(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ContextClip value) {
-      if (failureAscpectsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureFailureAscpectsIsMutable();
-        failureAscpects_.set(index, value);
-        onChanged();
-      } else {
-        failureAscpectsBuilder_.setMessage(index, value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
-     */
-    public Builder setFailureAscpects(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder builderForValue) {
-      if (failureAscpectsBuilder_ == null) {
-        ensureFailureAscpectsIsMutable();
-        failureAscpects_.set(index, builderForValue.build());
-        onChanged();
-      } else {
-        failureAscpectsBuilder_.setMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
-     */
-    public Builder addFailureAscpects(eu.tsystems.mms.tic.testframework.report.model.ContextClip value) {
-      if (failureAscpectsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureFailureAscpectsIsMutable();
-        failureAscpects_.add(value);
-        onChanged();
-      } else {
-        failureAscpectsBuilder_.addMessage(value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
-     */
-    public Builder addFailureAscpects(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ContextClip value) {
-      if (failureAscpectsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureFailureAscpectsIsMutable();
-        failureAscpects_.add(index, value);
-        onChanged();
-      } else {
-        failureAscpectsBuilder_.addMessage(index, value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
-     */
-    public Builder addFailureAscpects(
-        eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder builderForValue) {
-      if (failureAscpectsBuilder_ == null) {
-        ensureFailureAscpectsIsMutable();
-        failureAscpects_.add(builderForValue.build());
-        onChanged();
-      } else {
-        failureAscpectsBuilder_.addMessage(builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
-     */
-    public Builder addFailureAscpects(
-        int index, eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder builderForValue) {
-      if (failureAscpectsBuilder_ == null) {
-        ensureFailureAscpectsIsMutable();
-        failureAscpects_.add(index, builderForValue.build());
-        onChanged();
-      } else {
-        failureAscpectsBuilder_.addMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
-     */
-    public Builder addAllFailureAscpects(
-        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.ContextClip> values) {
-      if (failureAscpectsBuilder_ == null) {
-        ensureFailureAscpectsIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, failureAscpects_);
-        onChanged();
-      } else {
-        failureAscpectsBuilder_.addAllMessages(values);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
-     */
-    public Builder clearFailureAscpects() {
-      if (failureAscpectsBuilder_ == null) {
-        failureAscpects_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000004);
-        onChanged();
-      } else {
-        failureAscpectsBuilder_.clear();
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
-     */
-    public Builder removeFailureAscpects(int index) {
-      if (failureAscpectsBuilder_ == null) {
-        ensureFailureAscpectsIsMutable();
-        failureAscpects_.remove(index);
-        onChanged();
-      } else {
-        failureAscpectsBuilder_.remove(index);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder getFailureAscpectsBuilder(
-        int index) {
-      return getFailureAscpectsFieldBuilder().getBuilder(index);
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder getFailureAscpectsOrBuilder(
-        int index) {
-      if (failureAscpectsBuilder_ == null) {
-        return failureAscpects_.get(index);  } else {
-        return failureAscpectsBuilder_.getMessageOrBuilder(index);
-      }
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
-     */
-    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> 
-         getFailureAscpectsOrBuilderList() {
-      if (failureAscpectsBuilder_ != null) {
-        return failureAscpectsBuilder_.getMessageOrBuilderList();
-      } else {
-        return java.util.Collections.unmodifiableList(failureAscpects_);
-      }
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder addFailureAscpectsBuilder() {
-      return getFailureAscpectsFieldBuilder().addBuilder(
-          eu.tsystems.mms.tic.testframework.report.model.ContextClip.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder addFailureAscpectsBuilder(
-        int index) {
-      return getFailureAscpectsFieldBuilder().addBuilder(
-          index, eu.tsystems.mms.tic.testframework.report.model.ContextClip.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
-     */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder> 
-         getFailureAscpectsBuilderList() {
-      return getFailureAscpectsFieldBuilder().getBuilderList();
-    }
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.ContextClip, eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder, eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> 
-        getFailureAscpectsFieldBuilder() {
-      if (failureAscpectsBuilder_ == null) {
-        failureAscpectsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            eu.tsystems.mms.tic.testframework.report.model.ContextClip, eu.tsystems.mms.tic.testframework.report.model.ContextClip.Builder, eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder>(
-                failureAscpects_,
-                ((bitField0_ & 0x00000004) != 0),
-                getParentForChildren(),
-                isClean());
-        failureAscpects_ = null;
-      }
-      return failureAscpectsBuilder_;
-    }
-
-    private com.google.protobuf.LazyStringList suiteContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    private void ensureSuiteContextIdsIsMutable() {
-      if (!((bitField0_ & 0x00000008) != 0)) {
-        suiteContextIds_ = new com.google.protobuf.LazyStringArrayList(suiteContextIds_);
-        bitField0_ |= 0x00000008;
-       }
-    }
-    /**
-     * <code>repeated string suite_context_ids = 6;</code>
+     * <pre>
+     *    repeated string merged_class_context_ids = 3 [deprecated = true];
+     *    repeated ContextClip exit_points = 4 [deprecated = true];
+     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+     * </pre>
+     *
+     * <code>repeated string suite_context_ids = 6 [deprecated = true];</code>
      * @return A list containing the suiteContextIds.
      */
-    public com.google.protobuf.ProtocolStringList
+    @java.lang.Deprecated public com.google.protobuf.ProtocolStringList
         getSuiteContextIdsList() {
       return suiteContextIds_.getUnmodifiableView();
     }
     /**
-     * <code>repeated string suite_context_ids = 6;</code>
+     * <pre>
+     *    repeated string merged_class_context_ids = 3 [deprecated = true];
+     *    repeated ContextClip exit_points = 4 [deprecated = true];
+     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+     * </pre>
+     *
+     * <code>repeated string suite_context_ids = 6 [deprecated = true];</code>
      * @return The count of suiteContextIds.
      */
-    public int getSuiteContextIdsCount() {
+    @java.lang.Deprecated public int getSuiteContextIdsCount() {
       return suiteContextIds_.size();
     }
     /**
-     * <code>repeated string suite_context_ids = 6;</code>
+     * <pre>
+     *    repeated string merged_class_context_ids = 3 [deprecated = true];
+     *    repeated ContextClip exit_points = 4 [deprecated = true];
+     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+     * </pre>
+     *
+     * <code>repeated string suite_context_ids = 6 [deprecated = true];</code>
      * @param index The index of the element to return.
      * @return The suiteContextIds at the given index.
      */
-    public java.lang.String getSuiteContextIds(int index) {
+    @java.lang.Deprecated public java.lang.String getSuiteContextIds(int index) {
       return suiteContextIds_.get(index);
     }
     /**
-     * <code>repeated string suite_context_ids = 6;</code>
+     * <pre>
+     *    repeated string merged_class_context_ids = 3 [deprecated = true];
+     *    repeated ContextClip exit_points = 4 [deprecated = true];
+     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+     * </pre>
+     *
+     * <code>repeated string suite_context_ids = 6 [deprecated = true];</code>
      * @param index The index of the value to return.
      * @return The bytes of the suiteContextIds at the given index.
      */
-    public com.google.protobuf.ByteString
+    @java.lang.Deprecated public com.google.protobuf.ByteString
         getSuiteContextIdsBytes(int index) {
       return suiteContextIds_.getByteString(index);
     }
     /**
-     * <code>repeated string suite_context_ids = 6;</code>
+     * <pre>
+     *    repeated string merged_class_context_ids = 3 [deprecated = true];
+     *    repeated ContextClip exit_points = 4 [deprecated = true];
+     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+     * </pre>
+     *
+     * <code>repeated string suite_context_ids = 6 [deprecated = true];</code>
      * @param index The index to set the value at.
      * @param value The suiteContextIds to set.
      * @return This builder for chaining.
      */
-    public Builder setSuiteContextIds(
+    @java.lang.Deprecated public Builder setSuiteContextIds(
         int index, java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
@@ -1989,11 +1443,17 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated string suite_context_ids = 6;</code>
+     * <pre>
+     *    repeated string merged_class_context_ids = 3 [deprecated = true];
+     *    repeated ContextClip exit_points = 4 [deprecated = true];
+     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+     * </pre>
+     *
+     * <code>repeated string suite_context_ids = 6 [deprecated = true];</code>
      * @param value The suiteContextIds to add.
      * @return This builder for chaining.
      */
-    public Builder addSuiteContextIds(
+    @java.lang.Deprecated public Builder addSuiteContextIds(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
@@ -2004,11 +1464,17 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated string suite_context_ids = 6;</code>
+     * <pre>
+     *    repeated string merged_class_context_ids = 3 [deprecated = true];
+     *    repeated ContextClip exit_points = 4 [deprecated = true];
+     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+     * </pre>
+     *
+     * <code>repeated string suite_context_ids = 6 [deprecated = true];</code>
      * @param values The suiteContextIds to add.
      * @return This builder for chaining.
      */
-    public Builder addAllSuiteContextIds(
+    @java.lang.Deprecated public Builder addAllSuiteContextIds(
         java.lang.Iterable<java.lang.String> values) {
       ensureSuiteContextIdsIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -2017,21 +1483,33 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated string suite_context_ids = 6;</code>
+     * <pre>
+     *    repeated string merged_class_context_ids = 3 [deprecated = true];
+     *    repeated ContextClip exit_points = 4 [deprecated = true];
+     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+     * </pre>
+     *
+     * <code>repeated string suite_context_ids = 6 [deprecated = true];</code>
      * @return This builder for chaining.
      */
-    public Builder clearSuiteContextIds() {
+    @java.lang.Deprecated public Builder clearSuiteContextIds() {
       suiteContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000008);
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
     /**
-     * <code>repeated string suite_context_ids = 6;</code>
+     * <pre>
+     *    repeated string merged_class_context_ids = 3 [deprecated = true];
+     *    repeated ContextClip exit_points = 4 [deprecated = true];
+     *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+     * </pre>
+     *
+     * <code>repeated string suite_context_ids = 6 [deprecated = true];</code>
      * @param value The bytes of the suiteContextIds to add.
      * @return This builder for chaining.
      */
-    public Builder addSuiteContextIdsBytes(
+    @java.lang.Deprecated public Builder addSuiteContextIdsBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
@@ -2468,9 +1946,9 @@ private static final long serialVersionUID = 0L;
 
     private com.google.protobuf.LazyStringList exclusiveSessionContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     private void ensureExclusiveSessionContextIdsIsMutable() {
-      if (!((bitField0_ & 0x00000010) != 0)) {
+      if (!((bitField0_ & 0x00000002) != 0)) {
         exclusiveSessionContextIds_ = new com.google.protobuf.LazyStringArrayList(exclusiveSessionContextIds_);
-        bitField0_ |= 0x00000010;
+        bitField0_ |= 0x00000002;
        }
     }
     /**
@@ -2555,7 +2033,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder clearExclusiveSessionContextIds() {
       exclusiveSessionContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000010);
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -2576,33 +2054,402 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private int estimatedTestMethodCount_ ;
+    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage> logMessages_ =
+      java.util.Collections.emptyList();
+    private void ensureLogMessagesIsMutable() {
+      if (!((bitField0_ & 0x00000004) != 0)) {
+        logMessages_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.LogMessage>(logMessages_);
+        bitField0_ |= 0x00000004;
+       }
+    }
+
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        eu.tsystems.mms.tic.testframework.report.model.LogMessage, eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder, eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder> logMessagesBuilder_;
+
     /**
-     * <code>int32 estimatedTestMethodCount = 13;</code>
-     * @return The estimatedTestMethodCount.
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
      */
-    public int getEstimatedTestMethodCount() {
-      return estimatedTestMethodCount_;
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage> getLogMessagesList() {
+      if (logMessagesBuilder_ == null) {
+        return java.util.Collections.unmodifiableList(logMessages_);
+      } else {
+        return logMessagesBuilder_.getMessageList();
+      }
     }
     /**
-     * <code>int32 estimatedTestMethodCount = 13;</code>
-     * @param value The estimatedTestMethodCount to set.
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     */
+    public int getLogMessagesCount() {
+      if (logMessagesBuilder_ == null) {
+        return logMessages_.size();
+      } else {
+        return logMessagesBuilder_.getCount();
+      }
+    }
+    /**
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.LogMessage getLogMessages(int index) {
+      if (logMessagesBuilder_ == null) {
+        return logMessages_.get(index);
+      } else {
+        return logMessagesBuilder_.getMessage(index);
+      }
+    }
+    /**
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     */
+    public Builder setLogMessages(
+        int index, eu.tsystems.mms.tic.testframework.report.model.LogMessage value) {
+      if (logMessagesBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureLogMessagesIsMutable();
+        logMessages_.set(index, value);
+        onChanged();
+      } else {
+        logMessagesBuilder_.setMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     */
+    public Builder setLogMessages(
+        int index, eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder builderForValue) {
+      if (logMessagesBuilder_ == null) {
+        ensureLogMessagesIsMutable();
+        logMessages_.set(index, builderForValue.build());
+        onChanged();
+      } else {
+        logMessagesBuilder_.setMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     */
+    public Builder addLogMessages(eu.tsystems.mms.tic.testframework.report.model.LogMessage value) {
+      if (logMessagesBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureLogMessagesIsMutable();
+        logMessages_.add(value);
+        onChanged();
+      } else {
+        logMessagesBuilder_.addMessage(value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     */
+    public Builder addLogMessages(
+        int index, eu.tsystems.mms.tic.testframework.report.model.LogMessage value) {
+      if (logMessagesBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureLogMessagesIsMutable();
+        logMessages_.add(index, value);
+        onChanged();
+      } else {
+        logMessagesBuilder_.addMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     */
+    public Builder addLogMessages(
+        eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder builderForValue) {
+      if (logMessagesBuilder_ == null) {
+        ensureLogMessagesIsMutable();
+        logMessages_.add(builderForValue.build());
+        onChanged();
+      } else {
+        logMessagesBuilder_.addMessage(builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     */
+    public Builder addLogMessages(
+        int index, eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder builderForValue) {
+      if (logMessagesBuilder_ == null) {
+        ensureLogMessagesIsMutable();
+        logMessages_.add(index, builderForValue.build());
+        onChanged();
+      } else {
+        logMessagesBuilder_.addMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     */
+    public Builder addAllLogMessages(
+        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.LogMessage> values) {
+      if (logMessagesBuilder_ == null) {
+        ensureLogMessagesIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, logMessages_);
+        onChanged();
+      } else {
+        logMessagesBuilder_.addAllMessages(values);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     */
+    public Builder clearLogMessages() {
+      if (logMessagesBuilder_ == null) {
+        logMessages_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000004);
+        onChanged();
+      } else {
+        logMessagesBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     */
+    public Builder removeLogMessages(int index) {
+      if (logMessagesBuilder_ == null) {
+        ensureLogMessagesIsMutable();
+        logMessages_.remove(index);
+        onChanged();
+      } else {
+        logMessagesBuilder_.remove(index);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder getLogMessagesBuilder(
+        int index) {
+      return getLogMessagesFieldBuilder().getBuilder(index);
+    }
+    /**
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder getLogMessagesOrBuilder(
+        int index) {
+      if (logMessagesBuilder_ == null) {
+        return logMessages_.get(index);  } else {
+        return logMessagesBuilder_.getMessageOrBuilder(index);
+      }
+    }
+    /**
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     */
+    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder> 
+         getLogMessagesOrBuilderList() {
+      if (logMessagesBuilder_ != null) {
+        return logMessagesBuilder_.getMessageOrBuilderList();
+      } else {
+        return java.util.Collections.unmodifiableList(logMessages_);
+      }
+    }
+    /**
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder addLogMessagesBuilder() {
+      return getLogMessagesFieldBuilder().addBuilder(
+          eu.tsystems.mms.tic.testframework.report.model.LogMessage.getDefaultInstance());
+    }
+    /**
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder addLogMessagesBuilder(
+        int index) {
+      return getLogMessagesFieldBuilder().addBuilder(
+          index, eu.tsystems.mms.tic.testframework.report.model.LogMessage.getDefaultInstance());
+    }
+    /**
+     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     */
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder> 
+         getLogMessagesBuilderList() {
+      return getLogMessagesFieldBuilder().getBuilderList();
+    }
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        eu.tsystems.mms.tic.testframework.report.model.LogMessage, eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder, eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder> 
+        getLogMessagesFieldBuilder() {
+      if (logMessagesBuilder_ == null) {
+        logMessagesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+            eu.tsystems.mms.tic.testframework.report.model.LogMessage, eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder, eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder>(
+                logMessages_,
+                ((bitField0_ & 0x00000004) != 0),
+                getParentForChildren(),
+                isClean());
+        logMessages_ = null;
+      }
+      return logMessagesBuilder_;
+    }
+
+    private int estimatedTestsCount_ ;
+    /**
+     * <code>int32 estimated_tests_count = 15;</code>
+     * @return The estimatedTestsCount.
+     */
+    @java.lang.Override
+    public int getEstimatedTestsCount() {
+      return estimatedTestsCount_;
+    }
+    /**
+     * <code>int32 estimated_tests_count = 15;</code>
+     * @param value The estimatedTestsCount to set.
      * @return This builder for chaining.
      */
-    public Builder setEstimatedTestMethodCount(int value) {
+    public Builder setEstimatedTestsCount(int value) {
       
-      estimatedTestMethodCount_ = value;
+      estimatedTestsCount_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>int32 estimatedTestMethodCount = 13;</code>
+     * <code>int32 estimated_tests_count = 15;</code>
      * @return This builder for chaining.
      */
-    public Builder clearEstimatedTestMethodCount() {
+    public Builder clearEstimatedTestsCount() {
       
-      estimatedTestMethodCount_ = 0;
+      estimatedTestsCount_ = 0;
       onChanged();
+      return this;
+    }
+
+    private com.google.protobuf.MapField<
+        java.lang.Integer, java.lang.Integer> failureCorridorLimits_;
+    private com.google.protobuf.MapField<java.lang.Integer, java.lang.Integer>
+    internalGetFailureCorridorLimits() {
+      if (failureCorridorLimits_ == null) {
+        return com.google.protobuf.MapField.emptyMapField(
+            FailureCorridorLimitsDefaultEntryHolder.defaultEntry);
+      }
+      return failureCorridorLimits_;
+    }
+    private com.google.protobuf.MapField<java.lang.Integer, java.lang.Integer>
+    internalGetMutableFailureCorridorLimits() {
+      onChanged();;
+      if (failureCorridorLimits_ == null) {
+        failureCorridorLimits_ = com.google.protobuf.MapField.newMapField(
+            FailureCorridorLimitsDefaultEntryHolder.defaultEntry);
+      }
+      if (!failureCorridorLimits_.isMutable()) {
+        failureCorridorLimits_ = failureCorridorLimits_.copy();
+      }
+      return failureCorridorLimits_;
+    }
+
+    public int getFailureCorridorLimitsCount() {
+      return internalGetFailureCorridorLimits().getMap().size();
+    }
+    /**
+     * <code>map&lt;int32, int32&gt; failure_corridor_limits = 16;</code>
+     */
+
+    @java.lang.Override
+    public boolean containsFailureCorridorLimits(
+        int key) {
+      
+      return internalGetFailureCorridorLimits().getMap().containsKey(key);
+    }
+    /**
+     * Use {@link #getFailureCorridorLimitsMap()} instead.
+     */
+    @java.lang.Override
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.Integer, java.lang.Integer> getFailureCorridorLimits() {
+      return getFailureCorridorLimitsMap();
+    }
+    /**
+     * <code>map&lt;int32, int32&gt; failure_corridor_limits = 16;</code>
+     */
+    @java.lang.Override
+
+    public java.util.Map<java.lang.Integer, java.lang.Integer> getFailureCorridorLimitsMap() {
+      return internalGetFailureCorridorLimits().getMap();
+    }
+    /**
+     * <code>map&lt;int32, int32&gt; failure_corridor_limits = 16;</code>
+     */
+    @java.lang.Override
+
+    public int getFailureCorridorLimitsOrDefault(
+        int key,
+        int defaultValue) {
+      
+      java.util.Map<java.lang.Integer, java.lang.Integer> map =
+          internalGetFailureCorridorLimits().getMap();
+      return map.containsKey(key) ? map.get(key) : defaultValue;
+    }
+    /**
+     * <code>map&lt;int32, int32&gt; failure_corridor_limits = 16;</code>
+     */
+    @java.lang.Override
+
+    public int getFailureCorridorLimitsOrThrow(
+        int key) {
+      
+      java.util.Map<java.lang.Integer, java.lang.Integer> map =
+          internalGetFailureCorridorLimits().getMap();
+      if (!map.containsKey(key)) {
+        throw new java.lang.IllegalArgumentException();
+      }
+      return map.get(key);
+    }
+
+    public Builder clearFailureCorridorLimits() {
+      internalGetMutableFailureCorridorLimits().getMutableMap()
+          .clear();
+      return this;
+    }
+    /**
+     * <code>map&lt;int32, int32&gt; failure_corridor_limits = 16;</code>
+     */
+
+    public Builder removeFailureCorridorLimits(
+        int key) {
+      
+      internalGetMutableFailureCorridorLimits().getMutableMap()
+          .remove(key);
+      return this;
+    }
+    /**
+     * Use alternate mutation accessors instead.
+     */
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.Integer, java.lang.Integer>
+    getMutableFailureCorridorLimits() {
+      return internalGetMutableFailureCorridorLimits().getMutableMap();
+    }
+    /**
+     * <code>map&lt;int32, int32&gt; failure_corridor_limits = 16;</code>
+     */
+    public Builder putFailureCorridorLimits(
+        int key,
+        int value) {
+      
+      
+      internalGetMutableFailureCorridorLimits().getMutableMap()
+          .put(key, value);
+      return this;
+    }
+    /**
+     * <code>map&lt;int32, int32&gt; failure_corridor_limits = 16;</code>
+     */
+
+    public Builder putAllFailureCorridorLimits(
+        java.util.Map<java.lang.Integer, java.lang.Integer> values) {
+      internalGetMutableFailureCorridorLimits().getMutableMap()
+          .putAll(values);
       return this;
     }
     @java.lang.Override

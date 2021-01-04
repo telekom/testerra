@@ -6,7 +6,7 @@ package eu.tsystems.mms.tic.testframework.report.model;
 /**
  * Protobuf type {@code data.SuiteContext}
  */
-public  final class SuiteContext extends
+public final class SuiteContext extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:data.SuiteContext)
     SuiteContextOrBuilder {
@@ -120,6 +120,7 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ContextValues context_values = 1;</code>
    * @return Whether the contextValues field is set.
    */
+  @java.lang.Override
   public boolean hasContextValues() {
     return contextValues_ != null;
   }
@@ -127,12 +128,14 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ContextValues context_values = 1;</code>
    * @return The contextValues.
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ContextValues getContextValues() {
     return contextValues_ == null ? eu.tsystems.mms.tic.testframework.report.model.ContextValues.getDefaultInstance() : contextValues_;
   }
   /**
    * <code>.data.ContextValues context_values = 1;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ContextValuesOrBuilder getContextValuesOrBuilder() {
     return getContextValues();
   }
@@ -144,10 +147,10 @@ private static final long serialVersionUID = 0L;
    * list of all test
    * </pre>
    *
-   * <code>repeated string test_context_ids = 6;</code>
+   * <code>repeated string test_context_ids = 6 [deprecated = true];</code>
    * @return A list containing the testContextIds.
    */
-  public com.google.protobuf.ProtocolStringList
+  @java.lang.Deprecated public com.google.protobuf.ProtocolStringList
       getTestContextIdsList() {
     return testContextIds_;
   }
@@ -156,10 +159,10 @@ private static final long serialVersionUID = 0L;
    * list of all test
    * </pre>
    *
-   * <code>repeated string test_context_ids = 6;</code>
+   * <code>repeated string test_context_ids = 6 [deprecated = true];</code>
    * @return The count of testContextIds.
    */
-  public int getTestContextIdsCount() {
+  @java.lang.Deprecated public int getTestContextIdsCount() {
     return testContextIds_.size();
   }
   /**
@@ -167,11 +170,11 @@ private static final long serialVersionUID = 0L;
    * list of all test
    * </pre>
    *
-   * <code>repeated string test_context_ids = 6;</code>
+   * <code>repeated string test_context_ids = 6 [deprecated = true];</code>
    * @param index The index of the element to return.
    * @return The testContextIds at the given index.
    */
-  public java.lang.String getTestContextIds(int index) {
+  @java.lang.Deprecated public java.lang.String getTestContextIds(int index) {
     return testContextIds_.get(index);
   }
   /**
@@ -179,11 +182,11 @@ private static final long serialVersionUID = 0L;
    * list of all test
    * </pre>
    *
-   * <code>repeated string test_context_ids = 6;</code>
+   * <code>repeated string test_context_ids = 6 [deprecated = true];</code>
    * @param index The index of the value to return.
    * @return The bytes of the testContextIds at the given index.
    */
-  public com.google.protobuf.ByteString
+  @java.lang.Deprecated public com.google.protobuf.ByteString
       getTestContextIdsBytes(int index) {
     return testContextIds_.getByteString(index);
   }
@@ -198,6 +201,7 @@ private static final long serialVersionUID = 0L;
    * <code>string execution_context_id = 7;</code>
    * @return The executionContextId.
    */
+  @java.lang.Override
   public java.lang.String getExecutionContextId() {
     java.lang.Object ref = executionContextId_;
     if (ref instanceof java.lang.String) {
@@ -218,6 +222,7 @@ private static final long serialVersionUID = 0L;
    * <code>string execution_context_id = 7;</code>
    * @return The bytes for executionContextId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getExecutionContextIdBytes() {
     java.lang.Object ref = executionContextId_;
@@ -731,10 +736,10 @@ private static final long serialVersionUID = 0L;
      * list of all test
      * </pre>
      *
-     * <code>repeated string test_context_ids = 6;</code>
+     * <code>repeated string test_context_ids = 6 [deprecated = true];</code>
      * @return A list containing the testContextIds.
      */
-    public com.google.protobuf.ProtocolStringList
+    @java.lang.Deprecated public com.google.protobuf.ProtocolStringList
         getTestContextIdsList() {
       return testContextIds_.getUnmodifiableView();
     }
@@ -743,10 +748,10 @@ private static final long serialVersionUID = 0L;
      * list of all test
      * </pre>
      *
-     * <code>repeated string test_context_ids = 6;</code>
+     * <code>repeated string test_context_ids = 6 [deprecated = true];</code>
      * @return The count of testContextIds.
      */
-    public int getTestContextIdsCount() {
+    @java.lang.Deprecated public int getTestContextIdsCount() {
       return testContextIds_.size();
     }
     /**
@@ -754,11 +759,11 @@ private static final long serialVersionUID = 0L;
      * list of all test
      * </pre>
      *
-     * <code>repeated string test_context_ids = 6;</code>
+     * <code>repeated string test_context_ids = 6 [deprecated = true];</code>
      * @param index The index of the element to return.
      * @return The testContextIds at the given index.
      */
-    public java.lang.String getTestContextIds(int index) {
+    @java.lang.Deprecated public java.lang.String getTestContextIds(int index) {
       return testContextIds_.get(index);
     }
     /**
@@ -766,11 +771,11 @@ private static final long serialVersionUID = 0L;
      * list of all test
      * </pre>
      *
-     * <code>repeated string test_context_ids = 6;</code>
+     * <code>repeated string test_context_ids = 6 [deprecated = true];</code>
      * @param index The index of the value to return.
      * @return The bytes of the testContextIds at the given index.
      */
-    public com.google.protobuf.ByteString
+    @java.lang.Deprecated public com.google.protobuf.ByteString
         getTestContextIdsBytes(int index) {
       return testContextIds_.getByteString(index);
     }
@@ -779,12 +784,12 @@ private static final long serialVersionUID = 0L;
      * list of all test
      * </pre>
      *
-     * <code>repeated string test_context_ids = 6;</code>
+     * <code>repeated string test_context_ids = 6 [deprecated = true];</code>
      * @param index The index to set the value at.
      * @param value The testContextIds to set.
      * @return This builder for chaining.
      */
-    public Builder setTestContextIds(
+    @java.lang.Deprecated public Builder setTestContextIds(
         int index, java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
@@ -799,11 +804,11 @@ private static final long serialVersionUID = 0L;
      * list of all test
      * </pre>
      *
-     * <code>repeated string test_context_ids = 6;</code>
+     * <code>repeated string test_context_ids = 6 [deprecated = true];</code>
      * @param value The testContextIds to add.
      * @return This builder for chaining.
      */
-    public Builder addTestContextIds(
+    @java.lang.Deprecated public Builder addTestContextIds(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
@@ -818,11 +823,11 @@ private static final long serialVersionUID = 0L;
      * list of all test
      * </pre>
      *
-     * <code>repeated string test_context_ids = 6;</code>
+     * <code>repeated string test_context_ids = 6 [deprecated = true];</code>
      * @param values The testContextIds to add.
      * @return This builder for chaining.
      */
-    public Builder addAllTestContextIds(
+    @java.lang.Deprecated public Builder addAllTestContextIds(
         java.lang.Iterable<java.lang.String> values) {
       ensureTestContextIdsIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -835,10 +840,10 @@ private static final long serialVersionUID = 0L;
      * list of all test
      * </pre>
      *
-     * <code>repeated string test_context_ids = 6;</code>
+     * <code>repeated string test_context_ids = 6 [deprecated = true];</code>
      * @return This builder for chaining.
      */
-    public Builder clearTestContextIds() {
+    @java.lang.Deprecated public Builder clearTestContextIds() {
       testContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
@@ -849,11 +854,11 @@ private static final long serialVersionUID = 0L;
      * list of all test
      * </pre>
      *
-     * <code>repeated string test_context_ids = 6;</code>
+     * <code>repeated string test_context_ids = 6 [deprecated = true];</code>
      * @param value The bytes of the testContextIds to add.
      * @return This builder for chaining.
      */
-    public Builder addTestContextIdsBytes(
+    @java.lang.Deprecated public Builder addTestContextIdsBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();

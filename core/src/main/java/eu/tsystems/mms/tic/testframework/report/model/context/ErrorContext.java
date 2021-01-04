@@ -22,21 +22,83 @@
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
+import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
+import eu.tsystems.mms.tic.testframework.utils.SourceUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import java.util.Optional;
 
-public class ErrorContext extends AbstractContext {
-
-    public String readableErrorMessage;
+public class ErrorContext {
+    @Deprecated
+    private String readableErrorMessage;
+    @Deprecated
     public String additionalErrorMessage;
     private transient Throwable throwable = null;
+    @Deprecated
     private transient StackTrace stacktraceForReadableMessage = null;
-    public StackTrace stackTrace;
-    public String errorFingerprint = "";
-    public ScriptSource scriptSource;
-    public ScriptSource executionObjectSource;
+    private StackTrace stackTrace;
+    @Deprecated
+    private String errorFingerprint;
+
+    private Optional<ScriptSource> scriptSource;
+    private Optional<ScriptSource> executionObjectSource;
+    private Object ticketId;
+    private boolean optional;
+
+    public ErrorContext() {
+
+    }
+
+    public ErrorContext(Throwable throwable, boolean optional) {
+        this.setThrowable(null, throwable);
+        this.optional = optional;
+    }
+
+    public boolean isOptional() {
+        return optional;
+    }
+
+    /**
+     * The script source is the test script source
+     */
+    public Optional<ScriptSource> getScriptSource() {
+        if (this.scriptSource == null) {
+            this.scriptSource = Optional.ofNullable(SourceUtils.findScriptSourceForThrowable(this.throwable));
+        }
+        return this.scriptSource;
+    }
+
+    /**
+     * The execution object source is the trigger of the assertion
+     */
+    public Optional<ScriptSource> getExecutionObjectSource() {
+        if (this.executionObjectSource == null) {
+            this.executionObjectSource = Optional.ofNullable(TestEvidenceCollector.getSourceFor(throwable));
+        }
+        return this.executionObjectSource;
+    }
+
+    public Object getTicketId() {
+        return ticketId;
+    }
+
+    public ErrorContext setTicketId(Object ticketId) {
+        this.ticketId = ticketId;
+        return this;
+    }
+
+    private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public ErrorContext setDescription(String description) {
+        this.description = description;
+        return this;
+    }
 
     public Throwable getThrowable() {
         return throwable;
@@ -46,31 +108,48 @@ public class ErrorContext extends AbstractContext {
      * Gets the stack trace.
      *
      * @return the stacktrace of the method. Can be null, if method has no stacktrace.
+     * @deprecated Use {@link #getThrowable()} instead
      */
     public StackTrace getStackTrace() {
         return stackTrace;
     }
 
+    @Deprecated
     public String getAdditionalErrorMessage() {
         return additionalErrorMessage;
     }
 
+    @Deprecated
     public String getAdditionalErrorMessageFormatted() {
         return "<i>" + StringUtils.prepareStringForHTML(additionalErrorMessage) + "</i>";
     }
 
+    @Deprecated
     public String getReadableErrorMessage() {
         return readableErrorMessage;
     }
 
+    @Deprecated
     public String getReadableMessageFormatted() {
         return StringUtils.prepareStringForHTML(this.getReadableErrorMessage());
     }
 
+    public void setThrowable(final Throwable throwable) {
+        this.throwable = throwable;
+    }
+
+    /**
+     * Use {@link #setThrowable(Throwable)} instead
+     */
+    @Deprecated
     public void setThrowable(final String readableMessage, final Throwable throwable) {
         setThrowable(readableMessage, throwable, false);
     }
 
+    /**
+     * Use {@link #setThrowable(Throwable)} instead
+     */
+    @Deprecated
     public void setThrowable(final String readableMessage, Throwable throwable, boolean forceUpdateReadableMessage) {
         this.throwable = throwable;
 
@@ -165,8 +244,8 @@ public class ErrorContext extends AbstractContext {
         }
 
         // use first cause in strackTrace as additionalErrorMessage for report
-        if(stacktrace.stackTrace.cause != null) {
-            this.additionalErrorMessage = "caused by: " + stacktrace.stackTrace.cause.className + " " + stacktrace.stackTrace.cause.message;
+        if(stacktrace.stackTrace.getCause() != null) {
+            this.additionalErrorMessage = "caused by: " + stacktrace.stackTrace.getCause().getClassName() + " " + stacktrace.stackTrace.getCause().getMessage();
         }
 
         this.readableErrorMessage = readableErrorMessage;
@@ -195,15 +274,18 @@ public class ErrorContext extends AbstractContext {
         return message;
     }
 
-    public void buildExitFingerprint() {
-        errorFingerprint = "";
+    @Deprecated
+    public String getExitFingerprint() {
+        if (errorFingerprint != null) {
+            return errorFingerprint;
+        }
 
+        Optional<ScriptSource> scriptSource = getScriptSource();
         /*
          * from scriptSource
          */
-        if (scriptSource != null) {
-            errorFingerprint = scriptSource.toString();
-            return;
+        if (scriptSource.isPresent()) {
+            return scriptSource.get().toString();
         }
 
         /*
@@ -220,10 +302,11 @@ public class ErrorContext extends AbstractContext {
                 errorFingerprint = completeStackTrace;
             }
         }
+        return errorFingerprint;
     }
 
-    @Override
-    public TestStatusController.Status getStatus() {
-        return TestStatusController.Status.FAILED;
-    }
+//    @Override
+//    public TestStatusController.Status getStatus() {
+//        return TestStatusController.Status.FAILED;
+//    }
 }

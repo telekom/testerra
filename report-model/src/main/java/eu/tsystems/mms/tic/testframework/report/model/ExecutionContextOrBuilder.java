@@ -23,101 +23,52 @@ public interface ExecutionContextOrBuilder extends
   eu.tsystems.mms.tic.testframework.report.model.ContextValuesOrBuilder getContextValuesOrBuilder();
 
   /**
-   * <code>repeated string merged_class_context_ids = 3;</code>
-   * @return A list containing the mergedClassContextIds.
-   */
-  java.util.List<java.lang.String>
-      getMergedClassContextIdsList();
-  /**
-   * <code>repeated string merged_class_context_ids = 3;</code>
-   * @return The count of mergedClassContextIds.
-   */
-  int getMergedClassContextIdsCount();
-  /**
-   * <code>repeated string merged_class_context_ids = 3;</code>
-   * @param index The index of the element to return.
-   * @return The mergedClassContextIds at the given index.
-   */
-  java.lang.String getMergedClassContextIds(int index);
-  /**
-   * <code>repeated string merged_class_context_ids = 3;</code>
-   * @param index The index of the value to return.
-   * @return The bytes of the mergedClassContextIds at the given index.
-   */
-  com.google.protobuf.ByteString
-      getMergedClassContextIdsBytes(int index);
-
-  /**
-   * <code>repeated .data.ContextClip exit_points = 4;</code>
-   */
-  java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> 
-      getExitPointsList();
-  /**
-   * <code>repeated .data.ContextClip exit_points = 4;</code>
-   */
-  eu.tsystems.mms.tic.testframework.report.model.ContextClip getExitPoints(int index);
-  /**
-   * <code>repeated .data.ContextClip exit_points = 4;</code>
-   */
-  int getExitPointsCount();
-  /**
-   * <code>repeated .data.ContextClip exit_points = 4;</code>
-   */
-  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> 
-      getExitPointsOrBuilderList();
-  /**
-   * <code>repeated .data.ContextClip exit_points = 4;</code>
-   */
-  eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder getExitPointsOrBuilder(
-      int index);
-
-  /**
-   * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
-   */
-  java.util.List<eu.tsystems.mms.tic.testframework.report.model.ContextClip> 
-      getFailureAscpectsList();
-  /**
-   * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
-   */
-  eu.tsystems.mms.tic.testframework.report.model.ContextClip getFailureAscpects(int index);
-  /**
-   * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
-   */
-  int getFailureAscpectsCount();
-  /**
-   * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
-   */
-  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder> 
-      getFailureAscpectsOrBuilderList();
-  /**
-   * <code>repeated .data.ContextClip failure_ascpects = 5;</code>
-   */
-  eu.tsystems.mms.tic.testframework.report.model.ContextClipOrBuilder getFailureAscpectsOrBuilder(
-      int index);
-
-  /**
-   * <code>repeated string suite_context_ids = 6;</code>
+   * <pre>
+   *    repeated string merged_class_context_ids = 3 [deprecated = true];
+   *    repeated ContextClip exit_points = 4 [deprecated = true];
+   *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+   * </pre>
+   *
+   * <code>repeated string suite_context_ids = 6 [deprecated = true];</code>
    * @return A list containing the suiteContextIds.
    */
-  java.util.List<java.lang.String>
+  @java.lang.Deprecated java.util.List<java.lang.String>
       getSuiteContextIdsList();
   /**
-   * <code>repeated string suite_context_ids = 6;</code>
+   * <pre>
+   *    repeated string merged_class_context_ids = 3 [deprecated = true];
+   *    repeated ContextClip exit_points = 4 [deprecated = true];
+   *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+   * </pre>
+   *
+   * <code>repeated string suite_context_ids = 6 [deprecated = true];</code>
    * @return The count of suiteContextIds.
    */
-  int getSuiteContextIdsCount();
+  @java.lang.Deprecated int getSuiteContextIdsCount();
   /**
-   * <code>repeated string suite_context_ids = 6;</code>
+   * <pre>
+   *    repeated string merged_class_context_ids = 3 [deprecated = true];
+   *    repeated ContextClip exit_points = 4 [deprecated = true];
+   *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+   * </pre>
+   *
+   * <code>repeated string suite_context_ids = 6 [deprecated = true];</code>
    * @param index The index of the element to return.
    * @return The suiteContextIds at the given index.
    */
-  java.lang.String getSuiteContextIds(int index);
+  @java.lang.Deprecated java.lang.String getSuiteContextIds(int index);
   /**
-   * <code>repeated string suite_context_ids = 6;</code>
+   * <pre>
+   *    repeated string merged_class_context_ids = 3 [deprecated = true];
+   *    repeated ContextClip exit_points = 4 [deprecated = true];
+   *    repeated ContextClip failure_ascpects = 5 [deprecated = true];
+   * </pre>
+   *
+   * <code>repeated string suite_context_ids = 6 [deprecated = true];</code>
    * @param index The index of the value to return.
    * @return The bytes of the suiteContextIds at the given index.
    */
-  com.google.protobuf.ByteString
+  @java.lang.Deprecated com.google.protobuf.ByteString
       getSuiteContextIdsBytes(int index);
 
   /**
@@ -209,8 +160,66 @@ public interface ExecutionContextOrBuilder extends
       getExclusiveSessionContextIdsBytes(int index);
 
   /**
-   * <code>int32 estimatedTestMethodCount = 13;</code>
-   * @return The estimatedTestMethodCount.
+   * <code>repeated .data.LogMessage log_messages = 14;</code>
    */
-  int getEstimatedTestMethodCount();
+  java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage> 
+      getLogMessagesList();
+  /**
+   * <code>repeated .data.LogMessage log_messages = 14;</code>
+   */
+  eu.tsystems.mms.tic.testframework.report.model.LogMessage getLogMessages(int index);
+  /**
+   * <code>repeated .data.LogMessage log_messages = 14;</code>
+   */
+  int getLogMessagesCount();
+  /**
+   * <code>repeated .data.LogMessage log_messages = 14;</code>
+   */
+  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder> 
+      getLogMessagesOrBuilderList();
+  /**
+   * <code>repeated .data.LogMessage log_messages = 14;</code>
+   */
+  eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder getLogMessagesOrBuilder(
+      int index);
+
+  /**
+   * <code>int32 estimated_tests_count = 15;</code>
+   * @return The estimatedTestsCount.
+   */
+  int getEstimatedTestsCount();
+
+  /**
+   * <code>map&lt;int32, int32&gt; failure_corridor_limits = 16;</code>
+   */
+  int getFailureCorridorLimitsCount();
+  /**
+   * <code>map&lt;int32, int32&gt; failure_corridor_limits = 16;</code>
+   */
+  boolean containsFailureCorridorLimits(
+      int key);
+  /**
+   * Use {@link #getFailureCorridorLimitsMap()} instead.
+   */
+  @java.lang.Deprecated
+  java.util.Map<java.lang.Integer, java.lang.Integer>
+  getFailureCorridorLimits();
+  /**
+   * <code>map&lt;int32, int32&gt; failure_corridor_limits = 16;</code>
+   */
+  java.util.Map<java.lang.Integer, java.lang.Integer>
+  getFailureCorridorLimitsMap();
+  /**
+   * <code>map&lt;int32, int32&gt; failure_corridor_limits = 16;</code>
+   */
+
+  int getFailureCorridorLimitsOrDefault(
+      int key,
+      int defaultValue);
+  /**
+   * <code>map&lt;int32, int32&gt; failure_corridor_limits = 16;</code>
+   */
+
+  int getFailureCorridorLimitsOrThrow(
+      int key);
 }

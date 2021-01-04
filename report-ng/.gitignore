@@ -1,0 +1,8 @@
+.DS_STORE
+Thumbs.db
+.idea
+node_modules
+dist
+/node_modules/
+model/
+screenshots/

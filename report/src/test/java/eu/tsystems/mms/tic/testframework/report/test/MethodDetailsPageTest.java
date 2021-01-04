@@ -149,11 +149,11 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
         checkAnnotationsAreDisplayed(methodDetailsPage, methodsTestObjects);
 
         //shown tabs: Back, Steps, stack, minor errors and dependencies
-        AssertCollector.assertTrue(methodDetailsPage.getBackTab().isDisplayed());
-        AssertCollector.assertTrue(methodDetailsPage.getStepsTab().isDisplayed());
-        AssertCollector.assertTrue(methodDetailsPage.getMinorErrors().isDisplayed());
-        AssertCollector.assertTrue(methodDetailsPage.getStackTab().isDisplayed());
-        AssertCollector.assertTrue(methodDetailsPage.getDependenciesTab().isDisplayed());
+        AssertCollector.assertTrue(methodDetailsPage.getBackTab().isDisplayed(), "The Back-tab should be displayed.");
+        AssertCollector.assertTrue(methodDetailsPage.getStepsTab().isDisplayed(), "The Steps-tab should be displayed.");
+        AssertCollector.assertTrue(methodDetailsPage.getMinorErrors().isDisplayed(), "The MinorErrors-tab should be displayed.");
+        AssertCollector.assertTrue(methodDetailsPage.getStackTab().isDisplayed(), "The Stack-tab should be displayed.");
+        AssertCollector.assertTrue(methodDetailsPage.getDependenciesTab().isDisplayed(), "The Dependencies-tab should be displayed.");
     }
 
     /**
@@ -187,12 +187,16 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
         final String methodNameMainPart = "test_FilterFailedNoMinorWithFailedRetry";
 
         final String htmlId = methodNameMainPart + "-" + TestStatusController.Status.FAILED_RETRIED.name();
-        final String methodName = methodNameMainPart + " (1/2)";
+        String retrySuffix = "(1/2)";
+        final String methodName = methodNameMainPart + " " + retrySuffix;
 
         final MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), htmlId);
 
+        String methodNameString = methodDetailsPage.getMethodNameString();
+
         //General Details
-        AssertCollector.assertTrue(methodDetailsPage.getMethodNameString().contains(methodName), "The method name is displayed correctly for " + methodName);
+        AssertCollector.assertTrue(methodNameString.startsWith(methodNameMainPart), "The method name (" + methodNameString + ") startrs with: " + methodName);
+        AssertCollector.assertTrue(methodNameString.contains(retrySuffix), "The method name (" + methodNameString +") contains the retry marker: " + retrySuffix);
         AssertCollector.assertTrue(methodDetailsPage.getMethodResultString().contains(TestResultHelper.TestResult.RETRIED.getXpathClassesDetailsHeader()), "The method status is displayed correctly for " + methodName);
 
         //Annotation
@@ -201,9 +205,9 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
         checkAnnotationsAreDisplayed(methodDetailsPage, methodsTestObjects);
 
         //shown tabs: Back, Steps and dependencies
-        AssertCollector.assertTrue(methodDetailsPage.getBackTab().isDisplayed());
-        AssertCollector.assertTrue(methodDetailsPage.getStepsTab().isDisplayed());
-        AssertCollector.assertTrue(methodDetailsPage.getDependenciesTab().isDisplayed());
+        AssertCollector.assertTrue(methodDetailsPage.getBackTab().isDisplayed(), "The Back-Tab should be displayed.");
+        AssertCollector.assertTrue(methodDetailsPage.getStepsTab().isDisplayed(), "The Steps-Tab should be displayed.");
+        AssertCollector.assertTrue(methodDetailsPage.getDependenciesTab().isDisplayed(), "The Dependencies-Tab should be displayed.");
 
         //check retry hints
         //TODO add check for retry information
@@ -292,8 +296,8 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
 
         MethodStackPage stackPage = GeneralWorkflow.doOpenReportStracktracePage(methodDetailsPage);
-        AssertCollector.assertTrue(stackPage.getStackTrace().contains("java.lang.AssertionError: expected [true] but found [false]"));
-        AssertCollector.assertTrue(stackPage.getStackTrace().contains("eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestExecutionFilter.test_FailedInheritedFilter(ReportTestUnderTestExecutionFilter.java"));
+        AssertCollector.assertTrue(stackPage.getStackTrace().contains("java.lang.AssertionError: expected [true] but found [false]"), "The stack trace tab should contain the expected message.");
+        AssertCollector.assertTrue(stackPage.getStackTrace().contains("eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestExecutionFilter.test_FailedInheritedFilter(ReportTestUnderTestExecutionFilter.java"), "The stack trace tab should contain the expected message.");
     }
 
     /**
@@ -308,11 +312,11 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
 
         MethodMinorErrorsPage minorErrorsPage = methodDetailsPage.clickMinorErrorsTab();
 
-        AssertCollector.assertTrue(minorErrorsPage.getAssertion().isDisplayed(), "The assertion message button is displayed in a with minor details page.");
-        AssertCollector.assertTrue(minorErrorsPage.getAssertion().getText().equals("Assert: expected [true] but found [false]"), "The assertion message is correct shwon on details page.");
+        AssertCollector.assertTrue(minorErrorsPage.getAssertion().isDisplayed(), "The assertion message button is displayed in the minor details page.");
+        AssertCollector.assertTrue(minorErrorsPage.getAssertion().getText().equals("Assert: expected [true] but found [false]"), "The assertion message is correct shown on the minor details page.");
 
         minorErrorsPage = minorErrorsPage.clickAssertion();
-        Assert.assertTrue(minorErrorsPage.getAssertionMessage().contains("eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTest"), "The assertion message is correct shwon on details page.");
+        Assert.assertTrue(minorErrorsPage.getAssertionMessage().contains("eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTest"), "The assertion message is correct shown on details page.");
     }
 
     /**
@@ -393,19 +397,17 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     public void testT16_checkErrorMessage() {
         TestStep.begin("Checks error Message from a failed test");
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestCorridorLow.class.getSimpleName(), "test_testLowCorridorFailed3");
-        AssertCollector.assertEquals(methodDetailsPage.getErrorMessageString().getText(), "ArithmeticException: / by zero", "Expected another error message.");
-        AssertCollector.assertFalse(methodDetailsPage.getFingerprintString().isDisplayed(), "Expected that the fingerprint link is shown.");
+        methodDetailsPage.getErrorMessageString().assertCollector().assertText("ArithmeticException: / by zero");
         methodDetailsPage = methodDetailsPage.toggleFingerprint();
-        AssertCollector.assertTrue(methodDetailsPage.getFingerprintString().getText().contains("test_testLowCorridorFailed3()"), "Expected that the detailed fingerprint message is shown.");
-        AssertCollector.assertTrue(methodDetailsPage.getFingerprintString().getText().contains("ExitPointCreatorTestClass2.testCreatorForDifferentExitPoints2()"), "Expected that the detailed fingerprint message is shown.");
+        methodDetailsPage.getFingerprintString().assertCollector().assertTextContains("test_testLowCorridorFailed3()");
+        methodDetailsPage.getFingerprintString().assertCollector().assertTextContains("ExitPointCreatorTestClass2.testCreatorForDifferentExitPoints2()");
 
         TestStep.begin("Checks error Message from a failed test with minor errors");
-        methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestCorridorLow.class.getSimpleName(), "test_FailedMinor1");
-        AssertCollector.assertEquals(methodDetailsPage.getErrorMessageString().getText(), "Exception", "Expected another error message.");
-        AssertCollector.assertFalse(methodDetailsPage.getFingerprintString().isDisplayed(), "Expected that the fingerprint link is shown.");
+        methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), "ReportTestUnderTestCorridorLow_Report- TestsUnderTest_Failed Creator", "test_FailedMinor1");
+        methodDetailsPage.getErrorMessageString().assertCollector().assertText("Exception");
         methodDetailsPage = methodDetailsPage.toggleFingerprint();
-        AssertCollector.assertTrue(methodDetailsPage.getFingerprintString().getText().contains("test_FailedMinor1()"), "Expected that the detailed fingerprint message is shown.");
-        AssertCollector.assertTrue(methodDetailsPage.getFingerprintString().getText().contains("NonFunctionalAssert.assertTrue(false)"), "Expected that the detailed fingerprint message is shown.");
+        methodDetailsPage.getFingerprintString().assertCollector().assertTextContains("test_FailedMinor1()");
+        methodDetailsPage.getFingerprintString().assertCollector().assertTextContains("NonFunctionalAssert.assertTrue(false)");
     }
 
     /**

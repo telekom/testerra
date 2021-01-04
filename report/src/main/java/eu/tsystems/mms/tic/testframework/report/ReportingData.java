@@ -26,7 +26,9 @@ import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ReportingData {
 
@@ -36,7 +38,9 @@ public class ReportingData {
     public boolean failureCorridorMatched;
     public Collection<ClassContext> classContexts;
     public ExecutionContext executionContext;
-
     public List<MethodContext> methodsWithAcknowledgements;
-
+    public Map<ClassContext, Map> methodStatsPerClass = new LinkedHashMap<>();
+    public Map<ClassContext, Map> configMethodStatsPerClass = new LinkedHashMap<>();
+    public Map<String, List<MethodContext>> exitPoints;
+    public Map<String, List<MethodContext>> failureAspects;
 }

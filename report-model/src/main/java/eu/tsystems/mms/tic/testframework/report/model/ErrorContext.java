@@ -6,7 +6,7 @@ package eu.tsystems.mms.tic.testframework.report.model;
 /**
  * Protobuf type {@code data.ErrorContext}
  */
-public  final class ErrorContext extends
+public final class ErrorContext extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:data.ErrorContext)
     ErrorContextOrBuilder {
@@ -16,9 +16,9 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private ErrorContext() {
-    readableErrorMessage_ = "";
-    additionalErrorMessage_ = "";
-    errorFingerprint_ = "";
+    ticketId_ = "";
+    description_ = "";
+    stackTrace_ = java.util.Collections.emptyList();
   }
 
   @java.lang.Override
@@ -41,6 +41,7 @@ private static final long serialVersionUID = 0L;
     if (extensionRegistry == null) {
       throw new java.lang.NullPointerException();
     }
+    int mutable_bitField0_ = 0;
     com.google.protobuf.UnknownFieldSet.Builder unknownFields =
         com.google.protobuf.UnknownFieldSet.newBuilder();
     try {
@@ -51,37 +52,6 @@ private static final long serialVersionUID = 0L;
           case 0:
             done = true;
             break;
-          case 10: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            readableErrorMessage_ = s;
-            break;
-          }
-          case 18: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            additionalErrorMessage_ = s;
-            break;
-          }
-          case 26: {
-            eu.tsystems.mms.tic.testframework.report.model.StackTrace.Builder subBuilder = null;
-            if (stackTrace_ != null) {
-              subBuilder = stackTrace_.toBuilder();
-            }
-            stackTrace_ = input.readMessage(eu.tsystems.mms.tic.testframework.report.model.StackTrace.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(stackTrace_);
-              stackTrace_ = subBuilder.buildPartial();
-            }
-
-            break;
-          }
-          case 50: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            errorFingerprint_ = s;
-            break;
-          }
           case 58: {
             eu.tsystems.mms.tic.testframework.report.model.ScriptSource.Builder subBuilder = null;
             if (scriptSource_ != null) {
@@ -108,6 +78,32 @@ private static final long serialVersionUID = 0L;
 
             break;
           }
+          case 74: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            ticketId_ = s;
+            break;
+          }
+          case 82: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            description_ = s;
+            break;
+          }
+          case 90: {
+            if (!((mutable_bitField0_ & 0x00000001) != 0)) {
+              stackTrace_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.StackTraceCause>();
+              mutable_bitField0_ |= 0x00000001;
+            }
+            stackTrace_.add(
+                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.parser(), extensionRegistry));
+            break;
+          }
+          case 96: {
+
+            optional_ = input.readBool();
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -123,6 +119,9 @@ private static final long serialVersionUID = 0L;
       throw new com.google.protobuf.InvalidProtocolBufferException(
           e).setUnfinishedMessage(this);
     } finally {
+      if (((mutable_bitField0_ & 0x00000001) != 0)) {
+        stackTrace_ = java.util.Collections.unmodifiableList(stackTrace_);
+      }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
     }
@@ -140,156 +139,49 @@ private static final long serialVersionUID = 0L;
             eu.tsystems.mms.tic.testframework.report.model.ErrorContext.class, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder.class);
   }
 
-  public static final int READABLE_ERROR_MESSAGE_FIELD_NUMBER = 1;
-  private volatile java.lang.Object readableErrorMessage_;
-  /**
-   * <code>string readable_error_message = 1;</code>
-   * @return The readableErrorMessage.
-   */
-  public java.lang.String getReadableErrorMessage() {
-    java.lang.Object ref = readableErrorMessage_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      readableErrorMessage_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string readable_error_message = 1;</code>
-   * @return The bytes for readableErrorMessage.
-   */
-  public com.google.protobuf.ByteString
-      getReadableErrorMessageBytes() {
-    java.lang.Object ref = readableErrorMessage_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      readableErrorMessage_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
-
-  public static final int ADDITIONAL_ERROR_MESSAGE_FIELD_NUMBER = 2;
-  private volatile java.lang.Object additionalErrorMessage_;
-  /**
-   * <code>string additional_error_message = 2;</code>
-   * @return The additionalErrorMessage.
-   */
-  public java.lang.String getAdditionalErrorMessage() {
-    java.lang.Object ref = additionalErrorMessage_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      additionalErrorMessage_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string additional_error_message = 2;</code>
-   * @return The bytes for additionalErrorMessage.
-   */
-  public com.google.protobuf.ByteString
-      getAdditionalErrorMessageBytes() {
-    java.lang.Object ref = additionalErrorMessage_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      additionalErrorMessage_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
-
-  public static final int STACK_TRACE_FIELD_NUMBER = 3;
-  private eu.tsystems.mms.tic.testframework.report.model.StackTrace stackTrace_;
-  /**
-   * <code>.data.StackTrace stack_trace = 3;</code>
-   * @return Whether the stackTrace field is set.
-   */
-  public boolean hasStackTrace() {
-    return stackTrace_ != null;
-  }
-  /**
-   * <code>.data.StackTrace stack_trace = 3;</code>
-   * @return The stackTrace.
-   */
-  public eu.tsystems.mms.tic.testframework.report.model.StackTrace getStackTrace() {
-    return stackTrace_ == null ? eu.tsystems.mms.tic.testframework.report.model.StackTrace.getDefaultInstance() : stackTrace_;
-  }
-  /**
-   * <code>.data.StackTrace stack_trace = 3;</code>
-   */
-  public eu.tsystems.mms.tic.testframework.report.model.StackTraceOrBuilder getStackTraceOrBuilder() {
-    return getStackTrace();
-  }
-
-  public static final int ERROR_FINGERPRINT_FIELD_NUMBER = 6;
-  private volatile java.lang.Object errorFingerprint_;
-  /**
-   * <code>string error_fingerprint = 6;</code>
-   * @return The errorFingerprint.
-   */
-  public java.lang.String getErrorFingerprint() {
-    java.lang.Object ref = errorFingerprint_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      errorFingerprint_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string error_fingerprint = 6;</code>
-   * @return The bytes for errorFingerprint.
-   */
-  public com.google.protobuf.ByteString
-      getErrorFingerprintBytes() {
-    java.lang.Object ref = errorFingerprint_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      errorFingerprint_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
-
   public static final int SCRIPT_SOURCE_FIELD_NUMBER = 7;
   private eu.tsystems.mms.tic.testframework.report.model.ScriptSource scriptSource_;
   /**
+   * <pre>
+   *    string readable_error_message = 1 [deprecated = true];
+   *    string additional_error_message = 2 [deprecated = true];
+   *    StackTrace stack_trace = 3  [deprecated = true];
+   *    string error_fingerprint = 6 [deprecated = true];
+   * </pre>
+   *
    * <code>.data.ScriptSource script_source = 7;</code>
    * @return Whether the scriptSource field is set.
    */
+  @java.lang.Override
   public boolean hasScriptSource() {
     return scriptSource_ != null;
   }
   /**
+   * <pre>
+   *    string readable_error_message = 1 [deprecated = true];
+   *    string additional_error_message = 2 [deprecated = true];
+   *    StackTrace stack_trace = 3  [deprecated = true];
+   *    string error_fingerprint = 6 [deprecated = true];
+   * </pre>
+   *
    * <code>.data.ScriptSource script_source = 7;</code>
    * @return The scriptSource.
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ScriptSource getScriptSource() {
     return scriptSource_ == null ? eu.tsystems.mms.tic.testframework.report.model.ScriptSource.getDefaultInstance() : scriptSource_;
   }
   /**
+   * <pre>
+   *    string readable_error_message = 1 [deprecated = true];
+   *    string additional_error_message = 2 [deprecated = true];
+   *    StackTrace stack_trace = 3  [deprecated = true];
+   *    string error_fingerprint = 6 [deprecated = true];
+   * </pre>
+   *
    * <code>.data.ScriptSource script_source = 7;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ScriptSourceOrBuilder getScriptSourceOrBuilder() {
     return getScriptSource();
   }
@@ -300,6 +192,7 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ScriptSource execution_object_source = 8;</code>
    * @return Whether the executionObjectSource field is set.
    */
+  @java.lang.Override
   public boolean hasExecutionObjectSource() {
     return executionObjectSource_ != null;
   }
@@ -307,14 +200,143 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ScriptSource execution_object_source = 8;</code>
    * @return The executionObjectSource.
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ScriptSource getExecutionObjectSource() {
     return executionObjectSource_ == null ? eu.tsystems.mms.tic.testframework.report.model.ScriptSource.getDefaultInstance() : executionObjectSource_;
   }
   /**
    * <code>.data.ScriptSource execution_object_source = 8;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ScriptSourceOrBuilder getExecutionObjectSourceOrBuilder() {
     return getExecutionObjectSource();
+  }
+
+  public static final int TICKETID_FIELD_NUMBER = 9;
+  private volatile java.lang.Object ticketId_;
+  /**
+   * <code>string ticketId = 9;</code>
+   * @return The ticketId.
+   */
+  @java.lang.Override
+  public java.lang.String getTicketId() {
+    java.lang.Object ref = ticketId_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      ticketId_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string ticketId = 9;</code>
+   * @return The bytes for ticketId.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getTicketIdBytes() {
+    java.lang.Object ref = ticketId_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      ticketId_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int DESCRIPTION_FIELD_NUMBER = 10;
+  private volatile java.lang.Object description_;
+  /**
+   * <code>string description = 10;</code>
+   * @return The description.
+   */
+  @java.lang.Override
+  public java.lang.String getDescription() {
+    java.lang.Object ref = description_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      description_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string description = 10;</code>
+   * @return The bytes for description.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getDescriptionBytes() {
+    java.lang.Object ref = description_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      description_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int STACK_TRACE_FIELD_NUMBER = 11;
+  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.StackTraceCause> stackTrace_;
+  /**
+   * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
+   */
+  @java.lang.Override
+  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.StackTraceCause> getStackTraceList() {
+    return stackTrace_;
+  }
+  /**
+   * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
+   */
+  @java.lang.Override
+  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder> 
+      getStackTraceOrBuilderList() {
+    return stackTrace_;
+  }
+  /**
+   * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
+   */
+  @java.lang.Override
+  public int getStackTraceCount() {
+    return stackTrace_.size();
+  }
+  /**
+   * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
+   */
+  @java.lang.Override
+  public eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getStackTrace(int index) {
+    return stackTrace_.get(index);
+  }
+  /**
+   * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
+   */
+  @java.lang.Override
+  public eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder getStackTraceOrBuilder(
+      int index) {
+    return stackTrace_.get(index);
+  }
+
+  public static final int OPTIONAL_FIELD_NUMBER = 12;
+  private boolean optional_;
+  /**
+   * <code>bool optional = 12;</code>
+   * @return The optional.
+   */
+  @java.lang.Override
+  public boolean getOptional() {
+    return optional_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -331,23 +353,23 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (!getReadableErrorMessageBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, readableErrorMessage_);
-    }
-    if (!getAdditionalErrorMessageBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, additionalErrorMessage_);
-    }
-    if (stackTrace_ != null) {
-      output.writeMessage(3, getStackTrace());
-    }
-    if (!getErrorFingerprintBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 6, errorFingerprint_);
-    }
     if (scriptSource_ != null) {
       output.writeMessage(7, getScriptSource());
     }
     if (executionObjectSource_ != null) {
       output.writeMessage(8, getExecutionObjectSource());
+    }
+    if (!getTicketIdBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 9, ticketId_);
+    }
+    if (!getDescriptionBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 10, description_);
+    }
+    for (int i = 0; i < stackTrace_.size(); i++) {
+      output.writeMessage(11, stackTrace_.get(i));
+    }
+    if (optional_ != false) {
+      output.writeBool(12, optional_);
     }
     unknownFields.writeTo(output);
   }
@@ -358,19 +380,6 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (!getReadableErrorMessageBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, readableErrorMessage_);
-    }
-    if (!getAdditionalErrorMessageBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, additionalErrorMessage_);
-    }
-    if (stackTrace_ != null) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(3, getStackTrace());
-    }
-    if (!getErrorFingerprintBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, errorFingerprint_);
-    }
     if (scriptSource_ != null) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(7, getScriptSource());
@@ -378,6 +387,20 @@ private static final long serialVersionUID = 0L;
     if (executionObjectSource_ != null) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(8, getExecutionObjectSource());
+    }
+    if (!getTicketIdBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, ticketId_);
+    }
+    if (!getDescriptionBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, description_);
+    }
+    for (int i = 0; i < stackTrace_.size(); i++) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(11, stackTrace_.get(i));
+    }
+    if (optional_ != false) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(12, optional_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -394,17 +417,6 @@ private static final long serialVersionUID = 0L;
     }
     eu.tsystems.mms.tic.testframework.report.model.ErrorContext other = (eu.tsystems.mms.tic.testframework.report.model.ErrorContext) obj;
 
-    if (!getReadableErrorMessage()
-        .equals(other.getReadableErrorMessage())) return false;
-    if (!getAdditionalErrorMessage()
-        .equals(other.getAdditionalErrorMessage())) return false;
-    if (hasStackTrace() != other.hasStackTrace()) return false;
-    if (hasStackTrace()) {
-      if (!getStackTrace()
-          .equals(other.getStackTrace())) return false;
-    }
-    if (!getErrorFingerprint()
-        .equals(other.getErrorFingerprint())) return false;
     if (hasScriptSource() != other.hasScriptSource()) return false;
     if (hasScriptSource()) {
       if (!getScriptSource()
@@ -415,6 +427,14 @@ private static final long serialVersionUID = 0L;
       if (!getExecutionObjectSource()
           .equals(other.getExecutionObjectSource())) return false;
     }
+    if (!getTicketId()
+        .equals(other.getTicketId())) return false;
+    if (!getDescription()
+        .equals(other.getDescription())) return false;
+    if (!getStackTraceList()
+        .equals(other.getStackTraceList())) return false;
+    if (getOptional()
+        != other.getOptional()) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -426,16 +446,6 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + READABLE_ERROR_MESSAGE_FIELD_NUMBER;
-    hash = (53 * hash) + getReadableErrorMessage().hashCode();
-    hash = (37 * hash) + ADDITIONAL_ERROR_MESSAGE_FIELD_NUMBER;
-    hash = (53 * hash) + getAdditionalErrorMessage().hashCode();
-    if (hasStackTrace()) {
-      hash = (37 * hash) + STACK_TRACE_FIELD_NUMBER;
-      hash = (53 * hash) + getStackTrace().hashCode();
-    }
-    hash = (37 * hash) + ERROR_FINGERPRINT_FIELD_NUMBER;
-    hash = (53 * hash) + getErrorFingerprint().hashCode();
     if (hasScriptSource()) {
       hash = (37 * hash) + SCRIPT_SOURCE_FIELD_NUMBER;
       hash = (53 * hash) + getScriptSource().hashCode();
@@ -444,6 +454,17 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + EXECUTION_OBJECT_SOURCE_FIELD_NUMBER;
       hash = (53 * hash) + getExecutionObjectSource().hashCode();
     }
+    hash = (37 * hash) + TICKETID_FIELD_NUMBER;
+    hash = (53 * hash) + getTicketId().hashCode();
+    hash = (37 * hash) + DESCRIPTION_FIELD_NUMBER;
+    hash = (53 * hash) + getDescription().hashCode();
+    if (getStackTraceCount() > 0) {
+      hash = (37 * hash) + STACK_TRACE_FIELD_NUMBER;
+      hash = (53 * hash) + getStackTraceList().hashCode();
+    }
+    hash = (37 * hash) + OPTIONAL_FIELD_NUMBER;
+    hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+        getOptional());
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -572,23 +593,12 @@ private static final long serialVersionUID = 0L;
     private void maybeForceBuilderInitialization() {
       if (com.google.protobuf.GeneratedMessageV3
               .alwaysUseFieldBuilders) {
+        getStackTraceFieldBuilder();
       }
     }
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      readableErrorMessage_ = "";
-
-      additionalErrorMessage_ = "";
-
-      if (stackTraceBuilder_ == null) {
-        stackTrace_ = null;
-      } else {
-        stackTrace_ = null;
-        stackTraceBuilder_ = null;
-      }
-      errorFingerprint_ = "";
-
       if (scriptSourceBuilder_ == null) {
         scriptSource_ = null;
       } else {
@@ -601,6 +611,18 @@ private static final long serialVersionUID = 0L;
         executionObjectSource_ = null;
         executionObjectSourceBuilder_ = null;
       }
+      ticketId_ = "";
+
+      description_ = "";
+
+      if (stackTraceBuilder_ == null) {
+        stackTrace_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000001);
+      } else {
+        stackTraceBuilder_.clear();
+      }
+      optional_ = false;
+
       return this;
     }
 
@@ -627,14 +649,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public eu.tsystems.mms.tic.testframework.report.model.ErrorContext buildPartial() {
       eu.tsystems.mms.tic.testframework.report.model.ErrorContext result = new eu.tsystems.mms.tic.testframework.report.model.ErrorContext(this);
-      result.readableErrorMessage_ = readableErrorMessage_;
-      result.additionalErrorMessage_ = additionalErrorMessage_;
-      if (stackTraceBuilder_ == null) {
-        result.stackTrace_ = stackTrace_;
-      } else {
-        result.stackTrace_ = stackTraceBuilder_.build();
-      }
-      result.errorFingerprint_ = errorFingerprint_;
+      int from_bitField0_ = bitField0_;
       if (scriptSourceBuilder_ == null) {
         result.scriptSource_ = scriptSource_;
       } else {
@@ -645,6 +660,18 @@ private static final long serialVersionUID = 0L;
       } else {
         result.executionObjectSource_ = executionObjectSourceBuilder_.build();
       }
+      result.ticketId_ = ticketId_;
+      result.description_ = description_;
+      if (stackTraceBuilder_ == null) {
+        if (((bitField0_ & 0x00000001) != 0)) {
+          stackTrace_ = java.util.Collections.unmodifiableList(stackTrace_);
+          bitField0_ = (bitField0_ & ~0x00000001);
+        }
+        result.stackTrace_ = stackTrace_;
+      } else {
+        result.stackTrace_ = stackTraceBuilder_.build();
+      }
+      result.optional_ = optional_;
       onBuilt();
       return result;
     }
@@ -693,26 +720,48 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(eu.tsystems.mms.tic.testframework.report.model.ErrorContext other) {
       if (other == eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance()) return this;
-      if (!other.getReadableErrorMessage().isEmpty()) {
-        readableErrorMessage_ = other.readableErrorMessage_;
-        onChanged();
-      }
-      if (!other.getAdditionalErrorMessage().isEmpty()) {
-        additionalErrorMessage_ = other.additionalErrorMessage_;
-        onChanged();
-      }
-      if (other.hasStackTrace()) {
-        mergeStackTrace(other.getStackTrace());
-      }
-      if (!other.getErrorFingerprint().isEmpty()) {
-        errorFingerprint_ = other.errorFingerprint_;
-        onChanged();
-      }
       if (other.hasScriptSource()) {
         mergeScriptSource(other.getScriptSource());
       }
       if (other.hasExecutionObjectSource()) {
         mergeExecutionObjectSource(other.getExecutionObjectSource());
+      }
+      if (!other.getTicketId().isEmpty()) {
+        ticketId_ = other.ticketId_;
+        onChanged();
+      }
+      if (!other.getDescription().isEmpty()) {
+        description_ = other.description_;
+        onChanged();
+      }
+      if (stackTraceBuilder_ == null) {
+        if (!other.stackTrace_.isEmpty()) {
+          if (stackTrace_.isEmpty()) {
+            stackTrace_ = other.stackTrace_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+          } else {
+            ensureStackTraceIsMutable();
+            stackTrace_.addAll(other.stackTrace_);
+          }
+          onChanged();
+        }
+      } else {
+        if (!other.stackTrace_.isEmpty()) {
+          if (stackTraceBuilder_.isEmpty()) {
+            stackTraceBuilder_.dispose();
+            stackTraceBuilder_ = null;
+            stackTrace_ = other.stackTrace_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+            stackTraceBuilder_ = 
+              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                 getStackTraceFieldBuilder() : null;
+          } else {
+            stackTraceBuilder_.addAllMessages(other.stackTrace_);
+          }
+        }
+      }
+      if (other.getOptional() != false) {
+        setOptional(other.getOptional());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -742,358 +791,19 @@ private static final long serialVersionUID = 0L;
       }
       return this;
     }
-
-    private java.lang.Object readableErrorMessage_ = "";
-    /**
-     * <code>string readable_error_message = 1;</code>
-     * @return The readableErrorMessage.
-     */
-    public java.lang.String getReadableErrorMessage() {
-      java.lang.Object ref = readableErrorMessage_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        readableErrorMessage_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <code>string readable_error_message = 1;</code>
-     * @return The bytes for readableErrorMessage.
-     */
-    public com.google.protobuf.ByteString
-        getReadableErrorMessageBytes() {
-      java.lang.Object ref = readableErrorMessage_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        readableErrorMessage_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string readable_error_message = 1;</code>
-     * @param value The readableErrorMessage to set.
-     * @return This builder for chaining.
-     */
-    public Builder setReadableErrorMessage(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      readableErrorMessage_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string readable_error_message = 1;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearReadableErrorMessage() {
-      
-      readableErrorMessage_ = getDefaultInstance().getReadableErrorMessage();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string readable_error_message = 1;</code>
-     * @param value The bytes for readableErrorMessage to set.
-     * @return This builder for chaining.
-     */
-    public Builder setReadableErrorMessageBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      readableErrorMessage_ = value;
-      onChanged();
-      return this;
-    }
-
-    private java.lang.Object additionalErrorMessage_ = "";
-    /**
-     * <code>string additional_error_message = 2;</code>
-     * @return The additionalErrorMessage.
-     */
-    public java.lang.String getAdditionalErrorMessage() {
-      java.lang.Object ref = additionalErrorMessage_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        additionalErrorMessage_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <code>string additional_error_message = 2;</code>
-     * @return The bytes for additionalErrorMessage.
-     */
-    public com.google.protobuf.ByteString
-        getAdditionalErrorMessageBytes() {
-      java.lang.Object ref = additionalErrorMessage_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        additionalErrorMessage_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string additional_error_message = 2;</code>
-     * @param value The additionalErrorMessage to set.
-     * @return This builder for chaining.
-     */
-    public Builder setAdditionalErrorMessage(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      additionalErrorMessage_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string additional_error_message = 2;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearAdditionalErrorMessage() {
-      
-      additionalErrorMessage_ = getDefaultInstance().getAdditionalErrorMessage();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string additional_error_message = 2;</code>
-     * @param value The bytes for additionalErrorMessage to set.
-     * @return This builder for chaining.
-     */
-    public Builder setAdditionalErrorMessageBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      additionalErrorMessage_ = value;
-      onChanged();
-      return this;
-    }
-
-    private eu.tsystems.mms.tic.testframework.report.model.StackTrace stackTrace_;
-    private com.google.protobuf.SingleFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.StackTrace, eu.tsystems.mms.tic.testframework.report.model.StackTrace.Builder, eu.tsystems.mms.tic.testframework.report.model.StackTraceOrBuilder> stackTraceBuilder_;
-    /**
-     * <code>.data.StackTrace stack_trace = 3;</code>
-     * @return Whether the stackTrace field is set.
-     */
-    public boolean hasStackTrace() {
-      return stackTraceBuilder_ != null || stackTrace_ != null;
-    }
-    /**
-     * <code>.data.StackTrace stack_trace = 3;</code>
-     * @return The stackTrace.
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.StackTrace getStackTrace() {
-      if (stackTraceBuilder_ == null) {
-        return stackTrace_ == null ? eu.tsystems.mms.tic.testframework.report.model.StackTrace.getDefaultInstance() : stackTrace_;
-      } else {
-        return stackTraceBuilder_.getMessage();
-      }
-    }
-    /**
-     * <code>.data.StackTrace stack_trace = 3;</code>
-     */
-    public Builder setStackTrace(eu.tsystems.mms.tic.testframework.report.model.StackTrace value) {
-      if (stackTraceBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        stackTrace_ = value;
-        onChanged();
-      } else {
-        stackTraceBuilder_.setMessage(value);
-      }
-
-      return this;
-    }
-    /**
-     * <code>.data.StackTrace stack_trace = 3;</code>
-     */
-    public Builder setStackTrace(
-        eu.tsystems.mms.tic.testframework.report.model.StackTrace.Builder builderForValue) {
-      if (stackTraceBuilder_ == null) {
-        stackTrace_ = builderForValue.build();
-        onChanged();
-      } else {
-        stackTraceBuilder_.setMessage(builderForValue.build());
-      }
-
-      return this;
-    }
-    /**
-     * <code>.data.StackTrace stack_trace = 3;</code>
-     */
-    public Builder mergeStackTrace(eu.tsystems.mms.tic.testframework.report.model.StackTrace value) {
-      if (stackTraceBuilder_ == null) {
-        if (stackTrace_ != null) {
-          stackTrace_ =
-            eu.tsystems.mms.tic.testframework.report.model.StackTrace.newBuilder(stackTrace_).mergeFrom(value).buildPartial();
-        } else {
-          stackTrace_ = value;
-        }
-        onChanged();
-      } else {
-        stackTraceBuilder_.mergeFrom(value);
-      }
-
-      return this;
-    }
-    /**
-     * <code>.data.StackTrace stack_trace = 3;</code>
-     */
-    public Builder clearStackTrace() {
-      if (stackTraceBuilder_ == null) {
-        stackTrace_ = null;
-        onChanged();
-      } else {
-        stackTrace_ = null;
-        stackTraceBuilder_ = null;
-      }
-
-      return this;
-    }
-    /**
-     * <code>.data.StackTrace stack_trace = 3;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.StackTrace.Builder getStackTraceBuilder() {
-      
-      onChanged();
-      return getStackTraceFieldBuilder().getBuilder();
-    }
-    /**
-     * <code>.data.StackTrace stack_trace = 3;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.StackTraceOrBuilder getStackTraceOrBuilder() {
-      if (stackTraceBuilder_ != null) {
-        return stackTraceBuilder_.getMessageOrBuilder();
-      } else {
-        return stackTrace_ == null ?
-            eu.tsystems.mms.tic.testframework.report.model.StackTrace.getDefaultInstance() : stackTrace_;
-      }
-    }
-    /**
-     * <code>.data.StackTrace stack_trace = 3;</code>
-     */
-    private com.google.protobuf.SingleFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.StackTrace, eu.tsystems.mms.tic.testframework.report.model.StackTrace.Builder, eu.tsystems.mms.tic.testframework.report.model.StackTraceOrBuilder> 
-        getStackTraceFieldBuilder() {
-      if (stackTraceBuilder_ == null) {
-        stackTraceBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            eu.tsystems.mms.tic.testframework.report.model.StackTrace, eu.tsystems.mms.tic.testframework.report.model.StackTrace.Builder, eu.tsystems.mms.tic.testframework.report.model.StackTraceOrBuilder>(
-                getStackTrace(),
-                getParentForChildren(),
-                isClean());
-        stackTrace_ = null;
-      }
-      return stackTraceBuilder_;
-    }
-
-    private java.lang.Object errorFingerprint_ = "";
-    /**
-     * <code>string error_fingerprint = 6;</code>
-     * @return The errorFingerprint.
-     */
-    public java.lang.String getErrorFingerprint() {
-      java.lang.Object ref = errorFingerprint_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        errorFingerprint_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <code>string error_fingerprint = 6;</code>
-     * @return The bytes for errorFingerprint.
-     */
-    public com.google.protobuf.ByteString
-        getErrorFingerprintBytes() {
-      java.lang.Object ref = errorFingerprint_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        errorFingerprint_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string error_fingerprint = 6;</code>
-     * @param value The errorFingerprint to set.
-     * @return This builder for chaining.
-     */
-    public Builder setErrorFingerprint(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      errorFingerprint_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string error_fingerprint = 6;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearErrorFingerprint() {
-      
-      errorFingerprint_ = getDefaultInstance().getErrorFingerprint();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string error_fingerprint = 6;</code>
-     * @param value The bytes for errorFingerprint to set.
-     * @return This builder for chaining.
-     */
-    public Builder setErrorFingerprintBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      errorFingerprint_ = value;
-      onChanged();
-      return this;
-    }
+    private int bitField0_;
 
     private eu.tsystems.mms.tic.testframework.report.model.ScriptSource scriptSource_;
     private com.google.protobuf.SingleFieldBuilderV3<
         eu.tsystems.mms.tic.testframework.report.model.ScriptSource, eu.tsystems.mms.tic.testframework.report.model.ScriptSource.Builder, eu.tsystems.mms.tic.testframework.report.model.ScriptSourceOrBuilder> scriptSourceBuilder_;
     /**
+     * <pre>
+     *    string readable_error_message = 1 [deprecated = true];
+     *    string additional_error_message = 2 [deprecated = true];
+     *    StackTrace stack_trace = 3  [deprecated = true];
+     *    string error_fingerprint = 6 [deprecated = true];
+     * </pre>
+     *
      * <code>.data.ScriptSource script_source = 7;</code>
      * @return Whether the scriptSource field is set.
      */
@@ -1101,6 +811,13 @@ private static final long serialVersionUID = 0L;
       return scriptSourceBuilder_ != null || scriptSource_ != null;
     }
     /**
+     * <pre>
+     *    string readable_error_message = 1 [deprecated = true];
+     *    string additional_error_message = 2 [deprecated = true];
+     *    StackTrace stack_trace = 3  [deprecated = true];
+     *    string error_fingerprint = 6 [deprecated = true];
+     * </pre>
+     *
      * <code>.data.ScriptSource script_source = 7;</code>
      * @return The scriptSource.
      */
@@ -1112,6 +829,13 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     *    string readable_error_message = 1 [deprecated = true];
+     *    string additional_error_message = 2 [deprecated = true];
+     *    StackTrace stack_trace = 3  [deprecated = true];
+     *    string error_fingerprint = 6 [deprecated = true];
+     * </pre>
+     *
      * <code>.data.ScriptSource script_source = 7;</code>
      */
     public Builder setScriptSource(eu.tsystems.mms.tic.testframework.report.model.ScriptSource value) {
@@ -1128,6 +852,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    string readable_error_message = 1 [deprecated = true];
+     *    string additional_error_message = 2 [deprecated = true];
+     *    StackTrace stack_trace = 3  [deprecated = true];
+     *    string error_fingerprint = 6 [deprecated = true];
+     * </pre>
+     *
      * <code>.data.ScriptSource script_source = 7;</code>
      */
     public Builder setScriptSource(
@@ -1142,6 +873,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    string readable_error_message = 1 [deprecated = true];
+     *    string additional_error_message = 2 [deprecated = true];
+     *    StackTrace stack_trace = 3  [deprecated = true];
+     *    string error_fingerprint = 6 [deprecated = true];
+     * </pre>
+     *
      * <code>.data.ScriptSource script_source = 7;</code>
      */
     public Builder mergeScriptSource(eu.tsystems.mms.tic.testframework.report.model.ScriptSource value) {
@@ -1160,6 +898,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    string readable_error_message = 1 [deprecated = true];
+     *    string additional_error_message = 2 [deprecated = true];
+     *    StackTrace stack_trace = 3  [deprecated = true];
+     *    string error_fingerprint = 6 [deprecated = true];
+     * </pre>
+     *
      * <code>.data.ScriptSource script_source = 7;</code>
      */
     public Builder clearScriptSource() {
@@ -1174,6 +919,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    string readable_error_message = 1 [deprecated = true];
+     *    string additional_error_message = 2 [deprecated = true];
+     *    StackTrace stack_trace = 3  [deprecated = true];
+     *    string error_fingerprint = 6 [deprecated = true];
+     * </pre>
+     *
      * <code>.data.ScriptSource script_source = 7;</code>
      */
     public eu.tsystems.mms.tic.testframework.report.model.ScriptSource.Builder getScriptSourceBuilder() {
@@ -1182,6 +934,13 @@ private static final long serialVersionUID = 0L;
       return getScriptSourceFieldBuilder().getBuilder();
     }
     /**
+     * <pre>
+     *    string readable_error_message = 1 [deprecated = true];
+     *    string additional_error_message = 2 [deprecated = true];
+     *    StackTrace stack_trace = 3  [deprecated = true];
+     *    string error_fingerprint = 6 [deprecated = true];
+     * </pre>
+     *
      * <code>.data.ScriptSource script_source = 7;</code>
      */
     public eu.tsystems.mms.tic.testframework.report.model.ScriptSourceOrBuilder getScriptSourceOrBuilder() {
@@ -1193,6 +952,13 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     *    string readable_error_message = 1 [deprecated = true];
+     *    string additional_error_message = 2 [deprecated = true];
+     *    StackTrace stack_trace = 3  [deprecated = true];
+     *    string error_fingerprint = 6 [deprecated = true];
+     * </pre>
+     *
      * <code>.data.ScriptSource script_source = 7;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
@@ -1326,6 +1092,429 @@ private static final long serialVersionUID = 0L;
         executionObjectSource_ = null;
       }
       return executionObjectSourceBuilder_;
+    }
+
+    private java.lang.Object ticketId_ = "";
+    /**
+     * <code>string ticketId = 9;</code>
+     * @return The ticketId.
+     */
+    public java.lang.String getTicketId() {
+      java.lang.Object ref = ticketId_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        ticketId_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string ticketId = 9;</code>
+     * @return The bytes for ticketId.
+     */
+    public com.google.protobuf.ByteString
+        getTicketIdBytes() {
+      java.lang.Object ref = ticketId_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        ticketId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string ticketId = 9;</code>
+     * @param value The ticketId to set.
+     * @return This builder for chaining.
+     */
+    public Builder setTicketId(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      ticketId_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string ticketId = 9;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearTicketId() {
+      
+      ticketId_ = getDefaultInstance().getTicketId();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string ticketId = 9;</code>
+     * @param value The bytes for ticketId to set.
+     * @return This builder for chaining.
+     */
+    public Builder setTicketIdBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      ticketId_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object description_ = "";
+    /**
+     * <code>string description = 10;</code>
+     * @return The description.
+     */
+    public java.lang.String getDescription() {
+      java.lang.Object ref = description_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        description_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string description = 10;</code>
+     * @return The bytes for description.
+     */
+    public com.google.protobuf.ByteString
+        getDescriptionBytes() {
+      java.lang.Object ref = description_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        description_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string description = 10;</code>
+     * @param value The description to set.
+     * @return This builder for chaining.
+     */
+    public Builder setDescription(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      description_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string description = 10;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearDescription() {
+      
+      description_ = getDefaultInstance().getDescription();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string description = 10;</code>
+     * @param value The bytes for description to set.
+     * @return This builder for chaining.
+     */
+    public Builder setDescriptionBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      description_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.StackTraceCause> stackTrace_ =
+      java.util.Collections.emptyList();
+    private void ensureStackTraceIsMutable() {
+      if (!((bitField0_ & 0x00000001) != 0)) {
+        stackTrace_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.StackTraceCause>(stackTrace_);
+        bitField0_ |= 0x00000001;
+       }
+    }
+
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        eu.tsystems.mms.tic.testframework.report.model.StackTraceCause, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder, eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder> stackTraceBuilder_;
+
+    /**
+     * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
+     */
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.StackTraceCause> getStackTraceList() {
+      if (stackTraceBuilder_ == null) {
+        return java.util.Collections.unmodifiableList(stackTrace_);
+      } else {
+        return stackTraceBuilder_.getMessageList();
+      }
+    }
+    /**
+     * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
+     */
+    public int getStackTraceCount() {
+      if (stackTraceBuilder_ == null) {
+        return stackTrace_.size();
+      } else {
+        return stackTraceBuilder_.getCount();
+      }
+    }
+    /**
+     * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getStackTrace(int index) {
+      if (stackTraceBuilder_ == null) {
+        return stackTrace_.get(index);
+      } else {
+        return stackTraceBuilder_.getMessage(index);
+      }
+    }
+    /**
+     * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
+     */
+    public Builder setStackTrace(
+        int index, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause value) {
+      if (stackTraceBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureStackTraceIsMutable();
+        stackTrace_.set(index, value);
+        onChanged();
+      } else {
+        stackTraceBuilder_.setMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
+     */
+    public Builder setStackTrace(
+        int index, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder builderForValue) {
+      if (stackTraceBuilder_ == null) {
+        ensureStackTraceIsMutable();
+        stackTrace_.set(index, builderForValue.build());
+        onChanged();
+      } else {
+        stackTraceBuilder_.setMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
+     */
+    public Builder addStackTrace(eu.tsystems.mms.tic.testframework.report.model.StackTraceCause value) {
+      if (stackTraceBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureStackTraceIsMutable();
+        stackTrace_.add(value);
+        onChanged();
+      } else {
+        stackTraceBuilder_.addMessage(value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
+     */
+    public Builder addStackTrace(
+        int index, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause value) {
+      if (stackTraceBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureStackTraceIsMutable();
+        stackTrace_.add(index, value);
+        onChanged();
+      } else {
+        stackTraceBuilder_.addMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
+     */
+    public Builder addStackTrace(
+        eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder builderForValue) {
+      if (stackTraceBuilder_ == null) {
+        ensureStackTraceIsMutable();
+        stackTrace_.add(builderForValue.build());
+        onChanged();
+      } else {
+        stackTraceBuilder_.addMessage(builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
+     */
+    public Builder addStackTrace(
+        int index, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder builderForValue) {
+      if (stackTraceBuilder_ == null) {
+        ensureStackTraceIsMutable();
+        stackTrace_.add(index, builderForValue.build());
+        onChanged();
+      } else {
+        stackTraceBuilder_.addMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
+     */
+    public Builder addAllStackTrace(
+        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.StackTraceCause> values) {
+      if (stackTraceBuilder_ == null) {
+        ensureStackTraceIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, stackTrace_);
+        onChanged();
+      } else {
+        stackTraceBuilder_.addAllMessages(values);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
+     */
+    public Builder clearStackTrace() {
+      if (stackTraceBuilder_ == null) {
+        stackTrace_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000001);
+        onChanged();
+      } else {
+        stackTraceBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
+     */
+    public Builder removeStackTrace(int index) {
+      if (stackTraceBuilder_ == null) {
+        ensureStackTraceIsMutable();
+        stackTrace_.remove(index);
+        onChanged();
+      } else {
+        stackTraceBuilder_.remove(index);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder getStackTraceBuilder(
+        int index) {
+      return getStackTraceFieldBuilder().getBuilder(index);
+    }
+    /**
+     * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder getStackTraceOrBuilder(
+        int index) {
+      if (stackTraceBuilder_ == null) {
+        return stackTrace_.get(index);  } else {
+        return stackTraceBuilder_.getMessageOrBuilder(index);
+      }
+    }
+    /**
+     * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
+     */
+    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder> 
+         getStackTraceOrBuilderList() {
+      if (stackTraceBuilder_ != null) {
+        return stackTraceBuilder_.getMessageOrBuilderList();
+      } else {
+        return java.util.Collections.unmodifiableList(stackTrace_);
+      }
+    }
+    /**
+     * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder addStackTraceBuilder() {
+      return getStackTraceFieldBuilder().addBuilder(
+          eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.getDefaultInstance());
+    }
+    /**
+     * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder addStackTraceBuilder(
+        int index) {
+      return getStackTraceFieldBuilder().addBuilder(
+          index, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.getDefaultInstance());
+    }
+    /**
+     * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
+     */
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder> 
+         getStackTraceBuilderList() {
+      return getStackTraceFieldBuilder().getBuilderList();
+    }
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        eu.tsystems.mms.tic.testframework.report.model.StackTraceCause, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder, eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder> 
+        getStackTraceFieldBuilder() {
+      if (stackTraceBuilder_ == null) {
+        stackTraceBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+            eu.tsystems.mms.tic.testframework.report.model.StackTraceCause, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder, eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder>(
+                stackTrace_,
+                ((bitField0_ & 0x00000001) != 0),
+                getParentForChildren(),
+                isClean());
+        stackTrace_ = null;
+      }
+      return stackTraceBuilder_;
+    }
+
+    private boolean optional_ ;
+    /**
+     * <code>bool optional = 12;</code>
+     * @return The optional.
+     */
+    @java.lang.Override
+    public boolean getOptional() {
+      return optional_;
+    }
+    /**
+     * <code>bool optional = 12;</code>
+     * @param value The optional to set.
+     * @return This builder for chaining.
+     */
+    public Builder setOptional(boolean value) {
+      
+      optional_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>bool optional = 12;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearOptional() {
+      
+      optional_ = false;
+      onChanged();
+      return this;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

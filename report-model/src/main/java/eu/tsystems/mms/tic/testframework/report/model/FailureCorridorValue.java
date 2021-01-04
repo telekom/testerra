@@ -13,17 +13,17 @@ public enum FailureCorridorValue
    */
   FCV_NOT_SET(0),
   /**
-   * <code>HIGH = 1;</code>
+   * <code>FCV_HIGH = 1;</code>
    */
-  HIGH(1),
+  FCV_HIGH(1),
   /**
-   * <code>MID = 2;</code>
+   * <code>FCV_MID = 2;</code>
    */
-  MID(2),
+  FCV_MID(2),
   /**
-   * <code>LOW = 3;</code>
+   * <code>FCV_LOW = 3;</code>
    */
-  LOW(3),
+  FCV_LOW(3),
   UNRECOGNIZED(-1),
   ;
 
@@ -32,17 +32,17 @@ public enum FailureCorridorValue
    */
   public static final int FCV_NOT_SET_VALUE = 0;
   /**
-   * <code>HIGH = 1;</code>
+   * <code>FCV_HIGH = 1;</code>
    */
-  public static final int HIGH_VALUE = 1;
+  public static final int FCV_HIGH_VALUE = 1;
   /**
-   * <code>MID = 2;</code>
+   * <code>FCV_MID = 2;</code>
    */
-  public static final int MID_VALUE = 2;
+  public static final int FCV_MID_VALUE = 2;
   /**
-   * <code>LOW = 3;</code>
+   * <code>FCV_LOW = 3;</code>
    */
-  public static final int LOW_VALUE = 3;
+  public static final int FCV_LOW_VALUE = 3;
 
 
   public final int getNumber() {
@@ -70,9 +70,9 @@ public enum FailureCorridorValue
   public static FailureCorridorValue forNumber(int value) {
     switch (value) {
       case 0: return FCV_NOT_SET;
-      case 1: return HIGH;
-      case 2: return MID;
-      case 3: return LOW;
+      case 1: return FCV_HIGH;
+      case 2: return FCV_MID;
+      case 3: return FCV_LOW;
       default: return null;
     }
   }
@@ -91,6 +91,10 @@ public enum FailureCorridorValue
 
   public final com.google.protobuf.Descriptors.EnumValueDescriptor
       getValueDescriptor() {
+    if (this == UNRECOGNIZED) {
+      throw new java.lang.IllegalStateException(
+          "Can't get the descriptor of an unrecognized enum value.");
+    }
     return getDescriptor().getValues().get(ordinal());
   }
   public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -99,7 +103,7 @@ public enum FailureCorridorValue
   }
   public static final com.google.protobuf.Descriptors.EnumDescriptor
       getDescriptor() {
-    return eu.tsystems.mms.tic.testframework.report.model.Framework.getDescriptor().getEnumTypes().get(1);
+    return eu.tsystems.mms.tic.testframework.report.model.Framework.getDescriptor().getEnumTypes().get(2);
   }
 
   private static final FailureCorridorValue[] VALUES = values();

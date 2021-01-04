@@ -14,9 +14,9 @@
         <br>
     #end
 
-    #if ($testMethod.classContext.merged)
-        (in $testMethod.suiteContext.name - $testMethod.testContextModel.name)
-    #end
+    ##if ($testMethod.classContext.merged)
+        (in $testMethod.suiteContext.name - $testMethod.testContext.name)
+    ##end
 
     #parse("methodTags.vm")
 
@@ -43,12 +43,12 @@
         <div>
             <font class="message">
                 <b>
-                    #if ($testMethod.errorContext().readableErrorMessage)
-                        $testMethod.errorContext().readableErrorMessage
+                    #if ($testMethod.getErrorContext().readableErrorMessage)
+                        $testMethod.getErrorContext().readableErrorMessage
                     #end
-                    #if ($testMethod.errorContext().getAdditionalErrorMessageFormatted())
+                    #if ($testMethod.getErrorContext().getAdditionalErrorMessageFormatted())
                         <br>
-                        $testMethod.errorContext().getAdditionalErrorMessageFormatted()
+                        $testMethod.getErrorContext().getAdditionalErrorMessageFormatted()
                     #end
                 </b>
             </font>
@@ -63,7 +63,7 @@
 
 <!-- buttons -->
 <div style="float:right; margin-top: -20px;">
-    #if($testMethod.errorContext().stackTrace)
+    #if($testMethod.getErrorContext().stackTrace)
         <a href="javascript:toggleElement('exception-${testMethod.methodRunIndex}')" title="Stacktrace">
             <!--<img src="../style/business-circular-pie-chart.png" alt="Stacktrace" title="Stacktrace" class="symbols"/>-->
             <i class="symbols fa fa-align-left fa-2x fa-flip-vertical"></i>
@@ -89,8 +89,8 @@
 <div>
     <div class="stackTrace" id="exception-${testMethod.methodRunIndex}">
         <div id="st" class="textLeft" style="padding:30px !important; text-align: left !important; margin-left: 20px;">
-            #if($testMethod.errorContext().stackTrace)
-                #set($stackTrace = $testMethod.errorContext().stackTrace)
+            #if($testMethod.getErrorContext().stackTrace)
+                #set($stackTrace = $testMethod.getErrorContext().stackTrace)
                 #parse("stackTrace.vm")
             #end
         </div>

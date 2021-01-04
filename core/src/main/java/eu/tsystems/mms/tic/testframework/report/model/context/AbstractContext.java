@@ -40,12 +40,19 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
 public abstract class AbstractContext implements SynchronizableContext, Loggable {
-    public String name;
-    public final String id = IDUtils.getB64encXID();
-    public AbstractContext parentContext;
-    public String swi; // system-wide identifier
+    protected String name;
+    private final String id = IDUtils.getB64encXID();
+    protected AbstractContext parentContext;
     private final Date startTime = new Date();
     private Date endTime;
+
+    public AbstractContext getParentContext() {
+        return this.parentContext;
+    }
+
+    public String getName() {
+        return this.name;
+    }
 
     public Date getStartTime() {
         return startTime;
@@ -54,18 +61,22 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
     public Date getEndTime() {
         return endTime;
     }
+//
+//    protected static void fillBasicContextValues(AbstractContext context, AbstractContext parentContext, String name) {
+//        context.name = name;
+//    }
 
-    protected static void fillBasicContextValues(AbstractContext context, AbstractContext parentContext, String name) {
-        context.name = name;
-        context.swi = parentContext.swi + "_" + name;
+    public String getId() {
+        return this.id;
     }
 
     /**
      * Gets an context for a specified name.
      * If it not exists, it will be created by a supplier, preconfigured, added to the given queue of contexts and supplied to a consumer
-     * @param contexts The queue to add the context when created
+     *
+     * @param contexts           The queue to add the context when created
      * @param newContextSupplier Supplier for the new context
-     * @param whenAddedToQueue Consumer when added to the queue
+     * @param whenAddedToQueue   Consumer when added to the queue
      * @return {@link AbstractContext} or NULL if the context doesn't exists or should not be created
      */
     protected <T extends AbstractContext> T getOrCreateContext(
@@ -83,7 +94,8 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
             }
             try {
                 T context = newContextSupplier.get();
-                fillBasicContextValues(context, this, name);
+                //fillBasicContextValues(context, this, name);
+                context.name = name;
                 contexts.add(context);
 
                 if (whenAddedToQueue != null) {
@@ -140,6 +152,10 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
     }
 
     public String getDurationAsString() {
+        Date endTime = this.endTime;
+        if (endTime == null) {
+            endTime = new Date();
+        }
         Duration between = Duration.between(startTime.toInstant(), endTime.toInstant());
         long millis = between.toMillis();
         if (millis > 60 * 60 * 1000) {

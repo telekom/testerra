@@ -353,7 +353,7 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
         for (int index = 0; index < entry.getMethodDetailPaths().size(); index++) {
             // Method Name Path
             GuiElement methodDetailElement = getTestMethodsForSingleFailurePoint(entry).get(index);
-            methodDetailElement.asserts().assertIsDisplayed();
+            methodDetailElement.asserts("The method details element should be displayed.").assertIsDisplayed();
             boolean isFound;
             int i = 0;
             do {
@@ -366,7 +366,7 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
 
             // Method Assertion Message
             GuiElement readableMessageElement = getReadableMessageElementsForFailurePoint(entry).get(index);
-            readableMessageElement.asserts().assertIsDisplayed();
+            readableMessageElement.asserts("The readable message element should be displayed.").assertIsDisplayed();
             String firstAssertionLine = readableMessageElement.getText();
             if (firstAssertionLine.contains("\n")) {
                 firstAssertionLine = firstAssertionLine.substring(0, firstAssertionLine.indexOf("\n"));
@@ -374,7 +374,7 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
             Assert.assertTrue(possibleAssertions.contains(firstAssertionLine), "Element " + firstAssertionLine + " does NOT contain one of the following assertions: " + possibleAssertions);
             // Method Detail Link
             GuiElement detailLink = getDetailsLinksForFailurePoint(entry).get(index);
-            detailLink.asserts().assertIsDisplayed();
+            detailLink.asserts("The details link should be displayed.").assertIsDisplayed();
         }
 
 

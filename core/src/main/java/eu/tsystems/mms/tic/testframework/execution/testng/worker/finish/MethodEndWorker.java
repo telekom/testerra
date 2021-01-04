@@ -81,9 +81,6 @@ public class MethodEndWorker implements MethodEndEvent.Listener, Loggable {
         if (testMethod.isTest()) {
             // cleanup thread locals from PropertyManager
             PropertyManager.clearThreadlocalProperties();
-
-            // cleanup collected assertions
-            CollectedAssertions.clear();
         }
 
         try {
@@ -97,22 +94,6 @@ public class MethodEndWorker implements MethodEndEvent.Listener, Loggable {
                     methodContext.infos.add(key + " = " + infos.get(key));
                 }
             }
-
-            // calculate fingerprint
-            if (event.isFailed()) {
-                Throwable throwable = methodContext.errorContext().getThrowable();
-                if (throwable != null) {
-                    // look for script source
-                    ScriptSource scriptSourceForThrowable = SourceUtils.findScriptSourceForThrowable(throwable);
-                    if (scriptSourceForThrowable != null) {
-                        methodContext.errorContext().scriptSource = scriptSourceForThrowable;
-                    }
-                    methodContext.errorContext().executionObjectSource = TestEvidenceCollector.getSourceFor(throwable);
-                }
-                methodContext.errorContext().buildExitFingerprint();
-            }
-
-
         } finally {
             TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(event.getMethodContext()));
 

@@ -6,7 +6,7 @@ package eu.tsystems.mms.tic.testframework.report.model;
 /**
  * Protobuf type {@code data.StackTraceCause}
  */
-public  final class StackTraceCause extends
+public final class StackTraceCause extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:data.StackTraceCause)
     StackTraceCauseOrBuilder {
@@ -73,19 +73,6 @@ private static final long serialVersionUID = 0L;
             stackTraceElements_.add(s);
             break;
           }
-          case 34: {
-            eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder subBuilder = null;
-            if (cause_ != null) {
-              subBuilder = cause_.toBuilder();
-            }
-            cause_ = input.readMessage(eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(cause_);
-              cause_ = subBuilder.buildPartial();
-            }
-
-            break;
-          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -127,6 +114,7 @@ private static final long serialVersionUID = 0L;
    * <code>string class_name = 1;</code>
    * @return The className.
    */
+  @java.lang.Override
   public java.lang.String getClassName() {
     java.lang.Object ref = className_;
     if (ref instanceof java.lang.String) {
@@ -143,6 +131,7 @@ private static final long serialVersionUID = 0L;
    * <code>string class_name = 1;</code>
    * @return The bytes for className.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getClassNameBytes() {
     java.lang.Object ref = className_;
@@ -163,6 +152,7 @@ private static final long serialVersionUID = 0L;
    * <code>string message = 2;</code>
    * @return The message.
    */
+  @java.lang.Override
   public java.lang.String getMessage() {
     java.lang.Object ref = message_;
     if (ref instanceof java.lang.String) {
@@ -179,6 +169,7 @@ private static final long serialVersionUID = 0L;
    * <code>string message = 2;</code>
    * @return The bytes for message.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getMessageBytes() {
     java.lang.Object ref = message_;
@@ -196,6 +187,10 @@ private static final long serialVersionUID = 0L;
   public static final int STACK_TRACE_ELEMENTS_FIELD_NUMBER = 3;
   private com.google.protobuf.LazyStringList stackTraceElements_;
   /**
+   * <pre>
+   *    StackTraceCause cause = 4 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string stack_trace_elements = 3;</code>
    * @return A list containing the stackTraceElements.
    */
@@ -204,6 +199,10 @@ private static final long serialVersionUID = 0L;
     return stackTraceElements_;
   }
   /**
+   * <pre>
+   *    StackTraceCause cause = 4 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string stack_trace_elements = 3;</code>
    * @return The count of stackTraceElements.
    */
@@ -211,6 +210,10 @@ private static final long serialVersionUID = 0L;
     return stackTraceElements_.size();
   }
   /**
+   * <pre>
+   *    StackTraceCause cause = 4 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string stack_trace_elements = 3;</code>
    * @param index The index of the element to return.
    * @return The stackTraceElements at the given index.
@@ -219,6 +222,10 @@ private static final long serialVersionUID = 0L;
     return stackTraceElements_.get(index);
   }
   /**
+   * <pre>
+   *    StackTraceCause cause = 4 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string stack_trace_elements = 3;</code>
    * @param index The index of the value to return.
    * @return The bytes of the stackTraceElements at the given index.
@@ -226,29 +233,6 @@ private static final long serialVersionUID = 0L;
   public com.google.protobuf.ByteString
       getStackTraceElementsBytes(int index) {
     return stackTraceElements_.getByteString(index);
-  }
-
-  public static final int CAUSE_FIELD_NUMBER = 4;
-  private eu.tsystems.mms.tic.testframework.report.model.StackTraceCause cause_;
-  /**
-   * <code>.data.StackTraceCause cause = 4;</code>
-   * @return Whether the cause field is set.
-   */
-  public boolean hasCause() {
-    return cause_ != null;
-  }
-  /**
-   * <code>.data.StackTraceCause cause = 4;</code>
-   * @return The cause.
-   */
-  public eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getCause() {
-    return cause_ == null ? eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.getDefaultInstance() : cause_;
-  }
-  /**
-   * <code>.data.StackTraceCause cause = 4;</code>
-   */
-  public eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder getCauseOrBuilder() {
-    return getCause();
   }
 
   private byte memoizedIsInitialized = -1;
@@ -274,9 +258,6 @@ private static final long serialVersionUID = 0L;
     for (int i = 0; i < stackTraceElements_.size(); i++) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 3, stackTraceElements_.getRaw(i));
     }
-    if (cause_ != null) {
-      output.writeMessage(4, getCause());
-    }
     unknownFields.writeTo(output);
   }
 
@@ -300,10 +281,6 @@ private static final long serialVersionUID = 0L;
       size += dataSize;
       size += 1 * getStackTraceElementsList().size();
     }
-    if (cause_ != null) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(4, getCause());
-    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -325,11 +302,6 @@ private static final long serialVersionUID = 0L;
         .equals(other.getMessage())) return false;
     if (!getStackTraceElementsList()
         .equals(other.getStackTraceElementsList())) return false;
-    if (hasCause() != other.hasCause()) return false;
-    if (hasCause()) {
-      if (!getCause()
-          .equals(other.getCause())) return false;
-    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -348,10 +320,6 @@ private static final long serialVersionUID = 0L;
     if (getStackTraceElementsCount() > 0) {
       hash = (37 * hash) + STACK_TRACE_ELEMENTS_FIELD_NUMBER;
       hash = (53 * hash) + getStackTraceElementsList().hashCode();
-    }
-    if (hasCause()) {
-      hash = (37 * hash) + CAUSE_FIELD_NUMBER;
-      hash = (53 * hash) + getCause().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -492,12 +460,6 @@ private static final long serialVersionUID = 0L;
 
       stackTraceElements_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       bitField0_ = (bitField0_ & ~0x00000001);
-      if (causeBuilder_ == null) {
-        cause_ = null;
-      } else {
-        cause_ = null;
-        causeBuilder_ = null;
-      }
       return this;
     }
 
@@ -532,11 +494,6 @@ private static final long serialVersionUID = 0L;
         bitField0_ = (bitField0_ & ~0x00000001);
       }
       result.stackTraceElements_ = stackTraceElements_;
-      if (causeBuilder_ == null) {
-        result.cause_ = cause_;
-      } else {
-        result.cause_ = causeBuilder_.build();
-      }
       onBuilt();
       return result;
     }
@@ -602,9 +559,6 @@ private static final long serialVersionUID = 0L;
           stackTraceElements_.addAll(other.stackTraceElements_);
         }
         onChanged();
-      }
-      if (other.hasCause()) {
-        mergeCause(other.getCause());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -796,6 +750,10 @@ private static final long serialVersionUID = 0L;
        }
     }
     /**
+     * <pre>
+     *    StackTraceCause cause = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string stack_trace_elements = 3;</code>
      * @return A list containing the stackTraceElements.
      */
@@ -804,6 +762,10 @@ private static final long serialVersionUID = 0L;
       return stackTraceElements_.getUnmodifiableView();
     }
     /**
+     * <pre>
+     *    StackTraceCause cause = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string stack_trace_elements = 3;</code>
      * @return The count of stackTraceElements.
      */
@@ -811,6 +773,10 @@ private static final long serialVersionUID = 0L;
       return stackTraceElements_.size();
     }
     /**
+     * <pre>
+     *    StackTraceCause cause = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string stack_trace_elements = 3;</code>
      * @param index The index of the element to return.
      * @return The stackTraceElements at the given index.
@@ -819,6 +785,10 @@ private static final long serialVersionUID = 0L;
       return stackTraceElements_.get(index);
     }
     /**
+     * <pre>
+     *    StackTraceCause cause = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string stack_trace_elements = 3;</code>
      * @param index The index of the value to return.
      * @return The bytes of the stackTraceElements at the given index.
@@ -828,6 +798,10 @@ private static final long serialVersionUID = 0L;
       return stackTraceElements_.getByteString(index);
     }
     /**
+     * <pre>
+     *    StackTraceCause cause = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string stack_trace_elements = 3;</code>
      * @param index The index to set the value at.
      * @param value The stackTraceElements to set.
@@ -844,6 +818,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    StackTraceCause cause = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string stack_trace_elements = 3;</code>
      * @param value The stackTraceElements to add.
      * @return This builder for chaining.
@@ -859,6 +837,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    StackTraceCause cause = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string stack_trace_elements = 3;</code>
      * @param values The stackTraceElements to add.
      * @return This builder for chaining.
@@ -872,6 +854,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    StackTraceCause cause = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string stack_trace_elements = 3;</code>
      * @return This builder for chaining.
      */
@@ -882,6 +868,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    StackTraceCause cause = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string stack_trace_elements = 3;</code>
      * @param value The bytes of the stackTraceElements to add.
      * @return This builder for chaining.
@@ -896,125 +886,6 @@ private static final long serialVersionUID = 0L;
       stackTraceElements_.add(value);
       onChanged();
       return this;
-    }
-
-    private eu.tsystems.mms.tic.testframework.report.model.StackTraceCause cause_;
-    private com.google.protobuf.SingleFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.StackTraceCause, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder, eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder> causeBuilder_;
-    /**
-     * <code>.data.StackTraceCause cause = 4;</code>
-     * @return Whether the cause field is set.
-     */
-    public boolean hasCause() {
-      return causeBuilder_ != null || cause_ != null;
-    }
-    /**
-     * <code>.data.StackTraceCause cause = 4;</code>
-     * @return The cause.
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getCause() {
-      if (causeBuilder_ == null) {
-        return cause_ == null ? eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.getDefaultInstance() : cause_;
-      } else {
-        return causeBuilder_.getMessage();
-      }
-    }
-    /**
-     * <code>.data.StackTraceCause cause = 4;</code>
-     */
-    public Builder setCause(eu.tsystems.mms.tic.testframework.report.model.StackTraceCause value) {
-      if (causeBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        cause_ = value;
-        onChanged();
-      } else {
-        causeBuilder_.setMessage(value);
-      }
-
-      return this;
-    }
-    /**
-     * <code>.data.StackTraceCause cause = 4;</code>
-     */
-    public Builder setCause(
-        eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder builderForValue) {
-      if (causeBuilder_ == null) {
-        cause_ = builderForValue.build();
-        onChanged();
-      } else {
-        causeBuilder_.setMessage(builderForValue.build());
-      }
-
-      return this;
-    }
-    /**
-     * <code>.data.StackTraceCause cause = 4;</code>
-     */
-    public Builder mergeCause(eu.tsystems.mms.tic.testframework.report.model.StackTraceCause value) {
-      if (causeBuilder_ == null) {
-        if (cause_ != null) {
-          cause_ =
-            eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.newBuilder(cause_).mergeFrom(value).buildPartial();
-        } else {
-          cause_ = value;
-        }
-        onChanged();
-      } else {
-        causeBuilder_.mergeFrom(value);
-      }
-
-      return this;
-    }
-    /**
-     * <code>.data.StackTraceCause cause = 4;</code>
-     */
-    public Builder clearCause() {
-      if (causeBuilder_ == null) {
-        cause_ = null;
-        onChanged();
-      } else {
-        cause_ = null;
-        causeBuilder_ = null;
-      }
-
-      return this;
-    }
-    /**
-     * <code>.data.StackTraceCause cause = 4;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder getCauseBuilder() {
-      
-      onChanged();
-      return getCauseFieldBuilder().getBuilder();
-    }
-    /**
-     * <code>.data.StackTraceCause cause = 4;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder getCauseOrBuilder() {
-      if (causeBuilder_ != null) {
-        return causeBuilder_.getMessageOrBuilder();
-      } else {
-        return cause_ == null ?
-            eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.getDefaultInstance() : cause_;
-      }
-    }
-    /**
-     * <code>.data.StackTraceCause cause = 4;</code>
-     */
-    private com.google.protobuf.SingleFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.StackTraceCause, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder, eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder> 
-        getCauseFieldBuilder() {
-      if (causeBuilder_ == null) {
-        causeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            eu.tsystems.mms.tic.testframework.report.model.StackTraceCause, eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.Builder, eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder>(
-                getCause(),
-                getParentForChildren(),
-                isClean());
-        cause_ = null;
-      }
-      return causeBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

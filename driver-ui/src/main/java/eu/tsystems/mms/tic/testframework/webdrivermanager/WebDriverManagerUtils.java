@@ -71,24 +71,6 @@ public final class WebDriverManagerUtils {
         return WebDriverManager.getConfig().getBaseUrl();
     }
 
-    /**
-     * Set Browser type + version in TestRunConfiguration and log infos.
-     *
-     * @param driver WebDriver or Selenium to get info from.
-     */
-    protected static void logUserAgent(final String sessionKey, final WebDriver driver,
-                                       final HostInfo hostInfo) {
-
-        String browserInfo = pLogUserAgent(driver);
-
-        SessionContext sessionContext = ExecutionContextController.getCurrentSessionContext();
-        if (sessionContext != null) {
-            sessionContext.metaData.put("browserInfo", browserInfo);
-        } else {
-            LOGGER.error("Something is wrong, I don't have a session context, but I'm in a session");
-        }
-    }
-
     public static void logUserAgent(WebDriver driver) {
         pLogUserAgent(driver);
     }

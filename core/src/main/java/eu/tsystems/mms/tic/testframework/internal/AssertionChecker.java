@@ -22,7 +22,7 @@
  package eu.tsystems.mms.tic.testframework.internal;
 
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
-import eu.tsystems.mms.tic.testframework.report.model.AssertionInfo;
+import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -55,13 +55,12 @@ public final class AssertionChecker {
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         if (methodContext != null) {
             // add nf info
-            AssertionInfo assertionInfo = methodContext.addNonFunctionalInfo(throwable);
+            methodContext.addOptionalAssertion(throwable);
 
             // get screenshots and videos
             List<Screenshot> screenshots = TestEvidenceCollector.collectScreenshots();
             if (screenshots != null) {
-                screenshots.forEach(s -> s.errorContextId = assertionInfo.id);
-                methodContext.screenshots.addAll(screenshots);
+                methodContext.addScreenshots(screenshots.stream());
             }
 
             // not collecting a video here

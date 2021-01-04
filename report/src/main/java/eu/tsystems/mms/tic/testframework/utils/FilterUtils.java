@@ -50,7 +50,7 @@ public final class FilterUtils {
     ) {
         return methodContexts.stream()
                 .filter(methodContext -> (methodContext.isConfigMethod() && configMethods) || (methodContext.isTestMethod() && testMethods))
-                .filter(methodContext -> methodContext.status == status)
+                .filter(methodContext -> methodContext.getStatus() == status)
                 .collect(Collectors.toList());
     }
 }

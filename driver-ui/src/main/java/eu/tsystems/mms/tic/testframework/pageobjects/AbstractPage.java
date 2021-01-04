@@ -92,7 +92,7 @@ public abstract class AbstractPage implements Loggable {
 
             MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
             if (methodContext != null) {
-                methodContext.errorContext().setThrowable(message, t);
+                methodContext.getErrorContext().setThrowable(message, t);
             }
 
             /*
@@ -161,7 +161,6 @@ public abstract class AbstractPage implements Loggable {
         Logging and demo mode
          */
         String classSimpleName = this.getClass().getSimpleName();
-        log().info("Checking mandatory elements");
 
         handleDemoMode(getWebDriver());
 
@@ -195,7 +194,7 @@ public abstract class AbstractPage implements Loggable {
 
                 MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
                 if (methodContext != null) {
-                    methodContext.errorContext().setThrowable(throwableMessage, importantThrowable);
+                    methodContext.getErrorContext().setThrowable(throwableMessage, importantThrowable);
                 }
 
                 if (importantThrowable instanceof Error) {
@@ -209,8 +208,6 @@ public abstract class AbstractPage implements Loggable {
         }
 
         screenShotOnPageLoad();
-
-        log().info("Page loaded successfully");
     }
 
     protected void checkPagePreparation() {

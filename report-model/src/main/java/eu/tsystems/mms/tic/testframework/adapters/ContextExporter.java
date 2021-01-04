@@ -302,7 +302,7 @@ public class ContextExporter {
                 optional.ifPresent(file -> entryBuilder.setScreenshotId(file.getId()));
             } else if (entry instanceof LogEvent) {
                 LogEvent logEvent = (LogEvent)entry;
-                Optional<LogMessage.Builder> optional = Optional.ofNullable(buildLogEvent(logEvent));
+                Optional<LogMessage.Builder> optional = Optional.ofNullable(buildLogMessage(logEvent));
                 optional.ifPresent(entryBuilder::setLogMessage);
             } else if (entry instanceof eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext) {
                 eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext errorContext = (eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext)entry;
@@ -412,9 +412,9 @@ public class ContextExporter {
         return builder;
     }
 
-    public LogMessage.Builder buildLogEvent(LogEvent logEvent) {
+    public LogMessage.Builder buildLogMessage(LogEvent logEvent) {
         LogMessage.Builder builder = LogMessage.newBuilder();
-        builder.setLoggerName(logEvent.getLoggerName());
+        apply(logEvent.getLoggerName(), builder::setLoggerName);
         builder.setMessage(logEvent.getMessage().getFormattedMessage());
         if (logEvent.getLevel() == Level.ERROR) {
             builder.setType(LogMessageType.LMT_ERROR);
@@ -476,7 +476,7 @@ public class ContextExporter {
         executionContext.readExclusiveSessionContexts().forEach(sessionContext -> builder.addExclusiveSessionContextIds(sessionContext.getId()));
         apply(executionContext.estimatedTestMethodCount, builder::setEstimatedTestsCount);
         executionContext.readMethodContextLessLogs().forEach(logEvent -> {
-            Optional<LogMessage.Builder> optional = Optional.ofNullable(buildLogEvent(logEvent));
+            Optional<LogMessage.Builder> optional = Optional.ofNullable(buildLogMessage(logEvent));
             optional.ifPresent(builder::addLogMessages);
         });
         builder.putFailureCorridorLimits(FailureCorridorValue.FCV_HIGH_VALUE, FailureCorridor.getAllowedTestFailuresHIGH());

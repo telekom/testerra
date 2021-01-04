@@ -6,7 +6,7 @@ package eu.tsystems.mms.tic.testframework.report.model;
 /**
  * Protobuf type {@code data.BuildInformation}
  */
-public  final class BuildInformation extends
+public final class BuildInformation extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:data.BuildInformation)
     BuildInformationOrBuilder {
@@ -128,6 +128,7 @@ private static final long serialVersionUID = 0L;
    * <code>string build_java_version = 1;</code>
    * @return The buildJavaVersion.
    */
+  @java.lang.Override
   public java.lang.String getBuildJavaVersion() {
     java.lang.Object ref = buildJavaVersion_;
     if (ref instanceof java.lang.String) {
@@ -144,6 +145,7 @@ private static final long serialVersionUID = 0L;
    * <code>string build_java_version = 1;</code>
    * @return The bytes for buildJavaVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getBuildJavaVersionBytes() {
     java.lang.Object ref = buildJavaVersion_;
@@ -164,6 +166,7 @@ private static final long serialVersionUID = 0L;
    * <code>string build_os_name = 2;</code>
    * @return The buildOsName.
    */
+  @java.lang.Override
   public java.lang.String getBuildOsName() {
     java.lang.Object ref = buildOsName_;
     if (ref instanceof java.lang.String) {
@@ -180,6 +183,7 @@ private static final long serialVersionUID = 0L;
    * <code>string build_os_name = 2;</code>
    * @return The bytes for buildOsName.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getBuildOsNameBytes() {
     java.lang.Object ref = buildOsName_;
@@ -200,6 +204,7 @@ private static final long serialVersionUID = 0L;
    * <code>string build_os_version = 3;</code>
    * @return The buildOsVersion.
    */
+  @java.lang.Override
   public java.lang.String getBuildOsVersion() {
     java.lang.Object ref = buildOsVersion_;
     if (ref instanceof java.lang.String) {
@@ -216,6 +221,7 @@ private static final long serialVersionUID = 0L;
    * <code>string build_os_version = 3;</code>
    * @return The bytes for buildOsVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getBuildOsVersionBytes() {
     java.lang.Object ref = buildOsVersion_;
@@ -236,6 +242,7 @@ private static final long serialVersionUID = 0L;
    * <code>string build_user_name = 4;</code>
    * @return The buildUserName.
    */
+  @java.lang.Override
   public java.lang.String getBuildUserName() {
     java.lang.Object ref = buildUserName_;
     if (ref instanceof java.lang.String) {
@@ -252,6 +259,7 @@ private static final long serialVersionUID = 0L;
    * <code>string build_user_name = 4;</code>
    * @return The bytes for buildUserName.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getBuildUserNameBytes() {
     java.lang.Object ref = buildUserName_;
@@ -272,6 +280,7 @@ private static final long serialVersionUID = 0L;
    * <code>string build_version = 5;</code>
    * @return The buildVersion.
    */
+  @java.lang.Override
   public java.lang.String getBuildVersion() {
     java.lang.Object ref = buildVersion_;
     if (ref instanceof java.lang.String) {
@@ -288,6 +297,7 @@ private static final long serialVersionUID = 0L;
    * <code>string build_version = 5;</code>
    * @return The bytes for buildVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getBuildVersionBytes() {
     java.lang.Object ref = buildVersion_;
@@ -308,6 +318,7 @@ private static final long serialVersionUID = 0L;
    * <code>string build_timestamp = 6;</code>
    * @return The buildTimestamp.
    */
+  @java.lang.Override
   public java.lang.String getBuildTimestamp() {
     java.lang.Object ref = buildTimestamp_;
     if (ref instanceof java.lang.String) {
@@ -324,6 +335,7 @@ private static final long serialVersionUID = 0L;
    * <code>string build_timestamp = 6;</code>
    * @return The bytes for buildTimestamp.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getBuildTimestampBytes() {
     java.lang.Object ref = buildTimestamp_;

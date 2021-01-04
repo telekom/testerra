@@ -27,12 +27,11 @@ import eu.tsystems.mms.tic.testframework.report.model.Serial;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
- * A static wrapper for {@link MethodContext#steps()}
+ * A static wrapper for {@link MethodContext#getTestSteps()}
  * Created by piet on 11.03.16.
  */
 public class TestStep implements Serializable, Loggable {
@@ -43,14 +42,11 @@ public class TestStep implements Serializable, Loggable {
     public static final String INTERNAL="Internal";
 
     private final String name;
-    private final List<TestStepAction> testStepActions = Collections.synchronizedList(new LinkedList<>());
+    private final List<TestStepAction> testStepActions = new LinkedList<>();
     private boolean closed = false;
 
-    public TestStep(String name) {
+    TestStep(String name) {
         this.name = name;
-        if (!isInternalTestStep()) {
-            log().info("Begin " + name);
-        }
     }
 
     public boolean isInternalTestStep() {
@@ -81,7 +77,7 @@ public class TestStep implements Serializable, Loggable {
         }
         // if there are no test steps actions yet, create an initial one
         if (testStepActions.size() == 0) {
-            TestStepAction testStepAction = new TestStepAction(this, name);
+            TestStepAction testStepAction = new TestStepAction(name);
             testStepActions.add(testStepAction);
             return testStepAction;
         }
@@ -90,11 +86,17 @@ public class TestStep implements Serializable, Loggable {
 
         // if the last TestStepAction name is NOT the same as the current contextual one, then we have to create a new one
         if (!StringUtils.equals(testStepAction.getName(), name)) {
-            testStepAction = new TestStepAction(this, name);
+            testStepAction = new TestStepAction(name);
             testStepActions.add(testStepAction);
         }
 
         return testStepAction;
+    }
+
+    public void open() {
+        if (!isInternalTestStep()) {
+            log().info("Begin " + name);
+        }
     }
 
     public void close() {
@@ -128,7 +130,7 @@ public class TestStep implements Serializable, Loggable {
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         TestStep testStep;
         if (methodContext != null) {
-            testStep = methodContext.steps().announceTestStep(name);
+            testStep = methodContext.getTestStep(name);
         } else {
             testStep = new TestStep(name);
         }
@@ -142,7 +144,7 @@ public class TestStep implements Serializable, Loggable {
     public static void end() {
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         if (methodContext != null) {
-            TestStep actualTestStep = methodContext.steps().getCurrentTestStep();
+            TestStep actualTestStep = methodContext.getCurrentTestStep();
             if (actualTestStep != null) {
                 actualTestStep.close();
             }

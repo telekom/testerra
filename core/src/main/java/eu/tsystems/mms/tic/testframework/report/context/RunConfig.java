@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2020,  Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -17,49 +17,29 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
  */
- package eu.tsystems.mms.tic.testframework.report.context;
+ package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.internal.BuildInformation;
-import eu.tsystems.mms.tic.testframework.report.context.report.DefaultReport;
-import java.io.File;
+import eu.tsystems.mms.tic.testframework.internal.Flags;
 
 public final class RunConfig {
 
-    public final String RUNCFG = (Testerra.Properties.DRY_RUN.asBool() ? Testerra.Properties.DRY_RUN : "") + PropertyManager.getProperty(TesterraProperties.RUNCFG, "DEFAULT");
+    public final String RUNCFG = (Flags.DRY_RUN ? "DRY RUN " : "") + PropertyManager.getProperty(TesterraProperties.RUNCFG, "DEFAULT");
     public final BuildInformation buildInformation = new BuildInformation();
 
-    public static String getModuleFolderName() {
-        return new File(".").getAbsoluteFile().getParentFile().getName();
-    }
-
-    private String reportName = null;
-
-    public void resetReportName() {
-        String defaultName = "";
-        try {
-            defaultName = getModuleFolderName();
-        } catch (Exception e) {
-            // nothing
-        }
-        reportName = DefaultReport.Properties.NAME.newDefault(defaultName).asString();
-    }
-
     public String getReportName() {
-        if (reportName == null) {
-            resetReportName();
-        }
-        return reportName;
+        return PropertyManager.getProperty(TesterraProperties.REPORTNAME, "Test Report");
     }
 
     @Override
     public String toString() {
         return "RunConfig{" +
                 "RUNCFG='" + RUNCFG + '\'' +
-                ", reportName='" + reportName + '\'' +
+                ", reportName='" + getReportName() + '\'' +
                 '}';
     }
 }

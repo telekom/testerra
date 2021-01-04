@@ -11,4 +11,5 @@ include 'docs'
 include 'bup'
 include 'report-model'
 include 'report'
+include 'report-ng'
 

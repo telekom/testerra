@@ -8,67 +8,37 @@ public interface ErrorContextOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>string readable_error_message = 1;</code>
-   * @return The readableErrorMessage.
-   */
-  java.lang.String getReadableErrorMessage();
-  /**
-   * <code>string readable_error_message = 1;</code>
-   * @return The bytes for readableErrorMessage.
-   */
-  com.google.protobuf.ByteString
-      getReadableErrorMessageBytes();
-
-  /**
-   * <code>string additional_error_message = 2;</code>
-   * @return The additionalErrorMessage.
-   */
-  java.lang.String getAdditionalErrorMessage();
-  /**
-   * <code>string additional_error_message = 2;</code>
-   * @return The bytes for additionalErrorMessage.
-   */
-  com.google.protobuf.ByteString
-      getAdditionalErrorMessageBytes();
-
-  /**
-   * <code>.data.StackTrace stack_trace = 3;</code>
-   * @return Whether the stackTrace field is set.
-   */
-  boolean hasStackTrace();
-  /**
-   * <code>.data.StackTrace stack_trace = 3;</code>
-   * @return The stackTrace.
-   */
-  eu.tsystems.mms.tic.testframework.report.model.StackTrace getStackTrace();
-  /**
-   * <code>.data.StackTrace stack_trace = 3;</code>
-   */
-  eu.tsystems.mms.tic.testframework.report.model.StackTraceOrBuilder getStackTraceOrBuilder();
-
-  /**
-   * <code>string error_fingerprint = 6;</code>
-   * @return The errorFingerprint.
-   */
-  java.lang.String getErrorFingerprint();
-  /**
-   * <code>string error_fingerprint = 6;</code>
-   * @return The bytes for errorFingerprint.
-   */
-  com.google.protobuf.ByteString
-      getErrorFingerprintBytes();
-
-  /**
+   * <pre>
+   *    string readable_error_message = 1 [deprecated = true];
+   *    string additional_error_message = 2 [deprecated = true];
+   *    StackTrace stack_trace = 3  [deprecated = true];
+   *    string error_fingerprint = 6 [deprecated = true];
+   * </pre>
+   *
    * <code>.data.ScriptSource script_source = 7;</code>
    * @return Whether the scriptSource field is set.
    */
   boolean hasScriptSource();
   /**
+   * <pre>
+   *    string readable_error_message = 1 [deprecated = true];
+   *    string additional_error_message = 2 [deprecated = true];
+   *    StackTrace stack_trace = 3  [deprecated = true];
+   *    string error_fingerprint = 6 [deprecated = true];
+   * </pre>
+   *
    * <code>.data.ScriptSource script_source = 7;</code>
    * @return The scriptSource.
    */
   eu.tsystems.mms.tic.testframework.report.model.ScriptSource getScriptSource();
   /**
+   * <pre>
+   *    string readable_error_message = 1 [deprecated = true];
+   *    string additional_error_message = 2 [deprecated = true];
+   *    StackTrace stack_trace = 3  [deprecated = true];
+   *    string error_fingerprint = 6 [deprecated = true];
+   * </pre>
+   *
    * <code>.data.ScriptSource script_source = 7;</code>
    */
   eu.tsystems.mms.tic.testframework.report.model.ScriptSourceOrBuilder getScriptSourceOrBuilder();
@@ -87,4 +57,58 @@ public interface ErrorContextOrBuilder extends
    * <code>.data.ScriptSource execution_object_source = 8;</code>
    */
   eu.tsystems.mms.tic.testframework.report.model.ScriptSourceOrBuilder getExecutionObjectSourceOrBuilder();
+
+  /**
+   * <code>string ticketId = 9;</code>
+   * @return The ticketId.
+   */
+  java.lang.String getTicketId();
+  /**
+   * <code>string ticketId = 9;</code>
+   * @return The bytes for ticketId.
+   */
+  com.google.protobuf.ByteString
+      getTicketIdBytes();
+
+  /**
+   * <code>string description = 10;</code>
+   * @return The description.
+   */
+  java.lang.String getDescription();
+  /**
+   * <code>string description = 10;</code>
+   * @return The bytes for description.
+   */
+  com.google.protobuf.ByteString
+      getDescriptionBytes();
+
+  /**
+   * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
+   */
+  java.util.List<eu.tsystems.mms.tic.testframework.report.model.StackTraceCause> 
+      getStackTraceList();
+  /**
+   * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
+   */
+  eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getStackTrace(int index);
+  /**
+   * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
+   */
+  int getStackTraceCount();
+  /**
+   * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
+   */
+  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder> 
+      getStackTraceOrBuilderList();
+  /**
+   * <code>repeated .data.StackTraceCause stack_trace = 11;</code>
+   */
+  eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder getStackTraceOrBuilder(
+      int index);
+
+  /**
+   * <code>bool optional = 12;</code>
+   * @return The optional.
+   */
+  boolean getOptional();
 }

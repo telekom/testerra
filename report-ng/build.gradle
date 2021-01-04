@@ -1,0 +1,51 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
+plugins {
+    id 'java'
+}
+
+def npm
+if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+    npm = 'npm.cmd'
+} else {
+    npm = 'npm'
+}
+
+task npmClean {
+    doLast {
+        delete "app/node_modules"
+        delete "app/package-lock.json"
+        delete "app/dist"
+    }
+}
+
+task destClean {
+    doLast {
+        delete "src/main/resources/report-ng"
+    }
+}
+
+task npmInstall(type:Exec) {
+    workingDir 'app'
+    commandLine npm, 'install'
+}
+
+task npmBuild(type:Exec) {
+    workingDir 'app'
+    commandLine npm, 'run', "build"
+}
+
+dependencies {
+    implementation project(':report-model')
+}
+
+apply from: rootProject.file('release-bintray.gradle')
+
+npmBuild.dependsOn(npmInstall)
+
+task buildReport {
+    dependsOn(npmBuild)
+    dependsOn(destClean)
+}
+
+clean.dependsOn(npmClean)

@@ -641,6 +641,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
      * Provides access to all non-functional assert methods.
      *
      * @return GuiElementAssert object for non-functional assertions
+     * @deprecated Use {@link #optionalAsserts()} instead
      */
     @Deprecated
     public GuiElementAssert nonFunctionalAsserts() {
@@ -669,12 +670,18 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     }
 
     /**
+     * Provides access to optional assert methods
+     */
+    public GuiElementAssert optionalAsserts() { return nonFunctionalAssertReplacement; }
+
+    /**
      * Provides access to all non-functional assert methods. If an assertion fails, the assertDescription will be
      * given as cause, instead of the technical cause like an isDisplayed error.
      *
      * @param errorMessage Cause returned on assertion error.
      *
      * @return GuiElementAssert object for non-functional assertions
+     * @deprecated Use {@link #optionalAsserts(String)} instead
      */
     @Deprecated
     public GuiElementAssert nonFunctionalAsserts(String errorMessage) {
@@ -690,6 +697,13 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
             instantAssert = createAssertDecorators(core, guiElementData, assertion, waits());
         }
         return instantAssert;
+    }
+
+    /**
+     * Provides access to optional assert methods
+     */
+    public GuiElementAssert optionalAsserts(String errorMessage) {
+        return nonFunctionalAsserts(errorMessage);
     }
 
     /**

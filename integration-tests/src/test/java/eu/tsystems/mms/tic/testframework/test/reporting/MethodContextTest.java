@@ -44,11 +44,11 @@ public class MethodContextTest extends TesterraTest {
     @Test
     public void testT01_SetThrowable() throws Exception {
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-        methodContext.errorContext().setThrowable(null, getStackedThrowable());
+        methodContext.getErrorContext().setThrowable(null, getStackedThrowable());
 
-        StackTrace stackTrace = methodContext.errorContext().getStackTrace();
+        StackTrace stackTrace = methodContext.getErrorContext().getStackTrace();
 
-        String errorMessage = methodContext.errorContext().getReadableErrorMessage();
+        String errorMessage = methodContext.getErrorContext().getReadableErrorMessage();
         AssertCollector.assertTrue(errorMessage.contains(level0String), "error message contains " + level0String);
 
         String[] toCheck = new String[]{

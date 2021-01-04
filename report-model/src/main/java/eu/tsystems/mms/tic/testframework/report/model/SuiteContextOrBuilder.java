@@ -27,40 +27,40 @@ public interface SuiteContextOrBuilder extends
    * list of all test
    * </pre>
    *
-   * <code>repeated string test_context_ids = 6;</code>
+   * <code>repeated string test_context_ids = 6 [deprecated = true];</code>
    * @return A list containing the testContextIds.
    */
-  java.util.List<java.lang.String>
+  @java.lang.Deprecated java.util.List<java.lang.String>
       getTestContextIdsList();
   /**
    * <pre>
    * list of all test
    * </pre>
    *
-   * <code>repeated string test_context_ids = 6;</code>
+   * <code>repeated string test_context_ids = 6 [deprecated = true];</code>
    * @return The count of testContextIds.
    */
-  int getTestContextIdsCount();
+  @java.lang.Deprecated int getTestContextIdsCount();
   /**
    * <pre>
    * list of all test
    * </pre>
    *
-   * <code>repeated string test_context_ids = 6;</code>
+   * <code>repeated string test_context_ids = 6 [deprecated = true];</code>
    * @param index The index of the element to return.
    * @return The testContextIds at the given index.
    */
-  java.lang.String getTestContextIds(int index);
+  @java.lang.Deprecated java.lang.String getTestContextIds(int index);
   /**
    * <pre>
    * list of all test
    * </pre>
    *
-   * <code>repeated string test_context_ids = 6;</code>
+   * <code>repeated string test_context_ids = 6 [deprecated = true];</code>
    * @param index The index of the value to return.
    * @return The bytes of the testContextIds at the given index.
    */
-  com.google.protobuf.ByteString
+  @java.lang.Deprecated com.google.protobuf.ByteString
       getTestContextIdsBytes(int index);
 
   /**

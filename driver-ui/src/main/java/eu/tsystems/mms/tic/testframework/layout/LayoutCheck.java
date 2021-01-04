@@ -679,7 +679,7 @@ public final class LayoutCheck {
             context.annotatedScreenshot = report.provideScreenshot(annotatedReferenceScreenshotPath.toFile(), Report.FileMode.MOVE);
         }
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-        methodContext.customContexts.add(context);
+        methodContext.addCustomContext(context);
     }
 
     public static void assertScreenshot(WebDriver webDriver, String targetImageName, double confidenceThreshold) {

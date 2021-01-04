@@ -32,42 +32,43 @@ public interface StackTraceCauseOrBuilder extends
       getMessageBytes();
 
   /**
+   * <pre>
+   *    StackTraceCause cause = 4 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string stack_trace_elements = 3;</code>
    * @return A list containing the stackTraceElements.
    */
   java.util.List<java.lang.String>
       getStackTraceElementsList();
   /**
+   * <pre>
+   *    StackTraceCause cause = 4 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string stack_trace_elements = 3;</code>
    * @return The count of stackTraceElements.
    */
   int getStackTraceElementsCount();
   /**
+   * <pre>
+   *    StackTraceCause cause = 4 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string stack_trace_elements = 3;</code>
    * @param index The index of the element to return.
    * @return The stackTraceElements at the given index.
    */
   java.lang.String getStackTraceElements(int index);
   /**
+   * <pre>
+   *    StackTraceCause cause = 4 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string stack_trace_elements = 3;</code>
    * @param index The index of the value to return.
    * @return The bytes of the stackTraceElements at the given index.
    */
   com.google.protobuf.ByteString
       getStackTraceElementsBytes(int index);
-
-  /**
-   * <code>.data.StackTraceCause cause = 4;</code>
-   * @return Whether the cause field is set.
-   */
-  boolean hasCause();
-  /**
-   * <code>.data.StackTraceCause cause = 4;</code>
-   * @return The cause.
-   */
-  eu.tsystems.mms.tic.testframework.report.model.StackTraceCause getCause();
-  /**
-   * <code>.data.StackTraceCause cause = 4;</code>
-   */
-  eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder getCauseOrBuilder();
 }

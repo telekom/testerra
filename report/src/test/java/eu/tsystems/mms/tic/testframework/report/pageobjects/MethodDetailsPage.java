@@ -187,7 +187,9 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
     }
 
     public MethodDetailsPage toggleFingerprint() {
+        getFingerprintString().asserts("Expected the fingerprint detail is not shown before clicking the details button").assertIsNotDisplayed();
         fingerprintButton.click();
+        getFingerprintString().asserts("Expected the fingerprint detail is shown after clicking the details button").assertIsDisplayed();
         return PageFactory.create(MethodDetailsPage.class, this.getWebDriver());
     }
 
@@ -348,8 +350,8 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
     }
 
     public void assertCorrectTestMethodIsDisplayed(String methodName, TestResultHelper.TestResult methodResult) {
-        getMethodNameElement().asserts().assertTextContains(methodName);
-        getMethodResultElement().asserts().assertTextContains(methodResult.getXpathClassesDetailsHeader());
+        getMethodNameElement().asserts("The correct element of the method name should be displayed.").assertTextContains(methodName);
+        getMethodResultElement().asserts("The correct result of the element should be displayed.").assertTextContains(methodResult.getXpathClassesDetailsHeader());
     }
 
     //@Override

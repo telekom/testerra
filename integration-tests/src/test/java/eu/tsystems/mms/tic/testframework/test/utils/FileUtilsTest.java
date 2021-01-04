@@ -19,7 +19,8 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.test.utils;
+
+package eu.tsystems.mms.tic.testframework.test.utils;
 
 import eu.tsystems.mms.tic.testframework.exceptions.FileNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
@@ -38,6 +39,7 @@ import org.testng.annotations.Test;
 public class FileUtilsTest extends TesterraTest {
 
     private static final String testfile = "testfiles/Test.txt";
+    private static final String testWithWhiteSpace = "test with whitespace/test.txt";
     private static final Path localFilePath = Paths.get(System.getProperty("user.dir"), "FileUtilsTest.txt");
 
     @AfterMethod
@@ -83,6 +85,7 @@ public class FileUtilsTest extends TesterraTest {
      */
     @Test
     public void testT03_readFromFile() throws IOException, FileNotFoundException {
+
         String absoluteFilePath = FileUtils.getAbsoluteFilePath(testfile);
         String content = FileUtils.readFromFile(absoluteFilePath);
         AssertUtils.assertContains(content, "Huhu");
@@ -121,5 +124,14 @@ public class FileUtilsTest extends TesterraTest {
 
         final InputStream resourceInputStream = FileUtils.getLocalFileOrResourceInputStream("build.gradle");
         Assert.assertNotNull(resourceInputStream, "Resource File found.");
+    }
+
+    @Test
+    public void testT07_readFilesWithWhitespaces() throws java.io.FileNotFoundException {
+
+        FileUtils fileUtils = new FileUtils();
+        File localOrResourceFile = fileUtils.getLocalOrResourceFile(testWithWhiteSpace);
+        Assert.assertTrue(localOrResourceFile.exists(), "File exists.");
+
     }
 }

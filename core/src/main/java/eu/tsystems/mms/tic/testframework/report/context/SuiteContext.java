@@ -27,36 +27,47 @@ import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.stream.Stream;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 
 public class SuiteContext extends AbstractContext implements SynchronizableContext {
 
-    public final Queue<TestContextModel> testContextModels = new ConcurrentLinkedQueue<>();
-    public final ExecutionContext executionContext;
+    /**
+     * @deprecated Use {@link #readTestContexts()} instead
+     */
+    public final Queue<TestContext> testContexts = new ConcurrentLinkedQueue<>();
 
     public SuiteContext(ExecutionContext executionContext) {
-        this.parentContext = this.executionContext = executionContext;
+        this.parentContext = executionContext;
     }
 
-    public synchronized TestContextModel getTestContext(ITestResult testResult, ITestContext iTestContext) {
+    public ExecutionContext getExecutionContext() {
+        return (ExecutionContext)this.parentContext;
+    }
+
+    public Stream<TestContext> readTestContexts() {
+        return testContexts.stream();
+    }
+
+    public synchronized TestContext getTestContext(ITestResult testResult, ITestContext iTestContext) {
         final String testName = TestNGHelper.getTestName(testResult, iTestContext);
         return getOrCreateContext(
-                testContextModels,
+                testContexts,
                 testName,
-                () -> new TestContextModel(this, executionContext),
+                () -> new TestContext(this),
                 testContextModel -> {
                     EventBus eventBus = TesterraListener.getEventBus();
                     eventBus.post(new ContextUpdateEvent().setContext(this));
                 });
     }
 
-    public TestContextModel getTestContext(final ITestContext iTestContext) {
+    public TestContext getTestContext(final ITestContext iTestContext) {
         return this.getTestContext(null, iTestContext);
     }
 
     @Override
     public TestStatusController.Status getStatus() {
-        return getStatusFromContexts(testContextModels.stream());
+        return getStatusFromContexts(testContexts.stream());
     }
 }

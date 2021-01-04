@@ -21,13 +21,13 @@ public class GenerateReportListener implements FinalizeExecutionEvent.Listener, 
 == Generate the protobuf report model
 
 Testerra ships Google Protobuf model adapters for the internal context model.
-You can automatically generate all the models during the execution, when you register the `GenerateReportModelListener` in your module hook.
+You can automatically generate all the models during the execution, when you register the `AbstractReportModelListener` in your module hook.
 
 [source,java]
 ----
 
 import com.google.common.eventbus.EventBus;
-import eu.tsystems.mms.tic.testframework.listeners.GenerateReportModelListener;
+import eu.tsystems.mms.tic.testframework.listeners.AbstractReportModelListener;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 

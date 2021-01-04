@@ -23,6 +23,7 @@
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.SupportMethod;
+import eu.tsystems.mms.tic.testframework.report.model.context.Cause;
 import eu.tsystems.mms.tic.testframework.report.context.StackTrace;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -198,21 +199,12 @@ public final class ExecutionUtils {
         }
     }
 
+    /**
+     * @deprecated Replaced by {@link Cause}
+     */
     public static StackTrace createStackTrace(Throwable throwable) {
         StackTrace stackTrace = new StackTrace();
-        stackTrace.stackTrace = createCause(throwable);
+        stackTrace.stackTrace = new Cause(throwable);
         return stackTrace;
-    }
-
-    private static StackTrace.Cause createCause(Throwable throwable) {
-        StackTrace.Cause cause = new StackTrace.Cause();
-        cause.className = throwable.getClass().getName();
-        cause.message = throwable.getMessage();
-        cause.stackTraceElements = Arrays.stream(throwable.getStackTrace()).map(ste -> "at " + ste).collect(Collectors.toList());
-
-        if ((throwable.getCause() != null) && (throwable.getCause() != throwable)) {
-            cause.cause = createCause(throwable.getCause());
-        }
-        return cause;
     }
 }

@@ -72,9 +72,12 @@ public class LogsPage extends AbstractReportPage {
         includeFilter.asserts().assertIsDisplayed();
     }
 
+    /**
+     * This method check the display of the logsMessage by looking that no errorMessage will be displayed.
+     */
     public void assertLogMessageIsDisplayed(){
         GuiElement errorMessage = mainFrame.getSubElement(By.xpath("//td[text()='No matching records found']"));
-        errorMessage.asserts().assertIsNotDisplayed();
+        errorMessage.asserts("A error message should not be displayed for a valid search term").assertIsNotDisplayed();
     }
 
     public void insertSearchTermInInSearchBar(String level, String message, String logger, String thread){

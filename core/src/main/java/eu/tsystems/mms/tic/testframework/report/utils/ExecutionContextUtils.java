@@ -48,7 +48,7 @@ public class ExecutionContextUtils {
                     Method method = (Method) parameter;
 
                     MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult, testContext);
-                    String testMethodName = methodContext.name;
+                    String testMethodName = methodContext.getName();
 
                     final String info = "for " + method.getName();
                     if (!testMethodName.contains(info)) {

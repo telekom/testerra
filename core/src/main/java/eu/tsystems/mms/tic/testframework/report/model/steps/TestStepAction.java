@@ -24,38 +24,36 @@
 import eu.tsystems.mms.tic.testframework.clickpath.ClickPathEvent;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.report.context.Screenshot;
-import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
+import eu.tsystems.mms.tic.testframework.report.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.Serial;
+import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import java.io.Serializable;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import org.apache.logging.log4j.core.LogEvent;
 
 public class TestStepAction implements Serializable {
 
     private static final long serialVersionUID = Serial.SERIAL;
 
     private final String name;
-    private final TestStep testStep;
-    private long timestamp;
+    private final long timestamp;
+    private final List<Object> entries = new LinkedList<>();
 
-    private final List<TestStepActionEntry> testStepActionEntries = Collections.synchronizedList(new LinkedList<>());
     private static final Formatter formatter = Testerra.injector.getInstance(Formatter.class);
 
-    public TestStepAction(TestStep testStep, String name) {
-        this.testStep = testStep;
+    public TestStepAction(String name) {
         this.name = name;
         this.timestamp = System.currentTimeMillis();
     }
 
-    public TestStep getTestStep() {
-        return testStep;
-    }
-
     /**
-     * Usually, a TestStep already contains a {@link TestStepActionEntry} which contains a {@link LogMessage},
-     * where the timestamp can be retrieved by calling {@link LogMessage#getTimestamp()}
+     * Usually, a TestStep already contains a {@link LogEvent},
+     * where the timestamp can be retrieved by calling {@link LogEvent#getTimeMillis()}
      * But when running under platform, the log messages are handled differently and not stored to the database within entities.
      * In this case, the TestSteps are stored WITHOUT log messages and WITHOUT timestamp, which is still required to find log messages according to time ranges.
      * Therefore, the TestStepAction gets it's own timestamp.
@@ -68,37 +66,54 @@ public class TestStepAction implements Serializable {
         return name;
     }
 
-    public List<TestStepActionEntry> getTestStepActionEntries() {
-        return testStepActionEntries;
+    public <T> Stream<T> readEntries(Class<T> clazz) {
+        return this.entries.stream().filter(clazz::isInstance).map(clazz::cast);
     }
 
-    public void addLogMessage(LogMessage logMessage) {
-        // We take the first real log message timestamp here
-        if (testStepActionEntries.size()==0) {
-            this.timestamp = logMessage.getTimestamp();
-        }
-        testStepActionEntries.add(new TestStepActionEntry(logMessage));
+    public void addAssertion(ErrorContext errorContext) {
+        this.entries.add(errorContext);
+    }
+
+    @Deprecated
+    public Stream<ErrorContext> readOptionalAssertions() {
+        return readEntries(ErrorContext.class).filter(ErrorContext::isOptional);
+    }
+
+    @Deprecated
+    public Stream<ErrorContext> readCollectedAssertions() {
+        return readEntries(ErrorContext.class).filter(errorContext -> !errorContext.isOptional());
+    }
+
+    public void addLogEvent(LogEvent logEvent) {
+        this.entries.add(logEvent);
     }
 
     public void addClickPathEvent(ClickPathEvent event) {
-        testStepActionEntries.add(new TestStepActionEntry(event));
+        this.entries.add(event);
     }
 
     public void addScreenshot(Screenshot screenshot) {
-        testStepActionEntries.add(new TestStepActionEntry(screenshot));
+        this.entries.add(screenshot);
     }
-//
-//    public void addFailingLogMessage(final String msg) {
-//        LogMessage logMessage = new LogMessage(
-//            Level.ERROR,
-//            System.currentTimeMillis(),
-//            Thread.currentThread().getName(),
-//            "Test Failed",
-//            msg
-//        );
-//        final TestStepActionEntry testStepActionEntry = new TestStepActionEntry();
-//        testStepActionEntry.logMessage = logMessage;
-//        testStepActionEntries.add(testStepActionEntry);
-//    }
+
+    /**
+     * @deprecated  Use {@link #readEntries()} instead
+     * Used in methodDetailsStep.vm
+     */
+    public Collection<LogMessage> getLogMessages() {
+        return this.readEntries(LogEvent.class).map(LogMessage::new).collect(Collectors.toList());
+    }
+
+    /**
+     * @deprecated Use {@link #readEntries()} instead
+     * Used in methodDetailsStep.vm
+     */
+    public Collection<Screenshot> getScreenshots() {
+        return this.readEntries(Screenshot.class).collect(Collectors.toList());
+    }
+
+    public Stream<Object> readEntries() {
+        return this.entries.stream();
+    }
 }
 

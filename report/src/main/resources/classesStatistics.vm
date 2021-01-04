@@ -31,8 +31,8 @@
                 <th class="textcenter"><b>Total</b></th>
             </tr>
 
-            #set ($methodStatsPerClass = ${executionContext.getMethodStatsPerClass(true, false)})
-            #set ($configMethodStatsPerClass = ${executionContext.getMethodStatsPerClass(false, true)})
+            #set ($methodStatsPerClass = ${reportingData.methodStatsPerClass})
+            #set ($configMethodStatsPerClass = ${reportingData.configMethodStatsPerClass})
 
             #foreach($class in $methodStatsPerClass.keySet())
                 #set($status = ${class.getStatus()})
@@ -43,7 +43,7 @@
             <tr class="testclassrow hidden test">
                 <td class="textleft">
                     <span class="" style="color:${status.color};" title="${status.title}"><font size="4" style="vertical-align:middle;">${status.symbol}</font></span>
-                    <a href="classes/${class.id}.html" class="tooltip">${class.name}</a>
+                    <a href="classes/${class.id}.html" class="tooltip">${class.getName()}</a>
                 </td>
 
                 #foreach ($s in ${executionContext.getAvailableStatuses()})
@@ -106,7 +106,7 @@
             <font class="configMethods">&nbsp;&nbsp;(X)&nbsp;</font><font size="1" class="textleft">Config Methods</font>
         </div>
         <br/>
-        <div align="left" class="spaceleft">            
+        <div align="left" class="spaceleft">
             <input type="checkbox" id="hidePassed" style="vertical-align:middle;" onclick="hidePassedTests()" />
             <font class="textleft">Hide passed Tests</font>
         </div>

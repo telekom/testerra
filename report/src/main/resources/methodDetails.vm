@@ -84,7 +84,7 @@
                 <h6><i class="symbols fa fa-file-text-o fa-2x"></i>Steps</h6>
             </div>
 
-            #if ($testMethod.errorContext().stackTrace)
+            #if ($testMethod.getErrorContext().stackTrace)
                 <div id="buttonstack" onclick="toggleDetailsView('exception', 'toggleview', 'buttonstack', 'togglebutton');"
                      title="Show Stacktrace" class="detailsmenu togglebutton">
                     <h6><i class="symbols fa fa-align-left fa-2x fa-flip-vertical"></i>Stack</h6>
@@ -187,7 +187,7 @@
                         <td class="cellTop">
                             <h5>Duration</h5>
                             <div class="dashboardTextBig"
-                                 id="actualRunDuration">$!{testMethod.getDuration(${testMethod.startTime}, ${testMethod.endTime})}</div>
+                                 id="actualRunDuration">$!{testMethod.getDurationAsString()}</div>
                             <div class="dashboardTextVerySmall"></div>
                             <br/>
                             <div class="dashboardTextSmall">Start $!{testMethod.startTime}</div>
@@ -207,9 +207,9 @@
                                 </h5>
 
                                 <div id="context" class="dashboardTextVerySmall hidden" style="line-height: 22px; color:#888;">
-                                    Class: <a href="../classes/${testMethod.getEffectiveClassContext().id}.html"
-                                              title="Jump to class">${testMethod.getEffectiveClassContext().name}</a><br/>
-                                    Test: ${testMethod.testContextModel.name}<br/>
+                                    Class: <a href="../classes/${testMethod.getClassContext().getId()}.html"
+                                              title="Jump to class">${testMethod.getClassContext().getName()}</a><br/>
+                                    Test: ${testMethod.getTestContext().getName()}<br/>
                                     Suite: ${testMethod.suiteContext.name}<br/>
                                     <br/>
                                     Thread: $testMethod.threadName<br/>
@@ -240,7 +240,7 @@
                                 <div>
                                     <!-- error infos -->
                                     <div>
-                                        #set($fingerprint = $testMethod.errorContext().errorFingerprint)
+                                        #set($fingerprint = $testMethod.getErrorContext().getExitFingerprint())
                                         <div>
                                             <h5 style="position:relative;">
                                                 <a href="#" onclick="toggleElement('fingerprint');" title="Show Fingerprint">
@@ -254,12 +254,12 @@
                                             <div style="color: red; font-size: 30px; padding: 25px; line-height: 40px;">
                                             #end
 
-                                            #if ($testMethod.errorContext().getReadableMessageFormatted())
-                                                $testMethod.errorContext().getReadableMessageFormatted()
+                                            #if ($testMethod.getErrorContext().getReadableMessageFormatted())
+                                                $testMethod.getErrorContext().getReadableMessageFormatted()
                                             #end
-                                            #if ($testMethod.errorContext().getAdditionalErrorMessageFormatted())
+                                            #if ($testMethod.getErrorContext().getAdditionalErrorMessageFormatted())
                                                 <div style="color: Grey; font-size: 30px; padding: 25px; line-height: 40px;">
-                                                    $testMethod.errorContext().getAdditionalErrorMessageFormatted()
+                                                    $testMethod.getErrorContext().getAdditionalErrorMessageFormatted()
                                                 </div>
                                             #end
                                             #if ($testMethod.priorityMessage)
@@ -294,7 +294,7 @@
                                                     <div id="$id" style="text-align: initial">
 <pre><code>  // $source.fileName
     #foreach($s in $source.lines)
-        #if ($s.mark)
+        #if ($source.getMarkedLineNumber() == $s.lineNumber)
             &#8623; $s.lineNumber : $s.line
         #else
             $s.lineNumber : $s.line
@@ -317,10 +317,10 @@
                                                     </thead>
                                                     <tr>
                                                         <td width="50%">
-                                                            #displayLines($testMethod.errorContext().scriptSource, "scriptSource")
+                                                            #displayLines($testMethod.getErrorContext().getScriptSource().orElse(null), "scriptSource")
                                                         </td>
                                                         <td width="50%">
-                                                            #displayLines($testMethod.errorContext().executionObjectSource,
+                                                            #displayLines($testMethod.getErrorContext().getExecutionObjectSource().orElse(null),
                                                                 "executionObjectSource")
                                                         </td>
                                                     </tr>
@@ -456,8 +456,8 @@
             <!-- stacktrace -->
             <div>
                 <div id="st" class="textLeft" style="padding:30px !important; text-align: left !important; margin-left: 20px;">
-                    #if($testMethod.errorContext().stackTrace)
-                        #set($stackTrace = $testMethod.errorContext().stackTrace)
+                    #if($testMethod.getErrorContext().stackTrace)
+                        #set($stackTrace = $testMethod.getErrorContext().stackTrace)
                         #parse("stackTrace.vm")
                     #end
                 </div>

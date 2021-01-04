@@ -9,7 +9,7 @@
                        onclick="javascript:showDetailsLog('logentry', '${testMethod.methodRunIndex}');">Test Steps in
                         ${testMethod.name}</a><br/>
 
-                    #set($testSteps = $testMethod.steps().getTestSteps())
+                    #set($testSteps = $testMethod.getTestSteps())
                     #foreach ($step in $testSteps)
 
                         #set($stepNumber = $testSteps.indexOf($step))
@@ -77,79 +77,71 @@
                                 #set($actionNumber = $step.getTestStepActions().indexOf($action))
                                 #set($viewclass = "viewclass_${stepNumber}_${actionNumber}")
 
-                                #foreach ($entry in $action.getTestStepActionEntries())
+                                #foreach ($logMessage in $action.getLogMessages())
 
-                                    #set($entryNumber = $action.getTestStepActionEntries().indexOf($entry))
+                                    #set ($ll = $logMessage.logLevel.toString())
 
-                                    #if ($entry.logMessage)
-
-                                        #set($logMessage = $entry.logMessage)
-                                        #set ($ll = $logMessage.logLevel.toString())
-
-                                        #if ($ll.contains("WARN"))
-                                        <tr class="logentry viewclass_${stepNumber} $viewclass ll_warning">
-                                        #elseif ($ll.contains("ERROR"))
-                                        <tr class="logentry viewclass_${stepNumber} $viewclass ll_error">
-                                        #elseif ($ll.contains("DEBUG"))
-                                        <tr class="logentry viewclass_${stepNumber} $viewclass ll_debug">
-                                        #elseif ($ll.contains("TRACE"))
-                                        <tr class="logentry viewclass_${stepNumber} $viewclass ll_trace">
-                                        #else
-                                        <tr class="logentry viewclass_${stepNumber} $viewclass">
-                                        #end
-                                        <td class="top textleft"> <!-- action -->
-                                            <a href="#" onclick="javascript:$('#link_${viewclass}').click();">${stepNumber}
-                                                .${actionNumber}</a>
-                                        </td>
-                                        <td class="top textleft"> <!-- level -->
-                                            $ll
-                                        </td>
-                                        <td class="top textleft"> <!-- date -->
-                                            $dateFormatter.format("dd.MM.yyyy-HH:mm:ss.SSS", $logMessage.date)
-                                        </td>
-                                        <td class="top maxwidth textleft"> <!-- thread -->
-                                            $logMessage.threadName
-                                        </td>
-                                        <td class="top logMessage textleft"> <!-- logger -->
-                                            $logMessage.loggerName
-                                        </td>
-                                        <td class="top logMessage textleft"> <!-- message -->
-                                            <pre>$logMessage.message</pre>
-                                        </td>
-                                    </tr>
-
-                                    #end
-
-                                    #if ($entry.screenshot)
+                                    #if ($ll.contains("WARN"))
+                                    <tr class="logentry viewclass_${stepNumber} $viewclass ll_warning">
+                                    #elseif ($ll.contains("ERROR"))
+                                    <tr class="logentry viewclass_${stepNumber} $viewclass ll_error">
+                                    #elseif ($ll.contains("DEBUG"))
+                                    <tr class="logentry viewclass_${stepNumber} $viewclass ll_debug">
+                                    #elseif ($ll.contains("TRACE"))
+                                    <tr class="logentry viewclass_${stepNumber} $viewclass ll_trace">
+                                    #else
                                     <tr class="logentry viewclass_${stepNumber} $viewclass">
-                                        <td class="top textleft">
-                                            <!--<a href="#" onclick="javascript:$('#link_${viewclass}').click();">${stepNumber}.${actionNumber}</a>-->
-                                        </td>
-                                        <td></td>
-                                        <td colspan="2" style="position: relative;">
-                                            <!-- screen -->
-                                            #if ($entry.screenshot)
-                                                <a href="../../screenshots/${entry.screenshot.getScreenshotFile().getName()}" target="_blank">
-                                                    <img alt="screenshot" src="../../screenshots/${entry.screenshot.getScreenshotFile().getName()}"
-                                                         width="300px"/>
-                                                </a>
-                                                <div style="position: absolute; padding: 5px;background: #ff7777; bottom: 10px; opacity: 0.8;">
-                                                    <h6>Screenshot</h6>
-                                                </div>
-                                            #end
-                                        </td>
-                                        ##                                    <td colspan="2" style="position: relative;">
-                                        ##                                        <!-- after -->
-                                        ##                                        #if ($entry.afterScreenshot)
-                                        ##                                        <a href="../../screenshots/${entry.afterScreenshot.filename}" target="_blank">
-                                        ##                                            <img alt="after" src="../../screenshots/${entry.afterScreenshot.filename}" width="300px"/>
-                                        ##                                        </a>
-                                        ##                                        <div style="position: absolute; padding: 5px;background: #ff7777; bottom: 10px; opacity: 0.8;"><h6>
-                                        ##                                            Screenshot after</h6></div>
-                                        ##                                        #end
-                                        ##                                    </td>
-                                    </tr>
                                     #end
+                                    <td class="top textleft"> <!-- action -->
+                                        <a href="#" onclick="javascript:$('#link_${viewclass}').click();">${stepNumber}
+                                            .${actionNumber}</a>
+                                    </td>
+                                    <td class="top textleft"> <!-- level -->
+                                        $ll
+                                    </td>
+                                    <td class="top textleft"> <!-- date -->
+                                        $dateFormatter.format("dd.MM.yyyy-HH:mm:ss.SSS", $logMessage.date)
+                                    </td>
+                                    <td class="top maxwidth textleft"> <!-- thread -->
+                                        $logMessage.threadName
+                                    </td>
+                                    <td class="top logMessage textleft"> <!-- logger -->
+                                        $logMessage.loggerName
+                                    </td>
+                                    <td class="top logMessage textleft"> <!-- message -->
+                                        <pre>$logMessage.message</pre>
+                                    </td>
+                                </tr>
+
+                                #end
+
+                                #foreach ($screenshot in $action.getScreenshots())
+                                <tr class="logentry viewclass_${stepNumber} $viewclass">
+                                    <td class="top textleft">
+                                        <!--<a href="#" onclick="javascript:$('#link_${viewclass}').click();">${stepNumber}.${actionNumber}</a>-->
+                                    </td>
+                                    <td></td>
+                                    <td colspan="2" style="position: relative;">
+                                        <!-- screen -->
+                                        <a href="../../screenshots/${screenshot.getScreenshotFile().getName()}" target="_blank">
+                                            <img alt="screenshot" src="../../screenshots/${screenshot.getScreenshotFile().getName()}"
+                                                 width="300px"/>
+                                        </a>
+                                        <div style="position: absolute; padding: 5px;background: #ff7777; bottom: 10px; opacity: 0.8;">
+                                            <h6>Screenshot</h6>
+                                        </div>
+                                    </td>
+                                    ##                                    <td colspan="2" style="position: relative;">
+                                    ##                                        <!-- after -->
+                                    ##                                        #if ($entry.afterScreenshot)
+                                    ##                                        <a href="../../screenshots/${entry.afterScreenshot.filename}" target="_blank">
+                                    ##                                            <img alt="after" src="../../screenshots/${entry.afterScreenshot.filename}" width="300px"/>
+                                    ##                                        </a>
+                                    ##                                        <div style="position: absolute; padding: 5px;background: #ff7777; bottom: 10px; opacity: 0.8;"><h6>
+                                    ##                                            Screenshot after</h6></div>
+                                    ##                                        #end
+                                    ##                                    </td>
+                                </tr>
                                 #end
                             #end
                         #end

@@ -397,7 +397,7 @@ public class TimerTest extends TesterraTest implements Loggable {
             isTimeoutExceptionThrown = true;
         }
         Assert.assertTrue(isTimeoutExceptionThrown, msgTimeoutExceptionThrown);
-        String readableErrorMessage = ExecutionContextController.getCurrentMethodContext().errorContext().getReadableErrorMessage();
+        String readableErrorMessage = ExecutionContextController.getCurrentMethodContext().getErrorContext().getReadableErrorMessage();
         Assert.assertNotNull(readableErrorMessage, "Readable error message must not be null.");
         Assert.assertEquals(readableErrorMessage, msgTesterraRuntimeException, "Readable error message was set correctly.");
     }
@@ -421,7 +421,7 @@ public class TimerTest extends TesterraTest implements Loggable {
             isTimeoutExceptionThrown = true;
         }
         Assert.assertTrue(isTimeoutExceptionThrown, msgTimeoutExceptionThrown);
-        String readableErrorMessage = ExecutionContextController.getCurrentMethodContext().errorContext().getReadableErrorMessage();
+        String readableErrorMessage = ExecutionContextController.getCurrentMethodContext().getErrorContext().getReadableErrorMessage();
         Assert.assertNull(readableErrorMessage, "Readable error message should be null.");
     }
 }

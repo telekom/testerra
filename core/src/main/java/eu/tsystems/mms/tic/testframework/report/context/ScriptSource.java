@@ -24,48 +24,87 @@ package eu.tsystems.mms.tic.testframework.report.context;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ScriptSource {
 
     public static class Line {
 
-        public String line;
-        public int lineNumber;
-        public boolean mark = false;
+        private final String line;
+        private final int lineNumber;
 
-        public Line(String line, int lineNumber, boolean mark) {
+        public Line(String line, int lineNumber) {
             this.line = line;
             this.lineNumber = lineNumber;
-            this.mark = mark;
+        }
+
+        public String getLine() {
+            return line;
+        }
+
+        public int getLineNumber() {
+            return lineNumber;
         }
 
         @Override
+        @Deprecated
         public String toString() {
             String msg = "";
-            if (mark) {
-                msg += "M ";
-            }
-            else {
+//            if (mark) {
+//                msg += "M ";
+//            }
+//            else {
                 msg += "  ";
-            }
+//            }
             msg += lineNumber + ": ";
             msg += line;
             return msg;
         }
     }
 
+    /**
+     * @deprecated Use {@link #readLines()} instead
+     */
     public List<Line> lines = new LinkedList<>();
+    private int markedLineNumber;
 
-    public String fileName;
-    public String methodName;
+    private final String fileName;
+    private final String methodName;
 
     public ScriptSource(String fileName, String methodName) {
         this.fileName = fileName;
         this.methodName = methodName;
     }
 
+    public String getFileName() {
+        return fileName;
+    }
+
+    public String getMethodName() {
+        return methodName;
+    }
+
     @Override
+    @Deprecated
     public String toString() {
         return fileName + "#" + methodName + "\n" + lines.stream().map(Line::toString).collect(Collectors.joining("\n"));
+    }
+
+    public Stream<Line> readLines() {
+        return this.lines.stream();
+    }
+
+    public ScriptSource addLine(Line line) {
+        this.lines.add(line);
+        return this;
+    }
+
+    public ScriptSource markLineNumber(int lineNumber) {
+        this.markedLineNumber = lineNumber;
+        return this;
+    }
+
+    public int getMarkedLineNumber() {
+        return this.markedLineNumber;
     }
 }

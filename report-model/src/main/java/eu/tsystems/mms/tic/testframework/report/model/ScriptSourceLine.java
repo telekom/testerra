@@ -6,7 +6,7 @@ package eu.tsystems.mms.tic.testframework.report.model;
 /**
  * Protobuf type {@code data.ScriptSourceLine}
  */
-public  final class ScriptSourceLine extends
+public final class ScriptSourceLine extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:data.ScriptSourceLine)
     ScriptSourceLineOrBuilder {
@@ -60,11 +60,6 @@ private static final long serialVersionUID = 0L;
             lineNumber_ = input.readInt32();
             break;
           }
-          case 24: {
-
-            mark_ = input.readBool();
-            break;
-          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -103,6 +98,7 @@ private static final long serialVersionUID = 0L;
    * <code>string line = 1;</code>
    * @return The line.
    */
+  @java.lang.Override
   public java.lang.String getLine() {
     java.lang.Object ref = line_;
     if (ref instanceof java.lang.String) {
@@ -119,6 +115,7 @@ private static final long serialVersionUID = 0L;
    * <code>string line = 1;</code>
    * @return The bytes for line.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getLineBytes() {
     java.lang.Object ref = line_;
@@ -136,21 +133,16 @@ private static final long serialVersionUID = 0L;
   public static final int LINE_NUMBER_FIELD_NUMBER = 2;
   private int lineNumber_;
   /**
+   * <pre>
+   *    bool mark = 3 [deprecated = true];
+   * </pre>
+   *
    * <code>int32 line_number = 2;</code>
    * @return The lineNumber.
    */
+  @java.lang.Override
   public int getLineNumber() {
     return lineNumber_;
-  }
-
-  public static final int MARK_FIELD_NUMBER = 3;
-  private boolean mark_;
-  /**
-   * <code>bool mark = 3;</code>
-   * @return The mark.
-   */
-  public boolean getMark() {
-    return mark_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -173,9 +165,6 @@ private static final long serialVersionUID = 0L;
     if (lineNumber_ != 0) {
       output.writeInt32(2, lineNumber_);
     }
-    if (mark_ != false) {
-      output.writeBool(3, mark_);
-    }
     unknownFields.writeTo(output);
   }
 
@@ -191,10 +180,6 @@ private static final long serialVersionUID = 0L;
     if (lineNumber_ != 0) {
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(2, lineNumber_);
-    }
-    if (mark_ != false) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeBoolSize(3, mark_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -215,8 +200,6 @@ private static final long serialVersionUID = 0L;
         .equals(other.getLine())) return false;
     if (getLineNumber()
         != other.getLineNumber()) return false;
-    if (getMark()
-        != other.getMark()) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -232,9 +215,6 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getLine().hashCode();
     hash = (37 * hash) + LINE_NUMBER_FIELD_NUMBER;
     hash = (53 * hash) + getLineNumber();
-    hash = (37 * hash) + MARK_FIELD_NUMBER;
-    hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-        getMark());
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -372,8 +352,6 @@ private static final long serialVersionUID = 0L;
 
       lineNumber_ = 0;
 
-      mark_ = false;
-
       return this;
     }
 
@@ -402,7 +380,6 @@ private static final long serialVersionUID = 0L;
       eu.tsystems.mms.tic.testframework.report.model.ScriptSourceLine result = new eu.tsystems.mms.tic.testframework.report.model.ScriptSourceLine(this);
       result.line_ = line_;
       result.lineNumber_ = lineNumber_;
-      result.mark_ = mark_;
       onBuilt();
       return result;
     }
@@ -457,9 +434,6 @@ private static final long serialVersionUID = 0L;
       }
       if (other.getLineNumber() != 0) {
         setLineNumber(other.getLineNumber());
-      }
-      if (other.getMark() != false) {
-        setMark(other.getMark());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -568,13 +542,22 @@ private static final long serialVersionUID = 0L;
 
     private int lineNumber_ ;
     /**
+     * <pre>
+     *    bool mark = 3 [deprecated = true];
+     * </pre>
+     *
      * <code>int32 line_number = 2;</code>
      * @return The lineNumber.
      */
+    @java.lang.Override
     public int getLineNumber() {
       return lineNumber_;
     }
     /**
+     * <pre>
+     *    bool mark = 3 [deprecated = true];
+     * </pre>
+     *
      * <code>int32 line_number = 2;</code>
      * @param value The lineNumber to set.
      * @return This builder for chaining.
@@ -586,42 +569,16 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    bool mark = 3 [deprecated = true];
+     * </pre>
+     *
      * <code>int32 line_number = 2;</code>
      * @return This builder for chaining.
      */
     public Builder clearLineNumber() {
       
       lineNumber_ = 0;
-      onChanged();
-      return this;
-    }
-
-    private boolean mark_ ;
-    /**
-     * <code>bool mark = 3;</code>
-     * @return The mark.
-     */
-    public boolean getMark() {
-      return mark_;
-    }
-    /**
-     * <code>bool mark = 3;</code>
-     * @param value The mark to set.
-     * @return This builder for chaining.
-     */
-    public Builder setMark(boolean value) {
-      
-      mark_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>bool mark = 3;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearMark() {
-      
-      mark_ = false;
       onChanged();
       return this;
     }

@@ -1,0 +1,158 @@
+/*!
+ * Testerra
+ *
+ * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+@use "@material/theme" with (
+  $primary: #4b4b4b,
+  $secondary: #f6a821,
+  $on-primary: #ffffff,
+  $on-secondary: #ffffff,
+);
+@use '@material/button/mdc-button';
+@use '@material/button';
+@use '@material/card/mdc-card';
+@use '@material/card';
+@use '@material/checkbox';
+@use '@material/icon-button';
+@use '@material/data-table';
+@use '@material/data-table/mdc-data-table';
+@use '@material/dialog/mdc-dialog';
+@use '@material/dialog';
+@use '@material/drawer/mdc-drawer';
+@use '@material/drawer';
+@use '@material/elevation/mdc-elevation';
+@use '@material/icon-button/mdc-icon-button';
+@use "@material/layout-grid/mdc-layout-grid";
+@use "@aurelia-mdc-web/layout-grid";
+@use "@aurelia-mdc-web/expandable";
+@use '@material/linear-progress/mdc-linear-progress';
+@use '@material/linear-progress';
+@use '@material/list/mdc-list';
+@use '@material/list';
+@use '@material/textfield/mdc-text-field';
+@use '@material/textfield';
+@use '@material/switch/mdc-switch';
+@use '@material/switch';
+@use '@material/form-field/mdc-form-field';
+@use '@material/form-field/_index' as form-field;
+@use '@material/ripple/mdc-ripple';
+@use '@material/ripple';
+@use '@material/menu/mdc-menu';
+@use '@material/menu';
+@use '@material/select/mdc-select';
+@use '@material/select/_index' as select;
+@use '@material/menu-surface/mdc-menu-surface';
+//@use '@material/radio/mdc-radio';
+//@use '@material/radio';
+@use '@material/tab-bar/mdc-tab-bar';
+@use '@material/tab-bar';
+@use '@material/tab-scroller/mdc-tab-scroller';
+@use '@material/tab-scroller';
+@use '@material/tab-indicator/mdc-tab-indicator';
+@use '@material/tab-indicator';
+@use '@material/tab/mdc-tab';
+@use '@material/tab';
+@use '@material/top-app-bar/mdc-top-app-bar';
+@use '@material/top-app-bar';
+@use '@material/typography/mdc-typography';
+@use '@material/typography';
+//@use '@material/chips/mdc-chips';
+//@use '@aurelia-mdc-web/chips';
+//@use '@material/image-list/mdc-image-list';
+//@use '@material/image-list';
+
+@include drawer.core-styles;
+@include drawer.dismissible-core-styles;
+@include drawer.modal-core-styles;
+@include list.core-styles;
+
+// MDC overrides
+
+.btn-secondary {
+    @include button.filled-accessible(theme.$secondary);
+}
+//
+//.mdc-card {
+//    @include card.fill-color(#ffffff);
+//}
+
+/**
+ * @todo Make this only available in .card-expandable
+ */
+.mdc-expandable.mdc-expandable--open {
+    @extend .m0;
+}
+
+.card-expandable {
+    .mdc-expandable__content-container {
+        .mdc-expandable__content {
+            @extend .m0;
+            @extend .p0;
+        }
+    }
+}
+
+.secondary {
+    @include theme.property(color, text-secondary-on-background);
+}
+
+.reset-cursor {
+    cursor: initial !important;
+}
+
+.list-label {
+    @extend .mr1;
+    min-width: 10em;
+}
+
+.card-headline {
+    @extend .secondary;
+    //@include theme.property(color, text-secondary-on-light);
+
+    padding: 8px 16px;
+    //margin: 0.4em 1em;
+    //color: rgba(0, 0, 0, 0.6);
+}
+
+.card-content {
+    @extend .p1;
+    //margin: auto 0;
+}
+
+.header-card {
+    height:188px;
+}
+
+//adapt router view size to drawer because it doesn't do that on it's own for some reason
+mdc-drawer-app-content {
+    width:100vw;
+    display: flex;
+    flex: 0 1 auto;
+    box-sizing: content-box;
+    padding: 1.5rem 2rem;
+    background-color: #f5f5f5;
+}
+
+.mdc-list--dense {
+    .mdc-list-item {
+        height:30px;
+        line-height: 1em;
+    }
+}

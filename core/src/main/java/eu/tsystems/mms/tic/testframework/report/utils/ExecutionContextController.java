@@ -21,6 +21,7 @@
  */
  package eu.tsystems.mms.tic.testframework.report.utils;
 
+import com.google.common.util.concurrent.AtomicLongMap;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
@@ -29,9 +30,12 @@ import eu.tsystems.mms.tic.testframework.report.context.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.context.SuiteContext;
-import eu.tsystems.mms.tic.testframework.report.context.TestContextModel;
+import eu.tsystems.mms.tic.testframework.report.context.TestContext;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,8 +74,6 @@ public class ExecutionContextController {
         return EXECUTION_CONTEXT;
     }
 
-    public static boolean testRunFinished = false;
-
     /**
      * Gets the ClassContext for TestNG ITestResult. If no ClassContext for result exists, it will set.
      *
@@ -80,15 +82,15 @@ public class ExecutionContextController {
      */
     public static ClassContext getClassContextFromTestResult(ITestResult testResult, ITestContext iTestContext, IInvokedMethod invokedMethod) {
         SuiteContext suiteContext = getCurrentExecutionContext().getSuiteContext(testResult, iTestContext);
-        TestContextModel testContextModel = suiteContext.getTestContext(testResult, iTestContext);
-        ClassContext classContext = testContextModel.getClassContext(testResult, iTestContext, invokedMethod);
+        TestContext testContext = suiteContext.getTestContext(testResult, iTestContext);
+        ClassContext classContext = testContext.getClassContext(testResult, iTestContext, invokedMethod);
         return classContext;
     }
 
     public static ClassContext getClassContextFromTestContextAndMethod(final ITestContext iTestContext, final ITestNGMethod iTestNgMethod) {
         SuiteContext suiteContext = getCurrentExecutionContext().getSuiteContext(iTestContext);
-        TestContextModel testContextModel = suiteContext.getTestContext(iTestContext);
-        ClassContext classContext = testContextModel.getClassContext(iTestNgMethod);
+        TestContext testContext = suiteContext.getTestContext(iTestContext);
+        ClassContext classContext = testContext.getClassContext(iTestNgMethod);
         return classContext;
     }
 
@@ -154,23 +156,46 @@ public class ExecutionContextController {
 
         LOGGER.info(prefix + "**********************************************");
 
-        LOGGER.info(prefix + "ExecutionContext: " + executionContext.name);
-        LOGGER.info(prefix + "SuiteContexts:  " + executionContext.suiteContexts.size());
-        LOGGER.info(prefix + "TestContexts:   " + executionContext.suiteContexts.stream().mapToInt(s -> s.testContextModels.size()).sum());
-        LOGGER.info(prefix + "ClassContexts:  " + executionContext.suiteContexts.stream().flatMap(s -> s.testContextModels.stream()).mapToInt(t -> t.classContexts.size()).sum());
+        LOGGER.info(prefix + "ExecutionContext: " + executionContext.getName());
+        AtomicInteger suiteContextCount = new AtomicInteger();
+        AtomicInteger classContextCount = new AtomicInteger();
+        AtomicInteger testContextCount = new AtomicInteger();
+        AtomicInteger methodContextCount = new AtomicInteger();
+        AtomicInteger testMethodContextCount = new AtomicInteger();
+        AtomicInteger relevantMethodContextCount = new AtomicInteger();
+        Map<TestStatusController.Status, Long> statusCounts = new HashMap<>();
+        executionContext.readSuiteContexts().forEach(suiteContext -> {
+            suiteContextCount.incrementAndGet();
+            suiteContext.readTestContexts().forEach(testContext -> {
+                testContextCount.incrementAndGet();
+                testContext.readClassContexts().forEach(classContext -> {
+                    classContextCount.incrementAndGet();
+                    classContext.readMethodContexts().forEach(methodContext -> {
+                        methodContextCount.incrementAndGet();
 
-        List<MethodContext> allMethodContexts = executionContext.suiteContexts.stream().flatMap(s -> s.testContextModels.stream()).flatMap(t -> t.classContexts.stream()).flatMap(c -> c.methodContexts.stream()).collect(Collectors.toList());
+                        if (methodContext.isTestMethod()) {
+                            testMethodContextCount.incrementAndGet();
 
-        LOGGER.info(prefix + "MethodContexts: " + allMethodContexts.size());
+                            if (methodContext.getStatus().relevant) {
+                                relevantMethodContextCount.incrementAndGet();
+                            }
 
+                            Long statusCount = statusCounts.getOrDefault(methodContext.getStatus(), 0L);
+                            statusCounts.put(methodContext.getStatus(), ++statusCount);
+                        }
+                    });
+                });
+            });
+        });
+        LOGGER.info(prefix + "SuiteContexts:  " + suiteContextCount.get());
+        LOGGER.info(prefix + "TestContexts:   " + testContextCount.get());
+        LOGGER.info(prefix + "ClassContexts:  " + classContextCount.get());
+        LOGGER.info(prefix + "MethodContexts: " + methodContextCount.get());
         LOGGER.info(prefix + "**********************************************");
-
-        List<MethodContext> allTestMethods = allMethodContexts.stream().filter(MethodContext::isTestMethod).collect(Collectors.toList());
-
-        LOGGER.info(prefix + "Test Methods Count: " + allTestMethods.size() + " (" + allTestMethods.stream().filter(m -> m.status.relevant).count() + " relevant)");
+        LOGGER.info(prefix + "Test Methods Count: " + testMethodContextCount.get() + " (" + relevantMethodContextCount.get() + " relevant)");
 
         for (TestStatusController.Status status : TestStatusController.Status.values()) {
-            LOGGER.info(prefix + status.name() + ": " + allTestMethods.stream().filter(m -> m.status == status).count());
+            LOGGER.info(prefix + status.name() + ": " + statusCounts.getOrDefault(status, 0L));
         }
 
         LOGGER.info(prefix + "**********************************************");

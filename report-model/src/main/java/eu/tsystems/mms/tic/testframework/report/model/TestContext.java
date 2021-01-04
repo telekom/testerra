@@ -6,7 +6,7 @@ package eu.tsystems.mms.tic.testframework.report.model;
 /**
  * Protobuf type {@code data.TestContext}
  */
-public  final class TestContext extends
+public final class TestContext extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:data.TestContext)
     TestContextOrBuilder {
@@ -127,6 +127,7 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ContextValues context_values = 1;</code>
    * @return Whether the contextValues field is set.
    */
+  @java.lang.Override
   public boolean hasContextValues() {
     return contextValues_ != null;
   }
@@ -134,12 +135,14 @@ private static final long serialVersionUID = 0L;
    * <code>.data.ContextValues context_values = 1;</code>
    * @return The contextValues.
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ContextValues getContextValues() {
     return contextValues_ == null ? eu.tsystems.mms.tic.testframework.report.model.ContextValues.getDefaultInstance() : contextValues_;
   }
   /**
    * <code>.data.ContextValues context_values = 1;</code>
    */
+  @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ContextValuesOrBuilder getContextValuesOrBuilder() {
     return getContextValues();
   }
@@ -147,34 +150,34 @@ private static final long serialVersionUID = 0L;
   public static final int CLASS_CONTEXT_IDS_FIELD_NUMBER = 6;
   private com.google.protobuf.LazyStringList classContextIds_;
   /**
-   * <code>repeated string class_context_ids = 6;</code>
+   * <code>repeated string class_context_ids = 6 [deprecated = true];</code>
    * @return A list containing the classContextIds.
    */
-  public com.google.protobuf.ProtocolStringList
+  @java.lang.Deprecated public com.google.protobuf.ProtocolStringList
       getClassContextIdsList() {
     return classContextIds_;
   }
   /**
-   * <code>repeated string class_context_ids = 6;</code>
+   * <code>repeated string class_context_ids = 6 [deprecated = true];</code>
    * @return The count of classContextIds.
    */
-  public int getClassContextIdsCount() {
+  @java.lang.Deprecated public int getClassContextIdsCount() {
     return classContextIds_.size();
   }
   /**
-   * <code>repeated string class_context_ids = 6;</code>
+   * <code>repeated string class_context_ids = 6 [deprecated = true];</code>
    * @param index The index of the element to return.
    * @return The classContextIds at the given index.
    */
-  public java.lang.String getClassContextIds(int index) {
+  @java.lang.Deprecated public java.lang.String getClassContextIds(int index) {
     return classContextIds_.get(index);
   }
   /**
-   * <code>repeated string class_context_ids = 6;</code>
+   * <code>repeated string class_context_ids = 6 [deprecated = true];</code>
    * @param index The index of the value to return.
    * @return The bytes of the classContextIds at the given index.
    */
-  public com.google.protobuf.ByteString
+  @java.lang.Deprecated public com.google.protobuf.ByteString
       getClassContextIdsBytes(int index) {
     return classContextIds_.getByteString(index);
   }
@@ -185,6 +188,7 @@ private static final long serialVersionUID = 0L;
    * <code>string suite_context_id = 7;</code>
    * @return The suiteContextId.
    */
+  @java.lang.Override
   public java.lang.String getSuiteContextId() {
     java.lang.Object ref = suiteContextId_;
     if (ref instanceof java.lang.String) {
@@ -201,6 +205,7 @@ private static final long serialVersionUID = 0L;
    * <code>string suite_context_id = 7;</code>
    * @return The bytes for suiteContextId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getSuiteContextIdBytes() {
     java.lang.Object ref = suiteContextId_;
@@ -218,10 +223,11 @@ private static final long serialVersionUID = 0L;
   public static final int EXECUTION_CONTEXT_ID_FIELD_NUMBER = 8;
   private volatile java.lang.Object executionContextId_;
   /**
-   * <code>string execution_context_id = 8;</code>
+   * <code>string execution_context_id = 8 [deprecated = true];</code>
    * @return The executionContextId.
    */
-  public java.lang.String getExecutionContextId() {
+  @java.lang.Override
+  @java.lang.Deprecated public java.lang.String getExecutionContextId() {
     java.lang.Object ref = executionContextId_;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
@@ -234,10 +240,11 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string execution_context_id = 8;</code>
+   * <code>string execution_context_id = 8 [deprecated = true];</code>
    * @return The bytes for executionContextId.
    */
-  public com.google.protobuf.ByteString
+  @java.lang.Override
+  @java.lang.Deprecated public com.google.protobuf.ByteString
       getExecutionContextIdBytes() {
     java.lang.Object ref = executionContextId_;
     if (ref instanceof java.lang.String) {
@@ -763,44 +770,44 @@ private static final long serialVersionUID = 0L;
        }
     }
     /**
-     * <code>repeated string class_context_ids = 6;</code>
+     * <code>repeated string class_context_ids = 6 [deprecated = true];</code>
      * @return A list containing the classContextIds.
      */
-    public com.google.protobuf.ProtocolStringList
+    @java.lang.Deprecated public com.google.protobuf.ProtocolStringList
         getClassContextIdsList() {
       return classContextIds_.getUnmodifiableView();
     }
     /**
-     * <code>repeated string class_context_ids = 6;</code>
+     * <code>repeated string class_context_ids = 6 [deprecated = true];</code>
      * @return The count of classContextIds.
      */
-    public int getClassContextIdsCount() {
+    @java.lang.Deprecated public int getClassContextIdsCount() {
       return classContextIds_.size();
     }
     /**
-     * <code>repeated string class_context_ids = 6;</code>
+     * <code>repeated string class_context_ids = 6 [deprecated = true];</code>
      * @param index The index of the element to return.
      * @return The classContextIds at the given index.
      */
-    public java.lang.String getClassContextIds(int index) {
+    @java.lang.Deprecated public java.lang.String getClassContextIds(int index) {
       return classContextIds_.get(index);
     }
     /**
-     * <code>repeated string class_context_ids = 6;</code>
+     * <code>repeated string class_context_ids = 6 [deprecated = true];</code>
      * @param index The index of the value to return.
      * @return The bytes of the classContextIds at the given index.
      */
-    public com.google.protobuf.ByteString
+    @java.lang.Deprecated public com.google.protobuf.ByteString
         getClassContextIdsBytes(int index) {
       return classContextIds_.getByteString(index);
     }
     /**
-     * <code>repeated string class_context_ids = 6;</code>
+     * <code>repeated string class_context_ids = 6 [deprecated = true];</code>
      * @param index The index to set the value at.
      * @param value The classContextIds to set.
      * @return This builder for chaining.
      */
-    public Builder setClassContextIds(
+    @java.lang.Deprecated public Builder setClassContextIds(
         int index, java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
@@ -811,11 +818,11 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated string class_context_ids = 6;</code>
+     * <code>repeated string class_context_ids = 6 [deprecated = true];</code>
      * @param value The classContextIds to add.
      * @return This builder for chaining.
      */
-    public Builder addClassContextIds(
+    @java.lang.Deprecated public Builder addClassContextIds(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
@@ -826,11 +833,11 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated string class_context_ids = 6;</code>
+     * <code>repeated string class_context_ids = 6 [deprecated = true];</code>
      * @param values The classContextIds to add.
      * @return This builder for chaining.
      */
-    public Builder addAllClassContextIds(
+    @java.lang.Deprecated public Builder addAllClassContextIds(
         java.lang.Iterable<java.lang.String> values) {
       ensureClassContextIdsIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -839,21 +846,21 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated string class_context_ids = 6;</code>
+     * <code>repeated string class_context_ids = 6 [deprecated = true];</code>
      * @return This builder for chaining.
      */
-    public Builder clearClassContextIds() {
+    @java.lang.Deprecated public Builder clearClassContextIds() {
       classContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
     /**
-     * <code>repeated string class_context_ids = 6;</code>
+     * <code>repeated string class_context_ids = 6 [deprecated = true];</code>
      * @param value The bytes of the classContextIds to add.
      * @return This builder for chaining.
      */
-    public Builder addClassContextIdsBytes(
+    @java.lang.Deprecated public Builder addClassContextIdsBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
@@ -943,10 +950,10 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object executionContextId_ = "";
     /**
-     * <code>string execution_context_id = 8;</code>
+     * <code>string execution_context_id = 8 [deprecated = true];</code>
      * @return The executionContextId.
      */
-    public java.lang.String getExecutionContextId() {
+    @java.lang.Deprecated public java.lang.String getExecutionContextId() {
       java.lang.Object ref = executionContextId_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
@@ -959,10 +966,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string execution_context_id = 8;</code>
+     * <code>string execution_context_id = 8 [deprecated = true];</code>
      * @return The bytes for executionContextId.
      */
-    public com.google.protobuf.ByteString
+    @java.lang.Deprecated public com.google.protobuf.ByteString
         getExecutionContextIdBytes() {
       java.lang.Object ref = executionContextId_;
       if (ref instanceof String) {
@@ -976,11 +983,11 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string execution_context_id = 8;</code>
+     * <code>string execution_context_id = 8 [deprecated = true];</code>
      * @param value The executionContextId to set.
      * @return This builder for chaining.
      */
-    public Builder setExecutionContextId(
+    @java.lang.Deprecated public Builder setExecutionContextId(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
@@ -991,21 +998,21 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string execution_context_id = 8;</code>
+     * <code>string execution_context_id = 8 [deprecated = true];</code>
      * @return This builder for chaining.
      */
-    public Builder clearExecutionContextId() {
+    @java.lang.Deprecated public Builder clearExecutionContextId() {
       
       executionContextId_ = getDefaultInstance().getExecutionContextId();
       onChanged();
       return this;
     }
     /**
-     * <code>string execution_context_id = 8;</code>
+     * <code>string execution_context_id = 8 [deprecated = true];</code>
      * @param value The bytes for executionContextId to set.
      * @return This builder for chaining.
      */
-    public Builder setExecutionContextIdBytes(
+    @java.lang.Deprecated public Builder setExecutionContextIdBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();

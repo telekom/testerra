@@ -1,0 +1,61 @@
+/*!
+ * Testerra
+ *
+ * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+.vis-timeline {
+    font-family: "Roboto", sans-serif;
+    border-radius: 4px;
+}
+
+.vis-odd {
+    background-color: rgb(240,240,240);
+}
+
+.vis-item {
+    cursor: pointer !important;
+    border-color: rgba(0,0,0,0) !important; //invisible border
+    border-radius: 5px !important;
+}
+
+.vis-item-content {
+    width: 100%;
+    padding: 0 !important;
+    color: #fff !important;
+    font-size: 12px;
+
+    .item-content {
+        text-align: center;
+
+        .item-content-head {
+            font-weight: 700;
+            background-color: rgba(0,0,0,0.15);
+            padding: 3px 0;
+        }
+
+        .item-content-body {
+            padding: 3px;
+        }
+    }
+}
+
+.vis-selected {
+    border: 2px solid #000 !important;
+    box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.5);
+}

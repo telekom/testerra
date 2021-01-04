@@ -34,6 +34,7 @@ import eu.tsystems.mms.tic.testframework.report.LoggingDispatcher;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.ReportingData;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.perf.PerfTestReportUtils;
@@ -49,6 +50,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import org.apache.velocity.VelocityContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -347,7 +349,7 @@ public final class ReportUtils {
          */
         Report report = Testerra.injector.getInstance(Report.class);
         final File reportFileIndex = report.getReportDirectory("index.html");
-        ReportFormatter.createTestClassesView(reportFileIndex, reportingData.classContexts, "index.vm", null, null);
+        ReportFormatter.createTestClassesView(reportFileIndex, reportingData, "index.vm", null, null);
 
         /*
         create all tabs that are not base tabs
@@ -389,7 +391,7 @@ public final class ReportUtils {
          */
         final File reportFileClassesStats = new File(FRAMES_DIRECTORY, "classesStatistics.html");
         final ReportInfo.RunInfo runInfo = ReportInfo.getRunInfo();
-        ReportFormatter.createTestClassesView(reportFileClassesStats, reportingData.classContexts, "classesStatistics.vm", null, runInfo);
+        ReportFormatter.createTestClassesView(reportFileClassesStats, reportingData, "classesStatistics.vm", null, runInfo);
 
         /*
         create classes dir
@@ -402,7 +404,7 @@ public final class ReportUtils {
          */
         Runnable createMethodsRunnable = () -> {
             for (ClassContext classContext : reportingData.classContexts) {
-                File reportFile0 = new File(classesLogDir, classContext.id + ".html");
+                File reportFile0 = new File(classesLogDir, classContext.getId() + ".html");
                 ReportFormatter.createMethodsView(reportFile0, classContext, "methods.vm");
                 // short view for dashboard
                 /*reportFile0 = new File(classesLogDir, classContext.name + "_dashboard.html");
@@ -442,7 +444,7 @@ public final class ReportUtils {
         Logs
          */
         final File reportFileGlobalLogs = new File(FRAMES_DIRECTORY, "logs.html");
-        ReportFormatter.createTestClassesView(reportFileGlobalLogs, reportingData.classContexts, "log.vm", LoggingDispatcher.getInstance().getUnrelatedLogs(), null);
+        ReportFormatter.createTestClassesView(reportFileGlobalLogs, reportingData, "log.vm", ExecutionContextController.getCurrentExecutionContext().readMethodContextLessLogs().map(LogMessage::new).collect(Collectors.toList()), null);
 
         /*
         Memory consumption

@@ -105,13 +105,13 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
         final String expectedHeaderClassAttribute = expectedTestResultCategory.getXpathClassesDetailsHeader();
 
         GuiElement testResultTableHeader = getTestResultTableHeaderForTestResult(expectedTestResultCategory);
-        testResultTableHeader.asserts().assertIsDisplayed();
+        testResultTableHeader.asserts("The table header of the demanded test result should be displayed.").assertIsDisplayed();
         GuiElement methodNameElement = getInformationMethodBodyForTestMethodName(testundertestMethodName, controlMethodName);
-        methodNameElement.asserts().assertIsDisplayed();
+        methodNameElement.asserts("The requested method name of the element should be displayed").assertIsDisplayed();
         GuiElement actualHeader = methodNameElement.getSubElement(By.xpath("./../tr/th"));
         String actualHeaderClassAttribute = actualHeader.getText();
         AssertCollector.assertEquals(actualHeaderClassAttribute, expectedHeaderClassAttribute,
-                "The Test method is in the correct test result category for test result + " + expectedTestResultCategory);
+                "The Test method should be in the correct test result category for test result + " + expectedTestResultCategory);
     }
 
     public void assertMethodIsDisplayedInTheCorrectTestResultCategoryWithTag(String testundertestMethodName, TestResultHelper.TestResult expectedTestResultCategory, String tagName) {
@@ -119,18 +119,18 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
         final String expectedHeaderClassAttribute = expectedTestResultCategory.getXpathClassesDetailsHeader();
 
         GuiElement testResultTableHeader = getTestResultTableHeaderForTestResult(expectedTestResultCategory);
-        testResultTableHeader.asserts().assertIsDisplayed();
+        testResultTableHeader.asserts("The table header of the demanded test result should be displayed.").assertIsDisplayed();
 
         GuiElement methodTagNameElement = getInformationMethodBodyForTestMethodNameWithTag(tagName);
-        methodTagNameElement.asserts().assertIsDisplayed();
+        methodTagNameElement.asserts("The requested method tag name should be displayed").assertIsDisplayed();
 
         GuiElement actualMethodName = methodTagNameElement.getSubElement(By.xpath("./../../td[contains(text(),'" + testundertestMethodName + "')]"));
-        actualMethodName.asserts().assertIsDisplayed();
+        actualMethodName.asserts("The requested method name of the element should be displayed").assertIsDisplayed();
 
         GuiElement actualHeader = methodTagNameElement.getSubElement(By.xpath("./../../..//th"));
         String actualHeaderClassAttribute = actualHeader.getText();
         AssertCollector.assertEquals(actualHeaderClassAttribute, expectedHeaderClassAttribute,
-                "The Test method is in the correct test result category for test result + " + expectedTestResultCategory);
+                "The Test method should be in the correct test result category for test result + " + expectedTestResultCategory);
     }
 
     /**
@@ -347,7 +347,7 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
         GuiElement methodBody = getInformationMethodBodyForTestMethodName(methodName);
         GuiElement annotationElement = methodBody.getSubElement(By.xpath(String.format(LOCATOR_FONT_ANNOTATION, annotationType.getAnnotationDisplayedName())));
         annotationElement.setName("annotationElementFor_" + annotationType.getAnnotationDisplayedName());
-        annotationElement.asserts().assertIsDisplayed();
+        annotationElement.asserts("The demanded annotation mark for the element should be displayed.").assertIsDisplayed();
     }
 
     @Override

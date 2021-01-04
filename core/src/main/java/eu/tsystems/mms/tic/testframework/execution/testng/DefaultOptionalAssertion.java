@@ -26,6 +26,9 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.AssertionInfo;
+import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import java.util.List;
 
@@ -42,11 +45,15 @@ public class DefaultOptionalAssertion extends AbstractAssertion implements
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         if (methodContext != null) {
             // add nf info
-            AssertionInfo assertionInfo = methodContext.addNonFunctionalInfo(error);
+            methodContext.addOptionalAssertion(error);
 
             // get screenshots and videos
             List<Screenshot> screenshots = TestEvidenceCollector.collectScreenshots();
-            methodContext.addScreenshots(screenshots.stream().peek(screenshot -> screenshot.setErrorContextId(assertionInfo.id)));
+            if (screenshots != null) {
+                methodContext.addScreenshots(screenshots.stream());
+            }
+
+            // not collecting a video here
         }
     }
 }

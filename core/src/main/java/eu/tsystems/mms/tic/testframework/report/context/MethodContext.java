@@ -20,21 +20,25 @@
  */
 package eu.tsystems.mms.tic.testframework.report.context;
 
+import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.Counters;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
-import eu.tsystems.mms.tic.testframework.report.model.AssertionInfo;
-import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.lang.annotation.Annotation;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import org.apache.logging.log4j.core.LogEvent;
 import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
@@ -54,58 +58,27 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     public ITestResult testResult;
     public ITestContext iTestContext;
     public ITestNGMethod iTestNgMethod;
-
-    public TestStatusController.Status status = TestStatusController.Status.NO_RUN;
-    public final Type methodType;
+    private TestStatusController.Status status = TestStatusController.Status.NO_RUN;
+    private final Type methodType;
     public List<Object> parameters = new LinkedList<>();
     public List<Annotation> methodTags = new LinkedList<>();
     public int retryNumber = 0;
     public int methodRunIndex = -1;
     public String threadName = "unrelated";
     private TestStep lastFailedStep;
-    public FailureCorridor.Value failureCorridorValue = FailureCorridor.Value.HIGH;
-
-    public ClassContext classContext;
-    public TestContextModel testContextModel;
-    public SuiteContext suiteContext;
-    public final ExecutionContext executionContext;
-
+    private Class failureCorridorClass = FailureCorridor.High.class;
     private int hashCodeOfTestResult = 0;
-
-    public final List<AssertionInfo> nonFunctionalInfos = new LinkedList<>();
-    public final List<AssertionInfo> collectedAssertions = new LinkedList<>();
     public final List<String> infos = new LinkedList<>();
-
-    public final List<SessionContext> sessionContexts = new LinkedList<>();
+    private List<SessionContext> sessionContexts = new LinkedList<>();
     public String priorityMessage = null;
     private final TestStepController testStepController = new TestStepController();
-    public List<MethodContext> relatedMethodContexts;
-    public List<MethodContext> dependsOnMethodContexts;
-
-    // Used in methodDependencies.vm
-    public List<MethodContext> getRelatedMethodContexts() {
-        return relatedMethodContexts;
-    }
-
-    // Used in methodDependencies.vm
-    public List<MethodContext> getDependsOnMethodContexts() {
-        return dependsOnMethodContexts;
-    }
-
-    public Stream<Screenshot> getAllScreenshotsFromTestSteps() {
-        return this.testStepController.getTestSteps().stream()
-                .flatMap(testStep -> testStep.getTestStepActions().stream())
-                .flatMap(testStepAction -> testStepAction.getTestStepActionEntries().stream())
-                .map(testStepActionEntry -> testStepActionEntry.screenshot)
-                .filter(Objects::nonNull);
-
-    }
-
-    private final List<Video> videos = new LinkedList<>();
-
-    public final List<CustomContext> customContexts = new LinkedList<>();
-
+    private List<MethodContext> relatedMethodContexts = new LinkedList<>();
+    private List<MethodContext> dependsOnMethodContexts = new LinkedList<>();
+    private List<Video> videos;
+    private List<CustomContext> customContexts;
     private ErrorContext errorContext;
+    private int numAssertions = 0;
+    private int numOptionalAssertions = 0;
 
     /**
      * Public constructor. Creates a new <code>MethodContext</code> object.
@@ -113,43 +86,219 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
      * @param name             The test method name.
      * @param methodType       method type.
      * @param classContext     .
-     * @param suiteContext     .
-     * @param testContextModel .
-     * @param executionContext .
      */
     public MethodContext(
             final String name,
             final Type methodType,
-            final ClassContext classContext,
-            final TestContextModel testContextModel,
-            final SuiteContext suiteContext,
-            final ExecutionContext executionContext
+            final ClassContext classContext
     ) {
-        this.testContextModel = testContextModel;
-        this.suiteContext = suiteContext;
-        this.executionContext = executionContext;
-
         this.name = name;
-        this.parentContext = this.classContext = classContext;
+        this.parentContext = classContext;
         this.methodRunIndex = Counters.increaseMethodExecutionCounter();
         this.methodType = methodType;
     }
 
-    public TestStepAction addLogMessage(LogMessage logMessage) {
-        return testStepController.addLogMessage(logMessage);
+
+
+    /**
+     * @deprecated Use {@link #getFailureCorridorClass()} instead
+     */
+    public FailureCorridor.Value getFailureCorridorValue() {
+        if (this.failureCorridorClass.equals(FailureCorridor.High.class)) {
+            return FailureCorridor.Value.HIGH;
+        } else if (this.failureCorridorClass.equals(FailureCorridor.Mid.class)) {
+            return FailureCorridor.Value.MID;
+        } else {
+            return FailureCorridor.Value.LOW;
+        }
     }
 
-    public TestStepController steps() {
-        return testStepController;
+    public void setFailureCorridorClass(Class failureCorridorClass) {
+        this.failureCorridorClass = failureCorridorClass;
     }
 
+    public Class getFailureCorridorClass() {
+        return this.failureCorridorClass;
+    }
+
+    /**
+     * @deprecated Use {@link #readCustomContexts()} instead
+     */
+    public List<CustomContext> getCustomContexts() {
+        if (this.customContexts == null) {
+            this.customContexts = new LinkedList<>();
+        }
+        return customContexts;
+    }
+
+    public void addCustomContext(CustomContext customContext) {
+        this.getCustomContexts().add(customContext);
+    }
+
+    public Stream<CustomContext> readCustomContexts() {
+        if (this.customContexts == null) {
+            return Stream.empty();
+        } else {
+            return this.customContexts.stream();
+        }
+    }
+
+    public Type getMethodType() {
+        return this.methodType;
+    }
+
+    public Stream<SessionContext> readSessionContexts() {
+        return sessionContexts.stream();
+    }
+
+    public void addSessionContext(SessionContext sessionContext) {
+        if (!this.sessionContexts.contains(sessionContext)) {
+            this.sessionContexts.add(sessionContext);
+            sessionContext.parentContext = this;
+            TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(this));
+        }
+    }
+
+    public ClassContext getClassContext() {
+        return (ClassContext)this.parentContext;
+    }
+
+    @Deprecated
+    public TestContext getTestContext() {
+        return this.getClassContext().getTestContext();
+    }
+
+    @Deprecated
+    public SuiteContext getSuiteContext() {
+        return this.getTestContext().getSuiteContext();
+    }
+
+    @Deprecated
+    public ExecutionContext getExecutionContext() {
+        return this.getSuiteContext().getExecutionContext();
+    }
+
+    public int getNumAssertions() {
+        return numAssertions;
+    }
+
+    public int getNumOptionalAssertions() {
+        return numOptionalAssertions;
+    }
+
+    /**
+     * @deprecated Use {@link #readTestSteps()} instead
+     */
+    public List<ErrorContext> getNonFunctionalInfos() {
+        return this.readTestStepActions()
+                .flatMap(TestStepAction::readOptionalAssertions)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * @deprecated Use {@link #readCollectedAssertions()} instead
+     */
+    public List<ErrorContext> getCollectedAssertions() {
+        return readCollectedAssertions().collect(Collectors.toList());
+    }
+
+    /**
+     * @deprecated Use {@link #readTestSteps()} instead
+     */
+    public Stream<ErrorContext> readCollectedAssertions() {
+        return this.readTestStepActions()
+                .flatMap(TestStepAction::readCollectedAssertions);
+    }
+
+    /**
+     * Used in methodDependencies.vm
+     * @deprecated Use {@link #readRelatedMethodContexts()} instead
+     */
+    public List<MethodContext> getRelatedMethodContexts() {
+        return this.relatedMethodContexts;
+    }
+
+    public Stream<MethodContext> readRelatedMethodContexts() {
+        return this.relatedMethodContexts.stream();
+    }
+
+    /**
+     * Used in methodDependencies.vm
+     * @deprecated Use {@link #readDependsOnMethodContexts()} instead
+     */
+    public List<MethodContext> getDependsOnMethodContexts() {
+        return this.dependsOnMethodContexts;
+    }
+
+    public Stream<MethodContext> readDependsOnMethodContexts() {
+        return this.dependsOnMethodContexts.stream();
+    }
+
+    public void setRelatedMethodContexts(List<MethodContext> relatedMethodContexts) {
+        this.relatedMethodContexts = relatedMethodContexts;
+    }
+
+    public void addDependsOnMethod(MethodContext methodContext) {
+        this.dependsOnMethodContexts.add(methodContext);
+    }
+
+    private Stream<TestStepAction> readTestStepActions() {
+        return this.readTestSteps().flatMap(testStep -> testStep.getTestStepActions().stream());
+    }
+
+    private Stream<Screenshot> readScreenshots() {
+        return this.readTestStepActions()
+                .flatMap(testStepAction -> testStepAction.readEntries(Screenshot.class));
+    }
+
+    /**
+     * @deprecated Use {@link #readTestSteps()} instead
+     * Use in methodsDashboard.vm
+     */
+    public Collection<Screenshot> getScreenshots() {
+        return readScreenshots().collect(Collectors.toList());
+    }
+
+    public TestStepAction addLogEvent(LogEvent logEvent) {
+        return testStepController.addLogEvent(logEvent);
+    }
+
+    /**
+     * @deprecated Use {@link #readTestSteps()} instead
+     */
+    public List<TestStep> getTestSteps() {
+        return this.testStepController.getTestSteps();
+    }
+
+    public TestStep getTestStep(String name) {
+        return this.testStepController.getTestStep(name);
+    }
+
+    public Stream<TestStep> readTestSteps() {
+        return this.testStepController.getTestSteps().stream();
+    }
+
+    public TestStep getCurrentTestStep() {
+        return this.testStepController.getCurrentTestStep();
+    }
+
+    /**
+     * Used in methodDetails.vm
+     */
     public TestStep getLastFailedStep() {
         return this.lastFailedStep;
     }
 
-    public MethodContext setFailedStep(TestStep step) {
+    public int getLastFailedTestStepIndex() {
+        return this.testStepController.getTestSteps().indexOf(this.lastFailedStep);
+    }
+
+    public void setFailedStep(TestStep step) {
         this.lastFailedStep = step;
-        return this;
+    }
+
+    public boolean hasErrorContext() {
+        return this.errorContext != null && this.errorContext.getThrowable() != null;
     }
 
     public ErrorContext getErrorContext() {
@@ -159,7 +308,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     /**
      * @deprecated Use {@link #getErrorContext()} instead
      */
-    public ErrorContext errorContext() {
+    public ErrorContext getErrorContext() {
         if (errorContext == null) {
             errorContext = new ErrorContext();
         }
@@ -203,21 +352,14 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return status == TestStatusController.Status.PASSED || status == TestStatusController.Status.MINOR;
     }
 
-    /**
-     * Add non functional infos.
-     *
-     * @param throwable .
-     */
-    public AssertionInfo addNonFunctionalInfo(final Throwable throwable) {
-        AssertionInfo assertionInfo = new AssertionInfo(throwable);
-
-        this.nonFunctionalInfos.add(assertionInfo);
-
-        return assertionInfo;
+    public void addOptionalAssertion(Throwable throwable) {
+        getCurrentTestStep().getCurrentTestStepAction().addAssertion(new ErrorContext(throwable, true));
+        this.numOptionalAssertions++;
     }
 
-    public void addCollectedAssertions(final List<AssertionInfo> collectedAssertions) {
-        this.collectedAssertions.addAll(collectedAssertions);
+    public void addCollectedAssertion(Throwable throwable) {
+        getCurrentTestStep().getCurrentTestStepAction().addAssertion(new ErrorContext(throwable, false));
+        this.numAssertions++;
     }
 
     public boolean isRetry() {
@@ -250,6 +392,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         }
     }
 
+    @Deprecated
     public void addPriorityMessage(String msg) {
         final String extraMessageToAdd = StringUtils.prepareStringForHTML(msg + "\n");
 
@@ -275,10 +418,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return !isConfigMethod();
     }
 
-    public boolean hasNonFunctionalErrors() {
-        return !nonFunctionalInfos.isEmpty();
-    }
-
     public boolean isExpectedFailed() {
         return status == TestStatusController.Status.FAILED_EXPECTED;
     }
@@ -287,10 +426,9 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return retryNumber > 0;
     }
 
-    public String getName() {
-        return name;
-    }
-
+    /**
+     * @todo What is this?
+     */
     public boolean isSame(MethodContext methodContext) {
         return methodContext.hashCodeOfTestResult == hashCodeOfTestResult;
     }
@@ -298,6 +436,10 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     @Override
     public TestStatusController.Status getStatus() {
         return status;
+    }
+
+    public void setStatus(TestStatusController.Status status) {
+        this.status = status;
     }
 
     public boolean isRepresentationalTestMethod() {
@@ -333,26 +475,22 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
                 '}';
     }
 
-    public ClassContext getEffectiveClassContext() {
-        if (classContext.merged) {
-            return classContext.mergedIntoClassContext;
-        } else {
-            return classContext;
-        }
-    }
-
     /**
      * Publish the screenshots to the report into the current errorContext.
      */
-    public MethodContext addScreenshots(Stream<Screenshot> screenshots) {
-        TestStepAction currentTestStepAction = steps().getCurrentTestStep().getCurrentTestStepAction();
-        screenshots.forEach(screenshot -> {
-            if (!screenshot.hasErrorContextId()) {
-                screenshot.setErrorContextId(this.getErrorContext().id);
-            }
-            currentTestStepAction.addScreenshot(screenshot);
-        });
-        return this;
+    public void addScreenshots(Stream<Screenshot> screenshots) {
+        TestStepAction currentTestStepAction = this.testStepController.getCurrentTestStep().getCurrentTestStepAction();
+        screenshots.forEach(currentTestStepAction::addScreenshot);
+    }
+
+    /**
+     * @deprecated Use {@link #readVideos()} instead
+     */
+    public Collection<Video> getVideos() {
+        if (this.videos == null) {
+            this.videos = new LinkedList<>();
+        }
+        return this.videos;
     }
 
     public MethodContext addVideo(Video video) {
@@ -361,7 +499,15 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return this;
     }
 
-    public List<Video> getVideos() {
-        return this.videos;
+    public Stream<Video> readVideos() {
+        if (this.videos == null) {
+            return Stream.empty();
+        } else {
+            return this.videos.stream();
+        }
+    }
+
+    public void addVideos(Collection<Video> videos) {
+        this.getVideos().addAll(videos);
     }
 }

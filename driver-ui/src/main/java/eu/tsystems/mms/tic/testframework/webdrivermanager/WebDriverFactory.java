@@ -22,15 +22,16 @@
  package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.report.model.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.report.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
+import java.util.Map;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 public abstract class WebDriverFactory<R extends WebDriverRequest> implements Loggable {
-    private SessionContext sessionContext = null;
 
     protected abstract R buildRequest(WebDriverRequest webDriverRequest);
 
@@ -41,8 +42,6 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> implements Lo
     protected abstract void setupSession(EventFiringWebDriver eventFiringWebDriver, R request);
 
     public EventFiringWebDriver getWebDriver(WebDriverRequest request, SessionContext sessionContext) {
-        this.sessionContext = sessionContext;
-
         if (!request.hasBaseUrl()) {
             request.setBaseUrl(WebDriverManager.getConfig().getBaseUrl());
         }
@@ -52,20 +51,21 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> implements Lo
          */
         R finalRequest = buildRequest(request);
 
+        Map<String, Object> sessionContextMetaData = sessionContext.getMetaData();
         /*
         fill the session context
          */
-        sessionContext.getMetaData().put("requested.browser", finalRequest.getBrowser());
-        sessionContext.getMetaData().put("requested.browserVersion", finalRequest.getBrowserVersion());
+        sessionContextMetaData.put("requested.browser", finalRequest.getBrowser());
+        sessionContextMetaData.put("requested.browserVersion", finalRequest.getBrowserVersion());
 
         /*
         create basic capabilities
          */
         DesiredCapabilities caps = new DesiredCapabilities();
         DesiredCapabilities tapOptions = new DesiredCapabilities();
-        ExecutionContextController.getCurrentExecutionContext().metaData.forEach(tapOptions::setCapability);
-        sessionContext.getMetaData().forEach(tapOptions::setCapability);
-        tapOptions.setCapability("scid", sessionContext.id);
+        ExecutionContextController.getCurrentExecutionContext().getMetaData().forEach(tapOptions::setCapability);
+        sessionContextMetaData.forEach(tapOptions::setCapability);
+        tapOptions.setCapability("scid", sessionContext.getId());
         tapOptions.setCapability("sessionKey", finalRequest.getSessionKey());
         caps.setCapability("tapOptions", tapOptions);
 
@@ -100,6 +100,10 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> implements Lo
         store session
          */
         WebDriverSessionsManager.storeWebDriverSession(finalRequest, eventFiringWebDriver, sessionContext);
+
+        BrowserInformation browserInformation = WebDriverManagerUtils.getBrowserInformation(eventFiringWebDriver);
+        sessionContextMetaData.put("browser", browserInformation.getBrowserName());
+        sessionContextMetaData.put("browserVersion", browserInformation.getBrowserVersion());
 
         /*
         finalize the session setup

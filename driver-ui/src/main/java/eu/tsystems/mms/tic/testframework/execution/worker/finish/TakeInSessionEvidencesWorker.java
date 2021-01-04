@@ -34,7 +34,10 @@ public class TakeInSessionEvidencesWorker extends AbstractEvidencesWorker {
         if (WebDriverManager.hasSessionsActiveInThisThread()) {
             // get screenshots and videos
             List<Screenshot> screenshots = TestEvidenceCollector.collectScreenshots();
-            event.getMethodContext().addScreenshots(screenshots.stream());
+
+            if (screenshots != null) {
+                event.getMethodContext().addScreenshots(screenshots.stream());
+            }
         }
     }
 

@@ -39,12 +39,12 @@ public class MethodAssertionsPage extends MethodDetailsPage {
 
     public void checkAssertionIsDisplayedCorrectly(String assertionTitle, String assertionDescription){
         GuiElement headline = mainFrame.getSubElement(By.xpath(String.format(LOCATOR_ASSERTION_HEADLINE, assertionTitle)));
-        headline.asserts().assertIsDisplayed();
-        headline.asserts().assertTextContains(assertionTitle);
+        headline.asserts("The headline of the assertion should be displayed.").assertIsDisplayed();
+        headline.asserts("The text of the headline of the assertion should be correct.").assertTextContains(assertionTitle);
 
         openAssertionDescriptionMenu(headline);
         GuiElement description = mainFrame.getSubElement(By.xpath(String.format(LOCATOR_ASSERTION_DESCRIPTION, assertionTitle)));
-        description.asserts().assertTextContains(assertionDescription);
+        description.asserts("The text of the assert description should be correct.").assertTextContains(assertionDescription);
     }
 
     public void openAssertionDescriptionMenu(GuiElement assertionElement) {

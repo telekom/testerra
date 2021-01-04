@@ -22,6 +22,7 @@
 
 import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
@@ -29,36 +30,82 @@ import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import org.apache.logging.log4j.core.LogEvent;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 
 public class ExecutionContext extends AbstractContext implements SynchronizableContext {
 
+    /**
+     * @deprecated Use {@link #readSuiteContexts()} instead
+     */
     public final Queue<SuiteContext> suiteContexts = new ConcurrentLinkedQueue<>();
-    public final Queue<ClassContext> mergedClassContexts = new ConcurrentLinkedQueue<>();
+    @Deprecated
     public Map<String, List<MethodContext>> failureAspects;
-    public Map<String, List<MethodContext>> exitPoints;
     public final RunConfig runConfig = new RunConfig();
 
+    /**
+     * @deprecated Use {@link #getMetaData()} instead
+     */
     public final Map<String, String> metaData = new LinkedHashMap<>();
     public boolean crashed = false;
 
-    public final Queue<SessionContext> exclusiveSessionContexts = new ConcurrentLinkedQueue<>();
+    private Queue<SessionContext> exclusiveSessionContexts;
 
     public int estimatedTestMethodCount;
 
+    private final ConcurrentLinkedQueue<LogEvent> methodContextLessLogs = new ConcurrentLinkedQueue<>();
+
     public ExecutionContext() {
         name = runConfig.RUNCFG;
-        swi = name;
         TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(this));
+    }
+
+    public Map<String, String> getMetaData() {
+        return metaData;
+    }
+
+    public Stream<SuiteContext> readSuiteContexts() {
+        return this.suiteContexts.stream();
+    }
+
+    public Stream<SessionContext> readExclusiveSessionContexts() {
+        if (this.exclusiveSessionContexts == null) {
+            return Stream.empty();
+        } else {
+            return exclusiveSessionContexts.stream();
+        }
+    }
+
+    public ExecutionContext addExclusiveSessionContext(SessionContext sessionContext) {
+        if (this.exclusiveSessionContexts == null) {
+            this.exclusiveSessionContexts = new ConcurrentLinkedQueue<>();
+        }
+        if (!this.exclusiveSessionContexts.contains(sessionContext)) {
+            this.exclusiveSessionContexts.add(sessionContext);
+            sessionContext.parentContext = this;
+        }
+        return this;
+    }
+
+    public ExecutionContext addLogEvent(LogEvent logEvent) {
+        this.methodContextLessLogs.add(logEvent);
+        return this;
+    }
+
+    public Stream<LogEvent> readMethodContextLessLogs() {
+        return this.methodContextLessLogs.stream();
     }
 
     public synchronized SuiteContext getSuiteContext(ITestResult testResult, ITestContext iTestContext) {
@@ -93,12 +140,13 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
     /**
      * Used in dashboard.vm
      */
+    @Deprecated
     public long getNumberOfRepresentationalTests() {
         AtomicLong i = new AtomicLong();
         i.set(0);
         suiteContexts.forEach(suiteContext -> {
-            suiteContext.testContextModels.forEach(testContext -> {
-                testContext.classContexts.forEach(classContext -> {
+            suiteContext.readTestContexts().forEach(testContext -> {
+                testContext.readClassContexts().forEach(classContext -> {
                     i.set(i.get() + classContext.getRepresentationalMethods().count());
                 });
             });
@@ -107,8 +155,9 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
     }
 
     /**
-     * Used in dashboard.vm
+     * Used in dashboard.vm and methodsDashboard.vm
      */
+    @Deprecated
     public Map<TestStatusController.Status, Integer> getMethodStats(boolean includeTestMethods, boolean includeConfigMethods) {
         Map<TestStatusController.Status, Integer> counts = new LinkedHashMap<>();
 
@@ -116,8 +165,8 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
         Arrays.stream(TestStatusController.Status.values()).forEach(status -> counts.put(status, 0));
 
         suiteContexts.forEach(suiteContext -> {
-            suiteContext.testContextModels.forEach(testContext -> {
-                testContext.classContexts.forEach(classContext -> {
+            suiteContext.readTestContexts().forEach(testContext -> {
+                testContext.readClassContexts().forEach(classContext -> {
                     Map<TestStatusController.Status, Integer> methodStats = classContext.getMethodStats(includeTestMethods, includeConfigMethods);
                     methodStats.keySet().forEach(status -> {
                         Integer oldValue = counts.get(status);
@@ -129,50 +178,6 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
         });
 
         return counts;
-    }
-
-    /**
-     * Get method statistics for all effective classes.
-     * The classes are all classContext from the context tree (without merged ones) AND mergedClassContexts from executionContext.
-     *
-     * @param includeTestMethods   .
-     * @param includeConfigMethods .
-     * @return a map
-     */
-    public Map<ClassContext, Map> getMethodStatsPerClass(boolean includeTestMethods, boolean includeConfigMethods) {
-        final Map<ClassContext, Map> methodStatsPerClass = new LinkedHashMap<>();
-        suiteContexts.forEach(suiteContext -> {
-            suiteContext.testContextModels.forEach(testContext -> {
-                testContext.classContexts.forEach(classContext -> {
-                    if (!classContext.merged) {
-                        Map<TestStatusController.Status, Integer> methodStats = classContext.getMethodStats(includeTestMethods, includeConfigMethods);
-                        methodStatsPerClass.put(classContext, methodStats);
-                    }
-                });
-            });
-        });
-
-        mergedClassContexts.forEach(classContext -> methodStatsPerClass.put(classContext, classContext.getMethodStats(includeTestMethods, includeConfigMethods)));
-
-        /*
-        sort
-         */
-        final AtomicReference<Integer> i1 = new AtomicReference<>();
-        final AtomicReference<Integer> i2 = new AtomicReference<>();
-        Comparator<? super Map> comp = (Comparator<Map>) (m1, m2) -> {
-            i1.set(0);
-            m1.keySet().forEach(status -> i1.set(i1.get() + ((int) m1.get(status))));
-
-            i2.set(0);
-            m2.keySet().forEach(status -> i2.set(i2.get() + ((int) m2.get(status))));
-
-            return i2.get() - i1.get();
-        };
-        final Map sortedMap = methodStatsPerClass.entrySet().stream().sorted(Map.Entry.comparingByValue(comp))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
-                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
-
-        return sortedMap;
     }
 
     public TestStatusController.Status[] getAvailableStatuses() {

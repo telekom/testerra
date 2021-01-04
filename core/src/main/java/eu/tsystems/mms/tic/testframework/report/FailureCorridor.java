@@ -51,6 +51,7 @@ public final class FailureCorridor implements Loggable {
 
     }
 
+    @Deprecated
     public enum Value {
         HIGH(false, "grey"),
         MID(true, "grey"),

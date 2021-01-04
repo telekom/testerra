@@ -1,0 +1,20 @@
+= Connectors
+
+include::../properties/property-attributes.adoc[]
+
+While using the framework some external connectors could be useful.
+The maintainers provide some of them in seperate repositories.
+Please take a look at the following list if there is a connetcor mapping your need.
+
+[cols="2,^1,4a",options="header"]
+|===
+| Name | Documentation | Description
+| Appium Connector | https://git.t-systems-mms.com/projects/XETA/repos/testerra-mobile-prep/browse/README.md[README.md] | Uses the open source standard Appium to run web tests based on Testerra on mobile devices.
+| Azure DevOps Connector | https://git.t-systems-mms.com/projects/XETA/repos/testerra-azure-devops-connector/browse/README.md[README.md] | Automatic test result synchronization for Microsoft AzureDevOps platform.
+| Cucumber Connector | https://git.t-systems-mms.com/projects/XETA/repos/testerra-cucumber-connector/browse/README.md[README.md] | Provides the opportunity to use Cucumber and Gherkin to specify `.feature` files and combine it with the advantages of Testerra.
+| HPQC Connector | https://git.t-systems-mms.com/projects/XETA/repos/testerra-hpqc-connector/browse/README.md[README.md] | Automatic test result synchronization to HP Application Lifecycle Management, former called HP QualityCenter.
+| Selenoid Connector | https://git.t-systems-mms.com/projects/XETA/repos/testerra-selenoid-connector/browse/README.md[README.md] | Using a Selenium Grid based on https://github.com/aerokube/selenoid[Selenoid] this module provides access to videos and VNC streams.
+| TeamCity Connector | https://git.t-systems-mms.com/projects/XETA/repos/testerra-teamcity-connector/browse/README.md[README.md] | A simple notification service for Jetbrains TeamCity.
+| Xray Connector | https://git.t-systems-mms.com/projects/XETA/repos/testerra-xray-connector/browse/README.md[README.md] | Automatic test result synchronization Jira XRay.
+
+|===

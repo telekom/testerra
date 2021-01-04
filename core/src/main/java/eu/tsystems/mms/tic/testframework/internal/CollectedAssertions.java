@@ -26,8 +26,9 @@ import eu.tsystems.mms.tic.testframework.report.context.CustomContext;
 import eu.tsystems.mms.tic.testframework.report.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.AssertionInfo;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -38,45 +39,16 @@ public final class CollectedAssertions implements AssertionsCollector {
     private final ThreadLocal<List<AssertionInfo>> ASSERTION_INFOS = new ThreadLocal<>();
 
     public synchronized boolean store(Throwable throwable) {
-        if (ASSERTION_INFOS.get() == null) {
-            ASSERTION_INFOS.set(new LinkedList<>());
-        }
-
-        List<AssertionInfo> assertionInfos = ASSERTION_INFOS.get();
-
         /*
         add info
          */
-        AssertionInfo assertionInfo = new AssertionInfo(throwable);
-
         MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
+        currentMethodContext.addCollectedAssertion(throwable);
 
         // take scrennshots
         List<Screenshot> screenshots = TestEvidenceCollector.collectScreenshots();
-        currentMethodContext.addScreenshots(screenshots.stream().peek(screenshot -> screenshot.setErrorContextId(assertionInfo.id)));
-
-        // get custom error contexts in queue
-        List<CustomContext> customContexts = ExecutionContextController.getCurrentMethodContext().customContexts;
-        currentMethodContext.customContexts.addAll(customContexts);
-        customContexts.clear();
-
-        // and store
-        return assertionInfos.add(assertionInfo);
-    }
-
-    public void clear() {
-        ASSERTION_INFOS.remove();
-    }
-    public boolean hasEntries() {
-        if (ASSERTION_INFOS.get() == null) {
-            return false;
+        if (screenshots != null) {
+            currentMethodContext.addScreenshots(screenshots.stream());
         }
-        if (ASSERTION_INFOS.get().size() > 0) {
-            return true;
-        }
-        return false;
-    }
-    public List<AssertionInfo> getEntries() {
-        return ASSERTION_INFOS.get();
     }
 }

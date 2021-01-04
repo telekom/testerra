@@ -20,10 +20,6 @@
                 #end
             </i>
         #end
-
-        #if ($testMethod.classContext.merged)
-            (in $testMethod.suiteContext.name - $testMethod.testContextModel.name)
-        #end
     </a>
 
     #parse("methodTags.vm")
@@ -31,9 +27,9 @@
     <!-- readable message -->
     <div>
         <font class="message" style="$style2">
-                #if ($testMethod.errorContext().getReadableMessageFormatted())
+                #if ($testMethod.getErrorContext().getReadableMessageFormatted())
                     <b>
-                        $testMethod.errorContext().getReadableMessageFormatted()
+                        $testMethod.getErrorContext().getReadableMessageFormatted()
                     </b>
                 #end
 
@@ -45,10 +41,10 @@
                     </div>
                 #end
 
-                #if ($testMethod.errorContext().getAdditionalErrorMessageFormatted())
+                #if ($testMethod.getErrorContext().getAdditionalErrorMessageFormatted())
                     <div style="color: Grey;">
                         <b>
-                            $testMethod.errorContext().getAdditionalErrorMessageFormatted()
+                            $testMethod.getErrorContext().getAdditionalErrorMessageFormatted()
                         </b>
                     </div>
                 #end

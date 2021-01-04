@@ -259,8 +259,8 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
     private void setWindowSizeBasedOnDisplayResolution(WebDriver.Window window, String browser) {
         log().debug("Trying to set window size to: " + Defaults.DISPLAY_RESOLUTION);
         String[] split = Defaults.DISPLAY_RESOLUTION.split("x");
-        int width = Integer.valueOf(split[0]);
-        int height = Integer.valueOf(split[1]);
+        int width = Integer.parseInt(split[0]);
+        int height = Integer.parseInt(split[1]);
         try {
             window.setSize(new Dimension(width, height));
         } catch (Throwable t2) {

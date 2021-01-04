@@ -1,0 +1,93 @@
+/*!
+ * Testerra
+ *
+ * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+@import "variables.scss";
+
+.status {
+    color: #ffffff;
+}
+
+.colored-icon {
+    color: #ffffff;
+    border-radius: 25px;
+    border: 5px solid;
+}
+
+.big-icon {
+    font-size: 40px !important;
+    //border-radius: 25px;
+}
+
+.status-passed {
+    @extend .status;
+    background: $passed;
+    border-color: $passed;
+}
+
+.status-passed-retried {
+    @extend .status-passed;
+}
+
+//.status-minor {
+//    @extend .status-passed;
+//}
+//
+//.status-minor-retry {
+//    @extend .status-passed;
+//}
+
+.status-skipped {
+    @extend .status;
+    background: $skipped;
+    border-color: $skipped;
+}
+
+.status-failed {
+    @extend .status;
+    background: $failed;
+    border-color: $failed;
+}
+
+//.status-failed-minor {
+//    @extend .status;
+//    background: $failedMinor;
+//    border-color: $failedMinor;
+//}
+
+.status-failed-expected {
+    @extend .status;
+    background: $failedExpected;
+    border-color: $failedExpected;
+}
+
+.status-failed-retried {
+    @extend .status-failed
+}
+
+.badge {
+    padding: 4px 10px;
+    border-radius: 25px;
+    //text-decoration: none;
+}
+.badge__dense {
+    padding: 0 5px;
+    border-radius: 10px;
+}

@@ -109,7 +109,7 @@ public interface MethodContextOrBuilder extends
 
   /**
    * <pre>
-   *TestStep failed_step = 13;
+   *    TestStep failed_step = 13;
    * </pre>
    *
    * <code>.data.FailureCorridorValue failure_corridor_value = 14;</code>
@@ -118,7 +118,7 @@ public interface MethodContextOrBuilder extends
   int getFailureCorridorValueValue();
   /**
    * <pre>
-   *TestStep failed_step = 13;
+   *    TestStep failed_step = 13;
    * </pre>
    *
    * <code>.data.FailureCorridorValue failure_corridor_value = 14;</code>
@@ -139,83 +139,55 @@ public interface MethodContextOrBuilder extends
       getClassContextIdBytes();
 
   /**
-   * <code>string execution_context_id = 16;</code>
+   * <code>string execution_context_id = 16 [deprecated = true];</code>
    * @return The executionContextId.
    */
-  java.lang.String getExecutionContextId();
+  @java.lang.Deprecated java.lang.String getExecutionContextId();
   /**
-   * <code>string execution_context_id = 16;</code>
+   * <code>string execution_context_id = 16 [deprecated = true];</code>
    * @return The bytes for executionContextId.
    */
-  com.google.protobuf.ByteString
+  @java.lang.Deprecated com.google.protobuf.ByteString
       getExecutionContextIdBytes();
 
   /**
-   * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
-   */
-  java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> 
-      getNonFunctionalInfosList();
-  /**
-   * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
-   */
-  eu.tsystems.mms.tic.testframework.report.model.ErrorContext getNonFunctionalInfos(int index);
-  /**
-   * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
-   */
-  int getNonFunctionalInfosCount();
-  /**
-   * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
-   */
-  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
-      getNonFunctionalInfosOrBuilderList();
-  /**
-   * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
-   */
-  eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getNonFunctionalInfosOrBuilder(
-      int index);
-
-  /**
-   * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-   */
-  java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> 
-      getCollectedAssertionsList();
-  /**
-   * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-   */
-  eu.tsystems.mms.tic.testframework.report.model.ErrorContext getCollectedAssertions(int index);
-  /**
-   * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-   */
-  int getCollectedAssertionsCount();
-  /**
-   * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-   */
-  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
-      getCollectedAssertionsOrBuilderList();
-  /**
-   * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
-   */
-  eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getCollectedAssertionsOrBuilder(
-      int index);
-
-  /**
+   * <pre>
+   *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
+   *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string infos = 19;</code>
    * @return A list containing the infos.
    */
   java.util.List<java.lang.String>
       getInfosList();
   /**
+   * <pre>
+   *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
+   *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string infos = 19;</code>
    * @return The count of infos.
    */
   int getInfosCount();
   /**
+   * <pre>
+   *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
+   *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string infos = 19;</code>
    * @param index The index of the element to return.
    * @return The infos at the given index.
    */
   java.lang.String getInfos(int index);
   /**
+   * <pre>
+   *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
+   *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string infos = 19;</code>
    * @param index The index of the value to return.
    * @return The bytes of the infos at the given index.
@@ -301,51 +273,51 @@ public interface MethodContextOrBuilder extends
   eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getErrorContextOrBuilder();
 
   /**
-   * <code>repeated .data.PTestStep test_steps = 26;</code>
+   * <code>repeated .data.TestStep test_steps = 26;</code>
    */
-  java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStep> 
+  java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestStep> 
       getTestStepsList();
   /**
-   * <code>repeated .data.PTestStep test_steps = 26;</code>
+   * <code>repeated .data.TestStep test_steps = 26;</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.PTestStep getTestSteps(int index);
+  eu.tsystems.mms.tic.testframework.report.model.TestStep getTestSteps(int index);
   /**
-   * <code>repeated .data.PTestStep test_steps = 26;</code>
+   * <code>repeated .data.TestStep test_steps = 26;</code>
    */
   int getTestStepsCount();
   /**
-   * <code>repeated .data.PTestStep test_steps = 26;</code>
+   * <code>repeated .data.TestStep test_steps = 26;</code>
    */
-  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.PTestStepOrBuilder> 
+  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.TestStepOrBuilder> 
       getTestStepsOrBuilderList();
   /**
-   * <code>repeated .data.PTestStep test_steps = 26;</code>
+   * <code>repeated .data.TestStep test_steps = 26;</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.PTestStepOrBuilder getTestStepsOrBuilder(
+  eu.tsystems.mms.tic.testframework.report.model.TestStepOrBuilder getTestStepsOrBuilder(
       int index);
 
   /**
-   * <code>string test_context_id = 27;</code>
+   * <code>string test_context_id = 27 [deprecated = true];</code>
    * @return The testContextId.
    */
-  java.lang.String getTestContextId();
+  @java.lang.Deprecated java.lang.String getTestContextId();
   /**
-   * <code>string test_context_id = 27;</code>
+   * <code>string test_context_id = 27 [deprecated = true];</code>
    * @return The bytes for testContextId.
    */
-  com.google.protobuf.ByteString
+  @java.lang.Deprecated com.google.protobuf.ByteString
       getTestContextIdBytes();
 
   /**
-   * <code>string suite_context_id = 28;</code>
+   * <code>string suite_context_id = 28 [deprecated = true];</code>
    * @return The suiteContextId.
    */
-  java.lang.String getSuiteContextId();
+  @java.lang.Deprecated java.lang.String getSuiteContextId();
   /**
-   * <code>string suite_context_id = 28;</code>
+   * <code>string suite_context_id = 28 [deprecated = true];</code>
    * @return The bytes for suiteContextId.
    */
-  com.google.protobuf.ByteString
+  @java.lang.Deprecated com.google.protobuf.ByteString
       getSuiteContextIdBytes();
 
   /**
@@ -399,39 +371,39 @@ public interface MethodContextOrBuilder extends
       getVideoIdsBytes(int index);
 
   /**
-   * <code>repeated string screenshot_ids = 31;</code>
-   * @return A list containing the screenshotIds.
-   */
-  java.util.List<java.lang.String>
-      getScreenshotIdsList();
-  /**
-   * <code>repeated string screenshot_ids = 31;</code>
-   * @return The count of screenshotIds.
-   */
-  int getScreenshotIdsCount();
-  /**
-   * <code>repeated string screenshot_ids = 31;</code>
-   * @param index The index of the element to return.
-   * @return The screenshotIds at the given index.
-   */
-  java.lang.String getScreenshotIds(int index);
-  /**
-   * <code>repeated string screenshot_ids = 31;</code>
-   * @param index The index of the value to return.
-   * @return The bytes of the screenshotIds at the given index.
-   */
-  com.google.protobuf.ByteString
-      getScreenshotIdsBytes(int index);
-
-  /**
+   * <pre>
+   *    repeated string screenshot_ids = 31 [deprecated = true];
+   * </pre>
+   *
    * <code>string custom_context_json = 32;</code>
    * @return The customContextJson.
    */
   java.lang.String getCustomContextJson();
   /**
+   * <pre>
+   *    repeated string screenshot_ids = 31 [deprecated = true];
+   * </pre>
+   *
    * <code>string custom_context_json = 32;</code>
    * @return The bytes for customContextJson.
    */
   com.google.protobuf.ByteString
       getCustomContextJsonBytes();
+
+  /**
+   * <code>int32 failed_step_index = 33;</code>
+   * @return The failedStepIndex.
+   */
+  int getFailedStepIndex();
+
+  /**
+   * <code>.data.ResultStatusType result_status = 34;</code>
+   * @return The enum numeric value on the wire for resultStatus.
+   */
+  int getResultStatusValue();
+  /**
+   * <code>.data.ResultStatusType result_status = 34;</code>
+   * @return The resultStatus.
+   */
+  eu.tsystems.mms.tic.testframework.report.model.ResultStatusType getResultStatus();
 }

@@ -22,7 +22,8 @@
 <template>
     <mdc-dialog-title> Comparison: Screenshot - Expected Screenshot</mdc-dialog-title>
     <mdc-dialog-content>
-        <img src="${_srcActual}" class="flex thumbnail"/>
+        <img src="${_comparison}" class="flex"/>
+        <div id="canvas"></div>
     </mdc-dialog-content>
     <mdc-dialog-actions>
         <button mdc-button  data-mdc-dialog-action="cancel">Cancel</button>

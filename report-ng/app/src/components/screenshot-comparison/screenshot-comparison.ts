@@ -27,6 +27,7 @@ import {MdcDialog} from '@aurelia-mdc-web/dialog';
 export class ScreenshotComparison {
     private _srcActual: string;
     private _srcExpected: string;
+    private _comparison: string;
 
 
     constructor(
@@ -37,6 +38,7 @@ export class ScreenshotComparison {
 
     activate(params:any) {
         this._srcActual = params.expected;
-        this._srcExpected = params.actual
+        this._srcExpected = params.actual;
+        this._comparison = params.comparison;
     }
 }

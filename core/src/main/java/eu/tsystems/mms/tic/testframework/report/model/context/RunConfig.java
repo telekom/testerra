@@ -18,18 +18,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+ package eu.tsystems.mms.tic.testframework.report.model.context;
 
-package eu.tsystems.mms.tic.testframework.internal;
+import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.internal.BuildInformation;
+import eu.tsystems.mms.tic.testframework.report.Report;
 
-import eu.tsystems.mms.tic.testframework.report.model.AssertionInfo;
-import java.util.List;
+public final class RunConfig {
 
-public interface AssertionsCollector {
-    /**
-     * @return True if stored
-     */
-    boolean store(Throwable throwable);
-    void clear();
-    boolean hasEntries();
-    List<AssertionInfo> getEntries();
+    public final String RUNCFG = (Testerra.Properties.DRY_RUN.asBool() ? "DRY RUN " : "") + PropertyManager.getProperty(TesterraProperties.RUNCFG, "DEFAULT");
+    public final BuildInformation buildInformation = new BuildInformation();
+
+    public String getReportName() {
+        return Report.Properties.NAME.asString();
+    }
 }

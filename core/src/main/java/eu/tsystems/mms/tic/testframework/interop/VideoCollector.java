@@ -20,7 +20,7 @@
  */
  package eu.tsystems.mms.tic.testframework.interop;
 
-import eu.tsystems.mms.tic.testframework.report.context.Video;
+import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import java.util.List;
 
 public interface VideoCollector extends Collector {

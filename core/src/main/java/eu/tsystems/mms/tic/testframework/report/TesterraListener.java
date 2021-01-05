@@ -44,8 +44,8 @@ import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.OmitInDev
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
-import eu.tsystems.mms.tic.testframework.report.context.ClassContext;
-import eu.tsystems.mms.tic.testframework.report.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.hooks.ConfigMethodHook;
 import eu.tsystems.mms.tic.testframework.report.hooks.TestMethodHook;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;

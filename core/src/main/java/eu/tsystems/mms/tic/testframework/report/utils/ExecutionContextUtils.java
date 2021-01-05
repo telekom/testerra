@@ -22,7 +22,7 @@
  package eu.tsystems.mms.tic.testframework.report.utils;
 
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
-import eu.tsystems.mms.tic.testframework.report.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.lang.reflect.Method;
 import org.slf4j.Logger;

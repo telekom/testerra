@@ -18,7 +18,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
- package eu.tsystems.mms.tic.testframework.report.context;
+ package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;

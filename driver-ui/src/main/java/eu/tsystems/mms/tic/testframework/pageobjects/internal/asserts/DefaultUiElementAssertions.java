@@ -38,7 +38,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.report.Report;
-import eu.tsystems.mms.tic.testframework.report.context.Screenshot;
+import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import java.io.File;
 import java.util.concurrent.atomic.AtomicReference;
 import org.openqa.selenium.Rectangle;

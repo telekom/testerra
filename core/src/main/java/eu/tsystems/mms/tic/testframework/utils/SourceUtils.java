@@ -24,8 +24,8 @@
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
-import eu.tsystems.mms.tic.testframework.report.context.ScriptSource;
-import eu.tsystems.mms.tic.testframework.report.context.report.DefaultReport;
+import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
+import eu.tsystems.mms.tic.testframework.report.DefaultReport;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;

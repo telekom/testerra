@@ -27,7 +27,7 @@ import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.TestFailureException;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.SharedTestResultAttributes;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
-import eu.tsystems.mms.tic.testframework.report.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.report.utils.FailsAnnotationFilter;
 import java.lang.annotation.Annotation;

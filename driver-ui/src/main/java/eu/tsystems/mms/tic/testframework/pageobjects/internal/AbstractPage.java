@@ -133,11 +133,6 @@ public abstract class AbstractPage implements
 
     private void pCheckPage(CheckRule checkRule, final boolean checkCaller) {
         /*
-        Logging and demo mode
-         */
-        log().info("Checking mandatory elements");
-
-        /*
         page checks
          */
         checkPagePreparation();
@@ -157,7 +152,6 @@ public abstract class AbstractPage implements
         }
 
         pageLoaded();
-        log().info("Page loaded successfully");
     }
 
     /**

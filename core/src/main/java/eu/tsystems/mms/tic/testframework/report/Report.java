@@ -23,8 +23,8 @@ package eu.tsystems.mms.tic.testframework.report;
 
 import eu.tsystems.mms.tic.testframework.common.IProperties;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.report.context.Screenshot;
-import eu.tsystems.mms.tic.testframework.report.context.Video;
+import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
+import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import java.io.File;
 
 public interface Report {
@@ -40,9 +40,9 @@ public interface Report {
         WHEN_FAILED
     }
     enum Properties implements IProperties {
-        BASE_DIR("dir", "testerra-report"),
+        BASE_DIR("dir", "test-report"),
         SCREENSHOTS_PREVIEW("screenshots.preview", true),
-        NAME("name", null),
+        NAME("name", "Test report"),
         ACTIVATE_SOURCES("activate.sources", true),
         SCREENSHOTTER_ACTIVE("screenshotter.active", true),
         SCREENSHOT_ON_PAGELOAD("screenshot.on.pageload", false),

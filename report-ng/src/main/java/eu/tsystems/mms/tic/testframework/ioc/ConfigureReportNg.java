@@ -19,26 +19,20 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.events;
+package eu.tsystems.mms.tic.testframework.ioc;
 
-import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
+import com.google.inject.AbstractModule;
+import com.google.inject.Scopes;
+import com.google.inject.multibindings.Multibinder;
+import eu.tsystems.mms.tic.testframework.hook.ReportNgHook;
+import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 
-/**
- * Gets fired when the report model has been finalized
- */
-public class FinalizeExecutionEvent {
-    public interface Listener {
-        void onFinalizeExecution(FinalizeExecutionEvent event);
-    }
+public class ConfigureReportNg extends AbstractModule {
 
-    private ExecutionContext executionContext;
-
-    public ExecutionContext getExecutionContext() {
-        return executionContext;
-    }
-
-    public FinalizeExecutionEvent setExecutionContext(ExecutionContext executionContext) {
-        this.executionContext = executionContext;
-        return this;
+    @Override
+    protected void configure() {
+        super.configure();
+        Multibinder<ModuleHook> hookBinder = Multibinder.newSetBinder(binder(), ModuleHook.class);
+        hookBinder.addBinding().to(ReportNgHook.class).in(Scopes.SINGLETON);
     }
 }

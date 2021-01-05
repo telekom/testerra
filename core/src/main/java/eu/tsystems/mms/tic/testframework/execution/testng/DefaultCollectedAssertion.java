@@ -21,23 +21,29 @@
 
 package eu.tsystems.mms.tic.testframework.execution.testng;
 
-import com.google.inject.Inject;
-import eu.tsystems.mms.tic.testframework.internal.AssertionsCollector;
+import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import java.util.List;
 
 /**
  * Collects {@link AssertionError} on failed assertion
  */
 public class DefaultCollectedAssertion extends AbstractAssertion implements CollectedAssertion {
 
-    private final AssertionsCollector collector;
-
-    @Inject
-    DefaultCollectedAssertion(AssertionsCollector collector) {
-        this.collector = collector;
-    }
-
     @Override
     public void fail(AssertionError error) {
-        collector.store(error);
+        /*
+        add info
+         */
+        MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
+        currentMethodContext.addCollectedAssertion(error);
+
+        // take scrennshots
+        List<Screenshot> screenshots = TestEvidenceCollector.collectScreenshots();
+        if (screenshots != null) {
+            currentMethodContext.addScreenshots(screenshots.stream());
+        }
     }
 }

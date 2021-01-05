@@ -18,11 +18,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package eu.tsystems.mms.tic.testframework.report.context;
+package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.utils.SourceUtils;
@@ -135,6 +134,14 @@ public class ErrorContext {
 
     public void setThrowable(final Throwable throwable) {
         this.throwable = throwable;
+    }
+
+    /**
+     * Use {@link #setThrowable(Throwable)} instead
+     */
+    @Deprecated
+    public void setThrowable(final String readableMessage, final Throwable throwable) {
+        setThrowable(readableMessage, throwable, false);
     }
 
     /**

@@ -31,7 +31,7 @@ import eu.tsystems.mms.tic.testframework.internal.asserts.PropertyAssertionFacto
 import eu.tsystems.mms.tic.testframework.internal.asserts.StringAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.report.Report;
-import eu.tsystems.mms.tic.testframework.report.context.Screenshot;
+import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import java.io.File;
 import java.util.concurrent.atomic.AtomicReference;

@@ -25,7 +25,7 @@ package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
-import eu.tsystems.mms.tic.testframework.report.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import org.testng.ITestResult;
 
 /**

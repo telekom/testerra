@@ -670,11 +670,6 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     }
 
     /**
-     * Provides access to optional assert methods
-     */
-    public GuiElementAssert optionalAsserts() { return nonFunctionalAssertReplacement; }
-
-    /**
      * Provides access to all non-functional assert methods. If an assertion fails, the assertDescription will be
      * given as cause, instead of the technical cause like an isDisplayed error.
      *
@@ -702,6 +697,13 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     /**
      * Provides access to optional assert methods
      */
+    @Deprecated
+    public GuiElementAssert optionalAsserts() { return nonFunctionalAsserts(); }
+
+    /**
+     * Provides access to optional assert methods
+     */
+    @Deprecated
     public GuiElementAssert optionalAsserts(String errorMessage) {
         return nonFunctionalAsserts(errorMessage);
     }

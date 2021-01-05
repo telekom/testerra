@@ -18,7 +18,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package eu.tsystems.mms.tic.testframework.report.context;
+package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
@@ -34,10 +34,8 @@ import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.apache.logging.log4j.core.LogEvent;
 import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
@@ -301,10 +299,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return this.errorContext != null && this.errorContext.getThrowable() != null;
     }
 
-    public ErrorContext getErrorContext() {
-        return this.errorContext();
-    }
-
     /**
      * @deprecated Use {@link #getErrorContext()} instead
      */
@@ -494,8 +488,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     public MethodContext addVideo(Video video) {
-        if (!video.hasErrorContextId()) video.setErrorContextId(this.getErrorContext().id);
-        this.videos.add(video);
+        this.getVideos().add(video);
         return this;
     }
 

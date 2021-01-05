@@ -18,37 +18,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package eu.tsystems.mms.tic.testframework.report.context;
+package eu.tsystems.mms.tic.testframework.report.model.context;
 
-/**
- * @todo Replace by {@link Cause}
- */
-@Deprecated
-public class StackTrace {
+import java.io.File;
 
-    @Deprecated
-    public Cause stackTrace;
-
-    @Deprecated
-    public String additionalErrorMessage;
-
-    @Deprecated
-    public Cause getCause() {
-        return this.stackTrace;
+public class Video extends Attachment {
+    public Video() {
+        super("Video");
+    }
+    public Video(File file) {
+        super(file);
     }
 
-    @Override
-    public String toString() {
-        String msg = "";
-        if (additionalErrorMessage != null) {
-            msg += "(" + additionalErrorMessage + ")\n";
-        }
-        msg += stackTrace;
-        return msg;
-    }
-
-    @Deprecated
-    public String getFirstLine() {
-        return stackTrace.getClassName() + ": " + stackTrace.getMessage();
+    public File getVideoFile() {
+        return getOrCreateTempFile(".mp4");
     }
 }

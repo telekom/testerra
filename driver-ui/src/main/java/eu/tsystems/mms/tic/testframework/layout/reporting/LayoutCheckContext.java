@@ -21,8 +21,8 @@
  */
 package eu.tsystems.mms.tic.testframework.layout.reporting;
 
-import eu.tsystems.mms.tic.testframework.report.context.CustomContext;
-import eu.tsystems.mms.tic.testframework.report.context.Screenshot;
+import eu.tsystems.mms.tic.testframework.report.model.context.CustomContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 
 public class LayoutCheckContext implements CustomContext {
 

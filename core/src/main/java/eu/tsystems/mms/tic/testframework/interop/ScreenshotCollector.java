@@ -20,7 +20,7 @@
  */
  package eu.tsystems.mms.tic.testframework.interop;
 
-import eu.tsystems.mms.tic.testframework.report.context.Screenshot;
+import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import java.util.List;
 
 public interface ScreenshotCollector extends Collector {

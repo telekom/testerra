@@ -21,22 +21,19 @@
  */
  package eu.tsystems.mms.tic.testframework.report.utils;
 
-import com.google.common.util.concurrent.AtomicLongMap;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
-import eu.tsystems.mms.tic.testframework.report.context.ClassContext;
-import eu.tsystems.mms.tic.testframework.report.context.ExecutionContext;
-import eu.tsystems.mms.tic.testframework.report.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.context.SessionContext;
-import eu.tsystems.mms.tic.testframework.report.context.SuiteContext;
-import eu.tsystems.mms.tic.testframework.report.context.TestContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.SuiteContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.TestContext;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.IInvokedMethod;

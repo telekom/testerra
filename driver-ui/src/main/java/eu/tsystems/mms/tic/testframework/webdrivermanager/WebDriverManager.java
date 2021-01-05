@@ -28,7 +28,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionHandler;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionsAfterMethodWorker;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
-import eu.tsystems.mms.tic.testframework.report.context.SessionContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;

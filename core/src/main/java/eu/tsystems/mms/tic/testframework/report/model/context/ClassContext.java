@@ -19,7 +19,7 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.report.context;
+package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
@@ -198,7 +198,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
 
     public MethodContext safeAddSkipMethod(ITestResult testResult, IInvokedMethod invokedMethod) {
         MethodContext methodContext = getMethodContext(testResult, testResult.getTestContext(), invokedMethod);
-        methodContext.getErrorContext().setThrowable(null, new SkipException("Skipped"));
+        methodContext.getErrorContext().setThrowable(new SkipException("Skipped"));
         methodContext.setStatus(TestStatusController.Status.SKIPPED);
         return methodContext;
     }

@@ -28,16 +28,12 @@ import eu.tsystems.mms.tic.testframework.internal.BuildInformation;
 import eu.tsystems.mms.tic.testframework.internal.TimingInfo;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
+import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.ReportingData;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
-import eu.tsystems.mms.tic.testframework.report.context.ClassContext;
-import eu.tsystems.mms.tic.testframework.report.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.context.report.DefaultReport;
-import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
-import eu.tsystems.mms.tic.testframework.report.LogMessage;
-import eu.tsystems.mms.tic.testframework.report.ReportingData;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.velocity.PublicFieldUberspect;
 import java.io.BufferedWriter;
@@ -290,7 +286,7 @@ public class ReportFormatter {
         if (testClass != null) {
             context.put("testClass", testClass);
         }
-        context.put("reportScreenshotsPreview", DefaultReport.Properties.SCREENSHOTS_PREVIEW.asBool());
+        context.put("reportScreenshotsPreview", Report.Properties.SCREENSHOTS_PREVIEW.asBool());
 
         writeHtml(logFile, htmlLogTemplate, context);
     }
@@ -382,7 +378,7 @@ public class ReportFormatter {
         VelocityContext context = new VelocityContext();
         context.put("executionContext", ExecutionContextController.getCurrentExecutionContext());
         context.put("TesterraBuildInformation", BuildInformation.getInstance());
-        context.put("reportScreenshotsPreview", DefaultReport.Properties.SCREENSHOTS_PREVIEW.asBool());
+        context.put("reportScreenshotsPreview", Report.Properties.SCREENSHOTS_PREVIEW.asBool());
         context.put("reportName", ReportUtils.getReportName());
 
         context.put("dryrun", Testerra.Properties.DRY_RUN.asBool());

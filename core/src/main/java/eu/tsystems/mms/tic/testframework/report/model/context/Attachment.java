@@ -19,7 +19,7 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.report.context;
+package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import java.io.File;
@@ -28,10 +28,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Attachment implements Loggable {
-    private static HashMap<String, Integer> counter = new HashMap<>();
+    private static final HashMap<String, Integer> counter = new HashMap<>();
     private String tmpName;
     private File file;
-    private String errorContextId;
     private Map<String, String> meta;
 
     /**
@@ -66,22 +65,6 @@ public class Attachment implements Loggable {
     public Attachment setFile(File file) {
         this.file = file;
         return this;
-    }
-
-    @Deprecated
-    public Attachment setErrorContextId(String id) {
-        this.errorContextId = id;
-        return this;
-    }
-
-    @Deprecated
-    public String getErrorContextId() {
-        return this.errorContextId;
-    }
-
-    @Deprecated
-    public boolean hasErrorContextId() {
-        return this.errorContextId != null;
     }
 
     public Map<String, String> meta() {

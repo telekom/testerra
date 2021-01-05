@@ -21,9 +21,9 @@
  package eu.tsystems.mms.tic.testframework.interop;
 
 import eu.tsystems.mms.tic.testframework.report.Report;
-import eu.tsystems.mms.tic.testframework.report.context.Screenshot;
-import eu.tsystems.mms.tic.testframework.report.context.ScriptSource;
-import eu.tsystems.mms.tic.testframework.report.context.Video;
+import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
+import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
+import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import java.util.LinkedList;
 import java.util.List;
 import org.slf4j.Logger;

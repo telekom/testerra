@@ -22,7 +22,7 @@
  package eu.tsystems.mms.tic.testframework.internal;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
-import eu.tsystems.mms.tic.testframework.report.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashMap;

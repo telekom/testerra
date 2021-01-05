@@ -23,7 +23,7 @@
 
 import eu.tsystems.mms.tic.testframework.clickpath.ClickPathEvent;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.report.context.Screenshot;
+import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.Serial;
 import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;

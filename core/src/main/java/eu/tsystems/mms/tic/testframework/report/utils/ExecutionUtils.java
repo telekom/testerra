@@ -24,7 +24,7 @@
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.SupportMethod;
 import eu.tsystems.mms.tic.testframework.report.model.context.Cause;
-import eu.tsystems.mms.tic.testframework.report.context.StackTrace;
+import eu.tsystems.mms.tic.testframework.report.model.context.StackTrace;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +33,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;

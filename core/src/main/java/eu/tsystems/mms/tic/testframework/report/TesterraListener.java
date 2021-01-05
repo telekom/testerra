@@ -138,6 +138,14 @@ public class TesterraListener implements
         Call Booter
          */
         Booter.bootOnce();
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            /*
+             * Shutdown local services and hooks
+             */
+            JVMMonitor.stop();
+            Booter.shutdown();
+        }));
     }
 
     public static EventBus getEventBus() {

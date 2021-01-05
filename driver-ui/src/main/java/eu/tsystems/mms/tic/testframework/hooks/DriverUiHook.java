@@ -30,7 +30,6 @@ import eu.tsystems.mms.tic.testframework.execution.worker.finish.TakeInSessionEv
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.TakeOutOfSessionsEvidencesWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionsAfterMethodWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverShutDownWorker;
-import eu.tsystems.mms.tic.testframework.execution.worker.shutdown.WebDriverShutDownAfterTestsWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.start.PerformanceTestWorker;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.report.ScreenshotGrabber;
@@ -38,6 +37,7 @@ import eu.tsystems.mms.tic.testframework.report.SourceGrabber;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.UITestStepIntegration;
 import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 
 public class DriverUiHook implements ModuleHook {
 
@@ -70,9 +70,6 @@ public class DriverUiHook implements ModuleHook {
         eventBus.register(new WebDriverShutDownWorker());
         eventBus.register(new TakeOutOfSessionsEvidencesWorker());
 
-        //shutdown
-        eventBus.register(new WebDriverShutDownAfterTestsWorker());
-
         /*
         register services
          */
@@ -85,6 +82,7 @@ public class DriverUiHook implements ModuleHook {
 
     @Override
     public void terminate() {
+        WebDriverManager.forceShutdownAllThreads();
         WebDriverWatchDog.stop();
     }
 }

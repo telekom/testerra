@@ -91,6 +91,12 @@ public class TestStepAction implements Serializable {
     }
 
     public void addScreenshot(Screenshot screenshot) {
+        if (
+                screenshot.filename == null
+                || screenshot.filename.trim().length() == 0
+        ) {
+            return;
+        }
         this.entries.add(screenshot);
     }
 

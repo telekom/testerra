@@ -487,11 +487,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return this.videos;
     }
 
-    public MethodContext addVideo(Video video) {
-        this.getVideos().add(video);
-        return this;
-    }
-
     public Stream<Video> readVideos() {
         if (this.videos == null) {
             return Stream.empty();

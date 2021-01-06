@@ -1,0 +1,38 @@
+* {box-sizing: border-box;}
+
+.screenshot-dialog {
+    .mdc-dialog__container {
+        .mdc-dialog__surface {
+            max-width: 100%;
+        }
+    }
+}
+
+.img-comp-container {
+    position: relative;
+    height: 300px;
+}
+
+.img-comp-img {
+    position: absolute;
+    width: 60vw;
+    height: auto;
+    overflow: hidden;
+}
+
+.img-comp-img img {
+    display: block;
+    vertical-align: middle;
+}
+
+.img-comp-slider {
+    position: absolute;
+    z-index: 9;
+    cursor: ew-resize;
+    /*set the appearance of the slider:*/
+    width: 40px;
+    height: 40px;
+    background-color: #2196F3;
+    opacity: 0.7;
+    border-radius: 50%;
+}

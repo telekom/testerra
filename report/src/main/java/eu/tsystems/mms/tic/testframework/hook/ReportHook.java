@@ -22,16 +22,15 @@
 
 package eu.tsystems.mms.tic.testframework.hook;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.listeners.GenerateHtmlReportListener;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 
 public class ReportHook implements ModuleHook {
 
     @Override
     public void init() {
-
-        TesterraListener.getEventBus().register(new GenerateHtmlReportListener());
+        Testerra.getEventBus().register(new GenerateHtmlReportListener());
     }
 
     @Override

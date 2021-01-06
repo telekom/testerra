@@ -24,6 +24,7 @@ package eu.tsystems.mms.tic.testframework.report;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.events.ExecutionAbortEvent;
 import eu.tsystems.mms.tic.testframework.events.ExecutionFinishEvent;
@@ -64,7 +65,7 @@ final class ExecutionEndListener implements
         ExecutionContext currentExecutionContext = ExecutionContextController.getCurrentExecutionContext();
         currentExecutionContext.updateEndTimeRecursive(new Date());
 
-        EventBus eventBus = TesterraListener.getEventBus();
+        EventBus eventBus = Testerra.getEventBus();
 
         eventBus.post(new ContextUpdateEvent().setContext(currentExecutionContext));
         eventBus.post(new FinalizeExecutionEvent().setExecutionContext(currentExecutionContext));

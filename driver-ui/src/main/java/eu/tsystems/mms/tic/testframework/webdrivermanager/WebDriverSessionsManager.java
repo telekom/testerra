@@ -324,7 +324,7 @@ public final class WebDriverSessionsManager {
         ExecutionContext currentExecutionContext = ExecutionContextController.getCurrentExecutionContext();
         currentExecutionContext.addExclusiveSessionContext(sessionContext);
         // fire sync
-        TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(sessionContext));
+        Testerra.getEventBus().post(new ContextUpdateEvent().setContext(sessionContext));
 
         /*
         Delete session from session maps.
@@ -439,7 +439,7 @@ public final class WebDriverSessionsManager {
             setup new session
              */
             eventFiringWebDriver = webDriverFactory.createWebDriver(webDriverRequest, sessionContext);
-            TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(sessionContext));
+            Testerra.getEventBus().post(new ContextUpdateEvent().setContext(sessionContext));
 
             /*
             run the handlers

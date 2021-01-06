@@ -23,8 +23,8 @@
 package eu.tsystems.mms.tic.testframework.report;
 
 import com.google.common.eventbus.EventBus;
-import eu.tsystems.mms.tic.testframework.boot.Booter;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.events.AbstractMethodEvent;
 import eu.tsystems.mms.tic.testframework.events.ExecutionFinishEvent;
@@ -52,9 +52,6 @@ import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import java.util.Arrays;
 import java.util.List;
-import org.apache.logging.log4j.core.LoggerContext;
-import org.apache.logging.log4j.core.config.Configurator;
-import org.apache.logging.log4j.core.config.DefaultConfiguration;
 import org.testng.IConfigurable;
 import org.testng.IConfigureCallBack;
 import org.testng.IHookCallBack;
@@ -98,21 +95,13 @@ public class TesterraListener implements
      */
     private static boolean skipAllMethods = false;
 
-    private static EventBus eventBus = new EventBus();
-    private static Booter booter;
-
     /**
      * Instance counter for this reporter. *
      */
     private static int instances = 0;
     private static final Object LOCK = new Object();
-    private static LoggerContext loggerContext;
 
     static {
-
-        DefaultConfiguration defaultConfiguration = new DefaultConfiguration();
-        loggerContext = Configurator.initialize(defaultConfiguration);
-
         /*
          * Add monitoring event listeners
          */
@@ -120,6 +109,8 @@ public class TesterraListener implements
 
         // start memory monitor
         JVMMonitor.start();
+
+        EventBus eventBus = Testerra.getEventBus();
 
         eventBus.register(new MethodStartWorker());
         eventBus.register(new MethodParametersWorker());
@@ -135,27 +126,9 @@ public class TesterraListener implements
 
         eventBus.register(new ExecutionEndListener());
 
-        booter = new Booter();
-
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            /*
-             * Shutdown local services and hooks
-             */
             JVMMonitor.stop();
-            Booter.shutdown();
         }));
-    }
-
-    public static EventBus getEventBus() {
-        return eventBus;
-    }
-
-    static Booter getBooter() {
-        return booter;
-    }
-
-    public static LoggerContext getLoggerContext() {
-        return loggerContext;
     }
 
     /**
@@ -168,7 +141,7 @@ public class TesterraListener implements
 
             if (instances==1) {
                 // The finalize listener has to be registered AFTER all modules ONCE
-                eventBus.register(new FinalizeListener());
+                Testerra.getEventBus().register(new FinalizeListener());
             }
         }
     }
@@ -191,7 +164,7 @@ public class TesterraListener implements
         InterceptMethodsEvent event = new InterceptMethodsEvent()
                 .setMethodInstances(list)
                 .setTestContext(iTestContext);
-        eventBus.post(event);
+        Testerra.getEventBus().post(event);
         return event.getMethodInstances();
     }
 
@@ -274,7 +247,7 @@ public class TesterraListener implements
                 .setTestContext(testContext)
                 .setMethodContext(methodContext);
 
-        eventBus.post(event);
+        Testerra.getEventBus().post(event);
 
         // We don't close teardown steps, because we want to collect further actions there
         //step.close();
@@ -384,7 +357,7 @@ public class TesterraListener implements
                 .setTestContext(testContext)
                 .setMethodContext(methodContext);
 
-        eventBus.post(event);
+        Testerra.getEventBus().post(event);
     }
 
     @Override
@@ -396,7 +369,7 @@ public class TesterraListener implements
         ExecutionFinishEvent event = new ExecutionFinishEvent()
                 .setSuites(suites)
                 .setXmlSuites(xmlSuites);
-        eventBus.post(event);
+        Testerra.getEventBus().post(event);
     }
 
     @Override
@@ -480,7 +453,7 @@ public class TesterraListener implements
      */
     @Override
     public void onStart(ISuite iSuite) {
-        eventBus.post(iSuite);
+        Testerra.getEventBus().post(iSuite);
     }
 
     /**
@@ -490,7 +463,7 @@ public class TesterraListener implements
      */
     @Override
     public void onFinish(ISuite iSuite) {
-        eventBus.post(iSuite);
+        Testerra.getEventBus().post(iSuite);
     }
 
     public static boolean isActive() {

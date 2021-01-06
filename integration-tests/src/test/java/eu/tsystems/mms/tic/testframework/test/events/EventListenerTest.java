@@ -23,10 +23,10 @@
 package eu.tsystems.mms.tic.testframework.test.events;
 
 import com.google.common.eventbus.Subscribe;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.InterceptMethodsEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodStartEvent;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeTest;
@@ -67,7 +67,7 @@ public class EventListenerTest extends TesterraTest {
     @BeforeTest
     public void setupListener() {
         listener = new MyListener();
-        TesterraListener.getEventBus().register(listener);
+        Testerra.getEventBus().register(listener);
     }
 
     @Test
@@ -85,6 +85,6 @@ public class EventListenerTest extends TesterraTest {
         Assert.assertNotNull(listener);
         Assert.assertNotNull(listener.startEvent);
         Assert.assertNotNull(listener.endEvent);
-        TesterraListener.getEventBus().unregister(listener);
+        Testerra.getEventBus().unregister(listener);
     }
 }

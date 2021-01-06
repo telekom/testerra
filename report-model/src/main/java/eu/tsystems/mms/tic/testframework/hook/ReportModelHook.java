@@ -22,6 +22,7 @@
 package eu.tsystems.mms.tic.testframework.hook;
 
 import com.google.common.eventbus.EventBus;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.listeners.GenerateXmlReportListener;
 import eu.tsystems.mms.tic.testframework.report.TestStepLogAppender;
@@ -34,18 +35,18 @@ public class ReportModelHook implements ModuleHook {
 
     @Override
     public void init() {
-        EventBus eventBus = TesterraListener.getEventBus();
+        EventBus eventBus = Testerra.getEventBus();
         eventBus.register(new GenerateXmlReportListener());
 
         // Enable report formatter here
         this.reportLogAppender = new TestStepLogAppender();
         this.reportLogAppender.start();
-        TesterraListener.getLoggerContext().getRootLogger().addAppender(this.reportLogAppender);
+        Testerra.getLoggerContext().getRootLogger().addAppender(this.reportLogAppender);
     }
 
     @Override
     public void terminate() {
         // Reset to default logger
-        TesterraListener.getLoggerContext().getRootLogger().removeAppender(this.reportLogAppender);
+        Testerra.getLoggerContext().getRootLogger().removeAppender(this.reportLogAppender);
     }
 }

@@ -20,12 +20,12 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.Counters;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepController;
@@ -151,7 +151,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         if (!this.sessionContexts.contains(sessionContext)) {
             this.sessionContexts.add(sessionContext);
             sessionContext.parentContext = this;
-            TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(this));
+            Testerra.getEventBus().post(new ContextUpdateEvent().setContext(this));
         }
     }
 

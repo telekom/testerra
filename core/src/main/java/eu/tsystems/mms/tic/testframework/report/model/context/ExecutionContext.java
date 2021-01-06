@@ -63,7 +63,7 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
 
     public ExecutionContext() {
         name = runConfig.RUNCFG;
-        TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(this));
+        Testerra.getEventBus().post(new ContextUpdateEvent().setContext(this));
     }
 
     public Map<String, String> getMetaData() {
@@ -109,7 +109,7 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
                 suiteName,
                 () -> new SuiteContext(this),
                 suiteContext -> {
-                    EventBus eventBus = TesterraListener.getEventBus();
+                    EventBus eventBus = Testerra.getEventBus();
                     eventBus.post(new ContextUpdateEvent().setContext(this));
                 });
     }

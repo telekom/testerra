@@ -35,7 +35,6 @@ import eu.tsystems.mms.tic.testframework.execution.worker.start.PerformanceTestW
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.report.ScreenshotGrabber;
 import eu.tsystems.mms.tic.testframework.report.SourceGrabber;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.UITestStepIntegration;
 import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -53,7 +52,7 @@ public class DriverUiHook implements ModuleHook {
         init TesterraListener Workers
          */
         //start
-        EventBus eventBus = TesterraListener.getEventBus();
+        EventBus eventBus = Testerra.getEventBus();
 
         if (Testerra.Properties.PERF_GENERATE_STATISTICS.asBool()) {
             eventBus.register(new PerformanceTestWorker());

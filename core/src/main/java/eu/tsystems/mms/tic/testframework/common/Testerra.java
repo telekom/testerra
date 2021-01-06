@@ -21,25 +21,41 @@
 
 package eu.tsystems.mms.tic.testframework.common;
 
+import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.util.Modules;
+import eu.tsystems.mms.tic.testframework.boot.Booter;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import java.lang.reflect.Constructor;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.config.DefaultConfiguration;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This is the core main class where everything begins.
+ * Using this method will initialize Testerra and all its modules.
+ * @author Mike Reiche <mike.reiche@t-systems.com>
+ */
 public class Testerra {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(Testerra.class);
 
+    /**
+     * @deprecated Use {@link #getInjector()} instead
+     */
     public final static Injector injector = initIoc();
+    private static final EventBus eventBus;
+    private static final Booter booter;
+    private static LoggerContext loggerContext;
 
     public enum Properties implements IProperties {
         DRY_RUN("tt.dryrun", false),
@@ -101,6 +117,28 @@ public class Testerra {
         public String asString() {
             return PropertyManager.getPropertiesParser().getProperty(toString(), defaultValue);
         }
+    }
+
+    static {
+        DefaultConfiguration defaultConfiguration = new DefaultConfiguration();
+        loggerContext = Configurator.initialize(defaultConfiguration);
+        eventBus = new EventBus();
+        booter = new Booter();
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            booter.shutdown();
+        }));
+    }
+
+    public static LoggerContext getLoggerContext() {
+        return loggerContext;
+    }
+
+    public static EventBus getEventBus() {
+        return eventBus;
+    }
+
+    public static Injector getInjector() {
+        return injector;
     }
 
     /**

@@ -21,9 +21,9 @@
  package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import com.google.common.eventbus.EventBus;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -57,7 +57,7 @@ public class SuiteContext extends AbstractContext implements SynchronizableConte
                 testName,
                 () -> new TestContext(this),
                 testContextModel -> {
-                    EventBus eventBus = TesterraListener.getEventBus();
+                    EventBus eventBus = Testerra.getEventBus();
                     eventBus.post(new ContextUpdateEvent().setContext(this));
                 });
     }

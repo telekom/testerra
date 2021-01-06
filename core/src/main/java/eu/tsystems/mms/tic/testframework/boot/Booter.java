@@ -104,12 +104,12 @@ public final class Booter implements Loggable {
     }
 
     private void initHooks() {
-        MODULE_HOOKS = Testerra.injector.getInstance(Key.get(new TypeLiteral<Set<ModuleHook>>(){}));
+        MODULE_HOOKS = Testerra.getInjector().getInstance(Key.get(new TypeLiteral<Set<ModuleHook>>(){}));
         MODULE_HOOKS.forEach(moduleHook -> {
             log().debug("Calling Init Hook " + moduleHook.getClass().getSimpleName() + "...");
             moduleHook.init();
         });
-        TesterraListener.getEventBus().post(new ModulesInitializedEvent());
+        Testerra.getEventBus().post(new ModulesInitializedEvent());
     }
 
     public void shutdown() {

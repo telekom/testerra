@@ -23,6 +23,7 @@ package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
@@ -103,7 +104,7 @@ public class TestContext extends AbstractContext implements SynchronizableContex
             }
 
             classContexts.add(newClassContext);
-            EventBus eventBus = TesterraListener.getEventBus();
+            EventBus eventBus = Testerra.getEventBus();
             eventBus.post(new ContextUpdateEvent().setContext(this));
             return newClassContext;
         }

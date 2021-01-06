@@ -30,7 +30,6 @@ import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
@@ -91,7 +90,7 @@ public class MethodEndWorker implements MethodEndEvent.Listener, Loggable {
                 }
             }
         } finally {
-            TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(event.getMethodContext()));
+            Testerra.getEventBus().post(new ContextUpdateEvent().setContext(event.getMethodContext()));
 
             // clear method infos
             ReportInfo.clearCurrentMethodInfo();

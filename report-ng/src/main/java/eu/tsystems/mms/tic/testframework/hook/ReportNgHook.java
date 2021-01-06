@@ -28,15 +28,14 @@ import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.listeners.CopyReportAppListener;
 import eu.tsystems.mms.tic.testframework.listeners.GenerateReportNgModelListener;
 import eu.tsystems.mms.tic.testframework.report.Report;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 
 public class ReportNgHook implements ModuleHook {
 
     @Override
     public void init() {
-        EventBus eventBus = TesterraListener.getEventBus();
+        EventBus eventBus = Testerra.getEventBus();
 
-        Report report = Testerra.injector.getInstance(Report.class);
+        Report report = Testerra.getInjector().getInstance(Report.class);
 
         eventBus.register(new CopyReportAppListener(report.getReportDirectory()));
         eventBus.register(new GenerateReportNgModelListener(report.getReportDirectory("report-ng/model")));

@@ -78,7 +78,7 @@ After you defined your first custom listener you now have to register it to the 
 .Registering your listener
 [source,java]
 ----
-TesterraListener.getEventBus().register(new LogEventListener());
+Testerra.getEventBus().register(new LogEventListener());
 ----
 
 == Fire events by yourself
@@ -94,7 +94,7 @@ For example, if your module changes some data in the underlying data model, you 
 // Update some data in data model...
 methodContext.name = "new_Test_Method_Name";
 
-TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(methodContext));
+Testerra.getEventBus().post(new ContextUpdateEvent().setContext(methodContext));
 ----
 
 == Create custom event types
@@ -144,7 +144,7 @@ public class MyTest extends TesterraTest {
 
     @BeforeTest
     public void setupListener() {
-        TesterraListener.getEventBus().register(new MyListener());
+        Testerra.getEventBus().register(new MyListener());
     }
 }
 ----

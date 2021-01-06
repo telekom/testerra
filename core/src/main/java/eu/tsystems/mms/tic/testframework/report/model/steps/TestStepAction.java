@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.report.model.Serial;
 import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 
+import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -91,6 +92,9 @@ public class TestStepAction implements Serializable {
     }
 
     public void addScreenshot(Screenshot screenshot) {
+        if (StringUtils.isBlank(screenshot.filename)) {
+            return;
+        }
         this.entries.add(screenshot);
     }
 

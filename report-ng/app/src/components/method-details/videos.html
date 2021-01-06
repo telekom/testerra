@@ -20,4 +20,7 @@
   -->
 
 <template>
+    <video width="100%" controls repeat.for="file of _videos" class="ml1 mr1">
+        <source src="${file.relativePath}">
+    </video>
 </template>

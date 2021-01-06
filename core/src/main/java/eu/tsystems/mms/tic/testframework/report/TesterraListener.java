@@ -136,6 +136,14 @@ public class TesterraListener implements
         eventBus.register(new ExecutionEndListener());
 
         booter = new Booter();
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            /*
+             * Shutdown local services and hooks
+             */
+            JVMMonitor.stop();
+            Booter.shutdown();
+        }));
     }
 
     public static EventBus getEventBus() {

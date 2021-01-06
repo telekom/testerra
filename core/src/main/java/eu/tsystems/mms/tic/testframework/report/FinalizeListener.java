@@ -38,14 +38,6 @@ final class FinalizeListener implements FinalizeExecutionEvent.Listener {
     @Override
     @Subscribe
     public void onFinalizeExecution(FinalizeExecutionEvent event) {
-        /*
-         * Shutdown local services and hooks
-         */
-        JVMMonitor.stop();
-        TesterraListener.getBooter().shutdown();
-        /*
-        print stats
-         */
         ExecutionContextController.printExecutionStatistics();
 
         Report report = Testerra.injector.getInstance(Report.class);

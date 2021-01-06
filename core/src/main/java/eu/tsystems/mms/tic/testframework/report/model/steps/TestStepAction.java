@@ -28,6 +28,7 @@ import eu.tsystems.mms.tic.testframework.report.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.Serial;
 import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
+import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedList;

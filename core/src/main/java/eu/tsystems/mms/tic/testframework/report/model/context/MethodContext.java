@@ -97,8 +97,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         this.methodType = methodType;
     }
 
-
-
     /**
      * @deprecated Use {@link #getFailureCorridorClass()} instead
      */
@@ -493,7 +491,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         }
     }
 
-    public void addVideos(Collection<Video> videos) {
-        this.getVideos().addAll(videos);
+    public void addVideos(Stream<Video> videos) {
+        videos.forEach(this.getVideos()::add);
     }
 }

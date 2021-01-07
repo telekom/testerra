@@ -88,11 +88,12 @@
     //text-decoration: none;
 }
 .badge__dense {
-    padding: 0 4px;
+    padding: 1px 4px;
     border-radius: 10px;
 }
 
 .tag {
     @extend .status;
+    font-size: 0.815rem;
     background-color: $crashed;
 }

@@ -112,7 +112,11 @@ public class ContextExporter {
         for (int i = 0; i < parameterValues.size(); ++i) {
             builder.putParameters(methodContext.getParameters()[i].getName(), parameterValues.get(i).toString());
         }
-        //forEach(methodContext.getAnnotations(), annotation -> builder.addMethodTags(annotationToString(annotation)));
+        if (methodContext.getAnnotations() != null) {
+            for (Annotation annotation : methodContext.getAnnotations()) {
+                builder.addMethodTags(annotationToString(annotation));
+            }
+        }
         apply(methodContext.retryNumber, builder::setRetryNumber);
         apply(methodContext.methodRunIndex, builder::setMethodRunIndex);
 

@@ -123,20 +123,24 @@ export class StatisticsGenerator {
     }
 
     getScreenshotsFromMethodContext(methodContext:IMethodContext) {
-        const screenshots:IFile[] = [];
-        const allFilePromises = [];
-        methodContext.testSteps
+        return this.getFilesForIds(methodContext.testSteps
             .flatMap(value => value.actions)
             .flatMap(value => value.entries)
-            .forEach(value => {
-                if (value.screenshotId) {
-                    allFilePromises.push(this._dataLoader.getFile(value.screenshotId).then(file => {
-                        file.relativePath = this._config.correctRelativePath(file.relativePath);
-                        screenshots.push(file);
-                    }));
-                }
-            })
-        return Promise.all(allFilePromises).then(()=>screenshots);
+            .filter(value => value.screenshotId)
+            .map(value => value.screenshotId));
     }
+
+    getFilesForIds(fileIds:string[]) {
+        const files:IFile[] = [];
+        const allFilePromises = [];
+        fileIds.forEach(value => {
+            allFilePromises.push(this._dataLoader.getFile(value).then(file => {
+                file.relativePath = this._config.correctRelativePath(file.relativePath);
+                files.push(file);
+            }));
+        })
+        return Promise.all(allFilePromises).then(()=>files);
+    }
+
 }
 

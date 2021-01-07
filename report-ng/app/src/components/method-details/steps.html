@@ -26,36 +26,30 @@
             <div class="timeline">
                 <section class="step" repeat.for="testStep of _methodDetails.methodContext.testSteps">
                     <let step-index.bind="$index+1"></let>
-                    <h3 mdc-headline5 id="step${stepIndex}">${stepIndex} ${testStep.name}</h3>
-                    <div repeat.for="action of testStep.actions">
+                    <div mdc-headline5 class="teststep-headline" id="step${stepIndex}">${stepIndex} ${testStep.name}</div>
+                    <div repeat.for="action of testStep.actions" mdc-body1>
+                        <div class="teststep-headline mt1 sticky">${stepIndex}.${$index+1} ${action.name}<br>
+                            <span class="secondary" mdc-body2>${action.timestamp|dateFormat}</span>
+                        </div>
                         <section>
-                            <ul>
-                                <li mdc-body1>${stepIndex}.${$index+1} ${action.name}<br>
-                                    <span class="secondary" mdc-body2>${action.timestamp|dateFormat}</span>
-                                </li>
-                                <div repeat.for="group of action.groups">
-                                    <li mdc-body1 if.bind="group.assertions.length > 0">Assertions
-                                        <expandable-error-context repeat.for="errorContext of group.assertions"
-                                                                  error-context.bind="errorContext"
-                                        ></expandable-error-context>
-                                    </li>
-                                    <li mdc-body1 if.bind="group.screenshots.length > 0">Screenshots
-                                        <mdc-card
-                                            repeat.for="screenshot of group.screenshots"
-                                            class="thumbnail-fixed"
-                                            outlined
-                                        >
-                                            <img src.bind="screenshot.relativePath"
-                                                 class="thumbnail-fixed clickable"
-                                                 click.delegate="_showScreenshot(screenshot)"
-                                                 title="${screenshot.meta.Title}"/>
-                                        </mdc-card>
-                                    </li>
-                                    <li mdc-body1 if.bind="group.logMessages.length > 0">Log messages
-                                        <log-view log-messages.bind="group.logMessages"></log-view>
-                                    </li>
+                            <div repeat.for="group of action.groups" class="teststep-group">
+                                <expandable-error-context repeat.for="errorContext of group.assertions"
+                                                          error-context.bind="errorContext"
+                                ></expandable-error-context>
+                                <div if.bind="group.screenshots.length > 0">
+                                    <mdc-card
+                                        repeat.for="screenshot of group.screenshots"
+                                        class="thumbnail-fixed"
+                                        outlined
+                                    >
+                                        <img src.bind="screenshot.relativePath"
+                                             class="thumbnail-fixed clickable"
+                                             click.delegate="_showScreenshot(screenshot)"
+                                             title="${screenshot.meta.Title}"/>
+                                    </mdc-card>
                                 </div>
-                            </ul>
+                                <log-view log-messages.bind="group.logMessages" if.bind="group.logMessages.length > 0"></log-view>
+                            </div>
                         </section>
                     </div>
                 </section>

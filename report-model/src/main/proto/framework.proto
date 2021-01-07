@@ -63,7 +63,7 @@ message MethodContext {
     ContextValues context_values = 1;
 
     MethodType method_type = 7;
-    repeated string parameters = 8;
+    //repeated string parameters = 8 [deprecated = true];
     repeated string method_tags = 9;
     int32 retry_number = 10;
     int32 method_run_index = 11;
@@ -91,6 +91,7 @@ message MethodContext {
     string custom_context_json = 32;
     int32 failed_step_index = 33;
     ResultStatusType result_status = 34;
+    map<string,string> parameters = 35;
 }
 
 message ContextValues {

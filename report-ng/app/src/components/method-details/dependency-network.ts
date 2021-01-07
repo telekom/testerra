@@ -20,7 +20,7 @@
  */
 
 import {autoinject} from 'aurelia-framework';
-import {IMethodDetails, StatisticsGenerator} from "../../services/statistics-generator";
+import {MethodDetails, StatisticsGenerator} from "../../services/statistics-generator";
 import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
 import {DataSet, Network, DataSetNodes, DataSetEdges} from "vis-network";
 import "vis-network/styles/vis-network.css";
@@ -36,7 +36,7 @@ export class DependencyNetwork {
     private _resizeListener:EventListener;
     private _queryParams;
     private _network:Network;
-    private _methodDetails:IMethodDetails;
+    private _methodDetails:MethodDetails;
     private _loadListener:EventListener;
 
     constructor(

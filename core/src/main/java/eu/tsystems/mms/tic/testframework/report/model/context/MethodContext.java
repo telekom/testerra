@@ -32,7 +32,10 @@ import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Parameter;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,13 +57,22 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         CONFIGURATION_METHOD
     }
 
+    /**
+     * @deprecated
+     */
     public ITestResult testResult;
+    /**
+     * @deprecated
+     */
     public ITestContext iTestContext;
+    /**
+     * @deprecated
+     */
     public ITestNGMethod iTestNgMethod;
+
     private TestStatusController.Status status = TestStatusController.Status.NO_RUN;
     private final Type methodType;
-    public List<Object> parameters = new LinkedList<>();
-    public List<Annotation> methodTags = new LinkedList<>();
+    private List<Object> parameterValues;
     public int retryNumber = 0;
     public int methodRunIndex = -1;
     public String threadName = "unrelated";
@@ -493,5 +505,63 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
 
     public void addVideos(Stream<Video> videos) {
         videos.forEach(this.getVideos()::add);
+    }
+
+    /**
+     * Proper parameter names are available by setting {https://stackoverflow.com/questions/6759880/getting-the-name-of-a-method-parameter}
+     */
+    public Parameter[] getParameters() {
+        return iTestNgMethod.getConstructorOrMethod().getMethod().getParameters();
+    }
+
+    public MethodContext setParameterValues(Object[] parameters) {
+        this.parameterValues = Arrays.asList(parameters);
+        return this;
+    }
+
+    public List<Object> getParameterValues() {
+        if (this.parameterValues == null) {
+            return Collections.emptyList();
+        } else {
+            return this.parameterValues;
+        }
+    }
+
+    public ITestResult getTestNgResult() {
+        return testResult;
+    }
+
+    public MethodContext setTestNgResult(ITestResult testResult) {
+        this.testResult = testResult;
+        return this;
+    }
+
+    public ITestContext getTestNgContext() {
+        return iTestContext;
+    }
+
+    public MethodContext setTestNgContext(ITestContext iTestContext) {
+        this.iTestContext = iTestContext;
+        return this;
+    }
+
+    public ITestNGMethod getTestNgMethod() {
+        return iTestNgMethod;
+    }
+
+    public MethodContext setTestNgMethod(ITestNGMethod iTestNgMethod) {
+        this.iTestNgMethod = iTestNgMethod;
+        return this;
+    }
+
+    public Annotation[] getAnnotations() {
+        return this.iTestNgMethod.getConstructorOrMethod().getMethod().getAnnotations();
+    }
+
+    /**
+     * @deprecated Use {@link #getAnnotations()} instead
+     */
+    public List<Annotation> getMethodTags() {
+        return Arrays.asList(getAnnotations());
     }
 }

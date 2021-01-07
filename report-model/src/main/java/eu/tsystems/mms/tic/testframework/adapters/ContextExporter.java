@@ -59,6 +59,7 @@ import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -107,8 +108,11 @@ public class ContextExporter {
         apply(buildContextValues(methodContext), builder::setContextValues);
         map(methodContext.getStatus(), this::getMappedStatus, builder::setResultStatus);
         map(methodContext.getMethodType(), type -> MethodType.valueOf(type.name()), builder::setMethodType);
-        forEach(methodContext.parameters, parameter -> builder.addParameters(parameter.toString()));
-        forEach(methodContext.methodTags, annotation -> builder.addMethodTags(annotationToString(annotation)));
+        List<Object> parameterValues = methodContext.getParameterValues();
+        for (int i = 0; i < parameterValues.size(); ++i) {
+            builder.putParameters(methodContext.getParameters()[i].getName(), parameterValues.get(i).toString());
+        }
+        //forEach(methodContext.getAnnotations(), annotation -> builder.addMethodTags(annotationToString(annotation)));
         apply(methodContext.retryNumber, builder::setRetryNumber);
         apply(methodContext.methodRunIndex, builder::setMethodRunIndex);
 

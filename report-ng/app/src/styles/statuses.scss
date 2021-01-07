@@ -88,6 +88,11 @@
     //text-decoration: none;
 }
 .badge__dense {
-    padding: 0 5px;
+    padding: 0 4px;
     border-radius: 10px;
+}
+
+.tag {
+    @extend .status;
+    background-color: $crashed;
 }

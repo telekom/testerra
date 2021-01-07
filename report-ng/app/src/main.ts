@@ -55,6 +55,7 @@ export function configure(aurelia: Aurelia) {
         .globalResources([
             PLATFORM.moduleName('components/apex-chart/apex-chart'),
             PLATFORM.moduleName('components/class-name/class-name'),
+            PLATFORM.moduleName('components/method-tags/method-tags'),
             PLATFORM.moduleName('components/log-view/log-view'),
             PLATFORM.moduleName('components/code-view/code-view'),
             PLATFORM.moduleName('components/alert/alert.html'),

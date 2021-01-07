@@ -133,14 +133,14 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
 
         if (testResult != null) {
             found = methodContexts.stream()
-                    .filter(mc -> testResult == mc.testResult)
+                    .filter(mc -> testResult == mc.getTestNgResult())
                     .findFirst();
         } else {
             // TODO: (!!!!) this is not eindeutig
             found = methodContexts.stream()
-                    .filter(mc -> iTestContext == mc.iTestContext)
-                    .filter(mc -> iTestNGMethod == mc.iTestNgMethod)
-                    .filter(mc -> mc.parameters.containsAll(parametersList))
+                    .filter(mc -> iTestContext == mc.getTestNgContext())
+                    .filter(mc -> iTestNGMethod == mc.getTestNgMethod())
+                    .filter(mc -> mc.getParameterValues().containsAll(parametersList))
                     .findFirst();
         }
 
@@ -155,16 +155,17 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
             }
 
             methodContext = new MethodContext(name, methodType, this);
-            methodContext.name = name;
+            //methodContext.name = name;
             //fillBasicContextValues(methodContext, this, name);
 
-            methodContext.testResult = testResult;
-            methodContext.iTestContext = iTestContext;
-            methodContext.iTestNgMethod = iTestNGMethod;
-
-            if (parameters.length > 0) {
-                methodContext.parameters = Arrays.stream(parameters).map(o -> o == null ? "" : o.toString()).collect(Collectors.toList());
-            }
+            methodContext.setTestNgResult(testResult);
+            methodContext.setTestNgContext(iTestContext);
+            methodContext.setTestNgMethod(iTestNGMethod);
+            methodContext.setParameterValues(parameters);
+//
+//            if (parameters.length > 0) {
+//                methodContext.parameters = Arrays.stream(parameters).map(o -> o == null ? "" : o.toString()).collect(Collectors.toList());
+//            }
 
                 /*
                 link to merged context

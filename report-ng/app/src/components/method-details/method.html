@@ -41,7 +41,8 @@
                     <div class="card-content" mdc-body1>
                         <span class="badge status-${_methodDetails.methodContext.resultStatus|statusClass} sr1"
                         >${_methodDetails.methodContext.resultStatus|statusName}</span>
-                        ${_methodDetails.methodContext.contextValues.name}
+                        ${_methodDetails.identifier}
+                        <method-tags class="sl1" details.bind="_methodDetails"></method-tags>
                     </div>
                     <mdc-list-divider></mdc-list-divider>
                     <div class="flex">

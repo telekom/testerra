@@ -452,7 +452,7 @@ public class TesterraListener implements
         final Class<?>[] parameterTypes = iTestResult.getMethod().getConstructorOrMethod().getMethod().getParameterTypes();
         if (parameterTypes.length > 0) {
             final MethodContext methodContextFromTestResult = ExecutionContextController.getMethodContextFromTestResult(iTestResult, testContext);
-            methodContextFromTestResult.parameters.addAll(Arrays.asList(parameterTypes));
+            methodContextFromTestResult.setParameterValues(parameterTypes);
         }
     }
 

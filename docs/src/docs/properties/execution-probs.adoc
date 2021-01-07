@@ -16,11 +16,11 @@ This is useful to check your TestNG suite without executing real testcode.
 | {execution_omit_indevelopment} | false | If `true` Testerra will remove all `@InDevelopment` annotated test methods from execution.
 | {watchdog_enable} | true | Enables/Disables the `WebDriverWatchDog`.
 | {watchdog_timeout_seconds} | 300 | Sets the timeout in seconds after the `WebDriverWatchDog` terminates the test execution (with System.exit(99) terminated).
-| {failure_corridor_active} |   false | Activate the failure corridor.
-| {failure_corridor_allowed_failed_tests} | -1 | Number of test methods allowed to fail to still mark the suite as passed.
-| {failure_corridor_allowed_failed_tests_high} | -1 | Number of test methods with weighting high allowed to fail to still mark the suite as passed.
-| {failure_corridor_allowed_failed_tests_mid} | -1 | Number of test methods with weighting mid allowed to fail to still mark the suite as passed.
-| {failure_corridor_allowed_failed_tests_low} | -1 | Number of test methods with weighting low allowed to fail to still mark the suite as passed.
+| {failure_corridor_active} | true | Activate the failure corridor.
+| {failure_corridor_allowed_failed_tests} | 0 | Number of test methods allowed to fail to still mark the suite as passed.
+| {failure_corridor_allowed_failed_tests_high} | 0 | Number of test methods with weighting high allowed to fail to still mark the suite as passed.
+| {failure_corridor_allowed_failed_tests_mid} | 0 | Number of test methods with weighting mid allowed to fail to still mark the suite as passed.
+| {failure_corridor_allowed_failed_tests_low} | 0 | Number of test methods with weighting low allowed to fail to still mark the suite as passed.
 | {perf_test} | false |  If true, activates performance test related behaviour sets default values for the performance test.
 | {perf_thinktime_ms} | 0 |  Sets a thinktime in ms for each page load.
 | {perf_generate_statistics} | false |  If true, activates generation of graphs for the performance measurements.

@@ -3,18 +3,17 @@ include::../properties/property-attributes.adoc[]
 
 This mechanism is used to define the test goal of test runs so that the test suite only fails with a broken failure corridor.
 
-Testerra provides to kinds of a Failure corridor:
+Testerra provides to kinds of a failure corridor:
 
 * Define a maximum number of allowed failed tests - _or_
 * define for every test a weight (low, medium, high) and set specific number of allowed failed tests.
 
 == General
-The Failure corridor can be activated by the following property.
+The failure corridor is enabled by default with the following property.
 
 [source, properties, subs="attributes"]
 ----
 {failure_corridor_active}=true
-# default is false
 ----
 
 == Maximum allowed failures
@@ -82,7 +81,5 @@ Define your own failure corridor with the maximum number of failed tests by the 
 
 [IMPORTANT]
 ====
-If you do not define any failure corridor, but activate them, Testerra uses the default value `-1`.
-
-In that case the custom failure corridor is used with `HIGH=-1, MID=-1, LOW=-1`.
+If you do not define any failure corridor, the default value `0` is used for all three levels.
 ====

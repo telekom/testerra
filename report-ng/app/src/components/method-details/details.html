@@ -53,12 +53,12 @@
                             click.delegate="_imageClicked()">
                         </mdc-image-list-item>
                         <mdc-image-list-item
-                            src.bind="'screenshots/' + _parsedJSON.expectedScreenshot.filename"
-                            label="expected Screenshot">
-                        </mdc-image-list-item>
-                        <mdc-image-list-item
                             src.bind="_dataUrl"
                             label="Comparison">
+                        </mdc-image-list-item>
+                        <mdc-image-list-item
+                            src.bind="'screenshots/' + _parsedJSON.expectedScreenshot.filename"
+                            label="expected Screenshot">
                         </mdc-image-list-item>
                     </mdc-image-list>
                 </mdc-card>

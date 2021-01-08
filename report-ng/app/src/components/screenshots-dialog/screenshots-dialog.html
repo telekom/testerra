@@ -21,6 +21,9 @@
 
 <template>
     <mdc-dialog-content>
+        <mdc-dialog-actions>
+            <button mdc-button data-mdc-dialog-action="cancel"><mdc-icon>clear</mdc-icon></button>
+        </mdc-dialog-actions>
         <div class="flex vcenter spread">
             <button mdc-icon-button icon="keyboard_arrow_left" click.delegate="_left()"></button>
             <ul class="mdc-list mdc-list--dense ml1 mr1">

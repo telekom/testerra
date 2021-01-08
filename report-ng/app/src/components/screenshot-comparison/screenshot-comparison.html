@@ -22,12 +22,12 @@
 <template>
     <mdc-dialog-title> Comparison: Screenshot - Expected Screenshot</mdc-dialog-title>
     <mdc-dialog-content>
-        <div class="img-comp-container flex vcenter spread">
+        <div class="img-comp-container">
             <div class="img-comp-img">
                 <img src.bind="_srcExpected">
             </div>
             <div class="img-comp-img img-comp-overlay">
-                <img src.bind="_srcActual">
+                <img src.bind="_comparison">
             </div>
         </div>
     </mdc-dialog-content>

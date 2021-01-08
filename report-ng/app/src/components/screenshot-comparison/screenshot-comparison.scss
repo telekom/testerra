@@ -1,28 +1,29 @@
 * {box-sizing: border-box;}
 
-.screenshot-dialog {
+.screenshot-comparison {
     .mdc-dialog__container {
         .mdc-dialog__surface {
-            max-width: 100%;
+            max-width: 100% !important;
+            width: 60vw;
         }
     }
 }
 
 .img-comp-container {
     position: relative;
-    height: 300px;
+    width: 60vw;
 }
 
 .img-comp-img {
     position: absolute;
-    width: 60vw;
     height: auto;
-    overflow: hidden;
 }
 
 .img-comp-img img {
     display: block;
     vertical-align: middle;
+    width: 50vw;
+    height: auto;
 }
 
 .img-comp-slider {

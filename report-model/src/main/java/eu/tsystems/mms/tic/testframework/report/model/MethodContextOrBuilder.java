@@ -34,48 +34,39 @@ public interface MethodContextOrBuilder extends
   eu.tsystems.mms.tic.testframework.report.model.MethodType getMethodType();
 
   /**
-   * <code>repeated string parameters = 8;</code>
-   * @return A list containing the parameters.
-   */
-  java.util.List<java.lang.String>
-      getParametersList();
-  /**
-   * <code>repeated string parameters = 8;</code>
-   * @return The count of parameters.
-   */
-  int getParametersCount();
-  /**
-   * <code>repeated string parameters = 8;</code>
-   * @param index The index of the element to return.
-   * @return The parameters at the given index.
-   */
-  java.lang.String getParameters(int index);
-  /**
-   * <code>repeated string parameters = 8;</code>
-   * @param index The index of the value to return.
-   * @return The bytes of the parameters at the given index.
-   */
-  com.google.protobuf.ByteString
-      getParametersBytes(int index);
-
-  /**
+   * <pre>
+   *repeated string parameters = 8 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string method_tags = 9;</code>
    * @return A list containing the methodTags.
    */
   java.util.List<java.lang.String>
       getMethodTagsList();
   /**
+   * <pre>
+   *repeated string parameters = 8 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string method_tags = 9;</code>
    * @return The count of methodTags.
    */
   int getMethodTagsCount();
   /**
+   * <pre>
+   *repeated string parameters = 8 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string method_tags = 9;</code>
    * @param index The index of the element to return.
    * @return The methodTags at the given index.
    */
   java.lang.String getMethodTags(int index);
   /**
+   * <pre>
+   *repeated string parameters = 8 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string method_tags = 9;</code>
    * @param index The index of the value to return.
    * @return The bytes of the methodTags at the given index.
@@ -406,4 +397,38 @@ public interface MethodContextOrBuilder extends
    * @return The resultStatus.
    */
   eu.tsystems.mms.tic.testframework.report.model.ResultStatusType getResultStatus();
+
+  /**
+   * <code>map&lt;string, string&gt; parameters = 35;</code>
+   */
+  int getParametersCount();
+  /**
+   * <code>map&lt;string, string&gt; parameters = 35;</code>
+   */
+  boolean containsParameters(
+      java.lang.String key);
+  /**
+   * Use {@link #getParametersMap()} instead.
+   */
+  @java.lang.Deprecated
+  java.util.Map<java.lang.String, java.lang.String>
+  getParameters();
+  /**
+   * <code>map&lt;string, string&gt; parameters = 35;</code>
+   */
+  java.util.Map<java.lang.String, java.lang.String>
+  getParametersMap();
+  /**
+   * <code>map&lt;string, string&gt; parameters = 35;</code>
+   */
+
+  java.lang.String getParametersOrDefault(
+      java.lang.String key,
+      java.lang.String defaultValue);
+  /**
+   * <code>map&lt;string, string&gt; parameters = 35;</code>
+   */
+
+  java.lang.String getParametersOrThrow(
+      java.lang.String key);
 }

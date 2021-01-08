@@ -37,10 +37,10 @@ public class MethodParametersWorker implements MethodStartEvent.Listener {
         ITestNGMethod testMethod = event.getTestMethod();
         ITestResult testResult = event.getTestResult();
         if (testMethod.isTest()) {
-            Object[] parameters = testResult.getParameters();
-            if (parameters != null && parameters.length > 0) {
-                event.getMethodContext().parameters = Arrays.stream(parameters).collect(Collectors.toList());
-            }
+//            Object[] parameters = testResult.getParameters();
+//            if (parameters != null && parameters.length > 0) {
+//                event.getMethodContext().parameters = Arrays.stream(parameters).collect(Collectors.toList());
+//            }
         }
         else {
             /*

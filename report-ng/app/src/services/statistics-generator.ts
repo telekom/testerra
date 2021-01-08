@@ -31,18 +31,35 @@ import {StatusConverter} from "./status-converter";
 import ITestContext = data.ITestContext;
 import ISuiteContext = data.ISuiteContext;
 import ISessionContext = data.ISessionContext;
-import ITestStep = data.ITestStep;
 
-export interface IMethodDetails {
-    executionStatistics?: ExecutionStatistics,
-    methodContext: IMethodContext,
-    classStatistics?: ClassStatistics,
-    testContext?: ITestContext,
-    suiteContext?: ISuiteContext,
-    numDetails?: number,
-    failureAspectStatistics?:FailureAspectStatistics,
-    sessionContexts?:ISessionContext[],
-    failedStep?:ITestStep,
+export class MethodDetails {
+    executionStatistics: ExecutionStatistics;
+    methodContext: IMethodContext;
+    classStatistics: ClassStatistics;
+    testContext: ITestContext;
+    suiteContext: ISuiteContext;
+    failureAspectStatistics:FailureAspectStatistics;
+    sessionContexts:ISessionContext[];
+
+    get identifier() {
+        let identifier = this.methodContext.contextValues.name;
+        const params = [];
+        for (const name in this.methodContext.parameters) {
+            params.push(name + ": " + this.methodContext.parameters[name]);
+        }
+        if (params.length > 0) {
+            identifier += "(" + params.join(", ") + ")";
+        }
+        return identifier;
+    }
+
+    get numDetails() {
+        return (this.methodContext.errorContext ? 1 : 0) + (this.methodContext.customContextJson ? 1 : 0);
+    }
+
+    get failedStep() {
+        return (this.methodContext.failedStepIndex >= 0 ? this.methodContext.testSteps[this.methodContext.failedStepIndex] : null);
+    }
 }
 
 @autoinject()
@@ -93,7 +110,7 @@ export class StatisticsGenerator {
         })
     }
 
-    getMethodDetails(methodId:string):Promise<IMethodDetails> {
+    getMethodDetails(methodId:string):Promise<MethodDetails> {
         return this._cacheService.getForKeyWithLoadingFunction("method:"+methodId, () => {
             return this.getExecutionStatistics().then(executionStatistics => {
                 for (const classStatistic of executionStatistics.classStatistics) {
@@ -106,16 +123,15 @@ export class StatisticsGenerator {
                         methodContext.sessionContextIds.forEach(value => {
                             sessionContexts.push(executionStatistics.executionAggregate.sessionContexts[value]);
                         })
-                        return {
-                            executionStatistics: executionStatistics,
-                            methodContext: methodContext,
-                            classStatistics: classStatistic,
-                            testContext: testContext,
-                            suiteContext: suiteContext,
-                            numDetails: (methodContext.errorContext ? 1 : 0) + (methodContext.customContextJson ? 1 : 0),
-                            sessionContexts: sessionContexts,
-                            failedStep: (methodContext.failedStepIndex >= 0 ? methodContext.testSteps[methodContext.failedStepIndex] : null),
-                        }
+
+                        const methodDetails = new MethodDetails();
+                        methodDetails.executionStatistics = executionStatistics;
+                        methodDetails.methodContext = methodContext;
+                        methodDetails.classStatistics = classStatistic;
+                        methodDetails.testContext = testContext;
+                        methodDetails.suiteContext = suiteContext;
+                        methodDetails.sessionContexts = sessionContexts;
+                        return methodDetails;
                     }
                 }
             });

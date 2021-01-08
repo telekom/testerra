@@ -369,8 +369,7 @@ public class RetryAnalyzer implements IRetryAnalyzer {
         return RETRIED_METHODS.stream().anyMatch(m -> {
 
             if (m.getName().equals(methodContext.getName())) {
-
-                if (m.parameters.containsAll(methodContext.parameters)) {
+                if (m.getParameterValues().containsAll(methodContext.getParameterValues())) {
                     AbstractContext context = methodContext;
                     AbstractContext mContext = m;
                     while (context.getParentContext() != null) {

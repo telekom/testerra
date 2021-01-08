@@ -45,9 +45,9 @@
     background: orange;
     border-radius: 10px;">Configuration Method</font>
 #end
-#if (${testMethod.parameters})
+#if (${testMethod.getParameterValues()})
     #set ($i = 0)
-    #foreach ($param in $testMethod.parameters)
+    #foreach ($param in $testMethod.getParameterValues())
         #set ($i = $i + 1)
         <font style="font-size: small; margin: 2px;
         padding: 6px;

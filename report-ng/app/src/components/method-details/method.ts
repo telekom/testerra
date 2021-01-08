@@ -21,7 +21,7 @@
 
 import {autoinject, PLATFORM} from 'aurelia-framework';
 import {NavigationInstruction, RouteConfig, Router, RouterConfiguration} from "aurelia-router";
-import {IMethodDetails, StatisticsGenerator} from "../../services/statistics-generator";
+import {MethodDetails, StatisticsGenerator} from "../../services/statistics-generator";
 import {data} from "../../services/report-model";
 import {ScreenshotsDialog} from "../screenshots-dialog/screenshots-dialog";
 import {MdcDialogService} from '@aurelia-mdc-web/dialog';
@@ -33,7 +33,7 @@ export class Method {
     private _router:Router;
     private _allScreenshots:IFile[];
     private _lastScreenshot:IFile;
-    private _methodDetails:IMethodDetails;
+    private _methodDetails:MethodDetails;
 
     constructor(
         private _statistics: StatisticsGenerator,
@@ -110,6 +110,7 @@ export class Method {
     ) {
         this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
             this._methodDetails = methodDetails;
+            console.log(this._methodDetails);
             this._statistics.getScreenshotsFromMethodContext(methodDetails.methodContext).then(screenshots => {
                 this._allScreenshots = screenshots;
                 this._lastScreenshot = this._allScreenshots.reverse().find(() => true);

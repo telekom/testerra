@@ -55,10 +55,7 @@ public class CopyReportAppListener implements FinalizeExecutionEvent.Listener, L
                 final String stringRepresentationOfResourcePath = StringUtils.stripStart(resourcePath.toString(), "/");
                 try (final InputStream resourceStream = getClass().getClassLoader().getResourceAsStream(stringRepresentationOfResourcePath)) {
                     if (resourceStream == null) {
-                        log().error(
-                                "Unable to copy app resource, because Stream could not be opened: " + stringRepresentationOfResourcePath,
-                                new Throwable());
-                        return;
+                        throw new Exception("Could not open stream: " + stringRepresentationOfResourcePath);
                     }
                     final File targetFile = new File(this.targetDir, resourcePath.toString());
                     FileUtils.copyInputStreamToFile(resourceStream, targetFile);

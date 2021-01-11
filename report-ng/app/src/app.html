@@ -32,13 +32,13 @@
     <mdc-top-app-bar fixed style="position: unset">
         <mdc-top-app-bar-row>
 
-            <mdc-top-app-bar-section align="start">
-                <button click.delegate="_drawer.toggle()"
+            <mdc-top-app-bar-section align="start" >
+                <!--<button click.delegate="_drawer.toggle()"
                         mdc-ripple="unbounded.bind: true"
-                        class="mdc-top-app-bar__navigation-icon mdc-icon-button mdc-ripple-upgraded--unbounded mdc-ripple-upgraded"
+                        class="mdc-top-app-bar__navigation-icon mdc-icon-button mdc-ripple-upgraded&#45;&#45;unbounded mdc-ripple-upgraded"
                         role="button"
-                        style="--mdc-ripple-fg-size:28px; --mdc-ripple-fg-scale:1.71429; --mdc-ripple-left:10px; --mdc-ripple-top:10px;"
-                ><i class="material-icons">menu</i></button>
+                        style="&#45;&#45;mdc-ripple-fg-size:28px; &#45;&#45;mdc-ripple-fg-scale:1.71429; &#45;&#45;mdc-ripple-left:10px; &#45;&#45;mdc-ripple-top:10px;"
+                ><i class="material-icons">menu</i></button>-->
                 <mdc-top-app-bar-title class="vcenter sl0">
                     <a href="#"><img src="${_logo}" class="logo" title="Framework logo" /></a> ${_router.title}
                 </mdc-top-app-bar-title>
@@ -60,7 +60,7 @@
         </mdc-top-app-bar-row>
     </mdc-top-app-bar>
     <div class="flex">
-        <mdc-drawer view-model.ref="_drawer" type="dismissible">
+        <mdc-drawer view-model.ref="_drawer" > <!--add : type="dismissible"-->
 
             <mdc-drawer-header title="Execution" subtitle="${_executionContext.contextValues.name}"></mdc-drawer-header>
             <mdc-drawer-content>

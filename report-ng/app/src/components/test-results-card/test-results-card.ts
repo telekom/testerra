@@ -20,20 +20,21 @@
  */
 
 import {autoinject, bindable} from "aurelia-framework";
-import {StatusConverter} from "../../services/status-converter";
+import {IFilter, StatusConverter} from "../../services/status-converter";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {ExecutionStatistics} from "../../services/statistic-models";
 import {ApexOptions} from "apexcharts";
+import {data} from "../../services/report-model";
+import ResultStatusType = data.ResultStatusType;
+import {ISelection} from "../apex-chart/apex-chart";
+import {bindingMode} from "aurelia-binding";
 
 @autoinject
 export class TestResultsCard {
-    @bindable result;
+    @bindable({bindingMode: bindingMode.toView}) filter:IFilter;
     @bindable executionStatistics: ExecutionStatistics;
     private _apexPieOptions: ApexOptions = undefined;
-    private _selection;
-    private _overallExitPoints;
-    private _overallFailureAspects;
-
+    private _selection:ISelection;
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -42,33 +43,39 @@ export class TestResultsCard {
     ) {
     }
 
-    resultChanged(){
-        if (this.result.status) {
-            // console.log("result status selected: " + this._statusConverter.getLabelForStatus(this.result.status));
-            //get datapoint index to select from filter
-            let label: string = this._statusConverter.getLabelForStatus(this.result.status);
-            //pass index to apexchart-element
-            this._selection = { dataPointIndex: this._apexPieOptions.labels.indexOf(label) };
-        }
+    private _getSeriesByStatus(status:ResultStatusType) {
+        return this._statusConverter.relevantStatuses.indexOf(status);
+    }
 
+    private _getStatusByIndex(index:number) {
+        return this._statusConverter.relevantStatuses[index];
+    }
+
+    filterChanged(newValue, oldValue) {
+        console.log("filter changed", newValue);
+        if (newValue?.status) {
+            this._selection = {
+                series: this._getSeriesByStatus(newValue.status),
+            };
+        } else {
+            this._selection = null;
+        }
     }
 
     executionStatisticsChanged() {
         this._preparePieChart(this.executionStatistics);
-        //this._overallExitPoints = this.executionStatistics.exitPointStatistics.length;
-        this._overallFailureAspects = this.executionStatistics.failureAspectStatistics.length;
     }
 
     private _preparePieChart(executionStatistics: ExecutionStatistics): void {
         const series = [];
         const labels = [];
-        const labelStatus = [];
+        //const labelStatus = [];
         const colors = [];
 
         for (const status of this._statusConverter.relevantStatuses) {
             series.push(executionStatistics.getStatusCount(status));
             labels.push(this._statusConverter.getLabelForStatus(status));
-            labelStatus.push(status)
+            //labelStatus.push(status)
             colors.push(this._statusConverter.getColorForStatus(status));
         }
 
@@ -80,12 +87,12 @@ export class TestResultsCard {
                 fontFamily: 'Roboto',
                 events: {
                     dataPointSelection: (event, chartContext, config) => {
-                        this._piePieceClicked(labelStatus[config.dataPointIndex]);
-                        if (event) {
-                            event.stopPropagation();
-                        }
+                        this._pieceToggled(event,chartContext,config)
                     }
                 },
+            },
+            legend: {
+                show: false,
             },
             dataLabels: {
                 style: {
@@ -116,13 +123,22 @@ export class TestResultsCard {
         };
     }
 
-    private _piePieceClicked(status: number): void {
-        const event = new CustomEvent("piece-clicked", {
-            detail: {
-                status: status
-            },
+    private _pieceToggled(event, chartContext, config) {
+        event?.stopPropagation();
+        let filter:IFilter = null;
+
+        if (config.selectedDataPoints[0]?.length > 0) {
+            filter = {
+                status: this._getStatusByIndex(config.selectedDataPoints[0][0])
+            };
+        }
+
+        console.log("piece clicked", filter);
+
+        const customEvent = new CustomEvent("filter-changed", {
+            detail: filter,
             bubbles: true
         });
-        this._element.dispatchEvent(event)
+        this._element.dispatchEvent(customEvent);
     }
 }

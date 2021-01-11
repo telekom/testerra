@@ -20,14 +20,14 @@
  */
 
 import {autoinject} from "aurelia-framework";
-import {StatusConverter} from "services/status-converter";
+import {IFilter, StatusConverter} from "services/status-converter";
 import {StatisticsGenerator} from "services/statistics-generator";
 import {ExecutionStatistics} from "services/statistic-models";
 import {AbstractViewModel} from "../abstract-view-model";
 import {data} from "../../services/report-model";
-import ResultStatusType = data.ResultStatusType;
 import MethodType = data.MethodType;
 import FailureCorridorValue = data.FailureCorridorValue;
+import ResultStatusType = data.ResultStatusType;
 
 class FailureCorridor {
     count:number = 0;
@@ -40,7 +40,7 @@ class FailureCorridor {
 @autoinject()
 export class Dashboard extends AbstractViewModel {
     private _executionStatistics: ExecutionStatistics;
-    private _selectedResult: any = {status: ""};
+    private _selectedStatus:number;
     private _failedRetried = 0;
     private _passedRetried = 0;
     private _majorFailures = 0;
@@ -48,6 +48,9 @@ export class Dashboard extends AbstractViewModel {
     private _highCorridor = new FailureCorridor();
     private _midCorridor = new FailureCorridor();
     private _lowCorridor = new FailureCorridor();
+    private _filterItems:object[];
+    private _breakdownFilter:IFilter;
+    private _classFilter:IFilter;
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -62,6 +65,24 @@ export class Dashboard extends AbstractViewModel {
             this._executionStatistics = executionStatistics;
             this._failedRetried = this._executionStatistics.getStatusCount(ResultStatusType.FAILED_RETRIED);
             this._passedRetried = this._executionStatistics.getStatusesCount([ResultStatusType.PASSED_RETRY,ResultStatusType.MINOR_RETRY]);
+
+            this._filterItems = [];
+            this._filterItems.push({
+                status: ResultStatusType.FAILED,
+                count: this._executionStatistics.overallFailed
+            });
+            this._filterItems.push({
+                status: ResultStatusType.FAILED_EXPECTED,
+                count: this._executionStatistics.getStatusCount(ResultStatusType.FAILED_EXPECTED)
+            });
+            this._filterItems.push({
+                status: ResultStatusType.SKIPPED,
+                count: this._executionStatistics.getStatusCount(ResultStatusType.SKIPPED)
+            });
+            this._filterItems.push({
+                status: ResultStatusType.PASSED,
+                count: this._executionStatistics.overallPassed
+            });
 
             this._executionStatistics.failureAspectStatistics.forEach(failureAspectStatistics => {
                 if (failureAspectStatistics.isMinor) {
@@ -92,15 +113,26 @@ export class Dashboard extends AbstractViewModel {
         });
     };
 
-    private _resultClicked(result) {
-        this._selectedResult = {status: result};
+    private _resultClicked(status) {
+        if (this._selectedStatus === status) {
+            this._selectedStatus = null;
+            this._classFilter = this._breakdownFilter = null;
+        } else {
+            this._selectedStatus = status;
+            this._classFilter = this._breakdownFilter = {
+                status: status
+            };
+        }
     }
 
-    private _pieceClicked(ev:CustomEvent) {
-        this.queryParams = ev.detail;
+    private _pieFilterChanged(ev:CustomEvent) {
+        this._classFilter = ev.detail;
+        if (ev.detail?.status) {
+            this._selectedStatus = ev.detail.status;
+        }
     }
 
-    private _gotoTests(params:any) {
-        this.navInstruction.router.navigateToRoute("tests", params);
+    private _barFilterChanged(ev:CustomEvent) {
+        this.navInstruction.router.navigateToRoute("tests", ev.detail);
     }
 }

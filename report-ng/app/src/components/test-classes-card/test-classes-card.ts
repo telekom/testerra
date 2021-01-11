@@ -21,20 +21,18 @@
 
 import {data} from "../../services/report-model";
 import {autoinject, bindable} from "aurelia-framework";
-import {StatusConverter} from "../../services/status-converter";
+import {IFilter, StatusConverter} from "../../services/status-converter";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {ClassStatistics} from "../../services/statistic-models";
 import ResultStatusType = data.ResultStatusType;
 import {ApexOptions} from "apexcharts";
-
+import {bindingMode} from "aurelia-binding";
 
 @autoinject
 export class TestClassesCard {
-    @bindable filter;
+    @bindable({bindingMode: bindingMode.toView}) filter:IFilter;
     @bindable classStatistics: ClassStatistics[];
     private _apexBarOptions: ApexOptions = undefined;
-    private _currentFilter;
-
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -44,19 +42,14 @@ export class TestClassesCard {
     }
 
     classStatisticsChanged() {
-        // console.log("stats changed.");
         this._prepareHorizontalBarChart(this.classStatistics);
     }
 
     filterChanged(){
-        // console.log("filter changed. ", this.filter);
-        if (this.filter.status == this._currentFilter){
-            this.filter = "";
-        }
+        console.log("filter changed", this.filter);
         if (this.classStatistics?.length > 0 ) {
             this._prepareHorizontalBarChart(this.classStatistics);
         }
-        this._currentFilter = this.filter.status;
     }
 
     private _prepareHorizontalBarChart(classStatistics: ClassStatistics[]): void {
@@ -64,7 +57,9 @@ export class TestClassesCard {
         let xlabels: Array<string> = [];
 
         const series = [];
-        const filteredStatuses = this._statusConverter.relevantStatuses.filter(status => (!this.filter?.status || status == this.filter.status) );
+        const filteredStatuses = this._statusConverter.relevantStatuses.filter(status => (!this.filter?.status || status === this.filter.status) );
+
+        console.log("filtered statuses",filteredStatuses);
 
         for (const status of filteredStatuses) {
             data.set(status, []);
@@ -108,21 +103,7 @@ export class TestClassesCard {
                 },
                 events: {
                     dataPointSelection: (event, chartContext, config) => {
-                        let selectedStatus: string;
-
-                        if (this.filter.status){
-                            selectedStatus = this._statusConverter.getClassForStatus(this.filter.status);
-                        } else {
-                            let statusNames = ["failed", "failed-expected", "skipped", "passed"];
-                            selectedStatus = statusNames[config.seriesIndex];
-                        }
-
-                        // console.log(selectedStatus);
-                        this._barClicked({
-                            class: xlabels[config.dataPointIndex],
-                            status: selectedStatus
-                        });
-                        event.stopPropagation();
+                        this._barClicked(event, chartContext, config);
                     }
                 },
             },
@@ -161,20 +142,26 @@ export class TestClassesCard {
                 text: "There is no data available at the moment. Please be patient!"
             },
             legend: {
-                position: 'top',
-                horizontalAlign: 'center'
+                show: false
+                // position: 'top',
+                // horizontalAlign: 'center'
             }
         }
     }
 
-    private _barClicked(params: any): void {
-        const event = new CustomEvent("bar-clicked", {
-            detail: {
-                params: params
-            },
+    private _barClicked(event, chartContext, config): void {
+        event?.stopPropagation();
+
+        const params:IFilter = {
+            class: this._apexBarOptions.xaxis.categories[config.dataPointIndex],
+            status: this._statusConverter.relevantStatuses[config.seriesIndex]
+        }
+
+        const customEvent = new CustomEvent("filter-changed", {
+            detail: params,
             bubbles: true
         });
         // console.log(params, this._element);
-        this._element.dispatchEvent(event)
+        this._element.dispatchEvent(customEvent)
     }
 }

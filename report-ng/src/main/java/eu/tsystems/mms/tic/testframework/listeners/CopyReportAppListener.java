@@ -24,24 +24,23 @@ package eu.tsystems.mms.tic.testframework.listeners;
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.events.FinalizeExecutionEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.apache.commons.io.FileUtils;
 
 public class CopyReportAppListener implements FinalizeExecutionEvent.Listener, Loggable {
+
     private File targetDir;
 
     public CopyReportAppListener(File targetDir) {
@@ -53,11 +52,16 @@ public class CopyReportAppListener implements FinalizeExecutionEvent.Listener, L
     public void onFinalizeExecution(FinalizeExecutionEvent event) {
         try {
             for (Path resourcePath : getPathsFromResourceJAR("report-ng")) {
-                InputStream resourceStream = getClass().getClassLoader().getResourceAsStream(resourcePath.toString());
-                File targetFile = new File(this.targetDir, resourcePath.toString());
-                FileUtils.copyInputStreamToFile(resourceStream, targetFile);
+                final String stringRepresentationOfResourcePath = StringUtils.stripStart(resourcePath.toString(), "/");
+                try (final InputStream resourceStream = getClass().getClassLoader().getResourceAsStream(stringRepresentationOfResourcePath)) {
+                    if (resourceStream == null) {
+                        throw new Exception("Could not open stream: " + stringRepresentationOfResourcePath);
+                    }
+                    final File targetFile = new File(this.targetDir, resourcePath.toString());
+                    FileUtils.copyInputStreamToFile(resourceStream, targetFile);
+                }
             }
-        }  catch (Exception e) {
+        } catch (Exception e) {
             log().error("Unable to copy app resource", e);
         }
     }

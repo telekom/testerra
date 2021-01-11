@@ -52,7 +52,7 @@ export class TestResultsCard {
     }
 
     filterChanged(newValue, oldValue) {
-        console.log("filter changed", newValue);
+        // console.log("filter changed", newValue);
         if (newValue?.status) {
             this._selection = {
                 series: this._getSeriesByStatus(newValue.status),
@@ -133,7 +133,7 @@ export class TestResultsCard {
             };
         }
 
-        console.log("piece clicked", filter);
+        // console.log("piece clicked", filter);
 
         const customEvent = new CustomEvent("filter-changed", {
             detail: filter,

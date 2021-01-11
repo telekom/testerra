@@ -37,10 +37,15 @@ class FailureCorridor {
     }
 }
 
+interface Item {
+    status: ResultStatusType,
+    count: number,
+    active: boolean,
+}
+
 @autoinject()
 export class Dashboard extends AbstractViewModel {
     private _executionStatistics: ExecutionStatistics;
-    private _selectedStatus:number;
     private _failedRetried = 0;
     private _passedRetried = 0;
     private _majorFailures = 0;
@@ -48,7 +53,7 @@ export class Dashboard extends AbstractViewModel {
     private _highCorridor = new FailureCorridor();
     private _midCorridor = new FailureCorridor();
     private _lowCorridor = new FailureCorridor();
-    private _filterItems:object[];
+    private _filterItems:Item[];
     private _breakdownFilter:IFilter;
     private _classFilter:IFilter;
 
@@ -69,19 +74,23 @@ export class Dashboard extends AbstractViewModel {
             this._filterItems = [];
             this._filterItems.push({
                 status: ResultStatusType.FAILED,
-                count: this._executionStatistics.overallFailed
+                count: this._executionStatistics.overallFailed,
+                active:false,
             });
             this._filterItems.push({
                 status: ResultStatusType.FAILED_EXPECTED,
-                count: this._executionStatistics.getStatusCount(ResultStatusType.FAILED_EXPECTED)
+                count: this._executionStatistics.getStatusCount(ResultStatusType.FAILED_EXPECTED),
+                active:false
             });
             this._filterItems.push({
                 status: ResultStatusType.SKIPPED,
-                count: this._executionStatistics.getStatusCount(ResultStatusType.SKIPPED)
+                count: this._executionStatistics.getStatusCount(ResultStatusType.SKIPPED),
+                active:false
             });
             this._filterItems.push({
                 status: ResultStatusType.PASSED,
-                count: this._executionStatistics.overallPassed
+                count: this._executionStatistics.overallPassed,
+                active:false
             });
 
             this._executionStatistics.failureAspectStatistics.forEach(failureAspectStatistics => {
@@ -113,23 +122,27 @@ export class Dashboard extends AbstractViewModel {
         });
     };
 
-    private _resultClicked(status) {
-        if (this._selectedStatus === status) {
-            this._selectedStatus = null;
-            this._classFilter = this._breakdownFilter = null;
-        } else {
-            this._selectedStatus = status;
+    private _resultClicked(item:Item) {
+        /**
+         * It still happens that items keep selected when they shouldn't
+         * https://gist.dumber.app/?gist=f09831456ae377d1121e8a41eece1c42
+         */
+        this._filterItems.filter(value => value !== item).forEach(value => value.active = false);
+        item.active = !item.active;
+        if (item.active) {
             this._classFilter = this._breakdownFilter = {
-                status: status
+                status: item.status
             };
+        } else {
+            this._classFilter = this._breakdownFilter = null;
         }
     }
 
     private _pieFilterChanged(ev:CustomEvent) {
         this._classFilter = ev.detail;
-        if (ev.detail?.status) {
-            this._selectedStatus = ev.detail.status;
-        }
+        this._filterItems.forEach(value => {
+            value.active = ev.detail?.status === value.status;
+        })
     }
 
     private _barFilterChanged(ev:CustomEvent) {

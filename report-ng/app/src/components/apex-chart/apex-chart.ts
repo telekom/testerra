@@ -53,7 +53,7 @@ export class ApexChart {
     }
 
     selectionChanged(newValue:ISelection, oldValue:ISelection) {
-        console.log(newValue, oldValue);
+        // console.log("select", newValue, oldValue);
         if (this._myApexChart) {
             if (newValue) this._myApexChart.toggleDataPointSelection(newValue.series, newValue.dataPointIndex);
             else if (oldValue) this._myApexChart.toggleDataPointSelection(oldValue.series, oldValue.dataPointIndex);

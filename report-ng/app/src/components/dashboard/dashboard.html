@@ -38,8 +38,8 @@
                                   class.bind="_failedRetried>0||_passedRetried>0?'w75':'w100'"
                         >
                             <mdc-list-item repeat.for="item of _filterItems"
-                                           click.delegate="_resultClicked(item.status)"
-                                           activated.bind="_selectedStatus===item.status"
+                                           click.delegate="_resultClicked(item)"
+                                           activated.bind="item.active"
                             >
                                 <mdc-icon mdc-list-item-graphic class="colored-icon big-icon status-${item.status|statusClass}">${item.status|statusIconName}</mdc-icon>
                                 <mdc-list-item-primary-text>${item.count}</mdc-list-item-primary-text>

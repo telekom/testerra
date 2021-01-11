@@ -46,7 +46,6 @@ export class TestClassesCard {
     }
 
     filterChanged(){
-        console.log("filter changed", this.filter);
         if (this.classStatistics?.length > 0 ) {
             this._prepareHorizontalBarChart(this.classStatistics);
         }
@@ -59,7 +58,7 @@ export class TestClassesCard {
         const series = [];
         const filteredStatuses = this._statusConverter.relevantStatuses.filter(status => (!this.filter?.status || status === this.filter.status) );
 
-        console.log("filtered statuses",filteredStatuses);
+        // console.log("filtered statuses",filteredStatuses);
 
         for (const status of filteredStatuses) {
             data.set(status, []);

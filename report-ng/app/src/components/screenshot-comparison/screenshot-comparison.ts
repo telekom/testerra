@@ -29,8 +29,6 @@ export class ScreenshotComparison {
     private _srcActual: string;
     private _srcExpected: string;
     private _comparison: string;
-    private _clicked: boolean;
-
 
     constructor(
         private _dialog: MdcDialog
@@ -60,22 +58,23 @@ export class ScreenshotComparison {
 
         function compareImages(img) {
             console.log(img);
-            var slider, clicked = 0, w, h;
+            var slider, clicked = 0, width, height;
             /* Get the width and height of the img element */
-            w = img.offsetWidth;
-            h = img.offsetHeight;
-            //let container = document.getElementsByClassName("img-comp-container")[0] as HTMLDivElement;
-            //container.style.height = h;
+            width = img.offsetWidth;
+            height = img.offsetHeight;
+            let container = document.querySelector(".img-comp-container") as HTMLDivElement;
+            container.style.height = height + "px";
+            container.style.width = width + "px";
             /* Set the width of the img element to 50%: */
-            img.style.width = (w / 2) + "px";
+            img.style.width = (width / 2) + "px";
             /* Create slider: */
             slider = document.createElement("div");
-            slider.setAttribute("class", "img-comp-slider");
+            slider.setAttribute("class", "img-comp-slider secondary-bg");
             /* Insert slider */
             img.parentElement.insertBefore(slider, img);
             /* Position the slider in the middle: */
-            slider.style.top = (h / 2) - (slider.offsetHeight / 2) + "px";
-            slider.style.left = (w / 2) - (slider.offsetWidth / 2) + "px";
+            slider.style.top = (height / 2) - (slider.offsetHeight / 2) + "px";
+            slider.style.left = (width / 2) - (slider.offsetWidth / 2) + "px";
             /* Execute a function when the mouse button is pressed: */
             slider.addEventListener("mousedown", slideReady);
             /* And another function when the mouse button is released: */
@@ -106,7 +105,7 @@ export class ScreenshotComparison {
                 pos = getCursorPos(e)
                 /* Prevent the slider from being positioned outside the image: */
                 if (pos < 0) pos = 0;
-                if (pos > w) pos = w;
+                if (pos > width) pos = width;
                 /* Execute a function that will resize the overlay image according to the cursor: */
                 slide(pos);
             }

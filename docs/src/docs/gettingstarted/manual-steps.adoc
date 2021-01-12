@@ -131,7 +131,7 @@ All supported browsers are listed in <<WebdriverManager properties>>
 
 == Create Page Class
 
-Now its time to create a first simple page class. It should be saved at path `src\main\java\<package>`. The following example represents the website example.org. It contains one possible link to click and one method to test.
+Now it's time to create a first simple page class. It should be saved at path `src\main\java\<package>`. The following example represents the website example.org. It contains one possible link to click and one method to test.
 
 .New page class
 [source, java]
@@ -185,7 +185,7 @@ public class ExampleTest extends TesterraTest {
 
 [IMPORTANT]
 ====
-Be aware of using `@Test` annotation at your test method. You have to use the `TestNG` annotation, not it from `JUnit`.
+Be aware of using `@Test` annotation at your test method. You have to use the `TestNG` annotation, not from `JUnit`.
 
 If you import `JUnit` lib, no test is executed via Maven or Gradle.
 ====

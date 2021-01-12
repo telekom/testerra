@@ -19,30 +19,20 @@
  * under the License.
  */
 
-import {autoinject} from 'aurelia-framework';
-import {StatisticsGenerator} from "../../services/statistics-generator";
-import {NavigationInstruction, RouteConfig} from "aurelia-router";
+import {bindable} from "aurelia-templating";
+import {bindingMode} from "aurelia-binding";
+import {autoinject} from "aurelia-framework";
 import {data} from "../../services/report-model";
-import IFile = data.IFile;
+import {MethodDetails} from "../../services/statistics-generator";
 
 @autoinject()
-export class Videos {
-    private _videos:IFile[];
+export class MethodTags {
 
     constructor(
-        private _statistics: StatisticsGenerator,
+        //private _statusConverter:StatusConverter
     ) {
     }
 
-    activate(
-        params: any,
-        routeConfig: RouteConfig,
-        navInstruction: NavigationInstruction
-    ) {
-        this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
-            this._statistics.getFilesForIds(methodDetails.methodContext.videoIds).then(value => {
-                this._videos = value;
-            });
-        });
-    }
+    @bindable({ defaultBindingMode: bindingMode.toView })
+    details: MethodDetails;
 }

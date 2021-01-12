@@ -2,7 +2,13 @@
 
 ## Build
 
+Cleans everything (including `node_modules`)
+
+```shell
+gradle clean
+```
+
 Builds the Report NG from `app` and copies the files to `src/main/resources`
-```bash
-gradle buildReport
+```shell
+gradle build
 ```

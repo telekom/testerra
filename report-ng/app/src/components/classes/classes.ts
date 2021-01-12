@@ -22,14 +22,14 @@
 import {DataLoader} from "../../services/data-loader";
 import {StatusConverter} from "../../services/status-converter";
 import {autoinject} from "aurelia-framework";
-import {IMethodDetails, StatisticsGenerator} from "../../services/statistics-generator";
-import {ClassStatistics, ExecutionStatistics, FailureAspectStatistics} from "../../services/statistic-models";
+import {MethodDetails, StatisticsGenerator} from "../../services/statistics-generator";
+import {ExecutionStatistics, FailureAspectStatistics} from "../../services/statistic-models";
 import {AbstractViewModel} from "../abstract-view-model";
 import {data} from "../../services/report-model";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
-import IMethodContext = data.IMethodContext;
 import MethodType = data.MethodType;
 import ResultStatusType = data.ResultStatusType;
+import "./classes.scss"
 
 @autoinject()
 export class Classes extends AbstractViewModel {
@@ -37,7 +37,7 @@ export class Classes extends AbstractViewModel {
     private _executionStatistics: ExecutionStatistics;
     private _selectedStatus:number;
     private _availableStatuses = this._statusConverter.relevantStatuses;
-    private _filteredMethodDetails:IMethodDetails[];
+    private _filteredMethodDetails:MethodDetails[];
     private _showConfigurationMethods:boolean = null;
     private _searchRegexp:RegExp;
     private _uniqueStatuses = 0;
@@ -140,18 +140,18 @@ export class Classes extends AbstractViewModel {
                             )
                         })
                         .map(methodContext => {
-                            return <IMethodDetails> {
-                                classStatistics: classStatistic,
-                                failureAspectStatistics: (relevantFailureAspect?relevantFailureAspect:(methodContext.errorContext?new FailureAspectStatistics().setErrorContext(methodContext.errorContext):null)),
-                                methodContext: methodContext
-                            };
+                            const methodDetails = new MethodDetails();
+                            methodDetails.methodContext = methodContext;
+                            methodDetails.classStatistics = classStatistic;
+                            methodDetails.failureAspectStatistics = (relevantFailureAspect?relevantFailureAspect:(methodContext.errorContext?new FailureAspectStatistics().setErrorContext(methodContext.errorContext):null));
+                            return methodDetails;
                         })
                         .filter(methodDetails => {
                             return (
                                 !this._searchRegexp
                                 || (
                                     methodDetails.failureAspectStatistics?.name.match(this._searchRegexp)
-                                    || methodDetails.methodContext.contextValues.name.match(this._searchRegexp)
+                                    || methodDetails.identifier.match(this._searchRegexp)
                                 )
                             );
                         })
@@ -163,7 +163,9 @@ export class Classes extends AbstractViewModel {
                 });
 
             // Sort by method name
-            this._filteredMethodDetails = this._filteredMethodDetails.sort((a, b) => a.methodContext.contextValues.name.localeCompare(b.methodContext.contextValues.name));
+            //this._filteredMethodDetails = this._filteredMethodDetails.sort((a, b) => a.methodContext.contextValues.name.localeCompare(b.methodContext.contextValues.name));
+            // Sort by run index
+            this._filteredMethodDetails = this._filteredMethodDetails.sort((a, b) => a.methodContext.methodRunIndex-b.methodContext.methodRunIndex);
 
             this._uniqueClasses = Object.keys(uniqueClasses).length;
             this._uniqueStatuses = Object.keys(uniqueStatuses).length;

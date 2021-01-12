@@ -48,8 +48,8 @@ public class MethodAnnotationCheckerWorker implements MethodEndEvent.Listener {
         /*
         write method annotations info
          */
-        Annotation[] annotations = method.getAnnotations();
-        methodContext.methodTags = Arrays.stream(annotations).collect(Collectors.toList());
+        //Annotation[] annotations = method.getAnnotations();
+        //methodContext.methodTags = Arrays.stream(annotations).collect(Collectors.toList());
 
         if (event.getTestMethod().isTest()) {
             // get fails annotation

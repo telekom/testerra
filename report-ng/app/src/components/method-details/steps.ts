@@ -20,7 +20,7 @@
  */
 
 import {autoinject} from 'aurelia-framework';
-import {IMethodDetails, StatisticsGenerator} from "services/statistics-generator";
+import {MethodDetails, StatisticsGenerator} from "services/statistics-generator";
 import {data} from "services/report-model";
 import {DataLoader} from "services/data-loader";
 import {Config} from "services/config-dev";
@@ -99,7 +99,7 @@ interface TestStepActionDetails extends ITestStepAction {
 
 @autoinject()
 export class Steps {
-    private _methodDetails:IMethodDetails;
+    private _methodDetails:MethodDetails;
     private _allScreenshots:IFile[];
     private _router:Router;
 

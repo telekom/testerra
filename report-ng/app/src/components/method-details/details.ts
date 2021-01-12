@@ -27,7 +27,7 @@ import hljs from 'highlight.js/lib/core';
 import java from 'highlight.js/lib/languages/java';
 import 'highlight.js/styles/darcula.css';
 import {autoinject} from 'aurelia-framework';
-import {IMethodDetails, StatisticsGenerator} from "services/statistics-generator";
+import {MethodDetails, StatisticsGenerator} from "services/statistics-generator";
 import {FailureAspectStatistics} from "services/statistic-models";
 import {Config} from "services/config-dev";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
@@ -37,7 +37,7 @@ import {StatusConverter} from "services/status-converter";
 export class Details {
     private _hljs = hljs;
     private _failureAspect:FailureAspectStatistics;
-    private _methodDetails:IMethodDetails;
+    private _methodDetails:MethodDetails;
 
     constructor(
         private _statistics: StatisticsGenerator,

@@ -101,6 +101,7 @@ public class GuiElementListTests extends AbstractTestSitesTest implements PageFa
         testTableRowsAndData(tableRows);
 
         GuiElement mkriProfileLink = tableRows.getList().get(0).getSubElement(By.tagName("a"));
+        mkriProfileLink.highlight();
         mkriProfileLink.asserts().assertAttributeContains("href", "mkri");
 
         GuiElement erkuProfileLink = tableRows.getList().get(tableRows.getNumberOfFoundElements() - 1).getSubElement(By.tagName("a"));

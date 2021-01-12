@@ -19,7 +19,7 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.report.utils;
+package eu.tsystems.mms.tic.testframework.report.utils;
 
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
@@ -36,32 +36,45 @@ public class ExecutionContextUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExecutionContextUtils.class);
 
     /**
+     * Get an injected test method of an ITestResult.
+     * <p>
+     * Eg. setup methods (@BeforeMethod) can contain an injected method. For these check the setup method should have 'Method method' as a parameter.
+     *
+     * @param testResult
+     * @return
+     */
+    public static Method getInjectedMethod(ITestResult testResult) {
+        if (testResult != null) {
+            Object[] parameters = testResult.getParameters();
+            if (parameters != null) {
+                for (Object parameter : parameters) {
+                    if ((parameter != null) && (parameter instanceof Method)) {
+                        return (Method) parameter;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
      * Checks if MethodContainer for the give result exists.
      *
      * @param testResult result to check.
      */
     public static void checkForInjectedMethod(ITestResult testResult, final ITestContext testContext) {
-        boolean foundMethodObject = false;
-        Object[] parameters = testResult.getParameters();
-        if (parameters != null) {
-            for (Object parameter : parameters) {
-                if ((parameter != null) && (parameter instanceof Method)) {
-                    Method method = (Method) parameter;
+        Method injectedMethod = getInjectedMethod(testResult);
 
-                    MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult, testContext);
-                    String testMethodName = methodContext.getName();
+        if (injectedMethod != null) {
+            MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult, testContext);
+            String testMethodName = methodContext.getName();
 
-                    final String info = "for " + method.getName();
-                    if (!testMethodName.contains(info)) {
-                        methodContext.infos.add(info);
-                    }
-
-                    foundMethodObject = true;
-                }
+            final String info = "for " + injectedMethod.getName();
+            if (!testMethodName.contains(info)) {
+                methodContext.infos.add(info);
             }
-        }
 
-        if (!foundMethodObject) {
+        } else {
             final String msg = "Please use @BeforeMethod before(Method method) and @AfterMethod after(Method method)!" +
                     "\nThis will be mandatory in a future release.";
 

@@ -17,7 +17,6 @@ private static final long serialVersionUID = 0L;
   }
   private MethodContext() {
     methodType_ = 0;
-    parameters_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     methodTags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     threadName_ = "";
     failureCorridorValue_ = 0;
@@ -86,20 +85,11 @@ private static final long serialVersionUID = 0L;
             methodType_ = rawValue;
             break;
           }
-          case 66: {
-            java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-              parameters_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000001;
-            }
-            parameters_.add(s);
-            break;
-          }
           case 74: {
             java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000002) != 0)) {
+            if (!((mutable_bitField0_ & 0x00000001) != 0)) {
               methodTags_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000002;
+              mutable_bitField0_ |= 0x00000001;
             }
             methodTags_.add(s);
             break;
@@ -140,9 +130,9 @@ private static final long serialVersionUID = 0L;
           }
           case 154: {
             java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000004) != 0)) {
+            if (!((mutable_bitField0_ & 0x00000002) != 0)) {
               infos_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000004;
+              mutable_bitField0_ |= 0x00000002;
             }
             infos_.add(s);
             break;
@@ -155,18 +145,18 @@ private static final long serialVersionUID = 0L;
           }
           case 186: {
             java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000008) != 0)) {
+            if (!((mutable_bitField0_ & 0x00000004) != 0)) {
               relatedMethodContextIds_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000008;
+              mutable_bitField0_ |= 0x00000004;
             }
             relatedMethodContextIds_.add(s);
             break;
           }
           case 194: {
             java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000010) != 0)) {
+            if (!((mutable_bitField0_ & 0x00000008) != 0)) {
               dependsOnMethodContextIds_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000010;
+              mutable_bitField0_ |= 0x00000008;
             }
             dependsOnMethodContextIds_.add(s);
             break;
@@ -185,9 +175,9 @@ private static final long serialVersionUID = 0L;
             break;
           }
           case 210: {
-            if (!((mutable_bitField0_ & 0x00000020) != 0)) {
+            if (!((mutable_bitField0_ & 0x00000010) != 0)) {
               testSteps_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.TestStep>();
-              mutable_bitField0_ |= 0x00000020;
+              mutable_bitField0_ |= 0x00000010;
             }
             testSteps_.add(
                 input.readMessage(eu.tsystems.mms.tic.testframework.report.model.TestStep.parser(), extensionRegistry));
@@ -207,18 +197,18 @@ private static final long serialVersionUID = 0L;
           }
           case 234: {
             java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000040) != 0)) {
+            if (!((mutable_bitField0_ & 0x00000020) != 0)) {
               sessionContextIds_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000040;
+              mutable_bitField0_ |= 0x00000020;
             }
             sessionContextIds_.add(s);
             break;
           }
           case 242: {
             java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000080) != 0)) {
+            if (!((mutable_bitField0_ & 0x00000040) != 0)) {
               videoIds_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000080;
+              mutable_bitField0_ |= 0x00000040;
             }
             videoIds_.add(s);
             break;
@@ -240,6 +230,19 @@ private static final long serialVersionUID = 0L;
             resultStatus_ = rawValue;
             break;
           }
+          case 282: {
+            if (!((mutable_bitField0_ & 0x00000080) != 0)) {
+              parameters_ = com.google.protobuf.MapField.newMapField(
+                  ParametersDefaultEntryHolder.defaultEntry);
+              mutable_bitField0_ |= 0x00000080;
+            }
+            com.google.protobuf.MapEntry<java.lang.String, java.lang.String>
+            parameters__ = input.readMessage(
+                ParametersDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
+            parameters_.getMutableMap().put(
+                parameters__.getKey(), parameters__.getValue());
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -256,27 +259,24 @@ private static final long serialVersionUID = 0L;
           e).setUnfinishedMessage(this);
     } finally {
       if (((mutable_bitField0_ & 0x00000001) != 0)) {
-        parameters_ = parameters_.getUnmodifiableView();
-      }
-      if (((mutable_bitField0_ & 0x00000002) != 0)) {
         methodTags_ = methodTags_.getUnmodifiableView();
       }
-      if (((mutable_bitField0_ & 0x00000004) != 0)) {
+      if (((mutable_bitField0_ & 0x00000002) != 0)) {
         infos_ = infos_.getUnmodifiableView();
       }
-      if (((mutable_bitField0_ & 0x00000008) != 0)) {
+      if (((mutable_bitField0_ & 0x00000004) != 0)) {
         relatedMethodContextIds_ = relatedMethodContextIds_.getUnmodifiableView();
       }
-      if (((mutable_bitField0_ & 0x00000010) != 0)) {
+      if (((mutable_bitField0_ & 0x00000008) != 0)) {
         dependsOnMethodContextIds_ = dependsOnMethodContextIds_.getUnmodifiableView();
       }
-      if (((mutable_bitField0_ & 0x00000020) != 0)) {
+      if (((mutable_bitField0_ & 0x00000010) != 0)) {
         testSteps_ = java.util.Collections.unmodifiableList(testSteps_);
       }
-      if (((mutable_bitField0_ & 0x00000040) != 0)) {
+      if (((mutable_bitField0_ & 0x00000020) != 0)) {
         sessionContextIds_ = sessionContextIds_.getUnmodifiableView();
       }
-      if (((mutable_bitField0_ & 0x00000080) != 0)) {
+      if (((mutable_bitField0_ & 0x00000040) != 0)) {
         videoIds_ = videoIds_.getUnmodifiableView();
       }
       this.unknownFields = unknownFields.build();
@@ -288,6 +288,18 @@ private static final long serialVersionUID = 0L;
     return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_MethodContext_descriptor;
   }
 
+  @SuppressWarnings({"rawtypes"})
+  @java.lang.Override
+  protected com.google.protobuf.MapField internalGetMapField(
+      int number) {
+    switch (number) {
+      case 35:
+        return internalGetParameters();
+      default:
+        throw new RuntimeException(
+            "Invalid map field number: " + number);
+    }
+  }
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
@@ -341,44 +353,13 @@ private static final long serialVersionUID = 0L;
     return result == null ? eu.tsystems.mms.tic.testframework.report.model.MethodType.UNRECOGNIZED : result;
   }
 
-  public static final int PARAMETERS_FIELD_NUMBER = 8;
-  private com.google.protobuf.LazyStringList parameters_;
-  /**
-   * <code>repeated string parameters = 8;</code>
-   * @return A list containing the parameters.
-   */
-  public com.google.protobuf.ProtocolStringList
-      getParametersList() {
-    return parameters_;
-  }
-  /**
-   * <code>repeated string parameters = 8;</code>
-   * @return The count of parameters.
-   */
-  public int getParametersCount() {
-    return parameters_.size();
-  }
-  /**
-   * <code>repeated string parameters = 8;</code>
-   * @param index The index of the element to return.
-   * @return The parameters at the given index.
-   */
-  public java.lang.String getParameters(int index) {
-    return parameters_.get(index);
-  }
-  /**
-   * <code>repeated string parameters = 8;</code>
-   * @param index The index of the value to return.
-   * @return The bytes of the parameters at the given index.
-   */
-  public com.google.protobuf.ByteString
-      getParametersBytes(int index) {
-    return parameters_.getByteString(index);
-  }
-
   public static final int METHOD_TAGS_FIELD_NUMBER = 9;
   private com.google.protobuf.LazyStringList methodTags_;
   /**
+   * <pre>
+   *repeated string parameters = 8 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string method_tags = 9;</code>
    * @return A list containing the methodTags.
    */
@@ -387,6 +368,10 @@ private static final long serialVersionUID = 0L;
     return methodTags_;
   }
   /**
+   * <pre>
+   *repeated string parameters = 8 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string method_tags = 9;</code>
    * @return The count of methodTags.
    */
@@ -394,6 +379,10 @@ private static final long serialVersionUID = 0L;
     return methodTags_.size();
   }
   /**
+   * <pre>
+   *repeated string parameters = 8 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string method_tags = 9;</code>
    * @param index The index of the element to return.
    * @return The methodTags at the given index.
@@ -402,6 +391,10 @@ private static final long serialVersionUID = 0L;
     return methodTags_.get(index);
   }
   /**
+   * <pre>
+   *repeated string parameters = 8 [deprecated = true];
+   * </pre>
+   *
    * <code>repeated string method_tags = 9;</code>
    * @param index The index of the value to return.
    * @return The bytes of the methodTags at the given index.
@@ -1025,6 +1018,87 @@ private static final long serialVersionUID = 0L;
     return result == null ? eu.tsystems.mms.tic.testframework.report.model.ResultStatusType.UNRECOGNIZED : result;
   }
 
+  public static final int PARAMETERS_FIELD_NUMBER = 35;
+  private static final class ParametersDefaultEntryHolder {
+    static final com.google.protobuf.MapEntry<
+        java.lang.String, java.lang.String> defaultEntry =
+            com.google.protobuf.MapEntry
+            .<java.lang.String, java.lang.String>newDefaultInstance(
+                eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_MethodContext_ParametersEntry_descriptor, 
+                com.google.protobuf.WireFormat.FieldType.STRING,
+                "",
+                com.google.protobuf.WireFormat.FieldType.STRING,
+                "");
+  }
+  private com.google.protobuf.MapField<
+      java.lang.String, java.lang.String> parameters_;
+  private com.google.protobuf.MapField<java.lang.String, java.lang.String>
+  internalGetParameters() {
+    if (parameters_ == null) {
+      return com.google.protobuf.MapField.emptyMapField(
+          ParametersDefaultEntryHolder.defaultEntry);
+    }
+    return parameters_;
+  }
+
+  public int getParametersCount() {
+    return internalGetParameters().getMap().size();
+  }
+  /**
+   * <code>map&lt;string, string&gt; parameters = 35;</code>
+   */
+
+  @java.lang.Override
+  public boolean containsParameters(
+      java.lang.String key) {
+    if (key == null) { throw new java.lang.NullPointerException(); }
+    return internalGetParameters().getMap().containsKey(key);
+  }
+  /**
+   * Use {@link #getParametersMap()} instead.
+   */
+  @java.lang.Override
+  @java.lang.Deprecated
+  public java.util.Map<java.lang.String, java.lang.String> getParameters() {
+    return getParametersMap();
+  }
+  /**
+   * <code>map&lt;string, string&gt; parameters = 35;</code>
+   */
+  @java.lang.Override
+
+  public java.util.Map<java.lang.String, java.lang.String> getParametersMap() {
+    return internalGetParameters().getMap();
+  }
+  /**
+   * <code>map&lt;string, string&gt; parameters = 35;</code>
+   */
+  @java.lang.Override
+
+  public java.lang.String getParametersOrDefault(
+      java.lang.String key,
+      java.lang.String defaultValue) {
+    if (key == null) { throw new java.lang.NullPointerException(); }
+    java.util.Map<java.lang.String, java.lang.String> map =
+        internalGetParameters().getMap();
+    return map.containsKey(key) ? map.get(key) : defaultValue;
+  }
+  /**
+   * <code>map&lt;string, string&gt; parameters = 35;</code>
+   */
+  @java.lang.Override
+
+  public java.lang.String getParametersOrThrow(
+      java.lang.String key) {
+    if (key == null) { throw new java.lang.NullPointerException(); }
+    java.util.Map<java.lang.String, java.lang.String> map =
+        internalGetParameters().getMap();
+    if (!map.containsKey(key)) {
+      throw new java.lang.IllegalArgumentException();
+    }
+    return map.get(key);
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -1044,9 +1118,6 @@ private static final long serialVersionUID = 0L;
     }
     if (methodType_ != eu.tsystems.mms.tic.testframework.report.model.MethodType.MT_NOT_SET.getNumber()) {
       output.writeEnum(7, methodType_);
-    }
-    for (int i = 0; i < parameters_.size(); i++) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 8, parameters_.getRaw(i));
     }
     for (int i = 0; i < methodTags_.size(); i++) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 9, methodTags_.getRaw(i));
@@ -1108,6 +1179,12 @@ private static final long serialVersionUID = 0L;
     if (resultStatus_ != eu.tsystems.mms.tic.testframework.report.model.ResultStatusType.RST_NOT_SET.getNumber()) {
       output.writeEnum(34, resultStatus_);
     }
+    com.google.protobuf.GeneratedMessageV3
+      .serializeStringMapTo(
+        output,
+        internalGetParameters(),
+        ParametersDefaultEntryHolder.defaultEntry,
+        35);
     unknownFields.writeTo(output);
   }
 
@@ -1124,14 +1201,6 @@ private static final long serialVersionUID = 0L;
     if (methodType_ != eu.tsystems.mms.tic.testframework.report.model.MethodType.MT_NOT_SET.getNumber()) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(7, methodType_);
-    }
-    {
-      int dataSize = 0;
-      for (int i = 0; i < parameters_.size(); i++) {
-        dataSize += computeStringSizeNoTag(parameters_.getRaw(i));
-      }
-      size += dataSize;
-      size += 1 * getParametersList().size();
     }
     {
       int dataSize = 0;
@@ -1230,6 +1299,16 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(34, resultStatus_);
     }
+    for (java.util.Map.Entry<java.lang.String, java.lang.String> entry
+         : internalGetParameters().getMap().entrySet()) {
+      com.google.protobuf.MapEntry<java.lang.String, java.lang.String>
+      parameters__ = ParametersDefaultEntryHolder.defaultEntry.newBuilderForType()
+          .setKey(entry.getKey())
+          .setValue(entry.getValue())
+          .build();
+      size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(35, parameters__);
+    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -1251,8 +1330,6 @@ private static final long serialVersionUID = 0L;
           .equals(other.getContextValues())) return false;
     }
     if (methodType_ != other.methodType_) return false;
-    if (!getParametersList()
-        .equals(other.getParametersList())) return false;
     if (!getMethodTagsList()
         .equals(other.getMethodTagsList())) return false;
     if (getRetryNumber()
@@ -1294,6 +1371,8 @@ private static final long serialVersionUID = 0L;
     if (getFailedStepIndex()
         != other.getFailedStepIndex()) return false;
     if (resultStatus_ != other.resultStatus_) return false;
+    if (!internalGetParameters().equals(
+        other.internalGetParameters())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -1311,10 +1390,6 @@ private static final long serialVersionUID = 0L;
     }
     hash = (37 * hash) + METHOD_TYPE_FIELD_NUMBER;
     hash = (53 * hash) + methodType_;
-    if (getParametersCount() > 0) {
-      hash = (37 * hash) + PARAMETERS_FIELD_NUMBER;
-      hash = (53 * hash) + getParametersList().hashCode();
-    }
     if (getMethodTagsCount() > 0) {
       hash = (37 * hash) + METHOD_TAGS_FIELD_NUMBER;
       hash = (53 * hash) + getMethodTagsList().hashCode();
@@ -1371,6 +1446,10 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getFailedStepIndex();
     hash = (37 * hash) + RESULT_STATUS_FIELD_NUMBER;
     hash = (53 * hash) + resultStatus_;
+    if (!internalGetParameters().getMap().isEmpty()) {
+      hash = (37 * hash) + PARAMETERS_FIELD_NUMBER;
+      hash = (53 * hash) + internalGetParameters().hashCode();
+    }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -1478,6 +1557,28 @@ private static final long serialVersionUID = 0L;
       return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_MethodContext_descriptor;
     }
 
+    @SuppressWarnings({"rawtypes"})
+    protected com.google.protobuf.MapField internalGetMapField(
+        int number) {
+      switch (number) {
+        case 35:
+          return internalGetParameters();
+        default:
+          throw new RuntimeException(
+              "Invalid map field number: " + number);
+      }
+    }
+    @SuppressWarnings({"rawtypes"})
+    protected com.google.protobuf.MapField internalGetMutableMapField(
+        int number) {
+      switch (number) {
+        case 35:
+          return internalGetMutableParameters();
+        default:
+          throw new RuntimeException(
+              "Invalid map field number: " + number);
+      }
+    }
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
@@ -1513,10 +1614,8 @@ private static final long serialVersionUID = 0L;
       }
       methodType_ = 0;
 
-      parameters_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000001);
       methodTags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000002);
+      bitField0_ = (bitField0_ & ~0x00000001);
       retryNumber_ = 0;
 
       methodRunIndex_ = 0;
@@ -1530,13 +1629,13 @@ private static final long serialVersionUID = 0L;
       executionContextId_ = "";
 
       infos_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000004);
+      bitField0_ = (bitField0_ & ~0x00000002);
       priorityMessage_ = "";
 
       relatedMethodContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000008);
+      bitField0_ = (bitField0_ & ~0x00000004);
       dependsOnMethodContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000010);
+      bitField0_ = (bitField0_ & ~0x00000008);
       if (errorContextBuilder_ == null) {
         errorContext_ = null;
       } else {
@@ -1545,7 +1644,7 @@ private static final long serialVersionUID = 0L;
       }
       if (testStepsBuilder_ == null) {
         testSteps_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000010);
       } else {
         testStepsBuilder_.clear();
       }
@@ -1554,15 +1653,16 @@ private static final long serialVersionUID = 0L;
       suiteContextId_ = "";
 
       sessionContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000040);
+      bitField0_ = (bitField0_ & ~0x00000020);
       videoIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000080);
+      bitField0_ = (bitField0_ & ~0x00000040);
       customContextJson_ = "";
 
       failedStepIndex_ = 0;
 
       resultStatus_ = 0;
 
+      internalGetMutableParameters().clear();
       return this;
     }
 
@@ -1597,13 +1697,8 @@ private static final long serialVersionUID = 0L;
       }
       result.methodType_ = methodType_;
       if (((bitField0_ & 0x00000001) != 0)) {
-        parameters_ = parameters_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000001);
-      }
-      result.parameters_ = parameters_;
-      if (((bitField0_ & 0x00000002) != 0)) {
         methodTags_ = methodTags_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000001);
       }
       result.methodTags_ = methodTags_;
       result.retryNumber_ = retryNumber_;
@@ -1612,20 +1707,20 @@ private static final long serialVersionUID = 0L;
       result.failureCorridorValue_ = failureCorridorValue_;
       result.classContextId_ = classContextId_;
       result.executionContextId_ = executionContextId_;
-      if (((bitField0_ & 0x00000004) != 0)) {
+      if (((bitField0_ & 0x00000002) != 0)) {
         infos_ = infos_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000002);
       }
       result.infos_ = infos_;
       result.priorityMessage_ = priorityMessage_;
-      if (((bitField0_ & 0x00000008) != 0)) {
+      if (((bitField0_ & 0x00000004) != 0)) {
         relatedMethodContextIds_ = relatedMethodContextIds_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000004);
       }
       result.relatedMethodContextIds_ = relatedMethodContextIds_;
-      if (((bitField0_ & 0x00000010) != 0)) {
+      if (((bitField0_ & 0x00000008) != 0)) {
         dependsOnMethodContextIds_ = dependsOnMethodContextIds_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000010);
+        bitField0_ = (bitField0_ & ~0x00000008);
       }
       result.dependsOnMethodContextIds_ = dependsOnMethodContextIds_;
       if (errorContextBuilder_ == null) {
@@ -1634,9 +1729,9 @@ private static final long serialVersionUID = 0L;
         result.errorContext_ = errorContextBuilder_.build();
       }
       if (testStepsBuilder_ == null) {
-        if (((bitField0_ & 0x00000020) != 0)) {
+        if (((bitField0_ & 0x00000010) != 0)) {
           testSteps_ = java.util.Collections.unmodifiableList(testSteps_);
-          bitField0_ = (bitField0_ & ~0x00000020);
+          bitField0_ = (bitField0_ & ~0x00000010);
         }
         result.testSteps_ = testSteps_;
       } else {
@@ -1644,19 +1739,21 @@ private static final long serialVersionUID = 0L;
       }
       result.testContextId_ = testContextId_;
       result.suiteContextId_ = suiteContextId_;
-      if (((bitField0_ & 0x00000040) != 0)) {
+      if (((bitField0_ & 0x00000020) != 0)) {
         sessionContextIds_ = sessionContextIds_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000020);
       }
       result.sessionContextIds_ = sessionContextIds_;
-      if (((bitField0_ & 0x00000080) != 0)) {
+      if (((bitField0_ & 0x00000040) != 0)) {
         videoIds_ = videoIds_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000080);
+        bitField0_ = (bitField0_ & ~0x00000040);
       }
       result.videoIds_ = videoIds_;
       result.customContextJson_ = customContextJson_;
       result.failedStepIndex_ = failedStepIndex_;
       result.resultStatus_ = resultStatus_;
+      result.parameters_ = internalGetParameters();
+      result.parameters_.makeImmutable();
       onBuilt();
       return result;
     }
@@ -1711,20 +1808,10 @@ private static final long serialVersionUID = 0L;
       if (other.methodType_ != 0) {
         setMethodTypeValue(other.getMethodTypeValue());
       }
-      if (!other.parameters_.isEmpty()) {
-        if (parameters_.isEmpty()) {
-          parameters_ = other.parameters_;
-          bitField0_ = (bitField0_ & ~0x00000001);
-        } else {
-          ensureParametersIsMutable();
-          parameters_.addAll(other.parameters_);
-        }
-        onChanged();
-      }
       if (!other.methodTags_.isEmpty()) {
         if (methodTags_.isEmpty()) {
           methodTags_ = other.methodTags_;
-          bitField0_ = (bitField0_ & ~0x00000002);
+          bitField0_ = (bitField0_ & ~0x00000001);
         } else {
           ensureMethodTagsIsMutable();
           methodTags_.addAll(other.methodTags_);
@@ -1755,7 +1842,7 @@ private static final long serialVersionUID = 0L;
       if (!other.infos_.isEmpty()) {
         if (infos_.isEmpty()) {
           infos_ = other.infos_;
-          bitField0_ = (bitField0_ & ~0x00000004);
+          bitField0_ = (bitField0_ & ~0x00000002);
         } else {
           ensureInfosIsMutable();
           infos_.addAll(other.infos_);
@@ -1769,7 +1856,7 @@ private static final long serialVersionUID = 0L;
       if (!other.relatedMethodContextIds_.isEmpty()) {
         if (relatedMethodContextIds_.isEmpty()) {
           relatedMethodContextIds_ = other.relatedMethodContextIds_;
-          bitField0_ = (bitField0_ & ~0x00000008);
+          bitField0_ = (bitField0_ & ~0x00000004);
         } else {
           ensureRelatedMethodContextIdsIsMutable();
           relatedMethodContextIds_.addAll(other.relatedMethodContextIds_);
@@ -1779,7 +1866,7 @@ private static final long serialVersionUID = 0L;
       if (!other.dependsOnMethodContextIds_.isEmpty()) {
         if (dependsOnMethodContextIds_.isEmpty()) {
           dependsOnMethodContextIds_ = other.dependsOnMethodContextIds_;
-          bitField0_ = (bitField0_ & ~0x00000010);
+          bitField0_ = (bitField0_ & ~0x00000008);
         } else {
           ensureDependsOnMethodContextIdsIsMutable();
           dependsOnMethodContextIds_.addAll(other.dependsOnMethodContextIds_);
@@ -1793,7 +1880,7 @@ private static final long serialVersionUID = 0L;
         if (!other.testSteps_.isEmpty()) {
           if (testSteps_.isEmpty()) {
             testSteps_ = other.testSteps_;
-            bitField0_ = (bitField0_ & ~0x00000020);
+            bitField0_ = (bitField0_ & ~0x00000010);
           } else {
             ensureTestStepsIsMutable();
             testSteps_.addAll(other.testSteps_);
@@ -1806,7 +1893,7 @@ private static final long serialVersionUID = 0L;
             testStepsBuilder_.dispose();
             testStepsBuilder_ = null;
             testSteps_ = other.testSteps_;
-            bitField0_ = (bitField0_ & ~0x00000020);
+            bitField0_ = (bitField0_ & ~0x00000010);
             testStepsBuilder_ = 
               com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                  getTestStepsFieldBuilder() : null;
@@ -1826,7 +1913,7 @@ private static final long serialVersionUID = 0L;
       if (!other.sessionContextIds_.isEmpty()) {
         if (sessionContextIds_.isEmpty()) {
           sessionContextIds_ = other.sessionContextIds_;
-          bitField0_ = (bitField0_ & ~0x00000040);
+          bitField0_ = (bitField0_ & ~0x00000020);
         } else {
           ensureSessionContextIdsIsMutable();
           sessionContextIds_.addAll(other.sessionContextIds_);
@@ -1836,7 +1923,7 @@ private static final long serialVersionUID = 0L;
       if (!other.videoIds_.isEmpty()) {
         if (videoIds_.isEmpty()) {
           videoIds_ = other.videoIds_;
-          bitField0_ = (bitField0_ & ~0x00000080);
+          bitField0_ = (bitField0_ & ~0x00000040);
         } else {
           ensureVideoIdsIsMutable();
           videoIds_.addAll(other.videoIds_);
@@ -1853,6 +1940,8 @@ private static final long serialVersionUID = 0L;
       if (other.resultStatus_ != 0) {
         setResultStatusValue(other.getResultStatusValue());
       }
+      internalGetMutableParameters().mergeFrom(
+          other.internalGetParameters());
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
       return this;
@@ -2056,124 +2145,18 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private com.google.protobuf.LazyStringList parameters_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    private void ensureParametersIsMutable() {
+    private com.google.protobuf.LazyStringList methodTags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private void ensureMethodTagsIsMutable() {
       if (!((bitField0_ & 0x00000001) != 0)) {
-        parameters_ = new com.google.protobuf.LazyStringArrayList(parameters_);
+        methodTags_ = new com.google.protobuf.LazyStringArrayList(methodTags_);
         bitField0_ |= 0x00000001;
        }
     }
     /**
-     * <code>repeated string parameters = 8;</code>
-     * @return A list containing the parameters.
-     */
-    public com.google.protobuf.ProtocolStringList
-        getParametersList() {
-      return parameters_.getUnmodifiableView();
-    }
-    /**
-     * <code>repeated string parameters = 8;</code>
-     * @return The count of parameters.
-     */
-    public int getParametersCount() {
-      return parameters_.size();
-    }
-    /**
-     * <code>repeated string parameters = 8;</code>
-     * @param index The index of the element to return.
-     * @return The parameters at the given index.
-     */
-    public java.lang.String getParameters(int index) {
-      return parameters_.get(index);
-    }
-    /**
-     * <code>repeated string parameters = 8;</code>
-     * @param index The index of the value to return.
-     * @return The bytes of the parameters at the given index.
-     */
-    public com.google.protobuf.ByteString
-        getParametersBytes(int index) {
-      return parameters_.getByteString(index);
-    }
-    /**
-     * <code>repeated string parameters = 8;</code>
-     * @param index The index to set the value at.
-     * @param value The parameters to set.
-     * @return This builder for chaining.
-     */
-    public Builder setParameters(
-        int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureParametersIsMutable();
-      parameters_.set(index, value);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string parameters = 8;</code>
-     * @param value The parameters to add.
-     * @return This builder for chaining.
-     */
-    public Builder addParameters(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureParametersIsMutable();
-      parameters_.add(value);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string parameters = 8;</code>
-     * @param values The parameters to add.
-     * @return This builder for chaining.
-     */
-    public Builder addAllParameters(
-        java.lang.Iterable<java.lang.String> values) {
-      ensureParametersIsMutable();
-      com.google.protobuf.AbstractMessageLite.Builder.addAll(
-          values, parameters_);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string parameters = 8;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearParameters() {
-      parameters_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000001);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string parameters = 8;</code>
-     * @param value The bytes of the parameters to add.
-     * @return This builder for chaining.
-     */
-    public Builder addParametersBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      ensureParametersIsMutable();
-      parameters_.add(value);
-      onChanged();
-      return this;
-    }
-
-    private com.google.protobuf.LazyStringList methodTags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    private void ensureMethodTagsIsMutable() {
-      if (!((bitField0_ & 0x00000002) != 0)) {
-        methodTags_ = new com.google.protobuf.LazyStringArrayList(methodTags_);
-        bitField0_ |= 0x00000002;
-       }
-    }
-    /**
+     * <pre>
+     *repeated string parameters = 8 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string method_tags = 9;</code>
      * @return A list containing the methodTags.
      */
@@ -2182,6 +2165,10 @@ private static final long serialVersionUID = 0L;
       return methodTags_.getUnmodifiableView();
     }
     /**
+     * <pre>
+     *repeated string parameters = 8 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string method_tags = 9;</code>
      * @return The count of methodTags.
      */
@@ -2189,6 +2176,10 @@ private static final long serialVersionUID = 0L;
       return methodTags_.size();
     }
     /**
+     * <pre>
+     *repeated string parameters = 8 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string method_tags = 9;</code>
      * @param index The index of the element to return.
      * @return The methodTags at the given index.
@@ -2197,6 +2188,10 @@ private static final long serialVersionUID = 0L;
       return methodTags_.get(index);
     }
     /**
+     * <pre>
+     *repeated string parameters = 8 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string method_tags = 9;</code>
      * @param index The index of the value to return.
      * @return The bytes of the methodTags at the given index.
@@ -2206,6 +2201,10 @@ private static final long serialVersionUID = 0L;
       return methodTags_.getByteString(index);
     }
     /**
+     * <pre>
+     *repeated string parameters = 8 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string method_tags = 9;</code>
      * @param index The index to set the value at.
      * @param value The methodTags to set.
@@ -2222,6 +2221,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *repeated string parameters = 8 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string method_tags = 9;</code>
      * @param value The methodTags to add.
      * @return This builder for chaining.
@@ -2237,6 +2240,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *repeated string parameters = 8 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string method_tags = 9;</code>
      * @param values The methodTags to add.
      * @return This builder for chaining.
@@ -2250,16 +2257,24 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *repeated string parameters = 8 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string method_tags = 9;</code>
      * @return This builder for chaining.
      */
     public Builder clearMethodTags() {
       methodTags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000002);
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
     /**
+     * <pre>
+     *repeated string parameters = 8 [deprecated = true];
+     * </pre>
+     *
      * <code>repeated string method_tags = 9;</code>
      * @param value The bytes of the methodTags to add.
      * @return This builder for chaining.
@@ -2642,9 +2657,9 @@ private static final long serialVersionUID = 0L;
 
     private com.google.protobuf.LazyStringList infos_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     private void ensureInfosIsMutable() {
-      if (!((bitField0_ & 0x00000004) != 0)) {
+      if (!((bitField0_ & 0x00000002) != 0)) {
         infos_ = new com.google.protobuf.LazyStringArrayList(infos_);
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000002;
        }
     }
     /**
@@ -2769,7 +2784,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder clearInfos() {
       infos_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000004);
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -2873,9 +2888,9 @@ private static final long serialVersionUID = 0L;
 
     private com.google.protobuf.LazyStringList relatedMethodContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     private void ensureRelatedMethodContextIdsIsMutable() {
-      if (!((bitField0_ & 0x00000008) != 0)) {
+      if (!((bitField0_ & 0x00000004) != 0)) {
         relatedMethodContextIds_ = new com.google.protobuf.LazyStringArrayList(relatedMethodContextIds_);
-        bitField0_ |= 0x00000008;
+        bitField0_ |= 0x00000004;
        }
     }
     /**
@@ -2960,7 +2975,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder clearRelatedMethodContextIds() {
       relatedMethodContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000008);
+      bitField0_ = (bitField0_ & ~0x00000004);
       onChanged();
       return this;
     }
@@ -2983,9 +2998,9 @@ private static final long serialVersionUID = 0L;
 
     private com.google.protobuf.LazyStringList dependsOnMethodContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     private void ensureDependsOnMethodContextIdsIsMutable() {
-      if (!((bitField0_ & 0x00000010) != 0)) {
+      if (!((bitField0_ & 0x00000008) != 0)) {
         dependsOnMethodContextIds_ = new com.google.protobuf.LazyStringArrayList(dependsOnMethodContextIds_);
-        bitField0_ |= 0x00000010;
+        bitField0_ |= 0x00000008;
        }
     }
     /**
@@ -3070,7 +3085,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder clearDependsOnMethodContextIds() {
       dependsOnMethodContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000010);
+      bitField0_ = (bitField0_ & ~0x00000008);
       onChanged();
       return this;
     }
@@ -3213,9 +3228,9 @@ private static final long serialVersionUID = 0L;
     private java.util.List<eu.tsystems.mms.tic.testframework.report.model.TestStep> testSteps_ =
       java.util.Collections.emptyList();
     private void ensureTestStepsIsMutable() {
-      if (!((bitField0_ & 0x00000020) != 0)) {
+      if (!((bitField0_ & 0x00000010) != 0)) {
         testSteps_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.TestStep>(testSteps_);
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000010;
        }
     }
 
@@ -3365,7 +3380,7 @@ private static final long serialVersionUID = 0L;
     public Builder clearTestSteps() {
       if (testStepsBuilder_ == null) {
         testSteps_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000010);
         onChanged();
       } else {
         testStepsBuilder_.clear();
@@ -3442,7 +3457,7 @@ private static final long serialVersionUID = 0L;
         testStepsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
             eu.tsystems.mms.tic.testframework.report.model.TestStep, eu.tsystems.mms.tic.testframework.report.model.TestStep.Builder, eu.tsystems.mms.tic.testframework.report.model.TestStepOrBuilder>(
                 testSteps_,
-                ((bitField0_ & 0x00000020) != 0),
+                ((bitField0_ & 0x00000010) != 0),
                 getParentForChildren(),
                 isClean());
         testSteps_ = null;
@@ -3604,9 +3619,9 @@ private static final long serialVersionUID = 0L;
 
     private com.google.protobuf.LazyStringList sessionContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     private void ensureSessionContextIdsIsMutable() {
-      if (!((bitField0_ & 0x00000040) != 0)) {
+      if (!((bitField0_ & 0x00000020) != 0)) {
         sessionContextIds_ = new com.google.protobuf.LazyStringArrayList(sessionContextIds_);
-        bitField0_ |= 0x00000040;
+        bitField0_ |= 0x00000020;
        }
     }
     /**
@@ -3691,7 +3706,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder clearSessionContextIds() {
       sessionContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000040);
+      bitField0_ = (bitField0_ & ~0x00000020);
       onChanged();
       return this;
     }
@@ -3714,9 +3729,9 @@ private static final long serialVersionUID = 0L;
 
     private com.google.protobuf.LazyStringList videoIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     private void ensureVideoIdsIsMutable() {
-      if (!((bitField0_ & 0x00000080) != 0)) {
+      if (!((bitField0_ & 0x00000040) != 0)) {
         videoIds_ = new com.google.protobuf.LazyStringArrayList(videoIds_);
-        bitField0_ |= 0x00000080;
+        bitField0_ |= 0x00000040;
        }
     }
     /**
@@ -3801,7 +3816,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder clearVideoIds() {
       videoIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000080);
+      bitField0_ = (bitField0_ & ~0x00000040);
       onChanged();
       return this;
     }
@@ -4000,6 +4015,134 @@ private static final long serialVersionUID = 0L;
       
       resultStatus_ = 0;
       onChanged();
+      return this;
+    }
+
+    private com.google.protobuf.MapField<
+        java.lang.String, java.lang.String> parameters_;
+    private com.google.protobuf.MapField<java.lang.String, java.lang.String>
+    internalGetParameters() {
+      if (parameters_ == null) {
+        return com.google.protobuf.MapField.emptyMapField(
+            ParametersDefaultEntryHolder.defaultEntry);
+      }
+      return parameters_;
+    }
+    private com.google.protobuf.MapField<java.lang.String, java.lang.String>
+    internalGetMutableParameters() {
+      onChanged();;
+      if (parameters_ == null) {
+        parameters_ = com.google.protobuf.MapField.newMapField(
+            ParametersDefaultEntryHolder.defaultEntry);
+      }
+      if (!parameters_.isMutable()) {
+        parameters_ = parameters_.copy();
+      }
+      return parameters_;
+    }
+
+    public int getParametersCount() {
+      return internalGetParameters().getMap().size();
+    }
+    /**
+     * <code>map&lt;string, string&gt; parameters = 35;</code>
+     */
+
+    @java.lang.Override
+    public boolean containsParameters(
+        java.lang.String key) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      return internalGetParameters().getMap().containsKey(key);
+    }
+    /**
+     * Use {@link #getParametersMap()} instead.
+     */
+    @java.lang.Override
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, java.lang.String> getParameters() {
+      return getParametersMap();
+    }
+    /**
+     * <code>map&lt;string, string&gt; parameters = 35;</code>
+     */
+    @java.lang.Override
+
+    public java.util.Map<java.lang.String, java.lang.String> getParametersMap() {
+      return internalGetParameters().getMap();
+    }
+    /**
+     * <code>map&lt;string, string&gt; parameters = 35;</code>
+     */
+    @java.lang.Override
+
+    public java.lang.String getParametersOrDefault(
+        java.lang.String key,
+        java.lang.String defaultValue) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      java.util.Map<java.lang.String, java.lang.String> map =
+          internalGetParameters().getMap();
+      return map.containsKey(key) ? map.get(key) : defaultValue;
+    }
+    /**
+     * <code>map&lt;string, string&gt; parameters = 35;</code>
+     */
+    @java.lang.Override
+
+    public java.lang.String getParametersOrThrow(
+        java.lang.String key) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      java.util.Map<java.lang.String, java.lang.String> map =
+          internalGetParameters().getMap();
+      if (!map.containsKey(key)) {
+        throw new java.lang.IllegalArgumentException();
+      }
+      return map.get(key);
+    }
+
+    public Builder clearParameters() {
+      internalGetMutableParameters().getMutableMap()
+          .clear();
+      return this;
+    }
+    /**
+     * <code>map&lt;string, string&gt; parameters = 35;</code>
+     */
+
+    public Builder removeParameters(
+        java.lang.String key) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      internalGetMutableParameters().getMutableMap()
+          .remove(key);
+      return this;
+    }
+    /**
+     * Use alternate mutation accessors instead.
+     */
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, java.lang.String>
+    getMutableParameters() {
+      return internalGetMutableParameters().getMutableMap();
+    }
+    /**
+     * <code>map&lt;string, string&gt; parameters = 35;</code>
+     */
+    public Builder putParameters(
+        java.lang.String key,
+        java.lang.String value) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      if (value == null) { throw new java.lang.NullPointerException(); }
+      internalGetMutableParameters().getMutableMap()
+          .put(key, value);
+      return this;
+    }
+    /**
+     * <code>map&lt;string, string&gt; parameters = 35;</code>
+     */
+
+    public Builder putAllParameters(
+        java.util.Map<java.lang.String, java.lang.String> values) {
+      internalGetMutableParameters().getMutableMap()
+          .putAll(values);
       return this;
     }
     @java.lang.Override

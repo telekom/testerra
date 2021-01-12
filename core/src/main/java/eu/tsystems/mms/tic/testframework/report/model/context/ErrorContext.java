@@ -279,11 +279,13 @@ public class ErrorContext {
         if (errorFingerprint != null) {
             return errorFingerprint;
         }
+
+        Optional<ScriptSource> scriptSource = getScriptSource();
         /*
          * from scriptSource
          */
-        if (scriptSource != null) {
-            return scriptSource.toString();
+        if (scriptSource.isPresent()) {
+            return scriptSource.get().toString();
         }
 
         /*

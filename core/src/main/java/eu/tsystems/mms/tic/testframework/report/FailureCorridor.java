@@ -70,10 +70,10 @@ public final class FailureCorridor implements Loggable {
 
     }
 
-    private static int allowedTestFailures = PropertyManager.getIntProperty(TesterraProperties.FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS, -1);
-    private static int allowedTestFailuresHIGH = PropertyManager.getIntProperty(TesterraProperties.FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_HIGH, -1);
-    private static int allowedTestFailuresMID = PropertyManager.getIntProperty(TesterraProperties.FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_MID, -1);
-    private static int allowedTestFailuresLOW = PropertyManager.getIntProperty(TesterraProperties.FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_LOW, -1);
+    private static int allowedTestFailures = PropertyManager.getIntProperty(TesterraProperties.FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS, 0);
+    private static int allowedTestFailuresHIGH = PropertyManager.getIntProperty(TesterraProperties.FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_HIGH, 0);
+    private static int allowedTestFailuresMID = PropertyManager.getIntProperty(TesterraProperties.FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_MID, 0);
+    private static int allowedTestFailuresLOW = PropertyManager.getIntProperty(TesterraProperties.FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_LOW, 0);
 
     public static void setFailureCorridorActive(boolean active) {
         Flags.FAILURE_CORRIDOR_ACTIVE = active;

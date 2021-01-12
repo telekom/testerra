@@ -152,6 +152,10 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
     }
 
     public String getDurationAsString() {
+        Date endTime = this.endTime;
+        if (endTime == null) {
+            endTime = new Date();
+        }
         Duration between = Duration.between(startTime.toInstant(), endTime.toInstant());
         long millis = between.toMillis();
         if (millis > 60 * 60 * 1000) {

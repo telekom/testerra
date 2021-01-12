@@ -186,7 +186,9 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
     }
 
     public MethodDetailsPage toggleFingerprint() {
+        getFingerprintString().asserts("Expected the fingerprint detail is not shown before clicking the details button").assertIsNotDisplayed();
         fingerprintButton.click();
+        getFingerprintString().asserts("Expected the fingerprint detail is shown after clicking the details button").assertIsDisplayed();
         return PageFactory.create(MethodDetailsPage.class, this.getWebDriver());
     }
 

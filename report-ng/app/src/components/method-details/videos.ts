@@ -22,10 +22,12 @@
 import {autoinject} from 'aurelia-framework';
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
+import {data} from "../../services/report-model";
+import IFile = data.IFile;
 
 @autoinject()
 export class Videos {
-    private _methodDetails;
+    private _videos:IFile[];
 
     constructor(
         private _statistics: StatisticsGenerator,
@@ -38,7 +40,9 @@ export class Videos {
         navInstruction: NavigationInstruction
     ) {
         this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
-            this._methodDetails = methodDetails;
+            this._statistics.getFilesForIds(methodDetails.methodContext.videoIds).then(value => {
+                this._videos = value;
+            });
         });
     }
 }

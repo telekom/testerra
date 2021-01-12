@@ -455,11 +455,6 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                     userAgentConfig.configure(edgeOptions);
                 }
                 edgeOptions.merge(capabilities);
-                /**
-                 * @todo What is this platform capability for?
-                 */
-                final String platform = null;
-                edgeOptions.setCapability("platform", platform);
                 finalCapabilities = edgeOptions;
                 driverClass = EdgeDriver.class;
                 break;

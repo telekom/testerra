@@ -27,12 +27,11 @@ import hljs from 'highlight.js/lib/core';
 import java from 'highlight.js/lib/languages/java';
 import 'highlight.js/styles/darcula.css';
 import {autoinject} from 'aurelia-framework';
-import {IMethodDetails, StatisticsGenerator} from "../../services/statistics-generator";
-import {FailureAspectStatistics} from "../../services/statistic-models";
-import {Config} from "../../services/config";
+import {MethodDetails, StatisticsGenerator} from "services/statistics-generator";
+import {FailureAspectStatistics} from "services/statistic-models";
+import {Config} from "services/config-dev";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
-import {StatusConverter} from "../../services/status-converter";
-import {data} from "../../services/report-model";
+import {StatusConverter} from "services/status-converter";
 import {ScreenshotComparison} from "../screenshot-comparison/screenshot-comparison";
 import {MdcDialogService} from '@aurelia-mdc-web/dialog';
 import pixelmatch from 'pixelmatch';
@@ -45,16 +44,16 @@ export interface CustomContext{
 @autoinject()
 export class Details {
     private _hljs = hljs;
-    private _failureAspect:FailureAspectStatistics;
-    private _methodDetails:IMethodDetails;
+    private _failureAspect: FailureAspectStatistics;
+    private _methodDetails: MethodDetails;
     private _parsedJSON: CustomContext;
     private _dataUrl = "";
 
     constructor(
         private _statistics: StatisticsGenerator,
-        private _config:Config,
-        private _statusConverter:StatusConverter,
-        private _dialogService:MdcDialogService
+        private _config: Config,
+        private _statusConverter: StatusConverter,
+        private _dialogService: MdcDialogService
     ) {
         this._hljs.registerLanguage("java", java);
     }

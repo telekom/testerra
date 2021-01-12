@@ -19,11 +19,8 @@
  * under the License.
  */
 
-export class Config {
-    readonly enableServiceWorker = false;
-    readonly developmentMode = true;
-    private pathRegex = new RegExp("[^\\/]+\\/")
-    correctRelativePath(path:string) {
-        return path.replaceAll("\\","/").replace(this.pathRegex,"");
-    }
+export interface IConfig {
+    readonly enableServiceWorker:boolean;
+    readonly developmentMode:boolean;
+    correctRelativePath(path:string):string;
 }

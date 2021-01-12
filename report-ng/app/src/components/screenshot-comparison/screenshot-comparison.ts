@@ -64,9 +64,10 @@ export class ScreenshotComparison {
             height = img.offsetHeight;
             let container = document.querySelector(".img-comp-container") as HTMLDivElement;
             container.style.height = height + "px";
-            container.style.width = width + "px";
+            container.style.width = (width + 20) + "px";
+
             /* Set the width of the img element to 50%: */
-            img.style.width = (width / 2) + "px";
+            img.style.width = width + "px";
             /* Create slider: */
             slider = document.createElement("div");
             slider.setAttribute("class", "img-comp-slider secondary-bg");
@@ -74,7 +75,13 @@ export class ScreenshotComparison {
             img.parentElement.insertBefore(slider, img);
             /* Position the slider in the middle: */
             slider.style.top = (height / 2) - (slider.offsetHeight / 2) + "px";
-            slider.style.left = (width / 2) - (slider.offsetWidth / 2) + "px";
+            slider.style.left = width - slider.offsetWidth + "px";
+
+            window.addEventListener('resize', () => {
+                container.style.height = height + "px";
+                container.style.width = (width + 20) + "px";
+            })
+
             /* Execute a function when the mouse button is pressed: */
             slider.addEventListener("mousedown", slideReady);
             /* And another function when the mouse button is released: */

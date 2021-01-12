@@ -22,11 +22,13 @@
 import {autoinject} from "aurelia-framework";
 import {bindable} from "aurelia-templating";
 import './test-duration-card.scss';
+import {bindingMode} from "aurelia-binding";
 
 @autoinject
 export class TestDurationCard {
     @bindable start: number;
     @bindable end: number;
+    @bindable({bindingMode: bindingMode.toView}) class:string;
     private _duration:number;
     private _hasEnded = false;
 

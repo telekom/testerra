@@ -162,7 +162,9 @@ The GuiElement describes the elements like links, buttons, etc. on your page. Le
 
 == Create Test Class and Test Method
 
-The easiest way to create a new test, is by creating a new class in the path of `src\test\java\<package>` and let it extend from `TesterraTest`. If you already have test classes that extend, you can add the `TesterraListener` manually. Both ways do basically the same.
+The easiest way to create a new test, is by creating a new class in the path of `src\test\java\<package>` and let it extend from `TesterraTest`.
+
+If you already have test classes that extend, you can add the `TesterraListener` manually. Both ways do basically the same.
 To stick to the example above, here is a very simple test class which navigates to example.org and clicks on the link defined on the example page. Again, probably imports must be made in IDE.
 
 .TesterraTest
@@ -180,6 +182,14 @@ public class ExampleTest extends TesterraTest {
     }
 }
 ----
+
+[IMPORTANT]
+====
+Be aware of using `@Test` annotation at your test method. You have to use the `TestNG` annotation, not it from `JUnit`.
+
+If you import `JUnit` lib, no test is executed via Maven or Gradle.
+====
+
 
 .TesterraListener
 [source, java, role="secondary"]

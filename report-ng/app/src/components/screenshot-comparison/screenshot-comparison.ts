@@ -69,7 +69,7 @@ export class ScreenshotComparison {
             img.style.width = (width / 2) + "px";
             /* Create slider: */
             slider = document.createElement("div");
-            slider.setAttribute("class", "img-comp-slider");
+            slider.setAttribute("class", "img-comp-slider secondary-bg");
             /* Insert slider */
             img.parentElement.insertBefore(slider, img);
             /* Position the slider in the middle: */

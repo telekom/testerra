@@ -113,6 +113,10 @@
     @include theme.property(color, text-secondary-on-background);
 }
 
+.secondary-bg {
+    @include theme.property(background-color, secondary);
+}
+
 .reset-cursor {
     cursor: initial !important;
 }

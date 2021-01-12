@@ -35,6 +35,11 @@ class GraphColors {
     static readonly FAILED_EXPECTED = '#4f031b'; // $failedExpected
 }
 
+export interface IFilter {
+    status?:ResultStatusType,
+    class?:string,
+}
+
 @autoinject()
 export class StatusConverter {
     private readonly _packageRegexp = new RegExp("^(.+)\\.(\\w+)$");
@@ -46,7 +51,7 @@ export class StatusConverter {
         return [
             ResultStatusType.FAILED,
             ResultStatusType.FAILED_MINOR,
-            ResultStatusType.FAILED_EXPECTED,
+            //ResultStatusType.FAILED_EXPECTED,
             /**
              * {@link ResultStatusType.FAILED_RETRIED} is not a statistical relevant status
              */

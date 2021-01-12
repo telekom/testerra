@@ -24,12 +24,17 @@ import {bindable} from "aurelia-templating";
 import ApexCharts from 'apexcharts';
 import ApexOptions = ApexCharts.ApexOptions;
 
+export interface ISelection {
+    series?:number;
+    dataPointIndex?:number;
+}
+
 export class ApexChart {
     private _apex: HTMLDivElement;
     private _myApexChart: ApexCharts;
 
     @bindable data: ApexOptions;
-    @bindable selection: any;
+    @bindable selection: ISelection;
 
     constructor() {
 
@@ -47,8 +52,12 @@ export class ApexChart {
         }
     }
 
-    selectionChanged() {
-        this._myApexChart.toggleDataPointSelection(this.selection.dataPointIndex);
+    selectionChanged(newValue:ISelection, oldValue:ISelection) {
+        // console.log("select", newValue, oldValue);
+        if (this._myApexChart) {
+            if (newValue) this._myApexChart.toggleDataPointSelection(newValue.series, newValue.dataPointIndex);
+            else if (oldValue) this._myApexChart.toggleDataPointSelection(oldValue.series, oldValue.dataPointIndex);
+        }
     }
 
     private _createChart() {

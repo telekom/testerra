@@ -46,8 +46,8 @@ export class Details {
     private _hljs = hljs;
     private _failureAspect: FailureAspectStatistics;
     private _methodDetails: MethodDetails;
+    private _images: any
     private _parsedJSON: CustomContext;
-    private _dataUrl = "";
 
     constructor(
         private _statistics: StatisticsGenerator,
@@ -74,12 +74,22 @@ export class Details {
     }
 
     private _prepareComparison() {
-        const images = {
-            actual: "screenshots/" + this._parsedJSON.actualScreenshot.filename,
-            expected: "screenshots/" + this._parsedJSON.expectedScreenshot.filename
+        this._images = {
+            actual: {
+                src: 'screenshots/' + this._parsedJSON.actualScreenshot.filename,
+                title: "Actual screenshot"
+            },
+            comparison: {
+                src: "",
+                title: "comparison"
+            },
+            expected: {
+                src: 'screenshots/' + this._parsedJSON.expectedScreenshot.filename,
+                title: "Expected screenshot"
+            }
         }
 
-        this._loadImages(images).then(images => {
+        this._loadImages(this._images).then(images => {
             const canvas: HTMLCanvasElement = document.createElement("canvas");
             const maxWidth = Math.max(images[0].width, images[1].width);
             const maxHeight = Math.max(images[0].height, images[1].height);
@@ -92,8 +102,6 @@ export class Details {
             const imgData1 = canvasContext.getImageData(0, 0, maxWidth, maxHeight);
 
             //get Image data of expected screenshot via canvas
-            //canvas.width = images[1].width;
-            //canvas.height = images[1].height;
             canvasContext = canvas.getContext("2d");
             canvasContext.clearRect(0, 0, canvas.width, canvas.height);
             canvasContext.drawImage(images[1], 0, 0);
@@ -105,11 +113,11 @@ export class Details {
 
             canvasContext = canvas.getContext("2d");
             canvasContext.putImageData(diff, 0, 0);
-            this._dataUrl = canvas.toDataURL();
+            this._images.comparison.src = canvas.toDataURL();
         })
     }
 
-    private async _loadImages(images: any) {
+    private async _loadImages(images: Array<any>) {
         //asynchronous function to ensure images are loaded before continuing
         const promiseArray = []; // create an array for promises
         const imageArray = [];
@@ -119,7 +127,7 @@ export class Details {
 
             img1.onload = resolve;
 
-            img1.src = images.actual
+            img1.src = this._images.actual.src
             imageArray[0] = img1;
         }));
 
@@ -128,7 +136,7 @@ export class Details {
 
             img2.onload = resolve;
 
-            img2.src = images.expected
+            img2.src = this._images.expected.src
             imageArray[1] = img2;
         }));
 
@@ -141,9 +149,9 @@ export class Details {
         this._dialogService.open({
             viewModel: ScreenshotComparison,
             model: {
-                actual: "screenshots/" + this._parsedJSON.actualScreenshot.filename,
-                expected: "screenshots/" + this._parsedJSON.expectedScreenshot.filename,
-                comparison: this._dataUrl
+                actual: this._images.actual,
+                expected: this._images.comparison,
+                comparison: this._images.expected
             },
             class: "screenshot-comparison"
         });

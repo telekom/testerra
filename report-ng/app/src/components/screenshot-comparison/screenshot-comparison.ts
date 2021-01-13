@@ -37,9 +37,9 @@ export class ScreenshotComparison {
     }
 
     activate(params:any) {
-        this._srcActual = params.expected;
-        this._srcExpected = params.actual;
-        this._comparison = params.comparison;
+        this._srcActual = params.actual.src;
+        this._srcExpected = params.expected.src;
+        this._comparison = params.comparison.src;
     }
 
     attached() {

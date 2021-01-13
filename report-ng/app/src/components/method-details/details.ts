@@ -101,7 +101,7 @@ export class Details {
             const diff = canvasContext.createImageData(maxWidth, maxHeight);
 
             // @ts-ignore
-            pixelmatch(imgData1.data, imgData2.data, diff.data, maxWidth, maxHeight, {threshold: 0.1});
+            pixelmatch(imgData1.data, imgData2.data, diff.data, maxWidth, maxHeight, {threshold: 0.2, includeAA: true, alpha: 0.9, diffColor:[246, 168, 33]});
 
             canvasContext = canvas.getContext("2d");
             canvasContext.putImageData(diff, 0, 0);

@@ -30,6 +30,7 @@ import org.testng.ITestContext;
 import org.testng.ITestResult;
 
 import java.lang.reflect.Method;
+import java.util.Optional;
 
 public class ExecutionContextUtils {
 
@@ -38,23 +39,23 @@ public class ExecutionContextUtils {
     /**
      * Get an injected test method of an ITestResult.
      * <p>
-     * Eg. setup methods (@BeforeMethod) can contain an injected method. For these check the setup method should have 'Method method' as a parameter.
+     * Eg. setup methods (@BeforeMethod) can contain an injected method. For this verification the setup method should have 'Method method' as a parameter.
      *
      * @param testResult
      * @return
      */
-    public static Method getInjectedMethod(ITestResult testResult) {
+    public static Optional<Method> getInjectedMethod(ITestResult testResult) {
         if (testResult != null) {
             Object[] parameters = testResult.getParameters();
             if (parameters != null) {
                 for (Object parameter : parameters) {
-                    if ((parameter != null) && (parameter instanceof Method)) {
-                        return (Method) parameter;
+                    if (parameter != null && parameter instanceof Method) {
+                        return Optional.of((Method) parameter);
                     }
                 }
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     /**
@@ -63,17 +64,15 @@ public class ExecutionContextUtils {
      * @param testResult result to check.
      */
     public static void checkForInjectedMethod(ITestResult testResult, final ITestContext testContext) {
-        Method injectedMethod = getInjectedMethod(testResult);
-
-        if (injectedMethod != null) {
+        Optional<Method> optional = getInjectedMethod(testResult);
+        if (optional.isPresent()) {
             MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult, testContext);
             String testMethodName = methodContext.getName();
 
-            final String info = "for " + injectedMethod.getName();
+            final String info = "for " + optional.get().getName();
             if (!testMethodName.contains(info)) {
                 methodContext.infos.add(info);
             }
-
         } else {
             final String msg = "Please use @BeforeMethod before(Method method) and @AfterMethod after(Method method)!" +
                     "\nThis will be mandatory in a future release.";

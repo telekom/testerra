@@ -27,12 +27,11 @@ import hljs from 'highlight.js/lib/core';
 import java from 'highlight.js/lib/languages/java';
 import 'highlight.js/styles/darcula.css';
 import {autoinject} from 'aurelia-framework';
-import {IMethodDetails, StatisticsGenerator} from "../../services/statistics-generator";
-import {FailureAspectStatistics} from "../../services/statistic-models";
-import {Config} from "../../services/config";
+import {MethodDetails, StatisticsGenerator} from "services/statistics-generator";
+import {FailureAspectStatistics} from "services/statistic-models";
+import {Config} from "services/config-dev";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
-import {StatusConverter} from "../../services/status-converter";
-import {data} from "../../services/report-model";
+import {StatusConverter} from "services/status-converter";
 import {ScreenshotComparison} from "../screenshot-comparison/screenshot-comparison";
 import {MdcDialogService} from '@aurelia-mdc-web/dialog';
 import pixelmatch from 'pixelmatch';
@@ -45,16 +44,16 @@ export interface CustomContext{
 @autoinject()
 export class Details {
     private _hljs = hljs;
-    private _failureAspect:FailureAspectStatistics;
-    private _methodDetails:IMethodDetails;
+    private _failureAspect: FailureAspectStatistics;
+    private _methodDetails: MethodDetails;
     private _parsedJSON: CustomContext;
     private _dataUrl = "";
 
     constructor(
         private _statistics: StatisticsGenerator,
-        private _config:Config,
-        private _statusConverter:StatusConverter,
-        private _dialogService:MdcDialogService
+        private _config: Config,
+        private _statusConverter: StatusConverter,
+        private _dialogService: MdcDialogService
     ) {
         this._hljs.registerLanguage("java", java);
     }
@@ -82,25 +81,27 @@ export class Details {
 
         this._loadImages(images).then(images => {
             const canvas: HTMLCanvasElement = document.createElement("canvas");
+            const maxWidth = Math.max(images[0].width, images[1].width);
+            const maxHeight = Math.max(images[0].height, images[1].height);
 
             //get Image data of actual screenshot via canvas
-            canvas.width = images[0].width;
-            canvas.height = images[0].height;
+            canvas.width = maxWidth;
+            canvas.height = maxHeight;
             let canvasContext = canvas.getContext("2d");
             canvasContext.drawImage(images[0], 0, 0);
-            const imgData1 = canvasContext.getImageData(0, 0, images[0].width, images[0].height);
+            const imgData1 = canvasContext.getImageData(0, 0, maxWidth, maxHeight);
 
             //get Image data of expected screenshot via canvas
-            canvas.width = images[1].width;
-            canvas.height = images[1].height;
+            //canvas.width = images[1].width;
+            //canvas.height = images[1].height;
             canvasContext = canvas.getContext("2d");
             canvasContext.clearRect(0, 0, canvas.width, canvas.height);
             canvasContext.drawImage(images[1], 0, 0);
-            const imgData2 = canvasContext.getImageData(0, 0, images[1].width, images[1].height);
-            const diff = canvasContext.createImageData(images[1].width, images[1].height);
+            const imgData2 = canvasContext.getImageData(0, 0, maxWidth, maxHeight);
+            const diff = canvasContext.createImageData(maxWidth, maxHeight);
 
             // @ts-ignore
-            pixelmatch(imgData1.data, imgData2.data, diff.data, images[0].width, images[0].height, {threshold: 0.1});
+            pixelmatch(imgData1.data, imgData2.data, diff.data, maxWidth, maxHeight, {threshold: 0.1});
 
             canvasContext = canvas.getContext("2d");
             canvasContext.putImageData(diff, 0, 0);
@@ -109,6 +110,7 @@ export class Details {
     }
 
     private async _loadImages(images: any) {
+        //asynchronous function to ensure images are loaded before continuing
         const promiseArray = []; // create an array for promises
         const imageArray = [];
 
@@ -131,7 +133,6 @@ export class Details {
         }));
 
         await Promise.all(promiseArray); // wait for all the images to be loaded
-        console.log("all images loaded");
 
         return imageArray;
     }

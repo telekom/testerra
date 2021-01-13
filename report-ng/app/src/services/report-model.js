@@ -353,6 +353,7 @@ export const data = $root.data = (() => {
          * @property {Array.<string>|null} [exclusiveSessionContextIds] ExecutionContext exclusiveSessionContextIds
          * @property {Array.<data.ILogMessage>|null} [logMessages] ExecutionContext logMessages
          * @property {number|null} [estimatedTestsCount] ExecutionContext estimatedTestsCount
+         * @property {Object.<string,number>|null} [failureCorridorLimits] ExecutionContext failureCorridorLimits
          */
 
         /**
@@ -367,6 +368,7 @@ export const data = $root.data = (() => {
             this.suiteContextIds = [];
             this.exclusiveSessionContextIds = [];
             this.logMessages = [];
+            this.failureCorridorLimits = {};
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -454,6 +456,14 @@ export const data = $root.data = (() => {
         ExecutionContext.prototype.estimatedTestsCount = 0;
 
         /**
+         * ExecutionContext failureCorridorLimits.
+         * @member {Object.<string,number>} failureCorridorLimits
+         * @memberof data.ExecutionContext
+         * @instance
+         */
+        ExecutionContext.prototype.failureCorridorLimits = $util.emptyObject;
+
+        /**
          * Decodes an ExecutionContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.ExecutionContext
@@ -467,7 +477,7 @@ export const data = $root.data = (() => {
         ExecutionContext.decode = function decode(r, l) {
             if (!(r instanceof $Reader))
                 r = $Reader.create(r);
-            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.ExecutionContext();
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.ExecutionContext(), k, value;
             while (r.pos < c) {
                 var t = r.uint32();
                 switch (t >>> 3) {
@@ -507,6 +517,28 @@ export const data = $root.data = (() => {
                 case 15:
                     m.estimatedTestsCount = r.int32();
                     break;
+                case 16:
+                    if (m.failureCorridorLimits === $util.emptyObject)
+                        m.failureCorridorLimits = {};
+                    var c2 = r.uint32() + r.pos;
+                    k = 0;
+                    value = 0;
+                    while (r.pos < c2) {
+                        var tag2 = r.uint32();
+                        switch (tag2 >>> 3) {
+                        case 1:
+                            k = r.int32();
+                            break;
+                        case 2:
+                            value = r.int32();
+                            break;
+                        default:
+                            r.skipType(tag2 & 7);
+                            break;
+                        }
+                    }
+                    m.failureCorridorLimits[k] = value;
+                    break;
                 default:
                     r.skipType(t & 7);
                     break;
@@ -526,7 +558,6 @@ export const data = $root.data = (() => {
          * @interface IMethodContext
          * @property {data.IContextValues|null} [contextValues] MethodContext contextValues
          * @property {data.MethodType|null} [methodType] MethodContext methodType
-         * @property {Array.<string>|null} [parameters] MethodContext parameters
          * @property {Array.<string>|null} [methodTags] MethodContext methodTags
          * @property {number|null} [retryNumber] MethodContext retryNumber
          * @property {number|null} [methodRunIndex] MethodContext methodRunIndex
@@ -547,6 +578,7 @@ export const data = $root.data = (() => {
          * @property {string|null} [customContextJson] MethodContext customContextJson
          * @property {number|null} [failedStepIndex] MethodContext failedStepIndex
          * @property {data.ResultStatusType|null} [resultStatus] MethodContext resultStatus
+         * @property {Object.<string,string>|null} [parameters] MethodContext parameters
          */
 
         /**
@@ -558,7 +590,6 @@ export const data = $root.data = (() => {
          * @param {data.IMethodContext=} [p] Properties to set
          */
         function MethodContext(p) {
-            this.parameters = [];
             this.methodTags = [];
             this.infos = [];
             this.relatedMethodContextIds = [];
@@ -566,6 +597,7 @@ export const data = $root.data = (() => {
             this.testSteps = [];
             this.sessionContextIds = [];
             this.videoIds = [];
+            this.parameters = {};
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -587,14 +619,6 @@ export const data = $root.data = (() => {
          * @instance
          */
         MethodContext.prototype.methodType = 0;
-
-        /**
-         * MethodContext parameters.
-         * @member {Array.<string>} parameters
-         * @memberof data.MethodContext
-         * @instance
-         */
-        MethodContext.prototype.parameters = $util.emptyArray;
 
         /**
          * MethodContext methodTags.
@@ -757,6 +781,14 @@ export const data = $root.data = (() => {
         MethodContext.prototype.resultStatus = 0;
 
         /**
+         * MethodContext parameters.
+         * @member {Object.<string,string>} parameters
+         * @memberof data.MethodContext
+         * @instance
+         */
+        MethodContext.prototype.parameters = $util.emptyObject;
+
+        /**
          * Decodes a MethodContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.MethodContext
@@ -770,7 +802,7 @@ export const data = $root.data = (() => {
         MethodContext.decode = function decode(r, l) {
             if (!(r instanceof $Reader))
                 r = $Reader.create(r);
-            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.MethodContext();
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.MethodContext(), k, value;
             while (r.pos < c) {
                 var t = r.uint32();
                 switch (t >>> 3) {
@@ -779,11 +811,6 @@ export const data = $root.data = (() => {
                     break;
                 case 7:
                     m.methodType = r.int32();
-                    break;
-                case 8:
-                    if (!(m.parameters && m.parameters.length))
-                        m.parameters = [];
-                    m.parameters.push(r.string());
                     break;
                 case 9:
                     if (!(m.methodTags && m.methodTags.length))
@@ -858,6 +885,28 @@ export const data = $root.data = (() => {
                     break;
                 case 34:
                     m.resultStatus = r.int32();
+                    break;
+                case 35:
+                    if (m.parameters === $util.emptyObject)
+                        m.parameters = {};
+                    var c2 = r.uint32() + r.pos;
+                    k = "";
+                    value = "";
+                    while (r.pos < c2) {
+                        var tag2 = r.uint32();
+                        switch (tag2 >>> 3) {
+                        case 1:
+                            k = r.string();
+                            break;
+                        case 2:
+                            value = r.string();
+                            break;
+                        default:
+                            r.skipType(tag2 & 7);
+                            break;
+                        }
+                    }
+                    m.parameters[k] = value;
                     break;
                 default:
                     r.skipType(t & 7);

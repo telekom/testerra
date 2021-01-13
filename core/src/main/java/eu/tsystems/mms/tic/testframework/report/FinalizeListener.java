@@ -39,14 +39,6 @@ final class FinalizeListener implements FinalizeExecutionEvent.Listener {
     @Override
     @Subscribe
     public void onFinalizeExecution(FinalizeExecutionEvent event) {
-        /*
-         * Shutdown local services and hooks
-         */
-        JVMMonitor.stop();
-        Booter.shutdown();
-        /*
-        print stats
-         */
         ExecutionContextController.printExecutionStatistics();
 
         Report report = new Report();

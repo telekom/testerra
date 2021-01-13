@@ -184,6 +184,9 @@ export namespace data {
 
         /** ExecutionContext estimatedTestsCount */
         estimatedTestsCount?: (number|null);
+
+        /** ExecutionContext failureCorridorLimits */
+        failureCorridorLimits?: ({ [k: string]: number }|null);
     }
 
     /** Represents an ExecutionContext. */
@@ -225,6 +228,9 @@ export namespace data {
         /** ExecutionContext estimatedTestsCount. */
         public estimatedTestsCount: number;
 
+        /** ExecutionContext failureCorridorLimits. */
+        public failureCorridorLimits: { [k: string]: number };
+
         /**
          * Decodes an ExecutionContext message from the specified reader or buffer.
          * @param r Reader or buffer to decode from
@@ -244,9 +250,6 @@ export namespace data {
 
         /** MethodContext methodType */
         methodType?: (data.MethodType|null);
-
-        /** MethodContext parameters */
-        parameters?: (string[]|null);
 
         /** MethodContext methodTags */
         methodTags?: (string[]|null);
@@ -307,6 +310,9 @@ export namespace data {
 
         /** MethodContext resultStatus */
         resultStatus?: (data.ResultStatusType|null);
+
+        /** MethodContext parameters */
+        parameters?: ({ [k: string]: string }|null);
     }
 
     /** Represents a MethodContext. */
@@ -323,9 +329,6 @@ export namespace data {
 
         /** MethodContext methodType. */
         public methodType: data.MethodType;
-
-        /** MethodContext parameters. */
-        public parameters: string[];
 
         /** MethodContext methodTags. */
         public methodTags: string[];
@@ -386,6 +389,9 @@ export namespace data {
 
         /** MethodContext resultStatus. */
         public resultStatus: data.ResultStatusType;
+
+        /** MethodContext parameters. */
+        public parameters: { [k: string]: string };
 
         /**
          * Decodes a MethodContext message from the specified reader or buffer.

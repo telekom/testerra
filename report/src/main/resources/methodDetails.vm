@@ -187,7 +187,7 @@
                         <td class="cellTop">
                             <h5>Duration</h5>
                             <div class="dashboardTextBig"
-                                 id="actualRunDuration">$!{testMethod.getDuration(${testMethod.startTime}, ${testMethod.endTime})}</div>
+                                 id="actualRunDuration">$!{testMethod.getDurationAsString()}</div>
                             <div class="dashboardTextVerySmall"></div>
                             <br/>
                             <div class="dashboardTextSmall">Start $!{testMethod.startTime}</div>
@@ -207,9 +207,9 @@
                                 </h5>
 
                                 <div id="context" class="dashboardTextVerySmall hidden" style="line-height: 22px; color:#888;">
-                                    Class: <a href="../classes/${testMethod.getEffectiveClassContext().id}.html"
-                                              title="Jump to class">${testMethod.getEffectiveClassContext().name}</a><br/>
-                                    Test: ${testMethod.getTextClassContext().name}<br/>
+                                    Class: <a href="../classes/${testMethod.getClassContext().getId()}.html"
+                                              title="Jump to class">${testMethod.getClassContext().getName()}</a><br/>
+                                    Test: ${testMethod.getTestContext().getName()}<br/>
                                     Suite: ${testMethod.suiteContext.name}<br/>
                                     <br/>
                                     Thread: $testMethod.threadName<br/>

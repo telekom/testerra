@@ -20,18 +20,22 @@
  */
 
 import {autoinject} from 'aurelia-framework';
-import {NavigationInstruction, RouteConfig} from "aurelia-router";
+import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
 import {AbstractViewModel} from "../abstract-view-model";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {StatusConverter} from "../../services/status-converter";
 import {FailureAspectStatistics} from "../../services/statistic-models";
 import './failure-aspects.scss'
+import {data} from "../../services/report-model";
+import ResultStatusType = data.ResultStatusType;
 
 @autoinject()
 export class FailureAspects extends AbstractViewModel {
     private _filteredFailureAspects: FailureAspectStatistics[];
     private _searchRegexp: RegExp;
     private _loading = false;
+    private _showExpectedFailed = true;
+    private _router:Router;
 
     constructor(
         private _statistics: StatisticsGenerator,
@@ -42,6 +46,9 @@ export class FailureAspects extends AbstractViewModel {
 
     activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
         super.activate(params, routeConfig, navInstruction);
+        if (params.expectedFailed === "false") {
+            this._showExpectedFailed = false;
+        }
         this._filter();
     }
 
@@ -58,6 +65,13 @@ export class FailureAspects extends AbstractViewModel {
         this._statistics.getExecutionStatistics().then(executionStatistics => {
             this._filteredFailureAspects = executionStatistics.failureAspectStatistics
                 .filter(failureAspectStatistics => {
+                    if (this._showExpectedFailed) {
+                        return true;
+                    } else {
+                        return failureAspectStatistics.availableStatuses.filter(status => status != ResultStatusType.FAILED_EXPECTED).length > 0;
+                    }
+                })
+                .filter(failureAspectStatistics => {
                     return (!this.queryParams.type || (
                         (this.queryParams.type == "major" && !failureAspectStatistics.isMinor)
                         || (this.queryParams.type == "minor" && failureAspectStatistics.isMinor)
@@ -68,6 +82,11 @@ export class FailureAspects extends AbstractViewModel {
                 })
 
             this._loading = false;
+            if (this._showExpectedFailed) {
+                delete this.queryParams.expectedFailed;
+            } else {
+                this.queryParams.expectedFailed = this._showExpectedFailed;
+            }
             this.updateUrl(this.queryParams);
         });
     }
@@ -75,9 +94,13 @@ export class FailureAspects extends AbstractViewModel {
     private _calcFontSize(index:number) {
         const min = 1;
         const max = 3;
-        const count = this._filteredFailureAspects.length;
+        const count = Math.min(10, this._filteredFailureAspects.length);
         let size = ((count-index)/count) * max;
         if (size < min) size = min;
         return size;
+    }
+
+    private _showExpectedFailedChanged() {
+        this._filter();
     }
 }

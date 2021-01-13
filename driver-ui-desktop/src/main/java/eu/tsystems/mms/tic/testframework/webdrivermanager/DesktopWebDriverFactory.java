@@ -455,11 +455,6 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                     userAgentConfig.configure(edgeOptions);
                 }
                 edgeOptions.merge(capabilities);
-                /**
-                 * @todo What is this platform capability for?
-                 */
-                final String platform = null;
-                edgeOptions.setCapability("platform", platform);
                 finalCapabilities = edgeOptions;
                 driverClass = EdgeDriver.class;
                 break;
@@ -472,7 +467,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 "Starting WebDriver (session key=%s) on %s with capabilities:\n%s",
                 sessionKey,
                 remoteAddress,
-                gson.toJson(finalCapabilities.asMap())
+                gson.toJson(new WebDriverCapabilityLogHelper().clean(finalCapabilities))
         ));
         log().debug(String.format("Starting (session key=%s) here", sessionKey), new Throwable());
 

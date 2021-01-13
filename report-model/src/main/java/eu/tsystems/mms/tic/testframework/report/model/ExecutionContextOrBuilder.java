@@ -188,4 +188,38 @@ public interface ExecutionContextOrBuilder extends
    * @return The estimatedTestsCount.
    */
   int getEstimatedTestsCount();
+
+  /**
+   * <code>map&lt;int32, int32&gt; failure_corridor_limits = 16;</code>
+   */
+  int getFailureCorridorLimitsCount();
+  /**
+   * <code>map&lt;int32, int32&gt; failure_corridor_limits = 16;</code>
+   */
+  boolean containsFailureCorridorLimits(
+      int key);
+  /**
+   * Use {@link #getFailureCorridorLimitsMap()} instead.
+   */
+  @java.lang.Deprecated
+  java.util.Map<java.lang.Integer, java.lang.Integer>
+  getFailureCorridorLimits();
+  /**
+   * <code>map&lt;int32, int32&gt; failure_corridor_limits = 16;</code>
+   */
+  java.util.Map<java.lang.Integer, java.lang.Integer>
+  getFailureCorridorLimitsMap();
+  /**
+   * <code>map&lt;int32, int32&gt; failure_corridor_limits = 16;</code>
+   */
+
+  int getFailureCorridorLimitsOrDefault(
+      int key,
+      int defaultValue);
+  /**
+   * <code>map&lt;int32, int32&gt; failure_corridor_limits = 16;</code>
+   */
+
+  int getFailureCorridorLimitsOrThrow(
+      int key);
 }

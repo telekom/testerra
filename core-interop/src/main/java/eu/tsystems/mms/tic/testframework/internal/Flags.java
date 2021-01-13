@@ -44,7 +44,7 @@ public final class Flags {
     public static boolean REUSE_DATAPROVIDER_DRIVER_BY_THREAD = p(TesterraProperties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD, false);
     public static boolean DRY_RUN = p(TesterraProperties.DRY_RUN, false);
     public static boolean LIST_TESTS = p(TesterraProperties.LIST_TESTS, false);
-    public static boolean FAILURE_CORRIDOR_ACTIVE = p(TesterraProperties.FAILURE_CORRIDOR_ACTIVE, false);
+    public static boolean FAILURE_CORRIDOR_ACTIVE = p(TesterraProperties.FAILURE_CORRIDOR_ACTIVE, true);
     public static boolean EXECUTION_OMIT_IN_DEVELOPMENT = p(TesterraProperties.EXECUTION_OMIT_IN_DEVELOPMENT, false);
     public static boolean GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR = p(TesterraProperties.GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR, false);
     @Deprecated

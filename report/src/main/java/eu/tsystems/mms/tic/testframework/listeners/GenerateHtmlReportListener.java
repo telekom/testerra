@@ -218,6 +218,8 @@ public class GenerateHtmlReportListener implements
      */
     public void createMethodStatsPerClass(ReportingData reportingData) {
         Map<String, ClassContext> mergedClassContexts = new HashMap<>();
+        Map<String, ClassContext> multiContextualClassContexts = new HashMap<>();
+
         reportingData.executionContext.readSuiteContexts().forEach(suiteContext -> {
             suiteContext.readTestContexts().forEach(testContext -> {
                 testContext.readClassContexts().forEach(classContext -> {
@@ -227,13 +229,25 @@ public class GenerateHtmlReportListener implements
                         ClassContext mergedClassContext;
                         if (!mergedClassContexts.containsKey(testClassContext.name())) {
                             mergedClassContext = new ClassContext(classContext.getTestClass(), testContext);
-                            mergedClassContext.setName(testClassContext.name());
+                            mergedClassContext.setTestClassContext(testClassContext);
                             mergedClassContexts.put(testClassContext.name(), mergedClassContext);
                         } else {
                             mergedClassContext = mergedClassContexts.get(testClassContext.name());
                         }
                         mergedClassContext.methodContexts.addAll(classContext.readMethodContexts().collect(Collectors.toList()));
                     } else {
+                        String testClassName = classContext.getTestClass().getName();
+                        /**
+                         * When a class context from a test class exists multiple times,
+                         * because they are organised in multiple test contexts,
+                         * then update their names to a more specific one including test
+                         * and suite context names via {@link ClassContext#updateMultiContextualName()}
+                         */
+                        if (multiContextualClassContexts.containsKey(testClassName)) {
+                            multiContextualClassContexts.get(testClassName).updateMultiContextualName();
+                            classContext.updateMultiContextualName();
+                        }
+                        multiContextualClassContexts.put(testClassName, classContext);
                         addMethodStats(reportingData, classContext);
                     }
                 });

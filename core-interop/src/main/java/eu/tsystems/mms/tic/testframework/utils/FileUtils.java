@@ -19,7 +19,11 @@
  * under the License.
  *
  */
+
 package eu.tsystems.mms.tic.testframework.utils;
+
+import static java.lang.Thread.currentThread;
+
 
 import de.idyl.winzipaes.AesZipFileEncrypter;
 import de.idyl.winzipaes.impl.AESEncrypter;
@@ -32,16 +36,17 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.Objects;
 import java.util.UUID;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.ZipParameters;
 import org.apache.commons.io.FilenameUtils;
-import static java.lang.Thread.currentThread;
 
 public final class FileUtils extends org.apache.commons.io.FileUtils {
 
@@ -56,9 +61,7 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
      * Simply get the resource as a stream - BUT DOES NOT return if resource file is inside a a included dependency jar.
      *
      * @param fileInResources {@link String}
-     *
      * @return InputStream
-     *
      * @implNote avoid logging here!
      */
     public static InputStream getLocalResourceInputStream(final String fileInResources) throws SystemException {
@@ -82,9 +85,7 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
      * Gets a local file if present, otherwise search for resource file.
      *
      * @param filePathAndName {@link String} relative path of file or resource
-     *
      * @return InputStream
-     *
      * @implNote avoid logging here!
      * @deprecated Use {@link #getLocalOrResourceFile(String)} instead
      */
@@ -100,6 +101,7 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
 
     /**
      * Gets a local or a resource file
+     *
      * @param filePath
      * @return
      * @throws java.io.FileNotFoundException Thrown when the file hasn't been found or is not a local file
@@ -112,9 +114,16 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
         } else {
             URL resourceUrl = currentThread().getContextClassLoader().getResource(filePath);
             if (resourceUrl == null || !resourceUrl.toString().startsWith("file:")) {
-                throw new java.io.FileNotFoundException("No local resource file: "+ filePath);
+                throw new java.io.FileNotFoundException("No local resource file: " + filePath);
             }
-            return new File(resourceUrl.getFile());
+
+            final String decodedUrl;
+            try {
+                decodedUrl = URLDecoder.decode(resourceUrl.getFile(), "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                throw new SystemException("Could not encode file path/url with UTF-8", e);
+            }
+            return new File(decodedUrl);
         }
     }
 
@@ -122,9 +131,7 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
      * Gets a local file if present, otherwise returns null
      *
      * @param filePathAndName {@link String} relative path of file to load
-     *
      * @return InputStream
-     *
      * @throws FileNotFoundException Exception, when file not existing
      */
     @Deprecated
@@ -147,9 +154,7 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
      * Get an absolute file path from a resource file path.
      *
      * @param fileInResources .
-     *
      * @return Absolute file path.
-     *
      * @throws FileNotFoundException
      */
     public static String getAbsoluteFilePath(String fileInResources) throws FileNotFoundException {
@@ -175,9 +180,7 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
      * Read a resource file into a string.
      *
      * @param fileInResources .
-     *
      * @return string.
-     *
      * @throws IOException
      */
     public static String readFromResourceFile(String fileInResources) throws IOException {
@@ -196,9 +199,7 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
      * Read an absolute file into a string.
      *
      * @param absoluteFilePath .
-     *
      * @return String.
-     *
      * @throws IOException
      */
     public static String readFromFile(String absoluteFilePath) throws IOException {
@@ -319,7 +320,8 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
 
     public File createTempFileName(String fileName) {
         String extension = FilenameUtils.getExtension(fileName);
-        return new File(System.getProperty("java.io.tmpdir") + "/" + FilenameUtils.getBaseName(fileName) + "-" + UUID.randomUUID() + (extension.length() > 0 ? "." + extension : ""));
+        return new File(System.getProperty("java.io.tmpdir") + "/" + FilenameUtils.getBaseName(fileName) + "-" + UUID.randomUUID() +
+                (extension.length() > 0 ? "." + extension : ""));
     }
 
     public File createTempDir(String dirName) {

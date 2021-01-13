@@ -59,6 +59,7 @@ import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -107,8 +108,15 @@ public class ContextExporter {
         apply(buildContextValues(methodContext), builder::setContextValues);
         map(methodContext.getStatus(), this::getMappedStatus, builder::setResultStatus);
         map(methodContext.getMethodType(), type -> MethodType.valueOf(type.name()), builder::setMethodType);
-        forEach(methodContext.parameters, parameter -> builder.addParameters(parameter.toString()));
-        forEach(methodContext.methodTags, annotation -> builder.addMethodTags(annotationToString(annotation)));
+        List<Object> parameterValues = methodContext.getParameterValues();
+        for (int i = 0; i < parameterValues.size(); ++i) {
+            builder.putParameters(methodContext.getParameters()[i].getName(), parameterValues.get(i).toString());
+        }
+        if (methodContext.getAnnotations() != null) {
+            for (Annotation annotation : methodContext.getAnnotations()) {
+                builder.addMethodTags(annotationToString(annotation));
+            }
+        }
         apply(methodContext.retryNumber, builder::setRetryNumber);
         apply(methodContext.methodRunIndex, builder::setMethodRunIndex);
 
@@ -302,7 +310,7 @@ public class ContextExporter {
                 optional.ifPresent(file -> entryBuilder.setScreenshotId(file.getId()));
             } else if (entry instanceof LogEvent) {
                 LogEvent logEvent = (LogEvent)entry;
-                Optional<LogMessage.Builder> optional = Optional.ofNullable(buildLogEvent(logEvent));
+                Optional<LogMessage.Builder> optional = Optional.ofNullable(buildLogMessage(logEvent));
                 optional.ifPresent(entryBuilder::setLogMessage);
             } else if (entry instanceof eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext) {
                 eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext errorContext = (eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext)entry;
@@ -412,9 +420,9 @@ public class ContextExporter {
         return builder;
     }
 
-    public LogMessage.Builder buildLogEvent(LogEvent logEvent) {
+    public LogMessage.Builder buildLogMessage(LogEvent logEvent) {
         LogMessage.Builder builder = LogMessage.newBuilder();
-        builder.setLoggerName(logEvent.getLoggerName());
+        apply(logEvent.getLoggerName(), builder::setLoggerName);
         builder.setMessage(logEvent.getMessage().getFormattedMessage());
         if (logEvent.getLevel() == Level.ERROR) {
             builder.setType(LogMessageType.LMT_ERROR);
@@ -460,7 +468,7 @@ public class ContextExporter {
         apply(classContext.getTestClass().getName(), builder::setFullClassName);
         apply(classContext.getTestContext().getId(), builder::setTestContextId);
         classContext.getTestClassContext().ifPresent(testClassContext -> builder.setTestContextName(testClassContext.name()));
-        
+
         return builder;
     }
 
@@ -476,9 +484,12 @@ public class ContextExporter {
         executionContext.readExclusiveSessionContexts().forEach(sessionContext -> builder.addExclusiveSessionContextIds(sessionContext.getId()));
         apply(executionContext.estimatedTestMethodCount, builder::setEstimatedTestsCount);
         executionContext.readMethodContextLessLogs().forEach(logEvent -> {
-            Optional<LogMessage.Builder> optional = Optional.ofNullable(buildLogEvent(logEvent));
+            Optional<LogMessage.Builder> optional = Optional.ofNullable(buildLogMessage(logEvent));
             optional.ifPresent(builder::addLogMessages);
         });
+        builder.putFailureCorridorLimits(FailureCorridorValue.FCV_HIGH_VALUE, FailureCorridor.getAllowedTestFailuresHIGH());
+        builder.putFailureCorridorLimits(FailureCorridorValue.FCV_MID_VALUE, FailureCorridor.getAllowedTestFailuresMID());
+        builder.putFailureCorridorLimits(FailureCorridorValue.FCV_LOW_VALUE, FailureCorridor.getAllowedTestFailuresLOW());
         return builder;
     }
 //

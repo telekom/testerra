@@ -31,6 +31,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import java.awt.Color;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -51,8 +52,22 @@ import org.slf4j.LoggerFactory;
  * JavaScript Utils.
  *
  * @author pele
+ * @todo Move this class to driver-ui-desktop
  */
 public final class JSUtils {
+
+    private enum Snippet {
+        HIGHLIGHT("snippets/highlight.js"),
+        ;
+        private final String resourcePath;
+        Snippet(String resourcePath) {
+            this.resourcePath = resourcePath;
+        }
+
+        public String getResourcePath() {
+            return this.resourcePath;
+        }
+    }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JSUtils.class);
 
@@ -62,6 +77,7 @@ public final class JSUtils {
      * @param driver       .
      * @param resourceFile .
      * @param id           .
+     * @deprecated Use {@link #readSnippets(Snippet...)} instead
      */
     public static void implementJavascriptOnPage(final WebDriver driver, final String resourceFile, final String id) {
 
@@ -94,6 +110,9 @@ public final class JSUtils {
         implementJavascriptOnPage(id, driver, inline);
     }
 
+    /**
+     * @deprecated Use {@link #readSnippets(Snippet...)} instead
+     */
     public static void implementJavascriptOnPage(
             String scriptId,
             WebDriver driver,
@@ -201,13 +220,13 @@ public final class JSUtils {
         int ms = 2000;
         executeScript(
                 driver,
-                String.format("var element = arguments[0];\n" +
-                                "var origOutline = element.style.outline;\n" +
-                                "element.style.outline='5px solid rgba(%d,%d,%d,%d)';\n" +
-                                "var t = window.setTimeout(function(){\n" +
-                                "   element.style.outline = origOutline;\n" +
-                                "}, %d);",
-                        color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha(), ms),
+                String.format(
+                    "%s\n"+
+                    "ttHighlight(arguments[0], '%s', %d)",
+                    readSnippets(Snippet.HIGHLIGHT),
+                    toHex(color),
+                    ms
+                ),
                 webElement
         );
     }
@@ -233,6 +252,22 @@ public final class JSUtils {
     }
 
 
+    private static String readSnippets(Snippet...snippets) {
+        StringBuilder sb = new StringBuilder();
+        for (Snippet snippet : snippets) {
+            try {
+                sb.append(new String(IOUtils.toByteArray(JSUtils.class.getClassLoader().getResourceAsStream(snippet.getResourcePath()))));
+            } catch (IOException e) {
+                LOGGER.error("Unable to read snippet", e);
+            }
+        }
+        return sb.toString();
+    }
+
+    public static String toHex(Color color) {
+        return String.format("#%02x%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
+    }
+
     /**
      * Static element highlight doesn't fade out.
      */
@@ -244,8 +279,12 @@ public final class JSUtils {
         LOGGER.debug("Static highlighting WebElement " + webElement);
         executeScript(
                 driver,
-                String.format("arguments[0].style.outline='5px dotted rgba(%d,%d,%d,%d)';", color.getRed(), color.getGreen(), color.getBlue(),
-                        color.getAlpha()),
+                String.format(
+                        "%s\n"+
+                        "ttAddStyle(arguments[0], 'outline: 5px dotted %s !important');",
+                        readSnippets(Snippet.HIGHLIGHT),
+                        toHex(color)
+                ),
                 webElement
         );
         LOGGER.debug("Finished static highlighting WebElement" + webElement);

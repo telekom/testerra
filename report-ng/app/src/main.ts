@@ -21,7 +21,7 @@
 
 import {Aurelia} from 'aurelia-framework';
 import {PLATFORM} from 'aurelia-pal';
-import {Config} from "./services/config";
+import {Config} from "./services/config-dev";
 import {DateFormatValueConverter} from "t-systems-aurelia-components/src/value-converters/date-format-value-converter";
 
 export function configure(aurelia: Aurelia) {
@@ -30,7 +30,6 @@ export function configure(aurelia: Aurelia) {
 
     aurelia.use
         .standardConfiguration()
-        //.plugin(PLATFORM.moduleName('@aurelia-mdc-web/all'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/button'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/card'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/data-table'))
@@ -56,6 +55,7 @@ export function configure(aurelia: Aurelia) {
         .globalResources([
             PLATFORM.moduleName('components/apex-chart/apex-chart'),
             PLATFORM.moduleName('components/class-name/class-name'),
+            PLATFORM.moduleName('components/method-tags/method-tags'),
             PLATFORM.moduleName('components/log-view/log-view'),
             PLATFORM.moduleName('components/code-view/code-view'),
             PLATFORM.moduleName('components/alert/alert.html'),
@@ -63,7 +63,7 @@ export function configure(aurelia: Aurelia) {
             PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/object-values-value-converter'),
             PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/highlight-text-value-converter'),
             PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/duration-format-value-converter'),
-            PLATFORM.moduleName('t-systems-aurelia-components/src/attributes/become-visible-custom-attribute'),
+            //PLATFORM.moduleName('t-systems-aurelia-components/src/attributes/become-visible-custom-attribute'),
             PLATFORM.moduleName('value-converters/status-icon-name-value-converter'),
             PLATFORM.moduleName('value-converters/status-name-value-converter'),
             PLATFORM.moduleName('value-converters/status-class-value-converter'),

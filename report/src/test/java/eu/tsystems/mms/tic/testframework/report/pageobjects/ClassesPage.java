@@ -37,6 +37,7 @@ import java.util.Locale;
 import java.util.Map;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 
 
 public class ClassesPage extends AbstractReportPage {
@@ -170,8 +171,9 @@ public class ClassesPage extends AbstractReportPage {
     public void assertSuccessIndicatorIsDisplayedForClass(String className) {
         GuiElement classTableRow = getClassTableRowForClass(className);
         GuiElement successIndicator = classTableRow.getSubElement(By.xpath("//*[@class='textleft']/span[@title='Passed']"));
+        successIndicator.scrollIntoView();
         successIndicator.setName("successIndicator");
-        successIndicator.asserts("The success indicator should be displayed.").assertIsDisplayed();
+        successIndicator.asserts("The success indicator for class name '" + className + "' should be displayed.").assertIsDisplayed();
     }
 
     /**
@@ -196,6 +198,7 @@ public class ClassesPage extends AbstractReportPage {
         List<GuiElement> testClasses = getPassedTestClasses();
         for (GuiElement currentTestClass : testClasses) {
             String className = currentTestClass.getSubElement(By.xpath(".//a")).getText();
+            Assert.assertTrue( className.trim().length() > 0, "Invalid passed class name: '"+className+"'");
             assertSuccessIndicatorIsDisplayedForClass(className);
         }
     }

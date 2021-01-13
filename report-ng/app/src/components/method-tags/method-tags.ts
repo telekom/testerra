@@ -19,11 +19,20 @@
  * under the License.
  */
 
-export class Config {
-    readonly enableServiceWorker = false;
-    readonly developmentMode = true;
-    private pathRegex = new RegExp("[^\\/]+\\/")
-    correctRelativePath(path:string) {
-        return path.replaceAll("\\","/").replace(this.pathRegex,"");
+import {bindable} from "aurelia-templating";
+import {bindingMode} from "aurelia-binding";
+import {autoinject} from "aurelia-framework";
+import {data} from "../../services/report-model";
+import {MethodDetails} from "../../services/statistics-generator";
+
+@autoinject()
+export class MethodTags {
+
+    constructor(
+        //private _statusConverter:StatusConverter
+    ) {
     }
+
+    @bindable({ defaultBindingMode: bindingMode.toView })
+    details: MethodDetails;
 }

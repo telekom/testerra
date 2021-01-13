@@ -19,10 +19,29 @@
  * under the License.
  */
 
-export class Config {
-    readonly enableServiceWorker = true;
-    readonly developmentMode = false;
-    correctRelativePath(path:string) {
-        return "../../"+path.replaceAll("\\","/");
+plugins {
+    id "com.github.node-gradle.node" version "3.0.0-rc6"
+}
+
+node {
+    download = true
+    version = "10.17.0"
+    useGradleProxySettings = true
+}
+
+task buildReport(type: NpmTask) {
+    dependsOn(npm_install)
+    args = ['run', 'build']
+}
+
+build.dependsOn(buildReport)
+
+task npmClean {
+    doLast {
+        delete "node_modules"
+        delete "package-lock.json"
+        delete "dist"
     }
 }
+
+clean.dependsOn(npmClean)

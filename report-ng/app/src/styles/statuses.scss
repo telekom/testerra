@@ -26,7 +26,7 @@
 }
 
 .colored-icon {
-    color: #ffffff;
+    color: #ffffff !important;
     border-radius: 25px;
     border: 5px solid;
 }
@@ -86,4 +86,14 @@
     padding: 4px 10px;
     border-radius: 25px;
     //text-decoration: none;
+}
+.badge__dense {
+    padding: 1px 4px;
+    border-radius: 10px;
+}
+
+.tag {
+    @extend .status;
+    font-size: 0.815rem;
+    background-color: $crashed;
 }

@@ -166,8 +166,8 @@ module.exports = ({production} = {}, {analyze, tests, hmr, port, host} = {}) => 
         plugins: [
             ...when(!tests, new DuplicatePackageCheckerPlugin()),
             new AureliaPlugin(),
-            ...when(production,  new webpack.NormalModuleReplacementPlugin(/services\/config/gi, (resource) => {
-                resource.request = resource.request.replace(/config/, 'production-config');
+            ...when(production,  new webpack.NormalModuleReplacementPlugin(/config-dev/gi, (resource) => {
+                resource.request = resource.request.replace(/config-dev/, 'config-prod');
             })),
             new HtmlWebpackPlugin({
                 template: 'index.ejs',

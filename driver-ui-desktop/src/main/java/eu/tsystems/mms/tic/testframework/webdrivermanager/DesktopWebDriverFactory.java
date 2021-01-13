@@ -467,7 +467,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 "Starting WebDriver (session key=%s) on %s with capabilities:\n%s",
                 sessionKey,
                 remoteAddress,
-                gson.toJson(finalCapabilities.asMap())
+                gson.toJson(new WebDriverCapabilityLogHelper().clean(finalCapabilities))
         ));
         log().debug(String.format("Starting (session key=%s) here", sessionKey), new Throwable());
 

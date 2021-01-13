@@ -23,8 +23,7 @@ import {data} from "../../services/report-model";
 import {MdcDialog} from '@aurelia-mdc-web/dialog';
 import './screenshot-dialog.scss'
 import IFile = data.IFile;
-import {MDCDialog} from '@material/dialog';
-import {MDCList} from '@material/list';
+
 
 @autoinject
 @useView(PLATFORM.moduleName('components/screenshots-dialog/screenshots-dialog.html'))

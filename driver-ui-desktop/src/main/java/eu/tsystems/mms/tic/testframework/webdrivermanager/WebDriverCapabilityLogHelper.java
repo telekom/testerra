@@ -37,7 +37,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
  *
  * @author Eric Kubenka
  */
-public class WebDriverCapabilityLogHelper {
+class WebDriverCapabilityLogHelper {
 
     /**
      * Clean the given {@link Capabilities} and return a {@link Map}

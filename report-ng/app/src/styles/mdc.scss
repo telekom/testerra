@@ -39,8 +39,6 @@
 @use '@material/drawer';
 @use '@material/elevation/mdc-elevation';
 @use '@material/icon-button/mdc-icon-button';
-@use '@material/image-list/mdc-image-list';
-@use '@material/image-list';
 @use "@material/layout-grid/mdc-layout-grid";
 @use "@aurelia-mdc-web/layout-grid";
 @use "@aurelia-mdc-web/expandable";
@@ -160,8 +158,3 @@ mdc-drawer-app-content {
         line-height: 1em;
     }
 }
-
-.image-list--rounded-corners {
-    @include image-list.shape-radius(8px);
-}
-

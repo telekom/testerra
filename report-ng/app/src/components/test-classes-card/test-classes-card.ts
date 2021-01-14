@@ -54,6 +54,7 @@ export class TestClassesCard {
     private _prepareHorizontalBarChart(classStatistics: ClassStatistics[]): void {
         let data: Map<ResultStatusType, Array<number>> = new Map();
         let xlabels: Array<string> = [];
+        let noData : boolean = true;
 
         const series = [];
         const filteredStatuses = this._statusConverter.relevantStatuses.filter(status => (!this.filter?.status || status === this.filter.status) );
@@ -75,6 +76,8 @@ export class TestClassesCard {
                 for (let status of filteredStatuses) {
                     if (classStatistic.getStatusCount(status) > 0) {
                         return true;
+                    } else {
+                       noData = false
                     }
                 }
             })
@@ -122,11 +125,22 @@ export class TestClassesCard {
             series: series,
             xaxis: {
                 labels: {
-                    show: true,
+                    show: noData,
                     trim: false,    //ignored apparently, documentation: https://apexcharts.com/docs/options/xaxis/#trim
                     maxHeight: undefined,
                 },
                 categories: xlabels,
+                axisBorder: {
+                    show: noData,
+                },
+                axisTicks: {
+                    show: noData,
+                }
+            },
+            yaxis: {
+                labels:{
+                    show: noData,
+                }
             },
             grid: {
                 show: false,

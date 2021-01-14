@@ -86,7 +86,7 @@ message MethodContext {
     string suite_context_id = 28 [deprecated = true];
 
     repeated string session_context_ids = 29;
-    repeated string video_ids = 30;
+//    repeated string video_ids = 30  [deprecated = true];
 //    repeated string screenshot_ids = 31 [deprecated = true];
     string custom_context_json = 32;
     int32 failed_step_index = 33;
@@ -181,6 +181,7 @@ message SessionContext {
     string provider = 3;
     map<string, string> metadata = 4;
     string session_id = 6;
+    string video_id = 7;
 }
 
 message RunConfig {

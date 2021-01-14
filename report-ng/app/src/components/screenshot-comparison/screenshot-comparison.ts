@@ -24,7 +24,6 @@ import {MdcDialog} from '@aurelia-mdc-web/dialog';
 import './screenshot-comparison.scss';
 
 @autoinject
-@useView(PLATFORM.moduleName('components/screenshot-comparison/screenshot-comparison.html'))
 export class ScreenshotComparison {
     private _srcActual: string;
     private _srcExpected: string;

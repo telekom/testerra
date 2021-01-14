@@ -24,9 +24,7 @@ import {MdcDialog} from '@aurelia-mdc-web/dialog';
 import './screenshot-dialog.scss'
 import IFile = data.IFile;
 
-
 @autoinject
-@useView(PLATFORM.moduleName('components/screenshots-dialog/screenshots-dialog.html'))
 export class ScreenshotsDialog {
     private _screenshots:IFile[];
     private _current:IFile;

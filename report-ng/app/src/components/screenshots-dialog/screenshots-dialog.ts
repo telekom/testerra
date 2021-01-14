@@ -43,7 +43,6 @@ export class ScreenshotsDialog {
         this._screenshots = params.screenshots;
         this._current = params.current;
         this._index = this._screenshots.indexOf(this._current);
-
     }
 
     attached(){

@@ -31,10 +31,10 @@ export class ScreenshotsDialog {
     private _screenshots:IFile[];
     private _current:IFile;
     private _index = 0;
-    private dialog: any;
+    private _dialog: MdcDialog;
 
     constructor(
-        private _dialog: MdcDialog
+
     ) {
 
     }
@@ -46,7 +46,7 @@ export class ScreenshotsDialog {
     }
 
     attached(){
-        this.dialog.listen('MDCDialog:opened', () => {
+        this._dialog.listen('MDCDialog:opened', () => {
             if (document.activeElement instanceof HTMLElement){
                 document.activeElement.blur()
             }

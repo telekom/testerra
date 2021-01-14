@@ -504,11 +504,8 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     public void addVideos(Stream<Video> videos) {
-        if (this.videos == null) {
-            this.videos = new LinkedList<>();
-        }
-        List<Video> newVideos = videos.filter(video -> !this.videos.contains(video)).collect(Collectors.toList());
-        this.videos.addAll(newVideos);
+        Collection<Video> videoList = getVideos();
+        videos.filter(video -> !videoList.contains(video)).forEach(videoList::add);
     }
 
     /**

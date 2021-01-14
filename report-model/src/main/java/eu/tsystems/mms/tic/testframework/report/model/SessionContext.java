@@ -19,7 +19,6 @@ private static final long serialVersionUID = 0L;
     sessionKey_ = "";
     provider_ = "";
     sessionId_ = "";
-    videoId_ = "";
   }
 
   @java.lang.Override
@@ -95,12 +94,6 @@ private static final long serialVersionUID = 0L;
             java.lang.String s = input.readStringRequireUtf8();
 
             sessionId_ = s;
-            break;
-          }
-          case 58: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            videoId_ = s;
             break;
           }
           default: {
@@ -368,44 +361,6 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int VIDEO_ID_FIELD_NUMBER = 7;
-  private volatile java.lang.Object videoId_;
-  /**
-   * <code>string video_id = 7;</code>
-   * @return The videoId.
-   */
-  @java.lang.Override
-  public java.lang.String getVideoId() {
-    java.lang.Object ref = videoId_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      videoId_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string video_id = 7;</code>
-   * @return The bytes for videoId.
-   */
-  @java.lang.Override
-  public com.google.protobuf.ByteString
-      getVideoIdBytes() {
-    java.lang.Object ref = videoId_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      videoId_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
-
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -437,9 +392,6 @@ private static final long serialVersionUID = 0L;
         4);
     if (!getSessionIdBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 6, sessionId_);
-    }
-    if (!getVideoIdBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 7, videoId_);
     }
     unknownFields.writeTo(output);
   }
@@ -473,9 +425,6 @@ private static final long serialVersionUID = 0L;
     if (!getSessionIdBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, sessionId_);
     }
-    if (!getVideoIdBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, videoId_);
-    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -504,8 +453,6 @@ private static final long serialVersionUID = 0L;
         other.internalGetMetadata())) return false;
     if (!getSessionId()
         .equals(other.getSessionId())) return false;
-    if (!getVideoId()
-        .equals(other.getVideoId())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -531,8 +478,6 @@ private static final long serialVersionUID = 0L;
     }
     hash = (37 * hash) + SESSION_ID_FIELD_NUMBER;
     hash = (53 * hash) + getSessionId().hashCode();
-    hash = (37 * hash) + VIDEO_ID_FIELD_NUMBER;
-    hash = (53 * hash) + getVideoId().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -701,8 +646,6 @@ private static final long serialVersionUID = 0L;
       internalGetMutableMetadata().clear();
       sessionId_ = "";
 
-      videoId_ = "";
-
       return this;
     }
 
@@ -740,7 +683,6 @@ private static final long serialVersionUID = 0L;
       result.metadata_ = internalGetMetadata();
       result.metadata_.makeImmutable();
       result.sessionId_ = sessionId_;
-      result.videoId_ = videoId_;
       onBuilt();
       return result;
     }
@@ -804,10 +746,6 @@ private static final long serialVersionUID = 0L;
           other.internalGetMetadata());
       if (!other.getSessionId().isEmpty()) {
         sessionId_ = other.sessionId_;
-        onChanged();
-      }
-      if (!other.getVideoId().isEmpty()) {
-        videoId_ = other.videoId_;
         onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
@@ -1311,82 +1249,6 @@ private static final long serialVersionUID = 0L;
   checkByteStringIsUtf8(value);
       
       sessionId_ = value;
-      onChanged();
-      return this;
-    }
-
-    private java.lang.Object videoId_ = "";
-    /**
-     * <code>string video_id = 7;</code>
-     * @return The videoId.
-     */
-    public java.lang.String getVideoId() {
-      java.lang.Object ref = videoId_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        videoId_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <code>string video_id = 7;</code>
-     * @return The bytes for videoId.
-     */
-    public com.google.protobuf.ByteString
-        getVideoIdBytes() {
-      java.lang.Object ref = videoId_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        videoId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string video_id = 7;</code>
-     * @param value The videoId to set.
-     * @return This builder for chaining.
-     */
-    public Builder setVideoId(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      videoId_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string video_id = 7;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearVideoId() {
-      
-      videoId_ = getDefaultInstance().getVideoId();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string video_id = 7;</code>
-     * @param value The bytes for videoId to set.
-     * @return This builder for chaining.
-     */
-    public Builder setVideoIdBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      videoId_ = value;
       onChanged();
       return this;
     }

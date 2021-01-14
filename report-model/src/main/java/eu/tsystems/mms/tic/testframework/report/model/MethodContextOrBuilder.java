@@ -337,8 +337,32 @@ public interface MethodContextOrBuilder extends
       getSessionContextIdsBytes(int index);
 
   /**
+   * <code>repeated string video_ids = 30;</code>
+   * @return A list containing the videoIds.
+   */
+  java.util.List<java.lang.String>
+      getVideoIdsList();
+  /**
+   * <code>repeated string video_ids = 30;</code>
+   * @return The count of videoIds.
+   */
+  int getVideoIdsCount();
+  /**
+   * <code>repeated string video_ids = 30;</code>
+   * @param index The index of the element to return.
+   * @return The videoIds at the given index.
+   */
+  java.lang.String getVideoIds(int index);
+  /**
+   * <code>repeated string video_ids = 30;</code>
+   * @param index The index of the value to return.
+   * @return The bytes of the videoIds at the given index.
+   */
+  com.google.protobuf.ByteString
+      getVideoIdsBytes(int index);
+
+  /**
    * <pre>
-   *    repeated string video_ids = 30  [deprecated = true];
    *    repeated string screenshot_ids = 31 [deprecated = true];
    * </pre>
    *
@@ -348,7 +372,6 @@ public interface MethodContextOrBuilder extends
   java.lang.String getCustomContextJson();
   /**
    * <pre>
-   *    repeated string video_ids = 30  [deprecated = true];
    *    repeated string screenshot_ids = 31 [deprecated = true];
    * </pre>
    *

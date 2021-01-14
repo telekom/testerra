@@ -38,7 +38,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.logging.log4j.core.LogEvent;
@@ -86,6 +85,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     private final TestStepController testStepController = new TestStepController();
     private List<MethodContext> relatedMethodContexts = new LinkedList<>();
     private List<MethodContext> dependsOnMethodContexts = new LinkedList<>();
+    private List<Video> videos;
     private List<CustomContext> customContexts;
     private ErrorContext errorContext;
     private int numAssertions = 0;
@@ -486,25 +486,26 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     /**
-     * @deprecated Use {@link #readSessionContexts()} instead
+     * @deprecated Use {@link #readVideos()} instead
      */
     public Collection<Video> getVideos() {
-        return this.readVideos().collect(Collectors.toList());
+        if (this.videos == null) {
+            this.videos = new LinkedList<>();
+        }
+        return this.videos;
     }
 
-    /**
-     * @deprecated Use {@link #readSessionContexts()} instead
-     */
     public Stream<Video> readVideos() {
-        return this.readSessionContexts().map(SessionContext::getVideo).filter(Optional::isPresent).map(Optional::get);
+        if (this.videos == null) {
+            return Stream.empty();
+        } else {
+            return this.videos.stream();
+        }
     }
 
-    /**
-     * @deprecated Use {@link SessionContext#setVideo(Video)} instead
-     */
     public void addVideos(Stream<Video> videos) {
-//        Collection<Video> videoList = getVideos();
-//        videos.filter(video -> !videoList.contains(video)).forEach(videoList::add);
+        Collection<Video> videoList = getVideos();
+        videos.filter(video -> !videoList.contains(video)).forEach(videoList::add);
     }
 
     /**

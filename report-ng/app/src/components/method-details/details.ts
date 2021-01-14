@@ -36,7 +36,7 @@ import {ScreenshotComparison} from "../screenshot-comparison/screenshot-comparis
 import {MdcDialogService} from '@aurelia-mdc-web/dialog';
 import pixelmatch from 'pixelmatch';
 
-export interface CustomContext{
+export interface ILayoutComparisonContext {
     name: string,
     image, mode, distance, actualScreenshot, annotatedScreenshot, distanceScreenshot, expectedScreenshot
 }
@@ -47,7 +47,7 @@ export class Details {
     private _failureAspect: FailureAspectStatistics;
     private _methodDetails: MethodDetails;
     private _images: any
-    private _parsedJSON: CustomContext;
+    private _layoutComparison: ILayoutComparisonContext;
 
     constructor(
         private _statistics: StatisticsGenerator,
@@ -65,8 +65,16 @@ export class Details {
     ) {
         this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
             this._methodDetails = methodDetails;
-            this._parsedJSON = JSON.parse(this._methodDetails.methodContext.customContextJson)[0];
-            this._prepareComparison()
+            this._layoutComparison = methodDetails.customContexts.find(value => {
+                /**
+                 * @todo @HNJO Please find the proper layout comparison context from the list of contexts
+                 */
+                // return value.name == "LayoutComparison";
+                return true;
+            })
+            if (this._layoutComparison) {
+                this._prepareComparison();
+            }
             if (methodDetails.methodContext.errorContext) {
                 this._failureAspect = new FailureAspectStatistics().setErrorContext(methodDetails.methodContext.errorContext);
             }
@@ -76,7 +84,7 @@ export class Details {
     private _prepareComparison() {
         this._images = {
             actual: {
-                src: 'screenshots/' + this._parsedJSON.actualScreenshot.filename,
+                src: 'screenshots/' + this._layoutComparison.actualScreenshot.filename,
                 title: "Actual screenshot"
             },
             comparison: {
@@ -84,7 +92,7 @@ export class Details {
                 title: "comparison"
             },
             expected: {
-                src: 'screenshots/' + this._parsedJSON.expectedScreenshot.filename,
+                src: 'screenshots/' + this._layoutComparison.expectedScreenshot.filename,
                 title: "Expected screenshot"
             }
         }

@@ -574,7 +574,6 @@ export const data = $root.data = (() => {
          * @property {string|null} [testContextId] MethodContext testContextId
          * @property {string|null} [suiteContextId] MethodContext suiteContextId
          * @property {Array.<string>|null} [sessionContextIds] MethodContext sessionContextIds
-         * @property {Array.<string>|null} [videoIds] MethodContext videoIds
          * @property {string|null} [customContextJson] MethodContext customContextJson
          * @property {number|null} [failedStepIndex] MethodContext failedStepIndex
          * @property {data.ResultStatusType|null} [resultStatus] MethodContext resultStatus
@@ -596,7 +595,6 @@ export const data = $root.data = (() => {
             this.dependsOnMethodContextIds = [];
             this.testSteps = [];
             this.sessionContextIds = [];
-            this.videoIds = [];
             this.parameters = {};
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
@@ -749,14 +747,6 @@ export const data = $root.data = (() => {
         MethodContext.prototype.sessionContextIds = $util.emptyArray;
 
         /**
-         * MethodContext videoIds.
-         * @member {Array.<string>} videoIds
-         * @memberof data.MethodContext
-         * @instance
-         */
-        MethodContext.prototype.videoIds = $util.emptyArray;
-
-        /**
          * MethodContext customContextJson.
          * @member {string} customContextJson
          * @memberof data.MethodContext
@@ -871,11 +861,6 @@ export const data = $root.data = (() => {
                     if (!(m.sessionContextIds && m.sessionContextIds.length))
                         m.sessionContextIds = [];
                     m.sessionContextIds.push(r.string());
-                    break;
-                case 30:
-                    if (!(m.videoIds && m.videoIds.length))
-                        m.videoIds = [];
-                    m.videoIds.push(r.string());
                     break;
                 case 32:
                     m.customContextJson = r.string();
@@ -1710,6 +1695,7 @@ export const data = $root.data = (() => {
          * @property {string|null} [provider] SessionContext provider
          * @property {Object.<string,string>|null} [metadata] SessionContext metadata
          * @property {string|null} [sessionId] SessionContext sessionId
+         * @property {string|null} [videoId] SessionContext videoId
          */
 
         /**
@@ -1769,6 +1755,14 @@ export const data = $root.data = (() => {
         SessionContext.prototype.sessionId = "";
 
         /**
+         * SessionContext videoId.
+         * @member {string} videoId
+         * @memberof data.SessionContext
+         * @instance
+         */
+        SessionContext.prototype.videoId = "";
+
+        /**
          * Decodes a SessionContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.SessionContext
@@ -1819,6 +1813,9 @@ export const data = $root.data = (() => {
                     break;
                 case 6:
                     m.sessionId = r.string();
+                    break;
+                case 7:
+                    m.videoId = r.string();
                     break;
                 default:
                     r.skipType(t & 7);

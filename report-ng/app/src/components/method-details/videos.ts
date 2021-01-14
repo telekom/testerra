@@ -40,7 +40,11 @@ export class Videos {
         navInstruction: NavigationInstruction
     ) {
         this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
-            this._statistics.getFilesForIds(methodDetails.methodContext.videoIds).then(value => {
+            const videoFileIds = [];
+            methodDetails.methodContext.sessionContextIds.forEach(sessionContextId => {
+                videoFileIds.push(methodDetails.executionStatistics.executionAggregate.sessionContexts[sessionContextId].videoId);
+            })
+            this._statistics.getFilesForIds(videoFileIds).then(value => {
                 this._videos = value;
             });
         });

@@ -30,7 +30,6 @@ private static final long serialVersionUID = 0L;
     testContextId_ = "";
     suiteContextId_ = "";
     sessionContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    videoIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     customContextJson_ = "";
     resultStatus_ = 0;
   }
@@ -204,15 +203,6 @@ private static final long serialVersionUID = 0L;
             sessionContextIds_.add(s);
             break;
           }
-          case 242: {
-            java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000040) != 0)) {
-              videoIds_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000040;
-            }
-            videoIds_.add(s);
-            break;
-          }
           case 258: {
             java.lang.String s = input.readStringRequireUtf8();
 
@@ -231,10 +221,10 @@ private static final long serialVersionUID = 0L;
             break;
           }
           case 282: {
-            if (!((mutable_bitField0_ & 0x00000080) != 0)) {
+            if (!((mutable_bitField0_ & 0x00000040) != 0)) {
               parameters_ = com.google.protobuf.MapField.newMapField(
                   ParametersDefaultEntryHolder.defaultEntry);
-              mutable_bitField0_ |= 0x00000080;
+              mutable_bitField0_ |= 0x00000040;
             }
             com.google.protobuf.MapEntry<java.lang.String, java.lang.String>
             parameters__ = input.readMessage(
@@ -275,9 +265,6 @@ private static final long serialVersionUID = 0L;
       }
       if (((mutable_bitField0_ & 0x00000020) != 0)) {
         sessionContextIds_ = sessionContextIds_.getUnmodifiableView();
-      }
-      if (((mutable_bitField0_ & 0x00000040) != 0)) {
-        videoIds_ = videoIds_.getUnmodifiableView();
       }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
@@ -907,45 +894,11 @@ private static final long serialVersionUID = 0L;
     return sessionContextIds_.getByteString(index);
   }
 
-  public static final int VIDEO_IDS_FIELD_NUMBER = 30;
-  private com.google.protobuf.LazyStringList videoIds_;
-  /**
-   * <code>repeated string video_ids = 30;</code>
-   * @return A list containing the videoIds.
-   */
-  public com.google.protobuf.ProtocolStringList
-      getVideoIdsList() {
-    return videoIds_;
-  }
-  /**
-   * <code>repeated string video_ids = 30;</code>
-   * @return The count of videoIds.
-   */
-  public int getVideoIdsCount() {
-    return videoIds_.size();
-  }
-  /**
-   * <code>repeated string video_ids = 30;</code>
-   * @param index The index of the element to return.
-   * @return The videoIds at the given index.
-   */
-  public java.lang.String getVideoIds(int index) {
-    return videoIds_.get(index);
-  }
-  /**
-   * <code>repeated string video_ids = 30;</code>
-   * @param index The index of the value to return.
-   * @return The bytes of the videoIds at the given index.
-   */
-  public com.google.protobuf.ByteString
-      getVideoIdsBytes(int index) {
-    return videoIds_.getByteString(index);
-  }
-
   public static final int CUSTOM_CONTEXT_JSON_FIELD_NUMBER = 32;
   private volatile java.lang.Object customContextJson_;
   /**
    * <pre>
+   *    repeated string video_ids = 30  [deprecated = true];
    *    repeated string screenshot_ids = 31 [deprecated = true];
    * </pre>
    *
@@ -967,6 +920,7 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
+   *    repeated string video_ids = 30  [deprecated = true];
    *    repeated string screenshot_ids = 31 [deprecated = true];
    * </pre>
    *
@@ -1167,9 +1121,6 @@ private static final long serialVersionUID = 0L;
     for (int i = 0; i < sessionContextIds_.size(); i++) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 29, sessionContextIds_.getRaw(i));
     }
-    for (int i = 0; i < videoIds_.size(); i++) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 30, videoIds_.getRaw(i));
-    }
     if (!getCustomContextJsonBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 32, customContextJson_);
     }
@@ -1280,14 +1231,6 @@ private static final long serialVersionUID = 0L;
       size += dataSize;
       size += 2 * getSessionContextIdsList().size();
     }
-    {
-      int dataSize = 0;
-      for (int i = 0; i < videoIds_.size(); i++) {
-        dataSize += computeStringSizeNoTag(videoIds_.getRaw(i));
-      }
-      size += dataSize;
-      size += 2 * getVideoIdsList().size();
-    }
     if (!getCustomContextJsonBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(32, customContextJson_);
     }
@@ -1364,8 +1307,6 @@ private static final long serialVersionUID = 0L;
         .equals(other.getSuiteContextId())) return false;
     if (!getSessionContextIdsList()
         .equals(other.getSessionContextIdsList())) return false;
-    if (!getVideoIdsList()
-        .equals(other.getVideoIdsList())) return false;
     if (!getCustomContextJson()
         .equals(other.getCustomContextJson())) return false;
     if (getFailedStepIndex()
@@ -1435,10 +1376,6 @@ private static final long serialVersionUID = 0L;
     if (getSessionContextIdsCount() > 0) {
       hash = (37 * hash) + SESSION_CONTEXT_IDS_FIELD_NUMBER;
       hash = (53 * hash) + getSessionContextIdsList().hashCode();
-    }
-    if (getVideoIdsCount() > 0) {
-      hash = (37 * hash) + VIDEO_IDS_FIELD_NUMBER;
-      hash = (53 * hash) + getVideoIdsList().hashCode();
     }
     hash = (37 * hash) + CUSTOM_CONTEXT_JSON_FIELD_NUMBER;
     hash = (53 * hash) + getCustomContextJson().hashCode();
@@ -1654,8 +1591,6 @@ private static final long serialVersionUID = 0L;
 
       sessionContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       bitField0_ = (bitField0_ & ~0x00000020);
-      videoIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000040);
       customContextJson_ = "";
 
       failedStepIndex_ = 0;
@@ -1744,11 +1679,6 @@ private static final long serialVersionUID = 0L;
         bitField0_ = (bitField0_ & ~0x00000020);
       }
       result.sessionContextIds_ = sessionContextIds_;
-      if (((bitField0_ & 0x00000040) != 0)) {
-        videoIds_ = videoIds_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000040);
-      }
-      result.videoIds_ = videoIds_;
       result.customContextJson_ = customContextJson_;
       result.failedStepIndex_ = failedStepIndex_;
       result.resultStatus_ = resultStatus_;
@@ -1917,16 +1847,6 @@ private static final long serialVersionUID = 0L;
         } else {
           ensureSessionContextIdsIsMutable();
           sessionContextIds_.addAll(other.sessionContextIds_);
-        }
-        onChanged();
-      }
-      if (!other.videoIds_.isEmpty()) {
-        if (videoIds_.isEmpty()) {
-          videoIds_ = other.videoIds_;
-          bitField0_ = (bitField0_ & ~0x00000040);
-        } else {
-          ensureVideoIdsIsMutable();
-          videoIds_.addAll(other.videoIds_);
         }
         onChanged();
       }
@@ -3727,119 +3647,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private com.google.protobuf.LazyStringList videoIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    private void ensureVideoIdsIsMutable() {
-      if (!((bitField0_ & 0x00000040) != 0)) {
-        videoIds_ = new com.google.protobuf.LazyStringArrayList(videoIds_);
-        bitField0_ |= 0x00000040;
-       }
-    }
-    /**
-     * <code>repeated string video_ids = 30;</code>
-     * @return A list containing the videoIds.
-     */
-    public com.google.protobuf.ProtocolStringList
-        getVideoIdsList() {
-      return videoIds_.getUnmodifiableView();
-    }
-    /**
-     * <code>repeated string video_ids = 30;</code>
-     * @return The count of videoIds.
-     */
-    public int getVideoIdsCount() {
-      return videoIds_.size();
-    }
-    /**
-     * <code>repeated string video_ids = 30;</code>
-     * @param index The index of the element to return.
-     * @return The videoIds at the given index.
-     */
-    public java.lang.String getVideoIds(int index) {
-      return videoIds_.get(index);
-    }
-    /**
-     * <code>repeated string video_ids = 30;</code>
-     * @param index The index of the value to return.
-     * @return The bytes of the videoIds at the given index.
-     */
-    public com.google.protobuf.ByteString
-        getVideoIdsBytes(int index) {
-      return videoIds_.getByteString(index);
-    }
-    /**
-     * <code>repeated string video_ids = 30;</code>
-     * @param index The index to set the value at.
-     * @param value The videoIds to set.
-     * @return This builder for chaining.
-     */
-    public Builder setVideoIds(
-        int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureVideoIdsIsMutable();
-      videoIds_.set(index, value);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string video_ids = 30;</code>
-     * @param value The videoIds to add.
-     * @return This builder for chaining.
-     */
-    public Builder addVideoIds(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureVideoIdsIsMutable();
-      videoIds_.add(value);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string video_ids = 30;</code>
-     * @param values The videoIds to add.
-     * @return This builder for chaining.
-     */
-    public Builder addAllVideoIds(
-        java.lang.Iterable<java.lang.String> values) {
-      ensureVideoIdsIsMutable();
-      com.google.protobuf.AbstractMessageLite.Builder.addAll(
-          values, videoIds_);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string video_ids = 30;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearVideoIds() {
-      videoIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000040);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string video_ids = 30;</code>
-     * @param value The bytes of the videoIds to add.
-     * @return This builder for chaining.
-     */
-    public Builder addVideoIdsBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      ensureVideoIdsIsMutable();
-      videoIds_.add(value);
-      onChanged();
-      return this;
-    }
-
     private java.lang.Object customContextJson_ = "";
     /**
      * <pre>
+     *    repeated string video_ids = 30  [deprecated = true];
      *    repeated string screenshot_ids = 31 [deprecated = true];
      * </pre>
      *
@@ -3860,6 +3671,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
+     *    repeated string video_ids = 30  [deprecated = true];
      *    repeated string screenshot_ids = 31 [deprecated = true];
      * </pre>
      *
@@ -3881,6 +3693,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
+     *    repeated string video_ids = 30  [deprecated = true];
      *    repeated string screenshot_ids = 31 [deprecated = true];
      * </pre>
      *
@@ -3900,6 +3713,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
+     *    repeated string video_ids = 30  [deprecated = true];
      *    repeated string screenshot_ids = 31 [deprecated = true];
      * </pre>
      *
@@ -3914,6 +3728,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
+     *    repeated string video_ids = 30  [deprecated = true];
      *    repeated string screenshot_ids = 31 [deprecated = true];
      * </pre>
      *

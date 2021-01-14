@@ -504,7 +504,8 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     public void addVideos(Stream<Video> videos) {
-        videos.forEach(this.getVideos()::add);
+        Collection<Video> videoList = getVideos();
+        videos.filter(video -> !videoList.contains(video)).forEach(videoList::add);
     }
 
     /**

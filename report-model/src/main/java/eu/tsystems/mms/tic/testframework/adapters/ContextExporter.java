@@ -149,11 +149,11 @@ public class ContextExporter {
         if (customContexts.size()>0) {
             builder.setCustomContextJson(jsonEncoder.toJson(customContexts));
         }
-
-        methodContext.readVideos().forEach(video -> {
-            Optional<File.Builder> optional = Optional.ofNullable(buildVideo(video));
-            optional.ifPresent(fileBuilder -> builder.addVideoIds(fileBuilder.getId()));
-        });
+//
+//        methodContext.readVideos().forEach(video -> {
+//            Optional<File.Builder> optional = Optional.ofNullable(buildVideo(video));
+//            optional.ifPresent(fileBuilder -> builder.addVideoIds(fileBuilder.getId()));
+//        });
 
         return builder;
     }
@@ -534,6 +534,10 @@ public class ContextExporter {
         apply(sessionContext.getSessionKey(), builder::setSessionKey);
         apply(sessionContext.getProvider(), builder::setProvider);
         apply(sessionContext.getSessionId(), builder::setSessionId);
+        sessionContext.getVideo().ifPresent(video -> {
+            Optional<File.Builder> optional = Optional.ofNullable(buildVideo(video));
+            optional.ifPresent(fileBuilder -> builder.setVideoId(fileBuilder.getId()));
+        });
 
         // translate object map to string map
         Map<String, String> newMap = new LinkedHashMap<>();

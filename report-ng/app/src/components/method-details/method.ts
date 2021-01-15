@@ -133,10 +133,11 @@ export class Method {
                         break;
                     }
                     case "videos": {
-                        if (methodDetails.methodContext.videoIds.length == 0) {
+                        const videos = methodDetails.sessionContexts.filter(value => value.videoId).map(value => value.videoId);
+                        if (videos.length == 0) {
                             routeConfig.nav = false;
                         } else {
-                            routeConfig.settings.count = methodDetails.methodContext.videoIds.length;
+                            routeConfig.settings.count = videos.length;
                             routeConfig.nav = true;
                         }
                         break;

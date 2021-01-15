@@ -20,47 +20,43 @@
   -->
 
 <template>
-    <mdc-card mdc-elevation="2">
-        <div mdc-subtitle2 class="card-headline vcenter">Screenshots</div>
-        <mdc-list-divider></mdc-list-divider>
-        <!--layout is not final-->
-        <div class="flex space-evenly m1">
-            <div>
-                <mdc-card
-                    class="thumbnail-fixed"
-                    outlined
-                >
-                    <img src.bind="_images.actual.src"
-                         class="thumbnail-fixed clickable"
-                         click.delegate="_imageClicked()"
-                         title.bind="_images.actual.title"/>
-                </mdc-card>
-                <span mdc-caption>${ _images.actual.title }</span>
-            </div>
-            <div>
-                <mdc-card
-                    class="thumbnail-fixed"
-                    outlined
-                >
-                    <img src.bind="_images.actual.src"
-                         class="thumbnail-fixed clickable"
-                         click.delegate="_imageClicked()"
-                         title.bind="_images.comparison.title"/>
-                </mdc-card>
-                <span mdc-caption>${ _images.comparison.title }</span>
-            </div>
-            <div>
-                <mdc-card
-                    class="thumbnail-fixed"
-                    outlined
-                >
-                    <img src.bind="_images.actual.src"
-                         class="thumbnail-fixed clickable"
-                         click.delegate="_imageClicked()"
-                         title.bind="_images.expected.title"/>
-                </mdc-card>
-                <span mdc-caption>${ _images.expected.title }</span>
-            </div>
+    <!--layout is not final-->
+    <div class="flex space-evenly m1">
+        <div>
+            <mdc-card
+                class="thumbnail-fixed"
+                outlined
+            >
+                <img src.bind="_images.actual.src"
+                     class="thumbnail-fixed clickable"
+                     click.delegate="_imageClicked()"
+                     title.bind="_images.actual.title"/>
+            </mdc-card>
+            <span mdc-caption>${ _images.actual.title }</span>
         </div>
-    </mdc-card>
+        <div>
+            <mdc-card
+                class="thumbnail-fixed"
+                outlined
+            >
+                <img src.bind="_images.actual.src"
+                     class="thumbnail-fixed clickable"
+                     click.delegate="_imageClicked()"
+                     title.bind="_images.comparison.title"/>
+            </mdc-card>
+            <span mdc-caption>${ _images.comparison.title }</span>
+        </div>
+        <div>
+            <mdc-card
+                class="thumbnail-fixed"
+                outlined
+            >
+                <img src.bind="_images.actual.src"
+                     class="thumbnail-fixed clickable"
+                     click.delegate="_imageClicked()"
+                     title.bind="_images.expected.title"/>
+            </mdc-card>
+            <span mdc-caption>${ _images.expected.title }</span>
+        </div>
+    </div>
 </template>

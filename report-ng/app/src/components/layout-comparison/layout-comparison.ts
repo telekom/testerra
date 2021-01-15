@@ -22,10 +22,11 @@ import {autoinject, bindable} from "aurelia-framework";
 import {ScreenshotComparison} from "../screenshot-comparison/screenshot-comparison";
 import {MdcDialogService} from '@aurelia-mdc-web/dialog';
 import pixelmatch from 'pixelmatch';
+import {bindingMode} from "aurelia-binding";
 
 @autoinject
 export class LayoutComparison {
-    @bindable context;
+    @bindable({bindingMode:bindingMode.toView}) context;
 
     private _images: any
 
@@ -35,7 +36,7 @@ export class LayoutComparison {
     }
 
 
-    attached() {
+    contextChanged() {
         this._prepareComparison();
     }
 

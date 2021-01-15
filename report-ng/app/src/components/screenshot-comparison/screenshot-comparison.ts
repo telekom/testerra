@@ -21,12 +21,19 @@
 import {autoinject, PLATFORM, useView} from 'aurelia-framework';
 import {MdcDialog} from '@aurelia-mdc-web/dialog';
 import './screenshot-comparison.scss';
+import {IImage} from "../layout-comparison/layout-comparison";
+
+export interface IComparison {
+    images: IImage[];
+    left: IImage;
+    right: IImage
+}
 
 @autoinject
 export class ScreenshotComparison {
-    private _srcActual: string;
-    private _srcExpected: string;
-    private _comparison: string;
+    private _comparison: IComparison;
+    private _left:IImage[];
+    private _right:IImage[];
 
     constructor(
         private _dialog: MdcDialog
@@ -34,16 +41,31 @@ export class ScreenshotComparison {
 
     }
 
-    activate(params:any) {
-        this._srcActual = params.actual.src;
-        this._srcExpected = params.expected.src;
-        this._comparison = params.comparison.src;
+    activate(params:IComparison) {
+        this._comparison = params;
+        // this._srcActual = params.actual.src;
+        // this._srcExpected = params.expected.src;
+        // this._comparison = params.comparison.src;
         console.log("activate", params)
     }
 
     attached() {
         console.log("attached");
         this._initComparisons();
+        this._updateCompareLists();
+    }
+
+    private _updateCompareLists() {
+        this._left = this._comparison.images;
+        this._right = this._comparison.images.filter(value => value != this._comparison.left);
+    }
+
+    private _leftChanged() {
+        this._updateCompareLists();
+    }
+
+    private _rightChanged() {
+        this._updateCompareLists();
     }
 
     private _initComparisons() {

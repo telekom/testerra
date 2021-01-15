@@ -19,11 +19,17 @@
  * under the License.
  */
 import {autoinject, bindable} from "aurelia-framework";
-import {ScreenshotComparison} from "../screenshot-comparison/screenshot-comparison";
+import {IComparison, ScreenshotComparison} from "../screenshot-comparison/screenshot-comparison";
 import {MdcDialogService} from '@aurelia-mdc-web/dialog';
 import pixelmatch from 'pixelmatch';
 import {bindingMode} from "aurelia-binding";
 import {Config} from "../../services/config-dev";
+
+export interface ICompareImages {
+    actual:IImage,
+    expected:IImage,
+    diff:IImage
+}
 
 export interface IImage {
     src:string,
@@ -34,7 +40,7 @@ export interface IImage {
 export class LayoutComparison {
     @bindable({bindingMode:bindingMode.toView}) context;
 
-    private _images:{[key: string]: IImage};
+    private _images:ICompareImages;
 
     constructor(
         private _dialogService: MdcDialogService,
@@ -51,15 +57,15 @@ export class LayoutComparison {
         this._images = {
             actual: {
                 src: 'screenshots/' + this.context.actualScreenshot.filename,
-                title: "Actual screenshot"
+                title: "Actual"
             },
-            comparison: {
+            diff: {
                 src: "",
-                title: "Comparison"
+                title: "Difference"
             },
             expected: {
                 src: 'screenshots/' + this.context.expectedScreenshot.filename,
-                title: "Expected screenshot"
+                title: "Expected"
             }
         }
 
@@ -87,7 +93,7 @@ export class LayoutComparison {
 
             canvasContext = canvas.getContext("2d");
             canvasContext.putImageData(diff, 0, 0);
-            this._images.comparison.src = canvas.toDataURL();
+            this._images.diff.src = canvas.toDataURL();
         })
     }
 
@@ -122,12 +128,11 @@ export class LayoutComparison {
     private _imageClicked() {
         this._dialogService.open({
             viewModel: ScreenshotComparison,
-            model: {
-                actual: this._images.actual,
-                expected: this._images.comparison,
-                comparison: this._images.expected
-            },
-            class: "screenshot-comparison"
+            model: <IComparison> {
+                images: Object.values(this._images),
+                left: this._images.actual,
+                right: this._images.expected
+            }
         });
     }
 }

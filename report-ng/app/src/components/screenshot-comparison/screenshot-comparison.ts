@@ -38,9 +38,11 @@ export class ScreenshotComparison {
         this._srcActual = params.actual.src;
         this._srcExpected = params.expected.src;
         this._comparison = params.comparison.src;
+        console.log("activate", params)
     }
 
     attached() {
+        console.log("attached");
         this._initComparisons();
     }
 

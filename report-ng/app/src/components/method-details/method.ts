@@ -110,7 +110,6 @@ export class Method {
     ) {
         this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
             this._methodDetails = methodDetails;
-            console.log(this._methodDetails);
             this._statistics.getScreenshotsFromMethodContext(methodDetails.methodContext).then(screenshots => {
                 this._allScreenshots = screenshots;
                 this._lastScreenshot = this._allScreenshots.reverse().find(() => true);

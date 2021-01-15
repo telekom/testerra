@@ -20,11 +20,9 @@
   -->
 
 <template>
-    <mdc-dialog-actions>
-        <button mdc-icon-button icon="clear" data-mdc-dialog-action="cancel"></button>
-    </mdc-dialog-actions>
-    <mdc-dialog-content>
-        <div class="flex vcenter spread">
+    <div class="flex spread card-actions">
+        <div></div>
+        <div class="flex vcenter">
             <button mdc-icon-button icon="keyboard_arrow_left" click.delegate="_left()"></button>
             <ul class="mdc-list mdc-list--dense ml1 mr1">
                 <li class="mdc-list-item reset-cursor">
@@ -42,7 +40,9 @@
             </ul>
             <button mdc-icon-button icon="keyboard_arrow_right" click.delegate="_right()"></button>
         </div>
-
+        <button mdc-icon-button class="icon-button--dense" icon="clear" data-mdc-dialog-action="cancel"></button>
+    </div>
+    <mdc-dialog-content>
         <mdc-list-divider></mdc-list-divider>
         <img src="${_current.relativePath}"/>
     </mdc-dialog-content>

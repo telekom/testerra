@@ -30,7 +30,7 @@ export function configure(aurelia: Aurelia) {
 
     aurelia.use
         .standardConfiguration()
-        .plugin(PLATFORM.moduleName('@aurelia-mdc-web/button'))
+        //.plugin(PLATFORM.moduleName('@aurelia-mdc-web/button'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/card'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/data-table'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/dialog'))

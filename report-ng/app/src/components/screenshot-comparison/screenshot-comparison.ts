@@ -19,7 +19,6 @@
  * under the License.
  */
 import {autoinject, PLATFORM, useView} from 'aurelia-framework';
-import {data} from "../../services/report-model";
 import {MdcDialog} from '@aurelia-mdc-web/dialog';
 import './screenshot-comparison.scss';
 

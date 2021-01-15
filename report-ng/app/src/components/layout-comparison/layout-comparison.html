@@ -28,8 +28,9 @@
                 outlined
             >
                 <img src.bind="_images.actual.src"
+                     ref="_actualImageElement"
                      class="thumbnail-fixed clickable"
-                     click.delegate="_imageClicked()"
+                     click.delegate="_imageClicked(_images.actual)"
                      title.bind="_images.actual.title"/>
             </mdc-card>
             <span mdc-caption>${ _images.actual.title }</span>
@@ -40,9 +41,9 @@
                 class="thumbnail-fixed"
                 outlined
             >
-                <img src.bind="_images.actual.src"
+                <img src.bind="_images.diff.src"
                      class="thumbnail-fixed clickable"
-                     click.delegate="_imageClicked()"
+                     click.delegate="_imageClicked(_images.diff)"
                      title.bind="_images.diff.title"/>
             </mdc-card>
             <span mdc-caption>${ _images.diff.title }</span>
@@ -53,9 +54,10 @@
                 class="thumbnail-fixed"
                 outlined
             >
-                <img src.bind="_images.actual.src"
+                <img src.bind="_images.expected.src"
+                     ref="_expectedImageElement"
                      class="thumbnail-fixed clickable"
-                     click.delegate="_imageClicked()"
+                     click.delegate="_imageClicked(_images.expected)"
                      title.bind="_images.expected.title"/>
             </mdc-card>
             <span mdc-caption>${ _images.expected.title }</span>

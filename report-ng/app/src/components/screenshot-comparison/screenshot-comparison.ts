@@ -34,6 +34,8 @@ export class ScreenshotComparison {
     private _comparison: IComparison;
     private _left:IImage[];
     private _right:IImage[];
+    private _leftImageElement:HTMLImageElement;
+    private _rightImageElement:HTMLImageElement;
 
     constructor(
         private _dialog: MdcDialog
@@ -69,16 +71,20 @@ export class ScreenshotComparison {
     }
 
     private _initComparisons() {
-        var imageElements, i;
-        /* Find all elements with an "overlay" class: */
-        imageElements = document.getElementsByClassName("img-comp-overlay");
-        for (i = 0; i < imageElements.length; i++) {
-            /* Once for each "overlay" element:
-            pass the "overlay" element as a parameter when executing the compareImages function: */
-            compareImages(imageElements[i]);
-        }
+        // var imageElements, i;
+        // // /* Find all elements with an "overlay" class: */
+        // imageElements = document.getElementsByClassName("img-comp-overlay");
+        // for (i = 0; i < imageElements.length; i++) {
+        //     /* Once for each "overlay" element:
+        //     pass the "overlay" element as a parameter when executing the compareImages function: */
+        //     compareImages(imageElements[i]);
+        // }
 
-        function compareImages(img) {
+        [this._leftImageElement, this._rightImageElement].forEach(value => compareImages(value))
+
+        //compareImages([this._leftImageElement, this._rightImageElement])
+
+        function compareImages(img:HTMLImageElement) {
             console.log(img);
             var slider, clicked = 0, width, height;
             /* Get the width and height of the img element */

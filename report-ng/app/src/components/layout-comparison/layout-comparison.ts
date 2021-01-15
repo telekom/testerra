@@ -39,8 +39,9 @@ export interface IImage {
 @autoinject
 export class LayoutComparison {
     @bindable({bindingMode:bindingMode.toView}) context;
-
     private _images:ICompareImages;
+    private _actualImageElement:HTMLImageElement;
+    private _expectedImageElement:HTMLImageElement;
 
     constructor(
         private _dialogService: MdcDialogService,
@@ -48,15 +49,22 @@ export class LayoutComparison {
     ) {
     }
 
-
-    contextChanged() {
+    bind() {
         this._prepareComparison();
+    }
+
+    private _loadImage(image:HTMLImageElement) {
+        return new Promise(resolve => {
+            image.addEventListener("load", () => {
+                resolve(image);
+            });
+        })
     }
 
     private _prepareComparison() {
         this._images = {
             actual: {
-                src: 'screenshots/' + this.context.actualScreenshot.filename,
+                src: this._config.correctRelativePath('test-report/screenshots/' + this.context.actualScreenshot.filename),
                 title: "Actual"
             },
             diff: {
@@ -64,27 +72,28 @@ export class LayoutComparison {
                 title: "Difference"
             },
             expected: {
-                src: 'screenshots/' + this.context.expectedScreenshot.filename,
+                src: this._config.correctRelativePath('test-report/screenshots/' + this.context.expectedScreenshot.filename),
                 title: "Expected"
             }
         }
 
-        this._loadImages().then(images => {
+        const allImagesLoaded = Promise.all([this._loadImage(this._actualImageElement), this._loadImage(this._expectedImageElement)]);
+        allImagesLoaded.then(() => {
             const canvas: HTMLCanvasElement = document.createElement("canvas");
-            const maxWidth = Math.max(images[0].width, images[1].width);
-            const maxHeight = Math.max(images[0].height, images[1].height);
+            const maxWidth = Math.max(this._actualImageElement.naturalWidth, this._expectedImageElement.naturalWidth);
+            const maxHeight = Math.max(this._actualImageElement.naturalHeight, this._expectedImageElement.naturalHeight);
 
             //get Image data of actual screenshot via canvas
             canvas.width = maxWidth;
             canvas.height = maxHeight;
             let canvasContext = canvas.getContext("2d");
-            canvasContext.drawImage(images[0], 0, 0);
+            canvasContext.drawImage(this._actualImageElement, 0, 0);
             const imgData1 = canvasContext.getImageData(0, 0, maxWidth, maxHeight);
 
             //get Image data of expected screenshot via canvas
             canvasContext = canvas.getContext("2d");
             canvasContext.clearRect(0, 0, canvas.width, canvas.height);
-            canvasContext.drawImage(images[1], 0, 0);
+            canvasContext.drawImage(this._expectedImageElement, 0, 0);
             const imgData2 = canvasContext.getImageData(0, 0, maxWidth, maxHeight);
             const diff = canvasContext.createImageData(maxWidth, maxHeight);
 
@@ -94,44 +103,24 @@ export class LayoutComparison {
             canvasContext = canvas.getContext("2d");
             canvasContext.putImageData(diff, 0, 0);
             this._images.diff.src = canvas.toDataURL();
-        })
+        });
     }
 
-    private async _loadImages() {
-        //asynchronous function to ensure images are loaded before continuing
-        const promiseArray = []; // create an array for promises
-        const imageArray = [];
+    private _imageClicked(image:IImage) {
+        const left = image;
+        let right:IImage;
+        if (image == this._images.diff) {
+            right = this._images.expected;
+        } else {
+            right = this._images.diff
+        }
 
-        promiseArray.push(new Promise(resolve => {
-            let img1 = new Image();
-
-            img1.onload = resolve;
-
-            img1.src = this._config.correctRelativePath(this._images.actual.src);
-            imageArray[0] = img1;
-        }));
-
-        promiseArray.push(new Promise(resolve => {
-            let img2 = new Image();
-
-            img2.onload = resolve;
-
-            img2.src = this._config.correctRelativePath(this._images.expected.src);
-            imageArray[1] = img2;
-        }));
-
-        await Promise.all(promiseArray); // wait for all the images to be loaded
-
-        return imageArray;
-    }
-
-    private _imageClicked() {
         this._dialogService.open({
             viewModel: ScreenshotComparison,
             model: <IComparison> {
                 images: Object.values(this._images),
-                left: this._images.actual,
-                right: this._images.expected
+                left: left,
+                right: right
             }
         });
     }

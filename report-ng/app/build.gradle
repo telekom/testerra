@@ -44,4 +44,4 @@ task npmClean {
     }
 }
 
-clean.dependsOn(npmClean)
+//clean.dependsOn(npmClean)

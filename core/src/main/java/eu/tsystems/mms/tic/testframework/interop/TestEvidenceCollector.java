@@ -83,7 +83,7 @@ public final class TestEvidenceCollector {
         List<Video> videos = new LinkedList<>();
         try {
             for (VideoCollector videoCollector : VIDEO_COLLECTORS) {
-                List<Video> videos1 = videoCollector.getVideos();
+                List<Video> videos1 = videoCollector.collectVideos();
                 if (videos1 != null) {
                     videos.addAll(videos1);
                 }

@@ -24,12 +24,14 @@ import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class SessionContext extends AbstractContext implements SynchronizableContext {
     private String sessionKey;
     private String provider;
     private final Map<String, Object> metaData = new LinkedHashMap<>();
     private String sessionId;
+    private Video video;
 
     public SessionContext(String sessionKey, String provider) {
         this.sessionKey = sessionKey;
@@ -81,5 +83,14 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
         Status is always null here. There is no context result status for sessions.
          */
         return null;
+    }
+
+    public Optional<Video> getVideo() {
+        return Optional.ofNullable(video);
+    }
+
+    public SessionContext setVideo(Video video) {
+        this.video = video;
+        return this;
     }
 }

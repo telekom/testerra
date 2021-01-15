@@ -25,6 +25,16 @@ import java.util.List;
 
 public interface VideoCollector extends Collector {
 
+    /**
+     * @deprecated Use {@link #collectVideos()} instead
+     */
     List<Video> getVideos();
 
+    /**
+     * Collects the videos and add them
+     * @return
+     */
+    default List<Video> collectVideos() {
+        return getVideos();
+    }
 }

@@ -500,14 +500,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     /**
-     * @deprecated Use {@link SessionContext#setVideo(Video)} instead
-     */
-    public void addVideos(Stream<Video> videos) {
-//        Collection<Video> videoList = getVideos();
-//        videos.filter(video -> !videoList.contains(video)).forEach(videoList::add);
-    }
-
-    /**
      * Proper parameter names are available by setting {https://stackoverflow.com/questions/6759880/getting-the-name-of-a-method-parameter}
      */
     public Parameter[] getParameters() {

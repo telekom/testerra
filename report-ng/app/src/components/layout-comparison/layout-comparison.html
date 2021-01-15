@@ -21,7 +21,7 @@
 
 <template>
     <!--layout is not final-->
-    <div class="flex space-evenly m1">
+    <div class="flex vcenter">
         <div>
             <mdc-card
                 class="thumbnail-fixed"
@@ -34,6 +34,7 @@
             </mdc-card>
             <span mdc-caption>${ _images.actual.title }</span>
         </div>
+        <mdc-icon>arrow_right</mdc-icon>
         <div>
             <mdc-card
                 class="thumbnail-fixed"
@@ -46,6 +47,7 @@
             </mdc-card>
             <span mdc-caption>${ _images.diff.title }</span>
         </div>
+        <mdc-icon>arrow_left</mdc-icon>
         <div>
             <mdc-card
                 class="thumbnail-fixed"

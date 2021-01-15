@@ -23,15 +23,22 @@ import {ScreenshotComparison} from "../screenshot-comparison/screenshot-comparis
 import {MdcDialogService} from '@aurelia-mdc-web/dialog';
 import pixelmatch from 'pixelmatch';
 import {bindingMode} from "aurelia-binding";
+import {Config} from "../../services/config-dev";
+
+export interface IImage {
+    src:string,
+    title:string;
+}
 
 @autoinject
 export class LayoutComparison {
     @bindable({bindingMode:bindingMode.toView}) context;
 
-    private _images: any
+    private _images:{[key: string]: IImage};
 
     constructor(
-        private _dialogService: MdcDialogService
+        private _dialogService: MdcDialogService,
+        private _config:Config,
     ) {
     }
 
@@ -56,7 +63,7 @@ export class LayoutComparison {
             }
         }
 
-        this._loadImages(this._images).then(images => {
+        this._loadImages().then(images => {
             const canvas: HTMLCanvasElement = document.createElement("canvas");
             const maxWidth = Math.max(images[0].width, images[1].width);
             const maxHeight = Math.max(images[0].height, images[1].height);
@@ -84,7 +91,7 @@ export class LayoutComparison {
         })
     }
 
-    private async _loadImages(images: Array<any>) {
+    private async _loadImages() {
         //asynchronous function to ensure images are loaded before continuing
         const promiseArray = []; // create an array for promises
         const imageArray = [];
@@ -94,7 +101,7 @@ export class LayoutComparison {
 
             img1.onload = resolve;
 
-            img1.src = this._images.actual.src
+            img1.src = this._config.correctRelativePath(this._images.actual.src);
             imageArray[0] = img1;
         }));
 
@@ -103,7 +110,7 @@ export class LayoutComparison {
 
             img2.onload = resolve;
 
-            img2.src = this._images.expected.src
+            img2.src = this._config.correctRelativePath(this._images.expected.src);
             imageArray[1] = img2;
         }));
 

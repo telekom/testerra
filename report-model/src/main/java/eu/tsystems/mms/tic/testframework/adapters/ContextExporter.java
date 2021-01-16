@@ -59,7 +59,6 @@ import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -480,7 +479,7 @@ public class ContextExporter {
 //        forEach(executionContext.mergedClassContexts, classContext -> builder.addMergedClassContextIds(classContext.id));
 //        map(executionContext.exitPoints, this::createContextClip, builder::addAllExitPoints);
 //        map(executionContext.failureAspects, this::createContextClip, builder::addAllFailureAscpects);
-        map(executionContext.runConfig, this::prepareRunConfig, builder::setRunConfig);
+        map(executionContext.runConfig, this::buildRunConfig, builder::setRunConfig);
         executionContext.readExclusiveSessionContexts().forEach(sessionContext -> builder.addExclusiveSessionContextIds(sessionContext.getId()));
         apply(executionContext.estimatedTestMethodCount, builder::setEstimatedTestsCount);
         executionContext.readMethodContextLessLogs().forEach(logEvent -> {
@@ -505,7 +504,7 @@ public class ContextExporter {
 //        return out;
 //    }
 
-    public RunConfig.Builder prepareRunConfig(eu.tsystems.mms.tic.testframework.report.model.context.RunConfig runConfig) {
+    public RunConfig.Builder buildRunConfig(eu.tsystems.mms.tic.testframework.report.model.context.RunConfig runConfig) {
         RunConfig.Builder builder = RunConfig.newBuilder();
 
         apply(runConfig.getReportName(), builder::setReportName);

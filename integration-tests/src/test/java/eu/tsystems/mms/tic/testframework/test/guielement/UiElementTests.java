@@ -282,7 +282,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
             });
         } catch (Exception e) {
             Assert.assertStartsWith(e.getMessage(), "Retry sequence timed out", e.getClass().getSimpleName());
-            Assert.assertEndsWith(e.getCause().getMessage(), "@enabled« actual [true] is one of [false, 'off', '0', 'no']", e.getCause().getClass().getSimpleName());
+            Assert.assertEndsWith(e.getCause().getMessage(), "@enabled< actual [true] is one of [false, 'off', '0', 'no']", e.getCause().getClass().getSimpleName());
         }
         Assert.assertEquals(retryCount.get(), 3, "Retry count");
     }

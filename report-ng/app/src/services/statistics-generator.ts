@@ -64,7 +64,11 @@ export class MethodDetails {
 
     get customContexts() {
         if (!this._customContexts) {
-            this._customContexts = JSON.parse(this.methodContext.customContextJson);
+            if (this.methodContext.customContextJson) {
+                this._customContexts = JSON.parse(this.methodContext.customContextJson);
+            } else {
+                this._customContexts = [];
+            }
         }
         return this._customContexts;
     }

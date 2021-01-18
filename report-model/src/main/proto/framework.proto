@@ -182,6 +182,7 @@ message SessionContext {
     map<string, string> metadata = 4;
     string session_id = 6;
     string video_id = 7;
+    string execution_context_id = 8;
 }
 
 message RunConfig {

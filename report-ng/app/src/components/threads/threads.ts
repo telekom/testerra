@@ -204,42 +204,6 @@ export class Threads extends AbstractViewModel {
             groupHeightMode: 'fixed' as TimelineOptionsGroupHeightModeType
         };
 
-/*        this.options = {
-            'width': "100%",
-            'height': "auto",
-            'minHeight': 0,       // minimal height in pixels
-            'autoHeight': true,
-
-            'eventMargin': 10,    // minimal margin between events
-            'eventMarginAxis': 20, // minimal margin beteen events and the axis
-            'dragAreaWidth': 10, // pixels
-
-            'min': undefined,
-            'max': undefined,
-            'intervalMin': 10,  // milliseconds
-            'intervalMax': 1000 * 60 * 60 * 24 * 365 * 10000, // milliseconds
-
-            'moveable': true,
-            'zoomable': true,
-            'selectable': true,
-            'editable': false,
-            'snapEvents': true,
-            'groupChangeable': true,
-
-            'showCurrentTime': true, // show a red bar displaying the current time
-            'showCustomTime': false, // show a blue, draggable bar displaying a custom time
-            'showMajorLabels': true,
-            'showMinorLabels': true,
-            'showNavigation': false,
-            'showButtonAdd': true,
-            'groupsOnRight': false,
-            'axisOnTop': false,
-            'stackEvents': true,
-            'animate': true,
-            'animateZoom': true,
-            'style': 'box'
-        };*/
-
         // Create a Timeline
         this._timeline = new Timeline(container, dataItems, groupItems, options);
         this._timeline.on('select',(event) => {

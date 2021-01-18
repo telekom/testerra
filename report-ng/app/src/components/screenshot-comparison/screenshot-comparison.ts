@@ -34,8 +34,9 @@ export class ScreenshotComparison {
     private _comparison: IComparison;
     private _left:IImage[];
     private _right:IImage[];
-    private _leftImageElement:HTMLImageElement;
-    private _rightImageElement:HTMLImageElement;
+    private _leftImageElement:HTMLDivElement;
+    private _rightImageElement:HTMLDivElement;
+    private _compContainer: HTMLDivElement;
 
     constructor(
         private _dialog: MdcDialog
@@ -82,86 +83,85 @@ export class ScreenshotComparison {
 
         //[this._leftImageElement, this._rightImageElement].forEach(value => compareImages(value))
 
-        compareImages(this._rightImageElement)
+        this._compareImages(this._rightImageElement);
+    }
 
-        function compareImages(img:HTMLDivElement){
-            console.log(img);
-            let slider, clicked = 0, width, height;
-            /* Get the width and height of the img element */
-            width = img.offsetWidth;
-            height = img.offsetHeight;
-            console.log(width, " x ", height)
-            let container = document.querySelector(".img-comp-container") as HTMLDivElement;
-            container.style.height = height + "px";
-            container.style.width = (width + 20) + "px";
+    private _compareImages(img:HTMLDivElement){
+        console.log(img);
+        let slider, clicked = 0, width, height;
+        /* Get the width and height of the img element */
+        width = img.offsetWidth;
+        height = img.offsetHeight;
+        console.log(width, " x ", height)
+        this._compContainer.style.height = height + "px";
+        this._compContainer.style.width = (width + 20) + "px";
 
-            /*Set the width of the img element to 50%: */
-            img.style.width = width / 2 + "px";
-            /* Create slider: */
-            slider = document.createElement("div");
-            slider.setAttribute("class", "img-comp-slider secondary-bg");
-            /* Insert slider */
-            img.parentElement.insertBefore(slider, img);
-            /* Position the slider in the middle: */
-            slider.style.top = (height / 2) - (slider.offsetHeight / 2) + "px";
-            slider.style.left = (width / 2) - (slider.offsetWidth / 2)+ "px";
+        /*Set the width of the img element to 50%: */
+        img.style.width = width / 2 + "px";
+        /* Create slider: */
+        slider = document.createElement("div");
+        slider.setAttribute("class", "img-comp-slider secondary-bg");
+        /* Insert slider */
+        img.parentElement.insertBefore(slider, img);
+        /* Position the slider in the middle: */
+        slider.style.top = (height / 2) - (slider.offsetHeight / 2) + "px";
+        slider.style.left = (width / 2) - (slider.offsetWidth / 2)+ "px";
 
-            window.addEventListener('resize', () => {
-                container.style.height = height + "px";
-                container.style.width = (width + 20) + "px";
-            })
+        window.addEventListener('resize', () => {
+            this._compContainer.style.height = height + "px";
+            this._compContainer.style.width = (width + 20) + "px";
+        })
 
-            /* Execute a function when the mouse button is pressed: */
-            slider.addEventListener("mousedown", slideReady);
-            /* And another function when the mouse button is released: */
-            window.addEventListener("mouseup", slideFinish);
-            /* Or touched (for touch screens: */
-            slider.addEventListener("touchstart", slideReady);
-            /* And released (for touch screens: */
-            window.addEventListener("touchend", slideFinish);
+        /* Execute a function when the mouse button is pressed: */
+        slider.addEventListener("mousedown", slideReady);
+        /* And another function when the mouse button is released: */
+        window.addEventListener("mouseup", slideFinish);
+        /* Or touched (for touch screens:) */
+        slider.addEventListener("touchstart", slideReady);
+        /* And released (for touch screens:) */
+        window.addEventListener("touchend", slideFinish);
 
-            function slideReady(e) {
-                /* Prevent any other actions that may occur when moving over the image: */
-                e.preventDefault();
-                /* The slider is now clicked and ready to move: */
-                clicked = 1;
-                /* Execute a function when the slider is moved: */
-                window.addEventListener("mousemove", slideMove);
-                window.addEventListener("touchmove", slideMove);
-            }
-            function slideFinish() {
-                /* The slider is no longer clicked: */
-                clicked = 0;
-            }
-            function slideMove(e) {
-                var pos;
-                /* If the slider is no longer clicked, exit this function: */
-                if (clicked == 0) return false;
-                /* Get the cursor's imageElements position: */
-                pos = getCursorPos(e)
-                /* Prevent the slider from being positioned outside the image: */
-                if (pos < 0) pos = 0;
-                if (pos > width) pos = width;
-                /* Execute a function that will resize the overlay image according to the cursor: */
-                slide(pos);
-            }
-            function getCursorPos(e) {
-                var a, x = 0;
-                e = e || window.event;
-                /* Get the imageElements positions of the image: */
-                a = img.getBoundingClientRect();
-                /* Calculate the cursor's imageElements coordinate, relative to the image: */
-                x = e.pageX - a.left;
-                /* Consider any page scrolling: */
-                x = x - window.pageXOffset;
-                return x;
-            }
-            function slide(x) {
-                /* Resize the image: */
-                img.style.width = x + "px";
-                /* Position the slider: */
-                slider.style.left = img.offsetWidth - (slider.offsetWidth / 2) + "px";
-            }
+        function slideReady(e) {
+            /* Prevent any other actions that may occur when moving over the image: */
+            e.preventDefault();
+            /* The slider is now clicked and ready to move: */
+            clicked = 1;
+            /* Execute a function when the slider is moved: */
+            window.addEventListener("mousemove", slideMove);
+            window.addEventListener("touchmove", slideMove);
+        }
+        function slideFinish() {
+            /* The slider is no longer clicked: */
+            clicked = 0;
+        }
+        function slideMove(e) {
+            var pos;
+            /* If the slider is no longer clicked, exit this function: */
+            if (clicked == 0) return false;
+            /* Get the cursor's imageElements position: */
+            pos = getCursorPos(e)
+            /* Prevent the slider from being positioned outside the image: */
+            if (pos < 0) pos = 0;
+            if (pos > width) pos = width;
+            /* Execute a function that will resize the overlay image according to the cursor: */
+            slide(pos);
+        }
+        function getCursorPos(e) {
+            var a, x = 0;
+            e = e || window.event;
+            /* Get the imageElements positions of the image: */
+            a = img.getBoundingClientRect();
+            /* Calculate the cursor's imageElements coordinate, relative to the image: */
+            x = e.pageX - a.left;
+            /* Consider any page scrolling: */
+            x = x - window.pageXOffset;
+            return x;
+        }
+        function slide(x) {
+            /* Resize the image: */
+            img.style.width = x + "px";
+            /* Position the slider: */
+            slider.style.left = img.offsetWidth - (slider.offsetWidth / 2) + "px";
         }
     }
 }

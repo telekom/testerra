@@ -33,13 +33,7 @@ export class ScreenshotsDialog {
     constructor(
         private _dialog: MdcDialog,
     ) {
-        // this._dialog.listen('MDCDialog:opened', () => {
-        //     console.log("dialog opened");
-        //     if (document.activeElement instanceof HTMLElement){
-        //         console.log("blur on open dialog");
-        //         document.activeElement.blur();
-        //     }
-        // });
+
     }
 
     activate(params:any) {

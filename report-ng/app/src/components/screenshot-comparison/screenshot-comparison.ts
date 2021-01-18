@@ -38,6 +38,7 @@ export class ScreenshotComparison {
     private _rightImageElement:HTMLDivElement;
     private _compContainer: HTMLDivElement;
 
+
     constructor(
         private _dialog: MdcDialog
     ) {
@@ -50,7 +51,6 @@ export class ScreenshotComparison {
     }
 
     attached() {
-        console.log("attached");
         this._initComparisons();
         this._updateCompareLists();
     }
@@ -69,17 +69,6 @@ export class ScreenshotComparison {
     }
 
     private _initComparisons() {
-        // var imageElements, i;
-        // // /* Find all elements with an "overlay" class: */
-        // imageElements = document.getElementsByClassName("img-comp-overlay");
-        // for (i = 0; i < imageElements.length; i++) {
-        //     /* Once for each "overlay" element:
-        //     pass the "overlay" element as a parameter when executing the compareImages function: */
-        //     compareImages(imageElements[i]);
-        // }
-
-        //[this._leftImageElement, this._rightImageElement].forEach(value => compareImages(value))
-
         this._compareImages(this._leftImageElement);
     }
 

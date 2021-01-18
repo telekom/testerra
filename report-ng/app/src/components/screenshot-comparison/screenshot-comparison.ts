@@ -46,9 +46,6 @@ export class ScreenshotComparison {
 
     activate(params:IComparison) {
         this._comparison = params;
-        // this._srcActual = params.actual.src;
-        // this._srcExpected = params.expected.src;
-        // this._comparison = params.comparison.src;
         console.log("activate", params)
     }
 
@@ -83,7 +80,7 @@ export class ScreenshotComparison {
 
         //[this._leftImageElement, this._rightImageElement].forEach(value => compareImages(value))
 
-        this._compareImages(this._rightImageElement);
+        this._compareImages(this._leftImageElement);
     }
 
     private _compareImages(img:HTMLDivElement){
@@ -98,6 +95,7 @@ export class ScreenshotComparison {
 
         /*Set the width of the img element to 50%: */
         img.style.width = width / 2 + "px";
+        img.style.zIndex = "2";
         /* Create slider: */
         slider = document.createElement("div");
         slider.setAttribute("class", "img-comp-slider secondary-bg");

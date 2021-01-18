@@ -142,16 +142,15 @@ export class Threads extends AbstractViewModel {
             groupItems.push({id: groupId, content: threadName});
 
             methodContexts.forEach((context: MethodContext) => {
-                let content: string = ''
-
-                content += "<div class='item-content' id='" + context.contextValues.id + "'>";
-                content += "<div class='item-content-head'>" + context.contextValues.name + "</div>";
-                content += "<div class='item-content-body'>"
-                content += "<p class='m0'>" + this._classNamesMap[context.classContextId] + "</p>";
-                content += "<p class='m0'>(" + context.methodRunIndex + ")</p>";
-                content += "</div>";
-                content += "</div>";
-
+                let content: string = `
+                    <div class="item-content" id="${context.contextValues.id}">
+                    <div class="item-content-head">${context.contextValues.name}</div>
+                    <div class='item-content-body'>
+                    <p class="m0">${this._classNamesMap[context.classContextId]}</p>
+                    <p class="m0">(${context.methodRunIndex})</p>
+                    </div>
+                    </div>
+                `;
                 dataItems.push({
                     id: context.contextValues.id,
                     content: content,

@@ -24,7 +24,7 @@ import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import {AbstractViewModel} from "../abstract-view-model";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {StatusConverter} from "../../services/status-converter";
-import { Timeline } from "vis-timeline/standalone";
+import {Timeline, TimelineOptionsGroupHeightModeType} from "vis-timeline/standalone";
 import "vis-timeline/styles/vis-timeline-graph2d.css";
 import {data} from "../../services/report-model";
 import {Router} from "aurelia-router";
@@ -142,6 +142,10 @@ export class Threads extends AbstractViewModel {
             groupItems.push({id: groupId, content: threadName});
 
             methodContexts.forEach((context: MethodContext) => {
+                /*
+                * workaround for XSS-protection update of vis-timeline which blocked adding of html classes in content attribute
+                * @see: https://github.com/visjs/vis-timeline/issues/846#issuecomment-749691286
+                */
                 const element = document.createElement("content");
                 element.innerHTML = `
                     <div class="item-content" id="${context.contextValues.id}">
@@ -160,7 +164,7 @@ export class Threads extends AbstractViewModel {
                     group: groupId,
                     callbackInfos: [context.contextValues.id],
                     style: "background-color: " + this._statusConverter.getColorForStatus(context.resultStatus) + ";",
-                    title: element
+                    title: context.contextValues.name
                 });
             });
 
@@ -196,8 +200,45 @@ export class Threads extends AbstractViewModel {
             zoomMin:10,
             margin: {
                 item: { horizontal: 2 }
-            }
+            },
+            groupHeightMode: 'fixed' as TimelineOptionsGroupHeightModeType
         };
+
+/*        this.options = {
+            'width': "100%",
+            'height': "auto",
+            'minHeight': 0,       // minimal height in pixels
+            'autoHeight': true,
+
+            'eventMargin': 10,    // minimal margin between events
+            'eventMarginAxis': 20, // minimal margin beteen events and the axis
+            'dragAreaWidth': 10, // pixels
+
+            'min': undefined,
+            'max': undefined,
+            'intervalMin': 10,  // milliseconds
+            'intervalMax': 1000 * 60 * 60 * 24 * 365 * 10000, // milliseconds
+
+            'moveable': true,
+            'zoomable': true,
+            'selectable': true,
+            'editable': false,
+            'snapEvents': true,
+            'groupChangeable': true,
+
+            'showCurrentTime': true, // show a red bar displaying the current time
+            'showCustomTime': false, // show a blue, draggable bar displaying a custom time
+            'showMajorLabels': true,
+            'showMinorLabels': true,
+            'showNavigation': false,
+            'showButtonAdd': true,
+            'groupsOnRight': false,
+            'axisOnTop': false,
+            'stackEvents': true,
+            'animate': true,
+            'animateZoom': true,
+            'style': 'box'
+        };*/
 
         // Create a Timeline
         this._timeline = new Timeline(container, dataItems, groupItems, options);

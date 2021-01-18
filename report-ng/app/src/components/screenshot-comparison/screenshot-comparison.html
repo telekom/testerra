@@ -53,14 +53,13 @@
 <!--    <mdc-dialog-actions>-->
 <!--        <button mdc-icon-button icon="clear" class="icon-button&#45;&#45;dense" data-mdc-dialog-action="cancel"></button>-->
 <!--    </mdc-dialog-actions>-->
-    <!--mdc-dialog-title> Screenshot Comparison</mdc-dialog-title-->
     <mdc-dialog-content class="pt0">
         <div class="img-comp-container">
-            <div class="img-comp-img">
-                <img src.bind="_comparison.left.src" ref="_leftImageElement">
+            <div class="img-comp-img" ref="_leftImageElement">
+                <img src.bind="_comparison.left.src">
             </div>
-            <div class="img-comp-img img-comp-overlay">
-                <img src.bind="_comparison.right.src" ref="_rightImageElement">
+            <div class="img-comp-img img-comp-overlay" ref="_rightImageElement">
+                <img src.bind="_comparison.right.src">
             </div>
         </div>
     </mdc-dialog-content>

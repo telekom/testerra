@@ -142,7 +142,8 @@ export class Threads extends AbstractViewModel {
             groupItems.push({id: groupId, content: threadName});
 
             methodContexts.forEach((context: MethodContext) => {
-                let content: string = `
+                const element = document.createElement("content");
+                element.innerHTML = `
                     <div class="item-content" id="${context.contextValues.id}">
                     <div class="item-content-head">${context.contextValues.name}</div>
                     <div class='item-content-body'>
@@ -153,13 +154,13 @@ export class Threads extends AbstractViewModel {
                 `;
                 dataItems.push({
                     id: context.contextValues.id,
-                    content: content,
+                    content: element,
                     start: context.contextValues.startTime,
                     end: context.contextValues.endTime,
                     group: groupId,
                     callbackInfos: [context.contextValues.id],
                     style: "background-color: " + this._statusConverter.getColorForStatus(context.resultStatus) + ";",
-                    title: content
+                    title: element
                 });
             });
 

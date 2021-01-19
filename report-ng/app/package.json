@@ -9,7 +9,6 @@
     ],
     "license": "Apache-2.0",
     "dependencies": {
-        "@aurelia-mdc-web/button": "^2.0.3",
         "@aurelia-mdc-web/card": "^2.0.3",
         "@aurelia-mdc-web/data-table": "^2.0.3",
         "@aurelia-mdc-web/dialog": "^2.0.3",
@@ -40,6 +39,7 @@
         "highlight.js": "^10.3.2",
         "moment": "^2.29.1",
         "moment-duration-format": "^2.3.2",
+        "pixelmatch": "^5.2.1",
         "protobufjs": "^6.10.2",
         "t-systems-aurelia-components": "^1.0.5",
         "ts-replace-all": "^1.0.0",

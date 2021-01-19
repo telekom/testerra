@@ -25,8 +25,8 @@
   $on-primary: #ffffff,
   $on-secondary: #ffffff,
 );
-@use '@material/button/mdc-button';
-@use '@material/button';
+//@use '@material/button/mdc-button';
+//@use '@material/button';
 @use '@material/card/mdc-card';
 @use '@material/card';
 @use '@material/checkbox';
@@ -75,8 +75,6 @@
 @use '@material/typography';
 //@use '@material/chips/mdc-chips';
 //@use '@aurelia-mdc-web/chips';
-//@use '@material/image-list/mdc-image-list';
-//@use '@material/image-list';
 
 @include drawer.core-styles;
 @include drawer.dismissible-core-styles;
@@ -85,9 +83,9 @@
 
 // MDC overrides
 
-.btn-secondary {
-    @include button.filled-accessible(theme.$secondary);
-}
+//.btn-secondary {
+//    @include button.filled-accessible(theme.$secondary);
+//}
 //
 //.mdc-card {
 //    @include card.fill-color(#ffffff);
@@ -113,6 +111,10 @@
     @include theme.property(color, text-secondary-on-background);
 }
 
+.secondary-bg {
+    @include theme.property(background-color, secondary);
+}
+
 .reset-cursor {
     cursor: initial !important;
 }
@@ -136,6 +138,10 @@
     //margin: auto 0;
 }
 
+.card-actions {
+    padding: 8px;
+}
+
 .header-card {
     height:188px;
 }
@@ -155,4 +161,8 @@ mdc-drawer-app-content {
         height:30px;
         line-height: 1em;
     }
+}
+
+.icon-button--dense {
+    @include icon-button.density(-3);
 }

@@ -33,6 +33,7 @@ export class TestClassesCard {
     @bindable({bindingMode: bindingMode.toView}) filter:IFilter;
     @bindable classStatistics: ClassStatistics[];
     private _apexBarOptions: ApexOptions = undefined;
+    private _filteredStatuses:number[];
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -56,36 +57,31 @@ export class TestClassesCard {
         let xlabels: Array<string> = [];
 
         const series = [];
-        const filteredStatuses = this._statusConverter.relevantStatuses.filter(status => (!this.filter?.status || status === this.filter.status) );
+        this._filteredStatuses = this._statusConverter.relevantStatuses.filter(status => (!this.filter?.status || status === this.filter.status) );
 
-        // console.log("filtered statuses",filteredStatuses);
-
-        for (const status of filteredStatuses) {
+        this._filteredStatuses.forEach(status => {
             data.set(status, []);
             series.push({
                 name: this._statusConverter.getLabelForStatus(status),
                 data: data.get(status),
                 color: this._statusConverter.getColorForStatus(status)
             })
-        }
+        })
 
         //Iterate through classStatistics array to fill map with data for series
         classStatistics
             .filter(classStatistic => {
-                for (let status of filteredStatuses) {
-                    if (classStatistic.getStatusCount(status) > 0) {
-                        return true;
-                    }
-                }
+                return this._filteredStatuses.find(status => classStatistic.getStatusCount(status)>0);
             })
             .forEach(classStats => {
-                for (const status of filteredStatuses) {
+                for (const status of this._filteredStatuses) {
                     data.get(status).push(classStats.getStatusCount(status));
                 }
                 //Push Class Names in array for x-axis labels
                 xlabels.push(classStats.classIdentifier);
             });
 
+        const dataAvailable = xlabels.length > 0;
 
         //set size by amount of bars to have consistent bar height
         //amount of classes * 60px + offset due to legend and labels
@@ -122,11 +118,22 @@ export class TestClassesCard {
             series: series,
             xaxis: {
                 labels: {
-                    show: true,
+                    show: dataAvailable,
                     trim: false,    //ignored apparently, documentation: https://apexcharts.com/docs/options/xaxis/#trim
                     maxHeight: undefined,
                 },
                 categories: xlabels,
+                axisBorder: {
+                    show: dataAvailable,
+                },
+                axisTicks: {
+                    show: dataAvailable,
+                }
+            },
+            yaxis: {
+                labels:{
+                    show: dataAvailable,
+                }
             },
             grid: {
                 show: false,
@@ -138,7 +145,7 @@ export class TestClassesCard {
                 }
             },
             noData: {
-                text: "There is no data available at the moment. Please be patient!"
+                text: "There is no data for this filter."
             },
             legend: {
                 show: false
@@ -153,7 +160,7 @@ export class TestClassesCard {
 
         const params:IFilter = {
             class: this._apexBarOptions.xaxis.categories[config.dataPointIndex],
-            status: this._statusConverter.relevantStatuses[config.seriesIndex]
+            status: this._filteredStatuses[config.seriesIndex]
         }
 
         const customEvent = new CustomEvent("filter-changed", {

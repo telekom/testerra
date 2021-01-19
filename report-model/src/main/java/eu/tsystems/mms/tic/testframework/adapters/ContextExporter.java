@@ -56,7 +56,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.CustomContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.lang.annotation.Annotation;

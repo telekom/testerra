@@ -143,7 +143,7 @@ export class Threads extends AbstractViewModel {
 
             methodContexts.forEach((context: MethodContext) => {
                 /*
-                * workaround for XSS-protection update of vis-timeline which blocked adding of html classes in content attribute
+                * workaround for XSS-protection update of vis-timeline by using an HTMLElement instead of injecting the html directly in which the XSS protection would remove the class names needed for our styling
                 * @see: https://github.com/visjs/vis-timeline/issues/846#issuecomment-749691286
                 */
                 const element = document.createElement("content");

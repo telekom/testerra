@@ -33,14 +33,12 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
     private final Map<String, Object> metaData = new LinkedHashMap<>();
     private String sessionId;
     private Video video;
-    private final String executionContextId;
 
     public SessionContext(String sessionKey, String provider) {
         this.sessionKey = sessionKey;
         this.provider = provider;
 
         final MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
-        this.executionContextId = ExecutionContextController.getCurrentExecutionContext().getId();
         if (currentMethodContext != null) {
             this.name = currentMethodContext.getName() + "_";
         } else {
@@ -95,9 +93,5 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
     public SessionContext setVideo(Video video) {
         this.video = video;
         return this;
-    }
-
-    public String getExecutionContextId() {
-        return executionContextId;
     }
 }

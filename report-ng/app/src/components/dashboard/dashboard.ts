@@ -146,6 +146,9 @@ export class Dashboard extends AbstractViewModel {
     }
 
     private _barFilterChanged(ev:CustomEvent) {
-        this.navInstruction.router.navigateToRoute("tests", ev.detail);
+        const filter:IFilter = ev.detail;
+        const queryParams:any = filter;
+        queryParams.status = this._statusConverter.getClassForStatus(filter.status);
+        this.navInstruction.router.navigateToRoute("tests", queryParams);
     }
 }

@@ -40,6 +40,7 @@ export class MethodDetails {
     suiteContext: ISuiteContext;
     failureAspectStatistics:FailureAspectStatistics;
     sessionContexts:ISessionContext[];
+    private _customContexts:any[];
 
     get identifier() {
         let identifier = this.methodContext.contextValues.name;
@@ -59,6 +60,17 @@ export class MethodDetails {
 
     get failedStep() {
         return (this.methodContext.failedStepIndex >= 0 ? this.methodContext.testSteps[this.methodContext.failedStepIndex] : null);
+    }
+
+    get customContexts() {
+        if (!this._customContexts) {
+            if (this.methodContext.customContextJson) {
+                this._customContexts = JSON.parse(this.methodContext.customContextJson);
+            } else {
+                this._customContexts = [];
+            }
+        }
+        return this._customContexts;
     }
 }
 

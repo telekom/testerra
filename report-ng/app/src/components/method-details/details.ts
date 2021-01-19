@@ -33,16 +33,22 @@ import {Config} from "services/config-dev";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import {StatusConverter} from "services/status-converter";
 
+export interface ILayoutComparisonContext {
+    name: string,
+    image, mode, distance, actualScreenshot, annotatedScreenshot, distanceScreenshot, expectedScreenshot
+}
+
 @autoinject()
 export class Details {
     private _hljs = hljs;
-    private _failureAspect:FailureAspectStatistics;
-    private _methodDetails:MethodDetails;
+    private _failureAspect: FailureAspectStatistics;
+    private _methodDetails: MethodDetails;
+    private _layoutComparisonContext: ILayoutComparisonContext;
 
     constructor(
         private _statistics: StatisticsGenerator,
-        private _config:Config,
-        private _statusConverter:StatusConverter,
+        private _config: Config,
+        private _statusConverter: StatusConverter
     ) {
         this._hljs.registerLanguage("java", java);
     }
@@ -54,6 +60,9 @@ export class Details {
     ) {
         this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
             this._methodDetails = methodDetails;
+            this._layoutComparisonContext = methodDetails.customContexts.find(value => {
+                return value.name == "LayoutCheckContext";
+            })
             if (methodDetails.methodContext.errorContext) {
                 this._failureAspect = new FailureAspectStatistics().setErrorContext(methodDetails.methodContext.errorContext);
             }

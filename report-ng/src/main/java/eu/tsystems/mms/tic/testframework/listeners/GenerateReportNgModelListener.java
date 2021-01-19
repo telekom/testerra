@@ -92,7 +92,8 @@ public class GenerateReportNgModelListener extends AbstractReportModelListener i
 
     private void buildUniqueSession(SessionContext sessionContext) {
         if (!executionAggregateBuilder.containsSessionContexts(sessionContext.getId())) {
-            executionAggregateBuilder.putSessionContexts(sessionContext.getId(), contextExporter.buildSessionContext(sessionContext).build());
+            eu.tsystems.mms.tic.testframework.report.model.SessionContext.Builder sessionContextBuilder = contextExporter.buildSessionContext(sessionContext);
+            executionAggregateBuilder.putSessionContexts(sessionContext.getId(), sessionContextBuilder.build());
         }
     }
 

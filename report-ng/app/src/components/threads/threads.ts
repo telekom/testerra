@@ -24,7 +24,7 @@ import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import {AbstractViewModel} from "../abstract-view-model";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {StatusConverter} from "../../services/status-converter";
-import { Timeline } from "vis-timeline/standalone";
+import {Timeline, TimelineOptionsGroupHeightModeType} from "vis-timeline/standalone";
 import "vis-timeline/styles/vis-timeline-graph2d.css";
 import {data} from "../../services/report-model";
 import {Router} from "aurelia-router";
@@ -142,25 +142,29 @@ export class Threads extends AbstractViewModel {
             groupItems.push({id: groupId, content: threadName});
 
             methodContexts.forEach((context: MethodContext) => {
-                let content: string = ''
-
-                content += "<div class='item-content' id='" + context.contextValues.id + "'>";
-                content += "<div class='item-content-head'>" + context.contextValues.name + "</div>";
-                content += "<div class='item-content-body'>"
-                content += "<p class='m0'>" + this._classNamesMap[context.classContextId] + "</p>";
-                content += "<p class='m0'>(" + context.methodRunIndex + ")</p>";
-                content += "</div>";
-                content += "</div>";
-
+                /*
+                * workaround for XSS-protection update of vis-timeline by using an HTMLElement instead of injecting the html directly in which the XSS protection would remove the class names needed for our styling
+                * @see: https://github.com/visjs/vis-timeline/issues/846#issuecomment-749691286
+                */
+                const element = document.createElement("content");
+                element.innerHTML = `
+                    <div class="item-content" id="${context.contextValues.id}">
+                    <div class="item-content-head">${context.contextValues.name}</div>
+                    <div class='item-content-body'>
+                    <p class="m0">${this._classNamesMap[context.classContextId]}</p>
+                    <p class="m0">(${context.methodRunIndex})</p>
+                    </div>
+                    </div>
+                `;
                 dataItems.push({
                     id: context.contextValues.id,
-                    content: content,
+                    content: element,
                     start: context.contextValues.startTime,
                     end: context.contextValues.endTime,
                     group: groupId,
                     callbackInfos: [context.contextValues.id],
                     style: "background-color: " + this._statusConverter.getColorForStatus(context.resultStatus) + ";",
-                    title: content
+                    title: context.contextValues.name
                 });
             });
 
@@ -196,7 +200,8 @@ export class Threads extends AbstractViewModel {
             zoomMin:10,
             margin: {
                 item: { horizontal: 2 }
-            }
+            },
+            groupHeightMode: 'fixed' as TimelineOptionsGroupHeightModeType
         };
 
         // Create a Timeline

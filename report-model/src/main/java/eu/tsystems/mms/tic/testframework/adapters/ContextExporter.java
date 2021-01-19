@@ -537,6 +537,7 @@ public class ContextExporter {
             Optional<File.Builder> optional = Optional.ofNullable(buildVideo(video));
             optional.ifPresent(fileBuilder -> builder.setVideoId(fileBuilder.getId()));
         });
+        builder.setExecutionContextId(sessionContext.getExecutionContextId());
 
         // translate object map to string map
         Map<String, String> newMap = new LinkedHashMap<>();

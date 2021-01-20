@@ -71,7 +71,7 @@ export class TestClassesCard {
         //Iterate through classStatistics array to fill map with data for series
         classStatistics
             .filter(classStatistic => {
-                return this._filteredStatuses.find(status => classStatistic.getStatusCount(status)>0);
+                return this._filteredStatuses.find(status => classStatistic.getStatusesCount(this._statusConverter.groupStatus(status))>0);
             })
             .forEach(classStats => {
                 for (const status of this._filteredStatuses) {

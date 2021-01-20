@@ -93,16 +93,7 @@ export class Classes extends AbstractViewModel {
         const uniqueClasses = {};
         const uniqueStatuses = {};
 
-        let relevantStatuses:ResultStatusType[] = null;
-        if (this._selectedStatus == ResultStatusType.PASSED) {
-            relevantStatuses = this._statusConverter.passedStatuses;
-        } else if (this._selectedStatus == ResultStatusType.FAILED) {
-            // Failed status without expected failed, because its handled extra
-            relevantStatuses = [ResultStatusType.FAILED, ResultStatusType.FAILED_RETRIED];
-        } else if (this._selectedStatus) {
-            relevantStatuses = [ this._selectedStatus ];
-        }
-
+        const relevantStatuses:ResultStatusType[] = this._selectedStatus?this._statusConverter.groupStatus(this._selectedStatus):null;
         this._filteredMethodDetails = [];
 
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {

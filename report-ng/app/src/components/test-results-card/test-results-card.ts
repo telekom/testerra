@@ -73,7 +73,7 @@ export class TestResultsCard {
         const colors = [];
 
         for (const status of this._statusConverter.relevantStatuses) {
-            series.push(executionStatistics.getStatusCount(status));
+            series.push(executionStatistics.getStatusesCount(this._statusConverter.groupStatus(status)));
             labels.push(this._statusConverter.getLabelForStatus(status));
             //labelStatus.push(status)
             colors.push(this._statusConverter.getColorForStatus(status));

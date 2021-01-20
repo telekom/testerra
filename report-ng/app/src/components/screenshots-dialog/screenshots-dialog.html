@@ -45,11 +45,12 @@
     <mdc-dialog-content class="pt0">
         <img src="${_current.relativePath}"/>
     </mdc-dialog-content>
-    <div class="flex spread card-actions">
+    <div class="flex spread card-actions btn-fullscreen">
         <button mdc-icon-button
-                class="icon-button--dense btn-fullscreen"
+                class="icon-button--dense"
                 icon="fullscreen"
-                click.delegate="_fullscreen()">
+                click.delegate="_fullscreen()"
+                tooltip="fullscreen">
         </button>
     </div>
 </template>

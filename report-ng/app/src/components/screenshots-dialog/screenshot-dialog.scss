@@ -27,5 +27,6 @@
     }
 }
  .btn-fullscreen{
-     float: left;
+     display: flex;
+     justify-content: flex-end;
  }

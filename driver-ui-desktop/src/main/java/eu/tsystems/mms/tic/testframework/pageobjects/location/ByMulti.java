@@ -1,5 +1,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.location;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.openqa.selenium.*;
 
@@ -59,6 +60,11 @@ public class ByMulti extends By {
             return new byte[]{};
         }
         return os.toByteArray();
+    }
+
+    public Rectangle getBoundingBox(){
+        JSONArray bb = selector.getJSONArray("bb");
+        return new Rectangle(bb.getInt(0), bb.getInt(1), bb.getInt(3), bb.getInt(2));
     }
 
     @Override

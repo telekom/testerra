@@ -29,11 +29,17 @@ export class ScreenshotsDialog {
     private _screenshots:IFile[];
     private _current:IFile;
     private _index = 0;
-    private _dialog: MdcDialog;
+
     constructor(
-
+        private _dialog: MdcDialog,
     ) {
-
+        // this._dialog.listen('MDCDialog:opened', () => {
+        //     console.log("dialog opened");
+        //     if (document.activeElement instanceof HTMLElement){
+        //         console.log("blur on open dialog");
+        //         document.activeElement.blur();
+        //     }
+        // });
     }
 
     activate(params:any) {
@@ -42,12 +48,10 @@ export class ScreenshotsDialog {
         this._index = this._screenshots.indexOf(this._current);
     }
 
-    attached(){
-        this._dialog.listen('MDCDialog:opened', () => {
-            if (document.activeElement instanceof HTMLElement){
-                document.activeElement.blur()
-            }
-        });
+    attached() {
+        // if (document.activeElement instanceof HTMLElement){
+        //     document.activeElement.blur();
+        // }
     }
 
     private _showScreenshot(file:IFile) {

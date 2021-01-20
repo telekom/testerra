@@ -24,7 +24,10 @@
     <div class="container">
         <div id="timeline">
             <div class="timeline">
-                <section class="step" repeat.for="testStep of _methodDetails.methodContext.testSteps">
+                <section class="step"
+                         repeat.for="testStep of _methodDetails.methodContext.testSteps"
+                         if.bind="testStep.actions.length > 0"
+                >
                     <let step-index.bind="$index+1"></let>
                     <div mdc-headline5 class="teststep-headline" id="step${stepIndex}">${stepIndex} ${testStep.name}</div>
                     <div repeat.for="action of testStep.actions" mdc-body1>

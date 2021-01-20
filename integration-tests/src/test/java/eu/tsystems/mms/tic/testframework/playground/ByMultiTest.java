@@ -55,18 +55,7 @@ public class ByMultiTest extends AbstractTestSitesTest {
     public void testT01_CorrectXpath() {
         String selector = ByMulti.serialize(json);
 
-        GuiElement guiElement = new GuiElement(driver, new ByMulti(driver, selector));
-        Assert.assertTrue(guiElement.isDisplayed());
-        Assert.assertEquals(guiElement.getText(), "Cross Frame Drag and Drop Example");
-    }
-
-    @Test
-    public void testT01_WrongXpath() {
-        json.put("xpath", "wrong_xpath");
-        String selector = ByMulti.serialize(json);
-
-        GuiElement guiElement = new GuiElement(driver, new ByMulti(driver, selector));
-        // even though the xpath is wrong the element should be found because of the correct bounding box
+        GuiElement guiElement = new GuiElement(driver, new ByMulti(selector));
         Assert.assertTrue(guiElement.isDisplayed());
         Assert.assertEquals(guiElement.getText(), "Cross Frame Drag and Drop Example");
     }

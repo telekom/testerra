@@ -1,17 +1,23 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.location;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.openqa.selenium.*;
 
 import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
+import java.util.zip.DeflaterOutputStream;
+import java.util.zip.InflaterOutputStream;
 
 public class ByMulti extends By {
 
-    private final WebDriver driver;
+    private final static Charset ENCODING = StandardCharsets.ISO_8859_1;
 
-    private final MultiDimSelector selector;
+    private final WebDriver driver;
+    private final JSONObject selector;
 
     public ByMulti(WebDriver driver, String encodedSelector) {
         this.driver = driver;
@@ -19,32 +25,44 @@ public class ByMulti extends By {
         this.selector = deserialize(encodedSelector);
     }
 
-    public static String serialize(Serializable data) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        try {
-            ObjectOutputStream oos = new ObjectOutputStream(baos);
-            oos.writeObject(data);
-            oos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-        return Base64.getEncoder().encodeToString(baos.toByteArray());
+    public static String serialize(JSONObject json) {
+        byte[] compressed = compress(json.toString());
+
+        return new String(compressed, ENCODING);
     }
 
-    public static MultiDimSelector deserialize(String s) {
-        byte [] data = Base64.getDecoder().decode(s);
-        Object o;
+    public static byte[] compress(String text) {
+        byte[] bArray = text.getBytes();
+
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
         try {
-            ObjectInputStream ois = new ObjectInputStream(
-                    new ByteArrayInputStream(data));
-            o = ois.readObject();
-            ois.close();
-        } catch (IOException | ClassNotFoundException e) {
+            DeflaterOutputStream dos = new DeflaterOutputStream(os);
+            dos.write(bArray);
+            dos.close();
+        } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            return new byte[]{};
         }
-        return (MultiDimSelector) o;
+        return os.toByteArray();
+    }
+
+    public static JSONObject deserialize(String s) {
+        byte[] decompressed = decompress(s.getBytes(ENCODING));
+
+        return new JSONObject(new String(decompressed));
+    }
+
+    public static byte[] decompress(byte[] compressedTxt) {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        try {
+            OutputStream ios = new InflaterOutputStream(os);
+            ios.write(compressedTxt);
+            ios.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new byte[]{};
+        }
+        return os.toByteArray();
     }
 
     private static class ByBoundingBox extends By {
@@ -66,7 +84,7 @@ public class ByMulti extends By {
                     rect.y + rect.height / 2).findElements(searchContext);
 
             List<WebElement> overlappingElements = new ArrayList<>();
-            System.out.println("aha");
+
             for (WebElement element : webElements) {
                 Rectangle rect2 = element.getRect();
                 int intersection = Math.max(0, Math.min(rect.x+rect.width,  rect2.x+rect2.width)  - Math.max(rect.x, rect2.x)) *
@@ -75,26 +93,28 @@ public class ByMulti extends By {
                 int union = (rect.width* rect.height) + (rect2.width * rect2.height) - intersection;
 
                 float overlap = (float) intersection / union;
-                System.out.println("Overlap of: " + overlap);
+
                 if (overlap >= THRESHOLD) {
                     overlappingElements.add(element);
                 }
             }
-
             return overlappingElements;
         }
     }
 
     @Override
     public List<WebElement> findElements(SearchContext searchContext) {
-        List<WebElement> xpathElements = new ByXPath(selector.getXpath()).findElements(searchContext);
+        List<WebElement> xpathElements = new ByXPath(selector.getString("xpath")).findElements(searchContext);
 
         if (xpathElements.size() > 0) {
             return xpathElements;
         }
 
-        if (selector.getRect() != null) {
-            return new ByBoundingBox(driver, selector.getRect()).findElements(searchContext);
+        if (selector.has("bb")) {
+            JSONArray bb = selector.getJSONArray("bb");
+            // index 3 and 2 are swapped as Rectangle takes height before width as parameter
+            Rectangle rect = new Rectangle(bb.getInt(0), bb.getInt(1), bb.getInt(3), bb.getInt(2));
+            return new ByBoundingBox(driver, rect).findElements(searchContext);
         } else {
             return new ArrayList<>();
         }

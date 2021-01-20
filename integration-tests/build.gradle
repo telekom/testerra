@@ -2,6 +2,7 @@ doNotPublish(this)
 
 dependencies {
     compile driver_ui_desktop
+    compile ai4test
     testImplementation project(':report-ng')
     testImplementation project(':report')
 

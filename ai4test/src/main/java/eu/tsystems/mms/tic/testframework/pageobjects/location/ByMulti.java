@@ -1,5 +1,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.location;
 
+import eu.tsystems.mms.tic.testframework.layout.core.Point2D;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.openqa.selenium.*;
@@ -65,6 +66,16 @@ public class ByMulti extends By {
     public Rectangle getBoundingBox(){
         JSONArray bb = selector.getJSONArray("bb");
         return new Rectangle(bb.getInt(0), bb.getInt(1), bb.getInt(3), bb.getInt(2));
+    }
+
+    public Point2D getStartPoint(){
+        JSONArray bb = selector.getJSONArray("bb");
+        return new Point2D(bb.getInt(0), bb.getInt(1));
+    }
+
+    public Point2D getEndPoint(){
+        JSONArray bb = selector.getJSONArray("bb");
+        return new Point2D(bb.getInt(0) + bb.getInt(2), bb.getInt(1) + bb.getInt(3));
     }
 
     @Override

@@ -4,11 +4,11 @@ dependencies {
     compile driver_ui_desktop
 
     // <UITestUtils>
-    compile 'org.sikuli:sikuli-api:1.2.0'
+    //compile 'org.sikuli:sikuli-api:1.2.0'
     // </UITestUtils>
 
     // <JSUtils>
-    implementation 'org.json:json:20140107'
+    //implementation 'org.json:json:20140107'
     // </JSUtils>
 }
 

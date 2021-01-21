@@ -123,7 +123,7 @@ export class Method {
                     }
                     case "dependencies": {
                         const count = methodDetails.methodContext.relatedMethodContextIds.length + methodDetails.methodContext.dependsOnMethodContextIds.length;
-                        if (count > 0) {
+                        if (count > 1) {
                             routeConfig.nav = true;
                             routeConfig.settings.count = count;
                         } else {

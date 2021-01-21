@@ -37,7 +37,7 @@ public class HighlightUiElementListener implements MethodEndEvent.Listener {
     @Override
     @Subscribe
     public void onMethodEnd(MethodEndEvent event) {
-        if (!event.isFailed()) return;
+        if (!event.isFailed() || !event.getTestMethod().isTest()) return;
 
         Throwable throwable = event.getTestResult().getThrowable();
         if (!(throwable instanceof UiElementAssertionError)) return;

@@ -27,7 +27,7 @@ public class UiElementAssertionError extends AssertionError {
     private GuiElementData data;
 
     public UiElementAssertionError(GuiElementData data, Throwable cause) {
-        super(cause.getMessage());
+        super(cause.getMessage(), cause.getCause());
         this.data = data;
     }
 

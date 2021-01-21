@@ -21,6 +21,7 @@
  */
  package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
+import eu.tsystems.mms.tic.testframework.exceptions.UiElementAssertionError;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
@@ -52,10 +53,11 @@ public class GuiElementAssertHighlightDecorator extends GuiElementAssertDecorato
     }
 
     @Override
-    void afterAssertion(String message, AssertionError assertionErrorOrNull) {
+    AssertionError afterAssertion(String message, AssertionError assertionErrorOrNull) {
         if (POConfig.isDemoMode()) {
             highlight(assertionErrorOrNull == null);
         }
+        return new UiElementAssertionError(this.guiElementData, assertionErrorOrNull);
     }
 
     private void highlight(boolean successful) {

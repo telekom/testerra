@@ -24,10 +24,16 @@ package eu.tsystems.mms.tic.testframework.pageobjects.listeners;
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.UiElementAssertionError;
+import eu.tsystems.mms.tic.testframework.layout.ImageUtil;
+import eu.tsystems.mms.tic.testframework.layout.core.Point2D;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.ByMulti;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.Scalar;
+
 import java.io.File;
 
 public class HighlightUiElementListener implements MethodEndEvent.Listener {
@@ -50,12 +56,11 @@ public class HighlightUiElementListener implements MethodEndEvent.Listener {
         File screenshotFile = new File(report.getReportDirectory(Report.SCREENSHOTS_FOLDER_NAME), screenshot.filename);
 
         if (screenshotFile.exists()) {
-//            String filename = screenshot.filename;
-//            Mat mat = ImageUtil.loadImage(filename);
-//            Point2D start = new Point2D(0, 0); // get start and endpoint from ByMulti
-//            Point2D end = new Point2D(0, 0);
-//            Core.rectangle(mat, start.toOpenCvPoint(), end.toOpenCvPoint(), new Scalar(255, 0, 0), 5);
-//            ImageUtil.writeImage(mat, filename);
+            Mat mat = ImageUtil.loadImage(screenshotFile.getAbsolutePath());
+            Point2D start = by.getStartPoint();
+            Point2D end = by.getEndPoint();
+            Core.rectangle(mat, start.toOpenCvPoint(), end.toOpenCvPoint(), new Scalar(255, 0, 0), 5);
+            ImageUtil.writeImage(mat, screenshotFile.getAbsolutePath());
         }
     }
 }

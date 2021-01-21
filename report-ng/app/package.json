@@ -26,6 +26,7 @@
         "@aurelia-mdc-web/switch": "^2.0.3",
         "@aurelia-mdc-web/tab-bar": "^2.0.3",
         "@aurelia-mdc-web/text-field": "^2.0.3",
+        "@aurelia-mdc-web/tooltip": "^3.0.3",
         "@aurelia-mdc-web/top-app-bar": "^2.0.3",
         "@aurelia-mdc-web/typography": "^2.0.3",
         "@types/moment-duration-format": "^2.2.2",

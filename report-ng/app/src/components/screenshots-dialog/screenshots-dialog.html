@@ -23,7 +23,7 @@
     <div class="flex spread card-actions">
         <div></div>
         <div class="flex vcenter">
-            <button mdc-icon-button icon="keyboard_arrow_left" click.delegate="_left()"></button>
+            <button mdc-icon-button icon="keyboard_arrow_left" click.delegate="_left()" if.bind="_screenshots.length>1"></button>
             <ul class="mdc-list mdc-list--dense ml1 mr1">
                 <li class="mdc-list-item reset-cursor">
                     <span class="secondary sr1">Title</span>${_current.meta.Title}
@@ -38,7 +38,7 @@
                     <span class="secondary sr1">Session</span>${_current.meta.SessionKey}
                 </li>
             </ul>
-            <button mdc-icon-button icon="keyboard_arrow_right" click.delegate="_right()"></button>
+            <button mdc-icon-button icon="keyboard_arrow_right" click.delegate="_right()" if.bind="_screenshots.length>1"></button>
         </div>
         <button mdc-icon-button class="icon-button--dense" icon="clear" data-mdc-dialog-action="cancel"></button>
     </div>

@@ -26,6 +26,7 @@
         "@aurelia-mdc-web/switch": "^2.0.3",
         "@aurelia-mdc-web/tab-bar": "^2.0.3",
         "@aurelia-mdc-web/text-field": "^2.0.3",
+        "@aurelia-mdc-web/tooltip": "^3.0.3",
         "@aurelia-mdc-web/top-app-bar": "^2.0.3",
         "@aurelia-mdc-web/typography": "^2.0.3",
         "@types/moment-duration-format": "^2.2.2",
@@ -44,7 +45,7 @@
         "t-systems-aurelia-components": "^1.0.5",
         "ts-replace-all": "^1.0.0",
         "vis-network": "^6.5.2",
-        "vis-timeline": "^7.4.2"
+        "vis-timeline": "^7.4.6"
     },
     "devDependencies": {
         "@types/lodash": "^4.14.165",

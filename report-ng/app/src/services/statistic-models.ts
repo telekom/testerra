@@ -53,7 +53,13 @@ class Statistics {
     }
 
     get overallTestCases() {
-        return this.getStatusesCount(this._statusConverter.relevantStatuses);
+        return this.getStatusesCount([
+            ResultStatusType.PASSED,
+            ResultStatusType.SKIPPED,
+            ResultStatusType.FAILED,
+            ResultStatusType.FAILED_EXPECTED,
+            ResultStatusType.PASSED_RETRY
+        ]);
     }
 
     get overallPassed() {

@@ -144,14 +144,18 @@ export class DependencyNetwork {
             }
         })
 
-        methodDetails.methodContext.relatedMethodContextIds.forEach(methodId => {
-            /**
-             * @todo Remove this workaround when data model is fixed
-             */
-            if (methodId != methodDetails.methodContext.contextValues.id) {
-                const methodContext = methodDetails.executionStatistics.executionAggregate.methodContexts[methodId];
-                if (methodContext) {
-                    addNode(methodContext);
+        methodDetails.methodContext.relatedMethodContextIds
+            .filter(methodId => {
+                return (methodId != methodDetails.methodContext.contextValues.id);
+            })
+            .map(methodId => {
+                return methodDetails.executionStatistics.executionAggregate.methodContexts[methodId]
+            })
+            .filter(methodContext => methodContext)
+            .forEach(methodContext => {
+                addNode(methodContext);
+
+                if (methodContext.methodRunIndex < methodDetails.methodContext.methodRunIndex) {
                     edges.push({
                         from: methodContext.contextValues.id,
                         to: methodDetails.methodContext.contextValues.id,
@@ -169,9 +173,26 @@ export class DependencyNetwork {
                         },
                         dashes: true,
                     })
+                } else {
+                    edges.push({
+                        from: methodDetails.methodContext.contextValues.id,
+                        to: methodContext.contextValues.id,
+                        arrows: {
+                            from: {
+                                enabled: true,
+                                type: "vee",
+                                scaleFactor: 0.7
+                            }
+                        },
+                        label: "after",
+                        font: {
+                            align: "middle",
+                            size: 9,
+                        },
+                        dashes: true,
+                    })
                 }
-            }
-        });
+            });
 
         // create a network
         const data = {

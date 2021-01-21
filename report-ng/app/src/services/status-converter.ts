@@ -62,9 +62,9 @@ export class StatusConverter {
     get passedStatuses() {
         return [
             ResultStatusType.PASSED,
-            //ResultStatusType.PASSED_RETRY,
+            ResultStatusType.PASSED_RETRY,
             ResultStatusType.MINOR,
-            //ResultStatusType.MINOR_RETRY
+            ResultStatusType.MINOR_RETRY
         ]
     }
 
@@ -75,6 +75,13 @@ export class StatusConverter {
             ResultStatusType.SKIPPED,
             ResultStatusType.PASSED,
         ];
+    }
+
+    groupStatus(status:ResultStatusType):ResultStatusType[] {
+        switch (status) {
+            case ResultStatusType.PASSED: return this.passedStatuses;
+            default: return [status];
+        }
     }
 
     private _normalizeStatus(status:ResultStatusType|string) {

@@ -367,14 +367,6 @@ public class TesterraListener implements
             }
         }
 
-        // set method endTime
-        //methodContext.endTime = new Date();
-
-        /*
-        add workers in workflow order
-         */
-        methodContext.getTestStep(TestStep.TEARDOWN);
-
         AbstractMethodEvent event = new MethodEndEvent()
                 .setTestResult(testResult)
                 .setInvokedMethod(invokedMethod)
@@ -383,6 +375,8 @@ public class TesterraListener implements
                 .setMethodContext(methodContext);
 
         eventBus.post(event);
+
+        methodContext.getTestStep(TestStep.TEARDOWN);
     }
 
     @Override

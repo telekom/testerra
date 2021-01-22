@@ -103,11 +103,6 @@
     justify-content: center;
 }
 
-.spread {
-    @extend .flex;
-    justify-content: space-between;
-}
-
 .space-evenly {
     @extend .flex;
     justify-content: space-evenly;

@@ -22,7 +22,15 @@
 .screenshot-dialog {
     .mdc-dialog__container {
         .mdc-dialog__surface {
-            max-width: 100%;
+            max-width: 90%;
         }
     }
+}
+.btn-fullscreen {
+    position: absolute;
+    right: 90%;
+}
+
+.screenshot-image {
+    border: #5d6f81 solid 1px;
 }

@@ -32,6 +32,8 @@ import {FailureAspectStatistics} from "services/statistic-models";
 import {Config} from "services/config-dev";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import {StatusConverter} from "services/status-converter";
+import {data} from "../../services/report-model";
+import IStackTraceCause = data.IStackTraceCause;
 
 export interface ILayoutComparisonContext {
     name: string,
@@ -66,6 +68,13 @@ export class Details {
             if (methodDetails.methodContext.errorContext) {
                 this._failureAspect = new FailureAspectStatistics().setErrorContext(methodDetails.methodContext.errorContext);
             }
+        });
+    }
+
+    private _copyStackTraceToClipboard(stackTrace:IStackTraceCause[]) {
+        const msg = stackTrace.flatMap(cause => cause.stackTraceElements).join("\n");
+        navigator.clipboard.writeText(msg).then(response => {
+            // Show tooltip here
         });
     }
 }

@@ -23,6 +23,12 @@ import {data} from "../../services/report-model";
 import {MdcDialog} from '@aurelia-mdc-web/dialog';
 import './screenshot-dialog.scss'
 import IFile = data.IFile;
+import {StatisticsGenerator} from "../../services/statistics-generator";
+
+export interface IScreenshotsDialogParams {
+    screenshotIds:string[],
+    current:IFile
+}
 
 @autoinject
 export class ScreenshotsDialog {
@@ -32,6 +38,7 @@ export class ScreenshotsDialog {
 
     constructor(
         private _dialog: MdcDialog,
+        private _statistics: StatisticsGenerator,
     ) {
         // this._dialog.listen('MDCDialog:opened', () => {
         //     console.log("dialog opened");
@@ -42,10 +49,13 @@ export class ScreenshotsDialog {
         // });
     }
 
-    activate(params:any) {
-        this._screenshots = params.screenshots;
+    activate(params:IScreenshotsDialogParams) {
         this._current = params.current;
-        this._index = this._screenshots.indexOf(this._current);
+        this._statistics.getFilesForIds(params.screenshotIds)
+            .then(screenshots => {
+                this._screenshots = screenshots;
+                this._index = this._screenshots.indexOf(this._current);
+            });
     }
 
     attached() {

@@ -23,16 +23,14 @@ import {autoinject, PLATFORM} from 'aurelia-framework';
 import {NavigationInstruction, RouteConfig, Router, RouterConfiguration} from "aurelia-router";
 import {MethodDetails, StatisticsGenerator} from "../../services/statistics-generator";
 import {data} from "../../services/report-model";
-import {ScreenshotsDialog} from "../screenshots-dialog/screenshots-dialog";
+import {IScreenshotsDialogParams, ScreenshotsDialog} from "../screenshots-dialog/screenshots-dialog";
 import {MdcDialogService} from '@aurelia-mdc-web/dialog';
-import IFile = data.IFile
-import ISessionContext = data.ISessionContext;
 
 @autoinject()
 export class Method {
     private _router:Router;
-    private _allScreenshots:IFile[];
-    private _lastScreenshot:IFile;
+    private _allScreenshotIds:string[];
+    private _lastScreenshotId:string;
     private _methodDetails:MethodDetails;
 
     constructor(
@@ -110,10 +108,8 @@ export class Method {
     ) {
         this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
             this._methodDetails = methodDetails;
-            this._statistics.getScreenshotsFromMethodContext(methodDetails.methodContext).then(screenshots => {
-                this._allScreenshots = screenshots;
-                this._lastScreenshot = this._allScreenshots.reverse().find(() => true);
-            })
+            this._allScreenshotIds = this._statistics.getScreenshotIdsFromMethodContext(methodDetails.methodContext);
+            this._lastScreenshotId = this._allScreenshotIds.reverse().find(() => true);
 
             this._router.routes.forEach(routeConfig => {
                 switch (routeConfig.name) {
@@ -188,12 +184,12 @@ export class Method {
         this._router.navigateToRoute(routeConfig.name);
     }
 
-    private _showScreenshot(file:data.File) {
+    private _showScreenshot(ev:CustomEvent) {
         this._dialogService.open({
             viewModel: ScreenshotsDialog,
-            model: {
-                current: file,
-                screenshots: this._allScreenshots
+            model: <IScreenshotsDialogParams> {
+                current: ev.detail,
+                screenshotIds: this._allScreenshotIds
             },
             class: "screenshot-dialog"
         });

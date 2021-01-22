@@ -25,9 +25,8 @@ import {data} from "services/report-model";
 import {DataLoader} from "services/data-loader";
 import {Config} from "services/config-dev";
 import {MdcDialogService} from '@aurelia-mdc-web/dialog';
-import {ScreenshotsDialog} from "../screenshots-dialog/screenshots-dialog";
+import {IScreenshotsDialogParams, ScreenshotsDialog} from "../screenshots-dialog/screenshots-dialog";
 import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
-import IFile = data.IFile;
 import './timeline.scss'
 import IClickPathEvent = data.IClickPathEvent;
 import ILogMessage = data.ILogMessage;
@@ -43,13 +42,13 @@ enum EntryType {
 }
 
 class TestStepActionGroup {
-    private _screenshots:IFile[]=[];
+    private _screenshotIds:string[]=[];
     private _clickPathEvents:IClickPathEvent[]=[];
     private _logMessages:ILogMessage[]=[];
     private _assertions:IErrorContext[]=[];
 
-    addScreenshot(screenshot:IFile) {
-        this._screenshots.push(screenshot);
+    addScreenshotId(screenshotId:string) {
+        this._screenshotIds.push(screenshotId);
     }
 
     addAssertion(assertion:IErrorContext) {
@@ -64,8 +63,8 @@ class TestStepActionGroup {
         this._logMessages.push(logMessage);
     }
 
-    get screenshots() {
-        return this._screenshots;
+    get screenshotIds() {
+        return this._screenshotIds;
     }
 
     get logMessages() {
@@ -100,7 +99,6 @@ interface TestStepActionDetails extends ITestStepAction {
 @autoinject()
 export class Steps {
     private _methodDetails:MethodDetails;
-    private _allScreenshots:IFile[];
     private _router:Router;
 
     constructor(
@@ -119,8 +117,6 @@ export class Steps {
         this._router = navInstruction.router;
         this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
             this._methodDetails = methodDetails;
-            const screenshotsLoadingPromise = this._statistics.getScreenshotsFromMethodContext(methodDetails.methodContext);
-
             this._methodDetails.methodContext.testSteps
                 .flatMap(value => value.actions)
                 .map(value => value as TestStepActionDetails)
@@ -136,9 +132,7 @@ export class Steps {
                         }
                         switch (currentEntryType) {
                             case EntryType.SCREENSHOT: {
-                                screenshotsLoadingPromise.then(screenshots => {
-                                    currentActionGroup.addScreenshot(screenshots.find(value => value.id===entry.screenshotId));
-                                });
+                                currentActionGroup.addScreenshotId(entry.screenshotId);
                                 break;
                             }
                             case EntryType.ASSERTION: {
@@ -157,10 +151,6 @@ export class Steps {
                     })
                 });
 
-            screenshotsLoadingPromise.then(value => {
-                this._allScreenshots = value;
-            });
-
             if (params.step) {
                 window.setTimeout(() => {
                     const stepHeadline = window.document.getElementById("step"+params.step);
@@ -170,12 +160,12 @@ export class Steps {
         });
     }
 
-    private _showScreenshot(file:data.File) {
+    private _showScreenshot(ev:CustomEvent) {
         this._dialogService.open({
             viewModel: ScreenshotsDialog,
-            model: {
-                current: file,
-                screenshots: this._allScreenshots
+            model: <IScreenshotsDialogParams> {
+                current: ev.detail,
+                screenshotIds: this._statistics.getScreenshotIdsFromMethodContext(this._methodDetails.methodContext)
             },
             class: "screenshot-dialog"
         });

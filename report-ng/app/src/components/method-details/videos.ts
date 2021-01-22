@@ -75,7 +75,6 @@ export class Videos {
         this._videos.forEach(video => {
            const videoInfo = this._videoStorage[video.file.id];
            if (videoInfo) {
-               console.log("restore video info", videoInfo);
                video.element.currentTime = videoInfo.time;
            }
         });

@@ -44,7 +44,6 @@ export class LazyImage {
     }
 
     bind() {
-        console.log("load lazy image", this.fileId);
         this._statistics.getFilesForIds([this.fileId]).then(file => {
             this._file = file[0];
         })

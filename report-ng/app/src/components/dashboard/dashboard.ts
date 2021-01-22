@@ -28,6 +28,7 @@ import {data} from "../../services/report-model";
 import MethodType = data.MethodType;
 import FailureCorridorValue = data.FailureCorridorValue;
 import ResultStatusType = data.ResultStatusType;
+import "./dashboard.scss"
 
 class FailureCorridor {
     count:number = 0;
@@ -37,23 +38,23 @@ class FailureCorridor {
     }
 }
 
-interface Item {
+interface IItem {
     status: ResultStatusType,
-    count: number,
+    counts: (string|number)[],
     active: boolean,
+    labels: string[],
 }
 
 @autoinject()
 export class Dashboard extends AbstractViewModel {
     private _executionStatistics: ExecutionStatistics;
-    private _failedRetried = 0;
     private _passedRetried = 0;
     private _majorFailures = 0;
     private _minorFailures = 0;
     private _highCorridor = new FailureCorridor();
     private _midCorridor = new FailureCorridor();
     private _lowCorridor = new FailureCorridor();
-    private _filterItems:Item[];
+    private _filterItems:IItem[];
     private _breakdownFilter:IFilter;
     private _classFilter:IFilter;
 
@@ -68,28 +69,31 @@ export class Dashboard extends AbstractViewModel {
     attached() {
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
             this._executionStatistics = executionStatistics;
-            this._failedRetried = this._executionStatistics.getStatusCount(ResultStatusType.FAILED_RETRIED);
             this._passedRetried = this._executionStatistics.getStatusesCount([ResultStatusType.PASSED_RETRY,ResultStatusType.MINOR_RETRY]);
 
             this._filterItems = [];
             this._filterItems.push({
                 status: ResultStatusType.FAILED,
-                count: this._executionStatistics.overallFailed,
+                counts: [this._executionStatistics.overallFailed],
+                labels: [this._statusConverter.getLabelForStatus(ResultStatusType.FAILED)],
                 active:false,
             });
             this._filterItems.push({
                 status: ResultStatusType.FAILED_EXPECTED,
-                count: this._executionStatistics.getStatusCount(ResultStatusType.FAILED_EXPECTED),
+                counts: [this._executionStatistics.getStatusCount(ResultStatusType.FAILED_EXPECTED)],
+                labels: [this._statusConverter.getLabelForStatus(ResultStatusType.FAILED)],
                 active:false
             });
             this._filterItems.push({
                 status: ResultStatusType.SKIPPED,
-                count: this._executionStatistics.getStatusCount(ResultStatusType.SKIPPED),
+                counts: [this._executionStatistics.getStatusCount(ResultStatusType.SKIPPED)],
+                labels: [this._statusConverter.getLabelForStatus(ResultStatusType.FAILED)],
                 active:false
             });
             this._filterItems.push({
                 status: ResultStatusType.PASSED,
-                count: this._executionStatistics.overallPassed,
+                counts: [this._executionStatistics.overallPassed,(this._passedRetried>0?`&sup; ${this._passedRetried}`:null)],
+                labels: [this._statusConverter.getLabelForStatus(ResultStatusType.PASSED), (this._passedRetried>0?this._statusConverter.getLabelForStatus(ResultStatusType.PASSED_RETRY):null)],
                 active:false
             });
 
@@ -122,7 +126,7 @@ export class Dashboard extends AbstractViewModel {
         });
     };
 
-    private _resultClicked(item:Item) {
+    private _resultClicked(item:IItem) {
         /**
          * It still happens that items keep selected when they shouldn't
          * https://gist.dumber.app/?gist=f09831456ae377d1121e8a41eece1c42

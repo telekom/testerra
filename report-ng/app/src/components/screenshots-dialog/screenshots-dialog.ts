@@ -76,12 +76,11 @@ export class ScreenshotsDialog {
 
    /** https://stackoverflow.com/questions/27798126/how-to-open-the-newly-created-image-in-a-new-tab**/
     private _fullscreen(){
-        let image = new Image();
-        let w = window.open('about:blank');
+        const image = new Image();
+        const newWindow = window.open('about:blank');
         image.src =  this._current.relativePath;
-
-           w.document.write(image.outerHTML);
-           w.document.title = this._current.meta.Title;
+        newWindow.document.write(image.outerHTML);
+        newWindow.document.title = this._current.meta.Title;
    }
 }
 

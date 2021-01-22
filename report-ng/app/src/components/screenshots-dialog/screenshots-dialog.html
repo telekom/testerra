@@ -24,33 +24,30 @@
         <div></div>
         <div class="flex vcenter">
             <button mdc-icon-button icon="keyboard_arrow_left" click.delegate="_left()" if.bind="_screenshots.length>1"></button>
-            <ul class="mdc-list mdc-list--dense ml1 mr1">
-                <li class="mdc-list-item reset-cursor">
-                    <span class="secondary sr1">Title</span>${_current.meta.Title}
-                </li>
-                <li class="mdc-list-item reset-cursor" if.bind="_current.meta.URL.length">
-                    <span class="secondary sr1">URL</span><a href="${_current.meta.URL}" rel="noopener" target="_blank">${_current.meta.URL}</a>
-                </li>
-                <li class="mdc-list-item reset-cursor">
-                    <span class="secondary sr1">Taken</span>${_current.lastModified|dateFormat:"ddd MMM D Y LTS Z"}</a>
-                </li>
-                <li class="mdc-list-item reset-cursor" if.bind="_current.meta.SessionKey.length">
-                    <span class="secondary sr1">Session</span>${_current.meta.SessionKey}
-                </li>
-            </ul>
+            <div class="flex">
+                <ul class="mdc-list mdc-list--dense ml1 mr1">
+                    <li class="mdc-list-item reset-cursor">
+                        <span class="secondary sr1">Title</span>${_current.meta.Title}
+                    </li>
+                    <li class="mdc-list-item reset-cursor" if.bind="_current.meta.URL.length">
+                        <span class="secondary sr1">URL</span><a href="${_current.meta.URL}" rel="noopener" target="_blank">${_current.meta.URL}</a>
+                    </li>
+                </ul>
+                <ul class="mdc-list mdc-list--dense ml1 mr1">
+                    <li class="mdc-list-item reset-cursor">
+                        <span class="secondary sr1">Taken</span>${_current.lastModified|dateFormat:"ddd MMM D Y LTS Z"}</a>
+                    </li>
+                    <li class="mdc-list-item reset-cursor" if.bind="_current.meta.SessionKey.length">
+                        <span class="secondary sr1">Session</span>${_current.meta.SessionKey}
+                    </li>
+                </ul>
+            </div>
+            <button mdc-icon-button icon="fullscreen" click.delegate="_fullscreen()"></button>
             <button mdc-icon-button icon="keyboard_arrow_right" click.delegate="_right()" if.bind="_screenshots.length>1"></button>
         </div>
         <button mdc-icon-button class="icon-button--dense" icon="clear" data-mdc-dialog-action="cancel"></button>
     </div>
     <mdc-dialog-content class="pt0">
-        <img src="${_current.relativePath}"/>
+        <img src="${_current.relativePath}" class="screenshot-image"/>
     </mdc-dialog-content>
-    <div class="flex space-between card-actions btn-fullscreen">
-        <button mdc-icon-button
-                class="icon-button--dense"
-                icon="fullscreen"
-                click.delegate="_fullscreen()"
-                tooltip="fullscreen">
-        </button>
-    </div>
 </template>

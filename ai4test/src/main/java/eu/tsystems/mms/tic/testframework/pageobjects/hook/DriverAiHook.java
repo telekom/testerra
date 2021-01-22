@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2021, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -48,9 +48,6 @@ public class DriverAiHook implements ModuleHook {
     public void init() {
         EventBus eventBus = TesterraListener.getEventBus();
         eventBus.register(new HighlightUiElementListener());
-
-        // Disable default screenshotter for test purposes
-        Flags.SCREENCASTER_ACTIVE = false;
     }
 
     @Override

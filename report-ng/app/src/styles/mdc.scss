@@ -30,7 +30,6 @@
 @use '@material/card/mdc-card';
 @use '@material/card';
 @use '@material/checkbox';
-@use '@material/icon-button';
 @use '@material/data-table';
 @use '@material/data-table/mdc-data-table';
 @use '@material/dialog/mdc-dialog';
@@ -38,27 +37,28 @@
 @use '@material/drawer/mdc-drawer';
 @use '@material/drawer';
 @use '@material/elevation/mdc-elevation';
+@use "@aurelia-mdc-web/expandable";
+@use '@material/form-field/mdc-form-field';
+@use '@material/form-field/_index' as form-field;
+@use '@material/icon-button';
 @use '@material/icon-button/mdc-icon-button';
 @use "@material/layout-grid/mdc-layout-grid";
 @use "@aurelia-mdc-web/layout-grid";
-@use "@aurelia-mdc-web/expandable";
 @use '@material/linear-progress/mdc-linear-progress';
 @use '@material/linear-progress';
 @use '@material/list/mdc-list';
 @use '@material/list';
-@use '@material/textfield/mdc-text-field';
-@use '@material/textfield';
-@use '@material/switch/mdc-switch';
-@use '@material/switch';
-@use '@material/form-field/mdc-form-field';
-@use '@material/form-field/_index' as form-field;
-@use '@material/ripple/mdc-ripple';
-@use '@material/ripple';
 @use '@material/menu/mdc-menu';
 @use '@material/menu';
+@use '@material/menu-surface/mdc-menu-surface';
+@use '@material/ripple/mdc-ripple';
+@use '@material/ripple';
 @use '@material/select/mdc-select';
 @use '@material/select/_index' as select;
-@use '@material/menu-surface/mdc-menu-surface';
+@use '@material/snackbar/mdc-snackbar';
+@use '@material/snackbar';
+@use '@material/switch/mdc-switch';
+@use '@material/switch';
 //@use '@material/radio/mdc-radio';
 //@use '@material/radio';
 @use '@material/tab-bar/mdc-tab-bar';
@@ -69,6 +69,8 @@
 @use '@material/tab-indicator';
 @use '@material/tab/mdc-tab';
 @use '@material/tab';
+@use '@material/textfield/mdc-text-field';
+@use '@material/textfield';
 @use "@material/tooltip/styles";
 @use '@material/top-app-bar/mdc-top-app-bar';
 @use '@material/top-app-bar';
@@ -84,10 +86,6 @@
 
 // MDC overrides
 
-//.btn-secondary {
-//    @include button.filled-accessible(theme.$secondary);
-//}
-//
 //.mdc-card {
 //    @include card.fill-color(#ffffff);
 //}
@@ -168,4 +166,8 @@ mdc-drawer-app-content {
 
 .icon-button--dense {
     @include icon-button.density(-3);
+}
+
+.snackbar--fill-color {
+    @include snackbar.fill-color(primary);
 }

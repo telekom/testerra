@@ -69,27 +69,28 @@ export class ScreenshotComparison {
     }
 
     private _initComparisons() {
-        this._compareImages(this._leftImageElement);
+        this._compareImages(this._leftImageElement, this._rightImageElement);
     }
 
-    private _compareImages(img:HTMLDivElement){
-        console.log(img);
+    private _compareImages(leftImg:HTMLDivElement, rightImg: HTMLDivElement){
+        console.log(leftImg);
         let slider, clicked = 0, width, height;
+        
         /* Get the width and height of the img element */
-        width = img.offsetWidth;
-        height = img.offsetHeight;
+        width = leftImg.offsetWidth;
+        height = leftImg.offsetHeight;
         console.log(width, " x ", height)
         this._compContainer.style.height = height + "px";
         this._compContainer.style.width = (width + 20) + "px";
 
         /*Set the width of the img element to 50%: */
-        img.style.width = width / 2 + "px";
-        img.style.zIndex = "2";
+        leftImg.style.width = width / 2 + "px";
+        leftImg.style.zIndex = "2";
         /* Create slider: */
         slider = document.createElement("div");
         slider.setAttribute("class", "img-comp-slider secondary-bg");
         /* Insert slider */
-        img.parentElement.insertBefore(slider, img);
+        leftImg.parentElement.insertBefore(slider, leftImg);
         /* Position the slider in the middle: */
         slider.style.top = (height / 2) - (slider.offsetHeight / 2) + "px";
         slider.style.left = (width / 2) - (slider.offsetWidth / 2)+ "px";
@@ -137,7 +138,7 @@ export class ScreenshotComparison {
             var a, x = 0;
             e = e || window.event;
             /* Get the imageElements positions of the image: */
-            a = img.getBoundingClientRect();
+            a = leftImg.getBoundingClientRect();
             /* Calculate the cursor's imageElements coordinate, relative to the image: */
             x = e.pageX - a.left;
             /* Consider any page scrolling: */
@@ -146,9 +147,9 @@ export class ScreenshotComparison {
         }
         function slide(x) {
             /* Resize the image: */
-            img.style.width = x + "px";
+            leftImg.style.width = x + "px";
             /* Position the slider: */
-            slider.style.left = img.offsetWidth - (slider.offsetWidth / 2) + "px";
+            slider.style.left = leftImg.offsetWidth - (slider.offsetWidth / 2) + "px";
         }
     }
 }

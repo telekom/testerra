@@ -18,7 +18,6 @@ ext {
     image_processing = project(':image-processing')
     core = project(':core')
     report = project(':report')
-    ai4test = project(':ai4test')
 
     seleniumVersion = '3.141.59'
     guavaVersion = "28.1-jre"

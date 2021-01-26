@@ -36,11 +36,11 @@ public class GuiElementAssertDescriptionDecorator extends GuiElementAssertDecora
     }
 
     @Override
-    void afterAssertion(String message, AssertionError assertionErrorOrNull) {
+    AssertionError afterAssertion(String message, AssertionError assertionErrorOrNull) {
         if (assertionErrorOrNull != null) {
-            AssertionError assertionError = new AssertionError(description, assertionErrorOrNull);
-            // will be thrown because GuiElementAssertDecorator does not catch Errors
-            throw assertionError;
+            return new AssertionError(description, assertionErrorOrNull);
+        } else {
+            return null;
         }
     }
 }

@@ -318,7 +318,14 @@ public class ContextExporter {
                 optional.ifPresent(entryBuilder::setAssertion);
             }
 
-            actionBuilder.addEntries(entryBuilder);
+            if (
+                    entryBuilder.hasAssertion()
+                    || entryBuilder.hasLogMessage()
+                    || entryBuilder.hasClickPathEvent()
+                    || entryBuilder.getScreenshotId() != null
+            ) {
+                actionBuilder.addEntries(entryBuilder);
+            }
         });
         return actionBuilder;
     }

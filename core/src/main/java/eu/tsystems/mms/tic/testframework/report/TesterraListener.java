@@ -42,6 +42,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodPar
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.OmitInDevelopmentMethodInterceptor;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
+import eu.tsystems.mms.tic.testframework.internal.BuildInformation;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
 import eu.tsystems.mms.tic.testframework.report.hooks.ConfigMethodHook;
@@ -50,7 +51,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import java.util.Arrays;
 import java.util.List;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configurator;
@@ -98,19 +98,21 @@ public class TesterraListener implements
      */
     private static boolean skipAllMethods = false;
 
-    private static EventBus eventBus = new EventBus();
-
+    private static final EventBus eventBus;
     /**
      * Instance counter for this reporter. *
      */
     private static int instances = 0;
     private static final Object LOCK = new Object();
-    private static LoggerContext loggerContext;
+    private static final LoggerContext loggerContext;
+    private static final BuildInformation buildInformation;
 
     static {
 
         DefaultConfiguration defaultConfiguration = new DefaultConfiguration();
         loggerContext = Configurator.initialize(defaultConfiguration);
+        buildInformation = new BuildInformation();
+        eventBus = new EventBus();
 
         /*
          * Add monitoring event listeners
@@ -154,6 +156,10 @@ public class TesterraListener implements
 
     public static LoggerContext getLoggerContext() {
         return loggerContext;
+    }
+
+    public static BuildInformation getBuildInformation() {
+        return buildInformation;
     }
 
     /**

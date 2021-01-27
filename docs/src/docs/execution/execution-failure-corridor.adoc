@@ -20,6 +20,11 @@ With an enabled failure corridor, you need to define the maximum amount of failu
 {failure_corridor_allowed_failed_tests_low}=2
 ----
 
+[IMPORTANT]
+====
+If you do not define any failure corridor, the default value `0` is used for all three levels.
+====
+
 To change the weight for each test, just annotate it with `@FailureCorridor`, where `High` is default.
 
 .Examples of method weighting

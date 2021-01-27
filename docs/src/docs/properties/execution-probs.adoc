@@ -17,7 +17,6 @@ This is useful to check your TestNG suite without executing real testcode.
 | {watchdog_enable} | true | Enables/Disables the `WebDriverWatchDog`.
 | {watchdog_timeout_seconds} | 300 | Sets the timeout in seconds after the `WebDriverWatchDog` terminates the test execution (with System.exit(99) terminated).
 | {failure_corridor_active} | true | Activate the failure corridor.
-| {failure_corridor_allowed_failed_tests} | 0 | Number of test methods allowed to fail to still mark the suite as passed.
 | {failure_corridor_allowed_failed_tests_high} | 0 | Number of test methods with weighting high allowed to fail to still mark the suite as passed.
 | {failure_corridor_allowed_failed_tests_mid} | 0 | Number of test methods with weighting mid allowed to fail to still mark the suite as passed.
 | {failure_corridor_allowed_failed_tests_low} | 0 | Number of test methods with weighting low allowed to fail to still mark the suite as passed.

@@ -17,5 +17,4 @@ Please take a look at the following list if there is a connetcor mapping your ne
 | Selenoid Connector | https://git.t-systems-mms.com/projects/XETA/repos/testerra-selenoid-connector/browse/README.md[README.md] | Using a Selenium Grid based on https://github.com/aerokube/selenoid[Selenoid] this module provides access to videos and VNC streams.
 | TeamCity Connector | https://git.t-systems-mms.com/projects/XETA/repos/testerra-teamcity-connector/browse/README.md[README.md] | A simple notification service for Jetbrains TeamCity.
 | Xray Connector | https://git.t-systems-mms.com/projects/XETA/repos/testerra-xray-connector/browse/README.md[README.md] | Automatic test result synchronization Jira XRay.
-
 |===

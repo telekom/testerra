@@ -57,7 +57,10 @@ public class GuiElementAssertHighlightDecorator extends GuiElementAssertDecorato
         if (POConfig.isDemoMode()) {
             highlight(assertionErrorOrNull == null);
         }
-        return new UiElementAssertionError(this.guiElementData, assertionErrorOrNull);
+        if (assertionErrorOrNull != null) {
+            assertionErrorOrNull = new UiElementAssertionError(this.guiElementData, assertionErrorOrNull);
+        }
+        return assertionErrorOrNull;
     }
 
     private void highlight(boolean successful) {

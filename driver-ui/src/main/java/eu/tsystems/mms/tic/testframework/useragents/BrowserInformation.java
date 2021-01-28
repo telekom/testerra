@@ -22,7 +22,7 @@ package eu.tsystems.mms.tic.testframework.useragents;
 
 public interface BrowserInformation {
 
-    BrowserInformation parseUserAgent(String userAgent);
+    void parseUserAgent(String userAgent);
 
     /**
      * Gets the browser name of the test run.

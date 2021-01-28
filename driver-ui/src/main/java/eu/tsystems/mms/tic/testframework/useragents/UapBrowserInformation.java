@@ -46,9 +46,8 @@ public class UapBrowserInformation implements BrowserInformation, Loggable {
      * Check the user agent and parse the browser name and version.
      */
     @Override
-    public UapBrowserInformation parseUserAgent(String userAgent) {
+    public void parseUserAgent(String userAgent) {
         client = userAgentAnalyzer.parse(userAgent);
-        return this;
     }
 
     @Override

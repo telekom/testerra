@@ -50,8 +50,6 @@ public final class WebDriverManagerUtils {
     // url pattern for node proxy requests
     private static final String urlPattern = "http://<ip>:<port>/grid/api/<request>";
 
-    private static final BrowserInformation uaParser = new UapBrowserInformation();
-
     /**
      * Hide constructor.
      */
@@ -120,9 +118,10 @@ public final class WebDriverManagerUtils {
                 LOGGER.error("Error requesting user agent", e);
             }
 
-            browserInformation = uaParser.parseUserAgent(userAgentString);
+            browserInformation = new UapBrowserInformation();
+            browserInformation.parseUserAgent(userAgentString);
         } else {
-            browserInformation = uaParser;
+            browserInformation = new UapBrowserInformation();
         }
 
         CACHED_BROWSER_INFOS.put(driver, browserInformation);

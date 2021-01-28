@@ -41,6 +41,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.RemoveTe
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodParametersWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.OmitInDevelopmentMethodInterceptor;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.SortMethodsByPriorityMethodInterceptor;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.internal.BuildInformation;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
@@ -133,6 +134,7 @@ public class TesterraListener implements
         eventBus.register(new MethodEndWorker());
 
         eventBus.register(new OmitInDevelopmentMethodInterceptor());
+        eventBus.register(new SortMethodsByPriorityMethodInterceptor());
 
         eventBus.register(new ExecutionEndListener());
 

@@ -24,14 +24,27 @@ import {StatisticsGenerator} from "../../services/statistics-generator";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import {data} from "../../services/report-model";
 import IFile = data.IFile;
+import {ObjectStorage} from "t-systems-aurelia-components/src/utils/object-storage";
+
+interface IVideoInfo {
+    time:number;
+}
+
+interface IVideo {
+    element?:HTMLVideoElement,
+    file:IFile;
+}
 
 @autoinject()
 export class Videos {
-    private _videos:IFile[];
+    private _videos:IVideo[];
+    private _videoStorage:{[key:string]:IVideoInfo};
 
     constructor(
         private _statistics: StatisticsGenerator,
+        private _objectStorage:ObjectStorage
     ) {
+        this._objectStorage.setStorage(localStorage);
     }
 
     activate(
@@ -40,10 +53,39 @@ export class Videos {
         navInstruction: NavigationInstruction
     ) {
         this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
+            this._videoStorage = this._objectStorage.getItem("videos");
+            if (!this._videoStorage) {
+                this._videoStorage = {};
+            }
             const videoFileIds = methodDetails.sessionContexts.filter(value => value.videoId).map(value => value.videoId);
-            this._statistics.getFilesForIds(videoFileIds).then(value => {
-                this._videos = value;
+            this._statistics.getFilesForIds(videoFileIds).then(videoFiles => {
+                this._videos = videoFiles.map(file => <IVideo>{
+                    file: file
+                });
+
+                window.setTimeout(() => {
+                    this._setStartTimes();
+                }, 100);
             });
+
         });
+    }
+
+    private _setStartTimes() {
+        this._videos.forEach(video => {
+           const videoInfo = this._videoStorage[video.file.id];
+           if (videoInfo) {
+               video.element.currentTime = videoInfo.time;
+           }
+        });
+    }
+
+    detached() {
+        this._videos.forEach(video => {
+            this._videoStorage[video.file.id] = {
+                time: video.element.currentTime,
+            };
+        });
+        this._objectStorage.setItem("videos", this._videoStorage);
     }
 }

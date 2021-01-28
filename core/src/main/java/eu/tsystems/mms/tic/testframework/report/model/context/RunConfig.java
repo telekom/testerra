@@ -23,13 +23,11 @@
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.internal.BuildInformation;
 import eu.tsystems.mms.tic.testframework.report.Report;
 
 public final class RunConfig {
 
     public final String RUNCFG = (Testerra.Properties.DRY_RUN.asBool() ? "DRY RUN " : "") + PropertyManager.getProperty(TesterraProperties.RUNCFG, "DEFAULT");
-    public final BuildInformation buildInformation = new BuildInformation();
 
     public String getReportName() {
         return Report.Properties.NAME.asString();

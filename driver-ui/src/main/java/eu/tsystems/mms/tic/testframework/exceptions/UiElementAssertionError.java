@@ -1,7 +1,7 @@
-/*!
+/*
  * Testerra
  *
- * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2021, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -19,18 +19,19 @@
  * under the License.
  */
 
-.screenshot-dialog {
-    .mdc-dialog__container {
-        .mdc-dialog__surface {
-            max-width: 90%;
-        }
-    }
-}
-.btn-fullscreen {
-    position: absolute;
-    right: 90%;
-}
+package eu.tsystems.mms.tic.testframework.exceptions;
 
-.screenshot-image {
-    border: #5d6f81 solid 1px;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
+
+public class UiElementAssertionError extends AssertionError {
+    private GuiElementData data;
+
+    public UiElementAssertionError(GuiElementData data, Throwable cause) {
+        super(cause.getMessage(), cause.getCause());
+        this.data = data;
+    }
+
+    public GuiElementData getData() {
+        return data;
+    }
 }

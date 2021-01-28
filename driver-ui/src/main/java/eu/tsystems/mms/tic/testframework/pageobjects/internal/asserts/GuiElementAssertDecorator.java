@@ -40,7 +40,12 @@ public abstract class GuiElementAssertDecorator implements GuiElementAssert {
 
     abstract void beforeAssertion();
 
-    abstract void afterAssertion(String message, AssertionError assertionErrorOrNull);
+    /**
+     * @param message
+     * @param assertionErrorOrNull
+     * @return Optional new assertion
+     */
+    abstract AssertionError afterAssertion(String message, AssertionError assertionErrorOrNull);
 
     private void callBeforeAssertion() {
         try {
@@ -53,7 +58,10 @@ public abstract class GuiElementAssertDecorator implements GuiElementAssert {
 
     private void handleAfterAssertion(String message, AssertionError assertionErrorOrNull) {
         try {
-            afterAssertion(message, assertionErrorOrNull);
+            AssertionError newAssertionError = afterAssertion(message, assertionErrorOrNull);
+            if (newAssertionError != null) {
+                assertionErrorOrNull = newAssertionError;
+            }
         } catch (Exception e) {
             // Do not change catch to Throwable! Instead, think about getting narrower by catching only RuntimeExceptions.
             LOGGER.warn("Exception thrown on afterAssertion in AssertDecorator.", e);

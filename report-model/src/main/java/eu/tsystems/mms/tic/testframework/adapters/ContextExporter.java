@@ -25,6 +25,7 @@ import com.google.common.net.MediaType;
 import com.google.gson.Gson;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.report.Report;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent;
 import eu.tsystems.mms.tic.testframework.internal.IDUtils;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
@@ -319,19 +320,22 @@ public class ContextExporter {
                 optional.ifPresent(entryBuilder::setAssertion);
             }
 
-            actionBuilder.addEntries(entryBuilder);
+            if (
+                    entryBuilder.hasAssertion()
+                    || entryBuilder.hasLogMessage()
+                    || entryBuilder.hasClickPathEvent()
+                    || entryBuilder.getScreenshotId() != null
+            ) {
+                actionBuilder.addEntries(entryBuilder);
+            }
         });
         return actionBuilder;
     }
 
     public ContextExporter() {
+        // Prepare a status map
         for (TestStatusController.Status status : TestStatusController.Status.values()) {
-            /*
-            Status
-             */
             ResultStatusType resultStatusType = ResultStatusType.valueOf(status.name());
-
-            // add to map
             STATUS_MAPPING.put(status, resultStatusType);
         }
     }
@@ -516,13 +520,14 @@ public class ContextExporter {
         add build information
          */
         BuildInformation.Builder bi = BuildInformation.newBuilder();
-        apply(runConfig.buildInformation.buildJavaVersion, bi::setBuildJavaVersion);
+        eu.tsystems.mms.tic.testframework.internal.BuildInformation buildInformation = TesterraListener.getBuildInformation();
+        apply(buildInformation.buildJavaVersion, bi::setBuildJavaVersion);
         //apply(runConfig.buildInformation.buildOsArch, bi::setBuildOsName);
-        apply(runConfig.buildInformation.buildOsName, bi::setBuildOsName);
-        apply(runConfig.buildInformation.buildOsVersion, bi::setBuildOsVersion);
-        apply(runConfig.buildInformation.buildTimestamp, bi::setBuildTimestamp);
-        apply(runConfig.buildInformation.buildUserName, bi::setBuildUserName);
-        apply(runConfig.buildInformation.buildVersion, bi::setBuildVersion);
+        apply(buildInformation.buildOsName, bi::setBuildOsName);
+        apply(buildInformation.buildOsVersion, bi::setBuildOsVersion);
+        apply(buildInformation.buildTimestamp, bi::setBuildTimestamp);
+        apply(buildInformation.buildUserName, bi::setBuildUserName);
+        apply(buildInformation.buildVersion, bi::setBuildVersion);
         builder.setBuildInformation(bi);
 
         return builder;

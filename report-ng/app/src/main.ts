@@ -30,7 +30,6 @@ export function configure(aurelia: Aurelia) {
 
     aurelia.use
         .standardConfiguration()
-        //.plugin(PLATFORM.moduleName('@aurelia-mdc-web/button'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/card'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/data-table'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/dialog'))
@@ -48,6 +47,7 @@ export function configure(aurelia: Aurelia) {
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/switch'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/text-field'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/tab-bar'))
+        .plugin(PLATFORM.moduleName('@aurelia-mdc-web/tooltip'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/top-app-bar'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/typography'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/lookup'))
@@ -58,11 +58,11 @@ export function configure(aurelia: Aurelia) {
             PLATFORM.moduleName('components/log-view/log-view'),
             PLATFORM.moduleName('components/code-view/code-view'),
             PLATFORM.moduleName('components/alert/alert.html'),
+            PLATFORM.moduleName('components/lazy-image/lazy-image'),
             PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/date-format-value-converter'),
             PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/object-values-value-converter'),
             PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/highlight-text-value-converter'),
             PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/duration-format-value-converter'),
-            //PLATFORM.moduleName('t-systems-aurelia-components/src/attributes/become-visible-custom-attribute'),
             PLATFORM.moduleName('value-converters/status-icon-name-value-converter'),
             PLATFORM.moduleName('value-converters/status-name-value-converter'),
             PLATFORM.moduleName('value-converters/status-class-value-converter'),

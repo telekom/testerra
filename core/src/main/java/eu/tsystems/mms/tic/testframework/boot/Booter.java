@@ -70,7 +70,7 @@ public final class Booter implements Loggable {
         /*
         get versions info
          */
-        BuildInformation buildInformation = BuildInformation.getInstance();
+        BuildInformation buildInformation = TesterraListener.getBuildInformation();
         bannerVersions.add("build.java.version: " + buildInformation.buildJavaVersion);
         bannerVersions.add("build.os.name:      " + buildInformation.buildOsName);
         bannerVersions.add("build.os.arch:      " + buildInformation.buildOsArch);

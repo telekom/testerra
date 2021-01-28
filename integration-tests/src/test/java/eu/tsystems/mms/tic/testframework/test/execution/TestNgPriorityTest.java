@@ -19,10 +19,12 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.playground;
+package eu.tsystems.mms.tic.testframework.test.execution;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+import java.util.LinkedList;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -35,23 +37,43 @@ import org.testng.annotations.Test;
  */
 public class TestNgPriorityTest extends TesterraTest implements Loggable {
 
-    @Test(priority = 2)
-    public void test2_and2() {
+    private LinkedList<Integer> internalOrder = new LinkedList<>();
+
+    @Test(priority = 2, groups = "SEQUENTIAL")
+    public void testUnderTest2_and2() {
+        internalOrder.add(2);
         log().info("TestNgPriorityTest :: 2");
     }
 
-    @Test(priority = 3)
-    public void test1_but3() {
+    @Test(priority = 3, groups = "SEQUENTIAL")
+    public void testUnderTest1_but3() {
+        internalOrder.add(3);
         log().info("TestNgPriorityTest :: 3");
     }
 
-    @Test(priority = 4)
-    public void test3_but4() {
+    @Test(priority = 4, groups = "SEQUENTIAL")
+    public void testUnderTest3_but4() {
+        internalOrder.add(4);
         log().info("TestNgPriorityTest :: 4");
     }
 
-    @Test(priority = 1)
-    public void test4_but1() {
+    @Test(priority = 1, groups = "SEQUENTIAL")
+    public void testUnderTest4_but1() {
+        internalOrder.add(1);
         log().info("TestNgPriorityTest :: 1");
     }
+
+    @Test(priority = 999, groups = "SEQUENTIAL")
+    public void test999_AssertPriorityOfOtherTestcasesInClass() {
+
+        Assert.assertEquals(internalOrder.size(), 4, "Method size should be 4");
+
+        for (int i = 0; i < internalOrder.size(); i++) {
+            final int actual = internalOrder.get(i); // receives actual value.
+            final int expected = i + 1; // should equal, huh ?
+            Assert.assertEquals(actual, expected, String.format("Method was at index %s but should be %s", actual, expected));
+        }
+
+    }
+
 }

@@ -21,6 +21,7 @@
 
 package eu.tsystems.mms.tic.testframework.execution.testng.worker.start;
 
+import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.events.InterceptMethodsEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import java.util.Comparator;
@@ -36,7 +37,7 @@ import org.testng.annotations.Test;
  */
 public class SortMethodsByPriorityMethodInterceptor implements Loggable, InterceptMethodsEvent.Listener {
 
-    @Override
+    @Subscribe
     public void onInterceptMethods(InterceptMethodsEvent event) {
         event.getMethodInstances().sort(Comparator.comparingInt(m -> m.getMethod().getPriority()));
     }

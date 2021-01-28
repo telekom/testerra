@@ -31,7 +31,7 @@
     right: 90%;
 }
 .mdc-dialog--open .mdc-dialog__container{
-    width: 100%;
+    max-width: 100%;
 }
 .screenshot-image {
     border: #5d6f81 solid 1px;

@@ -54,7 +54,8 @@ export function configure(aurelia: Aurelia) {
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/lookup'))
         .globalResources([
             PLATFORM.moduleName('components/apex-chart/apex-chart'),
-            PLATFORM.moduleName('components/class-name/class-name'),
+            PLATFORM.moduleName('components/class-name-markup/class-name-markup'),
+            PLATFORM.moduleName('components/session-context-markup/session-context-markup'),
             PLATFORM.moduleName('components/method-tags/method-tags'),
             PLATFORM.moduleName('components/log-view/log-view'),
             PLATFORM.moduleName('components/code-view/code-view'),

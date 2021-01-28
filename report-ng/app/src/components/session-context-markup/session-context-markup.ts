@@ -21,23 +21,18 @@
 
 import {bindable} from "aurelia-templating";
 import {bindingMode} from "aurelia-binding";
-import {StatusConverter} from "../../services/status-converter";
-import {autoinject} from "aurelia-framework";
+import {data} from "../../services/report-model";
+import ISessionContext = data.ISessionContext;
 
-@autoinject()
-export class ClassName {
+export class SessionContextMarkup {
+    @bindable({defaultBindingMode:bindingMode.toView})
+    public sessionContext:ISessionContext;
+    private _element:HTMLElement;
 
     constructor(
-        private _statusConverter:StatusConverter
     ) {
     }
 
-    @bindable({ defaultBindingMode: bindingMode.toView })
-    namespace: string;
-
-    private _parts;
-
-    namespaceChanged() {
-        this._parts = this._statusConverter.separateNamespace(this.namespace);
+    sessionContextChanged() {
     }
 }

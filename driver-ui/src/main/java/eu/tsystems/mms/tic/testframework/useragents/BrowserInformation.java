@@ -37,7 +37,4 @@ public interface BrowserInformation {
      * @return the browser version.
      */
     String getBrowserVersion();
-
-    @Deprecated
-    String getUserAgent();
 }

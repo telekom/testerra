@@ -22,9 +22,9 @@
  package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.report.model.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
 import java.util.Map;
 import org.openqa.selenium.WebDriver;
@@ -37,7 +37,7 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> implements Lo
 
     protected abstract DesiredCapabilities buildCapabilities(DesiredCapabilities preSetCaps, R request);
 
-    protected abstract WebDriver getRawWebDriver(R webDriverRequest, DesiredCapabilities desiredCapabilities);
+    protected abstract WebDriver getRawWebDriver(R webDriverRequest, DesiredCapabilities desiredCapabilities, SessionContext sessionContext);
 
     protected abstract void setupSession(EventFiringWebDriver eventFiringWebDriver, R request);
 
@@ -51,33 +51,25 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> implements Lo
          */
         R finalRequest = buildRequest(request);
 
-        Map<String, Object> sessionContextMetaData = sessionContext.getMetaData();
-        /*
-        fill the session context
-         */
-        sessionContextMetaData.put("requested.browser", finalRequest.getBrowser());
-        sessionContextMetaData.put("requested.browserVersion", finalRequest.getBrowserVersion());
-
-        /*
-        create basic capabilities
-         */
-        DesiredCapabilities caps = new DesiredCapabilities();
-        DesiredCapabilities tapOptions = new DesiredCapabilities();
-        ExecutionContextController.getCurrentExecutionContext().getMetaData().forEach(tapOptions::setCapability);
-        sessionContextMetaData.forEach(tapOptions::setCapability);
-        tapOptions.setCapability("scid", sessionContext.getId());
-        tapOptions.setCapability("sessionKey", finalRequest.getSessionKey());
-        caps.setCapability("tapOptions", tapOptions);
-
         /*
         create capabilities
          */
-        DesiredCapabilities finalCaps = buildCapabilities(caps, finalRequest);
+        DesiredCapabilities caps = new DesiredCapabilities();
+        DesiredCapabilities preparedCaps = buildCapabilities(caps, finalRequest);
+
+        /**
+         * @todo Move these options to the platform-connector
+         */
+        DesiredCapabilities tapOptions = new DesiredCapabilities();
+        ExecutionContextController.getCurrentExecutionContext().getMetaData().forEach(tapOptions::setCapability);
+        tapOptions.setCapability("scid", sessionContext.getId());
+        tapOptions.setCapability("sessionKey", finalRequest.getSessionKey());
+        preparedCaps.setCapability("tapOptions", tapOptions);
 
         /*
         create the web driver session
          */
-        WebDriver rawDriver = getRawWebDriver(finalRequest, finalCaps);
+        WebDriver rawDriver = getRawWebDriver(finalRequest, preparedCaps, sessionContext);
 
         /*
         wrap the driver with the proxy
@@ -102,8 +94,9 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> implements Lo
         WebDriverSessionsManager.storeWebDriverSession(finalRequest, eventFiringWebDriver, sessionContext);
 
         BrowserInformation browserInformation = WebDriverManagerUtils.getBrowserInformation(eventFiringWebDriver);
-        sessionContextMetaData.put("browser", browserInformation.getBrowserName());
-        sessionContextMetaData.put("browserVersion", browserInformation.getBrowserVersion());
+        Map<String, Object> sessionContextMetaData = sessionContext.getMetaData();
+        sessionContextMetaData.put(SessionContext.MetaData.BROWSER, browserInformation.getBrowserName());
+        sessionContextMetaData.put(SessionContext.MetaData.BROWSER_VERSION, browserInformation.getBrowserVersion());
 
         /*
         finalize the session setup

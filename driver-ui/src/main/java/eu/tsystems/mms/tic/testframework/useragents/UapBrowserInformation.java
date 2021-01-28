@@ -29,18 +29,16 @@ import ua_parser.Parser;
  * Uap User Agent implementation
  * @author Mike Reiche
  */
-public class UapBrowserInformation extends AbstractBrowserInformation implements Loggable {
+public class UapBrowserInformation implements BrowserInformation, Loggable {
 
     private static Parser userAgentAnalyzer;
     private Client client;
 
     public UapBrowserInformation() {
-        if (userAgentAnalyzer == null) {
-            try {
-                userAgentAnalyzer = new Parser();
-            } catch (IOException e) {
-                log().error(e.getMessage(), e);
-            }
+        try {
+            userAgentAnalyzer = new Parser();
+        } catch (IOException e) {
+            log().error(e.getMessage(), e);
         }
     }
 
@@ -49,7 +47,6 @@ public class UapBrowserInformation extends AbstractBrowserInformation implements
      */
     @Override
     public UapBrowserInformation parseUserAgent(String userAgent) {
-        this.userAgent = userAgent;
         client = userAgentAnalyzer.parse(userAgent);
         return this;
     }

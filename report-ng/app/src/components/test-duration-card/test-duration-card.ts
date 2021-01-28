@@ -23,6 +23,7 @@ import {autoinject} from "aurelia-framework";
 import {bindable} from "aurelia-templating";
 import './test-duration-card.scss';
 import {bindingMode} from "aurelia-binding";
+import {DateFormatValueConverter} from "t-systems-aurelia-components/src/value-converters/date-format-value-converter";
 
 @autoinject
 export class TestDurationCard {
@@ -31,13 +32,17 @@ export class TestDurationCard {
     @bindable({bindingMode: bindingMode.toView}) class:string;
     private _duration:number;
     private _hasEnded = false;
+    private _startTooltip:string;
+    private _endTooltip:string;
 
     startChanged() {
         this._updateDuration();
+        this._startTooltip = DateFormatValueConverter.format(this.start);
     }
 
     endChanged() {
         this._updateDuration();
+        this._endTooltip = DateFormatValueConverter.format(this.end);
     }
 
     private _updateDuration() {

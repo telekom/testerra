@@ -19,13 +19,10 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.webdrivermanager;
+package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import eu.tsystems.mms.tic.testframework.model.HostInfo;
-import eu.tsystems.mms.tic.testframework.report.model.BrowserInformation;
-import eu.tsystems.mms.tic.testframework.report.model.YauaaBrowserInformation;
-import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
+import eu.tsystems.mms.tic.testframework.useragents.UapBrowserInformation;
 import java.net.URL;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -53,6 +50,8 @@ public final class WebDriverManagerUtils {
     // url pattern for node proxy requests
     private static final String urlPattern = "http://<ip>:<port>/grid/api/<request>";
 
+    private static final BrowserInformation uaParser = new UapBrowserInformation();
+
     /**
      * Hide constructor.
      */
@@ -71,28 +70,28 @@ public final class WebDriverManagerUtils {
         return WebDriverManager.getConfig().getBaseUrl();
     }
 
-    public static void logUserAgent(WebDriver driver) {
-        pLogUserAgent(driver);
-    }
+//    public static void logUserAgent(WebDriver driver) {
+//        pLogUserAgent(driver);
+//    }
 
-    private static String pLogUserAgent(WebDriver driver) {
-        String browserInfo;
-        String browserName = "Browser unknown";
-        String browserVersion = " unknown";
-        final String msg = "Error logging user agent";
-        try {
-            final BrowserInformation browserInformation = getBrowserInformation(driver);
-            browserName = browserInformation.getBrowserName();
-            browserVersion = browserInformation.getBrowserVersion();
-        } catch (final Exception we) {
-            LOGGER.error(msg, we);
-        }
-
-        browserInfo = browserName + " - v" + browserVersion;
-
-        LOGGER.info("Browser: " + browserInfo);
-        return browserInfo;
-    }
+//    private static String pLogUserAgent(WebDriver driver) {
+//        String browserInfo;
+//        String browserName = "Browser unknown";
+//        String browserVersion = " unknown";
+//        final String msg = "Error logging user agent";
+//        try {
+//            final BrowserInformation browserInformation = getBrowserInformation(driver);
+//            browserName = browserInformation.getBrowserName();
+//            browserVersion = browserInformation.getBrowserVersion();
+//        } catch (final Exception we) {
+//            LOGGER.error(msg, we);
+//        }
+//
+//        browserInfo = browserName + " - v" + browserVersion;
+//
+//        LOGGER.info("Browser: " + browserInfo);
+//        return browserInfo;
+//    }
 
     private static final Map<WebDriver, BrowserInformation> CACHED_BROWSER_INFOS = new ConcurrentHashMap<>();
 
@@ -121,9 +120,9 @@ public final class WebDriverManagerUtils {
                 LOGGER.error("Error requesting user agent", e);
             }
 
-            browserInformation = new YauaaBrowserInformation(userAgentString);
+            browserInformation = uaParser.parseUserAgent(userAgentString);
         } else {
-            browserInformation = new YauaaBrowserInformation(null);
+            browserInformation = uaParser;
         }
 
         CACHED_BROWSER_INFOS.put(driver, browserInformation);

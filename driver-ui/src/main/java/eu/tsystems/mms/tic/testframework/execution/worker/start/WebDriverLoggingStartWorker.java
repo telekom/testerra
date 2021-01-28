@@ -52,12 +52,12 @@ public class WebDriverLoggingStartWorker implements MethodStartEvent.Listener, L
                 log().info(msg + executingSeleniumHost);
 
                 // log browser
-//                long threadId = Thread.currentThread().getId();
-//                List<WebDriver> webDriversFromThread = WebDriverManager.getWebDriversFromThread(threadId);
-//                if (webDriversFromThread != null && webDriversFromThread.size() > 0) {
-//                    WebDriver driver = webDriversFromThread.get(0);
-//                    WebDriverManagerUtils.logUserAgent(driver);
-//                }
+                long threadId = Thread.currentThread().getId();
+                List<WebDriver> webDriversFromThread = WebDriverManager.getWebDriversFromThread(threadId);
+                if (webDriversFromThread != null && webDriversFromThread.size() > 0) {
+                    WebDriver driver = webDriversFromThread.get(0);
+                    WebDriverManagerUtils.logUserAgent(driver);
+                }
             }
         }
     }

@@ -68,28 +68,28 @@ public final class WebDriverManagerUtils {
         return WebDriverManager.getConfig().getBaseUrl();
     }
 
-//    public static void logUserAgent(WebDriver driver) {
-//        pLogUserAgent(driver);
-//    }
+    public static void logUserAgent(WebDriver driver) {
+        pLogUserAgent(driver);
+    }
 
-//    private static String pLogUserAgent(WebDriver driver) {
-//        String browserInfo;
-//        String browserName = "Browser unknown";
-//        String browserVersion = " unknown";
-//        final String msg = "Error logging user agent";
-//        try {
-//            final BrowserInformation browserInformation = getBrowserInformation(driver);
-//            browserName = browserInformation.getBrowserName();
-//            browserVersion = browserInformation.getBrowserVersion();
-//        } catch (final Exception we) {
-//            LOGGER.error(msg, we);
-//        }
-//
-//        browserInfo = browserName + " - v" + browserVersion;
-//
-//        LOGGER.info("Browser: " + browserInfo);
-//        return browserInfo;
-//    }
+    private static String pLogUserAgent(WebDriver driver) {
+        String browserInfo;
+        String browserName = "Browser unknown";
+        String browserVersion = " unknown";
+        final String msg = "Error logging user agent";
+        try {
+            final BrowserInformation browserInformation = getBrowserInformation(driver);
+            browserName = browserInformation.getBrowserName();
+            browserVersion = browserInformation.getBrowserVersion();
+        } catch (final Exception we) {
+            LOGGER.error(msg, we);
+        }
+
+        browserInfo = browserName + " - v" + browserVersion;
+
+        LOGGER.info("Browser: " + browserInfo);
+        return browserInfo;
+    }
 
     private static final Map<WebDriver, BrowserInformation> CACHED_BROWSER_INFOS = new ConcurrentHashMap<>();
 

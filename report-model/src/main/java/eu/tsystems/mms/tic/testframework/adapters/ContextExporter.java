@@ -25,7 +25,6 @@ import com.google.common.net.MediaType;
 import com.google.gson.Gson;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.report.Report;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent;
 import eu.tsystems.mms.tic.testframework.internal.IDUtils;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
@@ -520,7 +519,7 @@ public class ContextExporter {
         add build information
          */
         BuildInformation.Builder bi = BuildInformation.newBuilder();
-        eu.tsystems.mms.tic.testframework.internal.BuildInformation buildInformation = TesterraListener.getBuildInformation();
+        eu.tsystems.mms.tic.testframework.internal.BuildInformation buildInformation = Testerra.getBuildInformation();
         apply(buildInformation.buildJavaVersion, bi::setBuildJavaVersion);
         //apply(runConfig.buildInformation.buildOsArch, bi::setBuildOsName);
         apply(buildInformation.buildOsName, bi::setBuildOsName);

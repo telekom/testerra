@@ -28,6 +28,7 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.util.Modules;
 import eu.tsystems.mms.tic.testframework.boot.Booter;
+import eu.tsystems.mms.tic.testframework.internal.BuildInformation;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import java.lang.reflect.Constructor;
 import java.util.Iterator;
@@ -56,6 +57,7 @@ public class Testerra {
     private static final EventBus eventBus;
     private static final Booter booter;
     private static LoggerContext loggerContext;
+    private static BuildInformation buildInformation;
 
     public enum Properties implements IProperties {
         DRY_RUN("tt.dryrun", false),
@@ -126,6 +128,7 @@ public class Testerra {
     static {
         DefaultConfiguration defaultConfiguration = new DefaultConfiguration();
         loggerContext = Configurator.initialize(defaultConfiguration);
+        buildInformation = new BuildInformation();
         eventBus = new EventBus();
         booter = new Booter();
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
@@ -143,6 +146,10 @@ public class Testerra {
 
     public static Injector getInjector() {
         return injector;
+    }
+
+    public static BuildInformation getBuildInformation() {
+        return buildInformation;
     }
 
     /**

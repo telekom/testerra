@@ -41,9 +41,8 @@ export class ScreenshotComparison {
     private _slider: HTMLDivElement;
     private _width: number;
     private _clicked: boolean;
+    private _ratio: number = 0.5;
     private _mouseMoveHandler: EventListenerObject;
-
-
 
     constructor(
         private _dialog: MdcDialog
@@ -57,7 +56,7 @@ export class ScreenshotComparison {
     }
 
     attached() {
-        this._initComparisons();
+        this._prepareImageComparison(this._leftImageElement);
         this._updateCompareLists();
     }
 
@@ -74,31 +73,19 @@ export class ScreenshotComparison {
         this._updateCompareLists();
     }
 
-    private _initComparisons() {
-        this._prepareImageComparison(this._leftImageElement, this._rightImageElement);
-        /*window.addEventListener('resize', () => {
-            this._prepareImageComparison(this._leftImageElement, this._rightImageElement);
-        });*/
-    }
-
-    private _prepareImageComparison(leftImg:HTMLDivElement, rightImg: HTMLDivElement){
+    private _prepareImageComparison(leftImg:HTMLDivElement){
         this._clicked = false;
 
         //Create slider
         this._slider = document.createElement("div");
         this._slider.setAttribute("class", "img-comp-slider secondary-bg");
-        //Insert slider
         leftImg.parentElement.insertBefore(this._slider, leftImg);
 
-        this._setImageSizes(this._leftImageElement, this._rightImageElement);
-
-        /*window.addEventListener('resize', () => {
-            console.log(window.innerWidth, window.innerHeight);
-            if (leftImg.offsetWidth > (window.innerWidth * 0.8 + 56) || rightImg.offsetWidth > (window.innerWidth * 0.8 + 56) ) {
-                console.log ("triggered resize listener");
-                width = window.innerWidth * 0.8 + 56; //80vw
-            }
-        }) */
+        //adjust image sizes
+        this._setImageSizes(this._leftImageElement, this._rightImageElement, this._ratio);
+        window.addEventListener('resize', () => {
+            this._setImageSizes(this._leftImageElement, this._rightImageElement, this._ratio);
+        })
 
         //Function handlers for mouse
         this._slider.addEventListener("mousedown", this._slideReady.bind(this));
@@ -108,27 +95,26 @@ export class ScreenshotComparison {
         window.addEventListener("touchend", this._slideFinish.bind(this));
     }
 
-    private _setImageSizes(leftImg:HTMLDivElement, rightImg: HTMLDivElement) {
+    private _setImageSizes(leftImg:HTMLDivElement, rightImg: HTMLDivElement, sliderRatio: number) {
         let height;
 
-        // Get the width and height of the img element
-        if (leftImg.offsetWidth > window.innerWidth || rightImg.offsetWidth > window.innerWidth) {
+        this._width = Math.max(leftImg.firstElementChild.clientWidth, rightImg.firstElementChild.clientWidth);
+        height = Math.max(leftImg.firstElementChild.clientHeight, rightImg.firstElementChild.clientHeight);
+
+        if (this._width > window.innerWidth * 0.8) {
             this._width = window.innerWidth * 0.8; //80vw
         }
 
-        this._width = leftImg.offsetWidth;
-        height = leftImg.offsetHeight;
-        console.log(this._width, " x ", height)
         this._compContainer.style.height = height + "px";
         this._compContainer.style.width = (this._width + 20) + "px";
 
-        //Set the width of the img element to 50%
-        leftImg.style.width = this._width / 2 + "px";
+        //Set the width of the img element to ratio
+        leftImg.style.width = this._width * sliderRatio + "px";
         leftImg.style.zIndex = "2";
 
-        //Position the slider in the middle
+        //Position the slider by ratio
         this._slider.style.top = (height / 2) - (this._slider.offsetHeight / 2) + "px";
-        this._slider.style.left = (this._width / 2) - (this._slider.offsetWidth / 2)+ "px";
+        this._slider.style.left = (this._width * sliderRatio)  - (this._slider.offsetWidth / 2) + "px";
     }
 
     // Function handlers for slider and image resizes:
@@ -147,12 +133,13 @@ export class ScreenshotComparison {
     private _slideFinish() {
         //The slider is no longer clicked:
         this._clicked = false;
+        //remember ratio for correct slider positioning
+        this._ratio = this._leftImageElement.offsetWidth / this._width;
         window.removeEventListener("mousemove", this._mouseMoveHandler);
         window.removeEventListener("touchmove", this._mouseMoveHandler);
     }
 
     public _slideMove(e) {
-        console.log("slideMove");
         let position;
 
         if (this._clicked == false) return false;
@@ -178,8 +165,7 @@ export class ScreenshotComparison {
     }
 
     private _getCursorPos(e) {
-        console.log("getCursorPos");
-        let a, x = 0;
+        let a, x: number;
         e = e || window.event;
         //Get the imageElements positions of the image
         a = this._leftImageElement.getBoundingClientRect();

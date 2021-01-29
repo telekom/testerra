@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2021, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -22,7 +22,7 @@ package eu.tsystems.mms.tic.testframework.useragents;
 
 public interface BrowserInformation {
 
-    BrowserInformation parseUserAgent(String userAgent);
+    void parseUserAgent(String userAgent);
 
     /**
      * Gets the browser name of the test run.
@@ -37,7 +37,4 @@ public interface BrowserInformation {
      * @return the browser version.
      */
     String getBrowserVersion();
-
-    @Deprecated
-    String getUserAgent();
 }

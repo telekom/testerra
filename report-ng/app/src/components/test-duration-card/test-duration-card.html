@@ -29,11 +29,11 @@
         </div>
         <mdc-list-divider></mdc-list-divider>
         <ul class="mdc-list mdc-list--dense timings">
-            <li class="mdc-list-item reset-cursor">
-                <span class="secondary time-column sr1">Started</span>${start | dateFormat}
+            <li class="mdc-custom-list-item">
+                <span class="secondary time-column sr1">Started</span><span title="${_startTooltip}">${start | dateFormat:"ddd MMM D HH:mm:ss"}</span>
             </li>
-            <li class="mdc-list-item reset-cursor">
-                <span class="secondary time-column sr1">Ended</span> ${end | dateFormat}
+            <li class="mdc-custom-list-item">
+                <span class="secondary time-column sr1">Ended</span><span title="${_endTooltip}">${end | dateFormat:"ddd MMM D HH:mm:ss"}</span>
 <!--                <div if.bind="_hasEnded"><span class="secondary time-column">Ended</span> ${end | dateFormat}</div>-->
 <!--                <span else class="secondary">Running...</span>-->
             </li>

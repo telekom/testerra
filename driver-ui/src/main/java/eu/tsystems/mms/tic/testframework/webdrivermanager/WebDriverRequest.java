@@ -36,7 +36,7 @@ public abstract class WebDriverRequest {
     /*
     Runtime
      */
-    private String storedSessionId;
+    private String remoteSessionId;
     private NodeInfo storedExecutingNode;
 
     public boolean hasSessionKey() {
@@ -105,12 +105,12 @@ public abstract class WebDriverRequest {
         return this;
     }
 
-    public String getSessionId() {
-        return storedSessionId;
+    public String getRemoteSessionId() {
+        return remoteSessionId;
     }
 
-    public WebDriverRequest setSessionId(String sessionId) {
-        this.storedSessionId = sessionId;
+    public WebDriverRequest setRemoteSessionId(String sessionId) {
+        this.remoteSessionId = sessionId;
         return this;
     }
 
@@ -119,6 +119,6 @@ public abstract class WebDriverRequest {
         this.sessionKey = webDriverRequest.sessionKey;
         this.baseUrl = webDriverRequest.baseUrl;
         this.browserVersion = webDriverRequest.browserVersion;
-        this.storedSessionId = webDriverRequest.storedSessionId;
+        this.remoteSessionId = webDriverRequest.remoteSessionId;
     }
 }

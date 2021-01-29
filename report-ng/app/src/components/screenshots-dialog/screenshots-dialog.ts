@@ -24,6 +24,7 @@ import {MdcDialog} from '@aurelia-mdc-web/dialog';
 import './screenshot-dialog.scss'
 import IFile = data.IFile;
 import {StatisticsGenerator} from "../../services/statistics-generator";
+import ISessionContext = data.ISessionContext;
 
 export interface IScreenshotsDialogParams {
     screenshotIds:string[],
@@ -35,6 +36,7 @@ export class ScreenshotsDialog {
     private _screenshots:IFile[];
     private _current:IFile;
     private _index = 0;
+    private _sessionContext:ISessionContext;
 
     constructor(
         private _dialog: MdcDialog,
@@ -50,7 +52,7 @@ export class ScreenshotsDialog {
     }
 
     activate(params:IScreenshotsDialogParams) {
-        this._current = params.current;
+        this._showScreenshot(params.current);
         this._statistics.getFilesForIds(params.screenshotIds)
             .then(screenshots => {
                 this._screenshots = screenshots;
@@ -66,6 +68,14 @@ export class ScreenshotsDialog {
 
     private _showScreenshot(file:IFile) {
         this._current = file;
+
+        const sessionKey = this._current.meta.SessionKey;
+        if (sessionKey) {
+            this._statistics.getExecutionStatistics().then(executionStatistics => {
+                const sessionContexts = Object.values(executionStatistics.executionAggregate.sessionContexts);
+                this._sessionContext = sessionContexts.find(value => value.sessionKey === sessionKey);
+            });
+        }
     }
 
     private _left() {
@@ -73,7 +83,7 @@ export class ScreenshotsDialog {
         if (this._index < 0) {
             this._index = this._screenshots.length-1;
         }
-        this._current = this._screenshots[this._index];
+        this._showScreenshot(this._screenshots[this._index]);
     }
 
     private _right() {
@@ -81,7 +91,7 @@ export class ScreenshotsDialog {
         if (this._index >= this._screenshots.length) {
             this._index = 0;
         }
-        this._current = this._screenshots[this._index];
+        this._showScreenshot(this._screenshots[this._index]);
     }
 
    /** https://stackoverflow.com/questions/27798126/how-to-open-the-newly-created-image-in-a-new-tab**/

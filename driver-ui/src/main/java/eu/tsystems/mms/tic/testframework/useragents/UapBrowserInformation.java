@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2021, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -29,18 +29,16 @@ import ua_parser.Parser;
  * Uap User Agent implementation
  * @author Mike Reiche
  */
-public class UapBrowserInformation extends AbstractBrowserInformation implements Loggable {
+public class UapBrowserInformation implements BrowserInformation, Loggable {
 
     private static Parser userAgentAnalyzer;
     private Client client;
 
     public UapBrowserInformation() {
-        if (userAgentAnalyzer == null) {
-            try {
-                userAgentAnalyzer = new Parser();
-            } catch (IOException e) {
-                log().error(e.getMessage(), e);
-            }
+        try {
+            userAgentAnalyzer = new Parser();
+        } catch (IOException e) {
+            log().error(e.getMessage(), e);
         }
     }
 
@@ -48,10 +46,8 @@ public class UapBrowserInformation extends AbstractBrowserInformation implements
      * Check the user agent and parse the browser name and version.
      */
     @Override
-    public UapBrowserInformation parseUserAgent(String userAgent) {
-        this.userAgent = userAgent;
+    public void parseUserAgent(String userAgent) {
         client = userAgentAnalyzer.parse(userAgent);
-        return this;
     }
 
     @Override

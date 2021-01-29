@@ -63,7 +63,6 @@
 :watchdog_timeout_seconds:                      tt.watchdog.timeout.seconds
 
 :failure_corridor_active:                       tt.failure.corridor.active
-:failure_corridor_allowed_failed_tests:         tt.failure.corridor.allowed.failed.tests
 :failure_corridor_allowed_failed_tests_high:    tt.failure.corridor.allowed.failed.tests.high
 :failure_corridor_allowed_failed_tests_mid:     tt.failure.corridor.allowed.failed.tests.mid
 :failure_corridor_allowed_failed_tests_low:     tt.failure.corridor.allowed.failed.tests.low

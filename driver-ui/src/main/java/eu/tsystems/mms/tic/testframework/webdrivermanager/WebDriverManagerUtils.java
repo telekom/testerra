@@ -19,10 +19,12 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.webdrivermanager;
+package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
+import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
+import eu.tsystems.mms.tic.testframework.useragents.UapBrowserInformation;
 import java.net.URL;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

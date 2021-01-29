@@ -68,7 +68,6 @@ public final class FailureCorridor implements Loggable {
 
     }
 
-    private static int allowedTestFailures = Testerra.Properties.FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS.asLong().intValue();
     private static int allowedTestFailuresHIGH = Testerra.Properties.FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_HIGH.asLong().intValue();
     private static int allowedTestFailuresMID = Testerra.Properties.FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_MID.asLong().intValue();
     private static int allowedTestFailuresLOW = Testerra.Properties.FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_LOW.asLong().intValue();
@@ -77,9 +76,6 @@ public final class FailureCorridor implements Loggable {
         System.setProperty(Testerra.Properties.FAILURE_CORRIDOR_ACTIVE.toString(), Boolean.toString(active));
     }
 
-    public static void setAllowedTestFailures(int allowedTestFailures) {
-        FailureCorridor.allowedTestFailures = allowedTestFailures;
-    }
 
     public static void setFailureCorridor(int high, int mid, int low) {
         allowedTestFailuresHIGH = high;
@@ -103,15 +99,6 @@ public final class FailureCorridor implements Loggable {
             return false;
         } else if (testsSuccessful + testsFailed + testsSkipped == 0) {
             return false;
-        }
-
-        /*
-        1) check if ANY test failed
-         */
-        if (allowedTestFailures > -1) {
-            if (testsFailed > allowedTestFailures) {
-                return false;
-            }
         }
 
         /*
@@ -163,17 +150,6 @@ public final class FailureCorridor implements Loggable {
          */
         if (testsSuccessful == 0 && testsFailed == 0 && testsSkipped > 0) {
             out += "Invalid state: skipped tests only! ";
-        }
-
-        if (allowedTestFailures > -1) {
-            //            int testsFailed = TestStatusController.getTestsFailed();
-            //            out += "  X: " + testsFailed;
-            //            if (testsFailed > allowedTestFailures) {
-            //                out += badMarker;
-            //            }
-            //            out += " (" + allowedTestFailures + ") ";
-
-            // failed allowed is not needed atm - pele 05.09.2016
         }
 
         if (allowedTestFailuresHIGH > -1 && allowedTestFailuresMID > -1 && allowedTestFailuresLOW > -1) {

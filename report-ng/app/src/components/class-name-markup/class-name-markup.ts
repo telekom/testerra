@@ -1,4 +1,4 @@
-/*!
+/*
  * Testerra
  *
  * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
@@ -18,40 +18,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-@use "@material/theme";
 
-* {box-sizing: border-box;}
+import {bindable} from "aurelia-templating";
+import {bindingMode} from "aurelia-binding";
+import {StatusConverter} from "../../services/status-converter";
+import {autoinject} from "aurelia-framework";
 
-.mdc-dialog__surface {
-    max-width: 90vw !important;
-    flex-grow: 1;
-}
+@autoinject()
+export class ClassNameMarkup {
 
-.img-comp-container {
-    position: relative;
-}
+    constructor(
+        private _statusConverter:StatusConverter
+    ) {
+    }
 
-.img-comp-img {
-    position: absolute;
-    width: 100%;
-    height: auto;
-    overflow:hidden;
-}
+    @bindable({ defaultBindingMode: bindingMode.toView })
+    namespace: string;
 
-.img-comp-img img {
-    display:block;
-    vertical-align:middle;
-    max-width: 80vw;
-}
+    private _parts;
 
-.img-comp-slider {
-    position: absolute;
-    z-index:9;
-    cursor: ew-resize;
-    /*set the appearance of the slider:*/
-    width: 2rem;
-    height: 2rem;
-    opacity: 0.7;
-    transform: rotate(45deg);
-    border-radius: 5%;
+    namespaceChanged() {
+        this._parts = this._statusConverter.separateNamespace(this.namespace);
+    }
 }

@@ -63,6 +63,7 @@
             <package name="eu.tsystems.mms.tic.testframework.test.testdata"/>
             <package name="eu.tsystems.mms.tic.testframework.test.webdrivermanager"/>
             <package name="eu.tsystems.mms.tic.testframework.test.utils"/>
+            <package name="eu.tsystems.mms.tic.testframework.test.execution"/>
         </packages>
     </test>
 </suite>

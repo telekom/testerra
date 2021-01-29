@@ -27,10 +27,16 @@ import java.util.Map;
 import java.util.Optional;
 
 public class SessionContext extends AbstractContext implements SynchronizableContext {
+    public static class MetaData {
+        public static final String BROWSER="browser";
+        public static final String BROWSER_VERSION="browserVersion";
+        public static final String CAPABILITIES="capabilities";
+    }
+
     private String sessionKey;
     private String provider;
     private final Map<String, Object> metaData = new LinkedHashMap<>();
-    private String sessionId;
+    private String remoteSessionId;
     private Video video;
 
     public SessionContext(String sessionKey, String provider) {
@@ -68,12 +74,12 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
         return this;
     }
 
-    public String getSessionId() {
-        return sessionId;
+    public String getRemoteSessionId() {
+        return remoteSessionId;
     }
 
-    public SessionContext setSessionId(String sessionId) {
-        this.sessionId = sessionId;
+    public SessionContext setRemoteSessionId(String sessionId) {
+        this.remoteSessionId = sessionId;
         return this;
     }
 

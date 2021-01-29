@@ -22,7 +22,7 @@
 .screenshot-dialog {
     .mdc-dialog__container {
         .mdc-dialog__surface {
-            max-width: 90%;
+            max-width: 90vw !important;
         }
     }
 }
@@ -30,7 +30,10 @@
     position: absolute;
     right: 90%;
 }
-
+.mdc-dialog--open .mdc-dialog__container{
+    max-width: 100%;
+}
 .screenshot-image {
     border: #5d6f81 solid 1px;
+
 }

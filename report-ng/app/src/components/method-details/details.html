@@ -20,6 +20,8 @@
   -->
 
 <template>
+    <require from="../layout-comparison/layout-comparison"></require>
+
     <mdc-layout-grid class="pt0">
         <mdc-layout-grid-inner>
             <mdc-layout-grid-cell span="12" if.bind="!_methodDetails.numDetails">
@@ -37,9 +39,15 @@
                 <mdc-card mdc-elevation="4">
                     <div mdc-subtitle2 class="card-headline">Failure Aspect</div>
                     <mdc-list-divider></mdc-list-divider>
-                    <div class="card-content status-${_methodDetails.methodContext.resultStatus|statusClass}" mdc-headline5 innerhtml="${_failureAspect.name|html}"></div>
+                    <div class="card-content status-${_methodDetails.methodContext.resultStatus|statusClass}">
+                        <div mdc-headline5 innerhtml="${_failureAspect.name|html}"></div>
+                        <div class="mt1" if.bind="_layoutComparisonContext">
+                            <layout-comparison context.bind="_layoutComparisonContext"></layout-comparison>
+                        </div>
+                    </div>
                 </mdc-card>
             </mdc-layout-grid-cell>
+
             <mdc-layout-grid-cell span="12" if.bind="_methodDetails.methodContext.errorContext.scriptSource">
                 <mdc-card>
                     <div mdc-subtitle2 class="card-headline">Origin (${_methodDetails.methodContext.errorContext.scriptSource.fileName})</div>
@@ -47,9 +55,19 @@
                     <code-view source.bind="_methodDetails.methodContext.errorContext.scriptSource"></code-view>
                 </mdc-card>
             </mdc-layout-grid-cell>
+
             <mdc-layout-grid-cell span="12" if.bind="_methodDetails.methodContext.errorContext.stackTrace">
                 <mdc-card>
-                    <div mdc-subtitle2 class="card-headline">Stacktrace</div>
+                    <div mdc-subtitle2 class="card-headline space-between">Stacktrace
+                        <button mdc-icon-button
+                                icon="content_copy"
+                                mdc-tooltip="Copy to clipboard"
+                                class="icon-button--dense"
+                                style="margin-top: -6px; margin-bottom: -6px;"
+                                click.delegate="_copyStackTraceToClipboard(_methodDetails.methodContext.errorContext.stackTrace)"
+                        ></button>
+                    </div>
+
                     <mdc-list-divider></mdc-list-divider>
                     <mdc-expandable repeat.for="cause of _methodDetails.methodContext.errorContext.stackTrace"
                                     class="card-expandable"

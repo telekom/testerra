@@ -1,0 +1,66 @@
+<!--
+  ~ Testerra
+  ~
+  ~ (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+  ~
+  ~ Deutsche Telekom AG and all other contributors /
+  ~ copyright owners license this file to you under the Apache
+  ~ License, Version 2.0 (the "License"); you may not use this
+  ~ file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<template>
+    <div class="flex space-between card-actions">
+        <div></div>
+        <div class="flex vcenter card-actions">
+            <mdc-icon class="m1">compare</mdc-icon>
+            <mdc-select label="Left"
+                        value.bind="_comparison.left"
+                        change.delegate="_leftChanged()"
+                        outlined
+            >
+                <mdc-list>
+                    <mdc-list-item repeat.for="image of _left"
+                                   value.bind="image"
+                    >${image.title}</mdc-list-item>
+                </mdc-list>
+            </mdc-select>
+            <mdc-icon class="m1">compare_arrows</mdc-icon>
+            <mdc-select label="Right"
+                        value.bind="_comparison.right"
+                        change.delegate="_rightChanged()"
+                        outlined
+            >
+                <mdc-list>
+                    <mdc-list-item repeat.for="image of _right"
+                                   value.bind="image"
+                    >${image.title}</mdc-list-item>
+                </mdc-list>
+            </mdc-select>
+        </div>
+        <button mdc-icon-button class="icon-button--dense" icon="clear" data-mdc-dialog-action="cancel"></button>
+    </div>
+<!--    <mdc-dialog-actions>-->
+<!--        <button mdc-icon-button icon="clear" class="icon-button&#45;&#45;dense" data-mdc-dialog-action="cancel"></button>-->
+<!--    </mdc-dialog-actions>-->
+    <mdc-dialog-content class="pt0">
+        <div class="img-comp-container" ref="_compContainer">
+            <div class="img-comp-img" ref="_leftImageElement">
+                <img src.bind="_comparison.left.src">
+            </div>
+            <div class="img-comp-img" ref="_rightImageElement">
+                <img src.bind="_comparison.right.src">
+            </div>
+        </div>
+    </mdc-dialog-content>
+</template>

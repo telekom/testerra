@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2021, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -19,29 +19,19 @@
  * under the License.
  */
 
-plugins {
-    id "com.github.node-gradle.node" version "3.0.0-rc6"
-}
+package eu.tsystems.mms.tic.testframework.exceptions;
 
-node {
-    download = true
-    version = "10.17.0"
-    useGradleProxySettings = true
-}
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 
-task buildReport(type: NpmTask) {
-    dependsOn(npm_install)
-    args = ['run', 'build']
-}
+public class UiElementAssertionError extends AssertionError {
+    private GuiElementData data;
 
-build.dependsOn(buildReport)
+    public UiElementAssertionError(GuiElementData data, Throwable cause) {
+        super(cause.getMessage(), cause.getCause());
+        this.data = data;
+    }
 
-task npmClean {
-    doLast {
-        delete "node_modules"
-        delete "package-lock.json"
-        delete "dist"
+    public GuiElementData getData() {
+        return data;
     }
 }
-
-//clean.dependsOn(npmClean)

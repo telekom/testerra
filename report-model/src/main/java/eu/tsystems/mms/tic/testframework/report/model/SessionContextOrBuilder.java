@@ -91,4 +91,28 @@ public interface SessionContextOrBuilder extends
    */
   com.google.protobuf.ByteString
       getSessionIdBytes();
+
+  /**
+   * <code>string video_id = 7;</code>
+   * @return The videoId.
+   */
+  java.lang.String getVideoId();
+  /**
+   * <code>string video_id = 7;</code>
+   * @return The bytes for videoId.
+   */
+  com.google.protobuf.ByteString
+      getVideoIdBytes();
+
+  /**
+   * <code>string execution_context_id = 8;</code>
+   * @return The executionContextId.
+   */
+  java.lang.String getExecutionContextId();
+  /**
+   * <code>string execution_context_id = 8;</code>
+   * @return The bytes for executionContextId.
+   */
+  com.google.protobuf.ByteString
+      getExecutionContextIdBytes();
 }

@@ -23,6 +23,7 @@ package eu.tsystems.mms.tic.testframework.adapters;
 
 import com.google.common.net.MediaType;
 import com.google.gson.Gson;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent;
 import eu.tsystems.mms.tic.testframework.internal.IDUtils;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
@@ -55,11 +56,11 @@ import eu.tsystems.mms.tic.testframework.report.model.context.CustomContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -149,11 +150,11 @@ public class ContextExporter {
         if (customContexts.size()>0) {
             builder.setCustomContextJson(jsonEncoder.toJson(customContexts));
         }
-
-        methodContext.readVideos().forEach(video -> {
-            Optional<File.Builder> optional = Optional.ofNullable(buildVideo(video));
-            optional.ifPresent(fileBuilder -> builder.addVideoIds(fileBuilder.getId()));
-        });
+//
+//        methodContext.readVideos().forEach(video -> {
+//            Optional<File.Builder> optional = Optional.ofNullable(buildVideo(video));
+//            optional.ifPresent(fileBuilder -> builder.addVideoIds(fileBuilder.getId()));
+//        });
 
         return builder;
     }
@@ -318,19 +319,22 @@ public class ContextExporter {
                 optional.ifPresent(entryBuilder::setAssertion);
             }
 
-            actionBuilder.addEntries(entryBuilder);
+            if (
+                    entryBuilder.hasAssertion()
+                    || entryBuilder.hasLogMessage()
+                    || entryBuilder.hasClickPathEvent()
+                    || entryBuilder.getScreenshotId() != null
+            ) {
+                actionBuilder.addEntries(entryBuilder);
+            }
         });
         return actionBuilder;
     }
 
     public ContextExporter() {
+        // Prepare a status map
         for (TestStatusController.Status status : TestStatusController.Status.values()) {
-            /*
-            Status
-             */
             ResultStatusType resultStatusType = ResultStatusType.valueOf(status.name());
-
-            // add to map
             STATUS_MAPPING.put(status, resultStatusType);
         }
     }
@@ -480,7 +484,7 @@ public class ContextExporter {
 //        forEach(executionContext.mergedClassContexts, classContext -> builder.addMergedClassContextIds(classContext.id));
 //        map(executionContext.exitPoints, this::createContextClip, builder::addAllExitPoints);
 //        map(executionContext.failureAspects, this::createContextClip, builder::addAllFailureAscpects);
-        map(executionContext.runConfig, this::prepareRunConfig, builder::setRunConfig);
+        map(executionContext.runConfig, this::buildRunConfig, builder::setRunConfig);
         executionContext.readExclusiveSessionContexts().forEach(sessionContext -> builder.addExclusiveSessionContextIds(sessionContext.getId()));
         apply(executionContext.estimatedTestMethodCount, builder::setEstimatedTestsCount);
         executionContext.readMethodContextLessLogs().forEach(logEvent -> {
@@ -505,7 +509,7 @@ public class ContextExporter {
 //        return out;
 //    }
 
-    public RunConfig.Builder prepareRunConfig(eu.tsystems.mms.tic.testframework.report.model.context.RunConfig runConfig) {
+    public RunConfig.Builder buildRunConfig(eu.tsystems.mms.tic.testframework.report.model.context.RunConfig runConfig) {
         RunConfig.Builder builder = RunConfig.newBuilder();
 
         apply(runConfig.getReportName(), builder::setReportName);
@@ -515,13 +519,14 @@ public class ContextExporter {
         add build information
          */
         BuildInformation.Builder bi = BuildInformation.newBuilder();
-        apply(runConfig.buildInformation.buildJavaVersion, bi::setBuildJavaVersion);
+        eu.tsystems.mms.tic.testframework.internal.BuildInformation buildInformation = TesterraListener.getBuildInformation();
+        apply(buildInformation.buildJavaVersion, bi::setBuildJavaVersion);
         //apply(runConfig.buildInformation.buildOsArch, bi::setBuildOsName);
-        apply(runConfig.buildInformation.buildOsName, bi::setBuildOsName);
-        apply(runConfig.buildInformation.buildOsVersion, bi::setBuildOsVersion);
-        apply(runConfig.buildInformation.buildTimestamp, bi::setBuildTimestamp);
-        apply(runConfig.buildInformation.buildUserName, bi::setBuildUserName);
-        apply(runConfig.buildInformation.buildVersion, bi::setBuildVersion);
+        apply(buildInformation.buildOsName, bi::setBuildOsName);
+        apply(buildInformation.buildOsVersion, bi::setBuildOsVersion);
+        apply(buildInformation.buildTimestamp, bi::setBuildTimestamp);
+        apply(buildInformation.buildUserName, bi::setBuildUserName);
+        apply(buildInformation.buildVersion, bi::setBuildVersion);
         builder.setBuildInformation(bi);
 
         return builder;
@@ -534,6 +539,11 @@ public class ContextExporter {
         apply(sessionContext.getSessionKey(), builder::setSessionKey);
         apply(sessionContext.getProvider(), builder::setProvider);
         apply(sessionContext.getSessionId(), builder::setSessionId);
+        sessionContext.getVideo().ifPresent(video -> {
+            Optional<File.Builder> optional = Optional.ofNullable(buildVideo(video));
+            optional.ifPresent(fileBuilder -> builder.setVideoId(fileBuilder.getId()));
+        });
+        builder.setExecutionContextId(ExecutionContextController.getCurrentExecutionContext().getId());
 
         // translate object map to string map
         Map<String, String> newMap = new LinkedHashMap<>();

@@ -34,8 +34,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.MouseActions;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
@@ -188,12 +186,6 @@ public class DesktopGuiElementCore implements GuiElementCore, Loggable {
     private void throwExceptionIfWebElementIsNull(Exception cause) {
         if (guiElementData.webElement == null) {
             String message = "GuiElement not found: " + toString();
-
-            MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
-            if (currentMethodContext != null) {
-                currentMethodContext.getErrorContext().setThrowable(message, cause);
-            }
-
             throw new ElementNotFoundException(message, cause);
         }
     }

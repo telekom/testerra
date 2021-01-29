@@ -68,7 +68,7 @@
 }
 
 .pt0 {
-    padding-top: 0;
+    padding-top: 0 !important;
 }
 
 .w100 {
@@ -103,7 +103,12 @@
     justify-content: center;
 }
 
-.spread {
+.space-evenly {
+    @extend .flex;
+    justify-content: space-evenly;
+}
+
+.space-between {
     @extend .flex;
     justify-content: space-between;
 }

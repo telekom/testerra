@@ -1,4 +1,4 @@
-/*
+/*!
  * Testerra
  *
  * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
@@ -18,30 +18,39 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+@use "@material/theme";
 
-plugins {
-    id "com.github.node-gradle.node" version "3.0.0-rc6"
+* {box-sizing: border-box;}
+
+.mdc-dialog__surface {
+    max-width: 80vw !important;
+    flex-grow: 1;
 }
 
-node {
-    download = true
-    version = "10.17.0"
-    useGradleProxySettings = true
+.img-comp-container {
+    position: relative;
 }
 
-task buildReport(type: NpmTask) {
-    dependsOn(npm_install)
-    args = ['run', 'build']
+.img-comp-img {
+    position: absolute;
+    width: 100%;
+    height: auto;
+    overflow:hidden;
 }
 
-build.dependsOn(buildReport)
-
-task npmClean {
-    doLast {
-        delete "node_modules"
-        delete "package-lock.json"
-        delete "dist"
-    }
+.img-comp-img img {
+    display:block;
+    vertical-align:middle;
+    max-width: 60vw;
 }
 
-//clean.dependsOn(npmClean)
+.img-comp-slider {
+    position: absolute;
+    z-index:9;
+    cursor: ew-resize;
+    /*set the appearance of the slider:*/
+    width: 40px;
+    height: 40px;
+    opacity: 0.7;
+    border-radius: 50%;
+}

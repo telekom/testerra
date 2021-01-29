@@ -78,7 +78,7 @@ public final class Booter {
         /*
         get versions info
          */
-        BuildInformation buildInformation = BuildInformation.getInstance();
+        BuildInformation buildInformation = TesterraListener.getBuildInformation();
         bannerVersions.add("build.java.version: " + buildInformation.buildJavaVersion);
         bannerVersions.add("build.os.name:      " + buildInformation.buildOsName);
         bannerVersions.add("build.os.arch:      " + buildInformation.buildOsArch);
@@ -121,6 +121,8 @@ public final class Booter {
 
         if (hooks.isEmpty()) {
             LOGGER.debug("No Init Hooks found");
+        } else {
+            LOGGER.info("Init hooks: " + hooks.stream().map(Class::getSimpleName).collect(Collectors.joining(", ")));
         }
 
         // init hooks in alphabetical order to avoid random initialization
@@ -129,7 +131,6 @@ public final class Booter {
                 .forEach(aClass -> {
                     try {
                         final ModuleHook moduleHook = aClass.getConstructor().newInstance();
-                        LOGGER.debug("Initialize " + ModuleHook.class.getSimpleName() + ": " + aClass.getSimpleName());
                         moduleHook.init();
                         MODULE_HOOKS.add(moduleHook);
                     } catch (Exception e) {

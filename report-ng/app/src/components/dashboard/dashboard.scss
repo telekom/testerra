@@ -1,4 +1,4 @@
-/*
+/*!
  * Testerra
  *
  * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
@@ -19,29 +19,7 @@
  * under the License.
  */
 
-plugins {
-    id "com.github.node-gradle.node" version "3.0.0-rc6"
+.item-label {
+    min-width: 80px;
+    display: inline-block;
 }
-
-node {
-    download = true
-    version = "10.17.0"
-    useGradleProxySettings = true
-}
-
-task buildReport(type: NpmTask) {
-    dependsOn(npm_install)
-    args = ['run', 'build']
-}
-
-build.dependsOn(buildReport)
-
-task npmClean {
-    doLast {
-        delete "node_modules"
-        delete "package-lock.json"
-        delete "dist"
-    }
-}
-
-//clean.dependsOn(npmClean)

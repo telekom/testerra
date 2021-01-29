@@ -36,7 +36,7 @@
             </mdc-layout-grid-cell>
         </mdc-layout-grid-inner>
         <mdc-layout-grid-inner else>
-            <mdc-layout-grid-cell span.bind="_lastScreenshot?7:9">
+            <mdc-layout-grid-cell span.bind="_lastScreenshotId?7:9">
                 <mdc-card>
                     <div class="card-content" mdc-body1>
                         <span class="badge status-${_methodDetails.methodContext.resultStatus|statusClass} sr1"
@@ -71,14 +71,15 @@
                     </div>
                 </mdc-card>
             </mdc-layout-grid-cell>
-            <mdc-layout-grid-cell span="2" if.bind="_lastScreenshot">
+            <mdc-layout-grid-cell span="2" if.bind="_lastScreenshotId">
                 <mdc-card class="header-card">
                     <div mdc-subtitle2 class="card-headline">Last Screenshot</div>
                     <mdc-list-divider></mdc-list-divider>
-                    <img src.bind="_lastScreenshot.relativePath"
-                         class="thumbnail clickable"
-                         click.delegate="_showScreenshot(_lastScreenshot)"
-                         title="${_lastScreenshot.meta.Title}"/>
+                    <lazy-image
+                        file-id.bind="_lastScreenshotId"
+                        class="thumbnail clickable"
+                        click.delegate="_showScreenshot($event)"
+                    ></lazy-image>
                 </mdc-card>
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="3" position="right">

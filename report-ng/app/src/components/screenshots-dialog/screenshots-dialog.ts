@@ -23,24 +23,45 @@ import {data} from "../../services/report-model";
 import {MdcDialog} from '@aurelia-mdc-web/dialog';
 import './screenshot-dialog.scss'
 import IFile = data.IFile;
+import {StatisticsGenerator} from "../../services/statistics-generator";
+
+export interface IScreenshotsDialogParams {
+    screenshotIds:string[],
+    current:IFile
+}
 
 @autoinject
-@useView(PLATFORM.moduleName('components/screenshots-dialog/screenshots-dialog.html'))
 export class ScreenshotsDialog {
     private _screenshots:IFile[];
     private _current:IFile;
     private _index = 0;
 
     constructor(
-        private _dialog: MdcDialog
+        private _dialog: MdcDialog,
+        private _statistics: StatisticsGenerator,
     ) {
-
+        // this._dialog.listen('MDCDialog:opened', () => {
+        //     console.log("dialog opened");
+        //     if (document.activeElement instanceof HTMLElement){
+        //         console.log("blur on open dialog");
+        //         document.activeElement.blur();
+        //     }
+        // });
     }
 
-    activate(params:any) {
-        this._screenshots = params.screenshots;
+    activate(params:IScreenshotsDialogParams) {
         this._current = params.current;
-        this._index = this._screenshots.indexOf(this._current);
+        this._statistics.getFilesForIds(params.screenshotIds)
+            .then(screenshots => {
+                this._screenshots = screenshots;
+                this._index = this._screenshots.indexOf(this._current);
+            });
+    }
+
+    attached() {
+        // if (document.activeElement instanceof HTMLElement){
+        //     document.activeElement.blur();
+        // }
     }
 
     private _showScreenshot(file:IFile) {
@@ -62,5 +83,14 @@ export class ScreenshotsDialog {
         }
         this._current = this._screenshots[this._index];
     }
+
+   /** https://stackoverflow.com/questions/27798126/how-to-open-the-newly-created-image-in-a-new-tab**/
+    private _fullscreen(){
+        const image = new Image();
+        const newWindow = window.open('about:blank');
+        image.src =  this._current.relativePath;
+        newWindow.document.write(image.outerHTML);
+        newWindow.document.title = this._current.meta.Title;
+   }
 }
 

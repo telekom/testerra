@@ -24,7 +24,10 @@
     <div class="container">
         <div id="timeline">
             <div class="timeline">
-                <section class="step" repeat.for="testStep of _methodDetails.methodContext.testSteps">
+                <section class="step"
+                         repeat.for="testStep of _methodDetails.methodContext.testSteps"
+                         if.bind="testStep.actions.length > 0"
+                >
                     <let step-index.bind="$index+1"></let>
                     <div mdc-headline5 class="teststep-headline" id="step${stepIndex}">${stepIndex} ${testStep.name}</div>
                     <div repeat.for="action of testStep.actions" mdc-body1>
@@ -36,16 +39,17 @@
                                 <expandable-error-context repeat.for="errorContext of group.assertions"
                                                           error-context.bind="errorContext"
                                 ></expandable-error-context>
-                                <div if.bind="group.screenshots.length > 0">
+                                <div if.bind="group.screenshotIds.length > 0" class="flex">
                                     <mdc-card
-                                        repeat.for="screenshot of group.screenshots"
-                                        class="thumbnail-fixed"
+                                        repeat.for="screenshotId of group.screenshotIds"
+                                        class="thumbnail-fixed sr1"
                                         outlined
                                     >
-                                        <img src.bind="screenshot.relativePath"
-                                             class="thumbnail-fixed clickable"
-                                             click.delegate="_showScreenshot(screenshot)"
-                                             title="${screenshot.meta.Title}"/>
+                                        <lazy-image
+                                            file-id.bind="screenshotId"
+                                            class="thumbnail-fixed clickable"
+                                            click.delegate="_showScreenshot($event)"
+                                        ></lazy-image>
                                     </mdc-card>
                                 </div>
                                 <log-view log-messages.bind="group.logMessages" if.bind="group.logMessages.length > 0"></log-view>

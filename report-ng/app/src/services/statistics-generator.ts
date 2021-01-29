@@ -40,6 +40,7 @@ export class MethodDetails {
     suiteContext: ISuiteContext;
     failureAspectStatistics:FailureAspectStatistics;
     sessionContexts:ISessionContext[];
+    private _customContexts:any[];
 
     get identifier() {
         let identifier = this.methodContext.contextValues.name;
@@ -59,6 +60,17 @@ export class MethodDetails {
 
     get failedStep() {
         return (this.methodContext.failedStepIndex >= 0 ? this.methodContext.testSteps[this.methodContext.failedStepIndex] : null);
+    }
+
+    get customContexts() {
+        if (!this._customContexts) {
+            if (this.methodContext.customContextJson) {
+                this._customContexts = JSON.parse(this.methodContext.customContextJson);
+            } else {
+                this._customContexts = [];
+            }
+        }
+        return this._customContexts;
     }
 }
 
@@ -138,25 +150,33 @@ export class StatisticsGenerator {
         });
     }
 
-    getScreenshotsFromMethodContext(methodContext:IMethodContext) {
-        return this.getFilesForIds(methodContext.testSteps
+    getScreenshotIdsFromMethodContext(methodContext:IMethodContext):string[] {
+        return methodContext.testSteps
             .flatMap(value => value.actions)
             .flatMap(value => value.entries)
             .filter(value => value.screenshotId)
-            .map(value => value.screenshotId));
+            .map(value => value.screenshotId);
     }
 
     getFilesForIds(fileIds:string[]) {
         const files:IFile[] = [];
         const allFilePromises = [];
-        fileIds.forEach(value => {
-            allFilePromises.push(this._dataLoader.getFile(value).then(file => {
-                file.relativePath = this._config.correctRelativePath(file.relativePath);
-                files.push(file);
-            }));
+        fileIds.forEach(fileId => {
+            const loadingPromise = this._getFileForId(fileId).then(file => {
+               files.push(file);
+            });
+            allFilePromises.push(loadingPromise);
         })
         return Promise.all(allFilePromises).then(()=>files);
     }
 
+    private _getFileForId(fileId:string) {
+        return this._cacheService.getForKeyWithLoadingFunction("file:"+fileId, () => {
+            return this._dataLoader.getFile(fileId).then(file => {
+                file.relativePath = this._config.correctRelativePath(file.relativePath);
+                return file;
+            })
+        });
+    }
 }
 

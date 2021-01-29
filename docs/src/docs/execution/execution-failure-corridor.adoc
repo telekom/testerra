@@ -1,33 +1,31 @@
 = Failure Corridor
 include::../properties/property-attributes.adoc[]
 
-This mechanism is used to define the test goal of test runs so that the test suite only fails with a broken failure corridor.
+This mechanism is used to define the test goal of test runs so that it only fails with an invalid failure corridor.
 
-Testerra provides to kinds of a failure corridor:
-
-* Define a maximum number of allowed failed tests - _or_
-* define for every test a weight (low, medium, high) and set specific number of allowed failed tests.
-
-== General
-The failure corridor is enabled by default with the following property.
+This feature is enabled by default with the following property.
 
 [source, properties, subs="attributes"]
 ----
 {failure_corridor_active}=true
 ----
 
-== Maximum allowed failures
-The simplest variant is to define the maximum number of allowed test failures.
+With an enabled failure corridor, you need to define the maximum amount of failures per weight:
 
 .test.properties
 [source, properties, subs="attributes"]
 ----
-{failure_corridor_allowed_failed_tests}=2
-# Ff less than two methods fail the suite will be marked as passed
+{failure_corridor_allowed_failed_tests_high}=0
+{failure_corridor_allowed_failed_tests_mid}=1
+{failure_corridor_allowed_failed_tests_low}=2
 ----
 
-== Custom failure corridor
-For further adjustment test methods can be weighted while defining the maximum number of failures for the corresponding weightings.
+[IMPORTANT]
+====
+If you do not define any failure corridor, the default value `0` is used for all three levels.
+====
+
+To change the weight for each test, just annotate it with `@FailureCorridor`, where `High` is default.
 
 .Examples of method weighting
 [source, java]
@@ -68,18 +66,3 @@ public void test5() throws Exception {
     Assert.fail();
 }
 ----
-
-Define your own failure corridor with the maximum number of failed tests by the following settings:
-
-.test.properties
-[source, properties, subs="attributes"]
-----
-{failure_corridor_allowed_failed_tests_high}=0
-{failure_corridor_allowed_failed_tests_mid}=1
-{failure_corridor_allowed_failed_tests_low}=2
-----
-
-[IMPORTANT]
-====
-If you do not define any failure corridor, the default value `0` is used for all three levels.
-====

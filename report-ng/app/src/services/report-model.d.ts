@@ -299,9 +299,6 @@ export namespace data {
         /** MethodContext sessionContextIds */
         sessionContextIds?: (string[]|null);
 
-        /** MethodContext videoIds */
-        videoIds?: (string[]|null);
-
         /** MethodContext customContextJson */
         customContextJson?: (string|null);
 
@@ -377,9 +374,6 @@ export namespace data {
 
         /** MethodContext sessionContextIds. */
         public sessionContextIds: string[];
-
-        /** MethodContext videoIds. */
-        public videoIds: string[];
 
         /** MethodContext customContextJson. */
         public customContextJson: string;
@@ -785,6 +779,9 @@ export namespace data {
 
         /** SessionContext sessionId */
         sessionId?: (string|null);
+
+        /** SessionContext videoId */
+        videoId?: (string|null);
     }
 
     /** Represents a SessionContext. */
@@ -810,6 +807,9 @@ export namespace data {
 
         /** SessionContext sessionId. */
         public sessionId: string;
+
+        /** SessionContext videoId. */
+        public videoId: string;
 
         /**
          * Decodes a SessionContext message from the specified reader or buffer.

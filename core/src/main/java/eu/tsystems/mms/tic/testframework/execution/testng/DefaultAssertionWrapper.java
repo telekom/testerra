@@ -21,21 +21,23 @@
 package eu.tsystems.mms.tic.testframework.execution.testng;
 
 import com.google.inject.Inject;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
 
 /**
  * This wrapper is the default implementation of {@link Assertion}
- * It always creates a new assertion from the {@link AssertionFactory} according to its {@link TestController.Overrides}
+ * It always creates a new assertion according to {@link TestController.Overrides}
  * @author Mike Reiche
  */
 public class DefaultAssertionWrapper extends AbstractAssertion implements Assertion {
-    private final AssertionFactory assertionFactory;
+    private final TestController.Overrides overrides;
     @Inject
-    protected DefaultAssertionWrapper(AssertionFactory assertionFactory) {
-        this.assertionFactory = assertionFactory;
+    protected DefaultAssertionWrapper(TestController.Overrides overrides) {
+        this.overrides = overrides;
     }
     @Override
     public void fail(AssertionError error) {
-        this.assertionFactory.create().fail(error);
+        Assertion assertion = Testerra.getInjector().getInstance(this.overrides.getAssertionClass());
+        assertion.fail(error);
     }
 }

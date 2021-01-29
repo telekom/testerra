@@ -21,9 +21,13 @@
 
 package eu.tsystems.mms.tic.testframework.internal.asserts;
 
+import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
+
 /**
  * Configuration for implementations of {@link AbstractPropertyAssertion}
+ * @todo Make this package private
  */
 public class PropertyAssertionConfig {
     public boolean throwErrors = false;
+    public Assertion useAssertion;
 }

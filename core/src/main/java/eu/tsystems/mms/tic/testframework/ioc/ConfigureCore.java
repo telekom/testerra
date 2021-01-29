@@ -24,9 +24,7 @@ package eu.tsystems.mms.tic.testframework.ioc;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
-import eu.tsystems.mms.tic.testframework.execution.testng.AssertionFactory;
 import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
-import eu.tsystems.mms.tic.testframework.execution.testng.DefaultAssertionFactory;
 import eu.tsystems.mms.tic.testframework.execution.testng.DefaultAssertionWrapper;
 import eu.tsystems.mms.tic.testframework.execution.testng.DefaultCollectedAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.DefaultOptionalAssertion;
@@ -45,7 +43,6 @@ public class ConfigureCore extends AbstractModule {
         // Singletons
         bind(Report.class).to(DefaultReport.class).in(Scopes.SINGLETON);
         bind(Formatter.class).to(DefaultFormatter.class).in(Scopes.SINGLETON);
-        bind(AssertionFactory.class).to(DefaultAssertionFactory.class).in(Scopes.SINGLETON);
         bind(CollectedAssertion.class).to(DefaultCollectedAssertion.class).in(Scopes.SINGLETON);
         bind(OptionalAssertion.class).to(DefaultOptionalAssertion.class).in(Scopes.SINGLETON);
         bind(InstantAssertion.class).to(ThrowingAssertion.class).in(Scopes.SINGLETON);

@@ -44,8 +44,8 @@ public class PageTests extends AbstractTestSitesTest implements Loggable, PageFa
 
         title.is("Input test");
         title.isNot("Affentest");
-        title.contains("Input");
-        title.containsNot("SuperTestPage");
+        title.contains("Input").is(true);
+        title.contains("SuperTestPage").is(false);
         title.containsWords("Input", "test").is(true);
 
         QuantityAssertion<Integer> length = page.expectThat().title().length();
@@ -61,7 +61,7 @@ public class PageTests extends AbstractTestSitesTest implements Loggable, PageFa
     public void test_Page_waitFor() {
         WebTestPage page = getPage();
         Control.withTimeout(0, () -> {
-            Assert.assertFalse(page.waitFor().title().contains("Katzentitel"));
+            Assert.assertFalse(page.waitFor().title().contains("Katzentitel").is(true));
             Assert.assertTrue(page.waitFor().title().is("Input test"));
         });
     }
@@ -109,7 +109,7 @@ public class PageTests extends AbstractTestSitesTest implements Loggable, PageFa
     public void test_Page_url_fails() {
         WebTestPage page = getPage();
         try {
-            page.expectThat().url().endsWith("nonexistingfile.html", "Wrong URL");
+            page.expectThat().url().endsWith("nonexistingfile.html").is(true, "Wrong URL");
         } catch (AssertionError e) {
             Assert.assertContains(e.getMessage(), "Wrong URL");
             Assert.assertEndsWith(e.getMessage(), "ends with [nonexistingfile.html]");

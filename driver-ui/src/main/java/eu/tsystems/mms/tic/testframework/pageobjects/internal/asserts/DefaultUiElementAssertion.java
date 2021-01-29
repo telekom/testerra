@@ -23,6 +23,8 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
+import eu.tsystems.mms.tic.testframework.exceptions.UiElementAssertionError;
+import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.internal.asserts.AbstractPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.internal.asserts.AssertionProvider;
 import eu.tsystems.mms.tic.testframework.internal.asserts.BinaryAssertion;
@@ -39,29 +41,62 @@ import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
+import java.awt.Color;
 import java.io.File;
 import java.util.concurrent.atomic.AtomicReference;
 import org.openqa.selenium.Rectangle;
 
 /**
- * Default implementation for {@link UiElementAssertions}
+ * Default implementation for {@link UiElementAssertion}
  */
-public class DefaultUiElementAssertions implements UiElementAssertions {
-    private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
-    private static final Report report = Testerra.injector.getInstance(Report.class);
+public class DefaultUiElementAssertion implements UiElementAssertion {
+    private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.getInjector().getInstance(PropertyAssertionFactory.class);
+    private static final Report report = Testerra.getInjector().getInstance(Report.class);
     private final PropertyAssertionConfig propertyAssertionConfig = new PropertyAssertionConfig();
     private final GuiElementCore core;
     private final GuiElement guiElement;
 
-    public DefaultUiElementAssertions(UiElement uiElement, boolean throwErrors) {
+    abstract class UiElementAssertionProvider<T> extends AssertionProvider<T> {
+
+        @Override
+        public AssertionError wrapAssertionError(AssertionError assertionError) {
+            return new UiElementAssertionError(guiElement.getData(), assertionError);
+        }
+
+        @Override
+        public void passed(AbstractPropertyAssertion<T> assertion) {
+            if (Testerra.Properties.DEMO_MODE.asBool()) {
+                guiElement.highlight(new Color(0, 255, 0));
+            }
+        }
+
+        @Override
+        public void failed(AbstractPropertyAssertion<T> assertion) {
+            if (Testerra.Properties.DEMO_MODE.asBool()) {
+                guiElement.highlight(new Color(255, 0, 0));
+            }
+        }
+    }
+
+    public DefaultUiElementAssertion(UiElement uiElement, boolean throwErrors) {
         this.guiElement = (GuiElement)uiElement;
         this.core = this.guiElement.getCore();
         this.propertyAssertionConfig.throwErrors = throwErrors;
     }
 
+    /**
+     * @deprecated This is only required for {@link LegacyGuiElementAssertWrapper}
+     * @param uiElement
+     * @param useAssertion
+     */
+    public DefaultUiElementAssertion(UiElement uiElement, Assertion useAssertion) {
+        this(uiElement, true);
+        this.propertyAssertionConfig.useAssertion = useAssertion;
+    }
+
     @Override
     public StringAssertion<String> tagName() {
-        return propertyAssertionFactory.createWithConfig(DefaultStringAssertion.class, this.propertyAssertionConfig, new AssertionProvider<String>() {
+        return propertyAssertionFactory.createWithConfig(DefaultStringAssertion.class, this.propertyAssertionConfig, new UiElementAssertionProvider<String>() {
             @Override
             public String getActual() {
                 return core.getTagName();
@@ -76,7 +111,7 @@ public class DefaultUiElementAssertions implements UiElementAssertions {
 
     @Override
     public StringAssertion<String> text() {
-        return propertyAssertionFactory.createWithConfig(DefaultStringAssertion.class, this.propertyAssertionConfig, new AssertionProvider<String>() {
+        return propertyAssertionFactory.createWithConfig(DefaultStringAssertion.class, this.propertyAssertionConfig, new UiElementAssertionProvider<String>() {
             @Override
             public String getActual() {
                 return core.getText();
@@ -92,7 +127,7 @@ public class DefaultUiElementAssertions implements UiElementAssertions {
     @Override
     public StringAssertion<String> value(String attribute) {
         final String finalAttribute = attribute;
-        return propertyAssertionFactory.createWithConfig(DefaultStringAssertion.class, this.propertyAssertionConfig, new AssertionProvider<String>() {
+        return propertyAssertionFactory.createWithConfig(DefaultStringAssertion.class, this.propertyAssertionConfig, new UiElementAssertionProvider<String>() {
             @Override
             public String getActual() {
                 return core.getAttribute(finalAttribute);
@@ -107,7 +142,7 @@ public class DefaultUiElementAssertions implements UiElementAssertions {
 
     @Override
     public StringAssertion<String> css(String property) {
-        return propertyAssertionFactory.createWithConfig(DefaultStringAssertion.class, this.propertyAssertionConfig, new AssertionProvider<String>() {
+        return propertyAssertionFactory.createWithConfig(DefaultStringAssertion.class, this.propertyAssertionConfig, new UiElementAssertionProvider<String>() {
             @Override
             public String getActual() {
                 return core.getCssValue(property);
@@ -122,7 +157,7 @@ public class DefaultUiElementAssertions implements UiElementAssertions {
 
     @Override
     public BinaryAssertion<Boolean> present() {
-        return propertyAssertionFactory.createWithConfig(DefaultBinaryAssertion.class, this.propertyAssertionConfig, new AssertionProvider<Boolean>() {
+        return propertyAssertionFactory.createWithConfig(DefaultBinaryAssertion.class, this.propertyAssertionConfig, new UiElementAssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 return core.isPresent();
@@ -137,7 +172,7 @@ public class DefaultUiElementAssertions implements UiElementAssertions {
 
     @Override
     public BinaryAssertion<Boolean> visible(boolean complete) {
-        return propertyAssertionFactory.createWithConfig(DefaultBinaryAssertion.class, this.propertyAssertionConfig, new AssertionProvider<Boolean>() {
+        return propertyAssertionFactory.createWithConfig(DefaultBinaryAssertion.class, this.propertyAssertionConfig, new UiElementAssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 return core.isVisible(complete);
@@ -152,7 +187,7 @@ public class DefaultUiElementAssertions implements UiElementAssertions {
 
     @Override
     public BinaryAssertion<Boolean> displayed() {
-        return propertyAssertionFactory.createWithConfig(DefaultBinaryAssertion.class, this.propertyAssertionConfig, new AssertionProvider<Boolean>() {
+        return propertyAssertionFactory.createWithConfig(DefaultBinaryAssertion.class, this.propertyAssertionConfig, new UiElementAssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 return core.isDisplayed();
@@ -166,7 +201,7 @@ public class DefaultUiElementAssertions implements UiElementAssertions {
 
     @Override
     public BinaryAssertion<Boolean> enabled() {
-        return propertyAssertionFactory.createWithConfig(DefaultBinaryAssertion.class, this.propertyAssertionConfig, new AssertionProvider<Boolean>() {
+        return propertyAssertionFactory.createWithConfig(DefaultBinaryAssertion.class, this.propertyAssertionConfig, new UiElementAssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 return core.isEnabled();
@@ -181,7 +216,7 @@ public class DefaultUiElementAssertions implements UiElementAssertions {
 
     @Override
     public BinaryAssertion<Boolean> selected() {
-        return propertyAssertionFactory.createWithConfig(DefaultBinaryAssertion.class, this.propertyAssertionConfig, new AssertionProvider<Boolean>() {
+        return propertyAssertionFactory.createWithConfig(DefaultBinaryAssertion.class, this.propertyAssertionConfig, new UiElementAssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 return core.isSelected();
@@ -196,7 +231,7 @@ public class DefaultUiElementAssertions implements UiElementAssertions {
 
     @Override
     public BinaryAssertion<Boolean> selectable() {
-        return propertyAssertionFactory.createWithConfig(DefaultBinaryAssertion.class, this.propertyAssertionConfig, new AssertionProvider<Boolean>() {
+        return propertyAssertionFactory.createWithConfig(DefaultBinaryAssertion.class, this.propertyAssertionConfig, new UiElementAssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 return core.isSelectable();
@@ -211,7 +246,7 @@ public class DefaultUiElementAssertions implements UiElementAssertions {
 
     @Override
     public RectAssertion bounds() {
-        return propertyAssertionFactory.createWithConfig(DefaultRectAssertion.class, this.propertyAssertionConfig, new AssertionProvider<Rectangle>() {
+        return propertyAssertionFactory.createWithConfig(DefaultRectAssertion.class, this.propertyAssertionConfig, new UiElementAssertionProvider<Rectangle>() {
             @Override
             public Rectangle getActual() {
                 return core.getRect();
@@ -226,7 +261,7 @@ public class DefaultUiElementAssertions implements UiElementAssertions {
 
     @Override
     public QuantityAssertion<Integer> numberOfElements() {
-        return propertyAssertionFactory.createWithConfig(DefaultQuantityAssertion.class, this.propertyAssertionConfig, new AssertionProvider<Integer>() {
+        return propertyAssertionFactory.createWithConfig(DefaultQuantityAssertion.class, this.propertyAssertionConfig, new UiElementAssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
                 try {
@@ -255,7 +290,7 @@ public class DefaultUiElementAssertions implements UiElementAssertions {
             report.addScreenshot(atomicScreenshot.get(), Report.FileMode.COPY);
         }
 
-        return propertyAssertionFactory.createWithConfig(DefaultImageAssertion.class, this.propertyAssertionConfig, new AssertionProvider<File>() {
+        return propertyAssertionFactory.createWithConfig(DefaultImageAssertion.class, this.propertyAssertionConfig, new UiElementAssertionProvider<File>() {
             @Override
             public File getActual() {
                 return atomicScreenshot.get().getScreenshotFile();

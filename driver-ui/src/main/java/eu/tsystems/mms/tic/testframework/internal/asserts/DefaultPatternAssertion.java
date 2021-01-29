@@ -21,6 +21,9 @@
 
 package eu.tsystems.mms.tic.testframework.internal.asserts;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import java.util.regex.Matcher;
 
 /**
@@ -42,8 +45,8 @@ public class DefaultPatternAssertion extends AbstractTestedPropertyAssertion<Mat
     public boolean is(boolean expected, String failMessage) {
         return testSequence(
                 provider,
-                (actual) -> assertion.equals(actual.find(), expected),
-                (actual) -> assertion.formatExpectEquals(actual.find(), expected, createFailMessage(failMessage))
+                (actual) -> testAssertion.equals(actual.find(), expected),
+                (actual) -> testAssertion.formatExpectEquals(actual.find(), expected, createFailMessage(failMessage))
         );
     }
 }

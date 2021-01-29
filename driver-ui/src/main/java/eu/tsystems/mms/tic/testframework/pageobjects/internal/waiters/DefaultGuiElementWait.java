@@ -125,7 +125,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
     private boolean pWaitForTextContains(final String... texts) {
         boolean finalContains = false;
         for (String text : texts) {
-            finalContains = this.uiElement.waitFor().text().contains(text);
+            finalContains = this.uiElement.waitFor().text().contains(text).is(true);
             if (!finalContains) break;
         }
         return finalContains;
@@ -135,7 +135,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
     public boolean waitForTextContainsNot(String... texts) {
         boolean finalContains = false;
         for (String text : texts) {
-            finalContains = this.uiElement.waitFor().text().containsNot(text);
+            finalContains = this.uiElement.waitFor().text().contains(text).is(false);
             if (!finalContains) break;
         }
         return finalContains;
@@ -153,12 +153,12 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
 
     @Override
     public boolean waitForAttributeContains(final String attributeName, final String value) {
-        return this.uiElement.waitFor().value(attributeName).contains(value);
+        return this.uiElement.waitFor().value(attributeName).contains(value).is(true);
     }
 
     @Override
     public boolean waitForAttributeContainsNot(final String attributeName, final String value) {
-        return this.uiElement.waitFor().value(attributeName).containsNot(value);
+        return this.uiElement.waitFor().value(attributeName).contains(value).is(false);
     }
 
     @Override

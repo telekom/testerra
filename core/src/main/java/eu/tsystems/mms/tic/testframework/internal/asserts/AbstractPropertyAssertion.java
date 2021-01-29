@@ -31,7 +31,7 @@ import java.util.function.Consumer;
  */
 public abstract class AbstractPropertyAssertion<T> implements ActualProperty<T> {
 
-    protected final static PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
+    protected final static PropertyAssertionFactory propertyAssertionFactory = Testerra.getInjector().getInstance(PropertyAssertionFactory.class);
     protected final AssertionProvider<T> provider;
     protected final AbstractPropertyAssertion<T> parent;
     protected PropertyAssertionConfig config;
@@ -88,4 +88,24 @@ public abstract class AbstractPropertyAssertion<T> implements ActualProperty<T> 
             parentAssertion = parentAssertion.parent;
         }
     }
+
+    protected void passedRecursive() {
+        provider.passed(this);
+        AbstractPropertyAssertion parentAssertion = parent;
+        while (parentAssertion != null) {
+            parentAssertion.provider.passed(this);
+            parentAssertion = parentAssertion.parent;
+        }
+    }
+
+    protected AssertionError wrapAssertionErrorRecursive(AssertionError assertionError) {
+        assertionError = provider.wrapAssertionError(assertionError);
+        AbstractPropertyAssertion parentAssertion = parent;
+        while (parentAssertion != null) {
+            parentAssertion.provider.wrapAssertionError(assertionError);
+            parentAssertion = parentAssertion.parent;
+        }
+        return assertionError;
+    }
+
 }

@@ -23,7 +23,6 @@ package eu.tsystems.mms.tic.testframework.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
-import eu.tsystems.mms.tic.testframework.execution.testng.AssertionFactory;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
@@ -41,9 +40,8 @@ import java.util.function.Supplier;
  * @author Mike Reiche
  */
 public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropertyAssertion<T> implements Loggable {
-    protected static final AssertionFactory assertionFactory = Testerra.injector.getInstance(AssertionFactory.class);
-    protected static final Assertion assertion = Testerra.injector.getInstance(InstantAssertion.class);
-    private static final TestController.Overrides overrides = Testerra.injector.getInstance(TestController.Overrides.class);
+    protected static final Assertion testAssertion = Testerra.getInjector().getInstance(InstantAssertion.class);
+    private static final TestController.Overrides overrides = Testerra.getInjector().getInstance(TestController.Overrides.class);
 
     public AbstractTestedPropertyAssertion(AbstractPropertyAssertion parentAssertion, AssertionProvider<T> provider) {
         super(parentAssertion, provider);
@@ -86,11 +84,22 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
             return atomicPassed.get();
         });
 
-        if (!atomicPassed.get()) {
+        boolean passed = atomicPassed.get();
+
+        if (!passed) {
             failedFinallyRecursive();
+
             // Dont handle exceptions when it should only wait
             if (config.throwErrors) {
-                Assertion finalAssertion = assertionFactory.create();
+
+                // Take assertion from config or global overrides
+                Assertion useAssertion;
+                if (config.useAssertion != null) {
+                    useAssertion = config.useAssertion;
+                } else {
+                    useAssertion = Testerra.getInjector().getInstance(overrides.getAssertionClass());
+                }
+
                 String message = null;
                 Throwable finalThrowable;
                 try {
@@ -101,9 +110,11 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
                     finalThrowable = throwable;
                 }
 
-                finalAssertion.fail(message, finalThrowable);
+                useAssertion.fail(wrapAssertionErrorRecursive(new AssertionError(message, finalThrowable)));
             }
+        } else {
+            passedRecursive();
         }
-        return atomicPassed.get();
+        return passed;
     }
 }

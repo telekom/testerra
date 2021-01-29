@@ -30,7 +30,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
  * Contains all assertions on an {@link UiElement}
  * @author Mike Reiche
  */
-public interface UiElementAssertions extends UiElementBaseAssertions {
+public interface UiElementAssertion extends UiElementBaseAssertion {
     default boolean text(String text) {
         return text().is(text);
     }

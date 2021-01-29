@@ -30,7 +30,7 @@ import eu.tsystems.mms.tic.testframework.internal.asserts.StringAssertion;
  * Contains basic GuiElement features which every GuiElement needs to have.
  * @author Mike Reiche
  */
-public interface UiElementBaseAssertions extends ScreenshotAssertion {
+public interface UiElementBaseAssertion extends ScreenshotAssertion {
     QuantityAssertion<Integer> numberOfElements();
     BinaryAssertion<Boolean> present();
     default boolean present(boolean expected) {

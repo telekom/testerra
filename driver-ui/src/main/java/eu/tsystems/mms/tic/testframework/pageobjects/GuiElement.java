@@ -31,13 +31,12 @@ import eu.tsystems.mms.tic.testframework.internal.NameableChild;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultLocator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFactory;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultGuiElementAssert;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultUiElementAssertions;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.LegacyGuiElementAssertWrapper;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultUiElementAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertDescriptionDecorator;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertHighlightDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PerformanceTestGuiElementAssert;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementAssertions;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.AbstractGuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreSequenceDecorator;
@@ -97,8 +96,8 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
      * This is the raw core implementation of {@link GuiElementCore}
      */
     private final GuiElementCore core;
-    private DefaultUiElementAssertions assertions;
-    private DefaultUiElementAssertions waits;
+    private DefaultUiElementAssertion assertions;
+    private DefaultUiElementAssertion waits;
 
     /**
      * Contains the elements base information and the {@link GuiElementData} hierarchy only.
@@ -321,12 +320,6 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
         return this;
     }
 
-    /**
-     * @deprecated
-     * This method is no longer acceptable as a part of GuiElement.
-     * Use {@link eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils#clickJS()} instead
-     *
-     */
     @Override
     public UiElement sendKeys(CharSequence... charSequences) {
         decoratedCore.sendKeys(charSequences);
@@ -647,24 +640,18 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     public GuiElementAssert nonFunctionalAsserts() {
         if (nonFunctionalAssert==null) {
             OptionalAssertion assertion = Testerra.injector.getInstance(OptionalAssertion.class);
-            nonFunctionalAssert = createAssertDecorators(core, guiElementData, assertion, waits());
+            nonFunctionalAssert = createAssertDecorators(assertion);
         }
         return nonFunctionalAssert;
     }
 
     @Deprecated
-    private GuiElementAssert createAssertDecorators(
-            GuiElementCore core,
-            GuiElementData data,
-            Assertion assertion,
-            GuiElementWait wait
-    ) {
+    private GuiElementAssert createAssertDecorators(Assertion assertion) {
         GuiElementAssert guiElementAssert;
         if (Testerra.Properties.PERF_TEST.asBool()) {
             guiElementAssert = new PerformanceTestGuiElementAssert();
         } else {
-            guiElementAssert = new DefaultGuiElementAssert(core, data, wait, assertion);
-            guiElementAssert = new GuiElementAssertHighlightDecorator(guiElementAssert, data);
+            guiElementAssert = new LegacyGuiElementAssertWrapper(this, assertion);
         }
         return guiElementAssert;
     }
@@ -689,7 +676,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     private GuiElementAssert instantAsserts() {
         if (instantAssert == null) {
             InstantAssertion assertion = Testerra.injector.getInstance(InstantAssertion.class);
-            instantAssert = createAssertDecorators(core, guiElementData, assertion, waits());
+            instantAssert = createAssertDecorators(assertion);
         }
         return instantAssert;
     }
@@ -718,7 +705,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     public GuiElementAssert assertCollector() {
         if (collectableAssert==null) {
             CollectedAssertion assertion = Testerra.injector.getInstance(CollectedAssertion.class);
-            collectableAssert = createAssertDecorators(core, guiElementData, assertion, waits());
+            collectableAssert = createAssertDecorators(assertion);
         }
         return collectableAssert;
     }
@@ -763,17 +750,17 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     }
 
     @Override
-    public UiElementAssertions waitFor() {
+    public UiElementAssertion waitFor() {
         if (this.waits == null) {
-            this.waits = new DefaultUiElementAssertions(this, false);
+            this.waits = new DefaultUiElementAssertion(this, false);
         }
         return this.waits;
     }
 
     @Override
-    public UiElementAssertions expectThat() {
+    public UiElementAssertion expectThat() {
         if (this.assertions == null) {
-            this.assertions = new DefaultUiElementAssertions(this, true);
+            this.assertions = new DefaultUiElementAssertion(this, true);
         }
         return this.assertions;
     }

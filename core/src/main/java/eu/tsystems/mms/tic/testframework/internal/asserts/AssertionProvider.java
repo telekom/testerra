@@ -35,6 +35,14 @@ public abstract class AssertionProvider<T> implements ActualProperty<T> {
     abstract public String getSubject();
 
     /**
+     * This method will be called recurisve from parent to descendants
+     * if the assertion passed.
+     * @param assertion
+     */
+    public void passed(AbstractPropertyAssertion<T> assertion) {
+    }
+
+    /**
      * This method will be called recursive from parent to descendants
      * if one of the assertions failed.
      * @param assertion The failed assertion
@@ -48,5 +56,14 @@ public abstract class AssertionProvider<T> implements ActualProperty<T> {
      * @param assertion The failed assertion
      */
     public void failedFinally(AbstractPropertyAssertion<T> assertion) {
+    }
+
+    /**
+     * This method will be called recursive from parent to descendants
+     * to wrap the given {@link AssertionError}.
+     * @param assertionError The given assertion error
+     */
+    public AssertionError wrapAssertionError(AssertionError assertionError) {
+        return assertionError;
     }
 }

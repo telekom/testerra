@@ -126,7 +126,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
         WebTestPage page = getPage();
         Control.withTimeout(0, () -> {
             Assert.assertFalse(page.notVisibleElement().waitFor().value(Attribute.STYLE).is("humbug"));
-            Assert.assertTrue(page.notVisibleElement().waitFor().value(Attribute.STYLE).contains("hidden"));
+            Assert.assertTrue(page.notVisibleElement().waitFor().value(Attribute.STYLE).contains("hidden").is(true));
         });
     }
 

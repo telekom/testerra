@@ -24,15 +24,15 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageObject;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementActions;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementBaseAssertions;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementBaseAssertion;
 
 /**
  * Contains basic GuiElement features which every GuiElement needs to have.
  * @author Mike Reiche
  */
 public interface UiElementBase extends WebElementActions, PageObject {
-    UiElementBaseAssertions waitFor();
-    UiElementBaseAssertions expectThat();
+    UiElementBaseAssertion waitFor();
+    UiElementBaseAssertion expectThat();
     /**
      * Creates a xpath of the given {@link Locator} hierarchy NOT the actual element hierarchy
      */

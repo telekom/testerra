@@ -26,7 +26,6 @@ package eu.tsystems.mms.tic.testframework.internal.asserts;
  * @author Mike Reiche
  */
 public class DefaultBinaryAssertion<T> extends AbstractTestedPropertyAssertion<T> implements BinaryAssertion<T> {
-
     public DefaultBinaryAssertion(AbstractPropertyAssertion parentAssertion, AssertionProvider<T> provider) {
         super(parentAssertion, provider);
     }
@@ -45,7 +44,7 @@ public class DefaultBinaryAssertion<T> extends AbstractTestedPropertyAssertion<T
                                 || actualString.equalsIgnoreCase("yes")
                         );
                     },
-                    (actual) -> assertion.format(actual, "is one of [true, 'on', '1', 'yes']", createFailMessage(failMessage))
+                    (actual) -> testAssertion.format(actual, "is one of [true, 'on', '1', 'yes']", createFailMessage(failMessage))
             );
         } else {
             return testSequence(
@@ -59,7 +58,7 @@ public class DefaultBinaryAssertion<T> extends AbstractTestedPropertyAssertion<T
                                 || actualString.equalsIgnoreCase("no")
                         );
                     },
-                    (actual) -> assertion.format(actual, "is one of [false, 'off', '0', 'no']", createFailMessage(failMessage)));
+                    (actual) -> testAssertion.format(actual, "is one of [false, 'off', '0', 'no']", createFailMessage(failMessage)));
         }
     }
 }

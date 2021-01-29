@@ -20,18 +20,14 @@
  */
  package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.ILayout;
 import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Deprecated
-public abstract class GuiElementAssertDecorator implements GuiElementAssert {
-
-    /**
-     * Logger to be non static, so we see which decorator actually logs something, instead of hiding it behind the abstraction.
-     */
-    final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+public abstract class GuiElementAssertDecorator implements GuiElementAssert, Loggable {
     private final GuiElementAssert decoratedAssert;
 
     public GuiElementAssertDecorator(GuiElementAssert decoratedAssert) {
@@ -52,7 +48,7 @@ public abstract class GuiElementAssertDecorator implements GuiElementAssert {
             beforeAssertion();
         } catch (Exception e) {
             // Do not change catch to Throwable! Instead, think about getting narrower by catching only RuntimeExceptions.
-            LOGGER.warn("Exception thrown on beforeAssertion in AssertDecorator.", e);
+            log().warn("Exception thrown on beforeAssertion in AssertDecorator.", e);
         }
     }
 
@@ -64,7 +60,7 @@ public abstract class GuiElementAssertDecorator implements GuiElementAssert {
             }
         } catch (Exception e) {
             // Do not change catch to Throwable! Instead, think about getting narrower by catching only RuntimeExceptions.
-            LOGGER.warn("Exception thrown on afterAssertion in AssertDecorator.", e);
+            log().warn("Exception thrown on afterAssertion in AssertDecorator.", e);
         }
         if (assertionErrorOrNull != null) {
             throw assertionErrorOrNull;
@@ -351,11 +347,11 @@ public abstract class GuiElementAssertDecorator implements GuiElementAssert {
     public void assertIsDisplayed() {
         callBeforeAssertion();
         AssertionError thrownAssertionError = null;
-        LOGGER.debug("Executing assertIsDisplayed");
+        log().debug("Executing assertIsDisplayed");
         try {
             decoratedAssert.assertIsDisplayed();
         } catch (AssertionError e) {
-            LOGGER.debug("assertIsDisplayed threw an assertion error, executing catch-action");
+            log().debug("assertIsDisplayed threw an assertion error, executing catch-action");
             thrownAssertionError = e;
         }
         handleAfterAssertion("assertIsDisplayed", thrownAssertionError);

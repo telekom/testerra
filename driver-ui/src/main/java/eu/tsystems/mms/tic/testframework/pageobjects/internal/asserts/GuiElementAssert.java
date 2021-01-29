@@ -34,7 +34,9 @@ public interface GuiElementAssert {
      * Assert isPresent() = true.
      */
     @Deprecated
-    void assertIsPresentFast();
+    default void assertIsPresentFast() {
+        this.assertIsPresent();
+    }
 
     /**
      * Assert waitForIsPresent() = true.
@@ -54,7 +56,9 @@ public interface GuiElementAssert {
      * Assert isPresent() = false.
      */
     @Deprecated
-    void assertIsNotPresentFast();
+    default void assertIsNotPresentFast() {
+        this.assertIsNotPresent();
+    }
 
     /**
      * Assert waitForIsSelected() = true.

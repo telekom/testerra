@@ -25,7 +25,7 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.AbstractPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFactory;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementBaseAssertions;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementBaseAssertion;
 import java.awt.Color;
 import java.util.function.Consumer;
 import org.apache.commons.lang3.NotImplementedException;
@@ -101,12 +101,12 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     }
 
     @Override
-    public UiElementBaseAssertions waitFor() {
+    public UiElementBaseAssertion waitFor() {
         return rootElement.waitFor();
     }
 
     @Override
-    public UiElementBaseAssertions expectThat() {
+    public UiElementBaseAssertion expectThat() {
         return rootElement.expectThat();
     }
 

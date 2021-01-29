@@ -33,46 +33,55 @@ import java.util.regex.Pattern;
  */
 public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> implements StringAssertion<T>, Loggable {
 
-    private final static Formatter formatter = Testerra.injector.getInstance(Formatter.class);
+    private final static Formatter formatter = Testerra.getInjector().getInstance(Formatter.class);
 
     public DefaultStringAssertion(AbstractPropertyAssertion parentAssertion, AssertionProvider<T> provider) {
         super(parentAssertion, provider);
     }
 
     @Override
-    public boolean contains(String expected, String failMessage) {
-        return testSequence(
-                provider,
-                (actual) -> assertion.contains(actual.toString(), expected),
-                (actual) -> assertion.formatExpectContains(actual.toString(), expected, createFailMessage(failMessage))
-        );
+    public BinaryAssertion<Boolean> contains(String expected) {
+        return propertyAssertionFactory.createWithParent(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
+            @Override
+            public Boolean getActual() {
+                return provider.getActual().toString().contains(expected);
+            }
+
+            @Override
+            public String getSubject() {
+                return String.format("\"%s\".contains(%s)", getStringSubject(), expected);
+            }
+        });
     }
 
     @Override
-    public boolean containsNot(String expected, String failMessage) {
-        return testSequence(
-                provider,
-                (actual) -> assertion.containsNot(actual.toString(), expected),
-                (actual) -> assertion.formatExpectContainsNot(actual.toString(), expected, createFailMessage(failMessage))
-        );
+    public BinaryAssertion<Boolean> startsWith(String expected) {
+        return propertyAssertionFactory.createWithParent(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
+            @Override
+            public Boolean getActual() {
+                return provider.getActual().toString().startsWith(expected);
+            }
+
+            @Override
+            public String getSubject() {
+                return String.format("\"%s\".startsWith(%s)", getStringSubject(), expected);
+            }
+        });
     }
 
     @Override
-    public boolean startsWith(String expected, String failMessage) {
-        return testSequence(
-                provider,
-                (actual) -> assertion.startsWith(actual.toString(), expected),
-                (actual) -> assertion.formatExpectStartsWith(actual.toString(), expected, createFailMessage(failMessage))
-        );
-    }
+    public BinaryAssertion<Boolean> endsWith(String expected) {
+        return propertyAssertionFactory.createWithParent(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
+            @Override
+            public Boolean getActual() {
+                return provider.getActual().toString().endsWith(expected);
+            }
 
-    @Override
-    public boolean endsWith(String expected, String failMessage) {
-        return testSequence(
-                provider,
-                (actual) -> assertion.endsWith(actual.toString(), expected),
-                (actual) -> assertion.formatExpectEndsWith(actual.toString(), expected, createFailMessage(failMessage))
-        );
+            @Override
+            public String getSubject() {
+                return String.format("\"%s\".endsWith(%s)", getStringSubject(), expected);
+            }
+        });
     }
 
     @Override

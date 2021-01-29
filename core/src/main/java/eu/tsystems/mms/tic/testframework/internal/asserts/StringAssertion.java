@@ -28,25 +28,9 @@ import java.util.regex.Pattern;
  * @author Mike Reiche
  */
 public interface StringAssertion<T> extends QuantityAssertion<T> {
-    default boolean contains(String expected) {
-        return contains(expected, null);
-    }
-    boolean contains(String expected, String subject);
-
-    default boolean containsNot(String expected) {
-        return containsNot(expected, null);
-    }
-    boolean containsNot(String expected, String subject);
-
-    default boolean startsWith(String expected) {
-        return startsWith(expected, null);
-    }
-    boolean startsWith(String expected, String subject);
-
-    default boolean endsWith(String expected) {
-        return endsWith(expected, null);
-    }
-    boolean endsWith(String expected, String subject);
+    BinaryAssertion <Boolean> contains(String expected);
+    BinaryAssertion <Boolean> startsWith(String expected);
+    BinaryAssertion <Boolean> endsWith(String expected);
 
     default PatternAssertion matches(String pattern) {
         return matches(Pattern.compile(pattern, Pattern.CASE_INSENSITIVE|Pattern.MULTILINE));

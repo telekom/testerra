@@ -21,13 +21,13 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementAssertions;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementAssertion;
 
 /**
  * Contains all test related features for an {@link UiElement}
  * @author Mike Reiche
  */
 public interface TestableUiElement {
-    UiElementAssertions waitFor();
-    UiElementAssertions expectThat();
+    UiElementAssertion waitFor();
+    UiElementAssertion expectThat();
 }

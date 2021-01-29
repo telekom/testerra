@@ -18,9 +18,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
- package eu.tsystems.mms.tic.testframework.report;
+package eu.tsystems.mms.tic.testframework.report;
 
-import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
@@ -123,8 +122,7 @@ public final class GraphGenerator {
      * @throws IOException
      */
     public static File saveGraphAsJPEG(JFreeChart chart, String relativeFileName, int width, int height) throws IOException {
-        Report report = new Report();
-        File graphFile = report.getReportDirectory(relativeFileName);
+        File graphFile = TesterraListener.getReport().getReportDirectory(relativeFileName);
         File dir = graphFile.getParentFile();
         if (!dir.exists()) {
             dir.mkdirs();

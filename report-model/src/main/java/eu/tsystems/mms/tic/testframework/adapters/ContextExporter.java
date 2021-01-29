@@ -23,6 +23,7 @@ package eu.tsystems.mms.tic.testframework.adapters;
 
 import com.google.common.net.MediaType;
 import com.google.gson.Gson;
+import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent;
 import eu.tsystems.mms.tic.testframework.internal.IDUtils;
@@ -55,7 +56,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.CustomContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.lang.annotation.Annotation;
@@ -75,7 +75,7 @@ import org.apache.logging.log4j.core.LogEvent;
 
 public class ContextExporter {
     private static final Map<TestStatusController.Status, ResultStatusType> STATUS_MAPPING = new LinkedHashMap<>();
-    private final Report report = new Report();
+    private final Report report = TesterraListener.getReport();
     private final Gson jsonEncoder = new Gson();
     private final java.io.File targetVideoDir = report.getFinalReportDirectory(Report.VIDEO_FOLDER_NAME);
     private final java.io.File targetScreenshotDir = report.getFinalReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
@@ -160,15 +160,15 @@ public class ContextExporter {
     }
 
     public File.Builder[] buildScreenshot(Screenshot screenshot) {
-        java.io.File currentScreenshotFile = new java.io.File(currentScreenshotDir, screenshot.filename);
-        java.io.File targetScreenshotFile = new java.io.File(targetScreenshotDir, screenshot.filename);
+        java.io.File currentScreenshotFile = screenshot.getScreenshotFile();
+        java.io.File targetScreenshotFile = new java.io.File(targetScreenshotDir, currentScreenshotFile.getName());
         File.Builder screenshotBuilder = prepareFile(currentScreenshotFile);
         screenshotBuilder.setRelativePath(targetScreenshotFile.getPath());
         screenshotBuilder.setMimetype(MediaType.PNG.toString());
-        screenshotBuilder.putAllMeta(screenshot.meta());
+        screenshotBuilder.putAllMeta(screenshot.getMetaData());
 
-        java.io.File currentSourceFile = new java.io.File(currentScreenshotDir, screenshot.sourceFilename);
-        java.io.File targetSourceFile = new java.io.File(targetScreenshotDir, screenshot.sourceFilename);
+        java.io.File currentSourceFile = screenshot.getPageSourceFile();
+        java.io.File targetSourceFile = new java.io.File(targetScreenshotDir, currentSourceFile.getName());
         File.Builder sourceBuilder = prepareFile(currentSourceFile);
         sourceBuilder.setRelativePath(targetSourceFile.getPath());
         sourceBuilder.setMimetype(MediaType.PLAIN_TEXT_UTF_8.toString());
@@ -181,8 +181,8 @@ public class ContextExporter {
     }
 
     public File.Builder buildVideo(Video video) {
-        java.io.File currentVideoFile = new java.io.File(currentVideoDir, video.filename);
-        java.io.File targetVideoFile = new java.io.File(targetVideoDir, video.filename);
+        java.io.File currentVideoFile = video.getVideoFile();
+        java.io.File targetVideoFile = new java.io.File(targetVideoDir, currentVideoFile.getName());
         File.Builder builder = prepareFile(currentVideoFile);
         builder.setRelativePath(targetVideoFile.getPath());
         builder.setMimetype(MediaType.WEBM_VIDEO.toString());

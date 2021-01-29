@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2021, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -17,20 +17,16 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
  */
-package eu.tsystems.mms.tic.testframework.report.model.context;
+package eu.tsystems.mms.tic.testframework.logging;
 
-import java.io.File;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class Video extends Attachment {
-    public Video() {
-        super("Video");
-    }
-    public Video(File file) {
-        super(file);
-    }
+public interface Loggable {
 
-    public File getVideoFile() {
-        return getOrCreateTempFile(".mp4");
+    default Logger log() {
+        return LoggerFactory.getLogger(this.getClass());
     }
 }

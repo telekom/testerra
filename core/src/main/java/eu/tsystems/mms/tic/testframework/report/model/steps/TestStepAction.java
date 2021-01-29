@@ -92,9 +92,6 @@ public class TestStepAction implements Serializable {
     }
 
     public void addScreenshot(Screenshot screenshot) {
-        if (StringUtils.isBlank(screenshot.filename)) {
-            return;
-        }
         this.entries.add(screenshot);
     }
 

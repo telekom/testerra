@@ -23,10 +23,7 @@
 package eu.tsystems.mms.tic.testframework.report;
 
 import com.google.common.eventbus.Subscribe;
-import eu.tsystems.mms.tic.testframework.boot.Booter;
 import eu.tsystems.mms.tic.testframework.events.FinalizeExecutionEvent;
-import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 
 /**
@@ -40,8 +37,6 @@ final class FinalizeListener implements FinalizeExecutionEvent.Listener {
     @Subscribe
     public void onFinalizeExecution(FinalizeExecutionEvent event) {
         ExecutionContextController.printExecutionStatistics();
-
-        Report report = new Report();
-        report.finalizeReport();
+        TesterraListener.getReport().finalizeReport();
     }
 }

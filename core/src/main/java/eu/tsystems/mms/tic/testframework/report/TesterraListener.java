@@ -107,6 +107,7 @@ public class TesterraListener implements
     private static final Object LOCK = new Object();
     private static final LoggerContext loggerContext;
     private static final BuildInformation buildInformation;
+    private static final Report report;
 
     static {
 
@@ -114,6 +115,7 @@ public class TesterraListener implements
         loggerContext = Configurator.initialize(defaultConfiguration);
         buildInformation = new BuildInformation();
         eventBus = new EventBus();
+        report = new DefaultReport();
 
         /*
          * Add monitoring event listeners
@@ -162,6 +164,10 @@ public class TesterraListener implements
 
     public static BuildInformation getBuildInformation() {
         return buildInformation;
+    }
+
+    public static Report getReport() {
+        return report;
     }
 
     /**

@@ -29,12 +29,13 @@ import eu.tsystems.mms.tic.testframework.internal.TimingInfo;
 import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.internal.utils.TimingInfosCollector;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
+import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.ReportingData;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.LogMessage;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.perf.PerfTestReportUtils;
 import eu.tsystems.mms.tic.testframework.report.perf.TimingsGraphGenerator;
 import eu.tsystems.mms.tic.testframework.report.threadvisualizer.ThreadVisualizer;
@@ -64,7 +65,7 @@ public final class ReportUtils {
      * Logger instance.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(ReportUtils.class);
-    private static Report report = new Report();
+    private static Report report = TesterraListener.getReport();
     private static final String FRAMES_FOLDER_NAME = "frames";
     private static final String METHODS_FOLDER_NAME = "methods";
     private static File FRAMES_DIRECTORY = report.getReportDirectory(FRAMES_FOLDER_NAME);
@@ -345,7 +346,6 @@ public final class ReportUtils {
         /*
          * main report index.html
          */
-        Report report = new Report();
         final File reportFileIndex = report.getReportDirectory("index.html");
         ReportFormatter.createTestClassesView(reportFileIndex, reportingData, "index.vm", null, null);
 

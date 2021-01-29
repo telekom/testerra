@@ -34,10 +34,15 @@ export class ScreenshotComparison {
     private _comparison: IComparison;
     private _left:IImage[];
     private _right:IImage[];
+
     private _leftImageElement:HTMLDivElement;
     private _rightImageElement:HTMLDivElement;
     private _compContainer: HTMLDivElement;
-
+    private _slider: HTMLDivElement;
+    private _width: number;
+    private _clicked: boolean;
+    private _ratio: number = 0.5;
+    private _mouseMoveHandler: EventListenerObject;
 
     constructor(
         private _dialog: MdcDialog
@@ -51,7 +56,7 @@ export class ScreenshotComparison {
     }
 
     attached() {
-        this._initComparisons();
+        this._prepareImageComparison(this._leftImageElement);
         this._updateCompareLists();
     }
 
@@ -68,87 +73,107 @@ export class ScreenshotComparison {
         this._updateCompareLists();
     }
 
-    private _initComparisons() {
-        this._compareImages(this._leftImageElement);
-    }
+    private _prepareImageComparison(leftImg:HTMLDivElement){
+        this._clicked = false;
 
-    private _compareImages(img:HTMLDivElement){
-        console.log(img);
-        let slider, clicked = 0, width, height;
-        /* Get the width and height of the img element */
-        width = img.offsetWidth;
-        height = img.offsetHeight;
-        console.log(width, " x ", height)
-        this._compContainer.style.height = height + "px";
-        this._compContainer.style.width = (width + 20) + "px";
+        //Create slider
+        this._slider = document.createElement("div");
+        this._slider.setAttribute("class", "img-comp-slider secondary-bg");
+        leftImg.parentElement.insertBefore(this._slider, leftImg);
 
-        /*Set the width of the img element to 50%: */
-        img.style.width = width / 2 + "px";
-        img.style.zIndex = "2";
-        /* Create slider: */
-        slider = document.createElement("div");
-        slider.setAttribute("class", "img-comp-slider secondary-bg");
-        /* Insert slider */
-        img.parentElement.insertBefore(slider, img);
-        /* Position the slider in the middle: */
-        slider.style.top = (height / 2) - (slider.offsetHeight / 2) + "px";
-        slider.style.left = (width / 2) - (slider.offsetWidth / 2)+ "px";
-
+        //adjust image sizes
+        this._setImageSizes(this._leftImageElement, this._rightImageElement, this._ratio);
         window.addEventListener('resize', () => {
-            this._compContainer.style.height = height + "px";
-            this._compContainer.style.width = (width + 20) + "px";
+            this._setImageSizes(this._leftImageElement, this._rightImageElement, this._ratio);
         })
 
-        /* Execute a function when the mouse button is pressed: */
-        slider.addEventListener("mousedown", slideReady);
-        /* And another function when the mouse button is released: */
-        window.addEventListener("mouseup", slideFinish);
-        /* Or touched (for touch screens:) */
-        slider.addEventListener("touchstart", slideReady);
-        /* And released (for touch screens:) */
-        window.addEventListener("touchend", slideFinish);
+        //Function handlers for mouse
+        this._slider.addEventListener("mousedown", this._slideReady.bind(this));
+        window.addEventListener("mouseup", this._slideFinish.bind(this));
+        //Function handlers for touchscreen devices
+        this._slider.addEventListener("touchstart", this._slideReady.bind(this));
+        window.addEventListener("touchend", this._slideFinish.bind(this));
+    }
 
-        function slideReady(e) {
-            /* Prevent any other actions that may occur when moving over the image: */
-            e.preventDefault();
-            /* The slider is now clicked and ready to move: */
-            clicked = 1;
-            /* Execute a function when the slider is moved: */
-            window.addEventListener("mousemove", slideMove);
-            window.addEventListener("touchmove", slideMove);
+    private _setImageSizes(leftImg:HTMLDivElement, rightImg: HTMLDivElement, sliderRatio: number) {
+        let height;
+
+        this._width = Math.max(leftImg.firstElementChild.clientWidth, rightImg.firstElementChild.clientWidth);
+        height = Math.max(leftImg.firstElementChild.clientHeight, rightImg.firstElementChild.clientHeight);
+
+        if (this._width > window.innerWidth * 0.8) {
+            this._width = window.innerWidth * 0.8; //80vw
         }
-        function slideFinish() {
-            /* The slider is no longer clicked: */
-            clicked = 0;
+
+        this._compContainer.style.height = height + "px";
+        this._compContainer.style.width = (this._width + 20) + "px";
+
+        //Set the width of the img element to ratio
+        leftImg.style.width = this._width * sliderRatio + "px";
+        leftImg.style.zIndex = "2";
+
+        //Position the slider by ratio
+        this._slider.style.top = (height / 2) - (this._slider.offsetHeight / 2) + "px";
+        this._slider.style.left = (this._width * sliderRatio)  - (this._slider.offsetWidth / 2) + "px";
+    }
+
+    // Function handlers for slider and image resizes:
+    private _slideReady(e) {
+        e.preventDefault();
+        this._clicked = true;
+        /*
+        * binding function to variable to allow removing it later since binding the this-context to the handler returns a new function everytime
+        * @see: https://stackoverflow.com/questions/33859113/javascript-removeeventlistener-not-working-inside-a-class
+        */
+        this._mouseMoveHandler = this._slideMove.bind(this);
+        window.addEventListener("mousemove", this._mouseMoveHandler);
+        window.addEventListener("touchmove", this._mouseMoveHandler);
+    }
+
+    private _slideFinish() {
+        //The slider is no longer clicked:
+        this._clicked = false;
+        //remember ratio for correct slider positioning
+        this._ratio = this._leftImageElement.offsetWidth / this._width;
+        window.removeEventListener("mousemove", this._mouseMoveHandler);
+        window.removeEventListener("touchmove", this._mouseMoveHandler);
+    }
+
+    public _slideMove(e) {
+        let position;
+
+        if (this._clicked == false) return false;
+
+        position = this._getCursorPos(e);
+        //Prevent the slider from being positioned outside the image:
+        if (position < 0) {
+            position = 0;
         }
-        function slideMove(e) {
-            var pos;
-            /* If the slider is no longer clicked, exit this function: */
-            if (clicked == 0) return false;
-            /* Get the cursor's imageElements position: */
-            pos = getCursorPos(e)
-            /* Prevent the slider from being positioned outside the image: */
-            if (pos < 0) pos = 0;
-            if (pos > width) pos = width;
-            /* Execute a function that will resize the overlay image according to the cursor: */
-            slide(pos);
+
+        if (position > this._width){
+            position = this._width;
         }
-        function getCursorPos(e) {
-            var a, x = 0;
-            e = e || window.event;
-            /* Get the imageElements positions of the image: */
-            a = img.getBoundingClientRect();
-            /* Calculate the cursor's imageElements coordinate, relative to the image: */
-            x = e.pageX - a.left;
-            /* Consider any page scrolling: */
-            x = x - window.pageXOffset;
-            return x;
-        }
-        function slide(x) {
-            /* Resize the image: */
-            img.style.width = x + "px";
-            /* Position the slider: */
-            slider.style.left = img.offsetWidth - (slider.offsetWidth / 2) + "px";
-        }
+
+        this._slide(position);
+    }
+
+    private _slide(x) {
+        //Resize the image
+        this._leftImageElement.style.width = x + "px";
+        //Position the slider
+        this._slider.style.left = this._leftImageElement.offsetWidth - (this._slider.offsetWidth / 2) + "px";
+    }
+
+    private _getCursorPos(e) {
+        let a, x: number;
+        e = e || window.event;
+        //Get the imageElements positions of the image
+        a = this._leftImageElement.getBoundingClientRect();
+        //Calculate the cursor's imageElements coordinate, relative to the image
+        x = e.pageX - a.left;
+        //Consider any page scrolling
+        x = x - window.pageXOffset;
+
+        return x;
     }
 }

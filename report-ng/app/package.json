@@ -23,6 +23,7 @@
         "@aurelia-mdc-web/lookup": "^3.0.3",
         "@aurelia-mdc-web/ripple": "^3.0.3",
         "@aurelia-mdc-web/select": "^3.0.3",
+        "@aurelia-mdc-web/snackbar": "^3.0.3",
         "@aurelia-mdc-web/switch": "^3.0.3",
         "@aurelia-mdc-web/tab-bar": "^3.0.3",
         "@aurelia-mdc-web/text-field": "^3.0.3",

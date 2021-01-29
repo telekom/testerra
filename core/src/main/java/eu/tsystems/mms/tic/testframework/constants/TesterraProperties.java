@@ -19,13 +19,13 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.constants;
+package eu.tsystems.mms.tic.testframework.constants;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra.Properties;
 
 /**
  * Class holding keys of all properties.
- *
+ * @deprecated Use {@link Properties} instead
  * @todo Move these Properties to {@link Properties}
  */
 public final class TesterraProperties {

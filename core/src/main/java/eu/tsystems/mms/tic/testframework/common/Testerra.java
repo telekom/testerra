@@ -81,7 +81,6 @@ public class Testerra {
          */
         WEBDRIVER_MODE("tt.webdriver.mode", "local"),
         FAILURE_CORRIDOR_ACTIVE("tt.failure.corridor.active", true),
-        FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS("tt.failure.corridor.allowed.failed.tests", 0),
         FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_HIGH("tt.failure.corridor.allowed.failed.tests.high", 0),
         FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_MID("tt.failure.corridor.allowed.failed.tests.mid", 0),
         FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_LOW("tt.failure.corridor.allowed.failed.tests.low", 0),

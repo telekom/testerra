@@ -21,7 +21,7 @@
 
 <template bindable="errorContext">
     <mdc-expandable class="card-expandable" class.bind="errorContext.optional?'status-skipped':'status-failed'">
-        <div slot="caption" mdc-body2><class-name namespace.bind="errorContext.stackTrace[0].className"><span if.bind="errorContext.stackTrace[0].message">: ${errorContext.stackTrace[0].message}</span></class-name></div>
+        <div slot="caption" mdc-body2><class-name-markup namespace.bind="errorContext.stackTrace[0].className"><span if.bind="errorContext.stackTrace[0].message">: ${errorContext.stackTrace[0].message}</span></class-name-markup></div>
         <code-view source.bind="errorContext.scriptSource"
                    mark-class.bind="errorContext.optional?'warn':'error'"
         ></code-view>

@@ -28,28 +28,16 @@ import org.apache.commons.io.FilenameUtils;
 
 public class Screenshot extends Attachment implements Loggable {
 
-    public enum Meta {
-        SESSION_KEY("SessionKey"),
-        TITLE("Title"),
-        WINDOW("Window"),
-        URL("URL"),
-        DATE("Date"),
-        DRIVER_FOCUS("Driver Focus"),
-        FILE_NAME("FileName"),
-        SOURCE_FILE_NAME("SourceFileName"),
-        ;
-
-        private String key;
-
-        Meta(final String key) {
-            this.key = key;
-        }
-
-        public String toString() {
-            return key;
-        }
+    public static class MetaData {
+        public static final String SESSION_KEY="SessionKey";
+        public static final String TITLE="Title";
+        public static final String WINDOW="Window";
+        public static final String URL="URL";
+        public static final String DATE="Date";
+        public static final String DRIVER_FOCUS="Driver Focus";
+        public static final String FILE_NAME="FileName";
+        public static final String SOURCE_FILE_NAME="SourceFileName";
     }
-
     private File pageSourceFile;
 
     public Screenshot() {
@@ -69,8 +57,8 @@ public class Screenshot extends Attachment implements Loggable {
 
     @Override
     public Screenshot setFile(File file) {
-        meta().put(Meta.DATE.toString(), new Date(file.lastModified()).toString());
-        meta().put(Meta.FILE_NAME.toString(), file.getName());
+        getMetaData().put(MetaData.DATE, new Date(file.lastModified()).toString());
+        getMetaData().put(MetaData.FILE_NAME, file.getName());
         super.setFile(file);
         return this;
     }
@@ -81,7 +69,7 @@ public class Screenshot extends Attachment implements Loggable {
 
     public Screenshot setPageSourceFile(File file) {
         pageSourceFile = file;
-        meta().put(Meta.SOURCE_FILE_NAME.toString(), file.getName());
+        getMetaData().put(MetaData.SOURCE_FILE_NAME, file.getName());
         return this;
     }
 

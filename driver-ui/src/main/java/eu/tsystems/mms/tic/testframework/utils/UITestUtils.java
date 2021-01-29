@@ -145,9 +145,9 @@ public class UITestUtils {
                 get infos
                  */
             if (sessionKey != null) {
-                screenshot.meta().put(Screenshot.Meta.SESSION_KEY.toString(), sessionKey);
+                screenshot.getMetaData().put(Screenshot.MetaData.SESSION_KEY, sessionKey);
             }
-            screenshot.meta().put(Screenshot.Meta.TITLE.toString(), eventFiringWebDriver.getTitle());
+            screenshot.getMetaData().put(Screenshot.MetaData.TITLE, eventFiringWebDriver.getTitle());
 
             /*
             window and focus infos
@@ -156,9 +156,9 @@ public class UITestUtils {
             String windowHandle = eventFiringWebDriver.getWindowHandle();
             if (originalWindowHandle != null) {
                 if (windowHandle.equals(originalWindowHandle)) {
-                    screenshot.meta().put(Screenshot.Meta.DRIVER_FOCUS.toString(), "true");
+                    screenshot.getMetaData().put(Screenshot.MetaData.DRIVER_FOCUS, "true");
                 } else {
-                    screenshot.meta().put(Screenshot.Meta.DRIVER_FOCUS.toString(), "false");
+                    screenshot.getMetaData().put(Screenshot.MetaData.DRIVER_FOCUS, "false");
                 }
             }
             Set<String> windowHandles = eventFiringWebDriver.getWindowHandles();
@@ -174,8 +174,8 @@ public class UITestUtils {
             }
 
             String currentUrl = eventFiringWebDriver.getCurrentUrl();
-            screenshot.meta().put(Screenshot.Meta.WINDOW.toString(), window);
-            screenshot.meta().put(Screenshot.Meta.URL.toString(), currentUrl);
+            screenshot.getMetaData().put(Screenshot.MetaData.WINDOW, window);
+            screenshot.getMetaData().put(Screenshot.MetaData.URL, currentUrl);
         } catch (final Exception e) {
             LOGGER.error(ERROR_TAKING_SCREENSHOT, e);
         }

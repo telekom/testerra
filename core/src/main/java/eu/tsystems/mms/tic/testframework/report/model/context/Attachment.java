@@ -67,7 +67,7 @@ public class Attachment implements Loggable {
         return this;
     }
 
-    public Map<String, String> meta() {
+    public Map<String, String> getMetaData() {
         if (meta == null) {
             meta = new HashMap<>();
         }

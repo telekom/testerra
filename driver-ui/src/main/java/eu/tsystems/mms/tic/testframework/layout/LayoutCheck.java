@@ -673,7 +673,7 @@ public final class LayoutCheck {
         context.expectedScreenshot = report.provideScreenshot(referenceScreenshotPath.toFile(),  Report.FileMode.COPY);
         context.actualScreenshot = report.provideScreenshot(actualScreenshotPath.toFile(), Report.FileMode.MOVE);
         context.distanceScreenshot = report.provideScreenshot(distanceScreenshotPath.toFile(), Report.FileMode.MOVE);
-        context.distanceScreenshot.meta().put("Distance", Double.toString(step.distance));
+        context.distanceScreenshot.getMetaData().put("Distance", Double.toString(step.distance));
         if (step.annotatedReferenceFileName!=null) {
             final Path annotatedReferenceScreenshotPath = step.annotatedReferenceFileName;
             context.annotatedScreenshot = report.provideScreenshot(annotatedReferenceScreenshotPath.toFile(), Report.FileMode.MOVE);

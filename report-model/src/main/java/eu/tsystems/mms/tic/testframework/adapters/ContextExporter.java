@@ -165,7 +165,7 @@ public class ContextExporter {
         File.Builder screenshotBuilder = prepareFile(currentScreenshotFile);
         screenshotBuilder.setRelativePath(targetScreenshotFile.getPath());
         screenshotBuilder.setMimetype(MediaType.PNG.toString());
-        screenshotBuilder.putAllMeta(screenshot.meta());
+        screenshotBuilder.putAllMeta(screenshot.getMetaData());
 
         java.io.File currentSourceFile = screenshot.getPageSourceFile();
         java.io.File targetSourceFile = new java.io.File(targetScreenshotDir, currentSourceFile.getName());

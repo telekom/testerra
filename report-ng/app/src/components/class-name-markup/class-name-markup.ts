@@ -17,25 +17,27 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
-package eu.tsystems.mms.tic.testframework.report.model;
 
-public interface BrowserInformation {
-    /**
-     * Gets the browser name of the test run.
-     *
-     * @return the browser name.
-     */
-    String getBrowserName();
+import {bindable} from "aurelia-templating";
+import {bindingMode} from "aurelia-binding";
+import {StatusConverter} from "../../services/status-converter";
+import {autoinject} from "aurelia-framework";
 
-    /**
-     * Gets the browser version of the test run.
-     *
-     * @return the browser version.
-     */
-    String getBrowserVersion();
+@autoinject()
+export class ClassNameMarkup {
 
-    String getUserAgent();
-    BrowserInformation parseUserAgent(String userAgentString);
+    constructor(
+        private _statusConverter:StatusConverter
+    ) {
+    }
+
+    @bindable({ defaultBindingMode: bindingMode.toView })
+    namespace: string;
+
+    private _parts;
+
+    namespaceChanged() {
+        this._parts = this._statusConverter.separateNamespace(this.namespace);
+    }
 }

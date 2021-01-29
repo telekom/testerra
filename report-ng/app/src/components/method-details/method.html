@@ -47,25 +47,26 @@
                     <mdc-list-divider></mdc-list-divider>
                     <div class="flex">
                         <ul class="mdc-list mdc-list--dense w50">
-                            <li class="mdc-list-item reset-cursor">
+                            <li class="mdc-custom-list-item">
                                 <span class="secondary sr1">Class</span><a route-href="route: tests; params.bind: {class: _methodDetails.classStatistics.classIdentifier}">${_methodDetails.classStatistics.classIdentifier}</a>
                             </li>
-                            <li class="mdc-list-item reset-cursor">
+                            <li class="mdc-custom-list-item">
                                 <span class="secondary sr1">Test Context</span>${_methodDetails.testContext.contextValues.name}
                             </li>
-                            <li class="mdc-list-item reset-cursor">
+                            <li class="mdc-custom-list-item">
                                 <span class="secondary sr1">Suite</span>${_methodDetails.suiteContext.contextValues.name}
                             </li>
-                            <li class="mdc-list-item reset-cursor">
-                                <span class="secondary sr1">Thread</span><a route-href="route: threads; params.bind: {methodId: _methodDetails.methodContext.contextValues.id}">${_methodDetails.methodContext.threadName}</a>
-                            </li>
+
                         </ul>
-                        <ul class="mdc-list mdc-list--dense w50">
-                            <li class="mdc-list-item reset-cursor" if.bind="_methodDetails.failedStep">
+                        <ul class="mdc-list mdc-list--dense">
+                            <li class="mdc-custom-list-item" if.bind="_methodDetails.failedStep">
                                 <span class="secondary sr1">Failed in</span><a route-href="route: steps; params.bind: {step: _methodDetails.methodContext.failedStepIndex+1}">${_methodDetails.failedStep.name}</a>
                             </li>
-                            <li class="mdc-list-item reset-cursor" if.bind="_methodDetails.sessionContexts.length > 0">
-                                <span class="secondary sr1">Sessions</span><span repeat.for="sessionContext of _methodDetails.sessionContexts">${sessionContext.sessionKey} (${sessionContext.metadata.browser}:${sessionContext.metadata.browserVersion})</span>
+                            <li class="mdc-custom-list-item">
+                                <span class="secondary sr1">Thread</span><a route-href="route: threads; params.bind: {methodId: _methodDetails.methodContext.contextValues.id}">${_methodDetails.methodContext.threadName}</a>
+                            </li>
+                            <li class="mdc-custom-list-item" if.bind="_methodDetails.sessionContexts.length > 0">
+                                <span class="secondary sr1">Sessions</span><session-context-markup session-context.bind="sessionContext" repeat.for="sessionContext of _methodDetails.sessionContexts"></session-context-markup>
                             </li>
                         </ul>
                     </div>

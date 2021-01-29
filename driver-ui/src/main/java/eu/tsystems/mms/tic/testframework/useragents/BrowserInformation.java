@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2021, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -17,14 +17,24 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
-package eu.tsystems.mms.tic.testframework.webdrivermanager;
+package eu.tsystems.mms.tic.testframework.useragents;
 
-import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
+public interface BrowserInformation {
 
-public interface ProvidesBrowserInformation {
+    void parseUserAgent(String userAgent);
 
-    BrowserInformation getBrowserInformation();
+    /**
+     * Gets the browser name of the test run.
+     *
+     * @return the browser name.
+     */
+    String getBrowserName();
 
+    /**
+     * Gets the browser version of the test run.
+     *
+     * @return the browser version.
+     */
+    String getBrowserVersion();
 }

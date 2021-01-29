@@ -109,7 +109,7 @@ public final class WebDriverSessionsManager {
         final String sessionId = WebDriverUtils.getSessionId(eventFiringWebDriver);
         if (sessionId != null) {
             ALL_EVENTFIRING_WEBDRIVER_SESSIONS_CONTEXTS.put(sessionId, sessionContext);
-            sessionContext.setSessionId(sessionId);
+            sessionContext.setRemoteSessionId(sessionId);
             LOGGER.trace("Stored SessionContext " + sessionContext + " for session " + sessionId);
         } else {
             LOGGER.error("Could not store SessionContext, could not get SessionId");

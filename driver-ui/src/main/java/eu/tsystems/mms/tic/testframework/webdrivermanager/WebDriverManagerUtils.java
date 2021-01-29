@@ -19,13 +19,10 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.webdrivermanager;
+package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import eu.tsystems.mms.tic.testframework.model.HostInfo;
-import eu.tsystems.mms.tic.testframework.report.model.BrowserInformation;
-import eu.tsystems.mms.tic.testframework.report.model.YauaaBrowserInformation;
-import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
+import eu.tsystems.mms.tic.testframework.useragents.UapBrowserInformation;
 import java.net.URL;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -121,9 +118,10 @@ public final class WebDriverManagerUtils {
                 LOGGER.error("Error requesting user agent", e);
             }
 
-            browserInformation = new YauaaBrowserInformation(userAgentString);
+            browserInformation = new UapBrowserInformation();
+            browserInformation.parseUserAgent(userAgentString);
         } else {
-            browserInformation = new YauaaBrowserInformation(null);
+            browserInformation = new UapBrowserInformation();
         }
 
         CACHED_BROWSER_INFOS.put(driver, browserInformation);

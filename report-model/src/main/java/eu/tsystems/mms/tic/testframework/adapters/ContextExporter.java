@@ -538,7 +538,7 @@ public class ContextExporter {
         apply(buildContextValues(sessionContext), builder::setContextValues);
         apply(sessionContext.getSessionKey(), builder::setSessionKey);
         apply(sessionContext.getProvider(), builder::setProvider);
-        apply(sessionContext.getSessionId(), builder::setSessionId);
+        apply(sessionContext.getRemoteSessionId(), builder::setSessionId);
         sessionContext.getVideo().ifPresent(video -> {
             Optional<File.Builder> optional = Optional.ofNullable(buildVideo(video));
             optional.ifPresent(fileBuilder -> builder.setVideoId(fileBuilder.getId()));

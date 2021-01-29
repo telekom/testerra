@@ -43,7 +43,7 @@ public final class DesktopWebDriverUtils implements Loggable {
 
         URL seleniumUrl = desktopWebDriverRequest.getSeleniumServerUrl();
         String url = seleniumUrl.toString();
-        String sessionId = desktopWebDriverRequest.getSessionId();
+        String sessionId = desktopWebDriverRequest.getRemoteSessionId();
 
         url = url.replace("/wd/hub", "");
 

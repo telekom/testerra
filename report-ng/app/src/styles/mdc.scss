@@ -71,6 +71,7 @@
 @use '@material/tab';
 @use '@material/textfield/mdc-text-field';
 @use '@material/textfield';
+@use "@material/tooltip";
 @use "@material/tooltip/styles";
 @use '@material/top-app-bar/mdc-top-app-bar';
 @use '@material/top-app-bar';
@@ -112,10 +113,6 @@
 
 .secondary-bg {
     @include theme.property(background-color, secondary);
-}
-
-.reset-cursor {
-    cursor: initial !important;
 }
 
 .list-label {
@@ -171,3 +168,20 @@ mdc-drawer-app-content {
 .snackbar--fill-color {
     @include snackbar.fill-color(primary);
 }
+
+.mdc-tooltip--shown.mdc-tooltip--rich{
+    @include tooltip.fill-color(#ffffff);
+}
+
+.mdc-custom-list-item {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
+    padding: 0;
+    padding-left: 16px;
+    padding-right: 16px;
+    height: 30px;
+}
+

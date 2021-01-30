@@ -148,7 +148,7 @@ public class LegacyGuiElementAssertWrapper implements GuiElementAssert {
                 t += "T";
             }
         }
-        this.guiElement.sendKeys(t).expectThat().value().length().isBetween(length-1, length+1);
+        this.guiElement.sendKeys(t).expect().value().length().isBetween(length-1, length+1);
     }
 
     @Override

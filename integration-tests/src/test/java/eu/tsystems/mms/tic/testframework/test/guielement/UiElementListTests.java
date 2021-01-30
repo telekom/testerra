@@ -71,20 +71,20 @@ public class UiElementListTests extends AbstractTestSitesTest implements PageFac
     }
 
     private void testNavigationAnchors(UiElement anchors) {
-        anchors.expectThat().numberOfElements().is(3);
+        anchors.expect().numberOfElements().is(3);
 
-        anchors.list().first().expectThat().text().is("First");
-        anchors.list().get(1).expectThat().text().is("Second");
-        anchors.list().last().expectThat().text().is("Third");
+        anchors.list().first().expect().text().is("First");
+        anchors.list().get(1).expect().text().is("Second");
+        anchors.list().last().expect().text().is("Third");
     }
 
     private void testTableRowsAndData(TableRow tableRows) {
-        tableRows.expectThat().numberOfElements().is(4);
+        tableRows.expect().numberOfElements().is(4);
         TestableUiElement tableDataUnspecified = tableRows.columns();
-        tableDataUnspecified.expectThat().numberOfElements().is(2);
+        tableDataUnspecified.expect().numberOfElements().is(2);
 
         TestableUiElement tableDataSpecified = tableRows.list().get(1).columns();
-        tableDataSpecified.expectThat().numberOfElements().is(2);
+        tableDataSpecified.expect().numberOfElements().is(2);
     }
 
     @Test
@@ -93,10 +93,10 @@ public class UiElementListTests extends AbstractTestSitesTest implements PageFac
         TableRow tableRows = page.getTableRowsByTagName();
         testTableRowsAndData(tableRows);
 
-        tableRows.list().first().linkByName().expectThat().value(Attribute.HREF).endsWith("mkri");
-        tableRows.list().get(1).linkByName().expectThat().value(Attribute.HREF).endsWith("joku");
-        tableRows.list().last().linkByName().expectThat().value(Attribute.HREF).endsWith("erku");
-        tableRows.list().forEach(tableRow -> tableRow.linkByName().expectThat().value(Attribute.HREF).startsWith("http"));
+        tableRows.list().first().linkByName().expect().value(Attribute.HREF).endsWith("mkri");
+        tableRows.list().get(1).linkByName().expect().value(Attribute.HREF).endsWith("joku");
+        tableRows.list().last().linkByName().expect().value(Attribute.HREF).endsWith("erku");
+        tableRows.list().forEach(tableRow -> tableRow.linkByName().expect().value(Attribute.HREF).startsWith("http"));
     }
 
     @Test
@@ -105,9 +105,9 @@ public class UiElementListTests extends AbstractTestSitesTest implements PageFac
         TableRow tableRows = page.getTableRowsByTagName();
         testTableRowsAndData(tableRows);
 
-        tableRows.list().first().linkByXPath().expectThat().value(Attribute.HREF).endsWith("mkri");
-        tableRows.list().get(1).linkByXPath().expectThat().value(Attribute.HREF).endsWith("joku");
-        tableRows.list().last().linkByXPath().expectThat().value(Attribute.HREF).endsWith("erku");
+        tableRows.list().first().linkByXPath().expect().value(Attribute.HREF).endsWith("mkri");
+        tableRows.list().get(1).linkByXPath().expect().value(Attribute.HREF).endsWith("joku");
+        tableRows.list().last().linkByXPath().expect().value(Attribute.HREF).endsWith("erku");
     }
 
     @Override

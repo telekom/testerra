@@ -133,8 +133,8 @@ public class PageTests extends AbstractTestSitesTest implements Loggable, PageFa
     public void test_Component() {
         final String input = "Ich gebe etwas ein";
         WebTestPage page = getPage();
-        page.inputForm().button().expectThat().value().is("Button1");
-        page.inputForm().input().clear().sendKeys(input).expectThat().value().is(input);
-        page.inputForm().button().expectThat().numberOfElements().is(1);
+        page.inputForm().button().expect().value().is("Button1");
+        page.inputForm().input().clear().sendKeys(input).expect().value().is(input);
+        page.inputForm().button().expect().numberOfElements().is(1);
     }
 }

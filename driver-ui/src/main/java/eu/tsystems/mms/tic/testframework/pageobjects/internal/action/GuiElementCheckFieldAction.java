@@ -78,21 +78,21 @@ public class GuiElementCheckFieldAction extends AbstractCheckFieldAction {
 
         switch (checkRule) {
             case IS_PRESENT:
-                guiElement.expectThat().present(true);
+                guiElement.expect().present(true);
                 break;
             case IS_NOT_PRESENT:
-                guiElement.expectThat().present(false);
+                guiElement.expect().present(false);
                 break;
             case IS_NOT_DISPLAYED: {
                 if (guiElement.waitFor().present(true)) {
-                    guiElement.expectThat().displayed(false);
+                    guiElement.expect().displayed(false);
                 }
             }
             break;
             case DEFAULT:
             case IS_DISPLAYED:
             default: {
-                guiElement.expectThat().displayed(true);
+                guiElement.expect().displayed(true);
             }
         }
 

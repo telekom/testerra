@@ -758,7 +758,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     }
 
     @Override
-    public UiElementAssertion expectThat() {
+    public UiElementAssertion expect() {
         if (this.assertions == null) {
             this.assertions = new DefaultUiElementAssertion(this, true);
         }

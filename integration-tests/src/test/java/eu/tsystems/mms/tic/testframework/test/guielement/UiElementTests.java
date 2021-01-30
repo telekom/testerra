@@ -28,6 +28,7 @@ import eu.tsystems.mms.tic.testframework.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementAssertion;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.testng.annotations.Test;
@@ -44,7 +45,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
         WebTestPage page = getPage();
         UiElement element = page.getFinder().findById(5);
         element.sendKeys("Test");
-        element.clear().expectThat().text().is("");
+        element.clear().expect().text().is("");
     }
 
     @Test(expectedExceptions = TimeoutException.class)
@@ -56,21 +57,23 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     @Test
     public void test_UiElement_displayed_false() {
         WebTestPage page = getPage();
-        page.notDisplayedElement().expectThat().value(Attribute.STYLE).contains("display: none");
-        page.notDisplayedElement().expectThat().displayed().is(false);
+        UiElementAssertion expect = page.notDisplayedElement().expect();
+        expect.value(Attribute.STYLE).contains("display: none");
+        expect.displayed(false);
+        expect.hasClass("button").is(false);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void test_UiElement_displayed_false_fails() {
         WebTestPage page = getPage();
-        page.notDisplayedElement().expectThat().displayed().is(true);
+        page.notDisplayedElement().expect().displayed(true);
     }
 
     @Test()
     public void test_UiElement_displayed_false_fails_withMessage() {
         WebTestPage page = getPage();
         try {
-            page.notDisplayedElement().expectThat().displayed().is(true,"Important element visibility");
+            page.notDisplayedElement().expect().displayed().is(true,"Important element visibility");
         } catch (AssertionError e) {
             Assert.assertContains(e.getMessage(), "Important element visibility");
         }
@@ -79,11 +82,11 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     @Test
     public void test_UiElement_visible_false() {
         WebTestPage page = getPage();
-        page.notVisibleElement().expectThat().value(Attribute.STYLE).contains("hidden");
-        page.notVisibleElement().expectThat().value("style").contains("hidden");
-        page.notVisibleElement().expectThat().visible(true).is(false);
-        page.notVisibleElement().expectThat().visible(false).is(false);
-        page.notDisplayedElement().expectThat().css("display").is("none");
+        page.notVisibleElement().expect().value(Attribute.STYLE).contains("hidden");
+        page.notVisibleElement().expect().value("style").contains("hidden");
+        page.notVisibleElement().expect().visible(true).is(false);
+        page.notVisibleElement().expect().visible(false).is(false);
+        page.notDisplayedElement().expect().css("display").is("none");
     }
 
     @Test
@@ -91,7 +94,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
         WebTestPage page = getPage();
         Assert.assertTrue(page.notDisplayedElement().waitFor().displayed(false), "Display status of not displayed element");
         try {
-            page.notVisibleElement().expectThat().displayed(true);
+            page.notVisibleElement().expect().displayed(true);
         } catch (AssertionError error) {
             Assert.assertContains(error.getMessage(), "actual [false] is one of [true");
         }
@@ -102,7 +105,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
         try {
             Control.optionalAssertions(() -> {
                 Control.withTimeout(1, () -> {
-                    getPage().notDisplayedElement().expectThat().displayed(true);
+                    getPage().notDisplayedElement().expect().displayed(true);
                 });
             });
         } catch (Exception e) {
@@ -114,7 +117,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     public void test_UiElement_expectThat_followedBy_waitFor() {
         WebTestPage page = getPage();
         try {
-            page.notVisibleElement().expectThat().displayed(true);
+            page.notVisibleElement().expect().displayed(true);
         } catch (AssertionError error) {
             Assert.assertContains(error.getMessage(), "actual [false] is one of [true");
         }
@@ -145,31 +148,31 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     @Test
     public void test_UiElement_attribute_present() {
         WebTestPage page = getPage();
-        page.getRadioBtn().expectThat().value("disabled").isNot(null);
+        page.getRadioBtn().expect().value("disabled").isNot(null);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void test_UiElement_attribute_present_fails() {
         WebTestPage page = getPage();
-        page.getRadioBtn().expectThat().value("disabled").is(null);
+        page.getRadioBtn().expect().value("disabled").is(null);
     }
 
     @Test
     public void test_UiElement_inexistent_attribute_present() {
         WebTestPage page = getPage();
-        page.getRadioBtn().expectThat().value("not-existent-attribute").is(null);
+        page.getRadioBtn().expect().value("not-existent-attribute").is(null);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void test_UiElement_inexistent_attribute_present_fails() {
         WebTestPage page = getPage();
-        page.getRadioBtn().expectThat().value("not-existent-attribute").isNot(null);
+        page.getRadioBtn().expect().value("not-existent-attribute").isNot(null);
     }
 
     @Test
     public void test_UiElement_inexistent_attribute_mapped() {
         WebTestPage page = getPage();
-        page.getRadioBtn().expectThat().value("not-existent-attribute").map(String::trim).is(null);
+        page.getRadioBtn().expect().value("not-existent-attribute").map(String::trim).is(null);
     }
 
     @Test
@@ -187,13 +190,13 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     @Test(expectedExceptions = AssertionError.class)
     public void test_UiElement_visible_false_fails() {
         WebTestPage page = getPage();
-        page.notVisibleElement().expectThat().visible(true).is(true);
+        page.notVisibleElement().expect().visible(true).is(true);
     }
 
     @Test
     public void test_inexistent_UiElement_present() {
         WebTestPage page = getPage();
-        page.nonExistentElement().expectThat().present().is(false);
+        page.nonExistentElement().expect().present().is(false);
     }
 
     @Test
@@ -201,7 +204,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
         WebTestPage page = getPage();
         String msg = null;
         try {
-            page.nonExistentElement().expectThat().present().is(true);
+            page.nonExistentElement().expect().present().is(true);
         } catch (AssertionError e) {
             msg = e.getMessage();
         }
@@ -210,19 +213,19 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
 
     @Test
     public void test_inexistent_UiElement_present_fails_fast() {
-        Control.withTimeout(0, () -> test_inexistent_UiElement_present_fails());
+        Control.withTimeout(0, this::test_inexistent_UiElement_present_fails);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void test_inexistent_UiElement_displayed_fails() {
         WebTestPage page = getPage();
-        page.nonExistentElement().expectThat().displayed().is(false);
+        page.nonExistentElement().expect().displayed().is(false);
     }
 
     @Test
     public void test_UiElement_screenshot() {
         WebTestPage page = getPage();
-        ImageAssertion screenshot = page.notVisibleElement().expectThat().screenshot();
+        ImageAssertion screenshot = page.notVisibleElement().expect().screenshot();
         screenshot.file().exists().is(true);
     }
 
@@ -231,7 +234,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
         WebTestPage page = getPage();
         String msg=null;
         try {
-            page.nonExistentElement().expectThat().screenshot().file().exists().is(true);
+            page.nonExistentElement().expect().screenshot().file().exists().is(true);
         } catch (ElementNotFoundException e) {
             msg = e.getMessage();
         }
@@ -253,31 +256,31 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     public void test_UiElement_click_retry() {
         WebTestPage page = getPage();
         UiElement disableMyselfBtn = page.getFinder().findById("disableMyselfBtn");
-        disableMyselfBtn.expectThat().enabled(true);
+        disableMyselfBtn.expect().enabled(true);
         AtomicInteger retryCount = new AtomicInteger();
         Control.retryFor(10, () -> {
             Control.withTimeout(1, () -> {
                 retryCount.incrementAndGet();
                 disableMyselfBtn.click();
-                disableMyselfBtn.expectThat().enabled(false);
+                disableMyselfBtn.expect().enabled(false);
             });
         });
         Assert.assertEquals(retryCount.get(), 5, "Retry count");
-        disableMyselfBtn.expectThat().enabled(false);
+        disableMyselfBtn.expect().enabled(false);
     }
 
     @Test
     public void test_UiElement_click_retry_fails() {
         WebTestPage page = pageFactory.createPage(WebTestPage.class, getWebDriver());
         UiElement disableMyselfBtn = page.getFinder().findById("disableMyselfBtn");
-        disableMyselfBtn.expectThat().enabled(true);
+        disableMyselfBtn.expect().enabled(true);
         AtomicInteger retryCount = new AtomicInteger();
         try {
             Control.retryFor(3, () -> {
                 Control.withTimeout(1, () -> {
                     retryCount.incrementAndGet();
                     disableMyselfBtn.click();
-                    disableMyselfBtn.expectThat().enabled(false);
+                    disableMyselfBtn.expect().enabled(false);
                 });
             });
         } catch (Exception e) {

@@ -55,4 +55,7 @@ public interface UiElementAssertion extends UiElementBaseAssertion {
     default boolean selectable(boolean expected) {
         return selectable().is(expected);
     }
+    default BinaryAssertion<Boolean> hasClass(String ...classes) {
+        return this.value(Attribute.CLASS).containsWords(classes);
+    }
 }

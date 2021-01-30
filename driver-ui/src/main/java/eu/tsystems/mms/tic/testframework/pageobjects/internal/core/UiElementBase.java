@@ -32,7 +32,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementB
  */
 public interface UiElementBase extends WebElementActions, PageObject {
     UiElementBaseAssertion waitFor();
-    UiElementBaseAssertion expectThat();
+    UiElementBaseAssertion expect();
     /**
      * Creates a xpath of the given {@link Locator} hierarchy NOT the actual element hierarchy
      */

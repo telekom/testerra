@@ -20,7 +20,7 @@ public class LocatorTest extends AbstractTestSitesTest implements UiElementFinde
     public void locateByClass() {
         UiElementFinder finder = getFinder();
         UiElement div = finder.find(XPath.from("div").classes("element", "multiple"));
-        div.expectThat().text().contains("This element has multiple classes");
+        div.expect().text().contains("This element has multiple classes");
     }
 
     @Test(expectedExceptions = AssertionError.class)
@@ -28,7 +28,7 @@ public class LocatorTest extends AbstractTestSitesTest implements UiElementFinde
         UiElementFinder finder = getFinder();
         UiElement realA = finder.findByQa("action/linkWithFormattedText");
         UiElement a = finder.find(XPath.from("a").text().is(textToFind));
-        a.expectThat().text().is(realA.waitFor().text().getActual());
+        a.expect().text().is(realA.waitFor().text().getActual());
     }
 
     @Test(expectedExceptions = AssertionError.class)
@@ -36,7 +36,7 @@ public class LocatorTest extends AbstractTestSitesTest implements UiElementFinde
         UiElementFinder finder = getFinder();
         UiElement realA = finder.findByQa("action/linkWithFormattedText");
         UiElement a = finder.find(XPath.from("a").text().contains(textToFind));
-        a.expectThat().text().is(realA.waitFor().text().getActual());
+        a.expect().text().is(realA.waitFor().text().getActual());
     }
 
     @Test
@@ -44,7 +44,7 @@ public class LocatorTest extends AbstractTestSitesTest implements UiElementFinde
         UiElementFinder finder = getFinder();
         UiElement realA = finder.findByQa("action/linkWithFormattedText");
         UiElement a = finder.find(XPath.from("a").text().hasWords(textToFind));
-        a.expectThat().text().is(realA.waitFor().text().getActual());
+        a.expect().text().is(realA.waitFor().text().getActual());
     }
 
     @Test
@@ -57,21 +57,21 @@ public class LocatorTest extends AbstractTestSitesTest implements UiElementFinde
                 .contains("span")
                     .text().hasWords("Subtext")
         );
-        a.expectThat().text().is(realA.waitFor().text().getActual());
+        a.expect().text().is(realA.waitFor().text().getActual());
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void locateByClassName_fails() {
         UiElementFinder finder = getFinder();
         UiElement div = finder.find(By.className("header"));
-        div.expectThat().text().is("You found me");
+        div.expect().text().is("You found me");
     }
 
     @Test
     public void testLocateByClassWord() {
         UiElementFinder finder = getFinder();
         UiElement div = finder.find(XPath.from("*").classes("header","large"));
-        div.expectThat().text().is("You found me");
+        div.expect().text().is("You found me");
     }
 
     @Test
@@ -79,19 +79,19 @@ public class LocatorTest extends AbstractTestSitesTest implements UiElementFinde
         UiElementFinder finder = getFinder();
         UiElement li;
         li = finder.find(XPath.from("ul").classes("list-group").select("li",1));
-        li.expectThat().text().is("Affe");
+        li.expect().text().is("Affe");
 
         li = finder.find(XPath.from("ul").classes("list-group").select("li",2));
-        li.expectThat().text().is("Katze");
+        li.expect().text().is("Katze");
 
         li = finder.find(XPath.from("ul").classes("list-group").select("li",-1));
-        li.expectThat().text().is("Kuh");
+        li.expect().text().is("Kuh");
     }
 
     @Test
     public void testLocateByWords() {
         UiElementFinder finder = getFinder();
         UiElement div = finder.find(XPath.from("*").text().hasWords("Login here"));
-        div.expectThat().value("data-qa").is("action/login");
+        div.expect().value("data-qa").is("action/login");
     }
 }

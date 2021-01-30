@@ -22,12 +22,15 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.UiElementBase;
 
 /**
  * Contains all test related features for an {@link UiElement}
  * @author Mike Reiche
  */
-public interface TestableUiElement {
+public interface TestableUiElement extends UiElementBase {
+    @Override
     UiElementAssertion waitFor();
-    UiElementAssertion expectThat();
+    @Override
+    UiElementAssertion expect();
 }

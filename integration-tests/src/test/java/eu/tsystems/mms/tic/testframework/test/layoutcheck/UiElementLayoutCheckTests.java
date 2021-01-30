@@ -44,27 +44,27 @@ public class UiElementLayoutCheckTests extends AbstractTestSitesTest implements 
     public void testCheckElementLayout() {
         BasePage page = getPage();
         UiElement guiElement = page.getFinder().findByQa("section/layoutTestArticle");
-        guiElement.expectThat().screenshot().pixelDistance("TestArticle").isLowerThan(1.3);
+        guiElement.expect().screenshot().pixelDistance("TestArticle").isLowerThan(1.3);
 
         guiElement = page.getFinder().findByQa("section/invisibleTestArticle");
-        guiElement.expectThat().screenshot().pixelDistance("InvisibleTestArticle").isLowerThan(1.3);
+        guiElement.expect().screenshot().pixelDistance("InvisibleTestArticle").isLowerThan(1.3);
     }
 
     @Test
     public void testCheckElementVisibility() {
         BasePage page = getPage();
         UiElement guiElement = page.getFinder().findByQa("section/layoutTestArticle");
-        guiElement.expectThat().visible(true).is(true);
+        guiElement.expect().visible(true).is(true);
 
         guiElement = page.getFinder().findByQa("section/invisibleTestArticle");
-        guiElement.expectThat().visible(false).is(false);
+        guiElement.expect().visible(false).is(false);
 
         // Scroll to offset doesn't work
         //guiElement.scrollToElement(300);
         //Assert.assertFalse(guiElement.isVisible(true));
 
         guiElement.scrollIntoView();
-        guiElement.expectThat().visible(true).is(true);
+        guiElement.expect().visible(true).is(true);
     }
 
     @Test()
@@ -73,7 +73,7 @@ public class UiElementLayoutCheckTests extends AbstractTestSitesTest implements 
         BasePage page = getPage();
         UiElement guiElement = page.getFinder().findByQa("section/layoutTestArticle");
         Control.retryFor(10,() -> {
-            Control.withTimeout(0, () -> guiElement.expectThat().screenshot().pixelDistance("TestArticleFailed").isLowerThan(1));
+            Control.withTimeout(0, () -> guiElement.expect().screenshot().pixelDistance("TestArticleFailed").isLowerThan(1));
         });
     }
 

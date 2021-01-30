@@ -106,8 +106,8 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     }
 
     @Override
-    public UiElementBaseAssertion expectThat() {
-        return rootElement.expectThat();
+    public UiElementBaseAssertion expect() {
+        return rootElement.expect();
     }
 
     public SELF setName(String name) {

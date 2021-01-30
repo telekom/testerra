@@ -63,4 +63,9 @@ public interface Report {
     default File getFinalReportDirectory(String childName) {
         return new File(getFinalReportDirectory(), childName);
     }
+
+    /**
+     * Returns the relative path of a given report file.
+     */
+    String getRelativePath(File file);
 }

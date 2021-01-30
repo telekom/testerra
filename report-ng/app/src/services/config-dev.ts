@@ -24,8 +24,8 @@ import {IConfig} from "./iconfig";
 export class Config implements IConfig {
     readonly enableServiceWorker = false;
     readonly developmentMode = true;
-    private pathRegex = new RegExp("[^\\/]+\\/")
+
     correctRelativePath(path:string) {
-        return path.replaceAll("\\","/").replace(this.pathRegex,"");
+        return ".."+path.replaceAll("\\","/");
     }
 }

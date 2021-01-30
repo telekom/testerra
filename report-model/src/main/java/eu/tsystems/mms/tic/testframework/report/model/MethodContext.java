@@ -30,7 +30,6 @@ private static final long serialVersionUID = 0L;
     testContextId_ = "";
     suiteContextId_ = "";
     sessionContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    customContextJson_ = "";
     resultStatus_ = 0;
   }
 
@@ -203,12 +202,6 @@ private static final long serialVersionUID = 0L;
             sessionContextIds_.add(s);
             break;
           }
-          case 258: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            customContextJson_ = s;
-            break;
-          }
           case 264: {
 
             failedStepIndex_ = input.readInt32();
@@ -231,6 +224,19 @@ private static final long serialVersionUID = 0L;
                 ParametersDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
             parameters_.getMutableMap().put(
                 parameters__.getKey(), parameters__.getValue());
+            break;
+          }
+          case 290: {
+            if (!((mutable_bitField0_ & 0x00000080) != 0)) {
+              customContexts_ = com.google.protobuf.MapField.newMapField(
+                  CustomContextsDefaultEntryHolder.defaultEntry);
+              mutable_bitField0_ |= 0x00000080;
+            }
+            com.google.protobuf.MapEntry<java.lang.String, java.lang.String>
+            customContexts__ = input.readMessage(
+                CustomContextsDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
+            customContexts_.getMutableMap().put(
+                customContexts__.getKey(), customContexts__.getValue());
             break;
           }
           default: {
@@ -282,6 +288,8 @@ private static final long serialVersionUID = 0L;
     switch (number) {
       case 35:
         return internalGetParameters();
+      case 36:
+        return internalGetCustomContexts();
       default:
         throw new RuntimeException(
             "Invalid map field number: " + number);
@@ -894,57 +902,15 @@ private static final long serialVersionUID = 0L;
     return sessionContextIds_.getByteString(index);
   }
 
-  public static final int CUSTOM_CONTEXT_JSON_FIELD_NUMBER = 32;
-  private volatile java.lang.Object customContextJson_;
-  /**
-   * <pre>
-   *    repeated string video_ids = 30  [deprecated = true];
-   *    repeated string screenshot_ids = 31 [deprecated = true];
-   * </pre>
-   *
-   * <code>string custom_context_json = 32;</code>
-   * @return The customContextJson.
-   */
-  @java.lang.Override
-  public java.lang.String getCustomContextJson() {
-    java.lang.Object ref = customContextJson_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      customContextJson_ = s;
-      return s;
-    }
-  }
-  /**
-   * <pre>
-   *    repeated string video_ids = 30  [deprecated = true];
-   *    repeated string screenshot_ids = 31 [deprecated = true];
-   * </pre>
-   *
-   * <code>string custom_context_json = 32;</code>
-   * @return The bytes for customContextJson.
-   */
-  @java.lang.Override
-  public com.google.protobuf.ByteString
-      getCustomContextJsonBytes() {
-    java.lang.Object ref = customContextJson_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      customContextJson_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
-
   public static final int FAILED_STEP_INDEX_FIELD_NUMBER = 33;
   private int failedStepIndex_;
   /**
+   * <pre>
+   *    repeated string video_ids = 30  [deprecated = true];
+   *    repeated string screenshot_ids = 31 [deprecated = true];
+   *    string custom_context_json = 32 [deprecated = true];
+   * </pre>
+   *
    * <code>int32 failed_step_index = 33;</code>
    * @return The failedStepIndex.
    */
@@ -1053,6 +1019,87 @@ private static final long serialVersionUID = 0L;
     return map.get(key);
   }
 
+  public static final int CUSTOM_CONTEXTS_FIELD_NUMBER = 36;
+  private static final class CustomContextsDefaultEntryHolder {
+    static final com.google.protobuf.MapEntry<
+        java.lang.String, java.lang.String> defaultEntry =
+            com.google.protobuf.MapEntry
+            .<java.lang.String, java.lang.String>newDefaultInstance(
+                eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_MethodContext_CustomContextsEntry_descriptor, 
+                com.google.protobuf.WireFormat.FieldType.STRING,
+                "",
+                com.google.protobuf.WireFormat.FieldType.STRING,
+                "");
+  }
+  private com.google.protobuf.MapField<
+      java.lang.String, java.lang.String> customContexts_;
+  private com.google.protobuf.MapField<java.lang.String, java.lang.String>
+  internalGetCustomContexts() {
+    if (customContexts_ == null) {
+      return com.google.protobuf.MapField.emptyMapField(
+          CustomContextsDefaultEntryHolder.defaultEntry);
+    }
+    return customContexts_;
+  }
+
+  public int getCustomContextsCount() {
+    return internalGetCustomContexts().getMap().size();
+  }
+  /**
+   * <code>map&lt;string, string&gt; custom_contexts = 36;</code>
+   */
+
+  @java.lang.Override
+  public boolean containsCustomContexts(
+      java.lang.String key) {
+    if (key == null) { throw new java.lang.NullPointerException(); }
+    return internalGetCustomContexts().getMap().containsKey(key);
+  }
+  /**
+   * Use {@link #getCustomContextsMap()} instead.
+   */
+  @java.lang.Override
+  @java.lang.Deprecated
+  public java.util.Map<java.lang.String, java.lang.String> getCustomContexts() {
+    return getCustomContextsMap();
+  }
+  /**
+   * <code>map&lt;string, string&gt; custom_contexts = 36;</code>
+   */
+  @java.lang.Override
+
+  public java.util.Map<java.lang.String, java.lang.String> getCustomContextsMap() {
+    return internalGetCustomContexts().getMap();
+  }
+  /**
+   * <code>map&lt;string, string&gt; custom_contexts = 36;</code>
+   */
+  @java.lang.Override
+
+  public java.lang.String getCustomContextsOrDefault(
+      java.lang.String key,
+      java.lang.String defaultValue) {
+    if (key == null) { throw new java.lang.NullPointerException(); }
+    java.util.Map<java.lang.String, java.lang.String> map =
+        internalGetCustomContexts().getMap();
+    return map.containsKey(key) ? map.get(key) : defaultValue;
+  }
+  /**
+   * <code>map&lt;string, string&gt; custom_contexts = 36;</code>
+   */
+  @java.lang.Override
+
+  public java.lang.String getCustomContextsOrThrow(
+      java.lang.String key) {
+    if (key == null) { throw new java.lang.NullPointerException(); }
+    java.util.Map<java.lang.String, java.lang.String> map =
+        internalGetCustomContexts().getMap();
+    if (!map.containsKey(key)) {
+      throw new java.lang.IllegalArgumentException();
+    }
+    return map.get(key);
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -1121,9 +1168,6 @@ private static final long serialVersionUID = 0L;
     for (int i = 0; i < sessionContextIds_.size(); i++) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 29, sessionContextIds_.getRaw(i));
     }
-    if (!getCustomContextJsonBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 32, customContextJson_);
-    }
     if (failedStepIndex_ != 0) {
       output.writeInt32(33, failedStepIndex_);
     }
@@ -1136,6 +1180,12 @@ private static final long serialVersionUID = 0L;
         internalGetParameters(),
         ParametersDefaultEntryHolder.defaultEntry,
         35);
+    com.google.protobuf.GeneratedMessageV3
+      .serializeStringMapTo(
+        output,
+        internalGetCustomContexts(),
+        CustomContextsDefaultEntryHolder.defaultEntry,
+        36);
     unknownFields.writeTo(output);
   }
 
@@ -1231,9 +1281,6 @@ private static final long serialVersionUID = 0L;
       size += dataSize;
       size += 2 * getSessionContextIdsList().size();
     }
-    if (!getCustomContextJsonBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(32, customContextJson_);
-    }
     if (failedStepIndex_ != 0) {
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(33, failedStepIndex_);
@@ -1251,6 +1298,16 @@ private static final long serialVersionUID = 0L;
           .build();
       size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(35, parameters__);
+    }
+    for (java.util.Map.Entry<java.lang.String, java.lang.String> entry
+         : internalGetCustomContexts().getMap().entrySet()) {
+      com.google.protobuf.MapEntry<java.lang.String, java.lang.String>
+      customContexts__ = CustomContextsDefaultEntryHolder.defaultEntry.newBuilderForType()
+          .setKey(entry.getKey())
+          .setValue(entry.getValue())
+          .build();
+      size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(36, customContexts__);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -1307,13 +1364,13 @@ private static final long serialVersionUID = 0L;
         .equals(other.getSuiteContextId())) return false;
     if (!getSessionContextIdsList()
         .equals(other.getSessionContextIdsList())) return false;
-    if (!getCustomContextJson()
-        .equals(other.getCustomContextJson())) return false;
     if (getFailedStepIndex()
         != other.getFailedStepIndex()) return false;
     if (resultStatus_ != other.resultStatus_) return false;
     if (!internalGetParameters().equals(
         other.internalGetParameters())) return false;
+    if (!internalGetCustomContexts().equals(
+        other.internalGetCustomContexts())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -1377,8 +1434,6 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + SESSION_CONTEXT_IDS_FIELD_NUMBER;
       hash = (53 * hash) + getSessionContextIdsList().hashCode();
     }
-    hash = (37 * hash) + CUSTOM_CONTEXT_JSON_FIELD_NUMBER;
-    hash = (53 * hash) + getCustomContextJson().hashCode();
     hash = (37 * hash) + FAILED_STEP_INDEX_FIELD_NUMBER;
     hash = (53 * hash) + getFailedStepIndex();
     hash = (37 * hash) + RESULT_STATUS_FIELD_NUMBER;
@@ -1386,6 +1441,10 @@ private static final long serialVersionUID = 0L;
     if (!internalGetParameters().getMap().isEmpty()) {
       hash = (37 * hash) + PARAMETERS_FIELD_NUMBER;
       hash = (53 * hash) + internalGetParameters().hashCode();
+    }
+    if (!internalGetCustomContexts().getMap().isEmpty()) {
+      hash = (37 * hash) + CUSTOM_CONTEXTS_FIELD_NUMBER;
+      hash = (53 * hash) + internalGetCustomContexts().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -1500,6 +1559,8 @@ private static final long serialVersionUID = 0L;
       switch (number) {
         case 35:
           return internalGetParameters();
+        case 36:
+          return internalGetCustomContexts();
         default:
           throw new RuntimeException(
               "Invalid map field number: " + number);
@@ -1511,6 +1572,8 @@ private static final long serialVersionUID = 0L;
       switch (number) {
         case 35:
           return internalGetMutableParameters();
+        case 36:
+          return internalGetMutableCustomContexts();
         default:
           throw new RuntimeException(
               "Invalid map field number: " + number);
@@ -1591,13 +1654,12 @@ private static final long serialVersionUID = 0L;
 
       sessionContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       bitField0_ = (bitField0_ & ~0x00000020);
-      customContextJson_ = "";
-
       failedStepIndex_ = 0;
 
       resultStatus_ = 0;
 
       internalGetMutableParameters().clear();
+      internalGetMutableCustomContexts().clear();
       return this;
     }
 
@@ -1679,11 +1741,12 @@ private static final long serialVersionUID = 0L;
         bitField0_ = (bitField0_ & ~0x00000020);
       }
       result.sessionContextIds_ = sessionContextIds_;
-      result.customContextJson_ = customContextJson_;
       result.failedStepIndex_ = failedStepIndex_;
       result.resultStatus_ = resultStatus_;
       result.parameters_ = internalGetParameters();
       result.parameters_.makeImmutable();
+      result.customContexts_ = internalGetCustomContexts();
+      result.customContexts_.makeImmutable();
       onBuilt();
       return result;
     }
@@ -1850,10 +1913,6 @@ private static final long serialVersionUID = 0L;
         }
         onChanged();
       }
-      if (!other.getCustomContextJson().isEmpty()) {
-        customContextJson_ = other.customContextJson_;
-        onChanged();
-      }
       if (other.getFailedStepIndex() != 0) {
         setFailedStepIndex(other.getFailedStepIndex());
       }
@@ -1862,6 +1921,8 @@ private static final long serialVersionUID = 0L;
       }
       internalGetMutableParameters().mergeFrom(
           other.internalGetParameters());
+      internalGetMutableCustomContexts().mergeFrom(
+          other.internalGetCustomContexts());
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
       return this;
@@ -3647,109 +3708,14 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.lang.Object customContextJson_ = "";
-    /**
-     * <pre>
-     *    repeated string video_ids = 30  [deprecated = true];
-     *    repeated string screenshot_ids = 31 [deprecated = true];
-     * </pre>
-     *
-     * <code>string custom_context_json = 32;</code>
-     * @return The customContextJson.
-     */
-    public java.lang.String getCustomContextJson() {
-      java.lang.Object ref = customContextJson_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        customContextJson_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <pre>
-     *    repeated string video_ids = 30  [deprecated = true];
-     *    repeated string screenshot_ids = 31 [deprecated = true];
-     * </pre>
-     *
-     * <code>string custom_context_json = 32;</code>
-     * @return The bytes for customContextJson.
-     */
-    public com.google.protobuf.ByteString
-        getCustomContextJsonBytes() {
-      java.lang.Object ref = customContextJson_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        customContextJson_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <pre>
-     *    repeated string video_ids = 30  [deprecated = true];
-     *    repeated string screenshot_ids = 31 [deprecated = true];
-     * </pre>
-     *
-     * <code>string custom_context_json = 32;</code>
-     * @param value The customContextJson to set.
-     * @return This builder for chaining.
-     */
-    public Builder setCustomContextJson(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      customContextJson_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <pre>
-     *    repeated string video_ids = 30  [deprecated = true];
-     *    repeated string screenshot_ids = 31 [deprecated = true];
-     * </pre>
-     *
-     * <code>string custom_context_json = 32;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearCustomContextJson() {
-      
-      customContextJson_ = getDefaultInstance().getCustomContextJson();
-      onChanged();
-      return this;
-    }
-    /**
-     * <pre>
-     *    repeated string video_ids = 30  [deprecated = true];
-     *    repeated string screenshot_ids = 31 [deprecated = true];
-     * </pre>
-     *
-     * <code>string custom_context_json = 32;</code>
-     * @param value The bytes for customContextJson to set.
-     * @return This builder for chaining.
-     */
-    public Builder setCustomContextJsonBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      customContextJson_ = value;
-      onChanged();
-      return this;
-    }
-
     private int failedStepIndex_ ;
     /**
+     * <pre>
+     *    repeated string video_ids = 30  [deprecated = true];
+     *    repeated string screenshot_ids = 31 [deprecated = true];
+     *    string custom_context_json = 32 [deprecated = true];
+     * </pre>
+     *
      * <code>int32 failed_step_index = 33;</code>
      * @return The failedStepIndex.
      */
@@ -3758,6 +3724,12 @@ private static final long serialVersionUID = 0L;
       return failedStepIndex_;
     }
     /**
+     * <pre>
+     *    repeated string video_ids = 30  [deprecated = true];
+     *    repeated string screenshot_ids = 31 [deprecated = true];
+     *    string custom_context_json = 32 [deprecated = true];
+     * </pre>
+     *
      * <code>int32 failed_step_index = 33;</code>
      * @param value The failedStepIndex to set.
      * @return This builder for chaining.
@@ -3769,6 +3741,12 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    repeated string video_ids = 30  [deprecated = true];
+     *    repeated string screenshot_ids = 31 [deprecated = true];
+     *    string custom_context_json = 32 [deprecated = true];
+     * </pre>
+     *
      * <code>int32 failed_step_index = 33;</code>
      * @return This builder for chaining.
      */
@@ -3957,6 +3935,134 @@ private static final long serialVersionUID = 0L;
     public Builder putAllParameters(
         java.util.Map<java.lang.String, java.lang.String> values) {
       internalGetMutableParameters().getMutableMap()
+          .putAll(values);
+      return this;
+    }
+
+    private com.google.protobuf.MapField<
+        java.lang.String, java.lang.String> customContexts_;
+    private com.google.protobuf.MapField<java.lang.String, java.lang.String>
+    internalGetCustomContexts() {
+      if (customContexts_ == null) {
+        return com.google.protobuf.MapField.emptyMapField(
+            CustomContextsDefaultEntryHolder.defaultEntry);
+      }
+      return customContexts_;
+    }
+    private com.google.protobuf.MapField<java.lang.String, java.lang.String>
+    internalGetMutableCustomContexts() {
+      onChanged();;
+      if (customContexts_ == null) {
+        customContexts_ = com.google.protobuf.MapField.newMapField(
+            CustomContextsDefaultEntryHolder.defaultEntry);
+      }
+      if (!customContexts_.isMutable()) {
+        customContexts_ = customContexts_.copy();
+      }
+      return customContexts_;
+    }
+
+    public int getCustomContextsCount() {
+      return internalGetCustomContexts().getMap().size();
+    }
+    /**
+     * <code>map&lt;string, string&gt; custom_contexts = 36;</code>
+     */
+
+    @java.lang.Override
+    public boolean containsCustomContexts(
+        java.lang.String key) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      return internalGetCustomContexts().getMap().containsKey(key);
+    }
+    /**
+     * Use {@link #getCustomContextsMap()} instead.
+     */
+    @java.lang.Override
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, java.lang.String> getCustomContexts() {
+      return getCustomContextsMap();
+    }
+    /**
+     * <code>map&lt;string, string&gt; custom_contexts = 36;</code>
+     */
+    @java.lang.Override
+
+    public java.util.Map<java.lang.String, java.lang.String> getCustomContextsMap() {
+      return internalGetCustomContexts().getMap();
+    }
+    /**
+     * <code>map&lt;string, string&gt; custom_contexts = 36;</code>
+     */
+    @java.lang.Override
+
+    public java.lang.String getCustomContextsOrDefault(
+        java.lang.String key,
+        java.lang.String defaultValue) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      java.util.Map<java.lang.String, java.lang.String> map =
+          internalGetCustomContexts().getMap();
+      return map.containsKey(key) ? map.get(key) : defaultValue;
+    }
+    /**
+     * <code>map&lt;string, string&gt; custom_contexts = 36;</code>
+     */
+    @java.lang.Override
+
+    public java.lang.String getCustomContextsOrThrow(
+        java.lang.String key) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      java.util.Map<java.lang.String, java.lang.String> map =
+          internalGetCustomContexts().getMap();
+      if (!map.containsKey(key)) {
+        throw new java.lang.IllegalArgumentException();
+      }
+      return map.get(key);
+    }
+
+    public Builder clearCustomContexts() {
+      internalGetMutableCustomContexts().getMutableMap()
+          .clear();
+      return this;
+    }
+    /**
+     * <code>map&lt;string, string&gt; custom_contexts = 36;</code>
+     */
+
+    public Builder removeCustomContexts(
+        java.lang.String key) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      internalGetMutableCustomContexts().getMutableMap()
+          .remove(key);
+      return this;
+    }
+    /**
+     * Use alternate mutation accessors instead.
+     */
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, java.lang.String>
+    getMutableCustomContexts() {
+      return internalGetMutableCustomContexts().getMutableMap();
+    }
+    /**
+     * <code>map&lt;string, string&gt; custom_contexts = 36;</code>
+     */
+    public Builder putCustomContexts(
+        java.lang.String key,
+        java.lang.String value) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      if (value == null) { throw new java.lang.NullPointerException(); }
+      internalGetMutableCustomContexts().getMutableMap()
+          .put(key, value);
+      return this;
+    }
+    /**
+     * <code>map&lt;string, string&gt; custom_contexts = 36;</code>
+     */
+
+    public Builder putAllCustomContexts(
+        java.util.Map<java.lang.String, java.lang.String> values) {
+      internalGetMutableCustomContexts().getMutableMap()
           .putAll(values);
       return this;
     }

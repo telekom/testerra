@@ -299,9 +299,6 @@ export namespace data {
         /** MethodContext sessionContextIds */
         sessionContextIds?: (string[]|null);
 
-        /** MethodContext customContextJson */
-        customContextJson?: (string|null);
-
         /** MethodContext failedStepIndex */
         failedStepIndex?: (number|null);
 
@@ -310,6 +307,9 @@ export namespace data {
 
         /** MethodContext parameters */
         parameters?: ({ [k: string]: string }|null);
+
+        /** MethodContext customContexts */
+        customContexts?: ({ [k: string]: string }|null);
     }
 
     /** Represents a MethodContext. */
@@ -375,9 +375,6 @@ export namespace data {
         /** MethodContext sessionContextIds. */
         public sessionContextIds: string[];
 
-        /** MethodContext customContextJson. */
-        public customContextJson: string;
-
         /** MethodContext failedStepIndex. */
         public failedStepIndex: number;
 
@@ -386,6 +383,9 @@ export namespace data {
 
         /** MethodContext parameters. */
         public parameters: { [k: string]: string };
+
+        /** MethodContext customContexts. */
+        public customContexts: { [k: string]: string };
 
         /**
          * Decodes a MethodContext message from the specified reader or buffer.
@@ -782,6 +782,9 @@ export namespace data {
 
         /** SessionContext videoId */
         videoId?: (string|null);
+
+        /** SessionContext executionContextId */
+        executionContextId?: (string|null);
     }
 
     /** Represents a SessionContext. */
@@ -810,6 +813,9 @@ export namespace data {
 
         /** SessionContext videoId. */
         public videoId: string;
+
+        /** SessionContext executionContextId. */
+        public executionContextId: string;
 
         /**
          * Decodes a SessionContext message from the specified reader or buffer.

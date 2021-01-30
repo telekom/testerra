@@ -574,10 +574,10 @@ export const data = $root.data = (() => {
          * @property {string|null} [testContextId] MethodContext testContextId
          * @property {string|null} [suiteContextId] MethodContext suiteContextId
          * @property {Array.<string>|null} [sessionContextIds] MethodContext sessionContextIds
-         * @property {string|null} [customContextJson] MethodContext customContextJson
          * @property {number|null} [failedStepIndex] MethodContext failedStepIndex
          * @property {data.ResultStatusType|null} [resultStatus] MethodContext resultStatus
          * @property {Object.<string,string>|null} [parameters] MethodContext parameters
+         * @property {Object.<string,string>|null} [customContexts] MethodContext customContexts
          */
 
         /**
@@ -596,6 +596,7 @@ export const data = $root.data = (() => {
             this.testSteps = [];
             this.sessionContextIds = [];
             this.parameters = {};
+            this.customContexts = {};
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -747,14 +748,6 @@ export const data = $root.data = (() => {
         MethodContext.prototype.sessionContextIds = $util.emptyArray;
 
         /**
-         * MethodContext customContextJson.
-         * @member {string} customContextJson
-         * @memberof data.MethodContext
-         * @instance
-         */
-        MethodContext.prototype.customContextJson = "";
-
-        /**
          * MethodContext failedStepIndex.
          * @member {number} failedStepIndex
          * @memberof data.MethodContext
@@ -777,6 +770,14 @@ export const data = $root.data = (() => {
          * @instance
          */
         MethodContext.prototype.parameters = $util.emptyObject;
+
+        /**
+         * MethodContext customContexts.
+         * @member {Object.<string,string>} customContexts
+         * @memberof data.MethodContext
+         * @instance
+         */
+        MethodContext.prototype.customContexts = $util.emptyObject;
 
         /**
          * Decodes a MethodContext message from the specified reader or buffer.
@@ -862,9 +863,6 @@ export const data = $root.data = (() => {
                         m.sessionContextIds = [];
                     m.sessionContextIds.push(r.string());
                     break;
-                case 32:
-                    m.customContextJson = r.string();
-                    break;
                 case 33:
                     m.failedStepIndex = r.int32();
                     break;
@@ -892,6 +890,28 @@ export const data = $root.data = (() => {
                         }
                     }
                     m.parameters[k] = value;
+                    break;
+                case 36:
+                    if (m.customContexts === $util.emptyObject)
+                        m.customContexts = {};
+                    var c2 = r.uint32() + r.pos;
+                    k = "";
+                    value = "";
+                    while (r.pos < c2) {
+                        var tag2 = r.uint32();
+                        switch (tag2 >>> 3) {
+                        case 1:
+                            k = r.string();
+                            break;
+                        case 2:
+                            value = r.string();
+                            break;
+                        default:
+                            r.skipType(tag2 & 7);
+                            break;
+                        }
+                    }
+                    m.customContexts[k] = value;
                     break;
                 default:
                     r.skipType(t & 7);
@@ -1696,6 +1716,7 @@ export const data = $root.data = (() => {
          * @property {Object.<string,string>|null} [metadata] SessionContext metadata
          * @property {string|null} [sessionId] SessionContext sessionId
          * @property {string|null} [videoId] SessionContext videoId
+         * @property {string|null} [executionContextId] SessionContext executionContextId
          */
 
         /**
@@ -1763,6 +1784,14 @@ export const data = $root.data = (() => {
         SessionContext.prototype.videoId = "";
 
         /**
+         * SessionContext executionContextId.
+         * @member {string} executionContextId
+         * @memberof data.SessionContext
+         * @instance
+         */
+        SessionContext.prototype.executionContextId = "";
+
+        /**
          * Decodes a SessionContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.SessionContext
@@ -1816,6 +1845,9 @@ export const data = $root.data = (() => {
                     break;
                 case 7:
                     m.videoId = r.string();
+                    break;
+                case 8:
+                    m.executionContextId = r.string();
                     break;
                 default:
                     r.skipType(t & 7);

@@ -31,7 +31,7 @@ public class Attachment implements Loggable {
     private static final HashMap<String, Integer> counter = new HashMap<>();
     private String tmpName;
     private File file;
-    private Map<String, String> meta;
+    private Map<String, String> metaData;
 
     /**
      * @todo We may pass name and extension later.
@@ -68,17 +68,17 @@ public class Attachment implements Loggable {
     }
 
     public Map<String, String> getMetaData() {
-        if (meta == null) {
-            meta = new HashMap<>();
+        if (metaData == null) {
+            metaData = new HashMap<>();
         }
-        return meta;
+        return metaData;
     }
 
     @Override
     public String toString() {
         return "Attachment{" +
                 "file=" + file +
-                ", meta=" + meta +
+                ", meta=" + metaData +
                 '}';
     }
 }

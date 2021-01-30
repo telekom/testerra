@@ -34,14 +34,14 @@ public class ReportExportTest extends TesterraTest {
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     // Test case #921
     public void test_TestNG_XML() {
-        File testNGExportFile = new File(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()) + "/" + DefaultReport.XML_FOLDER_NAME + "/testng-results.xml");
+        File testNGExportFile = new File(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()) + "/" + Report.XML_FOLDER_NAME + "/testng-results.xml");
         Assert.assertTrue(testNGExportFile.exists());
     }
 
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     // Test case #922
     public void test_JUnit_XML() {
-        File testNGExportFile = new File(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()) + "/" + DefaultReport.XML_FOLDER_NAME + "/TEST-Results.xml");
+        File testNGExportFile = new File(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()) + "/" + Report.XML_FOLDER_NAME + "/TEST-Results.xml");
         Assert.assertTrue(testNGExportFile.exists());
     }
 }

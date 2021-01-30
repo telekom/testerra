@@ -20,22 +20,17 @@
  */
 package eu.tsystems.mms.tic.testframework.report;
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 
 public class DefaultReport implements Report, Loggable {
 
     private File REPORT_DIRECTORY;
-    private final String BASE_DIR = PropertyManager.getProperty(TesterraProperties.REPORTDIR, "test-report");
+    private final String BASE_DIR = Properties.BASE_DIR.asString();
     private final File SCREENSHOTS_DIRECTORY;
     private final File VIDEO_DIRECTORY;
 

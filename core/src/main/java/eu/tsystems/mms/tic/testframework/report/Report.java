@@ -21,14 +21,62 @@
 
 package eu.tsystems.mms.tic.testframework.report;
 
+import eu.tsystems.mms.tic.testframework.common.IProperties;
+import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import java.io.File;
 
 public interface Report {
+    enum Properties implements IProperties {
+        BASE_DIR("dir", "test-report"),
+        SCREENSHOTS_PREVIEW("screenshots.preview", true),
+        NAME("name", "Test report"),
+        ACTIVATE_SOURCES("activate.sources", true),
+        SCREENSHOTTER_ACTIVE("screenshotter.active", true),
+        SCREENSHOT_ON_PAGELOAD("screenshot.on.pageload", false),
+        SCREENCASTER_ACTIVE("screencaster.active", false),
+        LIST_TESTS("tt.list.tests", false)
+        ;
+        private final String property;
+        private Object defaultValue;
+
+        Properties(String property, Object defaultValue) {
+            this.property = property;
+            this.defaultValue = defaultValue;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("tt.report.%s",property);
+        }
+        @Override
+        public IProperties newDefault(Object defaultValue) {
+            this.defaultValue = defaultValue;
+            return this;
+        }
+        @Override
+        public Double asDouble() {
+            return PropertyManager.getPropertiesParser().getDoubleProperty(toString(), defaultValue);
+        }
+        @Override
+        public Long asLong() {
+            return PropertyManager.getPropertiesParser().getLongProperty(toString(), defaultValue);
+        }
+        @Override
+        public Boolean asBool() {
+            return PropertyManager.getPropertiesParser().getBooleanProperty(toString(), defaultValue);
+        }
+        @Override
+        public String asString() {
+            return PropertyManager.getPropertiesParser().getProperty(toString(), defaultValue);
+        }
+    }
+
     String SCREENSHOTS_FOLDER_NAME = "screenshots";
     String VIDEO_FOLDER_NAME = "videos";
     String XML_FOLDER_NAME = "xml";
+
     enum FileMode {
         COPY,
         MOVE
@@ -37,6 +85,7 @@ public interface Report {
         ALWAYS,
         WHEN_FAILED
     }
+
     /**
      * Adds a screenshot to the current MethodContext
      */

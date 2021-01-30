@@ -20,5 +20,12 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
+import eu.tsystems.mms.tic.testframework.report.Report;
+import java.util.Map;
+
 public interface CustomContext {
+    default String getName() {
+        return this.getClass().getSimpleName();
+    }
+    Map<String, Object> exportToReport(Report report);
 }

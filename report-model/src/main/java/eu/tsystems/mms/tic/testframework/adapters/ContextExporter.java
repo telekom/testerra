@@ -53,7 +53,6 @@ import eu.tsystems.mms.tic.testframework.report.model.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.TestContext;
 import eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry;
 import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.CustomContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -77,10 +76,6 @@ public class ContextExporter {
     private static final Map<TestStatusController.Status, ResultStatusType> STATUS_MAPPING = new LinkedHashMap<>();
     private final Report report = Testerra.injector.getInstance(Report.class);
     private final Gson jsonEncoder = new Gson();
-    private final java.io.File targetVideoDir = report.getFinalReportDirectory(Report.VIDEO_FOLDER_NAME);
-    private final java.io.File targetScreenshotDir = report.getFinalReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
-    private final java.io.File currentVideoDir = report.getFinalReportDirectory(Report.VIDEO_FOLDER_NAME);
-    private final java.io.File currentScreenshotDir = report.getFinalReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
 
     private static String annotationToString(Annotation annotation) {
         String json = "\"" + annotation.annotationType().getSimpleName() + "\"";
@@ -146,31 +141,23 @@ public class ContextExporter {
         if (methodContext.hasErrorContext()) builder.setErrorContext(buildErrorContext(methodContext.getErrorContext()));
         methodContext.readSessionContexts().forEach(sessionContext -> builder.addSessionContextIds(sessionContext.getId()));
 
-        List<CustomContext> customContexts = methodContext.readCustomContexts().collect(Collectors.toList());
-        if (customContexts.size()>0) {
-            builder.setCustomContextJson(jsonEncoder.toJson(customContexts));
-        }
-//
-//        methodContext.readVideos().forEach(video -> {
-//            Optional<File.Builder> optional = Optional.ofNullable(buildVideo(video));
-//            optional.ifPresent(fileBuilder -> builder.addVideoIds(fileBuilder.getId()));
-//        });
+        methodContext.readCustomContexts().forEach(customContext -> {
+            builder.putCustomContexts(customContext.getName(), jsonEncoder.toJson(customContext.exportToReport(report)));
+        });
 
         return builder;
     }
 
     public File.Builder[] buildScreenshot(Screenshot screenshot) {
         java.io.File currentScreenshotFile = screenshot.getScreenshotFile();
-        java.io.File targetScreenshotFile = new java.io.File(targetScreenshotDir, currentScreenshotFile.getName());
         File.Builder screenshotBuilder = prepareFile(currentScreenshotFile);
-        screenshotBuilder.setRelativePath(targetScreenshotFile.getPath());
+        screenshotBuilder.setRelativePath(report.getRelativePath(currentScreenshotFile));
         screenshotBuilder.setMimetype(MediaType.PNG.toString());
         screenshotBuilder.putAllMeta(screenshot.getMetaData());
 
         java.io.File currentSourceFile = screenshot.getPageSourceFile();
-        java.io.File targetSourceFile = new java.io.File(targetScreenshotDir, currentSourceFile.getName());
         File.Builder sourceBuilder = prepareFile(currentSourceFile);
-        sourceBuilder.setRelativePath(targetSourceFile.getPath());
+        sourceBuilder.setRelativePath(report.getRelativePath(currentSourceFile));
         sourceBuilder.setMimetype(MediaType.PLAIN_TEXT_UTF_8.toString());
         screenshotBuilder.putMeta("sourcesRefId", sourceBuilder.getId());
 
@@ -182,9 +169,8 @@ public class ContextExporter {
 
     public File.Builder buildVideo(Video video) {
         java.io.File currentVideoFile = video.getVideoFile();
-        java.io.File targetVideoFile = new java.io.File(targetVideoDir, currentVideoFile.getName());
         File.Builder builder = prepareFile(currentVideoFile);
-        builder.setRelativePath(targetVideoFile.getPath());
+        builder.setRelativePath(report.getRelativePath(currentVideoFile));
         builder.setMimetype(MediaType.WEBM_VIDEO.toString());
         return builder;
     }

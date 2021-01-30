@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2021, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -21,8 +21,6 @@
 
 package eu.tsystems.mms.tic.testframework.report;
 
-import eu.tsystems.mms.tic.testframework.common.IProperties;
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import java.io.File;
@@ -39,50 +37,6 @@ public interface Report {
         ALWAYS,
         WHEN_FAILED
     }
-    enum Properties implements IProperties {
-        BASE_DIR("dir", "test-report"),
-        SCREENSHOTS_PREVIEW("screenshots.preview", true),
-        NAME("name", "Test report"),
-        ACTIVATE_SOURCES("activate.sources", true),
-        SCREENSHOTTER_ACTIVE("screenshotter.active", true),
-        SCREENSHOT_ON_PAGELOAD("screenshot.on.pageload", false),
-        SCREENCASTER_ACTIVE("screencaster.active", false),
-        LIST_TESTS("tt.list.tests", false)
-        ;
-        private final String property;
-        private Object defaultValue;
-
-        Properties(String property, Object defaultValue) {
-            this.property = property;
-            this.defaultValue = defaultValue;
-        }
-
-        @Override
-        public String toString() {
-            return String.format("tt.report.%s",property);
-        }
-        @Override
-        public IProperties newDefault(Object defaultValue) {
-            this.defaultValue = defaultValue;
-            return this;
-        }
-        @Override
-        public Double asDouble() {
-            return PropertyManager.getPropertiesParser().getDoubleProperty(toString(), defaultValue);
-        }
-        @Override
-        public Long asLong() {
-            return PropertyManager.getPropertiesParser().getLongProperty(toString(), defaultValue);
-        }
-        @Override
-        public Boolean asBool() {
-            return PropertyManager.getPropertiesParser().getBooleanProperty(toString(), defaultValue);
-        }
-        @Override
-        public String asString() {
-            return PropertyManager.getPropertiesParser().getProperty(toString(), defaultValue);
-        }
-    }
     /**
      * Adds a screenshot to the current MethodContext
      */
@@ -91,6 +45,7 @@ public interface Report {
      * Creates a screenshot, moves it files but doesn't add in to the current MethodContext
      */
     Screenshot provideScreenshot(File file, FileMode fileMode);
+
     Report addVideo(Video video, FileMode fileMode);
     Video provideVideo(File file, FileMode fileMode);
     File finalizeReport();
@@ -108,4 +63,9 @@ public interface Report {
     default File getFinalReportDirectory(String childName) {
         return new File(getFinalReportDirectory(), childName);
     }
+
+    /**
+     * Returns the relative path of a given report file.
+     */
+    String getRelativePath(File file);
 }

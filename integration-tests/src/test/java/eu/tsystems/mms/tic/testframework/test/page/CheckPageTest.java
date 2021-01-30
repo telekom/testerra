@@ -33,6 +33,7 @@ import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithNotEx
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithNullElement;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.report.Report;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
 import java.io.File;
 import org.openqa.selenium.WebDriver;

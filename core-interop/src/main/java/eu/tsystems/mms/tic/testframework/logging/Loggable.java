@@ -17,15 +17,16 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
  */
+package eu.tsystems.mms.tic.testframework.logging;
 
-import {IConfig} from "./iconfig";
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-export class Config implements IConfig {
-    readonly enableServiceWorker = false;
-    readonly developmentMode = true;
+public interface Loggable {
 
-    correctRelativePath(path:string) {
-        return ".."+path.replaceAll("\\","/");
+    default Logger log() {
+        return LoggerFactory.getLogger(this.getClass());
     }
 }

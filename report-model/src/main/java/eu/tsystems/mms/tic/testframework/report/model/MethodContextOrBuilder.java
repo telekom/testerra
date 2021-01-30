@@ -340,25 +340,9 @@ public interface MethodContextOrBuilder extends
    * <pre>
    *    repeated string video_ids = 30  [deprecated = true];
    *    repeated string screenshot_ids = 31 [deprecated = true];
+   *    string custom_context_json = 32 [deprecated = true];
    * </pre>
    *
-   * <code>string custom_context_json = 32;</code>
-   * @return The customContextJson.
-   */
-  java.lang.String getCustomContextJson();
-  /**
-   * <pre>
-   *    repeated string video_ids = 30  [deprecated = true];
-   *    repeated string screenshot_ids = 31 [deprecated = true];
-   * </pre>
-   *
-   * <code>string custom_context_json = 32;</code>
-   * @return The bytes for customContextJson.
-   */
-  com.google.protobuf.ByteString
-      getCustomContextJsonBytes();
-
-  /**
    * <code>int32 failed_step_index = 33;</code>
    * @return The failedStepIndex.
    */
@@ -407,5 +391,39 @@ public interface MethodContextOrBuilder extends
    */
 
   java.lang.String getParametersOrThrow(
+      java.lang.String key);
+
+  /**
+   * <code>map&lt;string, string&gt; custom_contexts = 36;</code>
+   */
+  int getCustomContextsCount();
+  /**
+   * <code>map&lt;string, string&gt; custom_contexts = 36;</code>
+   */
+  boolean containsCustomContexts(
+      java.lang.String key);
+  /**
+   * Use {@link #getCustomContextsMap()} instead.
+   */
+  @java.lang.Deprecated
+  java.util.Map<java.lang.String, java.lang.String>
+  getCustomContexts();
+  /**
+   * <code>map&lt;string, string&gt; custom_contexts = 36;</code>
+   */
+  java.util.Map<java.lang.String, java.lang.String>
+  getCustomContextsMap();
+  /**
+   * <code>map&lt;string, string&gt; custom_contexts = 36;</code>
+   */
+
+  java.lang.String getCustomContextsOrDefault(
+      java.lang.String key,
+      java.lang.String defaultValue);
+  /**
+   * <code>map&lt;string, string&gt; custom_contexts = 36;</code>
+   */
+
+  java.lang.String getCustomContextsOrThrow(
       java.lang.String key);
 }

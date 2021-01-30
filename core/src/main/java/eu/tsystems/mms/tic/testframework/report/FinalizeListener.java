@@ -25,8 +25,6 @@ package eu.tsystems.mms.tic.testframework.report;
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.FinalizeExecutionEvent;
-import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 
 /**
  * Listener for the very end of the execution.

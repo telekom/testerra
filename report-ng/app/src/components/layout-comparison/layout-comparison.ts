@@ -36,9 +36,18 @@ export interface IImage {
     title:string;
 }
 
+export interface ILayoutComparisonContext {
+    image:string,
+    mode:string,
+    distance:number,
+    actualScreenshotPath:string,
+    distanceScreenshotPath:string,
+    expectedScreenshotPath:string
+}
+
 @autoinject
 export class LayoutComparison {
-    @bindable({bindingMode:bindingMode.toView}) context;
+    @bindable({bindingMode:bindingMode.toView}) context:ILayoutComparisonContext;
     private _images:ICompareImages;
     private _actualImageElement:HTMLImageElement;
     private _expectedImageElement:HTMLImageElement;
@@ -64,7 +73,7 @@ export class LayoutComparison {
     private _prepareComparison() {
         this._images = {
             actual: {
-                src: this._config.correctRelativePath('test-report/screenshots/' + this.context.actualScreenshot.filename),
+                src: this._config.correctRelativePath(this.context.actualScreenshotPath),
                 title: "Actual"
             },
             diff: {
@@ -72,7 +81,7 @@ export class LayoutComparison {
                 title: "Difference"
             },
             expected: {
-                src: this._config.correctRelativePath('test-report/screenshots/' + this.context.expectedScreenshot.filename),
+                src: this._config.correctRelativePath(this.context.expectedScreenshotPath),
                 title: "Expected"
             }
         }

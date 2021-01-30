@@ -20,6 +20,8 @@
  */
 package eu.tsystems.mms.tic.testframework.report;
 
+import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
@@ -28,19 +30,18 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import java.io.File;
 import java.io.IOException;
-import java.util.stream.Stream;
+import java.nio.file.Path;
 
 public class DefaultReport implements Report, Loggable {
 
-    public static File REPORT_DIRECTORY;
-
-    private File SCREENSHOTS_DIRECTORY;
-    private File VIDEO_DIRECTORY;
+    private File REPORT_DIRECTORY;
+    private final String BASE_DIR = PropertyManager.getProperty(TesterraProperties.REPORTDIR, "test-report");
+    private final File SCREENSHOTS_DIRECTORY;
+    private final File VIDEO_DIRECTORY;
 
     public DefaultReport() {
         FileUtils fileUtils = new FileUtils();
-        String relativeReportDir = Properties.BASE_DIR.asString();
-        REPORT_DIRECTORY = fileUtils.createTempDir(relativeReportDir);
+        REPORT_DIRECTORY = fileUtils.createTempDir(BASE_DIR);
         log().debug("Prepare report in " + REPORT_DIRECTORY.getAbsolutePath());
 
         SCREENSHOTS_DIRECTORY = new File(REPORT_DIRECTORY, SCREENSHOTS_FOLDER_NAME);
@@ -69,8 +70,7 @@ public class DefaultReport implements Report, Loggable {
     }
 
     public File finalizeReport() {
-        String relativeReportDirString = Properties.BASE_DIR.asString();
-        File finalReportDirectory = new File(relativeReportDirString);
+        File finalReportDirectory = new File(BASE_DIR);
         try {
             if (finalReportDirectory.exists()) {
                 FileUtils.deleteDirectory(finalReportDirectory);
@@ -87,11 +87,6 @@ public class DefaultReport implements Report, Loggable {
         return finalReportDirectory;
     }
 
-    private void addScreenshotToMethodContext(Screenshot screenshot) {
-        MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-        methodContext.addScreenshots(Stream.of(screenshot));
-    }
-
     private void addScreenshotFiles(Screenshot screenshot, FileMode fileMode) {
         if (screenshot.getScreenshotFile() != null) {
             screenshot.setFile(addFile(screenshot.getScreenshotFile(), SCREENSHOTS_DIRECTORY, fileMode));
@@ -105,7 +100,6 @@ public class DefaultReport implements Report, Loggable {
     @Override
     public Report addScreenshot(Screenshot screenshot, FileMode fileMode) {
         addScreenshotFiles(screenshot, fileMode);
-        addScreenshotToMethodContext(screenshot);
         return this;
     }
 
@@ -139,6 +133,11 @@ public class DefaultReport implements Report, Loggable {
      * @return Final report directory defined by the user
      */
     public File getFinalReportDirectory() {
-        return new File(Properties.BASE_DIR.asString());
+        return new File(BASE_DIR);
+    }
+
+    @Override
+    public String getRelativePath(File file) {
+        return file.getAbsolutePath().replace(getReportDirectory().getAbsolutePath(), "");
     }
 }

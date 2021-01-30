@@ -88,10 +88,11 @@ message MethodContext {
     repeated string session_context_ids = 29;
 //    repeated string video_ids = 30  [deprecated = true];
 //    repeated string screenshot_ids = 31 [deprecated = true];
-    string custom_context_json = 32;
+//    string custom_context_json = 32 [deprecated = true];
     int32 failed_step_index = 33;
     ResultStatusType result_status = 34;
     map<string,string> parameters = 35;
+    map<string,string> custom_contexts = 36;
 }
 
 message ContextValues {

@@ -72,7 +72,7 @@
                     <mdc-expandable repeat.for="cause of _methodDetails.methodContext.errorContext.stackTrace"
                                     class="card-expandable"
                     >
-                        <div slot="caption" mdc-body2><class-name namespace.bind="cause.className"><span if.bind="cause.message">: ${cause.message}</span></class-name></div>
+                        <div slot="caption" mdc-body2><class-name-markup namespace.bind="cause.className"><span if.bind="cause.message">: ${cause.message}</span></class-name-markup></div>
                         <div class="code-view">
                             <div class="line"
                                  repeat.for="line of cause.stackTraceElements"

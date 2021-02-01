@@ -86,6 +86,17 @@ class Statistics {
         return count;
     }
 
+    getUpmostStatus():number {
+        let count = 0;
+        let upmostStatus:any;
+        for (let status in this._resultStatuses) {
+            if (this._resultStatuses[status] > count) {
+                upmostStatus = status;
+            }
+        }
+        return upmostStatus;
+    }
+
     protected addStatistics(statistics: Statistics) {
         for (const status in statistics._resultStatuses) {
             if (!this._resultStatuses[status]) {

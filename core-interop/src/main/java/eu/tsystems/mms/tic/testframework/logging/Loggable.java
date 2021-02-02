@@ -19,14 +19,14 @@
  * under the License.
  *
  */
-package eu.tsystems.mms.tic.testframework.report.model.context;
+package eu.tsystems.mms.tic.testframework.logging;
 
-import eu.tsystems.mms.tic.testframework.report.Report;
-import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public interface CustomContext {
-    default String getName() {
-        return this.getClass().getSimpleName();
+public interface Loggable {
+
+    default Logger log() {
+        return LoggerFactory.getLogger(this.getClass());
     }
-    Map<String, Object> exportToReport(Report report);
 }

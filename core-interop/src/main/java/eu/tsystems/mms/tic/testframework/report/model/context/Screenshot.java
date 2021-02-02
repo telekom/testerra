@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2021, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -17,50 +17,72 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
  package eu.tsystems.mms.tic.testframework.report.model.context;
 
-import java.util.*;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
+import org.apache.commons.io.FilenameUtils;
 
-public class Screenshot {
+public class Screenshot extends Attachment implements Loggable {
 
-    public enum Meta {
-        SESSION_KEY("SessionKey"),
-        TITLE("Title"),
-        WINDOW("Window"),
-        URL("URL"),
-        DATE("Date"),
-        DRIVER_FOCUS("Driver Focus"),
-        FILE_NAME("FileName"),
-        SOURCE_FILE_NAME("SourceFileName"),
-        ;
+    public static class MetaData {
+        public static final String SESSION_KEY="SessionKey";
+        public static final String TITLE="Title";
+        public static final String WINDOW="Window";
+        public static final String URL="URL";
+        public static final String DATE="Date";
+        public static final String DRIVER_FOCUS="Driver Focus";
+        public static final String FILE_NAME="FileName";
+        public static final String SOURCE_FILE_NAME="SourceFileName";
+    }
+    private File pageSourceFile;
 
-        private String key;
-
-        Meta(final String key) {
-            this.key = key;
-        }
-
-        public String toString() {
-            return key;
-        }
+    public Screenshot() {
+        this("Screenshot");
     }
 
-    public String filename;
-    public String sourceFilename;
-    final private Map<String, String> meta = new HashMap<>();
+    public Screenshot(String name) {
+        super(name);
+    }
+
+    public Screenshot(File screenshotFile, File pageSourceFile) {
+        super(screenshotFile);
+        if (pageSourceFile!=null) {
+            setPageSourceFile(pageSourceFile);
+        }
+    }
 
     @Override
-    public String toString() {
-        return "Screenshot{" +
-                "filename='" + filename + '\'' +
-                ", sourceFilename='" + sourceFilename + '\'' +
-                ", meta=" + meta +
-                '}';
+    public Screenshot setFile(File file) {
+        getMetaData().put(MetaData.DATE, new Date(file.lastModified()).toString());
+        getMetaData().put(MetaData.FILE_NAME, file.getName());
+        super.setFile(file);
+        return this;
     }
 
-    public Map<String, String> meta() {
-        return meta;
+    public File getScreenshotFile() {
+        return getOrCreateTempFile(".png");
+    }
+
+    public Screenshot setPageSourceFile(File file) {
+        pageSourceFile = file;
+        getMetaData().put(MetaData.SOURCE_FILE_NAME, file.getName());
+        return this;
+    }
+
+    public File getPageSourceFile() {
+        if (pageSourceFile==null) {
+            try {
+                File file = File.createTempFile(FilenameUtils.getBaseName(getScreenshotFile().getName()), ".html");
+                if (file.exists()) file.delete();
+                setPageSourceFile(file);
+            } catch (IOException e) {
+                log().error(e.getMessage());
+            }
+        }
+        return pageSourceFile;
     }
 }

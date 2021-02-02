@@ -23,7 +23,8 @@
 
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
+import eu.tsystems.mms.tic.testframework.report.Report;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.testdata.XLSTestDataReader;
 import eu.tsystems.mms.tic.testframework.testdata.XLSWriter;
 import java.io.File;
@@ -66,7 +67,7 @@ public class XLSWriterTest extends AbstractWebDriverTest {
             xlsWriter.writeCell(id, col, data);
 
             filecounter++;
-            Report report = new Report();
+            Report report = TesterraListener.getReport();
             final File fullFile = report.getReportDirectory("xls/out-" + filecounter + "-" + filename);
 
             // check dirs

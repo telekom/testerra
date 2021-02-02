@@ -21,12 +21,14 @@
  */
 package eu.tsystems.mms.tic.testframework.layout.reporting;
 
+import eu.tsystems.mms.tic.testframework.report.Report;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.CustomContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LayoutCheckContext implements CustomContext {
-
-    public String name = this.getClass().getSimpleName();
     public String image;
     public String mode;
     public double distance;
@@ -35,4 +37,15 @@ public class LayoutCheckContext implements CustomContext {
     public Screenshot distanceScreenshot;
     public Screenshot annotatedScreenshot;
 
+    @Override
+    public Map<String, Object> exportToReport(Report report) {
+        Map<String, Object> exported = new HashMap<>();
+        exported.put("image", this.image);
+        exported.put("mode", this.mode);
+        exported.put("actualDistance", this.distance);
+        exported.put("expectedScreenshotPath", report.getRelativePath(expectedScreenshot.getScreenshotFile()));
+        exported.put("actualScreenshotPath", report.getRelativePath(actualScreenshot.getScreenshotFile()));
+        exported.put("distanceScreenshotPath", report.getRelativePath(distanceScreenshot.getScreenshotFile()));
+        return exported;
+    }
 }

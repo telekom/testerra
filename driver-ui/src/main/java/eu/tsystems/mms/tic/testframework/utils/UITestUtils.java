@@ -29,9 +29,10 @@ import eu.tsystems.mms.tic.testframework.internal.Constants;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
 import eu.tsystems.mms.tic.testframework.report.Shot;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
+import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
@@ -143,17 +144,19 @@ public class UITestUtils {
                     savePageSource(pageSource, sourceTargetFile);
                 }
 
-                final Screenshot screenshot = Report.provideScreenshot(screenShotTargetFile, sourceTargetFile, Report.Mode.MOVE);
-                final Date screenshotDate = new Date();
-                screenshot.meta().put(Screenshot.Meta.DATE.toString(), screenshotDate.toString());
+                Report report = TesterraListener.getReport();
+                Screenshot screenshot = new Screenshot(screenShotTargetFile, sourceTargetFile);
+                report.addScreenshot(screenshot, Report.FileMode.MOVE);
+
+                Map<String, String> metaData = screenshot.getMetaData();
 
                 /*
                 get infos
                  */
                 if (sessionKey != null) {
-                    screenshot.meta().put(Screenshot.Meta.SESSION_KEY.toString(), sessionKey);
+                    metaData.put(Screenshot.MetaData.SESSION_KEY, sessionKey);
                 }
-                screenshot.meta().put(Screenshot.Meta.TITLE.toString(), eventFiringWebDriver.getTitle());
+                metaData.put(Screenshot.MetaData.TITLE, eventFiringWebDriver.getTitle());
 
                 /*
                 window and focus infos
@@ -162,9 +165,9 @@ public class UITestUtils {
                 String windowHandle = eventFiringWebDriver.getWindowHandle();
                 if (originalWindowHandle != null) {
                     if (windowHandle.equals(originalWindowHandle)) {
-                        screenshot.meta().put(Screenshot.Meta.DRIVER_FOCUS.toString(), "true");
+                        metaData.put(Screenshot.MetaData.DRIVER_FOCUS, "true");
                     } else {
-                        screenshot.meta().put(Screenshot.Meta.DRIVER_FOCUS.toString(), "false");
+                        metaData.put(Screenshot.MetaData.DRIVER_FOCUS, "false");
                     }
                 }
                 Set<String> windowHandles = eventFiringWebDriver.getWindowHandles();
@@ -180,8 +183,8 @@ public class UITestUtils {
                 }
 
                 String currentUrl = eventFiringWebDriver.getCurrentUrl();
-                screenshot.meta().put(Screenshot.Meta.WINDOW.toString(), window);
-                screenshot.meta().put(Screenshot.Meta.URL.toString(), currentUrl);
+                metaData.put(Screenshot.MetaData.WINDOW, window);
+                metaData.put(Screenshot.MetaData.URL, currentUrl);
 
                 return screenshot;
 
@@ -311,18 +314,20 @@ public class UITestUtils {
             LOGGER.info("Taking screenshot from desktop");
             final ScreenLocation upperLeftCorner = screenRegion.getUpperLeftCorner();
             final ScreenLocation lowerRightCorner = screenRegion.getLowerRightCorner();
-            final BufferedImage screenshot = screenRegion.getScreen()
+            final BufferedImage screenshotImage = screenRegion.getScreen()
                     .getScreenshot(upperLeftCorner.getX(), upperLeftCorner.getY(), lowerRightCorner.getX(), lowerRightCorner.getY());
 
-            final String filename = "Desktop_" + FILES_DATE_FORMAT.format(new Date()) + ".png";
-            final File targetFile = new File(Report.SCREENSHOTS_DIRECTORY, filename);
-            saveBufferedImage(screenshot, targetFile);
-
-            final MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-            if (methodContext != null) {
-                Screenshot screenshot1 = new Screenshot();
-                screenshot1.filename = filename;
-                methodContext.addScreenshots(Stream.of(screenshot1));
+            try {
+                File targetFile = File.createTempFile("Desktop_" + FILES_DATE_FORMAT.format(new Date()), "png");
+                saveBufferedImage(screenshotImage, targetFile);
+                Report report = TesterraListener.getReport();
+                Screenshot screenshot = report.provideScreenshot(targetFile, Report.FileMode.MOVE);
+                final MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
+                if (methodContext != null) {
+                    methodContext.addScreenshots(Stream.of(screenshot));
+                }
+            } catch (IOException e) {
+                LOGGER.error("Could not take screenshot", e);
             }
         } else {
             LOGGER.error("Could not take native screenshot, screen region is missing");

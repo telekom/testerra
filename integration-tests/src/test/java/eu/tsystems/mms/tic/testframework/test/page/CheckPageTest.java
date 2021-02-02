@@ -34,7 +34,8 @@ import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
+import eu.tsystems.mms.tic.testframework.report.Report;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.io.File;
 import org.openqa.selenium.By;
@@ -117,7 +118,7 @@ public class CheckPageTest extends AbstractTestSitesTest {
     @Test
     public void testT08_CheckPage_ScreenshotOnLoad() {
 
-        final File reportScreenshotDirectory = Report.SCREENSHOTS_DIRECTORY;
+        final File reportScreenshotDirectory = TesterraListener.getReport().getReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
         Assert.assertNotNull(reportScreenshotDirectory);
         Assert.assertTrue(reportScreenshotDirectory.exists());
         Assert.assertTrue(reportScreenshotDirectory.isDirectory());

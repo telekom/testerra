@@ -21,10 +21,11 @@
 
 import {IConfig} from "./iconfig";
 
-export class Config implements IConfig{
+export class Config implements IConfig {
     readonly enableServiceWorker = true;
     readonly developmentMode = false;
+
     correctRelativePath(path:string) {
-        return "../../"+path.replaceAll("\\","/");
+        return "../.."+path.replaceAll("\\","/");
     }
 }

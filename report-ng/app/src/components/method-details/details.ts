@@ -35,11 +35,7 @@ import {StatusConverter} from "services/status-converter";
 import {data} from "../../services/report-model";
 import {MdcSnackbarService} from '@aurelia-mdc-web/snackbar';
 import IStackTraceCause = data.IStackTraceCause;
-
-export interface ILayoutComparisonContext {
-    name: string,
-    image, mode, distance, actualScreenshot, annotatedScreenshot, distanceScreenshot, expectedScreenshot
-}
+import {ILayoutComparisonContext} from "../layout-comparison/layout-comparison";
 
 @autoinject()
 export class Details {
@@ -64,9 +60,7 @@ export class Details {
     ) {
         this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
             this._methodDetails = methodDetails;
-            this._layoutComparisonContext = methodDetails.customContexts.find(value => {
-                return value.name == "LayoutCheckContext";
-            })
+            this._layoutComparisonContext = methodDetails.decodeCustomContext("LayoutCheckContext");
             if (methodDetails.methodContext.errorContext) {
                 this._failureAspect = new FailureAspectStatistics().setErrorContext(methodDetails.methodContext.errorContext);
             }

@@ -194,7 +194,7 @@ public final class SyncUtils {
         final List<File> result = new ArrayList<>();
 
         for (final Video video : videoList) {
-            result.add(new File(video.filename));
+            result.add(video.getVideoFile());
         }
 
         return result;
@@ -213,7 +213,7 @@ public final class SyncUtils {
         final List<File> fileList = new ArrayList<>();
 
         for (Screenshot screenshot : screenshotList) {
-            fileList.add(new File(screenshot.filename));
+            fileList.add(screenshot.getScreenshotFile());
         }
 
         return fileList;

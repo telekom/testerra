@@ -28,8 +28,9 @@ import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.internal.Constants;
 import eu.tsystems.mms.tic.testframework.layout.extraction.AnnotationReader;
 import eu.tsystems.mms.tic.testframework.layout.reporting.LayoutCheckContext;
+import eu.tsystems.mms.tic.testframework.report.Report;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import java.awt.Color;
@@ -590,18 +591,16 @@ public final class LayoutCheck {
         context.mode = step.mode.name();
         // For readable report
         context.distance = new BigDecimal(step.distance).setScale(2, RoundingMode.HALF_UP).doubleValue();
-        try {
-            // Always copy the reference image
-            context.expectedScreenshot = Report.provideScreenshot(referenceScreenshotPath.toFile(), null, Report.Mode.COPY);
-            context.actualScreenshot = Report.provideScreenshot(actualScreenshotPath.toFile(), null, Report.Mode.MOVE);
-            context.distanceScreenshot = Report.provideScreenshot(distanceScreenshotPath.toFile(), null, Report.Mode.MOVE);
-            context.distanceScreenshot.meta().put("Distance", Double.toString(step.distance));
-            if (step.annotatedReferenceFileName != null) {
-                final Path annotatedReferenceScreenshotPath = step.annotatedReferenceFileName;
-                context.annotatedScreenshot = Report.provideScreenshot(annotatedReferenceScreenshotPath.toFile(), null, Report.Mode.MOVE);
-            }
-        } catch (IOException e) {
-            LOGGER.debug(e.toString());
+
+        Report report = TesterraListener.getReport();
+        // Always copy the reference image
+        context.expectedScreenshot = report.provideScreenshot(referenceScreenshotPath.toFile(), Report.FileMode.COPY);
+        context.actualScreenshot = report.provideScreenshot(actualScreenshotPath.toFile(), Report.FileMode.MOVE);
+        context.distanceScreenshot = report.provideScreenshot(distanceScreenshotPath.toFile(), Report.FileMode.MOVE);
+        context.distanceScreenshot.getMetaData().put("Distance", Double.toString(step.distance));
+        if (step.annotatedReferenceFileName != null) {
+            final Path annotatedReferenceScreenshotPath = step.annotatedReferenceFileName;
+            context.annotatedScreenshot = report.provideScreenshot(annotatedReferenceScreenshotPath.toFile(), Report.FileMode.MOVE);
         }
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         methodContext.addCustomContext(context);

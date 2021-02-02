@@ -19,7 +19,8 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
+
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
@@ -36,6 +37,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.MouseActions;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
+import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -137,7 +139,9 @@ public class DesktopGuiElementCore implements GuiElementCore, Loggable {
     private int setWebElement(List<WebElement> elements) {
         int numberOfFoundElements = elements.size();
         if (numberOfFoundElements < guiElementData.index + 1) {
-            throw new StaleElementReferenceException("Request index of GuiElement was " + guiElementData.index + ", but only " + numberOfFoundElements + " were found. There you go, GuiElementList-Fanatics!");
+            throw new StaleElementReferenceException(
+                    "Request index of GuiElement was " + guiElementData.index + ", but only " + numberOfFoundElements +
+                            " were found. There you go, GuiElementList-Fanatics!");
         }
 
         if (numberOfFoundElements > 0) {
@@ -146,7 +150,10 @@ public class DesktopGuiElementCore implements GuiElementCore, Loggable {
 
             // check for shadowRoot
             if (guiElementData.shadowRoot) {
-                Object o = JSUtils.executeScript(webDriver, "return arguments[0].shadowRoot", webElement);
+                // 14.01.2021: Gheckodriver throw an internal exception when using the command above,
+                // therefore the result in the JS snippet "return arguments[0].shadowRoot" will be null.
+                // To handle firefox shadow roots we decided to handle it this way and implement an automatic resolver in getSubElement
+                final Object o = JSUtils.executeScript(webDriver, "return arguments[0].shadowRoot.firstChild", webElement);
                 if (o instanceof WebElement) {
                     webElement = (WebElement) o;
                 }
@@ -164,7 +171,8 @@ public class DesktopGuiElementCore implements GuiElementCore, Loggable {
             // find timings
             int findCounter = Timings.raiseFindCounter();
             if (numberOfFoundElements > 1 && guiElementData.index == -1) {
-                LOGGER.debug("find()#" + findCounter + ": GuiElement " + toString() + " was found " + numberOfFoundElements + " times. Will use the first occurrence.");
+                LOGGER.debug("find()#" + findCounter + ": GuiElement " + toString() + " was found " + numberOfFoundElements +
+                        " times. Will use the first occurrence.");
             } else {
                 LOGGER.debug("find()#" + findCounter + ": GuiElement " + toString() + " was found.");
             }
@@ -282,7 +290,8 @@ public class DesktopGuiElementCore implements GuiElementCore, Loggable {
                 }
             }
         } else {
-            LOGGER.warn("Cannot perform value check after type() because " + this.toString() + " doesn't have a value property. Consider using sendKeys() instead.");
+            LOGGER.warn("Cannot perform value check after type() because " + this.toString() +
+                    " doesn't have a value property. Consider using sendKeys() instead.");
         }
     }
 
@@ -377,18 +386,45 @@ public class DesktopGuiElementCore implements GuiElementCore, Loggable {
             frames = frameLogic.getFrames();
         }
 
-        String abstractLocatorString = locate.getBy().toString();
+
+        final String abstractLocatorString = locate.getBy().toString();
+        String xpath = null;
         if (abstractLocatorString.toLowerCase().contains("xpath")) {
             int i = abstractLocatorString.indexOf(":") + 1;
-            String xpath = abstractLocatorString.substring(i).trim();
+            xpath = abstractLocatorString.substring(i).trim();
             // Check if locator does not start with dot, ignoring a leading parenthesis for choosing the n-th element
+            // /input --> ./input
+            // //input --> .//input
+            // input --> ./input
+            // ./input --> No corrections
+            // .//input --> No corrections
             if (xpath.startsWith("/")) {
                 xpath = xpath.replaceFirst("/", "./");
-                locate = Locate.by(By.xpath(xpath));
             } else if (!xpath.startsWith(".")) {
                 xpath = "./" + xpath;
-                locate = Locate.by(By.xpath(xpath));
             }
+        }
+
+        // 14.01.2021 - To get in touch with shadow roots / dom in firefox
+        // we have to point some facts out.
+        // 1. We only support xpath, because it the only way we can simply handle locator modification
+        if (guiElementData.shadowRoot) {
+
+            if (!abstractLocatorString.toLowerCase().contains("xpath")) {
+                throw new RuntimeException("GuiElement.getSubElement() on shadowRoot() only supports By.xpath()");
+            }
+
+            // auto correct these sub element locators
+            // ./input --> ./../input
+            // .//input --> ./..//input
+            if (StringUtils.isNotBlank(xpath)) {
+                xpath = "./." + xpath;
+            }
+        }
+
+        // override locator, because we made an auto correction to the given xpath
+        if (StringUtils.isNotBlank(xpath)) {
+            locate = Locate.by(By.xpath(xpath));
         }
 
         GuiElement subElement = new GuiElement(webDriver, locate, frames);
@@ -418,7 +454,9 @@ public class DesktopGuiElementCore implements GuiElementCore, Loggable {
 
     @Override
     public boolean isVisible(final boolean complete) {
-        if (!isDisplayed()) return false;
+        if (!isDisplayed()) {
+            return false;
+        }
         Rectangle viewport = WebDriverUtils.getViewport(webDriver);
         final WebElement webElement = getWebElement();
         // getRect doesn't work

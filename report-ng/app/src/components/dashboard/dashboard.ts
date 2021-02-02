@@ -22,7 +22,7 @@
 import {autoinject} from "aurelia-framework";
 import {IFilter, StatusConverter} from "services/status-converter";
 import {StatisticsGenerator} from "services/statistics-generator";
-import {ExecutionStatistics} from "services/statistic-models";
+import {ExecutionStatistics, FailureAspectStatistics} from "services/statistic-models";
 import {AbstractViewModel} from "../abstract-view-model";
 import {data} from "../../services/report-model";
 import MethodType = data.MethodType;
@@ -57,6 +57,7 @@ export class Dashboard extends AbstractViewModel {
     private _filterItems:IItem[];
     private _breakdownFilter:IFilter;
     private _classFilter:IFilter;
+    private _topFailureAspects:FailureAspectStatistics[];
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -69,6 +70,7 @@ export class Dashboard extends AbstractViewModel {
     attached() {
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
             this._executionStatistics = executionStatistics;
+            this._topFailureAspects = this._executionStatistics.failureAspectStatistics.slice(0,3);
             this._passedRetried = this._executionStatistics.getStatusesCount([ResultStatusType.PASSED_RETRY,ResultStatusType.MINOR_RETRY]);
 
             this._filterItems = [];
@@ -81,13 +83,13 @@ export class Dashboard extends AbstractViewModel {
             this._filterItems.push({
                 status: ResultStatusType.FAILED_EXPECTED,
                 counts: [this._executionStatistics.getStatusCount(ResultStatusType.FAILED_EXPECTED)],
-                labels: [this._statusConverter.getLabelForStatus(ResultStatusType.FAILED)],
+                labels: [this._statusConverter.getLabelForStatus(ResultStatusType.FAILED_EXPECTED)],
                 active:false
             });
             this._filterItems.push({
                 status: ResultStatusType.SKIPPED,
                 counts: [this._executionStatistics.getStatusCount(ResultStatusType.SKIPPED)],
-                labels: [this._statusConverter.getLabelForStatus(ResultStatusType.FAILED)],
+                labels: [this._statusConverter.getLabelForStatus(ResultStatusType.SKIPPED)],
                 active:false
             });
             this._filterItems.push({
@@ -154,5 +156,12 @@ export class Dashboard extends AbstractViewModel {
         const queryParams:any = filter;
         queryParams.status = this._statusConverter.getClassForStatus(filter.status);
         this.navInstruction.router.navigateToRoute("tests", queryParams);
+    }
+
+    private _gotoFailureAspect(failureAspect:FailureAspectStatistics) {
+        this.navInstruction.router.navigateToRoute("tests", {
+            failureAspect: failureAspect.index+1,
+            status: this._statusConverter.getClassForStatus(failureAspect.getUpmostStatus())
+        });
     }
 }

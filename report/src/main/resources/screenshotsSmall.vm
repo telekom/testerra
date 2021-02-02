@@ -13,7 +13,7 @@
              data-thumbwidth="32"
              data-thumbheight="32">
             #foreach( $screenshot in $methodInfo.screenshots )
-                <div data-img="../../screenshots/${screenshot.filename}">
+                <div data-img="../../screenshots/${screenshot.getScreenshotFile().getName()}">
                     <!-- Fullscreen -->
                     <a class="gallerybutton" href="#" title="Fullscreen" onclick="fotorama.cancelFullScreen();">
                         <i class="bgwhite fa fa-arrows-alt"></i>

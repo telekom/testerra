@@ -123,8 +123,8 @@
                                     <td></td>
                                     <td colspan="2" style="position: relative;">
                                         <!-- screen -->
-                                        <a href="../../screenshots/${screenshot.filename}" target="_blank">
-                                            <img alt="screenshot" src="../../screenshots/${screenshot.filename}"
+                                        <a href="../../screenshots/${screenshot.getScreenshotFile().getName()}" target="_blank">
+                                            <img alt="screenshot" src="../../screenshots/${screenshot.getScreenshotFile().getName()}"
                                                  width="300px"/>
                                         </a>
                                         <div style="position: absolute; padding: 5px;background: #ff7777; bottom: 10px; opacity: 0.8;">

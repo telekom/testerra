@@ -71,7 +71,7 @@
                              data-thumbheight="32"
                         >
                             #foreach( $screenshot in $testMethod.screenshots )
-                                <div data-img="../screenshots/${screenshot.filename}">
+                                <div data-img="../screenshots/${screenshot.getScreenshotFile().getName()}">
                                     <!-- Quit fullscreen -->
                                     <a class="gallerybutton" href="#">
                                         <!--<img id="fullscreenButton" alt="F" title="Fullscreen" src="style/thumb_full-screen.png" style="width: 21px; background-color: white;"/>-->

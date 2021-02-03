@@ -28,7 +28,7 @@ import org.testng.ITestResult;
 public class DefaultTestNGContextGenerator {
 
     public String getClassContextName(ITestResult testResult) {
-        return testResult.getTestClass().getName();
+        return testResult.getTestClass().getRealClass().getSimpleName();
     }
 
     public String getSuiteContextName(ITestResult testResult) {

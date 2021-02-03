@@ -28,7 +28,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Clone of {@link LogEvent}
+ * Copy of {@link LogEvent} because Log4j2 reuses the event instance
+ * for passing new messages. This only happens under some circumstances we didn't
+ * figure out yet.
  */
 public class LogMessage implements Serializable, Loggable {
     private final long timestamp;

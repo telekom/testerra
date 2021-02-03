@@ -275,6 +275,6 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
 
     public void updateMultiContextualName() {
         TestContext testContext = getTestContext();
-        this.name = getTestClass().getSimpleName() + "_" + testContext.getSuiteContext().getName() + "_" + testContext.getName();
+        this.name = this.getName() + "_" + testContext.getSuiteContext().getName() + "_" + testContext.getName();
     }
 }

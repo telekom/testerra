@@ -281,7 +281,7 @@ public class TesterraListener implements
         /*
          * store testresult, create method context
          */
-        MethodContext methodContext = ExecutionContextController.setCurrentTestResult(testResult, testContext); // stores the actual testresult, auto-creates the method context
+        MethodContext methodContext = ExecutionContextController.setCurrentTestResult(testResult); // stores the actual testresult, auto-creates the method context
         ExecutionContextController.setCurrentMethodContext(methodContext);
 
         methodContext.getTestStep(TestStep.SETUP);
@@ -387,8 +387,8 @@ public class TesterraListener implements
                 /*
                  * TestNG bug or whatever ?!?!
                  */
-                ClassContext classContext = ExecutionContextController.getClassContextFromTestResult(testResult, testContext, invokedMethod);
-                methodContext = classContext.safeAddSkipMethod(testResult, invokedMethod);
+                ClassContext classContext = ExecutionContextController.getClassContextFromTestResult(testResult);
+                methodContext = classContext.safeAddSkipMethod(testResult);
             } else {
                 throw new SystemException("INTERNAL ERROR. Could not create methodContext for " + methodName + " with result: " + testResult);
             }
@@ -463,7 +463,7 @@ public class TesterraListener implements
          */
         final Throwable throwable = iTestResult.getThrowable();
         if (throwable != null && throwable.toString().contains(SKIP_FAILED_DEPENDENCY_MSG)) {
-            ExecutionContextController.setCurrentTestResult(iTestResult, testContext);
+            ExecutionContextController.setCurrentTestResult(iTestResult);
             pAfterInvocation(null, iTestResult, testContext);
         }
 
@@ -472,7 +472,7 @@ public class TesterraListener implements
          */
         final Class<?>[] parameterTypes = iTestResult.getMethod().getConstructorOrMethod().getMethod().getParameterTypes();
         if (parameterTypes.length > 0) {
-            final MethodContext methodContextFromTestResult = ExecutionContextController.getMethodContextFromTestResult(iTestResult, testContext);
+            final MethodContext methodContextFromTestResult = ExecutionContextController.getMethodContextFromTestResult(iTestResult);
             methodContextFromTestResult.setParameterValues(parameterTypes);
         }
     }

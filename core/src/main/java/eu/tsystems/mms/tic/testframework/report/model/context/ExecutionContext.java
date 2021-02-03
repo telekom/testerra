@@ -101,11 +101,14 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
         return this.methodContextLessLogs.stream();
     }
 
-    public synchronized SuiteContext getSuiteContext(ITestResult testResult, ITestContext iTestContext) {
-        final String suiteName = TesterraListener.getContextGenerator().getSuiteContextName(testResult, iTestContext, null);
+    public SuiteContext getSuiteContext(ITestResult testResult) {
+        return getSuiteContext(TesterraListener.getContextGenerator().getSuiteContextName(testResult));
+    }
+
+    private synchronized SuiteContext getSuiteContext(String suiteContextName) {
         return getOrCreateContext(
                 suiteContexts,
-                suiteName,
+                suiteContextName,
                 () -> new SuiteContext(this),
                 suiteContext -> {
                     EventBus eventBus = TesterraListener.getEventBus();
@@ -113,8 +116,8 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
                 });
     }
 
-    public SuiteContext getSuiteContext(final ITestContext iTestContext) {
-        return this.getSuiteContext(null, iTestContext);
+    public SuiteContext getSuiteContext(ITestContext testContext) {
+        return getSuiteContext(TesterraListener.getContextGenerator().getSuiteContextName(testContext));
     }
 
     @Override

@@ -50,8 +50,15 @@ public class SuiteContext extends AbstractContext implements SynchronizableConte
         return testContexts.stream();
     }
 
-    public synchronized TestContext getTestContext(ITestResult testResult, ITestContext iTestContext) {
-        final String testContextName = TesterraListener.getContextGenerator().getTestContextName(testResult, iTestContext, null);
+    public TestContext getTestContext(ITestResult testResult) {
+        return getTestContext(TesterraListener.getContextGenerator().getTestContextName(testResult));
+    }
+
+    public TestContext getTestContext(ITestContext testContext) {
+        return getTestContext(TesterraListener.getContextGenerator().getTestContextName(testContext));
+    }
+
+    private synchronized TestContext getTestContext(String testContextName) {
         return getOrCreateContext(
                 testContexts,
                 testContextName,
@@ -60,14 +67,6 @@ public class SuiteContext extends AbstractContext implements SynchronizableConte
                     EventBus eventBus = TesterraListener.getEventBus();
                     eventBus.post(new ContextUpdateEvent().setContext(this));
                 });
-    }
-
-    /**
-     * Used in platform-connector only
-     * May be @deprecated
-     */
-    public TestContext getTestContext(final ITestContext iTestContext) {
-        return this.getTestContext(null, iTestContext);
     }
 
     @Override

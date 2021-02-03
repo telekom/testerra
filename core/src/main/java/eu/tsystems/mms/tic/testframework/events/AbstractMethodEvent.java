@@ -47,7 +47,7 @@ public abstract class AbstractMethodEvent {
     }
 
     public ITestNGMethod getTestMethod() {
-        return TesterraListener.getContextGenerator().getTestMethod(testResult, testContext, invokedMethod);
+        return testResult.getMethod();
     }
 
     public Method getMethod() {

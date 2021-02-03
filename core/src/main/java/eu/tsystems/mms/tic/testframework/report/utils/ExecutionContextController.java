@@ -80,10 +80,10 @@ public class ExecutionContextController {
      * @param testResult The ITestResult to set.
      * @return the ClassContext for the result.
      */
-    public static ClassContext getClassContextFromTestResult(ITestResult testResult, ITestContext iTestContext, IInvokedMethod invokedMethod) {
-        SuiteContext suiteContext = getCurrentExecutionContext().getSuiteContext(testResult, iTestContext);
-        TestContext testContext = suiteContext.getTestContext(testResult, iTestContext);
-        ClassContext classContext = testContext.getClassContext(testResult, iTestContext, invokedMethod);
+    public static ClassContext getClassContextFromTestResult(ITestResult testResult) {
+        SuiteContext suiteContext = getCurrentExecutionContext().getSuiteContext(testResult);
+        TestContext testContext = suiteContext.getTestContext(testResult);
+        ClassContext classContext = testContext.getClassContext(testResult);
         return classContext;
     }
 
@@ -91,10 +91,10 @@ public class ExecutionContextController {
      * Used in platform-connector only
      * May be @deprecated
      */
-    public static ClassContext getClassContextFromTestContextAndMethod(final ITestContext iTestContext, final ITestNGMethod iTestNgMethod) {
-        SuiteContext suiteContext = getCurrentExecutionContext().getSuiteContext(iTestContext);
-        TestContext testContext = suiteContext.getTestContext(iTestContext);
-        ClassContext classContext = testContext.getClassContext(iTestNgMethod);
+    public static ClassContext getClassContextFromTestContextAndMethod(ITestContext testNGContext, ITestNGMethod testNGMethod) {
+        SuiteContext suiteContext = getCurrentExecutionContext().getSuiteContext(testNGContext);
+        TestContext testContext = suiteContext.getTestContext(testNGContext);
+        ClassContext classContext = testContext.getClassContext(testNGMethod);
         return classContext;
     }
 
@@ -105,19 +105,18 @@ public class ExecutionContextController {
      * @param iTestResult The ITestResult to set.
      * @return the MethodContext for the result.
      */
-    public static MethodContext getMethodContextFromTestResult(final ITestResult iTestResult, final ITestContext testContext) {
+    public static MethodContext getMethodContextFromTestResult(ITestResult iTestResult) {
         //final Object[] parameters = iTestResult.getParameters();
-        final ClassContext classContext = getClassContextFromTestResult(iTestResult, testContext, null);
-        return classContext.getMethodContext(iTestResult, testContext, null);
+        final ClassContext classContext = getClassContextFromTestResult(iTestResult);
+        return classContext.getMethodContext(iTestResult);
     }
 
     /**
-     * Used in platform-connector only
-     * May be @deprecated
+     * Used by ReTestFilterInterceptor on platform-connector
      */
-    public static MethodContext getMethodContextFromTestContextAndMethod(final ITestContext iTestContext, final ITestNGMethod iTestNgMethod, final Object[] parameters) {
-        ClassContext classContext = getClassContextFromTestContextAndMethod(iTestContext, iTestNgMethod);
-        return classContext.getMethodContext(null, iTestContext, iTestNgMethod, parameters);
+    public static MethodContext getMethodContextFromTestContextAndMethod(ITestContext testContext, ITestNGMethod testNGMethod, Object[] parameters) {
+        ClassContext classContext = getClassContextFromTestContextAndMethod(testContext, testNGMethod);
+        return classContext.getMethodContext(testContext, testNGMethod, parameters);
     }
 
     /**
@@ -125,9 +124,9 @@ public class ExecutionContextController {
      *
      * @param iTestResult TestNg testResult representing current test.
      */
-    public static MethodContext setCurrentTestResult(final ITestResult iTestResult, final ITestContext testContext) {
+    public static MethodContext setCurrentTestResult(ITestResult iTestResult) {
         CURRENT_TEST_RESULT.set(iTestResult);
-        return getMethodContextFromTestResult(iTestResult, testContext);
+        return getMethodContextFromTestResult(iTestResult);
     }
 
     /**

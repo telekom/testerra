@@ -22,12 +22,11 @@
  package eu.tsystems.mms.tic.testframework.report.model.steps;
 
 import eu.tsystems.mms.tic.testframework.clickpath.ClickPathEvent;
-import eu.tsystems.mms.tic.testframework.report.LogMessage;
+import eu.tsystems.mms.tic.testframework.report.model.context.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.Serial;
 import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -83,8 +82,8 @@ public class TestStepAction implements Serializable {
         return readEntries(ErrorContext.class).filter(errorContext -> !errorContext.isOptional());
     }
 
-    public void addLogEvent(LogEvent logEvent) {
-        this.entries.add(logEvent);
+    public void addLogMessage(LogMessage logMessage) {
+        this.entries.add(logMessage);
     }
 
     public void addClickPathEvent(ClickPathEvent event) {

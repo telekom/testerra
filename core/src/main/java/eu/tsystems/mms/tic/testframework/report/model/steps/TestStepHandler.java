@@ -21,10 +21,10 @@
  */
  package eu.tsystems.mms.tic.testframework.report.model.steps;
 
-import org.apache.logging.log4j.core.LogEvent;
+import eu.tsystems.mms.tic.testframework.report.model.context.LogMessage;
 
 public interface TestStepHandler {
 
-    String getTestStepActionContext(LogEvent logEvent);
+    String getTestStepActionContext(LogMessage logEvent);
 
 }

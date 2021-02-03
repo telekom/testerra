@@ -70,7 +70,7 @@ public class TestContext extends AbstractContext implements SynchronizableContex
      */
     public ClassContext getClassContext(final ITestNGMethod iTestNgMethod) {
         final IClass testClass = iTestNgMethod.getTestClass();
-        return this.pGetClassContext(testClass, testClass.getName());
+        return this.pGetClassContext(testClass, testClass.getRealClass().getSimpleName());
     }
 
     private synchronized ClassContext pGetClassContext(IClass testClass, String classContextName) {

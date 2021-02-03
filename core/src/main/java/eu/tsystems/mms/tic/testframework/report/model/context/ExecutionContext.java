@@ -22,27 +22,19 @@
  package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import com.google.common.eventbus.EventBus;
-import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
-import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.apache.logging.log4j.core.LogEvent;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 
@@ -110,7 +102,7 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
     }
 
     public synchronized SuiteContext getSuiteContext(ITestResult testResult, ITestContext iTestContext) {
-        final String suiteName = TestNGHelper.getSuiteName(testResult, iTestContext);
+        final String suiteName = TesterraListener.getContextGenerator().getSuiteContextName(testResult, iTestContext, null);
         return getOrCreateContext(
                 suiteContexts,
                 suiteName,

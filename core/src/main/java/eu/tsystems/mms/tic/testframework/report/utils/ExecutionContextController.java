@@ -87,6 +87,10 @@ public class ExecutionContextController {
         return classContext;
     }
 
+    /**
+     * Used in platform-connector only
+     * May be @deprecated
+     */
     public static ClassContext getClassContextFromTestContextAndMethod(final ITestContext iTestContext, final ITestNGMethod iTestNgMethod) {
         SuiteContext suiteContext = getCurrentExecutionContext().getSuiteContext(iTestContext);
         TestContext testContext = suiteContext.getTestContext(iTestContext);
@@ -108,7 +112,8 @@ public class ExecutionContextController {
     }
 
     /**
-     * Used in platform-connector
+     * Used in platform-connector only
+     * May be @deprecated
      */
     public static MethodContext getMethodContextFromTestContextAndMethod(final ITestContext iTestContext, final ITestNGMethod iTestNgMethod, final Object[] parameters) {
         ClassContext classContext = getClassContextFromTestContextAndMethod(iTestContext, iTestNgMethod);

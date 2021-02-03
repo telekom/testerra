@@ -52,6 +52,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.report.utils.DefaultTestNGContextGenerator;
 import java.util.List;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configurator;
@@ -108,14 +109,15 @@ public class TesterraListener implements
     private static final LoggerContext loggerContext;
     private static final BuildInformation buildInformation;
     private static final Report report;
+    private static DefaultTestNGContextGenerator contextGenerator;
 
     static {
-
         DefaultConfiguration defaultConfiguration = new DefaultConfiguration();
         loggerContext = Configurator.initialize(defaultConfiguration);
         buildInformation = new BuildInformation();
         eventBus = new EventBus();
         report = new DefaultReport();
+        contextGenerator = new DefaultTestNGContextGenerator();
 
         /*
          * Add monitoring event listeners
@@ -168,6 +170,17 @@ public class TesterraListener implements
 
     public static Report getReport() {
         return report;
+    }
+
+    public static DefaultTestNGContextGenerator getContextGenerator() {
+        if (contextGenerator == null) {
+            contextGenerator = new DefaultTestNGContextGenerator();
+        }
+        return contextGenerator;
+    }
+
+    public static void setContextGenerator(DefaultTestNGContextGenerator newContextGenerator) {
+        contextGenerator = newContextGenerator;
     }
 
     /**

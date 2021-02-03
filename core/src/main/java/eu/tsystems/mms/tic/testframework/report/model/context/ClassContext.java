@@ -29,7 +29,6 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
-import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
@@ -120,12 +119,12 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
 
     public MethodContext getMethodContext(ITestResult testResult, ITestContext iTestContext, IInvokedMethod invokedMethod) {
         final Object[] parameters = testResult.getParameters();
-        final ITestNGMethod testMethod = TestNGHelper.getTestMethod(testResult, iTestContext, invokedMethod);
+        final ITestNGMethod testMethod = TesterraListener.getContextGenerator().getTestMethod(testResult, iTestContext, invokedMethod);
         return this.getMethodContext(testResult, iTestContext, testMethod, parameters);
     }
 
     public MethodContext getMethodContext(ITestResult testResult, ITestContext iTestContext, ITestNGMethod iTestNGMethod, Object[] parameters) {
-        final String name = iTestNGMethod.getMethodName();
+        final String methodContextName = TesterraListener.getContextGenerator().getMethodContextName(testResult, iTestContext, null);
 
         final List<Object> parametersList = Arrays.stream(parameters).collect(Collectors.toList());
 
@@ -154,7 +153,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
                 methodType = MethodContext.Type.CONFIGURATION_METHOD;
             }
 
-            methodContext = new MethodContext(name, methodType, this);
+            methodContext = new MethodContext(methodContextName, methodType, this);
             //methodContext.name = name;
             //fillBasicContextValues(methodContext, this, name);
 

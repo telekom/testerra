@@ -27,10 +27,8 @@ import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
-import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
-import java.util.Map;
+import eu.tsystems.mms.tic.testframework.report.utils.DefaultTestNGContextGenerator;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Stream;
 import org.testng.IClass;
@@ -48,13 +46,6 @@ public class TestContext extends AbstractContext implements SynchronizableContex
      * @deprecated Use {@link #readClassContexts()} instead
      */
     public final Queue<ClassContext> classContexts = new ConcurrentLinkedQueue<>();
-    /**
-     * id to context map:
-     * The first occurance of a class create an entry for id=fullClassName.
-     * Same class context can see an already existing id and either enhance (same testContext)
-     * or create a new id with naming scheme.
-     */
-    private static final Map<String, ClassContext> CLASS_CONTEXT_MARKS = new ConcurrentHashMap<>();
 
     public TestContext(SuiteContext suiteContext) {
         this.parentContext = suiteContext;
@@ -69,22 +60,27 @@ public class TestContext extends AbstractContext implements SynchronizableContex
     }
 
     public ClassContext getClassContext(ITestResult testResult, ITestContext iTestContext, IInvokedMethod invokedMethod) {
-        final IClass testClass = TestNGHelper.getTestClass(testResult, iTestContext, invokedMethod);
-        return this.pGetClassContext(testClass);
+        DefaultTestNGContextGenerator contextGenerator = TesterraListener.getContextGenerator();
+        final IClass testClass = contextGenerator.getTestClass(testResult, iTestContext, invokedMethod);
+        return this.pGetClassContext(testClass, contextGenerator.getClassContextName(testResult, iTestContext, invokedMethod));
     }
 
+    /**
+     * Used in platform-connector only
+     * May be @deprecated
+     */
     public ClassContext getClassContext(final ITestNGMethod iTestNgMethod) {
         final IClass testClass = iTestNgMethod.getTestClass();
-        return this.pGetClassContext(testClass);
+        return this.pGetClassContext(testClass, testClass.getName());
     }
 
-    private synchronized ClassContext pGetClassContext(IClass testClass) {
+    private synchronized ClassContext pGetClassContext(IClass testClass, String classContextName) {
 
         final Class<?> realClass = testClass.getRealClass();
 
         return getOrCreateContext(
                 this.classContexts,
-                realClass.getName(),
+                classContextName,
                 () -> {
                     ClassContext newClassContext = new ClassContext(realClass, this);
                     /*
@@ -100,8 +96,7 @@ public class TestContext extends AbstractContext implements SynchronizableContex
                             newClassContext.setTestClassContext(actualTestContext);
                         }
                     }
-                    classContexts.add(newClassContext);
-                    return new ClassContext(realClass, this);
+                    return newClassContext;
                 },
                 classContext -> {
                     EventBus eventBus = TesterraListener.getEventBus();

@@ -21,54 +21,54 @@
  */
  package eu.tsystems.mms.tic.testframework.report.utils;
 
-import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
+import java.util.function.Supplier;
 import org.testng.IClass;
 import org.testng.IInvokedMethod;
 import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 
-public final class TestNGHelper {
+public class DefaultTestNGContextGenerator {
 
-    @FunctionalInterface
-    private interface GetValue<T> {
-        T run();
-    }
-
-    private static final <T> T tryAny(Class<T> responseType, final String scope, final GetValue<T>... getValues) {
-        if (getValues != null) {
-            for (GetValue<T> getValue : getValues) {
-                try {
-                    T value = getValue.run();
-                    if (value != null) {
-                        return value;
-                    }
-                } catch (Throwable e) {
-                    // ignore
+    protected final <T> T tryAny(final Supplier<T>... getValues) {
+        for (Supplier<T> getValue : getValues) {
+            try {
+                T value = getValue.get();
+                if (value != null) {
+                    return value;
                 }
+            } catch (Throwable e) {
+                // ignore
             }
         }
-
-        throw new SystemException("Could not get " + scope);
+        throw new RuntimeException("Could not get value");
     }
 
-    public static String getSuiteName(ITestResult testResult, ITestContext testContext) {
-        return tryAny(String.class, "SuiteName",
+    public String getClassContextName(ITestResult testResult, ITestContext testContext, IInvokedMethod invokedMethod) {
+        return this.getTestClass(testResult, testContext, invokedMethod).getName();
+    }
+
+    public String getSuiteContextName(ITestResult testResult, ITestContext testContext, IInvokedMethod invokedMethod) {
+        return tryAny(
                 () -> testResult.getTestContext().getSuite().getName(),
                 () -> testContext.getSuite().getName()
         );
 
     }
 
-    public static String getTestName(ITestResult testResult, ITestContext testContext) {
-        return tryAny(String.class, "TestName",
+    public String getTestContextName(ITestResult testResult, ITestContext testContext, IInvokedMethod invokedMethod) {
+        return tryAny(
                 () -> testResult.getTestContext().getCurrentXmlTest().getName(),
                 () -> testContext.getCurrentXmlTest().getName()
         );
     }
 
-    public static IClass getTestClass(ITestResult testResult, ITestContext testContext, IInvokedMethod invokedMethod) {
-        return tryAny(IClass.class, "TestClass",
+    public String getMethodContextName(ITestResult testResult, ITestContext testContext, IInvokedMethod invokedMethod) {
+        return getTestMethod(testResult, testContext, invokedMethod).getMethodName();
+    }
+
+    public IClass getTestClass(ITestResult testResult, ITestContext testContext, IInvokedMethod invokedMethod) {
+        return tryAny(
                 () -> testResult.getTestClass(),
                 () -> invokedMethod.getTestMethod().getTestClass(),
                 () -> invokedMethod.getTestResult().getTestClass(),
@@ -76,8 +76,8 @@ public final class TestNGHelper {
         );
     }
 
-    public static ITestNGMethod getTestMethod(ITestResult testResult, ITestContext testContext, IInvokedMethod invokedMethod) {
-        return tryAny(ITestNGMethod.class, "TestMethod",
+    public ITestNGMethod getTestMethod(ITestResult testResult, ITestContext testContext, IInvokedMethod invokedMethod) {
+        return tryAny(
                 () -> testResult.getMethod(),
                 () -> invokedMethod.getTestMethod()
         );

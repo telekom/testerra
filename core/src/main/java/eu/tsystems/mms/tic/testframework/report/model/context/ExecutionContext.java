@@ -66,7 +66,7 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
 
     public int estimatedTestMethodCount;
 
-    private final ConcurrentLinkedQueue<LogEvent> methodContextLessLogs = new ConcurrentLinkedQueue<>();
+    private final ConcurrentLinkedQueue<LogMessage> methodContextLessLogs = new ConcurrentLinkedQueue<>();
 
     public ExecutionContext() {
         name = runConfig.RUNCFG;
@@ -100,12 +100,12 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
         return this;
     }
 
-    public ExecutionContext addLogEvent(LogEvent logEvent) {
-        this.methodContextLessLogs.add(logEvent);
+    public ExecutionContext addLogMessage(LogMessage logMessage) {
+        this.methodContextLessLogs.add(logMessage);
         return this;
     }
 
-    public Stream<LogEvent> readMethodContextLessLogs() {
+    public Stream<LogMessage> readMethodContextLessLogs() {
         return this.methodContextLessLogs.stream();
     }
 

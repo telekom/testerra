@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2021, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -18,7 +18,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
- package eu.tsystems.mms.tic.testframework.report;
+ package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import org.apache.logging.log4j.Level;
@@ -28,27 +28,27 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Wrapper for {@link LogEvent}
- * @deprecated Only required for report
+ * Clone of {@link LogEvent}
  */
-@Deprecated
 public class LogMessage implements Serializable, Loggable {
-    private LogEvent logEvent;
-//
-//    public LogMessage(Level logLevel, long timestamp, String threadName, String loggerName, String message) {
-//        this.level = logLevel;
-//        this.timestamp = timestamp;
-//        this.threadName = threadName;
-//        this.loggerName = loggerName;
-//        this.message = message;
-//    }
+    private final long timestamp;
+    private final String threadName;
+    private final String loggerName;
+    private final Throwable thrown;
+    private final String message;
+    private final Level level;
 
     public LogMessage(LogEvent event) {
-        this.logEvent = event;
+        this.timestamp = event.getTimeMillis();
+        this.threadName = event.getThreadName();
+        this.loggerName = event.getLoggerName();
+        this.thrown = event.getThrown();
+        this.message = event.getMessage().getFormattedMessage();
+        this.level = event.getLevel();
     }
 
     public Level getLogLevel() {
-        return this.logEvent.getLevel();
+        return this.level;
     }
 
     /**
@@ -56,22 +56,26 @@ public class LogMessage implements Serializable, Loggable {
      */
     @Deprecated
     public Date getDate() {
-        return new Date(logEvent.getTimeMillis());
+        return new Date(this.getTimestamp());
     }
 
     public long getTimestamp() {
-        return this.logEvent.getTimeMillis();
+        return this.timestamp;
     }
 
     public String getThreadName() {
-        return this.logEvent.getThreadName();
+        return this.threadName;
     }
 
     public String getLoggerName() {
-        return this.logEvent.getLoggerName();
+        return this.loggerName;
     }
 
     public String getMessage() {
-        return this.logEvent.getMessage().getFormattedMessage();
+        return this.message;
+    }
+
+    public Throwable getThrown() {
+        return this.thrown;
     }
 }

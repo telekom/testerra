@@ -75,7 +75,7 @@ public class WebDriverKeepAliveSequence extends Timer.Sequence<WebDriverKeepAliv
         this.driver = driver;
 
         // add ShutDownHandler that kills this Sequence.
-        WebDriverSessionsManager.registerWebDriverAfterShutDownHandler(webDriver -> {
+        WebDriverSessionsManager.registerWebDriverAfterShutdownHandler(webDriver -> {
             if (driver == webDriver) {
                 forceRemove = true;
             }

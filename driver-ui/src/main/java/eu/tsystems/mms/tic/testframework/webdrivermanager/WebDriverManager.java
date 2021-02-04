@@ -251,7 +251,7 @@ public final class WebDriverManager {
     private static void realShutdown(final boolean force) {
         if (getConfig().shouldShutdownSessions() || force) {
             if (WebDriverManager.isWebDriverActive()) {
-                WebDriverSessionsManager.shutDownAllThreadSessions();
+                WebDriverSessionsManager.shutdownAllThreadSessions();
                 WebDriverCapabilities.clearThreadCapabilities();
             }
 
@@ -395,7 +395,7 @@ public final class WebDriverManager {
 
     private static void pRealShutdownAllThreads(final boolean force) {
         if (getConfig().shouldShutdownSessions() || force) {
-            WebDriverSessionsManager.shutDownAllSessions();
+            WebDriverSessionsManager.shutdownAllSessions();
             WDInternal.cleanupDriverReferencesInCurrentThread();
         }
     }
@@ -423,8 +423,8 @@ public final class WebDriverManager {
         return uuid;
     }
 
-    public static void shutDownExclusiveSession(final String key) {
-        WebDriverSessionsManager.shutDownExclusiveSession(key);
+    public static void shutdownExclusiveSession(final String key) {
+        WebDriverSessionsManager.shutdownExclusiveSession(key);
     }
 
     public static List<WebDriver> getWebDriversFromThread(final long threadId) {

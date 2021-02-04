@@ -191,15 +191,15 @@ public final class WebDriverSessionsManager {
     private static final List<Consumer<WebDriver>> afterQuitActions = new LinkedList<>();
     private static final List<Consumer<WebDriver>> WEBDRIVER_STARTUP_HANDLERS = new LinkedList<>();
 
-    public static void registerWebDriverBeforeShutDownHandler(Consumer<WebDriver> beforeQuit) {
+    public static void registerWebDriverBeforeShutdownHandler(Consumer<WebDriver> beforeQuit) {
         beforeQuitActions.add(beforeQuit);
     }
 
-    public static void registerWebDriverAfterShutDownHandler(Consumer<WebDriver> afterQuit) {
+    public static void registerWebDriverAfterShutdownHandler(Consumer<WebDriver> afterQuit) {
         afterQuitActions.add(afterQuit);
     }
 
-    public static void registerWebDriverAfterStartUpHandler(Consumer<WebDriver> afterStart) {
+    public static void registerWebDriverAfterStartupHandler(Consumer<WebDriver> afterStart) {
         WEBDRIVER_STARTUP_HANDLERS.add(afterStart);
     }
 
@@ -207,7 +207,7 @@ public final class WebDriverSessionsManager {
         return String.format("%s (session key=%s)", webDriver.getClass().getSimpleName(), sessionKey);
     }
 
-    public static void shutDownWebDriver(WebDriver webDriver) {
+    public static void shutdownWebDriver(WebDriver webDriver) {
         String sessionKey = getSessionKey(webDriver);
         String sessionIdentifier = createSessionIdentifier(webDriver, sessionKey);
 
@@ -231,9 +231,9 @@ public final class WebDriverSessionsManager {
         });
     }
 
-    static void shutDownAllThreadSessions() {
+    static void shutdownAllThreadSessions() {
         for (WebDriver eventFiringWebDriver : getWebDriversFromCurrentThread()) {
-            shutDownWebDriver(eventFiringWebDriver);
+            shutdownWebDriver(eventFiringWebDriver);
         }
     }
 
@@ -242,17 +242,17 @@ public final class WebDriverSessionsManager {
         return getWebDriversFromThread(threadId);
     }
 
-    static void shutDownAllSessions() {
+    static void shutdownAllSessions() {
         for (String key : ALL_EVENTFIRING_WEBDRIVER_SESSIONS.keySet()) {
             LOGGER.info("Quitting webdriver session: " + key);
             WebDriver eventFiringWebDriver = ALL_EVENTFIRING_WEBDRIVER_SESSIONS.get(key);
-            shutDownWebDriver(eventFiringWebDriver);
+            shutdownWebDriver(eventFiringWebDriver);
         }
 
         for (String key : ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.keySet()) {
             LOGGER.info("Quitting exclusive ebdriver session: " + key);
             WebDriver eventFiringWebDriver = ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.get(key);
-            shutDownWebDriver(eventFiringWebDriver);
+            shutdownWebDriver(eventFiringWebDriver);
         }
 
         ALL_EVENTFIRING_WEBDRIVER_SESSIONS.clear();
@@ -324,10 +324,10 @@ public final class WebDriverSessionsManager {
         return uuid;
     }
 
-    static void shutDownExclusiveSession(final String key) {
+    static void shutdownExclusiveSession(final String key) {
         final WebDriver driver = ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.get(key);
         if (driver != null) {
-            shutDownWebDriver(driver);
+            shutdownWebDriver(driver);
             ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.remove(key);
         }
     }

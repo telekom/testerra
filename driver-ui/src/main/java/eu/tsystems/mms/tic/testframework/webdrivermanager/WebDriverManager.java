@@ -24,8 +24,6 @@
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
-import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionHandler;
-import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionsAfterMethodWorker;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
@@ -201,22 +199,6 @@ public final class WebDriverManager {
 
     public static WebDriver getWebDriver(WebDriverRequest webDriverRequest) {
         return WebDriverSessionsManager.getWebDriver(webDriverRequest);
-    }
-
-    public static void registerWebDriverStartUpHandler(WebDriverSessionHandler webDriverSessionHandler) {
-        WebDriverSessionsManager.addWebDriverStartUpHandler(webDriverSessionHandler);
-    }
-
-    public static void registerWebDriverShutDownHandler(WebDriverSessionHandler webDriverSessionHandler) {
-        WebDriverSessionsAfterMethodWorker.register(webDriverSessionHandler);
-    }
-
-    public static void registerWebDriverShutDownHandler(Runnable afterQuit) {
-        WebDriverSessionsManager.afterQuitActions.add(afterQuit);
-    }
-
-    public static void registerWebDriverMethodShutDownHandler(WebDriverSessionHandler webDriverSessionHandler) {
-        WebDriverSessionsAfterMethodWorker.register(webDriverSessionHandler);
     }
 
     /**
@@ -441,8 +423,8 @@ public final class WebDriverManager {
         return uuid;
     }
 
-    public static void shutdownExclusiveSession(final String key) {
-        WebDriverSessionsManager.shutdownExclusiveSession(key);
+    public static void shutDownExclusiveSession(final String key) {
+        WebDriverSessionsManager.shutDownExclusiveSession(key);
     }
 
     public static List<WebDriver> getWebDriversFromThread(final long threadId) {

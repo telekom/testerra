@@ -21,9 +21,9 @@
  */
  package eu.tsystems.mms.tic.testframework.execution.worker.finish;
 
-import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.events.AfterShutdownWebDriverSessionsEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.SharedTestResultAttributes;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
@@ -33,13 +33,13 @@ import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.util.List;
 
-public class TakeOutOfSessionsEvidencesWorker extends AbstractEvidencesWorker implements Loggable {
+public class TakeOutOfSessionsEvidencesWorker implements Loggable, AfterShutdownWebDriverSessionsEvent.Listener {
 
     private final boolean SCREENCASTER_ACTIVE_ON_SUCCESS = PropertyManager.getBooleanProperty(TesterraProperties.SCREENCASTER_ACTIVE_ON_SUCCESS, false);
     private final boolean SCREENCASTER_ACTIVE_ON_FAILED = PropertyManager.getBooleanProperty(TesterraProperties.SCREENCASTER_ACTIVE_ON_FAILED, true);
 
-    protected void collect() {
-        if (event.getTestMethod().isTest() && WebDriverManager.getConfig().shouldShutdownSessionAfterTestMethod()) {
+    protected void collect(MethodEndEvent methodEndEvent) {
+        if (methodEndEvent.getTestMethod().isTest() && WebDriverManager.getConfig().shouldShutdownSessionAfterTestMethod()) {
             /*
             videos are now fetched only after test methods
              */
@@ -49,22 +49,20 @@ public class TakeOutOfSessionsEvidencesWorker extends AbstractEvidencesWorker im
     }
 
     @Override
-    @Subscribe
-    public void onMethodEnd(MethodEndEvent event) {
-        this.event = event;
-
-        if (event.isFailed() && SCREENCASTER_ACTIVE_ON_FAILED) {
-            Object attribute = event.getTestResult().getAttribute(SharedTestResultAttributes.failsFromCollectedAssertsOnly);
+    public void onAfterShutdownWebDriverSessionsEvent(AfterShutdownWebDriverSessionsEvent event) {
+        MethodEndEvent methodEndEvent = event.getMethodEndEvent();
+        if (methodEndEvent.isFailed() && SCREENCASTER_ACTIVE_ON_FAILED) {
+            Object attribute = methodEndEvent.getTestResult().getAttribute(SharedTestResultAttributes.failsFromCollectedAssertsOnly);
 
             if (attribute != Boolean.TRUE) {
-                collect();
+                collect(methodEndEvent);
             }
-        } else if (event.isPassed() && SCREENCASTER_ACTIVE_ON_SUCCESS) {
-            collect();
+        } else if (methodEndEvent.isPassed() && SCREENCASTER_ACTIVE_ON_SUCCESS) {
+            collect(methodEndEvent);
 
-        } else if (event.isSkipped()) {
-            if (event.getMethodContext().getStatus() == TestStatusController.Status.FAILED_RETRIED) {
-                collect();
+        } else if (methodEndEvent.isSkipped()) {
+            if (methodEndEvent.getMethodContext().getStatus() == TestStatusController.Status.FAILED_RETRIED) {
+                collect(methodEndEvent);
             }
         }
     }

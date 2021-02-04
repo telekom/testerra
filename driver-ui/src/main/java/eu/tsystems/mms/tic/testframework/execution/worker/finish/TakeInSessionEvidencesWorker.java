@@ -19,31 +19,46 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.execution.worker.finish;
+package eu.tsystems.mms.tic.testframework.execution.worker.finish;
 
 import com.google.common.eventbus.Subscribe;
+import eu.tsystems.mms.tic.testframework.events.AfterShutdownWebDriverSessionsEvent;
+import eu.tsystems.mms.tic.testframework.events.BeforeShutdownWebDriverSessionsEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.SharedTestResultAttributes;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
+import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.util.List;
 
-public class TakeInSessionEvidencesWorker extends AbstractEvidencesWorker {
+public class TakeInSessionEvidencesWorker implements BeforeShutdownWebDriverSessionsEvent.Listener {
 
-    protected void collect() {
+    protected void collect(MethodEndEvent methodEndEvent) {
         if (WebDriverManager.hasSessionsActiveInThisThread()) {
             // get screenshots and videos
             List<Screenshot> screenshots = TestEvidenceCollector.collectScreenshots();
 
             if (screenshots != null) {
-                event.getMethodContext().addScreenshots(screenshots.stream());
+                methodEndEvent.getMethodContext().addScreenshots(screenshots.stream());
             }
         }
     }
 
     @Override
     @Subscribe
-    public void onMethodEnd(MethodEndEvent event) {
-        super.onMethodEnd(event);
+    public void onBeforeShutdownWebDriverSessionsEvent(BeforeShutdownWebDriverSessionsEvent event) {
+        MethodEndEvent methodEndEvent = event.getMethodEndEvent();
+        if (methodEndEvent.isFailed()) {
+            Object attribute = methodEndEvent.getTestResult().getAttribute(SharedTestResultAttributes.failsFromCollectedAssertsOnly);
+
+            if (attribute != Boolean.TRUE) {
+                collect(methodEndEvent);
+            }
+        } else if (methodEndEvent.isSkipped()) {
+            if (methodEndEvent.getMethodContext().getStatus() == TestStatusController.Status.FAILED_RETRIED) {
+                collect(methodEndEvent);
+            }
+        }
     }
 }

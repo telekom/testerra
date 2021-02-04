@@ -23,7 +23,6 @@
 
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
-import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionHandler;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
@@ -42,6 +41,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
@@ -187,70 +187,77 @@ public final class WebDriverSessionsManager {
         storeWebDriverSession(r, eventFiringWebDriver, sessionContext);
     }
 
-    static final List<WebDriverSessionHandler> beforeQuitActions = new LinkedList<>();
-    static final List<Runnable> afterQuitActions = new LinkedList<>();
+    private static final List<Consumer<WebDriver>> beforeQuitActions = new LinkedList<>();
+    private static final List<Consumer<WebDriver>> afterQuitActions = new LinkedList<>();
+    private static final List<Consumer<WebDriver>> WEBDRIVER_STARTUP_HANDLERS = new LinkedList<>();
 
-    public static void registerWebDriverShutDownHandler(WebDriverSessionHandler beforeQuit) {
-        WebDriverSessionsManager.beforeQuitActions.add(beforeQuit);
+    public static void registerWebDriverBeforeShutDownHandler(Consumer<WebDriver> beforeQuit) {
+        beforeQuitActions.add(beforeQuit);
     }
 
-    public static void registerWebDriverShutDownHandler(Runnable afterQuit) {
-        WebDriverSessionsManager.afterQuitActions.add(afterQuit);
+    public static void registerWebDriverAfterShutDownHandler(Consumer<WebDriver> afterQuit) {
+        afterQuitActions.add(afterQuit);
+    }
+
+    public static void registerWebDriverAfterStartUpHandler(Consumer<WebDriver> afterStart) {
+        WEBDRIVER_STARTUP_HANDLERS.add(afterStart);
+    }
+
+    private static String createSessionIdentifier(WebDriver webDriver, String sessionKey) {
+        return String.format("%s (session key=%s)", webDriver.getClass().getSimpleName(), sessionKey);
+    }
+
+    public static void shutDownWebDriver(WebDriver webDriver) {
+        String sessionKey = getSessionKey(webDriver);
+        String sessionIdentifier = createSessionIdentifier(webDriver, sessionKey);
+
+        beforeQuitActions.forEach(webDriverConsumer -> {
+            try {
+                webDriverConsumer.accept(webDriver);
+            } catch (Exception e) {
+                LOGGER.error("Failed executing handler before shutting down " + sessionIdentifier, e);
+            }
+        });
+        LOGGER.info("Shutting down " + sessionIdentifier);
+        WebDriverManagerUtils.quitWebDriverSession(webDriver);
+        removeWebDriverSession(sessionKey, webDriver, null);
+
+        afterQuitActions.forEach(webDriverConsumer -> {
+            try {
+                webDriverConsumer.accept(webDriver);
+            } catch (Exception e) {
+                LOGGER.error("Failed executing handler after shut down " + sessionIdentifier, e);
+            }
+        });
     }
 
     static void shutDownAllThreadSessions() {
-        long threadId = Thread.currentThread().getId();
-        List<WebDriver> webDriversFromThread = getWebDriversFromThread(threadId);
-
-        for (WebDriver eventFiringWebDriver : webDriversFromThread) {
-            String sessionKey = getSessionKey(eventFiringWebDriver);
-            LOGGER.info(String.format("Shutting down %s (session key=%s)", eventFiringWebDriver.getClass().getSimpleName(), sessionKey));
-
-            beforeQuitActions.forEach(webDriverSessionHandler -> {
-                try {
-                    webDriverSessionHandler.run(eventFiringWebDriver);
-                } catch (Exception e) {
-                    LOGGER.error("Error executing " + webDriverSessionHandler, e);
-                }
-            });
-
-            // quit it
-            WebDriverManagerUtils.quitWebDriverSession(eventFiringWebDriver);
-
-            // remove links
-            removeWebDriverSession(sessionKey, eventFiringWebDriver, null);
-
-            afterQuitActions.forEach(runnable -> {
-                try {
-                    runnable.run();
-                } catch (Exception e) {
-                    LOGGER.error("Error executing WD shutdown afterQuit action " + runnable, e);
-                }
-            });
-
+        for (WebDriver eventFiringWebDriver : getWebDriversFromCurrentThread()) {
+            shutDownWebDriver(eventFiringWebDriver);
         }
+    }
+
+    public static List<WebDriver> getWebDriversFromCurrentThread() {
+        long threadId = Thread.currentThread().getId();
+        return getWebDriversFromThread(threadId);
     }
 
     static void shutDownAllSessions() {
         for (String key : ALL_EVENTFIRING_WEBDRIVER_SESSIONS.keySet()) {
             LOGGER.info("Quitting webdriver session: " + key);
             WebDriver eventFiringWebDriver = ALL_EVENTFIRING_WEBDRIVER_SESSIONS.get(key);
-
-            WebDriverManagerUtils.quitWebDriverSession(eventFiringWebDriver);
+            shutDownWebDriver(eventFiringWebDriver);
         }
 
         for (String key : ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.keySet()) {
             LOGGER.info("Quitting exclusive ebdriver session: " + key);
             WebDriver eventFiringWebDriver = ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.get(key);
-
-            WebDriverManagerUtils.quitWebDriverSession(eventFiringWebDriver);
+            shutDownWebDriver(eventFiringWebDriver);
         }
 
         ALL_EVENTFIRING_WEBDRIVER_SESSIONS.clear();
         ALL_EVENTFIRING_WEBDRIVER_SESSIONS_INVERSE.clear();
-
         ALL_EVENTFIRING_WEBDRIVER_SESSIONS_WITH_THREADID.clear();
-
         ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.clear();
     }
 
@@ -317,11 +324,10 @@ public final class WebDriverSessionsManager {
         return uuid;
     }
 
-    static void shutdownExclusiveSession(final String key) {
+    static void shutDownExclusiveSession(final String key) {
         final WebDriver driver = ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.get(key);
         if (driver != null) {
-            LOGGER.info("Shutting down exclusive session: " + key);
-            WebDriverManagerUtils.quitWebDriverSession(driver);
+            shutDownWebDriver(driver);
             ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.remove(key);
         }
     }
@@ -351,11 +357,6 @@ public final class WebDriverSessionsManager {
         return drivers;
     }
 
-    private static final List<WebDriverSessionHandler> WEBDRIVER_STARTUP_HANDLERS = new LinkedList<>();
-
-    static void addWebDriverStartUpHandler(WebDriverSessionHandler webDriverSessionHandler) {
-        WEBDRIVER_STARTUP_HANDLERS.add(webDriverSessionHandler);
-    }
 
     public static WebDriver getWebDriver(WebDriverRequest webDriverRequest) {
         /*
@@ -388,13 +389,13 @@ public final class WebDriverSessionsManager {
         }
 
         String fullSessionKey = getFullSessionKey(sessionKey);
-        WebDriver eventFiringWebDriver = ALL_EVENTFIRING_WEBDRIVER_SESSIONS.get(fullSessionKey);
+        WebDriver existingWebDriver = ALL_EVENTFIRING_WEBDRIVER_SESSIONS.get(fullSessionKey);
 
         /*
         session already exists?
          */
-        if (eventFiringWebDriver != null) {
-            return eventFiringWebDriver;
+        if (existingWebDriver != null) {
+            return existingWebDriver;
         }
 
         /*
@@ -420,20 +421,20 @@ public final class WebDriverSessionsManager {
             /*
             setup new session
              */
-            eventFiringWebDriver = webDriverFactory.getWebDriver(webDriverRequest, sessionContext);
+            WebDriver newWebDriver = webDriverFactory.getWebDriver(webDriverRequest, sessionContext);
             TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(sessionContext));
-
+            String sessionIdentifier = createSessionIdentifier(newWebDriver, sessionKey);
             /*
             run the handlers
              */
-            for (WebDriverSessionHandler handler : WEBDRIVER_STARTUP_HANDLERS) {
+            WEBDRIVER_STARTUP_HANDLERS.forEach(webDriverConsumer -> {
                 try {
-                    handler.run(eventFiringWebDriver);
+                    webDriverConsumer.accept(newWebDriver);
                 } catch (Exception e) {
-                    LOGGER.error("Error executing webdriver startup handler", e);
+                    LOGGER.error("Failed executing handler after starting up " + sessionIdentifier, e);
                 }
-            }
-            return eventFiringWebDriver;
+            });
+            return newWebDriver;
         } else {
             throw new SystemException("No webdriver factory registered for browser " + browser);
         }

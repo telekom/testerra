@@ -22,7 +22,11 @@
 package eu.tsystems.mms.tic.testframework.execution.worker.finish;
 
 import com.google.common.eventbus.Subscribe;
+import eu.tsystems.mms.tic.testframework.events.AfterShutdownWebDriverSessionsEvent;
+import eu.tsystems.mms.tic.testframework.events.BeforeShutdownWebDriverSessionsEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
+import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WDInternal;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
@@ -30,18 +34,11 @@ import org.testng.ITestResult;
 
 public class WebDriverShutDownWorker implements MethodEndEvent.Listener {
 
-    /**
-     * WebDriverManagerShutdown routine. Shutdown if test method.
-     *
-     * @param invokedMethodName .
-     * @param testResult        .
-     */
-    private static void webDriverManagerShutdownRoutine(final String invokedMethodName, final Object testResult) {
+    @Override
+    @Subscribe
+    public void onMethodEnd(MethodEndEvent methodEndEvent) {
         if (WebDriverManager.hasAnySessionActive()) {
-            ITestResult iTestResult = null;
-            if (testResult instanceof ITestResult) {
-                iTestResult = (ITestResult) testResult;
-            }
+            ITestResult iTestResult = methodEndEvent.getTestResult();
 
             /*
              * Take Screenshot of failure and log it into report.
@@ -65,7 +62,9 @@ public class WebDriverShutDownWorker implements MethodEndEvent.Listener {
                     }
 
                     if (close) {
+                        TesterraListener.getEventBus().post(new BeforeShutdownWebDriverSessionsEvent(methodEndEvent));
                         WebDriverManager.shutdown();
+                        TesterraListener.getEventBus().post(new AfterShutdownWebDriverSessionsEvent(methodEndEvent));
                         // cleanup executing selenium host
                         WDInternal.cleanupExecutingSeleniumHost();
                     }
@@ -73,14 +72,9 @@ public class WebDriverShutDownWorker implements MethodEndEvent.Listener {
             }
             // nothing more here!!
         }
-    }
-
-    @Override
-    @Subscribe
-    public void onMethodEnd(MethodEndEvent event) {
-        webDriverManagerShutdownRoutine(event.getMethodName(), event.getTestResult());
 
         // WDM cleanup threadlocals
         WebDriverManager.cleanupThreadlocals();
+        POConfig.removeThreadLocalUiElementTimeout();
     }
 }

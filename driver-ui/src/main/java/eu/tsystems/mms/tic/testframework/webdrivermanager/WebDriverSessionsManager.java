@@ -448,6 +448,10 @@ public final class WebDriverSessionsManager {
         }
     }
 
+    public static boolean isExclusiveSession(WebDriver webDriver) {
+        return ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.containsValue(webDriver);
+    }
+
     public static SessionContext getSessionContext(String sessionId) {
         return ALL_EVENTFIRING_WEBDRIVER_SESSIONS_CONTEXTS.get(sessionId);
     }

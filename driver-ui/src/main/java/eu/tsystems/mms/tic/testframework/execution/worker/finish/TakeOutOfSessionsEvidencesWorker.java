@@ -21,6 +21,7 @@
  */
  package eu.tsystems.mms.tic.testframework.execution.worker.finish;
 
+import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.events.AfterShutdownWebDriverSessionsEvent;
@@ -49,6 +50,7 @@ public class TakeOutOfSessionsEvidencesWorker implements Loggable, AfterShutdown
     }
 
     @Override
+    @Subscribe
     public void onAfterShutdownWebDriverSessionsEvent(AfterShutdownWebDriverSessionsEvent event) {
         MethodEndEvent methodEndEvent = event.getMethodEndEvent();
         if (methodEndEvent.isFailed() && SCREENCASTER_ACTIVE_ON_FAILED) {

@@ -207,7 +207,8 @@ export class ClassStatistics extends Statistics {
 
     setClassContext(classContext : IClassContext) {
         this._classContext = classContext;
-        this._classIdentifier = classContext.testContextName || this.statusConverter.separateNamespace(classContext.fullClassName).class;
+        this._classIdentifier = classContext.testContextName || classContext.contextValues.name;
+        // this.statusConverter.separateNamespace(classContext.fullClassName).class
         return this;
     }
 

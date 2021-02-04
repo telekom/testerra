@@ -22,7 +22,6 @@
 package eu.tsystems.mms.tic.testframework.execution.worker.finish;
 
 import com.google.common.eventbus.Subscribe;
-import eu.tsystems.mms.tic.testframework.events.AfterShutdownWebDriverSessionsEvent;
 import eu.tsystems.mms.tic.testframework.events.BeforeShutdownWebDriverSessionsEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.SharedTestResultAttributes;

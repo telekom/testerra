@@ -27,11 +27,8 @@ import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
-import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
-import java.util.Map;
-import java.util.Optional;
+import eu.tsystems.mms.tic.testframework.report.utils.DefaultTestNGContextGenerator;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Stream;
 import org.testng.IClass;
@@ -49,13 +46,6 @@ public class TestContext extends AbstractContext implements SynchronizableContex
      * @deprecated Use {@link #readClassContexts()} instead
      */
     public final Queue<ClassContext> classContexts = new ConcurrentLinkedQueue<>();
-    /**
-     * id to context map:
-     * The first occurance of a class create an entry for id=fullClassName.
-     * Same class context can see an already existing id and either enhance (same testContext)
-     * or create a new id with naming scheme.
-     */
-    private static final Map<String, ClassContext> CLASS_CONTEXT_MARKS = new ConcurrentHashMap<>();
 
     public TestContext(SuiteContext suiteContext) {
         this.parentContext = suiteContext;
@@ -69,96 +59,99 @@ public class TestContext extends AbstractContext implements SynchronizableContex
         return this.classContexts.stream();
     }
 
-    public ClassContext getClassContext(ITestResult testResult, ITestContext iTestContext, IInvokedMethod invokedMethod) {
-        final IClass testClass = TestNGHelper.getTestClass(testResult, iTestContext, invokedMethod);
-        return this.pGetClassContext(testClass);
+    public ClassContext getClassContext(ITestResult testResult) {
+        DefaultTestNGContextGenerator contextGenerator = TesterraListener.getContextGenerator();
+        return this.pGetClassContext(testResult.getTestClass(), contextGenerator.getClassContextName(testResult));
     }
 
+    /**
+     * Used in platform-connector only
+     * May be @deprecated
+     */
     public ClassContext getClassContext(final ITestNGMethod iTestNgMethod) {
         final IClass testClass = iTestNgMethod.getTestClass();
-        return this.pGetClassContext(testClass);
+        return this.pGetClassContext(testClass, testClass.getRealClass().getSimpleName());
     }
 
-    private synchronized ClassContext pGetClassContext(IClass testClass) {
+    private synchronized ClassContext pGetClassContext(IClass testClass, String classContextName) {
+
         final Class<?> realClass = testClass.getRealClass();
 
-        Optional<ClassContext> first = this.readClassContexts().filter(classContext -> classContext.getTestClass().getName().equals(realClass.getName())).findFirst();
-        if (first.isPresent()) {
-            return first.get();
-        } else {
-            ClassContext newClassContext = new ClassContext(realClass, this);
-            //newClassContext.setName(realClass.getSimpleName());
+        return getOrCreateContext(
+                this.classContexts,
+                classContextName,
+                () -> {
+                    ClassContext newClassContext = new ClassContext(realClass, this);
+                    /*
+                     * check if {@link TestClassContext} is present on class
+                     */
+                    if (realClass.isAnnotationPresent(TestClassContext.class)) {
 
-            /**
-             * check if {@link TestClassContext} is present on class
-             */
-            if (realClass.isAnnotationPresent(TestClassContext.class)) {
-
-                /*
-                hook into executionContext mergedContexts
-                 */
-                TestClassContext actualTestContext = realClass.getAnnotation(TestClassContext.class);
-                if (actualTestContext.mode() == TestClassContext.Mode.ONE_FOR_ALL) {
-                    newClassContext.setTestClassContext(actualTestContext);
-                }
-            }
-
-            classContexts.add(newClassContext);
-            EventBus eventBus = TesterraListener.getEventBus();
-            eventBus.post(new ContextUpdateEvent().setContext(this));
-            return newClassContext;
-        }
+                        /*
+                        hook into executionContext mergedContexts
+                         */
+                        TestClassContext actualTestContext = realClass.getAnnotation(TestClassContext.class);
+                        if (actualTestContext.mode() == TestClassContext.Mode.ONE_FOR_ALL) {
+                            newClassContext.setTestClassContext(actualTestContext);
+                        }
+                    }
+                    return newClassContext;
+                },
+                classContext -> {
+                    EventBus eventBus = TesterraListener.getEventBus();
+                    eventBus.post(new ContextUpdateEvent().setContext(this));
+                });
 
     }
 
-//    private synchronized ClassContext createAndAddClassContext(Class realClass) {
-//
-//        /*
-//        create a new class context, maybe this is later thrown away
-//         */
-//        final ClassContext newClassContext = new ClassContext(realClass, this);
-//
-//        //fillBasicContextValues(newClassContext, this, newClassContext.getTestClass().getSimpleName());
-//
-//        // lets check if we already know about it
-//        if (readClassContexts().anyMatch(classContext -> classContext.getTestClass().getName().equals(realClass.getName()))) {
-//
-//            // a context for this class is already present
-////            newClassContext.setName(realClass.getSimpleName() + "_" + getSuiteContext().getName() + "_" + this.getName());
-//
-//            // Does a marker entry with this swi exist?
-//            Optional<ClassContext> optionalFoundClassContext = readClassContexts().filter(classContext -> {
-//                if (classContext.getTestClass().getName().equals(realClass.getName())) {
-//                    AbstractContext context = newClassContext;
-//                    AbstractContext cContext = classContext;
-//                    while (context.getParentContext() != null) {
-//                        if (!context.getParentContext().equals(cContext.getParentContext())) {
-//                            return false;
-//                        }
-//                        context = context.getParentContext();
-//                        cContext = cContext.getParentContext();
-//                    }
-//                }
-//                return true;
-//            }).findFirst();
-//
-//            if (optionalFoundClassContext.isPresent()) {
-//                // this must be our class context
-//                ClassContext classContext = optionalFoundClassContext.get();
-//                /**
-//                 * @todo erku Setting the name doesn't behave like before (#setExplicitName())
-//                 */
-//                classContext.setName(realClass.getSimpleName() + "_" + getSuiteContext().getName() + "_" + this.getName());
-//                return classContext;
-//            }
-//        } else {
-//            newClassContext.setName(realClass.getSimpleName());
-//        }
-//
-//        // Our new class is the first time coming up.
-//        classContexts.add(newClassContext);
-//        return newClassContext;
-//    }
+    //    private synchronized ClassContext createAndAddClassContext(Class realClass) {
+    //
+    //        /*
+    //        create a new class context, maybe this is later thrown away
+    //         */
+    //        final ClassContext newClassContext = new ClassContext(realClass, this);
+    //
+    //        //fillBasicContextValues(newClassContext, this, newClassContext.getTestClass().getSimpleName());
+    //
+    //        // lets check if we already know about it
+    //        if (readClassContexts().anyMatch(classContext -> classContext.getTestClass().getName().equals(realClass.getName()))) {
+    //
+    //            // a context for this class is already present
+    ////            newClassContext.setName(realClass.getSimpleName() + "_" + getSuiteContext().getName() + "_" + this.getName());
+    //
+    //            // Does a marker entry with this swi exist?
+    //            Optional<ClassContext> optionalFoundClassContext = readClassContexts().filter(classContext -> {
+    //                if (classContext.getTestClass().getName().equals(realClass.getName())) {
+    //                    AbstractContext context = newClassContext;
+    //                    AbstractContext cContext = classContext;
+    //                    while (context.getParentContext() != null) {
+    //                        if (!context.getParentContext().equals(cContext.getParentContext())) {
+    //                            return false;
+    //                        }
+    //                        context = context.getParentContext();
+    //                        cContext = cContext.getParentContext();
+    //                    }
+    //                }
+    //                return true;
+    //            }).findFirst();
+    //
+    //            if (optionalFoundClassContext.isPresent()) {
+    //                // this must be our class context
+    //                ClassContext classContext = optionalFoundClassContext.get();
+    //                /**
+    //                 * @todo erku Setting the name doesn't behave like before (#setExplicitName())
+    //                 */
+    //                classContext.setName(realClass.getSimpleName() + "_" + getSuiteContext().getName() + "_" + this.getName());
+    //                return classContext;
+    //            }
+    //        } else {
+    //            newClassContext.setName(realClass.getSimpleName());
+    //        }
+    //
+    //        // Our new class is the first time coming up.
+    //        classContexts.add(newClassContext);
+    //        return newClassContext;
+    //    }
 
     @Override
     public TestStatusController.Status getStatus() {

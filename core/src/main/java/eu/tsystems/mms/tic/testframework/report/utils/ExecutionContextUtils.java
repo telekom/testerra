@@ -63,10 +63,10 @@ public class ExecutionContextUtils {
      *
      * @param testResult result to check.
      */
-    public static void checkForInjectedMethod(ITestResult testResult, final ITestContext testContext) {
+    public static void checkForInjectedMethod(ITestResult testResult) {
         Optional<Method> optional = getInjectedMethod(testResult);
         if (optional.isPresent()) {
-            MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult, testContext);
+            MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult);
             String testMethodName = methodContext.getName();
 
             final String info = "for " + optional.get().getName();

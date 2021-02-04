@@ -236,18 +236,18 @@ public class GenerateHtmlReportListener implements
                         }
                         mergedClassContext.methodContexts.addAll(classContext.readMethodContexts().collect(Collectors.toList()));
                     } else {
-                        String testClassName = classContext.getTestClass().getName();
+                        String classContextName = classContext.getName();
                         /**
                          * When a class context from a test class exists multiple times,
                          * because they are organised in multiple test contexts,
                          * then update their names to a more specific one including test
                          * and suite context names via {@link ClassContext#updateMultiContextualName()}
                          */
-                        if (multiContextualClassContexts.containsKey(testClassName)) {
-                            multiContextualClassContexts.get(testClassName).updateMultiContextualName();
+                        if (multiContextualClassContexts.containsKey(classContextName)) {
+                            multiContextualClassContexts.get(classContextName).updateMultiContextualName();
                             classContext.updateMultiContextualName();
                         }
-                        multiContextualClassContexts.put(testClassName, classContext);
+                        multiContextualClassContexts.put(classContextName, classContext);
                         addMethodStats(reportingData, classContext);
                     }
                 });

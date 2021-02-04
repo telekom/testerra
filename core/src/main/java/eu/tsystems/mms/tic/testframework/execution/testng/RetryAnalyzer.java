@@ -126,7 +126,7 @@ public class RetryAnalyzer implements IRetryAnalyzer {
         String retryReason = null;
         boolean retry = false;
 
-        MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult, testResult.getTestContext());
+        MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult);
         final String testMethodName = methodContext.getName();
 
         /*
@@ -223,7 +223,7 @@ public class RetryAnalyzer implements IRetryAnalyzer {
         int retryCounter = raiseRetryCounter(testResult);
 
         // reset method name
-        MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult, testResult.getTestContext());
+        MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult);
         if (maxRetries > 0) {
 
             final String retryLog = "(" + retryCounter + "/" + (maxRetries + 1) + ")";
@@ -291,7 +291,7 @@ public class RetryAnalyzer implements IRetryAnalyzer {
             Throwable retryCause = checkThrowable(throwable);
 
             if (retryCause != null) {
-                MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult, testResult.getTestContext());
+                MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult);
                 if (methodContext != null) {
                     methodContext.addPriorityMessage("Retry Cause:\n" + retryCause.toString());
                 }

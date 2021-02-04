@@ -22,27 +22,19 @@
  package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import com.google.common.eventbus.EventBus;
-import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
-import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.apache.logging.log4j.core.LogEvent;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 
@@ -109,11 +101,14 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
         return this.methodContextLessLogs.stream();
     }
 
-    public synchronized SuiteContext getSuiteContext(ITestResult testResult, ITestContext iTestContext) {
-        final String suiteName = TestNGHelper.getSuiteName(testResult, iTestContext);
+    public SuiteContext getSuiteContext(ITestResult testResult) {
+        return getSuiteContext(TesterraListener.getContextGenerator().getSuiteContextName(testResult));
+    }
+
+    private synchronized SuiteContext getSuiteContext(String suiteContextName) {
         return getOrCreateContext(
                 suiteContexts,
-                suiteName,
+                suiteContextName,
                 () -> new SuiteContext(this),
                 suiteContext -> {
                     EventBus eventBus = TesterraListener.getEventBus();
@@ -121,8 +116,8 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
                 });
     }
 
-    public SuiteContext getSuiteContext(final ITestContext iTestContext) {
-        return this.getSuiteContext(null, iTestContext);
+    public SuiteContext getSuiteContext(ITestContext testContext) {
+        return getSuiteContext(TesterraListener.getContextGenerator().getSuiteContextName(testContext));
     }
 
     @Override

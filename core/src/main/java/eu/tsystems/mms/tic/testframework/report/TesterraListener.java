@@ -52,6 +52,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.report.utils.DefaultTestNGContextGenerator;
 import java.util.List;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configurator;
@@ -108,14 +109,15 @@ public class TesterraListener implements
     private static final LoggerContext loggerContext;
     private static final BuildInformation buildInformation;
     private static final Report report;
+    private static DefaultTestNGContextGenerator contextGenerator;
 
     static {
-
         DefaultConfiguration defaultConfiguration = new DefaultConfiguration();
         loggerContext = Configurator.initialize(defaultConfiguration);
         buildInformation = new BuildInformation();
         eventBus = new EventBus();
         report = new DefaultReport();
+        contextGenerator = new DefaultTestNGContextGenerator();
 
         /*
          * Add monitoring event listeners
@@ -168,6 +170,17 @@ public class TesterraListener implements
 
     public static Report getReport() {
         return report;
+    }
+
+    public static DefaultTestNGContextGenerator getContextGenerator() {
+        if (contextGenerator == null) {
+            contextGenerator = new DefaultTestNGContextGenerator();
+        }
+        return contextGenerator;
+    }
+
+    public static void setContextGenerator(DefaultTestNGContextGenerator newContextGenerator) {
+        contextGenerator = newContextGenerator;
     }
 
     /**
@@ -268,7 +281,7 @@ public class TesterraListener implements
         /*
          * store testresult, create method context
          */
-        MethodContext methodContext = ExecutionContextController.setCurrentTestResult(testResult, testContext); // stores the actual testresult, auto-creates the method context
+        MethodContext methodContext = ExecutionContextController.setCurrentTestResult(testResult); // stores the actual testresult, auto-creates the method context
         ExecutionContextController.setCurrentMethodContext(methodContext);
 
         methodContext.getTestStep(TestStep.SETUP);
@@ -374,8 +387,8 @@ public class TesterraListener implements
                 /*
                  * TestNG bug or whatever ?!?!
                  */
-                ClassContext classContext = ExecutionContextController.getClassContextFromTestResult(testResult, testContext, invokedMethod);
-                methodContext = classContext.safeAddSkipMethod(testResult, invokedMethod);
+                ClassContext classContext = ExecutionContextController.getClassContextFromTestResult(testResult);
+                methodContext = classContext.safeAddSkipMethod(testResult);
             } else {
                 throw new SystemException("INTERNAL ERROR. Could not create methodContext for " + methodName + " with result: " + testResult);
             }
@@ -450,7 +463,7 @@ public class TesterraListener implements
          */
         final Throwable throwable = iTestResult.getThrowable();
         if (throwable != null && throwable.toString().contains(SKIP_FAILED_DEPENDENCY_MSG)) {
-            ExecutionContextController.setCurrentTestResult(iTestResult, testContext);
+            ExecutionContextController.setCurrentTestResult(iTestResult);
             pAfterInvocation(null, iTestResult, testContext);
         }
 
@@ -459,7 +472,7 @@ public class TesterraListener implements
          */
         final Class<?>[] parameterTypes = iTestResult.getMethod().getConstructorOrMethod().getMethod().getParameterTypes();
         if (parameterTypes.length > 0) {
-            final MethodContext methodContextFromTestResult = ExecutionContextController.getMethodContextFromTestResult(iTestResult, testContext);
+            final MethodContext methodContextFromTestResult = ExecutionContextController.getMethodContextFromTestResult(iTestResult);
             methodContextFromTestResult.setParameterValues(parameterTypes);
         }
     }

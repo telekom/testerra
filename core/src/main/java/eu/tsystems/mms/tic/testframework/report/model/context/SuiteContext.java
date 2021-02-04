@@ -25,7 +25,6 @@ import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
-import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Stream;
@@ -51,20 +50,23 @@ public class SuiteContext extends AbstractContext implements SynchronizableConte
         return testContexts.stream();
     }
 
-    public synchronized TestContext getTestContext(ITestResult testResult, ITestContext iTestContext) {
-        final String testName = TestNGHelper.getTestName(testResult, iTestContext);
+    public TestContext getTestContext(ITestResult testResult) {
+        return getTestContext(TesterraListener.getContextGenerator().getTestContextName(testResult));
+    }
+
+    public TestContext getTestContext(ITestContext testContext) {
+        return getTestContext(TesterraListener.getContextGenerator().getTestContextName(testContext));
+    }
+
+    private synchronized TestContext getTestContext(String testContextName) {
         return getOrCreateContext(
                 testContexts,
-                testName,
+                testContextName,
                 () -> new TestContext(this),
                 testContextModel -> {
                     EventBus eventBus = TesterraListener.getEventBus();
                     eventBus.post(new ContextUpdateEvent().setContext(this));
                 });
-    }
-
-    public TestContext getTestContext(final ITestContext iTestContext) {
-        return this.getTestContext(null, iTestContext);
     }
 
     @Override

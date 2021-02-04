@@ -48,7 +48,7 @@ public class MethodParametersWorker implements MethodStartEvent.Listener {
              */
             if (testMethod.isBeforeMethodConfiguration() || testMethod.isAfterMethodConfiguration()) {
                 // check for method injection
-                ExecutionContextUtils.checkForInjectedMethod(testResult, event.getTestContext());
+                ExecutionContextUtils.checkForInjectedMethod(testResult);
             }
         }
     }

@@ -267,8 +267,8 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return readScreenshots().collect(Collectors.toList());
     }
 
-    public TestStepAction addLogEvent(LogEvent logEvent) {
-        return testStepController.addLogEvent(logEvent);
+    public TestStepAction addLogMessage(LogMessage logMessage) {
+        return testStepController.addLogMessage(logMessage);
     }
 
     /**

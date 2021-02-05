@@ -93,26 +93,19 @@ export class StatisticsGenerator {
                 for (const id in executionAggregate.methodContexts) {
                     const methodContext = executionAggregate.methodContexts[id];
                     const classContext = executionAggregate.classContexts[methodContext.classContextId];
-                    let classStatistics:ClassStatistics;
 
-                    // Group by test context name
-                    if (classContext.testContextName) {
-                        classStatistics = executionStatistics.classStatistics.find(classStatistics => classStatistics.classContext.testContextName == classContext.testContextName);
-
-                        // Or by class name
+                    let currentClassStatistics:ClassStatistics = new ClassStatistics().setClassContext(classContext);
+                    const existingClassStatistics = executionStatistics.classStatistics.find(classStatistics => classStatistics.classIdentifier === currentClassStatistics.classIdentifier);
+                    if (!existingClassStatistics) {
+                        executionStatistics.addClassStatistics(currentClassStatistics);
                     } else {
-                        classStatistics = executionStatistics.classStatistics.find(classStatistics => classStatistics.classContext.fullClassName == classContext.fullClassName);
-                    }
-                    if (!classStatistics) {
-                        classStatistics = new ClassStatistics().setClassContext(classContext);
-                        executionStatistics.addClassStatistics(classStatistics);
+                        currentClassStatistics = existingClassStatistics;
                     }
 
                     methodContext.resultStatus = this._statusConverter.correctStatus(methodContext.resultStatus);
-                    classStatistics.addMethodContext(methodContext);
+                    currentClassStatistics.addMethodContext(methodContext);
                 }
                 executionStatistics.updateStatistics();
-                // console.log(executionStatistics);
                 return executionStatistics;
             });
         })

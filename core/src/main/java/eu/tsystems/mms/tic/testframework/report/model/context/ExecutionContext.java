@@ -26,7 +26,6 @@ import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
-import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -35,7 +34,6 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
-import org.apache.logging.log4j.core.LogEvent;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 
@@ -59,7 +57,7 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
 
     public int estimatedTestMethodCount;
 
-    private final ConcurrentLinkedQueue<LogEvent> methodContextLessLogs = new ConcurrentLinkedQueue<>();
+    private final ConcurrentLinkedQueue<LogMessage> methodContextLessLogs = new ConcurrentLinkedQueue<>();
 
     public ExecutionContext() {
         name = runConfig.RUNCFG;
@@ -93,20 +91,23 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
         return this;
     }
 
-    public ExecutionContext addLogEvent(LogEvent logEvent) {
-        this.methodContextLessLogs.add(logEvent);
+    public ExecutionContext addLogMessage(LogMessage logMessage) {
+        this.methodContextLessLogs.add(logMessage);
         return this;
     }
 
-    public Stream<LogEvent> readMethodContextLessLogs() {
+    public Stream<LogMessage> readMethodContextLessLogs() {
         return this.methodContextLessLogs.stream();
     }
 
-    public synchronized SuiteContext getSuiteContext(ITestResult testResult, ITestContext iTestContext) {
-        final String suiteName = TestNGHelper.getSuiteName(testResult, iTestContext);
+    public SuiteContext getSuiteContext(ITestResult testResult) {
+        return getSuiteContext(TesterraListener.getContextGenerator().getSuiteContextName(testResult));
+    }
+
+    private synchronized SuiteContext getSuiteContext(String suiteContextName) {
         return getOrCreateContext(
                 suiteContexts,
-                suiteName,
+                suiteContextName,
                 () -> new SuiteContext(this),
                 suiteContext -> {
                     EventBus eventBus = Testerra.getEventBus();
@@ -114,8 +115,8 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
                 });
     }
 
-    public SuiteContext getSuiteContext(final ITestContext iTestContext) {
-        return this.getSuiteContext(null, iTestContext);
+    public SuiteContext getSuiteContext(ITestContext testContext) {
+        return getSuiteContext(TesterraListener.getContextGenerator().getSuiteContextName(testContext));
     }
 
     @Override

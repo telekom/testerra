@@ -86,6 +86,17 @@ class Statistics {
         return count;
     }
 
+    getUpmostStatus():number {
+        let count = 0;
+        let upmostStatus:any;
+        for (let status in this._resultStatuses) {
+            if (this._resultStatuses[status] > count) {
+                upmostStatus = status;
+            }
+        }
+        return upmostStatus;
+    }
+
     protected addStatistics(statistics: Statistics) {
         for (const status in statistics._resultStatuses) {
             if (!this._resultStatuses[status]) {
@@ -196,7 +207,8 @@ export class ClassStatistics extends Statistics {
 
     setClassContext(classContext : IClassContext) {
         this._classContext = classContext;
-        this._classIdentifier = classContext.testContextName || this.statusConverter.separateNamespace(classContext.fullClassName).class;
+        this._classIdentifier = classContext.testContextName || classContext.contextValues.name;
+        // this.statusConverter.separateNamespace(classContext.fullClassName).class
         return this;
     }
 

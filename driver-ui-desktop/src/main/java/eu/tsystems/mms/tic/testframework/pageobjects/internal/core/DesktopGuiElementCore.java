@@ -19,7 +19,8 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
+
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
@@ -35,6 +36,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.MouseActions;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
+import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
@@ -197,7 +200,10 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
 
                 // check for shadowRoot
                 if (guiElementData.isShadowRoot()) {
-                    Object shadowedWebElement = JSUtils.executeScript(webDriver, "return arguments[0].shadowRoot", webElement);
+                    // 14.01.2021: Gheckodriver throw an internal exception when using the command above,
+                // therefore the result in the JS snippet "return arguments[0].shadowRoot" will be null.
+                // To handle firefox shadow roots we decided to handle it this way and implement an automatic resolver in getSubElement
+                final Object shadowedWebElement = JSUtils.executeScript(webDriver, "return arguments[0].shadowRoot.firstChild", webElement);
                     if (shadowedWebElement instanceof WebElement) {
                         webElement = (WebElement) shadowedWebElement;
                     }
@@ -323,7 +329,8 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
                     }
                 }
             } else {
-                log().warn("Cannot perform value check after type() because " + this.toString() + " doesn't have a value property. Consider using sendKeys() instead.");
+                log().warn("Cannot perform value check after type() because " + this.toString() +
+                    " doesn't have a value property. Consider using sendKeys() instead.");
             }
         });
     }
@@ -419,7 +426,9 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
     public boolean isVisible(boolean complete) {
         AtomicBoolean atomicBoolean = new AtomicBoolean(false);
         this.findWebElement(webElement -> {
-            if (!webElement.isDisplayed()) return;
+            if (!webElement.isDisplayed()) {
+            return;
+        }
             Rectangle viewport = WebDriverUtils.getViewport(guiElementData.getWebDriver());
             // getRect doesn't work
             Point elementLocation = webElement.getLocation();

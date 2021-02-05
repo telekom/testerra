@@ -22,8 +22,8 @@
 
 package eu.tsystems.mms.tic.testframework.events;
 
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import java.lang.reflect.Method;
 import org.testng.IInvokedMethod;
 import org.testng.ITestContext;
@@ -47,7 +47,7 @@ public abstract class AbstractMethodEvent {
     }
 
     public ITestNGMethod getTestMethod() {
-        return TestNGHelper.getTestMethod(testResult, testContext, invokedMethod);
+        return testResult.getMethod();
     }
 
     public Method getMethod() {

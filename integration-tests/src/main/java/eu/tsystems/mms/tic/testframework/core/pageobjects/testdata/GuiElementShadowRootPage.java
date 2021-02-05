@@ -19,6 +19,7 @@
  * under the License.
  *
  */
+
 package eu.tsystems.mms.tic.testframework.core.pageobjects.testdata;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
@@ -36,10 +37,10 @@ public class GuiElementShadowRootPage extends Page {
 
     // shadow root element
     public final GuiElement shadowRootElement = new GuiElement(getWebDriver(), By.id("shadow-host")).shadowRoot();
-    public final GuiElement shadowContent = shadowRootElement.getSubElement(By.cssSelector("#shadow-content"));
+    public final GuiElement shadowContent = shadowRootElement.getSubElement(By.xpath(".//*[@id='shadow-content']"));
 
-    public final GuiElement shadowContentParagraph = shadowContent.getSubElement(By.cssSelector("p"));
-    public final GuiElement shadowContentInput = shadowContent.getSubElement(By.tagName("input"));
+    public final GuiElement shadowContentParagraph = shadowContent.getSubElement(By.xpath(".//p"));
+    public final GuiElement shadowContentInput = shadowContent.getSubElement(By.xpath(".//input"));
 
     public GuiElementShadowRootPage(WebDriver driver) {
         super(driver);
@@ -57,7 +58,6 @@ public class GuiElementShadowRootPage extends Page {
 
     public void assertShadowRootVisibility() {
         // shadow root is never displayed but present
-        shadowRootElement.asserts().assertIsNotDisplayed();
         shadowRootElement.asserts().assertIsPresent();
 
         // sub elements from shadow root are displayed

@@ -33,7 +33,7 @@ import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.ReportingData;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
-import eu.tsystems.mms.tic.testframework.report.LogMessage;
+import eu.tsystems.mms.tic.testframework.report.model.context.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
@@ -443,7 +443,7 @@ public final class ReportUtils {
         Logs
          */
         final File reportFileGlobalLogs = new File(FRAMES_DIRECTORY, "logs.html");
-        ReportFormatter.createTestClassesView(reportFileGlobalLogs, reportingData, "log.vm", ExecutionContextController.getCurrentExecutionContext().readMethodContextLessLogs().map(LogMessage::new).collect(Collectors.toList()), null);
+        ReportFormatter.createTestClassesView(reportFileGlobalLogs, reportingData, "log.vm", ExecutionContextController.getCurrentExecutionContext().readMethodContextLessLogs().collect(Collectors.toList()), null);
 
         /*
         Memory consumption

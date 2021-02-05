@@ -35,6 +35,7 @@ export class TestResultsCard {
     @bindable executionStatistics: ExecutionStatistics;
     private _apexPieOptions: ApexOptions = undefined;
     private _selection:ISelection;
+    @bindable({bindingMode: bindingMode.toView}) class:string;
 
     constructor(
         private _statusConverter: StatusConverter,

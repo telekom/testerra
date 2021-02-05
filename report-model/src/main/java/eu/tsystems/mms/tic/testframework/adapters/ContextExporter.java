@@ -295,8 +295,8 @@ public class ContextExporter {
                 File.Builder[] builders = buildScreenshot((Screenshot) entry);
                 Optional<File.Builder> optional = Optional.ofNullable(builders[0]);
                 optional.ifPresent(file -> entryBuilder.setScreenshotId(file.getId()));
-            } else if (entry instanceof LogEvent) {
-                LogEvent logEvent = (LogEvent)entry;
+            } else if (entry instanceof eu.tsystems.mms.tic.testframework.report.model.context.LogMessage) {
+                eu.tsystems.mms.tic.testframework.report.model.context.LogMessage logEvent = (eu.tsystems.mms.tic.testframework.report.model.context.LogMessage)entry;
                 Optional<LogMessage.Builder> optional = Optional.ofNullable(buildLogMessage(logEvent));
                 optional.ifPresent(entryBuilder::setLogMessage);
             } else if (entry instanceof eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext) {
@@ -410,23 +410,23 @@ public class ContextExporter {
         return builder;
     }
 
-    public LogMessage.Builder buildLogMessage(LogEvent logEvent) {
+    public LogMessage.Builder buildLogMessage(eu.tsystems.mms.tic.testframework.report.model.context.LogMessage logMessage) {
         LogMessage.Builder builder = LogMessage.newBuilder();
-        apply(logEvent.getLoggerName(), builder::setLoggerName);
-        builder.setMessage(logEvent.getMessage().getFormattedMessage());
-        if (logEvent.getLevel() == Level.ERROR) {
+        apply(logMessage.getLoggerName(), builder::setLoggerName);
+        builder.setMessage(logMessage.getMessage());
+        if (logMessage.getLogLevel() == Level.ERROR) {
             builder.setType(LogMessageType.LMT_ERROR);
-        } else if (logEvent.getLevel() == Level.WARN) {
+        } else if (logMessage.getLogLevel() == Level.WARN) {
             builder.setType(LogMessageType.LMT_WARN);
-        } else if (logEvent.getLevel() == Level.INFO) {
+        } else if (logMessage.getLogLevel() == Level.INFO) {
             builder.setType(LogMessageType.LMT_INFO);
-        } else if (logEvent.getLevel() == Level.DEBUG) {
+        } else if (logMessage.getLogLevel() == Level.DEBUG) {
             builder.setType(LogMessageType.LMT_DEBUG);
         }
-        builder.setTimestamp(logEvent.getTimeMillis());
-        builder.setThreadName(logEvent.getThreadName());
+        builder.setTimestamp(logMessage.getTimestamp());
+        builder.setThreadName(logMessage.getThreadName());
 
-        traceThrowable(logEvent.getThrown(), throwable -> {
+        traceThrowable(logMessage.getThrown(), throwable -> {
             builder.addStackTrace(this.buildStackTraceCause(throwable));
         });
         return builder;

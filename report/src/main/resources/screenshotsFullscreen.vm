@@ -16,12 +16,12 @@
              data-height="90%"
              data-width="90%"
         >
-            #foreach( $screenshot in $methodInfo.getAllScreenshotsFromTestSteps().toArray() )
+            #foreach( $screenshot in $methodInfo.screenshots )
                 #set ($path = "../../screenshots/${screenshot.getScreenshotFile().getName()}")
 
                 #set ($infoText = "")
-                #if ($screenshot.meta().size() > 0)
-                    #foreach ($mapEntry in $screenshot.meta().entrySet())
+                #if ($screenshot.getMetaData().size() > 0)
+                    #foreach ($mapEntry in $screenshot.getMetaData().entrySet())
                         #set ($infoText = $infoText + $mapEntry.getKey() + ":"+ $mapEntry.getValue() + "<br/>")
                     #end
                 #else

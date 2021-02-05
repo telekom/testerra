@@ -60,10 +60,6 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
     public Date getEndTime() {
         return endTime;
     }
-//
-//    protected static void fillBasicContextValues(AbstractContext context, AbstractContext parentContext, String name) {
-//        context.name = name;
-//    }
 
     public String getId() {
         return this.id;
@@ -71,7 +67,9 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
 
     /**
      * Gets an context for a specified name.
-     * If it not exists, it will be created by a supplier, preconfigured, added to the given queue of contexts and supplied to a consumer
+     * If it not exists, it will be created by a supplier,
+     * preconfigured by setting the name,
+     * added to the given queue of contexts and supplied to a consumer.
      *
      * @param contexts           The queue to add the context when created
      * @param newContextSupplier Supplier for the new context
@@ -79,12 +77,13 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
      * @return {@link AbstractContext} or NULL if the context doesn't exists or should not be created
      */
     protected <T extends AbstractContext> T getOrCreateContext(
-            Collection<T> contexts, String name,
+            Collection<T> contexts,
+            String name,
             Supplier<T> newContextSupplier,
             Consumer<T> whenAddedToQueue
     ) {
         List<T> list = contexts.stream()
-                .filter(context -> name.equals(context.name))
+                .filter(context -> name.equals(context.getName()))
                 .collect(Collectors.toList());
 
         if (list.size() == 0) {
@@ -93,7 +92,6 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
             }
             try {
                 T context = newContextSupplier.get();
-                //fillBasicContextValues(context, this, name);
                 context.name = name;
                 contexts.add(context);
 

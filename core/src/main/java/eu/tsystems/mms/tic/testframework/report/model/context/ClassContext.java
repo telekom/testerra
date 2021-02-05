@@ -28,7 +28,7 @@ import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
-import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
@@ -41,7 +41,6 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.testng.IInvokedMethod;
 import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
@@ -117,50 +116,62 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
         return getOrCreateContext(methodContexts, methodName, null, null);
     }
 
-    public MethodContext getMethodContext(ITestResult testResult, ITestContext iTestContext, IInvokedMethod invokedMethod) {
-        final Object[] parameters = testResult.getParameters();
-        final ITestNGMethod testMethod = TestNGHelper.getTestMethod(testResult, iTestContext, invokedMethod);
-        return this.getMethodContext(testResult, iTestContext, testMethod, parameters);
+    public MethodContext getMethodContext(ITestResult testResult) {
+        return getMethodContext(testResult, testResult.getTestContext(), testResult.getMethod(), testResult.getParameters());
     }
 
-    public MethodContext getMethodContext(ITestResult testResult, ITestContext iTestContext, ITestNGMethod iTestNGMethod, Object[] parameters) {
-        final String name = iTestNGMethod.getMethodName();
+    public MethodContext getMethodContext(ITestContext testContext,
+                                          ITestNGMethod testNGMethod,
+                                          Object[] parameters) {
+        return getMethodContext(null, testContext, testNGMethod, parameters);
+    }
 
+    private MethodContext getMethodContext(
+            ITestResult testResult,
+            ITestContext testContext,
+            ITestNGMethod testNGMethod,
+            Object[] parameters
+    ) {
         final List<Object> parametersList = Arrays.stream(parameters).collect(Collectors.toList());
 
         Optional<MethodContext> found;
+        String methodContextName;
+
 
         if (testResult != null) {
             found = methodContexts.stream()
                     .filter(mc -> testResult == mc.getTestNgResult())
                     .findFirst();
+            methodContextName = TesterraListener.getContextGenerator().getMethodContextName(testResult);
         } else {
             // TODO: (!!!!) this is not eindeutig
             found = methodContexts.stream()
-                    .filter(mc -> iTestContext == mc.getTestNgContext())
-                    .filter(mc -> iTestNGMethod == mc.getTestNgMethod())
+                    .filter(mc -> testContext == mc.getTestNgContext())
+                    .filter(mc -> testNGMethod == mc.getTestNgMethod())
                     .filter(mc -> mc.getParameterValues().containsAll(parametersList))
                     .findFirst();
+
+            methodContextName = TesterraListener.getContextGenerator().getMethodContextName(testContext, testNGMethod, parameters);
         }
 
         MethodContext methodContext;
         if (!found.isPresent()) {
             MethodContext.Type methodType;
 
-            if (iTestNGMethod.isTest()) {
+            if (testNGMethod.isTest()) {
                 methodType = MethodContext.Type.TEST_METHOD;
             } else {
                 methodType = MethodContext.Type.CONFIGURATION_METHOD;
             }
 
-            methodContext = new MethodContext(name, methodType, this);
+            methodContext = new MethodContext(methodContextName, methodType, this);
             //methodContext.name = name;
             //fillBasicContextValues(methodContext, this, name);
 
             methodContext.setTestNgResult(testResult);
-            methodContext.setTestNgContext(iTestContext);
-            methodContext.setTestNgMethod(iTestNGMethod);
-            methodContext.setParameterValues(parameters);
+            methodContext.setTestNgContext(testContext);
+            methodContext.setTestNgMethod(testNGMethod);
+            methodContext.setParameterValues(testResult.getParameters());
 //
 //            if (parameters.length > 0) {
 //                methodContext.parameters = Arrays.stream(parameters).map(o -> o == null ? "" : o.toString()).collect(Collectors.toList());
@@ -174,7 +185,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
 //            }
 
             // also check for annotations
-            Method method = iTestNGMethod.getConstructorOrMethod().getMethod();
+            Method method = testNGMethod.getConstructorOrMethod().getMethod();
             if (method.isAnnotationPresent(FailureCorridor.High.class)) {
                 methodContext.setFailureCorridorClass(FailureCorridor.High.class);
             } else if (method.isAnnotationPresent(FailureCorridor.Mid.class)) {
@@ -197,8 +208,8 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
         return methodContext;
     }
 
-    public MethodContext safeAddSkipMethod(ITestResult testResult, IInvokedMethod invokedMethod) {
-        MethodContext methodContext = getMethodContext(testResult, testResult.getTestContext(), invokedMethod);
+    public MethodContext safeAddSkipMethod(ITestResult testResult) {
+        MethodContext methodContext = getMethodContext(testResult);
         methodContext.getErrorContext().setThrowable(new SkipException("Skipped"));
         methodContext.setStatus(TestStatusController.Status.SKIPPED);
         return methodContext;
@@ -257,12 +268,9 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
         return methodContexts;
     }
 
-//    public void setName(String name) {
-//        this.name = name;
-//    }
-
+    @Deprecated
     public void updateMultiContextualName() {
         TestContext testContext = getTestContext();
-        this.name = getTestClass().getSimpleName() + "_" + testContext.getSuiteContext().getName() + "_" + testContext.getName();
+        this.name = this.getName() + "_" + testContext.getSuiteContext().getName() + "_" + testContext.getName();
     }
 }

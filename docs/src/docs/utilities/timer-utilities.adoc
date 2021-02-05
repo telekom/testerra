@@ -20,10 +20,9 @@ If you want to sleep without a message, `TimerUtils` of Testerra provides a meth
 
 == Timer
 
-The `Timer` provides a basic timer feature, if you have to execute the same snippet of code in an defined interval.
-The `Timer` ships with an internal class called `Sequence`.
-With this little helper it is possible to define the sequence you want to execute in an timed interval.
+The `Timer` provides a basic timer feature, if you have to execute the same snippet of code in a defined interval. It stops after timeout or your sequence code was executed without any exceptions. If your sequence code was not successful the `Timer` will occur a `TimeoutException`.
 
+.Simple timer sequence
 [source,java]
 ----
 final Timer timer = new Timer(500, 15_000);
@@ -43,13 +42,22 @@ If you want to execute your `Sequence` in another thread - we got you.
 Just use the `executeSequenceThread` method.
 ====
 
+You can also return an object. In that case no `TimeoutException` will occur. Therefor you have to verify your returning object.
+
 [source,java]
 ----
-final Timer timer = new Timer(500, 15_000);
-timer.executeSequenceThread(new Timer.Sequence<Boolean>() {
-    @Override
-    public void run() throws Throwable {
-        // do your sequence here
-    }
-});
+
+public MyObject runTimer() {
+    final Timer timer = new Timer(500, 15_000);
+    ThrowablePackedResponse<MyObject> myObjectResponse = timer.executeSequenceThread(new Timer.Sequence<Boolean>() {
+        @Override
+        public void run() throws Throwable {
+            // sequence code here
+            setPassState(boolean);  // exit the sequence if your condition is true before timeout
+            setReturningObject(new MyObject());
+
+        }
+    });
+    return myObjectResponse.getResponse();
+}
 ----

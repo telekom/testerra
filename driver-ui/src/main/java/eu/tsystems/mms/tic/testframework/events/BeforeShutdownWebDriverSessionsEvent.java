@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2021, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -17,13 +17,17 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
- package eu.tsystems.mms.tic.testframework.execution.worker.finish;
 
-import org.openqa.selenium.WebDriver;
+package eu.tsystems.mms.tic.testframework.events;
 
-@FunctionalInterface
-public interface WebDriverSessionHandler {
-    void run(WebDriver driver);
+public class BeforeShutdownWebDriverSessionsEvent extends AbstractWebDriverShutdownEvent {
+
+    public interface Listener {
+        void onBeforeShutdownWebDriverSessionsEvent(BeforeShutdownWebDriverSessionsEvent event);
+    }
+
+    public BeforeShutdownWebDriverSessionsEvent(MethodEndEvent methodEndEvent) {
+        super(methodEndEvent);
+    }
 }

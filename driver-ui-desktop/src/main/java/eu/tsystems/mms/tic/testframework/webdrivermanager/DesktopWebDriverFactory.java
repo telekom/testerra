@@ -361,7 +361,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
 
         BrowserInformation browserInformation = WebDriverManagerUtils.getBrowserInformation(newDriver);
         log().info(String.format(
-                "Started %s (session key=%s, session id=%s, node=%s, user agent=%s) in %s",
+                "Started %s (sessionKey=%s, sessionId=%s, node=%s, userAgent=%s) in %s",
                 newDriver.getClass().getSimpleName(),
                 sessionKey,
                 remoteSessionId,
@@ -473,7 +473,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         log().info(String.format(
-                "Starting WebDriver (session key=%s) on host %s with capabilities:\n%s",
+                "Requesting WebDriver (sessionKey=%s) on host %s with capabilities:\n%s",
                 sessionContext.getSessionKey(),
                 remoteAddress,
                 gson.toJson(cleanedCapsMap)

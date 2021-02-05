@@ -304,7 +304,7 @@ public class Page extends AbstractPage implements TestablePage, Nameable<Page> {
     }
 
     @Override
-    public PageAssertions expectThat() {
+    public PageAssertions expect() {
         if (this.assertions == null) {
             this.assertions = new DefaultPageAssertions(this, true);
         }

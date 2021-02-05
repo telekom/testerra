@@ -40,7 +40,7 @@ public class PageTests extends AbstractTestSitesTest implements Loggable, PageFa
     public void test_Page_title() {
         WebTestPage page = getPage();
 
-        StringAssertion<String> title = page.expectThat().title();
+        StringAssertion<String> title = page.expect().title();
 
         title.is("Input test");
         title.isNot("Affentest");
@@ -48,7 +48,7 @@ public class PageTests extends AbstractTestSitesTest implements Loggable, PageFa
         title.contains("SuperTestPage").is(false);
         title.containsWords("Input", "test").is(true);
 
-        QuantityAssertion<Integer> length = page.expectThat().title().length();
+        QuantityAssertion<Integer> length = page.expect().title().length();
         length.is(10);
         length.isLowerThan(100);
         length.isGreaterThan(5);
@@ -69,47 +69,47 @@ public class PageTests extends AbstractTestSitesTest implements Loggable, PageFa
     @Test
     public void test_Page_title_matches() {
         WebTestPage page = getPage();
-        page.expectThat().title().matches("input\\s+.es.").is(true);
+        page.expect().title().matches("input\\s+.es.").is(true);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void test_Page_title_matches_fails() {
         WebTestPage page = getPage();
-        page.expectThat().title().matches("input\\s+.es.").is(false);
+        page.expect().title().matches("input\\s+.es.").is(false);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void test_Page_title_length_fails() {
         WebTestPage page = getPage();
-        page.expectThat().title().length().isGreaterThan(10);
+        page.expect().title().length().isGreaterThan(10);
     }
 
     @Test
     @Fails(description = "The test itself passes, but collected assertions will always fail")
     public void test_Page_title_length_fails_collected() {
         WebTestPage page = getPage();
-        Control.collectAssertions(() -> page.expectThat().title().length().isGreaterThan(10));
+        Control.collectAssertions(() -> page.expect().title().length().isGreaterThan(10));
     }
 
     @Test
     public void test_Page_title_length_fails_nonFunctional() {
         WebTestPage page = getPage();
-        Control.optionalAssertions(()-> page.expectThat().title().length().isGreaterThan(10));
+        Control.optionalAssertions(()-> page.expect().title().length().isGreaterThan(10));
     }
 
     @Test
     public void test_Page_url() {
         WebTestPage page = getPage();
-        page.expectThat().url().startsWith("http");
-        page.expectThat().url().endsWith("input.html");
-        page.expectThat().url().length().isGreaterEqualThan(10);
+        page.expect().url().startsWith("http");
+        page.expect().url().endsWith("input.html");
+        page.expect().url().length().isGreaterEqualThan(10);
     }
 
     @Test()
     public void test_Page_url_fails() {
         WebTestPage page = getPage();
         try {
-            page.expectThat().url().endsWith("nonexistingfile.html").is(true, "Wrong URL");
+            page.expect().url().endsWith("nonexistingfile.html").is(true, "Wrong URL");
         } catch (AssertionError e) {
             Assert.assertContains(e.getMessage(), "Wrong URL");
             Assert.assertEndsWith(e.getMessage(), "ends with [nonexistingfile.html]");
@@ -121,7 +121,7 @@ public class PageTests extends AbstractTestSitesTest implements Loggable, PageFa
         WebTestPage page = getPage();
 
         try {
-            page.expectThat().url().length().isGreaterEqualThan(10000, "URL is too short");
+            page.expect().url().length().isGreaterEqualThan(10000, "URL is too short");
         } catch (AssertionError e) {
             Assert.assertContains(e.getMessage(), "URL is too short");
             Assert.assertEndsWith(e.getMessage(), "is greater or equal than [10000]");

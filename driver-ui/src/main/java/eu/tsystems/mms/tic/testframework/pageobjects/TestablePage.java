@@ -25,5 +25,5 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PageAssert
 
 public interface TestablePage {
     PageAssertions waitFor();
-    PageAssertions expectThat();
+    PageAssertions expect();
 }

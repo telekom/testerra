@@ -67,7 +67,7 @@ class HomePage extends Page {
     private UiElement userName = find(By.name("name"));
 
     public void assertUserIsLoggedIn() {
-        userName.text().isNot("Guest");
+        userName.expect().text().isNot("Guest");
     }
 ```
 
@@ -101,7 +101,7 @@ class LoginTest extends TesterraTest implements UiElementCreator {
         find(By.name("loginAction")).click();
 
         // Then
-        find(By.name("name")).text().isNot("Guest");
+        find(By.name("name")).expect().text().isNot("Guest");
     }
 }
 ```
@@ -265,10 +265,10 @@ List elements
 ```java
 UiElement anchors = find(By.tagName("a"));
 
-anchors.numberOfElements().is(3); <1>
-anchors.list().first().value(Attribute.TITLE).is("StartPage"); <2>
-anchors.list().get(1).value(Attribute.TITLE).is("About Us"); <3>
-anchors.list().last().value(Attribute.TITLE).is("Contact"); <4>
+anchors.expect().numberOfElements().is(3); <1>
+anchors.list().first().expect().value(Attribute.TITLE).is("StartPage"); <2>
+anchors.list().get(1).expect().value(Attribute.TITLE).is("About Us"); <3>
+anchors.list().last().expect().value(Attribute.TITLE).is("Contact"); <4>
 
 anchors.list().forEach(anchor -> anchor.value(Attribute.HREF).beginsWith("https")); <5>
 ```
@@ -314,10 +314,10 @@ class MyPage extends Page {
 
 The new standard way to perform assertions on elements like Pages and GuiElements is now
 ```java
-uiElement.displayed(true); <1>
-uiElement.value().contains("Hallo Welt"); <2>
-page.url().endsWith("index.html"); <3>
-page.anyElementContainsText("You see me").displayed(true); <4>
+uiElement.expect().displayed(true); <1>
+uiElement.expect().value().contains("Hallo Welt"); <2>
+page.expect().url().endsWith("index.html"); <3>
+page.anyElementContainsText("You see me").expect().displayed(true); <4>
 ```
 [NOTE]
 .Using the GuiElement assertions is now `@deprecated`
@@ -347,9 +347,9 @@ if (guiElement.waits().waitForIsDisplayed()) {
 
 Support of more features through consistent assertion API
 ```java
-uiElement.css("display").is("none"); <1>
-uiElement.text().map(value -> value.toLowerCase()).matches("^hello\\s.orld").is(true); <2,3>
-page.anyElementContainsText("You see me").numberOfElements().is(1); <4>
+uiElement.expect().css("display").is("none"); <1>
+uiElement.expect().text().map(value -> value.toLowerCase()).matches("^hello\\s.orld").is(true); <2,3>
+page.anyElementContainsText("You see me").expect().numberOfElements().is(1); <4>
 ```
 <1> Perform assertions on the element's CSS properties
 <2> Map values
@@ -386,22 +386,22 @@ To check if a element is beside another element
 UiElement left = find(By.id("left"));
 UiElement right = find(By.id("right"));
 
-left.bounds().leftOf(right).is(true); <1>
-left.bounds().intersects(right).is(false);
+left.expect().bounds().leftOf(right).is(true); <1>
+left.expect().bounds().intersects(right).is(false);
 ```
 Elements aligned to the same right
 ```java
 UiElement top = find(By.id("top"));
 UiElement bottom = find(By.id("bottom"));
 
-top.bounds().fromRight().toRightOf(bottom).is(0); <2>
+top.expect().bounds().fromRight().toRightOf(bottom).is(0); <2>
 ```
 Element contains another element
 ```java
 UiElement body = find(By.tagName("body"));
 UiElement nav = parent.find(By.tagName("nav"));
 
-body.bounds().contains(nav).is(true);
+body.expect().bounds().contains(nav).is(true);
 ```
 [NOTE]
 .Using the `assertLayout()` method is now `@deprecated`
@@ -436,8 +436,8 @@ For many elements or pages
 ```java
 Control.collectAssertions(() -> {
     MyPage page = pageFactory.create(MyPage.class);
-    page.title().is("TestPage");
-    uiElement.value().contains("Hello");
+    page.expect().title().is("TestPage");
+    uiElement.expect().value().contains("Hello");
 });
 ```
 
@@ -493,7 +493,7 @@ tt.guielement.default.assertcollector=true
 
 The new standard way for optional assertions works like <<Collected Assertions>>
 ```java
-Control.optionalAssertions(() -> uiElement.displayed(true));
+Control.optionalAssertions(() -> uiElement.expect().displayed(true));
 ```
 
 [NOTE]
@@ -525,7 +525,7 @@ public MyClass {
 For non-injectable classes
 ```java
 public MyClass {
-    private final Assertion assertion = Testerra.injector.getInstance(Assertion.class);
+    private final Assertion assertion = Testerra.getInjector().getInstance(Assertion.class);
     public MyClass() {
         assertion.assertTrue(false);
     }
@@ -582,15 +582,15 @@ page.setElementTimeoutInSeconds(1);
 
 Override during runtime
 ```java
-Control.withTimeout(1, () -> uiElement.displayed(true));
+Control.withTimeout(1, () -> uiElement.expect().displayed(true));
 ```
 
 For many elements
 ```java
 Control.withTimeout(1, () -> {
     MyPage page = pageFactory.create(MyPage.class);
-    page.title().is("TestPage");
-    uiElement.value().contains("Hello");
+    page.expect().title().is("TestPage");
+    uiElement.expect().value().contains("Hello");
 });
 ```
 
@@ -619,7 +619,7 @@ It sometimes happens, that you need to retry a whole sequence of operations.
 ```java
 Control.retryFor(5, () -> {
     button.click();
-    button.enabled().is(false);
+    button.expect().enabled().is(false);
 );
 ```
 
@@ -631,7 +631,7 @@ You can combine these features with the fluent API design, to completely disable
 Control.retryFor(10).withTimeout(0, () -> {
     button.click();
     guiElement.scrollIntoView();
-    guiElement.visible(false).is(true);
+    guiElement.expect().visible(false).is(true);
 });
 ```
 

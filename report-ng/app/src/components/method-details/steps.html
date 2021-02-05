@@ -32,7 +32,7 @@
                     <div mdc-headline5 class="teststep-headline" id="step${stepIndex}">${stepIndex} ${testStep.name}</div>
                     <div repeat.for="action of testStep.actions" mdc-body1>
                         <div class="teststep-headline mt1 sticky">${stepIndex}.${$index+1} ${action.name}<br>
-                            <span class="secondary" mdc-body2>${action.timestamp|dateFormat}</span>
+                            <span class="secondary" mdc-body2 title="${action.timestamp|dateFormat}">${action.timestamp|dateFormat:"ddd MMM D HH:mm:ss"}</span>
                         </div>
                         <section>
                             <div repeat.for="group of action.groups" class="teststep-group">

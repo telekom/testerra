@@ -26,6 +26,6 @@ export class Config implements IConfig {
     readonly developmentMode = false;
 
     correctRelativePath(path:string) {
-        return "../.."+path.replaceAll("\\","/");
+        return ".."+path.replaceAll("\\","/");
     }
 }

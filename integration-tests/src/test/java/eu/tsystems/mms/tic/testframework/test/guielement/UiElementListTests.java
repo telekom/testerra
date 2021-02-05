@@ -24,6 +24,7 @@ import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElementList;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.test.core.pageobjects.testdata.UiElementListPage;
 import eu.tsystems.mms.tic.testframework.test.core.pageobjects.testdata.components.TableRow;
@@ -73,9 +74,10 @@ public class UiElementListTests extends AbstractTestSitesTest implements PageFac
     private void testNavigationAnchors(UiElement anchors) {
         anchors.expect().numberOfElements().is(3);
 
-        anchors.list().first().expect().text().is("First");
-        anchors.list().get(1).expect().text().is("Second");
-        anchors.list().last().expect().text().is("Third");
+        UiElementList<UiElement> list = anchors.list();
+        list.first().expect().text().is("First");
+        list.get(1).expect().text().is("Second");
+        list.last().expect().text().is("Third");
     }
 
     private void testTableRowsAndData(TableRow tableRows) {

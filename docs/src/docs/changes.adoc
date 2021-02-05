@@ -266,11 +266,12 @@ List elements
 UiElement anchors = find(By.tagName("a"));
 
 anchors.expect().numberOfElements().is(3); <1>
-anchors.list().first().expect().value(Attribute.TITLE).is("StartPage"); <2>
-anchors.list().get(1).expect().value(Attribute.TITLE).is("About Us"); <3>
-anchors.list().last().expect().value(Attribute.TITLE).is("Contact"); <4>
+UiElementList<UiElement> list = anchors.list();
+list.first().expect().value(Attribute.TITLE).is("StartPage"); <2>
+list.get(1).expect().value(Attribute.TITLE).is("About Us"); <3>
+list.last().expect().value(Attribute.TITLE).is("Contact"); <4>
 
-anchors.list().forEach(anchor -> anchor.value(Attribute.HREF).beginsWith("https")); <5>
+list.forEach(anchor -> anchor.expect().value(Attribute.HREF).startsWith("https")); <5>
 ```
 
 [NOTE]
@@ -364,13 +365,13 @@ uiElement.displayed(true, "This element should be displayed");
 === Screenshot based Assertions
 The new standard way to perform screenshot based assertions is now
 ```java
-uiElement.screenshot().pixelDistance("ElementReference").isLowerThan(1);
-page.screenshot().pixelDistance("PageReference").isBetween(0, 10);
+uiElement.expect().screenshot().pixelDistance("ElementReference").isLowerThan(1);
+page.expect().screenshot().pixelDistance("PageReference").isBetween(0, 10);
 ```
 
 Add screenshot to the report
 ```java
-page.screenshot().toReport();
+page.expect().screenshot().toReport();
 ```
 [NOTE]
 .Using the static `UITestUtils` is now `@deprecated`

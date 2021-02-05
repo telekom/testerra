@@ -25,32 +25,39 @@ import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 
-public class DefaultTestNGContextGenerator {
+public class DefaultTestNGContextGenerator implements TestNGContextNameGenerator {
 
+    @Override
     public String getClassContextName(ITestResult testResult) {
         return testResult.getTestClass().getRealClass().getSimpleName();
     }
 
+    @Override
     public String getSuiteContextName(ITestResult testResult) {
         return testResult.getTestContext().getSuite().getName();
     }
 
+    @Override
     public String getSuiteContextName(ITestContext testContext) {
         return testContext.getSuite().getName();
     }
 
+    @Override
     public String getTestContextName(ITestResult testResult) {
         return testResult.getTestContext().getCurrentXmlTest().getName();
     }
 
+    @Override
     public String getTestContextName(ITestContext testContext) {
         return testContext.getCurrentXmlTest().getName();
     }
 
+    @Override
     public String getMethodContextName(ITestResult testResult) {
         return getMethodContextName(testResult.getTestContext(), testResult.getMethod(), testResult.getParameters());
     }
 
+    @Override
     public String getMethodContextName(ITestContext testContext, ITestNGMethod testNGMethod, Object[] parameters) {
         return testNGMethod.getMethodName();
     }

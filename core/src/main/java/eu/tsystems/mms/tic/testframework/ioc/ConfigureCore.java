@@ -33,6 +33,8 @@ import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.ThrowingAssertion;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.DefaultReport;
+import eu.tsystems.mms.tic.testframework.report.utils.DefaultTestNGContextGenerator;
+import eu.tsystems.mms.tic.testframework.report.utils.TestNGContextNameGenerator;
 import eu.tsystems.mms.tic.testframework.testing.DefaultTestController;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
 import eu.tsystems.mms.tic.testframework.utils.DefaultFormatter;
@@ -48,5 +50,6 @@ public class ConfigureCore extends AbstractModule {
         bind(InstantAssertion.class).to(ThrowingAssertion.class).in(Scopes.SINGLETON);
         bind(Assertion.class).to(DefaultAssertionWrapper.class).in(Scopes.SINGLETON);
         bind(TestController.class).to(DefaultTestController.class).in(Scopes.SINGLETON);
+        bind(TestNGContextNameGenerator.class).to(DefaultTestNGContextGenerator.class).in(Scopes.SINGLETON);
     }
 }

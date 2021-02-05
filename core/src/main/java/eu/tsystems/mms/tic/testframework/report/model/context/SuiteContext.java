@@ -51,11 +51,11 @@ public class SuiteContext extends AbstractContext implements SynchronizableConte
     }
 
     public TestContext getTestContext(ITestResult testResult) {
-        return getTestContext(TesterraListener.getContextGenerator().getTestContextName(testResult));
+        return getTestContext(contextNameGenerator.getTestContextName(testResult));
     }
 
     public TestContext getTestContext(ITestContext testContext) {
-        return getTestContext(TesterraListener.getContextGenerator().getTestContextName(testContext));
+        return getTestContext(contextNameGenerator.getTestContextName(testContext));
     }
 
     private synchronized TestContext getTestContext(String testContextName) {

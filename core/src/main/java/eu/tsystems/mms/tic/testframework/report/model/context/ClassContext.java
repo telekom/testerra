@@ -142,7 +142,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
             found = methodContexts.stream()
                     .filter(mc -> testResult == mc.getTestNgResult())
                     .findFirst();
-            methodContextName = TesterraListener.getContextGenerator().getMethodContextName(testResult);
+            methodContextName = contextNameGenerator.getMethodContextName(testResult);
         } else {
             // TODO: (!!!!) this is not eindeutig
             found = methodContexts.stream()
@@ -151,7 +151,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
                     .filter(mc -> mc.getParameterValues().containsAll(parametersList))
                     .findFirst();
 
-            methodContextName = TesterraListener.getContextGenerator().getMethodContextName(testContext, testNGMethod, parameters);
+            methodContextName = contextNameGenerator.getMethodContextName(testContext, testNGMethod, parameters);
         }
 
         MethodContext methodContext;

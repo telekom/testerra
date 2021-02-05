@@ -69,6 +69,8 @@ import org.openqa.selenium.interactions.Actions;
 
 public class DesktopGuiElementCore extends AbstractGuiElementCore implements Loggable {
 
+    private static final Assertion assertion = Testerra.getInjector().getInstance(Assertion.class);
+
     public DesktopGuiElementCore(GuiElementData guiElementData) {
         super(guiElementData);
     }
@@ -77,32 +79,48 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
      * Corrects a given {@link By} with xpath to use "./" instead of "/"
      * when passed to a sub element search.
      */
-    private By correctToRelativeXPath(By by) {
+    private By correctToRelativeXPath(GuiElementData parentData, By by) {
         String abstractLocatorString = by.toString();
         if (abstractLocatorString.toLowerCase().contains("xpath")) {
             int i = abstractLocatorString.indexOf(":") + 1;
             String xpath = abstractLocatorString.substring(i).trim();
-            //String prevXPath = xpath;
+            boolean corrected = false;
             // Check if locator does not start with dot, ignoring a leading parenthesis for choosing the n-th element
+            // /input --> ./input
+            // //input --> .//input
+            // input --> ./input
+            // ./input --> No corrections
+            // .//input --> No corrections
             if (xpath.startsWith("/")) {
                 xpath = xpath.replaceFirst("/", "./");
-                //log().warn(String.format("Replaced absolute xpath locator \"%s\" to relative: \"%s\"", prevXPath, xpath));
-                by = By.xpath(xpath);
+                corrected = true;
             } else if (!xpath.startsWith(".")) {
                 xpath = "./" + xpath;
-                //log().warn(String.format("Added relative xpath locator for children to \"%s\": \"%s\"", prevXPath, xpath));
+                corrected = true;
+            }
+
+            // 14.01.2021 - To get in touch with shadow roots / dom in firefox
+            // we have to point some facts out.
+            // 1. We only support xpath, because it the only way we can simply handle locator modification
+            if (parentData.isShadowRoot()) {
+                // auto correct these sub element locators
+                // ./input --> ./../input
+                // .//input --> ./..//input
+                xpath = "./." + xpath;
+                corrected = true;
+            }
+
+            if (corrected) {
                 by = By.xpath(xpath);
             }
+        } else if (parentData.isShadowRoot()) {
+            throw new RuntimeException("Finding sub elements on shadowRoot() only supports By.xpath()");
         }
         return by;
     }
 
     private void throwNotFoundException(Throwable reason) {
         throw new ElementNotFoundException(guiElementData.getGuiElement(), reason);
-        //MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
-        //if (currentMethodContext != null) {
-        //      currentMethodContext.errorContext().setThrowable(exception.getMessage(), reason);
-        //}
     }
 
     /**
@@ -147,7 +165,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
                     webDriver.switchTo().frame(parentWebElement);
                     consumer.accept(findElementsFromWebDriver(webDriver, by));
                 } else {
-                    consumer.accept(findElementsFromWebElement(parentWebElement, correctToRelativeXPath(by)));
+                    consumer.accept(findElementsFromWebElement(parentWebElement, correctToRelativeXPath(parentData, by)));
                 }
             });
         } else {
@@ -187,7 +205,6 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
 
             DefaultLocator locate = guiElementData.getLocate();
             if (locate.isUnique() && webElements.size() > 1) {
-                Assertion assertion = Testerra.injector.getInstance(Assertion.class);
                 throwNotFoundException(new AssertionError(assertion.formatExpectEquals(webElements.size(), 1, formatLocateSubject(locate, numElementsBeforeFilter))));
             }
 
@@ -201,9 +218,9 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
                 // check for shadowRoot
                 if (guiElementData.isShadowRoot()) {
                     // 14.01.2021: Gheckodriver throw an internal exception when using the command above,
-                // therefore the result in the JS snippet "return arguments[0].shadowRoot" will be null.
-                // To handle firefox shadow roots we decided to handle it this way and implement an automatic resolver in getSubElement
-                final Object shadowedWebElement = JSUtils.executeScript(webDriver, "return arguments[0].shadowRoot.firstChild", webElement);
+                    // therefore the result in the JS snippet "return arguments[0].shadowRoot" will be null.
+                    // To handle firefox shadow roots we decided to handle it this way and implement an automatic resolver in getSubElement
+                    final Object shadowedWebElement = JSUtils.executeScript(webDriver, "return arguments[0].shadowRoot.firstChild", webElement);
                     if (shadowedWebElement instanceof WebElement) {
                         webElement = (WebElement) shadowedWebElement;
                     }
@@ -226,7 +243,6 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
 
                 logTimings(start, Timings.getFindCounter());
             } else {
-                Assertion assertion = Testerra.injector.getInstance(Assertion.class);
                 throwNotFoundException(new AssertionError(assertion.formatExpectGreaterEqualThan(assertion.toBigDecimal(0), assertion.toBigDecimal(1), formatLocateSubject(locate, numElementsBeforeFilter))));
             }
         });

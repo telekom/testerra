@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
+import eu.tsystems.mms.tic.testframework.report.utils.TestNGContextNameGenerator;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -101,7 +102,7 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
     }
 
     public SuiteContext getSuiteContext(ITestResult testResult) {
-        return getSuiteContext(TesterraListener.getContextGenerator().getSuiteContextName(testResult));
+        return getSuiteContext(contextNameGenerator.getSuiteContextName(testResult));
     }
 
     private synchronized SuiteContext getSuiteContext(String suiteContextName) {
@@ -116,7 +117,7 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
     }
 
     public SuiteContext getSuiteContext(ITestContext testContext) {
-        return getSuiteContext(TesterraListener.getContextGenerator().getSuiteContextName(testContext));
+        return getSuiteContext(contextNameGenerator.getSuiteContextName(testContext));
     }
 
     @Override

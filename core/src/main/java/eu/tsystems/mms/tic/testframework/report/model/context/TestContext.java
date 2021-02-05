@@ -60,8 +60,7 @@ public class TestContext extends AbstractContext implements SynchronizableContex
     }
 
     public ClassContext getClassContext(ITestResult testResult) {
-        DefaultTestNGContextGenerator contextGenerator = TesterraListener.getContextGenerator();
-        return this.pGetClassContext(testResult.getTestClass(), contextGenerator.getClassContextName(testResult));
+        return this.pGetClassContext(testResult.getTestClass(), contextNameGenerator.getClassContextName(testResult));
     }
 
     /**

@@ -20,10 +20,12 @@
  */
  package eu.tsystems.mms.tic.testframework.report.model.context;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.IDUtils;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.utils.TestNGContextNameGenerator;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collection;
@@ -39,6 +41,7 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
 public abstract class AbstractContext implements SynchronizableContext, Loggable {
+    protected static final TestNGContextNameGenerator contextNameGenerator = Testerra.getInjector().getInstance(TestNGContextNameGenerator.class);
     protected String name;
     private final String id = IDUtils.getB64encXID();
     protected AbstractContext parentContext;

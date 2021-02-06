@@ -371,7 +371,7 @@ page.expect().screenshot().pixelDistance("PageReference").isBetween(0, 10);
 
 Add screenshot to the report
 ```java
-page.expect().screenshot().toReport();
+page.screenshotToReport();
 ```
 [NOTE]
 .Using the static `UITestUtils` is now `@deprecated`

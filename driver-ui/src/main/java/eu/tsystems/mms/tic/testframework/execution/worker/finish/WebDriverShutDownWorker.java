@@ -22,11 +22,10 @@
 package eu.tsystems.mms.tic.testframework.execution.worker.finish;
 
 import com.google.common.eventbus.Subscribe;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.AfterShutdownWebDriverSessionsEvent;
 import eu.tsystems.mms.tic.testframework.events.BeforeShutdownWebDriverSessionsEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
-import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WDInternal;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
@@ -62,9 +61,9 @@ public class WebDriverShutDownWorker implements MethodEndEvent.Listener {
                     }
 
                     if (close) {
-                        TesterraListener.getEventBus().post(new BeforeShutdownWebDriverSessionsEvent(methodEndEvent));
+                        Testerra.getEventBus().post(new BeforeShutdownWebDriverSessionsEvent(methodEndEvent));
                         WebDriverManager.shutdown();
-                        TesterraListener.getEventBus().post(new AfterShutdownWebDriverSessionsEvent(methodEndEvent));
+                        Testerra.getEventBus().post(new AfterShutdownWebDriverSessionsEvent(methodEndEvent));
                         // cleanup executing selenium host
                         WDInternal.cleanupExecutingSeleniumHost();
                     }
@@ -75,6 +74,5 @@ public class WebDriverShutDownWorker implements MethodEndEvent.Listener {
 
         // WDM cleanup threadlocals
         WebDriverManager.cleanupThreadlocals();
-        POConfig.removeThreadLocalUiElementTimeout();
     }
 }

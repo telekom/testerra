@@ -85,15 +85,15 @@ public abstract class AbstractWebDriverTest extends TesterraTest implements WebD
 
     public WebDriver getClassExclusiveWebDriver() {
         if (exclusiveSessionId == null) {
-            exclusiveSessionId = webDriverManager.createExclusiveSessionId(getWebDriver());
+            exclusiveSessionId = webDriverManager.createExclusiveSessionKey(getWebDriver());
         }
-        return webDriverManager.getWebDriverBySessionId(exclusiveSessionId);
+        return webDriverManager.getWebDriver(exclusiveSessionId);
     }
 
     @AfterClass
     public void closeClassExclusiveWebDriverSession() {
         if (this.exclusiveSessionId != null) {
-            webDriverManager.shutdownExclusiveSessionId(this.exclusiveSessionId);
+            webDriverManager.shutdownSession(this.exclusiveSessionId);
             this.exclusiveSessionId = null;
         }
     }
@@ -105,7 +105,7 @@ public abstract class AbstractWebDriverTest extends TesterraTest implements WebD
             webDriver.getWindowHandles();
         } catch (WebDriverException s) {
             log().error(s.getMessage());
-            webDriverManager.shutdownAllSessions(true); // shutdown all threwad drivers.
+            webDriverManager.shutdownAllThreadSessions(); // shutdown all threwad drivers.
         }
 
         return webDriver;

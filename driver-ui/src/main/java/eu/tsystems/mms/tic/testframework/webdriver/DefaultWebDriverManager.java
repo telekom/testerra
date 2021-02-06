@@ -33,7 +33,7 @@ public class DefaultWebDriverManager implements IWebDriverManager {
     }
 
     @Override
-    public String createExclusiveSessionId(WebDriver webDriver) {
+    public String createExclusiveSessionKey(WebDriver webDriver) {
         return WebDriverManager.makeSessionExclusive(webDriver);
     }
 
@@ -43,26 +43,32 @@ public class DefaultWebDriverManager implements IWebDriverManager {
     }
 
     @Override
-    public WebDriver getWebDriverBySessionId(String sessionId) {
-        return WebDriverManager.getWebDriver(sessionId);
+    public WebDriver getWebDriver(String sessionKey) {
+        return WebDriverManager.getWebDriver(sessionKey);
     }
 
     @Override
-    public void shutdownExclusiveSessionId(String sessionId) {
-        WebDriverManager.shutdownExclusiveSession(sessionId);
+    public void shutdownSession(String sessionKey) {
+        WebDriverManager.shutdownExclusiveSession(sessionKey);
     }
 
     @Override
-    public void shutdownAllSessions(boolean force) {
-        if (force) {
-            WebDriverManager.forceShutdown();
-        } else {
-            WebDriverManager.shutdown();
-        }
+    public void shutdownSession(WebDriver webDriver) {
+        WebDriverSessionsManager.shutdownWebDriver(webDriver);
     }
 
     @Override
-    public WebDriverRequest getWebDriverRequestByWebDriver(WebDriver webDriver) {
+    public void shutdownAllThreadSessions() {
+        WebDriverManager.forceShutdown();
+    }
+
+    @Override
+    public void shutdownAllSessions() {
+        WebDriverManager.forceShutdownAllThreads();
+    }
+
+    @Override
+    public WebDriverRequest getWebDriverRequest(WebDriver webDriver) {
         return WebDriverManager.getRelatedWebDriverRequest(webDriver);
     }
 

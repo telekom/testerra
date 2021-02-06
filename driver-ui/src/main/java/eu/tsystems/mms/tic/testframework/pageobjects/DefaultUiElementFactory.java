@@ -35,7 +35,7 @@ public class DefaultUiElementFactory implements UiElementFactory, Loggable, WebD
     @Override
     public UiElement createFromParent(UiElement parent, Locator locator) {
         GuiElement parentGuiElement = (GuiElement)parent;
-        WebDriverRequest webDriverRequest = webDriverManager.getWebDriverRequestByWebDriver(parentGuiElement.getData().getWebDriver());
+        WebDriverRequest webDriverRequest = webDriverManager.getWebDriverRequest(parentGuiElement.getData().getWebDriver());
         IWebDriverFactory factory = webDriverManager.getWebDriverFactoryForBrowser(webDriverRequest.getBrowser());
         GuiElementCore core = factory.createCoreFromParent(parentGuiElement.getData(), locator);
         GuiElement guiElement = new GuiElement(core);

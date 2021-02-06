@@ -157,7 +157,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
         final WebDriverKeepAliveSequence webDriverKeepAliveSequence = WebDriverUtils.keepWebDriverAlive(driver, 1, 10);
         TimerUtils.sleep(3_000);
 
-        webDriverManager.shutdownAllSessions();
+        webDriverManager.shutdownAllThreadSessions();
         TimerUtils.sleep(10_000);
         final WebDriverKeepAliveSequence.KeepAliveState returningObject = webDriverKeepAliveSequence.getReturningObject();
         Assert.assertEquals(returningObject, WebDriverKeepAliveSequence.KeepAliveState.REMOVED_BY_DRIVER_SHUTDOWN);

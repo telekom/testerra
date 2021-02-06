@@ -101,22 +101,22 @@ public class LegacyGuiElementAssertWrapper implements GuiElementAssert {
 
     @Override
     public void assertAttributeIsPresent(String attributeName) {
-        this.uiElementAssertion.value(attributeName).isNot(null);
+        this.uiElementAssertion.attribute(attributeName).isNot(null);
     }
 
     @Override
     public void assertAttributeValue(String attributeName, String value) {
-        this.uiElementAssertion.value(attributeName).is(value);
+        this.uiElementAssertion.attribute(attributeName).is(value);
     }
 
     @Override
     public void assertAttributeContains(String attributeName, String textContainedByAttribute) {
-        this.uiElementAssertion.value(attributeName).contains(textContainedByAttribute).is(true);
+        this.uiElementAssertion.attribute(attributeName).contains(textContainedByAttribute).is(true);
     }
 
     @Override
     public void assertAttributeContainsNot(final String attributeName, final String textNotContainedByAttribute) {
-        this.uiElementAssertion.value(attributeName).contains(textNotContainedByAttribute).is(false);
+        this.uiElementAssertion.attribute(attributeName).contains(textNotContainedByAttribute).is(false);
     }
 
     @Override
@@ -158,12 +158,12 @@ public class LegacyGuiElementAssertWrapper implements GuiElementAssert {
 
     @Override
     public void assertCssClassIsPresent(final String className) {
-        this.uiElementAssertion.value(Attribute.CLASS).containsWords(className).is(true);
+        this.uiElementAssertion.attribute(Attribute.CLASS).containsWords(className).is(true);
     }
 
     @Override
     public void assertCssClassIsNotPresent(final String className) {
-        this.uiElementAssertion.value(Attribute.CLASS).containsWords(className).is(false);
+        this.uiElementAssertion.attribute(Attribute.CLASS).containsWords(className).is(false);
     }
 
     @Override

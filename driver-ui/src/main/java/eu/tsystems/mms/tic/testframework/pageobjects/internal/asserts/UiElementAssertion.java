@@ -31,17 +31,20 @@ import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
  * @author Mike Reiche
  */
 public interface UiElementAssertion extends UiElementBaseAssertion {
-    default boolean text(String text) {
+    default boolean text(Object text) {
         return text().is(text);
     }
     StringAssertion<String> text();
+    default boolean value(Object text) {
+        return value().is(text);
+    }
     default StringAssertion<String> value() {
-        return value(Attribute.VALUE);
+        return attribute(Attribute.VALUE);
     }
-    default StringAssertion<String> value(Attribute attribute) {
-        return value(attribute.toString());
+    default StringAssertion<String> attribute(Attribute attribute) {
+        return attribute(attribute.toString());
     }
-    StringAssertion<String> value(String attribute);
+    StringAssertion<String> attribute(String attribute);
     StringAssertion<String> css(String property);
     BinaryAssertion<Boolean> enabled();
     default boolean enabled(boolean expected) {
@@ -56,6 +59,6 @@ public interface UiElementAssertion extends UiElementBaseAssertion {
         return selectable().is(expected);
     }
     default BinaryAssertion<Boolean> hasClass(String ...classes) {
-        return this.value(Attribute.CLASS).containsWords(classes);
+        return this.attribute(Attribute.CLASS).containsWords(classes);
     }
 }

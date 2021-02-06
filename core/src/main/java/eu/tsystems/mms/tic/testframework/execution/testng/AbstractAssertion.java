@@ -42,9 +42,9 @@ public abstract class AbstractAssertion implements Assertion {
 
         }
         if (actual != null) {
-            if (subject != null) {
-                builder.append(" actual");
-            }
+//            if (subject != null) {
+//                builder.append(" actual");
+//            }
             builder.append(" [").append(actual).append("]");
         }
         builder.append(" ").append(expected);

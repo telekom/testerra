@@ -58,7 +58,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     public void test_UiElement_displayed_false() {
         WebTestPage page = getPage();
         UiElementAssertion expect = page.notDisplayedElement().expect();
-        expect.value(Attribute.STYLE).contains("display: none");
+        expect.attribute(Attribute.STYLE).contains("display: none");
         expect.displayed(false);
         expect.hasClass("button").is(false);
     }
@@ -82,8 +82,8 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     @Test
     public void test_UiElement_visible_false() {
         WebTestPage page = getPage();
-        page.notVisibleElement().expect().value(Attribute.STYLE).contains("hidden");
-        page.notVisibleElement().expect().value("style").contains("hidden");
+        page.notVisibleElement().expect().attribute(Attribute.STYLE).contains("hidden");
+        page.notVisibleElement().expect().attribute("style").contains("hidden");
         page.notVisibleElement().expect().visible(true).is(false);
         page.notVisibleElement().expect().visible(false).is(false);
         page.notDisplayedElement().expect().css("display").is("none");
@@ -128,8 +128,8 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     public void test_UiElement_waitFor_fast() {
         WebTestPage page = getPage();
         Control.withTimeout(0, () -> {
-            Assert.assertFalse(page.notVisibleElement().waitFor().value(Attribute.STYLE).is("humbug"));
-            Assert.assertTrue(page.notVisibleElement().waitFor().value(Attribute.STYLE).contains("hidden").is(true));
+            Assert.assertFalse(page.notVisibleElement().waitFor().attribute(Attribute.STYLE).is("humbug"));
+            Assert.assertTrue(page.notVisibleElement().waitFor().attribute(Attribute.STYLE).contains("hidden").is(true));
         });
     }
 
@@ -148,31 +148,31 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     @Test
     public void test_UiElement_attribute_present() {
         WebTestPage page = getPage();
-        page.getRadioBtn().expect().value("disabled").isNot(null);
+        page.getRadioBtn().expect().attribute("disabled").isNot(null);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void test_UiElement_attribute_present_fails() {
         WebTestPage page = getPage();
-        page.getRadioBtn().expect().value("disabled").is(null);
+        page.getRadioBtn().expect().attribute("disabled").is(null);
     }
 
     @Test
     public void test_UiElement_inexistent_attribute_present() {
         WebTestPage page = getPage();
-        page.getRadioBtn().expect().value("not-existent-attribute").is(null);
+        page.getRadioBtn().expect().attribute("not-existent-attribute").is(null);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void test_UiElement_inexistent_attribute_present_fails() {
         WebTestPage page = getPage();
-        page.getRadioBtn().expect().value("not-existent-attribute").isNot(null);
+        page.getRadioBtn().expect().attribute("not-existent-attribute").isNot(null);
     }
 
     @Test
     public void test_UiElement_inexistent_attribute_mapped() {
         WebTestPage page = getPage();
-        page.getRadioBtn().expect().value("not-existent-attribute").map(String::trim).is(null);
+        page.getRadioBtn().expect().attribute("not-existent-attribute").map(String::trim).is(null);
     }
 
     @Test

@@ -39,7 +39,7 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
         return testSequence(
                 provider,
                 (actual) -> testAssertion.equals(actual, expected),
-                (actual) -> testAssertion.formatExpectEquals(actual, expected ,createFailMessage(failMessage))
+                (actual) -> testAssertion.formatExpectEquals(null, expected ,createFailMessage(failMessage))
         );
     }
 
@@ -48,7 +48,7 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
         return testSequence(
                 provider,
                 (actual) -> testAssertion.notEquals(actual, expected),
-                (actual) -> testAssertion.formatExpectNotEquals(actual, expected, createFailMessage(failMessage))
+                (actual) -> testAssertion.formatExpectNotEquals(null, expected, createFailMessage(failMessage))
         );
     }
 

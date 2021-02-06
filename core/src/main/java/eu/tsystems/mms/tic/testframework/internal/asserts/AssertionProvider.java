@@ -33,9 +33,9 @@ import java.util.stream.Collectors;
  */
 public abstract class AssertionProvider<T> implements ActualProperty<T> {
 
-    protected static class Format {
+    public static class Format {
         private final static Formatter formatter = Testerra.getInjector().getInstance(Formatter.class);
-        protected static final String SEPARATOR=" > ";
+        public static final String SEPARATOR=" > ";
         public static String separate(Object...parts) {
             return Arrays.stream(parts).map(Object::toString).collect(Collectors.joining(SEPARATOR));
         }

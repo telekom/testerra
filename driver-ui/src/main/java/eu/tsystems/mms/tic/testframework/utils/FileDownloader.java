@@ -192,10 +192,10 @@ public class FileDownloader implements Loggable {
     public String download(UiElement element, String targetFileName) throws IOException {
 
         log().debug("Try to get href attribute of GuiElement");
-        String link = element.waitFor().value(Attribute.HREF).getActual();
+        String link = element.waitFor().attribute(Attribute.HREF).getActual();
         if (link == null || link.length() == 0) {
             log().debug("No href attribute found. Try src attribute.");
-            link = element.waitFor().value(Attribute.SRC).getActual();
+            link = element.waitFor().attribute(Attribute.SRC).getActual();
         }
 
         if (link == null || link.length() == 0) {

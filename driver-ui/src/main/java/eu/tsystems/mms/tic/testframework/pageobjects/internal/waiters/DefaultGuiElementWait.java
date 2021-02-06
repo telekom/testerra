@@ -143,22 +143,22 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
 
     @Override
     public boolean waitForAttribute(final String attributeName) {
-        return this.uiElement.waitFor().value(attributeName).isNot(null);
+        return this.uiElement.waitFor().attribute(attributeName).isNot(null);
     }
 
     @Override
     public boolean waitForAttribute(final String attributeName, final String value) {
-        return this.uiElement.waitFor().value(attributeName).map(String::trim).is(value);
+        return this.uiElement.waitFor().attribute(attributeName).map(String::trim).is(value);
     }
 
     @Override
     public boolean waitForAttributeContains(final String attributeName, final String value) {
-        return this.uiElement.waitFor().value(attributeName).contains(value).is(true);
+        return this.uiElement.waitFor().attribute(attributeName).contains(value).is(true);
     }
 
     @Override
     public boolean waitForAttributeContainsNot(final String attributeName, final String value) {
-        return this.uiElement.waitFor().value(attributeName).contains(value).is(false);
+        return this.uiElement.waitFor().attribute(attributeName).contains(value).is(false);
     }
 
     @Override

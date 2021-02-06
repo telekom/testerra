@@ -95,10 +95,10 @@ public class UiElementListTests extends AbstractTestSitesTest implements PageFac
         TableRow tableRows = page.getTableRowsByTagName();
         testTableRowsAndData(tableRows);
 
-        tableRows.list().first().linkByName().expect().value(Attribute.HREF).endsWith("mkri");
-        tableRows.list().get(1).linkByName().expect().value(Attribute.HREF).endsWith("joku");
-        tableRows.list().last().linkByName().expect().value(Attribute.HREF).endsWith("erku");
-        tableRows.list().forEach(tableRow -> tableRow.linkByName().expect().value(Attribute.HREF).startsWith("http"));
+        tableRows.list().first().linkByName().expect().attribute(Attribute.HREF).endsWith("mkri");
+        tableRows.list().get(1).linkByName().expect().attribute(Attribute.HREF).endsWith("joku");
+        tableRows.list().last().linkByName().expect().attribute(Attribute.HREF).endsWith("erku");
+        tableRows.list().forEach(tableRow -> tableRow.linkByName().expect().attribute(Attribute.HREF).startsWith("http"));
     }
 
     @Test
@@ -107,9 +107,9 @@ public class UiElementListTests extends AbstractTestSitesTest implements PageFac
         TableRow tableRows = page.getTableRowsByTagName();
         testTableRowsAndData(tableRows);
 
-        tableRows.list().first().linkByXPath().expect().value(Attribute.HREF).endsWith("mkri");
-        tableRows.list().get(1).linkByXPath().expect().value(Attribute.HREF).endsWith("joku");
-        tableRows.list().last().linkByXPath().expect().value(Attribute.HREF).endsWith("erku");
+        tableRows.list().first().linkByXPath().expect().attribute(Attribute.HREF).endsWith("mkri");
+        tableRows.list().get(1).linkByXPath().expect().attribute(Attribute.HREF).endsWith("joku");
+        tableRows.list().last().linkByXPath().expect().attribute(Attribute.HREF).endsWith("erku");
     }
 
     @Override

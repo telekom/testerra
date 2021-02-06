@@ -32,7 +32,7 @@ import org.testng.annotations.Test;
  */
 public class AssertionsTest extends TesterraTest {
 
-    private SimpleAssertion assertion = Testerra.injector.getInstance(InstantAssertion.class);
+    private SimpleAssertion assertion = Testerra.getInjector().getInstance(InstantAssertion.class);
 
     @Test
     public void testIsTrue() {

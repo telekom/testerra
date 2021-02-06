@@ -46,7 +46,7 @@ public interface UiElementFinder extends LocatorFactoryProvider, Loggable, WebDr
         return find(Locate.by(xPath));
     }
     default UiElement findByLabel(String element, String label) {
-        return findDeep(Testerra.injector.getInstance(UiElementLabelLocator.class).createLocator(element, label));
+        return findDeep(Testerra.getInjector().getInstance(UiElementLabelLocator.class).createLocator(element, label));
     }
 
     default UiElement findDeep(Locator locator) {

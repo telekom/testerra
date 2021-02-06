@@ -56,7 +56,7 @@ public class DefaultPageFactory implements PageFactory, Loggable {
     }
 
     private IWebDriverManager getWebDriverManager() {
-        return Testerra.injector.getInstance(IWebDriverManager.class);
+        return Testerra.getInjector().getInstance(IWebDriverManager.class);
     }
 
     @Override

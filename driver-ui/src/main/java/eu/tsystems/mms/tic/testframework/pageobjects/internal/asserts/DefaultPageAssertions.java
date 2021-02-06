@@ -38,8 +38,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.openqa.selenium.WebDriver;
 
 public class DefaultPageAssertions implements PageAssertions {
-    private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
-    private static final Report report = Testerra.injector.getInstance(Report.class);
+    private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.getInjector().getInstance(PropertyAssertionFactory.class);
+    private static final Report report = Testerra.getInjector().getInstance(Report.class);
     private final PropertyAssertionConfig propertyAssertionConfig = new PropertyAssertionConfig();
     private final Page page;
 

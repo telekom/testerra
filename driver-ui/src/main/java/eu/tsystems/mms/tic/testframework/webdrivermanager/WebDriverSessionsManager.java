@@ -95,7 +95,7 @@ public final class WebDriverSessionsManager {
          * Getting multi binder set programmatically
          * @see {https://groups.google.com/forum/#!topic/google-guice/EUnNStmrhOk}
          */
-        Set<IWebDriverFactory> webDriverFactories = Testerra.injector.getInstance(Key.get(new TypeLiteral<Set<IWebDriverFactory>>(){}));
+        Set<IWebDriverFactory> webDriverFactories = Testerra.getInjector().getInstance(Key.get(new TypeLiteral<Set<IWebDriverFactory>>(){}));
         webDriverFactories.forEach(webDriverFactory -> webDriverFactory.getSupportedBrowsers().forEach(browser -> WEB_DRIVER_FACTORIES.put(browser, webDriverFactory)));
     }
 

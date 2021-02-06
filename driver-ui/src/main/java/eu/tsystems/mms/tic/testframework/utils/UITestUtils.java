@@ -81,7 +81,7 @@ public class UITestUtils {
      * A date format for files like screenshots.
      */
     private static final DateFormat FILES_DATE_FORMAT = new SimpleDateFormat("dd_MM_yyyy__HH_mm_ss");
-    private static final Report report = Testerra.injector.getInstance(Report.class);
+    private static final Report report = Testerra.getInjector().getInstance(Report.class);
 
     private static int IE_SCREENSHOT_LIMIT = 1200;
 
@@ -304,7 +304,7 @@ public class UITestUtils {
 
             final String filename = "Desktop_" + FILES_DATE_FORMAT.format(new Date()) + ".png";
             Screenshot screenshot = new Screenshot(filename);
-            Report report = Testerra.injector.getInstance(Report.class);
+            Report report = Testerra.getInjector().getInstance(Report.class);
             saveBufferedImage(screenshotImage, screenshot.getScreenshotFile());
             report.addScreenshot(screenshot, Report.FileMode.MOVE);
         } else {

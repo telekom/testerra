@@ -78,7 +78,7 @@ public class CheckPageTest extends AbstractTestSitesTest implements PageFactoryP
     @Test
     public void testT08_CheckPage_ScreenshotOnLoad() {
 
-        Report report = Testerra.injector.getInstance(Report.class);
+        Report report = Testerra.getInjector().getInstance(Report.class);
         final File reportScreenshotDirectory = report.getReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
         Assert.assertNotNull(reportScreenshotDirectory);
         Assert.assertTrue(reportScreenshotDirectory.exists());

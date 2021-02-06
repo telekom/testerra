@@ -36,7 +36,7 @@ import org.testng.internal.annotations.DisabledRetryAnalyzer;
 
 public class MethodStartWorker implements Loggable, MethodStartEvent.Listener {
 
-    private final Formatter formatter = Testerra.injector.getInstance(Formatter.class);
+    private final Formatter formatter = Testerra.getInjector().getInstance(Formatter.class);
 
     @Override
     @Subscribe

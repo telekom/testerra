@@ -32,7 +32,7 @@ import org.openqa.selenium.WebDriver;
  * @author Mike Reiche
  */
 public class DefaultUiElementFinder implements UiElementFinder {
-    private static final UiElementFactory uiElementFactory = Testerra.injector.getInstance(UiElementFactory.class);
+    private static final UiElementFactory uiElementFactory = Testerra.getInjector().getInstance(UiElementFactory.class);
     private final WebDriver webDriver;
 
     public DefaultUiElementFinder(WebDriver webDriver) {

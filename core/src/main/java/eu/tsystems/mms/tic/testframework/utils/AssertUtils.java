@@ -32,7 +32,7 @@ public final class AssertUtils {
     private static final Assertion assertion;
 
     static {
-        assertion = Testerra.injector.getInstance(InstantAssertion.class);
+        assertion = Testerra.getInjector().getInstance(InstantAssertion.class);
     }
 
     private AssertUtils() {

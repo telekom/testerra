@@ -39,7 +39,7 @@ import org.testng.ITestResult;
 
 public class MethodEndWorker implements MethodEndEvent.Listener, Loggable {
 
-    private final Formatter formatter = Testerra.injector.getInstance(Formatter.class);
+    private final Formatter formatter = Testerra.getInjector().getInstance(Formatter.class);
 
     @Subscribe
     @Override

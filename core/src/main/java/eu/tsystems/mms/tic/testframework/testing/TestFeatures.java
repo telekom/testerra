@@ -29,6 +29,6 @@ import eu.tsystems.mms.tic.testframework.execution.testng.SimpleAssertion;
  * @author Mike Reiche
  */
 public interface TestFeatures {
-    SimpleAssertion Assert = Testerra.injector.getInstance(Assertion.class);
-    TestController Control = Testerra.injector.getInstance(TestController.class);
+    SimpleAssertion Assert = Testerra.getInjector().getInstance(Assertion.class);
+    TestController Control = Testerra.getInjector().getInstance(TestController.class);
 }

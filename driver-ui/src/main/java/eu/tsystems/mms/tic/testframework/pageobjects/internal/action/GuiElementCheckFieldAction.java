@@ -33,7 +33,7 @@ import java.lang.reflect.Field;
 
 public class GuiElementCheckFieldAction extends AbstractCheckFieldAction {
 
-    private final static TestController.Overrides overrides = Testerra.injector.getInstance(TestController.Overrides.class);
+    private final static TestController.Overrides overrides = Testerra.getInjector().getInstance(TestController.Overrides.class);
     private final CheckRule defaultCheckRule;
 
     public GuiElementCheckFieldAction(

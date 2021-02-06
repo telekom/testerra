@@ -169,7 +169,7 @@ public final class LayoutCheck {
         public LayoutComparator layoutComparator;
     }
 
-    private static final Report report = Testerra.injector.getInstance(Report.class);
+    private static final Report report = Testerra.getInjector().getInstance(Report.class);
 
     /**
      * Hide Default constructor.

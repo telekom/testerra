@@ -43,7 +43,7 @@ public class GenerateXmlReportListener implements
         ISuiteListener,
         ExecutionAbortEvent.Listener
 {
-    Report report = Testerra.injector.getInstance(Report.class);
+    Report report = Testerra.getInjector().getInstance(Report.class);
 
     JUnitXMLReporter XML_REPORTER;
 

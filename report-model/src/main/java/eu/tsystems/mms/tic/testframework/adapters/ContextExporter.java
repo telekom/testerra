@@ -74,7 +74,7 @@ import org.apache.logging.log4j.core.LogEvent;
 
 public class ContextExporter {
     private static final Map<TestStatusController.Status, ResultStatusType> STATUS_MAPPING = new LinkedHashMap<>();
-    private final Report report = Testerra.injector.getInstance(Report.class);
+    private final Report report = Testerra.getInjector().getInstance(Report.class);
     private final Gson jsonEncoder = new Gson();
 
     private static String annotationToString(Annotation annotation) {

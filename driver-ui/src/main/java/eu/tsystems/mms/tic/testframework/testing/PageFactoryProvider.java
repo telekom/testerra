@@ -29,5 +29,5 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.PageFactory;
  * @author Mike Reiche
  */
 public interface PageFactoryProvider {
-    PageFactory pageFactory = Testerra.injector.getInstance(PageFactory.class);
+    PageFactory pageFactory = Testerra.getInjector().getInstance(PageFactory.class);
 }

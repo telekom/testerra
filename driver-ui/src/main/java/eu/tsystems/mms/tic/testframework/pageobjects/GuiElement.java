@@ -70,7 +70,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     /**
      * Factory required for {@link UiElementFinder}
      */
-    private static final UiElementFactory uiElementFactory = Testerra.injector.getInstance(UiElementFactory.class);
+    private static final UiElementFactory uiElementFactory = Testerra.getInjector().getInstance(UiElementFactory.class);
 
     /**
      * Get lazy initialized by {@link #asserts()}
@@ -639,7 +639,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     @Deprecated
     public GuiElementAssert nonFunctionalAsserts() {
         if (nonFunctionalAssert==null) {
-            OptionalAssertion assertion = Testerra.injector.getInstance(OptionalAssertion.class);
+            OptionalAssertion assertion = Testerra.getInjector().getInstance(OptionalAssertion.class);
             nonFunctionalAssert = createAssertDecorators(assertion);
         }
         return nonFunctionalAssert;
@@ -675,7 +675,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     @Deprecated
     private GuiElementAssert instantAsserts() {
         if (instantAssert == null) {
-            InstantAssertion assertion = Testerra.injector.getInstance(InstantAssertion.class);
+            InstantAssertion assertion = Testerra.getInjector().getInstance(InstantAssertion.class);
             instantAssert = createAssertDecorators(assertion);
         }
         return instantAssert;
@@ -704,7 +704,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     @Deprecated
     public GuiElementAssert assertCollector() {
         if (collectableAssert==null) {
-            CollectedAssertion assertion = Testerra.injector.getInstance(CollectedAssertion.class);
+            CollectedAssertion assertion = Testerra.getInjector().getInstance(CollectedAssertion.class);
             collectableAssert = createAssertDecorators(assertion);
         }
         return collectableAssert;

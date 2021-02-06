@@ -29,5 +29,5 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFinderFac
  * @author Mike Reiche
  */
 public interface UiElementFinderFactoryProvider {
-    UiElementFinderFactory uiElementFinderFactory = Testerra.injector.getInstance(UiElementFinderFactory.class);
+    UiElementFinderFactory uiElementFinderFactory = Testerra.getInjector().getInstance(UiElementFinderFactory.class);
 }

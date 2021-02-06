@@ -40,7 +40,7 @@ import org.openqa.selenium.WebElement;
  */
 public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> extends AbstractPage implements Component<SELF>
 {
-    protected static final UiElementFactory uiElementFactory = Testerra.injector.getInstance(UiElementFactory.class);
+    protected static final UiElementFactory uiElementFactory = Testerra.getInjector().getInstance(UiElementFactory.class);
 
     protected final UiElement rootElement;
     private String name;

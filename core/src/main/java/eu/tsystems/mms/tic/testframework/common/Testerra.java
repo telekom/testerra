@@ -49,11 +49,7 @@ import org.slf4j.LoggerFactory;
 public class Testerra {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(Testerra.class);
-
-    /**
-     * @deprecated Use {@link #getInjector()} instead
-     */
-    public final static Injector injector = initIoc();
+    private final static Injector injector = initIoc();
     private static final EventBus eventBus;
     private static final Booter booter;
     private static LoggerContext loggerContext;

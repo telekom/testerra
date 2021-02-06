@@ -32,7 +32,7 @@ import org.openqa.selenium.WebDriver;
 @Deprecated
 public final class PageFactory {
 
-    private static eu.tsystems.mms.tic.testframework.pageobjects.internal.PageFactory pageFactory = Testerra.injector.getInstance(eu.tsystems.mms.tic.testframework.pageobjects.internal.PageFactory.class);
+    private static eu.tsystems.mms.tic.testframework.pageobjects.internal.PageFactory pageFactory = Testerra.getInjector().getInstance(eu.tsystems.mms.tic.testframework.pageobjects.internal.PageFactory.class);
 
     private PageFactory() {
 

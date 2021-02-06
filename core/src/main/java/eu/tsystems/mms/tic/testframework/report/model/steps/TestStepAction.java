@@ -47,8 +47,6 @@ public class TestStepAction implements Serializable {
     private final long timestamp;
     private final List<Object> entries = new LinkedList<>();
 
-    private static final Formatter formatter = Testerra.injector.getInstance(Formatter.class);
-
     public TestStepAction(String name) {
         this.name = name;
         this.timestamp = System.currentTimeMillis();

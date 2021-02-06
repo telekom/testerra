@@ -124,7 +124,7 @@ public final class GraphGenerator {
      * @throws IOException
      */
     public static File saveGraphAsJPEG(JFreeChart chart, String relativeFileName, int width, int height) throws IOException {
-        Report report = Testerra.injector.getInstance(Report.class);
+        Report report = Testerra.getInjector().getInstance(Report.class);
         File graphFile = report.getReportDirectory(relativeFileName);
         File dir = graphFile.getParentFile();
         if (!dir.exists()) {

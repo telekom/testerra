@@ -73,7 +73,7 @@ public class ThreadVisualizer {
         }
 
         // copy
-        Report report = Testerra.injector.getInstance(Report.class);
+        Report report = Testerra.getInjector().getInstance(Report.class);
         ReportUtils.copyFile(css, report.getReportDirectory());
         ReportUtils.copyFile(js, report.getReportDirectory());
 

@@ -67,7 +67,7 @@ public class XLSWriterTest extends TesterraTest {
             xlsWriter.writeCell(id, col, data);
 
             filecounter++;
-            Report report = Testerra.injector.getInstance(Report.class);
+            Report report = Testerra.getInjector().getInstance(Report.class);
             final File fullFile = report.getReportDirectory("xls/out-" + filecounter + "-" + filename);
 
             // check dirs

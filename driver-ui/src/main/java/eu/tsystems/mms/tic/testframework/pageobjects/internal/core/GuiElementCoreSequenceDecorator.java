@@ -48,7 +48,7 @@ import org.openqa.selenium.WebElement;
  */
 public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecorator implements Loggable {
 
-    private static final TestController.Overrides overrides = Testerra.injector.getInstance(TestController.Overrides.class);
+    private static final TestController.Overrides overrides = Testerra.getInjector().getInstance(TestController.Overrides.class);
 
     public GuiElementCoreSequenceDecorator(GuiElementCore core) {
         super(core);

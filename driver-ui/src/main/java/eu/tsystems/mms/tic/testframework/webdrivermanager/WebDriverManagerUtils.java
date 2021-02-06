@@ -92,10 +92,10 @@ public final class WebDriverManagerUtils {
             } catch (Exception e) {
                 LOGGER.error("Error requesting user agent", e);
             }
-            browserInformation = Testerra.injector.getInstance(BrowserInformation.class);
+            browserInformation = Testerra.getInjector().getInstance(BrowserInformation.class);
             browserInformation.parseUserAgent(userAgentString);
         } else {
-            browserInformation = Testerra.injector.getInstance(BrowserInformation.class);
+            browserInformation = Testerra.getInjector().getInstance(BrowserInformation.class);
         }
 
         CACHED_BROWSER_INFOS.put(driver, browserInformation);

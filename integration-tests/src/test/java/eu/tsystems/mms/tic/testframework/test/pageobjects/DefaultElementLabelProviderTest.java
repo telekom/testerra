@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 
 public class DefaultElementLabelProviderTest extends TesterraTest implements Loggable {
 
-    private UiElementLabelLocator labelLocator = Testerra.injector.getInstance(UiElementLabelLocator.class);
+    private UiElementLabelLocator labelLocator = Testerra.getInjector().getInstance(UiElementLabelLocator.class);
 
     @Test
     public void test_button() {

@@ -21,7 +21,6 @@
  */
 package eu.tsystems.mms.tic.testframework.utils;
 
-import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionHandler;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
@@ -75,15 +74,10 @@ public class WebDriverKeepAliveSequence extends Timer.Sequence<WebDriverKeepAliv
         // store driver
         this.driver = driver;
 
-        final WebDriver webDriverForUseInSequence = driver;
-
         // add ShutDownHandler that kills this Sequence.
-        WebDriverSessionsManager.registerWebDriverShutDownHandler(new WebDriverSessionHandler() {
-            @Override
-            public void run(WebDriver driver) {
-                if (webDriverForUseInSequence == driver) {
-                    forceRemove = true;
-                }
+        WebDriverSessionsManager.registerWebDriverAfterShutdownHandler(webDriver -> {
+            if (driver == webDriver) {
+                forceRemove = true;
             }
         });
 

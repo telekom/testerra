@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionHandler;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionsAfterMethodWorker;
+import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
@@ -206,22 +207,6 @@ public final class WebDriverManager {
         return WebDriverSessionsManager.getWebDriver(webDriverRequest);
     }
 
-    public static void registerWebDriverStartUpHandler(WebDriverSessionHandler webDriverSessionHandler) {
-        WebDriverSessionsManager.addWebDriverStartUpHandler(webDriverSessionHandler);
-    }
-
-    public static void registerWebDriverShutDownHandler(WebDriverSessionHandler webDriverSessionHandler) {
-        WebDriverSessionsAfterMethodWorker.register(webDriverSessionHandler);
-    }
-
-    public static void registerWebDriverShutDownHandler(Runnable afterQuit) {
-        WebDriverSessionsManager.afterQuitActions.add(afterQuit);
-    }
-
-    public static void registerWebDriverMethodShutDownHandler(WebDriverSessionHandler webDriverSessionHandler) {
-        WebDriverSessionsAfterMethodWorker.register(webDriverSessionHandler);
-    }
-
     /**
      * Introduce an own webdriver object. Selenium session will be released in this case.
      *
@@ -272,7 +257,7 @@ public final class WebDriverManager {
     private static void realShutdown(final boolean force) {
         if (getConfig().shouldShutdownSessions() || force) {
             if (WebDriverManager.isWebDriverActive()) {
-                WebDriverSessionsManager.shutDownAllThreadSessions();
+                WebDriverSessionsManager.shutdownAllThreadSessions();
                 WebDriverCapabilities.clearThreadCapabilities();
             }
 
@@ -406,7 +391,7 @@ public final class WebDriverManager {
 
     private static void pRealShutdownAllThreads(final boolean force) {
         if (getConfig().shouldShutdownSessions() || force) {
-            WebDriverSessionsManager.shutDownAllSessions();
+            WebDriverSessionsManager.shutdownAllSessions();
             WDInternal.cleanupDriverReferencesInCurrentThread();
         }
     }

@@ -31,20 +31,13 @@ public class DefaultReport implements Report, Loggable {
 
     private File REPORT_DIRECTORY;
     private final String BASE_DIR = Properties.BASE_DIR.asString();
-    private final File SCREENSHOTS_DIRECTORY;
-    private final File VIDEO_DIRECTORY;
 
     public DefaultReport() {
         FileUtils fileUtils = new FileUtils();
         REPORT_DIRECTORY = fileUtils.createTempDir(BASE_DIR);
         log().debug("Prepare report in " + REPORT_DIRECTORY.getAbsolutePath());
-
-        SCREENSHOTS_DIRECTORY = new File(REPORT_DIRECTORY, SCREENSHOTS_FOLDER_NAME);
-        VIDEO_DIRECTORY = new File(REPORT_DIRECTORY, VIDEO_FOLDER_NAME);
-
-        SCREENSHOTS_DIRECTORY.mkdirs();
-        VIDEO_DIRECTORY.mkdirs();
     }
+
 
 
     private File addFile(File sourceFile, File directory, FileMode fileMode) {
@@ -83,12 +76,13 @@ public class DefaultReport implements Report, Loggable {
     }
 
     private void addScreenshotFiles(Screenshot screenshot, FileMode fileMode) {
+        File screenshotsDirectory = getReportDirectory(SCREENSHOTS_FOLDER_NAME);
         if (screenshot.getScreenshotFile() != null) {
-            screenshot.setFile(addFile(screenshot.getScreenshotFile(), SCREENSHOTS_DIRECTORY, fileMode));
+            screenshot.setFile(addFile(screenshot.getScreenshotFile(), screenshotsDirectory, fileMode));
         }
 
         if (screenshot.getPageSourceFile() != null) {
-            screenshot.setPageSourceFile(addFile(screenshot.getPageSourceFile(), SCREENSHOTS_DIRECTORY, fileMode));
+            screenshot.setPageSourceFile(addFile(screenshot.getPageSourceFile(), screenshotsDirectory, fileMode));
         }
     }
 
@@ -107,7 +101,8 @@ public class DefaultReport implements Report, Loggable {
 
     @Override
     public Report addVideo(Video video, FileMode fileMode) {
-        video.setFile(addFile(video.getVideoFile(), VIDEO_DIRECTORY, fileMode));
+        File videoDirectory = getReportDirectory(VIDEO_FOLDER_NAME);
+        video.setFile(addFile(video.getVideoFile(), videoDirectory, fileMode));
         return this;
     }
 

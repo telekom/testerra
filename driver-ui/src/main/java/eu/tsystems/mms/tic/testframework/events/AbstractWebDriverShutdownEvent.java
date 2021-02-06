@@ -1,7 +1,7 @@
-/*!
+/*
  * Testerra
  *
- * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2021, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -19,21 +19,16 @@
  * under the License.
  */
 
-.screenshot-dialog {
-    .mdc-dialog__container {
-        .mdc-dialog__surface {
-            max-width: 90vw !important;
-        }
+package eu.tsystems.mms.tic.testframework.events;
+
+public abstract class AbstractWebDriverShutdownEvent {
+    private final MethodEndEvent methodEndEvent;
+
+    AbstractWebDriverShutdownEvent(MethodEndEvent methodEndEvent) {
+        this.methodEndEvent = methodEndEvent;
     }
-}
-.btn-fullscreen {
-    position: absolute;
-    right: 90%;
-}
-.mdc-dialog--open .mdc-dialog__container{
-    max-width: 100%;
-}
-.screenshot-image {
-    border: #5d6f81 solid 1px;
-    width:100%
+
+    public MethodEndEvent getMethodEndEvent() {
+        return methodEndEvent;
+    }
 }

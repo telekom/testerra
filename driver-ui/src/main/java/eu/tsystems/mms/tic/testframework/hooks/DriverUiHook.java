@@ -29,10 +29,10 @@ import eu.tsystems.mms.tic.testframework.execution.worker.finish.ConditionalBeha
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.LogWDSessionsWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.TakeInSessionEvidencesWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.TakeOutOfSessionsEvidencesWorker;
-import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionsAfterMethodWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverShutDownWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.start.PerformanceTestWorker;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
+import eu.tsystems.mms.tic.testframework.listeners.ShutdownSessionsListener;
 import eu.tsystems.mms.tic.testframework.report.ScreenshotGrabber;
 import eu.tsystems.mms.tic.testframework.report.SourceGrabber;
 import eu.tsystems.mms.tic.testframework.report.UITestStepIntegration;
@@ -64,13 +64,12 @@ public class DriverUiHook implements ModuleHook {
         eventBus.register(new LogWDSessionsWorker());
         eventBus.register(new TakeInSessionEvidencesWorker());
 
-        eventBus.register(new WebDriverSessionsAfterMethodWorker()); // the utilizable one
-
         /*
         ********* SESSIONS SHUTDOWN *********
          */
         eventBus.register(new WebDriverShutDownWorker());
         eventBus.register(new TakeOutOfSessionsEvidencesWorker());
+        eventBus.register(new ShutdownSessionsListener());
 
         /*
         register services
@@ -84,6 +83,10 @@ public class DriverUiHook implements ModuleHook {
 
     @Override
     public void terminate() {
+        shutdownModule();
+    }
+
+    public static void shutdownModule() {
         WebDriverManager.forceShutdownAllThreads();
         WebDriverWatchDog.stop();
     }

@@ -21,18 +21,56 @@
 
 package eu.tsystems.mms.tic.testframework.internal.asserts;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.utils.Formatter;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 /**
  * Provides information and reacts to further assertions
  * @author Mike Reiche
  */
 public abstract class AssertionProvider<T> implements ActualProperty<T> {
+
+    protected static class Format {
+        private final static Formatter formatter = Testerra.getInjector().getInstance(Formatter.class);
+        protected static final String SEPARATOR=" > ";
+        public static String separate(Object...parts) {
+            return Arrays.stream(parts).map(Object::toString).collect(Collectors.joining(SEPARATOR));
+        }
+
+        public static String cut(String subject) {
+            return formatter.cutString(subject, 30);
+        }
+
+        public static String quote(String parameter) {
+            return "\""+parameter+"\"";
+        }
+
+        public static String enclose(String method, Object...parameters) {
+            if (parameters.length > 0) {
+                method += "(" + Arrays.stream(parameters).map(Objects::toString).collect(Collectors.joining(", ")) + ")";
+            }
+            return method;
+        }
+
+        public static String label(String label, Object parameter) {
+            return label+": " + parameter;
+        }
+
+        public static String string(Object param) {
+            return quote(cut(param.toString()));
+        }
+    }
+
     @Override
     abstract public T getActual();
 
     /**
      * @return The subject ob the property (ea. "name", "url", ...)
      */
-    abstract public String getSubject();
+    abstract public String createSubject();
 
     /**
      * This method will be called recurisve from parent to descendants

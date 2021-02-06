@@ -21,9 +21,7 @@
 
 package eu.tsystems.mms.tic.testframework.internal.asserts;
 
-import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,7 +31,6 @@ import java.util.regex.Pattern;
  */
 public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> implements StringAssertion<T>, Loggable {
 
-    private final static Formatter formatter = Testerra.getInjector().getInstance(Formatter.class);
 
     public DefaultStringAssertion(AbstractPropertyAssertion parentAssertion, AssertionProvider<T> provider) {
         super(parentAssertion, provider);
@@ -48,8 +45,8 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
             }
 
             @Override
-            public String getSubject() {
-                return String.format("\"%s\".contains(%s)", getStringSubject(), expected);
+            public String createSubject() {
+                return Format.separate(Format.enclose("contains", Format.string(expected)));
             }
         });
     }
@@ -63,8 +60,8 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
             }
 
             @Override
-            public String getSubject() {
-                return String.format("\"%s\".startsWith(%s)", getStringSubject(), expected);
+            public String createSubject() {
+                return Format.separate(Format.enclose("startsWith", Format.string(expected)));
             }
         });
     }
@@ -78,8 +75,8 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
             }
 
             @Override
-            public String getSubject() {
-                return String.format("\"%s\".endsWith(%s)", getStringSubject(), expected);
+            public String createSubject() {
+                return Format.separate(Format.enclose("endsWith", Format.string(expected)));
             }
         });
     }
@@ -93,8 +90,8 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
             }
 
             @Override
-            public String getSubject() {
-                return String.format("\"%s\".matches(pattern: %s)", getStringSubject(), pattern.toString());
+            public String createSubject() {
+                return Format.separate(Format.enclose("matches", Format.string(pattern)));
             }
         });
     }
@@ -114,15 +111,12 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
             }
 
             @Override
-            public String getSubject() {
-                return String.format("\"%s\".containsWords(%s)", getStringSubject(), wordsList);
+            public String createSubject() {
+                return Format.separate(Format.enclose("containsWords", Format.quote(wordsList)));
             }
         });
     }
 
-    private String getStringSubject() {
-        return formatter.cutString(provider.getActual().toString(), 30);
-    }
 
     @Override
     public QuantityAssertion<Integer> length() {
@@ -133,8 +127,8 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
             }
 
             @Override
-            public String getSubject() {
-                return String.format("\"%s\".length", getStringSubject());
+            public String createSubject() {
+                return "length";
             }
         });
     }

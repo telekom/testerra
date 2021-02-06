@@ -111,7 +111,7 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
             }
 
             @Override
-            public String getSubject() {
+            public String createSubject() {
                 return "map";
             }
         });
@@ -132,7 +132,7 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
             }
 
             @Override
-            public String getSubject() {
+            public String createSubject() {
                 return "absolute";
             }
         });

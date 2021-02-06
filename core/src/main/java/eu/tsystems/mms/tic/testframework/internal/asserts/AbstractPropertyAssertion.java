@@ -22,7 +22,11 @@
 package eu.tsystems.mms.tic.testframework.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.utils.Formatter;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * An abstract property assertion without any test implementations.
@@ -53,11 +57,11 @@ public abstract class AbstractPropertyAssertion<T> implements ActualProperty<T> 
 
         StringBuilder sb = new StringBuilder();
         traceAncestors(propertyAssertion -> {
-            String subject = propertyAssertion.provider.getSubject();
-            if (subject != null) sb.append(subject).append(".");
+            String subject = propertyAssertion.provider.createSubject();
+            if (subject != null) sb.append(subject).append(AssertionProvider.Format.SEPARATOR);
         });
 
-        String subject = this.provider.getSubject();
+        String subject = this.provider.createSubject();
         if (subject != null) sb.append(subject);
 
         return sb.toString();

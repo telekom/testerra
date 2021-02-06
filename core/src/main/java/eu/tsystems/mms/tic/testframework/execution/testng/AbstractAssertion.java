@@ -38,10 +38,15 @@ public abstract class AbstractAssertion implements Assertion {
         StringBuilder builder = new StringBuilder();
         builder.append("Expected");
         if (subject != null) {
-            builder.append(" that >").append(subject).append("<");
-            builder.append(" actual");
+            builder.append(" that ").append(subject);
+
         }
-        builder.append(" [").append(actual).append("]");
+        if (actual != null) {
+            if (subject != null) {
+                builder.append(" actual");
+            }
+            builder.append(" [").append(actual).append("]");
+        }
         builder.append(" ").append(expected);
         return builder.toString();
     }

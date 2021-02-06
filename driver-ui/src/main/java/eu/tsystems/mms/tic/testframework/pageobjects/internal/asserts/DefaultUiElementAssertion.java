@@ -103,8 +103,8 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
             }
 
             @Override
-            public String getSubject() {
-                return String.format("%s.@tagName", guiElement);
+            public String createSubject() {
+                return String.format("%s.@tagName=", guiElement);
             }
         });
     }
@@ -118,8 +118,8 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
             }
 
             @Override
-            public String getSubject() {
-                return String.format("%s.@text", guiElement.toString(true));
+            public String createSubject() {
+                return String.format("%s.@text=", guiElement.toString(true));
             }
         });
     }
@@ -134,8 +134,8 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
             }
 
             @Override
-            public String getSubject() {
-                return String.format("%s.@%s", guiElement.toString(true), finalAttribute);
+            public String createSubject() {
+                return String.format("%s.@%s=", guiElement.toString(true), finalAttribute);
             }
         });
     }
@@ -149,8 +149,8 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
             }
 
             @Override
-            public String getSubject() {
-                return String.format("%s.css(@%s)", guiElement.toString(true), property);
+            public String createSubject() {
+                return String.format("%s.css(%s)", guiElement.toString(true), property);
             }
         });
     }
@@ -164,8 +164,8 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
             }
 
             @Override
-            public String getSubject() {
-                return String.format("%s.@present", guiElement.toString(true));
+            public String createSubject() {
+                return String.format("%s.present", guiElement.toString(true));
             }
         });
     }
@@ -179,7 +179,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
             }
 
             @Override
-            public String getSubject() {
+            public String createSubject() {
                 return String.format("%s.visible(complete: %s)", guiElement.toString(true), complete);
             }
         });
@@ -193,8 +193,8 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
                 return core.isDisplayed();
             }
             @Override
-            public String getSubject() {
-                return String.format("%s.@displayed", guiElement.toString(true));
+            public String createSubject() {
+                return String.format("%s.displayed", guiElement.toString(true));
             }
         });
     }
@@ -208,7 +208,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
             }
 
             @Override
-            public String getSubject() {
+            public String createSubject() {
                 return String.format("%s.@enabled", guiElement.toString(true));
             }
         });
@@ -223,7 +223,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
             }
 
             @Override
-            public String getSubject() {
+            public String createSubject() {
                 return String.format("%s.@selected", guiElement.toString(true));
             }
         });
@@ -238,7 +238,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
             }
 
             @Override
-            public String getSubject() {
+            public String createSubject() {
                 return String.format("%s.selectable", guiElement.toString(true));
             }
         });
@@ -253,7 +253,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
             }
 
             @Override
-            public String getSubject() {
+            public String createSubject() {
                 return String.format("%s.bounds", guiElement.toString(true));
             }
         });
@@ -272,7 +272,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
             }
 
             @Override
-            public String getSubject() {
+            public String createSubject() {
                 return String.format("%s.numberOfElements", guiElement.toString(true));
             }
         });
@@ -307,7 +307,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
             }
 
             @Override
-            public String getSubject() {
+            public String createSubject() {
                 return String.format("%s.screenshot", guiElement.toString(true));
             }
         });

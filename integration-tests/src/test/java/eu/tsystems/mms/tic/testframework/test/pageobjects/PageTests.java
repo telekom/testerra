@@ -105,30 +105,6 @@ public class PageTests extends AbstractTestSitesTest implements Loggable, PageFa
         page.expect().url().length().isGreaterEqualThan(10);
     }
 
-    @Test()
-    public void test_Page_url_fails() {
-        WebTestPage page = getPage();
-        try {
-            page.expect().url().endsWith("nonexistingfile.html").is(true, "Wrong URL");
-        } catch (AssertionError e) {
-            Assert.assertContains(e.getMessage(), "Wrong URL");
-            Assert.assertEndsWith(e.getMessage(), "ends with [nonexistingfile.html]");
-        }
-    }
-
-    @Test()
-    public void test_Page_url_length_fails() {
-        WebTestPage page = getPage();
-
-        try {
-            page.expect().url().length().isGreaterEqualThan(10000, "URL is too short");
-        } catch (AssertionError e) {
-            Assert.assertContains(e.getMessage(), "URL is too short");
-            Assert.assertEndsWith(e.getMessage(), "is greater or equal than [10000]");
-        }
-    }
-
-
     @Test
     public void test_Component() {
         final String input = "Ich gebe etwas ein";

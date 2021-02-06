@@ -21,6 +21,7 @@
 
 package eu.tsystems.mms.tic.testframework.test.guielement;
 
+import eu.tsystems.mms.tic.testframework.AbstractExclusiveTestSitesTest;
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.WebTestPage;
 import eu.tsystems.mms.tic.testframework.internal.asserts.QuantityAssertion;
@@ -29,11 +30,11 @@ import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 
-public class UiElementLayoutTests extends AbstractTestSitesTest implements PageFactoryTest {
+public class UiElementLayoutTests extends AbstractExclusiveTestSitesTest<WebTestPage> {
 
     @Override
-    public WebTestPage getPage() {
-        return pageFactory.createPage(WebTestPage.class, getClassExclusiveWebDriver());
+    public Class<WebTestPage> getPageClass() {
+        return WebTestPage.class;
     }
 
     @Test

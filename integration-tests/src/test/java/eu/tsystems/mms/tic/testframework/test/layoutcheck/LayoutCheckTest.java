@@ -21,20 +21,25 @@
  */
  package eu.tsystems.mms.tic.testframework.test.layoutcheck;
 
+import eu.tsystems.mms.tic.testframework.AbstractExclusiveTestSitesTest;
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.BasePage;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.LocatorFactoryProvider;
 import org.testng.annotations.Test;
 
-public class LayoutCheckTest extends AbstractTestSitesTest implements LocatorFactoryProvider {
-
-
+public class LayoutCheckTest extends AbstractExclusiveTestSitesTest<BasePage> implements LocatorFactoryProvider {
 
     @Override
     protected TestPage getTestPage() {
         return TestPage.LAYOUT;
+    }
+
+    @Override
+    public Class getPageClass() {
+        return BasePage.class;
     }
 
     private GuiElement getGuiElementQa(final String qaTag) {

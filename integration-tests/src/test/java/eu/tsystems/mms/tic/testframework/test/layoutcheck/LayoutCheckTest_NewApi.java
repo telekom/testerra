@@ -19,16 +19,14 @@
  */
 package eu.tsystems.mms.tic.testframework.test.layoutcheck;
 
-import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.AbstractExclusiveTestSitesTest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.BasePage;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
-import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
-import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import org.testng.annotations.Test;
 
-public class UiElementLayoutCheckTests extends AbstractTestSitesTest implements Loggable, PageFactoryTest {
+public class LayoutCheckTest_NewApi extends AbstractExclusiveTestSitesTest<BasePage> {
 
     @Override
     protected TestPage getTestPage() {
@@ -36,8 +34,8 @@ public class UiElementLayoutCheckTests extends AbstractTestSitesTest implements 
     }
 
     @Override
-    public BasePage getPage() {
-        return pageFactory.createPage(BasePage.class, getClassExclusiveWebDriver());
+    public Class getPageClass() {
+        return BasePage.class;
     }
 
     @Test
@@ -67,15 +65,15 @@ public class UiElementLayoutCheckTests extends AbstractTestSitesTest implements 
         guiElement.expect().visible(true).is(true);
     }
 
-    @Test()
-    @Fails(description = "This test should fail")
-    public void testCheckElementLayoutDistance() {
-        BasePage page = getPage();
-        UiElement guiElement = page.getFinder().findByQa("section/layoutTestArticle");
-        Control.retryFor(10,() -> {
-            Control.withTimeout(0, () -> guiElement.expect().screenshot().pixelDistance("TestArticleFailed").isLowerThan(1));
-        });
-    }
+//    @Test()
+//    @Fails(description = "This test should fail")
+//    public void testCheckElementLayoutDistance() {
+//        BasePage page = getPage();
+//        UiElement guiElement = page.getFinder().findByQa("section/layoutTestArticle");
+//        Control.retryFor(10,() -> {
+//            Control.withTimeout(0, () -> guiElement.expect().screenshot().pixelDistance("TestArticleFailed").isLowerThan(1));
+//        });
+//    }
 
     @Test
     public void testCheckPageLayout() {

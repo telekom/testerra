@@ -22,6 +22,7 @@
 
 package eu.tsystems.mms.tic.testframework.test.guielement;
 
+import eu.tsystems.mms.tic.testframework.AbstractExclusiveTestSitesTest;
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.GuiElementListPage;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
@@ -30,7 +31,7 @@ import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 
-public class GuiElementListTests extends AbstractTestSitesTest implements PageFactoryTest {
+public class GuiElementListTests extends AbstractExclusiveTestSitesTest<GuiElementListPage> {
 
 
     @Override
@@ -39,8 +40,8 @@ public class GuiElementListTests extends AbstractTestSitesTest implements PageFa
     }
 
     @Override
-    public GuiElementListPage getPage() {
-        return pageFactory.createPage(GuiElementListPage.class, getWebDriver());
+    public Class getPageClass() {
+        return GuiElementListPage.class;
     }
 
     @Test

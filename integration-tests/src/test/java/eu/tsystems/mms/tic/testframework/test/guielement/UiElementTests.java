@@ -20,24 +20,22 @@
  */
 package eu.tsystems.mms.tic.testframework.test.guielement;
 
-import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.AbstractExclusiveTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.WebTestPage;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.internal.asserts.ImageAssertion;
-import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementAssertion;
-import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.testng.annotations.Test;
 
-public class UiElementTests extends AbstractTestSitesTest implements Loggable, PageFactoryTest {
+public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> {
 
     @Override
-    public WebTestPage getPage() {
-        return pageFactory.createPage(WebTestPage.class, getClassExclusiveWebDriver());
+    public Class<WebTestPage> getPageClass() {
+        return WebTestPage.class;
     }
 
     @Test
@@ -90,13 +88,13 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     }
 
     @Test
-    public void test_UiElement_waitFor_followedBy_expectThat() {
+    public void test_UiElement_waitFor_followedBy_expect() {
         WebTestPage page = getPage();
         Assert.assertTrue(page.notDisplayedElement().waitFor().displayed(false), "Display status of not displayed element");
         try {
             page.notVisibleElement().expect().displayed(true);
         } catch (AssertionError error) {
-            Assert.assertContains(error.getMessage(), "actual [false] is one of [true");
+            Assert.assertEndsWith(error.getMessage(), "is true");
         }
     }
 
@@ -114,12 +112,12 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     }
 
     @Test
-    public void test_UiElement_expectThat_followedBy_waitFor() {
+    public void test_UiElement_expect_followedBy_waitFor() {
         WebTestPage page = getPage();
         try {
             page.notVisibleElement().expect().displayed(true);
         } catch (AssertionError error) {
-            Assert.assertContains(error.getMessage(), "actual [false] is one of [true");
+            Assert.assertEndsWith(error.getMessage(), "is true");
         }
         Assert.assertTrue(page.notDisplayedElement().waitFor().displayed(false), "Display status of not displayed element");
     }
@@ -208,7 +206,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
         } catch (AssertionError e) {
             msg = e.getMessage();
         }
-        Assert.assertEndsWith(msg, "is one of [true, 'on', '1', 'yes']", AssertionError.class.toString());
+        Assert.assertEndsWith(msg, "is true", AssertionError.class.toString());
     }
 
     @Test
@@ -285,7 +283,6 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
             });
         } catch (Exception e) {
             Assert.assertStartsWith(e.getMessage(), "Retry sequence timed out", e.getClass().getSimpleName());
-            Assert.assertEndsWith(e.getCause().getMessage(), "@enabled< actual [true] is one of [false, 'off', '0', 'no']", e.getCause().getClass().getSimpleName());
         }
         Assert.assertEquals(retryCount.get(), 3, "Retry count");
     }

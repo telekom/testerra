@@ -20,16 +20,15 @@
  */
 package eu.tsystems.mms.tic.testframework.test;
 
-import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.AbstractExclusiveTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.WebTestPage;
-import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import org.testng.annotations.Test;
 
-public class AssertionFormatTests extends AbstractTestSitesTest implements Loggable, PageFactoryTest {
+public class AssertionFormatTests extends AbstractExclusiveTestSitesTest<WebTestPage> {
 
     @Override
-    public WebTestPage getPage() {
-        return pageFactory.createPage(WebTestPage.class, getClassExclusiveWebDriver());
+    public Class<WebTestPage> getPageClass() {
+        return WebTestPage.class;
     }
 
     @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that WebTestPage > @url=\"http://localhost/Input/input.html\" > endsWith\\(\"nonexistingfile.html\"\\) is true")

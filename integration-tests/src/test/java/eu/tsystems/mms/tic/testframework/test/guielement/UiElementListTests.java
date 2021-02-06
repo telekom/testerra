@@ -19,21 +19,21 @@
  */
 package eu.tsystems.mms.tic.testframework.test.guielement;
 
-import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.AbstractExclusiveTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementList;
-import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.test.core.pageobjects.testdata.UiElementListPage;
 import eu.tsystems.mms.tic.testframework.test.core.pageobjects.testdata.components.TableRow;
 import org.testng.annotations.Test;
 
-public class UiElementListTests extends AbstractTestSitesTest implements PageFactoryTest {
+public class UiElementListTests extends AbstractExclusiveTestSitesTest<UiElementListPage> {
 
-    public UiElementListPage getPage() {
-        return pageFactory.createPage(UiElementListPage.class, getClassExclusiveWebDriver());
+    @Override
+    public Class<UiElementListPage> getPageClass() {
+        return UiElementListPage.class;
     }
 
     @Test

@@ -20,7 +20,7 @@
  */
 package eu.tsystems.mms.tic.testframework.test.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.AbstractExclusiveTestSitesTest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.WebTestPage;
 import eu.tsystems.mms.tic.testframework.internal.asserts.QuantityAssertion;
@@ -29,11 +29,11 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import org.testng.annotations.Test;
 
-public class PageTests extends AbstractTestSitesTest implements Loggable, PageFactoryTest {
+public class PageTests extends AbstractExclusiveTestSitesTest<WebTestPage> implements Loggable, PageFactoryTest {
 
     @Override
-    public WebTestPage getPage() {
-        return pageFactory.createPage(WebTestPage.class, getClassExclusiveWebDriver());
+    public Class getPageClass() {
+        return WebTestPage.class;
     }
 
     @Test

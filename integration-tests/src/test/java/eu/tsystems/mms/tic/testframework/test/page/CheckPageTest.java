@@ -43,13 +43,13 @@ public class CheckPageTest extends AbstractTestSitesTest implements PageFactoryP
 
     @Test
     public void testT01_checkExistingElement() throws Exception {
-        pageFactory.createPage(PageWithExistingElement.class, getWebDriver());
+        pageFactory.createPage(PageWithExistingElement.class, getClassExclusiveWebDriver());
     }
 
     @Test(expectedExceptions = PageNotFoundException.class)
     public void testT02_checkNotExistingElement() throws Throwable {
         try {
-            pageFactory.createPage(PageWithNotExistingElement.class, getWebDriver());
+            pageFactory.createPage(PageWithNotExistingElement.class, getClassExclusiveWebDriver());
         } catch (Throwable e) {
             do {
                 e = e.getCause();
@@ -62,17 +62,17 @@ public class CheckPageTest extends AbstractTestSitesTest implements PageFactoryP
 
     @Test(expectedExceptions = RuntimeException.class)
     public void testT03_checkNullElement() throws Exception {
-        pageFactory.createPage(PageWithNullElement.class, getWebDriver());
+        pageFactory.createPage(PageWithNullElement.class, getClassExclusiveWebDriver());
     }
 
     @Test(expectedExceptions = RuntimeException.class)
     public void testT04_checkStaticElement() throws Exception {
-        pageFactory.createPage(PageWithExistingStaticElement.class, getWebDriver());
+        pageFactory.createPage(PageWithExistingStaticElement.class, getClassExclusiveWebDriver());
     }
 
     @Test(expectedExceptions = RuntimeException.class)
     public void testT05_checkNonCheckableElement() throws Exception {
-        pageFactory.createPage(PageWithNonCheckableCheck.class, getWebDriver());
+        pageFactory.createPage(PageWithNonCheckableCheck.class, getClassExclusiveWebDriver());
     }
 
     @Test
@@ -85,7 +85,7 @@ public class CheckPageTest extends AbstractTestSitesTest implements PageFactoryP
         Assert.assertTrue(reportScreenshotDirectory.isDirectory());
         Assert.assertNotNull(reportScreenshotDirectory.listFiles());
 
-        final WebDriver driver = getWebDriver();
+        final WebDriver driver = getClassExclusiveWebDriver();
 
         final int fileCountBeforeAction = reportScreenshotDirectory.listFiles().length;
         PropertyManager.getFileProperties().setProperty(TesterraProperties.SCREENSHOT_ON_PAGELOAD, "false");

@@ -107,7 +107,7 @@ public interface Report {
      */
     default File getReportDirectory(String childName) {
         File file = new File(getReportDirectory(), childName);
-        if (file.isDirectory() && !file.exists()) {
+        if (!file.exists()) {
             file.mkdirs();
         }
         return file;

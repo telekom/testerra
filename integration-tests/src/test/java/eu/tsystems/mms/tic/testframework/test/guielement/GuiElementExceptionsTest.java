@@ -37,7 +37,7 @@ public class GuiElementExceptionsTest extends AbstractTestSitesTest {
      */
     @Test
     public void testT01N_GuiElement_notExistingFrame() {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = getWebDriver();
         GuiElement notExistingFrame = new GuiElement(driver, By.xpath("meNoExist"));
         GuiElement elementToSearch = notExistingFrame.getSubElement(By.xpath("thisDoesNotMatter"));
 

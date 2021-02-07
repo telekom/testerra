@@ -44,7 +44,7 @@ public class AssertionsTest extends TesterraTest {
         assertion.assertTrue(false);
     }
 
-    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that »should be true« actual \\[false\\] equals \\[true\\]")
+    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that should be true \\[false\\] equals \\[true\\]")
     public void testIsTrue_fails_message() {
         assertion.assertTrue(false, "should be true");
     }
@@ -59,7 +59,7 @@ public class AssertionsTest extends TesterraTest {
         assertion.assertFalse(true);
     }
 
-    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that »should be false« actual \\[true\\] equals \\[false\\]")
+    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that should be false \\[true\\] equals \\[false\\]")
     public void testIsFalse_fails_message() {
         assertion.assertFalse(true, "should be false");
     }
@@ -114,7 +114,7 @@ public class AssertionsTest extends TesterraTest {
         assertion.assertStartsWith("a long time ago", "in the end");
     }
 
-    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp="Expected that »a fairytale« actual \\[a long time ago\\] starts with \\[in the end\\]")
+    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp="Expected that a fairytale \\[a long time ago\\] starts with \\[in the end\\]")
     public void testStartsWith_fails_message() {
         assertion.assertStartsWith("a long time ago", "in the end", "a fairytale");
     }
@@ -129,7 +129,7 @@ public class AssertionsTest extends TesterraTest {
         assertion.assertEndsWith("this is the end", "the beginning");
     }
 
-    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that »the sentence« actual \\[this is the end\\] ends with \\[the beginning\\]")
+    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that the sentence \\[this is the end\\] ends with \\[the beginning\\]")
     public void testEndsWith_fails_message() {
         assertion.assertEndsWith("this is the end", "the beginning", "the sentence");
     }

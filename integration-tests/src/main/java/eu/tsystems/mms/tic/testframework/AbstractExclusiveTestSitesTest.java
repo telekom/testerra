@@ -23,14 +23,14 @@
 package eu.tsystems.mms.tic.testframework;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageObject;
+import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
 import org.testng.annotations.BeforeClass;
 
 /**
  * Abstract test class for tests based on static test site resources
  */
-public abstract class AbstractExclusiveTestSitesTest<T extends Page> extends AbstractTestSitesTest implements PageFactoryProvider {
+public abstract class AbstractExclusiveTestSitesTest<T extends Page> extends AbstractTestSitesTest implements PageFactoryTest, PageFactoryProvider {
     private T page;
 
     @BeforeClass
@@ -40,6 +40,7 @@ public abstract class AbstractExclusiveTestSitesTest<T extends Page> extends Abs
 
     abstract public Class<T> getPageClass();
 
+    @Override
     public T getPage() {
         return this.page;
     }

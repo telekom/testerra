@@ -22,6 +22,7 @@
 
 package eu.tsystems.mms.tic.testframework.test.guielement;
 
+import eu.tsystems.mms.tic.testframework.AbstractExclusiveTestSitesTest;
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.GuiElementShadowRootPage;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
@@ -30,7 +31,7 @@ import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import org.testng.annotations.Test;
 
-public class GuiElementShadowRootTest extends AbstractTestSitesTest implements PageFactoryTest {
+public class GuiElementShadowRootTest extends AbstractExclusiveTestSitesTest<GuiElementShadowRootPage> {
 
     @Override
     protected TestPage getTestPage() {
@@ -38,8 +39,8 @@ public class GuiElementShadowRootTest extends AbstractTestSitesTest implements P
     }
 
     @Override
-    public GuiElementShadowRootPage getPage() {
-        return PageFactory.create(GuiElementShadowRootPage.class, getWebDriver());
+    public Class<GuiElementShadowRootPage> getPageClass() {
+        return GuiElementShadowRootPage.class;
     }
 
     @Test

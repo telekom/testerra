@@ -125,7 +125,7 @@ public abstract class AbstractGuiElementLayoutsTest extends AbstractGuiElementSt
         GuiElement e1 = getGuiElementBy(By.id("1")).getSubElement(By.xpath("./.."));
         GuiElement e2 = getGuiElementBy(By.id("11")).getSubElement(By.xpath("./.."));
 
-        getWebDriver().manage().window().setSize(new Dimension(1920, 1080));
+        e1.getWebDriver().manage().window().setSize(new Dimension(1920, 1080));
         e1.asserts().assertLayout(Layout.outer().sameTop(e2, 0));
     }
 
@@ -140,7 +140,7 @@ public abstract class AbstractGuiElementLayoutsTest extends AbstractGuiElementSt
     public void testT43_SameTopWithDelta() throws Exception {
         GuiElement e1 = getGuiElementBy(By.id("1")).getSubElement(By.xpath("./.."));
         GuiElement e2 = getGuiElementBy(By.id("11"));
-        getWebDriver().manage().window().setSize(new Dimension(1920, 1080));
+        e1.getWebDriver().manage().window().setSize(new Dimension(1920, 1080));
         e1.asserts().assertLayout(Layout.outer().sameTop(e2, 20));
     }
 
@@ -152,7 +152,7 @@ public abstract class AbstractGuiElementLayoutsTest extends AbstractGuiElementSt
     public void testT51_SameBottom() throws Exception {
         GuiElement e1 = getGuiElementBy(By.id("1")).getSubElement(By.xpath("./.."));
         GuiElement e2 = getGuiElementBy(By.id("11")).getSubElement(By.xpath("./.."));
-        getWebDriver().manage().window().setSize(new Dimension(1920, 1080));
+        e1.getWebDriver().manage().window().setSize(new Dimension(1920, 1080));
         e1.asserts().assertLayout(Layout.outer().sameBottom(e2, 0));
     }
 

@@ -659,7 +659,7 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
     public void testT66_GuiElement_doubleClick() {
         final GuiElement element = getSelectableElement();
         // scroll element out of viewport
-        JSUtils.executeScript(getWebDriver(), String.format("scrollBy(%d, %d)", 0, getWebDriver().manage().window().getSize().getHeight()));
+        JSUtils.executeScript(getWebDriver(), String.format("scrollBy(%d, %d)", 0, element.getWebDriver().manage().window().getSize().getHeight()));
         // double click element with implicit scrolling to viewport
         element.doubleClick();
         getLoggerTableElement().asserts().assertTextContains("Input 3 Double clicked");

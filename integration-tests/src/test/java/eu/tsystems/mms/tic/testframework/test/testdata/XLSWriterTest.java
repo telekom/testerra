@@ -68,13 +68,7 @@ public class XLSWriterTest extends TesterraTest {
 
             filecounter++;
             Report report = Testerra.getInjector().getInstance(Report.class);
-            final File fullFile = report.getReportDirectory("xls/out-" + filecounter + "-" + filename);
-
-            // check dirs
-            File dir = fullFile.getParentFile();
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
+            final File fullFile = report.getReportFile("xls/out-" + filecounter + "-" + filename);
 
             // save
             xlsWriter.saveAs(fullFile.getAbsolutePath());

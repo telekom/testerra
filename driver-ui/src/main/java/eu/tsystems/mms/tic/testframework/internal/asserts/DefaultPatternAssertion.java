@@ -21,9 +21,6 @@
 
 package eu.tsystems.mms.tic.testframework.internal.asserts;
 
-import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
-import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import java.util.regex.Matcher;
 
 /**

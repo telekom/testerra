@@ -40,7 +40,7 @@ import java.util.Date;
  * It finalizes the {@link ExecutionContext} and posts the {@link FinalizeExecutionEvent}.
  * NOTE: It is package private to prevent miss usage.
  */
-final class ExecutionEndListener implements
+public final class ExecutionEndListener implements
         ExecutionFinishEvent.Listener,
         ExecutionAbortEvent.Listener,
         Loggable

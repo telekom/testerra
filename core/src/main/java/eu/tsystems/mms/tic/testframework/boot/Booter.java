@@ -32,6 +32,8 @@ import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -39,7 +41,7 @@ import java.util.stream.Collectors;
 
 public final class Booter implements Loggable {
 
-    private Set<ModuleHook> MODULE_HOOKS;
+    private List<ModuleHook> MODULE_HOOKS;
 
     public Booter() {
         // when logger is configured:
@@ -103,9 +105,11 @@ public final class Booter implements Loggable {
     }
 
     private void initHooks() {
-        MODULE_HOOKS = Testerra.getInjector().getInstance(Key.get(new TypeLiteral<Set<ModuleHook>>(){}));
+        MODULE_HOOKS = new ArrayList<>(Testerra.getInjector().getInstance(Key.get(new TypeLiteral<Set<ModuleHook>>() {})));
+        Collections.reverse(MODULE_HOOKS);
+        log().info("Init module hooks: " + MODULE_HOOKS.stream().map(moduleHook -> moduleHook.getClass().getSimpleName()).collect(Collectors.joining(", ")));
         MODULE_HOOKS.forEach(moduleHook -> {
-            log().debug("Calling Init Hook " + moduleHook.getClass().getSimpleName() + "...");
+            log().debug("Init " + moduleHook.getClass().getSimpleName() + "...");
             moduleHook.init();
         });
         Testerra.getEventBus().post(new ModulesInitializedEvent());
@@ -113,7 +117,7 @@ public final class Booter implements Loggable {
 
     public void shutdown() {
         MODULE_HOOKS.forEach(moduleHook -> {
-            log().debug("Shutting down " + moduleHook.getClass().getSimpleName());
+            log().debug("Terminate " + moduleHook.getClass().getSimpleName());
             moduleHook.terminate();
         });
     }

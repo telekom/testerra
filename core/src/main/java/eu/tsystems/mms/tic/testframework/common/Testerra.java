@@ -164,7 +164,7 @@ public class Testerra {
                     Constructor<?> ctor = moduleClass.getConstructor();
                     sortedModules.put(moduleClass.getSimpleName(), (Module) ctor.newInstance());
                 }
-                LOGGER.info(String.format("Register IoC modules: %s", sortedModules.keySet()));
+                LOGGER.info(String.format("Register IoC modules: %s", String.join(", ", sortedModules.keySet())));
 
                 // Override each module with next
                 Module prevModule = null;

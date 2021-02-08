@@ -23,6 +23,7 @@ package eu.tsystems.mms.tic.testframework.ioc;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
+import com.google.inject.multibindings.Multibinder;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.DefaultAssertionWrapper;
@@ -31,6 +32,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.DefaultOptionalAsserti
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.ThrowingAssertion;
+import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.DefaultReport;
 import eu.tsystems.mms.tic.testframework.report.utils.DefaultTestNGContextGenerator;
@@ -51,5 +53,8 @@ public class ConfigureCore extends AbstractModule {
         bind(Assertion.class).to(DefaultAssertionWrapper.class).in(Scopes.SINGLETON);
         bind(TestController.class).to(DefaultTestController.class).in(Scopes.SINGLETON);
         bind(TestNGContextNameGenerator.class).to(DefaultTestNGContextGenerator.class).in(Scopes.SINGLETON);
+
+        Multibinder<ModuleHook> hookBinder = Multibinder.newSetBinder(binder(), ModuleHook.class);
+        hookBinder.addBinding().to(CoreHook.class).in(Scopes.SINGLETON);
     }
 }

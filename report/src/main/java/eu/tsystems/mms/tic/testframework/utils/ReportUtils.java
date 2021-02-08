@@ -347,7 +347,7 @@ public final class ReportUtils {
         /*
          * main report index.html
          */
-        final File reportFileIndex = report.getReportDirectory("index.html");
+        final File reportFileIndex = report.getReportFile("index.html");
         ReportFormatter.createTestClassesView(reportFileIndex, reportingData, "index.vm", null, null);
 
         /*
@@ -371,7 +371,7 @@ public final class ReportUtils {
         final File reportFileDashboard = new File(FRAMES_DIRECTORY, "dashboard.html");
         ReportFormatter.createDashboardHtml(reportingData, reportFileDashboard, "dashboard.vm");
 
-        final File reportFileEmailable = report.getReportDirectory("emailable-report.html");
+        final File reportFileEmailable = report.getReportFile("emailable-report.html");
         ReportFormatter.createEmailableReportHtml(reportingData, reportFileEmailable, "emailable-report.vm");
 
         /*

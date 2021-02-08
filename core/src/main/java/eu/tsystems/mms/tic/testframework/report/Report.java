@@ -106,9 +106,17 @@ public interface Report {
      * @return Final report sub directory defined by the user
      */
     default File getReportDirectory(String childName) {
-        File file = new File(getReportDirectory(), childName);
-        if (!file.exists()) {
-            file.mkdirs();
+        File dir = new File(getReportDirectory(), childName);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        return dir;
+    }
+    default File getReportFile(String filePath) {
+        File file = new File(getReportDirectory(), filePath);
+        File dir = file.getParentFile();
+        if (!dir.exists()) {
+            dir.mkdirs();
         }
         return file;
     }

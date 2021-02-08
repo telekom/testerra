@@ -110,23 +110,6 @@ public class TesterraListener implements
         // start memory monitor
         JVMMonitor.start();
 
-        EventBus eventBus = Testerra.getEventBus();
-
-        eventBus.register(new MethodStartWorker());
-        eventBus.register(new MethodParametersWorker());
-        eventBus.register(new HandleCollectedAssertsWorker());// !! must be invoked before MethodAnnotationCheckerWorker
-        eventBus.register(new MethodAnnotationCheckerWorker()); // !! must be invoked before Container Update
-        eventBus.register(new MethodContextUpdateWorker());
-        eventBus.register(new RemoveTestMethodIfRetryPassedWorker());
-
-        // this is the last worker to be called
-        eventBus.register(new MethodEndWorker());
-
-        eventBus.register(new OmitInDevelopmentMethodInterceptor());
-        eventBus.register(new SortMethodsByPriorityMethodInterceptor());
-
-        eventBus.register(new ExecutionEndListener());
-
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             JVMMonitor.stop();
         }));

@@ -84,6 +84,7 @@ public abstract class AbstractPage implements
     protected UiElement find(XPath xPath) {
         return find(Locate.by(xPath));
     }
+    protected UiElement findDeep(XPath xPath) { return findDeep(Locate.by(xPath)); }
 
     /**
      * Calls the assertPageIsShown method.

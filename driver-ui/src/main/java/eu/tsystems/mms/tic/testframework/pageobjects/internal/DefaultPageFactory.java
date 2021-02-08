@@ -60,7 +60,7 @@ public class DefaultPageFactory implements PageFactory, Loggable {
     }
 
     @Override
-    public <T extends PageObject> T createPageWithDefaultWebDriver(Class<T> pageClass) {
+    public <T extends PageObject> T createPage(Class<T> pageClass) {
         return createPage(pageClass, getWebDriverManager().getWebDriver());
     }
 

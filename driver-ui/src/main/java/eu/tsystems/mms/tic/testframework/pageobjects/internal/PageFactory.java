@@ -31,7 +31,7 @@ public interface PageFactory {
     PageFactory setGlobalPagePrefix(String pagePrefix);
     PageFactory setThreadLocalPagePrefix(String pagePrefix);
     PageFactory removeThreadLocalPagePrefix();
-    <T extends PageObject> T createPageWithDefaultWebDriver(Class<T> pageClass);
+    <T extends PageObject> T createPage(Class<T> pageClass);
     default <T extends PageObject> T createPage(Class<T> pageClass, WebDriver webDriver) {
         return createPageWithCheckRule(pageClass, webDriver, CheckRule.DEFAULT);
     }

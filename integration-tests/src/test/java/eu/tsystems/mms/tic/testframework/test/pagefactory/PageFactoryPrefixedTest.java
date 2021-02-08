@@ -39,6 +39,7 @@ import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.TLPrefix2Resp
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
+import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
@@ -53,12 +54,12 @@ import org.testng.annotations.Test;
 /**
  * Tests the responsive page factory for correct instantiated classes.
  */
-public class PageFactoryPrefixedTest extends AbstractTestSitesTest implements Loggable {
+public class PageFactoryPrefixedTest extends AbstractTestSitesTest implements Loggable, PageFactoryProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PageFactoryPrefixedTest.class);
 
     public ResponsiveWebTestPage getPage() {
-        return PageFactory.create(ResponsiveWebTestPage.class, WebDriverManager.getWebDriver());
+        return pageFactory.createPage(ResponsiveWebTestPage.class, getWebDriver());
     }
 
     /**

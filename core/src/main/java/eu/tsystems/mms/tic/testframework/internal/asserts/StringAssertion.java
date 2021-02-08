@@ -21,7 +21,10 @@
 
 package eu.tsystems.mms.tic.testframework.internal.asserts;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Allows string based assertions
@@ -37,7 +40,10 @@ public interface StringAssertion<T> extends QuantityAssertion<T> {
     }
     PatternAssertion matches(Pattern pattern);
 
-    BinaryAssertion <Boolean> containsWords(String...words);
+    default BinaryAssertion <Boolean> containsWords(String...words) {
+        return containsWords(Arrays.stream(words).collect(Collectors.toList()));
+    }
+    BinaryAssertion <Boolean> containsWords(List<String> words);
 
     QuantityAssertion<Integer> length();
 }

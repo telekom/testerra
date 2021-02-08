@@ -22,6 +22,7 @@
 package eu.tsystems.mms.tic.testframework.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -97,7 +98,7 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
     }
 
     @Override
-    public BinaryAssertion<Boolean> containsWords(String... words) {
+    public BinaryAssertion<Boolean> containsWords(List<String> words) {
         final String wordsList = String.join("|", words);
         final Pattern wordsPattern = Pattern.compile("\\b(" + wordsList + ")\\b", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 
@@ -107,7 +108,7 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
                 int found = 0;
                 Matcher matcher = wordsPattern.matcher(provider.getActual().toString());
                 while (matcher.find()) found++;
-                return found >= words.length;
+                return found >= words.size();
             }
 
             @Override

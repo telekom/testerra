@@ -251,8 +251,12 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
 //        }
     }
 
-    private String formatLocateSubject(Locator locator, int numElementsBeforeFilter) {
-        return String.format("[%d] filtered elements", numElementsBeforeFilter);
+    private String formatLocateSubject(DefaultLocator locator, int numElementsBeforeFilter) {
+        if (locator.getFilter() != null) {
+            return "found elements";
+        } else {
+            return String.format("[%d] filtered elements", numElementsBeforeFilter);
+        }
     }
 
     private void logTimings(long start, int findCounter) {

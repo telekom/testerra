@@ -158,12 +158,12 @@ public class LegacyGuiElementAssertWrapper implements GuiElementAssert {
 
     @Override
     public void assertCssClassIsPresent(final String className) {
-        this.uiElementAssertion.attribute(Attribute.CLASS).containsWords(className).is(true);
+        this.uiElementAssertion.attribute(Attribute.CLASS).hasWords(className).is(true);
     }
 
     @Override
     public void assertCssClassIsNotPresent(final String className) {
-        this.uiElementAssertion.attribute(Attribute.CLASS).containsWords(className).is(false);
+        this.uiElementAssertion.attribute(Attribute.CLASS).hasWords(className).is(false);
     }
 
     @Override

@@ -75,7 +75,7 @@ public class LocatorTest extends AbstractTestSitesTest implements UiElementFinde
         UiElement a = finder.find(
             XPath.from("a")
                 .text().hasWords("This link has some text!")
-                .contains("span")
+                .encloses("span")
                     .text().hasWords("Subtext")
         );
         a.expect().text().is(realA.waitFor().text().getActual());

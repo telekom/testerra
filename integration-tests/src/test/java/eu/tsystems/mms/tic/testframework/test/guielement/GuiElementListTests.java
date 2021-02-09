@@ -83,7 +83,7 @@ public class GuiElementListTests extends AbstractExclusiveTestSitesTest<GuiEleme
         Assert.assertEquals(anchors.getNumberOfFoundElements(), 3);
         Assert.assertEquals(anchors.getList().size(), 3);
         Assert.assertEquals(anchors.getList().get(0).getText(), "First");
-        Assert.assertEquals(anchors.getList().get(anchors.getNumberOfFoundElements() - 1).getText(), "Third");
+        anchors.getList().get(anchors.getNumberOfFoundElements() - 1).asserts().assertText("Third");
     }
 
     private void testTableRowsAndData(GuiElement tableRows) {

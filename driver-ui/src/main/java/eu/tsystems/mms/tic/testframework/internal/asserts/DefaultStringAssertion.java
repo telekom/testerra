@@ -98,7 +98,7 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
     }
 
     @Override
-    public BinaryAssertion<Boolean> containsWords(List<String> words) {
+    public BinaryAssertion<Boolean> hasWords(List<String> words) {
         final String wordsList = String.join("|", words);
         final Pattern wordsPattern = Pattern.compile("\\b(" + wordsList + ")\\b", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 

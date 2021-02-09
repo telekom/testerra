@@ -45,9 +45,14 @@ public class XPathTest extends TesterraTest  {
 
     @Test
     public void deepSelection() {
-        Assert.assertEquals(XPath.from("button").attribute("data-qa").present().contains("span").text().is("Klick mich").toString(), "//button[@data-qa and descendant::span[.//text()='Klick mich']]");
+        Assert.assertEquals(XPath.from("button").attribute("data-qa").present().encloses("span").text("Klick mich").toString(), "//button[@data-qa and descendant::span[.//text()='Klick mich']]");
         Assert.assertEquals(XPath.from("h2").attribute(Attribute.TITLE).is("Head").select("div").toString(), "//h2[@title='Head']//div");
         Assert.assertEquals(XPath.from("h2").attribute(Attribute.TITLE).is("Head").select("/span").toString(), "//h2[@title='Head']/span");
-        Assert.assertEquals(XPath.from("table").contains("th").text("Quote ID").select("tbody").toString(), "//table[descendant::th[.//text()='Quote ID']]//tbody");
+        Assert.assertEquals(XPath.from("table").encloses("th").text("Quote ID").select("tbody").toString(), "//table[descendant::th[.//text()='Quote ID']]//tbody");
+    }
+
+    @Test
+    public void classSelection() {
+        Assert.assertEquals(XPath.from("body").select("nav").classes("container"), "//body//nav[contains(concat(' ', normalize-space(@class), ' '), ' container ')]");
     }
 }

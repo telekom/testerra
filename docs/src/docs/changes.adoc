@@ -294,7 +294,7 @@ For elements in frames
 ```java
 class MyPage extends Page {
     private UiElement frame = find(By.tagName("frame"));
-    private UiElement uiElement = inFrame(frame).findById(14);
+    private UiElement uiElement = frame.findById(14);
 }
 ```
 

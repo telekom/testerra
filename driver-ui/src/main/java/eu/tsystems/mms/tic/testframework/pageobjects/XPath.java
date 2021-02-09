@@ -23,6 +23,9 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.utils.Condition;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.openqa.selenium.By;
 
 /**
@@ -132,7 +135,11 @@ public class XPath {
             return xPath;
         }
 
-        public XPath hasWords(Object ... words) {
+        public XPath hasWords(String ... words) {
+            return hasWords(Arrays.stream(words).collect(Collectors.toList()));
+        }
+
+        public XPath hasWords(List<String> words) {
             attributeContainsWords(function, words);
             return xPath;
         }
@@ -157,8 +164,8 @@ public class XPath {
         private void attributeContainsWord(String something, Object string) {
             attributes.add(somethingContainsWord(something, string));
         }
-        private void attributeContainsWords(String something, Object ... texts) {
-            for (Object text : texts) {
+        private void attributeContainsWords(String something, List<String> words) {
+            for (Object text : words) {
                 for (String word : text.toString().split("\\s+")) {
                     attributeContainsWord(something, word);
                 }
@@ -166,8 +173,12 @@ public class XPath {
         }
     }
 
-    public XPath classes(Object ... classes) {
-        return attribute("class").hasWords(classes);
+    public XPath classes(String ... classes) {
+        return attribute(Attribute.CLASS).hasWords(classes);
+    }
+
+    public XPath classes(List<String> classes) {
+        return attribute(Attribute.CLASS).hasWords(classes);
     }
 
     public Test attribute(Attribute attribute) {
@@ -211,13 +222,13 @@ public class XPath {
         }
     }
 
-    public XPath contains(String selector, int position) {
+    public XPath encloses(String selector, int position) {
         XPath contains = new XPath(translateInnerSelection(selector), position);
         prepareContainsSelect(contains);
         return contains;
     }
 
-    public XPath contains(String selector) {
+    public XPath encloses(String selector) {
         XPath contains = new XPath(translateInnerSelection(selector));
         prepareContainsSelect(contains);
         return contains;

@@ -46,7 +46,7 @@ public class PageTests extends AbstractExclusiveTestSitesTest<WebTestPage> imple
         title.isNot("Affentest");
         title.contains("Input").is(true);
         title.contains("SuperTestPage").is(false);
-        title.containsWords("Input", "test").is(true);
+        title.hasWords("Input", "test").is(true);
 
         QuantityAssertion<Integer> length = page.expect().title().length();
         length.is(10);

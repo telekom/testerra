@@ -63,10 +63,10 @@ public interface UiElementAssertion extends UiElementBaseAssertion {
         return this.attribute(Attribute.CLASS);
     }
     default BinaryAssertion<Boolean> classes(String ... classes) {
-        return classes().containsWords(classes);
+        return classes().hasWords(classes);
     }
 
     default BinaryAssertion<Boolean> classes(List<String> classes) {
-        return classes().containsWords(classes);
+        return classes().hasWords(classes);
     }
 }

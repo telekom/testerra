@@ -40,10 +40,10 @@ public interface StringAssertion<T> extends QuantityAssertion<T> {
     }
     PatternAssertion matches(Pattern pattern);
 
-    default BinaryAssertion <Boolean> containsWords(String...words) {
-        return containsWords(Arrays.stream(words).collect(Collectors.toList()));
+    default BinaryAssertion <Boolean> hasWords(String...words) {
+        return hasWords(Arrays.stream(words).collect(Collectors.toList()));
     }
-    BinaryAssertion <Boolean> containsWords(List<String> words);
+    BinaryAssertion <Boolean> hasWords(List<String> words);
 
     QuantityAssertion<Integer> length();
 }

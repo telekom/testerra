@@ -5,7 +5,7 @@
 class Test extends TesterraTest {
     @Test
     public void test() {
-        MyPage page = PageFactory.createPage(MyPage.class, WebDriverManager.getWebDriver());
+        MyPage page = PageFactory.create(MyPage.class, WebDriverManager.getWebDriver());
     }
 }
 ```
@@ -26,7 +26,7 @@ class Test extends TesterraTest implements PageFactoryProvider {
 ```java
 class MyPage extends Page {
     public OtherPage navigateToOtherPage() {
-        return PageFactory.createPage(OtherPage.class, getWebDriver());
+        return PageFactory.create(OtherPage.class, getWebDriver());
     }
 }
 ```

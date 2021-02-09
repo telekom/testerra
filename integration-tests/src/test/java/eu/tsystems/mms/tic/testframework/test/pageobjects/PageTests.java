@@ -100,8 +100,8 @@ public class PageTests extends AbstractExclusiveTestSitesTest<WebTestPage> imple
     @Test
     public void test_Page_url() {
         WebTestPage page = getPage();
-        page.expect().url().startsWith("http");
-        page.expect().url().endsWith("input.html");
+        page.expect().url().startsWith("http").is(true);
+        page.expect().url().endsWith("input.html").is(true);
         page.expect().url().length().isGreaterEqualThan(10);
     }
 

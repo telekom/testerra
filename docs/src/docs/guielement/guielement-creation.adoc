@@ -2,7 +2,7 @@
 
 == Create default UiElement
 
-For every UiElement you need an implementation of the `UiElementFinder` interface (like a `Page`) and a locator (https://seleniumhq.github.io/selenium/docs/api/java/org/openqa/selenium/By.html[Selenium docs]).
+For every UiElement you need an implementation of the `UiElementFinder` interface (like <<PageObjects>>) and a locator (https://seleniumhq.github.io/selenium/docs/api/java/org/openqa/selenium/By.html[Selenium docs]).
 
 [source,java]
 ----

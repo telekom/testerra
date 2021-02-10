@@ -27,25 +27,3 @@ element.findWebElement(webElement -> {
     String value = webElement.getCssValue("font-size");   // returns "20px"
 });
 ----
-
-== Additional properties
-
-GuiElement provide some more special methods which could helpful for assertions.
-
-.The given HTML snippet
-[source,html]
-----
-...
-<a href="newpage.html" style="font-size: 20px;">
-    <span>My</span>
-    <span>Link</span>
-</a>
-...
-----
-
-.Special GuiElement methods
-[source,java]
-----
-UiElement span = find(By.xpath("//a/span"));
-int count = span.waitFor().numberOfElements().getActual();        // returns 2
-----

@@ -101,7 +101,7 @@ NOTE: If you have troubles using this method, take a look to the fallback soluti
 == Drag and drop actions
 
 With the utils class `MouseActions` you can execute a drag-and-drop actions.
-Source and target GuiElements can be located in different frames.
+Source and target UiElements can be located in different frames.
 
 [source,java]
 ----

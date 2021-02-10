@@ -1,7 +1,7 @@
 = Localization
 
 Websites come in many languages, where the functionality may not change, but labels of buttons, input or other interactive elements.
-Testerra provides an easy and simple way to support the localization of GuiElements.
+Testerra provides an easy and simple way to support the localization of UiElements.
 
 == Add localization resource bundle
 
@@ -24,21 +24,12 @@ NOTE: You can change the default encoding for `.properties` files in IntellJ at 
 
 == Access localization text
 
-Now you can instance GuiElements by localized strings.
+Now you can instance UiElements by localized strings.
 
 [source, java]
 ----
 import eu.tsystems.mms.tic.testframework.l10n.SimpleLocalization;
-
-enum Localization {
-    BTN_LOGIN;
-
-    public String toString() {
-        return SimpleLocalization.getText(this.name());
-    }
-}
-
-GuiElement loginBtn = new GuiElement(By.linkText(Localization.BTN_LOGIN));
+UiElement loginBtn = find(By.linkText(SimpleLocalization.getText("BTN_LOGIN")));
 ----
 
 == Change runtime locale

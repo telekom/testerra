@@ -33,7 +33,7 @@ element.expect().classes("disabled").is(false);
 
 == Assert collector of functional asserts
 
-Assert Collector is a collector for functional asserts of a GuiElement. Failing an assert it will not abort the test method, but it will throw an exception at *the end* of the test method. So you have a chance to validate many more aspects in one test run.
+Assert Collector is a collector for functional asserts of a UiElement. Failing an assert it will not abort the test method, but it will throw an exception at *the end* of the test method. So you have a chance to validate many more aspects in one test run.
 
 [source,java]
 ----

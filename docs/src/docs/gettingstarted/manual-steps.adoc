@@ -158,7 +158,7 @@ public class ExamplePage extends Page {
 ======
 The basic Page class added all the page object functionality of Testerra to your project. See <<PageObjects>> chapter for more details.
 
-The UiElement describes the elements like links, buttons, etc. on your page. Learn more about GuiElements in <<UiElements>>.
+The UiElement describes the elements like links, buttons, etc. on your page. Learn more about UiElements in <<UiElements>>.
 ======
 
 == Create Test Class and Test Method

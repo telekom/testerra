@@ -10,12 +10,14 @@ For example, Testerras <<Demo mode>> will use this behaviour to highlight elemen
 .Executing JavaScript
 [source,java]
 ----
-final WebDriver driver = WebDriverManager.getWebDriver();
-final GuiElement hiddenUploadField = new GuiElement(driver, Locate.by().id("hidden-upload-field"));
-hiddenUploadField.asserts().assertIsPresent();
+UiElement hiddenUploadField = findById("hidden-upload-field");
+hiddenUploadField.expect().present(true);
 
-// will change style to display a hidden element
-JSUtils.executeScript(driver, "arguments[0].setAttribute('style', 'display:block; opacity: 1')", hiddenUploadField.getWebElement());
+hiddenUploadField.findWebElement(webElement -> {
+    // will change style to display a hidden element
+    JSUtils.executeScript(hiddenUploadField.getWebDriver(), "arguments[0].setAttribute('style', 'display:block; opacity: 1')", webElement);
+});
+
 ----
 
 == Inject JavaScript
@@ -26,7 +28,7 @@ Then you can inject the full JavaScript file with following method.
 .Implementing own JavaScript code
 [source,java]
 ----
-final WebDriver driver = WebDriverManager.getWebDriver();
+WebDriver driver = webDriverManager.getWebDriver();
 
 // WebDriver, Path to resource file, id of the script-tag
 JSUtils.implementJavascriptOnPage(driver, "js/inject/custom.js", "customJs");

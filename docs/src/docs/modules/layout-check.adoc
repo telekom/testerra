@@ -58,7 +58,7 @@ menus or footer may falsify the test result if there are deviations from the ref
 but these are not currently the subject of the test. For this reason,
 the `{layoutcheck_ignore_color}` property can be used to determine that a particular color in the image can be excluded from comparison.
 
-To validate the layout in Pixel Mode, you can check the whole page or a single <<GuiElements,GuiElement>>.
+To validate the layout in Pixel Mode, you can check the whole page or a single <<UiElements,UiElement>>.
 
 === Check the whole page
 
@@ -67,9 +67,9 @@ To validate the layout in Pixel Mode, you can check the whole page or a single <
 page.expect().screenshot().pixelDistance("WelcomePage").isLowerThan(1);
 ----
 
-=== Check a single GuiElement
+=== Check a single UiElement
 
-To check the layout of a single GuiElement only, you can use the standard asserts implementation.
+To check the layout of a single UiElement only, you can use the standard asserts implementation.
 
 [source, java]
 ----

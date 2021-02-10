@@ -62,7 +62,7 @@ UiElement shadowRootElement = find(By.cssSelector("my-custom-shadow-root-element
 UiElement inputName = shadowRootElement.find(By.xpath("./custom-component-login-name"));
 ----
 
-IMPORTANT: Calling `displayed()` on `shadowRoot()`-notated `GuiElement` will always return false, but `present()` will work as designed.
+IMPORTANT: Calling `displayed(boolean)` on `shadowRoot()`-notated UiElement will always return false, but `present(boolean)` will work as designed.
 
 IMPORTANT: Because of technical limitations and internal handling of browser-different access to Shadow DOM elements, it is not possible to use any other `By` Selector-type than `By.xpath()` working with `find()` on a shadow root.
 

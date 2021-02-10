@@ -7,5 +7,3 @@ include::best-practices/html-elements.adoc[leveloffset=+1]
 include::best-practices/multiple-profiles.adoc[leveloffset=+1]
 include::best-practices/multiple-environments.adoc[leveloffset=+1]
 include::best-practices/project-setup.adoc[leveloffset=+1]
-include::best-practices/qa-attributes.adoc[leveloffset=+1]
-

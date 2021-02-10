@@ -1,9 +1,9 @@
 = Overview
 
 == What is a page object?
-A page objects represents a HTML pages and or a subpage. It contains GuiElements with describe the actual page and methods to provide actions on them.
+A page objects represents a HTML pages and or a subpage. It contains UiElements with describe the actual page and methods to provide actions on them.
 
-In your test you only uses the provided actions of your page like an API. The page object himself uses the GuiElements as an API to interact with the website.
+In your test you only uses the provided actions of your page like an API. The page object himself uses the UiElements as an API to interact with the website.
 
 == Navigation Principle
 In a regular Web Application there is a defined navigation flow. This means there are pages with actions on it that let you navigate to other pages.
@@ -18,11 +18,11 @@ image::../images/PageFlowExample.png[]
 
 == Example
 
-The following page contains two `GuiElements` and one method for a user action 'search a string'.
+The following page contains two UiElements and one method for a user action 'search a string'.
 
-Within the method `search` the defined GuiElements are used to execute a search.
+Within the method `search` the defined UiElements are used to execute a search.
 
-The annoation `Check` marks the GuiElements as mandatory for the page. Testerra automatically verifies these elements when this page is instantiated (<<Check Annotations>>).
+The annotation `Check` marks the UiElements as mandatory for the page. Testerra automatically verifies these elements when this page is instantiated (<<Check Annotations>>).
 
 [source,java]
 ----

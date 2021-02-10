@@ -1,6 +1,8 @@
 = Assertions
-`Pages objects` offer some `assertions` which mostly work like their equivalents on `GuiElements`.
-In difference to `GuiElements` here the whole page is searched for the given element in recursive order.
+
+Pages objects offer some assertions which mostly work like their equivalents on UiElements.
+In difference to UiElements here the whole page is searched for the given element in recursive order.
+
 [source,java]
 ----
 ResultPage resultPage = pageFactory.createPage(ResultPage.class);

@@ -27,7 +27,7 @@ import {Config} from "services/config-dev";
 import {MdcDialogService} from '@aurelia-mdc-web/dialog';
 import {IScreenshotsDialogParams, ScreenshotsDialog} from "../screenshots-dialog/screenshots-dialog";
 import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
-import './timeline.scss'
+import './steps.scss'
 import IClickPathEvent = data.IClickPathEvent;
 import ILogMessage = data.ILogMessage;
 import IErrorContext = data.IErrorContext;

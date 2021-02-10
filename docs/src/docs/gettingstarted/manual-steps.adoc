@@ -137,11 +137,12 @@ Now it's time to create a first simple page class. It should be saved at path `s
 [source, java]
 ----
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 
 public class ExamplePage extends Page {
 
     @Check
-    private GuiElement moreInformationLink = new GuiElement(this.getWebDriver(), By.partialLinkText("More information"));
+    private UiElement moreInformationLink = find(By.partialLinkText("More information"));
 
     public ExamplePage(WebDriver driver) {
         super(driver);
@@ -157,7 +158,7 @@ public class ExamplePage extends Page {
 ======
 The basic Page class added all the page object functionality of Testerra to your project. See <<PageObjects>> chapter for more details.
 
-The GuiElement describes the elements like links, buttons, etc. on your page. Learn more about GuiElements in <<GuiElements>>.
+The UiElement describes the elements like links, buttons, etc. on your page. Learn more about GuiElements in <<UiElements>>.
 ======
 
 == Create Test Class and Test Method
@@ -171,13 +172,13 @@ To stick to the example above, here is a very simple test class which navigates 
 [source, java, role="primary"]
 ----
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
 
-public class ExampleTest extends TesterraTest {
+public class ExampleTest extends TesterraTest implements PageFactoryProvider {
 
     @Test
     public void testT01_My_first_test() {
-        WebDriver driver = WebDriverManager.getWebDriver();
-        ExamplePage examplePage = PageFactory.create(ExamplePage.class, driver);
+        ExamplePage examplePage = pageFactory.createPage(ExamplePage.class);
         examplePage.clickOnMoreInformation();
     }
 }

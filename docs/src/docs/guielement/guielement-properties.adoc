@@ -2,7 +2,7 @@
 
 == Selenium webelement properties
 
-GuiElement provide all Selenium methods get more details about the webelement.
+UiElement provides all Selenium methods when retrieving the `WebElement`.
 
 .The given HTML snippet
 [source,html]
@@ -15,15 +15,17 @@ GuiElement provide all Selenium methods get more details about the webelement.
 .Standard attributes
 [source,java]
 ----
-GuiElement element = new GuiElement(driver, By.xpath("//a"));
+UiElement element = find(By.xpath("//a"));
 
-String text = element.getText();                   // returns "My link"
-String attr = element.getAttribute("href");        // returns "newpage.html"
-String name = element.getTagName();                // returns "a"
-Point point = element.getLocation();               // returns the top left corner of the element
-Dimension dim = element.getSize();                 // returns width and heigth of the element
-Rectangle rect = element.getRect();                // returns rectangle with location and size
-String value = element.getCssValue("font-size");   // returns "20px"
+element.findWebElement(webElement -> {
+    String text = webElement.getText();                   // returns "My link"
+    String attr = webElement.getAttribute("href");        // returns "newpage.html"
+    String name = webElement.getTagName();                // returns "a"
+    Point point = webElement.getLocation();               // returns the top left corner of the element
+    Dimension dim = webElement.getSize();                 // returns width and heigth of the element
+    Rectangle rect = webElement.getRect();                // returns rectangle with location and size
+    String value = webElement.getCssValue("font-size");   // returns "20px"
+});
 ----
 
 == Additional properties
@@ -44,9 +46,6 @@ GuiElement provide some more special methods which could helpful for assertions.
 .Special GuiElement methods
 [source,java]
 ----
-GuiElement link = new GuiElement(driver, By.xpath("//a"));
-List<String> list = link.getTextsFromChildren();    // returns a list ["My", "Link"]
-
-GuiElement span = new GuiElement(driver, By.xpath("//a/span"));
-int count = span.getNumberOfFoundElements();        // returns 2
+UiElement span = find(By.xpath("//a/span"));
+int count = span.waitFor().numberOfElements().getActual();        // returns 2
 ----

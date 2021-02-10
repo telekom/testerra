@@ -64,8 +64,7 @@ To validate the layout in Pixel Mode, you can check the whole page or a single <
 
 [source, java]
 ----
-import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
-LayoutCheck.assertScreenshot(WebDriverManager.getWebDriver(), "WelcomePage", 1);
+page.expect().screenshot().pixelDistance("WelcomePage").isLowerThan(1);
 ----
 
 === Check a single GuiElement
@@ -74,11 +73,7 @@ To check the layout of a single GuiElement only, you can use the standard assert
 
 [source, java]
 ----
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-
-final String guiElementImage = "HeaderComponent";
-final GuiElement guiElement;
-guiElement.asserts().assertScreenshot(guiElementImage, 10);
+uiElement.expect().screenshot().pixelDistance("HeaderComponent").isLowerThan(10);
 ----
 
 === Take reference screenshots on first run

@@ -1,37 +1,61 @@
 = Creation
 
-== Create default GuiElement
+== Create default UiElement
 
-For every GuiElement you need the current WebDriver object and a locator (https://seleniumhq.github.io/selenium/docs/api/java/org/openqa/selenium/By.html[Selenium docs]).
+For every UiElement you need an implementation of the `UiElementFinder` interface (like a `Page`) and a locator (https://seleniumhq.github.io/selenium/docs/api/java/org/openqa/selenium/By.html[Selenium docs]).
 
 [source,java]
 ----
-GuiElement myElement = new GuiElement(driver, By.id("elementId"));
-GuiElement button1 = new GuiElement(driver, By.name("button"));
-GuiElement textOutputField = new GuiElement(driver, By.xpath("//p[@id='99']"));
+UiElement myElement = find(By.id("elementId"));
+UiElement button1 = find(By.name("button"));
+UiElement textOutputField = find(By.xpath("//p[@id='99']"));
 ----
 
 == Create SubElements
 
-The Method `getSubElement()` generates a new GuiElement. It will only be searched in the DOM tree below the element on which the method was called.
+The `UiElement` also implements `UiElementFinder`. Elements will only be searched in the DOM tree below the given parent element on which the method was called.
 
 [source,java]
 ----
-GuiElement upper = new GuiElement(driver, By.name("upperElement"));
+UiElement upper = find(By.name("upperElement"));
 
 // Create the sub elements
-GuiElement lower = upper.getSubElement(By.name("lowerElement"));
-GuiElement lower = upper.getSubElement(By.xpath(".//p[@id='element']")); <1>
-GuiElement lower = upper.getSubElement(By.xpath("//p[@id='element']")); <2>
-GuiElement lower = upper.getSubElement(By.xpath("./p[@id='element']")); <3>
+UiElement lower = upper.find(By.name("lowerElement"));
+UiElement lower = upper.find(By.xpath(".//p[@id='element']")); <1>
+UiElement lower = upper.find(By.xpath("//p[@id='element']")); <2>
+UiElement lower = upper.find(By.xpath("./p[@id='element']")); <3>
 ----
 <1> Find any matching descendant
 <2> Corrects the selector prefix to './/'
 <3> Find any matching child
 
-== Advanced GuiElement locating
 
-The `Locator` extension provides more features than standard Selenium `By`.
+== Implement UiElementFinder
+
+When you don't want to use the PageObject pattern, you can instantiate an `UiElementFinder` on your own.
+
+[source,java]
+----
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+import eu.tsystems.mms.tic.testframework.testing.UiElementFinderFactoryProvider;
+import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
+
+class MyTest extends TesterraTest implements UiElementFinderFactoryProvider, WebDriverManagerProvider {
+    private UiElementFinder finder = uiElementFinderFactory.create(webDriverManager.getWebDriver());
+
+    @Test
+    public void test() {
+        UiElement myElement = finder.find(By.id("elementId"));
+        UiElement button1 = finder.find(By.name("button"));
+        UiElement textOutputField = finder.find(By.xpath("//p[@id='99']"));
+    }
+}
+----
+
+== Advanced UiElement locating
+
+The `UiElementFinder` interface also provides a `Locate` factory which provides more features than standard Selenium `By`.
 
 === Locate unique elements
 
@@ -39,9 +63,7 @@ If you want to make sure, that your element is unique.
 
 [source,java]
 ----
-import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
-
-GuiElement myElement = new GuiElement(driver, Locate.by(By.id("elementId")).unique());
+UiElement myElement = find(Locate.by(By.id("elementId")).unique());
 ----
 
 This will throw an exception, if not one WebElement has been found.
@@ -50,7 +72,7 @@ This will throw an exception, if not one WebElement has been found.
 
 [source,java]
 ----
-GuiElement myElement = new GuiElement(driver, Locate.by(By.xpath(".//button")).displayed());
+UiElement myElement = find(Locate.by(By.xpath(".//button")).displayed());
 ----
 
 === Prepared xpath expressions
@@ -62,8 +84,8 @@ Using prepared expressions makes your selectors more readable.
 Locate byText = Locate.prepare("//button[text()='%s'])");
 Locate byClass = Locate.prepare("//%s[contains(@class, '%s')][%d]");
 
-GuiElement loginButton = new GuiElement(driver, byText.with("Login"));
-GuiElement logoutButton = new GuiElement(driver, byClass.with("button", "btn-logout", 1));
+UiElement loginButton = find(byText.with("Login"));
+UiElement logoutButton = find(byClass.with("button", "btn-logout", 1));
 ----
 
 === Filtering elements
@@ -74,42 +96,30 @@ You can also filter elements during find.
 ----
 Locate byText = Locate.by(By.xpath("//button")).filter(webElement -> webElement.getText().equals("Open again"));
 
-GuiElement buttonContainsText = new GuiElement(driver, byText);
+UiElement buttonContainsText = find(byText);
 ----
 
-=== GuiElements inside frames
+=== UiElements inside frames
 
-Accessing WebElements inside frames requires changing the active frame before any action. GuiElements do that automatically.
-
-For creating new GuiElements within one or more frames, the frames have to be passed to the constructor. A frame can be the HTML element `<frame>` inside a `<frameset>` or `<iframe>`.
+Accessing WebElements inside frames requires changing the active frame before any action. UiElements do that automatically as long you identify every `<frame>` or `<iframe>` as own element.
 
 [source,java]
 ----
-GuiElement frame1 = new GuiElement(driver, By.id("frame1"));
+UiElement frame1 = find(By.id("frame1"));
 
 // frame2 is child of frame1
-GuiElement frame2 = new GuiElement(driver, By.id("frame2"), frame1);
+UiElement frame2 = frame1.find(By.id("frame2"));
 
 // target is child of frame2 which is child of frame1,
-// in this case the frames are searched recurse automatically
-GuiElement target = new GuiElement(driver, By.id("target"), frame2);
+UiElement target = frame2.find(By.id("target"));
 ----
 
-When accessing the `WebElement` instance, you are responsible for frame switches by yourself.
-You can perform these as following.
-```java
-WebElement webElement = target.getWebElement();
-if (target.hasFrameLogic()) {
-    target.getFrameLogic().switchToCorrectFrame();
-}
-
-// Perform your actions on webElement here
-webElement.findElements("//div");
-
-if (target.hasFrameLogic()) {
-    target.getFrameLogic().switchToDefaultFrame();
-}
-```
+And easier way is to use the `findDeep` method, which search for the element recursive in the frame hierarchy every time.
+[source,java]
+----
+// in this case the frames are searched recurse automatically
+UiElement target = findDeep(By.id("target"));
+----
 
 //
 //== GuiElement by image

@@ -17,11 +17,11 @@ Its better to select both options separately.
 ----
 // Good practice
 Locate locator = Locate.prepare("//input[@name='%s' and @value='%s']").unique();
-GuiElement teeOption = new GuiElement(driver, locator.with("beverage", "tee"));
-GuiElement coffeeOption = new GuiElement(driver, locator.with("beverage", "coffee"));
+UiElement teeOption = find(locator.with("beverage", "tee"));
+UiElement coffeeOption = find(locator.with("beverage", "coffee"));
 
 // Bad practice
-GuiElement options = new GuiElement(driver, By.name("beverage"));
+UiElement options = find(By.name("beverage"));
 ----
 
 == Shadow Roots
@@ -34,9 +34,9 @@ Modern web applications are allowed to use some third-party components, which ca
 This is the modern art of an iframe, because the components will be loaded via asynchronous JavaScript.
 
 Each embedded Shadow DOM component will have its own shadow root.
-To work with shadow root elements Testerra provide the method `shadowRoot()` on the `GuiElement` class.
+To work with shadow root elements Testerra provide the method `shadowRoot()` on the `UiElement` class.
 
-Given the following HTML code snippet it will be easier how to get the corresponding `GuiElement` of the Shadow DOM component.
+Given the following HTML code snippet it will be easier how to get the corresponding `UiElement` of the Shadow DOM component.
 
 .HTML Code
 [source,html]
@@ -58,13 +58,11 @@ Given the following HTML code snippet it will be easier how to get the correspon
 .Java Code
 [source,java]
 ----
-WebDriver driver = WebDriverManager.getWebDriver();
-
-GuiElement shadowRootElement = new GuiElement(driver, By.cssSelector("my-custom-shadow-root-element")).shadowRoot();
-GuiElement inputName = shadowRootElement.getSubElement(By.cssSelector("#custom-component-login-name"));
+UiElement shadowRootElement = find(By.cssSelector("my-custom-shadow-root-element")).shadowRoot();
+UiElement inputName = shadowRootElement.find(By.xpath("./custom-component-login-name"));
 ----
 
-IMPORTANT: Calling `isDisplayed()` on `shadowRoot()`-notated `GuiElement` will always return false, but `isPresent()` will work as designed.
+IMPORTANT: Calling `displayed()` on `shadowRoot()`-notated `GuiElement` will always return false, but `present()` will work as designed.
 
-IMPORTANT: Because of technical limitations and internal handling of browser-different access to Shadow DOM elements, it is not possible to use any other `By`Selector-type than `By.xpath()` working with `getSubElement()` on a shadow root.
+IMPORTANT: Because of technical limitations and internal handling of browser-different access to Shadow DOM elements, it is not possible to use any other `By` Selector-type than `By.xpath()` working with `find()` on a shadow root.
 

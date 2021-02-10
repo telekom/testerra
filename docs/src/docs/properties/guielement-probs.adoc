@@ -5,7 +5,7 @@ include::property-attributes.adoc[]
 | Property | default | Description
 | {element_timeout_seconds} | 8 | GuiElement timeout in seconds
 `perf` is used for the Performance indicator module
-| {guielement_default_assertcollector} | false | Sets the behavior of `GuiElement.asserts()`: +
+| {guielement_default_assertcollector} `@deprecated` | false | Sets the behavior of `@deprecated` `GuiElement.asserts()`: +
 `true` asserts() reacts like assertCollector() (Continue at FAIL) +
 `false` asserts() reacts like default assert (Stop at FAIL)
 | {guielement_use_js_alternatives} | true | As a fallback of a click action Testerra tries a clickJS

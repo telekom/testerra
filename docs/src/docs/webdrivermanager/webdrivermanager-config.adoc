@@ -10,7 +10,7 @@ You can set a global configuration by
 
 * `test.properties`
 * at runtime by `System.setProperty()`
-* at runtime by `WebDriverManager.config()` (only browser session behaviour)
+* at runtime by `webDriverManager.getDefaultConfig()` (only browser session behaviour)
 
 === Configure with `test.properties`
 
@@ -35,21 +35,21 @@ Some of the WebdriverManager settings you can change as follows
 [source,java]
 ----
 // tt.wdm.closewindows.aftertestmethods
-WebDriverManager.getConfig().setShutdownSessionAfterTestMethod(true);
+webDriverManager.getDefaultConfig().setShutdownSessionAfterTestMethod(true);
 
 // tt.wdm.closewindows.onfailure
-WebDriverManager.getConfig().setShutdownSessionOnFailure(false);
+webDriverManager.getDefaultConfig().setShutdownSessionOnFailure(false);
 
 // tt.browser.maximize
-WebDriverManager.getConfig().setMaximizeViewport(true);
+webDriverManager.getDefaultConfig().setMaximizeViewport(true);
 
 // tt.webdriver.mode
-WebDriverManager.getConfig().setWebDriverMode(WebDriverMode.remote);
+webDriverManager.getDefaultConfig().setWebDriverMode(WebDriverMode.remote);
 ----
 
 [NOTE]
 ======
-`WebDriverManager.getConfig().setShutdownSessions()` controls closing of browser windows after every test method in general,
+`webDriverManager.getDefaultConfig().setShutdownSessions()` controls closing of browser windows after every test method in general,
 when its set to `false`, this also affects `shouldShutdownSessionOnFailure()` and `shouldShutdownSessionAfterTestMethod()`.
 
 Keep in mind, that after the complete test run a session shutdown is being forced.
@@ -59,7 +59,7 @@ You can reset the settings to the default values or defined in `test.properties`
 
 [source,java]
 ----
-WebDriverManager.getConfig().reset();
+webDriverManager.getDefaultConfig().reset();
 ----
 
 == Local configuration
@@ -77,5 +77,5 @@ myRequest.setBrowser(Browsers.firefox);
 myRequest.setBrowserVersion("66");
 myRequest.setSessionKey("mysession");     // if no custom session defined, the default value 'default' is set
 
-WebDriver driver = WebDriverManager.getWebDriver(myRequest);
+WebDriver driver = webDriverManager.getWebDriver(myRequest);
 ----

@@ -22,6 +22,7 @@
 package eu.tsystems.mms.tic.testframework.webdriver;
 
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import org.openqa.selenium.WebDriver;
 
@@ -39,4 +40,6 @@ public interface IWebDriverManager extends WebDriverRetainer {
     WebDriverRequest getWebDriverRequest(WebDriver webDriver);
     WebDriver getWebDriver(String sessionKey);
     WebDriver getWebDriver(WebDriverRequest request);
+    String getSessionKey(WebDriver webDriver);
+    WebDriverManagerConfig getDefaultConfig();
 }

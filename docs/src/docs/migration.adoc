@@ -1,8 +1,5 @@
-= Changes
+= Migration from Testerra 1
 
-== New API
-
-This is a draft of the new Testerra API.
 The main goal for re-inventing the GuiElement API was at first, to provide a better user experience for
 implementing tests scripts in the role of a Test Engineer.
 
@@ -17,106 +14,6 @@ The new Testerra API provides it all.
 
 If you're a developer and want to know how the new API works, you can jump straight to <<The internals>> or just proceed with the next chapter to get an overview.
 
-== Traditional page objects tests
-
-For the traditional page objects pattern, the test class looks like.
-
-```java
-import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
-
-class LoginTest extends TesterraTest implements PageFactoryProvider {
-
-    @Test
-    public void test_doLogin() {
-        LoginPage loginPage = pageFactory.create(LoginPage.class);
-        HomePage homePage = loginPage.doLogin("jane doe", "foobar");
-        homePage.assertUserIsLoggedIn();
-    }
-}
-```
-
-And the page objects
-
-```java
-import eu.tsystems.mms.tic.testframework.pageobjects.Check;
-
-class LoginPage extends Page {
-
-    @Check
-    private UiElement login = find(By.name("login"));
-    @Check
-    private UiElement password = find(By.name("password"));
-    @Check
-    private UiElement loginBtn = find(By.name("loginAction"));
-
-    public HomePage doLogin(String username, String password) {
-        login.type(username);
-        password.type(password);
-        loginBtn.click();
-        return createPage(HomePage.class);
-    }
-}
-```
-
-```java
-import eu.tsystems.mms.tic.testframework.pageobjects.Check;
-
-class HomePage extends Page {
-
-    @Check
-    private UiElement userName = find(By.name("name"));
-
-    public void assertUserIsLoggedIn() {
-        userName.expect().text().isNot("Guest");
-    }
-```
-
-**Pros:**
-
-- Test separation from page abstraction
-- More readable tests
-- Reusable code through components compositions
-
-**Cons:**
-
-- More effort required at the beginning
-
-== Behaviour driven tests
-
-For the non-abstract behaviour driven test API, the test class looks like.
-
-```java
-import eu.tsystems.mms.tic.testframework.testing.UiElementCreator;
-
-class LoginTest extends TesterraTest implements UiElementCreator {
-
-    @Test
-    public void test_doLogin() {
-
-        // Given
-        find(By.name("login")).type("jane doe");
-        find(By.name("password")).type("foobar");
-
-        // When
-        find(By.name("loginAction")).click();
-
-        // Then
-        find(By.name("name")).expect().text().isNot("Guest");
-    }
-}
-```
-
-**Pros:**
-
-- No boiler plate code
-- Test code separation
-
-**Cons:**
-
-- Redundant code
-- Not useful for large test environments
-
-
 == Page object changes
 
 When implementing the `PageFactoryProvider` interface, you get an `pageFactory` instance within your class.
@@ -128,10 +25,10 @@ class MyTest extends TesterraTest implements PageFactoryProvider {
 
     @Test
     public void test_MyPageTest() {
-        MyPage page = pageFactory.create(MyPage.class);
+        MyPage page = pageFactory.createPage(MyPage.class);
 
         // Or using a different WebDriver
-        MyPage page = pageFactory.create(MyPage.class, WebDriverManager.getWebDriver());
+        MyPage page = pageFactory.createPage(MyPage.class, webDriverManager.getWebDriver());
     }
 }
 ```
@@ -316,8 +213,8 @@ class MyPage extends Page {
 The new standard way to perform assertions on elements like Pages and GuiElements is now
 ```java
 uiElement.expect().displayed(true); <1>
-uiElement.expect().value().contains("Hallo Welt"); <2>
-page.expect().url().endsWith("index.html"); <3>
+uiElement.expect().value().contains("Hallo Welt").is(true); <2>
+page.expect().url().endsWith("index.html").is(true); <3>
 page.anyElementContainsText("You see me").expect().displayed(true); <4>
 ```
 [NOTE]
@@ -634,89 +531,6 @@ Control.retryFor(10).withTimeout(0, () -> {
     guiElement.scrollIntoView();
     guiElement.expect().visible(false).is(true);
 });
-```
-
-== New Locator interface
-
-The new `XPath` class helps you to build failsafe xpathes optimized for HTML. But it's restricted to search elements from top down. Once you changed the
-scope of an element by `contains` or `select` you cannot go back.
-
-This is what the basic syntax looks like
-```java
-UiElement div = find(XPath.from("div"));
-```
-
-But it supports many other features you need when you select
-elements from the DOM, like first and last element.
-```java
-XPath.from("td", 1);
-XPath.from("td", -1);
-```
-
-=== Elements that have classes
-
-```java
-XPath.from("div").classes("navigation", "header");
-```
-This will find elements like
-```html
-<div class="header large navigation">
-```
-but not
-```html
-<div class="navigation-header">
-```
-
-=== Select an element that contains another element
-
-```java
-XPath.from("nav")
-    .classes("mobile")
-    .contains("div")
-        .classes("navigation", "header");
-```
-
-This will find elements like
-```html
-<nav class="mobile"><div class="navigation header"></nav>
-```
-
-=== Select an element by its text
-```java
-XPath.from("*").text().words("Login", "here");
-XPath.from("*").text().contains("first");
-XPath.from("*").text().endsWith("here ");
-```
-This will find elements like
-```html
-<a> Login first
-    here </a>
-```
-
-=== Select by attributes
-
-```java
-XPath.from("*").attribute("src").endsWith(".png");
-```
-
-This will find elements like
-
-```html
-<img src="http://example.com/image.png"/>
-```
-
-=== Select a sub element
-```java
-XPath.from("form")
-    .attribute("name", "login") // shortcut for attribute("name").is("login")
-    .select("button")
-        .text().words("Login");
-```
-This will find elements like
-```html
-<form name="login">
-    <button>Login here</button>
-</form>
 ```
 
 == The internals

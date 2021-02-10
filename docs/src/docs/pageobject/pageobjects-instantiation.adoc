@@ -1,22 +1,22 @@
 = Instantiation
 
 == PageFactory
-Instead of creating Pages with the page constructor pages should created by using the `PageFactory` as demonstrated in the example.
+Pages need to be created via. `PageFactory` interface only. It's provided by a `Page` or the `PageFactoryProvider`.
 
 When the page is instantiated, Testerra automatically checks its annotated elements.
 
 [source,java]
 ----
-HomePage homePage = PageFactory.create(HomePage.class, driver);
+HomePage homePage = pageFactory.createPage(HomePage.class);
 ----
 
 With the PageFactory you can also perform to check a page was gone. With this you can make sure, that your page is NOT shown any more. For example, you want to verify a dialog windows was closed after a click.
 
 [source,java]
 ----
-PageFactory.checkNot(searchPage.class, driver);
+pageFactory.createPageWithCheckRule(searchPage.class, webDriver, CheckRule.IS_NOT_PRESENT);
 ----
-The checkNot is successful if at least one mandatory GuiElement ("@Check") is not shown.
+The check rule is successful if at least one mandatory UiElement ("@Check") is not shown.
 
 ==	Page Prefixes
 
@@ -30,9 +30,9 @@ Before instantiation, we can set the prefix using the `PageFactory`.
 Then we instantiate it and we can get our variation of the base class.
 [source,java]
 ----
-PageFactory.setGlobalPagesPrefix("Variation1");
+pageFactory.setGlobalPagesPrefix("Variation1");
 //this actualy creates a Variation1BaseClass
-BaseClass baseClass = PageFactory.create(BaseClass.class, driver);
+BaseClass baseClass = pageFactory.createPage(BaseClass.class);
 ----
 Default is no prefix.
 
@@ -40,12 +40,12 @@ Usage:
 [source,java]
 ----
 // Set a global Prefix
-PageFactory.setGlobalPagesPrefix("prefix");
+pageFactory.setGlobalPagesPrefix("prefix");
 
 // Set a thread local prefix. See next row about cleaning this prefix.
-PageFactory.setThreadLocalPagesPrefix("prefix");
+pageFactory.setThreadLocalPagesPrefix("prefix");
 
 // The thread local pages prefix is not cleared automatically,
-// be sure to always set the correct one or clear  itafter using.
-PageFactory.clearThreadLocalPagesPrefix();
+// be sure to always set the correct one or clear it after using.
+pageFactory.removeThreadLocalPagePrefix();
 ----

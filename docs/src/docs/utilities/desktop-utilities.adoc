@@ -16,7 +16,7 @@ It could be useful if elements are hidden or not reachable by Selenium.
 .A short clickJS example
 [source,java]
 ----
-GuiElement element = new GuiElement(driver, By.id("label"));
+UiElement element = find(By.id("label"));
 DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
 
 utils.clickJS(element);

@@ -3,18 +3,18 @@
 include::../properties/property-attributes.adoc[]
 
 The `@Check` annotation is used to verify the actual presence of an element on the site.
-All `GuiElements` that are marked with the `@Check` annotation are automatically checked when instantiated by the `PageFactory`.
+All UiElements that are marked with the `@Check` annotation are automatically checked when instantiated by the `PageFactory`.
 
-In the example, the first `GuiElement` has the `@Check` annotation, the second doesn't.
+In the example, the first UiElement has the `@Check` annotation, the second doesn't.
 The result is, that the presence of the first element will be checked by the constructor, the second won't.
 If a checked element is not found, the constructor will throw a `PageNotFoundException`.
 
 [source,java]
 ----
 @Check
-private GuiElement checked = new GuiElement(driver, By.name("checked"));
+private UiElement checked = find(By.name("checked"));
 //no @Check here
-private GuiElement unchecked = new GuiElement(driver, By.name("unchecked"));
+private UiElement unchecked = find(By.name("unchecked"));
 ----
 
 The `@Check` annotation will use the default `CheckRule` defined in `test.properties`.
@@ -23,7 +23,7 @@ It is also possible to overwrite the default `CheckRule` for a single `@Check` a
 [source,java]
 ----
 @Check(checkRule = CheckRule.IS_PRESENT)
-private GuiElement checked = new GuiElement(driver, By.name("checked"));
+private UiElement checked = find(By.name("checked"));
 ----
 
 Change the check rules for the whole project (global) with the following:
@@ -49,7 +49,7 @@ The test will not interrupted at this position.
 [source,java]
 ----
 @Check(nonFunctional = true)
-private GuiElement checked = new GuiElement(driver, By.name("checked"));
+private UiElement checked = find(By.name("checked"));
 ----
 
 With following `@Check` annotation you can define a special error message.
@@ -57,5 +57,5 @@ With following `@Check` annotation you can define a special error message.
 [source,java]
 ----
 @Check(prioritizedErrorMessage = "My error message.")
-private GuiElement checked = new GuiElement(driver, By.name("checked"));
+private UiElement checked = find(By.name("checked"));
 ----

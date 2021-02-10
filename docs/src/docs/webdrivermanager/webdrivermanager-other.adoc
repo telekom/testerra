@@ -22,20 +22,3 @@ To switch windows in a easy way Testerra provides some methods, which will autom
 // Switch to a window by matching title
 WebDriverUtils.findWindowAndSwitchTo(String windowTitle)
 ----
-
-== Difference in session key and session id
-
-There is a difference between session key and session id.
-The session key is value that you can declare and provide to handle multiple web driver sessions in one test method, as you can read in section "Multiple sessions".
-The session id is an internal id of Selenium itself.
-
-[source,java]
-----
-WebDriver driver = WebDriverManager.getWebDriver("mySession");
-
-// Returns generated UUID of the Selenium session
-String sessionId = WebDriverUtils.getSessionId(driver);
-
-// will be "mySession"
-String sessionKey = WebDriverManagerUtils.getSessionKey(driver);
-----

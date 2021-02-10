@@ -1,17 +1,17 @@
 = Actions
 
-GuiElement provides a variety of action methods.
+An UiElement provides a variety of action methods.
 Beside the known WebElement methods there are some more useful methods to interact with the web site.
 
 == Click on elements
 
 [source,java]
 ----
-GuiElement element = new GuiElement(driver, By.id("button"));
+UiElement element = find(By.id("button"));
 
 element.click();
 element.doubleClick();
-element.rightClick();
+element.contextClick();
 ----
 
 NOTE: If you have troubles using these methods, take a look to the fallback solution <<Desktop WebDriver utilities>>.
@@ -20,7 +20,7 @@ NOTE: If you have troubles using these methods, take a look to the fallback solu
 
 [source,java]
 ----
-GuiElement element = new GuiElement(driver, By.id("input"));
+UiElement element = find(By.id("input"));
 
 // Enters the given text in a input or textfield.
 // Any old values are automatically deleted before input.
@@ -40,25 +40,28 @@ element.clear();
 
 [source,java]
 ----
-GuiElement element = new GuiElement(driver, By.id("select"));
+UiElement element = find(By.id("select"));
 
-// Get the Select WebElement of a GuiElement
-Select select = element.getSelectElement();
+// Get the Select WebElement of a UiElement
+element.findWebElement(webElement -> {
+    Select selectElement = new Select(webElement);
 
-// You can use all Selenium Select methods to interact.
-select.selectByIndex(2);
-select.selectByVisibleText("option");
-List<WebElements> list = select.getAllSelectedOptions();
+    // You can use all Selenium Select methods to interact.
+    select.selectByIndex(2);
+    select.selectByVisibleText("option");
+    List<WebElements> list = select.getAllSelectedOptions();
+});
+
 ----
 
 == Use check boxes
 
 [source,java]
 ----
-GuiElement element = new GuiElement(driver, By.id("checkbox"));
+UiElement element = find(By.id("checkbox"));
 
 // Only check boxes returns true, all other elements return false
-boolean check = element.isSelectable();
+boolean check = element.waitFor().selectable(true);
 
 // Check and uncheck the check box
 element.select();
@@ -74,7 +77,7 @@ You can scroll the browser viewport until the element is in the middle viewport 
 
 [source,java]
 ----
-GuiElement element = new GuiElement(driver, By.id("image"));
+UiElement element = find(By.id("image"));
 
 element.scrollIntoView();
 
@@ -88,9 +91,9 @@ You can simulate the mouse pointer is moved over an element.
 
 [source,java]
 ----
-GuiElement element = new GuiElement(driver, By.id("label"));
+UiElement element = find(By.id("label"));
 
-element.mouseOver();
+element.hover();
 ----
 
 NOTE: If you have troubles using this method, take a look to the fallback solution <<Desktop WebDriver utilities>>.
@@ -103,8 +106,8 @@ Source and target GuiElements can be located in different frames.
 [source,java]
 ----
 
-GuiElement source = new GuiElement(driver, By.id("elem1"));
-GuiElement target = new GuiElement(driver, By.id("elem2"));
+UiElement source = find(By.id("elem1"));
+UiElement target = find(By.id("elem2"));
 
 MouseActions.dragAndDropJS(source, target);
 
@@ -119,11 +122,11 @@ MouseActions.swipeElement(source, offsetX, offsetY);
 
 == Highlight elements
 
-This method draws a coloured frame around the GuiElement.
+This method draws a coloured frame around the UiElement.
 
 [source,java]
 ----
-GuiElement element = new GuiElement(driver, By.id("button"));
+UiElement element = find(By.id("button"));
 
 element.highlight();
 ----

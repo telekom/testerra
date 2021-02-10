@@ -2,7 +2,7 @@
 
 The checks are performed with a timeout. The default timeout is set by the property {element_timeout_seconds} in `test.properties`
 
-With the following annotation the GuiElement timeout can be changed for all GuiElements in one page:
+With the following annotation the UiElements timeout can be changed during page instantiation:
 [source,java]
 ----
 @PageOptions(elementTimeoutInSeconds = 60)

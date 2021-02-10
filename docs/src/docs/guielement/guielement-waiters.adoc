@@ -1,8 +1,8 @@
 = Waiters
 
-In testing practice the test automation code must tolerate delays caused e.g. by page loading or javascript activities when checking conditions on GuiElements.
+In testing practice the test automation code must tolerate delays caused e.g. by page loading or javascript activities when checking conditions on UiElements.
 
-Therefore GuiElement provides dedicated methods to wait for a condition that operate
+Therefore UiElement provides dedicated methods to wait for a condition that operate
 on the following principle:
 
 If the condition (which is checked continuously) is met within the timeout
@@ -18,14 +18,11 @@ See also <<PageObjects,Timeout-Settings>>
 ----
 boolean result;
 
-result = element.waits().waitForIsDisplayed();
-result = element.waits().waitForText(String text);
-result = element.waits().waitForAttribute(String attribute, String value);
-result = element.waits().waitForAttributeContains(String attribute, String value);
-result = element.waits().waitForAttributeContainsNot(String attribute, String value);
-result = element.waits().waitForIsSelected();
-result = element.waits().waitForTextContains("Hello");
-result = element.waits().waitForTextContainsNot("Foo bar");
-result = element.waits().waitForCssClassIsPresent("active");
-result = element.waits().waitForCssClassIsGone("disabled");
+result = element.waitFor().displayed(boolean);
+result = element.waitFor().text(String);
+result = element.waitFor().attribute(String).is(String);
+result = element.waitFor().attribute(String).contains(String).is(boolean);
+result = element.waitFor().selected(boolean);
+result = element.waitFor().text().contains(String).is(boolean);
+result = element.waitFor().classes(String...).is(boolean);
 ----

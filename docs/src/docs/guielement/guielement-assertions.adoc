@@ -1,6 +1,6 @@
 = Assertions
 
-GuiElements provide many kinds of assertion methods to verify your elements.
+UiElements provide many kinds of assertion methods to verify your elements.
 
 == Functional asserts
 
@@ -8,24 +8,25 @@ If a functional assert fails, it will make the whole test fail and abort.
 
 [source,java]
 ----
-GuiElement element = new GuiElement(driver, By.id("button"));
+UiElement element = find(By.id("button"));
 
-// assertText only returns true, if the text is exactly the passed string
-element.asserts().assertText("mytext");
-element.asserts().assertTextContains("my");
-element.asserts().assertTextContainsNot("foo");
+// expect text only returns true, if the text is exactly the passed string
+element.expect().text("mytext");
+element.expect().text().contains("my").is(true);
+element.expect().text().contains("foo").is(false);
 
-// assertIsPresent is true, if the element can be found within the currect site
-element.asserts().assertIsPresent();
-element.asserts().assertIsNotPresent();
+// expect present is true, if the element can be found within the currect site
+element.expect().present(true);
 
-// assertIsDisplayed returns true, if the element is visible and reachable by Selenium
-element.asserts().assertIsDisplayed();
-element.asserts().assertIsNotDisplayed();
+// expect displayed returns true, if the element is visible and reachable by Selenium
+element.expect().displayed(true);
+
+// CSS property checks
+element.expect().css("display").is("none");
 
 // CSS class checks
-element.asserts().assertCssClassIsPresent("active");
-element.asserts().assertCssClassIsGone("disabled");
+element.expect().classes("active").is(true);
+element.expect().classes("disabled").is(false);
 
 // ... and many more
 ----
@@ -36,10 +37,12 @@ Assert Collector is a collector for functional asserts of a GuiElement. Failing 
 
 [source,java]
 ----
-GuiElement element = new GuiElement(driver, By.id("label"));
+UiElement element = find(By.id("label"));
 
-element.assertCollector().assertIsPresent();
-element.assertCollector().assertText("mytext");
+Control.collectAssertions(() -> {
+    element.expect().present(true);
+    element.expect().text("mytext");
+});
 ----
 
 == Optional asserts
@@ -50,48 +53,24 @@ Optional asserts provide the same assertion methods like functional asserts.
 
 [source,java]
 ----
-GuiElement element = new GuiElement(driver, By.id("label"));
+UiElement element = find(By.id("label"));
 
-element.optionalAsserts().assertIsPresent();
-element.optionalAsserts().assertText("mytext");
+Control.optionalAssertions(() -> {
+    element.expect().present(true);
+    element.expect().text("mytext");
+});
 ----
 
 == Layout asserts
 
-GuiElements can be checked for their relative layouts.
+UiElement can be checked for their relative layouts.
 
 [source,java]
 ----
-GuiElement left = new GuiElement(driver, By.id("left"));
-GuiElement right = new GuiElement(driver, By.id("right"));
+UiElement left = find(By.id("left"));
+UiElement right = find(By.id("right"));
 
-left.asserts().assertLayout(Layout.outer().leftOf(right));
-----
-
-The following checks are available in the `Layout` class:
-
-* leftOf
-* rightOf
-* above
-* below
-* sameTop
-* sameBottom
-* sameLeft
-* sameRight
-
-The same methods have a delta parameter that can be used to set deviations.
-
-=== Inner and outer borders
-
-For WebElements, there are internal and external sizes that can be addressed by the layout check. Interesting are the CSS values for 'border' and 'padding'. The 'margin' is not relevant.
-
-A check with `Layout.outer()` also observed the padding and margin definitions.
-
-A check with `Layout.inner()` ignores padding and margin. It takes the position of the inner elements for check.
-
-[source,java]
-----
-left.assertLayout(Layout.inner().leftOf(right));
+left.expect().bounds().leftOf(right).is(true);
 ----
 
 .A simple example for a layout check
@@ -99,15 +78,15 @@ image::GuiElement_layout_comperator.png[]
 
 [source,java]
 ----
-GuiElement image1 = new GuiElement(driver, By.xpath("//..."));
-GuiElement image2 = new GuiElement(driver, By.xpath("//..."));
-GuiElement image3 = new GuiElement(driver, By.xpath("//..."));
+UiElement image1 = find(By.xpath("//..."));
+UiElement image2 = find(By.xpath("//..."));
+UiElement image3 = find(By.xpath("//..."));
 
 // Assertions are true
-image1.assertLayout(Layout.outer().leftOf(image2));
-image1.assertLayout(Layout.outer().sameTop(image2, 0));
-image1.assertLayout(Layout.outer().sameBottom(image3, 0));
+image1.expect().bounds().leftOf(image2).is(true);
+image1.expect().bounds().fromTop().toTopOf(image2).is(0);
+image1.expect().bounds().fromBottom().toBottomOf(image3).is(0);
 
 // Assertions are false
-image1.assertLayout(Layout.outer().sameBottom(image2, 0));
+image1.expect().bounds().fromBottom().toBottomOf(image2).is(0);
 ----

@@ -3,11 +3,9 @@
 This section contains several articles for best practices for the usage and implementation of tests with Testerra.
 
 include::best-practices/browser-specific-knowledge.adoc[leveloffset=+1]
-include::best-practices/describe-assertions.adoc[leveloffset=+1]
 include::best-practices/html-elements.adoc[leveloffset=+1]
 include::best-practices/multiple-profiles.adoc[leveloffset=+1]
 include::best-practices/multiple-environments.adoc[leveloffset=+1]
 include::best-practices/project-setup.adoc[leveloffset=+1]
 include::best-practices/qa-attributes.adoc[leveloffset=+1]
-include::best-practices/prefer-assertions.adoc[leveloffset=+1]
 

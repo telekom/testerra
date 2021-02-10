@@ -28,6 +28,7 @@ import MethodType = data.MethodType;
 import IMethodContext = data.IMethodContext;
 import IClassContext = data.IClassContext;
 import IErrorContext = data.IErrorContext;
+import IStackTraceCause = data.IStackTraceCause;
 
 class Statistics {
     private _statusConverter: StatusConverter
@@ -130,10 +131,10 @@ export class ExecutionStatistics extends Statistics {
     }
 
     private _addUniqueFailureAspect(errorContext:IErrorContext, methodContext:IMethodContext) {
-        let failureAspectStatistics = new FailureAspectStatistics().setErrorContext(errorContext);
+        let failureAspectStatistics = new FailureAspectStatistics(errorContext);
 
         const foundFailureAspectStatistics = this._failureAspectStatistics.find(existingFailureAspectStatistics => {
-            return existingFailureAspectStatistics.name == failureAspectStatistics.name;
+            return existingFailureAspectStatistics.identifier == failureAspectStatistics.identifier;
         });
 
         if (foundFailureAspectStatistics) {
@@ -241,25 +242,31 @@ export class ClassStatistics extends Statistics {
 
 
 export class FailureAspectStatistics extends Statistics {
-
+    private _irrelevantClassNameNeedles = ["TimeoutException"];
     private _methodContexts:IMethodContext[] = [];
-    private _name:string;
+    readonly identifier:string;
+    readonly relevantCause:IStackTraceCause;
+    readonly message:string;
     public index:number;
 
-    constructor() {
+    constructor(
+        private _errorContext:IErrorContext
+    ) {
         super();
+        this.relevantCause = this._findRelevantCause(this._errorContext.stackTrace);
+        if (this._errorContext.description) {
+            this.identifier = this._errorContext.description;
+            this.message = this._errorContext.description;
+        } else {
+            this.message = this.relevantCause.message?.trim();
+            this.identifier = this.relevantCause.className + this.message;
+        }
     }
 
-    setErrorContext(errorContext:IErrorContext) {
-        if (errorContext.description) {
-            this._name = errorContext.description;
-        } else {
-            const cause = errorContext.stackTrace[0];
-            const namespace = this.statusConverter.separateNamespace(cause.className);
-            this._name = namespace.class + (cause.message ? ": " + cause.message.trim() : "");
-        }
-
-        return this;
+    private _findRelevantCause(causes:IStackTraceCause[]):IStackTraceCause {
+        return causes.find(cause => {
+            return !this._irrelevantClassNameNeedles.find(needle => cause.className.indexOf(needle) >= 0);
+        })
     }
 
     addMethodContext(methodContext:IMethodContext) {
@@ -273,10 +280,6 @@ export class FailureAspectStatistics extends Statistics {
      */
     get isMinor() {
         return this.getStatusesCount(this.statusConverter.failedStatuses) == 0;
-    }
-
-    get name() {
-        return this._name;
     }
 
     get methodContexts() {

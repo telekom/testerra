@@ -20,5 +20,5 @@
   -->
 
 <template>
-    <span title="${_parts.package}.${_parts.class}">${_parts.class}<slot></slot></span>
+    <span title="${_parts.package}.${_parts.class}" innerhtml.bind="_parts.class|highlightText:highlight"></span><slot></slot>
 </template>

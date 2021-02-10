@@ -82,7 +82,7 @@
                                       class="colored-icon status-${failureAspect.getUpmostStatus()|statusClass}"
                                       title="${failureAspect.getUpmostStatus()|statusName}"
                             >${failureAspect.getUpmostStatus()|statusIconName}</mdc-icon>
-                            <mdc-list-item-text>${failureAspect.name}</mdc-list-item-text>
+                            <mdc-list-item-text><class-name-markup namespace.bind="failureAspect.relevantCause.className">:</class-name-markup>${failureAspect.message}</mdc-list-item-text>
                         </mdc-list-item>
                     </mdc-list>
                     <div class="hcenter vcenter card-content pt0" mdc-body1>

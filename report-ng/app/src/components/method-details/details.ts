@@ -62,7 +62,7 @@ export class Details {
             this._methodDetails = methodDetails;
             this._layoutComparisonContext = methodDetails.decodeCustomContext("LayoutCheckContext");
             if (methodDetails.methodContext.errorContext) {
-                this._failureAspect = new FailureAspectStatistics().setErrorContext(methodDetails.methodContext.errorContext);
+                this._failureAspect = new FailureAspectStatistics(methodDetails.methodContext.errorContext);
             }
         });
     }

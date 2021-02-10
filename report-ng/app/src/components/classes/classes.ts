@@ -131,9 +131,7 @@ export class Classes extends AbstractViewModel {
                             )
                         })
                         .map(methodContext => {
-                            const methodDetails = new MethodDetails();
-                            methodDetails.methodContext = methodContext;
-                            methodDetails.classStatistics = classStatistic;
+                            const methodDetails = new MethodDetails(methodContext, classStatistic);
                             methodDetails.failureAspectStatistics = (relevantFailureAspect?relevantFailureAspect:(methodContext.errorContext?new FailureAspectStatistics().setErrorContext(methodContext.errorContext):null));
                             return methodDetails;
                         })

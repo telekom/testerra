@@ -92,21 +92,31 @@ export class DependencyNetwork {
         });
     }
 
+    private _createMethodDetails(methodContextIds:string[]):MethodDetails[] {
+        return methodContextIds.filter(methodId => {
+            return (methodId != this._methodDetails.methodContext.contextValues.id);
+        })
+        .map(methodId => {
+            return this._methodDetails.executionStatistics.executionAggregate.methodContexts[methodId]
+        })
+        .filter(methodContext => methodContext)
+        .map(methodContext => new MethodDetails(methodContext, this._methodDetails.classStatistics))
+    }
+
     private _createGraph() {
         if (!this._methodDetails || !this._container) {
             return;
         }
 
-        const methodDetails = this._methodDetails;
         const nodes:DataSetNodes[] = [];
         const edges:DataSetEdges[] = [];
 
-        const addNode = (methodContext:IMethodContext) => {
+        const addNode = (methodDetails:MethodDetails) => {
             const node:DataSetNodes = {
-                id: methodContext.contextValues.id,
-                label: methodContext.contextValues.name,
+                id: methodDetails.methodContext.contextValues.id,
+                label: methodDetails.identifier,
                 physics: false,
-                color: this._statusConverter.getColorForStatus(methodContext.resultStatus),
+                color: this._statusConverter.getColorForStatus(methodDetails.methodContext.resultStatus),
                 font: {
                     color: "#fff",
                     face: "Roboto, sans-serif",
@@ -117,17 +127,17 @@ export class DependencyNetwork {
             return node;
         }
 
-        const main = addNode(methodDetails.methodContext);
+        const main = addNode(this._methodDetails);
         //main.mass = 10;
         main.value = 3;
 
-        methodDetails.methodContext.dependsOnMethodContextIds.forEach(methodId => {
-            const methodContext = methodDetails.executionStatistics.executionAggregate.methodContexts[methodId];
-            if (methodContext) {
-                addNode(methodContext);
+        this._createMethodDetails(this._methodDetails.methodContext.dependsOnMethodContextIds)
+            .forEach(otherMethodDetails => {
+                addNode(otherMethodDetails);
+
                 edges.push({
-                    from: methodContext.contextValues.id,
-                    to: methodDetails.methodContext.contextValues.id,
+                    from: otherMethodDetails.methodContext.contextValues.id,
+                    to: this._methodDetails.methodContext.contextValues.id,
                     arrows: {
                         from: {
                             enabled: true,
@@ -141,24 +151,16 @@ export class DependencyNetwork {
                         size: 9,
                     },
                 })
-            }
-        })
-
-        methodDetails.methodContext.relatedMethodContextIds
-            .filter(methodId => {
-                return (methodId != methodDetails.methodContext.contextValues.id);
             })
-            .map(methodId => {
-                return methodDetails.executionStatistics.executionAggregate.methodContexts[methodId]
-            })
-            .filter(methodContext => methodContext)
-            .forEach(methodContext => {
-                addNode(methodContext);
 
-                if (methodContext.methodRunIndex < methodDetails.methodContext.methodRunIndex) {
+        this._createMethodDetails(this._methodDetails.methodContext.relatedMethodContextIds)
+            .forEach(otherMethodDetails => {
+                addNode(otherMethodDetails);
+
+                if (otherMethodDetails.methodContext.methodRunIndex < this._methodDetails.methodContext.methodRunIndex) {
                     edges.push({
-                        from: methodContext.contextValues.id,
-                        to: methodDetails.methodContext.contextValues.id,
+                        from: otherMethodDetails.methodContext.contextValues.id,
+                        to: this._methodDetails.methodContext.contextValues.id,
                         arrows: {
                             to: {
                                 enabled: true,
@@ -175,8 +177,8 @@ export class DependencyNetwork {
                     })
                 } else {
                     edges.push({
-                        from: methodDetails.methodContext.contextValues.id,
-                        to: methodContext.contextValues.id,
+                        from: this._methodDetails.methodContext.contextValues.id,
+                        to: otherMethodDetails.methodContext.contextValues.id,
                         arrows: {
                             from: {
                                 enabled: true,

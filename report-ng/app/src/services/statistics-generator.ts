@@ -34,27 +34,40 @@ import ISessionContext = data.ISessionContext;
 
 export class MethodDetails {
     executionStatistics: ExecutionStatistics;
-    methodContext: IMethodContext;
-    classStatistics: ClassStatistics;
     testContext: ITestContext;
     suiteContext: ISuiteContext;
     failureAspectStatistics:FailureAspectStatistics;
     sessionContexts:ISessionContext[];
+    private _identifier:string = null;
+
+    constructor(
+        readonly methodContext:IMethodContext,
+        readonly classStatistics:ClassStatistics,
+    ) {
+    }
 
     get identifier() {
-        let identifier = this.methodContext.contextValues.name;
-        const params = [];
-        for (const name in this.methodContext.parameters) {
-            params.push(name + ": " + this.methodContext.parameters[name]);
+        if (!this._identifier) {
+            this._identifier = this.methodContext.contextValues.name;
+            const otherMethodWithSameName = this.classStatistics.methodContexts
+                .find(otherMethodContext => {
+                    return (otherMethodContext.contextValues.id !== this.methodContext.contextValues.id && this.methodContext.contextValues.name === otherMethodContext.contextValues.name)
+                });
+            if (otherMethodWithSameName) {
+                const params = [];
+                for (const name in this.methodContext.parameters) {
+                    params.push(name + ": " + this.methodContext.parameters[name]);
+                }
+                if (params.length > 0) {
+                    this._identifier += "(" + params.join(", ") + ")";
+                }
+            }
         }
-        if (params.length > 0) {
-            identifier += "(" + params.join(", ") + ")";
-        }
-        return identifier;
+        return this._identifier;
     }
 
     get numDetails() {
-        return (this.methodContext.errorContext ? 1 : 0) + (this.methodContext.customContexts ? 1 : 0);
+        return (this.methodContext.errorContext ? 1 : 0) + Object.keys(this.methodContext.customContexts).length;
     }
 
     get failedStep() {
@@ -125,10 +138,8 @@ export class StatisticsGenerator {
                             sessionContexts.push(executionStatistics.executionAggregate.sessionContexts[value]);
                         })
 
-                        const methodDetails = new MethodDetails();
+                        const methodDetails = new MethodDetails(methodContext, classStatistic);
                         methodDetails.executionStatistics = executionStatistics;
-                        methodDetails.methodContext = methodContext;
-                        methodDetails.classStatistics = classStatistic;
                         methodDetails.testContext = testContext;
                         methodDetails.suiteContext = suiteContext;
                         methodDetails.sessionContexts = sessionContexts;

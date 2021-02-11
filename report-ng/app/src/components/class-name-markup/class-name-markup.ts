@@ -35,6 +35,9 @@ export class ClassNameMarkup {
     @bindable({ defaultBindingMode: bindingMode.toView })
     namespace: string;
 
+    @bindable({ defaultBindingMode: bindingMode.toView })
+    highlight:RegExp;
+
     private _parts;
 
     namespaceChanged() {

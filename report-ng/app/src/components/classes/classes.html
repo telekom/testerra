@@ -107,8 +107,7 @@
                                 <div if.bind="methodDetails.failureAspectStatistics"
                                      mdc-body2
                                      class="st1"
-                                     innerhtml.bind="methodDetails.failureAspectStatistics.name|html|highlightText:_searchRegexp"
-                                ></div>
+                                ><class-name-markup namespace.bind="methodDetails.failureAspectStatistics.relevantCause.className" highlight.bind="_searchRegexp">:</class-name-markup><span innerhtml="${methodDetails.failureAspectStatistics.message|html|highlightText:_searchRegexp}"></span></div>
                             </mdc-data-table-cell>
                         </mdc-data-table-row>
                     </mdc-data-table-content>

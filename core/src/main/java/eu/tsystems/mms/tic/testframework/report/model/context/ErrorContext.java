@@ -40,8 +40,8 @@ public class ErrorContext {
     @Deprecated
     private String errorFingerprint;
 
-    private Optional<ScriptSource> scriptSource;
-    private Optional<ScriptSource> executionObjectSource;
+    private ScriptSource scriptSource;
+    private ScriptSource executionObjectSource;
     private Object ticketId;
     private boolean optional;
 
@@ -59,23 +59,23 @@ public class ErrorContext {
     }
 
     /**
-     * The script source is the test script source
+     * The test script source
      */
     public Optional<ScriptSource> getScriptSource() {
         if (this.scriptSource == null) {
-            this.scriptSource = Optional.ofNullable(SourceUtils.findScriptSourceForThrowable(this.throwable));
+            this.scriptSource = SourceUtils.findScriptSourceForThrowable(getThrowable());
         }
-        return this.scriptSource;
+        return Optional.ofNullable(this.scriptSource);
     }
 
     /**
-     * The execution object source is the trigger of the assertion
+     * The page object source triggering this assertion
      */
     public Optional<ScriptSource> getExecutionObjectSource() {
         if (this.executionObjectSource == null) {
-            this.executionObjectSource = Optional.ofNullable(TestEvidenceCollector.getSourceFor(throwable));
+            this.executionObjectSource = TestEvidenceCollector.getSourceFor(getThrowable());
         }
-        return this.executionObjectSource;
+        return Optional.ofNullable(this.executionObjectSource);
     }
 
     public Object getTicketId() {

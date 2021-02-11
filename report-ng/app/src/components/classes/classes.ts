@@ -132,14 +132,14 @@ export class Classes extends AbstractViewModel {
                         })
                         .map(methodContext => {
                             const methodDetails = new MethodDetails(methodContext, classStatistic);
-                            methodDetails.failureAspectStatistics = (relevantFailureAspect?relevantFailureAspect:(methodContext.errorContext?new FailureAspectStatistics().setErrorContext(methodContext.errorContext):null));
+                            methodDetails.failureAspectStatistics = (relevantFailureAspect?relevantFailureAspect:(methodContext.errorContext?new FailureAspectStatistics(methodContext.errorContext):null));
                             return methodDetails;
                         })
                         .filter(methodDetails => {
                             return (
                                 !this._searchRegexp
                                 || (
-                                    methodDetails.failureAspectStatistics?.name.match(this._searchRegexp)
+                                    methodDetails.failureAspectStatistics?.identifier.match(this._searchRegexp)
                                     || methodDetails.identifier.match(this._searchRegexp)
                                 )
                             );

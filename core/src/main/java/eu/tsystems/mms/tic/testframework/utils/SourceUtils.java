@@ -90,7 +90,11 @@ public final class SourceUtils {
         /*
          * When no class file has been found, search recursive in the stacktrace of it's cause
          */
-        if (!optionalStackTraceElement.isPresent() && throwable.getCause() != throwable) {
+        if (
+                !optionalStackTraceElement.isPresent()
+                && throwable.getCause() != null
+                && throwable.getCause() != throwable
+        ) {
             return traceStackTraceElement(throwable.getCause(), atomicClassFile);
         } else {
             return optionalStackTraceElement;

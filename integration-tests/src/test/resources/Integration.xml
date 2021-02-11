@@ -20,22 +20,12 @@
         <suite-file path="GuiElementVariations.xml"></suite-file>
         <suite-file path="PageObjects.xml"></suite-file>
         <suite-file path="UiElement.xml"></suite-file>
+        <suite-file path="WebDriverManager.xml"></suite-file>
     </suite-files>
 
     <test name="Events" parallel="false">
         <packages>
             <package name="eu.tsystems.mms.tic.testframework.test.events"/>
-        </packages>
-    </test>
-
-    <test name="WebDriver" parallel="methods">
-        <groups>
-            <run>
-                <exclude name="SEQUENTIAL"/>
-            </run>
-        </groups>
-        <packages>
-            <package name="eu.tsystems.mms.tic.testframework.test.webdrivermanager"/>
         </packages>
     </test>
 

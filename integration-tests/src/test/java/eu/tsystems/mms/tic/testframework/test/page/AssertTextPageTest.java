@@ -107,5 +107,4 @@ public class AssertTextPageTest extends AbstractTestSitesTest implements PageFac
         WebTestFramedPage page = getPage();
         page.assertIsNotTextDisplayed("Frame1234");
     }
-
 }

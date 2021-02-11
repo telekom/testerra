@@ -55,7 +55,7 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
 
     @Test(dependsOnMethods = "test_take_screenshot_on_failure", alwaysRun = true)
     public void test_screenshot_present_in_MethodContext() {
-        this.screenshot_is_present_in_MethodContext();
+        this.screenshot_is_present_in_MethodContext("test_take_screenshot_on_failure");
     }
 
     @Test()
@@ -68,12 +68,16 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
 
     @Test(dependsOnMethods = "test_take_screenshot_on_failure_without_closing_WebDriver", alwaysRun = true)
     public void test_screenshot_present_in_MethodContext_without_closing_WebDriver() {
-        this.screenshot_is_present_in_MethodContext();
+        this.screenshot_is_present_in_MethodContext("test_take_screenshot_on_failure_without_closing_WebDriver");
     }
 
-    private void screenshot_is_present_in_MethodContext() {
+    private void screenshot_is_present_in_MethodContext(String methodName) {
         MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
-        Optional<MethodContext> optionalMethodContext = currentMethodContext.getClassContext().readMethodContexts().filter(methodContext -> methodContext.getName().equals("test_take_screenshot_on_failure")).findFirst();
+
+        Optional<MethodContext> optionalMethodContext = currentMethodContext.getClassContext().readMethodContexts()
+                .filter(methodContext -> methodContext.getName().equals(methodName))
+                .findFirst();
+
         Assert.assertTrue(optionalMethodContext.isPresent());
         optionalMethodContext.ifPresent(methodContext -> {
             long count = methodContext.readTestSteps()

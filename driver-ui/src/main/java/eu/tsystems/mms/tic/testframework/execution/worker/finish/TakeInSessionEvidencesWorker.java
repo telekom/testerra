@@ -22,7 +22,6 @@
 package eu.tsystems.mms.tic.testframework.execution.worker.finish;
 
 import com.google.common.eventbus.Subscribe;
-import eu.tsystems.mms.tic.testframework.events.BeforeShutdownWebDriverSessionsEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.SharedTestResultAttributes;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
@@ -31,7 +30,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.util.List;
 
-public class TakeInSessionEvidencesWorker implements BeforeShutdownWebDriverSessionsEvent.Listener {
+public class TakeInSessionEvidencesWorker implements MethodEndEvent.Listener {
 
     protected void collect(MethodEndEvent methodEndEvent) {
         if (WebDriverManager.hasSessionsActiveInThisThread()) {
@@ -46,8 +45,7 @@ public class TakeInSessionEvidencesWorker implements BeforeShutdownWebDriverSess
 
     @Override
     @Subscribe
-    public void onBeforeShutdownWebDriverSessionsEvent(BeforeShutdownWebDriverSessionsEvent event) {
-        MethodEndEvent methodEndEvent = event.getMethodEndEvent();
+    public void onMethodEnd(MethodEndEvent methodEndEvent) {
         if (methodEndEvent.isFailed()) {
             Object attribute = methodEndEvent.getTestResult().getAttribute(SharedTestResultAttributes.failsFromCollectedAssertsOnly);
 

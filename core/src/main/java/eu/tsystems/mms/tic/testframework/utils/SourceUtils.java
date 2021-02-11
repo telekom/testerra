@@ -30,9 +30,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,42 +55,46 @@ public final class SourceUtils {
     private static String sourceRoot = System.getProperty(TesterraProperties.MODULE_SOURCE_ROOT, "src");
     private static int linePrefetch = PropertyManager.getIntProperty(TesterraProperties.SOURCE_LINES_PREFETCH, 5);
     private static final boolean FIND_SOURCES = PropertyManager.getBooleanProperty(TesterraProperties.REPORT_ACTIVATE_SOURCES, true);
-    private static HashMap<Class, List<String>> cachedClassNames = new HashMap<Class, List<String>>();
+    private static HashMap<Class, List<String>> cachedClassNames = new HashMap<>();
 
     public static ScriptSource findScriptSourceForThrowable(Throwable throwable) {
         if (!FIND_SOURCES) {
             return null;
         }
 
-        StackTraceElement[] stackTrace = throwable.getStackTrace();
-        String className = null;
-        String fileName = null;
-        String methodName = null;
-        int lineNumber = 0;
-        boolean inDefaultPackageSection = false;
-        for (StackTraceElement stackTraceElement : stackTrace) {
-            if (stackTraceElement.getClassName().startsWith(TesterraListener.DEFAULT_PACKAGE)) {
-                className = stackTraceElement.getClassName();
-                fileName = stackTraceElement.getFileName();
-                lineNumber = stackTraceElement.getLineNumber();
-                methodName = stackTraceElement.getMethodName();
-                inDefaultPackageSection = true;
-            }
-            else {
-                if (inDefaultPackageSection) {
-                    /*
-                    beeing here means, to be in the first line after the default package section
-                    so we stop searching
-                     */
-                    break;
-                }
-            }
-        }
+        AtomicReference<File> atomicClassFile = new AtomicReference<>();
+        Optional<StackTraceElement> optionalStackTraceElement = traceStackTraceElement(throwable, atomicClassFile);
 
-        if (!ObjectUtils.isNull(className, fileName, methodName)) {
-            return getSourceFrom(className, fileName, methodName, lineNumber);
+        ScriptSource source = null;
+        if (optionalStackTraceElement.isPresent()) {
+            StackTraceElement stackTraceElement = optionalStackTraceElement.get();
+            source = getSource(atomicClassFile.get(), stackTraceElement.getMethodName(), stackTraceElement.getLineNumber());
         }
-        return null;
+        return source;
+    }
+
+    /**
+     * Searches for a stack trace element which source can be resolved on the local file system
+     */
+    private static Optional<StackTraceElement> traceStackTraceElement(Throwable throwable, AtomicReference<File> atomicClassFile) {
+        Optional<StackTraceElement> optionalStackTraceElement = Arrays.stream(throwable.getStackTrace())
+                //.filter(stackTraceElement -> stackTraceElement.getClassName().startsWith(TesterraListener.DEFAULT_PACKAGE))
+                // Filter for files that exists in the source path
+                .filter(stackTraceElement -> {
+                    Optional<File> optionalClassFile = findClassFile(stackTraceElement.getClassName());
+                    optionalClassFile.ifPresent(atomicClassFile::set);
+                    return optionalClassFile.isPresent();
+                })
+                .findFirst();
+
+        /*
+         * When no class file has been found, search recursive in the stacktrace of it's cause
+         */
+        if (!optionalStackTraceElement.isPresent() && throwable.getCause() != throwable) {
+            return traceStackTraceElement(throwable.getCause(), atomicClassFile);
+        } else {
+            return optionalStackTraceElement;
+        }
     }
 
     /**
@@ -181,22 +188,27 @@ public final class SourceUtils {
         return classnames;
     }
 
-    private static ScriptSource getSourceFrom(String className, String filename, String methodName, int lineNr) {
+    private static Optional<File> findClassFile(String className) {
         String filePath = className.replace(".", "/").concat(".java");
-        File file;
-        file = new File(sourceRoot + "/main/java/" + filePath);
+        File file = new File(sourceRoot + "/main/java/" + filePath);
+        if (file.exists()) {
+            return Optional.of(file);
+        }
+
+        file = new File(sourceRoot + "/test/java/" + filePath);
+        if (file.exists()) {
+            return Optional.of(file);
+        }
+
+        return Optional.empty();
+    }
+
+    private static ScriptSource getSourceFrom(String className, String filename, String methodName, int lineNr) {
         ScriptSource source = null;
 
-        if (file.exists()) {
-            LOGGER.debug("Found file in main/java");
-            source = getSource(file, methodName, lineNr);
-        }
-        else {
-            file = new File(sourceRoot + "/test/java/" + filePath);
-            if (file.exists()) {
-                LOGGER.debug("Found file in test/java");
-                source = getSource(file, methodName, lineNr);
-            }
+        Optional<File> optionalClassFile = findClassFile(className);
+        if (optionalClassFile.isPresent()) {
+            source = getSource(optionalClassFile.get(), methodName, lineNr);
         }
 
         if (source != null) {

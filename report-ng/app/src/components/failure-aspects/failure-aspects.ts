@@ -78,7 +78,7 @@ export class FailureAspects extends AbstractViewModel {
                     ));
                 })
                 .filter(failureAspectStatistics => {
-                    return (!this._searchRegexp || failureAspectStatistics.name.match(this._searchRegexp));
+                    return (!this._searchRegexp || failureAspectStatistics.identifier.match(this._searchRegexp));
                 })
 
             this._loading = false;

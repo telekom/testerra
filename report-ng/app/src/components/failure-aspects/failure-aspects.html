@@ -69,8 +69,7 @@
                             <mdc-data-table-cell mdc-body1 class="rank-column" css="font-size: ${_calcFontSize(failureAspect.index)}rem;">${failureAspect.index+1}</mdc-data-table-cell>
                             <mdc-data-table-cell class="p1 mdc-wrapable-cell" mdc-body1>
                                 <a route-href="route: tests; params.bind: {failureAspect: failureAspect.index+1}"
-                                   innerhtml.bind="failureAspect.name|html|highlightText:_searchRegexp"
-                                ></a>
+                                ><class-name-markup namespace.bind="failureAspect.relevantCause.className" highlight.bind="_searchRegexp">:</class-name-markup><span innerhtml="${failureAspect.message|html|highlightText:_searchRegexp}"></span></a>
                             </mdc-data-table-cell>
                             <mdc-data-table-cell>
                                 <div repeat.for="status of failureAspect.availableStatuses" class="mt1 mb1">

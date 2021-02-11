@@ -41,5 +41,5 @@ public interface IWebDriverManager extends WebDriverRetainer {
     WebDriver getWebDriver(String sessionKey);
     WebDriver getWebDriver(WebDriverRequest request);
     String getSessionKey(WebDriver webDriver);
-    WebDriverManagerConfig getDefaultConfig();
+    WebDriverManagerConfig getConfig();
 }

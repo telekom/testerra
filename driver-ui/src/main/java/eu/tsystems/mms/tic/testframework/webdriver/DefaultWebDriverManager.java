@@ -84,7 +84,7 @@ public class DefaultWebDriverManager implements IWebDriverManager {
     }
 
     @Override
-    public WebDriverManagerConfig getDefaultConfig() {
+    public WebDriverManagerConfig getConfig() {
         return WebDriverManager.getConfig();
     }
 }

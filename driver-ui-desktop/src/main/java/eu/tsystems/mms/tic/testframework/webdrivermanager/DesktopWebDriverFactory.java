@@ -360,6 +360,8 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         sw.stop();
 
         BrowserInformation browserInformation = WebDriverManagerUtils.getBrowserInformation(newDriver);
+        sessionContext.setBrowserName(browserInformation.getBrowserName());
+        sessionContext.setBrowserVersion(browserInformation.getBrowserVersion());
         log().info(String.format(
                 "Started %s (sessionKey=%s, sessionId=%s, node=%s, userAgent=%s) in %s",
                 newDriver.getClass().getSimpleName(),
@@ -469,7 +471,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         }
 
         Map<String, Object> cleanedCapsMap = new WebDriverCapabilityLogHelper().clean(finalCapabilities);
-        sessionContext.getMetaData().put(SessionContext.MetaData.CAPABILITIES, cleanedCapsMap);
+        sessionContext.setCapabilities(cleanedCapsMap);
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         log().info(String.format(

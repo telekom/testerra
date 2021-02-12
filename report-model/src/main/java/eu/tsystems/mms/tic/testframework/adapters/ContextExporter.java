@@ -531,18 +531,9 @@ public class ContextExporter {
         });
         builder.setExecutionContextId(ExecutionContextController.getCurrentExecutionContext().getId());
 
-        // translate object map to string map
-        Map<String, String> newMap = new LinkedHashMap<>();
-        for (String key : sessionContext.getMetaData().keySet()) {
-            Object value = sessionContext.getMetaData().get(key);
-            if (StringUtils.isStringEmpty(key) || value == null || StringUtils.isStringEmpty(value.toString())) {
-                // ignore
-            } else {
-                newMap.put(key, value.toString());
-            }
-        }
-        builder.putAllMetadata(newMap);
-
+        apply(sessionContext.getBrowserName(), builder::setBrowserName);
+        apply(sessionContext.getBrowserVersion(), builder::setBrowserVersion);
+        sessionContext.getCapabilities().ifPresent(map -> builder.setCapabilities(jsonEncoder.toJson(map)));
         return builder;
     }
 

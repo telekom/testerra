@@ -32,6 +32,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithAc
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetGuiElementTimeoutFieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFieldAction;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
@@ -39,6 +40,7 @@ import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
@@ -170,8 +172,8 @@ public abstract class Page extends AbstractPage {
 
         String textFinderXpath = TEXT_FINDER_XPATH.replace(TEXT_FINDER_PLACEHOLDER, text);
 
-        WebDriver driver = getWebDriver();
-        textElement = new GuiElement(driver, By.xpath(textFinderXpath));
+        WebDriver webDriver = getWebDriver();
+        textElement = new GuiElement(webDriver, By.xpath(textFinderXpath));
         if (isDisplayed) {
             textElement.withWebElementFilter(WebElement::isDisplayed);
         }
@@ -180,7 +182,7 @@ public abstract class Page extends AbstractPage {
         if (textElement.isPresent()) {
             // highlight
             WebElement webElement = textElement.getWebElement();
-            JSUtils.highlightWebElementStatic(driver, webElement, new Color(0, 255, 0));
+            JSUtils.highlightWebElementStatic(webDriver, webElement, new Color(0, 255, 0));
             return true;
         }
 
@@ -189,8 +191,8 @@ public abstract class Page extends AbstractPage {
           */
 
         // exit when safari
-        WebDriverRequest request = WebDriverManager.getRelatedWebDriverRequest(driver);
-        if (Browsers.safari.equalsIgnoreCase(request.getBrowser()) || Browsers.phantomjs.equalsIgnoreCase(request.getBrowser())) {
+        String browser = WebDriverSessionsManager.getSessionContext(webDriver).map(SessionContext::getBrowserName).orElse(null);
+        if (Browsers.safari.equalsIgnoreCase(browser) || Browsers.phantomjs.equalsIgnoreCase(browser)) {
             String msg = "Recursive Page Scan does not work. Unsupported Browser.";
             log().error(msg);
             MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
@@ -200,22 +202,22 @@ public abstract class Page extends AbstractPage {
             // don't return here, let it run into failure...
         }
 
-        List<WebElement> iframes = driver.findElements(By.tagName("iframe"));
+        List<WebElement> iframes = webDriver.findElements(By.tagName("iframe"));
         for (WebElement iframe : iframes) {
-            driver.switchTo().frame(iframe);
+            webDriver.switchTo().frame(iframe);
             if (pIsTextPresentRecursive(isDisplayed, text)) {
                 return true;
             }
-            driver.switchTo().parentFrame();
+            webDriver.switchTo().parentFrame();
         }
 
-        List<WebElement> frames = driver.findElements(By.tagName("frame"));
+        List<WebElement> frames = webDriver.findElements(By.tagName("frame"));
         for (WebElement frame : frames) {
-            driver.switchTo().frame(frame);
+            webDriver.switchTo().frame(frame);
             if (pIsTextPresentRecursive(isDisplayed, text)) {
                 return true;
             }
-            driver.switchTo().parentFrame();
+            webDriver.switchTo().parentFrame();
         }
 
         return false;

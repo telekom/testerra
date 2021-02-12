@@ -67,8 +67,6 @@ public final class WebDriverSessionsManager {
 
     private static final String FULL_SESSION_KEY_SPLIT_MARKER = "___";
 
-    static final Map<EventFiringWebDriver, WebDriverRequest> DRIVER_REQUEST_MAP = new ConcurrentHashMap<>();
-
     private WebDriverSessionsManager() {
 
     }
@@ -102,9 +100,6 @@ public final class WebDriverSessionsManager {
         store driver to session context relation
          */
         ALL_EVENTFIRING_WEBDRIVER_SESSIONS_CONTEXTS.put(eventFiringWebDriver, sessionContext);
-
-        // store the request
-        DRIVER_REQUEST_MAP.put((EventFiringWebDriver) eventFiringWebDriver, webDriverRequest);
     }
 
     static void removeWebDriverSession(String sessionKey, WebDriver eventFiringWebDriver) {

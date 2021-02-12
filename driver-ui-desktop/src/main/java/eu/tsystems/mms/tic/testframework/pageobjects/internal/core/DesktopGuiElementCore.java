@@ -35,6 +35,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
+import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.MouseActions;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
@@ -43,6 +44,7 @@ import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebElementProxy;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -592,15 +594,13 @@ public class DesktopGuiElementCore implements GuiElementCore, Loggable {
         WebElement webElement = guiElementData.webElement;
         By localBy = getBy();
 
-        WebDriverRequest driverRequest = WebDriverManager.getRelatedWebDriverRequest(webDriver);
-
         if (localBy instanceof ByImage) {
             ByImage byImage = (ByImage) localBy;
             int x = byImage.getCenterX();
             int y = byImage.getCenterY();
             LOGGER.info("Image Double Click on image webElement at " + x + "," + y);
             JSUtils.executeJavaScriptMouseAction(webDriver, webElement, JSMouseAction.DOUBLE_CLICK, x, y);
-        } else if (Browsers.safari.equalsIgnoreCase(driverRequest.getBrowser())) {
+        } else if (WebDriverSessionsManager.getSessionContext(webDriver).map(SessionContext::getBrowserName).orElse("").equals(Browsers.safari)) {
             LOGGER.info("Safari double click workaround");
             JSUtils.executeJavaScriptMouseAction(webDriver, webElement, JSMouseAction.DOUBLE_CLICK, 0, 0);
         } else {

@@ -24,23 +24,18 @@ package eu.tsystems.mms.tic.testframework.report.model.context;
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
 public class SessionContext extends AbstractContext implements SynchronizableContext {
-    public static class MetaData {
-        public static final String BROWSER="browser";
-        public static final String BROWSER_VERSION="browserVersion";
-        public static final String CAPABILITIES="capabilities";
-    }
-
     private String sessionKey;
     private String provider;
-    private final Map<String, Object> metaData = new LinkedHashMap<>();
     private String remoteSessionId;
     private Video video;
     private NodeInfo nodeInfo;
+    private String browserName;
+    private String browserVersion;
+    private Map<String, Object> capabilities;
 
     public SessionContext(String sessionKey, String provider) {
         this.sessionKey = sessionKey;
@@ -57,10 +52,6 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
 
     public String getSessionKey() {
         return sessionKey;
-    }
-
-    public Map<String, Object> getMetaData() {
-        return metaData;
     }
 
     public SessionContext setSessionKey(String sessionKey) {
@@ -109,6 +100,33 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
 
     public SessionContext setNodeInfo(NodeInfo nodeInfo) {
         this.nodeInfo = nodeInfo;
+        return this;
+    }
+
+    public String getBrowserName() {
+        return browserName;
+    }
+
+    public SessionContext setBrowserName(String browserName) {
+        this.browserName = browserName;
+        return this;
+    }
+
+    public String getBrowserVersion() {
+        return browserVersion;
+    }
+
+    public SessionContext setBrowserVersion(String browserVersion) {
+        this.browserVersion = browserVersion;
+        return this;
+    }
+
+    public Optional<Map<String, Object>> getCapabilities() {
+        return Optional.ofNullable(capabilities);
+    }
+
+    public SessionContext setCapabilities(Map<String, Object> capabilities) {
+        this.capabilities = capabilities;
         return this;
     }
 }

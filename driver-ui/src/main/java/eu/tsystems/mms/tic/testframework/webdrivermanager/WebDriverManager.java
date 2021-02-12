@@ -439,10 +439,6 @@ public final class WebDriverManager {
         return WebDriverSessionsManager.getSessionKey(driver);
     }
 
-    public static WebDriverRequest getRelatedWebDriverRequest(WebDriver driver) {
-        return WebDriverSessionsManager.DRIVER_REQUEST_MAP.get(driver);
-    }
-
     public static SessionContext getSessionContextFromWebDriver(WebDriver webDriver) {
         return WebDriverSessionsManager.getSessionContext(webDriver).orElse(null);
     }

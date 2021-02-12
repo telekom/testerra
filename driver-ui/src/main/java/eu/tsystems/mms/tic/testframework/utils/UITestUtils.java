@@ -33,9 +33,11 @@ import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.Report;
+import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -117,8 +119,7 @@ public class UITestUtils {
             String sessionKey
     ) {
 
-        WebDriverRequest webDriverRequest = WebDriverManager.getRelatedWebDriverRequest(eventFiringWebDriver);
-        if (Browsers.htmlunit.equalsIgnoreCase(webDriverRequest.getBrowser())) {
+        if (Browsers.htmlunit.equalsIgnoreCase(WebDriverSessionsManager.getSessionContext(eventFiringWebDriver).map(SessionContext::getBrowserName).orElse(null))) {
             LOGGER.warn("Not taking screenshot for htmunit");
             return null;
         }
@@ -225,9 +226,7 @@ public class UITestUtils {
          * captured. To allow full-page screenshots, we stitch several viewport-screenshots together.
          * If this is eventually supported by WebDriver, this special branch can be removed.
          */
-        WebDriverRequest relatedWebDriverRequest = WebDriverManager.getRelatedWebDriverRequest(eventFiringWebDriver);
-        String browser = relatedWebDriverRequest.getBrowser();
-        if (Browsers.ie.equalsIgnoreCase(browser)) {
+        if (Browsers.ie.equalsIgnoreCase(WebDriverSessionsManager.getSessionContext(eventFiringWebDriver).map(SessionContext::getBrowserName).orElse(null))) {
             Viewport viewport = JSUtils.getViewport(driver);
 
             if (viewport.height > Constants.IE_SCREENSHOT_LIMIT) {

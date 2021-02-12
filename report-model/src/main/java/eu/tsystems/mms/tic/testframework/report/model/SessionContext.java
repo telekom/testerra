@@ -21,6 +21,9 @@ private static final long serialVersionUID = 0L;
     sessionId_ = "";
     videoId_ = "";
     executionContextId_ = "";
+    browserName_ = "";
+    browserVersion_ = "";
+    capabilities_ = "";
   }
 
   @java.lang.Override
@@ -43,7 +46,6 @@ private static final long serialVersionUID = 0L;
     if (extensionRegistry == null) {
       throw new java.lang.NullPointerException();
     }
-    int mutable_bitField0_ = 0;
     com.google.protobuf.UnknownFieldSet.Builder unknownFields =
         com.google.protobuf.UnknownFieldSet.newBuilder();
     try {
@@ -79,19 +81,6 @@ private static final long serialVersionUID = 0L;
             provider_ = s;
             break;
           }
-          case 34: {
-            if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-              metadata_ = com.google.protobuf.MapField.newMapField(
-                  MetadataDefaultEntryHolder.defaultEntry);
-              mutable_bitField0_ |= 0x00000001;
-            }
-            com.google.protobuf.MapEntry<java.lang.String, java.lang.String>
-            metadata__ = input.readMessage(
-                MetadataDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
-            metadata_.getMutableMap().put(
-                metadata__.getKey(), metadata__.getValue());
-            break;
-          }
           case 50: {
             java.lang.String s = input.readStringRequireUtf8();
 
@@ -108,6 +97,24 @@ private static final long serialVersionUID = 0L;
             java.lang.String s = input.readStringRequireUtf8();
 
             executionContextId_ = s;
+            break;
+          }
+          case 74: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            browserName_ = s;
+            break;
+          }
+          case 82: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            browserVersion_ = s;
+            break;
+          }
+          case 90: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            capabilities_ = s;
             break;
           }
           default: {
@@ -134,18 +141,6 @@ private static final long serialVersionUID = 0L;
     return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_SessionContext_descriptor;
   }
 
-  @SuppressWarnings({"rawtypes"})
-  @java.lang.Override
-  protected com.google.protobuf.MapField internalGetMapField(
-      int number) {
-    switch (number) {
-      case 4:
-        return internalGetMetadata();
-      default:
-        throw new RuntimeException(
-            "Invalid map field number: " + number);
-    }
-  }
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
@@ -256,90 +251,13 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int METADATA_FIELD_NUMBER = 4;
-  private static final class MetadataDefaultEntryHolder {
-    static final com.google.protobuf.MapEntry<
-        java.lang.String, java.lang.String> defaultEntry =
-            com.google.protobuf.MapEntry
-            .<java.lang.String, java.lang.String>newDefaultInstance(
-                eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_SessionContext_MetadataEntry_descriptor, 
-                com.google.protobuf.WireFormat.FieldType.STRING,
-                "",
-                com.google.protobuf.WireFormat.FieldType.STRING,
-                "");
-  }
-  private com.google.protobuf.MapField<
-      java.lang.String, java.lang.String> metadata_;
-  private com.google.protobuf.MapField<java.lang.String, java.lang.String>
-  internalGetMetadata() {
-    if (metadata_ == null) {
-      return com.google.protobuf.MapField.emptyMapField(
-          MetadataDefaultEntryHolder.defaultEntry);
-    }
-    return metadata_;
-  }
-
-  public int getMetadataCount() {
-    return internalGetMetadata().getMap().size();
-  }
-  /**
-   * <code>map&lt;string, string&gt; metadata = 4;</code>
-   */
-
-  @java.lang.Override
-  public boolean containsMetadata(
-      java.lang.String key) {
-    if (key == null) { throw new java.lang.NullPointerException(); }
-    return internalGetMetadata().getMap().containsKey(key);
-  }
-  /**
-   * Use {@link #getMetadataMap()} instead.
-   */
-  @java.lang.Override
-  @java.lang.Deprecated
-  public java.util.Map<java.lang.String, java.lang.String> getMetadata() {
-    return getMetadataMap();
-  }
-  /**
-   * <code>map&lt;string, string&gt; metadata = 4;</code>
-   */
-  @java.lang.Override
-
-  public java.util.Map<java.lang.String, java.lang.String> getMetadataMap() {
-    return internalGetMetadata().getMap();
-  }
-  /**
-   * <code>map&lt;string, string&gt; metadata = 4;</code>
-   */
-  @java.lang.Override
-
-  public java.lang.String getMetadataOrDefault(
-      java.lang.String key,
-      java.lang.String defaultValue) {
-    if (key == null) { throw new java.lang.NullPointerException(); }
-    java.util.Map<java.lang.String, java.lang.String> map =
-        internalGetMetadata().getMap();
-    return map.containsKey(key) ? map.get(key) : defaultValue;
-  }
-  /**
-   * <code>map&lt;string, string&gt; metadata = 4;</code>
-   */
-  @java.lang.Override
-
-  public java.lang.String getMetadataOrThrow(
-      java.lang.String key) {
-    if (key == null) { throw new java.lang.NullPointerException(); }
-    java.util.Map<java.lang.String, java.lang.String> map =
-        internalGetMetadata().getMap();
-    if (!map.containsKey(key)) {
-      throw new java.lang.IllegalArgumentException();
-    }
-    return map.get(key);
-  }
-
   public static final int SESSION_ID_FIELD_NUMBER = 6;
   private volatile java.lang.Object sessionId_;
   /**
+   * <pre>
+   *    map&lt;string, string&gt; metadata = 4 [deprecated = true];
+   * </pre>
+   *
    * <code>string session_id = 6;</code>
    * @return The sessionId.
    */
@@ -357,6 +275,10 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
+   * <pre>
+   *    map&lt;string, string&gt; metadata = 4 [deprecated = true];
+   * </pre>
+   *
    * <code>string session_id = 6;</code>
    * @return The bytes for sessionId.
    */
@@ -451,6 +373,120 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int BROWSER_NAME_FIELD_NUMBER = 9;
+  private volatile java.lang.Object browserName_;
+  /**
+   * <code>string browser_name = 9;</code>
+   * @return The browserName.
+   */
+  @java.lang.Override
+  public java.lang.String getBrowserName() {
+    java.lang.Object ref = browserName_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      browserName_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string browser_name = 9;</code>
+   * @return The bytes for browserName.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getBrowserNameBytes() {
+    java.lang.Object ref = browserName_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      browserName_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int BROWSER_VERSION_FIELD_NUMBER = 10;
+  private volatile java.lang.Object browserVersion_;
+  /**
+   * <code>string browser_version = 10;</code>
+   * @return The browserVersion.
+   */
+  @java.lang.Override
+  public java.lang.String getBrowserVersion() {
+    java.lang.Object ref = browserVersion_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      browserVersion_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string browser_version = 10;</code>
+   * @return The bytes for browserVersion.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getBrowserVersionBytes() {
+    java.lang.Object ref = browserVersion_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      browserVersion_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int CAPABILITIES_FIELD_NUMBER = 11;
+  private volatile java.lang.Object capabilities_;
+  /**
+   * <code>string capabilities = 11;</code>
+   * @return The capabilities.
+   */
+  @java.lang.Override
+  public java.lang.String getCapabilities() {
+    java.lang.Object ref = capabilities_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      capabilities_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string capabilities = 11;</code>
+   * @return The bytes for capabilities.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getCapabilitiesBytes() {
+    java.lang.Object ref = capabilities_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      capabilities_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -474,12 +510,6 @@ private static final long serialVersionUID = 0L;
     if (!getProviderBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 3, provider_);
     }
-    com.google.protobuf.GeneratedMessageV3
-      .serializeStringMapTo(
-        output,
-        internalGetMetadata(),
-        MetadataDefaultEntryHolder.defaultEntry,
-        4);
     if (!getSessionIdBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 6, sessionId_);
     }
@@ -488,6 +518,15 @@ private static final long serialVersionUID = 0L;
     }
     if (!getExecutionContextIdBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 8, executionContextId_);
+    }
+    if (!getBrowserNameBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 9, browserName_);
+    }
+    if (!getBrowserVersionBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 10, browserVersion_);
+    }
+    if (!getCapabilitiesBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 11, capabilities_);
     }
     unknownFields.writeTo(output);
   }
@@ -508,16 +547,6 @@ private static final long serialVersionUID = 0L;
     if (!getProviderBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, provider_);
     }
-    for (java.util.Map.Entry<java.lang.String, java.lang.String> entry
-         : internalGetMetadata().getMap().entrySet()) {
-      com.google.protobuf.MapEntry<java.lang.String, java.lang.String>
-      metadata__ = MetadataDefaultEntryHolder.defaultEntry.newBuilderForType()
-          .setKey(entry.getKey())
-          .setValue(entry.getValue())
-          .build();
-      size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, metadata__);
-    }
     if (!getSessionIdBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, sessionId_);
     }
@@ -526,6 +555,15 @@ private static final long serialVersionUID = 0L;
     }
     if (!getExecutionContextIdBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, executionContextId_);
+    }
+    if (!getBrowserNameBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, browserName_);
+    }
+    if (!getBrowserVersionBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, browserVersion_);
+    }
+    if (!getCapabilitiesBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, capabilities_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -551,14 +589,18 @@ private static final long serialVersionUID = 0L;
         .equals(other.getSessionKey())) return false;
     if (!getProvider()
         .equals(other.getProvider())) return false;
-    if (!internalGetMetadata().equals(
-        other.internalGetMetadata())) return false;
     if (!getSessionId()
         .equals(other.getSessionId())) return false;
     if (!getVideoId()
         .equals(other.getVideoId())) return false;
     if (!getExecutionContextId()
         .equals(other.getExecutionContextId())) return false;
+    if (!getBrowserName()
+        .equals(other.getBrowserName())) return false;
+    if (!getBrowserVersion()
+        .equals(other.getBrowserVersion())) return false;
+    if (!getCapabilities()
+        .equals(other.getCapabilities())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -578,16 +620,18 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getSessionKey().hashCode();
     hash = (37 * hash) + PROVIDER_FIELD_NUMBER;
     hash = (53 * hash) + getProvider().hashCode();
-    if (!internalGetMetadata().getMap().isEmpty()) {
-      hash = (37 * hash) + METADATA_FIELD_NUMBER;
-      hash = (53 * hash) + internalGetMetadata().hashCode();
-    }
     hash = (37 * hash) + SESSION_ID_FIELD_NUMBER;
     hash = (53 * hash) + getSessionId().hashCode();
     hash = (37 * hash) + VIDEO_ID_FIELD_NUMBER;
     hash = (53 * hash) + getVideoId().hashCode();
     hash = (37 * hash) + EXECUTION_CONTEXT_ID_FIELD_NUMBER;
     hash = (53 * hash) + getExecutionContextId().hashCode();
+    hash = (37 * hash) + BROWSER_NAME_FIELD_NUMBER;
+    hash = (53 * hash) + getBrowserName().hashCode();
+    hash = (37 * hash) + BROWSER_VERSION_FIELD_NUMBER;
+    hash = (53 * hash) + getBrowserVersion().hashCode();
+    hash = (37 * hash) + CAPABILITIES_FIELD_NUMBER;
+    hash = (53 * hash) + getCapabilities().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -695,28 +739,6 @@ private static final long serialVersionUID = 0L;
       return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_SessionContext_descriptor;
     }
 
-    @SuppressWarnings({"rawtypes"})
-    protected com.google.protobuf.MapField internalGetMapField(
-        int number) {
-      switch (number) {
-        case 4:
-          return internalGetMetadata();
-        default:
-          throw new RuntimeException(
-              "Invalid map field number: " + number);
-      }
-    }
-    @SuppressWarnings({"rawtypes"})
-    protected com.google.protobuf.MapField internalGetMutableMapField(
-        int number) {
-      switch (number) {
-        case 4:
-          return internalGetMutableMetadata();
-        default:
-          throw new RuntimeException(
-              "Invalid map field number: " + number);
-      }
-    }
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
@@ -753,12 +775,17 @@ private static final long serialVersionUID = 0L;
 
       provider_ = "";
 
-      internalGetMutableMetadata().clear();
       sessionId_ = "";
 
       videoId_ = "";
 
       executionContextId_ = "";
+
+      browserName_ = "";
+
+      browserVersion_ = "";
+
+      capabilities_ = "";
 
       return this;
     }
@@ -786,7 +813,6 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public eu.tsystems.mms.tic.testframework.report.model.SessionContext buildPartial() {
       eu.tsystems.mms.tic.testframework.report.model.SessionContext result = new eu.tsystems.mms.tic.testframework.report.model.SessionContext(this);
-      int from_bitField0_ = bitField0_;
       if (contextValuesBuilder_ == null) {
         result.contextValues_ = contextValues_;
       } else {
@@ -794,11 +820,12 @@ private static final long serialVersionUID = 0L;
       }
       result.sessionKey_ = sessionKey_;
       result.provider_ = provider_;
-      result.metadata_ = internalGetMetadata();
-      result.metadata_.makeImmutable();
       result.sessionId_ = sessionId_;
       result.videoId_ = videoId_;
       result.executionContextId_ = executionContextId_;
+      result.browserName_ = browserName_;
+      result.browserVersion_ = browserVersion_;
+      result.capabilities_ = capabilities_;
       onBuilt();
       return result;
     }
@@ -858,8 +885,6 @@ private static final long serialVersionUID = 0L;
         provider_ = other.provider_;
         onChanged();
       }
-      internalGetMutableMetadata().mergeFrom(
-          other.internalGetMetadata());
       if (!other.getSessionId().isEmpty()) {
         sessionId_ = other.sessionId_;
         onChanged();
@@ -870,6 +895,18 @@ private static final long serialVersionUID = 0L;
       }
       if (!other.getExecutionContextId().isEmpty()) {
         executionContextId_ = other.executionContextId_;
+        onChanged();
+      }
+      if (!other.getBrowserName().isEmpty()) {
+        browserName_ = other.browserName_;
+        onChanged();
+      }
+      if (!other.getBrowserVersion().isEmpty()) {
+        browserVersion_ = other.browserVersion_;
+        onChanged();
+      }
+      if (!other.getCapabilities().isEmpty()) {
+        capabilities_ = other.capabilities_;
         onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
@@ -900,7 +937,6 @@ private static final long serialVersionUID = 0L;
       }
       return this;
     }
-    private int bitField0_;
 
     private eu.tsystems.mms.tic.testframework.report.model.ContextValues contextValues_;
     private com.google.protobuf.SingleFieldBuilderV3<
@@ -1173,136 +1209,12 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private com.google.protobuf.MapField<
-        java.lang.String, java.lang.String> metadata_;
-    private com.google.protobuf.MapField<java.lang.String, java.lang.String>
-    internalGetMetadata() {
-      if (metadata_ == null) {
-        return com.google.protobuf.MapField.emptyMapField(
-            MetadataDefaultEntryHolder.defaultEntry);
-      }
-      return metadata_;
-    }
-    private com.google.protobuf.MapField<java.lang.String, java.lang.String>
-    internalGetMutableMetadata() {
-      onChanged();;
-      if (metadata_ == null) {
-        metadata_ = com.google.protobuf.MapField.newMapField(
-            MetadataDefaultEntryHolder.defaultEntry);
-      }
-      if (!metadata_.isMutable()) {
-        metadata_ = metadata_.copy();
-      }
-      return metadata_;
-    }
-
-    public int getMetadataCount() {
-      return internalGetMetadata().getMap().size();
-    }
-    /**
-     * <code>map&lt;string, string&gt; metadata = 4;</code>
-     */
-
-    @java.lang.Override
-    public boolean containsMetadata(
-        java.lang.String key) {
-      if (key == null) { throw new java.lang.NullPointerException(); }
-      return internalGetMetadata().getMap().containsKey(key);
-    }
-    /**
-     * Use {@link #getMetadataMap()} instead.
-     */
-    @java.lang.Override
-    @java.lang.Deprecated
-    public java.util.Map<java.lang.String, java.lang.String> getMetadata() {
-      return getMetadataMap();
-    }
-    /**
-     * <code>map&lt;string, string&gt; metadata = 4;</code>
-     */
-    @java.lang.Override
-
-    public java.util.Map<java.lang.String, java.lang.String> getMetadataMap() {
-      return internalGetMetadata().getMap();
-    }
-    /**
-     * <code>map&lt;string, string&gt; metadata = 4;</code>
-     */
-    @java.lang.Override
-
-    public java.lang.String getMetadataOrDefault(
-        java.lang.String key,
-        java.lang.String defaultValue) {
-      if (key == null) { throw new java.lang.NullPointerException(); }
-      java.util.Map<java.lang.String, java.lang.String> map =
-          internalGetMetadata().getMap();
-      return map.containsKey(key) ? map.get(key) : defaultValue;
-    }
-    /**
-     * <code>map&lt;string, string&gt; metadata = 4;</code>
-     */
-    @java.lang.Override
-
-    public java.lang.String getMetadataOrThrow(
-        java.lang.String key) {
-      if (key == null) { throw new java.lang.NullPointerException(); }
-      java.util.Map<java.lang.String, java.lang.String> map =
-          internalGetMetadata().getMap();
-      if (!map.containsKey(key)) {
-        throw new java.lang.IllegalArgumentException();
-      }
-      return map.get(key);
-    }
-
-    public Builder clearMetadata() {
-      internalGetMutableMetadata().getMutableMap()
-          .clear();
-      return this;
-    }
-    /**
-     * <code>map&lt;string, string&gt; metadata = 4;</code>
-     */
-
-    public Builder removeMetadata(
-        java.lang.String key) {
-      if (key == null) { throw new java.lang.NullPointerException(); }
-      internalGetMutableMetadata().getMutableMap()
-          .remove(key);
-      return this;
-    }
-    /**
-     * Use alternate mutation accessors instead.
-     */
-    @java.lang.Deprecated
-    public java.util.Map<java.lang.String, java.lang.String>
-    getMutableMetadata() {
-      return internalGetMutableMetadata().getMutableMap();
-    }
-    /**
-     * <code>map&lt;string, string&gt; metadata = 4;</code>
-     */
-    public Builder putMetadata(
-        java.lang.String key,
-        java.lang.String value) {
-      if (key == null) { throw new java.lang.NullPointerException(); }
-      if (value == null) { throw new java.lang.NullPointerException(); }
-      internalGetMutableMetadata().getMutableMap()
-          .put(key, value);
-      return this;
-    }
-    /**
-     * <code>map&lt;string, string&gt; metadata = 4;</code>
-     */
-
-    public Builder putAllMetadata(
-        java.util.Map<java.lang.String, java.lang.String> values) {
-      internalGetMutableMetadata().getMutableMap()
-          .putAll(values);
-      return this;
-    }
-
     private java.lang.Object sessionId_ = "";
     /**
+     * <pre>
+     *    map&lt;string, string&gt; metadata = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>string session_id = 6;</code>
      * @return The sessionId.
      */
@@ -1319,6 +1231,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     *    map&lt;string, string&gt; metadata = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>string session_id = 6;</code>
      * @return The bytes for sessionId.
      */
@@ -1336,6 +1252,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     *    map&lt;string, string&gt; metadata = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>string session_id = 6;</code>
      * @param value The sessionId to set.
      * @return This builder for chaining.
@@ -1351,6 +1271,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    map&lt;string, string&gt; metadata = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>string session_id = 6;</code>
      * @return This builder for chaining.
      */
@@ -1361,6 +1285,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    map&lt;string, string&gt; metadata = 4 [deprecated = true];
+     * </pre>
+     *
      * <code>string session_id = 6;</code>
      * @param value The bytes for sessionId to set.
      * @return This builder for chaining.
@@ -1525,6 +1453,234 @@ private static final long serialVersionUID = 0L;
   checkByteStringIsUtf8(value);
       
       executionContextId_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object browserName_ = "";
+    /**
+     * <code>string browser_name = 9;</code>
+     * @return The browserName.
+     */
+    public java.lang.String getBrowserName() {
+      java.lang.Object ref = browserName_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        browserName_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string browser_name = 9;</code>
+     * @return The bytes for browserName.
+     */
+    public com.google.protobuf.ByteString
+        getBrowserNameBytes() {
+      java.lang.Object ref = browserName_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        browserName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string browser_name = 9;</code>
+     * @param value The browserName to set.
+     * @return This builder for chaining.
+     */
+    public Builder setBrowserName(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      browserName_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string browser_name = 9;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearBrowserName() {
+      
+      browserName_ = getDefaultInstance().getBrowserName();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string browser_name = 9;</code>
+     * @param value The bytes for browserName to set.
+     * @return This builder for chaining.
+     */
+    public Builder setBrowserNameBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      browserName_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object browserVersion_ = "";
+    /**
+     * <code>string browser_version = 10;</code>
+     * @return The browserVersion.
+     */
+    public java.lang.String getBrowserVersion() {
+      java.lang.Object ref = browserVersion_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        browserVersion_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string browser_version = 10;</code>
+     * @return The bytes for browserVersion.
+     */
+    public com.google.protobuf.ByteString
+        getBrowserVersionBytes() {
+      java.lang.Object ref = browserVersion_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        browserVersion_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string browser_version = 10;</code>
+     * @param value The browserVersion to set.
+     * @return This builder for chaining.
+     */
+    public Builder setBrowserVersion(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      browserVersion_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string browser_version = 10;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearBrowserVersion() {
+      
+      browserVersion_ = getDefaultInstance().getBrowserVersion();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string browser_version = 10;</code>
+     * @param value The bytes for browserVersion to set.
+     * @return This builder for chaining.
+     */
+    public Builder setBrowserVersionBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      browserVersion_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object capabilities_ = "";
+    /**
+     * <code>string capabilities = 11;</code>
+     * @return The capabilities.
+     */
+    public java.lang.String getCapabilities() {
+      java.lang.Object ref = capabilities_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        capabilities_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string capabilities = 11;</code>
+     * @return The bytes for capabilities.
+     */
+    public com.google.protobuf.ByteString
+        getCapabilitiesBytes() {
+      java.lang.Object ref = capabilities_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        capabilities_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string capabilities = 11;</code>
+     * @param value The capabilities to set.
+     * @return This builder for chaining.
+     */
+    public Builder setCapabilities(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      capabilities_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string capabilities = 11;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearCapabilities() {
+      
+      capabilities_ = getDefaultInstance().getCapabilities();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string capabilities = 11;</code>
+     * @param value The bytes for capabilities to set.
+     * @return This builder for chaining.
+     */
+    public Builder setCapabilitiesBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      capabilities_ = value;
       onChanged();
       return this;
     }

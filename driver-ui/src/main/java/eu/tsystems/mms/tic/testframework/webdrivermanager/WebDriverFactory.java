@@ -92,12 +92,6 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> implements Lo
         store session
          */
         WebDriverSessionsManager.storeWebDriverSession(finalRequest, eventFiringWebDriver, sessionContext);
-
-        BrowserInformation browserInformation = WebDriverManagerUtils.getBrowserInformation(eventFiringWebDriver);
-        Map<String, Object> sessionContextMetaData = sessionContext.getMetaData();
-        sessionContextMetaData.put(SessionContext.MetaData.BROWSER, browserInformation.getBrowserName());
-        sessionContextMetaData.put(SessionContext.MetaData.BROWSER_VERSION, browserInformation.getBrowserVersion());
-
         /*
         finalize the session setup
          */

@@ -21,8 +21,6 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import eu.tsystems.mms.tic.testframework.model.NodeInfo;
-
 public abstract class WebDriverRequest {
     /*
     Request

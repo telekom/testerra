@@ -108,7 +108,6 @@ public class DesktopWebDriverRequest extends WebDriverRequest implements Loggabl
                 ", sessionKey='" + getSessionKey() + '\'' +
                 ", baseUrl='" + getBaseUrl() + '\'' +
                 ", browserVersion='" + getBrowserVersion() + '\'' +
-                ", storedExecutingNode=" + getExecutingNode() +
                 '}';
     }
 }

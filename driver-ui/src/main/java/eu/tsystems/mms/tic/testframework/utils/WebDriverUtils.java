@@ -29,6 +29,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverProxy;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import java.lang.reflect.Field;
 import java.lang.reflect.Proxy;
 import java.net.HttpURLConnection;
@@ -337,6 +338,8 @@ public final class WebDriverUtils {
      *
      * @param driver {@link WebDriver}
      * @return String
+     * @deprecated Use {@link WebDriverSessionsManager#getSessionContext(WebDriver)} instead
+     * @todo Should be package private
      */
     public static String getSessionId(WebDriver driver) {
         driver = getLowestWebDriver(driver);

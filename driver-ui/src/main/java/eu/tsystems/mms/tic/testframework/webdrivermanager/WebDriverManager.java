@@ -443,12 +443,8 @@ public final class WebDriverManager {
         return WebDriverSessionsManager.DRIVER_REQUEST_MAP.get(driver);
     }
 
-    public static SessionContext getSessionContextFromWebDriver(WebDriver driver) {
-        String sessionId = WebDriverUtils.getSessionId(driver);
-        if (sessionId != null) {
-            return WebDriverSessionsManager.getSessionContext(sessionId);
-        }
-        return null;
+    public static SessionContext getSessionContextFromWebDriver(WebDriver webDriver) {
+        return WebDriverSessionsManager.getSessionContext(webDriver).orElse(null);
     }
 
     public static void setUserAgentConfig(String browser, UserAgentConfig configurator) {

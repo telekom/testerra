@@ -21,6 +21,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
+import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import java.util.LinkedHashMap;
@@ -39,6 +40,7 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
     private final Map<String, Object> metaData = new LinkedHashMap<>();
     private String remoteSessionId;
     private Video video;
+    private NodeInfo nodeInfo;
 
     public SessionContext(String sessionKey, String provider) {
         this.sessionKey = sessionKey;
@@ -98,6 +100,15 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
 
     public SessionContext setVideo(Video video) {
         this.video = video;
+        return this;
+    }
+
+    public Optional<NodeInfo> getNodeInfo() {
+        return Optional.ofNullable(nodeInfo);
+    }
+
+    public SessionContext setNodeInfo(NodeInfo nodeInfo) {
+        this.nodeInfo = nodeInfo;
         return this;
     }
 }

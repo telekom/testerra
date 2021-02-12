@@ -32,14 +32,6 @@ public abstract class WebDriverRequest {
     private String browserVersion;
     private String baseUrl;
 
-    /*
-    Runtime
-     */
-    @Deprecated
-    private String remoteSessionId;
-    @Deprecated
-    private NodeInfo storedExecutingNode;
-
     public boolean hasSessionKey() {
         return sessionKey != null && !sessionKey.trim().isEmpty();
     }
@@ -92,33 +84,10 @@ public abstract class WebDriverRequest {
         return this;
     }
 
-    @Deprecated
-    public NodeInfo getExecutingNode() {
-        return storedExecutingNode;
-    }
-
-    @Deprecated
-    public WebDriverRequest setExecutingNode(NodeInfo executingNode) {
-        this.storedExecutingNode = executingNode;
-        return this;
-    }
-
-    @Deprecated
-    public String getRemoteSessionId() {
-        return remoteSessionId;
-    }
-
-    @Deprecated
-    public WebDriverRequest setRemoteSessionId(String sessionId) {
-        this.remoteSessionId = sessionId;
-        return this;
-    }
-
     public void copyFrom(WebDriverRequest webDriverRequest) {
         this.browser = webDriverRequest.browser;
         this.sessionKey = webDriverRequest.sessionKey;
         this.baseUrl = webDriverRequest.baseUrl;
         this.browserVersion = webDriverRequest.browserVersion;
-        this.remoteSessionId = webDriverRequest.remoteSessionId;
     }
 }

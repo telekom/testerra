@@ -49,6 +49,7 @@ import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
+import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import java.io.File;
 import java.lang.reflect.Constructor;
@@ -347,15 +348,14 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         /*
         Log session id
          */
-        SessionId remoteSessionId = ((RemoteWebDriver) newDriver).getSessionId();
-        desktopWebDriverRequest.setRemoteSessionId(remoteSessionId.toString());
-
+        String remoteSessionId = WebDriverUtils.getSessionId(newDriver);
+        sessionContext.setRemoteSessionId(remoteSessionId);
         /*
         Log User Agent and executing host
          */
         DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
-        NodeInfo nodeInfo = utils.getNodeInfo(desktopWebDriverRequest);
-        desktopWebDriverRequest.setExecutingNode(nodeInfo);
+        NodeInfo nodeInfo = utils.getNodeInfo(desktopWebDriverRequest.getSeleniumServerUrl(), remoteSessionId);
+        sessionContext.setNodeInfo(nodeInfo);
         WebDriverManager.addExecutingSeleniumHostInfo(sessionKey + ": " + nodeInfo.toString());
         sw.stop();
 

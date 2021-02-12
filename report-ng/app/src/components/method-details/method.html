@@ -38,7 +38,7 @@
         <mdc-layout-grid-inner else>
             <mdc-layout-grid-cell span.bind="_lastScreenshotId?7:9">
                 <mdc-card>
-                    <div class="card-content" mdc-body1>
+                    <div class="card-content wrapable" mdc-body1>
                         <span class="badge status-${_methodDetails.methodContext.resultStatus|statusClass} sr1"
                         >${_methodDetails.methodContext.resultStatus|statusName}</span>
                         ${_methodDetails.identifier}

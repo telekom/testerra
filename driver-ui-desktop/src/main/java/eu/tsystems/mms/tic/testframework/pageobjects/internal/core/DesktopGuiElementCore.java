@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
+import eu.tsystems.mms.tic.testframework.exceptions.UiElementException;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
@@ -185,8 +186,7 @@ public class DesktopGuiElementCore implements GuiElementCore, Loggable {
 
     private void throwExceptionIfWebElementIsNull(Exception cause) {
         if (guiElementData.webElement == null) {
-            String message = "GuiElement not found: " + toString();
-            throw new ElementNotFoundException(message, cause);
+            throw new ElementNotFoundException(this.guiElementData.guiElement, cause);
         }
     }
 
@@ -411,7 +411,7 @@ public class DesktopGuiElementCore implements GuiElementCore, Loggable {
         if (guiElementData.shadowRoot) {
 
             if (!abstractLocatorString.toLowerCase().contains("xpath")) {
-                throw new RuntimeException("GuiElement.getSubElement() on shadowRoot() only supports By.xpath()");
+                throw new UiElementException(this.guiElementData.guiElement, "getSubElement() on shadowRoot() only supports " + By.ByXPath.class.getSimpleName());
             }
 
             // auto correct these sub element locators

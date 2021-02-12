@@ -23,6 +23,8 @@ package eu.tsystems.mms.tic.testframework.adapters;
 
 import com.google.common.net.MediaType;
 import com.google.gson.Gson;
+import eu.tsystems.mms.tic.testframework.annotations.Fails;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent;
@@ -61,6 +63,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -70,32 +73,36 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.core.LogEvent;
 
-public class ContextExporter {
+public class ContextExporter implements Loggable {
     private static final Map<TestStatusController.Status, ResultStatusType> STATUS_MAPPING = new LinkedHashMap<>();
     private final Report report = TesterraListener.getReport();
     private final Gson jsonEncoder = new Gson();
 
-    private static String annotationToString(Annotation annotation) {
-        String json = "\"" + annotation.annotationType().getSimpleName() + "\"";
-        json += " : { ";
-
+    private Map<String,Object> getAnnotationParameters(Annotation annotation) {
         Method[] methods = annotation.annotationType().getMethods();
-        List<String> params = new LinkedList<>();
+        Map<String,Object> params = new HashMap<>();
         for (Method method : methods) {
             if (method.getDeclaringClass() == annotation.annotationType()) { //this filters out built-in methods, like hashCode etc
                 try {
-                    params.add("\"" + method.getName() + "\" : \"" + method.invoke(annotation) + "\"");
+                    Object value = method.invoke(annotation);
+                    if (value == null) continue;
+
+                    if (value.getClass().isArray()) {
+                        Object[] values = (Object[])value;
+                        if (values.length == 0) continue;
+                        value = Arrays.asList(values);
+                    } else {
+                        value = value.toString();
+                        if (((String) value).isEmpty()) continue;
+                    }
+                    params.put(method.getName(), value);
                 } catch (Exception e) {
-                    params.add("\"" + method.getName() + "\" : \"---error---\"");
+                    log().error("Unable to retrieve annotation parameter", e);
                 }
             }
         }
-        json += String.join(", ", params);
-
-        json += " }";
-        return json;
+        return params;
     }
 
     public MethodContext.Builder buildMethodContext(eu.tsystems.mms.tic.testframework.report.model.context.MethodContext methodContext) {
@@ -108,11 +115,15 @@ public class ContextExporter {
         for (int i = 0; i < parameterValues.size(); ++i) {
             builder.putParameters(methodContext.getParameters()[i].getName(), parameterValues.get(i).toString());
         }
-        if (methodContext.getAnnotations() != null) {
-            for (Annotation annotation : methodContext.getAnnotations()) {
-                builder.addMethodTags(annotationToString(annotation));
-            }
-        }
+
+
+        methodContext.readAnnotations()
+                // Skip TestNG annotations
+                .filter(annotation -> !annotation.annotationType().getName().startsWith("org.testng"))
+                .forEach(annotation -> {
+                    builder.putAnnotations(annotation.annotationType().getName(), this.jsonEncoder.toJson(getAnnotationParameters(annotation)));
+                });
+
         apply(methodContext.retryNumber, builder::setRetryNumber);
         apply(methodContext.methodRunIndex, builder::setMethodRunIndex);
 

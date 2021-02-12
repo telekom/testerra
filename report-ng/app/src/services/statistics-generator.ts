@@ -32,6 +32,14 @@ import ITestContext = data.ITestContext;
 import ISuiteContext = data.ISuiteContext;
 import ISessionContext = data.ISessionContext;
 
+export class FailsAnnotation {
+    ticketString:string;
+    description:string;
+    get isTicketUrl() {
+        return this.ticketString?.match("/^\w+:\/\/");
+    }
+}
+
 export class MethodDetails {
     executionStatistics: ExecutionStatistics;
     testContext: ITestContext;
@@ -39,6 +47,9 @@ export class MethodDetails {
     failureAspectStatistics:FailureAspectStatistics;
     sessionContexts:ISessionContext[];
     private _identifier:string = null;
+    static readonly FAIL_ANNOTATION_NAME="eu.tsystems.mms.tic.testframework.annotations.Fails";
+    private _decodedAnnotations = {};
+    private _decodedCustomContexts = {};
 
     constructor(
         readonly methodContext:IMethodContext,
@@ -74,12 +85,23 @@ export class MethodDetails {
         return (this.methodContext.failedStepIndex >= 0 ? this.methodContext.testSteps[this.methodContext.failedStepIndex] : null);
     }
 
-    decodeCustomContext(name:string):any|null {
-        if (this.methodContext.customContexts[name]) {
-            return JSON.parse(this.methodContext.customContexts[name]);
-        } else {
-            return null;
+    private _decode(from:{ [k: string]: string }|null, name:string, to: { [k: string]: any }):any {
+        if (to[name] === undefined) {
+            if (from[name]) {
+                to[name] = JSON.parse(from[name]);
+            } else {
+                to[name] = null;
+            }
         }
+        return to[name];
+    }
+
+    decodeCustomContext(name:string):any {
+        return this._decode(this.methodContext.customContexts, name, this._decodedCustomContexts);
+    }
+
+    decodeAnnotation(name:string):any {
+        return this._decode(this.methodContext.annotations, name, this._decodedAnnotations);
     }
 }
 
@@ -93,7 +115,6 @@ export class StatisticsGenerator {
         private _statusConverter:StatusConverter,
     ) {
         this._cacheService.setDefaultCacheTtl(120);
-
     }
 
     getExecutionStatistics(): Promise<ExecutionStatistics> {

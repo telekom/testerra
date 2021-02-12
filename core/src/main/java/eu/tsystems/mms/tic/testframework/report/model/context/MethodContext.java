@@ -546,14 +546,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return this;
     }
 
-    public Annotation[] getAnnotations() {
-        return this.iTestNgMethod.getConstructorOrMethod().getMethod().getAnnotations();
-    }
-
-    /**
-     * @deprecated Use {@link #getAnnotations()} instead
-     */
-    public List<Annotation> getMethodTags() {
-        return Arrays.asList(getAnnotations());
+    public Stream<Annotation> readAnnotations() {
+        return Stream.of(this.iTestNgMethod.getConstructorOrMethod().getMethod().getAnnotations());
     }
 }

@@ -58,6 +58,9 @@ public class WebDriverManagerConfig {
 
     private String baseUrl;
 
+    private String browser;
+    private String browserVersion;
+
     /**
      * Default constructor.
      */
@@ -73,6 +76,8 @@ public class WebDriverManagerConfig {
         this.maximize = PropertyManager.getBooleanProperty(TesterraProperties.BROWSER_MAXIMIZE, false);
         this.maximizePosition = null;
         this.baseUrl = null;
+        this.browser = null;
+        this.browserVersion = null;
         return this;
     }
 
@@ -97,15 +102,37 @@ public class WebDriverManagerConfig {
      */
     @Deprecated
     public String getDefaultBrowser() {
-        return browser();
+        return getBrowser();
+    }
+
+    private void initBrowser() {
+        String browserSetting = PropertyManager.getProperty(TesterraProperties.BROWSER_SETTING);
+        if (!StringUtils.isStringEmpty(browserSetting)) {
+            String[] split = browserSetting.split(":");
+            if (split.length > 0) this.browser = split[0].trim();
+            if (split.length > 1) this.browserVersion = split[1].trim();
+        }
+
+        if (StringUtils.isStringEmpty(this.browser)) {
+            this.browser = PropertyManager.getProperty(TesterraProperties.BROWSER, "");
+        }
+        if (StringUtils.isStringEmpty(this.browserVersion)) {
+            this.browserVersion = PropertyManager.getProperty(TesterraProperties.BROWSER_VERSION, "");
+        }
     }
 
     public String getBrowser() {
-        return browser();
+        if (this.browser == null) {
+            this.initBrowser();
+        }
+        return this.browser;
     }
 
     public String getBrowserVersion() {
-        return browserVersion();
+        if (this.browserVersion == null) {
+            this.initBrowser();
+        }
+        return this.browserVersion;
     }
 
     public WebDriverMode getWebDriverMode() {
@@ -117,15 +144,7 @@ public class WebDriverManagerConfig {
      */
     @Deprecated
     public String browser() {
-        String browser = PropertyManager.getProperty(TesterraProperties.BROWSER, null);
-
-        String browserSetting = PropertyManager.getProperty(TesterraProperties.BROWSER_SETTING);
-        if (!StringUtils.isStringEmpty(browserSetting) && browserSetting.contains(":")) {
-            String[] split = browserSetting.split(":");
-            browser = split[0];
-        }
-
-        return browser;
+        return this.getBrowser();
     }
 
     /**
@@ -133,13 +152,7 @@ public class WebDriverManagerConfig {
      */
     @Deprecated
     public String browserVersion() {
-        String browserVersion = PropertyManager.getProperty(TesterraProperties.BROWSER_VERSION, null);
-        String browserSetting = PropertyManager.getProperty(TesterraProperties.BROWSER_SETTING);
-        if (!StringUtils.isStringEmpty(browserSetting) && browserSetting.contains(":")) {
-            String[] split = browserSetting.split(":");
-            browserVersion = split[1];
-        }
-        return browserVersion;
+       return this.getBrowserVersion();
     }
 
     public boolean shouldShutdownSessions() {

@@ -23,6 +23,7 @@
 package eu.tsystems.mms.tic.testframework.test.guielement;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
+import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
@@ -270,7 +271,7 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
         try {
             WebElement webElement = guiElement.getWebElement();
         } catch (TimeoutException e) {
-            AssertUtils.assertContains(e.getCause().getMessage(), "GuiElement not found");
+            AssertUtils.assertContains(e.getCause().getMessage(), "not found");
             AssertUtils.assertContains(e.getCause().getMessage(), guiElement.getLocator().toString());
         }
     }

@@ -73,7 +73,7 @@ export class ScreenshotsDialog {
         if (sessionKey) {
             this._statistics.getExecutionStatistics().then(executionStatistics => {
                 const sessionContexts = Object.values(executionStatistics.executionAggregate.sessionContexts);
-                this._sessionContext = sessionContexts.find(value => value.sessionKey === sessionKey);
+                this._sessionContext = sessionContexts.find(value => value.contextValues.name === sessionKey);
             });
         }
     }

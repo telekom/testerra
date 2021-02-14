@@ -1711,12 +1711,12 @@ export const data = $root.data = (() => {
          * @memberof data
          * @interface ISessionContext
          * @property {data.IContextValues|null} [contextValues] SessionContext contextValues
-         * @property {string|null} [sessionKey] SessionContext sessionKey
-         * @property {string|null} [provider] SessionContext provider
-         * @property {Object.<string,string>|null} [metadata] SessionContext metadata
          * @property {string|null} [sessionId] SessionContext sessionId
          * @property {string|null} [videoId] SessionContext videoId
          * @property {string|null} [executionContextId] SessionContext executionContextId
+         * @property {string|null} [browserName] SessionContext browserName
+         * @property {string|null} [browserVersion] SessionContext browserVersion
+         * @property {string|null} [capabilities] SessionContext capabilities
          */
 
         /**
@@ -1728,7 +1728,6 @@ export const data = $root.data = (() => {
          * @param {data.ISessionContext=} [p] Properties to set
          */
         function SessionContext(p) {
-            this.metadata = {};
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -1742,30 +1741,6 @@ export const data = $root.data = (() => {
          * @instance
          */
         SessionContext.prototype.contextValues = null;
-
-        /**
-         * SessionContext sessionKey.
-         * @member {string} sessionKey
-         * @memberof data.SessionContext
-         * @instance
-         */
-        SessionContext.prototype.sessionKey = "";
-
-        /**
-         * SessionContext provider.
-         * @member {string} provider
-         * @memberof data.SessionContext
-         * @instance
-         */
-        SessionContext.prototype.provider = "";
-
-        /**
-         * SessionContext metadata.
-         * @member {Object.<string,string>} metadata
-         * @memberof data.SessionContext
-         * @instance
-         */
-        SessionContext.prototype.metadata = $util.emptyObject;
 
         /**
          * SessionContext sessionId.
@@ -1792,6 +1767,30 @@ export const data = $root.data = (() => {
         SessionContext.prototype.executionContextId = "";
 
         /**
+         * SessionContext browserName.
+         * @member {string} browserName
+         * @memberof data.SessionContext
+         * @instance
+         */
+        SessionContext.prototype.browserName = "";
+
+        /**
+         * SessionContext browserVersion.
+         * @member {string} browserVersion
+         * @memberof data.SessionContext
+         * @instance
+         */
+        SessionContext.prototype.browserVersion = "";
+
+        /**
+         * SessionContext capabilities.
+         * @member {string} capabilities
+         * @memberof data.SessionContext
+         * @instance
+         */
+        SessionContext.prototype.capabilities = "";
+
+        /**
          * Decodes a SessionContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.SessionContext
@@ -1805,40 +1804,12 @@ export const data = $root.data = (() => {
         SessionContext.decode = function decode(r, l) {
             if (!(r instanceof $Reader))
                 r = $Reader.create(r);
-            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.SessionContext(), k, value;
+            var c = l === undefined ? r.len : r.pos + l, m = new $root.data.SessionContext();
             while (r.pos < c) {
                 var t = r.uint32();
                 switch (t >>> 3) {
                 case 1:
                     m.contextValues = $root.data.ContextValues.decode(r, r.uint32());
-                    break;
-                case 2:
-                    m.sessionKey = r.string();
-                    break;
-                case 3:
-                    m.provider = r.string();
-                    break;
-                case 4:
-                    if (m.metadata === $util.emptyObject)
-                        m.metadata = {};
-                    var c2 = r.uint32() + r.pos;
-                    k = "";
-                    value = "";
-                    while (r.pos < c2) {
-                        var tag2 = r.uint32();
-                        switch (tag2 >>> 3) {
-                        case 1:
-                            k = r.string();
-                            break;
-                        case 2:
-                            value = r.string();
-                            break;
-                        default:
-                            r.skipType(tag2 & 7);
-                            break;
-                        }
-                    }
-                    m.metadata[k] = value;
                     break;
                 case 6:
                     m.sessionId = r.string();
@@ -1848,6 +1819,15 @@ export const data = $root.data = (() => {
                     break;
                 case 8:
                     m.executionContextId = r.string();
+                    break;
+                case 9:
+                    m.browserName = r.string();
+                    break;
+                case 10:
+                    m.browserVersion = r.string();
+                    break;
+                case 11:
+                    m.capabilities = r.string();
                     break;
                 default:
                     r.skipType(t & 7);

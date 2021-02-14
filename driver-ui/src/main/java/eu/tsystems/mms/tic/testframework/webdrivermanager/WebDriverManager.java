@@ -417,10 +417,6 @@ public final class WebDriverManager {
         return WebDriverSessionsManager.getSessionKey(driver);
     }
 
-    public static SessionContext getSessionContextFromWebDriver(WebDriver webDriver) {
-        return WebDriverSessionsManager.getSessionContext(webDriver).orElse(null);
-    }
-
     public static void setUserAgentConfig(String browser, UserAgentConfig configurator) {
         userAgentConfigurators.put(browser, configurator);
     }

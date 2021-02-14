@@ -39,17 +39,13 @@ import org.testng.annotations.Test;
 
 public class ProxyServerTest extends AbstractTest {
 
-    private DesktopWebDriverRequest request;
-
     @BeforeSuite
     public void setupFFProfile() throws MalformedURLException {
-        this.request = new DesktopWebDriverRequest();
-        this.request.setWebDriverMode(WebDriverMode.remote);
-        this.request.setBaseUrl("https://www.google.de");
-
         DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
         WebDriverManagerUtils.addProxyToCapabilities(desiredCapabilities, "localhost:9999");
         WebDriverManager.setGlobalExtraCapabilities(desiredCapabilities);
+
+        WebDriverManager.getConfig().setBaseUrl("https://www.google.de");
     }
 
     @Test
@@ -63,7 +59,7 @@ public class ProxyServerTest extends AbstractTest {
             proxyServer.startCapture();
 
             // open ff
-            WebDriverManager.getWebDriver(this.request);
+            WebDriverManager.getWebDriver();
 
             // stop capture
             Har har = proxyServer.stopCapture();

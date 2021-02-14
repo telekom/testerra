@@ -22,20 +22,25 @@
 package eu.tsystems.mms.tic.testframework.report;
 
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.core.server.Server;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverRequest;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.UnspecificWebDriverRequest;
+import java.net.MalformedURLException;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 
 /**
  * Abstract test classes which using generated local report directories
  */
-public abstract class AbstractReportTest extends AbstractWebDriverTest {
+public abstract class AbstractReportTest extends AbstractWebDriverTest implements Loggable {
     private Server server = new Server();
 
     @BeforeTest(alwaysRun = true)
     public void setUp() throws Exception {
         server.start();
-        getWebDriver().get(String.format("http://localhost:%d", server.getPort()));
+        System.setProperty(TesterraProperties.BASEURL, String.format("http://localhost:%d", server.getPort()));
     }
 
     @AfterTest(alwaysRun = true)

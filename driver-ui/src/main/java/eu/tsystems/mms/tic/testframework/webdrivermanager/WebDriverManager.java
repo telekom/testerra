@@ -36,6 +36,7 @@ import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
@@ -404,7 +405,7 @@ public final class WebDriverManager {
         WebDriverSessionsManager.shutdownExclusiveSession(key);
     }
 
-    public static List<WebDriver> getWebDriversFromThread(final long threadId) {
+    public static Stream<WebDriver> getWebDriversFromThread(final long threadId) {
         return WebDriverSessionsManager.getWebDriversFromThread(threadId);
     }
 

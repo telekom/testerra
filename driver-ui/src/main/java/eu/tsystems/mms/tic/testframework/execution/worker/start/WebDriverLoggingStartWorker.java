@@ -53,11 +53,7 @@ public class WebDriverLoggingStartWorker implements MethodStartEvent.Listener, L
 
                 // log browser
                 long threadId = Thread.currentThread().getId();
-                List<WebDriver> webDriversFromThread = WebDriverManager.getWebDriversFromThread(threadId);
-                if (webDriversFromThread != null && webDriversFromThread.size() > 0) {
-                    WebDriver driver = webDriversFromThread.get(0);
-                    WebDriverManagerUtils.logUserAgent(driver);
-                }
+                WebDriverManager.getWebDriversFromThread(threadId).findFirst().ifPresent(WebDriverManagerUtils::logUserAgent);
             }
         }
     }

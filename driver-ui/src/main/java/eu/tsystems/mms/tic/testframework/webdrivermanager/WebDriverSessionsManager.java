@@ -42,7 +42,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
@@ -60,10 +62,10 @@ public final class WebDriverSessionsManager {
 
     public static final Map<Date, Throwable> SESSION_STARTUP_ERRORS = new LinkedHashMap<>();
 
-    private static final Map<String, WebDriver> ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS = Collections.synchronizedMap(new HashMap<>());
-    private static final Map<String, WebDriver> ALL_EVENTFIRING_WEBDRIVER_SESSIONS = Collections.synchronizedMap(new HashMap<>());
-    private static final Map<WebDriver, Long> ALL_EVENTFIRING_WEBDRIVER_SESSIONS_WITH_THREADID = Collections.synchronizedMap(new HashMap<>());
-    private static final Map<WebDriver, SessionContext> ALL_EVENTFIRING_WEBDRIVER_SESSIONS_CONTEXTS = Collections.synchronizedMap(new HashMap<>());
+    private static final Map<String, WebDriver> ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS = new ConcurrentHashMap<>();
+    private static final Map<String, WebDriver> ALL_EVENTFIRING_WEBDRIVER_SESSIONS = new ConcurrentHashMap<>();
+    private static final Map<WebDriver, Long> ALL_EVENTFIRING_WEBDRIVER_SESSIONS_WITH_THREADID = new ConcurrentHashMap<>();
+    private static final Map<WebDriver, SessionContext> WEBDRIVER_SESSIONS_CONTEXTS_MAP = new ConcurrentHashMap<>();
 
     private static final String FULL_SESSION_KEY_SPLIT_MARKER = "___";
 
@@ -99,7 +101,7 @@ public final class WebDriverSessionsManager {
         /*
         store driver to session context relation
          */
-        ALL_EVENTFIRING_WEBDRIVER_SESSIONS_CONTEXTS.put(WebDriverUtils.getLowestWebDriver(eventFiringWebDriver), sessionContext);
+        WEBDRIVER_SESSIONS_CONTEXTS_MAP.put(WebDriverUtils.getLowestWebDriver(eventFiringWebDriver), sessionContext);
     }
 
     static void removeWebDriverSession(String sessionKey, WebDriver eventFiringWebDriver) {
@@ -109,7 +111,7 @@ public final class WebDriverSessionsManager {
         final long threadId = Thread.currentThread().getId();
         ALL_EVENTFIRING_WEBDRIVER_SESSIONS_WITH_THREADID.remove(eventFiringWebDriver, threadId);
 
-        ALL_EVENTFIRING_WEBDRIVER_SESSIONS_CONTEXTS.remove(WebDriverUtils.getLowestWebDriver(eventFiringWebDriver));
+        WEBDRIVER_SESSIONS_CONTEXTS_MAP.remove(WebDriverUtils.getLowestWebDriver(eventFiringWebDriver));
 
         /*
         storing driver into driver storage, for whatever reason
@@ -213,12 +215,10 @@ public final class WebDriverSessionsManager {
 
 
     static void shutdownAllThreadSessions() {
-        for (WebDriver eventFiringWebDriver : getWebDriversFromCurrentThread()) {
-            shutdownWebDriver(eventFiringWebDriver);
-        }
+        getWebDriversFromCurrentThread().forEach(WebDriverSessionsManager::shutdownWebDriver);
     }
 
-    public static List<WebDriver> getWebDriversFromCurrentThread() {
+    public static Stream<WebDriver> getWebDriversFromCurrentThread() {
         long threadId = Thread.currentThread().getId();
         return getWebDriversFromThread(threadId);
     }
@@ -257,8 +257,7 @@ public final class WebDriverSessionsManager {
 
     static boolean hasSessionActiveInThisThread() {
         long threadId = Thread.currentThread().getId();
-        List<WebDriver> drivers = getWebDriversFromThread(threadId);
-        return drivers.size() > 0;
+        return getWebDriversFromThread(threadId).findAny().isPresent();
     }
 
     static synchronized String makeSessionExclusive(final WebDriver eventFiringWebDriver) {
@@ -325,16 +324,8 @@ public final class WebDriverSessionsManager {
         return sessionKey;
     }
 
-    static List<WebDriver> getWebDriversFromThread(final long threadId) {
-        // !! but this has to be a list of eventfiring webdrivers
-        final List<WebDriver> drivers = new LinkedList<>();
-        for (WebDriver eventFiringWebDriver : ALL_EVENTFIRING_WEBDRIVER_SESSIONS_WITH_THREADID.keySet()) {
-            Long threadIdToCheck = ALL_EVENTFIRING_WEBDRIVER_SESSIONS_WITH_THREADID.get(eventFiringWebDriver);
-            if (threadIdToCheck == threadId) {
-                drivers.add(eventFiringWebDriver);
-            }
-        }
-        return drivers;
+    static Stream<WebDriver> getWebDriversFromThread(final long threadId) {
+        return ALL_EVENTFIRING_WEBDRIVER_SESSIONS_WITH_THREADID.entrySet().stream().filter(entry -> entry.getValue() == threadId).map(Map.Entry::getKey);
     }
 
 
@@ -433,6 +424,6 @@ public final class WebDriverSessionsManager {
     }
 
     public static Optional<SessionContext> getSessionContext(WebDriver webDriver) {
-        return Optional.ofNullable(ALL_EVENTFIRING_WEBDRIVER_SESSIONS_CONTEXTS.get(WebDriverUtils.getLowestWebDriver(webDriver)));
+        return Optional.ofNullable(WEBDRIVER_SESSIONS_CONTEXTS_MAP.get(WebDriverUtils.getLowestWebDriver(webDriver)));
     }
 }

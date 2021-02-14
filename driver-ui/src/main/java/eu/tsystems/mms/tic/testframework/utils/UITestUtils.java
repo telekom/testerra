@@ -465,16 +465,11 @@ public class UITestUtils {
      */
     public static List<Screenshot> takeScreenshots(final MethodContext methodContext, boolean explicitlyForThisContext) {
         long threadId = Thread.currentThread().getId();
-        List<WebDriver> webDriversFromThread = WebDriverManager.getWebDriversFromThread(threadId);
-        Map<String, WebDriver> webDriverSessions = new HashMap<>(webDriversFromThread.size());
-        for (WebDriver webDriver : webDriversFromThread) {
+        Map<String, WebDriver> webDriverSessions = new HashMap<>();
+        WebDriverManager.getWebDriversFromThread(threadId).forEach(webDriver -> {
             String sessionKey = WebDriverManager.getSessionKeyFrom(webDriver);
             webDriverSessions.put(sessionKey, webDriver);
-        }
-
-        if (webDriversFromThread.size() == 0) {
-            LOGGER.warn("No webdriver or selenium session found. Could not take screenshot(s).");
-        }
+        });
 
         return UITestUtils.takeScreenshotsFromSessions(methodContext, webDriverSessions, explicitlyForThisContext);
     }

@@ -26,8 +26,6 @@ import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.enums.Position;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 /**
  * Class holding configuration settings for the WebDriverManager. Some are writable. This class is not ThreadSafe, some
@@ -90,23 +88,6 @@ public class WebDriverManagerConfig {
         return baseUrl;
     }
 
-    /**
-     * @deprecated Set your base url via. {@link AbstractWebDriverRequest#setBaseUrl(String)} instead
-     */
-    @Deprecated
-    public WebDriverManagerConfig setBaseUrl(String baseUrl) {
-        this.baseUrl = baseUrl;
-        return this;
-    }
-
-    /**
-     * @deprecated Use {@link #getBrowser()} instead
-     */
-    @Deprecated
-    public String getDefaultBrowser() {
-        return getBrowser();
-    }
-
     private void initBrowser() {
         String browserSetting = PropertyManager.getProperty(TesterraProperties.BROWSER_SETTING);
         if (!StringUtils.isStringEmpty(browserSetting)) {
@@ -141,36 +122,12 @@ public class WebDriverManagerConfig {
         return webDriverMode;
     }
 
-    /**
-     * @deprecated Use {@link #getBrowser()} ()} instead
-     */
-    @Deprecated
-    public String browser() {
-        return this.getBrowser();
-    }
-
-    /**
-     * @deprecated Use {@link #getBrowserVersion()} instead
-     */
-    @Deprecated
-    public String browserVersion() {
-       return this.getBrowserVersion();
-    }
-
     public boolean shouldShutdownSessions() {
         return executeCloseWindows;
     }
 
     public WebDriverManagerConfig setShutdownSessions(boolean close) {
         this.executeCloseWindows = close;
-        return this;
-    }
-
-    /**
-     * @deprecated
-     */
-    public WebDriverManagerConfig setWebDriverMode(WebDriverMode webDriverMode) {
-        this.webDriverMode = webDriverMode;
         return this;
     }
 
@@ -190,21 +147,8 @@ public class WebDriverManagerConfig {
         return executeCloseWindows && closeWindowsOnFailure;
     }
 
-    public WebDriverManagerConfig setShutdownSessionOnFailure(boolean shutdown) {
-        if (shutdown) {
-            this.setShutdownSessions(true);
-        }
-        this.closeWindowsOnFailure = shutdown;
-        return this;
-    }
-
     public boolean shouldMaximizeViewport() {
         return maximize;
-    }
-
-    public WebDriverManagerConfig setMaximizeViewport(boolean maximize) {
-        this.maximize = maximize;
-        return this;
     }
 
     public Position getMaximizePosition() {
@@ -212,10 +156,5 @@ public class WebDriverManagerConfig {
             this.maximizePosition = Position.valueOf(PropertyManager.getProperty(TesterraProperties.BROWSER_MAXIMIZE_POSITION, Position.CENTER.toString()).toUpperCase());
         }
         return maximizePosition;
-    }
-
-    public WebDriverManagerConfig setMaximizePosition(Position maximizePosition) {
-        this.maximizePosition = maximizePosition;
-        return this;
     }
 }

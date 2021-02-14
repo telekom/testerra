@@ -23,7 +23,6 @@ package eu.tsystems.mms.tic.testframework.report;
 
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.core.server.Server;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 
@@ -36,7 +35,7 @@ public abstract class AbstractReportTest extends AbstractWebDriverTest {
     @BeforeTest(alwaysRun = true)
     public void setUp() throws Exception {
         server.start();
-        WebDriverManager.getConfig().setBaseUrl(String.format("http://localhost:%d", server.getPort()));
+        getWebDriver().get(String.format("http://localhost:%d", server.getPort()));
     }
 
     @AfterTest(alwaysRun = true)

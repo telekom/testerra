@@ -23,9 +23,12 @@ package eu.tsystems.mms.tic.testframework.bmp.playground;
 
 import eu.tsystems.mms.tic.testframework.bmp.AbstractTest;
 import eu.tsystems.mms.tic.testframework.bmp.ProxyServer;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerUtils;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
+import java.net.MalformedURLException;
 import net.lightbody.bmp.core.har.Har;
 import net.lightbody.bmp.core.har.HarLog;
 import org.apache.http.HttpHost;
@@ -36,15 +39,17 @@ import org.testng.annotations.Test;
 
 public class ProxyServerTest extends AbstractTest {
 
+    private DesktopWebDriverRequest request;
+
     @BeforeSuite
-    public void setupFFProfile() {
-        WebDriverManager.getConfig().setWebDriverMode(WebDriverMode.remote);
+    public void setupFFProfile() throws MalformedURLException {
+        this.request = new DesktopWebDriverRequest();
+        this.request.setWebDriverMode(WebDriverMode.remote);
+        this.request.setBaseUrl("https://www.google.de");
 
         DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
         WebDriverManagerUtils.addProxyToCapabilities(desiredCapabilities, "localhost:9999");
         WebDriverManager.setGlobalExtraCapabilities(desiredCapabilities);
-
-        WebDriverManager.getConfig().setBaseUrl("https://www.google.de");
     }
 
     @Test
@@ -58,7 +63,7 @@ public class ProxyServerTest extends AbstractTest {
             proxyServer.startCapture();
 
             // open ff
-            WebDriverManager.getWebDriver();
+            WebDriverManager.getWebDriver(this.request);
 
             // stop capture
             Har har = proxyServer.stopCapture();

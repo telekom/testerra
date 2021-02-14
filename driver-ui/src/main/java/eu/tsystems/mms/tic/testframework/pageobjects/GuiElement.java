@@ -23,7 +23,6 @@
 
 import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
@@ -51,7 +50,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.StandardGuiElementWait;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import java.awt.Color;
@@ -171,7 +169,7 @@ public class GuiElement implements
 
     private void buildInternals(WebDriver webDriver, By by) {
         // Create core depending on requested Browser
-        String currentBrowser = WebDriverSessionsManager.getSessionContext(webDriver).map(SessionContext::getBrowserName).orElse(null);
+        String currentBrowser = WebDriverSessionsManager.getSessionContext(webDriver).map(SessionContext::getWebDriverRequest).map(WebDriverRequest::getBrowser).orElse(null);
         guiElementData.browser = currentBrowser;
 
         if (coreFactories.containsKey(currentBrowser)) {

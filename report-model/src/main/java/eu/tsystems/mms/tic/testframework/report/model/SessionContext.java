@@ -16,8 +16,6 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private SessionContext() {
-    sessionKey_ = "";
-    provider_ = "";
     sessionId_ = "";
     videoId_ = "";
     executionContextId_ = "";
@@ -67,18 +65,6 @@ private static final long serialVersionUID = 0L;
               contextValues_ = subBuilder.buildPartial();
             }
 
-            break;
-          }
-          case 18: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            sessionKey_ = s;
-            break;
-          }
-          case 26: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            provider_ = s;
             break;
           }
           case 50: {
@@ -175,86 +161,12 @@ private static final long serialVersionUID = 0L;
     return getContextValues();
   }
 
-  public static final int SESSION_KEY_FIELD_NUMBER = 2;
-  private volatile java.lang.Object sessionKey_;
-  /**
-   * <code>string session_key = 2;</code>
-   * @return The sessionKey.
-   */
-  @java.lang.Override
-  public java.lang.String getSessionKey() {
-    java.lang.Object ref = sessionKey_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      sessionKey_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string session_key = 2;</code>
-   * @return The bytes for sessionKey.
-   */
-  @java.lang.Override
-  public com.google.protobuf.ByteString
-      getSessionKeyBytes() {
-    java.lang.Object ref = sessionKey_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      sessionKey_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
-
-  public static final int PROVIDER_FIELD_NUMBER = 3;
-  private volatile java.lang.Object provider_;
-  /**
-   * <code>string provider = 3;</code>
-   * @return The provider.
-   */
-  @java.lang.Override
-  public java.lang.String getProvider() {
-    java.lang.Object ref = provider_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      provider_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string provider = 3;</code>
-   * @return The bytes for provider.
-   */
-  @java.lang.Override
-  public com.google.protobuf.ByteString
-      getProviderBytes() {
-    java.lang.Object ref = provider_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      provider_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
-
   public static final int SESSION_ID_FIELD_NUMBER = 6;
   private volatile java.lang.Object sessionId_;
   /**
    * <pre>
+   *    string session_key = 2 [deprecated = true];
+   *    string provider = 3 [deprecated = true];
    *    map&lt;string, string&gt; metadata = 4 [deprecated = true];
    * </pre>
    *
@@ -276,6 +188,8 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
+   *    string session_key = 2 [deprecated = true];
+   *    string provider = 3 [deprecated = true];
    *    map&lt;string, string&gt; metadata = 4 [deprecated = true];
    * </pre>
    *
@@ -504,12 +418,6 @@ private static final long serialVersionUID = 0L;
     if (contextValues_ != null) {
       output.writeMessage(1, getContextValues());
     }
-    if (!getSessionKeyBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, sessionKey_);
-    }
-    if (!getProviderBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 3, provider_);
-    }
     if (!getSessionIdBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 6, sessionId_);
     }
@@ -540,12 +448,6 @@ private static final long serialVersionUID = 0L;
     if (contextValues_ != null) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(1, getContextValues());
-    }
-    if (!getSessionKeyBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, sessionKey_);
-    }
-    if (!getProviderBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, provider_);
     }
     if (!getSessionIdBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, sessionId_);
@@ -585,10 +487,6 @@ private static final long serialVersionUID = 0L;
       if (!getContextValues()
           .equals(other.getContextValues())) return false;
     }
-    if (!getSessionKey()
-        .equals(other.getSessionKey())) return false;
-    if (!getProvider()
-        .equals(other.getProvider())) return false;
     if (!getSessionId()
         .equals(other.getSessionId())) return false;
     if (!getVideoId()
@@ -616,10 +514,6 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + CONTEXT_VALUES_FIELD_NUMBER;
       hash = (53 * hash) + getContextValues().hashCode();
     }
-    hash = (37 * hash) + SESSION_KEY_FIELD_NUMBER;
-    hash = (53 * hash) + getSessionKey().hashCode();
-    hash = (37 * hash) + PROVIDER_FIELD_NUMBER;
-    hash = (53 * hash) + getProvider().hashCode();
     hash = (37 * hash) + SESSION_ID_FIELD_NUMBER;
     hash = (53 * hash) + getSessionId().hashCode();
     hash = (37 * hash) + VIDEO_ID_FIELD_NUMBER;
@@ -771,10 +665,6 @@ private static final long serialVersionUID = 0L;
         contextValues_ = null;
         contextValuesBuilder_ = null;
       }
-      sessionKey_ = "";
-
-      provider_ = "";
-
       sessionId_ = "";
 
       videoId_ = "";
@@ -818,8 +708,6 @@ private static final long serialVersionUID = 0L;
       } else {
         result.contextValues_ = contextValuesBuilder_.build();
       }
-      result.sessionKey_ = sessionKey_;
-      result.provider_ = provider_;
       result.sessionId_ = sessionId_;
       result.videoId_ = videoId_;
       result.executionContextId_ = executionContextId_;
@@ -876,14 +764,6 @@ private static final long serialVersionUID = 0L;
       if (other == eu.tsystems.mms.tic.testframework.report.model.SessionContext.getDefaultInstance()) return this;
       if (other.hasContextValues()) {
         mergeContextValues(other.getContextValues());
-      }
-      if (!other.getSessionKey().isEmpty()) {
-        sessionKey_ = other.sessionKey_;
-        onChanged();
-      }
-      if (!other.getProvider().isEmpty()) {
-        provider_ = other.provider_;
-        onChanged();
       }
       if (!other.getSessionId().isEmpty()) {
         sessionId_ = other.sessionId_;
@@ -1057,161 +937,11 @@ private static final long serialVersionUID = 0L;
       return contextValuesBuilder_;
     }
 
-    private java.lang.Object sessionKey_ = "";
-    /**
-     * <code>string session_key = 2;</code>
-     * @return The sessionKey.
-     */
-    public java.lang.String getSessionKey() {
-      java.lang.Object ref = sessionKey_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        sessionKey_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <code>string session_key = 2;</code>
-     * @return The bytes for sessionKey.
-     */
-    public com.google.protobuf.ByteString
-        getSessionKeyBytes() {
-      java.lang.Object ref = sessionKey_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        sessionKey_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string session_key = 2;</code>
-     * @param value The sessionKey to set.
-     * @return This builder for chaining.
-     */
-    public Builder setSessionKey(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      sessionKey_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string session_key = 2;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearSessionKey() {
-      
-      sessionKey_ = getDefaultInstance().getSessionKey();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string session_key = 2;</code>
-     * @param value The bytes for sessionKey to set.
-     * @return This builder for chaining.
-     */
-    public Builder setSessionKeyBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      sessionKey_ = value;
-      onChanged();
-      return this;
-    }
-
-    private java.lang.Object provider_ = "";
-    /**
-     * <code>string provider = 3;</code>
-     * @return The provider.
-     */
-    public java.lang.String getProvider() {
-      java.lang.Object ref = provider_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        provider_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <code>string provider = 3;</code>
-     * @return The bytes for provider.
-     */
-    public com.google.protobuf.ByteString
-        getProviderBytes() {
-      java.lang.Object ref = provider_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        provider_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string provider = 3;</code>
-     * @param value The provider to set.
-     * @return This builder for chaining.
-     */
-    public Builder setProvider(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      provider_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string provider = 3;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearProvider() {
-      
-      provider_ = getDefaultInstance().getProvider();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string provider = 3;</code>
-     * @param value The bytes for provider to set.
-     * @return This builder for chaining.
-     */
-    public Builder setProviderBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      provider_ = value;
-      onChanged();
-      return this;
-    }
-
     private java.lang.Object sessionId_ = "";
     /**
      * <pre>
+     *    string session_key = 2 [deprecated = true];
+     *    string provider = 3 [deprecated = true];
      *    map&lt;string, string&gt; metadata = 4 [deprecated = true];
      * </pre>
      *
@@ -1232,6 +962,8 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
+     *    string session_key = 2 [deprecated = true];
+     *    string provider = 3 [deprecated = true];
      *    map&lt;string, string&gt; metadata = 4 [deprecated = true];
      * </pre>
      *
@@ -1253,6 +985,8 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
+     *    string session_key = 2 [deprecated = true];
+     *    string provider = 3 [deprecated = true];
      *    map&lt;string, string&gt; metadata = 4 [deprecated = true];
      * </pre>
      *
@@ -1272,6 +1006,8 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
+     *    string session_key = 2 [deprecated = true];
+     *    string provider = 3 [deprecated = true];
      *    map&lt;string, string&gt; metadata = 4 [deprecated = true];
      * </pre>
      *
@@ -1286,6 +1022,8 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
+     *    string session_key = 2 [deprecated = true];
+     *    string provider = 3 [deprecated = true];
      *    map&lt;string, string&gt; metadata = 4 [deprecated = true];
      * </pre>
      *

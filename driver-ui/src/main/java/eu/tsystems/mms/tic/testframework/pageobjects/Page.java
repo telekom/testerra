@@ -38,7 +38,6 @@ import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import java.awt.Color;
@@ -191,7 +190,7 @@ public abstract class Page extends AbstractPage {
           */
 
         // exit when safari
-        String browser = WebDriverSessionsManager.getSessionContext(webDriver).map(SessionContext::getBrowserName).orElse(null);
+        String browser = WebDriverSessionsManager.getSessionContext(webDriver).map(SessionContext::getWebDriverRequest).map(WebDriverRequest::getBrowser).orElse(null);
         if (Browsers.safari.equalsIgnoreCase(browser) || Browsers.phantomjs.equalsIgnoreCase(browser)) {
             String msg = "Recursive Page Scan does not work. Unsupported Browser.";
             log().error(msg);

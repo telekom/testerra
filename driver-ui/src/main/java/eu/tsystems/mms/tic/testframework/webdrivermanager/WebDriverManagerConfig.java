@@ -26,6 +26,8 @@ import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.enums.Position;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Class holding configuration settings for the WebDriverManager. Some are writable. This class is not ThreadSafe, some
@@ -89,7 +91,7 @@ public class WebDriverManagerConfig {
     }
 
     /**
-     * @deprecated Set your base url via. {@link WebDriverRequest#setBaseUrl(String)} instead
+     * @deprecated Set your base url via. {@link AbstractWebDriverRequest#setBaseUrl(String)} instead
      */
     @Deprecated
     public WebDriverManagerConfig setBaseUrl(String baseUrl) {
@@ -164,6 +166,9 @@ public class WebDriverManagerConfig {
         return this;
     }
 
+    /**
+     * @deprecated
+     */
     public WebDriverManagerConfig setWebDriverMode(WebDriverMode webDriverMode) {
         this.webDriverMode = webDriverMode;
         return this;

@@ -30,7 +30,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-public class DesktopWebDriverRequest extends WebDriverRequest implements Loggable {
+public class DesktopWebDriverRequest extends AbstractWebDriverRequest implements Loggable {
     private DesiredCapabilities desiredCapabilities;
     private URL seleniumServerURL;
     private WebDriverMode webDriverMode;

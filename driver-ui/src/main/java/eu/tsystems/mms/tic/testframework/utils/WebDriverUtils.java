@@ -31,6 +31,7 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverProxy;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -315,18 +316,10 @@ public final class WebDriverUtils {
         }
 
         if (driver instanceof Proxy) {
-            Proxy proxy = (Proxy) driver;
-
-            try {
-                Field h = Proxy.class.getDeclaredField("h");
-                h.setAccessible(true);
-                Object handler = h.get(proxy);
-                if (handler instanceof WebDriverProxy) {
-                    WebDriverProxy webDriverProxy = (WebDriverProxy) handler;
-                    driver = webDriverProxy.getWrappedWebDriver();
-                }
-            } catch (Exception e) {
-                LOGGER.error("Could not get proxy instance out of proxied webDriver");
+            InvocationHandler invocationHandler = Proxy.getInvocationHandler(driver);
+            if (invocationHandler instanceof WebDriverProxy) {
+                WebDriverProxy webDriverProxy = (WebDriverProxy) invocationHandler;
+                driver = webDriverProxy.getWrappedWebDriver();
             }
         }
 

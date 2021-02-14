@@ -23,48 +23,44 @@ package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import java.util.Map;
 import java.util.Optional;
+import org.apache.commons.lang3.SerializationUtils;
 
 public class SessionContext extends AbstractContext implements SynchronizableContext {
-    private String sessionKey;
-    private String provider;
     private String remoteSessionId;
     private Video video;
     private NodeInfo nodeInfo;
     private String browserName;
     private String browserVersion;
     private Map<String, Object> capabilities;
+    private final WebDriverRequest webDriverRequest;
 
-    public SessionContext(String sessionKey, String provider) {
-        this.sessionKey = sessionKey;
-        this.provider = provider;
+    public SessionContext(WebDriverRequest webDriverRequest) {
+        this.webDriverRequest = SerializationUtils.clone(webDriverRequest);
+        this.name = webDriverRequest.getSessionKey();
 
-        final MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
-        if (currentMethodContext != null) {
-            this.name = currentMethodContext.getName() + "_";
-        } else {
-            this.name = "";
-        }
-        this.name += sessionKey;
+//        this.provider = provider;
+//
+//        final MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
+//        if (currentMethodContext != null) {
+//            this.name = currentMethodContext.getName() + "_";
+//        } else {
+//            this.name = "";
+//        }
+    }
+
+    public WebDriverRequest getWebDriverRequest() {
+        return this.webDriverRequest;
     }
 
     public String getSessionKey() {
-        return sessionKey;
+        return this.name;
     }
 
     public SessionContext setSessionKey(String sessionKey) {
-        this.sessionKey = sessionKey;
-        return this;
-    }
-
-    public String getProvider() {
-        return provider;
-    }
-
-    public SessionContext setProvider(String provider) {
-        this.provider = provider;
+        this.name = sessionKey;
         return this;
     }
 
@@ -103,20 +99,20 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
         return this;
     }
 
-    public String getBrowserName() {
+    public String getActualBrowserName() {
         return browserName;
     }
 
-    public SessionContext setBrowserName(String browserName) {
+    public SessionContext setActualBrowserName(String browserName) {
         this.browserName = browserName;
         return this;
     }
 
-    public String getBrowserVersion() {
+    public String getActualBrowserVersion() {
         return browserVersion;
     }
 
-    public SessionContext setBrowserVersion(String browserVersion) {
+    public SessionContext setActualBrowserVersion(String browserVersion) {
         this.browserVersion = browserVersion;
         return this;
     }

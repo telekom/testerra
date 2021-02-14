@@ -21,71 +21,61 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-public abstract class WebDriverRequest {
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Optional;
+
+public abstract class AbstractWebDriverRequest implements WebDriverRequest {
     /*
     Request
      */
     private String sessionKey;
     private String browser;
     private String browserVersion;
-    private String baseUrl;
+    private URL baseUrl;
 
-    public boolean hasSessionKey() {
-        return sessionKey != null && !sessionKey.trim().isEmpty();
-    }
-
+    @Override
     public String getSessionKey() {
         return sessionKey;
     }
 
-    public WebDriverRequest setSessionKey(String sessionKey) {
+    public AbstractWebDriverRequest setSessionKey(String sessionKey) {
         this.sessionKey = sessionKey;
         return this;
     }
 
-    public boolean hasBrowser() {
-        return browser != null && !browser.trim().isEmpty();
-    }
-
+    @Override
     public String getBrowser() {
         return browser;
     }
 
-    public WebDriverRequest setBrowser(String browser) {
+    public AbstractWebDriverRequest setBrowser(String browser) {
         this.browser = browser;
         return this;
     }
 
-    public boolean hasBrowserVersion() {
-        return browserVersion != null && !browserVersion.trim().isEmpty();
-    }
-
+    @Override
     public String getBrowserVersion() {
         return browserVersion;
     }
 
-    public WebDriverRequest setBrowserVersion(String browserVersion) {
+    public AbstractWebDriverRequest setBrowserVersion(String browserVersion) {
         this.browserVersion = browserVersion;
         return this;
     }
 
-    public boolean hasBaseUrl() {
-        return baseUrl != null && !baseUrl.trim().isEmpty();
+    @Override
+    public Optional<URL> getBaseUrl() {
+        return Optional.ofNullable(baseUrl);
     }
 
-    public String getBaseUrl() {
-        return baseUrl;
-    }
-
-    public WebDriverRequest setBaseUrl(String baseUrl) {
-        this.baseUrl = baseUrl;
+    public AbstractWebDriverRequest setBaseUrl(String baseUrl) throws MalformedURLException {
+        this.baseUrl = new URL(baseUrl);
         return this;
     }
 
-    public void copyFrom(WebDriverRequest webDriverRequest) {
-        this.browser = webDriverRequest.browser;
-        this.sessionKey = webDriverRequest.sessionKey;
-        this.baseUrl = webDriverRequest.baseUrl;
-        this.browserVersion = webDriverRequest.browserVersion;
+    public AbstractWebDriverRequest setBaseUrl(URL baseUrl) {
+        this.baseUrl = baseUrl;
+        return this;
     }
 }

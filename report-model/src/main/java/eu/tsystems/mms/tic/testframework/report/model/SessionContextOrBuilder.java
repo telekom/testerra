@@ -23,31 +23,9 @@ public interface SessionContextOrBuilder extends
   eu.tsystems.mms.tic.testframework.report.model.ContextValuesOrBuilder getContextValuesOrBuilder();
 
   /**
-   * <code>string session_key = 2;</code>
-   * @return The sessionKey.
-   */
-  java.lang.String getSessionKey();
-  /**
-   * <code>string session_key = 2;</code>
-   * @return The bytes for sessionKey.
-   */
-  com.google.protobuf.ByteString
-      getSessionKeyBytes();
-
-  /**
-   * <code>string provider = 3;</code>
-   * @return The provider.
-   */
-  java.lang.String getProvider();
-  /**
-   * <code>string provider = 3;</code>
-   * @return The bytes for provider.
-   */
-  com.google.protobuf.ByteString
-      getProviderBytes();
-
-  /**
    * <pre>
+   *    string session_key = 2 [deprecated = true];
+   *    string provider = 3 [deprecated = true];
    *    map&lt;string, string&gt; metadata = 4 [deprecated = true];
    * </pre>
    *
@@ -57,6 +35,8 @@ public interface SessionContextOrBuilder extends
   java.lang.String getSessionId();
   /**
    * <pre>
+   *    string session_key = 2 [deprecated = true];
+   *    string provider = 3 [deprecated = true];
    *    map&lt;string, string&gt; metadata = 4 [deprecated = true];
    * </pre>
    *

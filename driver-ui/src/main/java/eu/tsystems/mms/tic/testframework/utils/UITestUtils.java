@@ -119,7 +119,7 @@ public class UITestUtils {
             String sessionKey
     ) {
 
-        if (Browsers.htmlunit.equalsIgnoreCase(WebDriverSessionsManager.getSessionContext(eventFiringWebDriver).map(SessionContext::getBrowserName).orElse(null))) {
+        if (Browsers.htmlunit.equalsIgnoreCase(WebDriverSessionsManager.getSessionContext(eventFiringWebDriver).map(SessionContext::getWebDriverRequest).map(WebDriverRequest::getBrowser).orElse(null))) {
             LOGGER.warn("Not taking screenshot for htmunit");
             return null;
         }
@@ -226,7 +226,7 @@ public class UITestUtils {
          * captured. To allow full-page screenshots, we stitch several viewport-screenshots together.
          * If this is eventually supported by WebDriver, this special branch can be removed.
          */
-        if (Browsers.ie.equalsIgnoreCase(WebDriverSessionsManager.getSessionContext(eventFiringWebDriver).map(SessionContext::getBrowserName).orElse(null))) {
+        if (Browsers.ie.equalsIgnoreCase(WebDriverSessionsManager.getSessionContext(eventFiringWebDriver).map(SessionContext::getWebDriverRequest).map(WebDriverRequest::getBrowser).orElse(null))) {
             Viewport viewport = JSUtils.getViewport(driver);
 
             if (viewport.height > Constants.IE_SCREENSHOT_LIMIT) {

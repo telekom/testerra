@@ -27,6 +27,8 @@ import eu.tsystems.mms.tic.testframework.core.server.Server;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.UnspecificWebDriverRequest;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
 import java.net.MalformedURLException;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
@@ -40,7 +42,7 @@ public abstract class AbstractReportTest extends AbstractWebDriverTest implement
     @BeforeTest(alwaysRun = true)
     public void setUp() throws Exception {
         server.start();
-        System.setProperty(TesterraProperties.BASEURL, String.format("http://localhost:%d", server.getPort()));
+        WebDriverManager.getConfig().setBaseUrl(String.format("http://localhost:%d", server.getPort()));
     }
 
     @AfterTest(alwaysRun = true)

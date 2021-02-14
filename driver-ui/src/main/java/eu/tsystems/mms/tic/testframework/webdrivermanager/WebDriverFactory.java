@@ -42,12 +42,8 @@ public abstract class WebDriverFactory<R extends AbstractWebDriverRequest> imple
     protected abstract void setupSession(EventFiringWebDriver eventFiringWebDriver, R request);
 
     public EventFiringWebDriver getWebDriver(AbstractWebDriverRequest request, SessionContext sessionContext) {
-        if (!request.getBaseUrl().isPresent() && !StringUtils.isEmpty(WebDriverManager.getConfig().getBaseUrl())) {
-            try {
-                request.setBaseUrl(WebDriverManager.getConfig().getBaseUrl());
-            } catch (MalformedURLException e) {
-                log().error("Unable read base URL from config", e);
-            }
+        if (!request.getBaseUrl().isPresent() && WebDriverManager.getConfig().getBaseUrl().isPresent()) {
+            request.setBaseUrl(WebDriverManager.getConfig().getBaseUrl().get());
         }
 
         /*

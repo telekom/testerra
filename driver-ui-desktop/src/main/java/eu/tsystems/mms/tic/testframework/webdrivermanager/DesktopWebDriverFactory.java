@@ -134,7 +134,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 driver.get(baseUrl.toString());
             } catch (Exception e) {
                 if (StringUtils.containsAll(e.getMessage(), true, "Reached error page", "connectionFailure")) {
-                    throw new RuntimeException("Could not start driver session, because of unreachable url: " + request.getBaseUrl(), e);
+                    throw new RuntimeException("Could not start driver session, because of unreachable url: " + baseUrl, e);
                 }
                 throw e;
             }

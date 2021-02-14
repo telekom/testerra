@@ -56,18 +56,6 @@ public final class WebDriverManagerUtils {
     private WebDriverManagerUtils() {
     }
 
-    /**
-     * Computes the baseUrl to use from the possible sources.
-     *
-     * @param presetBaseURL A manually set baseUrl
-     * @return BaseUrl to use.
-     * @deprecated Use {@link WebDriverManager#getConfig()} instead
-     */
-    @Deprecated
-    protected static String getBaseUrl(final String presetBaseURL) {
-        return WebDriverManager.getConfig().getBaseUrl();
-    }
-
     public static void logUserAgent(WebDriver driver) {
         pLogUserAgent(driver);
     }

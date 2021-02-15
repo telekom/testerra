@@ -21,19 +21,19 @@
 
 package eu.tsystems.mms.tic.testframework.exceptions;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 
 public class UiElementException extends RuntimeException {
     /**
-     * @deprecated Use {@link UiElementException(GuiElement, String)} instead
+     * @deprecated Use {@link UiElementException( UiElement , String)} instead
      */
     protected UiElementException(String message) {
         super(message);
     }
-    public UiElementException(GuiElement guiElement, String message) {
-        this(guiElement, message, null);
+    public UiElementException(UiElement uiElement, String message) {
+        this(uiElement, message, null);
     }
-    public UiElementException(GuiElement guiElement, String message, Throwable cause) {
-        super(guiElement.toString() + ": " + message, cause);
+    public UiElementException(UiElement uiElement, String message, Throwable cause) {
+        super(uiElement.toString(true) + ": " + message, cause);
     }
 }

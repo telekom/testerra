@@ -33,6 +33,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
@@ -193,8 +194,7 @@ public class UITestUtils {
             return null;
         }
 
-        WebDriverRequest webDriverRequest = WebDriverManager.getRelatedWebDriverRequest(eventFiringWebDriver);
-        if (Browsers.htmlunit.equalsIgnoreCase(webDriverRequest.getBrowser())) {
+        if (Browsers.htmlunit.equalsIgnoreCase(Testerra.getInjector().getInstance(IWebDriverManager.class).getSessionContext(eventFiringWebDriver).map(SessionContext::getWebDriverRequest).map(WebDriverRequest::getBrowser).orElse(null))) {
             LOGGER.warn("Not taking screenshot for htmunit");
             return null;
         }

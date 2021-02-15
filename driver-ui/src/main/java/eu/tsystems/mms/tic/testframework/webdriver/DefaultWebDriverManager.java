@@ -21,10 +21,13 @@
 
 package eu.tsystems.mms.tic.testframework.webdriver;
 
+import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
+import java.util.Optional;
 import org.openqa.selenium.WebDriver;
 
 public class DefaultWebDriverManager implements IWebDriverManager {
@@ -69,13 +72,13 @@ public class DefaultWebDriverManager implements IWebDriverManager {
     }
 
     @Override
-    public WebDriverRequest getWebDriverRequest(WebDriver webDriver) {
-        return WebDriverManager.getRelatedWebDriverRequest(webDriver);
+    public WebDriver getWebDriver(AbstractWebDriverRequest request) {
+        return WebDriverManager.getWebDriver(request);
     }
 
     @Override
-    public WebDriver getWebDriver(WebDriverRequest request) {
-        return WebDriverManager.getWebDriver(request);
+    public Optional<SessionContext> getSessionContext(WebDriver webDriver) {
+        return WebDriverSessionsManager.getSessionContext(webDriver);
     }
 
     @Override

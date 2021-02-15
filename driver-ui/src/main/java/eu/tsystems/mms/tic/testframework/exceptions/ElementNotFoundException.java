@@ -29,17 +29,17 @@ import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 public class ElementNotFoundException extends UiElementException {
 
     /**
-     * @deprecated Use {@link ElementNotFoundException(GuiElement)} instead
+     * @deprecated Use {@link ElementNotFoundException(UiElement)} instead
      */
     public ElementNotFoundException(String message) {
         super(message);
     }
 
-    public ElementNotFoundException(UiElement guiElement) {
-       this(guiElement, null);
+    public ElementNotFoundException(UiElement uiElement) {
+       this(uiElement, null);
     }
 
-    public ElementNotFoundException(UiElement guiElement, Throwable cause) {
-        super(guiElement, "not found", cause);
+    public ElementNotFoundException(UiElement uiElement, Throwable cause) {
+        super(uiElement, "not found", cause);
     }
 }

@@ -49,10 +49,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElement
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverFactory;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.StandardGuiElementWait;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
@@ -133,8 +131,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     private GuiElement(GuiElementData data) {
         guiElementData = data;
         guiElementData.setGuiElement(this);
-        WebDriverRequest webDriverRequest = webDriverManager.getWebDriverRequest(guiElementData.getWebDriver());
-        IWebDriverFactory factory = webDriverManager.getWebDriverFactoryForBrowser(webDriverRequest.getBrowser());
+        IWebDriverFactory factory = webDriverManager.getWebDriverFactoryForBrowser(webDriverManager.getSessionContext(guiElementData.getWebDriver()).map(SessionContext::getWebDriverRequest).map(WebDriverRequest::getBrowser).orElse(null));
         this.core = factory.createCore(guiElementData);
     }
 

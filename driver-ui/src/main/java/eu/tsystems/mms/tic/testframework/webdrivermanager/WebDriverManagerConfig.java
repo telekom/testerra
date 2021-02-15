@@ -73,12 +73,12 @@ public class WebDriverManagerConfig extends AbstractWebDriverRequest implements 
         this.closeWindowsOnFailure = PropertyManager.getBooleanProperty(TesterraProperties.CLOSE_WINDOWS_ON_FAILURE, true);
         this.maximize = PropertyManager.getBooleanProperty(TesterraProperties.BROWSER_MAXIMIZE, false);
         this.maximizePosition = Position.valueOf(PropertyManager.getProperty(TesterraProperties.BROWSER_MAXIMIZE_POSITION, Position.CENTER.toString()).toUpperCase());
-        String baseUrl = PropertyManager.getProperty(TesterraProperties.BASEURL, "");
+        String baseUrl = Testerra.Properties.BASEURL.asString();
         if (!baseUrl.isEmpty()) {
             try {
                 this.setBaseUrl(baseUrl);
             } catch (MalformedURLException e) {
-                log().error("Unable to read " + TesterraProperties.BASEURL, e);
+                log().error("Unable to read " + baseUrl, e);
             }
         }
         this.initBrowser();

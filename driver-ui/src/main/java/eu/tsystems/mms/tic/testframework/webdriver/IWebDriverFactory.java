@@ -25,17 +25,18 @@ import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import java.util.List;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 public interface IWebDriverFactory {
     /**
-     * Use {@link #createWebDriver(WebDriverRequest, SessionContext)} instead
+     * Use {@link #createWebDriver(AbstractWebDriverRequest, SessionContext)} instead
      */
     @Deprecated
-    EventFiringWebDriver getWebDriver(WebDriverRequest r, SessionContext sessionContext);
-    default EventFiringWebDriver createWebDriver(WebDriverRequest request, SessionContext sessionContext) {
+    EventFiringWebDriver getWebDriver(AbstractWebDriverRequest r, SessionContext sessionContext);
+    default EventFiringWebDriver createWebDriver(AbstractWebDriverRequest request, SessionContext sessionContext) {
         return getWebDriver(request, sessionContext);
     }
 

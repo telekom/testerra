@@ -21,9 +21,12 @@
 
 package eu.tsystems.mms.tic.testframework.webdriver;
 
+import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
+import java.util.Optional;
 import org.openqa.selenium.WebDriver;
 
 /**
@@ -37,9 +40,9 @@ public interface IWebDriverManager extends WebDriverRetainer {
     void shutdownSession(WebDriver webDriver);
     void shutdownAllThreadSessions();
     void shutdownAllSessions();
-    WebDriverRequest getWebDriverRequest(WebDriver webDriver);
     WebDriver getWebDriver(String sessionKey);
-    WebDriver getWebDriver(WebDriverRequest request);
+    WebDriver getWebDriver(AbstractWebDriverRequest request);
+    Optional<SessionContext> getSessionContext(WebDriver webDriver);
     String getSessionKey(WebDriver webDriver);
     WebDriverManagerConfig getConfig();
 }

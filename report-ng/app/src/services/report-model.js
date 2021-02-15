@@ -1601,7 +1601,6 @@ export const data = $root.data = (() => {
          * @memberof data
          * @interface IErrorContext
          * @property {data.IScriptSource|null} [scriptSource] ErrorContext scriptSource
-         * @property {data.IScriptSource|null} [executionObjectSource] ErrorContext executionObjectSource
          * @property {string|null} [ticketId] ErrorContext ticketId
          * @property {string|null} [description] ErrorContext description
          * @property {Array.<data.IStackTraceCause>|null} [stackTrace] ErrorContext stackTrace
@@ -1631,14 +1630,6 @@ export const data = $root.data = (() => {
          * @instance
          */
         ErrorContext.prototype.scriptSource = null;
-
-        /**
-         * ErrorContext executionObjectSource.
-         * @member {data.IScriptSource|null|undefined} executionObjectSource
-         * @memberof data.ErrorContext
-         * @instance
-         */
-        ErrorContext.prototype.executionObjectSource = null;
 
         /**
          * ErrorContext ticketId.
@@ -1692,9 +1683,6 @@ export const data = $root.data = (() => {
                 switch (t >>> 3) {
                 case 7:
                     m.scriptSource = $root.data.ScriptSource.decode(r, r.uint32());
-                    break;
-                case 8:
-                    m.executionObjectSource = $root.data.ScriptSource.decode(r, r.uint32());
                     break;
                 case 9:
                     m.ticketId = r.string();

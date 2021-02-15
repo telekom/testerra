@@ -708,9 +708,6 @@ export namespace data {
         /** ErrorContext scriptSource */
         scriptSource?: (data.IScriptSource|null);
 
-        /** ErrorContext executionObjectSource */
-        executionObjectSource?: (data.IScriptSource|null);
-
         /** ErrorContext ticketId */
         ticketId?: (string|null);
 
@@ -735,9 +732,6 @@ export namespace data {
 
         /** ErrorContext scriptSource. */
         public scriptSource?: (data.IScriptSource|null);
-
-        /** ErrorContext executionObjectSource. */
-        public executionObjectSource?: (data.IScriptSource|null);
 
         /** ErrorContext ticketId. */
         public ticketId: string;

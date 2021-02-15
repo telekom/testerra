@@ -63,6 +63,7 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 /**
  * GuiElement is the access point for most tests and is an extension of WebElement.
@@ -791,5 +792,10 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     @Override
     public void screenshotToReport() {
         this.waitFor().screenshot(Report.Mode.ALWAYS);
+    }
+
+    @Deprecated
+    public Select getSelectElement() {
+        return new Select(getWebElement());
     }
 }

@@ -318,4 +318,9 @@ public class Page extends AbstractPage implements TestablePage, Nameable<Page> {
     public void screenshotToReport() {
         this.waitFor().screenshot(Report.Mode.ALWAYS);
     }
+
+    @Override
+    public String toString() {
+        return this.toString(false);
+    }
 }

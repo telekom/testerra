@@ -53,6 +53,6 @@ public class XPathTest extends TesterraTest  {
 
     @Test
     public void classSelection() {
-        Assert.assertEquals(XPath.from("body").select("nav").classes("container"), "//body//nav[contains(concat(' ', normalize-space(@class), ' '), ' container ')]");
+        Assert.assertEquals(XPath.from("body").select("nav").classes("container").toString(), "//body//nav[contains(concat(' ', normalize-space(@class), ' '), ' container ')]");
     }
 }

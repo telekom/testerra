@@ -197,8 +197,8 @@ public class ClassesPage extends AbstractReportPage {
     public void assertAllPassedClassesAreDisplayed() {
         List<GuiElement> testClasses = getPassedTestClasses();
         for (GuiElement currentTestClass : testClasses) {
+            currentTestClass.asserts().assertIsDisplayed();
             String className = currentTestClass.getSubElement(By.xpath(".//a")).getText();
-            Assert.assertTrue( className.trim().length() > 0, "Invalid passed class name: '"+className+"'");
             assertSuccessIndicatorIsDisplayedForClass(className);
         }
     }

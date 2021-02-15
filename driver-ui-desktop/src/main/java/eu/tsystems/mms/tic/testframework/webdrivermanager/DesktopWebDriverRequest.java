@@ -27,40 +27,18 @@ import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-public class DesktopWebDriverRequest extends WebDriverRequest implements Loggable {
-    private Map<String, Object> sessionCapabilities;
+public class DesktopWebDriverRequest extends AbstractWebDriverRequest implements Loggable {
     private DesiredCapabilities desiredCapabilities;
     private URL seleniumServerURL;
     private WebDriverMode webDriverMode;
 
-    public boolean hasSessionCapabilities() {
-        return this.sessionCapabilities != null;
-    }
-
-    public Map<String, Object> getSessionCapabilities() {
-        if (this.sessionCapabilities == null) {
-            this.sessionCapabilities = new HashMap<>();
+    public DesiredCapabilities getDesiredCapabilities() {
+        if (this.desiredCapabilities == null) {
+            this.desiredCapabilities = new DesiredCapabilities();
         }
-        return this.sessionCapabilities;
-    }
-
-    public DesktopWebDriverRequest setSessionCapabilities(Map<String, Object> sessionCapabilities) {
-        this.sessionCapabilities = sessionCapabilities;
-        return this;
-    }
-
-    public Optional<DesiredCapabilities> getDesiredCapabilities() {
-        return Optional.ofNullable(desiredCapabilities);
-    }
-
-    public DesktopWebDriverRequest setDesiredCapabilities(DesiredCapabilities desiredCapabilities) {
-        this.desiredCapabilities = desiredCapabilities;
-        return this;
+        return desiredCapabilities;
     }
 
     public URL getSeleniumServerUrl() {
@@ -99,7 +77,6 @@ public class DesktopWebDriverRequest extends WebDriverRequest implements Loggabl
     @Override
     public String toString() {
         return "DesktopWebDriverRequest{" +
-                "sessionCapabilities=" + sessionCapabilities +
                 ", desiredCapabilities=" + desiredCapabilities +
                 ", seleniumServerURL='" + getSeleniumServerUrl() + '\'' +
                 ", webDriverMode=" + webDriverMode +
@@ -107,7 +84,6 @@ public class DesktopWebDriverRequest extends WebDriverRequest implements Loggabl
                 ", sessionKey='" + getSessionKey() + '\'' +
                 ", baseUrl='" + getBaseUrl() + '\'' +
                 ", browserVersion='" + getBrowserVersion() + '\'' +
-                ", storedExecutingNode=" + getExecutingNode() +
                 '}';
     }
 }

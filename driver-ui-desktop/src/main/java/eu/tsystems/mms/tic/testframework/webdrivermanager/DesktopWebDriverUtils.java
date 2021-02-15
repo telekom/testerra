@@ -28,7 +28,9 @@ import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.RESTUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import java.net.URL;
+import java.util.Optional;
 import org.json.JSONObject;
+import org.openqa.selenium.remote.SessionId;
 
 public final class DesktopWebDriverUtils implements Loggable {
 
@@ -38,14 +40,8 @@ public final class DesktopWebDriverUtils implements Loggable {
 
     }
 
-    public NodeInfo getNodeInfo(DesktopWebDriverRequest desktopWebDriverRequest) {
-        if (desktopWebDriverRequest.getWebDriverMode() == WebDriverMode.local) {
-            return new NodeInfo("local", 0);
-        }
-
-        URL seleniumUrl = desktopWebDriverRequest.getSeleniumServerUrl();
+    public NodeInfo getNodeInfo(URL seleniumUrl, String sessionId) {
         String url = seleniumUrl.toString();
-        String sessionId = desktopWebDriverRequest.getRemoteSessionId();
 
         url = url.replace("/wd/hub", "");
 
@@ -55,8 +51,7 @@ public final class DesktopWebDriverUtils implements Loggable {
         try {
             String nodeResponse = RESTUtils.requestGET(url + "/host/" + sessionId, 30 * 1000, String.class);
             JSONObject out = new JSONObject(nodeResponse);
-            NodeInfo nodeInfo = new NodeInfo(out.getString("Name"), out.getInt("Port"));
-            return nodeInfo;
+            return new NodeInfo(out.getString("Name"), out.getInt("Port"));
         } catch (Exception e) {
             log().debug("Could not get node info: " + e.getMessage());
             return new NodeInfo(seleniumUrl.getHost(), seleniumUrl.getPort());

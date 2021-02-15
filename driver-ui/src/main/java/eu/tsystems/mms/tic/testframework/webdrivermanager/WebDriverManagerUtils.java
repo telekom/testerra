@@ -54,16 +54,27 @@ public final class WebDriverManagerUtils {
     private WebDriverManagerUtils() {
     }
 
-    /**
-     * Computes the baseUrl to use from the possible sources.
-     *
-     * @param presetBaseURL A manually set baseUrl
-     * @return BaseUrl to use.
-     * @deprecated Use {@link WebDriverManager#getConfig()} instead
-     */
-    @Deprecated
-    protected static String getBaseUrl(final String presetBaseURL) {
-        return WebDriverManager.getConfig().getBaseUrl();
+    public static void logUserAgent(WebDriver driver) {
+        pLogUserAgent(driver);
+    }
+
+    private static String pLogUserAgent(WebDriver driver) {
+        String browserInfo;
+        String browserName = "Browser unknown";
+        String browserVersion = " unknown";
+        final String msg = "Error logging user agent";
+        try {
+            final BrowserInformation browserInformation = getBrowserInformation(driver);
+            browserName = browserInformation.getBrowserName();
+            browserVersion = browserInformation.getBrowserVersion();
+        } catch (final Exception we) {
+            LOGGER.error(msg, we);
+        }
+
+        browserInfo = browserName + " - v" + browserVersion;
+
+        LOGGER.info("Browser: " + browserInfo);
+        return browserInfo;
     }
 
     private static final Map<WebDriver, BrowserInformation> CACHED_BROWSER_INFOS = new ConcurrentHashMap<>();

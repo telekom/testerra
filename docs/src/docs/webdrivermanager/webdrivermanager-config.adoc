@@ -64,7 +64,7 @@ webDriverManager.getConfig().reset();
 
 == Local configuration
 
-If you only want to change the settings for one session, you can use `WebDriverRequest`.
+If you only want to change the settings for one session, you can use `AbstractWebDriverRequest`.
 All defined attributes overrides the standard configuration.
 
 NOTE: If an attribute is not set the global definition is used.

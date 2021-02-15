@@ -1,7 +1,7 @@
-/*!
+/*
  * Testerra
  *
- * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2021, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -19,10 +19,15 @@
  * under the License.
  */
 
-.status-column {
-    width: 160px;
-}
+package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-.run-index-column {
-    width: 40px;
+import java.io.Serializable;
+import java.net.URL;
+import java.util.Optional;
+
+public interface WebDriverRequest extends Serializable {
+    String getSessionKey();
+    String getBrowser();
+    String getBrowserVersion();
+    Optional<URL> getBaseUrl();
 }

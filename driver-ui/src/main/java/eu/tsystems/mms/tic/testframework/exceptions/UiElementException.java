@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2021, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -17,29 +17,23 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
+
 package eu.tsystems.mms.tic.testframework.exceptions;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 
-/**
- * Runtime Exception, stating that a {@link UiElement} is missing.
- */
-public class ElementNotFoundException extends UiElementException {
-
+public class UiElementException extends RuntimeException {
     /**
-     * @deprecated Use {@link ElementNotFoundException(GuiElement)} instead
+     * @deprecated Use {@link UiElementException(GuiElement, String)} instead
      */
-    public ElementNotFoundException(String message) {
+    protected UiElementException(String message) {
         super(message);
     }
-
-    public ElementNotFoundException(UiElement guiElement) {
-       this(guiElement, null);
+    public UiElementException(GuiElement guiElement, String message) {
+        this(guiElement, message, null);
     }
-
-    public ElementNotFoundException(UiElement guiElement, Throwable cause) {
-        super(guiElement, "not found", cause);
+    public UiElementException(GuiElement guiElement, String message, Throwable cause) {
+        super(guiElement.toString() + ": " + message, cause);
     }
 }

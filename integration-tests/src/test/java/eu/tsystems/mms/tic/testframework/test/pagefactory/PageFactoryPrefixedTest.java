@@ -43,8 +43,12 @@ import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverRequest;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.UnspecificWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
+import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterClass;
@@ -59,6 +63,17 @@ public class PageFactoryPrefixedTest extends AbstractWebDriverTest implements Lo
     @Override
     public ResponsiveWebTestPage getPage() {
         return pageFactory.createPage(ResponsiveWebTestPage.class, getClassExclusiveWebDriver());
+    }
+
+    @Override
+    protected AbstractWebDriverRequest getWebDriverRequest() {
+        UnspecificWebDriverRequest unspecificWebDriverRequest = new UnspecificWebDriverRequest();
+        try {
+            unspecificWebDriverRequest.setBaseUrl("http://www.google.com");
+        } catch (MalformedURLException e) {
+            log().error(e.getMessage());
+        }
+        return unspecificWebDriverRequest;
     }
 
     /**
@@ -95,24 +110,19 @@ public class PageFactoryPrefixedTest extends AbstractWebDriverTest implements Lo
         }
     }
 
-    String baseURL = "unset";
-
     @BeforeClass(alwaysRun = true)
     public void before() {
         PageFactory.clearCache();
         PageFactory.setGlobalPagesPrefix("Prefix");
         WebDriverManagerConfig config = WebDriverManager.getConfig();
-        baseURL = config.getBaseUrl();
-        config.setBaseUrl("http://www.google.com");
-        //config.setShutdownSessionAfterTestMethod(false);
+        config.setShutdownSessionAfterTestMethod(false);
     }
 
     @AfterClass(alwaysRun = true)
     public void after() {
         PageFactory.setGlobalPagesPrefix(null);
         WebDriverManagerConfig config = WebDriverManager.getConfig();
-        config.setBaseUrl(baseURL);
-        //config.setShutdownSessionAfterTestMethod(true);
+        config.setShutdownSessionAfterTestMethod(true);
     }
 
     @Test
@@ -216,7 +226,7 @@ public class PageFactoryPrefixedTest extends AbstractWebDriverTest implements Lo
 
     @Test
     public void testT07_LoadBasePage() {
-        BasePage basePage = pageFactory.createPage(BasePage.class);
+        BasePage basePage = pageFactory.createPage(BasePage.class, getWebDriver());
 
         AssertCollector.assertFalse(basePage instanceof BasePage2016, "its a BasePage2016");
         AssertCollector.assertFalse(basePage instanceof PrefixBasePage2016, "its a PrefixBasePage2016");

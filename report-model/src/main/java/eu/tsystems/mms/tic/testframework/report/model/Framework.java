@@ -95,11 +95,6 @@ public final class Framework {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_SessionContext_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_data_SessionContext_MetadataEntry_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_data_SessionContext_MetadataEntry_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_RunConfig_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -212,51 +207,49 @@ public final class Framework {
       "ecution_object_source\030\010 \001(\0132\022.data.Scrip" +
       "tSource\022\020\n\010ticketId\030\t \001(\t\022\023\n\013description" +
       "\030\n \001(\t\022*\n\013stack_trace\030\013 \003(\0132\025.data.Stack" +
-      "TraceCause\022\020\n\010optional\030\014 \001(\010\"\217\002\n\016Session" +
+      "TraceCause\022\020\n\010optional\030\014 \001(\010\"\306\001\n\016Session" +
       "Context\022+\n\016context_values\030\001 \001(\0132\023.data.C" +
-      "ontextValues\022\023\n\013session_key\030\002 \001(\t\022\020\n\010pro" +
-      "vider\030\003 \001(\t\0224\n\010metadata\030\004 \003(\0132\".data.Ses" +
-      "sionContext.MetadataEntry\022\022\n\nsession_id\030" +
-      "\006 \001(\t\022\020\n\010video_id\030\007 \001(\t\022\034\n\024execution_con" +
-      "text_id\030\010 \001(\t\032/\n\rMetadataEntry\022\013\n\003key\030\001 " +
-      "\001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"c\n\tRunConfig\022\016\n\006r" +
-      "uncfg\030\001 \001(\t\0221\n\021build_information\030\002 \001(\0132\026" +
-      ".data.BuildInformation\022\023\n\013report_name\030\003 " +
-      "\001(\t\"\250\001\n\020BuildInformation\022\032\n\022build_java_v" +
-      "ersion\030\001 \001(\t\022\025\n\rbuild_os_name\030\002 \001(\t\022\030\n\020b" +
-      "uild_os_version\030\003 \001(\t\022\027\n\017build_user_name" +
-      "\030\004 \001(\t\022\025\n\rbuild_version\030\005 \001(\t\022\027\n\017build_t" +
-      "imestamp\030\006 \001(\t\"T\n\017StackTraceCause\022\022\n\ncla" +
-      "ss_name\030\001 \001(\t\022\017\n\007message\030\002 \001(\t\022\034\n\024stack_" +
-      "trace_elements\030\003 \003(\t\"k\n\014ScriptSource\022\021\n\t" +
-      "file_name\030\001 \001(\t\022\023\n\013method_name\030\002 \001(\t\022%\n\005" +
-      "lines\030\003 \003(\0132\026.data.ScriptSourceLine\022\014\n\004m" +
-      "ark\030\004 \001(\005\"5\n\020ScriptSourceLine\022\014\n\004line\030\001 " +
-      "\001(\t\022\023\n\013line_number\030\002 \001(\005\"\253\002\n\004File\022\n\n\002id\030" +
-      "\001 \001(\t\022\014\n\004size\030\002 \001(\003\022\020\n\010mimetype\030\003 \001(\t\022\025\n" +
-      "\rrelative_path\030\004 \001(\t\022\031\n\021created_timestam" +
-      "p\030\005 \001(\003\022\025\n\rsha1_checksum\030\006 \001(\014\022\"\n\004meta\030\007" +
-      " \003(\0132\024.data.File.MetaEntry\022\025\n\rlast_modif" +
-      "ied\030\t \001(\003\022\022\n\nproject_id\030\n \001(\t\022\016\n\006job_id\030" +
-      "\013 \001(\t\022\024\n\014is_directory\030\014 \001(\010\022\014\n\004name\030\r \001(" +
-      "\t\032+\n\tMetaEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001" +
-      "(\t:\0028\001*t\n\022ClickPathEventType\022\020\n\014CPET_NOT" +
-      "_SET\020\000\022\017\n\013CPET_WINDOW\020\001\022\016\n\nCPET_CLICK\020\002\022" +
-      "\016\n\nCPET_VALUE\020\003\022\r\n\tCPET_PAGE\020\004\022\014\n\010CPET_U" +
-      "RL\020\005*W\n\016LogMessageType\022\013\n\007LMT_OFF\020\000\022\r\n\tL" +
-      "MT_ERROR\020\001\022\014\n\010LMT_WARN\020\002\022\014\n\010LMT_INFO\020\003\022\r" +
-      "\n\tLMT_DEBUG\020\004*O\n\024FailureCorridorValue\022\017\n" +
-      "\013FCV_NOT_SET\020\000\022\014\n\010FCV_HIGH\020\001\022\013\n\007FCV_MID\020" +
-      "\002\022\013\n\007FCV_LOW\020\003*G\n\nMethodType\022\016\n\nMT_NOT_S" +
-      "ET\020\000\022\017\n\013TEST_METHOD\020\001\022\030\n\024CONFIGURATION_M" +
-      "ETHOD\020\002*\323\001\n\020ResultStatusType\022\017\n\013RST_NOT_" +
-      "SET\020\000\022\n\n\006NO_RUN\020\001\022\010\n\004INFO\020\002\022\013\n\007SKIPPED\020\003" +
-      "\022\n\n\006PASSED\020\004\022\r\n\005MINOR\020\005\032\002\010\001\022\n\n\006FAILED\020\007\022" +
-      "\024\n\014FAILED_MINOR\020\010\032\002\010\001\022\022\n\016FAILED_RETRIED\020" +
-      "\t\022\023\n\017FAILED_EXPECTED\020\n\022\020\n\014PASSED_RETRY\020\013" +
-      "\022\023\n\013MINOR_RETRY\020\014\032\002\010\001B2\n.eu.tsystems.mms" +
-      ".tic.testframework.report.modelP\001b\006proto" +
-      "3"
+      "ontextValues\022\022\n\nsession_id\030\006 \001(\t\022\020\n\010vide" +
+      "o_id\030\007 \001(\t\022\034\n\024execution_context_id\030\010 \001(\t" +
+      "\022\024\n\014browser_name\030\t \001(\t\022\027\n\017browser_versio" +
+      "n\030\n \001(\t\022\024\n\014capabilities\030\013 \001(\t\"c\n\tRunConf" +
+      "ig\022\016\n\006runcfg\030\001 \001(\t\0221\n\021build_information\030" +
+      "\002 \001(\0132\026.data.BuildInformation\022\023\n\013report_" +
+      "name\030\003 \001(\t\"\250\001\n\020BuildInformation\022\032\n\022build" +
+      "_java_version\030\001 \001(\t\022\025\n\rbuild_os_name\030\002 \001" +
+      "(\t\022\030\n\020build_os_version\030\003 \001(\t\022\027\n\017build_us" +
+      "er_name\030\004 \001(\t\022\025\n\rbuild_version\030\005 \001(\t\022\027\n\017" +
+      "build_timestamp\030\006 \001(\t\"T\n\017StackTraceCause" +
+      "\022\022\n\nclass_name\030\001 \001(\t\022\017\n\007message\030\002 \001(\t\022\034\n" +
+      "\024stack_trace_elements\030\003 \003(\t\"k\n\014ScriptSou" +
+      "rce\022\021\n\tfile_name\030\001 \001(\t\022\023\n\013method_name\030\002 " +
+      "\001(\t\022%\n\005lines\030\003 \003(\0132\026.data.ScriptSourceLi" +
+      "ne\022\014\n\004mark\030\004 \001(\005\"5\n\020ScriptSourceLine\022\014\n\004" +
+      "line\030\001 \001(\t\022\023\n\013line_number\030\002 \001(\005\"\253\002\n\004File" +
+      "\022\n\n\002id\030\001 \001(\t\022\014\n\004size\030\002 \001(\003\022\020\n\010mimetype\030\003" +
+      " \001(\t\022\025\n\rrelative_path\030\004 \001(\t\022\031\n\021created_t" +
+      "imestamp\030\005 \001(\003\022\025\n\rsha1_checksum\030\006 \001(\014\022\"\n" +
+      "\004meta\030\007 \003(\0132\024.data.File.MetaEntry\022\025\n\rlas" +
+      "t_modified\030\t \001(\003\022\022\n\nproject_id\030\n \001(\t\022\016\n\006" +
+      "job_id\030\013 \001(\t\022\024\n\014is_directory\030\014 \001(\010\022\014\n\004na" +
+      "me\030\r \001(\t\032+\n\tMetaEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005va" +
+      "lue\030\002 \001(\t:\0028\001*t\n\022ClickPathEventType\022\020\n\014C" +
+      "PET_NOT_SET\020\000\022\017\n\013CPET_WINDOW\020\001\022\016\n\nCPET_C" +
+      "LICK\020\002\022\016\n\nCPET_VALUE\020\003\022\r\n\tCPET_PAGE\020\004\022\014\n" +
+      "\010CPET_URL\020\005*W\n\016LogMessageType\022\013\n\007LMT_OFF" +
+      "\020\000\022\r\n\tLMT_ERROR\020\001\022\014\n\010LMT_WARN\020\002\022\014\n\010LMT_I" +
+      "NFO\020\003\022\r\n\tLMT_DEBUG\020\004*O\n\024FailureCorridorV" +
+      "alue\022\017\n\013FCV_NOT_SET\020\000\022\014\n\010FCV_HIGH\020\001\022\013\n\007F" +
+      "CV_MID\020\002\022\013\n\007FCV_LOW\020\003*G\n\nMethodType\022\016\n\nM" +
+      "T_NOT_SET\020\000\022\017\n\013TEST_METHOD\020\001\022\030\n\024CONFIGUR" +
+      "ATION_METHOD\020\002*\323\001\n\020ResultStatusType\022\017\n\013R" +
+      "ST_NOT_SET\020\000\022\n\n\006NO_RUN\020\001\022\010\n\004INFO\020\002\022\013\n\007SK" +
+      "IPPED\020\003\022\n\n\006PASSED\020\004\022\r\n\005MINOR\020\005\032\002\010\001\022\n\n\006FA" +
+      "ILED\020\007\022\024\n\014FAILED_MINOR\020\010\032\002\010\001\022\022\n\016FAILED_R" +
+      "ETRIED\020\t\022\023\n\017FAILED_EXPECTED\020\n\022\020\n\014PASSED_" +
+      "RETRY\020\013\022\023\n\013MINOR_RETRY\020\014\032\002\010\001B2\n.eu.tsyst" +
+      "ems.mms.tic.testframework.report.modelP\001" +
+      "b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -357,13 +350,7 @@ public final class Framework {
     internal_static_data_SessionContext_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_data_SessionContext_descriptor,
-        new java.lang.String[] { "ContextValues", "SessionKey", "Provider", "Metadata", "SessionId", "VideoId", "ExecutionContextId", });
-    internal_static_data_SessionContext_MetadataEntry_descriptor =
-      internal_static_data_SessionContext_descriptor.getNestedTypes().get(0);
-    internal_static_data_SessionContext_MetadataEntry_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_data_SessionContext_MetadataEntry_descriptor,
-        new java.lang.String[] { "Key", "Value", });
+        new java.lang.String[] { "ContextValues", "SessionId", "VideoId", "ExecutionContextId", "BrowserName", "BrowserVersion", "Capabilities", });
     internal_static_data_RunConfig_descriptor =
       getDescriptor().getMessageTypes().get(13);
     internal_static_data_RunConfig_fieldAccessorTable = new

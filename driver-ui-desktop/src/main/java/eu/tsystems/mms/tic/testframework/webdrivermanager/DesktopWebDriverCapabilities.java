@@ -65,21 +65,11 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
             }
         }
 
-        /*
-        add session caps
-         */
-        for (String key : desktopWebDriverRequest.getSessionCapabilities().keySet()) {
-            Object value = desktopWebDriverRequest.getSessionCapabilities().get(key);
+        Map<String, ?> stringMap = desktopWebDriverRequest.getDesiredCapabilities().asMap();
+        for (String key : stringMap.keySet()) {
+            Object value = stringMap.get(key);
             safelyAddCapsValue(baseCapabilities, key, value);
         }
-
-        desktopWebDriverRequest.getDesiredCapabilities().ifPresent(desiredCapabilities -> {
-            Map<String, ?> stringMap = desiredCapabilities.asMap();
-            for (String key : stringMap.keySet()) {
-                Object value = stringMap.get(key);
-                safelyAddCapsValue(baseCapabilities, key, value);
-            }
-        });
     }
 
     static DesiredCapabilities createCapabilities(final WebDriverManagerConfig config, DesiredCapabilities preSetCaps, DesktopWebDriverRequest desktopWebDriverRequest) {
@@ -113,9 +103,8 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
         for (Pattern pattern : ENDPOINT_CAPABILITIES.keySet()) {
             if (pattern.matcher(desktopWebDriverRequest.getSeleniumServerUrl().getHost()).find()) {
                 Capabilities capabilities = ENDPOINT_CAPABILITIES.get(pattern);
-                Map<String, ?> m = capabilities.asMap();
-                desktopWebDriverRequest.getSessionCapabilities().putAll(m);
-                LOGGER.info("Applying EndPoint Capabilities: " + m);
+                desktopWebDriverRequest.getDesiredCapabilities().merge(capabilities);
+                LOGGER.info("Applying EndPoint Capabilities: " + capabilities);
             }
         }
     }

@@ -41,18 +41,17 @@ public class WebElementProxy extends ObjectUtils.PassThroughProxy<WebElement> im
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        SessionContext sessionContext = WebDriverManager.getSessionContextFromWebDriver(driver);
-
-        if (!method.getName().equals("toString")) {
-            String msg = method.getName();
-            if (args != null) {
-                msg += " " + Arrays.stream(args).map(Object::toString).collect(Collectors.joining(" "));
+        WebDriverSessionsManager.getSessionContext(driver).ifPresent(sessionContext -> {
+            if (!method.getName().equals("toString")) {
+                String msg = method.getName();
+                if (args != null) {
+                    msg += " " + Arrays.stream(args).map(Object::toString).collect(Collectors.joining(" "));
+                }
+                log().trace(msg);
             }
-            log().trace(msg);
-        }
 
-        WebDriverProxyUtils.updateSessionContextRelations(sessionContext);
-
+            WebDriverProxyUtils.updateSessionContextRelations(sessionContext);
+        });
         return invoke(method, args);
     }
 }

@@ -31,13 +31,13 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
-import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
 import eu.tsystems.mms.tic.testframework.webdriver.DefaultWebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverFactory;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
@@ -152,28 +152,6 @@ public final class WebDriverManager {
     }
 
     /**
-     * Sets the baseURL.
-     *
-     * @param baseURL Base URL for tests.
-     * @deprecated Use {@link #getConfig()} instead
-     */
-    @Deprecated
-    public static void setBaseURL(final String baseURL) {
-        getConfig().setBaseUrl(baseURL);
-    }
-
-    /**
-     * Returns the tt. test base url.
-     *
-     * @return base url as string.
-     * @deprecated Use {@link #getConfig()} instead
-     */
-    @Deprecated
-    public static String getBaseURL() {
-        return getConfig().getBaseUrl();
-    }
-
-    /**
      * Checks that EVENTFIRINGWEBDRIVER_MAP and SELENIUM_MAP are not null.
      */
     private static void checkMaps() {
@@ -200,7 +178,7 @@ public final class WebDriverManager {
         return getWebDriver(webDriverRequest);
     }
 
-    public static WebDriver getWebDriver(WebDriverRequest webDriverRequest) {
+    public static WebDriver getWebDriver(AbstractWebDriverRequest webDriverRequest) {
         return WebDriverSessionsManager.getWebDriver(webDriverRequest);
     }
 
@@ -420,7 +398,7 @@ public final class WebDriverManager {
         WebDriverSessionsManager.shutdownExclusiveSession(key);
     }
 
-    public static List<WebDriver> getWebDriversFromThread(final long threadId) {
+    public static Stream<WebDriver> getWebDriversFromThread(final long threadId) {
         return WebDriverSessionsManager.getWebDriversFromThread(threadId);
     }
 
@@ -431,19 +409,6 @@ public final class WebDriverManager {
 
     public static String getSessionKeyFrom(WebDriver driver) {
         return WebDriverSessionsManager.getSessionKey(driver);
-    }
-
-    public static WebDriverRequest getRelatedWebDriverRequest(WebDriver driver) {
-        return WebDriverSessionsManager.DRIVER_REQUEST_MAP.get(driver);
-    }
-
-
-    public static SessionContext getSessionContextFromWebDriver(WebDriver driver) {
-        String sessionId = WebDriverUtils.getSessionId(driver);
-        if (sessionId != null) {
-            return WebDriverSessionsManager.getSessionContext(sessionId);
-        }
-        return null;
     }
 
     public static void setUserAgentConfig(String browser, UserAgentConfig configurator) {

@@ -25,10 +25,11 @@ import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExistingElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
+import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverCapabilities;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -45,7 +46,7 @@ public class DriverAndGuiElementTest extends AbstractTestSitesTest {
     @Test
     public void testGuiElement() throws Exception {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-        request.setBaseUrl(WebDriverManager.getConfig().getBaseUrl());
+        request.setBaseUrl(WebDriverManager.getConfig().getBaseUrl().orElse(null));
         request.setWebDriverMode(WebDriverMode.local);
         request.setBrowser(Browsers.phantomjs);
         request.setBrowserVersion("egal");
@@ -75,8 +76,8 @@ public class DriverAndGuiElementTest extends AbstractTestSitesTest {
         // start session
         WebDriver driver = WebDriverManager.getWebDriver(request);
 
-        WebDriverRequest relatedRequest = WebDriverManager.getRelatedWebDriverRequest(driver);
-        Map<String, Object> sessionCapabilities = ((DesktopWebDriverRequest) relatedRequest).getSessionCapabilities();
+        SessionContext sessionContext = WebDriverSessionsManager.getSessionContext(driver).get();
+        Map<String, Object> sessionCapabilities = sessionContext.getCapabilities().get();
 
         Assert.assertEquals(sessionCapabilities.get("projectId"), caps.getCapability("projectId"), "EndPoint Capability is set");
     }

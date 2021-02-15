@@ -30,9 +30,12 @@ import eu.tsystems.mms.tic.testframework.internal.Viewport;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
+import eu.tsystems.mms.tic.testframework.report.Report;
+import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -229,9 +232,7 @@ public class UITestUtils {
          * captured. To allow full-page screenshots, we stitch several viewport-screenshots together.
          * If this is eventually supported by WebDriver, this special branch can be removed.
          */
-        WebDriverRequest relatedWebDriverRequest = WebDriverManager.getRelatedWebDriverRequest(eventFiringWebDriver);
-        String browser = relatedWebDriverRequest.getBrowser();
-        if (Browsers.ie.equalsIgnoreCase(browser)) {
+        if (Browsers.ie.equalsIgnoreCase(WebDriverSessionsManager.getSessionContext(eventFiringWebDriver).map(SessionContext::getWebDriverRequest).map(WebDriverRequest::getBrowser).orElse(null))) {
             Viewport viewport = JSUtils.getViewport(driver);
 
             if (viewport.height > IE_SCREENSHOT_LIMIT) {
@@ -437,16 +438,11 @@ public class UITestUtils {
     @Deprecated
     public static List<Screenshot> takeScreenshots(final MethodContext methodContext, boolean explicitlyForThisContext) {
         long threadId = Thread.currentThread().getId();
-        List<WebDriver> webDriversFromThread = WebDriverManager.getWebDriversFromThread(threadId);
-        Map<String, WebDriver> webDriverSessions = new HashMap<>(webDriversFromThread.size());
-        for (WebDriver webDriver : webDriversFromThread) {
+        Map<String, WebDriver> webDriverSessions = new HashMap<>();
+        WebDriverManager.getWebDriversFromThread(threadId).forEach(webDriver -> {
             String sessionKey = WebDriverManager.getSessionKeyFrom(webDriver);
             webDriverSessions.put(sessionKey, webDriver);
-        }
-
-        if (webDriversFromThread.size() == 0) {
-            LOGGER.warn("No webdriver or selenium session found. Could not take screenshot(s).");
-        }
+        });
 
         return UITestUtils.takeScreenshotsFromSessions(methodContext, webDriverSessions, explicitlyForThisContext);
     }

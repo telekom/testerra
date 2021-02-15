@@ -72,14 +72,15 @@ public abstract class AbstractReportFailuresTest extends AbstractReportTest {
     // Test case #840
     public void testT03_checkNumberOfFailedTests() {
         TestReportTwoNumbers testReportTwoNumbers = new TestReportTwoNumbers();
-        int expectedNumberOfFailedTests = testReportTwoNumbers.getExitPoints();
+        int expectedNumberOfFailedTests = testReportTwoNumbers.getAllBroken() + testReportTwoNumbers.getFailedExpected();
         AbstractFailurePointsPage failurePointsPage = openFailuresPointsPage(ReportDirectory.REPORT_DIRECTORY_2);
         failurePointsPage.assertNumberOfTestsForAllFailurePoints(expectedNumberOfFailedTests);
     }
     /**
      * This test checks the HEADER INFORMATION for each single failure point entry in the listed order
+     * @deprecated Checking header information elements is done implicitely
      */
-    @Test(groups = SystemTestsGroup.SYSTEMTESTSFILTER2)
+    @Test(groups = SystemTestsGroup.SYSTEMTESTSFILTER2, enabled = false)
     // Test case #841
     public void testT04_checkHeaderForEachSingleFailurePoint() {
         AbstractFailurePointsPage failurePointsPage = openFailuresPointsPage(ReportDirectory.REPORT_DIRECTORY_2);

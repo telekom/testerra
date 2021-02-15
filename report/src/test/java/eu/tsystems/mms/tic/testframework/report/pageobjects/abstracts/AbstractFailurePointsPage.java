@@ -51,6 +51,8 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
     private final String LOCATOR_FAILUREPOINT_EXTEND_BUTTON = LOCATOR_FAILUREPOINT_HEADER + "//i[@class='fa fa-caret-square-o-down']";
     private final String LOCATOR_FAILUREPOINT_INTO_REPORT_NO = LOCATOR_FAILUREPOINT_HEADER + "/../..//*[@class='method expfailed']";
     private final String LOCATOR_FAILUREPOINT_INTO_REPORT_YES = LOCATOR_FAILUREPOINT_HEADER + "/../..//*[@class='method ']";
+    private static Pattern testCountPattern = Pattern.compile("(\\d+) Tests", Pattern.CASE_INSENSITIVE);
+
 
     /**
      * Constructor called bei PageFactory
@@ -208,7 +210,7 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
                 // HEADER
                 failurePointType.getLabel(),
                 entry.getEntryNumber(),
-                entry.getNumberOfTests(),
+                //entry.getNumberOfTests(),
                 // DESCRIPTION
                 entry.getDescription()
         )), mainFrame);
@@ -336,17 +338,23 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
     public void assertNumberOfTestsForAllFailurePoints(int expectedNumberOfTests) {
         final AtomicInteger sumOfTests = new AtomicInteger();
         GuiElement headerInformationElements = getHeaderInformationElements();
-        Pattern pattern = Pattern.compile("(\\d+) Tests", Pattern.CASE_INSENSITIVE);
         headerInformationElements.getList().forEach(guiElement -> {
-            guiElement.asserts().assertIsDisplayed();
-            String text = guiElement.getText();
-            Matcher matcher = pattern.matcher(text);
-            Assert.assertTrue(matcher.find(), "Tests pattern not found in: " + text);
-            sumOfTests.addAndGet(Integer.parseInt(matcher.group(1)));
+            sumOfTests.addAndGet(getNumberOfTestsFromHeaderElement(guiElement));
         });
         Assert.assertEquals(sumOfTests.get(), expectedNumberOfTests, "Sum of tests is NOT correct");
     }
 
+    protected int getNumberOfTestsFromHeaderElement(GuiElement guiElement) {
+        guiElement.asserts().assertIsDisplayed();
+        String text = guiElement.getText();
+        Matcher matcher = testCountPattern.matcher(text);
+        Assert.assertTrue(matcher.find(), "Tests pattern not found in: " + text);
+        return Integer.parseInt(matcher.group(1));
+    }
+
+    /**
+     * @deprecated This is done implicit checks
+     */
     public void assertHeaderInformation(List<? extends AbstractResultTableFailureEntry> expectedEntries) {
         for (AbstractResultTableFailureEntry entry : expectedEntries) {
             assertHeaderInformation(entry);

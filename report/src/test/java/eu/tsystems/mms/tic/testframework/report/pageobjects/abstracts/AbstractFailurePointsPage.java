@@ -86,7 +86,7 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
         return headerElement;
     }
     public GuiElement getHeaderInformationElements() {
-        return new GuiElement(this.getWebDriver(), By.xpath(String.format(LOCATOR_ALL_FAILUREPOINT_HEADER, failurePointType.getLabel())), mainFrame);
+        return (GuiElement) mainFrame.find(By.xpath(String.format(LOCATOR_ALL_FAILUREPOINT_HEADER, failurePointType.getLabel())));
     }
 
     /**

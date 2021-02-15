@@ -28,7 +28,6 @@ import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.internal.Constants;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
-import eu.tsystems.mms.tic.testframework.report.Shot;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
@@ -54,6 +53,8 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.sikuli.api.ScreenLocation;
@@ -210,13 +211,11 @@ public class UITestUtils {
     }
 
     private static void makeSimpleScreenshot(WebDriver driver, File screenShotTargetFile) {
-        File file = Shot.takeScreenshot(driver);
-        if (file != null) {
-            try {
-                FileUtils.moveFile(file, screenShotTargetFile);
-            } catch (IOException e) {
-                LOGGER.error("Error moving screenshot: " + e.getLocalizedMessage());
-            }
+        File file = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        try {
+            FileUtils.moveFile(file, screenShotTargetFile);
+        } catch (IOException e) {
+            LOGGER.error("Error moving screenshot: " + e.getLocalizedMessage());
         }
     }
 

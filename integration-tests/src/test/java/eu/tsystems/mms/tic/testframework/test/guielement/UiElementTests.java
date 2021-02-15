@@ -237,7 +237,7 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
         } catch (ElementNotFoundException e) {
             msg = e.getMessage();
         }
-        Assert.assertStartsWith(msg, "Element not found", ElementNotFoundException.class.toString());
+        Assert.assertEndsWith(msg, "not found", ElementNotFoundException.class.toString());
     }
 
 //    @Test

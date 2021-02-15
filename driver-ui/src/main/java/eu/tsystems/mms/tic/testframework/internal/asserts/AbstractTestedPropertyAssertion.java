@@ -61,7 +61,7 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
     ) {
         Sequence sequence = new Sequence()
                 .setWaitMsAfterRun(UiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong())
-                .setTimeoutMs(overrides.getTimeoutInSeconds() * 1000);
+                .setTimeoutMs(overrides.getTimeoutInSeconds() * 1000L);
 
         AtomicBoolean atomicPassed = new AtomicBoolean(false);
         AtomicReference<Throwable> atomicThrowable = new AtomicReference<>();

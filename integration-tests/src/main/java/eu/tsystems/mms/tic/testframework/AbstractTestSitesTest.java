@@ -43,10 +43,6 @@ public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implem
 
     @BeforeTest(alwaysRun = true)
     public void setUp() throws Exception {
-
-        System.setProperty(UiElement.Properties.ELEMENT_TIMEOUT_SECONDS.toString(), "3");
-        log().info("Set " + UiElement.Properties.ELEMENT_TIMEOUT_SECONDS.toString() + "=" + UiElement.Properties.ELEMENT_TIMEOUT_SECONDS.asString());
-
         try {
             server.start(80);
         } catch (BindException e) {

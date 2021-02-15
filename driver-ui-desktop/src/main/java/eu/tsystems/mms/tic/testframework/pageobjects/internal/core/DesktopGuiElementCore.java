@@ -41,8 +41,6 @@ import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebElementProxy;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -592,15 +590,13 @@ public class DesktopGuiElementCore implements GuiElementCore, Loggable {
         WebElement webElement = guiElementData.webElement;
         By localBy = getBy();
 
-        WebDriverRequest driverRequest = WebDriverManager.getRelatedWebDriverRequest(webDriver);
-
         if (localBy instanceof ByImage) {
             ByImage byImage = (ByImage) localBy;
             int x = byImage.getCenterX();
             int y = byImage.getCenterY();
             LOGGER.info("Image Double Click on image webElement at " + x + "," + y);
             JSUtils.executeJavaScriptMouseAction(webDriver, webElement, JSMouseAction.DOUBLE_CLICK, x, y);
-        } else if (Browsers.safari.equalsIgnoreCase(driverRequest.getBrowser())) {
+        } else if (Browsers.safari.equalsIgnoreCase(guiElementData.browser)) {
             LOGGER.info("Safari double click workaround");
             JSUtils.executeJavaScriptMouseAction(webDriver, webElement, JSMouseAction.DOUBLE_CLICK, 0, 0);
         } else {

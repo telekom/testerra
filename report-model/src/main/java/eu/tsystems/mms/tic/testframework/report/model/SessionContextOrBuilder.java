@@ -23,69 +23,23 @@ public interface SessionContextOrBuilder extends
   eu.tsystems.mms.tic.testframework.report.model.ContextValuesOrBuilder getContextValuesOrBuilder();
 
   /**
-   * <code>string session_key = 2;</code>
-   * @return The sessionKey.
-   */
-  java.lang.String getSessionKey();
-  /**
-   * <code>string session_key = 2;</code>
-   * @return The bytes for sessionKey.
-   */
-  com.google.protobuf.ByteString
-      getSessionKeyBytes();
-
-  /**
-   * <code>string provider = 3;</code>
-   * @return The provider.
-   */
-  java.lang.String getProvider();
-  /**
-   * <code>string provider = 3;</code>
-   * @return The bytes for provider.
-   */
-  com.google.protobuf.ByteString
-      getProviderBytes();
-
-  /**
-   * <code>map&lt;string, string&gt; metadata = 4;</code>
-   */
-  int getMetadataCount();
-  /**
-   * <code>map&lt;string, string&gt; metadata = 4;</code>
-   */
-  boolean containsMetadata(
-      java.lang.String key);
-  /**
-   * Use {@link #getMetadataMap()} instead.
-   */
-  @java.lang.Deprecated
-  java.util.Map<java.lang.String, java.lang.String>
-  getMetadata();
-  /**
-   * <code>map&lt;string, string&gt; metadata = 4;</code>
-   */
-  java.util.Map<java.lang.String, java.lang.String>
-  getMetadataMap();
-  /**
-   * <code>map&lt;string, string&gt; metadata = 4;</code>
-   */
-
-  java.lang.String getMetadataOrDefault(
-      java.lang.String key,
-      java.lang.String defaultValue);
-  /**
-   * <code>map&lt;string, string&gt; metadata = 4;</code>
-   */
-
-  java.lang.String getMetadataOrThrow(
-      java.lang.String key);
-
-  /**
+   * <pre>
+   *    string session_key = 2 [deprecated = true];
+   *    string provider = 3 [deprecated = true];
+   *    map&lt;string, string&gt; metadata = 4 [deprecated = true];
+   * </pre>
+   *
    * <code>string session_id = 6;</code>
    * @return The sessionId.
    */
   java.lang.String getSessionId();
   /**
+   * <pre>
+   *    string session_key = 2 [deprecated = true];
+   *    string provider = 3 [deprecated = true];
+   *    map&lt;string, string&gt; metadata = 4 [deprecated = true];
+   * </pre>
+   *
    * <code>string session_id = 6;</code>
    * @return The bytes for sessionId.
    */
@@ -115,4 +69,40 @@ public interface SessionContextOrBuilder extends
    */
   com.google.protobuf.ByteString
       getExecutionContextIdBytes();
+
+  /**
+   * <code>string browser_name = 9;</code>
+   * @return The browserName.
+   */
+  java.lang.String getBrowserName();
+  /**
+   * <code>string browser_name = 9;</code>
+   * @return The bytes for browserName.
+   */
+  com.google.protobuf.ByteString
+      getBrowserNameBytes();
+
+  /**
+   * <code>string browser_version = 10;</code>
+   * @return The browserVersion.
+   */
+  java.lang.String getBrowserVersion();
+  /**
+   * <code>string browser_version = 10;</code>
+   * @return The bytes for browserVersion.
+   */
+  com.google.protobuf.ByteString
+      getBrowserVersionBytes();
+
+  /**
+   * <code>string capabilities = 11;</code>
+   * @return The capabilities.
+   */
+  java.lang.String getCapabilities();
+  /**
+   * <code>string capabilities = 11;</code>
+   * @return The bytes for capabilities.
+   */
+  com.google.protobuf.ByteString
+      getCapabilitiesBytes();
 }

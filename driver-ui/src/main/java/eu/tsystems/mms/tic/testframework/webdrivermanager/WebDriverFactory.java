@@ -24,16 +24,16 @@
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
-import java.util.Map;
+import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import java.net.MalformedURLException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
-public abstract class WebDriverFactory<R extends WebDriverRequest> implements Loggable {
+public abstract class WebDriverFactory<R extends AbstractWebDriverRequest> implements Loggable {
 
-    protected abstract R buildRequest(WebDriverRequest webDriverRequest);
+    protected abstract R buildRequest(AbstractWebDriverRequest webDriverRequest);
 
     protected abstract DesiredCapabilities buildCapabilities(DesiredCapabilities preSetCaps, R request);
 
@@ -41,9 +41,9 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> implements Lo
 
     protected abstract void setupSession(EventFiringWebDriver eventFiringWebDriver, R request);
 
-    public EventFiringWebDriver getWebDriver(WebDriverRequest request, SessionContext sessionContext) {
-        if (!request.hasBaseUrl()) {
-            request.setBaseUrl(WebDriverManager.getConfig().getBaseUrl());
+    public EventFiringWebDriver getWebDriver(AbstractWebDriverRequest request, SessionContext sessionContext) {
+        if (!request.getBaseUrl().isPresent() && WebDriverManager.getConfig().getBaseUrl().isPresent()) {
+            request.setBaseUrl(WebDriverManager.getConfig().getBaseUrl().get());
         }
 
         /*
@@ -92,12 +92,6 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> implements Lo
         store session
          */
         WebDriverSessionsManager.storeWebDriverSession(finalRequest, eventFiringWebDriver, sessionContext);
-
-        BrowserInformation browserInformation = WebDriverManagerUtils.getBrowserInformation(eventFiringWebDriver);
-        Map<String, Object> sessionContextMetaData = sessionContext.getMetaData();
-        sessionContextMetaData.put(SessionContext.MetaData.BROWSER, browserInformation.getBrowserName());
-        sessionContextMetaData.put(SessionContext.MetaData.BROWSER_VERSION, browserInformation.getBrowserVersion());
-
         /*
         finalize the session setup
          */

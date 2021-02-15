@@ -23,6 +23,7 @@ package eu.tsystems.mms.tic.testframework.report;
 
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.core.server.Server;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
@@ -30,7 +31,7 @@ import org.testng.annotations.BeforeTest;
 /**
  * Abstract test classes which using generated local report directories
  */
-public abstract class AbstractReportTest extends AbstractWebDriverTest {
+public abstract class AbstractReportTest extends AbstractWebDriverTest implements Loggable {
     private Server server = new Server();
 
     @BeforeTest(alwaysRun = true)

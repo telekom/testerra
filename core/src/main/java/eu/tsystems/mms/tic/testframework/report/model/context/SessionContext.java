@@ -21,57 +21,46 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
+import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import java.util.LinkedHashMap;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverRequest;
 import java.util.Map;
 import java.util.Optional;
+import org.apache.commons.lang3.SerializationUtils;
 
 public class SessionContext extends AbstractContext implements SynchronizableContext {
-    public static class MetaData {
-        public static final String BROWSER="browser";
-        public static final String BROWSER_VERSION="browserVersion";
-        public static final String CAPABILITIES="capabilities";
-    }
-
-    private String sessionKey;
-    private String provider;
-    private final Map<String, Object> metaData = new LinkedHashMap<>();
     private String remoteSessionId;
     private Video video;
+    private NodeInfo nodeInfo;
+    private String browserName;
+    private String browserVersion;
+    private Map<String, Object> capabilities;
+    private final AbstractWebDriverRequest webDriverRequest;
 
-    public SessionContext(String sessionKey, String provider) {
-        this.sessionKey = sessionKey;
-        this.provider = provider;
+    public SessionContext(AbstractWebDriverRequest webDriverRequest) {
+        this.webDriverRequest = SerializationUtils.clone(webDriverRequest);
+        this.name = webDriverRequest.getSessionKey();
 
-        final MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
-        if (currentMethodContext != null) {
-            this.name = currentMethodContext.getName() + "_";
-        } else {
-            this.name = "";
-        }
-        this.name += sessionKey;
+//        this.provider = provider;
+//
+//        final MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
+//        if (currentMethodContext != null) {
+//            this.name = currentMethodContext.getName() + "_";
+//        } else {
+//            this.name = "";
+//        }
+    }
+
+    public AbstractWebDriverRequest getWebDriverRequest() {
+        return this.webDriverRequest;
     }
 
     public String getSessionKey() {
-        return sessionKey;
-    }
-
-    public Map<String, Object> getMetaData() {
-        return metaData;
+        return this.name;
     }
 
     public SessionContext setSessionKey(String sessionKey) {
-        this.sessionKey = sessionKey;
-        return this;
-    }
-
-    public String getProvider() {
-        return provider;
-    }
-
-    public SessionContext setProvider(String provider) {
-        this.provider = provider;
+        this.name = sessionKey;
         return this;
     }
 
@@ -98,6 +87,42 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
 
     public SessionContext setVideo(Video video) {
         this.video = video;
+        return this;
+    }
+
+    public Optional<NodeInfo> getNodeInfo() {
+        return Optional.ofNullable(nodeInfo);
+    }
+
+    public SessionContext setNodeInfo(NodeInfo nodeInfo) {
+        this.nodeInfo = nodeInfo;
+        return this;
+    }
+
+    public String getActualBrowserName() {
+        return browserName;
+    }
+
+    public SessionContext setActualBrowserName(String browserName) {
+        this.browserName = browserName;
+        return this;
+    }
+
+    public String getActualBrowserVersion() {
+        return browserVersion;
+    }
+
+    public SessionContext setActualBrowserVersion(String browserVersion) {
+        this.browserVersion = browserVersion;
+        return this;
+    }
+
+    public Optional<Map<String, Object>> getCapabilities() {
+        return Optional.ofNullable(capabilities);
+    }
+
+    public SessionContext setCapabilities(Map<String, Object> capabilities) {
+        this.capabilities = capabilities;
         return this;
     }
 }

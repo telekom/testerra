@@ -21,10 +21,10 @@
 
 <template>
     <div class="mdc-tooltip-wrapper--rich">
-        <span class="badge__dense tag clickable" ref="_element">${sessionContext.sessionKey} - ${sessionContext.metadata.browser}:${sessionContext.metadata.browserVersion}</span>
+        <span class="badge__dense tag clickable" ref="_element">${sessionContext.contextValues.name} - ${sessionContext.browserName}:${sessionContext.browserVersion}</span>
         <mdc-tooltip rich anchor-elem.bind="_element">
             <!--div class="mdc-tooltip__title">${sessionContext.metadata.browser}:${sessionContext.metadata.browserVersion}</div-->
-            <div class="code-view" mdc-body2>${sessionContext.metadata.capabilities}</div>
+            <div class="code-view" mdc-body2>${sessionContext.capabilities}</div>
         </mdc-tooltip>
     </div>
 </template>

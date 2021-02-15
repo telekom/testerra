@@ -10,7 +10,7 @@ You can set a global configuration by
 
 * `test.properties`
 * at runtime by `System.setProperty()`
-* at runtime by `WebDriverManager.config()` (only browser session behaviour)
+* at runtime by `WebDriverManager.getConfig()` (only browser session behaviour)
 
 === Configure with `test.properties`
 
@@ -42,9 +42,6 @@ WebDriverManager.getConfig().setShutdownSessionOnFailure(false);
 
 // tt.browser.maximize
 WebDriverManager.getConfig().setMaximizeViewport(true);
-
-// tt.webdriver.mode
-WebDriverManager.getConfig().setWebDriverMode(WebDriverMode.remote);
 ----
 
 [NOTE]
@@ -64,7 +61,7 @@ WebDriverManager.getConfig().reset();
 
 == Local configuration
 
-If you only want to change the settings for one session, you can use `WebDriverRequest`.
+If you only want to change the settings for one session, you can use `AbstractWebDriverRequest`.
 All defined attributes overrides the standard configuration.
 
 NOTE: If an attribute is not set the global definition is used.

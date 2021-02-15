@@ -179,12 +179,15 @@ message ErrorContext {
 
 message SessionContext {
     ContextValues context_values = 1;
-    string session_key = 2;
-    string provider = 3;
-    map<string, string> metadata = 4;
+//    string session_key = 2 [deprecated = true];
+//    string provider = 3 [deprecated = true];
+//    map<string, string> metadata = 4 [deprecated = true];
     string session_id = 6;
     string video_id = 7;
     string execution_context_id = 8;
+    string browser_name = 9;
+    string browser_version = 10;
+    string capabilities = 11;
 }
 
 message RunConfig {

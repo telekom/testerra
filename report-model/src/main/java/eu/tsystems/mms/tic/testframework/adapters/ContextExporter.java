@@ -58,7 +58,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -533,8 +532,8 @@ public class ContextExporter implements Loggable {
         SessionContext.Builder builder = SessionContext.newBuilder();
 
         apply(buildContextValues(sessionContext), builder::setContextValues);
-        apply(sessionContext.getSessionKey(), builder::setSessionKey);
-        apply(sessionContext.getProvider(), builder::setProvider);
+        //apply(sessionContext.getSessionKey(), builder::setSessionKey);
+        //apply(sessionContext.getProvider(), builder::setProvider);
         apply(sessionContext.getRemoteSessionId(), builder::setSessionId);
         sessionContext.getVideo().ifPresent(video -> {
             Optional<File.Builder> optional = Optional.ofNullable(buildVideo(video));
@@ -542,18 +541,9 @@ public class ContextExporter implements Loggable {
         });
         builder.setExecutionContextId(ExecutionContextController.getCurrentExecutionContext().getId());
 
-        // translate object map to string map
-        Map<String, String> newMap = new LinkedHashMap<>();
-        for (String key : sessionContext.getMetaData().keySet()) {
-            Object value = sessionContext.getMetaData().get(key);
-            if (StringUtils.isStringEmpty(key) || value == null || StringUtils.isStringEmpty(value.toString())) {
-                // ignore
-            } else {
-                newMap.put(key, value.toString());
-            }
-        }
-        builder.putAllMetadata(newMap);
-
+        apply(sessionContext.getActualBrowserName(), builder::setBrowserName);
+        apply(sessionContext.getActualBrowserVersion(), builder::setBrowserVersion);
+        sessionContext.getCapabilities().ifPresent(map -> builder.setCapabilities(jsonEncoder.toJson(map)));
         return builder;
     }
 

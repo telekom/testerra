@@ -768,15 +768,6 @@ export namespace data {
         /** SessionContext contextValues */
         contextValues?: (data.IContextValues|null);
 
-        /** SessionContext sessionKey */
-        sessionKey?: (string|null);
-
-        /** SessionContext provider */
-        provider?: (string|null);
-
-        /** SessionContext metadata */
-        metadata?: ({ [k: string]: string }|null);
-
         /** SessionContext sessionId */
         sessionId?: (string|null);
 
@@ -785,6 +776,15 @@ export namespace data {
 
         /** SessionContext executionContextId */
         executionContextId?: (string|null);
+
+        /** SessionContext browserName */
+        browserName?: (string|null);
+
+        /** SessionContext browserVersion */
+        browserVersion?: (string|null);
+
+        /** SessionContext capabilities */
+        capabilities?: (string|null);
     }
 
     /** Represents a SessionContext. */
@@ -799,15 +799,6 @@ export namespace data {
         /** SessionContext contextValues. */
         public contextValues?: (data.IContextValues|null);
 
-        /** SessionContext sessionKey. */
-        public sessionKey: string;
-
-        /** SessionContext provider. */
-        public provider: string;
-
-        /** SessionContext metadata. */
-        public metadata: { [k: string]: string };
-
         /** SessionContext sessionId. */
         public sessionId: string;
 
@@ -816,6 +807,15 @@ export namespace data {
 
         /** SessionContext executionContextId. */
         public executionContextId: string;
+
+        /** SessionContext browserName. */
+        public browserName: string;
+
+        /** SessionContext browserVersion. */
+        public browserVersion: string;
+
+        /** SessionContext capabilities. */
+        public capabilities: string;
 
         /**
          * Decodes a SessionContext message from the specified reader or buffer.

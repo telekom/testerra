@@ -61,7 +61,6 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 import net.anthavio.phanbedder.Phanbedder;
-import org.apache.commons.lang3.SerializationUtils;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;

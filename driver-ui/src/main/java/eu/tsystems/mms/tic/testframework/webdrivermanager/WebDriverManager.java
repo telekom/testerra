@@ -152,12 +152,6 @@ public final class WebDriverManager {
     }
 
     /**
-     * Checks that EVENTFIRINGWEBDRIVER_MAP and SELENIUM_MAP are not null.
-     */
-    private static void checkMaps() {
-    }
-
-    /**
      * Getter for webDriver instance.
      *
      * @return instance of WebDriver object.
@@ -311,12 +305,10 @@ public final class WebDriverManager {
      * @return .
      */
     public static boolean hasAnySessionActive() {
-        checkMaps();
         return WebDriverSessionsManager.hasAnySessionActive();
     }
 
     public static boolean hasSessionsActiveInThisThread() {
-        checkMaps();
         return WebDriverSessionsManager.hasSessionActiveInThisThread();
     }
 

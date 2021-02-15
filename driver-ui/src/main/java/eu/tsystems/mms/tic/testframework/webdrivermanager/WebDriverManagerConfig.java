@@ -33,7 +33,7 @@ import java.net.MalformedURLException;
  * Class holding configuration settings for the WebDriverManager. Some are writable. This class is not ThreadSafe, some
  * settings may not be valid.
  */
-public class WebDriverManagerConfig extends AbstractWebDriverRequest implements Loggable {
+public class WebDriverManagerConfig extends AbstractWebDriverConfiguration implements Loggable {
     /**
      * Specifies if windows should be closed.
      */

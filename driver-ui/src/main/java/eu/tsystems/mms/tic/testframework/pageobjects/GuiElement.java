@@ -50,7 +50,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.StandardGuiElementWait;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import java.awt.Color;
 import java.io.File;
@@ -169,7 +169,7 @@ public class GuiElement implements
 
     private void buildInternals(WebDriver webDriver, By by) {
         // Create core depending on requested Browser
-        String currentBrowser = WebDriverSessionsManager.getSessionContext(webDriver).map(SessionContext::getWebDriverRequest).map(WebDriverRequest::getBrowser).orElse(null);
+        String currentBrowser = WebDriverSessionsManager.getSessionContext(webDriver).map(SessionContext::getWebDriverRequest).map(AbstractWebDriverRequest::getBrowser).orElse(null);
         guiElementData.browser = currentBrowser;
 
         if (coreFactories.containsKey(currentBrowser)) {

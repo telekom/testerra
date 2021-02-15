@@ -33,7 +33,7 @@ import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 public abstract class WebDriverFactory<R extends AbstractWebDriverRequest> implements Loggable {
 
-    protected abstract R buildRequest(WebDriverRequest webDriverRequest);
+    protected abstract R buildRequest(AbstractWebDriverRequest webDriverRequest);
 
     protected abstract DesiredCapabilities buildCapabilities(DesiredCapabilities preSetCaps, R request);
 

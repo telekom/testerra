@@ -30,12 +30,10 @@ import eu.tsystems.mms.tic.testframework.internal.Viewport;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
-import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -232,7 +230,7 @@ public class UITestUtils {
          * captured. To allow full-page screenshots, we stitch several viewport-screenshots together.
          * If this is eventually supported by WebDriver, this special branch can be removed.
          */
-        if (Browsers.ie.equalsIgnoreCase(WebDriverSessionsManager.getSessionContext(eventFiringWebDriver).map(SessionContext::getWebDriverRequest).map(WebDriverRequest::getBrowser).orElse(null))) {
+        if (Browsers.ie.equalsIgnoreCase(WebDriverSessionsManager.getRequestedBrowser(eventFiringWebDriver).orElse(null))) {
             Viewport viewport = JSUtils.getViewport(driver);
 
             if (viewport.height > IE_SCREENSHOT_LIMIT) {

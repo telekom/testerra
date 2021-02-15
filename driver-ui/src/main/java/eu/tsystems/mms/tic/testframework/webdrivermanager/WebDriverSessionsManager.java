@@ -445,6 +445,10 @@ public final class WebDriverSessionsManager {
         return Optional.ofNullable(WEBDRIVER_SESSIONS_CONTEXTS_MAP.get(WebDriverUtils.getLowestWebDriver(webDriver)));
     }
 
+    public static Optional<String> getRequestedBrowser(WebDriver webDriver) {
+        return getSessionContext(webDriver).map(SessionContext::getWebDriverRequest).map(AbstractWebDriverRequest::getBrowser);
+    }
+
     public static IWebDriverFactory getWebDriverFactory(String browser) {
         return WEB_DRIVER_FACTORIES.getOrDefault(browser, null);
     }

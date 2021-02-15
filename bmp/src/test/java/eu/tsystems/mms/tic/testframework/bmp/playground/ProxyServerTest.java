@@ -23,11 +23,8 @@ package eu.tsystems.mms.tic.testframework.bmp.playground;
 
 import eu.tsystems.mms.tic.testframework.bmp.AbstractTest;
 import eu.tsystems.mms.tic.testframework.bmp.ProxyServer;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerUtils;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import java.net.MalformedURLException;
 import net.lightbody.bmp.core.har.Har;
 import net.lightbody.bmp.core.har.HarLog;

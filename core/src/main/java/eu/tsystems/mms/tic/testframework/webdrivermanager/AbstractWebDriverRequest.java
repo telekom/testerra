@@ -18,16 +18,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import java.io.Serializable;
-import java.net.URL;
-import java.util.Optional;
 
-public interface WebDriverRequest extends Serializable {
-    String getSessionKey();
-    String getBrowser();
-    String getBrowserVersion();
-    Optional<URL> getBaseUrl();
+public abstract class AbstractWebDriverRequest extends AbstractWebDriverConfiguration implements Serializable {
+    private String sessionKey;
+
+    public String getSessionKey() {
+        return sessionKey;
+    }
+
+    public AbstractWebDriverRequest setSessionKey(String sessionKey) {
+        this.sessionKey = sessionKey;
+        return this;
+    }
 }

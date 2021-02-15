@@ -22,7 +22,7 @@ package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverRequest;
 import java.util.Map;
 import java.util.Optional;
 import org.apache.commons.lang3.SerializationUtils;
@@ -34,9 +34,9 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
     private String browserName;
     private String browserVersion;
     private Map<String, Object> capabilities;
-    private final WebDriverRequest webDriverRequest;
+    private final AbstractWebDriverRequest webDriverRequest;
 
-    public SessionContext(WebDriverRequest webDriverRequest) {
+    public SessionContext(AbstractWebDriverRequest webDriverRequest) {
         this.webDriverRequest = SerializationUtils.clone(webDriverRequest);
         this.name = webDriverRequest.getSessionKey();
 
@@ -50,7 +50,7 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
 //        }
     }
 
-    public WebDriverRequest getWebDriverRequest() {
+    public AbstractWebDriverRequest getWebDriverRequest() {
         return this.webDriverRequest;
     }
 

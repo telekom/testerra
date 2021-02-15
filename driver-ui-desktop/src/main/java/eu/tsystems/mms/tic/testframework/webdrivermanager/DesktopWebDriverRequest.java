@@ -25,11 +25,12 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-public class DesktopWebDriverRequest extends AbstractWebDriverRequest implements Loggable {
+public class DesktopWebDriverRequest extends AbstractWebDriverRequest implements Loggable, Serializable {
     private DesiredCapabilities desiredCapabilities;
     private URL seleniumServerURL;
     private WebDriverMode webDriverMode;

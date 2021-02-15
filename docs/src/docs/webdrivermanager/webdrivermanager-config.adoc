@@ -41,10 +41,7 @@ webDriverManager.getConfig().setShutdownSessionAfterTestMethod(true);
 webDriverManager.getConfig().setShutdownSessionOnFailure(false);
 
 // tt.browser.maximize
-webDriverManager.getConfig().setMaximizeViewport(true);
-
-// tt.webdriver.mode
-webDriverManager.getConfig().setWebDriverMode(WebDriverMode.remote);
+WebDriverManager.getConfig().setMaximizeViewport(true);
 ----
 
 [NOTE]

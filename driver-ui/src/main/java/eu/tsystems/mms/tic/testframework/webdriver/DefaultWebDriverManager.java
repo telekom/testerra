@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import java.util.Optional;
+import java.util.stream.Stream;
 import org.openqa.selenium.WebDriver;
 
 public class DefaultWebDriverManager implements IWebDriverManager {
@@ -93,5 +94,10 @@ public class DefaultWebDriverManager implements IWebDriverManager {
     @Override
     public WebDriverManagerConfig getConfig() {
         return WebDriverManager.getConfig();
+    }
+
+    @Override
+    public Stream<WebDriver> getWebDriversFromCurrentThread() {
+        return WebDriverSessionsManager.getWebDriversFromCurrentThread();
     }
 }

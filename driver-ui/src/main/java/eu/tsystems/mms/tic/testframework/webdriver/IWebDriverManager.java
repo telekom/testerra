@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverReque
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
 import java.util.Optional;
+import java.util.stream.Stream;
 import org.openqa.selenium.WebDriver;
 
 /**
@@ -45,4 +46,5 @@ public interface IWebDriverManager extends WebDriverRetainer {
     Optional<String>getRequestedBrowser(WebDriver webDriver);
     String getSessionKey(WebDriver webDriver);
     WebDriverManagerConfig getConfig();
+    Stream<WebDriver> getWebDriversFromCurrentThread();
 }

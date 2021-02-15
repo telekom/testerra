@@ -28,6 +28,9 @@ import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodDetailsPage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -40,6 +43,7 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
     private final String LOCATOR_FAILUREPOINT_ROW = "./../..//*[@id='row-%02d']";
     private final String LOCATOR_FAILUREPOINT_TOTAL = "//*[contains(text(),'%ss: %s')]";
     private final String LOCATOR_FAILUREPOINT_HEADER = "//*[contains(text(),'%s #%d')]";
+    private final String LOCATOR_ALL_FAILUREPOINT_HEADER = "//*[contains(text(),'%s #')]";
     private final String LOCATOR_FAILUREPOINT_DESCRIPTION = LOCATOR_FAILUREPOINT_HEADER + "/../..//*[contains(text(),'%s')]";
     private final String LOCATOR_FAILUREPOINT_METHOD = LOCATOR_FAILUREPOINT_HEADER + "/../..//a//*[contains(text(),'%s')]/following-sibling::*";
     private final String LOCATOR_FAILUREPOINT_READABLE_MESSAGE = LOCATOR_FAILUREPOINT_HEADER + "/../..//*[contains(text(),'%s')]";
@@ -79,6 +83,9 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
         )), mainFrame);
         headerElement.setName("headerElement");
         return headerElement;
+    }
+    public GuiElement getHeaderInformationElements() {
+        return new GuiElement(this.getWebDriver(), By.xpath(String.format(LOCATOR_ALL_FAILUREPOINT_HEADER, failurePointType.getLabel())), mainFrame);
     }
 
     /**
@@ -326,13 +333,18 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
         getTotalNumberOfFailurePointsElement(expectedNumberOfFailurePoints).asserts("The number of Failure Points is NOT correct.").assertIsDisplayed();
     }
 
-    public void assertNumberOfTestsForAllFailurePoints(int expectedNumberOfTests, List<? extends AbstractResultTableFailureEntry> expectedEntries) {
-        int sumOfTests = 0;
-        for (AbstractResultTableFailureEntry actualEntry : expectedEntries) {
-            assertHeaderInformation(actualEntry);
-            sumOfTests += actualEntry.getNumberOfTests();
-        }
-        Assert.assertEquals(sumOfTests, expectedNumberOfTests, "Sum of tests is NOT correct");
+    public void assertNumberOfTestsForAllFailurePoints(int expectedNumberOfTests) {
+        final AtomicInteger sumOfTests = new AtomicInteger();
+        GuiElement headerInformationElements = getHeaderInformationElements();
+        Pattern pattern = Pattern.compile("(\\d+) Tests", Pattern.CASE_INSENSITIVE);
+        headerInformationElements.getList().forEach(guiElement -> {
+            guiElement.asserts().assertIsDisplayed();
+            String text = guiElement.getText();
+            Matcher matcher = pattern.matcher(text);
+            Assert.assertTrue(matcher.find(), "Tests pattern not found in: " + text);
+            sumOfTests.addAndGet(Integer.parseInt(matcher.group(1)));
+        });
+        Assert.assertEquals(sumOfTests.get(), expectedNumberOfTests, "Sum of tests is NOT correct");
     }
 
     public void assertHeaderInformation(List<? extends AbstractResultTableFailureEntry> expectedEntries) {

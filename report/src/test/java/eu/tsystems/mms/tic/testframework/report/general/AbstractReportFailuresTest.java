@@ -74,7 +74,7 @@ public abstract class AbstractReportFailuresTest extends AbstractReportTest {
         TestReportTwoNumbers testReportTwoNumbers = new TestReportTwoNumbers();
         int expectedNumberOfFailedTests = testReportTwoNumbers.getExitPoints();
         AbstractFailurePointsPage failurePointsPage = openFailuresPointsPage(ReportDirectory.REPORT_DIRECTORY_2);
-        failurePointsPage.assertNumberOfTestsForAllFailurePoints(expectedNumberOfFailedTests, failurePointEntryTestObjects);
+        failurePointsPage.assertNumberOfTestsForAllFailurePoints(expectedNumberOfFailedTests);
     }
     /**
      * This test checks the HEADER INFORMATION for each single failure point entry in the listed order

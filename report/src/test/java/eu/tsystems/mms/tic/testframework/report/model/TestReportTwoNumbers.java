@@ -44,7 +44,7 @@ public class TestReportTwoNumbers extends AbstractTestReportNumbers {
         failedRetried = 4;
         failedExpected = 7;
         failureAspects = 8;
-        exitPoints = 34;
+        exitPoints = 42;
         percentage = 34;
     }
 

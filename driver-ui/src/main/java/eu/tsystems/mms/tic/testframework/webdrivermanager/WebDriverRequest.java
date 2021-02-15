@@ -35,7 +35,9 @@ public abstract class WebDriverRequest {
     /*
     Runtime
      */
+    @Deprecated
     private String remoteSessionId;
+    @Deprecated
     private NodeInfo storedExecutingNode;
 
     public boolean hasSessionKey() {
@@ -90,19 +92,23 @@ public abstract class WebDriverRequest {
         return this;
     }
 
+    @Deprecated
     public NodeInfo getExecutingNode() {
         return storedExecutingNode;
     }
 
+    @Deprecated
     public WebDriverRequest setExecutingNode(NodeInfo executingNode) {
         this.storedExecutingNode = executingNode;
         return this;
     }
 
+    @Deprecated
     public String getRemoteSessionId() {
         return remoteSessionId;
     }
 
+    @Deprecated
     public WebDriverRequest setRemoteSessionId(String sessionId) {
         this.remoteSessionId = sessionId;
         return this;

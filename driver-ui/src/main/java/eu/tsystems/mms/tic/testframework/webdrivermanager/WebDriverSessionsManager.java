@@ -426,4 +426,8 @@ public final class WebDriverSessionsManager {
     public static Optional<SessionContext> getSessionContext(WebDriver webDriver) {
         return Optional.ofNullable(WEBDRIVER_SESSIONS_CONTEXTS_MAP.get(WebDriverUtils.getLowestWebDriver(webDriver)));
     }
+
+    public static Optional<String> getRequestedBrowser(WebDriver webDriver) {
+        return getSessionContext(webDriver).map(SessionContext::getWebDriverRequest).map(AbstractWebDriverRequest::getBrowser);
+    }
 }

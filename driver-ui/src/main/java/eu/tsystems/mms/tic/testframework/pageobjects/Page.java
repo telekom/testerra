@@ -190,7 +190,7 @@ public abstract class Page extends AbstractPage {
           */
 
         // exit when safari
-        String browser = WebDriverSessionsManager.getSessionContext(webDriver).map(SessionContext::getWebDriverRequest).map(AbstractWebDriverRequest::getBrowser).orElse(null);
+        String browser = WebDriverSessionsManager.getRequestedBrowser(webDriver).orElse(null);
         if (Browsers.safari.equalsIgnoreCase(browser) || Browsers.phantomjs.equalsIgnoreCase(browser)) {
             String msg = "Recursive Page Scan does not work. Unsupported Browser.";
             log().error(msg);

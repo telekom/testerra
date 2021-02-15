@@ -121,14 +121,12 @@ public final class WebDriverSessionsManager {
         WEBDRIVER_SESSIONS_CONTEXTS_MAP.put(WebDriverUtils.getLowestWebDriver(eventFiringWebDriver), sessionContext);
     }
 
-    static void removeWebDriverSession(String sessionKey, WebDriver eventFiringWebDriver) {
+    private static void unlinkFromThread(String sessionKey, WebDriver eventFiringWebDriver) {
         String fullSessionKey = getFullSessionKey(sessionKey);
         ALL_EVENTFIRING_WEBDRIVER_SESSIONS.remove(fullSessionKey, eventFiringWebDriver);
 
         final long threadId = Thread.currentThread().getId();
         ALL_EVENTFIRING_WEBDRIVER_SESSIONS_WITH_THREADID.remove(eventFiringWebDriver, threadId);
-
-        WEBDRIVER_SESSIONS_CONTEXTS_MAP.remove(WebDriverUtils.getLowestWebDriver(eventFiringWebDriver));
 
         /*
         storing driver into driver storage, for whatever reason
@@ -227,7 +225,8 @@ public final class WebDriverSessionsManager {
                 LOGGER.error("Failed executing after shutdown handler", e);
             }
         });
-        removeWebDriverSession(sessionKey, webDriver);
+        unlinkFromThread(sessionKey, webDriver);
+        WEBDRIVER_SESSIONS_CONTEXTS_MAP.remove(WebDriverUtils.getLowestWebDriver(webDriver));
     }
 
 
@@ -241,19 +240,14 @@ public final class WebDriverSessionsManager {
     }
 
     static void shutdownAllSessions() {
-        for (String key : ALL_EVENTFIRING_WEBDRIVER_SESSIONS.keySet()) {
-            WebDriver eventFiringWebDriver = ALL_EVENTFIRING_WEBDRIVER_SESSIONS.get(key);
-            shutdownWebDriver(eventFiringWebDriver);
-        }
+        ALL_EVENTFIRING_WEBDRIVER_SESSIONS.values().forEach(WebDriverSessionsManager::shutdownWebDriver);
+        ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.values().forEach(WebDriverSessionsManager::shutdownWebDriver);
 
-        for (String key : ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.keySet()) {
-            WebDriver eventFiringWebDriver = ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.get(key);
-            shutdownWebDriver(eventFiringWebDriver);
-        }
-
+        // This should not be necessary but we do it anyway
         ALL_EVENTFIRING_WEBDRIVER_SESSIONS.clear();
         ALL_EVENTFIRING_WEBDRIVER_SESSIONS_WITH_THREADID.clear();
         ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.clear();
+        WEBDRIVER_SESSIONS_CONTEXTS_MAP.clear();
     }
 
     /**
@@ -311,7 +305,7 @@ public final class WebDriverSessionsManager {
         /*
         Delete session from session maps.
          */
-        removeWebDriverSession(sessionKey, eventFiringWebDriver);
+        unlinkFromThread(sessionKey, eventFiringWebDriver);
 
         LOGGER.info("Promoted " + createSessionIdentifier(eventFiringWebDriver, sessionKey) + " to " + createSessionIdentifier(eventFiringWebDriver, exclusiveSessionKey));
         return exclusiveSessionKey;

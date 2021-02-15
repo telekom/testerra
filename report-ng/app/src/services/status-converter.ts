@@ -43,6 +43,7 @@ export interface IFilter {
 @autoinject()
 export class StatusConverter {
     private readonly _packageRegexp = new RegExp("^(.+)\\.(\\w+)$");
+    static readonly urlRegexp = /^\w+:\/\//ig;
 
     /**
      * Status adapted from {@link TestStatusController.java}

@@ -33,10 +33,12 @@ import ISuiteContext = data.ISuiteContext;
 import ISessionContext = data.ISessionContext;
 
 export class FailsAnnotation {
-    ticketString:string;
-    description:string;
-    get isTicketUrl() {
-        return this.ticketString?.match("/^\w+:\/\/");
+    constructor(
+        readonly annotation:any
+    ) {
+    }
+    get ticketIsUrl() {
+        return this.annotation.ticketString?.match(StatusConverter.urlRegexp);
     }
 }
 

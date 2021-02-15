@@ -22,7 +22,6 @@
 import {autoinject, PLATFORM} from 'aurelia-framework';
 import {NavigationInstruction, RouteConfig, Router, RouterConfiguration} from "aurelia-router";
 import {FailsAnnotation, MethodDetails, StatisticsGenerator} from "../../services/statistics-generator";
-import {data} from "../../services/report-model";
 import {IScreenshotsDialogParams, ScreenshotsDialog} from "../screenshots-dialog/screenshots-dialog";
 import {MdcDialogService} from '@aurelia-mdc-web/dialog';
 
@@ -109,7 +108,7 @@ export class Method {
     ) {
         this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
             this._methodDetails = methodDetails;
-            this._failsAnnotation = this._methodDetails.decodeAnnotation(MethodDetails.FAIL_ANNOTATION_NAME);
+            this._failsAnnotation = new FailsAnnotation(this._methodDetails.decodeAnnotation(MethodDetails.FAIL_ANNOTATION_NAME));
             this._allScreenshotIds = this._statistics.getScreenshotIdsFromMethodContext(methodDetails.methodContext);
             this._lastScreenshotId = this._allScreenshotIds.reverse().find(() => true);
 

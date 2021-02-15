@@ -45,8 +45,13 @@
                         <method-tags class="sl1" details.bind="_methodDetails"></method-tags>
                     </div>
                     <mdc-list-divider></mdc-list-divider>
-                    <div class="card-content" if.bind="_failsAnnotation">
-                        <span class="badge tag">@Fails</span>
+                    <div class="card-content flex vcenter" if.bind="_failsAnnotation" mdc-body2>
+                        <span class="badge status-failed-expected sr1">@Fails</span>
+                        <div>
+                            <div if.bind="_failsAnnotation.annotation.description">${_failsAnnotation.annotation.description}</div>
+                            <div if.bind="_failsAnnotation.ticketIsUrl"><a href="${_failsAnnotation.annotation.ticketString}">${_failsAnnotation.annotation.ticketString}</a></div>
+                            <div else>Ticket: ${_failsAnnotation.annotation.ticketString}</div>
+                        </div>
                     </div>
                     <mdc-list-divider if.bind="_failsAnnotation"></mdc-list-divider>
                     <div class="flex">

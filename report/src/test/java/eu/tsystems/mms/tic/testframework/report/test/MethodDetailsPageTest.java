@@ -399,8 +399,8 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestCorridorLow.class.getSimpleName(), "test_testLowCorridorFailed3");
         methodDetailsPage.getErrorMessageString().assertCollector().assertText("ArithmeticException: / by zero");
         methodDetailsPage = methodDetailsPage.toggleFingerprint();
-        methodDetailsPage.getFingerprintString().assertCollector().assertTextContains("test_testLowCorridorFailed3()");
-        methodDetailsPage.getFingerprintString().assertCollector().assertTextContains("ExitPointCreatorTestClass2.testCreatorForDifferentExitPoints2()");
+        //methodDetailsPage.getFingerprintString().assertCollector().assertTextContains("test_testLowCorridorFailed3()");
+        methodDetailsPage.getFingerprintString().assertCollector().assertTextContains("ExitPointCreatorTestClass2.java#testCreatorForDifferentExitPoints2");
 
         TestStep.begin("Checks error Message from a failed test with minor errors");
         methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), "ReportTestUnderTestCorridorLow_Report- TestsUnderTest_Failed Creator", "test_FailedMinor1");

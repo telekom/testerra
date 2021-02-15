@@ -72,7 +72,7 @@ public abstract class AbstractReportFailuresTest extends AbstractReportTest {
     // Test case #840
     public void testT03_checkNumberOfFailedTests() {
         TestReportTwoNumbers testReportTwoNumbers = new TestReportTwoNumbers();
-        int expectedNumberOfFailedTests = testReportTwoNumbers.getAllBroken() + testReportTwoNumbers.getFailedExpected();
+        int expectedNumberOfFailedTests = testReportTwoNumbers.getExitPoints();
         AbstractFailurePointsPage failurePointsPage = openFailuresPointsPage(ReportDirectory.REPORT_DIRECTORY_2);
         failurePointsPage.assertNumberOfTestsForAllFailurePoints(expectedNumberOfFailedTests, failurePointEntryTestObjects);
     }

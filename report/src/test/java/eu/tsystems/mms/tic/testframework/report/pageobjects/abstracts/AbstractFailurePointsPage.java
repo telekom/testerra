@@ -39,7 +39,7 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
 
     private final String LOCATOR_FAILUREPOINT_ROW = "./../..//*[@id='row-%02d']";
     private final String LOCATOR_FAILUREPOINT_TOTAL = "//*[contains(text(),'%ss: %s')]";
-    private final String LOCATOR_FAILUREPOINT_HEADER = "//*[contains(text(),'%s #%d (%d Tests)')]";
+    private final String LOCATOR_FAILUREPOINT_HEADER = "//*[contains(text(),'%s #%d')]";
     private final String LOCATOR_FAILUREPOINT_DESCRIPTION = LOCATOR_FAILUREPOINT_HEADER + "/../..//*[contains(text(),'%s')]";
     private final String LOCATOR_FAILUREPOINT_METHOD = LOCATOR_FAILUREPOINT_HEADER + "/../..//a//*[contains(text(),'%s')]/following-sibling::*";
     private final String LOCATOR_FAILUREPOINT_READABLE_MESSAGE = LOCATOR_FAILUREPOINT_HEADER + "/../..//*[contains(text(),'%s')]";
@@ -74,8 +74,8 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
         GuiElement headerElement = new GuiElement(this.getWebDriver(), By.xpath(String.format(
                 LOCATOR_FAILUREPOINT_HEADER,
                 failurePointType.getLabel(),
-                entry.getEntryNumber(),
-                entry.getNumberOfTests()
+                entry.getEntryNumber()
+                //entry.getNumberOfTests()
         )), mainFrame);
         headerElement.setName("headerElement");
         return headerElement;
@@ -266,7 +266,7 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
                     // HEADER
                     failurePointType.getLabel(),
                     entry.getEntryNumber(),
-                    entry.getNumberOfTests(),
+                    //entry.getNumberOfTests(),
                     // METHOD
                     entry.getMethodDetailPaths().get(index).substring(0, entry.getMethodDetailPaths().get(index).lastIndexOf(" - t"))
             )), mainFrame);
@@ -290,7 +290,7 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
                     // HEADER
                     failurePointType.getLabel(),
                     entry.getEntryNumber(),
-                    entry.getNumberOfTests(),
+                    //entry.getNumberOfTests(),
                     // ASSERTION
                     entry.getMethodDetailAssertions().get(index)
             )), mainFrame);

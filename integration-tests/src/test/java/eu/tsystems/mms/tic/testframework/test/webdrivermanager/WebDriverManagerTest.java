@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import java.util.Map;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -94,6 +95,8 @@ public class WebDriverManagerTest extends AbstractWebDriverTest {
 
         final WebDriver exclusiveDriver = WebDriverManager.getWebDriver();
         final String sessionId = WebDriverManager.makeSessionExclusive(exclusiveDriver);
+
+        Assert.assertNotNull(WebDriverSessionsManager.getSessionContext(exclusiveDriver).get());
 
         final WebDriver driver2 = WebDriverManager.getWebDriver("Session2");
         final WebDriver exclusiveDriverActual = WebDriverManager.getWebDriver(sessionId);

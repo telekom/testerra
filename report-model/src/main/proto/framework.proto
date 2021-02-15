@@ -170,7 +170,7 @@ message ErrorContext {
 //    StackTrace stack_trace = 3  [deprecated = true];
 //    string error_fingerprint = 6 [deprecated = true];
     ScriptSource script_source = 7;
-    ScriptSource execution_object_source = 8;
+//    ScriptSource execution_object_source = 8 [deprecated = true];
     string ticketId = 9;
     string description = 10;
     repeated StackTraceCause stack_trace = 11;

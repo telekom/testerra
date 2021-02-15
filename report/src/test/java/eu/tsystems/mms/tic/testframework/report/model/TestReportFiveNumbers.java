@@ -41,7 +41,7 @@ public class TestReportFiveNumbers extends AbstractTestReportNumbers {
         failed = 10;
         failedMinor = 20;
         failureAspects = 3;
-        exitPoints = 30;
+        exitPoints = 28;
         percentage = 30;
     }
 }

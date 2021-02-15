@@ -43,7 +43,7 @@ public class TestReportSixNumbers extends AbstractTestReportNumbers {
         failedMinor = 17;
         failedRetried = 8;
         failureAspects = 10;
-        exitPoints = 32;
+        exitPoints = 30;
         percentage = 37;
     }
 

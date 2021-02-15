@@ -29,7 +29,7 @@ public class TestReportTwoExitPoints implements IFailurePointEntryHelper {
 
     public static final ExitPointEntry EP1 = new ExitPointEntry(
             TestResultHelper.TestResultFailurePointEntryType.FAILED,
-            1,
+            3,
             1,
             //*[contains(text(),'Exit Point #1 (1 Tests)')]/../..//*[contains(text(),'ReportTestUnderTestCorridorHigh.java:15')]
             "ReportTestUnderTestCorridorHigh.java#test_testHighCorridorFailed1",
@@ -39,7 +39,7 @@ public class TestReportTwoExitPoints implements IFailurePointEntryHelper {
 
     public static final ExitPointEntry EP2 = new ExitPointEntry(
             TestResultHelper.TestResultFailurePointEntryType.FAILED,
-            2,
+            4,
             1,
             "ReportTestUnderTestCorridorHigh.java#test_testHighCorridorFailed2",
             true,

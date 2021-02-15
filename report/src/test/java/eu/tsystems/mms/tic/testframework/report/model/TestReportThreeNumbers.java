@@ -43,7 +43,7 @@ public class TestReportThreeNumbers extends AbstractTestReportNumbers {
         failedRetried = 4;
         failedExpected = 3;
         failureAspects = 5;
-        exitPoints = 36;
+        exitPoints = 32;
         percentage = 32;
     }
 

@@ -25,7 +25,7 @@ import eu.tsystems.mms.tic.testframework.bmp.AbstractTest;
 import eu.tsystems.mms.tic.testframework.bmp.ProxyServer;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerUtils;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
+import java.net.MalformedURLException;
 import net.lightbody.bmp.core.har.Har;
 import net.lightbody.bmp.core.har.HarLog;
 import org.apache.http.HttpHost;
@@ -37,9 +37,7 @@ import org.testng.annotations.Test;
 public class ProxyServerTest extends AbstractTest {
 
     @BeforeSuite
-    public void setupFFProfile() {
-        WebDriverManager.getConfig().setWebDriverMode(WebDriverMode.remote);
-
+    public void setupFFProfile() throws MalformedURLException {
         DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
         WebDriverManagerUtils.addProxyToCapabilities(desiredCapabilities, "localhost:9999");
         WebDriverManager.setGlobalExtraCapabilities(desiredCapabilities);

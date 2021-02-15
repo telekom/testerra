@@ -37,8 +37,11 @@ import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.ResponsiveWeb
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverRequest;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.UnspecificWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
+import java.net.MalformedURLException;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -51,36 +54,42 @@ import org.testng.annotations.Test;
 public class PageFactoryTest extends AbstractTestSitesTest {
 
     private ResponsiveWebTestPage getPage() {
-        return PageFactory.create(ResponsiveWebTestPage.class, WebDriverManager.getWebDriver());
+        return PageFactory.create(ResponsiveWebTestPage.class, getWebDriver());
     }
 
-    String baseURL = "unset";
+    @Override
+    protected AbstractWebDriverRequest getWebDriverRequest() {
+        UnspecificWebDriverRequest unspecificWebDriverRequest = new UnspecificWebDriverRequest();
+        try {
+            unspecificWebDriverRequest.setBaseUrl("http://www.google.com");
+        } catch (MalformedURLException e) {
+            log().error(e.getMessage());
+        }
+        return unspecificWebDriverRequest;
+    }
 
     @BeforeClass
-    public void before() {
+    public void before() throws MalformedURLException {
         WebDriverManagerConfig config = WebDriverManager.getConfig();
-        baseURL = config.getBaseUrl();
-        config.setBaseUrl("http://www.google.com");
         config.setShutdownSessionAfterTestMethod(false);
     }
 
     @AfterClass
     public void after() {
         WebDriverManagerConfig config = WebDriverManager.getConfig();
-        config.setBaseUrl(baseURL);
         config.setShutdownSessionAfterTestMethod(true);
     }
 
     @Test
     public void testT01_InRange_1() {
-        PageFactoryPrefixedTest.setViewportSize(WebDriverManager.getWebDriver(), 799, 1000);
+        PageFactoryPrefixedTest.setViewportSize(getWebDriver(), 799, 1000);
         ResponsiveWebTestPage blaPage = getPage();
         Assert.assertEquals(blaPage.getClass().getSimpleName(), ResponsiveWebTestPage_601px_800px.class.getSimpleName(), "Instantiated correct page.");
     }
 
     @Test
     public void testT02_InRange_2() {
-        PageFactoryPrefixedTest.setViewportSize(WebDriverManager.getWebDriver(), 1024, 1000);
+        PageFactoryPrefixedTest.setViewportSize(getWebDriver(), 1024, 1000);
         ResponsiveWebTestPage blaPage = getPage();
 
         Assert.assertEquals(blaPage.getClass().getSimpleName(), ResponsiveWebTestPage_801px_1234px.class.getSimpleName(), "Instantiated correct page.");
@@ -88,7 +97,7 @@ public class PageFactoryTest extends AbstractTestSitesTest {
 
     @Test
     public void testT03_ClassPerfectMatch_LowerValue() {
-        PageFactoryPrefixedTest.setViewportSize(WebDriverManager.getWebDriver(), 601, 1000);
+        PageFactoryPrefixedTest.setViewportSize(getWebDriver(), 601, 1000);
         ResponsiveWebTestPage blaPage = getPage();
 
         Assert.assertEquals(blaPage.getClass().getSimpleName(), ResponsiveWebTestPage_601px_800px.class.getSimpleName(), "Instantiated correct page.");
@@ -96,7 +105,7 @@ public class PageFactoryTest extends AbstractTestSitesTest {
 
     @Test
     public void testT04_ClassPerfectMatch_UpperValue() {
-        PageFactoryPrefixedTest.setViewportSize(WebDriverManager.getWebDriver(), 800, 1000);
+        PageFactoryPrefixedTest.setViewportSize(getWebDriver(), 800, 1000);
         ResponsiveWebTestPage blaPage = getPage();
 
         Assert.assertEquals(blaPage.getClass().getSimpleName(), ResponsiveWebTestPage_601px_800px.class.getSimpleName(), "Instantiated correct page.");
@@ -104,7 +113,7 @@ public class PageFactoryTest extends AbstractTestSitesTest {
 
     @Test
     public void testT05_Match_Min() {
-        PageFactoryPrefixedTest.setViewportSize(WebDriverManager.getWebDriver(), 599, 1000);
+        PageFactoryPrefixedTest.setViewportSize(getWebDriver(), 599, 1000);
         ResponsiveWebTestPage blaPage = getPage();
 
         Assert.assertEquals(blaPage.getClass().getSimpleName(), ResponsiveWebTestPage_Min_600px.class.getSimpleName(), "Instantiated correct page.");
@@ -112,7 +121,7 @@ public class PageFactoryTest extends AbstractTestSitesTest {
 
     @Test
     public void testT06_Match_Max() {
-        PageFactoryPrefixedTest.setViewportSize(WebDriverManager.getWebDriver(), 1600, 1000);
+        PageFactoryPrefixedTest.setViewportSize(getWebDriver(), 1600, 1000);
         ResponsiveWebTestPage blaPage = getPage();
 
         Assert.assertEquals(blaPage.getClass().getSimpleName(), ResponsiveWebTestPage_1235px_Max.class.getSimpleName(), "Instantiated correct page.");
@@ -120,7 +129,7 @@ public class PageFactoryTest extends AbstractTestSitesTest {
 
     @Test
     public void testT07_IgnoreOtherImpls() {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = getWebDriver();
         BasePage basePage = PageFactory.create(BasePage.class, driver);
 
         AssertCollector.assertFalse(basePage instanceof BasePage2016, "its a BasePage2016");
@@ -131,7 +140,7 @@ public class PageFactoryTest extends AbstractTestSitesTest {
     @Test
     public void testT08_CheckNot() {
 
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = getWebDriver();
         visitTestPage(driver, TestPage.INPUT_TEST_PAGE);
 
         final PageWithExistingElement pageWithExistingElement = PageFactory.create(PageWithExistingElement.class, driver);

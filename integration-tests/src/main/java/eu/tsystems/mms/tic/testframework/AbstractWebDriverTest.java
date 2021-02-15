@@ -25,6 +25,7 @@ package eu.tsystems.mms.tic.testframework;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.lang.reflect.Method;
 import org.openqa.selenium.WebDriver;
@@ -77,14 +78,29 @@ public abstract class AbstractWebDriverTest extends TesterraTest {
         }
     }
 
+    protected AbstractWebDriverRequest getWebDriverRequest() {
+        return null;
+    }
+
+    private WebDriver _getWebDriver() {
+        WebDriver webDriver;
+        AbstractWebDriverRequest request =  getWebDriverRequest();
+        if (request != null) {
+            webDriver = WebDriverManager.getWebDriver(request);
+        } else {
+            webDriver = WebDriverManager.getWebDriver();
+        }
+        return webDriver;
+    }
+
     protected WebDriver getWebDriver() {
         try {
-            WebDriverManager.getWebDriver().getWindowHandles();
+            this._getWebDriver().getWindowHandles();
         } catch (WebDriverException s) {
             WebDriverManager.forceShutdown(); // shutdown all threwad drivers.
         }
 
-        return WebDriverManager.getWebDriver();
+        return this._getWebDriver();
     }
 
     static {

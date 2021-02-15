@@ -25,6 +25,7 @@ import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.UiElementException;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Checkable;
@@ -49,8 +50,9 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.StandardGui
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.StandardGuiElementWait;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
+import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverRequest;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
@@ -166,15 +168,14 @@ public class GuiElement implements
         return locator;
     }
 
-    private void buildInternals(WebDriver driver, By by) {
+    private void buildInternals(WebDriver webDriver, By by) {
         // Create core depending on requested Browser
-        WebDriverRequest webDriverRequest = WebDriverManager.getRelatedWebDriverRequest(driver);
-        String currentBrowser = webDriverRequest.getBrowser();
+        String currentBrowser = WebDriverSessionsManager.getRequestedBrowser(webDriver).orElse(null);
         guiElementData.browser = currentBrowser;
 
         if (coreFactories.containsKey(currentBrowser)) {
             GuiElementCoreFactory guiElementCoreFactory = coreFactories.get(currentBrowser);
-            guiElementCore = guiElementCoreFactory.create(by, driver, this.guiElementData);
+            guiElementCore = guiElementCoreFactory.create(by, webDriver, this.guiElementData);
         } else {
             throw new SystemException("No GuiElementCoreFactory registered for " + currentBrowser);
         }

@@ -24,14 +24,16 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.enums.Position;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
+import java.net.MalformedURLException;
 
 /**
  * Class holding configuration settings for the WebDriverManager. Some are writable. This class is not ThreadSafe, some
  * settings may not be valid.
  */
-public class WebDriverManagerConfig {
+public class WebDriverManagerConfig extends AbstractWebDriverConfiguration implements Loggable {
     /**
      * Specifies if windows should be closed.
      */
@@ -56,11 +58,6 @@ public class WebDriverManagerConfig {
 
     private Position maximizePosition;
 
-    private String baseUrl;
-
-    private String browser;
-    private String browserVersion;
-
     /**
      * Default constructor.
      */
@@ -74,85 +71,37 @@ public class WebDriverManagerConfig {
         this.closeWindowsAfterTestMethod = PropertyManager.getBooleanProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, true);
         this.closeWindowsOnFailure = PropertyManager.getBooleanProperty(TesterraProperties.CLOSE_WINDOWS_ON_FAILURE, true);
         this.maximize = PropertyManager.getBooleanProperty(TesterraProperties.BROWSER_MAXIMIZE, false);
-        this.maximizePosition = null;
-        this.baseUrl = null;
-        this.browser = null;
-        this.browserVersion = null;
-        return this;
-    }
-
-    public String getBaseUrl() {
-        if (baseUrl == null) {
-            baseUrl = PropertyManager.getProperty(TesterraProperties.BASEURL, "");
+        this.maximizePosition = Position.valueOf(PropertyManager.getProperty(TesterraProperties.BROWSER_MAXIMIZE_POSITION, Position.CENTER.toString()).toUpperCase());
+        String baseUrl = PropertyManager.getProperty(TesterraProperties.BASEURL, "");
+        if (!baseUrl.isEmpty()) {
+            try {
+                this.setBaseUrl(baseUrl);
+            } catch (MalformedURLException e) {
+                log().error("Unable to read " + TesterraProperties.BASEURL, e);
+            }
         }
-        return baseUrl;
-    }
-
-    /**
-     * @deprecated Set your base url via. {@link WebDriverRequest#setBaseUrl(String)} instead
-     */
-    @Deprecated
-    public WebDriverManagerConfig setBaseUrl(String baseUrl) {
-        this.baseUrl = baseUrl;
+        this.initBrowser();
         return this;
-    }
-
-    /**
-     * @deprecated Use {@link #getBrowser()} instead
-     */
-    @Deprecated
-    public String getDefaultBrowser() {
-        return getBrowser();
     }
 
     private void initBrowser() {
         String browserSetting = PropertyManager.getProperty(TesterraProperties.BROWSER_SETTING);
         if (!StringUtils.isStringEmpty(browserSetting)) {
             String[] split = browserSetting.split(":");
-            if (split.length > 0) this.browser = split[0].trim();
-            if (split.length > 1) this.browserVersion = split[1].trim();
+            if (split.length > 0) this.setBrowser(split[0].trim());
+            if (split.length > 1) this.setBrowserVersion(split[1].trim());
         }
 
-        if (StringUtils.isStringEmpty(this.browser)) {
-            this.browser = PropertyManager.getProperty(TesterraProperties.BROWSER, "");
+        if (StringUtils.isStringEmpty(this.getBrowser())) {
+            this.setBrowser(PropertyManager.getProperty(TesterraProperties.BROWSER, ""));
         }
-        if (StringUtils.isStringEmpty(this.browserVersion)) {
-            this.browserVersion = PropertyManager.getProperty(TesterraProperties.BROWSER_VERSION, "");
+        if (StringUtils.isStringEmpty(this.getBrowserVersion())) {
+            this.setBrowserVersion(PropertyManager.getProperty(TesterraProperties.BROWSER_VERSION, ""));
         }
-    }
-
-    public String getBrowser() {
-        if (this.browser == null) {
-            this.initBrowser();
-        }
-        return this.browser;
-    }
-
-    public String getBrowserVersion() {
-        if (this.browserVersion == null) {
-            this.initBrowser();
-        }
-        return this.browserVersion;
     }
 
     public WebDriverMode getWebDriverMode() {
         return webDriverMode;
-    }
-
-    /**
-     * @deprecated Use {@link #getBrowser()} ()} instead
-     */
-    @Deprecated
-    public String browser() {
-        return this.getBrowser();
-    }
-
-    /**
-     * @deprecated Use {@link #getBrowserVersion()} instead
-     */
-    @Deprecated
-    public String browserVersion() {
-       return this.getBrowserVersion();
     }
 
     public boolean shouldShutdownSessions() {
@@ -161,11 +110,6 @@ public class WebDriverManagerConfig {
 
     public WebDriverManagerConfig setShutdownSessions(boolean close) {
         this.executeCloseWindows = close;
-        return this;
-    }
-
-    public WebDriverManagerConfig setWebDriverMode(WebDriverMode webDriverMode) {
-        this.webDriverMode = webDriverMode;
         return this;
     }
 
@@ -185,32 +129,11 @@ public class WebDriverManagerConfig {
         return executeCloseWindows && closeWindowsOnFailure;
     }
 
-    public WebDriverManagerConfig setShutdownSessionOnFailure(boolean shutdown) {
-        if (shutdown) {
-            this.setShutdownSessions(true);
-        }
-        this.closeWindowsOnFailure = shutdown;
-        return this;
-    }
-
     public boolean shouldMaximizeViewport() {
         return maximize;
     }
 
-    public WebDriverManagerConfig setMaximizeViewport(boolean maximize) {
-        this.maximize = maximize;
-        return this;
-    }
-
     public Position getMaximizePosition() {
-        if (this.maximizePosition == null) {
-            this.maximizePosition = Position.valueOf(PropertyManager.getProperty(TesterraProperties.BROWSER_MAXIMIZE_POSITION, Position.CENTER.toString()).toUpperCase());
-        }
         return maximizePosition;
-    }
-
-    public WebDriverManagerConfig setMaximizePosition(Position maximizePosition) {
-        this.maximizePosition = maximizePosition;
-        return this;
     }
 }

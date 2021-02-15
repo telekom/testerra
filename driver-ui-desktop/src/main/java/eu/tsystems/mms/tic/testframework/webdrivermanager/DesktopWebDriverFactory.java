@@ -92,7 +92,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
     private static File phantomjsFile = null;
 
     @Override
-    protected DesktopWebDriverRequest buildRequest(WebDriverRequest request) {
+    protected DesktopWebDriverRequest buildRequest(AbstractWebDriverRequest request) {
         DesktopWebDriverRequest finalRequest;
         if (request instanceof DesktopWebDriverRequest) {
             finalRequest = (DesktopWebDriverRequest) request;

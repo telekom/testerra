@@ -139,6 +139,7 @@ public class UITestUtils {
                 get infos
                  */
                 metaData.put(Screenshot.MetaData.SESSION_KEY, sessionContext.map(SessionContext::getSessionKey).orElse(null));
+                metaData.put(Screenshot.MetaData.SESSION_CONTEXT_ID, sessionContext.map(SessionContext::getId).orElse(null));
                 metaData.put(Screenshot.MetaData.TITLE, eventFiringWebDriver.getTitle());
 
                 /*

@@ -20,11 +20,12 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Optional;
 
-public abstract class AbstractWebDriverConfiguration {
+public abstract class AbstractWebDriverConfiguration implements Serializable {
     private String browser;
     private String browserVersion;
     private URL baseUrl;

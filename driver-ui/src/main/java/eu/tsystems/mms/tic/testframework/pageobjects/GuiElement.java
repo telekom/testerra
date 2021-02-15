@@ -25,6 +25,7 @@ import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.UiElementException;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Checkable;
@@ -169,7 +170,7 @@ public class GuiElement implements
 
     private void buildInternals(WebDriver webDriver, By by) {
         // Create core depending on requested Browser
-        String currentBrowser = WebDriverSessionsManager.getSessionContext(webDriver).map(SessionContext::getWebDriverRequest).map(AbstractWebDriverRequest::getBrowser).orElse(null);
+        String currentBrowser = WebDriverSessionsManager.getRequestedBrowser(webDriver).orElse(null);
         guiElementData.browser = currentBrowser;
 
         if (coreFactories.containsKey(currentBrowser)) {

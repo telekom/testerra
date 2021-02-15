@@ -65,19 +65,6 @@ private static final long serialVersionUID = 0L;
 
             break;
           }
-          case 66: {
-            eu.tsystems.mms.tic.testframework.report.model.ScriptSource.Builder subBuilder = null;
-            if (executionObjectSource_ != null) {
-              subBuilder = executionObjectSource_.toBuilder();
-            }
-            executionObjectSource_ = input.readMessage(eu.tsystems.mms.tic.testframework.report.model.ScriptSource.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(executionObjectSource_);
-              executionObjectSource_ = subBuilder.buildPartial();
-            }
-
-            break;
-          }
           case 74: {
             java.lang.String s = input.readStringRequireUtf8();
 
@@ -186,35 +173,13 @@ private static final long serialVersionUID = 0L;
     return getScriptSource();
   }
 
-  public static final int EXECUTION_OBJECT_SOURCE_FIELD_NUMBER = 8;
-  private eu.tsystems.mms.tic.testframework.report.model.ScriptSource executionObjectSource_;
-  /**
-   * <code>.data.ScriptSource execution_object_source = 8;</code>
-   * @return Whether the executionObjectSource field is set.
-   */
-  @java.lang.Override
-  public boolean hasExecutionObjectSource() {
-    return executionObjectSource_ != null;
-  }
-  /**
-   * <code>.data.ScriptSource execution_object_source = 8;</code>
-   * @return The executionObjectSource.
-   */
-  @java.lang.Override
-  public eu.tsystems.mms.tic.testframework.report.model.ScriptSource getExecutionObjectSource() {
-    return executionObjectSource_ == null ? eu.tsystems.mms.tic.testframework.report.model.ScriptSource.getDefaultInstance() : executionObjectSource_;
-  }
-  /**
-   * <code>.data.ScriptSource execution_object_source = 8;</code>
-   */
-  @java.lang.Override
-  public eu.tsystems.mms.tic.testframework.report.model.ScriptSourceOrBuilder getExecutionObjectSourceOrBuilder() {
-    return getExecutionObjectSource();
-  }
-
   public static final int TICKETID_FIELD_NUMBER = 9;
   private volatile java.lang.Object ticketId_;
   /**
+   * <pre>
+   *    ScriptSource execution_object_source = 8 [deprecated = true];
+   * </pre>
+   *
    * <code>string ticketId = 9;</code>
    * @return The ticketId.
    */
@@ -232,6 +197,10 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
+   * <pre>
+   *    ScriptSource execution_object_source = 8 [deprecated = true];
+   * </pre>
+   *
    * <code>string ticketId = 9;</code>
    * @return The bytes for ticketId.
    */
@@ -356,9 +325,6 @@ private static final long serialVersionUID = 0L;
     if (scriptSource_ != null) {
       output.writeMessage(7, getScriptSource());
     }
-    if (executionObjectSource_ != null) {
-      output.writeMessage(8, getExecutionObjectSource());
-    }
     if (!getTicketIdBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 9, ticketId_);
     }
@@ -383,10 +349,6 @@ private static final long serialVersionUID = 0L;
     if (scriptSource_ != null) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(7, getScriptSource());
-    }
-    if (executionObjectSource_ != null) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(8, getExecutionObjectSource());
     }
     if (!getTicketIdBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, ticketId_);
@@ -422,11 +384,6 @@ private static final long serialVersionUID = 0L;
       if (!getScriptSource()
           .equals(other.getScriptSource())) return false;
     }
-    if (hasExecutionObjectSource() != other.hasExecutionObjectSource()) return false;
-    if (hasExecutionObjectSource()) {
-      if (!getExecutionObjectSource()
-          .equals(other.getExecutionObjectSource())) return false;
-    }
     if (!getTicketId()
         .equals(other.getTicketId())) return false;
     if (!getDescription()
@@ -449,10 +406,6 @@ private static final long serialVersionUID = 0L;
     if (hasScriptSource()) {
       hash = (37 * hash) + SCRIPT_SOURCE_FIELD_NUMBER;
       hash = (53 * hash) + getScriptSource().hashCode();
-    }
-    if (hasExecutionObjectSource()) {
-      hash = (37 * hash) + EXECUTION_OBJECT_SOURCE_FIELD_NUMBER;
-      hash = (53 * hash) + getExecutionObjectSource().hashCode();
     }
     hash = (37 * hash) + TICKETID_FIELD_NUMBER;
     hash = (53 * hash) + getTicketId().hashCode();
@@ -605,12 +558,6 @@ private static final long serialVersionUID = 0L;
         scriptSource_ = null;
         scriptSourceBuilder_ = null;
       }
-      if (executionObjectSourceBuilder_ == null) {
-        executionObjectSource_ = null;
-      } else {
-        executionObjectSource_ = null;
-        executionObjectSourceBuilder_ = null;
-      }
       ticketId_ = "";
 
       description_ = "";
@@ -654,11 +601,6 @@ private static final long serialVersionUID = 0L;
         result.scriptSource_ = scriptSource_;
       } else {
         result.scriptSource_ = scriptSourceBuilder_.build();
-      }
-      if (executionObjectSourceBuilder_ == null) {
-        result.executionObjectSource_ = executionObjectSource_;
-      } else {
-        result.executionObjectSource_ = executionObjectSourceBuilder_.build();
       }
       result.ticketId_ = ticketId_;
       result.description_ = description_;
@@ -722,9 +664,6 @@ private static final long serialVersionUID = 0L;
       if (other == eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance()) return this;
       if (other.hasScriptSource()) {
         mergeScriptSource(other.getScriptSource());
-      }
-      if (other.hasExecutionObjectSource()) {
-        mergeExecutionObjectSource(other.getExecutionObjectSource());
       }
       if (!other.getTicketId().isEmpty()) {
         ticketId_ = other.ticketId_;
@@ -975,127 +914,12 @@ private static final long serialVersionUID = 0L;
       return scriptSourceBuilder_;
     }
 
-    private eu.tsystems.mms.tic.testframework.report.model.ScriptSource executionObjectSource_;
-    private com.google.protobuf.SingleFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.ScriptSource, eu.tsystems.mms.tic.testframework.report.model.ScriptSource.Builder, eu.tsystems.mms.tic.testframework.report.model.ScriptSourceOrBuilder> executionObjectSourceBuilder_;
-    /**
-     * <code>.data.ScriptSource execution_object_source = 8;</code>
-     * @return Whether the executionObjectSource field is set.
-     */
-    public boolean hasExecutionObjectSource() {
-      return executionObjectSourceBuilder_ != null || executionObjectSource_ != null;
-    }
-    /**
-     * <code>.data.ScriptSource execution_object_source = 8;</code>
-     * @return The executionObjectSource.
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ScriptSource getExecutionObjectSource() {
-      if (executionObjectSourceBuilder_ == null) {
-        return executionObjectSource_ == null ? eu.tsystems.mms.tic.testframework.report.model.ScriptSource.getDefaultInstance() : executionObjectSource_;
-      } else {
-        return executionObjectSourceBuilder_.getMessage();
-      }
-    }
-    /**
-     * <code>.data.ScriptSource execution_object_source = 8;</code>
-     */
-    public Builder setExecutionObjectSource(eu.tsystems.mms.tic.testframework.report.model.ScriptSource value) {
-      if (executionObjectSourceBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        executionObjectSource_ = value;
-        onChanged();
-      } else {
-        executionObjectSourceBuilder_.setMessage(value);
-      }
-
-      return this;
-    }
-    /**
-     * <code>.data.ScriptSource execution_object_source = 8;</code>
-     */
-    public Builder setExecutionObjectSource(
-        eu.tsystems.mms.tic.testframework.report.model.ScriptSource.Builder builderForValue) {
-      if (executionObjectSourceBuilder_ == null) {
-        executionObjectSource_ = builderForValue.build();
-        onChanged();
-      } else {
-        executionObjectSourceBuilder_.setMessage(builderForValue.build());
-      }
-
-      return this;
-    }
-    /**
-     * <code>.data.ScriptSource execution_object_source = 8;</code>
-     */
-    public Builder mergeExecutionObjectSource(eu.tsystems.mms.tic.testframework.report.model.ScriptSource value) {
-      if (executionObjectSourceBuilder_ == null) {
-        if (executionObjectSource_ != null) {
-          executionObjectSource_ =
-            eu.tsystems.mms.tic.testframework.report.model.ScriptSource.newBuilder(executionObjectSource_).mergeFrom(value).buildPartial();
-        } else {
-          executionObjectSource_ = value;
-        }
-        onChanged();
-      } else {
-        executionObjectSourceBuilder_.mergeFrom(value);
-      }
-
-      return this;
-    }
-    /**
-     * <code>.data.ScriptSource execution_object_source = 8;</code>
-     */
-    public Builder clearExecutionObjectSource() {
-      if (executionObjectSourceBuilder_ == null) {
-        executionObjectSource_ = null;
-        onChanged();
-      } else {
-        executionObjectSource_ = null;
-        executionObjectSourceBuilder_ = null;
-      }
-
-      return this;
-    }
-    /**
-     * <code>.data.ScriptSource execution_object_source = 8;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ScriptSource.Builder getExecutionObjectSourceBuilder() {
-      
-      onChanged();
-      return getExecutionObjectSourceFieldBuilder().getBuilder();
-    }
-    /**
-     * <code>.data.ScriptSource execution_object_source = 8;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ScriptSourceOrBuilder getExecutionObjectSourceOrBuilder() {
-      if (executionObjectSourceBuilder_ != null) {
-        return executionObjectSourceBuilder_.getMessageOrBuilder();
-      } else {
-        return executionObjectSource_ == null ?
-            eu.tsystems.mms.tic.testframework.report.model.ScriptSource.getDefaultInstance() : executionObjectSource_;
-      }
-    }
-    /**
-     * <code>.data.ScriptSource execution_object_source = 8;</code>
-     */
-    private com.google.protobuf.SingleFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.ScriptSource, eu.tsystems.mms.tic.testframework.report.model.ScriptSource.Builder, eu.tsystems.mms.tic.testframework.report.model.ScriptSourceOrBuilder> 
-        getExecutionObjectSourceFieldBuilder() {
-      if (executionObjectSourceBuilder_ == null) {
-        executionObjectSourceBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            eu.tsystems.mms.tic.testframework.report.model.ScriptSource, eu.tsystems.mms.tic.testframework.report.model.ScriptSource.Builder, eu.tsystems.mms.tic.testframework.report.model.ScriptSourceOrBuilder>(
-                getExecutionObjectSource(),
-                getParentForChildren(),
-                isClean());
-        executionObjectSource_ = null;
-      }
-      return executionObjectSourceBuilder_;
-    }
-
     private java.lang.Object ticketId_ = "";
     /**
+     * <pre>
+     *    ScriptSource execution_object_source = 8 [deprecated = true];
+     * </pre>
+     *
      * <code>string ticketId = 9;</code>
      * @return The ticketId.
      */
@@ -1112,6 +936,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     *    ScriptSource execution_object_source = 8 [deprecated = true];
+     * </pre>
+     *
      * <code>string ticketId = 9;</code>
      * @return The bytes for ticketId.
      */
@@ -1129,6 +957,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     *    ScriptSource execution_object_source = 8 [deprecated = true];
+     * </pre>
+     *
      * <code>string ticketId = 9;</code>
      * @param value The ticketId to set.
      * @return This builder for chaining.
@@ -1144,6 +976,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    ScriptSource execution_object_source = 8 [deprecated = true];
+     * </pre>
+     *
      * <code>string ticketId = 9;</code>
      * @return This builder for chaining.
      */
@@ -1154,6 +990,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *    ScriptSource execution_object_source = 8 [deprecated = true];
+     * </pre>
+     *
      * <code>string ticketId = 9;</code>
      * @param value The bytes for ticketId to set.
      * @return This builder for chaining.

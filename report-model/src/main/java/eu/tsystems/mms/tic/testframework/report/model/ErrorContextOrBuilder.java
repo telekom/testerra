@@ -44,26 +44,19 @@ public interface ErrorContextOrBuilder extends
   eu.tsystems.mms.tic.testframework.report.model.ScriptSourceOrBuilder getScriptSourceOrBuilder();
 
   /**
-   * <code>.data.ScriptSource execution_object_source = 8;</code>
-   * @return Whether the executionObjectSource field is set.
-   */
-  boolean hasExecutionObjectSource();
-  /**
-   * <code>.data.ScriptSource execution_object_source = 8;</code>
-   * @return The executionObjectSource.
-   */
-  eu.tsystems.mms.tic.testframework.report.model.ScriptSource getExecutionObjectSource();
-  /**
-   * <code>.data.ScriptSource execution_object_source = 8;</code>
-   */
-  eu.tsystems.mms.tic.testframework.report.model.ScriptSourceOrBuilder getExecutionObjectSourceOrBuilder();
-
-  /**
+   * <pre>
+   *    ScriptSource execution_object_source = 8 [deprecated = true];
+   * </pre>
+   *
    * <code>string ticketId = 9;</code>
    * @return The ticketId.
    */
   java.lang.String getTicketId();
   /**
+   * <pre>
+   *    ScriptSource execution_object_source = 8 [deprecated = true];
+   * </pre>
+   *
    * <code>string ticketId = 9;</code>
    * @return The bytes for ticketId.
    */

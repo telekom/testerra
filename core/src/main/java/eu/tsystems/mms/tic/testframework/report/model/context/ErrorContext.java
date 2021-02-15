@@ -71,6 +71,7 @@ public class ErrorContext {
     /**
      * The page object source triggering this assertion
      */
+    @Deprecated
     public Optional<ScriptSource> getExecutionObjectSource() {
         if (this.executionObjectSource == null) {
             this.executionObjectSource = TestEvidenceCollector.getSourceFor(getThrowable());

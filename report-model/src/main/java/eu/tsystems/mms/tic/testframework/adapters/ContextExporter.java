@@ -235,7 +235,7 @@ public class ContextExporter {
 //        map(errorContext.getThrowable(), this::prepareStackTraceCause, builder::addAllCause);
 //        apply(errorContext.errorFingerprint, builder::setErrorFingerprint);
         errorContext.getScriptSource().ifPresent(scriptSource -> builder.setScriptSource(this.buildScriptSource(scriptSource)));
-        errorContext.getExecutionObjectSource().ifPresent(scriptSource -> builder.setExecutionObjectSource(this.buildScriptSource(scriptSource)));
+        //errorContext.getExecutionObjectSource().ifPresent(scriptSource -> builder.setExecutionObjectSource(this.buildScriptSource(scriptSource)));
         if (errorContext.getTicketId() != null) builder.setTicketId(errorContext.getTicketId().toString());
         apply(errorContext.getDescription(), builder::setDescription);
         builder.setOptional(errorContext.isOptional());

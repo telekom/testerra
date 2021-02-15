@@ -47,18 +47,20 @@ public class ExitPointsPage extends AbstractFailurePointsPage {
     @Override
     public void assertFailurePointRanking(List<? extends AbstractResultTableFailureEntry> expectedEntries) {
         int numberOfTestsThreshold = Integer.MAX_VALUE;
-        for (AbstractResultTableFailureEntry failureEntry : expectedEntries) {
+        for (GuiElement headerInfoElement : getHeaderInformationElements().getList()) {
             // check - page information fits to test object model
-            assertHeaderInformation(failureEntry);
+            headerInfoElement.asserts().assertIsDisplayed();
             // following lines not really necessary since it considers the model only
-            int currentNumberOfTests = failureEntry.getNumberOfTests();
+            int currentNumberOfTests = getNumberOfTestsFromHeaderElement(headerInfoElement);
             // check - order is descending or last entry
-            if (currentNumberOfTests <= numberOfTestsThreshold) {
-                numberOfTestsThreshold = currentNumberOfTests;
-            } else if (failureEntry.getEntryNumber() != expectedEntries.size()) {
-                // Todo: else branch mot necessary, since Exit Points are separated in single ones
-                Assert.fail("Failure Point ranking is NOT correct. " + currentNumberOfTests + " must be less than or equal to " + numberOfTestsThreshold);
-            }
+            Assert.assertTrue(currentNumberOfTests <= numberOfTestsThreshold, "Wrong order by number of tests");
+            numberOfTestsThreshold = currentNumberOfTests;
+//            if (currentNumberOfTests <= numberOfTestsThreshold) {
+//                numberOfTestsThreshold = currentNumberOfTests;
+//            } else if (failureEntry.getEntryNumber() != expectedEntries.size()) {
+//                // Todo: else branch mot necessary, since Exit Points are separated in single ones
+//                Assert.fail("Failure Point ranking is NOT correct. " + currentNumberOfTests + " must be less than or equal to " + numberOfTestsThreshold);
+//            }
         }
     }
 

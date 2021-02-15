@@ -28,6 +28,9 @@ import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodDetailsPage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -38,7 +41,8 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
 
     private final String LOCATOR_FAILUREPOINT_ROW = "./../..//*[@id='row-%02d']";
     private final String LOCATOR_FAILUREPOINT_TOTAL = "//*[contains(text(),'%ss: %s')]";
-    private final String LOCATOR_FAILUREPOINT_HEADER = "//*[contains(text(),'%s #%d (%d Tests)')]";
+    private final String LOCATOR_FAILUREPOINT_HEADER = "//*[contains(text(),'%s #%d')]";
+    private final String LOCATOR_ALL_FAILUREPOINT_HEADER = "//*[contains(text(),'%s #')]";
     private final String LOCATOR_FAILUREPOINT_DESCRIPTION = LOCATOR_FAILUREPOINT_HEADER + "/../..//*[contains(text(),'%s')]";
     private final String LOCATOR_FAILUREPOINT_METHOD = LOCATOR_FAILUREPOINT_HEADER + "/../..//a//*[contains(text(),'%s')]/following-sibling::*";
     private final String LOCATOR_FAILUREPOINT_READABLE_MESSAGE = LOCATOR_FAILUREPOINT_HEADER + "/../..//*[contains(text(),'%s')]";
@@ -46,6 +50,8 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
     private final String LOCATOR_FAILUREPOINT_EXTEND_BUTTON = LOCATOR_FAILUREPOINT_HEADER + "//i[@class='fa fa-caret-square-o-down']";
     private final String LOCATOR_FAILUREPOINT_INTO_REPORT_NO = LOCATOR_FAILUREPOINT_HEADER + "/../..//*[@class='method expfailed']";
     private final String LOCATOR_FAILUREPOINT_INTO_REPORT_YES = LOCATOR_FAILUREPOINT_HEADER + "/../..//*[@class='method ']";
+    private static Pattern testCountPattern = Pattern.compile("(\\d+) Tests", Pattern.CASE_INSENSITIVE);
+
 
     /**
      * Constructor called bei PageFactory
@@ -73,11 +79,14 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
         GuiElement headerElement = mainFrame.getSubElement(By.xpath(String.format(
                 LOCATOR_FAILUREPOINT_HEADER,
                 failurePointType.getLabel(),
-                entry.getEntryNumber(),
-                entry.getNumberOfTests()
+                entry.getEntryNumber()
+                //entry.getNumberOfTests()
         )));
         headerElement.setName("headerElement");
         return headerElement;
+    }
+    public GuiElement getHeaderInformationElements() {
+        return new GuiElement(this.getWebDriver(), By.xpath(String.format(LOCATOR_ALL_FAILUREPOINT_HEADER, failurePointType.getLabel())), mainFrame);
     }
 
     /**
@@ -200,7 +209,7 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
                 // HEADER
                 failurePointType.getLabel(),
                 entry.getEntryNumber(),
-                entry.getNumberOfTests(),
+                //entry.getNumberOfTests(),
                 // DESCRIPTION
                 entry.getDescription()
         )));
@@ -265,7 +274,7 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
                     // HEADER
                     failurePointType.getLabel(),
                     entry.getEntryNumber(),
-                    entry.getNumberOfTests(),
+                    //entry.getNumberOfTests(),
                     // METHOD
                     entry.getMethodDetailPaths().get(index).substring(0, entry.getMethodDetailPaths().get(index).lastIndexOf(" - t"))
             )));
@@ -289,7 +298,7 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
                     // HEADER
                     failurePointType.getLabel(),
                     entry.getEntryNumber(),
-                    entry.getNumberOfTests(),
+                    //entry.getNumberOfTests(),
                     // ASSERTION
                     entry.getMethodDetailAssertions().get(index)
             )));
@@ -325,15 +334,26 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
         getTotalNumberOfFailurePointsElement(expectedNumberOfFailurePoints).asserts("The number of Failure Points is NOT correct.").assertIsDisplayed();
     }
 
-    public void assertNumberOfTestsForAllFailurePoints(int expectedNumberOfTests, List<? extends AbstractResultTableFailureEntry> expectedEntries) {
-        int sumOfTests = 0;
-        for (AbstractResultTableFailureEntry actualEntry : expectedEntries) {
-            assertHeaderInformation(actualEntry);
-            sumOfTests += actualEntry.getNumberOfTests();
-        }
-        Assert.assertEquals(sumOfTests, expectedNumberOfTests, "Sum of tests is NOT correct");
+    public void assertNumberOfTestsForAllFailurePoints(int expectedNumberOfTests) {
+        final AtomicInteger sumOfTests = new AtomicInteger();
+        GuiElement headerInformationElements = getHeaderInformationElements();
+        headerInformationElements.getList().forEach(guiElement -> {
+            sumOfTests.addAndGet(getNumberOfTestsFromHeaderElement(guiElement));
+        });
+        Assert.assertEquals(sumOfTests.get(), expectedNumberOfTests, "Sum of tests is NOT correct");
     }
 
+    protected int getNumberOfTestsFromHeaderElement(GuiElement guiElement) {
+        guiElement.asserts().assertIsDisplayed();
+        String text = guiElement.getText();
+        Matcher matcher = testCountPattern.matcher(text);
+        Assert.assertTrue(matcher.find(), "Tests pattern not found in: " + text);
+        return Integer.parseInt(matcher.group(1));
+    }
+
+    /**
+     * @deprecated This is done implicit checks
+     */
     public void assertHeaderInformation(List<? extends AbstractResultTableFailureEntry> expectedEntries) {
         for (AbstractResultTableFailureEntry entry : expectedEntries) {
             assertHeaderInformation(entry);

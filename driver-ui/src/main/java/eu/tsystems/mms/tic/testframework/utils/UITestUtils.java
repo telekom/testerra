@@ -192,7 +192,7 @@ public class UITestUtils {
             return null;
         }
 
-        if (Browsers.htmlunit.equalsIgnoreCase(Testerra.getInjector().getInstance(IWebDriverManager.class).getSessionContext(eventFiringWebDriver).map(SessionContext::getWebDriverRequest).map(WebDriverRequest::getBrowser).orElse(null))) {
+        if (Browsers.htmlunit.equalsIgnoreCase(Testerra.getInjector().getInstance(IWebDriverManager.class).getRequestedBrowser(eventFiringWebDriver).orElse(null))) {
             LOGGER.warn("Not taking screenshot for htmunit");
             return null;
         }

@@ -34,15 +34,11 @@ import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultLocator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementRetainer;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
-import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.MouseActions;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverManager;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebElementProxy;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -577,7 +573,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
                 int y = byImage.getCenterY();
                 log().info("Image Double Click on image webElement at " + x + "," + y);
                 JSUtils.executeJavaScriptMouseAction(guiElementData.getWebDriver(), webElement, JSMouseAction.DOUBLE_CLICK, x, y);
-            } else if (Browsers.safari.equalsIgnoreCase(Testerra.getInjector().getInstance(IWebDriverManager.class).getSessionContext(this.guiElementData.getWebDriver()).map(SessionContext::getWebDriverRequest).map(WebDriverRequest::getBrowser).orElse(null))) {
+            } else if (Browsers.safari.equalsIgnoreCase(Testerra.getInjector().getInstance(IWebDriverManager.class).getRequestedBrowser(this.guiElementData.getWebDriver()).orElse(null))) {
                 log().info("Safari double click workaround");
                 JSUtils.executeJavaScriptMouseAction(guiElementData.getWebDriver(), webElement, JSMouseAction.DOUBLE_CLICK, 0, 0);
             } else {

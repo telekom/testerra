@@ -26,7 +26,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCor
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverRequest;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import java.util.List;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 

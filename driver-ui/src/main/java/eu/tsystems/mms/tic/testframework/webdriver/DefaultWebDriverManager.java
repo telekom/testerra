@@ -25,7 +25,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import java.util.Optional;
 import org.openqa.selenium.WebDriver;
@@ -79,6 +78,11 @@ public class DefaultWebDriverManager implements IWebDriverManager {
     @Override
     public Optional<SessionContext> getSessionContext(WebDriver webDriver) {
         return WebDriverSessionsManager.getSessionContext(webDriver);
+    }
+
+    @Override
+    public Optional<String> getRequestedBrowser(WebDriver webDriver) {
+        return WebDriverSessionsManager.getRequestedBrowser(webDriver);
     }
 
     @Override

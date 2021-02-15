@@ -150,9 +150,16 @@ public interface SimpleAssertion {
     void assertEqualsDeep(Set<?> actual, Set<?> expected, Object subject);
     void assertEqualsDeep(Map<?, ?> actual, Map<?, ?> expected, Object subject);
     void assertEqualsNoOrder(Object[] actual, Object[] expected, Object subject);
+    default void assertEquals(long actual, long expected) {
+        assertEquals(actual, expected, null);
+    }
+    default void assertEquals(int actual, int expected) {
+        assertEquals(actual, expected, null);
+    }
     default void assertEquals(Object actual, Object expected) {
         assertEquals(actual, expected, null);
     }
+
 
     void assertNotEquals(Object actual1, Object actual2, Object subject);
     void assertNotEquals(Set<?> actual, Set<?> expected, Object subject);

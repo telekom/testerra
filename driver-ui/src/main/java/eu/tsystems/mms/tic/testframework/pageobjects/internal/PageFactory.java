@@ -36,6 +36,13 @@ public interface PageFactory {
     default PageFactory clearCache() {
         return clearThreadLocalPagesPrefix();
     }
+
+    /**
+     * @deprecated Use {@link #createPage(Class, WebDriver)} instead
+     */
+    default <T extends PageObject> T create(Class<T> pageClass, WebDriver webDriver) {
+        return createPage(pageClass, webDriver);
+    }
     <T extends PageObject> T createPage(Class<T> pageClass);
     default <T extends PageObject> T createPage(Class<T> pageClass, WebDriver webDriver) {
         return createPageWithCheckRule(pageClass, webDriver, CheckRule.DEFAULT);

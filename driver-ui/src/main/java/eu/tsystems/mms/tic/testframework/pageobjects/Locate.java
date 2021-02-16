@@ -21,10 +21,29 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.LocatorFactory;
+import java.util.function.Predicate;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 /**
  * @deprecated Use {@link LocatorFactoryProvider}
  */
-public class Locate extends LocatorFactory {
+public class Locate implements Locator, LocatorFactoryProvider {
+    public static Locator by(By by) {
+        return Locate.by(by);
+    }
+    @Override
+    public By getBy() {
+        return null;
+    }
+
+    @Override
+    public Locator unique() {
+        return null;
+    }
+
+    @Override
+    public Locator filter(Predicate<WebElement> filter) {
+        return null;
+    }
 }

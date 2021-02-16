@@ -41,6 +41,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import java.awt.Color;
 import java.io.File;
 import java.util.concurrent.atomic.AtomicReference;
@@ -277,6 +278,11 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
         });
     }
 
+    private static void addScreenshotToReport(Screenshot screenshot) {
+        report.addScreenshot(screenshot, Report.FileMode.COPY);
+        ExecutionContextController.getCurrentMethodContext().addScreenshot(screenshot);
+    }
+
     @Override
     public ImageAssertion screenshot(Report.Mode reportMode) {
         Screenshot screenshot = new Screenshot(guiElement.getName(true));
@@ -286,7 +292,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
         atomicScreenshot.set(screenshot);
 
         if (reportMode == Report.Mode.ALWAYS) {
-            report.addScreenshot(atomicScreenshot.get(), Report.FileMode.COPY);
+            addScreenshotToReport(atomicScreenshot.get());
         }
 
         return propertyAssertionFactory.createWithConfig(DefaultImageAssertion.class, this.propertyAssertionConfig, new UiElementAssertionProvider<File>() {
@@ -302,7 +308,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
 
             @Override
             public void failedFinally(AbstractPropertyAssertion assertion) {
-                report.addScreenshot(atomicScreenshot.get(), Report.FileMode.MOVE);
+                addScreenshotToReport(atomicScreenshot.get());
             }
 
             @Override

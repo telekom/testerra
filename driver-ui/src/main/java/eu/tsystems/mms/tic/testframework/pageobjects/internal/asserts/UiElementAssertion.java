@@ -65,7 +65,6 @@ public interface UiElementAssertion extends UiElementBaseAssertion {
     default BinaryAssertion<Boolean> classes(String ... classes) {
         return classes().hasWords(classes);
     }
-
     default BinaryAssertion<Boolean> classes(List<String> classes) {
         return classes().hasWords(classes);
     }

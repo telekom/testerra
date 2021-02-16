@@ -109,7 +109,7 @@
             #end
 
             <!-- screens link-->
-            #if (${testMethod.getAllScreenshotsFromTestSteps().findAny().isPresent()})
+            #if (${testMethod.getScreenshots().size()} > 0)
                 <div id="buttonscreen" onclick="toggleDetailsView('screenshotarea', 'toggleview', 'buttonscreen', 'togglebutton');"
                      title="Show screenshots" class="detailsmenu togglebutton">
                     <h6><i class="symbols fa fa-photo fa-2x"></i>Screenshots</h6>

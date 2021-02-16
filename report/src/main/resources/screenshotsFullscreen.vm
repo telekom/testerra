@@ -1,4 +1,4 @@
-#if (${methodInfo.getAllScreenshotsFromTestSteps().findAny().isPresent()})
+#if (${methodInfo.getScreenshots().size()} > 0)
     <div style="padding:20px;">
         <div id="infobox" class="selectable screenshotmessagebox"></div>
     </div>

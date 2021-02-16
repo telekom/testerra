@@ -87,7 +87,7 @@ public class UITestUtils implements WebDriverManagerProvider {
         Screenshot screenshot = takeScreenshot(driver, driver.getWindowHandle());
 
         if (intoReport) {
-            ExecutionContextController.getCurrentMethodContext().addScreenshots(Stream.of(screenshot));
+            ExecutionContextController.getCurrentMethodContext().addScreenshot(screenshot);
             report.addScreenshot(screenshot, Report.FileMode.MOVE);
         }
 
@@ -324,8 +324,8 @@ public class UITestUtils implements WebDriverManagerProvider {
         List<Screenshot> allScreenshots = new LinkedList<>();
         takeScreenshotsFromThreadSessions().forEach(webDriverScreenshots -> {
             if (publishToReport) {
-                ExecutionContextController.getCurrentMethodContext().addScreenshots(webDriverScreenshots.stream());
                 webDriverScreenshots.forEach(screenshot -> {
+                    ExecutionContextController.getCurrentMethodContext().addScreenshot(screenshot);
                     report.addScreenshot(screenshot, Report.FileMode.MOVE);
                 });
             }

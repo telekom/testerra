@@ -24,17 +24,12 @@
 import eu.tsystems.mms.tic.testframework.interop.ScreenshotCollector;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.util.List;
 
 public class ScreenshotGrabber implements ScreenshotCollector {
 
     @Override
     public List<Screenshot> takeScreenshots() {
-        if (WebDriverManager.hasAnySessionActive()) {
-            return UITestUtils.takeScreenshots(false);
-        }
-        return null;
+        return UITestUtils.takeScreenshots(false);
     }
-
 }

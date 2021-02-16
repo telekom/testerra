@@ -32,6 +32,7 @@ import eu.tsystems.mms.tic.testframework.internal.asserts.StringAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import java.io.File;
 import java.util.concurrent.atomic.AtomicReference;
@@ -78,6 +79,11 @@ public class DefaultPageAssertions implements PageAssertions {
         });
     }
 
+    private static void addScreenshotToReport(Screenshot screenshot) {
+        report.addScreenshot(screenshot, Report.FileMode.COPY);
+        ExecutionContextController.getCurrentMethodContext().addScreenshot(screenshot);
+    }
+
     @Override
     public ImageAssertion screenshot(Report.Mode reportMode) {
         Screenshot screenshot = new Screenshot(page.toString());
@@ -85,7 +91,7 @@ public class DefaultPageAssertions implements PageAssertions {
         UITestUtils.takeScreenshot(webDriver, screenshot);
 
         if (reportMode == Report.Mode.ALWAYS) {
-            report.addScreenshot(screenshot, Report.FileMode.COPY);
+            addScreenshotToReport(screenshot);
         }
 
         AtomicReference<Screenshot> atomicScreenshot = new AtomicReference<>();
@@ -105,7 +111,7 @@ public class DefaultPageAssertions implements PageAssertions {
 
             @Override
             public void failedFinally(AbstractPropertyAssertion assertion) {
-                report.addScreenshot(atomicScreenshot.get(), Report.FileMode.MOVE);
+                addScreenshotToReport(atomicScreenshot.get());
             }
 
             @Override

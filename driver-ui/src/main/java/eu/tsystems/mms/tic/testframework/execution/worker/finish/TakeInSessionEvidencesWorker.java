@@ -22,24 +22,27 @@
 package eu.tsystems.mms.tic.testframework.execution.worker.finish;
 
 import com.google.common.eventbus.Subscribe;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.SharedTestResultAttributes;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
+import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.util.List;
 
 public class TakeInSessionEvidencesWorker implements MethodEndEvent.Listener {
 
     protected void collect(MethodEndEvent methodEndEvent) {
-        if (WebDriverManager.hasSessionsActiveInThisThread()) {
-            // get screenshots and videos
-            List<Screenshot> screenshots = TestEvidenceCollector.collectScreenshots();
+        // get screenshots and videos
+        List<Screenshot> screenshots = TestEvidenceCollector.collectScreenshots();
 
-            if (screenshots != null) {
-                methodEndEvent.getMethodContext().addScreenshots(screenshots.stream());
-            }
+        if (screenshots != null) {
+            Report report = Testerra.getInjector().getInstance(Report.class);
+            screenshots.forEach(screenshot -> {
+                methodEndEvent.getMethodContext().addScreenshot(screenshot);
+                report.addScreenshot(screenshot, Report.FileMode.MOVE);
+            });
         }
     }
 

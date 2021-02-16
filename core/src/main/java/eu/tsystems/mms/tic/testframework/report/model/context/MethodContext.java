@@ -40,7 +40,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
-import org.apache.logging.log4j.core.LogEvent;
 import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
@@ -483,8 +482,11 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
      * Publish the screenshots to the report into the current errorContext.
      */
     public void addScreenshots(Stream<Screenshot> screenshots) {
-        TestStepAction currentTestStepAction = this.testStepController.getCurrentTestStep().getCurrentTestStepAction();
-        screenshots.forEach(currentTestStepAction::addScreenshot);
+        screenshots.forEach(this::addScreenshot);
+    }
+
+    public void addScreenshot(Screenshot screenshot) {
+        this.testStepController.getCurrentTestStep().getCurrentTestStepAction().addScreenshot(screenshot);
     }
 
     /**

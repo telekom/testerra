@@ -37,6 +37,7 @@ public @interface Fails {
 
     /**
      * tickedID as integer
+     * @deprecated Use {@link #ticketString()} instead
      */
     int ticketId() default 0;
 

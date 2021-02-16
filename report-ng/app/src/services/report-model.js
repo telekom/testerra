@@ -558,7 +558,6 @@ export const data = $root.data = (() => {
          * @interface IMethodContext
          * @property {data.IContextValues|null} [contextValues] MethodContext contextValues
          * @property {data.MethodType|null} [methodType] MethodContext methodType
-         * @property {Array.<string>|null} [methodTags] MethodContext methodTags
          * @property {number|null} [retryNumber] MethodContext retryNumber
          * @property {number|null} [methodRunIndex] MethodContext methodRunIndex
          * @property {string|null} [threadName] MethodContext threadName
@@ -578,6 +577,7 @@ export const data = $root.data = (() => {
          * @property {data.ResultStatusType|null} [resultStatus] MethodContext resultStatus
          * @property {Object.<string,string>|null} [parameters] MethodContext parameters
          * @property {Object.<string,string>|null} [customContexts] MethodContext customContexts
+         * @property {Object.<string,string>|null} [annotations] MethodContext annotations
          */
 
         /**
@@ -589,7 +589,6 @@ export const data = $root.data = (() => {
          * @param {data.IMethodContext=} [p] Properties to set
          */
         function MethodContext(p) {
-            this.methodTags = [];
             this.infos = [];
             this.relatedMethodContextIds = [];
             this.dependsOnMethodContextIds = [];
@@ -597,6 +596,7 @@ export const data = $root.data = (() => {
             this.sessionContextIds = [];
             this.parameters = {};
             this.customContexts = {};
+            this.annotations = {};
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -618,14 +618,6 @@ export const data = $root.data = (() => {
          * @instance
          */
         MethodContext.prototype.methodType = 0;
-
-        /**
-         * MethodContext methodTags.
-         * @member {Array.<string>} methodTags
-         * @memberof data.MethodContext
-         * @instance
-         */
-        MethodContext.prototype.methodTags = $util.emptyArray;
 
         /**
          * MethodContext retryNumber.
@@ -780,6 +772,14 @@ export const data = $root.data = (() => {
         MethodContext.prototype.customContexts = $util.emptyObject;
 
         /**
+         * MethodContext annotations.
+         * @member {Object.<string,string>} annotations
+         * @memberof data.MethodContext
+         * @instance
+         */
+        MethodContext.prototype.annotations = $util.emptyObject;
+
+        /**
          * Decodes a MethodContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.MethodContext
@@ -802,11 +802,6 @@ export const data = $root.data = (() => {
                     break;
                 case 7:
                     m.methodType = r.int32();
-                    break;
-                case 9:
-                    if (!(m.methodTags && m.methodTags.length))
-                        m.methodTags = [];
-                    m.methodTags.push(r.string());
                     break;
                 case 10:
                     m.retryNumber = r.int32();
@@ -912,6 +907,28 @@ export const data = $root.data = (() => {
                         }
                     }
                     m.customContexts[k] = value;
+                    break;
+                case 37:
+                    if (m.annotations === $util.emptyObject)
+                        m.annotations = {};
+                    var c2 = r.uint32() + r.pos;
+                    k = "";
+                    value = "";
+                    while (r.pos < c2) {
+                        var tag2 = r.uint32();
+                        switch (tag2 >>> 3) {
+                        case 1:
+                            k = r.string();
+                            break;
+                        case 2:
+                            value = r.string();
+                            break;
+                        default:
+                            r.skipType(tag2 & 7);
+                            break;
+                        }
+                    }
+                    m.annotations[k] = value;
                     break;
                 default:
                     r.skipType(t & 7);
@@ -1584,7 +1601,6 @@ export const data = $root.data = (() => {
          * @memberof data
          * @interface IErrorContext
          * @property {data.IScriptSource|null} [scriptSource] ErrorContext scriptSource
-         * @property {data.IScriptSource|null} [executionObjectSource] ErrorContext executionObjectSource
          * @property {string|null} [ticketId] ErrorContext ticketId
          * @property {string|null} [description] ErrorContext description
          * @property {Array.<data.IStackTraceCause>|null} [stackTrace] ErrorContext stackTrace
@@ -1614,14 +1630,6 @@ export const data = $root.data = (() => {
          * @instance
          */
         ErrorContext.prototype.scriptSource = null;
-
-        /**
-         * ErrorContext executionObjectSource.
-         * @member {data.IScriptSource|null|undefined} executionObjectSource
-         * @memberof data.ErrorContext
-         * @instance
-         */
-        ErrorContext.prototype.executionObjectSource = null;
 
         /**
          * ErrorContext ticketId.
@@ -1675,9 +1683,6 @@ export const data = $root.data = (() => {
                 switch (t >>> 3) {
                 case 7:
                     m.scriptSource = $root.data.ScriptSource.decode(r, r.uint32());
-                    break;
-                case 8:
-                    m.executionObjectSource = $root.data.ScriptSource.decode(r, r.uint32());
                     break;
                 case 9:
                     m.ticketId = r.string();

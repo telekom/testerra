@@ -94,6 +94,9 @@
 
 .tag {
     @extend .status;
-    font-size: 0.815rem;
     background-color: $crashed;
+}
+
+.tag__dense {
+    font-size: 0.815rem;
 }

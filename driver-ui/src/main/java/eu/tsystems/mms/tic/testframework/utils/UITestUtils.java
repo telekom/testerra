@@ -28,15 +28,13 @@ import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.internal.Constants;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
-import eu.tsystems.mms.tic.testframework.report.Shot;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverRequest;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverConfiguration;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -46,17 +44,17 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
-import org.apache.commons.codec.binary.Base64;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.sikuli.api.ScreenLocation;
@@ -90,37 +88,24 @@ public class UITestUtils {
 
     }
 
-    public static Screenshot takeScreenshot(
-            final WebDriver driver,
-            boolean intoReport
-    ) {
-        Screenshot screenshot = takeScreenshot(
-                driver,
-                driver.getWindowHandle(),
-                WebDriverManager.getSessionKeyFrom(driver)
-        );
+    public static Screenshot takeScreenshot(final WebDriver driver, boolean intoReport) {
+        Screenshot screenshot = takeScreenshot(driver, driver.getWindowHandle());
 
         if (intoReport) {
             if (screenshot != null) {
-                List<Screenshot> screenshots = new ArrayList<>();
-                screenshots.add(screenshot);
-
-                MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-                addScreenshotsToMethodContext(methodContext, screenshots);
+                ExecutionContextController.getCurrentMethodContext().addScreenshots(Stream.of(screenshot));
             }
         }
 
         return screenshot;
     }
 
-    public static Screenshot takeScreenshot(
-            final WebDriver eventFiringWebDriver,
-            String originalWindowHandle,
-            String sessionKey
-    ) {
+    private static Screenshot takeScreenshot(WebDriver eventFiringWebDriver, String originalWindowHandle) {
 
-        if (Browsers.htmlunit.equalsIgnoreCase(WebDriverSessionsManager.getRequestedBrowser(eventFiringWebDriver).orElse(null))) {
-            LOGGER.warn("Not taking screenshot for htmunit");
+        Optional<SessionContext> sessionContext = WebDriverSessionsManager.getSessionContext(eventFiringWebDriver);
+
+        if (Browsers.htmlunit.equalsIgnoreCase(sessionContext.map(SessionContext::getWebDriverRequest).map(AbstractWebDriverConfiguration::getBrowser).orElse(null))) {
+            LOGGER.warn("Not taking screenshot for " + Browsers.htmlunit);
             return null;
         }
 
@@ -154,9 +139,8 @@ public class UITestUtils {
                 /*
                 get infos
                  */
-                if (sessionKey != null) {
-                    metaData.put(Screenshot.MetaData.SESSION_KEY, sessionKey);
-                }
+                metaData.put(Screenshot.MetaData.SESSION_KEY, sessionContext.map(SessionContext::getSessionKey).orElse(null));
+                metaData.put(Screenshot.MetaData.SESSION_CONTEXT_ID, sessionContext.map(SessionContext::getId).orElse(null));
                 metaData.put(Screenshot.MetaData.TITLE, eventFiringWebDriver.getTitle());
 
                 /*
@@ -199,19 +183,6 @@ public class UITestUtils {
         return null;
     }
 
-    /**
-     * Publish the screenshots to the report into the current errorContext.
-     *
-     * @param methodContext
-     * @param screenshots
-     * @return
-     */
-    private static void addScreenshotsToMethodContext(MethodContext methodContext, List<Screenshot> screenshots) {
-        if (methodContext != null) {
-            methodContext.addScreenshots(screenshots.stream());
-        }
-    }
-
     public static void takeWebDriverScreenshotToFile(WebDriver eventFiringWebDriver, File screenShotTargetFile) {
         WebDriver driver;
         if (eventFiringWebDriver instanceof EventFiringWebDriver) {
@@ -240,34 +211,11 @@ public class UITestUtils {
     }
 
     private static void makeSimpleScreenshot(WebDriver driver, File screenShotTargetFile) {
-        File file = Shot.takeScreenshot(driver);
-        if (file != null) {
-            try {
-                FileUtils.moveFile(file, screenShotTargetFile);
-            } catch (IOException e) {
-                LOGGER.error("Error moving screenshot: " + e.getLocalizedMessage());
-            }
-        }
-    }
-
-    /**
-     * Saves a Selenium/WebDriver Screenshot String to a file in the logging directory.
-     *
-     * @param screenshot Base64 encoded String.
-     * @param filename   filename of target File.
-     */
-    private static void saveBase64EncodedScreenshot(final String screenshot, final String filename) {
-        // Convert Base64 String to byte[]
-        final byte[] imageBytes = Base64.decodeBase64(screenshot.getBytes());
+        File file = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         try {
-            final FileOutputStream fos = new FileOutputStream(filename);
-            fos.write(imageBytes);
-            fos.close();
-        } catch (final FileNotFoundException ex) {
-            LoggerFactory.getLogger(UITestUtils.class).warn(
-                    ("Screenshot file could not be written to file system: " + ex.toString()));
-        } catch (final IOException ioe) {
-            LoggerFactory.getLogger(UITestUtils.class).warn(ioe.toString());
+            FileUtils.moveFile(file, screenShotTargetFile);
+        } catch (IOException e) {
+            LOGGER.error("Error moving screenshot: " + e.getLocalizedMessage());
         }
     }
 
@@ -333,36 +281,7 @@ public class UITestUtils {
         }
     }
 
-    public static List<Screenshot> takeScreenshotsFromSessions(
-            final MethodContext methodContext,
-            final Map<String, WebDriver> rawWebDriverInstances,
-            final boolean explicitly
-    ) {
-        List<String> processedWebDriverSessions = new ArrayList<>(1);
-        List<Screenshot> screenshots = new LinkedList<>();
-        if (rawWebDriverInstances != null) {
-            // iterate through driver instances
-            for (final String sessionKey : rawWebDriverInstances.keySet()) {
-                if (!processedWebDriverSessions.contains(sessionKey)) { // already processed
-                    final WebDriver driver = rawWebDriverInstances.get(sessionKey);
-                    try {
-                        List<Screenshot> screenshotsForSession = pTakeAllScreenshotsForSession(sessionKey, driver);
-                        screenshots.addAll(screenshotsForSession);
-                    } catch (Exception e) {
-                        LOGGER.warn("Could not take screenshot from session: " + sessionKey, e);
-                    }
-                }
-            }
-        }
-
-        if (methodContext != null) {
-            addScreenshotsToMethodContext(methodContext, screenshots);
-        }
-
-        return screenshots;
-    }
-
-    private static List<Screenshot> pTakeAllScreenshotsForSession(String sessionKey, WebDriver driver) {
+    private static List<Screenshot> pTakeAllScreenshotsForSession(WebDriver driver) {
 
         final List<Screenshot> screenshots = new LinkedList<>();
 
@@ -386,7 +305,7 @@ public class UITestUtils {
                 // switch to
                 try {
                     driver.switchTo().window(windowHandle);
-                    Screenshot screenshot = takeScreenshot(driver, originalWindowHandle, sessionKey);
+                    Screenshot screenshot = takeScreenshot(driver, originalWindowHandle);
                     if (screenshot != null) {
                         screenshots.add(screenshot);
                     }
@@ -450,28 +369,24 @@ public class UITestUtils {
      * @return ScreenshotPaths.
      */
     public static List<Screenshot> takeScreenshots(final boolean publishToReport) {
-        MethodContext methodContext = null;
-        if (publishToReport) {
-            methodContext = ExecutionContextController.getCurrentMethodContext();
-        }
-        return takeScreenshots(methodContext, false);
+        List<Screenshot> allScreenshots = new LinkedList<>();
+        takeScreenshotsFromThreadSessions().forEach(webDriverScreenshots -> {
+            if (publishToReport) {
+                ExecutionContextController.getCurrentMethodContext().addScreenshots(webDriverScreenshots.stream());
+            }
+            allScreenshots.addAll(webDriverScreenshots);
+        });
+
+        return allScreenshots;
     }
 
     /**
      * Take screenshots from all windows and store them into the info container.
      *
-     * @param methodContext
      * @return
      */
-    public static List<Screenshot> takeScreenshots(final MethodContext methodContext, boolean explicitlyForThisContext) {
-        long threadId = Thread.currentThread().getId();
-        Map<String, WebDriver> webDriverSessions = new HashMap<>();
-        WebDriverManager.getWebDriversFromThread(threadId).forEach(webDriver -> {
-            String sessionKey = WebDriverManager.getSessionKeyFrom(webDriver);
-            webDriverSessions.put(sessionKey, webDriver);
-        });
-
-        return UITestUtils.takeScreenshotsFromSessions(methodContext, webDriverSessions, explicitlyForThisContext);
+    private static Stream<List<Screenshot>> takeScreenshotsFromThreadSessions() {
+        return WebDriverSessionsManager.getWebDriversFromCurrentThread().map(UITestUtils::pTakeAllScreenshotsForSession);
     }
 
 }

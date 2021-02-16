@@ -47,7 +47,7 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
 
             @Override
             public String createSubject() {
-                return Format.separate(Format.enclose("contains", Format.string(expected)));
+                return "contains " + Format.param(expected);
             }
         });
     }
@@ -62,7 +62,7 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
 
             @Override
             public String createSubject() {
-                return Format.separate(Format.enclose("startsWith", Format.string(expected)));
+                return "starts with " + Format.param(expected);
             }
         });
     }
@@ -77,7 +77,7 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
 
             @Override
             public String createSubject() {
-                return Format.separate(Format.enclose("endsWith", Format.string(expected)));
+                return "ends with " + Format.param(expected);
             }
         });
     }
@@ -92,7 +92,7 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
 
             @Override
             public String createSubject() {
-                return Format.separate(Format.enclose("matches", Format.string(pattern)));
+                return "matches " + Format.param(pattern);
             }
         });
     }
@@ -113,7 +113,7 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
 
             @Override
             public String createSubject() {
-                return Format.separate(Format.enclose("containsWords", Format.quote(wordsList)));
+                return "has words " + Format.param(wordsList);
             }
         });
     }

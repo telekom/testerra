@@ -59,7 +59,7 @@ public class DefaultPageAssertions implements PageAssertions {
 
             @Override
             public String createSubject() {
-                return Format.separate(page.toString(), "title="+Format.string(getActual()));
+                return Format.separate(page.toString(), "title="+Format.shortString(getActual()));
             }
         });
     }
@@ -74,7 +74,7 @@ public class DefaultPageAssertions implements PageAssertions {
 
             @Override
             public String createSubject() {
-                return Format.separate(page.toString(), "url="+Format.quote(getActual()));
+                return Format.separate(page.toString(), "url="+Format.param(getActual()));
             }
         });
     }

@@ -28,7 +28,6 @@ import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssertion;
 import eu.tsystems.mms.tic.testframework.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.internal.NameableChild;
-import eu.tsystems.mms.tic.testframework.internal.asserts.AssertionProvider;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultLocator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFactory;
@@ -568,7 +567,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     @Override
     public String toString(boolean detailed) {
         StringBuilder sb = new StringBuilder();
-        this.traceAncestors(parent -> sb.append(parent.getName(detailed)).append(AssertionProvider.Format.SEPARATOR));
+        this.traceAncestors(parent -> sb.append(parent.getName(detailed)).append(" -> "));
         sb.append(getName(detailed));
         return sb.toString();
     }

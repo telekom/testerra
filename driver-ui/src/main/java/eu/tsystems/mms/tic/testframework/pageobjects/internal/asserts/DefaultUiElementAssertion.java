@@ -105,7 +105,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
 
             @Override
             public String createSubject() {
-                return Format.separate(guiElement.toString(), "tagName="+Format.quote(getActual()));
+                return Format.separate(guiElement.toString(), "tagName="+Format.param(getActual()));
             }
         });
     }
@@ -120,7 +120,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
 
             @Override
             public String createSubject() {
-                return Format.separate(guiElement.toString(), "text="+Format.string(getActual()));
+                return Format.separate(guiElement.toString(), "text="+Format.shortString(getActual()));
             }
         });
     }
@@ -135,7 +135,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
 
             @Override
             public String createSubject() {
-                return Format.separate(guiElement.toString(), attribute+"="+Format.quote(getActual()));
+                return Format.separate(guiElement.toString(), attribute+"="+Format.param(getActual()));
             }
         });
     }
@@ -180,7 +180,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
 
             @Override
             public String createSubject() {
-                return Format.separate(guiElement.toString(), Format.enclose("visible", Format.label("complete", complete)));
+                return Format.separate(guiElement.toString(), (complete?"complete ":"")+"visible");
             }
         });
     }

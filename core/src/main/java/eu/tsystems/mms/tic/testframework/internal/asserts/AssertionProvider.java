@@ -35,17 +35,13 @@ public abstract class AssertionProvider<T> implements ActualProperty<T> {
 
     public static class Format {
         private final static Formatter formatter = Testerra.getInjector().getInstance(Formatter.class);
-        public static final String SEPARATOR=" > ";
+        public static final String SEPARATOR=" ";
         public static String separate(Object...parts) {
             return Arrays.stream(parts).map(Object::toString).collect(Collectors.joining(SEPARATOR));
         }
 
         public static String cut(String subject) {
             return formatter.cutString(subject, 30);
-        }
-
-        public static String quote(String parameter) {
-            return "\""+parameter+"\"";
         }
 
         public static String enclose(String method, Object...parameters) {
@@ -56,11 +52,15 @@ public abstract class AssertionProvider<T> implements ActualProperty<T> {
         }
 
         public static String label(String label, Object parameter) {
-            return label+": " + parameter;
+            return label+": " + param(parameter);
         }
 
-        public static String string(Object param) {
-            return quote(cut(param.toString()));
+        public static String shortString(Object param) {
+            return param(cut(param.toString()));
+        }
+
+        public static String param(Object param) {
+            return "["+param.toString()+"]";
         }
     }
 

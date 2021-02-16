@@ -81,8 +81,8 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
     @Test
     public void test_UiElement_visible_false() {
         WebTestPage page = getPage();
-        page.notVisibleElement().expect().attribute(Attribute.STYLE).contains("hidden");
-        page.notVisibleElement().expect().attribute("style").contains("hidden");
+        page.notVisibleElement().expect().attribute(Attribute.STYLE).contains("hidden").is(true);
+        page.notVisibleElement().expect().attribute("style").contains("hidden").is(true);
         page.notVisibleElement().expect().visible(true).is(false);
         page.notVisibleElement().expect().visible(false).is(false);
         page.notDisplayedElement().expect().css("display").is("none");

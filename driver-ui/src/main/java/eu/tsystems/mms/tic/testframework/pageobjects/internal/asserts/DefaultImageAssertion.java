@@ -55,7 +55,7 @@ public class DefaultImageAssertion extends AbstractPropertyAssertion<File> imple
 
             @Override
             public String createSubject() {
-                return Format.enclose("pixelDistance", Format.label("referenceImageName", referenceImageName));
+                return "pixel distance to image \""+referenceImageName+"\"";
             }
 
             @Override

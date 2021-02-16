@@ -31,7 +31,7 @@ public class AssertionFormatTests extends AbstractExclusiveTestSitesTest<WebTest
         return WebTestPage.class;
     }
 
-    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that WebTestPage > url=\"http://localhost/Input/input.html\" > endsWith\\(\"nonexistingfile.html\"\\) is true")
+    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that WebTestPage url=\\[http://localhost/Input/input.html\\] ends with \\[nonexistingfile.html\\] is true")
     public void test_Page_url_format() {
         WebTestPage page = getPage();
         Control.withTimeout(0, () -> page.expect().url().endsWith("nonexistingfile.html").is(true));
@@ -43,37 +43,37 @@ public class AssertionFormatTests extends AbstractExclusiveTestSitesTest<WebTest
         Control.withTimeout(0, () -> page.expect().url().endsWith("nonexistingfile.html").is(true, "URL ends with proper file name"));
     }
 
-    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that WebTestPage > title=\"Input test\" > startsWith\\(\"Hallo\"\\) is true")
+    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that WebTestPage title=\\[Input test\\] starts with \\[Hallo\\] is true")
     public void test_Page_title_format() {
         WebTestPage page = getPage();
         Control.withTimeout(0, () -> page.expect().title().startsWith("Hallo").is(true));
     }
 
-    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that WebTestPage > UiElement\\(By.id: notDisplayedElement\\) > displayed is true")
+    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that WebTestPage -> UiElement\\(By.id: notDisplayedElement\\) displayed is true")
     public void test_UiElement_displayed_format() {
         WebTestPage page = getPage();
         Control.withTimeout(0, () -> page.notDisplayedElement().expect().displayed(true));
     }
 
-    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that WebTestPage > UiElement\\(By.id: notDisplayedElement\\) > css \\{ display: none \\} > contains\\(\"block\"\\) is true")
+    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that WebTestPage -> UiElement\\(By.id: notDisplayedElement\\) css \\{ display: \\[none\\] \\} contains \\[block\\] is true")
     public void test_UiElement_css_format() {
         WebTestPage page = getPage();
         Control.withTimeout(0, () -> page.notDisplayedElement().expect().css("display").contains("block").is(true));
     }
 
-    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that WebTestPage > title=\"Input test\" > length \\[10\\] is between \\[3000\\] and \\[1\\]")
+    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that WebTestPage title=\\[Input test\\] length \\[10\\] is between \\[3000\\] and \\[1\\]")
     public void test_Page_title_length_format() {
         WebTestPage page = getPage();
         Control.withTimeout(0, () -> page.expect().title().length().isBetween(3000,1));
     }
 
-    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that WebTestPage > UiElement\\(By.id: notDisplayedElement\\) > style=\"display: none;\" > endsWith\\(\"block\"\\) is true")
+    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that WebTestPage -> UiElement\\(By.id: notDisplayedElement\\) style=\\[display: none;\\] ends with \\[block\\] is true")
     public void test_UiElement_value_format() {
         WebTestPage page = getPage();
         Control.withTimeout(0, () -> page.notDisplayedElement().expect().attribute("style").endsWith("block").is(true));
     }
 
-    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that WebTestPage > inputForm > button > value=\"Button1\" equals \\[Glickmisch\\]")
+    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that WebTestPage -> inputForm -> button value=\\[Button1\\] equals \\[Glickmisch\\]")
     public void test_Component_text_format() {
         WebTestPage page = getPage();
         Control.withTimeout(0, () -> page.inputForm().button().expect().value("Glickmisch"));

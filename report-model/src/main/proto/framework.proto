@@ -64,7 +64,7 @@ message MethodContext {
 
     MethodType method_type = 7;
     //repeated string parameters = 8 [deprecated = true];
-    repeated string method_tags = 9;
+//    repeated string method_tags = 9 [deprecated = true];
     int32 retry_number = 10;
     int32 method_run_index = 11;
     string thread_name = 12;
@@ -93,6 +93,7 @@ message MethodContext {
     ResultStatusType result_status = 34;
     map<string,string> parameters = 35;
     map<string,string> custom_contexts = 36;
+    map<string,string> annotations = 37;
 }
 
 message ContextValues {

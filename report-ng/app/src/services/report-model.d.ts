@@ -251,9 +251,6 @@ export namespace data {
         /** MethodContext methodType */
         methodType?: (data.MethodType|null);
 
-        /** MethodContext methodTags */
-        methodTags?: (string[]|null);
-
         /** MethodContext retryNumber */
         retryNumber?: (number|null);
 
@@ -310,6 +307,9 @@ export namespace data {
 
         /** MethodContext customContexts */
         customContexts?: ({ [k: string]: string }|null);
+
+        /** MethodContext annotations */
+        annotations?: ({ [k: string]: string }|null);
     }
 
     /** Represents a MethodContext. */
@@ -326,9 +326,6 @@ export namespace data {
 
         /** MethodContext methodType. */
         public methodType: data.MethodType;
-
-        /** MethodContext methodTags. */
-        public methodTags: string[];
 
         /** MethodContext retryNumber. */
         public retryNumber: number;
@@ -386,6 +383,9 @@ export namespace data {
 
         /** MethodContext customContexts. */
         public customContexts: { [k: string]: string };
+
+        /** MethodContext annotations. */
+        public annotations: { [k: string]: string };
 
         /**
          * Decodes a MethodContext message from the specified reader or buffer.
@@ -708,9 +708,6 @@ export namespace data {
         /** ErrorContext scriptSource */
         scriptSource?: (data.IScriptSource|null);
 
-        /** ErrorContext executionObjectSource */
-        executionObjectSource?: (data.IScriptSource|null);
-
         /** ErrorContext ticketId */
         ticketId?: (string|null);
 
@@ -735,9 +732,6 @@ export namespace data {
 
         /** ErrorContext scriptSource. */
         public scriptSource?: (data.IScriptSource|null);
-
-        /** ErrorContext executionObjectSource. */
-        public executionObjectSource?: (data.IScriptSource|null);
 
         /** ErrorContext ticketId. */
         public ticketId: string;

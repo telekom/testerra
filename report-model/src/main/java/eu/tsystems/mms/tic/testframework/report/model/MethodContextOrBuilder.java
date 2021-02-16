@@ -36,45 +36,9 @@ public interface MethodContextOrBuilder extends
   /**
    * <pre>
    *repeated string parameters = 8 [deprecated = true];
+   *    repeated string method_tags = 9 [deprecated = true];
    * </pre>
    *
-   * <code>repeated string method_tags = 9;</code>
-   * @return A list containing the methodTags.
-   */
-  java.util.List<java.lang.String>
-      getMethodTagsList();
-  /**
-   * <pre>
-   *repeated string parameters = 8 [deprecated = true];
-   * </pre>
-   *
-   * <code>repeated string method_tags = 9;</code>
-   * @return The count of methodTags.
-   */
-  int getMethodTagsCount();
-  /**
-   * <pre>
-   *repeated string parameters = 8 [deprecated = true];
-   * </pre>
-   *
-   * <code>repeated string method_tags = 9;</code>
-   * @param index The index of the element to return.
-   * @return The methodTags at the given index.
-   */
-  java.lang.String getMethodTags(int index);
-  /**
-   * <pre>
-   *repeated string parameters = 8 [deprecated = true];
-   * </pre>
-   *
-   * <code>repeated string method_tags = 9;</code>
-   * @param index The index of the value to return.
-   * @return The bytes of the methodTags at the given index.
-   */
-  com.google.protobuf.ByteString
-      getMethodTagsBytes(int index);
-
-  /**
    * <code>int32 retry_number = 10;</code>
    * @return The retryNumber.
    */
@@ -425,5 +389,39 @@ public interface MethodContextOrBuilder extends
    */
 
   java.lang.String getCustomContextsOrThrow(
+      java.lang.String key);
+
+  /**
+   * <code>map&lt;string, string&gt; annotations = 37;</code>
+   */
+  int getAnnotationsCount();
+  /**
+   * <code>map&lt;string, string&gt; annotations = 37;</code>
+   */
+  boolean containsAnnotations(
+      java.lang.String key);
+  /**
+   * Use {@link #getAnnotationsMap()} instead.
+   */
+  @java.lang.Deprecated
+  java.util.Map<java.lang.String, java.lang.String>
+  getAnnotations();
+  /**
+   * <code>map&lt;string, string&gt; annotations = 37;</code>
+   */
+  java.util.Map<java.lang.String, java.lang.String>
+  getAnnotationsMap();
+  /**
+   * <code>map&lt;string, string&gt; annotations = 37;</code>
+   */
+
+  java.lang.String getAnnotationsOrDefault(
+      java.lang.String key,
+      java.lang.String defaultValue);
+  /**
+   * <code>map&lt;string, string&gt; annotations = 37;</code>
+   */
+
+  java.lang.String getAnnotationsOrThrow(
       java.lang.String key);
 }

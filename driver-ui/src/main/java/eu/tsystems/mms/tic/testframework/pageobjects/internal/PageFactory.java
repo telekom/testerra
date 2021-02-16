@@ -28,9 +28,14 @@ import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import org.openqa.selenium.WebDriver;
 
 public interface PageFactory {
-    PageFactory setGlobalPagePrefix(String pagePrefix);
-    PageFactory setThreadLocalPagePrefix(String pagePrefix);
-    PageFactory removeThreadLocalPagePrefix();
+    PageFactory setGlobalPagesPrefix(String pagePrefix);
+    PageFactory setThreadLocalPagesPrefix(String pagePrefix);
+    PageFactory clearThreadLocalPagesPrefix();
+
+    @Deprecated
+    default PageFactory clearCache() {
+        return clearThreadLocalPagesPrefix();
+    }
     <T extends PageObject> T createPage(Class<T> pageClass);
     default <T extends PageObject> T createPage(Class<T> pageClass, WebDriver webDriver) {
         return createPageWithCheckRule(pageClass, webDriver, CheckRule.DEFAULT);

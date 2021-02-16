@@ -29,5 +29,5 @@ import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverManager;
  * @author Mike Reiche
  */
 public interface WebDriverManagerProvider {
-    IWebDriverManager webDriverManager = Testerra.getInjector().getInstance(IWebDriverManager.class);
+    IWebDriverManager WebDriverManager = Testerra.getInjector().getInstance(IWebDriverManager.class);
 }

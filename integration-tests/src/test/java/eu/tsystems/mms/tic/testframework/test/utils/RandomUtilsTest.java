@@ -25,6 +25,7 @@ import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.RandomUtils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class RandomUtilsTest extends TesterraTest {

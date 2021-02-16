@@ -37,7 +37,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.XPath;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.AbstractFieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.GuiElementCheckFieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFieldAction;
-import eu.tsystems.mms.tic.testframework.testing.TestFeatures;
+import eu.tsystems.mms.tic.testframework.testing.TestControllerProvider;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -63,7 +63,7 @@ import org.openqa.selenium.WebDriver;
  */
 public abstract class AbstractPage implements
         Loggable,
-        TestFeatures,
+        TestControllerProvider,
         PageObject,
         LocatorFactoryProvider
 {

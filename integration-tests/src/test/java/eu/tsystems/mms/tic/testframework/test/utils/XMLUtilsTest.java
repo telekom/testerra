@@ -25,6 +25,7 @@ import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.XMLUtils;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.xpath.XPathExpressionException;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.w3c.dom.NodeList;
 

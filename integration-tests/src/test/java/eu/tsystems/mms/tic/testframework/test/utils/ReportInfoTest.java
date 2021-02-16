@@ -23,6 +23,7 @@ package eu.tsystems.mms.tic.testframework.test.utils;
 
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**

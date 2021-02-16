@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.internal.asserts.QuantityAssertion;
 import eu.tsystems.mms.tic.testframework.internal.asserts.StringAssertion;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class PageTests extends AbstractExclusiveTestSitesTest<WebTestPage> implements Loggable, PageFactoryTest {

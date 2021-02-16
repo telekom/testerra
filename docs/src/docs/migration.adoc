@@ -313,7 +313,7 @@ top.asserts().assertLayout(Layout.outer().sameRight(bottom, 0)); <2>
 == New Control API
 
 With the `TestController` API, you are able to control your test flow during runtime. Like timeouts, assertion handling and retry intervals.
-The `Control` instance is availabe as soon you implement the `TestFeatures` interface.
+The `Control` instance is availabe as soon you implement the `TestControllerProvider` interface.
 
 ```java
 class MyPage extends Page implements TestFeatures {
@@ -411,7 +411,7 @@ guiElement.nonFunctionalAsserts().assertIsDisplayed();
 ====
 
 === Advanced Topics on assertions
-Perform assertions outside of `TestFeatures`
+Perform assertions outside of `TestControllerProvider`
 ```java
 public MyClass {
     @Inject

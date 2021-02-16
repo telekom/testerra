@@ -25,6 +25,7 @@ import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.NumberUtils;
 import java.util.ArrayList;
 import java.util.List;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class NumberUtilsTest extends TesterraTest {

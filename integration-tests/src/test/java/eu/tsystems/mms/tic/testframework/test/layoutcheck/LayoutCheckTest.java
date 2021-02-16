@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.LocatorFactoryProvider;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class LayoutCheckTest extends AbstractTestSitesTest implements LocatorFactoryProvider {

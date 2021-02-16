@@ -38,8 +38,6 @@ import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.TLPrefix2Resp
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.TLPrefix2ResponsiveWebTestPage_801px_1234px;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.Page;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
@@ -47,10 +45,10 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverReque
 import eu.tsystems.mms.tic.testframework.webdrivermanager.UnspecificWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
-import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -62,7 +60,7 @@ public class PageFactoryPrefixedTest extends AbstractWebDriverTest implements Lo
 
     @Override
     public ResponsiveWebTestPage getPage() {
-        return pageFactory.createPage(ResponsiveWebTestPage.class, getClassExclusiveWebDriver());
+        return PageFactory.createPage(ResponsiveWebTestPage.class, getClassExclusiveWebDriver());
     }
 
     @Override
@@ -226,7 +224,7 @@ public class PageFactoryPrefixedTest extends AbstractWebDriverTest implements Lo
 
     @Test
     public void testT07_LoadBasePage() {
-        BasePage basePage = pageFactory.createPage(BasePage.class, getWebDriver());
+        BasePage basePage = PageFactory.createPage(BasePage.class, getWebDriver());
 
         AssertCollector.assertFalse(basePage instanceof BasePage2016, "its a BasePage2016");
         AssertCollector.assertFalse(basePage instanceof PrefixBasePage2016, "its a PrefixBasePage2016");

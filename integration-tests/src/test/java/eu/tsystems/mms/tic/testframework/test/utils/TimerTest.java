@@ -28,6 +28,7 @@ import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class TimerTest extends TesterraTest implements Loggable {

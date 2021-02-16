@@ -95,7 +95,7 @@ public class UITestUtils implements WebDriverManagerProvider {
     }
 
     public static void takeScreenshot(WebDriver webDriver, Screenshot screenshot) {
-        Optional<SessionContext> sessionContext = webDriverManager.getSessionContext(webDriver);
+        Optional<SessionContext> sessionContext = WebDriverManager.getSessionContext(webDriver);
         takeWebDriverScreenshotToFile(webDriver, screenshot.getScreenshotFile());
 
         // get page source (webdriver)
@@ -170,7 +170,7 @@ public class UITestUtils implements WebDriverManagerProvider {
          * captured. To allow full-page screenshots, we stitch several viewport-screenshots together.
          * If this is eventually supported by WebDriver, this special branch can be removed.
          */
-        if (Browsers.ie.equalsIgnoreCase(webDriverManager.getRequestedBrowser(eventFiringWebDriver).orElse(null))) {
+        if (Browsers.ie.equalsIgnoreCase(WebDriverManager.getRequestedBrowser(eventFiringWebDriver).orElse(null))) {
             Viewport viewport = JSUtils.getViewport(driver);
 
             if (viewport.height > IE_SCREENSHOT_LIMIT) {
@@ -341,6 +341,6 @@ public class UITestUtils implements WebDriverManagerProvider {
      * @return
      */
     private static Stream<List<Screenshot>> takeScreenshotsFromThreadSessions() {
-        return webDriverManager.getWebDriversFromCurrentThread().map(UITestUtils::pTakeAllScreenshotsForSession);
+        return WebDriverManager.getWebDriversFromCurrentThread().map(UITestUtils::pTakeAllScreenshotsForSession);
     }
 }

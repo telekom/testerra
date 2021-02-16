@@ -21,13 +21,14 @@
  */
  package eu.tsystems.mms.tic.testframework.test.utils;
 
+import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import java.math.BigDecimal;
 import org.testng.annotations.Test;
 
 @Deprecated
-public class AssertUtilsTest extends TesterraTest {
+public class AssertUtilsTest extends TesterraTest implements AssertProvider {
 
     /**
      * checks if string contains expected content

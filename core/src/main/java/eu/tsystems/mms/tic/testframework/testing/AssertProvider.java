@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2021, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -18,17 +18,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package eu.tsystems.mms.tic.testframework.testing;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.SimpleAssertion;
 
-/**
- * Provides basic test features
- * @author Mike Reiche
- */
-public interface TestFeatures {
+public interface AssertProvider {
     SimpleAssertion Assert = Testerra.getInjector().getInstance(Assertion.class);
-    TestController Control = Testerra.getInjector().getInstance(TestController.class);
 }

@@ -24,6 +24,7 @@ package eu.tsystems.mms.tic.testframework.test.utils;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.Condition;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class ConditionsTest extends TesterraTest implements Loggable {

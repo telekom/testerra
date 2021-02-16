@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public abstract class AbstractGuiElementLayoutsTest extends AbstractGuiElementStandardFunctionsTest {

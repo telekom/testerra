@@ -23,6 +23,7 @@
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class PropertyManagerTest extends TesterraTest {

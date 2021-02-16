@@ -24,6 +24,7 @@ package eu.tsystems.mms.tic.testframework.test.utils;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.XPath;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class XPathTest extends TesterraTest  {

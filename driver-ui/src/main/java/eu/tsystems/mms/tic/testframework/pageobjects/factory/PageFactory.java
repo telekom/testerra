@@ -39,23 +39,23 @@ public final class PageFactory {
     }
 
     /**
-     * @deprecated Use {@link eu.tsystems.mms.tic.testframework.pageobjects.internal.PageFactory#setGlobalPagePrefix(String)} instead
+     * @deprecated Use {@link eu.tsystems.mms.tic.testframework.pageobjects.internal.PageFactory#setGlobalPagesPrefix(String)} instead
      */
     public static void setGlobalPagesPrefix(String prefix) {
-        pageFactory.setGlobalPagePrefix(prefix);
+        pageFactory.setGlobalPagesPrefix(prefix);
     }
 
     /**
-     * @deprecated Use {@link eu.tsystems.mms.tic.testframework.pageobjects.internal.PageFactory#setThreadLocalPagePrefix(String)} instead
+     * @deprecated Use {@link eu.tsystems.mms.tic.testframework.pageobjects.internal.PageFactory#setThreadLocalPagesPrefix(String)} instead
      */
     @Deprecated
     public static void setThreadLocalPagesPrefix(String threadLocalPagesPrefix) {
-        pageFactory.setThreadLocalPagePrefix(threadLocalPagesPrefix);
+        pageFactory.setThreadLocalPagesPrefix(threadLocalPagesPrefix);
     }
 
     @Deprecated
     public static void clearThreadLocalPagesPrefix() {
-        pageFactory.removeThreadLocalPagePrefix();
+        pageFactory.clearThreadLocalPagesPrefix();
     }
 
     /**

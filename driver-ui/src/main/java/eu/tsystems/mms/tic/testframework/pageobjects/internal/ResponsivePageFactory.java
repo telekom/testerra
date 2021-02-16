@@ -32,4 +32,10 @@ public class ResponsivePageFactory extends DefaultPageFactory {
     public <T extends PageObject> Class<T> findBestMatchingClass(Class<T> pageClass, WebDriver webDriver) {
         return ClassFinder.getBestMatchingClass(pageClass, webDriver, getConfiguredPrefix());
     }
+
+    @Override
+    public PageFactory clearThreadLocalPagesPrefix() {
+        ClassFinder.clearCache();
+        return super.clearThreadLocalPagesPrefix();
+    }
 }

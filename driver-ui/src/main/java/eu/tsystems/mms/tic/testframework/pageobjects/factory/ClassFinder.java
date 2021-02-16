@@ -274,7 +274,7 @@ final public class ClassFinder {
         }
     }
 
-    static void clearCache() {
+    public static void clearCache() {
         Caches.IMPLEMENTATIONS_CACHE.clear();
     }
 

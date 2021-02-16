@@ -234,6 +234,12 @@ public class XPath {
         return contains;
     }
 
+    public XPath encloses(XPath selector) {
+        XPath contains = new XPath(selector.toString());
+        prepareContainsSelect(contains);
+        return contains;
+    }
+
     private void prepareContainsSelect(XPath contains) {
         contains.root = this.root;
         contains.parentSelect = this.parentSelect;
@@ -247,6 +253,12 @@ public class XPath {
     }
     public XPath select(String selector, int position) {
         XPath sub = new XPath(translateSubSelection(selector), position);
+        prepareSubSelect(sub);
+        return sub;
+    }
+
+    public XPath select(XPath selector) {
+        XPath sub = new XPath(translateSubSelection(selector.toString()));
         prepareSubSelect(sub);
         return sub;
     }

@@ -35,7 +35,7 @@ public abstract class AbstractExclusiveTestSitesTest<T extends Page> extends Abs
 
     @BeforeClass
     public void createPage() {
-        this.page = pageFactory.createPage(getPageClass(), getClassExclusiveWebDriver());
+        this.page = PageFactory.createPage(getPageClass(), getClassExclusiveWebDriver());
     }
 
     abstract public Class<T> getPageClass();

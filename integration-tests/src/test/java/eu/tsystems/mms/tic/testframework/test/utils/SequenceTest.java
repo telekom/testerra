@@ -21,12 +21,13 @@
 
 package eu.tsystems.mms.tic.testframework.test.utils;
 
+import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.Sequence;
 import java.math.BigDecimal;
 import org.testng.annotations.Test;
 
-public class SequenceTest extends TesterraTest {
+public class SequenceTest extends TesterraTest implements AssertProvider {
 
     @Test
     public void testSequenceDuration() {

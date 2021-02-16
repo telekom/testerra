@@ -22,6 +22,7 @@
 package eu.tsystems.mms.tic.testframework.playground;
 
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class SimpleFailingTest extends TesterraTest {

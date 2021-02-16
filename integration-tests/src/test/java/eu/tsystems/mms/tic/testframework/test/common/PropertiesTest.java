@@ -17,11 +17,12 @@
  *     Peter Lehmann
  *     pele
  */
-package eu.tsystems.mms.tic.testframework.core.test.common;
+package eu.tsystems.mms.tic.testframework.test.common;
 
 import eu.tsystems.mms.tic.testframework.common.IProperties;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class PropertiesTest extends TesterraTest {
@@ -81,7 +82,7 @@ public class PropertiesTest extends TesterraTest {
 
     @Test
     public void test_asDouble() {
-        Assert.assertEquals(Properties.FLOAT.asDouble(), 42.1337);
+        Assert.assertEquals(Properties.FLOAT.asDouble().doubleValue(), 42.1337);
         Assert.assertEquals(Properties.FLOAT_STRING.asDouble(), Properties.FLOAT.asDouble());
     }
 

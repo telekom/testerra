@@ -25,6 +25,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.FileNotFoundException;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.PdfUtils;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 

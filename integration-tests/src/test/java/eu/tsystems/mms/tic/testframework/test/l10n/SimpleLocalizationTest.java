@@ -24,6 +24,7 @@ package eu.tsystems.mms.tic.testframework.test.l10n;
 import eu.tsystems.mms.tic.testframework.l10n.SimpleLocalization;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import java.util.Locale;
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 

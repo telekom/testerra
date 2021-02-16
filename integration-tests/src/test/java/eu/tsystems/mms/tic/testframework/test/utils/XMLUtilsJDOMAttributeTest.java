@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.utils.XMLUtils;
 import java.io.IOException;
 import org.jdom2.Document;
 import org.jdom2.JDOMException;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**

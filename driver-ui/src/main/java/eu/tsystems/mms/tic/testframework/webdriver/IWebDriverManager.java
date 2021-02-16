@@ -22,6 +22,7 @@
 package eu.tsystems.mms.tic.testframework.webdriver;
 
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
+import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
@@ -47,4 +48,14 @@ public interface IWebDriverManager extends WebDriverRetainer {
     String getSessionKey(WebDriver webDriver);
     WebDriverManagerConfig getConfig();
     Stream<WebDriver> getWebDriversFromCurrentThread();
+
+    @Deprecated
+    default void forceShutdownAllThreads() {
+        shutdownAllThreadSessions();
+    }
+
+    default IWebDriverManager setUserAgentConfig(String browser, UserAgentConfig configurator) {
+        WebDriverManager.setUserAgentConfig(browser, configurator);
+        return this;
+    }
 }

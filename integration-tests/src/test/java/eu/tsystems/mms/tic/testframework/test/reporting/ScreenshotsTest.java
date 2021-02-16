@@ -24,14 +24,13 @@ package eu.tsystems.mms.tic.testframework.test.reporting;
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.BasePage;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.util.Optional;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -42,7 +41,7 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
 
     @Override
     public BasePage getPage() {
-        return PageFactory.create(BasePage.class, WebDriverManager.getWebDriver());
+        return PageFactory.createPage(BasePage.class, WebDriverManager.getWebDriver());
     }
 
     @Test()

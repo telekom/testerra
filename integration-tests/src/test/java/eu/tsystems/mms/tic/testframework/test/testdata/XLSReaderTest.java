@@ -28,6 +28,7 @@ import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 

@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverProxyUtils;
 import java.net.MalformedURLException;
 import java.net.URL;
 import org.openqa.selenium.Proxy;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;

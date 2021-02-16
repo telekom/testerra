@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020,  Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -17,13 +17,15 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 package eu.tsystems.mms.tic.testframework.testing;
 
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
-import org.testng.annotations.Listeners;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 
-@Listeners(TesterraListener.class)
-public abstract class TesterraTest implements TestControllerProvider {
+/**
+ * Provides basic test features
+ * @author Mike Reiche
+ */
+public interface TestControllerProvider {
+    TestController Control = Testerra.getInjector().getInstance(TestController.class);
 }

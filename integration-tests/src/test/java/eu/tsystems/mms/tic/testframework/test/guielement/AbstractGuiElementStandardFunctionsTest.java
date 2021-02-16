@@ -23,10 +23,10 @@
 package eu.tsystems.mms.tic.testframework.test.guielement;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.PreparedLocator;
+import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.ThrowableUtils;
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.annotations.Test;
 
-public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGuiElementTest {
+public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGuiElementTest implements AssertProvider {
 
     /**
      * Test if GuiElement.asserts().assertContainsText works for one string that is contained

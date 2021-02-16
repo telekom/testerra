@@ -38,19 +38,19 @@ public class DefaultPageFactory implements PageFactory, Loggable {
     private final ThreadLocal<String> THREAD_LOCAL_PAGES_PREFIX = new ThreadLocal<>();
 
     @Override
-    public PageFactory setGlobalPagePrefix(String pagePrefix) {
+    public PageFactory setGlobalPagesPrefix(String pagePrefix) {
         GLOBAL_PAGES_PREFIX = pagePrefix;
         return this;
     }
 
     @Override
-    public PageFactory setThreadLocalPagePrefix(String pagePrefix) {
+    public PageFactory setThreadLocalPagesPrefix(String pagePrefix) {
         THREAD_LOCAL_PAGES_PREFIX.set(pagePrefix);
         return this;
     }
 
     @Override
-    public PageFactory removeThreadLocalPagePrefix() {
+    public PageFactory clearThreadLocalPagesPrefix() {
         THREAD_LOCAL_PAGES_PREFIX.remove();
         return this;
     }

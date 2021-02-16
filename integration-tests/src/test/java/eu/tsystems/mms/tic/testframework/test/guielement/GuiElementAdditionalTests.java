@@ -29,6 +29,7 @@ import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import java.io.File;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class GuiElementAdditionalTests extends AbstractTestSitesTest {

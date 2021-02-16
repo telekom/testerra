@@ -28,10 +28,11 @@ import eu.tsystems.mms.tic.testframework.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementAssertion;
+import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.testng.annotations.Test;
 
-public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> {
+public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> implements AssertProvider {
 
     @Override
     public Class<WebTestPage> getPageClass() {
@@ -270,7 +271,7 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
 
     @Test
     public void test_UiElement_click_retry_fails() {
-        WebTestPage page = pageFactory.createPage(WebTestPage.class, getWebDriver());
+        WebTestPage page = PageFactory.createPage(WebTestPage.class, getWebDriver());
         UiElement disableMyselfBtn = page.getFinder().findById("disableMyselfBtn");
         disableMyselfBtn.expect().enabled(true);
         AtomicInteger retryCount = new AtomicInteger();

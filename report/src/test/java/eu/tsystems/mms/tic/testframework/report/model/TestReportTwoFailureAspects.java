@@ -37,19 +37,19 @@ public class TestReportTwoFailureAspects implements IFailurePointEntryHelper {
             TestResultHelper.TestResultFailurePointEntryType.FAILED,
             2,
             6,
-            "Assert: expected [true] but found [false]",
+            "Assert: Expected [false] equals [true]",
             Arrays.asList("ReportTestUnderTestExecutionFilter - test_FailedInheritedFilter",
                           "ReportTestUnderTestExecutionFilter - test_FilterFailedMinor",
                           "ReportTestUnderTestExecutionFilter - test_FilterFailedNoMinor",
                           "ReportTestUnderTestCorridorLow - test_testLowCorridorFailed2 (in Report- TestsUnderTest - Low-Corridor Creator)",
                           "ReportTestUnderTestCorridorMid - test_testMidCorridorFailed2",
                           "ReportTestUnderTestCorridorMid - test_testMidCorridorFailed3"),
-            Arrays.asList("Assert: expected [true] but found [false]",
-                          "Assert: expected [true] but found [false]",
-                          "Assert: expected [true] but found [false]",
-                          "Assert: expected [true] but found [false]",
-                          "Assert: expected [true] but found [false]",
-                          "Assert: expected [true] but found [false]")
+            Arrays.asList("Assert: Expected [false] equals [true]",
+                          "Assert: Expected [false] equals [true]",
+                          "Assert: Expected [false] equals [true]",
+                          "Assert: Expected [false] equals [true]",
+                          "Assert: Expected [false] equals [true]",
+                          "Assert: Expected [false] equals [true]")
     );
 
     public static final FailureAspectEntry FA3 = new FailureAspectEntry(

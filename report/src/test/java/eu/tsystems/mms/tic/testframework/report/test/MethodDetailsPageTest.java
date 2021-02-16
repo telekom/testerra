@@ -295,8 +295,9 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
 
         MethodStackPage stackPage = GeneralWorkflow.doOpenReportStracktracePage(methodDetailsPage);
-        AssertCollector.assertTrue(stackPage.getStackTrace().contains("java.lang.AssertionError: expected [true] but found [false]"), "The stack trace tab should contain the expected message.");
-        AssertCollector.assertTrue(stackPage.getStackTrace().contains("eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestExecutionFilter.test_FailedInheritedFilter(ReportTestUnderTestExecutionFilter.java"), "The stack trace tab should contain the expected message.");
+        String stackTrace = stackPage.getStackTrace();
+        AssertCollector.assertTrue(stackTrace.contains("java.lang.AssertionError: Expected [false] equals [true]"), "The stack trace tab should contain the expected message.");
+        AssertCollector.assertTrue(stackTrace.contains("eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestExecutionFilter.test_FailedInheritedFilter(ReportTestUnderTestExecutionFilter.java"), "The stack trace tab should contain the expected message.");
     }
 
     /**
@@ -312,7 +313,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
         MethodMinorErrorsPage minorErrorsPage = methodDetailsPage.clickMinorErrorsTab();
 
         AssertCollector.assertTrue(minorErrorsPage.getAssertion().isDisplayed(), "The assertion message button is displayed in the minor details page.");
-        AssertCollector.assertTrue(minorErrorsPage.getAssertion().getText().equals("Assert: expected [true] but found [false]"), "The assertion message is correct shown on the minor details page.");
+        AssertCollector.assertTrue(minorErrorsPage.getAssertion().getText().equals("Assert: Expected [false] equals [true]"), "The assertion message is correct shown on the minor details page.");
 
         minorErrorsPage = minorErrorsPage.clickAssertion();
         Assert.assertTrue(minorErrorsPage.getAssertionMessage().contains("eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTest"), "The assertion message is correct shown on details page.");

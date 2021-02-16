@@ -723,8 +723,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
      */
     @Deprecated
     public GuiElementAssert assertCollector(String errorMessage) {
-        GuiElementAssertDescriptionDecorator guiElementAssertDescriptionDecorator
-                = new GuiElementAssertDescriptionDecorator(errorMessage, assertCollector());
+        GuiElementAssertDescriptionDecorator guiElementAssertDescriptionDecorator = new GuiElementAssertDescriptionDecorator(errorMessage, assertCollector());
         return guiElementAssertDescriptionDecorator;
     }
 

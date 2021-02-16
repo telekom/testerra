@@ -213,7 +213,7 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
                 // DESCRIPTION
                 entry.getDescription()
         )));
-        descriptionElement.setName("descriptionElement");
+        //descriptionElement.setName("descriptionElement: " + entry.getTitle());
         return descriptionElement;
     }
 

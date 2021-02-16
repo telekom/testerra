@@ -204,6 +204,9 @@ public final class WebDriverManagerUtils {
     }
 
 
+    /**
+     * @deprecated Use {@link WebDriverSessionsManager#getSessionContext(WebDriver)} instead
+     */
     public static String getSessionKey(WebDriver driver) {
 
         return WebDriverSessionsManager.getSessionKey(driver);

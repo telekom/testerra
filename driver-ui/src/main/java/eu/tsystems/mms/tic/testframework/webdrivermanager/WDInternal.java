@@ -27,12 +27,7 @@ import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 public class WDInternal {
 
     private WDInternal() {
-        
-    }
 
-    public static void cleanupExecutingSeleniumHost() {
-        WebDriverManager.EXECUTING_SELENIUM_HOSTS_PER_THREAD.set(null);
-        WebDriverManager.EXECUTING_SELENIUM_HOSTS_PER_THREAD.remove();
     }
 
     /**

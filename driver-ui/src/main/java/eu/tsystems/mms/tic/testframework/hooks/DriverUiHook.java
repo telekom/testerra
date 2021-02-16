@@ -25,7 +25,6 @@ import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.execution.testng.WebDriverRetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.ConditionalBehaviourWorker;
-import eu.tsystems.mms.tic.testframework.execution.worker.finish.LogWDSessionsWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.TakeInSessionEvidencesWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.TakeOutOfSessionsEvidencesWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverShutDownWorker;
@@ -59,7 +58,6 @@ public class DriverUiHook implements ModuleHook {
 
         //finish
         eventBus.register(new ConditionalBehaviourWorker());
-        eventBus.register(new LogWDSessionsWorker());
         eventBus.register(new TakeInSessionEvidencesWorker());
 
         /*

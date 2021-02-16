@@ -108,7 +108,7 @@ export class Method {
     ) {
         this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
             this._methodDetails = methodDetails;
-            this._failsAnnotation = new FailsAnnotation(this._methodDetails.decodeAnnotation(MethodDetails.FAIL_ANNOTATION_NAME));
+            this._failsAnnotation = this._methodDetails.failsAnnotation;
             this._allScreenshotIds = this._statistics.getScreenshotIdsFromMethodContext(methodDetails.methodContext);
             this._lastScreenshotId = this._allScreenshotIds.reverse().find(() => true);
 

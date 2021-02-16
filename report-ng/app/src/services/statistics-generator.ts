@@ -52,12 +52,26 @@ export class MethodDetails {
     static readonly FAIL_ANNOTATION_NAME="eu.tsystems.mms.tic.testframework.annotations.Fails";
     private _decodedAnnotations = {};
     private _decodedCustomContexts = {};
+    private _failsAnnotation:FailsAnnotation;
 
     constructor(
         readonly methodContext:IMethodContext,
         readonly classStatistics:ClassStatistics,
     ) {
     }
+
+    get failsAnnotation():FailsAnnotation|null {
+        if (this._failsAnnotation === undefined) {
+            const data = this.decodeAnnotation(MethodDetails.FAIL_ANNOTATION_NAME);
+            if (data) {
+                this._failsAnnotation = new FailsAnnotation(data);
+            } else {
+                this._failsAnnotation = null;
+            }
+        }
+        return this._failsAnnotation;
+    }
+
 
     get identifier() {
         if (!this._identifier) {

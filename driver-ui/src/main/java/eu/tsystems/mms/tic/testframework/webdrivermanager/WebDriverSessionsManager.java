@@ -399,4 +399,8 @@ public final class WebDriverSessionsManager {
     public static Optional<String> getRequestedBrowser(WebDriver webDriver) {
         return getSessionContext(webDriver).map(SessionContext::getWebDriverRequest).map(AbstractWebDriverRequest::getBrowser);
     }
+
+    public static Stream<SessionContext> readSessionContexts() {
+        return WEBDRIVER_SESSIONS_CONTEXTS_MAP.values().stream();
+    }
 }

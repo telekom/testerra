@@ -26,6 +26,8 @@ import eu.tsystems.mms.tic.testframework.events.MethodStartEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerUtils;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
+import java.util.LinkedList;
 import org.openqa.selenium.WebDriver;
 
 import java.util.List;
@@ -39,21 +41,19 @@ public class WebDriverLoggingStartWorker implements MethodStartEvent.Listener, L
             /*
              * Log already opened wd sessions
              */
-            if (WebDriverManager.hasAnySessionActive()) {
-                String executingSeleniumHost = WebDriverManager.getExecutingSeleniumHosts();
-                if (executingSeleniumHost == null) {
-                    executingSeleniumHost = "unknown";
-                }
+            List<String> statusLog = new LinkedList<>();
+            WebDriverSessionsManager.readSessionContexts()
+                    .forEach(sessionContext -> {
+                        StringBuilder statusLogEntry = new StringBuilder();
+                        statusLogEntry.append(sessionContext.getActualBrowserName()).append(":").append(sessionContext.getActualBrowserVersion());
+                        sessionContext.getNodeInfo().ifPresent(nodeInfo -> {
+                            statusLogEntry.append(" on ").append(nodeInfo.getHost()).append(":").append(nodeInfo.getPort());
+                        });
+                        statusLog.add(statusLogEntry.toString());
+                    });
 
-                String msg = "Already opened webdriver sessions on: ";
-                if (executingSeleniumHost.contains("\n")) {
-                    msg += "\n";
-                }
-                log().info(msg + executingSeleniumHost);
-
-                // log browser
-                long threadId = Thread.currentThread().getId();
-                WebDriverManager.getWebDriversFromThread(threadId).findFirst().ifPresent(WebDriverManagerUtils::logUserAgent);
+            if (statusLog.size() > 0) {
+                log().info("Already opened webdriver sessions:\n" + String.join("\n", statusLog));
             }
         }
     }

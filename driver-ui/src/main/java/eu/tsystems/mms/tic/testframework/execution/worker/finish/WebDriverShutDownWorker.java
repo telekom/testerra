@@ -65,8 +65,6 @@ public class WebDriverShutDownWorker implements MethodEndEvent.Listener {
                         TesterraListener.getEventBus().post(new BeforeShutdownWebDriverSessionsEvent(methodEndEvent));
                         WebDriverManager.shutdown();
                         TesterraListener.getEventBus().post(new AfterShutdownWebDriverSessionsEvent(methodEndEvent));
-                        // cleanup executing selenium host
-                        WDInternal.cleanupExecutingSeleniumHost();
                     }
                 }
             }
@@ -74,7 +72,6 @@ public class WebDriverShutDownWorker implements MethodEndEvent.Listener {
         }
 
         // WDM cleanup threadlocals
-        WebDriverManager.cleanupThreadlocals();
         POConfig.removeThreadLocalUiElementTimeout();
     }
 }

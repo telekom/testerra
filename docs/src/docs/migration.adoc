@@ -256,7 +256,7 @@ page.anyElementContainsText("You see me").expect().numberOfElements().is(1); <4>
 
 Custom failure messages
 ```java
-uiElement.displayed(true, "This element should be displayed");
+uiElement.expect().displayed(true, "This element should be displayed");
 ```
 
 === Screenshot based Assertions

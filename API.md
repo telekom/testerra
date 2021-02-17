@@ -90,6 +90,7 @@ page.expect().title().endsWith("Startseite").is(boolean);
 ## Wait for the page URL to change
 
 **API v1**:
+
 *unsupported*
 
 **API v2**:
@@ -158,6 +159,7 @@ UiElement uiElement = frame.findById(42);
 ## Find elements over frames
 
 **API v1**:
+
 *unsupported*
 
 **API v2**:

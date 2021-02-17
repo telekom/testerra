@@ -31,7 +31,7 @@ import eu.tsystems.mms.tic.testframework.internal.asserts.StringAssertion;
  * @author Mike Reiche
  */
 public interface UiElementBaseAssertion extends ScreenshotAssertion {
-    QuantityAssertion<Integer> numberOfElements();
+    QuantityAssertion<Integer> foundElements();
     BinaryAssertion<Boolean> present();
     default boolean present(boolean expected) {
         return present().is(expected);

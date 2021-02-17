@@ -46,12 +46,12 @@ public class LegacyGuiElementAssertWrapper implements GuiElementAssert {
 
     @Override
     public void assertIsPresent() {
-        this.uiElementAssertion.numberOfElements().isGreaterThan(0);
+        this.uiElementAssertion.foundElements().isGreaterThan(0);
     }
 
     @Override
     public void assertIsNotPresent() {
-        this.uiElementAssertion.numberOfElements().is(0);
+        this.uiElementAssertion.foundElements().is(0);
     }
 
     @Override
@@ -123,7 +123,7 @@ public class LegacyGuiElementAssertWrapper implements GuiElementAssert {
     public void assertAnyFollowingTextNodeContains(String contains) {
         TestableUiElement testableUiElement = this.guiElement.anyElementContainsText(contains);
         UiElementAssertion uiElementAssertion = this.createUiElementAssertion((UiElement) testableUiElement, this.useAssertion);
-        uiElementAssertion.numberOfElements().isGreaterThan(0);
+        uiElementAssertion.foundElements().isGreaterThan(0);
     }
 
     @Override

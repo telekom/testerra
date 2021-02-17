@@ -55,14 +55,14 @@ public interface UiElementFinder extends LocatorFactoryProvider, Loggable, WebDr
 
     default UiElement findDeep(Locator locator) {
         UiElement currentScope = find(locator);
-        if (currentScope.waitFor().numberOfElements().getActual() > 0) {
+        if (currentScope.waitFor().foundElements().getActual() > 0) {
             return currentScope;
         }
 
         UiElement frames = find(By.xpath("(//iframe|//frame)"));
         for (UiElement frame : frames.list()) {
             UiElement deepScope = frame.findDeep(locator);
-            if (deepScope.waitFor().numberOfElements().getActual() > 0) {
+            if (deepScope.waitFor().foundElements().getActual() > 0) {
                 return deepScope;
             }
         }

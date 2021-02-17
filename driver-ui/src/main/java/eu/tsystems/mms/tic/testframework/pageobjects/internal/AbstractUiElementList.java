@@ -36,7 +36,7 @@ public abstract class AbstractUiElementList<SELF extends UiElementBase> implemen
 
     @Override
     public int size() {
-        return uiElement.waitFor().numberOfElements().getActual();
+        return uiElement.waitFor().foundElements().getActual();
     }
 
     @Override

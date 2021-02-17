@@ -260,7 +260,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
     }
 
     @Override
-    public QuantityAssertion<Integer> numberOfElements() {
+    public QuantityAssertion<Integer> foundElements() {
         return propertyAssertionFactory.createWithConfig(DefaultQuantityAssertion.class, this.propertyAssertionConfig, new UiElementAssertionProvider<Integer>() {
             @Override
             public Integer getActual() {

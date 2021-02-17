@@ -108,7 +108,7 @@ Assert.assertTrue(elements.getNumberOfFoundElements() >= 4 && elements.getNumber
 
 **API v2**:
 ```java
-elements.expect().numberOfElements().isBetween(4, 6);
+elements.expect().foundElements().isBetween(4, 6);
 ```
 
 ## Value mapping

@@ -72,7 +72,7 @@ public class UiElementListTests extends AbstractExclusiveTestSitesTest<UiElement
     }
 
     private void testNavigationAnchors(UiElement anchors) {
-        anchors.expect().numberOfElements().is(3);
+        anchors.expect().foundElements().is(3);
 
         UiElementList<UiElement> list = anchors.list();
         list.first().expect().text().is("First");
@@ -81,12 +81,12 @@ public class UiElementListTests extends AbstractExclusiveTestSitesTest<UiElement
     }
 
     private void testTableRowsAndData(TableRow tableRows) {
-        tableRows.expect().numberOfElements().is(4);
+        tableRows.expect().foundElements().is(4);
         TestableUiElement tableDataUnspecified = tableRows.columns();
-        tableDataUnspecified.expect().numberOfElements().is(2);
+        tableDataUnspecified.expect().foundElements().is(2);
 
         TestableUiElement tableDataSpecified = tableRows.list().get(1).columns();
-        tableDataSpecified.expect().numberOfElements().is(2);
+        tableDataSpecified.expect().foundElements().is(2);
     }
 
     @Test

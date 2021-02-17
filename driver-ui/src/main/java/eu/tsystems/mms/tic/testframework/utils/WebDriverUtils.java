@@ -30,7 +30,6 @@ import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverProxy;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.net.HttpURLConnection;
@@ -39,7 +38,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.Rectangle;
@@ -71,6 +72,23 @@ public final class WebDriverUtils {
      * Hidden constructor.
      */
     private WebDriverUtils() {
+    }
+
+    public static Optional<WebDriver> switchToWindow(Predicate<WebDriver> predicate) {
+        return switchToWindow(WebDriverManager.getWebDriver(), predicate);
+    }
+
+    public static Optional<WebDriver> switchToWindow(WebDriver mainWebDriver, Predicate<WebDriver> predicate) {
+        String mainWindowHandle = mainWebDriver.getWindowHandle();
+        return mainWebDriver.getWindowHandles().stream()
+                .map(windowHandle -> mainWebDriver.switchTo().window(windowHandle))
+                .filter(webDriver -> {
+                    boolean valid = predicate.test(webDriver);
+                    if (!valid) {
+                        mainWebDriver.switchTo().window(mainWindowHandle);
+                    }
+                    return valid;
+                }).findFirst();
     }
 
     /**

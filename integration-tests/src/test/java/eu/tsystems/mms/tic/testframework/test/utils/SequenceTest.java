@@ -40,6 +40,6 @@ public class SequenceTest extends TesterraTest implements AssertProvider {
                     }
                     return false;
                 });
-        Assert.assertBetween(new BigDecimal(sequence.getDurationMs()), new BigDecimal(1000), new BigDecimal(1100), "Sequence duration");
+        ASSERT.assertBetween(new BigDecimal(sequence.getDurationMs()), new BigDecimal(1000), new BigDecimal(1100), "Sequence duration");
     }
 }

@@ -22,11 +22,9 @@
 package eu.tsystems.mms.tic.testframework.test.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractExclusiveTestSitesTest;
-import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.WebTestPage;
 import eu.tsystems.mms.tic.testframework.internal.asserts.QuantityAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
-import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 
@@ -50,7 +48,7 @@ public class UiElementLayoutTests extends AbstractExclusiveTestSitesTest<WebTest
         WebTestPage page = getPage();
         UiElement left = page.getFinder().findById(1);
         UiElement right =  page.getFinder().find(By.linkText("Open again"));
-        Control.withTimeout(0, () -> right.expect().bounds().leftOf(left).is(true));
+        CONTROL.withTimeout(0, () -> right.expect().bounds().leftOf(left).is(true));
     }
 
     @Test(expectedExceptions = AssertionError.class)
@@ -58,7 +56,7 @@ public class UiElementLayoutTests extends AbstractExclusiveTestSitesTest<WebTest
         WebTestPage page = getPage();
         UiElement left = page.getFinder().findById(1);
         UiElement right = page.getFinder().findById(5);
-        Control.withTimeout(0, () -> right.expect().bounds().leftOf(left).is(true));
+        CONTROL.withTimeout(0, () -> right.expect().bounds().leftOf(left).is(true));
     }
 
     /*
@@ -78,7 +76,7 @@ public class UiElementLayoutTests extends AbstractExclusiveTestSitesTest<WebTest
         WebTestPage page = getPage();
         UiElement left = page.getFinder().findById(1);
         UiElement right = page.getFinder().find(By.linkText("Open again"));
-        Control.withTimeout(0, () -> left.expect().bounds().rightOf(right).is(true));
+        CONTROL.withTimeout(0, () -> left.expect().bounds().rightOf(right).is(true));
     }
 
     @Test(expectedExceptions = AssertionError.class)
@@ -86,7 +84,7 @@ public class UiElementLayoutTests extends AbstractExclusiveTestSitesTest<WebTest
         WebTestPage page = getPage();
         UiElement left = page.getFinder().findById(1);
         UiElement right = page.getFinder().findById(5);
-        Control.withTimeout(0, () -> left.expect().bounds().rightOf(right).is(true));
+        CONTROL.withTimeout(0, () -> left.expect().bounds().rightOf(right).is(true));
     }
 
     /*
@@ -106,7 +104,7 @@ public class UiElementLayoutTests extends AbstractExclusiveTestSitesTest<WebTest
         WebTestPage page = getPage();
         UiElement oben = page.getFinder().findById(1);
         UiElement unten = page.getFinder().findById(5);
-        Control.withTimeout(0, () -> unten.expect().bounds().above(oben).is(true));
+        CONTROL.withTimeout(0, () -> unten.expect().bounds().above(oben).is(true));
     }
 
     /*
@@ -126,7 +124,7 @@ public class UiElementLayoutTests extends AbstractExclusiveTestSitesTest<WebTest
         WebTestPage page = getPage();
         UiElement oben = page.getFinder().findById(1);
         UiElement unten = page.getFinder().findById(5);
-        Control.withTimeout(0, () -> oben.expect().bounds().below(unten).is(true));
+        CONTROL.withTimeout(0, () -> oben.expect().bounds().below(unten).is(true));
     }
 
     /*
@@ -146,7 +144,7 @@ public class UiElementLayoutTests extends AbstractExclusiveTestSitesTest<WebTest
         WebTestPage page = getPage();
         UiElement e1 = page.getFinder().findById(1).find(By.xpath("./.."));
         UiElement e2 = page.getFinder().findById(11);
-        Control.withTimeout(0, () -> e1.expect().bounds().fromTop().toTopOf(e2).is(0));
+        CONTROL.withTimeout(0, () -> e1.expect().bounds().fromTop().toTopOf(e2).is(0));
     }
 
     @Test
@@ -174,7 +172,7 @@ public class UiElementLayoutTests extends AbstractExclusiveTestSitesTest<WebTest
         WebTestPage page = getPage();
         UiElement e1 = page.getFinder().findById(1).find(By.xpath("./.."));
         UiElement e2 = page.getFinder().findById(11);
-        Control.withTimeout(0, () -> e1.expect().bounds().fromBottom().toBottomOf(e2).is(0));
+        CONTROL.withTimeout(0, () -> e1.expect().bounds().fromBottom().toBottomOf(e2).is(0));
     }
 
     @Test
@@ -202,7 +200,7 @@ public class UiElementLayoutTests extends AbstractExclusiveTestSitesTest<WebTest
         WebTestPage page = getPage();
         UiElement e1 = page.getFinder().findById(1);
         UiElement e2 = page.getFinder().findById(3);
-        Control.withTimeout(0, () -> e1.expect().bounds().fromLeft().toLeftOf(e2).is(0));
+        CONTROL.withTimeout(0, () -> e1.expect().bounds().fromLeft().toLeftOf(e2).is(0));
     }
 
     @Test
@@ -232,7 +230,7 @@ public class UiElementLayoutTests extends AbstractExclusiveTestSitesTest<WebTest
         WebTestPage page = getPage();
         UiElement e1 = page.getFinder().findById(1);
         UiElement e2 = page.getFinder().findById(3);
-        Control.withTimeout(0, () -> e1.expect().bounds().fromRight().toRightOf(e2).is(0));
+        CONTROL.withTimeout(0, () -> e1.expect().bounds().fromRight().toRightOf(e2).is(0));
     }
 
     @Test

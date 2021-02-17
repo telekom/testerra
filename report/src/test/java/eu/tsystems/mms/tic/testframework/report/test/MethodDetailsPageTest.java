@@ -43,7 +43,6 @@ import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTes
 import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestExpectedtoFail;
 import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestPassed;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -65,7 +64,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     // Test case #805
     public void testT01_checkMethodDetailsForPassedTest() {
         String methodName = "test_FilterPassedNoMinor";
-        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
+        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
 
         //Method Details
         AssertCollector.assertEquals(methodDetailsPage.getMethodNameString(), methodName, "The method name is displayed correctly for " + methodName);
@@ -85,7 +84,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     // Test case #806
     public void testT02_checkMethodDetailsForPassedMinorTest() {
         String methodName = "test_FilterPassedMinor";
-        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
+        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
 
         //Method Details
         AssertCollector.assertTrue(methodDetailsPage.getMethodNameString().contains(methodName), "The method name is displayed correctly for " + methodName);
@@ -116,7 +115,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     // Test case #807
     public void testT03_checkMethodDetailsForFailedTest() {
         String methodName = "test_FailedInheritedFilter";
-        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
+        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
 
         ///Method Details
         AssertCollector.assertEquals(methodDetailsPage.getMethodNameString(), methodName, "The method name is displayed correctly for " + methodName);
@@ -137,7 +136,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     // Test case #808
     public void testT04_checkMethodDetailsForFailedMinorTest() {
         String methodName = "test_FilterFailedMinor";
-        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
+        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
 
         //General Details
         AssertCollector.assertTrue(methodDetailsPage.getMethodNameString().contains(methodName), "The method name is displayed correctly for " + methodName);
@@ -164,7 +163,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     // Test case #809
     public void testT05_checkMethodDetailsForSkippedTest() {
         String methodName = "test_FilterSkipped";
-        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
+        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
 
         //General Details
         AssertCollector.assertEquals(methodDetailsPage.getMethodNameString(), methodName, "The method name is displayed correctly for " + methodName);
@@ -190,7 +189,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
         String retrySuffix = "(1/2)";
         final String methodName = methodNameMainPart + " " + retrySuffix;
 
-        final MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), htmlId);
+        final MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), htmlId);
 
         String methodNameString = methodDetailsPage.getMethodNameString();
 
@@ -221,7 +220,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     // Test case #811
     public void testT07_checkMethodDetailsForExpectedFailedTest() {
         String methodName = "test_FailedMinorAnnotatedWithFail_Run1";
-        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
+        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
 
         //General Details
         AssertCollector.assertTrue(methodDetailsPage.getMethodNameString().contains(methodName), "The method name is displayed correctly for " + methodName);
@@ -245,7 +244,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     public void testT08_checkMethodDetailsForPassedRetriedTest() {
         String methodName = "test_FilterFailedNoMinorWithPassedRetry";
-        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
+        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
 
         //General Details
         AssertCollector.assertTrue(methodDetailsPage.getMethodNameString().contains(methodName), "The method name is displayed correctly for " + methodName);
@@ -264,7 +263,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     // Test case #812
     public void testT09_checkRepairedFailsIndication() {
         final String methodName = "test_TestStatePassed2";
-        final MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestPassed.class.getSimpleName(), methodName);
+        final MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestPassed.class.getSimpleName(), methodName);
 
         final GuiElement repairedFailsIndication = methodDetailsPage.getRepairedFailsIndication();
         final String failsText = repairedFailsIndication.getText();
@@ -280,7 +279,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     // Test case #814
     public void testT10_checkScreenshotTab() {
-        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), "My_Context", "test_FailedInheritedMinor2");
+        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), "My_Context", "test_FailedInheritedMinor2");
         MethodScreenshotPage screenshotPage = GeneralWorkflow.doOpenReportMethodScreenshotPage(methodDetailsPage);
         Assert.assertTrue(screenshotPage.getScreenShot().isDisplayed(), "There is no screenshot in the methodDetailsPage of the first report.");
     }
@@ -293,7 +292,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     // Test case #816
     public void testT11_checkStackTraceTab() {
         String methodName = "test_FailedInheritedFilter";
-        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
+        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
 
         MethodStackPage stackPage = GeneralWorkflow.doOpenReportStracktracePage(methodDetailsPage);
         String stackTrace = stackPage.getStackTrace();
@@ -309,7 +308,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     // Test case #817
     public void testT12_checkMinorErrorsTab() {
         String methodName = "test_FilterPassedMinor";
-        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
+        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
 
         MethodMinorErrorsPage minorErrorsPage = methodDetailsPage.clickMinorErrorsTab();
 
@@ -326,7 +325,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     // Test case #819
     public void testT13_checkDependenciesTab() {
-        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestPassed.class.getSimpleName(), "test_PassedMinor1");
+        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestPassed.class.getSimpleName(), "test_PassedMinor1");
         MethodDependenciesPage dependenciesPage = methodDetailsPage.clickDependenciesTab();
         //TODO what to check here
     }
@@ -338,14 +337,14 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     // Test case #820
     public void testT14_checkContext() {
         TestStep.begin("Checks Context for classes without using TesterraClassContext");
-        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestPassed.class.getSimpleName(), "test_PassedMinor1");
+        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestPassed.class.getSimpleName(), "test_PassedMinor1");
         methodDetailsPage = methodDetailsPage.toggleContext();
         AssertCollector.assertEquals(methodDetailsPage.getContextClassString(), ReportTestUnderTestPassed.class.getSimpleName());
         AssertCollector.assertEquals(methodDetailsPage.getContextTestString(), "Passed Creator");
         AssertCollector.assertEquals(methodDetailsPage.getContextSuiteString(), "Report- TestsUnderTest");
 
         TestStep.begin("Checks Context for classes with using TesterraClassContext");
-        methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), "My_Context", "test_FailedMinor1");
+        methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), "My_Context", "test_FailedMinor1");
         methodDetailsPage = methodDetailsPage.toggleContext();
         AssertCollector.assertEquals(methodDetailsPage.getContextClassString(), "My_Context");
         AssertCollector.assertEquals(methodDetailsPage.getContextTestString(), "Failed Creator");
@@ -358,7 +357,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     // Test case #821
     public void testT15_checkDuration() {
-        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestPassed.class.getSimpleName(), "test_PassedMinor1");
+        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestPassed.class.getSimpleName(), "test_PassedMinor1");
 
         DateFormat durationFormat = new SimpleDateFormat("S 'ms'");
         DateFormat dateFormat = new SimpleDateFormat("E MMM d hh:mm:ss z yyyy", Locale.ENGLISH);
@@ -397,14 +396,14 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     // Test case #822
     public void testT16_checkErrorMessage() {
         TestStep.begin("Checks error Message from a failed test");
-        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestCorridorLow.class.getSimpleName(), "test_testLowCorridorFailed3");
+        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestCorridorLow.class.getSimpleName(), "test_testLowCorridorFailed3");
         methodDetailsPage.getErrorMessageString().assertCollector().assertText("ArithmeticException: / by zero");
         methodDetailsPage = methodDetailsPage.toggleFingerprint();
         //methodDetailsPage.getFingerprintString().assertCollector().assertTextContains("test_testLowCorridorFailed3()");
         methodDetailsPage.getFingerprintString().assertCollector().assertTextContains("ExitPointCreatorTestClass2.java#testCreatorForDifferentExitPoints2");
 
         TestStep.begin("Checks error Message from a failed test with minor errors");
-        methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), "ReportTestUnderTestCorridorLow_Report- TestsUnderTest_Failed Creator", "test_FailedMinor1");
+        methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), "ReportTestUnderTestCorridorLow_Report- TestsUnderTest_Failed Creator", "test_FailedMinor1");
         methodDetailsPage.getErrorMessageString().assertCollector().assertText("Exception");
         methodDetailsPage = methodDetailsPage.toggleFingerprint();
         methodDetailsPage.getFingerprintString().assertCollector().assertTextContains("test_FailedMinor1()");
@@ -420,7 +419,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     // Test case #823
     public void testT17_checkStepsTab() {
         String testmethod = "test_TestStatePassed1";
-        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestPassed.class.getSimpleName(), testmethod);
+        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestPassed.class.getSimpleName(), testmethod);
         MethodStepsPage stepsPage = GeneralWorkflow.doOpenReportStepsPage(methodDetailsPage);
         AssertCollector.assertEquals(stepsPage.getTestStep1Button().getText(), "1 ) Test-Step-1", "Test-Step-1-Button is displayed (correctly) in steps tab for " + testmethod);
         AssertCollector.assertEquals(stepsPage.getTestStep2Button().getText(), "2 ) Test-Step-2", "Test-Step-2-Button is displayed (correctly) in steps tab for " + testmethod);
@@ -435,7 +434,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     // Test case #824
     public void testT18_failureAspectMatchingExpectedFailedInfoMessage() {
         String testMethod = "test_UnexpectedFailedWithRelatedExpectedFailed";
-        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.getReportDirectory()), ReportTestUnderTestExpectedtoFail.class.getSimpleName(), testMethod);
+        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.getReportDirectory()), ReportTestUnderTestExpectedtoFail.class.getSimpleName(), testMethod);
         AssertCollector.assertEquals(methodDetailsPage.getErrorMessageExtraInfo().getText(), "Failure aspect matches known issue: Description: Known issue with same aspect as unmarked failed test");
     }
 

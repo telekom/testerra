@@ -30,7 +30,7 @@ import org.openqa.selenium.WebElement;
  */
 public class Locate implements Locator, LocatorFactoryProvider {
     public static Locator by(By by) {
-        return Locate.by(by);
+        return LOCATE.by(by);
     }
     @Override
     public By getBy() {

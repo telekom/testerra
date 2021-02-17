@@ -28,7 +28,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverCapabilities;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import java.util.Map;
@@ -47,7 +46,7 @@ public class DriverAndGuiElementTest extends AbstractTestSitesTest {
     @Test
     public void testGuiElement() throws Exception {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-        request.setBaseUrl(WebDriverManager.getConfig().getBaseUrl().orElse(null));
+        request.setBaseUrl(WEB_DRIVER_MANAGER.getConfig().getBaseUrl().orElse(null));
         request.setWebDriverMode(WebDriverMode.local);
         request.setBrowser(Browsers.phantomjs);
         request.setBrowserVersion("egal");
@@ -56,7 +55,7 @@ public class DriverAndGuiElementTest extends AbstractTestSitesTest {
 //        WebDriverManagerUtils.addProxyToCapabilities(caps, "proxyblabla");
 //        WebDriverManager.setGlobalExtraCapabilities(caps);
 
-        WebDriver driver = WebDriverManager.getWebDriver(request);
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver(request);
         PageFactory.create(PageWithExistingElement.class, driver);
     }
 
@@ -75,7 +74,7 @@ public class DriverAndGuiElementTest extends AbstractTestSitesTest {
         DesktopWebDriverCapabilities.registerEndPointCapabilities(Pattern.compile(".*localhost.*"), caps);
 
         // start session
-        WebDriver driver = WebDriverManager.getWebDriver(request);
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver(request);
 
         SessionContext sessionContext = WebDriverSessionsManager.getSessionContext(driver).get();
         Map<String, Object> sessionCapabilities = sessionContext.getCapabilities().get();
@@ -90,7 +89,7 @@ public class DriverAndGuiElementTest extends AbstractTestSitesTest {
         request.setWebDriverMode(WebDriverMode.local);
         request.setBrowser(Browsers.phantomjs);
 
-        WebDriverManager.getWebDriver(request);
+        WEB_DRIVER_MANAGER.getWebDriver(request);
         Assert.assertTrue(false);
     }
 }

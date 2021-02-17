@@ -205,7 +205,7 @@ public abstract class AbstractGuiElementTest extends AbstractTestSitesTest imple
      */
     @Deprecated
     public GuiElement getGuiElementBy(By locator) {
-        return getGuiElementBy(Locate.by(locator));
+        return getGuiElementBy(LOCATE.by(locator));
     }
 
     @Deprecated

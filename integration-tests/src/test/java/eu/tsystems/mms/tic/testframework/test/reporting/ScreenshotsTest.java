@@ -41,7 +41,7 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
 
     @Override
     public BasePage getPage() {
-        return PageFactory.createPage(BasePage.class, WebDriverManager.getWebDriver());
+        return PAGE_FACTORY.createPage(BasePage.class, WEB_DRIVER_MANAGER.getWebDriver());
     }
 
     @Test()
@@ -59,7 +59,7 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
     @Test()
     @Fails(description = "This test needs to fail to create a screenshot")
     public void test_take_screenshot_on_failure_without_closing_WebDriver() {
-        WebDriverManager.getConfig().setShutdownSessions(false);
+        WEB_DRIVER_MANAGER.getConfig().setShutdownSessions(false);
         System.setProperty(Report.Properties.SCREENCASTER_ACTIVE.toString(), "true");
         getPage().assertIsTextDisplayed("Screenshot present on failure");
     }

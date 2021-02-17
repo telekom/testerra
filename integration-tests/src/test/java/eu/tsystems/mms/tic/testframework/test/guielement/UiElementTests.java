@@ -74,7 +74,7 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
         try {
             page.notDisplayedElement().expect().displayed().is(true,"Important element visibility");
         } catch (AssertionError e) {
-            Assert.assertContains(e.getMessage(), "Important element visibility");
+            ASSERT.assertContains(e.getMessage(), "Important element visibility");
         }
     }
 
@@ -92,19 +92,19 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
     @Test
     public void test_UiElement_waitFor_followedBy_expect() {
         WebTestPage page = getPage();
-        Assert.assertTrue(page.notDisplayedElement().waitFor().displayed(false), "Display status of not displayed element");
+        ASSERT.assertTrue(page.notDisplayedElement().waitFor().displayed(false), "Display status of not displayed element");
         try {
             page.notVisibleElement().expect().displayed(true);
         } catch (AssertionError error) {
-            Assert.assertEndsWith(error.getMessage(), "is true");
+            ASSERT.assertEndsWith(error.getMessage(), "is true");
         }
     }
 
     @Test
     public void test_UiElement_nonfunctional_assert() {
         try {
-            Control.optionalAssertions(() -> {
-                Control.withTimeout(1, () -> {
+            CONTROL.optionalAssertions(() -> {
+                CONTROL.withTimeout(1, () -> {
                     getPage().notDisplayedElement().expect().displayed(true);
                 });
             });
@@ -119,30 +119,30 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
         try {
             page.notVisibleElement().expect().displayed(true);
         } catch (AssertionError error) {
-            Assert.assertEndsWith(error.getMessage(), "is true");
+            ASSERT.assertEndsWith(error.getMessage(), "is true");
         }
-        Assert.assertTrue(page.notDisplayedElement().waitFor().displayed(false), "Display status of not displayed element");
+        ASSERT.assertTrue(page.notDisplayedElement().waitFor().displayed(false), "Display status of not displayed element");
     }
 
     @Test
     public void test_UiElement_waitFor_fast() {
         WebTestPage page = getPage();
-        Control.withTimeout(0, () -> {
-            Assert.assertFalse(page.notVisibleElement().waitFor().attribute(Attribute.STYLE).is("humbug"));
-            Assert.assertTrue(page.notVisibleElement().waitFor().attribute(Attribute.STYLE).contains("hidden").is(true));
+        CONTROL.withTimeout(0, () -> {
+            ASSERT.assertFalse(page.notVisibleElement().waitFor().attribute(Attribute.STYLE).is("humbug"));
+            ASSERT.assertTrue(page.notVisibleElement().waitFor().attribute(Attribute.STYLE).contains("hidden").is(true));
         });
     }
 
     @Test
     public void test_UiElement_waitFor_text() {
         WebTestPage page = getPage();
-        Assert.assertTrue(page.getOpenAgainLink().waitFor().text("Open again"));
+        ASSERT.assertTrue(page.getOpenAgainLink().waitFor().text("Open again"));
     }
 
     @Test
     public void test_UiElement_waitFor_text_fails() {
         WebTestPage page = getPage();
-        Assert.assertFalse(page.getOpenAgainLink().waitFor().text("Close again"));
+        ASSERT.assertFalse(page.getOpenAgainLink().waitFor().text("Close again"));
     }
 
     @Test
@@ -178,13 +178,13 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
     @Test
     public void test_UiElement_waitFor_text_mapped() {
         WebTestPage page = getPage();
-        Assert.assertTrue(page.getOpenAgainLink().waitFor().text().map(String::toLowerCase).is("open again"));
+        ASSERT.assertTrue(page.getOpenAgainLink().waitFor().text().map(String::toLowerCase).is("open again"));
     }
 
     @Test
     public void test_UiElement_waitFor_text_mapped_fails() {
         WebTestPage page = getPage();
-        Assert.assertFalse(page.getOpenAgainLink().waitFor().text().map(String::toLowerCase).is("close again"));
+        ASSERT.assertFalse(page.getOpenAgainLink().waitFor().text().map(String::toLowerCase).is("close again"));
     }
 
     @Test(expectedExceptions = AssertionError.class)
@@ -208,12 +208,12 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
         } catch (AssertionError e) {
             msg = e.getMessage();
         }
-        Assert.assertEndsWith(msg, "is true", AssertionError.class.toString());
+        ASSERT.assertEndsWith(msg, "is true", AssertionError.class.toString());
     }
 
     @Test
     public void test_inexistent_UiElement_present_fails_fast() {
-        Control.withTimeout(0, this::test_inexistent_UiElement_present_fails);
+        CONTROL.withTimeout(0, this::test_inexistent_UiElement_present_fails);
     }
 
     @Test(expectedExceptions = AssertionError.class)
@@ -238,7 +238,7 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
         } catch (ElementNotFoundException e) {
             msg = e.getMessage();
         }
-        Assert.assertEndsWith(msg, "not found", ElementNotFoundException.class.toString());
+        ASSERT.assertEndsWith(msg, "not found", ElementNotFoundException.class.toString());
     }
 
 //    @Test
@@ -258,35 +258,35 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
         UiElement disableMyselfBtn = page.getFinder().findById("disableMyselfBtn");
         disableMyselfBtn.expect().enabled(true);
         AtomicInteger retryCount = new AtomicInteger();
-        Control.retryFor(10, () -> {
-            Control.withTimeout(1, () -> {
+        CONTROL.retryFor(10, () -> {
+            CONTROL.withTimeout(1, () -> {
                 retryCount.incrementAndGet();
                 disableMyselfBtn.click();
                 disableMyselfBtn.expect().enabled(false);
             });
         });
-        Assert.assertEquals(retryCount.get(), 5, "Retry count");
+        ASSERT.assertEquals(retryCount.get(), 5, "Retry count");
         disableMyselfBtn.expect().enabled(false);
     }
 
     @Test
     public void test_UiElement_click_retry_fails() {
-        WebTestPage page = PageFactory.createPage(WebTestPage.class, getWebDriver());
+        WebTestPage page = PAGE_FACTORY.createPage(WebTestPage.class, getWebDriver());
         UiElement disableMyselfBtn = page.getFinder().findById("disableMyselfBtn");
         disableMyselfBtn.expect().enabled(true);
         AtomicInteger retryCount = new AtomicInteger();
         try {
-            Control.retryFor(3, () -> {
-                Control.withTimeout(1, () -> {
+            CONTROL.retryFor(3, () -> {
+                CONTROL.withTimeout(1, () -> {
                     retryCount.incrementAndGet();
                     disableMyselfBtn.click();
                     disableMyselfBtn.expect().enabled(false);
                 });
             });
         } catch (Exception e) {
-            Assert.assertStartsWith(e.getMessage(), "Retry sequence timed out", e.getClass().getSimpleName());
+            ASSERT.assertStartsWith(e.getMessage(), "Retry sequence timed out", e.getClass().getSimpleName());
         }
-        Assert.assertEquals(retryCount.get(), 3, "Retry count");
+        ASSERT.assertEquals(retryCount.get(), 3, "Retry count");
     }
 
 }

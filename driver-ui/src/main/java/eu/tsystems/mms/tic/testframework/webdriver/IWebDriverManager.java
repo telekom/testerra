@@ -48,12 +48,6 @@ public interface IWebDriverManager extends WebDriverRetainer {
     String getSessionKey(WebDriver webDriver);
     WebDriverManagerConfig getConfig();
     Stream<WebDriver> getWebDriversFromCurrentThread();
-
-    @Deprecated
-    default void forceShutdownAllThreads() {
-        shutdownAllThreadSessions();
-    }
-
     default IWebDriverManager setUserAgentConfig(String browser, UserAgentConfig configurator) {
         WebDriverManager.setUserAgentConfig(browser, configurator);
         return this;

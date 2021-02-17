@@ -32,7 +32,6 @@ import eu.tsystems.mms.tic.testframework.report.pageobjects.ClassesPage;
 import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestDependsOn;
 import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestPassed;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
@@ -59,7 +58,7 @@ public class ClassesPageTest extends AbstractReportTest {
         expectedClassesTableRowNumbers.put(TestResultHelper.TestResultClassesColumn.FAILEDEXPECTED, "0");
         expectedClassesTableRowNumbers.put(TestResultHelper.TestResultClassesColumn.SKIPPED, "3");
 
-        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
+        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
 
         classesPage.assertNumbersForTestResultsOfOneTestClass(expectedClassesTableRowNumbers, className);
 
@@ -77,7 +76,7 @@ public class ClassesPageTest extends AbstractReportTest {
         final String successClass = ReportTestUnderTestPassed.class.getSimpleName();
         final String brokenClass = ReportTestUnderTestDependsOn.class.getSimpleName();
 
-        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
+        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         classesPage.assertSuccessIndicatorIsDisplayedForClass(successClass);
         classesPage.assertBrokenIndicatorIsShownForClass(brokenClass);
     }
@@ -89,7 +88,7 @@ public class ClassesPageTest extends AbstractReportTest {
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     // Test case #827
     public void testT03_checkHidePassedFilter() {
-        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
+        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
 
         classesPage.assertAllPassedClassesAreDisplayed();
         classesPage.assertAllFailedClassesAreDisplayed();
@@ -107,7 +106,7 @@ public class ClassesPageTest extends AbstractReportTest {
     // Test case #828
     public void testT04_checkLinkToClassesDetails() {
         final String className = ReportTestUnderTestPassed.class.getSimpleName();
-        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
+        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         ClassesDetailsPage classesDetailsPage = classesPage.gotoClassesDetailsPageForClass(className);
         classesDetailsPage.assertPageIsShown();
 
@@ -120,7 +119,7 @@ public class ClassesPageTest extends AbstractReportTest {
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     // Test case #829
     public void testT05_checkTesterraInformationIsDisplayed() throws ParseException {
-        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
+        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         classesPage.assertTesterraInformationIsDisplayed();
     }
 
@@ -131,7 +130,7 @@ public class ClassesPageTest extends AbstractReportTest {
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     // Test case #830
     public void testT06_checkLegendSymbolsAreDisplayed() {
-        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
+        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         classesPage.assertAllLegendSymbolsAreDisplayed();
     }
 

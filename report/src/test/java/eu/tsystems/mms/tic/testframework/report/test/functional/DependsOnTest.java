@@ -34,7 +34,6 @@ import eu.tsystems.mms.tic.testframework.report.pageobjects.ClassesDetailsPage;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.DashboardPage;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.dashboard.DashboardModuleMethodChart;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -48,7 +47,7 @@ public class DependsOnTest extends AbstractReportTest {
     @Fails(ticketString = "668")
     // Test case #803
     public void testT01_checkDependsOnMethodChartDisplaysTheExpectedTestResults(String dependsOnClassName) {
-        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
+        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         int barChartPosition = dashboardPage.dashboardModuleClassBarChart.getBarChartElementNumberByClassName(dependsOnClassName);
         AssertCollector.assertNotEquals(barChartPosition, -1, "The Class " + dependsOnClassName + " does not exists in bar chart class names");
         dashboardPage.dashboardModuleClassBarChart.getBarChartLegendElementByPosition(barChartPosition).click();
@@ -63,7 +62,7 @@ public class DependsOnTest extends AbstractReportTest {
     public void testT02_checkDependsOnMethodChartEntryStates(MethodDependency dependsOnTestObject) {
 
         final String testClassName = "ReportTestUnderTestDependsOn_Report- TestsUnderTest_Parallel";
-        ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory())).gotoClassesDetailsPageForClass(testClassName);
+        ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory())).gotoClassesDetailsPageForClass(testClassName);
 
         String tagName = dependsOnTestObject.getTagName();
 

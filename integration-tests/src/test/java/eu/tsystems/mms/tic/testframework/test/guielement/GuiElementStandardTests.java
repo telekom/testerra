@@ -33,6 +33,6 @@ public class GuiElementStandardTests extends AbstractGuiElementNonFunctionalAsse
     @Override
     @Deprecated
     public GuiElement getGuiElementBy(Locator locator) {
-        return (GuiElement) uiElementFinderFactory.create(getWebDriver()).find(locator);
+        return (GuiElement) UI_ELEMENT_FINDER_FACTORY.create(getWebDriver()).find(locator);
     }
 }

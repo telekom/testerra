@@ -34,7 +34,6 @@ import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.abstracts.AbstractFailurePointsPage;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.abstracts.AbstractResultTableFailureEntry;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.util.List;
 import org.testng.annotations.BeforeMethod;
 
@@ -103,7 +102,7 @@ public class ExitPointsPageTest extends AbstractReportFailuresTest {
 
     @Override
     protected AbstractFailurePointsPage openFailuresPointsPage(ReportDirectory reportDirectory) {
-        return GeneralWorkflow.doOpenBrowserAndReportExitPointsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(reportDirectory.getReportDirectory()));
+        return GeneralWorkflow.doOpenBrowserAndReportExitPointsPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(reportDirectory.getReportDirectory()));
     }
 
 }

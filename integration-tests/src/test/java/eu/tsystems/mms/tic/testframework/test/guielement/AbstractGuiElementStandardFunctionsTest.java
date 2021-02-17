@@ -38,6 +38,7 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGuiElementTest implements AssertProvider {
@@ -258,26 +259,26 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
 
     @Test
     public void testT23_GuiElement_findByIDUnique() {
-        GuiElement guiElement = getGuiElementBy(Locate.by(By.id("11")).unique());
+        GuiElement guiElement = getGuiElementBy(LOCATE.by(By.id("11")).unique());
         WebElement webElement = guiElement.getWebElement();
         Assert.assertNotNull(webElement);
     }
 
     @Test
     public void test_GuiElement_findNonUnique() {
-        GuiElement guiElement = getGuiElementBy(Locate.by(By.xpath("//div")).unique());
+        GuiElement guiElement = getGuiElementBy(LOCATE.by(By.xpath("//div")).unique());
         try {
             WebElement webElement = guiElement.getWebElement();
         } catch (TimeoutException e) {
-            Assert.assertContains(e.getCause().getMessage(), "not found");
-            Assert.assertContains(e.getCause().getCause().getMessage(), "equals [1]");
+            ASSERT.assertContains(e.getCause().getMessage(), "not found");
+            ASSERT.assertContains(e.getCause().getCause().getMessage(), "equals [1]");
         }
     }
 
 
     @Test
     public void test_GuiElement_findPrepared() {
-        PreparedLocator locator = Locate.prepare("//*[@id='%s']");
+        PreparedLocator locator = LOCATE.prepare("//*[@id='%s']");
         GuiElement guiElement = getGuiElementBy(locator.with("11"));
         Assert.assertNotNull(guiElement.getWebElement());
     }
@@ -310,9 +311,9 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
     }
 
     @Test
-    public void testT26a_GuiElement_locateByLinkText() {
+    public void testT26a_GuiElement_LOCATEByLinkText() {
 
-        final GuiElement linkOpenAgain = getGuiElementBy(Locate.by(By.linkText("Open again")));
+        final GuiElement linkOpenAgain = getGuiElementBy(LOCATE.by(By.linkText("Open again")));
         Assert.assertNotNull(linkOpenAgain.getWebElement());
     }
 
@@ -326,9 +327,9 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
     }
 
     @Test
-    public void test27a_GuiElement_locateByPartialLinkText() {
+    public void test27a_GuiElement_LOCATEByPartialLinkText() {
 
-        final GuiElement linkOpenAgain = getGuiElementBy(Locate.by(By.partialLinkText("again")));
+        final GuiElement linkOpenAgain = getGuiElementBy(LOCATE.by(By.partialLinkText("again")));
         Assert.assertNotNull(linkOpenAgain.getWebElement());
     }
 
@@ -344,7 +345,7 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
 
     @Test
     public void testT28a_GuiElement_findByName() {
-        final GuiElement linkOpenAgain = getGuiElementBy(Locate.by(By.name("radioBtn")));
+        final GuiElement linkOpenAgain = getGuiElementBy(LOCATE.by(By.name("radioBtn")));
         Assert.assertNotNull(linkOpenAgain.getWebElement());
     }
 
@@ -823,7 +824,7 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
 
     @Test
     public void testT85a_GuiElement_getTagName() {
-        GuiElement element = getGuiElementBy(Locate.by(By.tagName("a")));
+        GuiElement element = getGuiElementBy(LOCATE.by(By.tagName("a")));
         Assert.assertTrue(element.isDisplayed(), "The Element is displayed.");
         Assert.assertEquals(element.getTagName(), "a", "Expected Tagname was found");
     }
@@ -913,10 +914,10 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
     @Test
     public void testT99_pageChangeOnAnchorClick() {
 
-        final GuiElement elementToClick = getGuiElementBy(Locate.byQa("action/pageChangeAnchor"));
+        final GuiElement elementToClick = getGuiElementBy(LOCATE.byQa("action/pageChangeAnchor"));
         elementToClick.click();
 
-        final GuiElement guiElementShownAfterClick = getGuiElementBy(Locate.by(By.cssSelector("input[type='submit']")));
+        final GuiElement guiElementShownAfterClick = getGuiElementBy(LOCATE.by(By.cssSelector("input[type='submit']")));
         Assert.assertTrue(guiElementShownAfterClick.isDisplayed());
     }
 }

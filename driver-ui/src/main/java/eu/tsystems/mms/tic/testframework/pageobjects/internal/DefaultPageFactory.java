@@ -20,14 +20,12 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
-import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Component;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageObject;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverManager;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import org.openqa.selenium.WebDriver;
@@ -53,15 +51,6 @@ public class DefaultPageFactory implements PageFactory, Loggable {
     public PageFactory clearThreadLocalPagesPrefix() {
         THREAD_LOCAL_PAGES_PREFIX.remove();
         return this;
-    }
-
-    private IWebDriverManager getWebDriverManager() {
-        return Testerra.getInjector().getInstance(IWebDriverManager.class);
-    }
-
-    @Override
-    public <T extends PageObject> T createPage(Class<T> pageClass) {
-        return createPage(pageClass, getWebDriverManager().getWebDriver());
     }
 
     protected String getConfiguredPrefix() {

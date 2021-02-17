@@ -58,7 +58,7 @@ public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementLay
         getTimeOutInput().type("4000");
         getShowWithTimeOutButton().click();
 
-        Control.withTimeout(8, () -> {
+        CONTROL.withTimeout(8, () -> {
             boolean result = g.waits().waitForIsDisplayedFromWebElement();
             Assert.assertTrue(result, "Text was found after TimeOut");
         });
@@ -69,7 +69,7 @@ public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementLay
         pre_hideText(true);
         GuiElement g = getDynamicTextElement();
 
-        Control.withTimeout(3, () -> {
+        CONTROL.withTimeout(3, () -> {
             boolean result = g.waits().waitForIsDisplayedFromWebElement();
             Assert.assertFalse(result, "Text was not found after TimeOut");
         });
@@ -88,7 +88,7 @@ public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementLay
         getTimeOutInput().type("4000");
         getHideWithTimeOutButton().click();
 
-        Control.withTimeout(8, () -> {
+        CONTROL.withTimeout(8, () -> {
             boolean result = g.waits().waitForIsNotDisplayedFromWebElement();
             Assert.assertTrue(result, "Text was not found after TimeOut");
         });
@@ -101,7 +101,7 @@ public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementLay
 
         //test if after 3s text is displayed
         GuiElement g = getDynamicTextElement();
-        Control.withTimeout(3, () -> {
+        CONTROL.withTimeout(3, () -> {
             g.asserts().assertIsDisplayed();
             boolean result = g.waits().waitForIsNotDisplayedFromWebElement();
             Assert.assertFalse(result, "Text was not found after TimeOut");
@@ -122,7 +122,7 @@ public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementLay
 
         getTimeOutInput().type("3000");
         GuiElement parent = getTimeOutDIV();
-        Control.withTimeout(4, () -> {
+        CONTROL.withTimeout(4, () -> {
             getInsertTextByJSButton().click();
 
             boolean ret = parent.waits().waitForAnyFollowingTextNodeContains("per Javascript");
@@ -149,7 +149,7 @@ public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementLay
         GuiElement rdButton = getRadio();
         getTimeOutInput().type("3000");
 
-        Control.withTimeout(4, () -> {
+        CONTROL.withTimeout(4, () -> {
             getAddAttributeWithTimeOutButton().click();
 
             boolean isAttribute = rdButton.waits().waitForAttribute("someAttribute");
@@ -176,7 +176,7 @@ public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementLay
         GuiElement rdButton = getRadio();
         getTimeOutInput().type("3000");
 
-        Control.withTimeout(4, () -> {
+        CONTROL.withTimeout(4, () -> {
             getAddAttributeWithTimeOutButton().click();
 
             boolean isAttribute = rdButton.waits().waitForAttribute("someAttribute", "someValue");
@@ -203,7 +203,7 @@ public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementLay
         GuiElement rdButton = getRadio();
         getTimeOutInput().type("3000");
 
-        Control.withTimeout(4, () -> {
+        CONTROL.withTimeout(4, () -> {
             getAddAttributeWithTimeOutButton().click();
 
             boolean isAttribute = rdButton.waits().waitForAttributeContains("someAttribute", "meVal");
@@ -231,7 +231,7 @@ public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementLay
         getDisableRDButton().click();
 
         GuiElement g = getRadio();
-        Control.withTimeout(4, () -> {
+        CONTROL.withTimeout(4, () -> {
             boolean result = g.waits().waitForIsDisabled();
             Assert.assertTrue(result, "Radio Button was disabled after TimeOut");
         });
@@ -280,7 +280,7 @@ public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementLay
         getTimeOutInput().type("2000");
 
         GuiElement g = getDynamicTextElement();
-        Control.withTimeout(3, () -> {
+        CONTROL.withTimeout(3, () -> {
             getChangeTextByJSButton().click();
 
             boolean result = g.waits().waitForText("Dieser Text wurde per Javascript ge\u00E4ndert");
@@ -315,7 +315,7 @@ public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementLay
         getTimeOutInput().type("2000");
 
         GuiElement g = getDynamicTextElement();
-        Control.withTimeout(3, () -> {
+        CONTROL.withTimeout(3, () -> {
             getChangeTextByJSButton().click();
 
             boolean result = g.waits().waitForTextContains("per Javascript");
@@ -352,7 +352,7 @@ public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementLay
         getShowWithTimeOutButton().click();
 
         GuiElement g = getDynamicTextElement();
-        Control.withTimeout(4, () -> {
+        CONTROL.withTimeout(4, () -> {
             boolean result = g.waits().waitForIsDisplayed();
             Assert.assertTrue(result, "Text was found after TimeOut");
         });
@@ -376,7 +376,7 @@ public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementLay
         getHideWithTimeOutButton().click();
 
         GuiElement g = getDynamicTextElement();
-        Control.withTimeout(3, () -> {
+        CONTROL.withTimeout(3, () -> {
             boolean result = g.waits().waitForIsNotDisplayed();
             Assert.assertTrue(result, "Text was found after TimeOut");
         });
@@ -411,7 +411,7 @@ public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementLay
         getInsertTextByJSButton().click();
 
         GuiElement g = getInsertedTextElement();
-        Control.withTimeout(3, () -> {
+        CONTROL.withTimeout(3, () -> {
             boolean result = g.waits().waitForIsPresent();
             Assert.assertTrue(result, "Text was found after TimeOut");
         });
@@ -448,7 +448,7 @@ public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementLay
         getTimeOutInput().type("3000");
         getEnableRDButton().click();
 
-        Control.withTimeout(6, () -> {
+        CONTROL.withTimeout(6, () -> {
             boolean result = g.waits().waitForIsEnabled();
             Assert.assertTrue(result, "Radio Button was enabled after TimeOut");
         });
@@ -476,7 +476,7 @@ public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementLay
         getTimeOutInput().type("4000");
         getSelectRadioButtonMitVerzoegerungButton().click();
 
-        Control.withTimeout(8, () -> {
+        CONTROL.withTimeout(8, () -> {
             boolean result = radio.waits().waitForIsSelected();
             Assert.assertTrue(result, "Radio Button was selected after TimeOut");
         });
@@ -495,7 +495,7 @@ public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementLay
         getTimeOutInput().type("4000");
         getDeselectRadioButtonMitVerzoegerungButton().click();
 
-        Control.withTimeout(8, () -> {
+        CONTROL.withTimeout(8, () -> {
             boolean result = g.waits().waitForIsNotSelected();
             Assert.assertTrue(result, "Radio Button was deselected after TimeOut");
         });

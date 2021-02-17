@@ -29,6 +29,7 @@ import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverRetainer;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverRequest;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.lang.reflect.Method;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
@@ -66,7 +67,7 @@ public abstract class AbstractWebDriverTest extends TesterraTest implements WebD
      */
     @BeforeMethod(alwaysRun = true)
     public void configureChromeOptions(Method method) {
-        WebDriverManager.setUserAgentConfig(Browsers.chromeHeadless, new ChromeConfig() {
+        WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.chromeHeadless, new ChromeConfig() {
             @Override
             public void configure(ChromeOptions options) {
                 options.addArguments("--disable-dev-shm-usage");
@@ -78,7 +79,7 @@ public abstract class AbstractWebDriverTest extends TesterraTest implements WebD
      * Sets the unsupportedBrowser=true flag for the @Fails annotation
      */
     protected static void setUnsupportedBrowserFlag() {
-        if (Browsers.phantomjs.equals(WebDriverManager.getConfig().getBrowser())) {
+        if (Browsers.phantomjs.equals(WEB_DRIVER_MANAGER.getConfig().getBrowser())) {
             System.setProperty("unsupportedBrowser", "true");
         }
     }
@@ -91,24 +92,24 @@ public abstract class AbstractWebDriverTest extends TesterraTest implements WebD
         WebDriver webDriver;
         AbstractWebDriverRequest request =  getWebDriverRequest();
         if (request != null) {
-            webDriver = WebDriverManager.getWebDriver(request);
+            webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
         } else {
-            webDriver = WebDriverManager.getWebDriver();
+            webDriver = WEB_DRIVER_MANAGER.getWebDriver();
         }
         return webDriver;
     }
 
     public WebDriver getClassExclusiveWebDriver() {
         if (exclusiveSessionId == null) {
-            exclusiveSessionId = WebDriverManager.makeExclusive(getWebDriver());
+            exclusiveSessionId = WEB_DRIVER_MANAGER.makeExclusive(getWebDriver());
         }
-        return WebDriverManager.getWebDriver(exclusiveSessionId);
+        return WEB_DRIVER_MANAGER.getWebDriver(exclusiveSessionId);
     }
 
     @AfterClass
     public void closeClassExclusiveWebDriverSession() {
         if (this.exclusiveSessionId != null) {
-            WebDriverManager.shutdownSession(this.exclusiveSessionId);
+            WEB_DRIVER_MANAGER.shutdownSession(this.exclusiveSessionId);
             this.exclusiveSessionId = null;
         }
     }
@@ -119,7 +120,7 @@ public abstract class AbstractWebDriverTest extends TesterraTest implements WebD
             this._getWebDriver().getWindowHandles();
         } catch (WebDriverException s) {
             log().error(s.getMessage());
-            WebDriverManager.shutdownAllThreadSessions(); // shutdown all threwad drivers.
+            WEB_DRIVER_MANAGER.shutdownAllThreadSessions(); // shutdown all threwad drivers.
         }
 
         return this._getWebDriver();

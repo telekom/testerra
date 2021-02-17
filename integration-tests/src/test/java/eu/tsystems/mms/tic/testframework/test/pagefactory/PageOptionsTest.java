@@ -30,6 +30,6 @@ public class PageOptionsTest extends AbstractTestSitesTest implements PageFactor
 
     @Override
     public PageWithPageOptions getPage() {
-        return PageFactory.createPage(PageWithPageOptions.class, getWebDriver());
+        return PAGE_FACTORY.createPage(PageWithPageOptions.class, getWebDriver());
     }
 }

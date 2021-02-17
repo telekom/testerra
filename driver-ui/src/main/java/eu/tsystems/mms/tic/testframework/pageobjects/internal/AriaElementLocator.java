@@ -94,6 +94,6 @@ public class AriaElementLocator implements UiElementLabelLocator, LocatorFactory
             }
         }
 
-        return Locate.by(By.xpath("("+String.join("|", xpathes)+")"));
+        return LOCATE.by(By.xpath("("+String.join("|", xpathes)+")"));
     }
 }

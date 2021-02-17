@@ -61,7 +61,7 @@ public class PageTests extends AbstractExclusiveTestSitesTest<WebTestPage> imple
     @Test
     public void test_Page_waitFor() {
         WebTestPage page = getPage();
-        Control.withTimeout(0, () -> {
+        CONTROL.withTimeout(0, () -> {
             Assert.assertFalse(page.waitFor().title().contains("Katzentitel").is(true));
             Assert.assertTrue(page.waitFor().title().is("Input test"));
         });
@@ -89,13 +89,13 @@ public class PageTests extends AbstractExclusiveTestSitesTest<WebTestPage> imple
     @Fails(description = "The test itself passes, but collected assertions will always fail")
     public void test_Page_title_length_fails_collected() {
         WebTestPage page = getPage();
-        Control.collectAssertions(() -> page.expect().title().length().isGreaterThan(10));
+        CONTROL.collectAssertions(() -> page.expect().title().length().isGreaterThan(10));
     }
 
     @Test
     public void test_Page_title_length_fails_nonFunctional() {
         WebTestPage page = getPage();
-        Control.optionalAssertions(()-> page.expect().title().length().isGreaterThan(10));
+        CONTROL.optionalAssertions(()-> page.expect().title().length().isGreaterThan(10));
     }
 
     @Test

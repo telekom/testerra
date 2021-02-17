@@ -28,7 +28,6 @@ import eu.tsystems.mms.tic.testframework.sikuli.ImageElement;
 import eu.tsystems.mms.tic.testframework.sikuli.ImageWebDriver;
 import eu.tsystems.mms.tic.testframework.sikuli.SikuliBy;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.net.URL;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -43,7 +42,7 @@ public class SikuliBasedWebTest extends AbstractTestSitesTest {
 
     //    @Test
     public void testT01_ByImage() throws Exception {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 
         URL resourceURL = FileUtils.getResourceURL("sikuli/testimage.png");
         GuiElement guiElement = new GuiElement(driver, SikuliBy.image(driver, resourceURL));
@@ -53,7 +52,7 @@ public class SikuliBasedWebTest extends AbstractTestSitesTest {
 
 //    @Test
     public void testT01_ByImage_Directly() throws Exception {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 
         URL resourceURL = FileUtils.getResourceURL("sikuli/iiswelcome.png");
 
@@ -64,7 +63,7 @@ public class SikuliBasedWebTest extends AbstractTestSitesTest {
 
 //    @Test
     public void testT03a_ByImage_InFrames_FindElementInFrame() throws Exception {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         URL resourceURL = FileUtils.getResourceURL("sikuli/ringo.png");
         GuiElement guiElement = new GuiElement(driver, SikuliBy.image(driver, resourceURL));
 
@@ -74,7 +73,7 @@ public class SikuliBasedWebTest extends AbstractTestSitesTest {
 
 //    @Test
     public void testT03b_ByImage_InFrames_FindElementInFrame_withObsoleteGuiElementFrame() throws Exception {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         GuiElement frame = new GuiElement(driver, By.id("draggableNodes"));
 
         URL resourceURL = FileUtils.getResourceURL("sikuli/ringo.png");

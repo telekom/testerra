@@ -34,7 +34,7 @@ public class LocatorTest extends AbstractTestSitesTest implements UiElementFinde
     private final String textToFind = "This link has some text!";
 
     private UiElementFinder getFinder() {
-        return uiElementFinderFactory.create(getClassExclusiveWebDriver());
+        return UI_ELEMENT_FINDER_FACTORY.create(getClassExclusiveWebDriver());
     }
 
     @Test

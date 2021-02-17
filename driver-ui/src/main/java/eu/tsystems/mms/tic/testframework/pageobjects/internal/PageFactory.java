@@ -25,25 +25,16 @@ import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.pageobjects.Component;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageObject;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import org.openqa.selenium.WebDriver;
 
-public interface PageFactory {
+public interface PageFactory extends WebDriverManagerProvider {
     PageFactory setGlobalPagesPrefix(String pagePrefix);
     PageFactory setThreadLocalPagesPrefix(String pagePrefix);
     PageFactory clearThreadLocalPagesPrefix();
-
-    @Deprecated
-    default PageFactory clearCache() {
-        return clearThreadLocalPagesPrefix();
+    default <T extends PageObject> T createPage(Class<T> pageClass) {
+        return createPage(pageClass, WEB_DRIVER_MANAGER.getWebDriver());
     }
-
-    /**
-     * @deprecated Use {@link #createPage(Class, WebDriver)} instead
-     */
-    default <T extends PageObject> T create(Class<T> pageClass, WebDriver webDriver) {
-        return createPage(pageClass, webDriver);
-    }
-    <T extends PageObject> T createPage(Class<T> pageClass);
     default <T extends PageObject> T createPage(Class<T> pageClass, WebDriver webDriver) {
         return createPageWithCheckRule(pageClass, webDriver, CheckRule.DEFAULT);
     }

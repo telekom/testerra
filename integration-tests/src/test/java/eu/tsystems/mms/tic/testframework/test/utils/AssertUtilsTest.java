@@ -50,10 +50,10 @@ public class AssertUtilsTest extends TesterraTest implements AssertProvider {
         try {
             AssertUtils.assertContains(string, "DresdenX");
         } catch (AssertionError e) {
-            Assert.assertContains(e.getMessage(), "Expected [Dresden] contains [DresdenX]");
+            ASSERT.assertContains(e.getMessage(), "Expected [Dresden] contains [DresdenX]");
             return;
         }
-        Assert.fail("");
+        ASSERT.fail("");
     }
 
     /**
@@ -77,10 +77,10 @@ public class AssertUtilsTest extends TesterraTest implements AssertProvider {
         try {
             AssertUtils.assertContains(string, "Holz", "String contains " + string + "instead of Holz");
         } catch (AssertionError e) {
-            Assert.assertTrue(e.getMessage().contains("String contains " + string + "instead of Holz"));
+            ASSERT.assertTrue(e.getMessage().contains("String contains " + string + "instead of Holz"));
             return;
         }
-        Assert.fail("");
+        ASSERT.fail("");
     }
 
     @Test

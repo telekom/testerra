@@ -44,7 +44,7 @@ public class AssertTextPageTest extends AbstractTestSitesTest implements PageFac
 
     @Override
     public WebTestFramedPage getPage() {
-         WebTestFramedPage page = PageFactory.createPage(WebTestFramedPage.class, getWebDriver());
+         WebTestFramedPage page = PAGE_FACTORY.createPage(WebTestFramedPage.class, getWebDriver());
          //page.expectThat().url().contains(getTestPage().getPath());
          return page;
     }

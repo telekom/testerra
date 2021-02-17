@@ -30,7 +30,6 @@ import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodDetailsPage;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.ThreadsPage;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -57,7 +56,7 @@ public class ThreadsPageTest extends AbstractReportTest {
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     public void testT01_checkCorrectDisplayOfThreadsPage() {
         // Test case #334
-        ThreadsPage threadsPage = GeneralWorkflow.doOpenBrowserAndReportThreadsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
+        ThreadsPage threadsPage = GeneralWorkflow.doOpenBrowserAndReportThreadsPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         threadsPage.assertPageIsDisplayedCorrectly();
     }
 
@@ -68,7 +67,7 @@ public class ThreadsPageTest extends AbstractReportTest {
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER7}, dataProvider = "testMethods")
     public void testT02_checkCorrectLinksFromThreadsPageToMethodDetailsPage(String methodName, TestResultHelper.TestResult methodResult) {
         // Test case #913
-        ThreadsPage threadsPage = GeneralWorkflow.doOpenBrowserAndReportThreadsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_7.getReportDirectory()));
+        ThreadsPage threadsPage = GeneralWorkflow.doOpenBrowserAndReportThreadsPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_7.getReportDirectory()));
         MethodDetailsPage methodDetailsPage = threadsPage.clickMethodAndOpenMethodDetailsPage(methodName);
         methodDetailsPage.assertCorrectTestMethodIsDisplayed(methodName, methodResult);
     }

@@ -27,5 +27,5 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.LocatorFactory;
  * Provides factory for {@link Locator}
  */
 public interface LocatorFactoryProvider {
-    LocatorFactory Locate = new LocatorFactory();
+    LocatorFactory LOCATE = new LocatorFactory();
 }

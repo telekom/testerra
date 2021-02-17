@@ -1,4 +1,49 @@
-## Creating elements in pages
+## Create pages in tests
+
+### API v1
+```java
+class Test extends TesterraTest {
+    @Test
+    public void test() {
+        MyPage page = PageFactory.create(MyPage.class, WebDriverManager.getWebDriver());
+    }
+}
+```
+
+### API v2
+```java
+class Test extends TesterraTest implements PageFactoryProvider {
+    @Test
+    public void test() {
+        // Uses WEB_DRIVER_MANAGER.getWebDriver()
+        MyPage page = PAGE_FACTORY.createPage(MyPage.class);
+    }
+}
+```
+
+## Create pages in pages
+
+### API v1
+```java
+class MyPage extends Page {
+    public OtherPage navigateToOtherPage() {
+        return PageFactory.create(OtherPage.class, getWebDriver());
+    }
+}
+```
+
+### API v2
+```java
+class MyPage extends Page {
+    public OtherPage navigateToOtherPage() {
+        // Uses same WebDriver
+        return createPage(OtherPage.class);
+    }
+}
+```
+
+
+## Locate elements in pages
 
 ### API v1
 ```java
@@ -18,7 +63,7 @@ class MyPage extends Page {
 
 ### API v1
 ```java
-if (condition) {
+if (boolean) {
     element.asserts().assertIsDisplayed();
 } else {
     element.asserts().assertIsNotDisplayed();
@@ -27,19 +72,19 @@ if (condition) {
 
 ### API v2
 ```java
-element.expect().displayed(condition);
+element.expect().displayed(boolean);
 ```
 
 ## Assert conditionally that the page title ends with a text
 
 ### API v1
 ```java
-Assert.assertEquals(page.getWebDriver().getTitle().endsWith("Startseite"), condition);
+Assert.assertEquals(page.getWebDriver().getTitle().endsWith("Startseite"), boolean);
 ```
 
 ### API v2
 ```java
-page.expect().title().endsWith("Startseite").is(condition);
+page.expect().title().endsWith("Startseite").is(boolean);
 ```
 
 ## Wait for the page URL to change
@@ -49,7 +94,9 @@ page.expect().title().endsWith("Startseite").is(condition);
 
 ### API v2
 ```java
-page.waitFor().url().is("https://google.de");
+if (page.waitFor().url().startsWith("http://redirect.to").is(true)) {
+
+}
 ```
 
 ## Assert the amount of found elements
@@ -64,7 +111,23 @@ Assert.assertTrue(elements.getNumberOfFoundElements() >= 4 && elements.getNumber
 elements.expect().numberOfElements().isBetween(4, 6);
 ```
 
-## Sub elements
+## Value mapping
+
+### API v1
+
+*unsupported*
+
+### API v2
+
+```java
+element.expect()
+        .text()
+        .map(String::trim)
+        .map(String::toUpperCase)
+        .is(String);
+```
+
+## Locate sub elements
 
 ### API v1
 ```java
@@ -99,11 +162,7 @@ UiElement uiElement = frame.findById(42);
 
 ### API v2
 ```java
-class MyPage extends Page {
-    public void acceptCookies() {
-        findDeep(By.id("acccept")).click();
-    }
-}
+findDeep(By.id("acccept-cookies")).click();
 ```
 
 ## Assert text on the last item in an element list
@@ -128,12 +187,52 @@ element.nonFunctionalAsserts().assertIsDisplayed();
 
 ### API v2
 ```java
-Control.collectedAssertions(() -> {
+CONTROL.collectedAssertions(() -> {
     element.expect().displayed(true);
 });
 
-Control.optionalAssertions(() -> {
+CONTROL.optionalAssertions(() -> {
     element.expect().displayed(true);
+});
+```
+
+## Fast assertions
+
+### API v1
+```java
+element1.setElementTimeoutSeconds(0);
+element1.asserts().assertIsDisplayed();
+
+element2.setElementTimeoutSeconds(0);
+element2.asserts().assertIsDisplayed();
+```
+
+### API v2
+```java
+CONTROL.withTimeout(0, () -> {
+    element1.expect().displayed(true);
+    element2.expect().displayed(true);
+});
+```
+
+## Retry blocks
+
+### API v1
+```java
+Timer timer = new Timer(500, 15_000);
+timer.executeSequence(new Timer.Sequence<Boolean>() {
+    @Override
+    public void run() throws Throwable {
+        // sequence code here
+    }
+});
+```
+
+### API v2
+```java
+CONTROL.retryFor(5, () -> {
+    button.click();
+    button.expect().enabled(false);
 });
 ```
 
@@ -147,46 +246,4 @@ GuiElement element = new GuiElement(By.xpath(String.format("//button[descendant:
 ### API v2
 ```java
 UiElement element = find(XPath.from("button").encloses("span").text("Klick mich"))
-```
-
-## Creating pages in tests
-
-### API v1
-```java
-class Test extends TesterraTest {
-    @Test
-    public void test() {
-        MyPage page = PageFactory.create(MyPage.class, WebDriverManager.getWebDriver());
-    }
-}
-```
-
-### API v2
-```java
-class Test extends TesterraTest implements PageFactoryProvider {
-    @Test
-    public void test() {
-        MyPage page = pageFactory.createPage(MyPage.class);
-    }
-}
-```
-
-## Creating pages in pages
-
-### API v1
-```java
-class MyPage extends Page {
-    public OtherPage navigateToOtherPage() {
-        return PageFactory.create(OtherPage.class, getWebDriver());
-    }
-}
-```
-
-### API v2
-```java
-class MyPage extends Page {
-    public OtherPage navigateToOtherPage() {
-        return createPage(OtherPage.class);
-    }
-}
 ```

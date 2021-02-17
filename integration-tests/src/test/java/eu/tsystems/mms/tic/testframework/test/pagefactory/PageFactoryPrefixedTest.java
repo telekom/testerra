@@ -38,12 +38,12 @@ import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.TLPrefix2Resp
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.TLPrefix2ResponsiveWebTestPage_801px_1234px;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.UnspecificWebDriverRequest;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
 import java.net.MalformedURLException;
 import org.openqa.selenium.Dimension;
@@ -60,7 +60,7 @@ public class PageFactoryPrefixedTest extends AbstractWebDriverTest implements Lo
 
     @Override
     public ResponsiveWebTestPage getPage() {
-        return PageFactory.createPage(ResponsiveWebTestPage.class, getClassExclusiveWebDriver());
+        return PAGE_FACTORY.createPage(ResponsiveWebTestPage.class, getClassExclusiveWebDriver());
     }
 
     @Override
@@ -111,15 +111,15 @@ public class PageFactoryPrefixedTest extends AbstractWebDriverTest implements Lo
     @BeforeClass(alwaysRun = true)
     public void before() {
         PageFactory.clearCache();
-        PageFactory.setGlobalPagesPrefix("Prefix");
-        WebDriverManagerConfig config = WebDriverManager.getConfig();
+        PAGE_FACTORY.setGlobalPagesPrefix("Prefix");
+        WebDriverManagerConfig config = WEB_DRIVER_MANAGER.getConfig();
         config.setShutdownSessionAfterTestMethod(false);
     }
 
     @AfterClass(alwaysRun = true)
     public void after() {
-        PageFactory.setGlobalPagesPrefix(null);
-        WebDriverManagerConfig config = WebDriverManager.getConfig();
+        PAGE_FACTORY.setGlobalPagesPrefix(null);
+        WebDriverManagerConfig config = WEB_DRIVER_MANAGER.getConfig();
         config.setShutdownSessionAfterTestMethod(true);
     }
 
@@ -133,7 +133,7 @@ public class PageFactoryPrefixedTest extends AbstractWebDriverTest implements Lo
 
     @Test
     public void testT01_InRange_1_ThreadLocalPrefix1() {
-        PageFactory.setThreadLocalPagesPrefix("TLPrefix1");
+        PAGE_FACTORY.setThreadLocalPagesPrefix("TLPrefix1");
         setViewportSize(getClassExclusiveWebDriver(), 799, 1000);
         ResponsiveWebTestPage blaPage = getPage();
 
@@ -141,18 +141,18 @@ public class PageFactoryPrefixedTest extends AbstractWebDriverTest implements Lo
             Assert.assertEquals(blaPage.getClass().getSimpleName(), TLPrefix1ResponsiveWebTestPage_601px_800px.class.getSimpleName(), "Instantiated correct page.");
         }
         finally {
-            PageFactory.clearThreadLocalPagesPrefix();
+            PAGE_FACTORY.clearThreadLocalPagesPrefix();
         }
     }
 
     @Test
     public void testT01_InRange_1_ThreadLocalPrefix2() {
-        PageFactory.setThreadLocalPagesPrefix("TLPrefix2");
+        PAGE_FACTORY.setThreadLocalPagesPrefix("TLPrefix2");
         setViewportSize(getClassExclusiveWebDriver(), 799, 1000);
         ResponsiveWebTestPage blaPage = getPage();
 
         Assert.assertEquals(blaPage.getClass().getSimpleName(), TLPrefix2ResponsiveWebTestPage_601px_800px.class.getSimpleName(), "Instantiated correct page.");
-        PageFactory.clearThreadLocalPagesPrefix();
+        PAGE_FACTORY.clearThreadLocalPagesPrefix();
     }
 
     @Test
@@ -165,20 +165,20 @@ public class PageFactoryPrefixedTest extends AbstractWebDriverTest implements Lo
 
     @Test
     public void testT02_InRange_2_ThreadLocalPrefix1() {
-        PageFactory.setThreadLocalPagesPrefix("TLPrefix1");
+        PAGE_FACTORY.setThreadLocalPagesPrefix("TLPrefix1");
         setViewportSize(getClassExclusiveWebDriver(), 1024, 1000);
         ResponsiveWebTestPage blaPage = getPage();
 
         try {
             Assert.assertEquals(blaPage.getClass().getSimpleName(), TLPrefix1ResponsiveWebTestPage_801px_1234px.class.getSimpleName(), "Instantiated correct page.");
         } finally {
-            PageFactory.clearThreadLocalPagesPrefix();
+            PAGE_FACTORY.clearThreadLocalPagesPrefix();
         }
     }
 
     @Test
     public void testT02_InRange_2_ThreadLocalPrefix2() {
-        PageFactory.setThreadLocalPagesPrefix("TLPrefix2");
+        PAGE_FACTORY.setThreadLocalPagesPrefix("TLPrefix2");
         setViewportSize(getClassExclusiveWebDriver(), 1024, 1000);
         ResponsiveWebTestPage blaPage = getPage();
 
@@ -186,7 +186,7 @@ public class PageFactoryPrefixedTest extends AbstractWebDriverTest implements Lo
             Assert.assertEquals(blaPage.getClass().getSimpleName(), TLPrefix2ResponsiveWebTestPage_801px_1234px.class.getSimpleName(), "Instantiated correct page.");
         }
         finally {
-            PageFactory.clearThreadLocalPagesPrefix();
+            PAGE_FACTORY.clearThreadLocalPagesPrefix();
         }
     }
 
@@ -224,7 +224,7 @@ public class PageFactoryPrefixedTest extends AbstractWebDriverTest implements Lo
 
     @Test
     public void testT07_LoadBasePage() {
-        BasePage basePage = PageFactory.createPage(BasePage.class, getWebDriver());
+        BasePage basePage = PAGE_FACTORY.createPage(BasePage.class, getWebDriver());
 
         AssertCollector.assertFalse(basePage instanceof BasePage2016, "its a BasePage2016");
         AssertCollector.assertFalse(basePage instanceof PrefixBasePage2016, "its a PrefixBasePage2016");

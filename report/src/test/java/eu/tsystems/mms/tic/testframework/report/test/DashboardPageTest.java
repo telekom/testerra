@@ -32,7 +32,6 @@ import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
 import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.DashboardPage;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
@@ -119,7 +118,7 @@ public class DashboardPageTest extends AbstractTestDashboard {
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     // Test case #849
     public void testT04_checksIfTesterraLogoIsDisplayed() {
-        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
+        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         Assert.assertTrue(dashboardPage.testerraLogo.isDisplayed(), "Testerra logo is displayed on dashboard page.");
     }
 
@@ -132,7 +131,7 @@ public class DashboardPageTest extends AbstractTestDashboard {
     // Test case #850
     public void testT05_checksScreenshotForFailedMethod() throws Exception {
         //TODO try out other locator or using java script
-        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
+        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(TestResult.FAILEDMINOR);
         dashboardPage.click(dashboardPage.dashboardModuleClassBarChart.getCurrentBars().get(0));
         GuiElement method1 = null;
@@ -155,7 +154,7 @@ public class DashboardPageTest extends AbstractTestDashboard {
     // Test case #851
     public void testT06_checkDashboardIndicationThatPassedTestIsAnnotatedWithFails() throws Exception {
         //TODO try out other locator or using java script
-        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_4.getReportDirectory()));
+        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_4.getReportDirectory()));
         dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(TestResult.PASSED);
         dashboardPage.click(dashboardPage.dashboardModuleClassBarChart.getCurrentBars().get(0));
         AssertCollector.assertTrue(dashboardPage.dashboardModuleInformationCorridor.repairedFailsIndicationButton.isDisplayed(), "The dashboard page does not show the indicator, that there is a redundant @Fails annotation.");

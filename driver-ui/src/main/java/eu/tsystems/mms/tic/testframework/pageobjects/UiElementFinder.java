@@ -34,23 +34,23 @@ import org.openqa.selenium.By;
 public interface UiElementFinder extends LocatorFactoryProvider, Loggable, WebDriverRetainer {
     UiElement find(Locator locator);
     default UiElement findById(Object id) {
-        return find(Locate.by(By.id(id.toString())));
+        return find(LOCATE.by(By.id(id.toString())));
     }
     default UiElement findByQa(String qa) {
-        return find(Locate.byQa(qa));
+        return find(LOCATE.byQa(qa));
     }
     default UiElement find(By by) {
-        return find(Locate.by(by));
+        return find(LOCATE.by(by));
     }
     default UiElement find(XPath xPath) {
-        return find(Locate.by(xPath));
+        return find(LOCATE.by(xPath));
     }
     default UiElement findByLabel(String element, String label) {
         return findDeep(Testerra.getInjector().getInstance(UiElementLabelLocator.class).createLocator(element, label));
     }
 
     default UiElement findDeep(XPath xPath) {
-        return findDeep(Locate.by(xPath));
+        return findDeep(LOCATE.by(xPath));
     }
 
     default UiElement findDeep(Locator locator) {

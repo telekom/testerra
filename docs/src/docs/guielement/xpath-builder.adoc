@@ -14,7 +14,7 @@ XPath.from("td", 1);
 XPath.from("td", -1);
 ```
 
-=== Elements that have classes
+== Elements that have classes
 
 ```java
 XPath.from("div").classes("navigation", "header");
@@ -28,7 +28,7 @@ but not
 <div class="navigation-header">
 ```
 
-=== Select an element that encloses another element
+== Select an element that encloses another element
 
 ```java
 XPath.from("nav")
@@ -44,7 +44,7 @@ This will find the `<nav>` element
 </nav>
 ```
 
-=== Select an element by its text
+== Select an element by its text
 ```java
 XPath.from("*").text().hasWords("Login", "here");
 XPath.from("*").text().contains("first");
@@ -56,7 +56,7 @@ This will find elements like
     here </a>
 ```
 
-=== Select by attributes
+== Select by attributes
 
 ```java
 XPath.from("*").attribute("src").endsWith(".png");
@@ -68,7 +68,7 @@ This will find elements like
 <img src="http://example.com/image.png"/>
 ```
 
-=== Select a sub element
+== Select a sub element
 ```java
 XPath.from("form")
     .attribute("name", "login")

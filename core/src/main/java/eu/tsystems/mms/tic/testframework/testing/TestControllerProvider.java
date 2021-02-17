@@ -27,5 +27,5 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
  * @author Mike Reiche
  */
 public interface TestControllerProvider {
-    TestController Control = Testerra.getInjector().getInstance(TestController.class);
+    TestController CONTROL = Testerra.getInjector().getInstance(TestController.class);
 }

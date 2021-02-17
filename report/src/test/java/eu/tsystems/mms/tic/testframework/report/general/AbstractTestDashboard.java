@@ -30,7 +30,6 @@ import eu.tsystems.mms.tic.testframework.report.model.TestReportThreeNumbers;
 import eu.tsystems.mms.tic.testframework.report.model.TestReportTwoNumbers;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.DashboardPage;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.DataProvider;
 
 public class AbstractTestDashboard extends AbstractAnnotationMarkerTest {
@@ -42,7 +41,7 @@ public class AbstractTestDashboard extends AbstractAnnotationMarkerTest {
      * @return
      */
     public DashboardPage getDashboardPage(ReportDirectory reportDirectory) {
-        return GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(reportDirectory.getReportDirectory()));
+        return GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(reportDirectory.getReportDirectory()));
     }
 
     @DataProvider(parallel = true)

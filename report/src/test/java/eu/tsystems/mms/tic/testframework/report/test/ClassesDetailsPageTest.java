@@ -39,7 +39,6 @@ import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTes
 import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestRetry;
 import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestSkipped;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -58,7 +57,7 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
     // Test case #831
     public void testT01_checkTestResultsColorsAreDisplayedAndTestResultCategoryIsCorrect() {
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
-                WebDriverManager.getWebDriver(),
+                WEB_DRIVER_MANAGER.getWebDriver(),
                 PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.getReportDirectory()),
                 "My_Context");
         classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.FAILEDMINOR);
@@ -101,7 +100,7 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
 
         Class<ReportTestUnderTestPassed> classWithPassedMethods = ReportTestUnderTestPassed.class;
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
-                WebDriverManager.getWebDriver(),
+                WEB_DRIVER_MANAGER.getWebDriver(),
                 PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.getReportDirectory()),
                 classWithPassedMethods.getSimpleName());
 
@@ -119,7 +118,7 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
 
         Class<ReportTestUnderTestFailed> classWithFailedMethods = ReportTestUnderTestFailed.class;
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
-                WebDriverManager.getWebDriver(),
+                WEB_DRIVER_MANAGER.getWebDriver(),
                 PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.getReportDirectory()),
                 classWithFailedMethods.getAnnotation(TestClassContext.class).name());
 
@@ -140,7 +139,7 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
     public void testT04_checkScreenShotSymbolIsNotDisplayed() {
         final String testundertestMethodName = "test_FailedInheritedMinor2";
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
-                WebDriverManager.getWebDriver(),
+                WEB_DRIVER_MANAGER.getWebDriver(),
                 PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()),
                 "My_Context");
         classesDetailsPage.assertScreenshotIsNotDisplayedForMethod(testundertestMethodName);
@@ -165,7 +164,7 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
         methodsTestObjects.put("testInDevelopmentMarker", Collections.singletonList(ReportAnnotationType.IN_DEVELOPMENT));
 
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
-                WebDriverManager.getWebDriver(),
+                WEB_DRIVER_MANAGER.getWebDriver(),
                 PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()),
                 ReportTestUnderTestAnnotations.class.getSimpleName());
         checkAnnotationsAreDisplayed(classesDetailsPage, methodsTestObjects);
@@ -180,10 +179,10 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
     public void testT06_checkAnnotationsForRetry() {
         TestStep.begin("Check Retried Annotation");
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
-                WebDriverManager.getWebDriver(),
+                WEB_DRIVER_MANAGER.getWebDriver(),
                 PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()),
                 ReportTestUnderTestRetry.class.getSimpleName());
-        WebDriverManager.getWebDriver().manage().window().setSize(new Dimension(1920, 1080));
+        WEB_DRIVER_MANAGER.getWebDriver().manage().window().setSize(new Dimension(1920, 1080));
         HashMap<String, List<ReportAnnotationType>> methodsTestObjects = new HashMap<>();
         methodsTestObjects.put("test_TestRetryExceptionTrigger", Collections.singletonList(ReportAnnotationType.RETRIED));
         checkAnnotationsAreDisplayed(classesDetailsPage, methodsTestObjects);

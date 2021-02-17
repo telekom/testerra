@@ -28,7 +28,6 @@ import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.LogsPage;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.Test;
 
 @TestClassContext(name = "View-Logs")
@@ -40,7 +39,7 @@ public class LogsPageTest extends AbstractReportTest {
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     // Test case #428
     public void testT01_checkCorrectDisplayOfLogsPage() {
-        LogsPage logsPage = GeneralWorkflow.doOpenBrowserAndReportLogsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
+        LogsPage logsPage = GeneralWorkflow.doOpenBrowserAndReportLogsPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         logsPage.assertPageIsDisplayedCorrectly();
     }
 
@@ -50,7 +49,7 @@ public class LogsPageTest extends AbstractReportTest {
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     // Test case #427
     public void testT02_checkForCorrectDisplayOfLogs() {
-        LogsPage logsPage = GeneralWorkflow.doOpenBrowserAndReportLogsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
+        LogsPage logsPage = GeneralWorkflow.doOpenBrowserAndReportLogsPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         logsPage.insertSearchTermInInSearchBar(
                 "WARN",
                 "Not retrying this method, because test is @Fails annotated.",

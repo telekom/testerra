@@ -37,7 +37,7 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements LocatorFac
     }
 
     private GuiElement getGuiElementQa(final String qaTag) {
-        return new GuiElement(getClassExclusiveWebDriver(), Locate.byQa(qaTag));
+        return new GuiElement(getClassExclusiveWebDriver(), LOCATE.byQa(qaTag));
     }
 
     @Test

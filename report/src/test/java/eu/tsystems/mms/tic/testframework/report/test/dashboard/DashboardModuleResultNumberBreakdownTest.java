@@ -30,7 +30,6 @@ import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.DashboardPage;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.abstracts.AbstractTestReportNumbers;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
@@ -98,7 +97,7 @@ public class DashboardModuleResultNumberBreakdownTest extends AbstractTestDashbo
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     // Test case #857
     public void testT03_checkTestFinishDateAndTime() throws Exception {
-        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
+        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         String elementString = dashboardPage.dashboardModuleTestResultNumberBreakdown.testEndTimeString.getText();
         String dateString;
         try {

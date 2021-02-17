@@ -25,7 +25,6 @@ package eu.tsystems.mms.tic.testframework.test.utils;
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -46,7 +45,7 @@ public class UITestUtilsTest extends AbstractTestSitesTest {
     @Test
     public void testT01_takeScreenshotTwice() {
 
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 
         final Screenshot screenshot = UITestUtils.takeScreenshot(driver, true);
         Assert.assertNotNull(screenshot, "Screenshot taken");

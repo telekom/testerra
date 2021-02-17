@@ -36,7 +36,6 @@ import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodDetailsPage;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.dashboard.DashboardModuleMethodChart;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.By;
@@ -56,7 +55,7 @@ public class RetryTest extends AbstractReportTest {
     public void testT01_checkRetryDataProviderRunsTheExpectedNumberOfTestMethods() {
         final String retryClassName = "ReportTestUnderTestRetry";
 
-        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
+        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
         GuiElement retryBarChartMethodLabel = dashboardPage.dashboardModuleClassBarChart.getBarChartElementByClassName(retryClassName);
         retryBarChartMethodLabel.click();
         DashboardModuleMethodChart dashboardModuleMethodChart = dashboardPage.getMethodChartModule();
@@ -88,7 +87,7 @@ public class RetryTest extends AbstractReportTest {
         tagNames.add("(1) Retry3");
 
 
-        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
+        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
         dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(TestResultHelper.TestResult.FAILED);
         dashboardPage.click(dashboardPage.dashboardModuleClassBarChart.getCurrentBars().get(0));
 
@@ -119,7 +118,7 @@ public class RetryTest extends AbstractReportTest {
     @Fails(ticketString = "667")
     // Test case #793
     public void testT03_checkSuccessfulRetriedTestsAreDisplayed() throws Exception {
-        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
+        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
         dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(TestResultHelper.TestResult.PASSED);
         dashboardPage.click(dashboardPage.dashboardModuleClassBarChart.getCurrentBars().get(1));
         Assert.assertTrue(dashboardPage.getMethodChartModule().methodChartSuccessfulRetried.getText().contains("test_ExceptionRetryTest"), "The retried test 'test_ExceptionRetryTest' does not exist in the passed method chart.");
@@ -136,7 +135,7 @@ public class RetryTest extends AbstractReportTest {
         final int numberOfPassedMethods = 1;
         final int numberOfRetryMethods = 3;
 
-        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
+        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
         GuiElement reportTestUnderTestRetry = dashboardPage.dashboardModuleClassBarChart.getBarChartElementByClassName("ReportTestUnderTestRetry");
         reportTestUnderTestRetry.click();
         DashboardModuleMethodChart dashboardModuleMethodChart = dashboardPage.getMethodChartModule();
@@ -172,7 +171,7 @@ public class RetryTest extends AbstractReportTest {
     @Fails(ticketString = "668")
     // Test case #796
     public void testT05_checkRetriedTestsWithDataProviderTestMethodsHaveTheCorrectName() {
-        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
+        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
         final int numberOfRetryMethods = 3;
 
         int retryOccurrenceCounter = 1;
@@ -197,8 +196,8 @@ public class RetryTest extends AbstractReportTest {
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
     // Test case #797
     public void testT06_checkMethodThatDependsOnPassedRetryIsSuccessful() {
-        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
-        WebDriverManager.getWebDriver().manage().window().setSize(new Dimension(1920, 1080));
+        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
+        WEB_DRIVER_MANAGER.getWebDriver().manage().window().setSize(new Dimension(1920, 1080));
         ClassesDetailsPage reportTestUnderTestRetry = dashboardPage.goToClasses().gotoClassesDetailsPageForClass("ReportTestUnderTestRetry");
         reportTestUnderTestRetry.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_MethodDependsOnMethodThatPassesInRetry", TestResultHelper.TestResult.PASSED);
     }

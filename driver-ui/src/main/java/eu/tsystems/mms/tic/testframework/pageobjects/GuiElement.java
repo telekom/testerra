@@ -129,7 +129,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     private GuiElement(GuiElementData data) {
         guiElementData = data;
         guiElementData.setGuiElement(this);
-        IWebDriverFactory factory = WebDriverManager.getWebDriverFactoryForBrowser(WebDriverManager.getRequestedBrowser(guiElementData.getWebDriver()).orElse(null));
+        IWebDriverFactory factory = WEB_DRIVER_MANAGER.getWebDriverFactoryForBrowser(WEB_DRIVER_MANAGER.getRequestedBrowser(guiElementData.getWebDriver()).orElse(null));
         this.core = factory.createCore(guiElementData);
     }
 
@@ -171,7 +171,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
      */
     @Deprecated
     public GuiElement(WebDriver driver, By by) {
-        this(driver, Locate.by(by));
+        this(driver, LOCATE.by(by));
     }
 
     public GuiElementCore getCore() {
@@ -257,7 +257,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
      */
     @Deprecated
     public GuiElement getSubElement(By by, String description) {
-        GuiElement subElement = getSubElement(Locate.by(by));
+        GuiElement subElement = getSubElement(LOCATE.by(by));
         if (description != null) subElement.setName(description);
         return subElement;
     }

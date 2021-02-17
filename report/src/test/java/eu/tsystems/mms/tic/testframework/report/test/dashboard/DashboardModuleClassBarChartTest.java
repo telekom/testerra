@@ -33,7 +33,6 @@ import eu.tsystems.mms.tic.testframework.report.pageobjects.DashboardPage;
 import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestAnnotations;
 import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestExecutionFilter;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.Test;
 
 @TestClassContext(name = "View-Dashboard-Module BarChart")
@@ -46,7 +45,7 @@ public class DashboardModuleClassBarChartTest extends AbstractTestDashboard {
     @Fails(ticketString = "668")
     // Test case #853
     public void testT01_checkExecutionFilter() {
-        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.getReportDirectory()));
+        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.getReportDirectory()));
         GuiElement testundertestExecutionFilterElement = dashboardPage.dashboardModuleClassBarChart.getBarChartElementByClassName(ReportTestUnderTestExecutionFilter.class.getSimpleName());
 
         testundertestExecutionFilterElement.click();
@@ -64,7 +63,7 @@ public class DashboardModuleClassBarChartTest extends AbstractTestDashboard {
     // Test case #854
     public void testT02_checkReportAnnotations() {
         final String annotationMethod = "testAllMarkers";
-        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
+        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         dashboardPage.dashboardModuleClassBarChart.getBarChartElementByClassName(ReportTestUnderTestAnnotations.class.getSimpleName()).click();
         dashboardPage.assertAllAnnotationMarksAreDisplayed(annotationMethod);
     }

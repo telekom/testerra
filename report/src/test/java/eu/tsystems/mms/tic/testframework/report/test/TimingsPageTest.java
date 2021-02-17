@@ -28,7 +28,6 @@ import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.TimingsPage;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.Test;
 
 
@@ -41,7 +40,7 @@ public class TimingsPageTest extends AbstractReportTest {
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     // Test case #426
     public void testT01_checkCorrectDisplayOfTimingsPage() {
-        TimingsPage timingsPage = GeneralWorkflow.doOpenBrowserAndReportTimingsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
+        TimingsPage timingsPage = GeneralWorkflow.doOpenBrowserAndReportTimingsPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         timingsPage.assertPageIsDisplayedCorrectly();
     }
 }

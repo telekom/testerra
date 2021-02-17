@@ -26,5 +26,5 @@ import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.SimpleAssertion;
 
 public interface AssertProvider {
-    SimpleAssertion Assert = Testerra.getInjector().getInstance(Assertion.class);
+    SimpleAssertion ASSERT = Testerra.getInjector().getInstance(Assertion.class);
 }

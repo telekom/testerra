@@ -25,10 +25,10 @@ class MyTest extends TesterraTest implements PageFactoryProvider {
 
     @Test
     public void test_MyPageTest() {
-        MyPage page = pageFactory.createPage(MyPage.class);
+        MyPage page = PAGE_FACTORY.createPage(MyPage.class);
 
         // Or using a different WebDriver
-        MyPage page = pageFactory.createPage(MyPage.class, webDriverManager.getWebDriver());
+        MyPage page = PAGE_FACTORY.createPage(MyPage.class, WEB_DRIVER_MANAGER.getWebDriver());
     }
 }
 ```
@@ -112,7 +112,7 @@ class MyPage extends Page {
     }
 }
 
-MyPage page = pageFactory.create(MyPage.class);
+MyPage page = PAGE_FACTORY.create(MyPage.class);
 page.checkPage(); <2>
 ```
 <1> Calling `checkPage()` as `protected` member is prohibited
@@ -316,10 +316,9 @@ With the `TestController` API, you are able to control your test flow during run
 The `Control` instance is availabe as soon you implement the `TestControllerProvider` interface.
 
 ```java
-class MyPage extends Page implements TestFeatures {
-    public void doSomething() {
-        Control.collectAssertions();
-    }
+import eu.tsystems.mms.tic.testframework.testing.TestControllerProvider;
+
+class MyTest implements TestControllerProvider {
 }
 ```
 
@@ -327,12 +326,12 @@ class MyPage extends Page implements TestFeatures {
 
 The new standard way to collect assertions of elements in tests or pages is now
 ```java
-Control.collectAssertions(() -> uiElement.displayed(true));
+CONTROL.collectAssertions(() -> uiElement.displayed(true));
 ```
 
 For many elements or pages
 ```java
-Control.collectAssertions(() -> {
+CONTROL.collectAssertions(() -> {
     MyPage page = pageFactory.create(MyPage.class);
     page.expect().title().is("TestPage");
     uiElement.expect().value().contains("Hello");
@@ -341,7 +340,7 @@ Control.collectAssertions(() -> {
 
 For custom assertions
 ```java
-Control.collectAssertions(() -> {
+CONTROL.collectAssertions(() -> {
     String data = loadSomeData();
     Assert.assertEquals(data, "Hello World", "some data");
 });
@@ -351,7 +350,7 @@ For other test methods
 ```java
 @Test
 public void test_CollectEverything() {
-    Control.collectAssertions(() -> test_TestSomething());
+    CONTROL.collectAssertions(() -> test_TestSomething());
 }
 ```
 
@@ -391,7 +390,7 @@ tt.guielement.default.assertcollector=true
 
 The new standard way for optional assertions works like <<Collected Assertions>>
 ```java
-Control.optionalAssertions(() -> uiElement.expect().displayed(true));
+CONTROL.optionalAssertions(() -> uiElement.expect().displayed(true));
 ```
 
 [NOTE]
@@ -409,41 +408,6 @@ NonFunctionalAssert.assertTrue(false);
 guiElement.nonFunctionalAsserts().assertIsDisplayed();
 ```
 ====
-
-=== Advanced Topics on assertions
-Perform assertions outside of `TestControllerProvider`
-```java
-public MyClass {
-    @Inject
-    public MyClass(Assertion assertion) {
-        assertion.assertTrue(false);
-    }
-}
-```
-For non-injectable classes
-```java
-public MyClass {
-    private final Assertion assertion = Testerra.getInjector().getInstance(Assertion.class);
-    public MyClass() {
-        assertion.assertTrue(false);
-    }
-}
-```
-Force performing explicit assertions
-```java
-public MyClass {
-    @Inject
-    public MyClass(
-        OptionalAssertion optional,
-        CollectedAssertion collected,
-        InstantAssertion instant
-    ) {
-        optional.assertTrue(false);
-        collected.assertTrue(false);
-        instant.assertTrue(false);
-    }
-}
-```
 
 == Timeouts and Retry API
 
@@ -480,12 +444,12 @@ page.setElementTimeoutInSeconds(1);
 
 Override during runtime
 ```java
-Control.withTimeout(1, () -> uiElement.expect().displayed(true));
+CONTROL.withTimeout(1, () -> uiElement.expect().displayed(true));
 ```
 
 For many elements
 ```java
-Control.withTimeout(1, () -> {
+CONTROL.withTimeout(1, () -> {
     MyPage page = pageFactory.create(MyPage.class);
     page.expect().title().is("TestPage");
     uiElement.expect().value().contains("Hello");
@@ -496,7 +460,7 @@ For other test methods
 ```java
 @Test
 public void test_TestSomething_fast() {
-    Control.withTimeout(1, () -> test_TestSomething());
+    CONTROL.withTimeout(1, () -> test_TestSomething());
 }
 ```
 
@@ -515,10 +479,10 @@ POConfig.removeThreadLocalUiElementTimeout();
 It sometimes happens, that you need to retry a whole sequence of operations.
 
 ```java
-Control.retryFor(5, () -> {
+CONTROL.retryFor(5, () -> {
     button.click();
     button.expect().enabled().is(false);
-);
+});
 ```
 
 That will retry to click a button for 5 seconds until it's disabled.
@@ -526,11 +490,13 @@ That will retry to click a button for 5 seconds until it's disabled.
 You can combine these features with the fluent API design, to completely disable the internal element timeout.
 
 ```java
-Control.retryFor(10).withTimeout(0, () -> {
-    button.click();
-    guiElement.scrollIntoView();
-    guiElement.expect().visible(false).is(true);
-});
+CONTROL.retryFor(10, () -> {
+    CONTROL.withTimeout(0, () -> {
+        button.click();
+        guiElement.scrollIntoView();
+        guiElement.expect().visible(false).is(true);
+    }
+);
 ```
 
 == The internals

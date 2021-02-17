@@ -73,19 +73,19 @@ public abstract class AbstractPage implements
     abstract protected UiElement findDeep(Locator locator);
 
     protected UiElement findById(Object id) {
-        return find(Locate.by(By.id(id.toString())));
+        return find(LOCATE.by(By.id(id.toString())));
     }
     protected UiElement findByQa(String qa) {
-        return find(Locate.byQa(qa));
+        return find(LOCATE.byQa(qa));
     }
     protected UiElement find(By by) {
-        return find(Locate.by(by));
+        return find(LOCATE.by(by));
     }
     protected UiElement find(XPath xPath) {
-        return find(Locate.by(xPath));
+        return find(LOCATE.by(xPath));
     }
-    protected UiElement findDeep(XPath xPath) { return findDeep(Locate.by(xPath)); }
-    protected UiElement findDeep(By by) { return findDeep(Locate.by(by)); }
+    protected UiElement findDeep(XPath xPath) { return findDeep(LOCATE.by(xPath)); }
+    protected UiElement findDeep(By by) { return findDeep(LOCATE.by(by)); }
 
     /**
      * Calls the assertPageIsShown method.

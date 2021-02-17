@@ -42,13 +42,13 @@ public class CheckPageTest extends AbstractTestSitesTest implements PageFactoryP
 
     @Test
     public void testT01_checkExistingElement() throws Exception {
-        PageFactory.createPage(PageWithExistingElement.class, getClassExclusiveWebDriver());
+        PAGE_FACTORY.createPage(PageWithExistingElement.class, getClassExclusiveWebDriver());
     }
 
     @Test(expectedExceptions = PageNotFoundException.class)
     public void testT02_checkNotExistingElement() throws Throwable {
         try {
-            PageFactory.createPage(PageWithNotExistingElement.class, getClassExclusiveWebDriver());
+            PAGE_FACTORY.createPage(PageWithNotExistingElement.class, getClassExclusiveWebDriver());
         } catch (Throwable e) {
             do {
                 e = e.getCause();
@@ -61,17 +61,17 @@ public class CheckPageTest extends AbstractTestSitesTest implements PageFactoryP
 
     @Test(expectedExceptions = RuntimeException.class)
     public void testT03_checkNullElement() throws Exception {
-        PageFactory.createPage(PageWithNullElement.class, getClassExclusiveWebDriver());
+        PAGE_FACTORY.createPage(PageWithNullElement.class, getClassExclusiveWebDriver());
     }
 
     @Test(expectedExceptions = RuntimeException.class)
     public void testT04_checkStaticElement() throws Exception {
-        PageFactory.createPage(PageWithExistingStaticElement.class, getClassExclusiveWebDriver());
+        PAGE_FACTORY.createPage(PageWithExistingStaticElement.class, getClassExclusiveWebDriver());
     }
 
     @Test(expectedExceptions = RuntimeException.class)
     public void testT05_checkNonCheckableElement() throws Exception {
-        PageFactory.createPage(PageWithNonCheckableCheck.class, getClassExclusiveWebDriver());
+        PAGE_FACTORY.createPage(PageWithNonCheckableCheck.class, getClassExclusiveWebDriver());
     }
 
     @Test

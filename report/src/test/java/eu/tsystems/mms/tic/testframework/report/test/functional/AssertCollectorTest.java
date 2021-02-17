@@ -30,7 +30,6 @@ import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodAssertionsPage
 import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodDetailsPage;
 import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestAssertCollector;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -55,7 +54,7 @@ public class AssertCollectorTest extends AbstractReportTest {
     public void testT01_checkDisplayOfAssertionsTabAllFailedAssertions() {
         String testMethod = "test_assertCollectorAllFailed";
 
-        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestAssertCollector.class.getSimpleName(), testMethod);
+        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestAssertCollector.class.getSimpleName(), testMethod);
         methodDetailsPage.assertAssertionsTabIsDisplayed();
     }
 
@@ -67,7 +66,7 @@ public class AssertCollectorTest extends AbstractReportTest {
     public void testT02_checkDisplayOfAssertionsTabPassedAndFailedAssertions() {
         String testMethod = "test_assertCollectorPassedAndFailed";
 
-        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestAssertCollector.class.getSimpleName(), testMethod);
+        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestAssertCollector.class.getSimpleName(), testMethod);
         methodDetailsPage.assertAssertionsTabIsDisplayed();
     }
 
@@ -79,7 +78,7 @@ public class AssertCollectorTest extends AbstractReportTest {
     public void testT03_checkDisplayOfAssertionsTabAllPassedAssertions() {
         String testMethod = "assertCollectorAllPassed";
 
-        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestAssertCollector.class.getSimpleName(), testMethod);
+        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestAssertCollector.class.getSimpleName(), testMethod);
         methodDetailsPage.assertAssertionsTabIsNotDisplayed();
     }
 
@@ -92,7 +91,7 @@ public class AssertCollectorTest extends AbstractReportTest {
     public void testT04_checkCorrectDisplayOfMultipleAssertionsInAssertionsTab(String assertionTitle, String assertionDescription) {
         String testMethod = "test_assertCollectorAllFailed";
 
-        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestAssertCollector.class.getSimpleName(), testMethod);
+        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WEB_DRIVER_MANAGER.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestAssertCollector.class.getSimpleName(), testMethod);
         MethodAssertionsPage methodAssertionsPage = GeneralWorkflow.doOpenReportMethodAssertionsPage(methodDetailsPage);
         methodAssertionsPage.checkAssertionIsDisplayedCorrectly(assertionTitle, assertionDescription);
     }

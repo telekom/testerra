@@ -22,6 +22,7 @@
 package eu.tsystems.mms.tic.testframework.report.testundertest;
 
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class ReportTestUnderTestCorridorMid extends AbstractTest {

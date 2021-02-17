@@ -51,6 +51,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 @TestClassContext(name = "View-MethodDetails")

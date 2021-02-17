@@ -25,6 +25,7 @@ import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.ExitPointCreaterTestClass1;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
+import org.testng.Assert;
 import org.testng.SkipException;
 import org.testng.annotations.Test;
 

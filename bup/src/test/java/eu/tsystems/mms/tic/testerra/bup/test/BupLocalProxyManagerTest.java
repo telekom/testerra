@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testerra.bup.BrowserUpNoFreePortException;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import java.util.ArrayList;
 import java.util.List;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;

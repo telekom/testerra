@@ -29,6 +29,7 @@ import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.DashboardPage;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.abstracts.AbstractTestReportNumbers;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 @TestClassContext(name = "View-Dashboard-FailureCorridor")

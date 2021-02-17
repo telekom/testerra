@@ -100,7 +100,7 @@ public abstract class AbstractWebDriverTest extends TesterraTest implements WebD
 
     public WebDriver getClassExclusiveWebDriver() {
         if (exclusiveSessionId == null) {
-            exclusiveSessionId = WebDriverManager.createExclusiveSessionKey(getWebDriver());
+            exclusiveSessionId = WebDriverManager.makeExclusive(getWebDriver());
         }
         return WebDriverManager.getWebDriver(exclusiveSessionId);
     }

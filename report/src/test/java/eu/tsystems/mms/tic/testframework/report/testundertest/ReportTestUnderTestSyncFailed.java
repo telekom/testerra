@@ -21,6 +21,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.testundertest;
 
+import org.testng.Assert;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;

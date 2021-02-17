@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 @TestClassContext(name = "Functional-Retry")

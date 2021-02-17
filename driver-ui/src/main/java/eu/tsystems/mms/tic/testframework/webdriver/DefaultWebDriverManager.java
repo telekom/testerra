@@ -37,7 +37,7 @@ public class DefaultWebDriverManager implements IWebDriverManager {
     }
 
     @Override
-    public String createExclusiveSessionKey(WebDriver webDriver) {
+    public String makeExclusive(WebDriver webDriver) {
         return WebDriverManager.makeSessionExclusive(webDriver);
     }
 

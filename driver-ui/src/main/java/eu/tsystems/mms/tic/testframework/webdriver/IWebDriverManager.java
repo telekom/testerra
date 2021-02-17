@@ -35,7 +35,7 @@ import org.openqa.selenium.WebDriver;
  * @todo Rename to {@link WebDriverManager}
  */
 public interface IWebDriverManager extends WebDriverRetainer {
-    String createExclusiveSessionKey(WebDriver webDriver);
+    String makeExclusive(WebDriver webDriver);
     IWebDriverFactory getWebDriverFactoryForBrowser(String browser);
     void shutdownSession(String sessionKey);
     void shutdownSession(WebDriver webDriver);

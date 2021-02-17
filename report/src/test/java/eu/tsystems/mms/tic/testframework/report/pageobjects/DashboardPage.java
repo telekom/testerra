@@ -36,6 +36,7 @@ import eu.tsystems.mms.tic.testframework.report.pageobjects.dashboard.DashboardM
 import eu.tsystems.mms.tic.testframework.report.pageobjects.dashboard.DashboardModuleTestResultPieChart;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 
 public class DashboardPage extends AbstractReportPage implements IReportAnnotationVerifier {
 

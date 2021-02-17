@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import java.io.File;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class ReportExportTest extends TesterraTest {

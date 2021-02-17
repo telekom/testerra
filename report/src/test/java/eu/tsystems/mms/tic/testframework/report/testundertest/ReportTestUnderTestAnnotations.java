@@ -28,6 +28,7 @@ import eu.tsystems.mms.tic.testframework.annotations.New;
 import eu.tsystems.mms.tic.testframework.annotations.NoRetry;
 import eu.tsystems.mms.tic.testframework.annotations.ReadyForApproval;
 import eu.tsystems.mms.tic.testframework.annotations.SupportMethod;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class ReportTestUnderTestAnnotations extends AbstractTest {

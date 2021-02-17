@@ -36,6 +36,7 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import static eu.tsystems.mms.tic.testframework.report.model.TestResultHelper.TestResult;
 

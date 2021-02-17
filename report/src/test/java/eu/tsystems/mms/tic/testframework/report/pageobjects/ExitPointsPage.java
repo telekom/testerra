@@ -28,6 +28,7 @@ import eu.tsystems.mms.tic.testframework.report.pageobjects.abstracts.AbstractFa
 import eu.tsystems.mms.tic.testframework.report.pageobjects.abstracts.AbstractResultTableFailureEntry;
 import java.util.List;
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 
 public class ExitPointsPage extends AbstractFailurePointsPage {
 

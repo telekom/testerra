@@ -16,7 +16,7 @@ If you're a developer and want to know how the new API works, you can jump strai
 
 == Page object changes
 
-When implementing the `PageFactoryProvider` interface, you get an `pageFactory` instance within your class.
+When implementing the `PageFactoryProvider` interface, you get an `PAGE_FACTORY` instance within your class.
 
 ```java
 import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
@@ -509,7 +509,7 @@ If this timeout has reached, the assertion will finally fail.
 
 But there is only one timeout for each assertion now. No more implicit timeouts on sub method calls like `getWebElement()`, `isPresent()` etc.
 
-This is what an assertion internally does, when you perform `uiElement.text().contains("Something")`.
+This is what an assertion internally does, when you perform `uiElement.expect().text().contains("Something")`.
 
 . Find web element using WebDriver
 . Check if element is present

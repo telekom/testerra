@@ -9,7 +9,7 @@ import org.openqa.selenium.By;
 public class InputForm extends AbstractComponent<InputForm> {
 
     @Check
-    private UiElement button = find(By.className("component-btn"));
+    private UiElement button = find(By.className("component-btn")).setName("submitButton");
 
     private UiElement input = findByQa("input/text");
 

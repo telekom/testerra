@@ -87,17 +87,19 @@ Assert.assertEquals(page.getWebDriver().getTitle().endsWith("Startseite"), boole
 page.expect().title().endsWith("Startseite").is(boolean);
 ```
 
-## Wait for the page URL to change
+## Improved logging
 
 **API v1**:
+```java
 
-*unsupported*
+```
 
 **API v2**:
 ```java
-if (page.waitFor().url().startsWith("http://redirect.to").is(true)) {
-
-}
+page.inputForm().button().expect().value().is("Absenden");
+```
+```shell
+Expected that WebTestPage -> inputForm -> submitButton value=[Button1] equals [Absenden]
 ```
 
 ## Assert the amount of found elements
@@ -111,6 +113,8 @@ Assert.assertTrue(elements.getNumberOfFoundElements() >= 4 && elements.getNumber
 ```java
 elements.expect().foundElements().isBetween(4, 6);
 ```
+
+## Improved 
 
 ## Value mapping
 

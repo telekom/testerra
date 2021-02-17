@@ -110,7 +110,7 @@ public class PageTests extends AbstractExclusiveTestSitesTest<WebTestPage> imple
     public void test_Component() {
         final String input = "Ich gebe etwas ein";
         WebTestPage page = getPage();
-        page.inputForm().button().expect().value().is("Button1");
+        page.inputForm().button().expect().value().is("Absenden");
         page.inputForm().input().clear().sendKeys(input).expect().value().is(input);
         page.inputForm().button().expect().foundElements().is(1);
     }

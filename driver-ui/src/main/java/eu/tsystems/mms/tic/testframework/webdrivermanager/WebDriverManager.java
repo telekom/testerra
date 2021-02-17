@@ -26,16 +26,13 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
-import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
 import eu.tsystems.mms.tic.testframework.webdriver.DefaultWebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverFactory;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 import org.openqa.selenium.JavascriptExecutor;
@@ -72,10 +69,6 @@ public final class WebDriverManager {
      * WebDriverManager configuration set. Modify by config() call!
      */
     private static WebDriverManagerConfig webdriverManagerConfig;
-    /**
-     * Executing selenium hosts. Package local access for WDInternal class.
-     */
-    static final ThreadLocal<String> EXECUTING_SELENIUM_HOSTS_PER_THREAD = new ThreadLocal<String>();
 
     private static final HashMap<String, UserAgentConfig> userAgentConfigurators = new HashMap<>();
 
@@ -196,13 +189,6 @@ public final class WebDriverManager {
     }
 
     /**
-     * Cleanup all threadlocals.
-     */
-    public static void cleanupThreadlocals() {
-        resetExecutingSeleniumHosts();
-    }
-
-    /**
      * checks if web driver is active
      *
      * @return true if webdriver is active, else false.
@@ -313,31 +299,6 @@ public final class WebDriverManager {
     }
 
     /**
-     * Returns the executing selenium host for the current thread.
-     *
-     * @return Executing selenium host.
-     */
-    public static String getExecutingSeleniumHosts() {
-        return EXECUTING_SELENIUM_HOSTS_PER_THREAD.get();
-    }
-
-    static void addExecutingSeleniumHostInfo(final String host) {
-        String executingSeleniumHost = EXECUTING_SELENIUM_HOSTS_PER_THREAD.get();
-        if (!StringUtils.isStringEmpty(executingSeleniumHost)) {
-            EXECUTING_SELENIUM_HOSTS_PER_THREAD.set(executingSeleniumHost + "\n" + host);
-        } else {
-            EXECUTING_SELENIUM_HOSTS_PER_THREAD.set(host);
-        }
-    }
-
-    /**
-     * Reset selenium hosts list.
-     */
-    public static void resetExecutingSeleniumHosts() {
-        EXECUTING_SELENIUM_HOSTS_PER_THREAD.set("");
-    }
-
-    /**
      * Are you sure you want do that?? This action quits all browser sessions in all threads.
      * Does not close windows when executeCloseWindows == false.
      *
@@ -361,13 +322,6 @@ public final class WebDriverManager {
             WebDriverSessionsManager.shutdownAllSessions();
             WDInternal.cleanupDriverReferencesInCurrentThread();
         }
-    }
-
-    /**
-     * Reset config to initial state.
-     */
-    public static void resetConfig() {
-        webdriverManagerConfig = new WebDriverManagerConfig();
     }
 
     /**

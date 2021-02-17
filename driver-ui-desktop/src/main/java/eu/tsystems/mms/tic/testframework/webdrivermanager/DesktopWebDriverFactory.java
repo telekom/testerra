@@ -352,7 +352,6 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
         NodeInfo nodeInfo = utils.getNodeInfo(desktopWebDriverRequest.getSeleniumServerUrl(), remoteSessionId);
         sessionContext.setNodeInfo(nodeInfo);
-        WebDriverManager.addExecutingSeleniumHostInfo(sessionKey + ": " + nodeInfo.toString());
         sw.stop();
 
         BrowserInformation browserInformation = WebDriverManagerUtils.getBrowserInformation(newDriver);

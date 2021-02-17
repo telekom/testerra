@@ -36,7 +36,6 @@ import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.DefaultWebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverFactory;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -421,5 +420,9 @@ public final class WebDriverSessionsManager {
 
     public static IWebDriverFactory getWebDriverFactory(String browser) {
         return WEB_DRIVER_FACTORIES.getOrDefault(browser, null);
+    }
+
+    public static Stream<SessionContext> readSessionContexts() {
+        return WEBDRIVER_SESSIONS_CONTEXTS_MAP.values().stream();
     }
 }

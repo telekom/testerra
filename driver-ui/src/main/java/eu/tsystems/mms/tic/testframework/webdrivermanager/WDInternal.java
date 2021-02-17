@@ -30,11 +30,6 @@ public class WDInternal {
 
     }
 
-    public static void cleanupExecutingSeleniumHost() {
-        WebDriverManager.EXECUTING_SELENIUM_HOSTS_PER_THREAD.set(null);
-        WebDriverManager.EXECUTING_SELENIUM_HOSTS_PER_THREAD.remove();
-    }
-
     /**
      * Cleans EVENTFIRINGWEBDRIVER_MAP and/or SELENIUM_MAP.
      */

@@ -133,7 +133,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
 
         request.getBaseUrl().ifPresent(baseUrl -> {
             try {
-                log().info("Opening: " + baseUrl.toString());
+                log().info("Opening " + baseUrl.toString());
                 StopWatch.startPageLoad(driver);
                 driver.get(baseUrl.toString());
             } catch (Exception e) {

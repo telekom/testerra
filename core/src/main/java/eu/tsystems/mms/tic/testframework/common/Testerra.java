@@ -152,33 +152,31 @@ public class Testerra {
      * and override each previously configured module with the next.
      */
     private static Injector initIoc() {
-        if (injector ==null) {
-            Reflections reflections = new Reflections(TesterraListener.DEFAULT_PACKAGE);
-            Set<Class<? extends AbstractModule>> classes = reflections.getSubTypesOf(AbstractModule.class);
-            Iterator<Class<? extends AbstractModule>> iterator = classes.iterator();
-            TreeMap<String, Module> sortedModules = new TreeMap<>();
-            try {
-                // Sort all modules
-                while (iterator.hasNext()) {
-                    Class<? extends AbstractModule> moduleClass = iterator.next();
-                    Constructor<?> ctor = moduleClass.getConstructor();
-                    sortedModules.put(moduleClass.getSimpleName(), (Module) ctor.newInstance());
-                }
-                LOGGER.info(String.format("Register IoC modules: %s", String.join(", ", sortedModules.keySet())));
+        Reflections reflections = new Reflections(TesterraListener.DEFAULT_PACKAGE);
+        Set<Class<? extends AbstractModule>> classes = reflections.getSubTypesOf(AbstractModule.class);
+        Iterator<Class<? extends AbstractModule>> iterator = classes.iterator();
+        TreeMap<String, Module> sortedModules = new TreeMap<>();
 
-                // Override each module with next
-                Module prevModule = null;
-                for (Module overrideModule : sortedModules.values()) {
-                    if (prevModule!=null) {
-                        overrideModule = Modules.override(prevModule).with(overrideModule);
-                    }
-                    prevModule = overrideModule;
-                }
-                return Guice.createInjector(prevModule);
-            } catch (Exception e) {
-                LOGGER.error(e.getMessage());
+        // Override each module with next
+        Module prevModule = null;
+        try {
+            // Sort all modules
+            while (iterator.hasNext()) {
+                Class<? extends AbstractModule> moduleClass = iterator.next();
+                Constructor<?> ctor = moduleClass.getConstructor();
+                sortedModules.put(moduleClass.getSimpleName(), (Module) ctor.newInstance());
             }
+            LOGGER.info(String.format("Register IoC modules: %s", String.join(", ", sortedModules.keySet())));
+            for (Module overrideModule : sortedModules.values()) {
+                if (prevModule!=null) {
+                    overrideModule = Modules.override(prevModule).with(overrideModule);
+                }
+                prevModule = overrideModule;
+            }
+            return Guice.createInjector(prevModule);
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
         }
-        return null;
+        return Guice.createInjector(prevModule);
     }
 }

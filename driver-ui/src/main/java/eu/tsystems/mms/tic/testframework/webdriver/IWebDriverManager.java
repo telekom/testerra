@@ -23,12 +23,14 @@ package eu.tsystems.mms.tic.testframework.webdriver;
 
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
+import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 import org.openqa.selenium.WebDriver;
 
@@ -109,5 +111,13 @@ public interface IWebDriverManager extends WebDriverRetainer {
 
     default void registerWebDriverAfterStartupHandler(Consumer<WebDriver> afterStart) {
         WebDriverSessionsManager.registerWebDriverAfterStartupHandler(afterStart);
+    }
+
+    default Optional<WebDriver> switchToWindow(Predicate<WebDriver> predicate) {
+        return switchToWindow(getWebDriver(), predicate);
+    }
+
+    default Optional<WebDriver> switchToWindow(WebDriver mainWebDriver, Predicate<WebDriver> predicate) {
+        return WebDriverUtils.switchToWindow(mainWebDriver, predicate);
     }
 }

@@ -52,7 +52,7 @@ public class EventLoggingEventDriverListener implements WebDriverEventListener, 
 
     @Override
     public void beforeNavigateTo(String s, WebDriver webDriver) {
-        log().info("GET " + s + " on " + webDriver);
+        log().info("Open " + s + " on " + webDriver);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class EventLoggingEventDriverListener implements WebDriverEventListener, 
 
     @Override
     public void beforeNavigateBack(WebDriver webDriver) {
-        log().info("BACK");
+        log().info("Back");
     }
 
     @Override
@@ -72,7 +72,7 @@ public class EventLoggingEventDriverListener implements WebDriverEventListener, 
 
     @Override
     public void beforeNavigateForward(WebDriver webDriver) {
-        log().info("FORWARD");
+        log().info("Forward");
     }
 
     @Override
@@ -82,7 +82,7 @@ public class EventLoggingEventDriverListener implements WebDriverEventListener, 
 
     @Override
     public void beforeNavigateRefresh(WebDriver webDriver) {
-        log().info("REFRESH");
+        log().info("Refresh");
     }
 
     @Override
@@ -127,12 +127,11 @@ public class EventLoggingEventDriverListener implements WebDriverEventListener, 
 
     @Override
     public void beforeSwitchToWindow(String s, WebDriver webDriver) {
-        log().info("SWITCH TO WINDOW " + s);
     }
 
     @Override
     public void afterSwitchToWindow(String s, WebDriver webDriver) {
-
+        log().info("Switched to window \"" + webDriver.getTitle() + "\" (" + webDriver.getCurrentUrl()+")");
     }
 
     @Override

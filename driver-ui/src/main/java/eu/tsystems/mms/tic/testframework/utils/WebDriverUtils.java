@@ -81,6 +81,7 @@ public final class WebDriverUtils {
     public static Optional<WebDriver> switchToWindow(WebDriver mainWebDriver, Predicate<WebDriver> predicate) {
         String mainWindowHandle = mainWebDriver.getWindowHandle();
         return mainWebDriver.getWindowHandles().stream()
+                .filter(windowHandle -> !windowHandle.equals(mainWebDriver.getWindowHandle()))
                 .map(windowHandle -> mainWebDriver.switchTo().window(windowHandle))
                 .filter(webDriver -> {
                     boolean valid = predicate.test(webDriver);
@@ -159,12 +160,6 @@ public final class WebDriverUtils {
 
                         String realTitle = window.getTitle();
                         String url = window.getCurrentUrl();
-                        String handle = window.getWindowHandle();
-
-                        String actualWindowMsg =
-                                "\ntitle : " + realTitle +
-                                        "\nurl   : " + url +
-                                        "\nhandle: " + handle;
 
                         boolean matchesTitle = windowTitle == null;
                         boolean matchesUrl = urlContains == null;
@@ -177,7 +172,6 @@ public final class WebDriverUtils {
                         }
 
                         if (matchesTitle && matchesUrl) {
-                            LOGGER.info("Switched to window:" + actualWindowMsg);
                             setPassState(true);
                             setReturningObject(true);
                         } else {

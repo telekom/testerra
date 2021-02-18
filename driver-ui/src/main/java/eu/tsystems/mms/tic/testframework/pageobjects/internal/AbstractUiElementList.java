@@ -21,6 +21,7 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
+import eu.tsystems.mms.tic.testframework.internal.asserts.QuantityAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementList;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.UiElementBase;
 import java.util.Iterator;
@@ -29,24 +30,30 @@ public abstract class AbstractUiElementList<SELF extends UiElementBase> implemen
     private final SELF uiElement;
     private int iteratorIndex = 0;
     private int iteratorSize = 0;
+    private int size = 0;
 
     public AbstractUiElementList(SELF uiElement) {
         this.uiElement = uiElement;
+
     }
 
     @Override
     public int size() {
-        return uiElement.waitFor().foundElements().getActual();
+        QuantityAssertion<Integer> assertion = uiElement.waitFor().foundElements();
+        if (assertion.isGreaterThan(0)) {
+            this.size = assertion.getActual();
+        }
+        return this.size;
     }
 
     @Override
     public boolean isEmpty() {
-        return size()==0;
+        return this.size==0;
     }
     @Override
     public Iterator<SELF> iterator() {
         iteratorIndex = 0;
-        iteratorSize = size();
+        iteratorSize = this.size();
         return this;
     }
 

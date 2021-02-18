@@ -10,11 +10,6 @@ public class TableRow extends AbstractComponent<TableRow> {
         super(rootElement);
     }
 
-    @Override
-    protected TableRow self() {
-        return this;
-    }
-
     public TestableUiElement linkByName() {
         return rootElement.find(By.tagName("a"));
     }

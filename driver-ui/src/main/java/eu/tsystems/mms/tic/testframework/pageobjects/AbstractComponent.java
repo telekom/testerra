@@ -50,8 +50,6 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
         this.rootElement = rootElement;
     }
 
-    protected abstract SELF self();
-
     @Override
     public InteractiveUiElement highlight(Color color) {
         return rootElement.highlight(color);
@@ -75,7 +73,7 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     @Override
     public UiElementList<SELF> list() {
         if (this.list == null) {
-            this.list = new DefaultComponentList<>(self());
+            this.list = new DefaultComponentList<>((SELF)this);
         }
         return this.list;
     }
@@ -112,7 +110,7 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
 
     public SELF setName(String name) {
         this.name = name;
-        return self();
+        return (SELF)this;
     }
 
     @Override

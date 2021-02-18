@@ -17,11 +17,6 @@ public class InputForm extends AbstractComponent<InputForm> {
         super(rootElement);
     }
 
-    @Override
-    protected InputForm self() {
-        return this;
-    }
-
     public InteractiveUiElement button() {
         return button;
     }

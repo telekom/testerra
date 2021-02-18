@@ -77,11 +77,6 @@ public class MyForm extends AbstractComponent<MyForm> {
     public MyForm(UiElement rootElement) {
         super(rootElement);
     }
-
-    @Override
-    protected MyForm self() {
-        return this;
-    }
 }
 ```
 Instantiate components

@@ -26,7 +26,9 @@ import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 import org.openqa.selenium.WebDriver;
 
@@ -35,21 +37,77 @@ import org.openqa.selenium.WebDriver;
  * @todo Rename to {@link WebDriverManager}
  */
 public interface IWebDriverManager extends WebDriverRetainer {
-    String makeExclusive(WebDriver webDriver);
-    IWebDriverFactory getWebDriverFactoryForBrowser(String browser);
-    void shutdownSession(String sessionKey);
-    void shutdownSession(WebDriver webDriver);
-    void shutdownAllThreadSessions();
-    void shutdownAllSessions();
-    WebDriver getWebDriver(String sessionKey);
-    WebDriver getWebDriver(AbstractWebDriverRequest request);
-    Optional<SessionContext> getSessionContext(WebDriver webDriver);
-    Optional<String>getRequestedBrowser(WebDriver webDriver);
-    String getSessionKey(WebDriver webDriver);
-    WebDriverManagerConfig getConfig();
-    Stream<WebDriver> getWebDriversFromCurrentThread();
+    @Override
+    default WebDriver getWebDriver() {
+        return WebDriverManager.getWebDriver();
+    }
+
+    default String makeExclusive(WebDriver webDriver) {
+        return WebDriverManager.makeSessionExclusive(webDriver);
+    }
+
+    default IWebDriverFactory getWebDriverFactoryForBrowser(String browser) {
+        return WebDriverSessionsManager.getWebDriverFactory(browser);
+    }
+
+    default void shutdownSession(String sessionKey) {
+        WebDriverManager.shutdownExclusiveSession(sessionKey);
+    }
+
+    default void shutdownSession(WebDriver webDriver) {
+        WebDriverSessionsManager.shutdownWebDriver(webDriver);
+    }
+
+    default void shutdownAllThreadSessions() {
+        WebDriverManager.forceShutdown();
+    }
+
+    default void shutdownAllSessions() {
+        WebDriverManager.forceShutdownAllThreads();
+    }
+
+    default WebDriver getWebDriver(String sessionKey) {
+        return WebDriverManager.getWebDriver(sessionKey);
+    }
+
+    default WebDriver getWebDriver(AbstractWebDriverRequest request) {
+        return WebDriverManager.getWebDriver(request);
+    }
+
+    default Optional<SessionContext> getSessionContext(WebDriver webDriver) {
+        return WebDriverSessionsManager.getSessionContext(webDriver);
+    }
+
+    default Optional<String>getRequestedBrowser(WebDriver webDriver) {
+        return WebDriverSessionsManager.getRequestedBrowser(webDriver);
+    }
+
+    default String getSessionKey(WebDriver webDriver) {
+        return WebDriverManager.getSessionKeyFrom(webDriver);
+    }
+
+    default WebDriverManagerConfig getConfig() {
+        return WebDriverManager.getConfig();
+    }
+
+    default Stream<WebDriver> getWebDriversFromCurrentThread() {
+        return WebDriverSessionsManager.getWebDriversFromCurrentThread();
+    }
+
     default IWebDriverManager setUserAgentConfig(String browser, UserAgentConfig configurator) {
         WebDriverManager.setUserAgentConfig(browser, configurator);
         return this;
+    }
+
+    default void registerWebDriverBeforeShutdownHandler(Consumer<WebDriver> beforeQuit) {
+        WebDriverSessionsManager.registerWebDriverBeforeShutdownHandler(beforeQuit);
+    }
+
+    default void registerWebDriverAfterShutdownHandler(Consumer<WebDriver> afterQuit) {
+        WebDriverSessionsManager.registerWebDriverAfterShutdownHandler(afterQuit);
+    }
+
+    default void registerWebDriverAfterStartupHandler(Consumer<WebDriver> afterStart) {
+        WebDriverSessionsManager.registerWebDriverAfterStartupHandler(afterStart);
     }
 }

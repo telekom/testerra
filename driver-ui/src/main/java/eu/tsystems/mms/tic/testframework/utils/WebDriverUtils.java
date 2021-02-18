@@ -160,12 +160,6 @@ public final class WebDriverUtils {
 
                         String realTitle = window.getTitle();
                         String url = window.getCurrentUrl();
-                        String handle = window.getWindowHandle();
-
-                        String actualWindowMsg =
-                                "\ntitle : " + realTitle +
-                                        "\nurl   : " + url +
-                                        "\nhandle: " + handle;
 
                         boolean matchesTitle = windowTitle == null;
                         boolean matchesUrl = urlContains == null;
@@ -178,7 +172,6 @@ public final class WebDriverUtils {
                         }
 
                         if (matchesTitle && matchesUrl) {
-                            LOGGER.info("Switched to window:" + actualWindowMsg);
                             setPassState(true);
                             setReturningObject(true);
                         } else {

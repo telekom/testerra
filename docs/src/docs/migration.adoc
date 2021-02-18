@@ -162,7 +162,7 @@ List elements
 ```java
 UiElement anchors = find(By.tagName("a"));
 
-anchors.expect().numberOfElements().is(3); <1>
+anchors.expect().foundElements().is(3); <1>
 UiElementList<UiElement> list = anchors.list();
 list.first().expect().value(Attribute.TITLE).is("StartPage"); <2>
 list.get(1).expect().value(Attribute.TITLE).is("About Us"); <3>
@@ -247,7 +247,7 @@ Support of more features through consistent assertion API
 ```java
 uiElement.expect().css("display").is("none"); <1>
 uiElement.expect().text().map(value -> value.toLowerCase()).matches("^hello\\s.orld").is(true); <2,3>
-page.anyElementContainsText("You see me").expect().numberOfElements().is(1); <4>
+page.anyElementContainsText("You see me").expect().foundElements().is(1); <4>
 ```
 <1> Perform assertions on the element's CSS properties
 <2> Map values
@@ -326,13 +326,13 @@ class MyTest implements TestControllerProvider {
 
 The new standard way to collect assertions of elements in tests or pages is now
 ```java
-CONTROL.collectAssertions(() -> uiElement.displayed(true));
+CONTROL.collectAssertions(() -> uiElement.expect().displayed(true));
 ```
 
 For many elements or pages
 ```java
 CONTROL.collectAssertions(() -> {
-    MyPage page = pageFactory.create(MyPage.class);
+    MyPage page = PAGE_FACTORY.create(MyPage.class);
     page.expect().title().is("TestPage");
     uiElement.expect().value().contains("Hello");
 });
@@ -450,7 +450,7 @@ CONTROL.withTimeout(1, () -> uiElement.expect().displayed(true));
 For many elements
 ```java
 CONTROL.withTimeout(1, () -> {
-    MyPage page = pageFactory.create(MyPage.class);
+    MyPage page = PAGE_FACTORY.create(MyPage.class);
     page.expect().title().is("TestPage");
     uiElement.expect().value().contains("Hello");
 });
@@ -477,6 +477,7 @@ POConfig.removeThreadLocalUiElementTimeout();
 === Retry
 
 It sometimes happens, that you need to retry a whole sequence of operations.
+That will retry to click a button for 5 seconds until it's disabled.
 
 ```java
 CONTROL.retryFor(5, () -> {
@@ -485,7 +486,15 @@ CONTROL.retryFor(5, () -> {
 });
 ```
 
-That will retry to click a button for 5 seconds until it's disabled.
+
+You can also perform something when the retry block fails.
+```java
+CONTROL.retryFor(5, () -> {
+    element.expect().text(String);
+}, () -> {
+    element.getWebDriver().reload();
+});
+```
 
 You can combine these features with the fluent API design, to completely disable the internal element timeout.
 

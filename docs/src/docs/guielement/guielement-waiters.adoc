@@ -13,16 +13,25 @@ action or assertion.
 
 See also <<PageObjects,Timeout-Settings>>
 
-.Usage:
+.Basic usage:
 [source,java]
 ----
 boolean result;
 
 result = element.waitFor().displayed(boolean);
-result = element.waitFor().text(String);
-result = element.waitFor().attribute(String).is(String);
-result = element.waitFor().attribute(String).contains(String).is(boolean);
-result = element.waitFor().selected(boolean);
-result = element.waitFor().text().contains(String).is(boolean);
-result = element.waitFor().classes(String...).is(boolean);
+
+// Overrides preconfigured internal timeout
+result = element.waitFor(int).displayed(boolean);
+----
+
+.Examples:
+[source,java]
+----
+element.waitFor().displayed(boolean);
+element.waitFor().text(String);
+element.waitFor().attribute(String).is(String);
+element.waitFor().attribute(String).contains(String).is(boolean);
+element.waitFor().selected(boolean);
+element.waitFor().text().contains(String).is(boolean);
+element.waitFor().classes(String...).is(boolean);
 ----

@@ -30,4 +30,5 @@ import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 public class PropertyAssertionConfig {
     public boolean throwErrors = false;
     public Assertion useAssertion;
+    public int useTimeout = -1;
 }

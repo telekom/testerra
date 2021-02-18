@@ -30,6 +30,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementAssertion;
 import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> implements AssertProvider {
@@ -127,10 +128,10 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
     @Test
     public void test_UiElement_waitFor_fast() {
         WebTestPage page = getPage();
-        CONTROL.withTimeout(0, () -> {
-            ASSERT.assertFalse(page.notVisibleElement().waitFor().attribute(Attribute.STYLE).is("humbug"));
-            ASSERT.assertTrue(page.notVisibleElement().waitFor().attribute(Attribute.STYLE).contains("hidden").is(true));
-        });
+        long start = System.currentTimeMillis();
+        Assert.assertFalse(page.notVisibleElement().waitFor(0).attribute(Attribute.STYLE).is("humbug"));
+        Assert.assertTrue(page.notVisibleElement().waitFor(0).attribute(Attribute.STYLE).contains("hidden").is(true));
+        ASSERT.assertLowerEqualThan((System.currentTimeMillis()-start) / 1000, UiElement.Properties.ELEMENT_TIMEOUT_SECONDS.asLong());
     }
 
     @Test

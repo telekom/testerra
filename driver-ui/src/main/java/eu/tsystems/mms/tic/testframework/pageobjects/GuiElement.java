@@ -748,9 +748,9 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     }
 
     @Override
-    public UiElementAssertion waitFor() {
+    public UiElementAssertion waitFor(int seconds) {
         if (this.waits == null) {
-            this.waits = new DefaultUiElementAssertion(this, false);
+            this.waits = new DefaultUiElementAssertion(this, seconds);
         }
         return this.waits;
     }

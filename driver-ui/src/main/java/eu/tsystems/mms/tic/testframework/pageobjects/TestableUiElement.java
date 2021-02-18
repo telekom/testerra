@@ -30,7 +30,10 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.UiElementBase
  */
 public interface TestableUiElement extends UiElementBase {
     @Override
-    UiElementAssertion waitFor();
+    default UiElementAssertion waitFor() {
+        return waitFor(-1);
+    }
+    UiElementAssertion waitFor(int seconds);
     @Override
     UiElementAssertion expect();
 }

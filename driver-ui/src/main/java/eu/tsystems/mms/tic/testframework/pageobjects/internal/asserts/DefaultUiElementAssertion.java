@@ -85,6 +85,12 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
         this.propertyAssertionConfig.throwErrors = throwErrors;
     }
 
+    public DefaultUiElementAssertion(UiElement uiElement, int useTimeoutSeconds) {
+        this.guiElement = (GuiElement)uiElement;
+        this.core = this.guiElement.getCore();
+        this.propertyAssertionConfig.useTimeout = useTimeoutSeconds;
+    }
+
     /**
      * @deprecated This is only required for {@link LegacyGuiElementAssertWrapper}
      * @param uiElement

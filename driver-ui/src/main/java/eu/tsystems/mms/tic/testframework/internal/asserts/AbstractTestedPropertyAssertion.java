@@ -59,9 +59,13 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
             Predicate<T> testFunction,
             Function<T, String> failMessageSupplier
     ) {
+        int useTime = config.useTimeout;
+        if (useTime < 0) {
+            useTime = overrides.getTimeoutInSeconds();
+        }
         Sequence sequence = new Sequence()
                 .setWaitMsAfterRun(UiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong())
-                .setTimeoutMs(overrides.getTimeoutInSeconds() * 1000L);
+                .setTimeoutMs(useTime * 1000L);
 
         AtomicBoolean atomicPassed = new AtomicBoolean(false);
         AtomicReference<Throwable> atomicThrowable = new AtomicReference<>();

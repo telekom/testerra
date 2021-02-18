@@ -81,6 +81,7 @@ public final class WebDriverUtils {
     public static Optional<WebDriver> switchToWindow(WebDriver mainWebDriver, Predicate<WebDriver> predicate) {
         String mainWindowHandle = mainWebDriver.getWindowHandle();
         return mainWebDriver.getWindowHandles().stream()
+                .filter(windowHandle -> !windowHandle.equals(mainWebDriver.getWindowHandle()))
                 .map(windowHandle -> mainWebDriver.switchTo().window(windowHandle))
                 .filter(webDriver -> {
                     boolean valid = predicate.test(webDriver);

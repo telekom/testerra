@@ -21,15 +21,12 @@
  */
  package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
-import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
 import eu.tsystems.mms.tic.testframework.webdriver.DefaultWebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverFactory;
 import java.util.HashMap;
@@ -55,12 +52,6 @@ public final class WebDriverManager {
 
     static {
         UITestUtils.initializePerfTest();
-
-        // start WatchDog for hanging sessions
-        boolean watchdogEnabled = PropertyManager.getBooleanProperty(TesterraProperties.WATCHDOG_ENABLE, true);
-        if (watchdogEnabled) {
-            WebDriverWatchDog.start();
-        }
     }
 
     public static final String DEFAULT_SESSION_KEY = "default";

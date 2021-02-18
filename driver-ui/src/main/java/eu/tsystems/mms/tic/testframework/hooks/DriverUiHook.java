@@ -23,6 +23,8 @@
 
 import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.execution.testng.WebDriverRetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.ConditionalBehaviourWorker;
@@ -77,6 +79,12 @@ public class DriverUiHook implements ModuleHook {
         // Screenshots and Videos
         TestEvidenceCollector.registerScreenshotCollector(new ScreenshotGrabber());
         TestEvidenceCollector.registerSourceCollector(new SourceGrabber());
+
+        // start WatchDog for hanging sessions
+        boolean watchdogEnabled = PropertyManager.getBooleanProperty(TesterraProperties.WATCHDOG_ENABLE, true);
+        if (watchdogEnabled) {
+            WebDriverWatchDog.start();
+        }
     }
 
     @Override

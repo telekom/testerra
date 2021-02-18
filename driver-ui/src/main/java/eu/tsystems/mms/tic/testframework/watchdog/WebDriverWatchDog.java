@@ -81,7 +81,7 @@ public final class WebDriverWatchDog {
 
         @Override
         public void run() {
-            LOGGER.debug("Started");
+            LOGGER.info("Started");
             while (!isStop()) {
                 final Map<Thread, StackTraceElement[]> allStackTraces = Thread.getAllStackTraces();
                 final List<String> actualThreads = new ArrayList<String>();
@@ -225,7 +225,7 @@ public final class WebDriverWatchDog {
             WATCH_DOG_THREAD.stopWatchDog();
             LOGGER.debug("Stopped");
         } catch (InterruptedException e) {
-            LOGGER.error("Exception stopping WebDriverWatchDog", e);
+            LOGGER.error("Unable to stop", e);
         }
         started = false;
     }

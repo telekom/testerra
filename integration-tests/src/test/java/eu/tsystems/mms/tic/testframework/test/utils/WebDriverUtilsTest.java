@@ -27,6 +27,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverKeepAliveSequence;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import java.util.Optional;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -163,6 +165,33 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
         TimerUtils.sleep(10_000);
         final WebDriverKeepAliveSequence.KeepAliveState returningObject = webDriverKeepAliveSequence.getReturningObject();
         Assert.assertEquals(returningObject, WebDriverKeepAliveSequence.KeepAliveState.REMOVED_BY_DRIVER_SHUTDOWN);
+    }
+
+    @Test
+    public void WebDriverUtils_findWindowByTitle() {
+        WebDriver driver = WebDriverManager.getWebDriver();
+
+        openPopUpWindow(driver);
+
+        Optional<WebDriver> optionalWebDriver = WebDriverUtils.switchToWindow(driver, webDriver -> webDriver.getTitle().equals("List"));
+
+        Assert.assertTrue(optionalWebDriver.isPresent());
+        Assert.assertEquals(optionalWebDriver.get().getTitle(), "List", msgSwitchSuccessfully);
+        Assert.assertEquals(driver.getTitle(), "List", msgSwitchSuccessfully);
+    }
+
+    @Test
+    public void WebDriverUtils_findWindowByTitle_no_context_switch() {
+        WebDriver driver = WebDriverManager.getWebDriver();
+
+        openPopUpWindow(driver);
+
+        String titleBeforeSwitch = driver.getTitle();
+
+        Optional<WebDriver> optionalWebDriver = WebDriverUtils.switchToWindow(driver, webDriver -> false);
+
+        Assert.assertFalse(optionalWebDriver.isPresent());
+        Assert.assertEquals(driver.getTitle(), titleBeforeSwitch);
     }
 
 }

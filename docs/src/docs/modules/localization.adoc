@@ -5,7 +5,7 @@ Testerra provides an easy and simple way to support the localization of UiElemen
 
 == Add localization resource bundle
 
-The localization is based on Unicode `.properties` files loaded during runtime.
+The localization is based on **Unicode** `.properties` files loaded during runtime.
 To add such files, create a new resource bundle `lang` in `src/main/resources` and add all required locales.
 
 .lang_en.properties
@@ -29,7 +29,18 @@ Now you can instance UiElements by localized strings.
 [source, java]
 ----
 import eu.tsystems.mms.tic.testframework.l10n.SimpleLocalization;
-UiElement loginBtn = find(By.linkText(SimpleLocalization.getText("BTN_LOGIN")));
+
+GuiElement loginBtn = new GuiElement(By.linkText(SimpleLocalization.getText("BTN_LOGIN")));
+----
+
+But you can use your own localized bundles.
+
+[source, java]
+----
+import eu.tsystems.mms.tic.testframework.l10n.LocalizedBundle;
+
+LocalizedBundle bundle = new LocalizedBundle("testdata");
+bundle.getString("TEST_KEY");
 ----
 
 == Change runtime locale

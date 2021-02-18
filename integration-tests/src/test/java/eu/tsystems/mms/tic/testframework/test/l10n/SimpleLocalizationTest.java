@@ -36,6 +36,11 @@ public class SimpleLocalizationTest extends TesterraTest {
         Assert.assertEquals(SimpleLocalization.getText("TEST"), expected);
     }
 
+    @Test
+    public void test_inexistentLocalizedProperty() {
+        Assert.assertEquals("NOT_EXISTENT", SimpleLocalization.getText("NOT_EXISTENT"));
+    }
+
     @DataProvider
     public Object[][] locales() {
         return new Object[][]{

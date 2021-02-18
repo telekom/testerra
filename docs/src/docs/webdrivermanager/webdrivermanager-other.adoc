@@ -20,5 +20,8 @@ To switch windows in a easy way Testerra provides some methods, which will autom
 [source,java]
 ----
 // Switch to a window by matching title
-WebDriverUtils.findWindowAndSwitchTo(String windowTitle)
+Optional<WebDriver> optionalWebDriver = WebDriverUtils.switchToWindow(webDriver -> webDriver.getTitle().equals(windowTitle));
+
+// Window context switched
+optionalWebDriver.isPresent();
 ----

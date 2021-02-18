@@ -190,7 +190,11 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
         return propertyAssertionFactory.createWithConfig(DefaultBinaryAssertion.class, this.propertyAssertionConfig, new UiElementAssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return core.isDisplayed();
+                try {
+                    return core.isDisplayed();
+                } catch (ElementNotFoundException e) {
+                    return false;
+                }
             }
             @Override
             public String createSubject() {

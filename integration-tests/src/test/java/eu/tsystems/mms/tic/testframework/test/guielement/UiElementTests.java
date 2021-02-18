@@ -216,7 +216,7 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
         CONTROL.withTimeout(0, this::test_inexistent_UiElement_present_fails);
     }
 
-    @Test(expectedExceptions = AssertionError.class)
+    @Test()
     public void test_inexistent_UiElement_displayed_fails() {
         WebTestPage page = getPage();
         page.nonExistentElement().expect().displayed().is(false);

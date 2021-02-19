@@ -290,4 +290,10 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
         ASSERT.assertEquals(retryCount.get(), 3, "Retry count");
     }
 
+    @Test
+    public void test_UiElement_empty() {
+        UiElement empty = UiElement.empty();
+        empty.expect().bounds().above(empty).is(false);
+    }
+
 }

@@ -55,6 +55,7 @@ import org.testng.Assert;
  *
  * @author fakr
  */
+@Deprecated
 public class CSVTestDataReader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CSVTestDataReader.class);

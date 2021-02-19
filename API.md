@@ -205,7 +205,7 @@ CONTROL.optionalAssertions(() -> {
 **API v1**
 ```java
 element1.setElementTimeoutSeconds(0);
-element1.asserts().assertIsDisplayed();
+element1.waits().waitForIsDisplayed();
 
 element2.setElementTimeoutSeconds(0);
 element2.asserts().assertIsDisplayed();
@@ -213,21 +213,27 @@ element2.asserts().assertIsDisplayed();
 
 **API v2**
 ```java
+element1.waitFor(0).displayed(true);
+
 CONTROL.withTimeout(0, () -> {
-    element1.expect().displayed(true);
     element2.expect().displayed(true);
 });
 ```
 
-## Retry blocks
+## Retry blocks and perform something on failure
 
 **API v1**
 ```java
-Timer timer = new Timer(500, 15_000);
+Timer timer = new Timer(500, 5000);
 timer.executeSequence(new Timer.Sequence<Boolean>() {
     @Override
     public void run() throws Throwable {
-        // sequence code here
+        try {
+            button.click();
+            button.asserts().assertIsEnabled();
+        } catch(AssertionError e) {
+            button.getWebDriver().reload();
+        }
     }
 });
 ```
@@ -237,6 +243,8 @@ timer.executeSequence(new Timer.Sequence<Boolean>() {
 CONTROL.retryFor(5, () -> {
     button.click();
     button.expect().enabled(false);
+}, () -> {
+    button.getWebDriver().reload();    
 });
 ```
 
@@ -244,10 +252,10 @@ CONTROL.retryFor(5, () -> {
 
 **API v1**
 ```java
-By.xpath(String.format("//button[//span[.//text()='%s']]"), "Klick mich"));
+By.xpath(String.format("//button[//span[contains(concat(' ', normalize-space(@class), ' '), ' info ') and starts-with(.//text(),'%s')]]"), "Klick mich"));
 ```
 
 **API v2**
 ```java
-XPath.from("button").encloses("span").text("Klick mich");
+XPath.from("button").encloses("span").classes("info").text().startsWith("Klick mich");
 ```

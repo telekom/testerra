@@ -36,29 +36,42 @@ public interface UiElementAssertion extends UiElementBaseAssertion {
         return text().is(text);
     }
     StringAssertion<String> text();
+
     default boolean value(Object text) {
         return value().is(text);
     }
     default StringAssertion<String> value() {
         return attribute(Attribute.VALUE);
     }
+
     default StringAssertion<String> attribute(Attribute attribute) {
         return attribute(attribute.toString());
     }
+    default boolean attribute(Attribute attribute, Object expected) {
+        return attribute(attribute.toString(), expected);
+    }
+    default boolean attribute(String attribute, Object expected) {
+        return this.attribute(attribute).is(expected);
+    }
     StringAssertion<String> attribute(String attribute);
+
     StringAssertion<String> css(String property);
+
     BinaryAssertion<Boolean> enabled();
     default boolean enabled(boolean expected) {
         return enabled().is(expected);
     }
+
     BinaryAssertion<Boolean> selected();
     default boolean selected(boolean expected) {
         return selected().is(expected);
     }
+
     BinaryAssertion<Boolean> selectable();
     default boolean selectable(boolean expected) {
         return selectable().is(expected);
     }
+
     default StringAssertion<String> classes() {
         return this.attribute(Attribute.CLASS);
     }

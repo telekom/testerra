@@ -21,6 +21,7 @@
  */
  package eu.tsystems.mms.tic.testframework.hooks;
 
+import com.google.common.cache.RemovalListener;
 import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
@@ -33,12 +34,16 @@ import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverShutDo
 import eu.tsystems.mms.tic.testframework.execution.worker.start.PerformanceTestWorker;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.listeners.ShutdownSessionsListener;
+import eu.tsystems.mms.tic.testframework.listeners.WatchdogStartupListener;
 import eu.tsystems.mms.tic.testframework.report.ScreenshotGrabber;
 import eu.tsystems.mms.tic.testframework.report.SourceGrabber;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.UITestStepIntegration;
 import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
+import java.util.function.Consumer;
+import org.openqa.selenium.WebDriver;
 
 public class DriverUiHook implements ModuleHook {
 
@@ -81,7 +86,7 @@ public class DriverUiHook implements ModuleHook {
         // start WatchDog for hanging sessions
         boolean watchdogEnabled = PropertyManager.getBooleanProperty(TesterraProperties.WATCHDOG_ENABLE, true);
         if (watchdogEnabled) {
-            WebDriverWatchDog.start();
+            WebDriverSessionsManager.registerWebDriverAfterStartupHandler(new WatchdogStartupListener());
         }
     }
 

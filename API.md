@@ -200,24 +200,17 @@ CONTROL.optionalAssertions(() -> {
 });
 ```
 
-## Fast assertions
+## Fast waits
 
 **API v1**
 ```java
-element1.setElementTimeoutSeconds(0);
-element1.waits().waitForIsDisplayed();
-
-element2.setElementTimeoutSeconds(0);
-element2.asserts().assertIsDisplayed();
+element.setElementTimeoutSeconds(0);
+element.waits().waitForIsDisplayed();
 ```
 
 **API v2**
 ```java
-element1.waitFor(0).displayed(true);
-
-CONTROL.withTimeout(0, () -> {
-    element2.expect().displayed(true);
-});
+element.waitFor(0).displayed(true);
 ```
 
 ## Retry blocks and perform something on failure
@@ -229,10 +222,9 @@ timer.executeSequence(new Timer.Sequence<Boolean>() {
     @Override
     public void run() throws Throwable {
         try {
-            button.click();
-            button.asserts().assertIsEnabled();
+            element.asserts().assertTextContains("geladen");
         } catch(AssertionError e) {
-            button.getWebDriver().reload();
+            element.getWebDriver().reload();
         }
     }
 });
@@ -241,10 +233,9 @@ timer.executeSequence(new Timer.Sequence<Boolean>() {
 **API v2**
 ```java
 CONTROL.retryFor(5, () -> {
-    button.click();
-    button.expect().enabled(false);
+    element.expect().text().contains("geladen");
 }, () -> {
-    button.getWebDriver().reload();    
+    element.getWebDriver().reload();    
 });
 ```
 
@@ -258,4 +249,38 @@ By.xpath(String.format("//button[//span[contains(concat(' ', normalize-space(@cl
 **API v2**
 ```java
 XPath.from("button").encloses("span").classes("info").text().startsWith("Klick mich");
+```
+
+## Optional elements
+
+**API v1**
+```java
+private Optional<GuiElement> getSectionBtn() {
+    if (container.waits().waitForIsDisplayed()) {
+        return Optional.of(container.getSubElement(By.tagName("button")));
+    } else {
+        return Optional.empty();
+    }
+}
+
+getSectionBtn().ifPresent(guiElement -> {
+    if (guiElement.waits().waitForIsDisplayed()) {
+        // Optional element is displayed
+    }
+});
+```
+
+**API v2**
+```java
+private UiElement getSectionBtn() {
+    if (container.waitFor().displayed(true)) {
+        return container.find(By.tagName("button"));
+    } else {
+        return UiElement.empty();
+    }
+}
+
+if (getSectionBtn().waitFor().displayed(true)) {
+    // Optional element is displayed
+}
 ```

@@ -33,6 +33,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.LocatorFactoryProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageObject;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
 import eu.tsystems.mms.tic.testframework.pageobjects.XPath;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.AbstractFieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.GuiElementCheckFieldAction;

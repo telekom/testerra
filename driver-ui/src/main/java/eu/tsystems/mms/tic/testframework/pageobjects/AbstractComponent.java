@@ -90,7 +90,7 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
 
     @Override
     protected UiElement findDeep(Locator locator) {
-        throw new NotImplementedException("Deep finding on components is not implemented");
+        return find(locator);
     }
 
     @Override

@@ -31,6 +31,7 @@ import eu.tsystems.mms.tic.testframework.internal.NameableChild;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.AbstractPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultUiElementFinder;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.PageUiElementFinder;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultPageAssertions;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PageAssertions;
 import eu.tsystems.mms.tic.testframework.report.Report;
@@ -51,7 +52,7 @@ import org.openqa.selenium.WebDriver;
  */
 public class Page extends AbstractPage implements TestablePage, Nameable<Page> {
     private WebDriver driver;
-    private DefaultUiElementFinder finder;
+    private PageUiElementFinder finder = new PageUiElementFinder(this);
     private PageAssertions assertions;
     private PageAssertions waits;
 
@@ -191,28 +192,17 @@ public class Page extends AbstractPage implements TestablePage, Nameable<Page> {
     }
 
     protected UiElementFinder getFinder() {
-        if (this.finder == null) {
-            this.finder = new DefaultUiElementFinder(getWebDriver());
-        }
         return this.finder;
     }
 
     @Override
     protected UiElement find(Locator locator) {
-        UiElement element = getFinder().find(locator);
-        if (element instanceof NameableChild) {
-            ((NameableChild)element).setParent(this);
-        }
-        return element;
+        return getFinder().find(locator);
     }
 
     @Override
     protected UiElement findDeep(Locator locator) {
-        UiElement element = getFinder().findDeep(locator);
-        if (element instanceof NameableChild) {
-            ((NameableChild)element).setParent(this);
-        }
-        return element;
+        return getFinder().findDeep(locator);
     }
 
     /**
@@ -292,7 +282,7 @@ public class Page extends AbstractPage implements TestablePage, Nameable<Page> {
     }
 
     private TestableUiElement anyElementContainsText(String text) {
-        return getFinder().findDeep(LOCATE.by(XPath.from("*").text().contains(text)));
+        return this.getFinder().findDeep(LOCATE.by(XPath.from("*").text().contains(text)));
     }
 
     @Override

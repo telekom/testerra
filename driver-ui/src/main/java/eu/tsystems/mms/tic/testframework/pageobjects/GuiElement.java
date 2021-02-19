@@ -420,6 +420,11 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     }
 
     @Override
+    public UiElement newEmpty() {
+        return new EmptyUiElement(this);
+    }
+
+    @Override
     public UiElementList<UiElement> list() {
         if (this.list == null) {
             this.list = new DefaultUiElementList(this);
@@ -562,14 +567,6 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     @Override
     public String toString() {
         return this.toString(false);
-    }
-
-    @Override
-    public String toString(boolean detailed) {
-        StringBuilder sb = new StringBuilder();
-        this.traceAncestors(parent -> sb.append(parent.getName(detailed)).append(" -> "));
-        sb.append(getName(detailed));
-        return sb.toString();
     }
 
     @Deprecated

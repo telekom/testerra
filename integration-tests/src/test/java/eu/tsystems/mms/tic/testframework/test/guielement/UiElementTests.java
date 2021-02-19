@@ -292,8 +292,8 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
 
     @Test
     public void test_UiElement_empty() {
-        UiElement empty = UiElement.empty();
-        empty.expect().bounds().above(empty).is(false);
+        UiElement empty = getPage().getFinder().newEmpty().setName("SubmitButton");
+        Assert.assertEquals(empty.toString(true), "WebTestPage -> EmptyUiElement(SubmitButton)");
     }
 
 }

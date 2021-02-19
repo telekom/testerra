@@ -31,6 +31,7 @@ import org.openqa.selenium.WebElement;
 
 public class EmptyUiElement implements UiElement {
     private String name;
+    private final Nameable parent;
     private static final EmptyStringAssertion emptyStringAssertion = new EmptyStringAssertion<>();
     private static final EmptyFileAssertion emptyFileAssertion = new EmptyFileAssertion();
     private static final EmptyImageAssertion emptyImageAssertion = new EmptyImageAssertion();
@@ -336,6 +337,10 @@ public class EmptyUiElement implements UiElement {
         }
     }
 
+    public EmptyUiElement(Nameable parent) {
+        this.parent = parent;
+    }
+
     @Override
     public UiElement setName(String name) {
         this.name = name;
@@ -344,12 +349,16 @@ public class EmptyUiElement implements UiElement {
 
     @Override
     public String getName(boolean detailed) {
-        return this.name;
+        String name = this.getClass().getSimpleName();
+        if (this.name != null) {
+            name += "("+this.name+")";
+        }
+        return name;
     }
 
     @Override
     public Nameable getParent() {
-        return null;
+        return this.parent;
     }
 
     @Override

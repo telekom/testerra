@@ -69,4 +69,11 @@ public interface UiElementFinder extends LocatorFactoryProvider, Loggable, WebDr
         }
         return currentScope;
     }
+
+    /**
+     * Returns an empty element
+     */
+    default UiElement newEmpty() {
+        return new EmptyUiElement(null);
+    }
 }

@@ -38,10 +38,6 @@ public interface UiElement extends
         WebDriverRetainer,
         UiElementFinder
 {
-    static UiElement empty() {
-        return new EmptyUiElement();
-    }
-
     enum Properties implements IProperties {
         @Deprecated
         DEFAULT_ASSERT_IS_COLLECTOR("tt.guielement.default.assertcollector", false),

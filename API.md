@@ -276,7 +276,7 @@ private UiElement getSectionBtn() {
     if (container.waitFor().displayed(true)) {
         return container.find(By.tagName("button"));
     } else {
-        return UiElement.empty();
+        return container.newEmpty();
     }
 }
 

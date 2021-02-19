@@ -54,7 +54,10 @@ public interface Nameable<SELF> {
     }
 
     default String toString(boolean detailed) {
-        return getName(detailed);
+        StringBuilder sb = new StringBuilder();
+        this.traceAncestors(parent -> sb.append(parent.getName(detailed)).append(" -> "));
+        sb.append(getName(detailed));
+        return sb.toString();
     }
 
     /**

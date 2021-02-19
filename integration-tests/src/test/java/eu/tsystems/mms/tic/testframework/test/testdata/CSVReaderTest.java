@@ -39,6 +39,7 @@ import org.testng.annotations.Test;
  *
  * @author Eric.Kubenka
  */
+@Deprecated
 public class CSVReaderTest {
 
     @Test

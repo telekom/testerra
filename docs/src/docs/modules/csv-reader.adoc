@@ -1,5 +1,7 @@
 = CSV Reader
 
+NOTE: This class is not supported anymore. If you want to read CSV files into Java beans, please consider the documentation of the http://opencsv.sourceforge.net/#reading_into_beans[OpenCSV library]
+
 The CSV reader class provides a basic reader for CSV files.
 This is useful to handle testdata.
 It provides two ways to read a csv file.

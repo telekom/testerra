@@ -52,8 +52,8 @@ public class PageUiElementFinder implements UiElementFinder {
     }
 
     @Override
-    public UiElement newEmpty() {
-        return new EmptyUiElement(this.page);
+    public UiElement newEmpty(Locator locator) {
+        return new EmptyUiElement(this.page, locator);
     }
 
     @Override

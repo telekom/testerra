@@ -133,6 +133,12 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
         this.core = factory.createCore(guiElementData);
     }
 
+    protected GuiElement(GuiElementData data, GuiElementCore core) {
+        this.guiElementData = data;
+        guiElementData.setGuiElement(this);
+        this.core = core;
+    }
+
     /**
      * Package private constructor for list elements of {@link UiElementList}.
      * Elements created by this constructor are identical to it's parent,
@@ -420,8 +426,8 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     }
 
     @Override
-    public UiElement newEmpty() {
-        return new EmptyUiElement(this);
+    public UiElement newEmpty(Locator locator) {
+        return new EmptyUiElement(this, locator);
     }
 
     @Override

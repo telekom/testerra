@@ -74,6 +74,9 @@ public interface UiElementFinder extends LocatorFactoryProvider, Loggable, WebDr
      * Returns an empty element
      */
     default UiElement newEmpty() {
-        return new EmptyUiElement(null);
+        return newEmpty(LOCATE.by(By.tagName("empty")));
+    }
+    default UiElement newEmpty(Locator locator) {
+        return new EmptyUiElement(getWebDriver(), locator);
     }
 }

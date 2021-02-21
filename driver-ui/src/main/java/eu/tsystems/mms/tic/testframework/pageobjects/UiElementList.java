@@ -22,6 +22,8 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import java.util.Iterator;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public interface UiElementList<SELF> extends
     Iterable<SELF>,
@@ -40,5 +42,9 @@ public interface UiElementList<SELF> extends
 
     default SELF last() {
         return get(size()-1);
+    }
+
+    default Stream<SELF> stream() {
+        return StreamSupport.stream(this.spliterator(), false);
     }
 }

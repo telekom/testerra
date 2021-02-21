@@ -2,44 +2,26 @@
 
 **API v1**
 ```java
-class Test extends TesterraTest {
-    @Test
-    public void test() {
-        MyPage page = PageFactory.create(MyPage.class, WebDriverManager.getWebDriver());
-    }
-}
+PageFactory.create(MyPage.class, WebDriverManager.getWebDriver());
 ```
 
 **API v2**
+
+Implementing the `PageFactoryProvider` interface.
 ```java
-class Test extends TesterraTest implements PageFactoryProvider {
-    @Test
-    public void test() {
-        // Uses WEB_DRIVER_MANAGER.getWebDriver()
-        MyPage page = PAGE_FACTORY.createPage(MyPage.class);
-    }
-}
+PAGE_FACTORY.createPage(MyPage.class);
 ```
 
 ## Create pages in pages
 
 **API v1**
 ```java
-class MyPage extends Page {
-    public OtherPage navigateToOtherPage() {
-        return PageFactory.create(OtherPage.class, getWebDriver());
-    }
-}
+PageFactory.create(OtherPage.class, getWebDriver());
 ```
 
 **API v2**
 ```java
-class MyPage extends Page {
-    public OtherPage navigateToOtherPage() {
-        // Uses same WebDriver
-        return createPage(OtherPage.class);
-    }
-}
+createPage(OtherPage.class);
 ```
 
 
@@ -47,16 +29,12 @@ class MyPage extends Page {
 
 **API v1**
 ```java
-class MyPage extends Page {
-    private GuiElement element = new GuiElement(By.id("42"), getWebDriver());
-}
+GuiElement element = new GuiElement(By.id("42"), getWebDriver());
 ```
 
 **API v2**
 ```java
-class MyPage extends Page {
-    private UiElement element = findById(42);
-}
+UiElement element = findById(42);
 ```
 
 ## Assert conditionally that an element is displayed
@@ -127,7 +105,7 @@ element.expect()
         .text()
         .map(String::trim)
         .map(String::toUpperCase)
-        .is(String);
+        .is("HALLO WELT");
 ```
 
 ## Locate sub elements
@@ -142,6 +120,19 @@ GuiElement sub = parent.getSubElement(By.xpath("//div[1]"));
 ```java
 UiElement parent = findById(42);
 UiElement sub = parent.find(By.xpath("//div[1]"));
+```
+
+## Reusable components
+
+**API v1**
+
+```java
+PageFactory.create(NavigationComponent.class, WebDriverManager.getWebDriver());
+```
+
+**API v2**
+```java
+createComponent(NavigationComponent.class, find(By.tagName("navigation")));
 ```
 
 ## Elements in frames
@@ -192,11 +183,11 @@ element.nonFunctionalAsserts().assertIsDisplayed();
 **API v2**
 ```java
 CONTROL.collectedAssertions(() -> {
-    element.expect().displayed(true);
+    element.expect().displayed(boolean);
 });
 
 CONTROL.optionalAssertions(() -> {
-    element.expect().displayed(true);
+    element.expect().displayed(boolean);
 });
 ```
 
@@ -210,7 +201,7 @@ element.waits().waitForIsDisplayed();
 
 **API v2**
 ```java
-element.waitFor(0).displayed(true);
+element.waitFor(0).displayed(boolean);
 ```
 
 ## Retry blocks and perform something on failure

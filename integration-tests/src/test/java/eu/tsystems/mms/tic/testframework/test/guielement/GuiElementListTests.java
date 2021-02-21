@@ -83,7 +83,7 @@ public class GuiElementListTests extends AbstractExclusiveTestSitesTest<GuiEleme
     private void testNavigationAnchors(GuiElement anchors) {
         Assert.assertEquals(anchors.getNumberOfFoundElements(), 3);
         Assert.assertEquals(anchors.getList().size(), 3);
-        Assert.assertEquals(anchors.getList().get(0).getText(), "First");
+        anchors.getList().get(0).asserts().assertText("First");
         anchors.getList().get(anchors.getNumberOfFoundElements() - 1).asserts().assertText("Third");
     }
 

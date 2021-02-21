@@ -75,9 +75,9 @@ public class UiElementListTests extends AbstractExclusiveTestSitesTest<UiElement
         anchors.expect().foundElements().is(3);
 
         UiElementList<UiElement> list = anchors.list();
-        list.first().expect().text().is("First");
-        list.get(1).expect().text().is("Second");
-        list.last().expect().text().is("Third");
+        list.first().expect().text("First");
+        list.get(1).expect().text("Second");
+        list.last().expect().text("Third");
     }
 
     private void testTableRowsAndData(TableRow tableRows) {
@@ -87,6 +87,8 @@ public class UiElementListTests extends AbstractExclusiveTestSitesTest<UiElement
 
         TestableUiElement tableDataSpecified = tableRows.list().get(1).columns();
         tableDataSpecified.expect().foundElements().is(2);
+
+        tableRows.list().stream().forEach(tableRow -> tableRow.expect().displayed(true));
     }
 
     @Test
@@ -95,10 +97,10 @@ public class UiElementListTests extends AbstractExclusiveTestSitesTest<UiElement
         TableRow tableRows = page.getTableRowsByTagName();
         testTableRowsAndData(tableRows);
 
-        tableRows.list().first().linkByName().expect().attribute(Attribute.HREF).endsWith("mkri");
-        tableRows.list().get(1).linkByName().expect().attribute(Attribute.HREF).endsWith("joku");
-        tableRows.list().last().linkByName().expect().attribute(Attribute.HREF).endsWith("erku");
-        tableRows.list().forEach(tableRow -> tableRow.linkByName().expect().attribute(Attribute.HREF).startsWith("http"));
+        tableRows.list().first().linkByName().expect().attribute(Attribute.HREF).endsWith("mkri").is(true);
+        tableRows.list().get(1).linkByName().expect().attribute(Attribute.HREF).endsWith("joku").is(true);
+        tableRows.list().last().linkByName().expect().attribute(Attribute.HREF).endsWith("erku").is(true);
+        tableRows.list().forEach(tableRow -> tableRow.linkByName().expect().attribute(Attribute.HREF).startsWith("http").is(true));
     }
 
     @Test
@@ -107,9 +109,9 @@ public class UiElementListTests extends AbstractExclusiveTestSitesTest<UiElement
         TableRow tableRows = page.getTableRowsByTagName();
         testTableRowsAndData(tableRows);
 
-        tableRows.list().first().linkByXPath().expect().attribute(Attribute.HREF).endsWith("mkri");
-        tableRows.list().get(1).linkByXPath().expect().attribute(Attribute.HREF).endsWith("joku");
-        tableRows.list().last().linkByXPath().expect().attribute(Attribute.HREF).endsWith("erku");
+        tableRows.list().first().linkByXPath().expect().attribute(Attribute.HREF).endsWith("mkri").is(true);
+        tableRows.list().get(1).linkByXPath().expect().attribute(Attribute.HREF).endsWith("joku").is(true);
+        tableRows.list().last().linkByXPath().expect().attribute(Attribute.HREF).endsWith("erku").is(true);
     }
 
     @Override

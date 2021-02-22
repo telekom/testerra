@@ -114,12 +114,15 @@ public class AssertCollector {
      * @param message the assertion error message
      */
     static public void fail(String message) {
-        AssertionError assertionError = new AssertionError(message);
+        fail(new AssertionError(message));
+    }
+
+    public static void fail(AssertionError assertionError) {
         if (TesterraListener.isActive()) {
             CollectedAssertions.store(assertionError);
         }
         else {
-            throw new AssertionError(message);
+            throw assertionError;
         }
     }
 
@@ -127,7 +130,7 @@ public class AssertCollector {
      * Fails a test with no message.
      */
     static public void fail() {
-        fail(null);
+        fail("");
     }
 
     /**

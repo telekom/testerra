@@ -34,7 +34,31 @@ GuiElement element = new GuiElement(By.id("42"), getWebDriver());
 
 **API v2**
 ```java
-UiElement element = findById(42);
+UiElement element = find(By.id("42"));
+```
+
+## Assertions
+
+```java
+element.asserts().assertIsDisplayed();
+```
+
+```java
+element.expect().displayed(boolean);
+element.expect().present(boolean);
+element.expect().text(String);
+element.expect().value(String);
+element.expect().attribute("disabled").isNot(null);
+element.expect().css("display").is("none");
+element.expect().classes("header", "navigation").is(true);
+
+element.waitFor().displayed(boolean);
+element.waitFor().present(boolean);
+element.waitFor().text(String);
+element.waitFor().value(String);
+element.waitFor().attribute("disabled").isNot(null);
+element.waitFor().css("display").is("none");
+element.waitFor().classes("header", "navigation").is(true);
 ```
 
 ## Assert conditionally that an element is displayed

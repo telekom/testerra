@@ -199,6 +199,10 @@ public final class WebDriverSessionsManager {
         WEBDRIVER_STARTUP_HANDLERS.add(afterStart);
     }
 
+    public static void unregisterWebDriverAfterStartupHandler(Consumer<WebDriver> afterStart) {
+        WEBDRIVER_STARTUP_HANDLERS.remove(afterStart);
+    }
+
     private static String createSessionIdentifier(WebDriver webDriver, String sessionKey) {
         return String.format("%s (sessionKey=%s)", webDriver.getClass().getSimpleName(), sessionKey);
     }

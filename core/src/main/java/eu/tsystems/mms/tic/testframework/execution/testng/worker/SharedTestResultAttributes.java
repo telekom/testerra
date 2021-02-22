@@ -21,10 +21,10 @@
 
 package eu.tsystems.mms.tic.testframework.execution.testng.worker;
 
+@Deprecated
 public class SharedTestResultAttributes {
 
     private SharedTestResultAttributes() { }
 
     public static final String failsFromCollectedAssertsOnly = "failsFromCollectedAssertsOnly";
-    public static final String expectedFailed = "expectedFailed";
 }

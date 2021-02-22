@@ -23,7 +23,6 @@ package eu.tsystems.mms.tic.testframework.execution.worker.finish;
 
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.SharedTestResultAttributes;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
@@ -47,11 +46,7 @@ public class TakeInSessionEvidencesWorker implements MethodEndEvent.Listener {
     @Subscribe
     public void onMethodEnd(MethodEndEvent methodEndEvent) {
         if (methodEndEvent.isFailed()) {
-            Object attribute = methodEndEvent.getTestResult().getAttribute(SharedTestResultAttributes.failsFromCollectedAssertsOnly);
-
-            if (attribute != Boolean.TRUE) {
-                collect(methodEndEvent);
-            }
+            collect(methodEndEvent);
         } else if (methodEndEvent.isSkipped()) {
             if (methodEndEvent.getMethodContext().getStatus() == TestStatusController.Status.FAILED_RETRIED) {
                 collect(methodEndEvent);

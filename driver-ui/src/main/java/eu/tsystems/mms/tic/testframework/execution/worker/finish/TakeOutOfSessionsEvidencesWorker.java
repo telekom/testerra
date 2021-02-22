@@ -19,14 +19,13 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.execution.worker.finish;
+package eu.tsystems.mms.tic.testframework.execution.worker.finish;
 
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.events.AfterShutdownWebDriverSessionsEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.SharedTestResultAttributes;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
@@ -54,11 +53,7 @@ public class TakeOutOfSessionsEvidencesWorker implements Loggable, AfterShutdown
     public void onAfterShutdownWebDriverSessionsEvent(AfterShutdownWebDriverSessionsEvent event) {
         MethodEndEvent methodEndEvent = event.getMethodEndEvent();
         if (methodEndEvent.isFailed() && SCREENCASTER_ACTIVE_ON_FAILED) {
-            Object attribute = methodEndEvent.getTestResult().getAttribute(SharedTestResultAttributes.failsFromCollectedAssertsOnly);
-
-            if (attribute != Boolean.TRUE) {
-                collect(methodEndEvent);
-            }
+            collect(methodEndEvent);
         } else if (methodEndEvent.isPassed() && SCREENCASTER_ACTIVE_ON_SUCCESS) {
             collect(methodEndEvent);
 

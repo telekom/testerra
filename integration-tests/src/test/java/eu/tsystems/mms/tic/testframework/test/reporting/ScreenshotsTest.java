@@ -26,7 +26,6 @@ import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.BasePage;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
@@ -34,8 +33,7 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController
 import eu.tsystems.mms.tic.testframework.test.page.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.util.Optional;
-import org.junit.Assert;
-import org.openqa.selenium.By;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -93,27 +91,13 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
 
     @Test
     @Fails(description = "This test needs to fail to create a screenshot")
-    public void test_take_screenshot_via_AssertCollector() {
+    public void test_take_screenshot_via_collected_assertion() {
         Flags.SCREENCASTER_ACTIVE = true;
         AssertCollector.assertTrue(false);
     }
 
-    @Test(dependsOnMethods = "test_take_screenshot_via_AssertCollector", alwaysRun = true)
-    public void test_screenshot_present_in_MethodContext_via_AssertCollector() {
+    @Test(dependsOnMethods = "test_take_screenshot_via_collected_assertion", alwaysRun = true)
+    public void test_Screenshot_is_present_in_MethodContext_on_collected_assertion() {
         this.screenshot_is_present_in_MethodContext("test_take_screenshot_via_AssertCollector");
     }
-
-    @Test
-    @Fails(description = "This test needs to fail to create a screenshot")
-    public void test_take_screenshot_via_collected_assertion() {
-        Flags.SCREENCASTER_ACTIVE = true;
-        GuiElement guiElement = new GuiElement(getWebDriver(), By.tagName("inexistent-element"));
-        guiElement.assertCollector().assertIsDisplayed();
-    }
-
-    @Test(dependsOnMethods = "test_take_screenshot_via_collected_assertion", alwaysRun = true)
-    public void test_screenshot_present_in_MethodContext_via_collected_assertion() {
-        this.screenshot_is_present_in_MethodContext("test_take_screenshot_via_collected_assertion");
-    }
-
 }

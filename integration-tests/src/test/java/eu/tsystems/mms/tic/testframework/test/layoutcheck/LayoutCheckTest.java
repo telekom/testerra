@@ -84,7 +84,7 @@ public class LayoutCheckTest extends AbstractTestSitesTest {
 
     @Test
     public void testCheckPageLayout() {
-        LayoutCheck.assertScreenshot(WebDriverManager.getWebDriver(), "LayoutTestPage", 1);
+        LayoutCheck.assertScreenshot(WebDriverManager.getWebDriver(), "LayoutTestPage", 5);
     }
 
 }

@@ -85,7 +85,7 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
                     .flatMap(testStep -> testStep.getTestStepActions().stream())
                     .flatMap(testStepAction -> testStepAction.readEntries(Screenshot.class))
                     .count();
-            Assert.assertEquals(count, 1);
+            Assert.assertEquals(count, 1, "Screenshots in MethodContext " + methodName);
         });
     }
 
@@ -98,6 +98,6 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
 
     @Test(dependsOnMethods = "test_take_screenshot_via_collected_assertion", alwaysRun = true)
     public void test_Screenshot_is_present_in_MethodContext_on_collected_assertion() {
-        this.screenshot_is_present_in_MethodContext("test_take_screenshot_via_AssertCollector");
+        this.screenshot_is_present_in_MethodContext("test_take_screenshot_via_collected_assertion");
     }
 }

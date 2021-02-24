@@ -28,6 +28,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssertion;
 import eu.tsystems.mms.tic.testframework.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.internal.NameableChild;
+import eu.tsystems.mms.tic.testframework.internal.asserts.PropertyAssertionConfig;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultLocator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFactory;
@@ -96,8 +97,6 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
      * This is the raw core implementation of {@link GuiElementCore}
      */
     private final GuiElementCore core;
-    private DefaultUiElementAssertion assertions;
-    private DefaultUiElementAssertion waits;
 
     /**
      * Contains the elements base information and the {@link GuiElementData} hierarchy only.
@@ -117,11 +116,6 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
      * Contains the {@link Nameable} hierarchy for {@link UiElement} and {@link PageObject}.
      */
     private Nameable parent;
-
-    /**
-     * Gets lazy initialized by {@link #list()}
-     */
-    private DefaultUiElementList list;
 
     /**
      * Elementary constructor
@@ -432,10 +426,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
 
     @Override
     public UiElementList<UiElement> list() {
-        if (this.list == null) {
-            this.list = new DefaultUiElementList(this);
-        }
-        return this.list;
+        return new DefaultUiElementList(this);
     }
 
     /**
@@ -752,18 +743,16 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
 
     @Override
     public UiElementAssertion waitFor(int seconds) {
-        if (this.waits == null) {
-            this.waits = new DefaultUiElementAssertion(this, seconds);
-        }
-        return this.waits;
+        PropertyAssertionConfig config = new PropertyAssertionConfig();
+        config.useTimeout = seconds;
+        return new DefaultUiElementAssertion(this, config);
     }
 
     @Override
     public UiElementAssertion expect() {
-        if (this.assertions == null) {
-            this.assertions = new DefaultUiElementAssertion(this, true);
-        }
-        return this.assertions;
+        PropertyAssertionConfig config = new PropertyAssertionConfig();
+        config.throwErrors = true;
+        return new DefaultUiElementAssertion(this, config);
     }
 
     @Override

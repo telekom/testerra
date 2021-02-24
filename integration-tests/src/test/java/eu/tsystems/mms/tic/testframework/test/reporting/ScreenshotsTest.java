@@ -90,7 +90,7 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
     @Test
     @Fails(description = "This test needs to fail to create a screenshot")
     public void test_take_screenshot_via_collected_assertion() {
-        Flags.SCREENCASTER_ACTIVE = true;
+        System.setProperty(Report.Properties.SCREENCASTER_ACTIVE.toString(), "true");
         AssertCollector.assertTrue(false);
     }
 

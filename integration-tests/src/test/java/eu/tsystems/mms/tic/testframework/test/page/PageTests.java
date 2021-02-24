@@ -22,7 +22,9 @@ package eu.tsystems.mms.tic.testframework.test.page;
 
 import eu.tsystems.mms.tic.testframework.AbstractExclusiveTestSitesTest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
+import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.InvalidComponentPage;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.WebTestPage;
+import eu.tsystems.mms.tic.testframework.exceptions.PageFactoryException;
 import eu.tsystems.mms.tic.testframework.internal.asserts.QuantityAssertion;
 import eu.tsystems.mms.tic.testframework.internal.asserts.StringAssertion;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
@@ -107,11 +109,16 @@ public class PageTests extends AbstractExclusiveTestSitesTest<WebTestPage> imple
     }
 
     @Test
-    public void test_Component() {
+    public void test_create_Component() {
         final String input = "Ich gebe etwas ein";
         WebTestPage page = getPage();
         page.inputForm().button().expect().value().is("Button1");
         page.inputForm().input().clear().sendKeys(input).expect().value().is(input);
         page.inputForm().button().expect().foundElements().is(1);
+    }
+
+    @Test(expectedExceptions = PageFactoryException.class)
+    public void test_failed_Component_check() {
+        InvalidComponentPage page = PAGE_FACTORY.createPage(InvalidComponentPage.class, getClassExclusiveWebDriver());
     }
 }

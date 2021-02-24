@@ -23,7 +23,6 @@ package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
 
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.SharedTestResultAttributes;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.testng.ITestResult;

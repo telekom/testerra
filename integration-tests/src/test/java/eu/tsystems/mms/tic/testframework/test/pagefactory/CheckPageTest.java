@@ -30,7 +30,7 @@ import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExist
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithNonCheckableCheck;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithNotExistingElement;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithNullElement;
-import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
+import eu.tsystems.mms.tic.testframework.exceptions.PageFactoryException;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
 import java.io.File;
@@ -45,14 +45,14 @@ public class CheckPageTest extends AbstractTestSitesTest implements PageFactoryP
         PAGE_FACTORY.createPage(PageWithExistingElement.class, getClassExclusiveWebDriver());
     }
 
-    @Test(expectedExceptions = PageNotFoundException.class)
+    @Test(expectedExceptions = PageFactoryException.class)
     public void testT02_checkNotExistingElement() throws Throwable {
         try {
             PAGE_FACTORY.createPage(PageWithNotExistingElement.class, getClassExclusiveWebDriver());
         } catch (Throwable e) {
             do {
                 e = e.getCause();
-                if (e instanceof PageNotFoundException) {
+                if (e instanceof PageFactoryException) {
                     throw e;
                 }
             } while (e != null);

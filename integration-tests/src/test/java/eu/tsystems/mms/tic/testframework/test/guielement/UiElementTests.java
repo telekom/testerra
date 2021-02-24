@@ -24,6 +24,7 @@ import eu.tsystems.mms.tic.testframework.AbstractExclusiveTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.WebTestPage;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
+import eu.tsystems.mms.tic.testframework.exceptions.UiElementAssertionError;
 import eu.tsystems.mms.tic.testframework.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
@@ -290,7 +291,7 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
         ASSERT.assertEquals(retryCount.get(), 3, "Retry count");
     }
 
-    @Test
+    @Test(expectedExceptions = UiElementAssertionError.class)
     public void test_UiElement_empty() {
         UiElement empty = getPage().getFinder().newEmpty().setName("SubmitButton");
         empty.expect().displayed(true);

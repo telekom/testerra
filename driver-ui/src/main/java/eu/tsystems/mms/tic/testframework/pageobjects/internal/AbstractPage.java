@@ -23,7 +23,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
-import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
+import eu.tsystems.mms.tic.testframework.exceptions.PageFactoryException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractComponent;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
@@ -33,7 +33,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.LocatorFactoryProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageObject;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
 import eu.tsystems.mms.tic.testframework.pageobjects.XPath;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.AbstractFieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.GuiElementCheckFieldAction;
@@ -92,31 +91,27 @@ public abstract class AbstractPage implements
      * Calls the assertPageIsShown method.
      */
     private void checkAdditional(CheckRule checkRule) {
-        try {
-            switch (checkRule) {
-                case IS_NOT_PRESENT:
-                case IS_NOT_DISPLAYED:
-                    assertPageIsNotShown();
+        switch (checkRule) {
+            case IS_NOT_PRESENT:
+            case IS_NOT_DISPLAYED:
+                assertPageIsNotShown();
                 break;
-                default:
-                    assertPageIsShown();
-            }
-        } catch (Throwable throwable) {
-            throw new PageNotFoundException(this, throwable);
+            default:
+                assertPageIsShown();
         }
     }
 
     /**
      * Package private accessible by {@link PageFactory}
      */
-    PageObject checkUiElements() {
+    PageObject checkUiElements() throws Throwable {
         return checkUiElements(CheckRule.DEFAULT);
     }
 
     /**
      * Package private accessible by {@link PageFactory}
      */
-    PageObject checkUiElements(CheckRule checkRule) {
+    PageObject checkUiElements(CheckRule checkRule) throws Throwable {
         pCheckPage(checkRule, true);
         return this;
     }
@@ -129,12 +124,16 @@ public abstract class AbstractPage implements
      */
     @Deprecated
     public final void checkPage() {
-        pCheckPage(CheckRule.DEFAULT, true);
+        try {
+            pCheckPage(CheckRule.DEFAULT, true);
+        } catch (Throwable throwable) {
+            throw new PageFactoryException(this.getClass(), getWebDriver(), throwable);
+        }
     }
 
     public abstract String getName(boolean detailed);
 
-    private void pCheckPage(CheckRule checkRule, final boolean checkCaller) {
+    private void pCheckPage(CheckRule checkRule, final boolean checkCaller) throws Throwable {
         /*
         page checks
          */
@@ -143,15 +142,8 @@ public abstract class AbstractPage implements
             checkAnnotatedFields(checkRule);
             checkAdditional(checkRule);
         } catch (Throwable throwable) {
-            try {
-                // call page error state logic
-                checkPageErrorState(throwable);
-
-                // if nothing is checked then the orig throwable is thrown
-                throw throwable;
-            } catch (Throwable importantThrowable) {
-                throw new PageNotFoundException(this, importantThrowable);
-            }
+            // call page error state logic
+            checkPageErrorState(throwable);
         }
 
         pageLoaded();
@@ -174,6 +166,7 @@ public abstract class AbstractPage implements
      * @throws Throwable .
      */
     protected void checkPageErrorState(Throwable throwable) throws Throwable {
+        throw throwable;
     }
 
     /**

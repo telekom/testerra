@@ -22,6 +22,7 @@
  package eu.tsystems.mms.tic.testframework.core.pageobjects.testdata;
 
 import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
+import eu.tsystems.mms.tic.testframework.pageobjects.AbstractComponent;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.InteractiveUiElement;

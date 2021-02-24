@@ -44,7 +44,6 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
 
     protected final UiElement rootElement;
     private String name;
-    private DefaultComponentList<SELF> list;
 
     public AbstractComponent(UiElement rootElement) {
         this.rootElement = rootElement;
@@ -72,10 +71,7 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
 
     @Override
     public UiElementList<SELF> list() {
-        if (this.list == null) {
-            this.list = new DefaultComponentList<>((SELF)this);
-        }
-        return this.list;
+        return new DefaultComponentList<>((SELF)this);
     }
 
     @Override

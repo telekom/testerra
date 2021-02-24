@@ -41,12 +41,12 @@ import org.openqa.selenium.WebDriver;
 public class DefaultPageAssertions implements PageAssertions {
     private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.getInjector().getInstance(PropertyAssertionFactory.class);
     private static final Report report = Testerra.getInjector().getInstance(Report.class);
-    private final PropertyAssertionConfig propertyAssertionConfig = new PropertyAssertionConfig();
+    private final PropertyAssertionConfig propertyAssertionConfig;
     private final Page page;
 
-    public DefaultPageAssertions(Page page, boolean throwErrors) {
+    public DefaultPageAssertions(Page page, PropertyAssertionConfig config) {
         this.page = page;
-        this.propertyAssertionConfig.throwErrors = throwErrors;
+        this.propertyAssertionConfig = config;
     }
 
     @Override

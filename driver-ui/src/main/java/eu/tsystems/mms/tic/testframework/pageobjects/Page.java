@@ -29,6 +29,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.internal.NameableChild;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
+import eu.tsystems.mms.tic.testframework.internal.asserts.PropertyAssertionConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.AbstractPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultUiElementFinder;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.PageUiElementFinder;
@@ -53,8 +54,6 @@ import org.openqa.selenium.WebDriver;
 public class Page extends AbstractPage implements TestablePage, Nameable<Page> {
     private WebDriver driver;
     private PageUiElementFinder finder = new PageUiElementFinder(this);
-    private PageAssertions assertions;
-    private PageAssertions waits;
 
     public Page(WebDriver webDriver) {
         this.driver = webDriver;
@@ -286,19 +285,17 @@ public class Page extends AbstractPage implements TestablePage, Nameable<Page> {
     }
 
     @Override
-    public PageAssertions waitFor() {
-        if (this.waits == null) {
-            this.waits = new DefaultPageAssertions(this, false);
-        }
-        return this.waits;
+    public PageAssertions waitFor(int seconds) {
+        PropertyAssertionConfig config = new PropertyAssertionConfig();
+        config.useTimeout = seconds;
+        return new DefaultPageAssertions(this, config);
     }
 
     @Override
     public PageAssertions expect() {
-        if (this.assertions == null) {
-            this.assertions = new DefaultPageAssertions(this, true);
-        }
-        return this.assertions;
+        PropertyAssertionConfig config = new PropertyAssertionConfig();
+        config.throwErrors = true;
+        return new DefaultPageAssertions(this, config);
     }
 
     @Override

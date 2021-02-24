@@ -21,25 +21,12 @@
  */
 package eu.tsystems.mms.tic.testframework.exceptions;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.AbstractPage;
+import eu.tsystems.mms.tic.testframework.pageobjects.PageObject;
+import org.openqa.selenium.WebDriver;
 
-/**
- * Exception indicating that a page was not found.
- *
- * @author pele
- */
-public class PageNotFoundException extends java.lang.RuntimeException {
+public class PageFactoryException extends RuntimeException {
 
-    /**
-     * Default serial UID.
-     */
-    private static final long serialVersionUID = 1L;
-
-    public PageNotFoundException(AbstractPage page) {
-        this(page, null);
-    }
-
-    public PageNotFoundException(AbstractPage page, Throwable cause) {
-        super("Page not found: " + page.getName(true), cause);
+    public PageFactoryException(Class<? extends PageObject> pageClass, WebDriver webDriver, Throwable cause) {
+        super("Could not create instance of " + pageClass.getSimpleName() + " on page \"" + webDriver.getTitle() + "\" ("+webDriver.getCurrentUrl()+")", cause);
     }
 }

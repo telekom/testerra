@@ -53,7 +53,7 @@ import org.openqa.selenium.Rectangle;
 public class DefaultUiElementAssertion implements UiElementAssertion {
     private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.getInjector().getInstance(PropertyAssertionFactory.class);
     private static final Report report = Testerra.getInjector().getInstance(Report.class);
-    private final PropertyAssertionConfig propertyAssertionConfig = new PropertyAssertionConfig();
+    private final PropertyAssertionConfig propertyAssertionConfig;
     private final GuiElementCore core;
     private final GuiElement guiElement;
 
@@ -79,16 +79,10 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
         }
     }
 
-    public DefaultUiElementAssertion(UiElement uiElement, boolean throwErrors) {
+    public DefaultUiElementAssertion(UiElement uiElement, PropertyAssertionConfig config) {
         this.guiElement = (GuiElement)uiElement;
         this.core = this.guiElement.getCore();
-        this.propertyAssertionConfig.throwErrors = throwErrors;
-    }
-
-    public DefaultUiElementAssertion(UiElement uiElement, int useTimeoutSeconds) {
-        this.guiElement = (GuiElement)uiElement;
-        this.core = this.guiElement.getCore();
-        this.propertyAssertionConfig.useTimeout = useTimeoutSeconds;
+        this.propertyAssertionConfig = config;
     }
 
     /**
@@ -97,7 +91,9 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
      * @param useAssertion
      */
     public DefaultUiElementAssertion(UiElement uiElement, Assertion useAssertion) {
-        this(uiElement, true);
+        this.guiElement = (GuiElement)uiElement;
+        this.core = this.guiElement.getCore();
+        this.propertyAssertionConfig = new PropertyAssertionConfig();
         this.propertyAssertionConfig.useAssertion = useAssertion;
     }
 

@@ -19,9 +19,8 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.hooks;
+package eu.tsystems.mms.tic.testframework.hooks;
 
-import com.google.common.cache.RemovalListener;
 import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
@@ -42,8 +41,6 @@ import eu.tsystems.mms.tic.testframework.report.UITestStepIntegration;
 import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
-import java.util.function.Consumer;
-import org.openqa.selenium.WebDriver;
 
 public class DriverUiHook implements ModuleHook {
 

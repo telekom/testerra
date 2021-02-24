@@ -95,10 +95,11 @@ public class NonFunctionalAssert {
      * @param realCause the original exception
      */
     static public void fail(String message, Throwable realCause) {
-        AssertionError ae = new AssertionError(message);
-        ae.initCause(realCause);
+        fail(new AssertionError(message, realCause));
+    }
 
-        AssertionChecker.storeNonFunctionalInfo(ae);
+    public static void fail(AssertionError assertionError) {
+        AssertionChecker.storeNonFunctionalInfo(assertionError);
     }
 
     /**
@@ -107,16 +108,14 @@ public class NonFunctionalAssert {
      * @param message the assertion error message
      */
     static public void fail(String message) {
-        AssertionError assertionError = new AssertionError(message);
-
-        AssertionChecker.storeNonFunctionalInfo(assertionError);
+        fail(new AssertionError(message));
     }
 
     /**
      * Fails a test with no message.
      */
     static public void fail() {
-        fail(null);
+        fail("");
     }
 
     /**

@@ -1,7 +1,7 @@
 [#Fails]
 = Expected Fails
 
-For known issues on the SUT the annoation `@Fails` can used to mark a test method as failing. These test cases are marked as `Expected failed` separately in the report.
+For known issues on the SUT the annotation `@Fails` can used to mark a test method as failing. These test cases are marked as `Expected failed` separately in the report.
 
 If tests are passed again, you get a note in the report to remove the `Fails` annotation.
 

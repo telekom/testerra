@@ -232,7 +232,7 @@ public class GuiElement implements
         if (PropertyManager.getBooleanProperty(TesterraProperties.PERF_TEST, false)) {
             guiElementAssert = new PerformanceTestGuiElementAssert();
         } else {
-            ConfiguredAssert configuredAssert = new ConfiguredAssert(functional, collected);
+            ConfiguredAssert configuredAssert = new ConfiguredAssert(functional, collected, guiElementData);
             guiElementAssert = new ConfigurableGuiElementAssert(guiElementCore, guiElementWait, configuredAssert, guiElementData);
             guiElementAssert = new GuiElementAssertHighlightDecorator(guiElementAssert, guiElementData);
         }

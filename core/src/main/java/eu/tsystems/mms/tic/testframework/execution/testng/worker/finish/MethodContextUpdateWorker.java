@@ -19,13 +19,13 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
+package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
 
 import com.google.common.eventbus.Subscribe;
+import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.InfoMethod;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.SharedTestResultAttributes;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
@@ -66,8 +66,7 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
                      * set status
                      */
                     if (testMethod.isTest()) {
-                        Object expectedFailed = testResult.getAttribute(SharedTestResultAttributes.expectedFailed);
-                        if (expectedFailed == Boolean.TRUE) {
+                        if (testMethod.getConstructorOrMethod().getMethod().isAnnotationPresent(Fails.class)) {
                             // expected failed
                             TestStatusController.setMethodStatus(methodContext, TestStatusController.Status.FAILED_EXPECTED, method);
                         } else {

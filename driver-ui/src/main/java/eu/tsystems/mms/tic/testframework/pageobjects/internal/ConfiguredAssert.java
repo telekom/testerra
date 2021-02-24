@@ -21,9 +21,11 @@
  */
  package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
+import eu.tsystems.mms.tic.testframework.exceptions.UiElementAssertionError;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
 import org.testng.Assert;
 
@@ -32,36 +34,52 @@ public class ConfiguredAssert {
     private final boolean functionalAssertions;
     private final boolean collected;
     private final String prefix;
+    private final GuiElementData guiElement;
 
-    public ConfiguredAssert(boolean functionalAssertions, boolean collected) {
+    public ConfiguredAssert(boolean functionalAssertions, boolean collected, GuiElementData data) {
         this.functionalAssertions = functionalAssertions;
         this.collected = collected;
+        this.guiElement = data;
         prefix = functionalAssertions ? "" : "Nonfunctional: ";
     }
 
     public void assertTrue(boolean value, String assertionMessage) {
+        UiElementAssertionError uiElementAssertionError = null;
+        try {
+            Assert.assertTrue(value, assertionMessage);
+            return;
+        } catch (AssertionError assertionError) {
+            uiElementAssertionError = new UiElementAssertionError(this.guiElement, assertionError);
+        }
         if (functionalAssertions) {
             if (collected) {
-                AssertCollector.assertTrue(value, assertionMessage);
+                AssertCollector.fail(uiElementAssertionError);
             }
             else {
-                Assert.assertTrue(value, assertionMessage);
+                throw uiElementAssertionError;
             }
         } else {
-            NonFunctionalAssert.assertTrue(value, assertionMessage);
+            NonFunctionalAssert.fail(uiElementAssertionError);
         }
     }
 
     public void assertFalse(boolean value, String assertionMessage) {
+        UiElementAssertionError uiElementAssertionError = null;
+        try {
+            Assert.assertFalse(value, assertionMessage);
+            return;
+        } catch (AssertionError assertionError) {
+            uiElementAssertionError = new UiElementAssertionError(this.guiElement, assertionError);
+        }
         if (functionalAssertions) {
             if (collected) {
-                AssertCollector.assertFalse(value, assertionMessage);
+                AssertCollector.fail(uiElementAssertionError);
             }
             else {
-                Assert.assertFalse(value, assertionMessage);
+                throw uiElementAssertionError;
             }
         } else {
-            NonFunctionalAssert.assertFalse(value, assertionMessage);
+            NonFunctionalAssert.fail(uiElementAssertionError);
         }
     }
 

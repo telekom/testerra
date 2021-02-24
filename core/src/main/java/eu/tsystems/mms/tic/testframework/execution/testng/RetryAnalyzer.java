@@ -33,7 +33,6 @@ import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.report.utils.FailsAnnotationFilter;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -166,14 +165,14 @@ public class RetryAnalyzer implements IRetryAnalyzer {
         /*
         no retry for tests with fails annotaion in stacktrace
          */
-        if (throwable1 != null && ExecutionUtils.getFailsAnnotationInStackTrace(throwable1.getStackTrace()) != null) {
+        /*if (throwable1 != null && ExecutionUtils.getFailsAnnotationInStackTrace(throwable1.getStackTrace()) != null) {
 
             final Fails failsAnnotation = testResult.getMethod().getConstructorOrMethod().getMethod().getAnnotation(Fails.class);
             if (FailsAnnotationFilter.isFailsAnnotationValid(failsAnnotation)) {
                 LOGGER.warn("Not retrying this method, because a method in stacktrace is @Fails annotated.");
                 return false;
             }
-        }
+        }*/
 
         boolean containingFilteredThrowable = isTestResultContainingFilteredThrowable(testResult);
         if (containingFilteredThrowable) {

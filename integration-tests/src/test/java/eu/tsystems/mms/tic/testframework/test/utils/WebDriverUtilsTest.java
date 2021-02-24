@@ -169,7 +169,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
     @Test
     public void WebDriverUtils_findWindowByTitle() {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = getWebDriver();
 
         openPopUpWindow(driver);
 
@@ -182,7 +182,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
     @Test
     public void WebDriverUtils_findWindowByTitle_no_context_switch() {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = getWebDriver();
 
         openPopUpWindow(driver);
 

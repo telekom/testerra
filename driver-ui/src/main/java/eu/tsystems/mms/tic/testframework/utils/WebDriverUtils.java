@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
+import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverProxy;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
@@ -97,6 +98,7 @@ public final class WebDriverUtils {
      *
      * @param windowTitle {@link String} Title of the window to switch to.
      * @return true if switching was successful.
+     * @deprecated Use {@link IWebDriverManager#switchToWindow(Predicate)} instead
      */
     public static boolean findWindowAndSwitchTo(final String windowTitle) {
         return findWindowAndSwitchTo(windowTitle, null);
@@ -109,6 +111,7 @@ public final class WebDriverUtils {
      * @param driver               {@link WebDriver} object or null (then the default session will be used)
      * @param excludeWindowHandles {@link String} array of window handles that should not be switch to.
      * @return true if switching was successful.
+     * @deprecated Use {@link IWebDriverManager#switchToWindow(Predicate)} instead
      */
     public static boolean findWindowAndSwitchTo(final String windowTitle, WebDriver driver,
                                                 final String... excludeWindowHandles) {
@@ -122,6 +125,7 @@ public final class WebDriverUtils {
      * @param driver               {@link WebDriver} object or null (then the default session will be used)
      * @param excludeWindowHandles {@link String} array of window handles that should not be switch to.
      * @return true if switching was successful.
+     * @deprecated Use {@link IWebDriverManager#switchToWindow(Predicate)} instead
      */
     public static boolean findWindowAndSwitchTo(final String windowTitle, final String urlContains, WebDriver driver,
                                                 final String... excludeWindowHandles) {

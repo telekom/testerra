@@ -429,4 +429,8 @@ public final class WebDriverSessionsManager {
     public static Stream<SessionContext> readSessionContexts() {
         return WEBDRIVER_SESSIONS_CONTEXTS_MAP.values().stream();
     }
+
+    public static Stream<WebDriver> readWebDrivers() {
+        return WEBDRIVER_SESSIONS_CONTEXTS_MAP.keySet().stream();
+    }
 }

@@ -92,9 +92,14 @@ public interface IWebDriverManager extends WebDriverRetainer {
         return WebDriverManager.getConfig();
     }
 
-    default Stream<WebDriver> getWebDriversFromCurrentThread() {
+    default Stream<WebDriver> readWebDriversFromCurrentThread() {
         return WebDriverSessionsManager.getWebDriversFromCurrentThread();
     }
+
+    default Stream<WebDriver> readWebDrivers() {
+        return WebDriverSessionsManager.readWebDrivers();
+    }
+
 
     default IWebDriverManager setUserAgentConfig(String browser, UserAgentConfig configurator) {
         WebDriverManager.setUserAgentConfig(browser, configurator);

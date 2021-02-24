@@ -21,7 +21,7 @@
 
 package eu.tsystems.mms.tic.testframework.test.reporting;
 
-import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.AbstractExclusiveTestSitesTest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.BasePage;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
@@ -32,18 +32,17 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import java.util.Optional;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
 /**
  * Tests if screenshots are added to the MethodContext when a test fails.
  * @author Mike Reiche
  */
-public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactoryTest {
+public class ScreenshotsTest extends AbstractExclusiveTestSitesTest<BasePage> implements PageFactoryTest {
 
     @Override
-    public BasePage getPage() {
-        return PAGE_FACTORY.createPage(BasePage.class, WEB_DRIVER_MANAGER.getWebDriver());
+    public Class<BasePage> getPageClass() {
+        return BasePage.class;
     }
 
     @Test()
@@ -72,6 +71,7 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
     }
 
     private void screenshot_is_present_in_MethodContext(String methodName) {
+        Assert.assertTrue(Report.Properties.SCREENSHOTTER_ACTIVE.asBool(), "Property should be active");
         MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
 
         Optional<MethodContext> optionalMethodContext = currentMethodContext.getClassContext().readMethodContexts()

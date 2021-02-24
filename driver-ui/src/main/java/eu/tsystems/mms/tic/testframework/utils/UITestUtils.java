@@ -322,25 +322,18 @@ public class UITestUtils implements WebDriverManagerProvider {
      */
     public static List<Screenshot> takeScreenshots(final boolean publishToReport) {
         List<Screenshot> allScreenshots = new LinkedList<>();
-        takeScreenshotsFromThreadSessions().forEach(webDriverScreenshots -> {
-            if (publishToReport) {
-                webDriverScreenshots.forEach(screenshot -> {
-                    ExecutionContextController.getCurrentMethodContext().addScreenshot(screenshot);
-                    report.addScreenshot(screenshot, Report.FileMode.MOVE);
+        WEB_DRIVER_MANAGER.readWebDrivers()
+                .map(UITestUtils::pTakeAllScreenshotsForSession)
+                .forEach(webDriverScreenshots -> {
+                    if (publishToReport) {
+                        webDriverScreenshots.forEach(screenshot -> {
+                            ExecutionContextController.getCurrentMethodContext().addScreenshot(screenshot);
+                            report.addScreenshot(screenshot, Report.FileMode.MOVE);
+                        });
+                    }
+                    allScreenshots.addAll(webDriverScreenshots);
                 });
-            }
-            allScreenshots.addAll(webDriverScreenshots);
-        });
 
         return allScreenshots;
-    }
-
-    /**
-     * Take screenshots from all windows and store them into the info container.
-     *
-     * @return
-     */
-    private static Stream<List<Screenshot>> takeScreenshotsFromThreadSessions() {
-        return WEB_DRIVER_MANAGER.getWebDriversFromCurrentThread().map(UITestUtils::pTakeAllScreenshotsForSession);
     }
 }

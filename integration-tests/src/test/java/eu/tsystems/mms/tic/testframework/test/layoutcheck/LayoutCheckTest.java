@@ -82,7 +82,7 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements LocatorFac
 
     @Test
     public void testCheckPageLayout() {
-        LayoutCheck.assertScreenshot(getClassExclusiveWebDriver(), "LayoutTestPage", 1);
+        LayoutCheck.assertScreenshot(getClassExclusiveWebDriver(), "LayoutTestPage", 5);
     }
 
 }

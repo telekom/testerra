@@ -63,7 +63,7 @@ public class NonFunctionalAssert {
         assertion.fail(message);
     }
     static public void fail() {
-        fail(null);
+        fail("");
     }
     public static void assertEquals(Object actual, Object expected, String message) {
         assertion.assertEquals(actual, expected, message);

@@ -19,21 +19,16 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
+package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
 
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.TestFailureException;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.SharedTestResultAttributes;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.report.utils.FailsAnnotationFilter;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 import org.testng.ITestResult;
 import org.testng.annotations.Test;
 
@@ -76,13 +71,13 @@ public class MethodAnnotationCheckerWorker implements MethodEndEvent.Listener {
                 Throwable throwable = testResult.getThrowable();
 
                 // may be there is a deeper @Fails annotataion present
-                if (fails == null && testResult != null && throwable != null) {
-                    Throwable scanThrowable = throwable;
-                    while (fails == null && scanThrowable != null) {
-                        fails = ExecutionUtils.getFailsAnnotationInStackTrace(scanThrowable.getStackTrace());
-                        scanThrowable = scanThrowable.getCause();
-                    }
-                }
+//                if (fails == null && testResult != null && throwable != null) {
+//                    Throwable scanThrowable = throwable;
+//                    while (fails == null && scanThrowable != null) {
+//                        fails = ExecutionUtils.getFailsAnnotationInStackTrace(scanThrowable.getStackTrace());
+//                        scanThrowable = scanThrowable.getCause();
+//                    }
+//                }
 
                 // override throwable with found annotation
                 if (fails != null && testResult != null && FailsAnnotationFilter.isFailsAnnotationValid(fails)) {
@@ -110,14 +105,6 @@ public class MethodAnnotationCheckerWorker implements MethodEndEvent.Listener {
                     String formerReadableMessage = methodContext.getErrorContext().getReadableErrorMessage();
                     methodContext.addPriorityMessage(formerReadableMessage);
                     methodContext.getErrorContext().setThrowable(message, throwable, true);
-
-                    // flag testresult as expected failed
-                    if (fails.intoReport()) {
-                        testResult.setAttribute(SharedTestResultAttributes.expectedFailed, Boolean.FALSE);
-                    }
-                    else {
-                        testResult.setAttribute(SharedTestResultAttributes.expectedFailed, Boolean.TRUE);
-                    }
                 }
             }
         }

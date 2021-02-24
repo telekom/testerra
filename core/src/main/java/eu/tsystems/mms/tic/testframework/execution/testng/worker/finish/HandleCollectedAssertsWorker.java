@@ -19,7 +19,7 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
+package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
 
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
@@ -51,7 +51,6 @@ public class HandleCollectedAssertsWorker implements MethodEndEvent.Listener {
 
             // update test method container
             methodContext.getErrorContext().setThrowable(null, testMethodContainerError);
-            testResult.setAttribute(SharedTestResultAttributes.failsFromCollectedAssertsOnly, Boolean.TRUE);
         }
     }
 }

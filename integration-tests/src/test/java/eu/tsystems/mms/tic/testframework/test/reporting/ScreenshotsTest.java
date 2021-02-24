@@ -24,6 +24,7 @@ package eu.tsystems.mms.tic.testframework.test.reporting;
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.BasePage;
+import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
@@ -82,7 +83,19 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
                     .flatMap(testStep -> testStep.getTestStepActions().stream())
                     .flatMap(testStepAction -> testStepAction.readEntries(Screenshot.class))
                     .count();
-            Assert.assertEquals(count, 1);
+            Assert.assertEquals(count, 1, "Screenshots in MethodContext " + methodName);
         });
+    }
+
+    @Test
+    @Fails(description = "This test needs to fail to create a screenshot")
+    public void test_take_screenshot_via_collected_assertion() {
+        Flags.SCREENCASTER_ACTIVE = true;
+        AssertCollector.assertTrue(false);
+    }
+
+    @Test(dependsOnMethods = "test_take_screenshot_via_collected_assertion", alwaysRun = true)
+    public void test_Screenshot_is_present_in_MethodContext_on_collected_assertion() {
+        this.screenshot_is_present_in_MethodContext("test_take_screenshot_via_collected_assertion");
     }
 }

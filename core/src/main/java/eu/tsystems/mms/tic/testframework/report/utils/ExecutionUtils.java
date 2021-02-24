@@ -55,7 +55,7 @@ import org.testng.ITestResult;
 public final class ExecutionUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExecutionUtils.class);
-    private static final String FAILS_CLASS_PACKAGE = "eu.tsystems.mms.tic";
+//    private static final String FAILS_CLASS_PACKAGE = "eu.tsystems.mms.tic";
 
     /**
      * Holds methods that are preconditions for other
@@ -68,72 +68,73 @@ public final class ExecutionUtils {
      *
      * @param stackTrace {@link StackTraceElement}
      * @return Fails
+     * @deprecated This is an undocumented feature
      */
-    public static Fails getFailsAnnotationInStackTrace(StackTraceElement[] stackTrace) {
-        final ClassPool pool = ClassPool.getDefault();
-        pool.appendClassPath(new LoaderClassPath(Thread.currentThread().getContextClassLoader()));
-
-        for (final StackTraceElement stackTraceElement : stackTrace) {
-            int lineNumberFromStackTrace = stackTraceElement.getLineNumber();
-
-            try {
-                if (stackTraceElement.getClassName().startsWith(FAILS_CLASS_PACKAGE)) {
-
-                    final CtClass ctClass = pool.get(stackTraceElement.getClassName());
-                    final CtMethod[] declaredMethods = ctClass.getDeclaredMethods();
-
-
-                    Map<Integer, CtMethod> ctMethods = new TreeMap<>();
-                    for (final CtMethod declaredMethod : declaredMethods) {
-                        if (declaredMethod.getName().equals(stackTraceElement.getMethodName())) {
-                            // methodname alleine reicht nicht
-                            // !!! line numbers don't always match
-                            final int lineNumberFromDeclaredMethod = declaredMethod.getMethodInfo().getLineNumber(0);
-
-                            if (declaredMethod.hasAnnotation(Fails.class)) {
-                                if (lineNumberFromDeclaredMethod == lineNumberFromStackTrace) {
-                                    // we are happy when this matched
-                                    return (Fails) declaredMethod.getAnnotation(Fails.class);
-                                }
-
-                                // but when it does not match...
-                                // add the method to the sorted map of linenumbers-to-mathod
-                                ctMethods.put(lineNumberFromDeclaredMethod, declaredMethod);
-                            }
-                        }
-                    }
-
-                    // check for which method is the correct one
-                    int size = ctMethods.size();
-                    Integer[] keys = ctMethods.keySet().toArray(new Integer[0]);
-                    for (int i = 0; i < size; i++) {
-                        int key = keys[i];
-                        int next = i + 1;
-                        boolean itsTheOne = false;
-
-                        if (next >= size) {
-                            itsTheOne = true;
-                        } else {
-                            int nextKey = keys[next];
-                            if (lineNumberFromStackTrace >= key && lineNumberFromStackTrace < nextKey) {
-                                itsTheOne = true;
-                            }
-                        }
-
-                        if (itsTheOne) {
-                            // its the last one OR the matching one
-                            CtMethod ctMethod = ctMethods.get(key);
-                            return (Fails) ctMethod.getAnnotation(Fails.class);
-                        }
-                    }
-                }
-            } catch (RuntimeException | ClassNotFoundException | NotFoundException e) {
-                LOGGER.debug("Stack Trace Analysis - Checking fails annotation. Got an error, but never mind: ", e);
-            }
-        }
-
-        return null;
-    }
+//    public static Fails getFailsAnnotationInStackTrace(StackTraceElement[] stackTrace) {
+//        final ClassPool pool = ClassPool.getDefault();
+//        pool.appendClassPath(new LoaderClassPath(Thread.currentThread().getContextClassLoader()));
+//
+//        for (final StackTraceElement stackTraceElement : stackTrace) {
+//            int lineNumberFromStackTrace = stackTraceElement.getLineNumber();
+//
+//            try {
+//                if (stackTraceElement.getClassName().startsWith(FAILS_CLASS_PACKAGE)) {
+//
+//                    final CtClass ctClass = pool.get(stackTraceElement.getClassName());
+//                    final CtMethod[] declaredMethods = ctClass.getDeclaredMethods();
+//
+//
+//                    Map<Integer, CtMethod> ctMethods = new TreeMap<>();
+//                    for (final CtMethod declaredMethod : declaredMethods) {
+//                        if (declaredMethod.getName().equals(stackTraceElement.getMethodName())) {
+//                            // methodname alleine reicht nicht
+//                            // !!! line numbers don't always match
+//                            final int lineNumberFromDeclaredMethod = declaredMethod.getMethodInfo().getLineNumber(0);
+//
+//                            if (declaredMethod.hasAnnotation(Fails.class)) {
+//                                if (lineNumberFromDeclaredMethod == lineNumberFromStackTrace) {
+//                                    // we are happy when this matched
+//                                    return (Fails) declaredMethod.getAnnotation(Fails.class);
+//                                }
+//
+//                                // but when it does not match...
+//                                // add the method to the sorted map of linenumbers-to-mathod
+//                                ctMethods.put(lineNumberFromDeclaredMethod, declaredMethod);
+//                            }
+//                        }
+//                    }
+//
+//                    // check for which method is the correct one
+//                    int size = ctMethods.size();
+//                    Integer[] keys = ctMethods.keySet().toArray(new Integer[0]);
+//                    for (int i = 0; i < size; i++) {
+//                        int key = keys[i];
+//                        int next = i + 1;
+//                        boolean itsTheOne = false;
+//
+//                        if (next >= size) {
+//                            itsTheOne = true;
+//                        } else {
+//                            int nextKey = keys[next];
+//                            if (lineNumberFromStackTrace >= key && lineNumberFromStackTrace < nextKey) {
+//                                itsTheOne = true;
+//                            }
+//                        }
+//
+//                        if (itsTheOne) {
+//                            // its the last one OR the matching one
+//                            CtMethod ctMethod = ctMethods.get(key);
+//                            return (Fails) ctMethod.getAnnotation(Fails.class);
+//                        }
+//                    }
+//                }
+//            } catch (RuntimeException | ClassNotFoundException | NotFoundException e) {
+//                LOGGER.debug("Stack Trace Analysis - Checking fails annotation. Got an error, but never mind: ", e);
+//            }
+//        }
+//
+//        return null;
+//    }
 
     /**
      * Determines if given method is in execution scope
@@ -180,23 +181,23 @@ public final class ExecutionUtils {
      * @param map          {@link HashMap}
      * @param testNGMethod {@link ITestNGMethod}
      */
-    private static void pAddDependencies(final HashMap<String, ITestNGMethod> map, final ITestNGMethod testNGMethod) {
-
-        List<String> methodsDependedUpon = Arrays.asList(testNGMethod.getMethodsDependedUpon());
-
-        if (methodsDependedUpon.size() > 0) {
-            methodsDependedUpon.forEach(method -> {
-                if (!dependsOnMethods.contains(method)) {
-                    dependsOnMethods.add(method);
-                    if (map.containsKey(method)) {
-                        pAddDependencies(map, map.get(method));
-                    } else {
-                        LOGGER.warn("Method " + method + " is not planned for execution");
-                    }
-                }
-            });
-        }
-    }
+//    private static void pAddDependencies(final HashMap<String, ITestNGMethod> map, final ITestNGMethod testNGMethod) {
+//
+//        List<String> methodsDependedUpon = Arrays.asList(testNGMethod.getMethodsDependedUpon());
+//
+//        if (methodsDependedUpon.size() > 0) {
+//            methodsDependedUpon.forEach(method -> {
+//                if (!dependsOnMethods.contains(method)) {
+//                    dependsOnMethods.add(method);
+//                    if (map.containsKey(method)) {
+//                        pAddDependencies(map, map.get(method));
+//                    } else {
+//                        LOGGER.warn("Method " + method + " is not planned for execution");
+//                    }
+//                }
+//            });
+//        }
+//    }
 
     /**
      * @deprecated Replaced by {@link Cause}

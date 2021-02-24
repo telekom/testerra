@@ -322,7 +322,7 @@ public class UITestUtils implements WebDriverManagerProvider {
      */
     public static List<Screenshot> takeScreenshots(final boolean publishToReport) {
         List<Screenshot> allScreenshots = new LinkedList<>();
-        WEB_DRIVER_MANAGER.readWebDrivers()
+        WEB_DRIVER_MANAGER.readWebDriversFromCurrentThread()
                 .map(UITestUtils::pTakeAllScreenshotsForSession)
                 .forEach(webDriverScreenshots -> {
                     if (publishToReport) {

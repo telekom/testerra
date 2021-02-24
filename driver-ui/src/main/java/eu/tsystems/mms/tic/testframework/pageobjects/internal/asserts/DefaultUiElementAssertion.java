@@ -94,6 +94,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
         this.guiElement = (GuiElement)uiElement;
         this.core = this.guiElement.getCore();
         this.propertyAssertionConfig = new PropertyAssertionConfig();
+        this.propertyAssertionConfig.throwErrors = true;
         this.propertyAssertionConfig.useAssertion = useAssertion;
     }
 

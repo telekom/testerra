@@ -32,6 +32,7 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import java.util.Optional;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
 /**
@@ -48,7 +49,7 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
     @Test()
     @Fails(description = "This test needs to fail to create a screenshot")
     public void test_take_screenshot_on_failure() {
-        System.setProperty(Report.Properties.SCREENCASTER_ACTIVE.toString(), "true");
+        System.setProperty(Report.Properties.SCREENSHOTTER_ACTIVE.toString(), "true");
         getPage().assertIsTextDisplayed("Screenshot present on failure");
     }
 
@@ -61,7 +62,7 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
     @Fails(description = "This test needs to fail to create a screenshot")
     public void test_take_screenshot_on_failure_without_closing_WebDriver() {
         WEB_DRIVER_MANAGER.getConfig().setShutdownSessions(false);
-        System.setProperty(Report.Properties.SCREENCASTER_ACTIVE.toString(), "true");
+        System.setProperty(Report.Properties.SCREENSHOTTER_ACTIVE.toString(), "true");
         getPage().assertIsTextDisplayed("Screenshot present on failure");
     }
 
@@ -90,7 +91,7 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
     @Test
     @Fails(description = "This test needs to fail to create a screenshot")
     public void test_take_screenshot_via_collected_assertion() {
-        System.setProperty(Report.Properties.SCREENCASTER_ACTIVE.toString(), "true");
+        System.setProperty(Report.Properties.SCREENSHOTTER_ACTIVE.toString(), "true");
         AssertCollector.assertTrue(false);
     }
 

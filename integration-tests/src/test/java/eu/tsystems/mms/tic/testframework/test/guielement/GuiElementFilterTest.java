@@ -21,22 +21,22 @@
  */
 package eu.tsystems.mms.tic.testframework.test.guielement;
 
-import eu.tsystems.mms.tic.testframework.AbstractExclusiveTestSitesTest;
+import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.BasePage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.LocatorFactoryProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
+import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class GuiElementFilterTest extends AbstractExclusiveTestSitesTest<BasePage> implements LocatorFactoryProvider {
+public class GuiElementFilterTest extends AbstractTestSitesTest implements LocatorFactoryProvider, PageFactoryProvider {
 
-    @Override
-    public Class<BasePage> getPageClass() {
-        return BasePage.class;
+    protected BasePage getPage() {
+        return PAGE_FACTORY.createPage(BasePage.class, getWebDriver());
     }
 
     private void assertLogFieldContains(String textToBeContained) {

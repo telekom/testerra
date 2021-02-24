@@ -296,7 +296,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
 
         MethodStackPage stackPage = GeneralWorkflow.doOpenReportStracktracePage(methodDetailsPage);
         String stackTrace = stackPage.getStackTrace();
-        AssertCollector.assertTrue(stackTrace.contains("java.lang.AssertionError: Expected [false] equals [true]"), "The stack trace tab should contain the expected message.");
+        AssertCollector.assertTrue(stackTrace.contains("java.lang.AssertionError: expected [true] but found [false]"), "The stack trace tab should contain the expected message.");
         AssertCollector.assertTrue(stackTrace.contains("eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestExecutionFilter.test_FailedInheritedFilter(ReportTestUnderTestExecutionFilter.java"), "The stack trace tab should contain the expected message.");
     }
 

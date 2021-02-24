@@ -41,7 +41,7 @@ public abstract class AssertionProvider<T> implements ActualProperty<T> {
         }
 
         public static String cut(String subject) {
-            return formatter.cutString(subject, 30);
+            return formatter.cutString(subject, 100);
         }
 
         public static String enclose(String method, Object...parameters) {

@@ -42,10 +42,12 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 import org.openqa.selenium.WebDriver;
@@ -183,9 +185,9 @@ public final class WebDriverSessionsManager {
         storeWebDriverSession(request, eventFiringWebDriver, sessionContext);
     }
 
-    private static final List<Consumer<WebDriver>> beforeQuitActions = new LinkedList<>();
-    private static final List<Consumer<WebDriver>> afterQuitActions = new LinkedList<>();
-    private static final List<Consumer<WebDriver>> WEBDRIVER_STARTUP_HANDLERS = new LinkedList<>();
+    private static final Queue<Consumer<WebDriver>> beforeQuitActions = new ConcurrentLinkedQueue<>();
+    private static final Queue<Consumer<WebDriver>> afterQuitActions = new ConcurrentLinkedQueue<>();
+    private static final Queue<Consumer<WebDriver>> WEBDRIVER_STARTUP_HANDLERS = new ConcurrentLinkedQueue<>();
 
     public static void registerWebDriverBeforeShutdownHandler(Consumer<WebDriver> beforeQuit) {
         beforeQuitActions.add(beforeQuit);

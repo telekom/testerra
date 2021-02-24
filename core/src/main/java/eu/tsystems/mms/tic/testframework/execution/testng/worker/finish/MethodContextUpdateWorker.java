@@ -66,7 +66,8 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
                      * set status
                      */
                     if (testMethod.isTest()) {
-                        if (testMethod.getConstructorOrMethod().getMethod().isAnnotationPresent(Fails.class)) {
+                        Fails fails = testMethod.getConstructorOrMethod().getMethod().getAnnotation(Fails.class);
+                        if (fails != null && !fails.intoReport()) {
                             // expected failed
                             TestStatusController.setMethodStatus(methodContext, TestStatusController.Status.FAILED_EXPECTED, method);
                         } else {

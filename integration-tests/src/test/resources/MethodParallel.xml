@@ -1,0 +1,15 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="Testerra Parallel tests" verbose="10" configfailurepolicy="continue" thread-count="10" >
+
+    <test name="Parallel tests" parallel="methods">
+        <packages>
+            <package name="eu.tsystems.mms.tic.testframework.test.common"/>
+            <package name="eu.tsystems.mms.tic.testframework.test.events"/>
+            <package name="eu.tsystems.mms.tic.testframework.test.l10n"/>
+            <package name="eu.tsystems.mms.tic.testframework.test.reporting"/>
+            <package name="eu.tsystems.mms.tic.testframework.test.testdata"/>
+            <package name="eu.tsystems.mms.tic.testframework.test.utils"/>
+            <package name="eu.tsystems.mms.tic.testframework.test.webdrivermanager"/>
+        </packages>
+    </test>
+</suite>

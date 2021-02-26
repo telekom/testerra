@@ -167,7 +167,6 @@ export class Steps {
                 current: ev.detail,
                 screenshotIds: this._statistics.getScreenshotIdsFromMethodContext(this._methodDetails.methodContext)
             },
-            class: "screenshot-dialog"
         });
     }
 }

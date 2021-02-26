@@ -70,6 +70,12 @@ export function configure(aurelia: Aurelia) {
             PLATFORM.moduleName('value-converters/status-class-value-converter'),
             PLATFORM.moduleName('value-converters/html-value-converter'),
             PLATFORM.moduleName('value-converters/log-level-value-converter'),
+            /**
+             * This is super important to dialogs
+             * https://discourse.aurelia.io/t/solved-error-cannot-determine-default-view-strategy-for-object/3589/2
+             */
+            PLATFORM.moduleName('components/screenshot-comparison/screenshot-comparison'),
+            PLATFORM.moduleName('components/screenshots-dialog/screenshots-dialog'),
         ]);
 
     if (config.developmentMode) {

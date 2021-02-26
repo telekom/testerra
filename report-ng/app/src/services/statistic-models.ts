@@ -253,7 +253,6 @@ export class FailureAspectStatistics extends Statistics {
         private _errorContext:IErrorContext
     ) {
         super();
-        console.log(this._errorContext);
         this.relevantCause = this._findRelevantCause(this._errorContext.stackTrace);
         if (this._errorContext.description) {
             this.identifier = this._errorContext.description;

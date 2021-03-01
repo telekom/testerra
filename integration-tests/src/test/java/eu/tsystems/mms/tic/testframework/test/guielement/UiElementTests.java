@@ -21,6 +21,7 @@
 package eu.tsystems.mms.tic.testframework.test.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractExclusiveTestSitesTest;
+import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.WebTestPage;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
@@ -112,6 +113,7 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
     }
 
     @Test
+    @Fails()
     public void test_collected_assert() {
         CONTROL.collectAssertions(() -> {
             Assert.assertTrue(false);

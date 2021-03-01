@@ -186,7 +186,11 @@ public class XPath {
     }
 
     public XPath attribute(Attribute attribute, Object value) {
-        return attribute(attribute).is(value);
+        if (value == null) {
+            return attribute(attribute).present();
+        } else {
+            return attribute(attribute).is(value);
+        }
     }
 
     public Test text() {
@@ -206,17 +210,23 @@ public class XPath {
     }
 
     protected static String translateSubSelection(String selector) {
-        if (!selector.startsWith("/") && !selector.startsWith(".")) {
-            selector = "//"+selector;
+        selector = selector.trim();
+        if (selector.startsWith("./")) {
+            selector = selector.replaceFirst("^\\./", "/");
+        } else if (!selector.startsWith("/")) {
+            selector = "//" + selector;
         }
         return selector;
     }
 
     protected static String translateInnerSelection(String selector) {
+        selector = selector.trim();
         if (selector.startsWith("//")) {
-            return selector.replace("//","descendant::");
+            return selector.replaceFirst("^//","descendant::");
         } else if (selector.startsWith("/")) {
-            return selector.replace("/","child::");
+            return selector.replaceFirst("^/", "child::");
+        } else if (selector.startsWith("./")) {
+            return selector.replaceFirst("^\\./", "child::");
         } else {
             return "descendant::"+selector;
         }

@@ -43,6 +43,9 @@ export class ScreenshotComparison {
     private _clicked: boolean;
     private _ratio: number = 0.5;
     private _mouseMoveHandler: EventListenerObject;
+    private _resizeListener = () => {
+        this._setImageSizes(this._leftImageElement, this._rightImageElement, this._ratio);
+    };
 
     constructor(
         private _dialog: MdcDialog
@@ -52,16 +55,19 @@ export class ScreenshotComparison {
 
     activate(params:IComparison) {
         this._comparison = params;
-        console.log("activate", params)
-    }
-
-    attached() {
-        this._prepareImageComparison(this._leftImageElement);
         this._updateCompareLists();
     }
 
+    unbind() {
+        window.removeEventListener('resize', this._resizeListener);
+    }
+
+    private _leftLoaded(event:Event) {
+        this._prepareImageComparison();
+    }
+
     private _updateCompareLists() {
-        this._left = this._comparison.images;
+        this._left = this._comparison.images.filter(value => value != this._comparison.right);
         this._right = this._comparison.images.filter(value => value != this._comparison.left);
     }
 
@@ -73,19 +79,20 @@ export class ScreenshotComparison {
         this._updateCompareLists();
     }
 
-    private _prepareImageComparison(leftImg:HTMLDivElement){
-        this._clicked = false;
+    private _prepareImageComparison(){
+        if (this._slider) return;
 
+        console.log("prepare image comparison");
+
+        this._clicked = false;
         //Create slider
         this._slider = document.createElement("div");
         this._slider.setAttribute("class", "img-comp-slider secondary-bg");
-        leftImg.parentElement.insertBefore(this._slider, leftImg);
+        this._leftImageElement.parentElement.insertBefore(this._slider, this._leftImageElement);
 
         //adjust image sizes
         this._setImageSizes(this._leftImageElement, this._rightImageElement, this._ratio);
-        window.addEventListener('resize', () => {
-            this._setImageSizes(this._leftImageElement, this._rightImageElement, this._ratio);
-        })
+        window.addEventListener('resize', this._resizeListener);
 
         //Function handlers for mouse
         this._slider.addEventListener("mousedown", this._slideReady.bind(this));

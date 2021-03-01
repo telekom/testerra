@@ -192,7 +192,6 @@ export class Method {
                 current: ev.detail,
                 screenshotIds: this._allScreenshotIds
             },
-            class: "screenshot-dialog"
         });
     }
 }

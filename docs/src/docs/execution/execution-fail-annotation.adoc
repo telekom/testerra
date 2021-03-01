@@ -44,7 +44,7 @@ public void testItWillFail() {
 | description | Give more details about the failure.
 | ticketId | Define a bug ticket ID as an int value.
 | ticketString | Define a bug ticket ID as a String value.
-| intoReport | Define who is shown in the report. If true the failing test isn't shown separately as `Expected Failed` but as `Failed`.
+| intoReport | If `true` the failing test is shown as `Failed` instead of `Expected Failed` (default: `false`).
 | validFor | Define the <<Define conditions, conditions>> of the expected failed.
 |===
 

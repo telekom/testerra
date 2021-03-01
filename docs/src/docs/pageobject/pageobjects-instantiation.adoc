@@ -7,45 +7,45 @@ When the page is instantiated, Testerra automatically checks its annotated eleme
 
 [source,java]
 ----
-HomePage homePage = pageFactory.createPage(HomePage.class);
+HomePage homePage = PAGE_FACTORY.createPage(HomePage.class);
 ----
 
 With the PageFactory you can also perform to check a page was gone. With this you can make sure, that your page is NOT shown any more. For example, you want to verify a dialog windows was closed after a click.
 
 [source,java]
 ----
-pageFactory.createPageWithCheckRule(searchPage.class, webDriver, CheckRule.IS_NOT_PRESENT);
+PAGE_FACTORY.createPageWithCheckRule(searchPage.class, webDriver, CheckRule.IS_NOT_PRESENT);
 ----
 The check rule is successful if at least one mandatory UiElement ("@Check") is not shown.
-
-==	Page Prefixes
-
-Page Prefixes can influence which concrete classes get instantiated by the `PageFactory`. They work together with a inheritance scheme of page classes. This can be useful if there is a base page which can come in different concrete variations. Example:
-
-There is a `BaseClass` which inherits from the `Page` class and contains the basic functionality of a page.
-Then the `Page` can come in 2 different variations.
-We can represent this as `Variation1BaseClass` and `Variation2BaseClass`.
-They both inherit from `BaseClass`.
-Before instantiation, we can set the prefix using the `PageFactory`.
-Then we instantiate it and we can get our variation of the base class.
-[source,java]
-----
-pageFactory.setGlobalPagesPrefix("Variation1");
-//this actualy creates a Variation1BaseClass
-BaseClass baseClass = pageFactory.createPage(BaseClass.class);
-----
-Default is no prefix.
-
-Usage:
-[source,java]
-----
-// Set a global Prefix
-pageFactory.setGlobalPagesPrefix("prefix");
-
-// Set a thread local prefix. See next row about cleaning this prefix.
-pageFactory.setThreadLocalPagesPrefix("prefix");
-
-// The thread local pages prefix is not cleared automatically,
-// be sure to always set the correct one or clear it after using.
-pageFactory.removeThreadLocalPagePrefix();
-----
+//
+//==	Page Prefixes
+//
+//Page Prefixes can influence which concrete classes get instantiated by the `PageFactory`. They work together with a inheritance scheme of page classes. This can be useful if there is a base page which can come in different concrete variations. Example:
+//
+//There is a `BaseClass` which inherits from the `Page` class and contains the basic functionality of a page.
+//Then the `Page` can come in 2 different variations.
+//We can represent this as `Variation1BaseClass` and `Variation2BaseClass`.
+//They both inherit from `BaseClass`.
+//Before instantiation, we can set the prefix using the `PageFactory`.
+//Then we instantiate it and we can get our variation of the base class.
+//[source,java]
+//----
+//pageFactory.setGlobalPagesPrefix("Variation1");
+////this actualy creates a Variation1BaseClass
+//BaseClass baseClass = pageFactory.createPage(BaseClass.class);
+//----
+//Default is no prefix.
+//
+//Usage:
+//[source,java]
+//----
+//// Set a global Prefix
+//pageFactory.setGlobalPagesPrefix("prefix");
+//
+//// Set a thread local prefix. See next row about cleaning this prefix.
+//pageFactory.setThreadLocalPagesPrefix("prefix");
+//
+//// The thread local pages prefix is not cleared automatically,
+//// be sure to always set the correct one or clear it after using.
+//pageFactory.removeThreadLocalPagePrefix();
+//----

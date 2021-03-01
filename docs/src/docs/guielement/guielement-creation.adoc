@@ -55,7 +55,7 @@ class MyTest extends TesterraTest implements UiElementFinderFactoryProvider, Web
 
 == Advanced UiElement locating
 
-The `UiElementFinder` interface also provides a `Locate` factory which provides more features than standard Selenium `By`.
+The `UiElementFinder` extends the `LocatorFactoryProvider` interface, which provides a `LOCATE` factory that supports more features than standard Selenium `By`.
 
 === Locate unique elements
 
@@ -63,7 +63,7 @@ If you want to make sure, that your element is unique.
 
 [source,java]
 ----
-UiElement myElement = find(Locate.by(By.id("elementId")).unique());
+UiElement myElement = find(LOCATE.by(By.id("elementId")).unique());
 ----
 
 This will throw an exception, if not one WebElement has been found.
@@ -72,7 +72,7 @@ This will throw an exception, if not one WebElement has been found.
 
 [source,java]
 ----
-UiElement myElement = find(Locate.by(By.xpath(".//button")).displayed());
+UiElement myElement = find(LOCATE.by(By.xpath(".//button")).displayed());
 ----
 
 === Prepared xpath expressions
@@ -81,8 +81,8 @@ Using prepared expressions makes your selectors more readable.
 
 [source,java]
 ----
-Locate byText = Locate.prepare("//button[text()='%s'])");
-Locate byClass = Locate.prepare("//%s[contains(@class, '%s')][%d]");
+Locate byText = LOCATE.prepare("//button[text()='%s'])");
+Locate byClass = LOCATE.prepare("//%s[contains(@class, '%s')][%d]");
 
 UiElement loginButton = find(byText.with("Login"));
 UiElement logoutButton = find(byClass.with("button", "btn-logout", 1));
@@ -94,12 +94,12 @@ You can also filter elements during find.
 
 [source,java]
 ----
-Locate byText = Locate.by(By.xpath("//button")).filter(webElement -> webElement.getText().equals("Open again"));
+Locate byText = LOCATE.by(By.xpath("//button")).filter(webElement -> webElement.getText().equals("Open again"));
 
 UiElement buttonContainsText = find(byText);
 ----
 
-=== UiElements inside frames
+== UiElements inside frames
 
 Accessing WebElements inside frames requires changing the active frame before any action. UiElements do that automatically as long you identify every `<frame>` or `<iframe>` as own element.
 
@@ -137,6 +137,23 @@ UiElement target = findDeep(By.id("target"));
 //It is recommended to locator the images in `src/main/resources` and create the Url object via `ClassLoader.getSystemResource()`.
 
 
+== Element lists
+
+The UiElement is like a pointer to the first element of the given locator. But if you want to retrieve a list of all found elements by the given locator, you can use UiElementLists like the following.
+
+[source,html]
+----
+<div>First</div>
+<div>Second</div>
+<div>Third</div>
+----
+
+[source,java]
+----
+UiElement div = find(By.tagName("div"));
+div.list().first().expect().text("First");
+div.list().last().expect().text("Third");
+----
 
 == Sensible Data
 

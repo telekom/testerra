@@ -1,0 +1,46 @@
+= Components
+
+You can improve your PageObjects by using components. Components are like they are in actual web development environments: Containers with functionality. With components, you don't need to try to create reusable PageObjects in a complex inheritance hierarchy, you can follow the pattern that composition before polymorphism.
+
+In Testerra, components are hybrids of both UiElements and PageObjects. They can contain more UiElements and even Components, but they don't provide features restricted to Pages or UiElements and their finder API is restricted to its root container element by default.
+
+You can create an component like...
+
+[source,java]
+----
+import eu.tsystems.mms.tic.testframework.pageobjects.AbstractComponent;
+
+public class MyComponent extends AbstractComponent<MyComponent> {
+
+    @Check
+    UiElement button = find(By.tagName("button"));
+
+    public MyComponent(UiElement rootElement) {
+        super(rootElement);
+    }
+}
+----
+
+To instantiate componets, use the `createComponent` method the same way as you create pages.
+
+[source,java]
+----
+public class MyPage extends Page {
+
+    @Check
+    MyComponent component = createComponent(MyComponent.class, find(By.className("container")));
+}
+----
+
+== Component lists
+
+Since components are hybrid UiElements, the can also handled as lists.
+
+```java
+UiElement table = find(By.tagName("table"));
+TableRow rows = createComponent(TableRow.class, table.find(By.tagName("tr")));
+
+rows.list().forEach(row -> {
+    row.getNameColumn().text().contains("Hello").is(true);
+});
+```

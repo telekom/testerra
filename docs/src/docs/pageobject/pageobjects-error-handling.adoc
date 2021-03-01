@@ -1,4 +1,4 @@
-= Error handling
+= Error handling (*deprecated*)
 Exceptions caused by `@Check` annotations can be catched by overwriting the `checkPageErrorState()` method in the concrete page class.
 This is an example how to overwrite the checkpage error inside a created page class.
 

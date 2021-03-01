@@ -1,4 +1,6 @@
-= Assertions
+= Assertions (*deprecated*)
+
+NOTE: This feature has been `@deprecated`. Please implement assertions within your PageObject and don't rely on these methods anymore.
 
 Pages objects offer some assertions which mostly work like their equivalents on UiElements.
 In difference to UiElements here the whole page is searched for the given element in recursive order.

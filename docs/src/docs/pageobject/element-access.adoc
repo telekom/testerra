@@ -1,0 +1,31 @@
+= Element access
+
+The PageObject pattern encapsulates UiElements for all activities on the page. Thats why every element should be private accessible by the page only. But for testing purposes, it could be useful to allow access to some elements. In this case, you can create public methods and casting to `TestableUiElement`.
+
+[source,java]
+----
+public class MyPage extends Page {
+    private UiElement saveButton = find(By.tagName("button"));
+
+    public void performSave() {
+        saveButton.click();
+    }
+
+    public TestableUiElement getSaveButton() {
+        return saveButton;
+    }
+}
+----
+
+In the test, you can perform assertions without breaking the PageObject pattern.
+
+[source,java]
+----
+public void testSaveFunctionality() {
+    MyPage page = getPage();
+    page.performSave();
+    page.getSaveButton().expect().text("Saved");
+}
+----
+
+

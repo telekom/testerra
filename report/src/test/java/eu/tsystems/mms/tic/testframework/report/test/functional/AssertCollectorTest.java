@@ -39,9 +39,9 @@ public class AssertCollectorTest extends AbstractReportTest {
     @DataProvider(parallel = true)
     public Object[][] assertionTitles(){
         Object[][] result = new Object[][]{
-                new Object[]{"Intentionally failed first", "java.lang.AssertionError: Intentionally failed first expected [false] equals [true]"},
-                new Object[]{"Intentionally failed second", "java.lang.AssertionError: Intentionally failed second expected [false] equals [true]"},
-                new Object[]{"Intentionally failed third", "java.lang.AssertionError: Intentionally failed third expected [false] equals [true]"},
+                new Object[]{"Intentionally failed first", "java.lang.AssertionError: Expected that Intentionally failed first [false] equals [true]"},
+                new Object[]{"Intentionally failed second", "java.lang.AssertionError: Expected that Intentionally failed second [false] equals [true]"},
+                new Object[]{"Intentionally failed third", "java.lang.AssertionError: Expected that Intentionally failed third [false] equals [true]"},
         };
         return result;
     }

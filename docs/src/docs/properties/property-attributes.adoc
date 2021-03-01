@@ -39,18 +39,18 @@
 // report
 :reportdir:                                     tt.report.dir
 :reportname:                                    tt.report.name
+:list_tests:                                    tt.report.list.tests
 :runcfg:                                        tt.runcfg
-:screenshotter_active:                          tt.report.screenshotter.active
-:report_screenshots_preview:                    tt.report.screenshots.preview
-:screenshot_on_pageload:                        tt.report.screenshot.on.pageload
-:screencaster_active:                           tt.report.screencaster.active
+:screenshotter_active:                          tt.screenshotter.active
+:report_screenshots_preview:                    tt.screenshots.preview
+:screenshot_on_pageload:                        tt.screenshot.on.pageload
+:screencaster_active:                           tt.screencaster.active
 :screencaster_active_on_failed:                 tt.screencaster.active.on.failed
 :screencaster_active_on_success:                tt.screencaster.active.on.success
 
 // execution
 :dryrun:                                        tt.dryrun
 :demomode:                                      tt.demomode
-:list_tests:                                    tt.list.tests
 :on_state_testfailed_skip_shutdown:             tt.on.state.testfailed.skip.shutdown
 :on_state_testfailed_skip_following_tests:      tt.on.state.testfailed.skip.following.tests
 :failed_tests_if_throwable_classes:             tt.failed.tests.if.throwable.classes

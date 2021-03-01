@@ -23,6 +23,7 @@ package eu.tsystems.mms.tic.testframework.test.reporting;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.BasePage;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.report.Report;
@@ -49,7 +50,7 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
     @Test()
     @Fails(description = "This test needs to fail to create a screenshot")
     public void test_take_screenshot_on_failure() {
-        System.setProperty(Report.Properties.SCREENSHOTTER_ACTIVE.toString(), "true");
+        System.setProperty(Testerra.Properties.SCREENSHOTTER_ACTIVE.toString(), "true");
         getPage().assertIsTextDisplayed("Screenshot present on failure");
     }
 
@@ -62,7 +63,7 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
     @Fails(description = "This test needs to fail to create a screenshot")
     public void test_take_screenshot_on_failure_without_closing_WebDriver() {
         WEB_DRIVER_MANAGER.getConfig().setShutdownSessions(false);
-        System.setProperty(Report.Properties.SCREENSHOTTER_ACTIVE.toString(), "true");
+        System.setProperty(Testerra.Properties.SCREENSHOTTER_ACTIVE.toString(), "true");
         getPage().assertIsTextDisplayed("Screenshot present on failure");
     }
 
@@ -91,7 +92,7 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
     @Test
     @Fails(description = "This test needs to fail to create a screenshot")
     public void test_take_screenshot_via_collected_assertion() {
-        System.setProperty(Report.Properties.SCREENSHOTTER_ACTIVE.toString(), "true");
+        System.setProperty(Testerra.Properties.SCREENSHOTTER_ACTIVE.toString(), "true");
         AssertCollector.assertTrue(false);
     }
 

@@ -81,6 +81,9 @@ public class Testerra {
         FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_MID("tt.failure.corridor.allowed.failed.tests.mid", 0),
         FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_LOW("tt.failure.corridor.allowed.failed.tests.low", 0),
         EXECUTION_OMIT_IN_DEVELOPMENT("tt.execution.omit.indevelopment", false),
+        SCREENCASTER_ACTIVE("tt.screencaster.active", false),
+        SCREENSHOTTER_ACTIVE("tt.screenshotter.active", true),
+        SCREENSHOT_ON_PAGELOAD("tt.screenshot.on.pageload", false),
         ;
 
         private final String property;

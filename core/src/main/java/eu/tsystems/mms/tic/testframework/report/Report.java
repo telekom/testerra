@@ -30,13 +30,12 @@ import java.io.File;
 public interface Report {
     enum Properties implements IProperties {
         BASE_DIR("dir", "test-report"),
+        @Deprecated
         SCREENSHOTS_PREVIEW("screenshots.preview", true),
         NAME("name", "Test report"),
+        @Deprecated
         ACTIVATE_SOURCES("activate.sources", true),
-        SCREENSHOTTER_ACTIVE("screenshotter.active", true),
-        SCREENSHOT_ON_PAGELOAD("screenshot.on.pageload", false),
-        SCREENCASTER_ACTIVE("screencaster.active", false),
-        LIST_TESTS("tt.list.tests", false)
+        LIST_TESTS("list.tests", false)
         ;
         private final String property;
         private Object defaultValue;

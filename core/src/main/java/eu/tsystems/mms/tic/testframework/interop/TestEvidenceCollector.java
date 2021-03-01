@@ -20,7 +20,7 @@
  */
  package eu.tsystems.mms.tic.testframework.interop;
 
-import eu.tsystems.mms.tic.testframework.report.Report;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
@@ -53,7 +53,7 @@ public final class TestEvidenceCollector {
     }
 
     public static List<Screenshot> collectScreenshots() {
-        if (!Report.Properties.SCREENSHOTTER_ACTIVE.asBool()) {
+        if (!Testerra.Properties.SCREENSHOTTER_ACTIVE.asBool()) {
             return null;
         }
 
@@ -72,7 +72,7 @@ public final class TestEvidenceCollector {
     }
 
     public static List<Video> collectVideos() {
-        if (!Report.Properties.SCREENCASTER_ACTIVE.asBool()) {
+        if (!Testerra.Properties.SCREENCASTER_ACTIVE.asBool()) {
             return null;
         }
 
@@ -107,10 +107,4 @@ public final class TestEvidenceCollector {
         }
         return null;
     }
-
-    public static void logInfo() {
-        LOGGER.trace("Collectors: Screenshots=" + SCREENSHOT_COLLECTORS.size() + ", Sources=" + SOURCE_COLLECTORS.size() + ", Videos: " + VIDEO_COLLECTORS.size());
-        LOGGER.debug("ScreenCaster enabled=" + Report.Properties.SCREENCASTER_ACTIVE.asBool() + ", Screenshotter enabled=" + Report.Properties.SCREENSHOTTER_ACTIVE.asBool());
-    }
-
 }

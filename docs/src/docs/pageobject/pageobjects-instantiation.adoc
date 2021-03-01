@@ -17,6 +17,7 @@ With the PageFactory you can also perform to check a page was gone. With this yo
 PAGE_FACTORY.createPageWithCheckRule(searchPage.class, webDriver, CheckRule.IS_NOT_PRESENT);
 ----
 The check rule is successful if at least one mandatory UiElement ("@Check") is not shown.
+
 //
 //==	Page Prefixes
 //

@@ -101,6 +101,13 @@ public class TesterraListener implements
     private static int instances = 0;
     private static final Object LOCK = new Object();
 
+    /**
+     * @deprecated Use {@link Testerra#getEventBus()}
+     */
+    public static EventBus getEventBus() {
+        return Testerra.getEventBus();
+    }
+
     static {
         /*
          * Add monitoring event listeners

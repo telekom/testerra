@@ -21,8 +21,6 @@
 
 package eu.tsystems.mms.tic.testframework.testing;
 
-import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
-
 /**
  * Allows to run blocks of code in a {@link Runnable} with {@link Overrides}
  * @author Mike Reiche
@@ -47,22 +45,6 @@ public interface TestController {
          * @return Returns the previously configured timeout
          */
         int setTimeout(int seconds);
-
-        /**
-         * Determines if a assertion class has been configured
-         */
-        boolean hasAssertionClass();
-
-        /**
-         * Sets a new default assertion class for any action
-         * @return Returns the previously configured assertion class
-         */
-        Class<? extends Assertion> setAssertionClass(Class<? extends Assertion> newClass);
-
-        /**
-         * @return Configured or default assertion class for any actions
-         */
-        Class<? extends Assertion> getAssertionClass();
     }
 
     /**

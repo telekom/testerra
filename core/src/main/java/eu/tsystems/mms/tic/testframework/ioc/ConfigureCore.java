@@ -24,9 +24,7 @@ package eu.tsystems.mms.tic.testframework.ioc;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 import com.google.inject.multibindings.Multibinder;
-import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
-import eu.tsystems.mms.tic.testframework.execution.testng.DefaultAssertionWrapper;
 import eu.tsystems.mms.tic.testframework.execution.testng.DefaultCollectedAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.DefaultOptionalAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
@@ -50,7 +48,6 @@ public class ConfigureCore extends AbstractModule {
         bind(CollectedAssertion.class).to(DefaultCollectedAssertion.class).in(Scopes.SINGLETON);
         bind(OptionalAssertion.class).to(DefaultOptionalAssertion.class).in(Scopes.SINGLETON);
         bind(InstantAssertion.class).to(ThrowingAssertion.class).in(Scopes.SINGLETON);
-        bind(Assertion.class).to(DefaultAssertionWrapper.class).in(Scopes.SINGLETON);
         bind(TestController.class).to(DefaultTestController.class).in(Scopes.SINGLETON);
         bind(TestNGContextNameGenerator.class).to(DefaultTestNGContextGenerator.class).in(Scopes.SINGLETON);
 

@@ -28,6 +28,7 @@ import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.UiElementException;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
@@ -67,7 +68,7 @@ import org.openqa.selenium.interactions.Actions;
 
 public class DesktopGuiElementCore extends AbstractGuiElementCore implements Loggable {
 
-    private static final Assertion assertion = Testerra.getInjector().getInstance(Assertion.class);
+    private static final Assertion assertion = Testerra.getInjector().getInstance(InstantAssertion.class);
 
     public DesktopGuiElementCore(GuiElementData guiElementData) {
         super(guiElementData);

@@ -22,9 +22,9 @@
 package eu.tsystems.mms.tic.testframework.testing;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.SimpleAssertion;
 
 public interface AssertProvider {
-    SimpleAssertion ASSERT = Testerra.getInjector().getInstance(Assertion.class);
+    SimpleAssertion ASSERT = Testerra.getInjector().getInstance(InstantAssertion.class);
 }

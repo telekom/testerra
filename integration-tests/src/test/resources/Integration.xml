@@ -6,6 +6,7 @@
         <suite-file path="GuiElementVariations.xml"></suite-file>
         <suite-file path="PageObjects.xml"></suite-file>
         <suite-file path="UiElement.xml"></suite-file>
+        <suite-file path="MethodParallel.xml"></suite-file>
     </suite-files>
 
     <test name="Priority tests" parallel="false">

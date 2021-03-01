@@ -22,6 +22,7 @@
 package eu.tsystems.mms.tic.testframework.testing;
 
 import com.google.inject.Inject;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
@@ -46,16 +47,20 @@ public class DefaultTestController implements TestController, Loggable {
 
     @Override
     public void collectAssertions(Runnable runnable) {
-        Class<? extends Assertion> prevClass = overrides.setAssertionClass(CollectedAssertion.class);
-        runnable.run();
-        overrides.setAssertionClass(prevClass);
+        try {
+            runnable.run();
+        } catch (AssertionError assertionError) {
+            Testerra.getInjector().getInstance(CollectedAssertion.class).fail(assertionError);
+        }
     }
 
     @Override
     public void optionalAssertions(Runnable runnable) {
-        Class<? extends Assertion> prevClass = overrides.setAssertionClass(OptionalAssertion.class);
-        runnable.run();
-        overrides.setAssertionClass(prevClass);
+        try {
+            runnable.run();
+        } catch (AssertionError assertionError) {
+            Testerra.getInjector().getInstance(OptionalAssertion.class).fail(assertionError);
+        }
     }
 
     @Override

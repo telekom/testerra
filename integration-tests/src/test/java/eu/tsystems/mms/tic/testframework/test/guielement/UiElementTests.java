@@ -104,15 +104,18 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
 
     @Test
     public void test_UiElement_nonfunctional_assert() {
-        try {
-            CONTROL.optionalAssertions(() -> {
-                CONTROL.withTimeout(1, () -> {
-                    getPage().notDisplayedElement().expect().displayed(true);
-                });
+        CONTROL.optionalAssertions(() -> {
+            CONTROL.withTimeout(1, () -> {
+                getPage().notDisplayedElement().expect().displayed(true);
             });
-        } catch (Exception e) {
-            log().error("Catched", e);
-        }
+        });
+    }
+
+    @Test
+    public void test_collected_assert() {
+        CONTROL.collectAssertions(() -> {
+            Assert.assertTrue(false);
+        });
     }
 
     @Test

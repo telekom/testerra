@@ -101,7 +101,7 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
                 if (config.useAssertion != null) {
                     useAssertion = config.useAssertion;
                 } else {
-                    useAssertion = Testerra.getInjector().getInstance(overrides.getAssertionClass());
+                    useAssertion = testAssertion;
                 }
 
                 String message = null;

@@ -21,9 +21,6 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
-import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
-import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
-import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
 
@@ -34,7 +31,6 @@ import eu.tsystems.mms.tic.testframework.testing.TestController;
 public class DefaultTestControllerOverrides implements TestController.Overrides {
 
     private final ThreadLocal<Integer> threadLocalTimeout = new ThreadLocal<>();
-    private final ThreadLocal<Class<? extends Assertion>> threadLocalAssertionClass = new ThreadLocal<>();
 
     DefaultTestControllerOverrides() {
     }
@@ -63,34 +59,5 @@ public class DefaultTestControllerOverrides implements TestController.Overrides 
             threadLocalTimeout.set(seconds);
         }
         return prevTimeout;
-    }
-
-    @Override
-    public boolean hasAssertionClass() {
-        return threadLocalAssertionClass.get() != null;
-    }
-
-    @Override
-    public Class<? extends Assertion> setAssertionClass(Class<? extends Assertion> newClass) {
-        Class<? extends Assertion> prevClass = threadLocalAssertionClass.get();
-        if (newClass == null) {
-            threadLocalAssertionClass.remove();
-        } else {
-            threadLocalAssertionClass.set(newClass);
-        }
-        return prevClass;
-    }
-
-    @Override
-    public Class<? extends Assertion> getAssertionClass() {
-        Class<? extends Assertion> assertionClass = threadLocalAssertionClass.get();
-        if (assertionClass==null) {
-            if (UiElement.Properties.DEFAULT_ASSERT_IS_COLLECTOR.asBool()) {
-                assertionClass = CollectedAssertion.class;
-            } else {
-                assertionClass = InstantAssertion.class;
-            }
-        }
-        return assertionClass;
     }
 }

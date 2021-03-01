@@ -56,7 +56,7 @@
     <mdc-dialog-content class="pt0">
         <div class="img-comp-container" ref="_compContainer">
             <div class="img-comp-img" ref="_leftImageElement">
-                <img src.bind="_comparison.left.src">
+                <img src.bind="_comparison.left.src" load.trigger="_leftLoaded($event)">
             </div>
             <div class="img-comp-img" ref="_rightImageElement">
                 <img src.bind="_comparison.right.src">

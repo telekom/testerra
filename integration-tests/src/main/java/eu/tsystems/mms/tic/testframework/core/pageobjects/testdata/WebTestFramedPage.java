@@ -40,7 +40,7 @@ public class WebTestFramedPage extends Page {
     @Check
     private final GuiElement input1 = new GuiElement(this.getWebDriver(), By.id("1"), inputFrame1);
     /** A button on the page. */
-    @Check(nonFunctional = true)
+    @Check(optional = true)
     private final GuiElement button1 = new GuiElement(this.getWebDriver(), By.id("4"), inputFrame1);
     /** The output text field. */
     private final GuiElement textOutputField = new GuiElement(this.getWebDriver(), By.xpath("//p[@id='99']"));

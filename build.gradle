@@ -1,6 +1,5 @@
 plugins {
     id 'com.github.jk1.dependency-license-report' version '1.13'
-    id "com.jfrog.bintray" version "1.8.5"
 }
 
 apply plugin: 'java'
@@ -151,16 +150,16 @@ task jacocoAggregateReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
     }
 }
 
-task publishToBintray(type: GradleBuild) {
-    tasks = [
-            'core:bintrayUpload',
-            'core-interop:bintrayUpload',
-            'image-processing:bintrayUpload',
-            'driver-ui:bintrayUpload',
-            'driver-ui-desktop:bintrayUpload',
-            'surefire-connector:bintrayUpload',
-            'bmp:bintrayUpload',
-            'bup:bintrayUpload',
-            'mail-connector:bintrayUpload'
-    ]
-}
+//task publishToBintray(type: GradleBuild) {
+//    tasks = [
+//            'core:bintrayUpload',
+//            'core-interop:bintrayUpload',
+//            'image-processing:bintrayUpload',
+//            'driver-ui:bintrayUpload',
+//            'driver-ui-desktop:bintrayUpload',
+//            'surefire-connector:bintrayUpload',
+//            'bmp:bintrayUpload',
+//            'bup:bintrayUpload',
+//            'mail-connector:bintrayUpload'
+//    ]
+//}

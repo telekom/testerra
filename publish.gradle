@@ -1,0 +1,69 @@
+/**
+ * Maven publishing configuration
+ * */
+
+
+// Maven basis attributes
+ext {
+  libraryName = 'Testerra'
+  artifact = project.getName().toLowerCase()
+  packagingType = 'jar'
+
+  libraryDescription = "Testerra ${project.getName()} module"
+
+  siteUrl = 'https://testerra.io'
+  gitUrl = 'https://github.com/telekom/testerra-selenoid-connector.git'
+  issueUrl = 'https://github.com/telekom/testerra-selenoid-connector/issues'
+
+  developerId = 'MMS'
+  developerName = 'Testerra Team T-Systems MMS'
+  developerEmail = 'testerra@t-systems-mms.com'
+
+  licenseName = 'The Apache Software License, Version 2.0'
+  licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+  allLicenses = ["Apache-2.0"]
+}
+
+// Set up the Maven publication.
+install {
+  repositories.mavenInstaller {
+    // This generates POM.xml with proper parameters
+    pom.project {
+      packaging packagingType
+      groupId group
+      artifactId artifact
+
+      // Add your description here
+      name libraryName
+      description libraryDescription
+      url siteUrl
+
+      // Set your license
+      licenses {
+        license {
+          name licenseName
+          url licenseUrl
+        }
+      }
+      developers {
+        developer {
+          id developerId
+          name developerName
+          email developerEmail
+        }
+      }
+      scm {
+        connection gitUrl
+        developerConnection gitUrl
+        url siteUrl
+      }
+
+      // Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
+      def deps = configurations.compile.allDependencies + configurations.implementation.allDependencies
+      deps.each {
+        dependencies.add("compile", it)
+      }
+
+    }
+  }
+}

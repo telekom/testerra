@@ -93,12 +93,12 @@ _Preparation_
 * For publishing a module, add the following line to the module's ``build.gradle``
   ````
   // ...
-  apply from: rootProject.file('release-bintray.gradle')
+  apply from: rootProject.file('publish.gradle')
   ````
 
 _Configuration_
 
-All publish settings are located in ``release-bintray.gradle``.
+All publish settings are located in ``publish.gradle``.
 
 
 _Upload and publish_

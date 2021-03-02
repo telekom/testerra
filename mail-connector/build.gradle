@@ -17,4 +17,4 @@ test {
     }
 }
 
-apply from: rootProject.file('release-bintray.gradle')
+apply from: rootProject.file('publish.gradle')

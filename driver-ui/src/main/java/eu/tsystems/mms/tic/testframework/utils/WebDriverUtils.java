@@ -79,14 +79,21 @@ public final class WebDriverUtils {
     }
 
     public static Optional<WebDriver> switchToWindow(WebDriver mainWebDriver, Predicate<WebDriver> predicate) {
-        String mainWindowHandle = mainWebDriver.getWindowHandle();
+        String mainWindowHandle;
+        try {
+            mainWindowHandle = mainWebDriver.getWindowHandle();
+        } catch (Exception e) {
+            mainWindowHandle = "";
+        }
+        String finalMainWindowHandle = mainWindowHandle;
+
         return mainWebDriver.getWindowHandles().stream()
-                .filter(windowHandle -> !windowHandle.equals(mainWebDriver.getWindowHandle()))
+                .filter(windowHandle -> !windowHandle.equals(finalMainWindowHandle))
                 .map(windowHandle -> mainWebDriver.switchTo().window(windowHandle))
                 .filter(webDriver -> {
                     boolean valid = predicate.test(webDriver);
-                    if (!valid) {
-                        mainWebDriver.switchTo().window(mainWindowHandle);
+                    if (!valid && !finalMainWindowHandle.isEmpty()) {
+                        mainWebDriver.switchTo().window(finalMainWindowHandle);
                     }
                     return valid;
                 }).findFirst();

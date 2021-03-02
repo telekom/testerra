@@ -176,8 +176,16 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
         Optional<WebDriver> optionalWebDriver = WebDriverUtils.switchToWindow(driver, webDriver -> webDriver.getTitle().equals("List"));
 
         Assert.assertTrue(optionalWebDriver.isPresent());
-        Assert.assertEquals(optionalWebDriver.get().getTitle(), "List", msgSwitchSuccessfully);
+        WebDriver popupDriver = optionalWebDriver.get();
+        Assert.assertEquals(popupDriver.getTitle(), "List", msgSwitchSuccessfully);
         Assert.assertEquals(driver.getTitle(), "List", msgSwitchSuccessfully);
+
+        // Close popup
+        popupDriver.close();
+
+        // And switch back
+        optionalWebDriver = WebDriverUtils.switchToWindow(driver, webDriver -> webDriver.getTitle().contains("Input"));
+        Assert.assertTrue(optionalWebDriver.isPresent());
     }
 
     @Test

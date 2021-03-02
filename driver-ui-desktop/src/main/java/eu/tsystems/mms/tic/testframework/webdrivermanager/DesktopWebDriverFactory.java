@@ -43,7 +43,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.sikuli.SikuliWebDriver;
 import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
-import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.Sequence;
@@ -54,7 +53,6 @@ import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import java.io.File;
 import java.lang.reflect.Constructor;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Date;
@@ -307,12 +305,12 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
          * Remote or local
          */
         WebDriver newDriver;
+        URL remoteAddress = null;
         if (desktopWebDriverRequest.getWebDriverMode() == WebDriverMode.remote) {
-            /*
-             ##### Remote
-             */
+            remoteAddress = desktopWebDriverRequest.getSeleniumServerUrl();
+        }
 
-            URL remoteAddress = desktopWebDriverRequest.getSeleniumServerUrl();
+
             /*
              * Start a new web driver session.
              */
@@ -327,18 +325,9 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 }
             } catch (final SetupException e) {
                 int ms = Testerra.Properties.WEBDRIVER_TIMEOUT_SECONDS_RETRY.asLong().intValue()*1000;
-                log().error(String.format("Error starting WebDriver. Trying again in %d seconds", (ms / 1000)), e);
-                TimerUtils.sleep(ms);
-                newDriver = startNewWebDriverSession(desktopWebDriverRequest, capabilities, remoteAddress, sessionContext);
-            }
-
-        } else {
-            log().warn(
-                    "Local WebDriver setups may cause side effects. It's highly recommended to use a remote Selenium configurations for all environments!");
-            /*
-             ##### Local
-             */
-            newDriver = startNewWebDriverSession(desktopWebDriverRequest, capabilities, null, sessionContext);
+            log().error(String.format("Error starting WebDriver. Trying again in %d seconds", (ms / 1000)), e);
+            TimerUtils.sleep(ms);
+            newDriver = startNewWebDriverSession(desktopWebDriverRequest, capabilities, remoteAddress, sessionContext);
         }
 
         /*
@@ -349,9 +338,12 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         /*
         Log User Agent and executing host
          */
-        DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
-        NodeInfo nodeInfo = utils.getNodeInfo(desktopWebDriverRequest.getSeleniumServerUrl(), remoteSessionId);
-        sessionContext.setNodeInfo(nodeInfo);
+        NodeInfo nodeInfo = null;
+        if (remoteAddress != null) {
+            DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
+            nodeInfo = utils.getNodeInfo(desktopWebDriverRequest.getSeleniumServerUrl(), remoteSessionId);
+            sessionContext.setNodeInfo(nodeInfo);
+        }
         sw.stop();
 
         BrowserInformation browserInformation = WebDriverManagerUtils.getBrowserInformation(newDriver);
@@ -362,7 +354,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 newDriver.getClass().getSimpleName(),
                 sessionKey,
                 remoteSessionId,
-                nodeInfo.toString(),
+                (nodeInfo!=null?nodeInfo.toString():"local webdriver"),
                 browserInformation.getBrowserName() + ":" + browserInformation.getBrowserVersion(),
                 sw.toString()
         ));
@@ -470,9 +462,8 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         log().info(String.format(
-                "Requesting WebDriver (sessionKey=%s) on host %s with capabilities:\n%s",
+                "Requesting " + (remoteAddress!=null?"remote":"") + " WebDriver (sessionKey=%s) " + (remoteAddress!=null?"on host " + remoteAddress:"") + " with capabilities:\n%s",
                 sessionContext.getSessionKey(),
-                remoteAddress,
                 gson.toJson(cleanedCapsMap)
         ));
         log().debug(String.format("Starting (session key=%s) here", sessionContext.getSessionKey()), new Throwable());
@@ -484,6 +475,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 driver = new SikuliWebDriver(httpCommandExecutor, finalCapabilities);
                 ((RemoteWebDriver) driver).setFileDetector(new LocalFileDetector());
             } else {
+                log().warn("Local WebDriver setups may cause side effects. It's highly recommended to use a remote Selenium configurations for all environments!");
                 Constructor<? extends RemoteWebDriver> constructor = driverClass.getConstructor(Capabilities.class);
                 driver = constructor.newInstance(finalCapabilities);
             }

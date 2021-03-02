@@ -82,4 +82,4 @@ def setCloseWindows() {
     System.setProperty("tt.wdm.closeWindows.afterTestMethods", "false")
 }
 
-apply from: rootProject.file('publish.gradle')
+//apply from: rootProject.file('publish.gradle')

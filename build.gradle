@@ -49,6 +49,8 @@ allprojects {
     version moduleVersion
 }
 
+
+
 subprojects {
     apply plugin: 'java'
     apply plugin: 'maven'
@@ -69,18 +71,19 @@ subprojects {
         toolVersion = "0.8.5"
     }
 
-    // custom tasks for creating source/javadoc jars
-    task sourcesJar(type: Jar, dependsOn: classes) {
-        classifier = 'sources'
-        from sourceSets.main.allSource
-    }
-
-    // add source jar tasks as artifacts
-    artifacts {
-        archives sourcesJar
-    }
-
     publishing {
+
+        // custom tasks for creating source/javadoc jars
+        task sourcesJar(type: Jar, dependsOn: classes) {
+            archiveClassifier.set('sources')
+            from sourceSets.main.allSource
+        }
+
+        // add source jar tasks as artifacts
+        artifacts {
+            archives sourcesJar
+        }
+
         publications {
             mavenJava(MavenPublication) {
                 from components.java
@@ -122,6 +125,9 @@ subprojects {
         }
     }
 }
+
+// Do not move this integration because `group` and `version` is needed for publishing
+//apply from: rootProject.file('publish.gradle')
 
 task jacocoAggregateReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
 

@@ -297,7 +297,7 @@ public class FileDownloader implements Loggable {
             String cookieString,
             boolean useSecondConnection
     ) throws IOException {
-        log().debug("Downloading: " + url);
+        log().info("Downloading: " + url);
 
         String targetFileName = "";
         URLConnection connection = openConnection(url, proxy, timeoutMS, trustAll, cookieString, sslSocketFactory);

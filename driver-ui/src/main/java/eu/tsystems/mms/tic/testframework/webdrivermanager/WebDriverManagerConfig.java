@@ -68,7 +68,7 @@ public class WebDriverManagerConfig extends AbstractWebDriverConfiguration imple
 
     public WebDriverManagerConfig reset() {
         this.executeCloseWindows = true;
-        this.webDriverMode = null;
+        this.webDriverMode = WebDriverMode.valueOf(Testerra.Properties.WEBDRIVER_MODE.asString());
         this.closeWindowsAfterTestMethod = PropertyManager.getBooleanProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, true);
         this.closeWindowsOnFailure = PropertyManager.getBooleanProperty(TesterraProperties.CLOSE_WINDOWS_ON_FAILURE, true);
         this.maximize = PropertyManager.getBooleanProperty(TesterraProperties.BROWSER_MAXIMIZE, false);

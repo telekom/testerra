@@ -141,7 +141,7 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
                     " " + declaringPage + " from " + declaringClass, e);
         }
 
-        if (check.nonFunctional()) {
+        if (check.optional()) {
             pCheckField(guiElement, guiElement.nonFunctionalAsserts(), checkRule, findNot, fast);
         } else {
 

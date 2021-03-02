@@ -175,7 +175,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                     });
                     return driver;
                 } else {
-                    return newWebDriver(desktopWebDriverRequest, desiredCapabilities ,sessionContext);
+                    return newWebDriver(desktopWebDriverRequest, desiredCapabilities, sessionContext);
                 }
             }
         } else {
@@ -341,7 +341,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         NodeInfo nodeInfo = null;
         if (remoteAddress != null) {
             DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
-            nodeInfo = utils.getNodeInfo(desktopWebDriverRequest.getSeleniumServerUrl(), remoteSessionId);
+            nodeInfo = utils.getNodeInfo(remoteAddress, remoteSessionId);
             sessionContext.setNodeInfo(nodeInfo);
         }
         sw.stop();
@@ -354,7 +354,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 newDriver.getClass().getSimpleName(),
                 sessionKey,
                 remoteSessionId,
-                (nodeInfo!=null?nodeInfo.toString():"local webdriver"),
+                (nodeInfo != null ? nodeInfo.toString() : "local webdriver"),
                 browserInformation.getBrowserName() + ":" + browserInformation.getBrowserVersion(),
                 sw.toString()
         ));
@@ -462,8 +462,10 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         log().info(String.format(
-                "Requesting " + (remoteAddress!=null?"remote":"") + " WebDriver (sessionKey=%s) " + (remoteAddress!=null?"on host " + remoteAddress:"") + " with capabilities:\n%s",
+                "Requesting%s WebDriver (sessionKey=%s)%s with capabilities:\n%s",
+                (remoteAddress != null ? " remote" : ""),
                 sessionContext.getSessionKey(),
+                (remoteAddress != null ? " on host " + remoteAddress : ""),
                 gson.toJson(cleanedCapsMap)
         ));
         log().debug(String.format("Starting (session key=%s) here", sessionContext.getSessionKey()), new Throwable());

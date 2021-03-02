@@ -38,7 +38,7 @@ public @interface Check {
     /**
      * simple boolean function
      */
-    boolean nonFunctional() default false;
+    boolean optional() default false;
 
     /**
      * Defaults to {@link UiElement.Properties#ELEMENT_TIMEOUT_SECONDS}

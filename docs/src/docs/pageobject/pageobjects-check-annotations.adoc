@@ -43,12 +43,12 @@ Available CheckRules are
 
 The default is IS_DISPLAYED.
 
-With nonFunctional attribute the check only adds a warning in Testerra report.
-The test will not interrupted at this position.
+With the `optional` attribute, the `@Check` only adds an optional assertion to the report.
+The test will not be interrupted at this position.
 
 [source,java]
 ----
-@Check(nonFunctional = true)
+@Check(optional = true)
 private UiElement checked = find(By.name("checked"));
 ----
 

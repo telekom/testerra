@@ -44,7 +44,7 @@ public class WebTestPage extends BasePage {
 
     private final GuiElement input1 = new GuiElement(this.getWebDriver(), By.id("1"));
     /** A button on the page. */
-    @Check(nonFunctional = true)
+    @Check(optional = true)
     private final GuiElement button1 = new GuiElement(this.getWebDriver(), By.id("4"));
 
     @Check

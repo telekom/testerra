@@ -53,7 +53,7 @@ public final class DesktopWebDriverUtils implements Loggable {
             JSONObject out = new JSONObject(nodeResponse);
             return new NodeInfo(out.getString("Name"), out.getInt("Port"));
         } catch (Exception e) {
-            log().debug("Could not get node info: " + e.getMessage());
+            log().warn("Could not get node info. Falling back to " + seleniumUrl.toString(), e);
             return new NodeInfo(seleniumUrl.getHost(), seleniumUrl.getPort());
         }
     }

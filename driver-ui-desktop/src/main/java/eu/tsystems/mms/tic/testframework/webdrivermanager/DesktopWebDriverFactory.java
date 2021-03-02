@@ -344,7 +344,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         NodeInfo nodeInfo = null;
         if (remoteAddress != null) {
             DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
-            nodeInfo = utils.getNodeInfo(desktopWebDriverRequest.getSeleniumServerUrl(), remoteSessionId);
+            nodeInfo = utils.getNodeInfo(remoteAddress, remoteSessionId);
             sessionContext.setNodeInfo(nodeInfo);
         }
         sw.stop();

@@ -66,7 +66,7 @@ Additional modules:
 
 ### Publishing
 
-#### ... to local Maven repo
+#### ... to a Maven repo
 
 _Preparation_
 
@@ -77,18 +77,19 @@ _Preparation_
   apply from: rootProject.file('publish.gradle')
   ````
 
-_Publishing_
+_Publishing to local repo_
 
-and run
 ```shell
 gradle publishToMavenLocal
 ```
-or pass then properties via CLI
+
+_Publishing to remote repo_
+
 ```shell
--DdeployUrl=<repo-url> -DdeployUsername=<repo-user> -DdeployPassword=<repo-password>
+gradle publish -DdeployUrl=<repo-url> -DdeployUsername=<repo-user> -DdeployPassword=<repo-password>
 ```
 
-Set a custom version
+_Set a custom version_
 ```shell script
 gradle publish -DttVersion=<version>
 ```

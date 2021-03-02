@@ -3,25 +3,9 @@ Testerra is an open source test automation library for web frontend testing. It 
 a base API for Page Object Pattern (including responsive layouts) and GuiElements (smarter WebElements (Selenium)), 
 enhanced reporting functionality, a utility collection and some additional helpful modules.
 
-## Main modules
-
-Framework core:
-* [core](core/README.md)
-* ([core-interop](core-interop/README.md))
-
-UI Testing modules:
-* [driver-ui](driver-ui/README.md)
-* [driver-ui-desktop](driver-ui-desktop/README.md)
-
-Connectors:
-* [mail-connector](mail-connector/README.md)
-
-Additional modules:
-* [bmp](bmp/README.md)
-
 ## Installation / Usage
 
-Check out our comprehensive [Testerra documentation](https://tapas-docs.s3.eu-central-1.amazonaws.com/testerra/latest/index.html)!
+Check out our comprehensive [Testerra documentation](http://docs.testerra.io)!
 
 At least you have to put the core module into your project dependencies:
 
@@ -36,7 +20,7 @@ For maven:
     </dependecy>
     <dependency>
         <groupId>eu.tsystems.mms.tic.testerra</groupId>
-        <artifactId>report</artifactId>
+        <artifactId>report-ng</artifactId>
         <version>1-SNAPSHOT</version>
     </dependecy>
 </dependencies>
@@ -45,7 +29,7 @@ For maven:
 For gradle:
 ```text
 compile 'eu.tsystems.mms.tic.testerra:driver-ui-desktop:1-SNAPSHOT'
-compile 'eu.tsystems.mms.tic.testerra:report:1-SNAPSHOT'
+compile 'eu.tsystems.mms.tic.testerra:report-ng:1-SNAPSHOT'
 ```
 
 ## Using testerra functionality:
@@ -61,23 +45,47 @@ public class MyTest extends TesterraTest {
     }
 }
 ```
-## Publishing
+## Some internals
 
-### ... to local Maven repo
+### Main modules
 
-Create a `gradle.properties` file with the following content.
-```properties
-systemProp.deployUrl=https://example.com
-systemProp.deployUsername=user
-systemProp.deployPassword=password
-```
+Framework core:
+* [core](core/README.md)
+* ([core-interop](core-interop/README.md))
+
+UI Testing modules:
+* [driver-ui](driver-ui/README.md)
+* [driver-ui-desktop](driver-ui-desktop/README.md)
+
+Connectors:
+* [mail-connector](mail-connector/README.md)
+
+Additional modules:
+* [bmp](bmp/README.md)
+
+
+### Publishing
+
+#### ... to local Maven repo
+
+_Preparation_
+
+* All publish settings are located in ``publish.gradle``.
+* For publishing a module, add the following line to the module's ``build.gradle``
+  ````
+  // ...
+  apply from: rootProject.file('publish.gradle')
+  ````
+
+_Publishing_
+
 and run
-```shell script
-gradle publish
+```shell
+gradle publishToMavenLocal
 ```
-or pass then properties via. CLI
-```shell script
-gradle publish -DdeployUrl=https://example.com -DdeployUsername=user -DdeployPassword=password
+or pass then properties via CLI
+```shell
+-DdeployUrl=<repo-url> -DdeployUsername=<repo-user> -DdeployPassword=<repo-password>
 ```
 
 Set a custom version
@@ -85,35 +93,14 @@ Set a custom version
 gradle publish -DttVersion=<version>
 ```
 
-### ... to Bintray
+#### ... to GitHub
 
-_Preparation_
+Some hints for using GitHub Packages as Maven repository
 
-* Folder jcenter contains basic Bintray publish files
-* For publishing a module, add the following line to the module's ``build.gradle``
-  ````
-  // ...
-  apply from: rootProject.file('publish.gradle')
-  ````
-
-_Configuration_
-
-All publish settings are located in ``publish.gradle``.
-
-
-_Upload and publish_
-
-* Before publishing, please note for Testerra version. You can only upload every version once!
-* Publish one module (but not recommended)
-  ```sh
-  gradle gradle core:bintrayUpload -DBINTRAY_USER=<bintray-user> -DBINTRAY_API_KEY=<bintray-api-key>
-  ```
-* Publish Testerra Framework with specified version (snapshot versions like `1-SNAPSHOT` are not allowed)
-  ```sh
-  gradle publishToBintray -DttVersion=1.0-RC-1 -DBINTRAY_USER=<bintray-user> -DBINTRAY_API_KEY=<bintray-api-key>
-  ```
+* Deploy URL is https://maven.pkg.github.com/OWNER/REPOSITRY
+* As password generate an access token and grant permissions to ``write:packages`` (Settings -> Developer settings -> Personal access token)
   
-  ## Contributing
+## Contributing
 Thank you for considering contributing to the Testerra framework! The contribution guide can be found here: [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License

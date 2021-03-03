@@ -5,7 +5,7 @@ include::../properties/property-attributes.adoc[]
 In the demo mode actions on pages are marked with distinctive coloured frames around the element of the action. This mechanism is set by a property
 
 .test.properties
-[source, properties]
+[source, properties,subs="attributes"]
 ----
 # activate demo mode, default = false
 {demomode}=true

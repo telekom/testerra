@@ -12,8 +12,12 @@ For using a remote Selenium server (e.g. a Selenium Grid) you only have to tell 
 [source,properties,subs="attributes"]
 ----
 {webdriver_mode}=remote
+
+# Selenium host and port
 {selenium_server_host}=localhost
 {selenium_server_port}=4444
+
+# Or combined as URL
 {selenium_server_url}=http://localhost:4444/wd/hub
 ----
 
@@ -54,11 +58,11 @@ Before starting a `WebDriver` session, you should configure your desired browser
 
 [source,properties,subs="attributes"]
 ----
-# ...this way
+# Browser name and version
 {browser}=firefox
 {browser_version}=65
 
-# ... or that way
+# Or both combined
 {browser_setting}=firefox:65
 ----
 

@@ -13,17 +13,17 @@ This will help you to get your things done and will ensure that you can't keep s
 .Keep a driver alive while interacting with second session
 [source,java]
 ----
-WebDriver driver = WebDriverManager.getWebDriver();
+WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 // Do some test stuff with session your session
 
 // Starting a second session for example to test concurrent interactions.
-WebDriver driverWithOtherUser = WebDriverManager.getWebDriver("Session2");
+WebDriver driverWithOtherUser = WEB_DRIVER_MANAGER.getWebDriver("Session2");
 
 // Keep alive driver while doing actions on driverWithOtherUser for 90 seconds, while refreshing all 10 seconds
-final WebDriverKeepAliveSequence webDriverKeepAliveSequence = WebDriverUtils.keepWebDriverAlive(driver, 10, 90);
+WEB_DRIVER_MANAGER.keepAlive(driver, 10, 90);
 
 // Do your things with your second driver
 
 // NOTE: Please release your WebDriverKeepAliveSequence as you dont need the lock
-WebDriverUtils.removeKeepAliveForWebDriver(driver);
+WEB_DRIVER_MANAGER.stopKeepingAlive(driver);
 ----

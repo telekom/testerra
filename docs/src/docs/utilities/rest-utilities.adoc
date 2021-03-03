@@ -1,4 +1,6 @@
-= REST Utilities
+= REST Utilities (*deprecated*)
+
+NOTE: This class is marked as `@deprecated` and should not be used anymore.
 
 This is a static helper class facilitating the usage of REST Services by providing several methods for creating valid HTTP requests.
 The default timeout for all http connections is 5 minutes.

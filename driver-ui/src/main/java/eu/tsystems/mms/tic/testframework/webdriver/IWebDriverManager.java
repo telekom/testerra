@@ -142,4 +142,12 @@ public interface IWebDriverManager extends WebDriverRetainer {
         }
         return optionalWebDriver.get();
     }
+
+    default void keepAlive(WebDriver webDriver, int intervalSleepTimeInSeconds, int durationInSeconds) {
+        WebDriverUtils.keepWebDriverAlive(webDriver, intervalSleepTimeInSeconds, durationInSeconds);
+    }
+
+    default void stopKeepingAlive(WebDriver webDriver) {
+        WebDriverUtils.removeKeepAliveForWebDriver(webDriver);
+    }
 }

@@ -1,4 +1,6 @@
-= HttpClient Utilities
+= HttpClient Utilities (*deprecated*)
+
+NOTE: This class is marked as `@deprecated` and should not be used anymore.
 
 This is an utility class that lets you send an http request to a web site to retrieve and process its response.
 
@@ -14,7 +16,7 @@ HttpClientUtils.ResponseCallBack callback = new HttpClientUtils.ResponseCallBack
 		System.out.println("incoming response!");
 		try {
 			InputStream inputStream = response.getEntity().getContent();
-			
+
 			StringWriter writer = new StringWriter();
 			IOUtils.copy(inputStream, writer, encoding);
 			String result = writer.toString();
@@ -34,8 +36,8 @@ String myUrl = "http://www.google.de";
 // now the proxyHost has to be defined
 HttpHost proxyHost = new HttpHost("proxy.your-company.de", 8080, "http");
 
-// if we would set autoProxy to true the the method would construct its proxy by using the 
-// standard System Properties http.proxyHost and http.proxyPort, 
+// if we would set autoProxy to true the the method would construct its proxy by using the
+// standard System Properties http.proxyHost and http.proxyPort,
 // so then we would and pass null as proxyHost
 boolean autoProxy = false;
 
@@ -50,7 +52,7 @@ String htmlString = HttpClientUtils.request(myUrl, autoProxy, proxyHost, timeout
 
 ----
 
-There is also a simpler version of this method that takes only the url and the callback. 
+There is also a simpler version of this method that takes only the url and the callback.
 The defaults for this method are autoProxy=true, timeout=10000, suppressLogs=false.
 [source,java]
 ----

@@ -1,4 +1,6 @@
-= XML Utilities
+= XML Utilities (*deprecated*)
+
+NOTE: This class is marked as `@deprecated` and should not be used anymore.
 
 XMLUtilities provide the helper classes JDom, JSoup, W3CDom for working with XML Documents. The XMlUtils class provides methods for accessing instances of the aforementioned classes, XPath Evaluation and Mapping to Java Objects.
 

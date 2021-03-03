@@ -1,4 +1,6 @@
-= Assert Utilities
+= Assert Utilities  (*deprecated*)
+
+NOTE: This class has been replaced by the <<Regular Assertions, Assertion interface>>, therefore marked as `@deprecated` and should not be used anymore.
 
 This class provides some extra assertion methods for TestNG:
 

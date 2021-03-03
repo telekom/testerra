@@ -1,4 +1,4 @@
-= CSV Reader
+= CSV Reader (*deprecated*)
 
 NOTE: This class is not supported anymore. If you want to read CSV files into Java beans, please consider the documentation of the http://opencsv.sourceforge.net/#reading_into_beans[OpenCSV library]
 

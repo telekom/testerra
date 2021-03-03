@@ -18,7 +18,9 @@ TimerUtils.sleep(5000, "Wait for something to happen.");
 Both of these methods calls of `sleep()` will produce a log message.
 If you want to sleep without a message, `TimerUtils` of Testerra provides a method `sleepSilent()`.
 
-== Timer
+== Timer (*deprecated*)
+
+NOTE: Timings can be controlled using <<Test controlling,TestController>>, therefore this class is marked as `@deprecated` and should not be used anymore.
 
 The `Timer` provides a basic timer feature, if you have to execute the same snippet of code in a defined interval. It stops after timeout or your sequence code was executed without any exceptions. If your sequence code was not successful the `Timer` will occur a `TimeoutException`.
 

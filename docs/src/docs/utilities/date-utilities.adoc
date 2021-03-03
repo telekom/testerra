@@ -1,4 +1,6 @@
-= Date Utilities
+= Date Utilities (*deprecated*)
+
+NOTE: This class is marked as `@deprecated` and should not be used anymore.
 
 This is a static helper class based on Apache date utils which offers a lot
 of methods for converting dates and diffrent formats of dates.

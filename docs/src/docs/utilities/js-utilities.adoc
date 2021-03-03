@@ -20,20 +20,18 @@ hiddenUploadField.findWebElement(webElement -> {
 
 ----
 
-== Inject JavaScript
+== Inject JavaScript (*deprecated*)
 
-For executing more than a single line of JavaScript code it is recommended to write a JavaScript file and store it in `src/main/resources` or `src/test/resources` directory.
+IMPORTANT: Content Security Policies disallow injection JavaScript into the DOM. Therefore, the following feature is `@deprecated`.
+
+For executing more than a single line of JavaScript code [line-through]#it is recommended to# write a JavaScript file and store it in `src/main/resources` or `src/test/resources` directory.
 Then you can inject the full JavaScript file with following method.
 
 .Implementing own JavaScript code
 [source,java]
 ----
-WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
-
 // WebDriver, Path to resource file, id of the script-tag
 JSUtils.implementJavascriptOnPage(driver, "js/inject/custom.js", "customJs");
-
-
 ----
 
 Testerra will then inject your resource file into the current DOM of your `WebDriver` instance according to the template.

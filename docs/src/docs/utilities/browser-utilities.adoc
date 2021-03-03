@@ -1,12 +1,14 @@
-= Browser Utilities
+= Browser Utilities (*deprecated*)
+
+NOTE: This class is marked as `@deprecated` and should not be used anymore.
 
 This class offers some utility functions to handle browser specifics relevant for the testautomation scripting phase.
 
 [source,java]
 ----
-// Skips the security warning that occures on connection attempts with the 
+// Skips the security warning that occures on connection attempts with the
 // Internet explorer to https locations with improper certificate.
-// In case the explorer opens an alert window the parameter handleAlert can be 
+// In case the explorer opens an alert window the parameter handleAlert can be
 // set to finally close it.
 BrowserUtils.skipIESecurityWarning(WebDriver driver, boolean handleAlert);
 ----

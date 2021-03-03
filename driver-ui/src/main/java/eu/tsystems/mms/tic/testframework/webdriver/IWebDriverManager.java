@@ -28,6 +28,7 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverReque
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -118,11 +119,19 @@ public interface IWebDriverManager extends WebDriverRetainer {
         WebDriverSessionsManager.registerWebDriverAfterStartupHandler(afterStart);
     }
 
-    default Optional<WebDriver> switchToWindow(Predicate<WebDriver> predicate) {
-        return switchToWindow(getWebDriver(), predicate);
-    }
-
     default Optional<WebDriver> switchToWindow(WebDriver mainWebDriver, Predicate<WebDriver> predicate) {
         return WebDriverUtils.switchToWindow(mainWebDriver, predicate);
+    }
+
+    default WebDriver switchToWindowTitle(WebDriver mainWebDriver, String windowTitle) {
+        ArrayList<String> availableWindowTitles = new ArrayList<>();
+        Optional<WebDriver> optionalWebDriver = WebDriverUtils.switchToWindow(mainWebDriver, webDriver -> {
+            availableWindowTitles.add(webDriver.getTitle());
+            return webDriver.getTitle().equals(windowTitle);
+        });
+        if (!optionalWebDriver.isPresent()) {
+            throw new RuntimeException(String.format("Window title \"%s\" not found in open windows \"%s\"", windowTitle, String.join("\", \"", availableWindowTitles)));
+        }
+        return optionalWebDriver.get();
     }
 }

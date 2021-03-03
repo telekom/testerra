@@ -15,13 +15,14 @@ To delete all the cookies of your current `WebDriver` session just call `WebDriv
 == Switching windows
 
 Sometimes you will come across testing websites with multiple windows, such as popups or something similar.
-To switch windows in a easy way Testerra provides some methods, which will automatically retry the window switching for maximum of seconds you can define with `{wdm_timeouts_window_switch}`.
 
 [source,java]
 ----
 // Switch to a window by matching title
-Optional<WebDriver> optionalWebDriver = WebDriverUtils.switchToWindow(webDriver -> webDriver.getTitle().equals(windowTitle));
+WebDriver webDriver = WEB_DRIVER_MANAGER.switchToWindowTitle(WebDriver webDriver, String windowTitle);
 
-// Window context switched
-optionalWebDriver.isPresent();
+// Switch to a window by a custom condition
+Optional<WebDriver> optionalWebDriver = WEB_DRIVER_MANAGER.switchToWindow(WebDriver webDriver, webDriver -> webDriver.getCurrentUrl().contains("login"));
+
+Assert.assertTrue(optionalWebDriver.isPresent(), "Login window not found");
 ----

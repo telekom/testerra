@@ -1,4 +1,4 @@
-= Browser Mob Proxy
+= Browser Mob Proxy (*deprecated*)
 
 Browser Mob Proxy (BMP) is a utility for manipulating network traffic.
 You can use it to enable Basic Auth for your SUT and other features.

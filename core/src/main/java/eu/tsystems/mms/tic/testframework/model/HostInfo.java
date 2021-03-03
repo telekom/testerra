@@ -25,16 +25,8 @@ public class HostInfo {
 
     private final String host;
     private final int port;
-    private final boolean localMode;
-
-    public HostInfo(boolean localMode) {
-        this.localMode = true;
-        this.host = null;
-        this.port = -1;
-    }
 
     public HostInfo(String host, int port) {
-        this.localMode = false;
         this.host = host;
         this.port = port;
     }
@@ -47,17 +39,8 @@ public class HostInfo {
         return port;
     }
 
-    public boolean isLocalMode() {
-        return localMode;
-    }
-
     @Override
     public String toString() {
-        if (isLocalMode()) {
-            return "webdriver local mode";
-        }
-        else {
-            return host + ':' + port;
-        }
+        return host + ':' + port;
     }
 }

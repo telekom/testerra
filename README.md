@@ -71,12 +71,12 @@ Additional modules:
 _Preparation_
 
 * All publish settings are located in ``publish.gradle``.
-* For publishing a module, add the following line to the module's ``build.gradle``
-  ````
-  // ...
-  apply from: rootProject.file('publish.gradle')
-  ````
-
+* All modules will be published.
+* To prevent publishing, add the following line to the ``build.gradle`` of the module:
+  ```groovy
+  doNotPublish(this)
+  ```
+  
 _Publishing to local repo_
 
 ```shell
@@ -90,7 +90,7 @@ gradle publish -DdeployUrl=<repo-url> -DdeployUsername=<repo-user> -DdeployPassw
 ```
 
 _Set a custom version_
-```shell script
+```shell
 gradle publish -DttVersion=<version>
 ```
 

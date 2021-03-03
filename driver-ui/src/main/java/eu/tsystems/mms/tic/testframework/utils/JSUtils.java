@@ -22,6 +22,8 @@
 
 package eu.tsystems.mms.tic.testframework.utils;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
 import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
@@ -38,7 +40,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.io.IOUtils;
-import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Point;
@@ -120,6 +121,7 @@ public final class JSUtils {
     ) {
         try {
             if (script.length() > 0) {
+                Gson gson = new GsonBuilder().create();
                 JavascriptExecutor javascriptExecutor = (JavascriptExecutor) driver;
                 String injectedScript = String.format("var script=document.createElement('script');" +
                                 "var text=document.createTextNode(%s);" +
@@ -127,8 +129,8 @@ public final class JSUtils {
                                 "script.id=%s;" +
                                 "script.appendChild(text);" +
                                 "document.body.appendChild(script);",
-                        JSONObject.quote(script),
-                        JSONObject.quote(scriptId)
+                        gson.toJson(script),
+                        gson.toJson(scriptId)
                 );
                 javascriptExecutor.executeScript(injectedScript);
             }

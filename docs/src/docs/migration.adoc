@@ -469,40 +469,6 @@ POConfig.removeThreadLocalUiElementTimeout();
 ```
 ====
 
-=== Retry
-
-It sometimes happens, that you need to retry a whole sequence of operations.
-That will retry to click a button for 5 seconds until it's disabled.
-
-```java
-CONTROL.retryFor(5, () -> {
-    button.click();
-    button.expect().enabled().is(false);
-});
-```
-
-
-You can also perform something when the retry block fails.
-```java
-CONTROL.retryFor(5, () -> {
-    element.expect().text(String);
-}, () -> {
-    element.getWebDriver().reload();
-});
-```
-
-You can combine these features with the fluent API design, to completely disable the internal element timeout.
-
-```java
-CONTROL.retryFor(10, () -> {
-    CONTROL.withTimeout(0, () -> {
-        button.click();
-        guiElement.scrollIntoView();
-        guiElement.expect().visible(false).is(true);
-    }
-);
-```
-
 == The internals
 
 This chapter explains how the new API works internally.

@@ -86,4 +86,5 @@ public interface UiElement extends
 
     UiElementList<UiElement> list();
     UiElement shadowRoot();
+    UiElement sensibleData();
 }

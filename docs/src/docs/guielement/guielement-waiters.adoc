@@ -2,36 +2,17 @@
 
 In testing practice the test automation code must tolerate delays caused e.g. by page loading or javascript activities when checking conditions on UiElements.
 
-Therefore UiElement provides dedicated methods to wait for a condition that operate
-on the following principle:
-
 If the condition (which is checked continuously) is met within the timeout
 then the wait methods return true.
 
 Otherwise, after the timeout has passed they return false without any further
 action or assertion.
 
-See also <<PageObjects,Timeout-Settings>>
-
-.Basic usage:
 [source,java]
 ----
 boolean result;
-
 result = element.waitFor().displayed(boolean);
 
 // Overrides preconfigured internal timeout
-result = element.waitFor(int).displayed(boolean);
-----
-
-.Examples:
-[source,java]
-----
-element.waitFor().displayed(boolean);
-element.waitFor().text(String);
-element.waitFor().attribute(String).is(String);
-element.waitFor().attribute(String).contains(String).is(boolean);
-element.waitFor().selected(boolean);
-element.waitFor().text().contains(String).is(boolean);
-element.waitFor().classes(String...).is(boolean);
+result = element.waitFor(int seconds).displayed(boolean);
 ----

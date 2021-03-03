@@ -23,7 +23,7 @@ It is also possible to overwrite the default `CheckRule` for a single `@Check` a
 [source,java]
 ----
 @Check(checkRule = CheckRule.IS_PRESENT)
-private UiElement checked = find(By.name("checked"));
+private UiElement uiElement;
 ----
 
 Change the check rules for the whole project (global) with the following:
@@ -43,19 +43,29 @@ Available CheckRules are
 
 The default is IS_DISPLAYED.
 
-With the `optional` attribute, the `@Check` only adds an optional assertion to the report.
+Use the `timeout` attribute to define a specific timeout for that element.
+The test will not be interrupted at this position.
+
+[source,java]
+----
+@Check(timeout = 1)
+private UiElement uiElement;
+----
+
+
+With the `optional` attribute, the check only adds an optional assertion to the report.
 The test will not be interrupted at this position.
 
 [source,java]
 ----
 @Check(optional = true)
-private UiElement checked = find(By.name("checked"));
+private UiElement uiElement;
 ----
 
-With following `@Check` annotation you can define a special error message.
+You can also define a special error message with the `prioritizedErrorMessage` attribute.
 
 [source,java]
 ----
 @Check(prioritizedErrorMessage = "My error message.")
-private UiElement checked = find(By.name("checked"));
+private UiElement uiElement;
 ----

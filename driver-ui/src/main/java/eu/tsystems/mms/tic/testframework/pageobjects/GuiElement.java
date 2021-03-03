@@ -55,6 +55,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -571,10 +572,12 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
         return getWebDriver();
     }
 
+    @Deprecated
     public boolean hasSensibleData() {
         return guiElementData.hasSensibleData();
     }
 
+    @Override
     public GuiElement sensibleData() {
         guiElementData.setHasSensibleData(true);
         return this;
@@ -719,9 +722,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
 
     @Deprecated
     public List<GuiElement> getList() {
-        List<GuiElement> guiElements = new ArrayList<>();
-        list().forEach(guiElement -> guiElements.add((GuiElement)guiElement));
-        return guiElements;
+        return list().stream().map(uiElement -> (GuiElement)uiElement).collect(Collectors.toList());
     }
 
     @Deprecated

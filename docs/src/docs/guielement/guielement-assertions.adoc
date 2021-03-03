@@ -11,22 +11,15 @@ If a functional assert fails, it will make the whole test fail and abort.
 UiElement element = find(By.id("button"));
 
 // expect text only returns true, if the text is exactly the passed string
-element.expect().text("mytext");
-element.expect().text().contains("my").is(true);
-element.expect().text().contains("foo").is(false);
-
-// expect present is true, if the element can be found within the currect site
-element.expect().present(true);
-
-// expect displayed returns true, if the element is visible and reachable by Selenium
-element.expect().displayed(true);
+element.expect().text("Hello World");
+element.expect().text().contains("World").is(boolean);
+element.expect().text().map(String::trim).startsWith("Hello").is(boolean);
 
 // CSS property checks
 element.expect().css("display").is("none");
 
 // CSS class checks
-element.expect().classes("active").is(true);
-element.expect().classes("disabled").is(false);
+element.expect().classes("active", "button").is(boolean);
 
 // ... and many more
 ----
@@ -37,11 +30,9 @@ Assert Collector is a collector for functional asserts of a UiElement. Failing a
 
 [source,java]
 ----
-UiElement element = find(By.id("label"));
-
-Control.collectAssertions(() -> {
-    element.expect().present(true);
-    element.expect().text("mytext");
+CONTROL.collectAssertions(() -> {
+    element.expect().text("Hello World");
+    Assert.assertEquals("hello", "world");
 });
 ----
 
@@ -53,11 +44,9 @@ Optional asserts provide the same assertion methods like functional asserts.
 
 [source,java]
 ----
-UiElement element = find(By.id("label"));
-
-Control.optionalAssertions(() -> {
-    element.expect().present(true);
-    element.expect().text("mytext");
+CONTROL.optionalAssertions(() -> {
+    element.expect().text("Hello World");
+    Assert.assertEquals("hello", "world");
 });
 ----
 

@@ -60,15 +60,12 @@ element.findWebElement(webElement -> {
 ----
 UiElement element = find(By.id("checkbox"));
 
-// Only check boxes returns true, all other elements return false
-boolean check = element.waitFor().selectable(true);
-
 // Check and uncheck the check box
 element.select();
 element.deselect();
 
 // true = check, false = uncheck
-element.select(true);
+element.select(boolean);
 ----
 
 == Scrolling
@@ -77,8 +74,6 @@ You can scroll the browser viewport until the element is in the middle viewport 
 
 [source,java]
 ----
-UiElement element = find(By.id("image"));
-
 element.scrollIntoView();
 
 // Lets offset pixel distance from the top of the viewport
@@ -91,8 +86,6 @@ You can simulate the mouse pointer is moved over an element.
 
 [source,java]
 ----
-UiElement element = find(By.id("label"));
-
 element.hover();
 ----
 
@@ -126,7 +119,8 @@ This method draws a coloured frame around the UiElement.
 
 [source,java]
 ----
-UiElement element = find(By.id("button"));
-
 element.highlight();
+
+// Or by a given color
+element.highlight(new Color(int, int, int));
 ----

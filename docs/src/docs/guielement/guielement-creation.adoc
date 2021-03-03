@@ -139,7 +139,7 @@ UiElement target = findDeep(By.id("target"));
 
 == Element lists
 
-The UiElement is like a pointer to the first element of the given locator. But if you want to retrieve a list of all found elements by the given locator, you can use UiElementLists like the following.
+The UiElement is like a pointer to the first element of the given locator. But if you want to retrieve a list of all found elements by the given locator, you can use the `UiElementList` like the following.
 
 [source,html]
 ----
@@ -160,6 +160,7 @@ div.list().last().expect().text("Third");
 Sensible data, such as passwords, can be displayed obfuscated in the logs during the actions type and sendKeys.
 
 [source,java]
-GuiElement myElement = new GuiElement(driver, By..).sensibleData();
-
+----
+UiElement sensibleElement = findById("secret").sensibleData();
+----
 Only the placeholder * is logged in the report instead of the real value.

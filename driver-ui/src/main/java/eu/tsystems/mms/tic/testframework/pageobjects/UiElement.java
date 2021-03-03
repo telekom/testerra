@@ -34,7 +34,7 @@ import eu.tsystems.mms.tic.testframework.webdriver.WebDriverRetainer;
 public interface UiElement extends
     UiElementBase,
         InteractiveUiElement,
-        Nameable<UiElement>,
+        PageObject<UiElement>,
         WebDriverRetainer,
         UiElementFinder
 {

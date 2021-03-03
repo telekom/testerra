@@ -30,7 +30,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementB
  * Contains basic GuiElement features which every GuiElement needs to have.
  * @author Mike Reiche
  */
-public interface UiElementBase extends WebElementActions, PageObject {
+public interface UiElementBase extends WebElementActions {
     UiElementBaseAssertion waitFor();
     UiElementBaseAssertion expect();
     /**

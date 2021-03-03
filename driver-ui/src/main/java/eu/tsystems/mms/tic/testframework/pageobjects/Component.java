@@ -21,13 +21,12 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.UiElementBase;
 
 /**
  * Components are PageObjects restricted to a root GuiElement
  * @author Mike Reiche
  */
-public interface Component<SELF> extends UiElementBase, Nameable<SELF> {
+public interface Component<SELF> extends UiElementBase, PageObject<SELF> {
     UiElementList<SELF> list();
 }

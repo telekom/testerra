@@ -28,6 +28,7 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractComponent;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.Component;
+import eu.tsystems.mms.tic.testframework.pageobjects.EmptyUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
 import eu.tsystems.mms.tic.testframework.pageobjects.LocatorFactoryProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
@@ -61,10 +62,10 @@ import org.openqa.selenium.WebDriver;
  * @author Mike Reiche
  * @todo Rename to AbstractPageObject
  */
-public abstract class AbstractPage implements
+public abstract class AbstractPage<SELF> implements
         Loggable,
         TestControllerProvider,
-        PageObject,
+        PageObject<SELF>,
         LocatorFactoryProvider
 {
     protected static final PageFactory pageFactory = Testerra.getInjector().getInstance(PageFactory.class);
@@ -86,6 +87,12 @@ public abstract class AbstractPage implements
     }
     protected UiElement findDeep(XPath xPath) { return findDeep(LOCATE.by(xPath)); }
     protected UiElement findDeep(By by) { return findDeep(LOCATE.by(by)); }
+    protected UiElement createEmpty() {
+        return createEmpty(LOCATE.by(By.tagName("empty")));
+    }
+    protected UiElement createEmpty(Locator locator) {
+        return new EmptyUiElement(this, locator);
+    }
 
     /**
      * Calls the assertPageIsShown method.
@@ -104,16 +111,15 @@ public abstract class AbstractPage implements
     /**
      * Package private accessible by {@link PageFactory}
      */
-    PageObject checkUiElements() throws Throwable {
-        return checkUiElements(CheckRule.DEFAULT);
+    void checkUiElements() throws Throwable {
+        checkUiElements(CheckRule.DEFAULT);
     }
 
     /**
      * Package private accessible by {@link PageFactory}
      */
-    PageObject checkUiElements(CheckRule checkRule) throws Throwable {
+    void checkUiElements(CheckRule checkRule) throws Throwable {
         pCheckPage(checkRule, true);
-        return this;
     }
 
     /**

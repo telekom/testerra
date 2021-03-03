@@ -21,12 +21,13 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
+import eu.tsystems.mms.tic.testframework.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverRetainer;
 
 /**
  * Fundamental Page Object features
  * @author Mike Reiche
  */
-public interface PageObject extends WebDriverRetainer {
+public interface PageObject<SELF> extends WebDriverRetainer, Nameable<SELF> {
     void screenshotToReport();
 }

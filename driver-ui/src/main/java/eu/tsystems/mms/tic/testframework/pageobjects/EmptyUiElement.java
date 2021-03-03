@@ -179,7 +179,7 @@ public class EmptyUiElement extends GuiElement {
         super(new GuiElementData(webDriver, locator), emptyCore);
     }
 
-    public EmptyUiElement(Page page, Locator locator) {
+    public EmptyUiElement(PageObject page, Locator locator) {
         super(new GuiElementData(page.getWebDriver(), locator), emptyCore);
         this.setParent(page);
     }

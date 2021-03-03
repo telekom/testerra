@@ -421,7 +421,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     }
 
     @Override
-    public UiElement newEmpty(Locator locator) {
+    public UiElement createEmpty(Locator locator) {
         return new EmptyUiElement(this, locator);
     }
 

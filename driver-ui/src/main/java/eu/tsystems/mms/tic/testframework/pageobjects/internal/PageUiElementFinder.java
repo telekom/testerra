@@ -52,7 +52,7 @@ public class PageUiElementFinder implements UiElementFinder {
     }
 
     @Override
-    public UiElement newEmpty(Locator locator) {
+    public UiElement createEmpty(Locator locator) {
         return new EmptyUiElement(this.page, locator);
     }
 

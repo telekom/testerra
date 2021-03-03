@@ -51,7 +51,7 @@ import org.openqa.selenium.WebDriver;
  * @author Mike Reiche
  * @todo Rename to AbstractPage
  */
-public class Page extends AbstractPage implements TestablePage, Nameable<Page> {
+public class Page extends AbstractPage<Page> implements TestablePage {
     private WebDriver driver;
     private PageUiElementFinder finder = new PageUiElementFinder(this);
 

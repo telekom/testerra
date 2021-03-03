@@ -12,7 +12,6 @@
             <class name="eu.tsystems.mms.tic.testframework.test.guielement.GuiElementFilterTest"/>
             <class name="eu.tsystems.mms.tic.testframework.test.guielement.GuiElementAdditionalTests"/>
             <class name="eu.tsystems.mms.tic.testframework.test.guielement.GuiElementExceptionsTest"/>
-            <class name="eu.tsystems.mms.tic.testframework.test.guielement.GuiElementListTests"/>
             <class name="eu.tsystems.mms.tic.testframework.test.guielement.GuiElementShadowRootTest"/>
             <class name="eu.tsystems.mms.tic.testframework.test.layoutcheck.LayoutCheckTest"/>
         </classes>

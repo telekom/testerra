@@ -38,7 +38,7 @@ import org.openqa.selenium.WebElement;
  * that acts like a {@link UiElement} and {@link PageObject}
  * @author Mike Reiche
  */
-public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> extends AbstractPage implements Component<SELF>
+public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> extends AbstractPage<SELF> implements Component<SELF>
 {
     protected static final UiElementFactory uiElementFactory = Testerra.getInjector().getInstance(UiElementFactory.class);
 

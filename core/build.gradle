@@ -35,7 +35,7 @@ dependencies {
     implementation 'com.opencsv:opencsv:3.9'
     // </CSVTestDataReader>
 
-    implementation 'org.reflections:reflections:0.9.12'
+//    implementation 'org.reflections:reflections:0.9.12'
 
     // <ExceptionUtils>
     // Comes already implicit from reflections

@@ -69,19 +69,19 @@ install {
 }
 
 subprojects {
+
+    // custom tasks for creating source/javadoc jars
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        archiveClassifier.set('sources')
+        from sourceSets.main.allSource
+    }
+
+    // add source jar tasks as artifacts
+    artifacts {
+        archives sourcesJar
+    }
+
     publishing {
-
-        // custom tasks for creating source/javadoc jars
-        task sourcesJar(type: Jar, dependsOn: classes) {
-            archiveClassifier.set('sources')
-            from sourceSets.main.allSource
-        }
-
-        // add source jar tasks as artifacts
-        artifacts {
-            archives sourcesJar
-        }
-
         publications {
             mavenJava(MavenPublication) {
                 from components.java

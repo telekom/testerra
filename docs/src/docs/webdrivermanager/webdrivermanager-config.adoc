@@ -10,7 +10,7 @@ You can set a global configuration by
 
 * `test.properties`
 * at runtime by `System.setProperty()`
-* at runtime by `webDriverManager.getConfig()` (only browser session behaviour)
+* at runtime by `WebDriverManager.getConfig()` (only browser session behaviour)
 
 === Configure with `test.properties`
 
@@ -35,18 +35,18 @@ Some of the WebdriverManager settings you can change as follows
 [source,java]
 ----
 // tt.wdm.closewindows.aftertestmethods
-webDriverManager.getConfig().setShutdownSessionAfterTestMethod(true);
+WEB_DRIVER_MANAGER.getConfig().setShutdownSessionAfterTestMethod(true);
 
 // tt.wdm.closewindows.onfailure
-webDriverManager.getConfig().setShutdownSessionOnFailure(false);
+WEB_DRIVER_MANAGER.getConfig().setShutdownSessionOnFailure(false);
 
 // tt.browser.maximize
-WebDriverManager.getConfig().setMaximizeViewport(true);
+WEB_DRIVER_MANAGER.getConfig().setMaximizeViewport(true);
 ----
 
 [NOTE]
 ======
-`webDriverManager.getConfig().setShutdownSessions()` controls closing of browser windows after every test method in general,
+`WEB_DRIVER_MANAGER.getConfig().setShutdownSessions()` controls closing of browser windows after every test method in general,
 when its set to `false`, this also affects `shouldShutdownSessionOnFailure()` and `shouldShutdownSessionAfterTestMethod()`.
 
 Keep in mind, that after the complete test run a session shutdown is being forced.
@@ -56,7 +56,7 @@ You can reset the settings to the default values or defined in `test.properties`
 
 [source,java]
 ----
-webDriverManager.getConfig().reset();
+WEB_DRIVER_MANAGER.getConfig().reset();
 ----
 
 == Local configuration
@@ -74,5 +74,5 @@ myRequest.setBrowser(Browsers.firefox);
 myRequest.setBrowserVersion("66");
 myRequest.setSessionKey("mysession");     // if no custom session defined, the default value 'default' is set
 
-WebDriver driver = webDriverManager.getWebDriver(myRequest);
+WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver(myRequest);
 ----

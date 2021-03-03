@@ -28,7 +28,7 @@ Then you can inject the full JavaScript file with following method.
 .Implementing own JavaScript code
 [source,java]
 ----
-WebDriver driver = webDriverManager.getWebDriver();
+WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 
 // WebDriver, Path to resource file, id of the script-tag
 JSUtils.implementJavascriptOnPage(driver, "js/inject/custom.js", "customJs");

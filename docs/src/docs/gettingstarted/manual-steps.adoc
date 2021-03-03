@@ -73,8 +73,8 @@ compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = "UTF-8"
 
 dependencies {
-    compile 'eu.tsystems.mms.tic.testerra:driver-ui-desktop:1-SNAPSHOT'
-    compile 'eu.tsystems.mms.tic.testerra:report-ng:1-SNAPSHOT'
+    compile 'eu.tsystems.mms.tic.testerra:driver-ui-desktop:2-SNAPSHOT'
+    compile 'eu.tsystems.mms.tic.testerra:report-ng:2-SNAPSHOT'
 }
 ----
 
@@ -196,7 +196,7 @@ public class ExampleTest extends TesterraTest implements PageFactoryProvider {
 
     @Test
     public void testT01_My_first_test() {
-        ExamplePage examplePage = pageFactory.createPage(ExamplePage.class);
+        ExamplePage examplePage = PAGE_FACTORY.createPage(ExamplePage.class);
         examplePage.clickOnMoreInformation();
     }
 }

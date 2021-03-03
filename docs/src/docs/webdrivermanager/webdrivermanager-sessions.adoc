@@ -66,7 +66,7 @@ On the first call of
 
 [source,java]
 ----
-WebDriver driver = webDriverManager.getWebDriver();
+WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 ----
 
 Selenium is triggered to open a new Browser windows with the defined URL.
@@ -88,13 +88,13 @@ The following example creates two independent browser sessions:
 
 [source,java]
 ----
-WebDriver driver = webDriverManager.getWebDriver();
-WebDriver driverWindow2 = webDriverManager.getWebDriver("window2");
+WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+WebDriver driverWindow2 = WEB_DRIVER_MANAGER.getWebDriver("window2");
 
 // Get the session key
-String key1 = webDriverManager.getSessionKey(driver);        // key1 contains 'default'
+String key1 = WEB_DRIVER_MANAGER.getSessionKey(driver);        // key1 contains 'default'
 
-String key2 = webDriverManager.getSessionKey(driverWindow2); // key2 contains 'window2'
+String key2 = WEB_DRIVER_MANAGER.getSessionKey(driverWindow2); // key2 contains 'window2'
 ----
 
 == Close a session
@@ -116,10 +116,10 @@ To close active sessions manually, do the following:
 [source,java]
 ----
 // Close all active session in the current test context.
-webDriverManager.shutdownAllThreadSessions();
+WEB_DRIVER_MANAGER.shutdownAllThreadSessions();
 
 // Close all active session in all current parallel test threads.
-WebDriverManager.shutdownAllSessions()
+WEB_DRIVER_MANAGER.shutdownAllSessions()
 ----
 
 [NOTE]
@@ -147,14 +147,14 @@ You can reuse the wedriver session in the following test by setting the followin
 ----
 @Test
 public void test1() {
-    WebDriver driver = webDriverManager.getWebDriver();
+    WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
     ...
 }
 
 @Test
 public void test2() {
     // You get the already opened session from test1
-    WebDriver driver = webDriverManager.getWebDriver();
+    WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
     ...
 }
 ----
@@ -178,14 +178,14 @@ private static String uuid = null;
 
 @Test
 public void test1() {
-    WebDriver driver = webDriverManager.getWebDriver();
-    uuid = webDriverManager.createExclusiveSessionKey(driver);
+    WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+    uuid = WEB_DRIVER_MANAGER.makeExclusive(driver);
 }
 
 @Test
 public void test2() {
     // Get the exclusive session
-    WebDriver driver = webDriverManager.getWebDriver(uuid);
+    WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver(uuid);
 }
 ----
 
@@ -201,7 +201,7 @@ You need do close this session manually.
 ----
 @AfterTest
 public void cleanup() {
-    webDriverManager.shutdownSession(uuid);
+    WEB_DRIVER_MANAGER.shutdownSession(uuid);
 }
 ----
 =====

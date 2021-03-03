@@ -42,7 +42,7 @@ import eu.tsystems.mms.tic.testframework.testing.UiElementFinderFactoryProvider;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 
 class MyTest extends TesterraTest implements UiElementFinderFactoryProvider, WebDriverManagerProvider {
-    private UiElementFinder finder = uiElementFinderFactory.create(webDriverManager.getWebDriver());
+    private UiElementFinder finder = UI_ELEMENT_FINDER_FACTORY.create(WEB_DRIVER_MANAGER.getWebDriver());
 
     @Test
     public void test() {

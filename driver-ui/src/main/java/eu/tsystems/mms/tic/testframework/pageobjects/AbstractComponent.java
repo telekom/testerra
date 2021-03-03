@@ -118,8 +118,8 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     }
 
     @Override
-    public boolean hasName() {
-        return rootElement.hasName();
+    public boolean hasOwnName() {
+        return rootElement.hasOwnName();
     }
 
     @Override

@@ -4,7 +4,7 @@ You can improve your PageObjects by using components. Components are like they a
 
 In Testerra, components are hybrids of both UiElements and PageObjects. They can contain more UiElements and even Components, but they don't provide features restricted to Pages or UiElements and their finder API is restricted to its root container element by default.
 
-You can create an component like...
+You can create a component like
 
 [source,java]
 ----
@@ -21,7 +21,7 @@ public class MyComponent extends AbstractComponent<MyComponent> {
 }
 ----
 
-To instantiate componets, use the `createComponent` method the same way as you create pages.
+To instantiate components, use the `createComponent()` method the same way as you create pages.
 
 [source,java]
 ----
@@ -36,11 +36,12 @@ public class MyPage extends Page {
 
 Since components are hybrid UiElements, the can also handled as lists.
 
-```java
+[source,java]
+----
 UiElement table = find(By.tagName("table"));
 TableRow rows = createComponent(TableRow.class, table.find(By.tagName("tr")));
 
 rows.list().forEach(row -> {
     row.getNameColumn().text().contains("Hello").is(true);
 });
-```
+----

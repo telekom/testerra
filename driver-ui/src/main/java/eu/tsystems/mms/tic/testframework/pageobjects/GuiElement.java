@@ -51,7 +51,6 @@ import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverFactory;
 import java.awt.Color;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -558,8 +557,8 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     }
 
     @Override
-    public boolean hasName() {
-        return guiElementData.hasName();
+    public boolean hasOwnName() {
+        return guiElementData.hasOwnName();
     }
 
     @Override

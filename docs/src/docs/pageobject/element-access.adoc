@@ -21,6 +21,7 @@ In the test, you can perform assertions without breaking the PageObject pattern.
 
 [source,java]
 ----
+@Test
 public void testSaveFunctionality() {
     MyPage page = getPage();
     page.performSave();

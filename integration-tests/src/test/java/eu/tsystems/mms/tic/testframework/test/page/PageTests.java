@@ -25,14 +25,20 @@ import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.InvalidComponentPage;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.WebTestPage;
 import eu.tsystems.mms.tic.testframework.exceptions.PageFactoryException;
+import eu.tsystems.mms.tic.testframework.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.internal.asserts.QuantityAssertion;
 import eu.tsystems.mms.tic.testframework.internal.asserts.StringAssertion;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
+import eu.tsystems.mms.tic.testframework.test.core.pageobjects.testdata.components.InputForm;
+import eu.tsystems.mms.tic.testframework.test.core.pageobjects.testdata.components.TableRow;
+import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
+import java.util.ArrayList;
+import java.util.List;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class PageTests extends AbstractExclusiveTestSitesTest<WebTestPage> implements Loggable, PageFactoryTest {
+public class PageTests extends AbstractExclusiveTestSitesTest<WebTestPage> implements Loggable, PageFactoryTest, AssertProvider {
 
     @Override
     public Class getPageClass() {
@@ -122,5 +128,20 @@ public class PageTests extends AbstractExclusiveTestSitesTest<WebTestPage> imple
     @Test(expectedExceptions = PageFactoryException.class)
     public void test_failed_Component_check() {
         InvalidComponentPage page = PAGE_FACTORY.createPage(InvalidComponentPage.class, getClassExclusiveWebDriver());
+    }
+
+    @Test
+    public void test_Component_hierarchy() {
+        WebTestPage page = getPage();
+        List<Nameable> ancestors = new ArrayList<>();
+        TableRow tableRow = page.inputForm().getTableRow();
+        tableRow.traceAncestors(nameable -> {
+            ancestors.add(nameable);
+            return true;
+        });
+
+        ASSERT.assertInstanceOf(ancestors.get(0), WebTestPage.class);
+        ASSERT.assertInstanceOf(ancestors.get(1), InputForm.class);
+        Assert.assertEquals(tableRow.toString(true), "WebTestPage -> InputForm(inputForm(By.className: box)) -> TableRow(tableRow(By.tagName: empty))");
     }
 }

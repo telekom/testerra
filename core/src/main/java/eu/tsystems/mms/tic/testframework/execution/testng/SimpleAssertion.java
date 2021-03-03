@@ -177,4 +177,9 @@ public interface SimpleAssertion {
     default void assertEndsWith(Object actual, Object expected) {
         assertEndsWith(actual, expected, null);
     }
+
+    void assertInstanceOf(Object actual, Class expected, Object subject);
+    default void assertInstanceOf(Object actual, Class expected) {
+        assertInstanceOf(actual, expected, null);
+    }
 }

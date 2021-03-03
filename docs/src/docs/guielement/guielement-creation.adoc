@@ -164,3 +164,27 @@ Sensible data, such as passwords, can be displayed obfuscated in the logs during
 UiElement sensibleElement = findById("secret").sensibleData();
 ----
 Only the placeholder * is logged in the report instead of the real value.
+
+== Trace elements hierarchy
+
+In most cases, elements are part of a view hierarchy. The `Nameable` interface provides some methods to retrieve this information.
+
+[source,java]
+----
+Nameable parent = element.getParent();
+----
+
+A parent could by any `PageObject` like `UiElement`, `Component` or `Page`.
+
+NOTE: Be aware that `getParent()` could return `NULL`, when the element has been created without a hierarchy or the element is a `Page`. So you should always perform a null or instanceof check.
+
+If you want to trace the hierarchy beginning from top-down, you can use the `traceAncestors()` method.
+
+[source,java]
+----
+element.traceAncestors(ancestor -> true);
+----
+
+When the given `Predicate` return `FALSE`, the tracing will stop.
+
+NOTE: This will not supply the calling element.

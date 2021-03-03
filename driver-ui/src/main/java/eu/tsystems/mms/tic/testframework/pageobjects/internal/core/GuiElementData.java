@@ -90,7 +90,7 @@ public class GuiElementData implements
     }
 
     @Override
-    public boolean hasName() {
+    public boolean hasOwnName() {
         return name!=null;
     }
 
@@ -130,7 +130,7 @@ public class GuiElementData implements
     public String getName(boolean detailed) {
         StringBuilder sb = new StringBuilder();
 
-        boolean hasName = hasName();
+        boolean hasName = hasOwnName();
 
         if (hasName) {
             sb.append(this.name);

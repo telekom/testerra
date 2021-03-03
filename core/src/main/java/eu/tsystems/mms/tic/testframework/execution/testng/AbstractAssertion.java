@@ -463,4 +463,11 @@ public abstract class AbstractAssertion implements Assertion {
             fail(formatExpectEndsWith(actual, expected, subject));
         }
     }
+
+    @Override
+    public void assertInstanceOf(Object actual, Class expected, Object subject) {
+        if (!expected.isInstance(actual)) {
+            fail(formatExpectEquals(actual, String.format("instance of [%s]", expected), subject));
+        }
+    }
 }

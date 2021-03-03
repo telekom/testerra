@@ -13,6 +13,8 @@ public class InputForm extends AbstractComponent<InputForm> {
 
     private UiElement input = findByQa("input/text");
 
+    private TableRow tableRow = createComponent(TableRow.class, createEmpty());
+
     public InputForm(UiElement rootElement) {
         super(rootElement);
     }
@@ -23,5 +25,9 @@ public class InputForm extends AbstractComponent<InputForm> {
 
     public InteractiveUiElement input() {
         return input;
+    }
+
+    public TableRow getTableRow() {
+        return tableRow;
     }
 }

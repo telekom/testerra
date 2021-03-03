@@ -62,7 +62,7 @@ public class SetNameFieldAction extends AbstractFieldAction implements Loggable 
                 log().error("Failed to assign description to " + field + ". Make sure the field was made accessible in the" +
                         " AbstractPage class before calling this method.");
             }
-            if (nameable != null && !nameable.hasName()) {
+            if (nameable != null && !nameable.hasOwnName()) {
                 nameable.setName(field.getName());
             }
         }

@@ -20,7 +20,9 @@
  */
 package eu.tsystems.mms.tic.testframework.internal;
 
+import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 /**
  * This interface supports naming hierarchy
@@ -40,14 +42,14 @@ public interface Nameable<SELF> {
     String getName(boolean detailed);
 
     /**
-     * Returns the parent instance of this
+     * Returns the parent instance of this. Can be NULL.
      */
     Nameable getParent();
 
     /**
      * Determines if the instance has name explicitly set by {@link #setName(String)}
      */
-    boolean hasName();
+    boolean hasOwnName();
 
     default String getName() {
         return getName(false);
@@ -55,20 +57,25 @@ public interface Nameable<SELF> {
 
     default String toString(boolean detailed) {
         StringBuilder sb = new StringBuilder();
-        this.traceAncestors(parent -> sb.append(parent.getName(detailed)).append(" -> "));
+        this.traceAncestors(parent -> {
+            sb.append(parent.getName(detailed)).append(" -> ");
+            return true;
+        });
         sb.append(getName(detailed));
         return sb.toString();
     }
 
     /**
-     * Traces the parents beginning by root and passes them to the consumer
-     * @param consumer
+     * Traces the parents beginning by root and passes them to the predicate WITHOUT the calling element.
+     * When the predicate returns FALSE, the tracing stops.
      */
-    default void traceAncestors(Consumer<Nameable> consumer) {
+    default void traceAncestors(Predicate<Nameable> consumer) {
         Nameable parent = getParent();
         if (parent!=null) {
             parent.traceAncestors(consumer);
-            consumer.accept(parent);
+            if (!consumer.test(parent)) {
+                return;
+            };
         }
     }
 }

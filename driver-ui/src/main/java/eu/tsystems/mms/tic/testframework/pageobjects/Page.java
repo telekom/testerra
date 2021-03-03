@@ -37,6 +37,7 @@ import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import java.awt.Color;
+import java.util.Optional;
 import java.util.Random;
 import org.openqa.selenium.WebDriver;
 
@@ -72,7 +73,7 @@ public class Page extends AbstractPage<Page> implements TestablePage {
      * A page has always a name
      */
     @Override
-    public boolean hasName() {
+    public boolean hasOwnName() {
         return true;
     }
 

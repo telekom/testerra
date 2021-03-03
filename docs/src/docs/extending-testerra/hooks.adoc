@@ -1,8 +1,6 @@
-= Hooks
+= Modules and Hooks
 
-The interface `ModuleHook` of Testerra framework offers you an entry point to extend the framework and register listeners, add workers or apply filters to methods.
-All you have to do is to implement the interfaces `ModuleHook.init()` and `ModuleHook.terminate()` methods.
-Testerra will then search for all present implementations of `ModuleHook` in the class path and will register it.
+The interface `ModuleHook` of Testerra framework offers you methods for the runtime lifecycle with the `ModuleHook.init()` and `ModuleHook.terminate()` methods.
 
 While the `init()` method is called on startup of Testerra as one of the earliest steps, you are able to make your customizations as soon as possible and you are able to register to all <<Events and Listener>> of Testerra framework as well.
 
@@ -27,3 +25,24 @@ public class SimpleCustomHook implements ModuleHook {
     }
 }
 ----
+
+To register your module hook, you need to create a module dependency injection configuration based on the Google Guice framework.
+
+[source,java]
+----
+package eu.tsystems.mms.tic.testframework.ioc;
+
+import com.google.inject.AbstractModule;
+import com.google.inject.Scopes;
+import com.google.inject.multibindings.Multibinder;
+
+public class ConfigureMyModule extends AbstractModule {
+    @Override
+    protected void configure() {
+        Multibinder<ModuleHook> hookBinder = Multibinder.newSetBinder(binder(), ModuleHook.class);
+        hookBinder.addBinding().to(SimpleCustomHook.class).in(Scopes.SINGLETON);
+    }
+}
+----
+
+NOTE: Please be aware, that the package namespace is required in order to find your module configuration.

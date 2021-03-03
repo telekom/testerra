@@ -33,7 +33,7 @@ public class DefaultElementLabelProviderTest extends TesterraTest implements Log
 
     private UiElementLabelLocator labelLocator = Testerra.getInjector().getInstance(UiElementLabelLocator.class);
 
-    @Test
+    @Test(enabled = false)
     public void test_button() {
         Locator locator = labelLocator.createLocator(Aria.BUTTON, "Ich stimme zu");
         log().info(locator.toString());

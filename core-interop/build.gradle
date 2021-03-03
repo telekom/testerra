@@ -25,10 +25,6 @@ dependencies {
     // <IDUtils>
     implementation 'org.mongodb:bson:3.7.0'
     // </IDUtils>
-
-    // <Booter>
-    implementation 'org.reflections:reflections:0.9.12'
-    // </Booter>
 }
 
 test {

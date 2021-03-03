@@ -37,7 +37,7 @@ ext {
 
 //doNotPublish(false)
 
-allprojects {
+subprojects {
 
     group 'eu.tsystems.mms.tic.testerra'
     version moduleVersion
@@ -46,6 +46,7 @@ allprojects {
     apply plugin: 'maven'
     apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
     apply plugin: 'jacoco'
+    apply from: rootProject.file('publish.gradle')
 //}
 
 

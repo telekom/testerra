@@ -16,5 +16,3 @@ test {
         suites 'src/test/resources/testSuite.xml'
     }
 }
-
-//apply from: rootProject.file('publish.gradle')

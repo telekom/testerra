@@ -62,5 +62,3 @@ processResources {
 test {
     exclude '**'
 }
-
-//apply from: rootProject.file('publish.gradle')

@@ -1,7 +1,3 @@
-/*if (hasProperty("free")) {
-    doNotPublish(this)
-}*/
-
 def opencv = [
         //'org.bytedeco.javacpp-presets:opencv:2.4.9-0.9',
         'org.bytedeco.javacpp-presets:opencv:2.4.9-0.9:windows-x86',
@@ -25,5 +21,3 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     // </LayoutCheck AnnotationContainer>
 }
-
-//apply from: rootProject.file('publish.gradle')

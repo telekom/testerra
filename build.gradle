@@ -2,11 +2,6 @@ plugins {
     id 'com.github.jk1.dependency-license-report' version '1.13'
 }
 
-//apply plugin: 'java'
-//apply plugin: 'maven'
-//apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
-//apply plugin: 'jacoco'
-
 ext {
     /*
     module stuff
@@ -20,14 +15,9 @@ ext {
 
     seleniumVersion = '3.141.59'
     guavaVersion = "28.1-jre"
-    /*
-    Flags
-     */
-    doNotPublish = this.&dnp
 
-    licenseName = 'The Apache Software License, Version 2.0'
-    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-    allLicenses = ["Apache-2.0"]
+    // Flags
+    doNotPublish = this.&dnp
 
     moduleVersion = '1-SNAPSHOT'
     if (System.properties.containsKey('ttVersion')) {
@@ -60,47 +50,6 @@ subprojects {
         toolVersion = "0.8.5"
     }
 
-//    // custom tasks for creating source/javadoc jars
-//    task sourcesJar(type: Jar, dependsOn: classes) {
-//        archiveClassifier.set('sources')
-//        from sourceSets.main.allSource
-//    }
-//
-//    // add source jar tasks as artifacts
-//    artifacts {
-//        archives sourcesJar
-//    }
-//
-//    publishing {
-//
-//        publications {
-//            mavenJava(MavenPublication) {
-//                from components.java
-//                artifact sourcesJar
-//            }
-//        }
-//
-//        repositories {
-//            maven {
-//                url System.getProperty("deployUrl", "none")
-//                credentials {
-//                    username System.getProperty("deployUsername", "none")
-//                    password System.getProperty("deployPassword", "none")
-//                }
-//            }
-//        }
-//    }
-//
-//    tasks.whenTaskAdded { t ->
-//        if (t.name.startsWith("publish")) {
-//            boolean e = t.project.publish.enabled
-//            if (!e) {
-//                println "Not running publish for " + t.project.name
-//                t.enabled = false
-//            }
-//        }
-//    }
-
     test {
 
         ignoreFailures = true
@@ -115,6 +64,7 @@ subprojects {
     }
 }
 
+// Helper function to prevent publishing
 def dnp(prj) {
     prj.jar.enabled = true
     prj.publish.enabled = false

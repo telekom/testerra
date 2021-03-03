@@ -16,5 +16,3 @@ clean.dependsOn(destClean)
 
 // Build the report app into resources before building the librar
 //compileJava.dependsOn(project("app").build)
-
-//apply from: rootProject.file('publish.gradle')

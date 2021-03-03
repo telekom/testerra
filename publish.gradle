@@ -58,12 +58,6 @@ install {
                 url siteUrl
             }
 
-            // Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
-//            def deps = configurations.compile.allDependencies + configurations.implementation.allDependencies
-//            deps.each {
-//                dependencies.add("compile", it)
-//            }
-
         }
     }
 }

@@ -1,6 +1,4 @@
-= Get properties
-
-== Selenium webelement properties
+= Access WebElement
 
 UiElement provides all Selenium methods when retrieving the `WebElement`.
 

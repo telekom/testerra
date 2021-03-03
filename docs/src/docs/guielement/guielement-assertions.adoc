@@ -2,9 +2,7 @@
 
 UiElements provide many kinds of assertion methods to verify your elements.
 
-== Functional asserts
-
-If a functional assert fails, it will make the whole test fail and abort.
+If an assertion fails, it will make the whole test fail and abort. You can control that by using a <<Assertion handling, TestController>>
 
 [source,java]
 ----
@@ -24,33 +22,7 @@ element.expect().classes("active", "button").is(boolean);
 // ... and many more
 ----
 
-== Assert collector of functional asserts
-
-Assert Collector is a collector for functional asserts of a UiElement. Failing an assert it will not abort the test method, but it will throw an exception at *the end* of the test method. So you have a chance to validate many more aspects in one test run.
-
-[source,java]
-----
-CONTROL.collectAssertions(() -> {
-    element.expect().text("Hello World");
-    Assert.assertEquals("hello", "world");
-});
-----
-
-== Optional asserts
-
-Optional asserts do not let the test fail. But the assertion message will be added to the log with loglevel ERROR.
-
-Optional asserts provide the same assertion methods like functional asserts.
-
-[source,java]
-----
-CONTROL.optionalAssertions(() -> {
-    element.expect().text("Hello World");
-    Assert.assertEquals("hello", "world");
-});
-----
-
-== Layout asserts
+== Layout assertions
 
 UiElement can be checked for their relative layouts.
 

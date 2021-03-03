@@ -1,0 +1,106 @@
+= Test controlling
+
+The `TestControllerProvider` interface provides the `TestController` instance `CONTROL` for controlling the test and assertion flow.
+
+
+== Collected assertions
+
+Collecting assertion means, that a failing assertion will not abort the test method, but it will throw an exception at *the end* of the test method. So you have a chance to validate many more aspects in one test run.
+
+[source,java]
+----
+CONTROL.collectAssertions(() -> {
+    element.expect().text("Hello World");
+    page.performLogin();
+    Assert.assertEquals("hello", "world");
+});
+----
+
+== Optional assertions
+
+Optional asserts do not let the test fail. But the assertion message will be added to the log with loglevel `WARN`.
+
+[source,java]
+----
+CONTROL.optionalAssertions(() -> {
+    element.expect().text("Hello World");
+    page.performLogin();
+    Assert.assertEquals("hello", "world");
+});
+----
+
+== Change internal timeout
+
+To change the timeout for internal assertions, you can override it for a specified block.
+
+[source,java]
+----
+CONTROL.withTimeout(int seconds, () -> {
+    element.expect().text("Hello World");
+}
+----
+
+Please mind that you also can pass already implemented methods.
+
+[source,java]
+----
+@Test
+public void test_TestSomething_fast() {
+    CONTROL.withTimeout(0, () -> test_TestSomething());
+}
+----
+
+
+== Retries
+
+In some situations you cannot rely on single assertions or waits anymore and need to continue trying something out before performing an alternative solution. Use control methods for repeating a couple of actions within a loop until a timeout has reached.
+
+For example, this retry block tries to click a button until it's disabled.
+
+[source,java]
+----
+CONTROL.retryFor(int seconds, () -> {
+    button.click();
+    button.expect().enabled(false);
+});
+----
+
+You can also perform something when the retry block fails.
+
+[source,java]
+----
+CONTROL.retryFor(int seconds, () -> {
+    element.expect().text(String);
+}, () -> {
+    element.getWebDriver().reload();
+});
+----
+
+You can combine control features to completely disable the internal element timeout.
+
+[source,java]
+----
+CONTROL.retryFor(int seconds, () -> {
+    CONTROL.withTimeout(int seconds, () -> {
+        button.click();
+        uiElement.scrollIntoView();
+        uiElement.expect().visible(boolean complete).is(boolean);
+    }
+);
+----
+
+== Waits
+
+If you need to wait for something to happen. You can use the control method `waitFor` which does the same as `retryFor` but without throwing any exception.
+
+[source,java]
+----
+String currentWindowTitle = getWebDriver().getTitle();
+
+findById("login").click();
+
+if (CONTROL.waitFor(int seconds, () -> WEB_DRIVER_MANAGER.switchToWindowTitle("Login"))) {
+    LoginPage loginPage = createPage(LoginPage.class);
+    loginPage.performLogin();
+}
+----

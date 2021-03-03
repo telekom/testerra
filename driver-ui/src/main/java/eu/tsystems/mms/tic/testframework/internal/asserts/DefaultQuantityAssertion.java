@@ -36,6 +36,10 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
 
     @Override
     public boolean is(Object expected, String failMessage) {
+        if (expected instanceof Boolean) {
+            boolean expectedBoolean = (Boolean)expected;
+            return this.is(expectedBoolean, failMessage);
+        }
         return testSequence(
                 provider,
                 (actual) -> testAssertion.equals(actual, expected),
@@ -45,11 +49,16 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
 
     @Override
     public boolean isNot(Object expected, String failMessage) {
-        return testSequence(
-                provider,
-                (actual) -> testAssertion.notEquals(actual, expected),
-                (actual) -> testAssertion.formatExpectNotEquals(null, expected, createFailMessage(failMessage))
-        );
+        if (expected instanceof Boolean) {
+            boolean expectedBoolean = (Boolean)expected;
+            return this.is(!expectedBoolean, failMessage);
+        } else {
+            return testSequence(
+                    provider,
+                    (actual) -> testAssertion.notEquals(actual, expected),
+                    (actual) -> testAssertion.formatExpectNotEquals(null, expected, createFailMessage(failMessage))
+            );
+        }
     }
 
     @Override

@@ -31,6 +31,7 @@ public enum Attribute {
     STYLE("style"),
     ALT("alt"),
     SRC("src"),
+    READONLY("readonly"),
     ;
 
     private final String attrib;

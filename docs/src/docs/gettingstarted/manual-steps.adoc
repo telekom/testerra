@@ -4,7 +4,7 @@ include::../properties/property-attributes.adoc[]
 
 == Setup
 
-NOTE: To be announced.
+NOTE: Comming soon: Testerra will be available at MavenCentral.
 
 //
 //The Testerra framework is deployed to a https://bintray.com/testerra-io/Testerra[Bintray repository].

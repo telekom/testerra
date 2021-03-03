@@ -1,25 +1,14 @@
-= Assertions (*deprecated*)
+= Assertions
 
-NOTE: This feature has been `@deprecated` for public access. Please implement assertions within your PageObject and don't rely on these methods anymore.
-
-Pages objects offer some assertions which mostly work like their equivalents on UiElements.
-In difference to UiElements here the whole page is searched for the given element in recursive order.
+A Page instance also provides an assertions interface similar to UiElements.
 
 [source,java]
 ----
 ResultPage resultPage = PAGE_FACTORY.createPage(ResultPage.class);
 
-TestableUiElement expectedTextElement = resultPage.anyElementContainsText("Expected Text");
-// Asserts if text is present or not.
-expectedTextElement.expect().present(boolean);
+// Expect the current WebDriver url
+page.expect().url().endsWith("input.html").is(true);
 
-// Asserts if text is displayed or not.
-expectedTextElement.expect().displayed(boolean);
-
-// Work like the methods above. In addition, the description String
-// is added to the exception if the assert fails.
-String errorTextNotPresent = text + " is not present on this page.";
-String errorTextNotDisplayed = text + " is not displayed on this page.";
-resultPage.anyElementContainsText(errorTextNotPresent).expect().present(boolean);
-resultPage.anyElementContainsText(errorTextNotDisplayed).expect().displayed(boolean);
+// Expect the page title
+page.expect().title("Search results");
 ----

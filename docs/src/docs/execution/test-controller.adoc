@@ -18,7 +18,7 @@ CONTROL.collectAssertions(() -> {
 
 == Optional assertions
 
-Optional asserts do not let the test fail. But the assertion message will be added to the log with loglevel `WARN`.
+Optional asserts do not let the test fail, but the assertion message will be added to the log with loglevel `WARN` and will result in an minor failure aspect.
 
 [source,java]
 ----
@@ -50,7 +50,6 @@ public void test_TestSomething_fast() {
 }
 ----
 
-
 == Retries
 
 In some situations you cannot rely on single assertions or waits anymore and need to continue trying something out before performing an alternative solution. Use control methods for repeating a couple of actions within a loop until a timeout has reached.
@@ -76,7 +75,7 @@ CONTROL.retryFor(int seconds, () -> {
 });
 ----
 
-You can combine control features to completely disable the internal element timeout.
+You can also combine these control features.
 
 [source,java]
 ----

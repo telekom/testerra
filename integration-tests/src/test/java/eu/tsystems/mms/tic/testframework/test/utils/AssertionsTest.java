@@ -21,116 +21,127 @@
 
 package eu.tsystems.mms.tic.testframework.test.utils;
 
-import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
-import eu.tsystems.mms.tic.testframework.execution.testng.SimpleAssertion;
+import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import org.testng.annotations.Test;
 
 /**
  * @todo Incomplete
  */
-public class AssertionsTest extends TesterraTest {
-
-    private SimpleAssertion assertion = Testerra.getInjector().getInstance(InstantAssertion.class);
+public class AssertionsTest extends TesterraTest implements AssertProvider {
 
     @Test
     public void testIsTrue() {
-        assertion.assertTrue(true);
+        ASSERT.assertTrue(true);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testIsTrue_fails() {
-        assertion.assertTrue(false);
+        ASSERT.assertTrue(false);
     }
 
     @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that should be true \\[false\\] equals \\[true\\]")
     public void testIsTrue_fails_message() {
-        assertion.assertTrue(false, "should be true");
+        ASSERT.assertTrue(false, "should be true");
     }
 
     @Test
     public void testIsFalse() {
-        assertion.assertFalse(false);
+        ASSERT.assertFalse(false);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testIsFalse_fails() {
-        assertion.assertFalse(true);
+        ASSERT.assertFalse(true);
     }
 
     @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that should be false \\[true\\] equals \\[false\\]")
     public void testIsFalse_fails_message() {
-        assertion.assertFalse(true, "should be false");
+        ASSERT.assertFalse(true, "should be false");
     }
 
     @Test
     public void testIsNull() {
-        assertion.assertNull(null);
+        ASSERT.assertNull(null);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testIsNull_fails() {
-        assertion.assertNull(assertion);
+        ASSERT.assertNull(ASSERT);
     }
 
     @Test
     public void testIsNotNull() {
-        assertion.assertNotNull(assertion);
+        ASSERT.assertNotNull(ASSERT);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testIsNotNull_fails() {
-        assertion.assertNotNull(null);
+        ASSERT.assertNotNull(null);
     }
 
     @Test
     public void testStringEquals() {
-        assertion.assertEquals("Hallo Welt", "Hallo Welt");
+        ASSERT.assertEquals("Hallo Welt", "Hallo Welt");
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testStringEquals_fails() {
-        assertion.assertEquals("Hello World", "Hallo Welt");
+        ASSERT.assertEquals("Hello World", "Hallo Welt");
     }
 
     @Test
     public void testStringNotEquals() {
-        assertion.assertNotEquals("Hello World", "Hallo Welt");
+        ASSERT.assertNotEquals("Hello World", "Hallo Welt");
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testStringNotEquals_fails() {
-        assertion.assertNotEquals("Hallo Welt", "Hallo Welt");
+        ASSERT.assertNotEquals("Hallo Welt", "Hallo Welt");
     }
 
     @Test
     public void testStartsWith() {
-        assertion.assertStartsWith("a long time ago", "a long");
+        ASSERT.assertStartsWith("a long time ago", "a long");
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testStartsWith_fails() {
-        assertion.assertStartsWith("a long time ago", "in the end");
+        ASSERT.assertStartsWith("a long time ago", "in the end");
     }
 
     @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp="Expected that a fairytale \\[a long time ago\\] starts with \\[in the end\\]")
     public void testStartsWith_fails_message() {
-        assertion.assertStartsWith("a long time ago", "in the end", "a fairytale");
+        ASSERT.assertStartsWith("a long time ago", "in the end", "a fairytale");
     }
 
     @Test
     public void testEndsWith() {
-        assertion.assertEndsWith("this is the end", "the end");
+        ASSERT.assertEndsWith("this is the end", "the end");
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testEndsWith_fails() {
-        assertion.assertEndsWith("this is the end", "the beginning");
+        ASSERT.assertEndsWith("this is the end", "the beginning");
     }
 
     @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that the sentence \\[this is the end\\] ends with \\[the beginning\\]")
     public void testEndsWith_fails_message() {
-        assertion.assertEndsWith("this is the end", "the beginning", "the sentence");
+        ASSERT.assertEndsWith("this is the end", "the beginning", "the sentence");
+    }
+
+    @Test
+    public void testContains() {
+        ASSERT.assertContains("Hello world", "world");
+    }
+
+    @Test(expectedExceptions = AssertionError.class)
+    public void testContains_fails() {
+        ASSERT.assertContains("Hello world", "planet");
+    }
+
+    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that the greeting \\[Hello world\\] contains \\[planet\\]")
+    public void testContains_fails_subject() {
+        ASSERT.assertContains("Hello world", "planet", "the greeting");
     }
 }

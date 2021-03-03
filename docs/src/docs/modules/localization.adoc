@@ -30,7 +30,7 @@ Now you can instance UiElements by localized strings.
 ----
 import eu.tsystems.mms.tic.testframework.l10n.SimpleLocalization;
 
-GuiElement loginBtn = new GuiElement(By.linkText(SimpleLocalization.getText("BTN_LOGIN")));
+UiElement loginBtn = find(By.linkText(SimpleLocalization.getText("BTN_LOGIN")));
 ----
 
 But you can use your own localized bundles.

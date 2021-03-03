@@ -1,8 +1,8 @@
 = Timeout Setting
 
-The checks are performed with a timeout. The default timeout is set by the property {element_timeout_seconds} in `test.properties`
+The checks are performed with a timeout. The default timeout is set by the `{element_timeout_seconds}` property.
 
-With the following annotation the UiElements timeout can be changed during page instantiation:
+With the following annotation, the check can be optimized for all UiElements during page instantiation:
 [source,java]
 ----
 @PageOptions(elementTimeoutInSeconds = 60)

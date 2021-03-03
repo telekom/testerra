@@ -24,7 +24,7 @@ in the scroll area of the Viewport.
 element.expect().visible(boolean complete).is(boolean);
 ----
 
-NOTE: It doesn't relate to `opacity` or `z-index` style properties. If you need to test the perceptually visibility to the human eye, you should consider to implement <<LayoutCheck>>.
+NOTE: It doesn't relate to `opacity` or `z-index` style properties. If you need to test the perceptually visibility to the human eye, you should consider to implement an image based <<Layout Check>>.
 
 == Standard WebElement checks
 

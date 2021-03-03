@@ -43,16 +43,6 @@ Available CheckRules are
 
 The default is IS_DISPLAYED.
 
-Use the `timeout` attribute to define a specific timeout for that element.
-The test will not be interrupted at this position.
-
-[source,java]
-----
-@Check(timeout = 1)
-private UiElement uiElement;
-----
-
-
 With the `optional` attribute, the check only adds an optional assertion to the report.
 The test will not be interrupted at this position.
 
@@ -67,5 +57,13 @@ You can also define a special error message with the `prioritizedErrorMessage` a
 [source,java]
 ----
 @Check(prioritizedErrorMessage = "My error message.")
+private UiElement uiElement;
+----
+
+Use the `timeout` attribute to define a specific timeout only for that element to optimize check timeouts on Page instantiation. This overrides <<Timeout Setting, the Page timeout setting>>.
+
+[source,java]
+----
+@Check(timeout = 60)
 private UiElement uiElement;
 ----

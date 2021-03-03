@@ -5,9 +5,7 @@ UiElement provides all Selenium methods when retrieving the `WebElement`.
 .The given HTML snippet
 [source,html]
 ----
-...
 <a href="newpage.html" style="font-size: 20px;">My link</a>
-...
 ----
 
 .Standard attributes

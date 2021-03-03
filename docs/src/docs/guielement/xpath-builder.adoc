@@ -1,83 +1,123 @@
 = XPath builder
 
-The static `XPath` class helps you to build failsafe xpathes optimized for HTML. But it's restricted to search elements top-down.
+The static `XPath` class helps you to build failsafe xPathes optimized for HTML. But it's restricted to search elements top-down.
 
 This is what the basic syntax looks like
-```java
+
+[source,java]
+----
 UiElement div = find(XPath.from("div"));
-```
+----
 
 But it supports many other features you need when you select
 elements from the DOM, like first and last element.
-```java
-XPath.from("td", 1);
-XPath.from("td", -1);
-```
+
+[source,java]
+----
+XPath.from("tr", 1);
+XPath.from("tr", -1);
+----
+
+The xPath is generated _greedy_ by default. When you create an xPath like
+
+[source,java]
+----
+XPath.from("body").select("div");
+----
+
+this equivalent result would be `//body//div`
+
+If you want to restrict the selection to a child element, use the `/` prefix:
+
+[source,java]
+----
+XPath.from("/body").select("/div");
+----
+
+which equivalent would be `/body/div`
 
 == Elements that have classes
 
-```java
+[source,java]
+----
 XPath.from("div").classes("navigation", "header");
-```
+----
 This will find elements like
-```html
+
+[source,html]
+----
 <div class="header large navigation">
-```
+----
 but not
-```html
+
+[source,html]
+----
 <div class="navigation-header">
-```
+----
 
 == Select an element that encloses another element
 
-```java
+[source,java]
+----
 XPath.from("nav")
     .classes("mobile")
-    .enclose("div")
+    .enclose("/div")
         .classes("navigation", "header");
-```
+----
 
 This will find the `<nav>` element
-```html
+
+[source,html]
+----
 <nav class="mobile">
     <div class="navigation header"></div>
 </nav>
-```
+----
 
 == Select an element by its text
-```java
+
+[source,java]
+----
 XPath.from("*").text().hasWords("Login", "here");
 XPath.from("*").text().contains("first");
 XPath.from("*").text().endsWith("here ");
-```
+----
 This will find elements like
-```html
+
+[source,html]
+----
 <a> Login first
     here </a>
-```
+----
 
 == Select by attributes
 
-```java
+[source,java]
+----
 XPath.from("*").attribute("src").endsWith(".png");
-```
+----
 
 This will find elements like
 
-```html
+[source,html]
+----
 <img src="http://example.com/image.png"/>
-```
+----
 
 == Select a sub element
-```java
+
+[source,java]
+----
 XPath.from("form")
     .attribute("name", "login")
     .select("button")
-        .text().hasWords("Login");
-```
+        .text().hasWords("Login here");
+----
 This will find the `<button>` element
-```html
+
+[source,html]
+----
 <form name="login">
-    <button>Login here</button>
+    <button> Login here * </button>
 </form>
-```
+----

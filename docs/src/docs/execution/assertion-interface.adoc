@@ -1,0 +1,31 @@
+= Regular Assertions
+
+When implementing the `AssertProvider` interface, you get an instance named `ASSERT`, which provides more features than standard TestNG `Assert`
+
+You can use this interface for assertions they cannot be covered by the UiElement.
+
+[source,java]
+----
+import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
+
+public class MyTest extends TesterraTest implements AssertProvider {
+
+    @Test
+    public void test() {
+        ASSERT.assertContains("Hello world", "planet");
+    }
+}
+----
+
+This will throw an `AssertionError` with the message `Expected [Hello world] contains [planet]`.
+
+You can also add some more detailed information to the subject.
+
+[source,java]
+----
+ASSERT.assertContains("Hello world", "planet", "the greeting");
+----
+
+Which will result in `Expected that the greeting [Hello world] contains [planet]`
+
+Please take a look into the `Assertion` interface for a full feature overview.

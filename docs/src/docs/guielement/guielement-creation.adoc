@@ -66,7 +66,7 @@ If you want to make sure, that your element is unique.
 UiElement myElement = find(LOCATE.by(By.id("elementId")).unique());
 ----
 
-This will throw an exception, if not one WebElement has been found.
+This will throw an exception, if not exact one WebElement has been found.
 
 === Locate displayed items only
 
@@ -77,7 +77,7 @@ UiElement myElement = find(LOCATE.by(By.xpath(".//button")).displayed());
 
 === Prepared xpath expressions
 
-Using prepared expressions makes your selectors more readable.
+Using prepared expressions makes complex selectors more readable.
 
 [source,java]
 ----
@@ -174,9 +174,9 @@ In most cases, elements are part of a view hierarchy. The `Nameable` interface p
 Nameable parent = element.getParent();
 ----
 
-A parent could by any `PageObject` like `UiElement`, `Component` or `Page`.
+A parent could be any `PageObject` like `UiElement`, `Component` or `Page`.
 
-NOTE: Be aware that `getParent()` could return `NULL`, when the element has been created without a hierarchy or the element is a `Page`. So you should always perform a null or instanceof check.
+NOTE: Be aware that `getParent()` could return `NULL`, when the element has been created without a hierarchy or the element is a `Page`. So you should always perform a null or `instanceof` check.
 
 If you want to trace the hierarchy beginning from top-down, you can use the `traceAncestors()` method.
 

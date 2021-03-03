@@ -100,18 +100,9 @@ String key2 = WEB_DRIVER_MANAGER.getSessionKey(driverWindow2); // key2 contains 
 == Close a session
 
 In most cases it is not needed to close your session manually.
-Testerra always closes all open session at the end of a test method.
+Testerra always closes all open session created in the thread at the end of a test method.
 
-If you want to reuse a session in the next test method, you can deactivate the automatic close.
-
-.test.properties
-[source,properties,subs="attributes"]
-----
-// Default value is true
-{wdm_closewindows_aftertestmethods}=false
-----
-
-To close active sessions manually, do the following:
+Anyway, to close active sessions manually, do the following:
 
 [source,java]
 ----
@@ -124,10 +115,6 @@ WEB_DRIVER_MANAGER.shutdownAllSessions()
 
 [NOTE]
 ====
-Testerra shuts down the WebDriver at the end of every test method.
-
-At the end of the test run Testerra always calls `IWebDriverManager.shutdownAllSessions()` to cleanup all sessions.
-
 Please do not use Selenium provided methods to close `WebDriver` sessions.
 Have a further read in our known issue section: <<Closing `WebDriver` sessions without using Testerra `WebDriverManager`>>.
 ====
@@ -148,14 +135,12 @@ You can reuse the wedriver session in the following test by setting the followin
 @Test
 public void test1() {
     WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
-    ...
 }
 
 @Test
 public void test2() {
     // You get the already opened session from test1
     WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
-    ...
 }
 ----
 
@@ -167,7 +152,7 @@ image::resuse_webdriver_sessions_1.png[]
 
 == Shared sessions over different threads
 
-To use a browser session over different test threads, you need an _exclusive_ session.
+To use a WebDriver session over different test threads, you need an _exclusive_ session.
 
 Exclusive sessions are identified by a special uuid, not by the standard session key.
 

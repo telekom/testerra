@@ -34,7 +34,7 @@ public class MyPage extends Page {
 
 == Component lists
 
-Since components are hybrid UiElements, the can also handled as lists.
+Since components are hybrid UiElements, they can also act as lists.
 
 [source,java]
 ----

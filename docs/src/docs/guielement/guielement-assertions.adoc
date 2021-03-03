@@ -8,18 +8,22 @@ If an assertion fails, it will make the whole test fail and abort. You can contr
 ----
 UiElement element = find(By.id("button"));
 
-// expect text only returns true, if the text is exactly the passed string
+// Expect the element text
 element.expect().text("Hello World");
 element.expect().text().contains("World").is(boolean);
 element.expect().text().map(String::trim).startsWith("Hello").is(boolean);
+
+// Expect the existence of an attribute
+element.expect().attribute(Attribute.DISABLED).isNot(null);
+
+// Expect the value of an input element
+element.expect().value("Hello World");
 
 // CSS property checks
 element.expect().css("display").is("none");
 
 // CSS class checks
 element.expect().classes("active", "button").is(boolean);
-
-// ... and many more
 ----
 
 == Layout assertions

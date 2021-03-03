@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.exceptions.UiElementAssertionError;
 import eu.tsystems.mms.tic.testframework.internal.asserts.ImageAssertion;
+import eu.tsystems.mms.tic.testframework.internal.asserts.StringAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementAssertion;
@@ -153,15 +154,23 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
     }
 
     @Test
-    public void test_UiElement_attribute_present() {
+    public void test_UiElement_disabled_attribute_present() {
         WebTestPage page = getPage();
-        page.getRadioBtn().expect().attribute("disabled").isNot(null);
+        UiElementAssertion expect = page.getRadioBtn().expect();
+        StringAssertion<String> disabled = expect.attribute(Attribute.DISABLED);
+        disabled.isNot(null);
+        disabled.isNot(false);
+        disabled.isNot(Boolean.FALSE);
+        disabled.isNot("false");
+        disabled.is(true);
+        disabled.is(Boolean.TRUE);
+        disabled.is("true");
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void test_UiElement_attribute_present_fails() {
         WebTestPage page = getPage();
-        page.getRadioBtn().expect().attribute("disabled").is(null);
+        page.getRadioBtn().expect().attribute(Attribute.DISABLED).is(null);
     }
 
     @Test

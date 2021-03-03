@@ -41,6 +41,8 @@ public class XPathTest extends TesterraTest  {
     @Test
     public void attributeFunctions() {
         Assert.assertEquals(XPath.from("myElement").attribute("data-qa").hasWords("test_id").toString(), "//myElement[contains(concat(' ', normalize-space(@data-qa), ' '), ' test_id ')]");
+        Assert.assertEquals(XPath.from("myElement").attribute("data-qa").hasWords("hello","world").toString(), "//myElement[contains(concat(' ', normalize-space(@data-qa), ' '), ' hello ') and contains(concat(' ', normalize-space(@data-qa), ' '), ' world ')]");
+        Assert.assertEquals(XPath.from("myElement").attribute("data-qa").hasWords("hello world").toString(), "//myElement[contains(concat(' ', normalize-space(@data-qa), ' '), ' hello world ')]");
         Assert.assertEquals(XPath.from("myElement").attribute("data-qa").present().toString(), "//myElement[@data-qa]");
     }
 

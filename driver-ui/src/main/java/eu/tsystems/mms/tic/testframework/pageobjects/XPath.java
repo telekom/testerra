@@ -165,10 +165,8 @@ public class XPath {
             attributes.add(somethingContainsWord(something, string));
         }
         private void attributeContainsWords(String something, List<String> words) {
-            for (Object text : words) {
-                for (String word : text.toString().split("\\s+")) {
-                    attributeContainsWord(something, word);
-                }
+            for (Object word : words) {
+                attributeContainsWord(something, word);
             }
         }
     }

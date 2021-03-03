@@ -28,7 +28,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementBaseAssertion;
 import java.awt.Color;
 import java.util.function.Consumer;
-import org.apache.commons.lang3.NotImplementedException;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -43,7 +42,6 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     protected static final UiElementFactory uiElementFactory = Testerra.getInjector().getInstance(UiElementFactory.class);
 
     protected final UiElement rootElement;
-    private String name;
 
     public AbstractComponent(UiElement rootElement) {
         this.rootElement = rootElement;
@@ -105,23 +103,13 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     }
 
     public SELF setName(String name) {
-        this.name = name;
+        this.rootElement.setName(name);
         return (SELF)this;
     }
 
     @Override
     public String getName(boolean detailed) {
-        String name;
-
-        if (!hasName()) name = getClass().getSimpleName();
-        else name = this.name;
-
-        if (detailed) {
-            name += "("+rootElement.getName(detailed)+")";
-        } else if (rootElement.hasName()) {
-            name += "("+rootElement.getName()+")";
-        }
-        return name;
+        return getClass().getSimpleName()+"("+rootElement.getName(detailed)+")";
     }
 
     @Override
@@ -131,7 +119,7 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
 
     @Override
     public boolean hasName() {
-        return name!=null;
+        return rootElement.hasName();
     }
 
     @Override

@@ -115,6 +115,8 @@ public class PageTests extends AbstractExclusiveTestSitesTest<WebTestPage> imple
         page.inputForm().button().expect().value().is("Button1");
         page.inputForm().input().clear().sendKeys(input).expect().value().is(input);
         page.inputForm().button().expect().foundElements().is(1);
+        Assert.assertEquals(page.inputForm().toString(false), "WebTestPage -> InputForm(inputForm)");
+        Assert.assertEquals(page.inputForm().toString(true), "WebTestPage -> InputForm(inputForm(By.className: box))");
     }
 
     @Test(expectedExceptions = PageFactoryException.class)

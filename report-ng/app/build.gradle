@@ -23,6 +23,8 @@ plugins {
     id "com.github.node-gradle.node" version "3.0.0-rc6"
 }
 
+doNotPublish(this)
+
 node {
     download = true
     version = "10.17.0"

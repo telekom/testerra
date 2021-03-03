@@ -35,8 +35,6 @@ ext {
     }
 }
 
-//doNotPublish(false)
-
 subprojects {
 
     group 'eu.tsystems.mms.tic.testerra'
@@ -46,16 +44,7 @@ subprojects {
     apply plugin: 'maven'
     apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
     apply plugin: 'jacoco'
-    apply from: rootProject.file('publish.gradle')
-//}
 
-
-
-//subprojects {
-//    apply plugin: 'java'
-//    apply plugin: 'maven'
-//    apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
-    //apply plugin: 'jacoco' // code-coverage
 
     // important!
     repositories {
@@ -71,18 +60,18 @@ subprojects {
         toolVersion = "0.8.5"
     }
 
+//    // custom tasks for creating source/javadoc jars
+//    task sourcesJar(type: Jar, dependsOn: classes) {
+//        archiveClassifier.set('sources')
+//        from sourceSets.main.allSource
+//    }
+//
+//    // add source jar tasks as artifacts
+//    artifacts {
+//        archives sourcesJar
+//    }
+//
 //    publishing {
-//
-//        // custom tasks for creating source/javadoc jars
-//        task sourcesJar(type: Jar, dependsOn: classes) {
-//            archiveClassifier.set('sources')
-//            from sourceSets.main.allSource
-//        }
-//
-//        // add source jar tasks as artifacts
-//        artifacts {
-//            archives sourcesJar
-//        }
 //
 //        publications {
 //            mavenJava(MavenPublication) {
@@ -135,7 +124,7 @@ def dnp(prj) {
 }
 
 // Do not move this integration because `group` and `version` is needed for publishing
-//apply from: rootProject.file('publish.gradle')
+apply from: rootProject.file('publish.gradle')
 
 task jacocoAggregateReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
 
@@ -163,17 +152,3 @@ task jacocoAggregateReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
         }))
     }
 }
-
-//task publishToBintray(type: GradleBuild) {
-//    tasks = [
-//            'core:bintrayUpload',
-//            'core-interop:bintrayUpload',
-//            'image-processing:bintrayUpload',
-//            'driver-ui:bintrayUpload',
-//            'driver-ui-desktop:bintrayUpload',
-//            'surefire-connector:bintrayUpload',
-//            'bmp:bintrayUpload',
-//            'bup:bintrayUpload',
-//            'mail-connector:bintrayUpload'
-//    ]
-//}

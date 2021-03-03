@@ -60,7 +60,11 @@ public abstract class AssertionProvider<T> implements ActualProperty<T> {
         }
 
         public static String param(Object param) {
-            return "["+param.toString()+"]";
+            if (param == null) {
+                return "[null]";
+            } else {
+                return "["+param.toString()+"]";
+            }
         }
     }
 

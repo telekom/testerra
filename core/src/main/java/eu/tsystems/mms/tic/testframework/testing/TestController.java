@@ -76,4 +76,9 @@ public interface TestController {
      * @param whenFail Runnable which gets called when a throwable occurred.
      */
     void retryFor(int seconds, Runnable runnable, Runnable whenFail);
+
+    default boolean waitFor(int seconds, Runnable runnable) {
+        return waitFor(seconds, runnable, null);
+    }
+    boolean waitFor(int seconds, Runnable runnable, Runnable whenFail);
 }

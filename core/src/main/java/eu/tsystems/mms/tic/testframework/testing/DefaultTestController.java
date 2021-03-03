@@ -72,28 +72,35 @@ public class DefaultTestController implements TestController, Loggable {
 
     @Override
     public void retryFor(int seconds, Runnable runnable, Runnable whenFail) {
+        Throwable throwable = _waitFor(seconds, runnable, whenFail);
+        if (throwable != null) {
+            throw new TimeoutException("Retry sequence timed out", throwable);
+        }
+    }
+
+    @Override
+    public boolean waitFor(int seconds, Runnable runnable, Runnable whenFail) {
+        return _waitFor(seconds, runnable, whenFail) == null;
+    }
+
+    private Throwable _waitFor(int seconds, Runnable runnable, Runnable whenFail) {
         Sequence sequence = new Sequence()
-                .setTimeoutMs(seconds * 1000);
+                .setTimeoutMs(seconds * 1000L);
 
         AtomicReference<Throwable> atomicThrowable = new AtomicReference<>();
-        AtomicBoolean atomicSuccess = new AtomicBoolean();
         sequence.run(() -> {
             try {
                 runnable.run();
-                atomicSuccess.set(true);
+                atomicThrowable.set(null);
             } catch (Throwable throwable) {
                 log().info("Retry after " + sequence.getDurationMs() + "ms because of: " + throwable.getMessage());
                 atomicThrowable.set(throwable);
-                atomicSuccess.set(false);
                 if (whenFail != null) {
                     whenFail.run();
                 }
             }
-            return atomicSuccess.get();
+            return atomicThrowable.get()==null;
         });
-
-        if (!atomicSuccess.get()) {
-            throw new TimeoutException("Retry sequence timed out after " + sequence.getDurationMs() / 1000 + "s", atomicThrowable.get());
-        }
+        return atomicThrowable.get();
     }
 }

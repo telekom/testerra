@@ -119,6 +119,14 @@ public interface IWebDriverManager extends WebDriverRetainer {
         WebDriverSessionsManager.registerWebDriverAfterStartupHandler(afterStart);
     }
 
+    default Optional<WebDriver> switchToWindow(Predicate<WebDriver> predicate) {
+        return WebDriverUtils.switchToWindow(getWebDriver(), predicate);
+    }
+
+    default WebDriver switchToWindowTitle(String windowTitle) {
+        return switchToWindowTitle(getWebDriver(), windowTitle);
+    }
+
     default Optional<WebDriver> switchToWindow(WebDriver mainWebDriver, Predicate<WebDriver> predicate) {
         return WebDriverUtils.switchToWindow(mainWebDriver, predicate);
     }

@@ -182,15 +182,11 @@ public class XPath {
     }
 
     public Test attribute(Attribute attribute) {
-        return new Test(this, "@"+attribute.toString());
+        return attribute(attribute.toString());
     }
 
     public XPath attribute(Attribute attribute, Object value) {
-        if (value == null) {
-            return attribute(attribute).present();
-        } else {
-            return attribute(attribute).is(value);
-        }
+        return attribute(attribute.toString(), value);
     }
 
     public Test text() {
@@ -206,7 +202,11 @@ public class XPath {
     }
 
     public XPath attribute(String attribute, Object value) {
-        return attribute(attribute).is(value);
+        if (value == null) {
+            return attribute(attribute).present();
+        } else {
+            return attribute(attribute).is(value);
+        }
     }
 
     protected static String translateSubSelection(String selector) {

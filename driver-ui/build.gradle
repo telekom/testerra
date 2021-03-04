@@ -14,21 +14,17 @@ dependencies {
     compile core
     implementation opencv
 
-    // <LayoutCheck AnnotationContainer>
+    // <LayoutCheck AnnotationContainer, JSUtils>
     implementation 'com.google.code.gson:gson:2.8.6'
-    // </LayoutCheck AnnotationContainer>
+    // </LayoutCheck AnnotationContainer, JSUtils>
 
     // <UITestUtils>
-    implementation 'org.sikuli:sikuli-api:1.2.0'
+    compile 'org.sikuli:sikuli-api:1.2.0'
     // </UITestUtils>
 
     // <PageFactory>
 //    implementation 'org.glassfish.jersey.core:jersey-common:2.22.2'
     // </PageFactory>
-
-    // <JSUtils>
-    implementation 'com.google.code.gson:gson:2.8.6'
-    // </JSUtils>
 
 //    implementation 'com.sun.jersey:jersey-client:1.19.3'
 //    implementation 'commons-codec:commons-codec:1.13'

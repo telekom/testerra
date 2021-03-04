@@ -31,6 +31,8 @@ import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.ThrowingAssertion;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
+import eu.tsystems.mms.tic.testframework.internal.IdGenerator;
+import eu.tsystems.mms.tic.testframework.internal.SequenceIdGenerator;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.DefaultReport;
 import eu.tsystems.mms.tic.testframework.report.utils.DefaultTestNGContextGenerator;
@@ -50,6 +52,7 @@ public class ConfigureCore extends AbstractModule {
         bind(InstantAssertion.class).to(ThrowingAssertion.class).in(Scopes.SINGLETON);
         bind(TestController.class).to(DefaultTestController.class).in(Scopes.SINGLETON);
         bind(TestNGContextNameGenerator.class).to(DefaultTestNGContextGenerator.class).in(Scopes.SINGLETON);
+        bind(IdGenerator.class).to(SequenceIdGenerator.class).in(Scopes.SINGLETON);
 
         Multibinder<ModuleHook> hookBinder = Multibinder.newSetBinder(binder(), ModuleHook.class);
         hookBinder.addBinding().to(CoreHook.class).in(Scopes.SINGLETON);

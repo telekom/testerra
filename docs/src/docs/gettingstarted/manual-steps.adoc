@@ -6,6 +6,59 @@ include::../properties/property-attributes.adoc[]
 
 NOTE: Comming soon: Testerra will be available at MavenCentral.
 
+//
+//The Testerra framework is deployed to a https://bintray.com/testerra-io/Testerra[Bintray repository].
+//Make sure, that you added the jCenter repository somewhere.
+//
+//Current release: image:https://img.shields.io/bintray/v/testerra-io/Testerra/eu.tsystems.mms.tic.testerra:core?label=Testerra%20Framework[Bintray]
+//
+//.Gradle
+//[source,gradle,role="primary"]
+//----
+//// Update your gradle configuration
+//repositories {
+//    jCenter()
+//    maven {
+//        url  "https://dl.bintray.com/testerra-io/Testerra"
+//    }
+//}
+//----
+
+//.Maven
+//[source,xml,role="secondary"]
+//----
+//<!-- settings.xml - Update your current profile -->
+//<profile>
+//    ...
+//    <repositories>
+//        <repository>
+//            <id>jcenter</id>
+//            <url>https://jcenter.bintray.com/</url>
+//        </repository>
+//        <repository>
+//            <snapshots>
+//                <enabled>false</enabled>
+//            </snapshots>
+//            <id>bintray-testerra-io-Testerra</id>
+//            <name>bintray</name>
+//            <url>https://dl.bintray.com/testerra-io/Testerra</url>
+//        </repository>
+//    </repositories>
+//    <pluginRepositories>
+//        <pluginRepository>
+//            <snapshots>
+//                <enabled>false</enabled>
+//            </snapshots>
+//            <id>bintray-testerra-io-Testerra</id>
+//            <name>bintray-plugins</name>
+//            <url>https://dl.bintray.com/testerra-io/Testerra</url>
+//        </pluginRepository>
+//    </pluginRepositories>
+//    ...
+//</profile>
+//
+//----
+
 For Testerra you need at least the following dependencies.
 
 .Gradle
@@ -26,7 +79,7 @@ dependencies {
 ----
 
 .Maven
-[source, xml, role="secondary"]
+[source,xml,role="secondary",subs="attributes+"]
 ----
 <!-- pom.xml -->
 <project>
@@ -40,13 +93,13 @@ dependencies {
         <dependency>
             <groupId>eu.tsystems.mms.tic.testerra</groupId>
             <artifactId>driver-ui-desktop</artifactId>
-            <version>1-SNAPSHOT</version>
+            <version>{revnumber}</version>
         </dependency>
 
         <dependency>
             <groupId>eu.tsystems.mms.tic.testerra</groupId>
             <artifactId>report-ng</artifactId>
-            <version>1-SNAPSHOT</version>
+            <version>{revnumber}</version>
         </dependency>
 
         <!-- These dependency are required to get logging to work in Maven -->

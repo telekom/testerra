@@ -112,7 +112,7 @@ public class LocatorTest extends AbstractTestSitesTest implements UiElementFinde
     @Test
     public void testLocateByWords() {
         UiElementFinder finder = getFinder();
-        UiElement div = finder.find(XPath.from("*").text().hasWords("Login here"));
+        UiElement div = finder.find(XPath.from("*").text().hasWords("Login", "here"));
         div.expect().attribute("data-qa").is("action/login");
     }
 }

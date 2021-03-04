@@ -162,7 +162,7 @@ div.list().first().expect().text("First");
 div.list().last().expect().text("Third");
 ----
 
-And you can also iterate and stream.
+They can also be iterated and streamed.
 
 [source,java]
 ----

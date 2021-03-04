@@ -64,7 +64,7 @@ public class LocatorTest extends AbstractTestSitesTest implements UiElementFinde
     public void locateByWords() {
         UiElementFinder finder = getFinder();
         UiElement realA = finder.findByQa("action/linkWithFormattedText");
-        UiElement a = finder.find(XPath.from("a").text().hasWords(textToFind));
+        UiElement a = finder.find(XPath.from("a").text().hasWords(textToFind.split("\\s+")));
         a.expect().text().is(realA.waitFor().text().getActual());
     }
 

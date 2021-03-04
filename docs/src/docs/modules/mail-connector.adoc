@@ -10,7 +10,7 @@ Current release image:https://img.shields.io/bintray/v/testerra-io/Testerra/eu.t
 [source,gradle,role="primary",subs="attributes+"]
 ----
 // build.gradle
-compile 'eu.tsystems.mms.tic.testerra:mail-connoctor:{revnumber}'
+compile 'eu.tsystems.mms.tic.testerra:mail-connector:{revnumber}'
 ----
 
 .Maven

@@ -31,7 +31,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
-public abstract class WebDriverFactory<R extends AbstractWebDriverRequest> implements Loggable {
+public abstract class AbstractWebDriverFactory<R extends AbstractWebDriverRequest> implements Loggable {
 
     protected abstract R buildRequest(AbstractWebDriverRequest webDriverRequest);
 
@@ -41,7 +41,7 @@ public abstract class WebDriverFactory<R extends AbstractWebDriverRequest> imple
 
     protected abstract void setupSession(EventFiringWebDriver eventFiringWebDriver, R request);
 
-    public EventFiringWebDriver getWebDriver(AbstractWebDriverRequest request, SessionContext sessionContext) {
+    public EventFiringWebDriver createWebDriver(AbstractWebDriverRequest request, SessionContext sessionContext) {
         if (!request.getBaseUrl().isPresent() && WebDriverManager.getConfig().getBaseUrl().isPresent()) {
             request.setBaseUrl(WebDriverManager.getConfig().getBaseUrl().get());
         }

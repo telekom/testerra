@@ -35,17 +35,14 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.DefaultWebDriverManager;
-import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverFactory;
+import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Optional;
-import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -56,7 +53,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import static eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverFactory.wrapRawWebDriverWithEventFiringWebDriver;
+import static eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverFactory.wrapRawWebDriverWithEventFiringWebDriver;
 
 /**
  * @todo Migrate to {@link DefaultWebDriverManager}
@@ -66,7 +63,7 @@ public final class WebDriverSessionsManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverSessionsManager.class);
 
-    private static final Map<String, IWebDriverFactory> WEB_DRIVER_FACTORIES = new HashMap<>();
+    private static final Map<String, WebDriverFactory> WEB_DRIVER_FACTORIES = new HashMap<>();
 
     public static final String EXCLUSIVE_PREFIX = "EXCLUSIVE_";
 
@@ -96,7 +93,7 @@ public final class WebDriverSessionsManager {
          * Getting multi binder set programmatically
          * @see {https://groups.google.com/forum/#!topic/google-guice/EUnNStmrhOk}
          */
-        Set<IWebDriverFactory> webDriverFactories = Testerra.getInjector().getInstance(Key.get(new TypeLiteral<Set<IWebDriverFactory>>(){}));
+        Set<WebDriverFactory> webDriverFactories = Testerra.getInjector().getInstance(Key.get(new TypeLiteral<Set<WebDriverFactory>>(){}));
         webDriverFactories.forEach(webDriverFactory -> webDriverFactory.getSupportedBrowsers().forEach(browser -> WEB_DRIVER_FACTORIES.put(browser, webDriverFactory)));
     }
 
@@ -369,7 +366,7 @@ public final class WebDriverSessionsManager {
         decide which session manager to use
          */
         if (WEB_DRIVER_FACTORIES.containsKey(browser)) {
-            IWebDriverFactory webDriverFactory = WEB_DRIVER_FACTORIES.get(browser);
+            WebDriverFactory webDriverFactory = WEB_DRIVER_FACTORIES.get(browser);
 
             /*
             create session context and link to method context
@@ -404,7 +401,7 @@ public final class WebDriverSessionsManager {
     }
 
     @Deprecated
-    static void registerWebDriverFactory(IWebDriverFactory webDriverFactory, String... browsers) {
+    static void registerWebDriverFactory(WebDriverFactory webDriverFactory, String... browsers) {
         LOGGER.debug("Register " + webDriverFactory.getClass().getSimpleName() + " for browsers " + String.join(", ", browsers));
 
         for (String browser : browsers) {
@@ -424,7 +421,7 @@ public final class WebDriverSessionsManager {
         return getSessionContext(webDriver).map(SessionContext::getWebDriverRequest).map(AbstractWebDriverRequest::getBrowser);
     }
 
-    public static IWebDriverFactory getWebDriverFactory(String browser) {
+    public static WebDriverFactory getWebDriverFactory(String browser) {
         return WEB_DRIVER_FACTORIES.getOrDefault(browser, null);
     }
 

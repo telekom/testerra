@@ -24,7 +24,7 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
-import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverFactory;
+import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
 import org.openqa.selenium.WebDriver;
 
 /**
@@ -34,7 +34,7 @@ public class DefaultUiElementFactory implements UiElementFactory, Loggable, WebD
     @Override
     public UiElement createFromParent(UiElement parent, Locator locator) {
         GuiElement parentGuiElement = (GuiElement)parent;
-        IWebDriverFactory factory = WEB_DRIVER_MANAGER.getWebDriverFactoryForBrowser(WEB_DRIVER_MANAGER.getRequestedBrowser(parentGuiElement.getData().getWebDriver()).orElse(null));
+        WebDriverFactory factory = WEB_DRIVER_MANAGER.getWebDriverFactoryForBrowser(WEB_DRIVER_MANAGER.getRequestedBrowser(parentGuiElement.getData().getWebDriver()).orElse(null));
         GuiElementCore core = factory.createCoreFromParent(parentGuiElement.getData(), locator);
         GuiElement guiElement = new GuiElement(core);
         guiElement.setParent(parentGuiElement);

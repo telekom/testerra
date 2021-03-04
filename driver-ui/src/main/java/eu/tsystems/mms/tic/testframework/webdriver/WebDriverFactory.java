@@ -29,19 +29,13 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverReque
 import java.util.List;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
-public interface IWebDriverFactory {
-    /**
-     * Use {@link #createWebDriver(AbstractWebDriverRequest, SessionContext)} instead
-     */
-    @Deprecated
-    EventFiringWebDriver getWebDriver(AbstractWebDriverRequest r, SessionContext sessionContext);
-    default EventFiringWebDriver createWebDriver(AbstractWebDriverRequest request, SessionContext sessionContext) {
-        return getWebDriver(request, sessionContext);
-    }
+public interface WebDriverFactory {
+    EventFiringWebDriver createWebDriver(AbstractWebDriverRequest request, SessionContext sessionContext);
 
     List<String> getSupportedBrowsers();
+
     default boolean isBrowserSupported(String browser) {
-        return getSupportedBrowsers().indexOf(browser) >= 0;
+        return getSupportedBrowsers().contains(browser);
     }
 
     GuiElementCore createCore(GuiElementData guiElementData);

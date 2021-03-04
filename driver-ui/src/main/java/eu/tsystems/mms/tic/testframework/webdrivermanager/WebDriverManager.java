@@ -28,7 +28,7 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.DefaultWebDriverManager;
-import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverFactory;
+import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -340,7 +340,7 @@ public final class WebDriverManager {
     }
 
     @Deprecated
-    public static void registerWebDriverFactory(IWebDriverFactory webDriverFactory, String... browsers) {
+    public static void registerWebDriverFactory(WebDriverFactory webDriverFactory, String... browsers) {
         WebDriverSessionsManager.registerWebDriverFactory(webDriverFactory, browsers);
     }
 

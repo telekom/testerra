@@ -48,7 +48,7 @@ import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.Sequence;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
-import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverFactory;
+import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import java.io.File;
@@ -85,9 +85,9 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
-public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRequest> implements
-        IWebDriverFactory,
-    Loggable
+public class DesktopWebDriverFactory extends AbstractWebDriverFactory<DesktopWebDriverRequest> implements
+        WebDriverFactory,
+        Loggable
 {
     public static final TimingInfosCollector STARTUP_TIME_COLLECTOR = new TimingInfosCollector();
 

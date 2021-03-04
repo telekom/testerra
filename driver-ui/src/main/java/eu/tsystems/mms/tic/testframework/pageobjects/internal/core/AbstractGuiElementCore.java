@@ -21,10 +21,28 @@
  */
  package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
+import java.io.File;
+import java.util.concurrent.atomic.AtomicReference;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.WebDriver;
+
+/**
+ * {@link WebDriver} to {@link GuiElementCore} adapter
+ */
 public abstract class AbstractGuiElementCore implements GuiElementCore {
+
     public final GuiElementData guiElementData;
 
     public AbstractGuiElementCore(GuiElementData guiElementData) {
         this.guiElementData = guiElementData;
+    }
+
+    @Override
+    public File takeScreenshot() {
+        AtomicReference<File> atomicReference = new AtomicReference<>();
+        this.findWebElement(webElement -> {
+            atomicReference.set(webElement.getScreenshotAs(OutputType.FILE));
+        });
+        return atomicReference.get();
     }
 }

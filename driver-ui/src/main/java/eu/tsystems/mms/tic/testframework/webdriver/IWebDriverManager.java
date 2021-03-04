@@ -49,7 +49,7 @@ public interface IWebDriverManager extends WebDriverRetainer {
         return WebDriverManager.makeSessionExclusive(webDriver);
     }
 
-    default IWebDriverFactory getWebDriverFactoryForBrowser(String browser) {
+    default WebDriverFactory getWebDriverFactoryForBrowser(String browser) {
         return WebDriverSessionsManager.getWebDriverFactory(browser);
     }
 

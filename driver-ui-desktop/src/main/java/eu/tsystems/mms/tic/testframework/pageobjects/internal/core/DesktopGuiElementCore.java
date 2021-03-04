@@ -650,37 +650,37 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
 
     @Override
     public File takeScreenshot() {
+        final boolean isSelenium4 = false;
+        if (isSelenium4) {
+            return super.takeScreenshot();
+        }
+
         AtomicReference<File> atomicReference = new AtomicReference<>();
         this.findWebElement(webElement -> {
-            final boolean isSelenium4 = false;
-            if (isSelenium4) {
-                atomicReference.set(webElement.getScreenshotAs(OutputType.FILE));
-            } else {
-                if (!isVisible(false)) {
-                    scrollIntoView();
-                }
-                Rectangle viewport = WebDriverUtils.getViewport(guiElementData.getWebDriver());
-                try {
-                    final TakesScreenshot driver = ((TakesScreenshot) guiElementData.getWebDriver());
+            if (!isVisible(false)) {
+                scrollIntoView();
+            }
+            Rectangle viewport = WebDriverUtils.getViewport(guiElementData.getWebDriver());
+            try {
+                final TakesScreenshot driver = ((TakesScreenshot) guiElementData.getWebDriver());
 
-                    File screenshot = driver.getScreenshotAs(OutputType.FILE);
-                    BufferedImage fullImg = ImageIO.read(screenshot);
+                File screenshot = driver.getScreenshotAs(OutputType.FILE);
+                BufferedImage fullImg = ImageIO.read(screenshot);
 
-                    Point point = webElement.getLocation();
-                    int eleWidth = webElement.getSize().getWidth();
-                    int eleHeight = webElement.getSize().getHeight();
+                Point point = webElement.getLocation();
+                int eleWidth = webElement.getSize().getWidth();
+                int eleHeight = webElement.getSize().getHeight();
 
-                    BufferedImage eleScreenshot = fullImg.getSubimage(
-                            point.getX() - viewport.getX(),
-                            point.getY() - viewport.getY(),
-                            eleWidth,
-                            eleHeight
-                    );
-                    ImageIO.write(eleScreenshot, "png", screenshot);
-                    atomicReference.set(screenshot);
-                } catch (IOException e) {
-                    log().error(String.format("%s unable to take screenshot: %s ", guiElementData, e));
-                }
+                BufferedImage eleScreenshot = fullImg.getSubimage(
+                        point.getX() - viewport.getX(),
+                        point.getY() - viewport.getY(),
+                        eleWidth,
+                        eleHeight
+                );
+                ImageIO.write(eleScreenshot, "png", screenshot);
+                atomicReference.set(screenshot);
+            } catch (IOException e) {
+                log().error(String.format("%s unable to take screenshot: %s ", guiElementData, e));
             }
         });
         return atomicReference.get();

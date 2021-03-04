@@ -93,13 +93,13 @@ dependencies {
         <dependency>
             <groupId>eu.tsystems.mms.tic.testerra</groupId>
             <artifactId>driver-ui-desktop</artifactId>
-            <version>1-SNAPSHOT</version>
+            <version>{revnumber}</version>
         </dependency>
 
         <dependency>
             <groupId>eu.tsystems.mms.tic.testerra</groupId>
             <artifactId>report-ng</artifactId>
-            <version>1-SNAPSHOT</version>
+            <version>{revnumber}</version>
         </dependency>
 
         <!-- These dependency are required to get logging to work in Maven -->
@@ -292,7 +292,7 @@ test {
 ----
 
 .Maven
-[source, xml, role="secondary"]
+[source, xml, role="secondary", subs="attributes+"]
 ----
 <!-- pom.xml -->
 <project>

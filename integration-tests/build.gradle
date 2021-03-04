@@ -33,8 +33,3 @@ test {
         systemProperties(System.getProperties())
     }
 }
-
-bintray {
-    publications = []
-    configurations = []
-}

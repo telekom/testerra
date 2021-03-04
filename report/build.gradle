@@ -81,5 +81,3 @@ def setFailureCorridor(nr) {
 def setCloseWindows() {
     System.setProperty("tt.wdm.closeWindows.afterTestMethods", "false")
 }
-
-apply from: rootProject.file('release-bintray.gradle')

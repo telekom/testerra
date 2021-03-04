@@ -1,12 +1,6 @@
 plugins {
     id 'com.github.jk1.dependency-license-report' version '1.13'
-    id "com.jfrog.bintray" version "1.8.5"
 }
-
-apply plugin: 'java'
-apply plugin: 'maven'
-apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
-apply plugin: 'jacoco'
 
 ext {
     /*
@@ -21,14 +15,9 @@ ext {
 
     seleniumVersion = '3.141.59'
     guavaVersion = "28.1-jre"
-    /*
-    Flags
-     */
-    doNotPublish = this.&dnp
 
-    licenseName = 'The Apache Software License, Version 2.0'
-    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-    allLicenses = ["Apache-2.0"]
+    // Flags
+    doNotPublish = this.&dnp
 
     moduleVersion = '1-SNAPSHOT'
     if (System.properties.containsKey('ttVersion')) {
@@ -36,25 +25,16 @@ ext {
     }
 }
 
-def dnp(prj) {
-    prj.jar.enabled = true
-    prj.publish.enabled = false
-    prj.publishToMavenLocal.enabled = false
-
-    println("Do not publish stuff from " + prj)
-}
-
-allprojects {
+subprojects {
 
     group 'eu.tsystems.mms.tic.testerra'
     version moduleVersion
-}
 
-subprojects {
     apply plugin: 'java'
     apply plugin: 'maven'
     apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
-    //apply plugin: 'jacoco' // code-coverage
+    apply plugin: 'jacoco'
+
 
     // important!
     repositories {
@@ -70,46 +50,6 @@ subprojects {
         toolVersion = "0.8.5"
     }
 
-    // custom tasks for creating source/javadoc jars
-    task sourcesJar(type: Jar, dependsOn: classes) {
-        classifier = 'sources'
-        from sourceSets.main.allSource
-    }
-
-    // add source jar tasks as artifacts
-    artifacts {
-        archives sourcesJar
-    }
-
-    publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                from components.java
-                artifact sourcesJar
-            }
-        }
-
-        repositories {
-            maven {
-                url System.getProperty("deployUrl", "none")
-                credentials {
-                    username System.getProperty("deployUsername", "none")
-                    password System.getProperty("deployPassword", "none")
-                }
-            }
-        }
-    }
-
-    tasks.whenTaskAdded { t ->
-        if (t.name.startsWith("publish")) {
-            boolean e = t.project.publish.enabled
-            if (!e) {
-                println "Not running publish for " + t.project.name
-                t.enabled = false
-            }
-        }
-    }
-
     test {
 
         ignoreFailures = true
@@ -123,6 +63,18 @@ subprojects {
         }
     }
 }
+
+// Helper function to prevent publishing
+def dnp(prj) {
+    prj.jar.enabled = true
+    prj.publish.enabled = false
+    prj.publishToMavenLocal.enabled = false
+
+    println("Do not publish stuff from " + prj)
+}
+
+// Do not move this integration because `group` and `version` is needed for publishing
+apply from: rootProject.file('publish.gradle')
 
 task jacocoAggregateReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
 
@@ -149,18 +101,4 @@ task jacocoAggregateReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
             it.exists()
         }))
     }
-}
-
-task publishToBintray(type: GradleBuild) {
-    tasks = [
-            'core:bintrayUpload',
-            'core-interop:bintrayUpload',
-            'image-processing:bintrayUpload',
-            'driver-ui:bintrayUpload',
-            'driver-ui-desktop:bintrayUpload',
-            'surefire-connector:bintrayUpload',
-            'bmp:bintrayUpload',
-            'bup:bintrayUpload',
-            'mail-connector:bintrayUpload'
-    ]
 }

@@ -78,6 +78,10 @@ public class UiElementListTests extends AbstractExclusiveTestSitesTest<UiElement
         list.first().expect().text("First");
         list.get(1).expect().text("Second");
         list.last().expect().text("Third");
+
+        list.stream()
+                .filter(uiElement -> uiElement.waitFor().classes("odd").is(true))
+                .forEach(uiElement -> {});
     }
 
     private void testTableRowsAndData(TableRow tableRows) {

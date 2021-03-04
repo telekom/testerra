@@ -100,7 +100,8 @@ You can also filter elements during find.
 
 [source,java]
 ----
-Locate byText = LOCATE.by(By.xpath("//button")).filter(webElement -> webElement.getText().equals("Open again"));
+Locate byText = LOCATE.by(By.xpath("//button"))
+                    .filter(webElement -> webElement.getText().equals("Open again"));
 
 UiElement buttonContainsText = find(byText);
 ----
@@ -160,6 +161,26 @@ UiElement div = find(By.tagName("div"));
 div.list().first().expect().text("First");
 div.list().last().expect().text("Third");
 ----
+
+And you can also iterate and stream.
+
+[source,java]
+----
+div.list().forEach(uiElement -> {});
+div.list().stream().forEach(uiElement -> {});
+----
+
+== Empty elements
+
+To prevent null pointers or any other exception that will break you program flow, you can use and empty UiElement using `createEmpty()` of `UiElementFinder`.
+
+[source,java]
+----
+UiElement empty = createEmpty(Locate locator);
+----
+
+All interactive operations on this element will do nothing, all wait methods will be false and all assertions will fail.
+
 
 == Sensible Data
 

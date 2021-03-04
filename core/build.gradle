@@ -20,7 +20,7 @@ dependencies {
     // </HttpClientUtils>
 
     // <RESTUtils>
-    implementation 'com.sun.jersey:jersey-client:1.19.3'
+    compile 'com.sun.jersey:jersey-client:1.19.3'
     // </RESTUtils
 
     compile "com.google.guava:guava:${guavaVersion}"

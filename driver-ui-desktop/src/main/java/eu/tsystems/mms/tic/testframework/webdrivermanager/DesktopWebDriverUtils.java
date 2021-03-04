@@ -51,7 +51,8 @@ public final class DesktopWebDriverUtils implements Loggable {
             String nodeResponse = RESTUtils.requestGET(url + "/host/" + sessionId, 30 * 1000, String.class);
             Gson gson = new GsonBuilder().create();
             Map map = gson.fromJson(nodeResponse, Map.class);
-            return new NodeInfo(map.get("Name").toString(), Integer.parseInt(map.get("Port").toString()));
+            double port = Double.parseDouble(map.get("Port").toString());
+            return new NodeInfo(map.get("Name").toString(), (int) port);
         } catch (Exception e) {
             log().warn("Could not get node info. Falling back to " + seleniumUrl.toString(), e);
             return new NodeInfo(seleniumUrl.getHost(), seleniumUrl.getPort());

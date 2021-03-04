@@ -79,7 +79,7 @@ dependencies {
 ----
 
 .Maven
-[source,xml,role="secondary"]
+[source,xml,role="secondary",subs="attributes+"]
 ----
 <!-- pom.xml -->
 <project>

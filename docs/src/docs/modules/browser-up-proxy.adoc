@@ -16,13 +16,13 @@ compile 'eu.tsystems.mms.tic.testerra:bup:1-SNAPSHOT'
 ----
 
 .pom.xml
-[source,xml,role="secondary"]
+[source,xml,role="secondary",subs="attributes+"]
 ----
 <dependencies>
     <dependency>
         <groupId>eu.tsystems.mms.tic.testerra</groupId>
         <artifactId>bup</artifactId>
-        <version>1-SNAPSHOT</version>
+        <version>{revnumber}</version>
     </dependency>
 </dependencies>
 ----

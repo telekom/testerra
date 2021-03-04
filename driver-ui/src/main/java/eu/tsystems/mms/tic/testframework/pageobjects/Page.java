@@ -50,7 +50,7 @@ public class Page extends AbstractPage<Page> implements TestablePage {
     private final WebDriver driver;
     private final PageUiElementFinder finder = new PageUiElementFinder(this);
 
-    protected Page(WebDriver webDriver) {
+    public Page(WebDriver webDriver) {
         this.driver = webDriver;
 
         // performance test stop timer

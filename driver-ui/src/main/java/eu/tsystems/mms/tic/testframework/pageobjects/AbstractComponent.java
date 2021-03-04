@@ -43,7 +43,7 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
 
     protected final UiElement rootElement;
 
-    protected AbstractComponent(UiElement rootElement) {
+    public AbstractComponent(UiElement rootElement) {
         this.rootElement = rootElement;
     }
 

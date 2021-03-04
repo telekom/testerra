@@ -41,11 +41,17 @@ import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.testing.UiElementFinderFactoryProvider;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 
-class MyTest extends TesterraTest implements UiElementFinderFactoryProvider, WebDriverManagerProvider {
-    private UiElementFinder finder = UI_ELEMENT_FINDER_FACTORY.create(WEB_DRIVER_MANAGER.getWebDriver());
+class MyTest extends TesterraTest implements
+    UiElementFinderFactoryProvider,
+    WebDriverManagerProvider
+{
+    protected UiElementFinder createFinder() {
+        return UI_ELEMENT_FINDER_FACTORY.create(WEB_DRIVER_MANAGER.getWebDriver());
+    }
 
     @Test
     public void test() {
+        UiElementFinder finder = createFinder();
         UiElement myElement = finder.find(By.id("elementId"));
         UiElement button1 = finder.find(By.name("button"));
         UiElement textOutputField = finder.find(By.xpath("//p[@id='99']"));

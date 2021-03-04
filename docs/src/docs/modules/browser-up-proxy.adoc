@@ -10,9 +10,9 @@ Testerra offers a simple integration to spin multiple local proxy servers or man
 Current release image:https://img.shields.io/bintray/v/testerra-io/Testerra/eu.tsystems.mms.tic.testerra:bup?label=Testerra%20BUP[Bintray]
 
 .build.gradle
-[source,gradle,role="primary"]
+[source,groovy,role="primary",subs="attributes"]
 ----
-compile 'eu.tsystems.mms.tic.testerra:bup:1-SNAPSHOT'
+compile 'eu.tsystems.mms.tic.testerra:bup:{revnumber}'
 ----
 
 .pom.xml

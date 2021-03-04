@@ -1,4 +1,4 @@
-= Browser Mob Proxy
+= Browser Mob Proxy (*deprecated*)
 
 Browser Mob Proxy (BMP) is a utility for manipulating network traffic.
 You can use it to enable Basic Auth for your SUT and other features.
@@ -8,9 +8,9 @@ You can use it to enable Basic Auth for your SUT and other features.
 Current release image:https://img.shields.io/bintray/v/testerra-io/Testerra/eu.tsystems.mms.tic.testerra:bmp?label=Testerra%20BMP[Bintray]
 
 .build.gradle
-[source,gradle,role="primary"]
+[source,groovy,role="primary",subs="attributes"]
 ----
-compile 'eu.tsystems.mms.tic.testerra:bmp:1-SNAPSHOT'
+compile 'eu.tsystems.mms.tic.testerra:bmp:{revnumber}'
 ----
 
 .pom.xml

@@ -62,7 +62,7 @@ NOTE: Comming soon: Testerra will be available at MavenCentral.
 For Testerra you need at least the following dependencies.
 
 .Gradle
-[source, gradle, role="primary"]
+[source, groovy, role="primary", subs="attributes"]
 ----
 // build.gradle
 
@@ -73,8 +73,8 @@ compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = "UTF-8"
 
 dependencies {
-    compile 'eu.tsystems.mms.tic.testerra:driver-ui-desktop:1-SNAPSHOT'
-    compile 'eu.tsystems.mms.tic.testerra:report-ng:1-SNAPSHOT'
+    compile 'eu.tsystems.mms.tic.testerra:driver-ui-desktop:{revnumber}'
+    compile 'eu.tsystems.mms.tic.testerra:report-ng:{revnumber}'
 }
 ----
 
@@ -292,7 +292,7 @@ test {
 ----
 
 .Maven
-[source, xml, role="secondary", subs="attributes+"]
+[source, xml, role="secondary"]
 ----
 <!-- pom.xml -->
 <project>

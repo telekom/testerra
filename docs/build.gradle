@@ -16,7 +16,7 @@ ext {
     destinationDir = 'build/docs'
     sourceDirForS3 = "${destinationDir}/html5"
     destDirS3 = 'testerra/latest'
-    myBucketName = 'tapas-docs'
+    myBucketName = 'docs.testerra.io'
 }
 
 aws {
@@ -74,11 +74,6 @@ task uploadContent(type: AmazonS3FileUploadTask) {
     def m = new ObjectMetadata()
     m.setCacheControl("no-cache, no-store")
     objectMetadata = m
-}
-
-bintray {
-    publications = []
-    configurations = []
 }
 
 asciidoctor.dependsOn(clean)

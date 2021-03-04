@@ -7,7 +7,6 @@ buildscript {
     }
 }
 
-apply from: rootProject.file('release-bintray.gradle')
 apply plugin: 'com.google.protobuf'
 def protobufVersion = '3.14.0'
 

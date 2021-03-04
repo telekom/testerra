@@ -21,16 +21,15 @@
  */
  package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.RESTUtils;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import java.net.URL;
-import java.util.Optional;
-import org.json.JSONObject;
-import org.openqa.selenium.remote.SessionId;
+import java.util.Map;
 
 public final class DesktopWebDriverUtils implements Loggable {
 
@@ -50,8 +49,9 @@ public final class DesktopWebDriverUtils implements Loggable {
          */
         try {
             String nodeResponse = RESTUtils.requestGET(url + "/host/" + sessionId, 30 * 1000, String.class);
-            JSONObject out = new JSONObject(nodeResponse);
-            return new NodeInfo(out.getString("Name"), out.getInt("Port"));
+            Gson gson = new GsonBuilder().create();
+            Map map = gson.fromJson(nodeResponse, Map.class);
+            return new NodeInfo(map.get("Name").toString(), Integer.parseInt(map.get("Port").toString()));
         } catch (Exception e) {
             log().warn("Could not get node info. Falling back to " + seleniumUrl.toString(), e);
             return new NodeInfo(seleniumUrl.getHost(), seleniumUrl.getPort());

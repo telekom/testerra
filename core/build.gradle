@@ -23,7 +23,7 @@ dependencies {
     implementation 'com.sun.jersey:jersey-client:1.19.3'
     // </RESTUtils
 
-    implementation "com.google.guava:guava:${guavaVersion}"
+    compile "com.google.guava:guava:${guavaVersion}"
 
     // <XML>
     // These dependencies are exposed by XMLUtils.java
@@ -40,6 +40,10 @@ dependencies {
     // <CSVTestDataReader>
     implementation 'com.opencsv:opencsv:3.9'
     // </CSVTestDataReader>
+
+    // <Booter>
+    implementation 'org.reflections:reflections:0.9.12'
+    // </Booter>
 
     // <ExceptionUtils>
     // Comes already implicit from reflections
@@ -85,5 +89,3 @@ processResources {
 test {
     exclude '**'
 }
-
-apply from: rootProject.file('release-bintray.gradle')

@@ -37,11 +37,14 @@ import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
 import java.awt.Color;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 import org.apache.commons.io.IOUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -166,16 +169,17 @@ public final class JSUtils {
      */
     public static Object executeScriptWOCatch(final WebDriver driver, final String script, final Object... parameters) {
         JavascriptExecutor javascriptExecutor = (JavascriptExecutor) driver;
-        String msg = "Executing script >>" + script + "<<";
-        if (parameters != null) {
-            for (Object parameter : parameters) {
-                msg += "\n\n with parameters: " + parameter;
+        try {
+            return javascriptExecutor.executeScript(script, parameters);
+        } catch (Exception e) {
+            String message = String.format("Error executing Javascript\n-----\n%s\n-----", script);
+            if (parameters.length > 0) {
+                message += "\nwith parameters:\n" + Arrays.stream(parameters).map(o -> (o==null?"null":o.toString())).collect(Collectors.joining("\n"));
+                message += "\n-----";
             }
+            LOGGER.error(message);
+            throw e;
         }
-
-        LOGGER.debug(msg);
-
-        return javascriptExecutor.executeScript(script, parameters);
     }
 
     /**
@@ -190,7 +194,7 @@ public final class JSUtils {
         try {
             return executeScriptWOCatch(driver, script, parameters);
         } catch (Exception e) {
-            LOGGER.error(String.format("Error executing script\n-----\n%s\n-----", script), e);
+            LOGGER.error("", e);
             return null;
         }
     }

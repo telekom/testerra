@@ -143,6 +143,16 @@ public interface IWebDriverManager extends WebDriverRetainer {
         return optionalWebDriver.get();
     }
 
+    default WebDriver switchToWindowHandle(WebDriver mainWebDriver, String windowHandle) {
+        Optional<WebDriver> optionalWebDriver = WebDriverUtils.switchToWindow(mainWebDriver, webDriver -> {
+            return webDriver.getWindowHandle().equals(windowHandle);
+        });
+        if (!optionalWebDriver.isPresent()) {
+            throw new RuntimeException(String.format("Window handle \"%s\" not found", windowHandle));
+        }
+        return optionalWebDriver.get();
+    }
+
     default void keepAlive(WebDriver webDriver, int intervalSleepTimeInSeconds, int durationInSeconds) {
         WebDriverUtils.keepWebDriverAlive(webDriver, intervalSleepTimeInSeconds, durationInSeconds);
     }

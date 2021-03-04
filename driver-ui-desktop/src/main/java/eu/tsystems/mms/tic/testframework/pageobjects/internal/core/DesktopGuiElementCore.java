@@ -219,9 +219,13 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
                     // 14.01.2021: Gheckodriver throw an internal exception when using the command above,
                     // therefore the result in the JS snippet "return arguments[0].shadowRoot" will be null.
                     // To handle firefox shadow roots we decided to handle it this way and implement an automatic resolver in getSubElement
-                    final Object shadowedWebElement = JSUtils.executeScript(webDriver, "return arguments[0].shadowRoot.firstChild", webElement);
-                    if (shadowedWebElement instanceof WebElement) {
-                        webElement = (WebElement) shadowedWebElement;
+                    try {
+                        final Object shadowedWebElement = JSUtils.executeScriptWOCatch(webDriver, "return arguments[0].shadowRoot.firstChild", webElement);
+                        if (shadowedWebElement instanceof WebElement) {
+                            webElement = (WebElement) shadowedWebElement;
+                        }
+                    } catch (Exception e) {
+                        log().error("Could not detect shadow root for " + guiElementData.toString() + ": " + e.getMessage());
                     }
                 } else if (webElement.getTagName().equals("frame") || webElement.getTagName().equals("iframe")) {
                     guiElementData.setIsFrame(true);

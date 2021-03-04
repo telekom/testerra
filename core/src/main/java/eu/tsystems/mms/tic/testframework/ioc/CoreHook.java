@@ -22,7 +22,16 @@
 package eu.tsystems.mms.tic.testframework.ioc;
 
 import com.google.common.eventbus.EventBus;
+import com.google.inject.AbstractModule;
+import com.google.inject.Scopes;
+import com.google.inject.multibindings.Multibinder;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.DefaultCollectedAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.DefaultOptionalAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.ThrowingAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.HandleCollectedAssertsWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodAnnotationCheckerWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodContextUpdateWorker;
@@ -33,9 +42,36 @@ import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodSta
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.OmitInDevelopmentMethodInterceptor;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.SortMethodsByPriorityMethodInterceptor;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
+import eu.tsystems.mms.tic.testframework.internal.IdGenerator;
+import eu.tsystems.mms.tic.testframework.internal.SequenceIdGenerator;
+import eu.tsystems.mms.tic.testframework.report.DefaultReport;
 import eu.tsystems.mms.tic.testframework.report.ExecutionEndListener;
+import eu.tsystems.mms.tic.testframework.report.Report;
+import eu.tsystems.mms.tic.testframework.report.utils.DefaultTestNGContextGenerator;
+import eu.tsystems.mms.tic.testframework.report.utils.TestNGContextNameGenerator;
+import eu.tsystems.mms.tic.testframework.testing.DefaultTestController;
+import eu.tsystems.mms.tic.testframework.testing.TestController;
+import eu.tsystems.mms.tic.testframework.utils.DefaultFormatter;
+import eu.tsystems.mms.tic.testframework.utils.Formatter;
 
-public class CoreHook implements ModuleHook {
+public class CoreHook extends AbstractModule implements ModuleHook {
+
+    @Override
+    protected void configure() {
+        // Singletons
+        bind(Report.class).to(DefaultReport.class).in(Scopes.SINGLETON);
+        bind(Formatter.class).to(DefaultFormatter.class).in(Scopes.SINGLETON);
+        bind(CollectedAssertion.class).to(DefaultCollectedAssertion.class).in(Scopes.SINGLETON);
+        bind(OptionalAssertion.class).to(DefaultOptionalAssertion.class).in(Scopes.SINGLETON);
+        bind(InstantAssertion.class).to(ThrowingAssertion.class).in(Scopes.SINGLETON);
+        bind(TestController.class).to(DefaultTestController.class).in(Scopes.SINGLETON);
+        bind(TestNGContextNameGenerator.class).to(DefaultTestNGContextGenerator.class).in(Scopes.SINGLETON);
+        bind(IdGenerator.class).to(SequenceIdGenerator.class).in(Scopes.SINGLETON);
+
+//        Multibinder<ModuleHook> hookBinder = Multibinder.newSetBinder(binder(), ModuleHook.class);
+//        hookBinder.addBinding().to(CoreHook.class).in(Scopes.SINGLETON);
+    }
+
     @Override
     public void init() {
         EventBus eventBus = Testerra.getEventBus();

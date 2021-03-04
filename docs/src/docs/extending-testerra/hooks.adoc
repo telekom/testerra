@@ -1,18 +1,20 @@
 = Modules and Hooks
 
-The interface `ModuleHook` of Testerra framework offers you methods for the runtime lifecycle with the `ModuleHook.init()` and `ModuleHook.terminate()` methods.
+To register your module hook, you need to create a module dependency injection configuration based on the Google Guice framework.
 
-While the `init()` method is called on startup of Testerra as one of the earliest steps, you are able to make your customizations as soon as possible and you are able to register to all <<Events and Listener>> of Testerra framework as well.
-
-The `terminate()` method of your custom module hook is called at the most latest point for Testerra right before terminating the execution.
-You should use this method to cleanup your module, if necessary, for example closing database connections in a database module.
-
-.Simple Testerra ModuleHook
 [source,java]
 ----
-import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
+package eu.tsystems.mms.tic.testframework.ioc;
 
-public class SimpleCustomHook implements ModuleHook {
+import com.google.inject.AbstractModule;
+import com.google.inject.Scopes;
+import com.google.inject.multibindings.Multibinder;
+
+public class ConfigureMyModule extends AbstractModule implements ModuleHook {
+    @Override
+    protected void configure() {
+        //
+    }
 
     @Override
     public void init() {
@@ -26,23 +28,13 @@ public class SimpleCustomHook implements ModuleHook {
 }
 ----
 
-To register your module hook, you need to create a module dependency injection configuration based on the Google Guice framework.
+IMPORTANT: Please be aware, that the package namespace prefix `eu.tsystems.mms.tic` is required in order to find your module configuration.
 
-[source,java]
-----
-package eu.tsystems.mms.tic.testframework.ioc;
+The `configure()` method is dependency injection configuration.
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Scopes;
-import com.google.inject.multibindings.Multibinder;
+While the `init()` method is called on startup of Testerra as one of the earliest steps, you are able to make your customizations as soon as possible and you are able to register to all <<Events and Listeners>> of Testerra framework as well.
 
-public class ConfigureMyModule extends AbstractModule {
-    @Override
-    protected void configure() {
-        Multibinder<ModuleHook> hookBinder = Multibinder.newSetBinder(binder(), ModuleHook.class);
-        hookBinder.addBinding().to(SimpleCustomHook.class).in(Scopes.SINGLETON);
-    }
-}
-----
+The `terminate()` method is called at the most latest point for Testerra right before terminating the execution.
+You should use this method to cleanup your module, if necessary, for example closing database connections in a database module.
 
-NOTE: Please be aware, that the package namespace is required in order to find your module configuration.
+NOTE: All module configuration instances are loaded in an alphabetical order.

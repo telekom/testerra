@@ -22,11 +22,12 @@
 
 package eu.tsystems.mms.tic.testframework.hook;
 
+import com.google.inject.AbstractModule;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.listeners.GenerateHtmlReportListener;
 
-public class ReportHook implements ModuleHook {
+public class ReportHook extends AbstractModule implements ModuleHook {
 
     @Override
     public void init() {

@@ -26,14 +26,25 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import com.google.inject.Scopes;
+import com.google.inject.multibindings.Multibinder;
 import com.google.inject.util.Modules;
-import eu.tsystems.mms.tic.testframework.boot.Booter;
+import eu.tsystems.mms.tic.testframework.events.ModulesInitializedEvent;
+import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.internal.BuildInformation;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
+import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.DefaultConfiguration;
@@ -48,12 +59,12 @@ import org.slf4j.LoggerFactory;
  */
 public class Testerra {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(Testerra.class);
-    private final static Injector injector = initIoc();
+    private static final Logger LOGGER = LoggerFactory.getLogger(Testerra.class);
+    private static final List<ModuleHook> MODULE_HOOKS = new LinkedList<>();
+    private static final Injector injector = initIoc();
     private static final EventBus eventBus;
-    private static final Booter booter;
-    private static LoggerContext loggerContext;
-    private static BuildInformation buildInformation;
+    private static final LoggerContext loggerContext;
+    private static final BuildInformation buildInformation;
 
     public enum Properties implements IProperties {
         DRY_RUN("tt.dryrun", false),
@@ -127,11 +138,10 @@ public class Testerra {
         DefaultConfiguration defaultConfiguration = new DefaultConfiguration();
         loggerContext = Configurator.initialize(defaultConfiguration);
         buildInformation = new BuildInformation();
+        printTesterraBanner();
         eventBus = new EventBus();
-        booter = new Booter();
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            booter.shutdown();
-        }));
+        initHooks();
+        Runtime.getRuntime().addShutdownHook(new Thread(Testerra::shutdown));
     }
 
     public static LoggerContext getLoggerContext() {
@@ -171,15 +181,95 @@ public class Testerra {
             }
             LOGGER.info(String.format("Register IoC modules: %s", String.join(", ", sortedModules.keySet())));
             for (Module overrideModule : sortedModules.values()) {
+                if (overrideModule instanceof ModuleHook) {
+                    MODULE_HOOKS.add((ModuleHook)overrideModule);
+                }
                 if (prevModule!=null) {
                     overrideModule = Modules.override(prevModule).with(overrideModule);
                 }
                 prevModule = overrideModule;
             }
-            return Guice.createInjector(prevModule);
+            //return Guice.createInjector(prevModule);
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
         }
         return Guice.createInjector(prevModule);
     }
+
+    private static void initHooks() {
+
+        // Register
+        //Multibinder<ModuleHook> hookBinder = Multibinder.newSetBinder(binder(), ModuleHook.class);
+        //hookBinder.addBinding().to(SelenoidVideoHook.class).in(Scopes.SINGLETON);
+
+        // Load
+        // MODULE_HOOKS = new ArrayList<>(Testerra.getInjector().getInstance(Key.get(new TypeLiteral<Set<ModuleHook>>() {})));
+
+
+        MODULE_HOOKS.forEach(moduleHook -> {
+            LOGGER.debug("Init " + moduleHook.getClass().getSimpleName() + "...");
+            moduleHook.init();
+        });
+
+        getEventBus().post(new ModulesInitializedEvent());
+    }
+
+    public static void shutdown() {
+        MODULE_HOOKS.forEach(moduleHook -> {
+            LOGGER.debug("Terminate " + moduleHook.getClass().getSimpleName());
+            moduleHook.terminate();
+        });
+    }
+
+    private static void printTesterraBanner() {
+        List<String> frameworkBanner = new LinkedList<>();
+        String buildVersion = "";
+        List<String> bannerVersions = new LinkedList<>();
+
+        /*
+        load banner
+         */
+        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("banner.txt");
+        if (is != null) {
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            br.lines().forEach(frameworkBanner::add);
+        } else {
+            LOGGER.debug("Could not read banner");
+        }
+
+        /*
+        get versions info
+         */
+        bannerVersions.add("build.java.version: " + buildInformation.buildJavaVersion);
+        bannerVersions.add("build.os.name:      " + buildInformation.buildOsName);
+        bannerVersions.add("build.os.arch:      " + buildInformation.buildOsArch);
+        bannerVersions.add("build.os.version:   " + buildInformation.buildOsVersion);
+        bannerVersions.add("build.user.name:    " + buildInformation.buildUserName);
+        bannerVersions.add("build.timestamp:    " + buildInformation.buildTimestamp);
+
+        buildVersion = buildInformation.buildVersion;
+
+        /*
+        beautify
+         */
+        String wall = " ° ";
+        final int widthLogo = frameworkBanner.stream().mapToInt(String::length).max().getAsInt();
+        frameworkBanner = frameworkBanner.stream().map(s -> s + StringUtils.repeat(" ", widthLogo - s.length())).collect(Collectors.toList());
+        final int width = bannerVersions.stream().mapToInt(String::length).max().getAsInt();
+        frameworkBanner = frameworkBanner.stream().map(s -> wall + StringUtils.center(s, width) + wall).collect(Collectors.toList());
+        buildVersion = wall + StringUtils.center(buildVersion, width) + wall;
+        bannerVersions = bannerVersions.stream().map(s -> wall + s + StringUtils.repeat(" ", width - s.length()) + wall).collect(Collectors.toList());
+
+        /*
+        print banner
+         */
+        String ruler = StringUtils.repeat(wall, width / wall.length() + 2);
+        LOGGER.info(ruler);
+        frameworkBanner.forEach(LOGGER::info);
+        LOGGER.info(buildVersion);
+        LOGGER.info(ruler);
+        bannerVersions.forEach(LOGGER::info);
+        LOGGER.info(ruler);
+    }
+
 }

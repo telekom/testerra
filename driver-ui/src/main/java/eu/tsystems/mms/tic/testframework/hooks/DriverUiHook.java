@@ -22,6 +22,9 @@
 package eu.tsystems.mms.tic.testframework.hooks;
 
 import com.google.common.eventbus.EventBus;
+import com.google.inject.AbstractModule;
+import com.google.inject.Scopes;
+import com.google.inject.multibindings.Multibinder;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
@@ -32,17 +35,48 @@ import eu.tsystems.mms.tic.testframework.execution.worker.finish.TakeInSessionEv
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.TakeOutOfSessionsEvidencesWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverShutDownWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.start.PerformanceTestWorker;
+import eu.tsystems.mms.tic.testframework.internal.asserts.DefaultPropertyAssertionFactory;
+import eu.tsystems.mms.tic.testframework.internal.asserts.PropertyAssertionFactory;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.listeners.ShutdownSessionsListener;
 import eu.tsystems.mms.tic.testframework.listeners.WatchdogStartupListener;
+import eu.tsystems.mms.tic.testframework.pageobjects.DefaultUiElementFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.AriaElementLocator;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultPageFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultTestControllerOverrides;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultUiElementFinderFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.PageFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFinderFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementLabelLocator;
 import eu.tsystems.mms.tic.testframework.report.ScreenshotGrabber;
 import eu.tsystems.mms.tic.testframework.report.SourceGrabber;
 import eu.tsystems.mms.tic.testframework.report.UITestStepIntegration;
+import eu.tsystems.mms.tic.testframework.testing.TestController;
+import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
+import eu.tsystems.mms.tic.testframework.useragents.UapBrowserInformation;
 import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
+import eu.tsystems.mms.tic.testframework.webdriver.DefaultWebDriverManager;
+import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 
-public class DriverUiHook implements ModuleHook {
+public class DriverUiHook extends AbstractModule implements ModuleHook {
+
+    @Override
+    protected void configure() {
+        // Singletons
+        bind(UiElementFactory.class).to(DefaultUiElementFactory.class).in(Scopes.SINGLETON);
+        bind(PageFactory.class).to(DefaultPageFactory.class).in(Scopes.SINGLETON);
+        bind(TestController.Overrides.class).to(DefaultTestControllerOverrides.class).in(Scopes.SINGLETON);
+        bind(IWebDriverManager.class).to(DefaultWebDriverManager.class).in(Scopes.SINGLETON);
+        bind(UiElementLabelLocator.class).to(AriaElementLocator.class).in(Scopes.SINGLETON);
+        bind(UiElementFinderFactory.class).to(DefaultUiElementFinderFactory.class).in(Scopes.SINGLETON);
+        bind(PropertyAssertionFactory.class).to(DefaultPropertyAssertionFactory.class).in(Scopes.SINGLETON);
+
+        // Instances
+        bind(BrowserInformation.class).to(UapBrowserInformation.class);
+    }
 
     @Override
     public void init() {

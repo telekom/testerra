@@ -22,6 +22,7 @@
 package eu.tsystems.mms.tic.testframework.hook;
 
 import com.google.common.eventbus.EventBus;
+import com.google.inject.AbstractModule;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.listeners.GenerateXmlReportListener;
@@ -29,7 +30,7 @@ import eu.tsystems.mms.tic.testframework.report.TestStepLogAppender;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import org.apache.logging.log4j.core.Appender;
 
-public class ReportModelHook implements ModuleHook {
+public class ReportModelHook extends AbstractModule implements ModuleHook {
 
     private Appender reportLogAppender;
 

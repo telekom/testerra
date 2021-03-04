@@ -27,7 +27,7 @@ import com.google.inject.multibindings.Multibinder;
 import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverFactory;
 
-public class ConfigureDriverUiDesktop extends AbstractModule {
+public class DriverUi_Desktop extends AbstractModule {
     @Override
     protected void configure() {
         Multibinder<IWebDriverFactory> webDriverFactoryBinder = Multibinder.newSetBinder(binder(), IWebDriverFactory.class);

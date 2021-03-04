@@ -16,8 +16,8 @@ element.expect().text().map(String::trim).startsWith("Hello").is(boolean);
 // Expect the existence of an attribute
 element.expect().attribute(Attribute.DISABLED).isNot(null);
 
-// Expect the value of an input element
-element.expect().value("Hello World");
+// Expect the value of an input element matches an regular expression
+element.expect().value().matches("^hello\\s.orld").is(boolean);
 
 // CSS property checks
 element.expect().css("display").is("none");

@@ -273,6 +273,7 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
         WebTestPage page = getPage();
         UiElement disableMyselfBtn = page.getFinder().findById("disableMyselfBtn");
         disableMyselfBtn.expect().enabled(true);
+        disableMyselfBtn.expect().value().matches("^hello\\s.orld").is(true);
         AtomicInteger retryCount = new AtomicInteger();
         CONTROL.retryFor(10, () -> {
             CONTROL.withTimeout(1, () -> {

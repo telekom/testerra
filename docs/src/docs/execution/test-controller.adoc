@@ -96,8 +96,6 @@ If you need to wait for something to happen. You can use the control method `wai
 
 [source,java]
 ----
-String currentWindowTitle = getWebDriver().getTitle();
-
 findById("login").click();
 
 if (CONTROL.waitFor(int seconds, () -> WEB_DRIVER_MANAGER.switchToWindowTitle("Login"))) {

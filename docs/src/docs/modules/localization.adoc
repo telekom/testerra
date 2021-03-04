@@ -22,6 +22,8 @@ BTN_LOGIN=Anmelden
 
 NOTE: You can change the default encoding for `.properties` files in IntellJ at _File -> Settings -> File Encodings_
 
+image::intellij-properties-encoding.jpg[]
+
 == Access localization text
 
 Now you can instance UiElements by localized strings.

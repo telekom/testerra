@@ -95,14 +95,14 @@ public class TestStep implements Serializable, Loggable {
 
     public void open() {
         if (!isInternalTestStep()) {
-            log().info("Begin " + name);
+            log().info("Begin \"" + name + "\"");
         }
     }
 
     public void close() {
         closed = true;
         if (!isInternalTestStep()) {
-            log().info("End " + name);
+            log().info("End \"" + name + "\"");
         }
     }
 

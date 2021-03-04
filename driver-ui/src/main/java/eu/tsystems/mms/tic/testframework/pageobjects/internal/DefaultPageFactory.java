@@ -24,6 +24,7 @@ import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.exceptions.PageFactoryException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Component;
+import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageObject;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -63,7 +64,7 @@ public class DefaultPageFactory implements PageFactory, Loggable {
     }
 
     @Override
-    public <T extends PageObject> Class<T> findBestMatchingClass(Class<T> pageClass, WebDriver webDriver) {
+    public <T extends Page> Class<T> findBestMatchingClass(Class<T> pageClass, WebDriver webDriver) {
         try {
             return (Class<T>) Class.forName(String.format("%s.%s%s",pageClass.getPackage().getName(), getConfiguredPrefix(), pageClass.getSimpleName()));
         } catch (ClassNotFoundException e) {
@@ -85,7 +86,7 @@ public class DefaultPageFactory implements PageFactory, Loggable {
     }
 
     @Override
-    public <T extends PageObject> T createPageWithCheckRule(Class<T> pageClass, WebDriver webDriver, CheckRule checkRule) {
+    public <T extends Page> T createPageWithCheckRule(Class<T> pageClass, WebDriver webDriver, CheckRule checkRule) {
         pageClass = findBestMatchingClass(pageClass, webDriver);
         try {
             Constructor<T> constructor = pageClass.getConstructor(WebDriver.class);

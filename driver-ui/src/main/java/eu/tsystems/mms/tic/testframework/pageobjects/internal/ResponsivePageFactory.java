@@ -20,7 +20,7 @@
  */
  package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.PageObject;
+import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.ClassFinder;
 import org.openqa.selenium.WebDriver;
 
@@ -29,7 +29,7 @@ import org.openqa.selenium.WebDriver;
  */
 public class ResponsivePageFactory extends DefaultPageFactory {
     @Override
-    public <T extends PageObject> Class<T> findBestMatchingClass(Class<T> pageClass, WebDriver webDriver) {
+    public <T extends Page> Class<T> findBestMatchingClass(Class<T> pageClass, WebDriver webDriver) {
         return ClassFinder.getBestMatchingClass(pageClass, webDriver, getConfiguredPrefix());
     }
 

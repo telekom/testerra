@@ -267,7 +267,7 @@ public abstract class AbstractPage<SELF> implements
         return pageFactory.createComponent(componentClass, rootElement);
     }
 
-    protected <T extends PageObject> T createPage(final Class<T> pageClass) {
+    public <T extends Page> T createPage(final Class<T> pageClass) {
         return pageFactory.createPage(pageClass, getWebDriver());
     }
 }

@@ -23,23 +23,29 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.pageobjects.Component;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageObject;
+import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import org.openqa.selenium.WebDriver;
 
 public interface PageFactory extends WebDriverManagerProvider {
+    @Deprecated
     PageFactory setGlobalPagesPrefix(String pagePrefix);
+    @Deprecated
     PageFactory setThreadLocalPagesPrefix(String pagePrefix);
+    @Deprecated
     PageFactory clearThreadLocalPagesPrefix();
-    default <T extends PageObject> T createPage(Class<T> pageClass) {
+
+    default <T extends Page> T createPage(Class<T> pageClass) {
         return createPage(pageClass, WEB_DRIVER_MANAGER.getWebDriver());
     }
-    default <T extends PageObject> T createPage(Class<T> pageClass, WebDriver webDriver) {
+    default <T extends Page> T createPage(Class<T> pageClass, WebDriver webDriver) {
         return createPageWithCheckRule(pageClass, webDriver, CheckRule.DEFAULT);
     }
-    <T extends PageObject> Class<T> findBestMatchingClass(Class<T> pageClass, WebDriver webDriver);
+    @Deprecated
+    <T extends Page> Class<T> findBestMatchingClass(Class<T> pageClass, WebDriver webDriver);
     <T extends Component> T createComponent(Class<T> componentClass, UiElement rootElement);
-    <T extends PageObject> T createPageWithCheckRule(Class<T> pageClass, WebDriver webDriver, CheckRule checkRule);
 
+    @Deprecated
+    <T extends Page> T createPageWithCheckRule(Class<T> pageClass, WebDriver webDriver, CheckRule checkRule);
 }

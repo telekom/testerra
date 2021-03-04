@@ -37,18 +37,14 @@ import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import java.awt.Color;
-import java.util.Optional;
 import java.util.Random;
 import org.openqa.selenium.WebDriver;
 
 /**
- * Represents a full web page and provides advanced {@link PageObject} features:
- *      Supports finding elements by {@link #find(Locator)}
- *      Support for performance tests by {@link #perfTestExtras()}
- *      Support for text assertions by {@link #anyElementContainsText(String)}
+ * Represents a full web page and provides advanced {@link PageObject}.
  * @author Peter Lehmann
  * @author Mike Reiche
- * @todo Rename to AbstractPage
+ * @todo Should be an interface only
  */
 public class Page extends AbstractPage<Page> implements TestablePage {
     private WebDriver driver;

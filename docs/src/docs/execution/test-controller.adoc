@@ -50,6 +50,8 @@ public void test_TestSomething_fast() {
 }
 ----
 
+NOTE: `Control.withTimeout()` overrides all internal timeouts except the explicity used timeout in `waitFor(int seconds)`
+
 == Retries
 
 In some situations you cannot rely on single assertions or waits anymore and need to continue trying something out before performing an alternative solution. Use control methods for repeating a couple of actions within a loop until a timeout has reached.

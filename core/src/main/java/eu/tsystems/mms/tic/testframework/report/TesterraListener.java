@@ -107,6 +107,13 @@ public class TesterraListener implements
         return Testerra.getLoggerContext();
     }
 
+    /**
+     * @deprecated Use {@link Testerra#getInjector()}
+     */
+    public static Report getReport() {
+        return Testerra.getInjector().getInstance(Report.class);
+    }
+
     static {
         /*
          * Add monitoring event listeners

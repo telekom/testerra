@@ -47,8 +47,8 @@ import org.openqa.selenium.WebDriver;
  * @todo Should be an interface only
  */
 public class Page extends AbstractPage<Page> implements TestablePage {
-    private WebDriver driver;
-    private PageUiElementFinder finder = new PageUiElementFinder(this);
+    private final WebDriver driver;
+    private final PageUiElementFinder finder = new PageUiElementFinder(this);
 
     protected Page(WebDriver webDriver) {
         this.driver = webDriver;

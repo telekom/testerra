@@ -22,10 +22,12 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
+import eu.tsystems.mms.tic.testframework.exceptions.PageFactoryException;
 import eu.tsystems.mms.tic.testframework.pageobjects.Component;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
+import java.util.Optional;
 import org.openqa.selenium.WebDriver;
 
 public interface PageFactory extends WebDriverManagerProvider {
@@ -42,6 +44,17 @@ public interface PageFactory extends WebDriverManagerProvider {
     default <T extends Page> T createPage(Class<T> pageClass, WebDriver webDriver) {
         return createPageWithCheckRule(pageClass, webDriver, CheckRule.DEFAULT);
     }
+    default <T extends Page> Optional<T> tryCreatePage(Class<T> pageClass) {
+        return tryCreatePage(pageClass, WEB_DRIVER_MANAGER.getWebDriver());
+    }
+    default <T extends Page> Optional<T> tryCreatePage(Class<T> pageClass, WebDriver webDriver) {
+        try {
+            return Optional.of(createPage(pageClass, webDriver));
+        } catch (PageFactoryException e) {
+            return Optional.empty();
+        }
+    }
+
     @Deprecated
     <T extends Page> Class<T> findBestMatchingClass(Class<T> pageClass, WebDriver webDriver);
     <T extends Component> T createComponent(Class<T> componentClass, UiElement rootElement);

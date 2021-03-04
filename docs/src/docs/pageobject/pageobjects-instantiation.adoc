@@ -19,7 +19,16 @@ Once you created a page, you can create other pages directly from this page, to 
 ----
 OtherPage otherPage = homePage.createPage(OtherPage.class);
 ----
-The check rule is successful if at least one mandatory UiElement ("@Check") is not shown.
+
+== Optional pages
+
+You can also try to create a page, when you want to handle unexpected redirects at some point.
+
+[source,java]
+----
+homePage.tryCreatePage(OtherPage.class).ifPresent(otherPage -> {});
+----
+
 
 == Page Prefixes (*deprecated*)
 

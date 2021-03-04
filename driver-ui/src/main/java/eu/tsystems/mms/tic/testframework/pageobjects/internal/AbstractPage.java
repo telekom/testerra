@@ -270,4 +270,8 @@ public abstract class AbstractPage<SELF> implements
     public <T extends Page> T createPage(final Class<T> pageClass) {
         return pageFactory.createPage(pageClass, getWebDriver());
     }
+
+    public <T extends Page> Optional<T> tryCreatePage(final Class<T> pageClass) {
+        return pageFactory.tryCreatePage(pageClass, getWebDriver());
+    }
 }

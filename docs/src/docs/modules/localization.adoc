@@ -1,7 +1,7 @@
 = Localization
 
 Websites come in many languages, where the functionality may not change, but labels of buttons, input or other interactive elements.
-Testerra provides an easy and simple way to support the localization of UiElements.
+Testerra provides an easy and simple way to support the localization of UiElements based on `Locale`.
 
 == Add localization resource bundle
 
@@ -45,7 +45,7 @@ LocalizedBundle bundle = new LocalizedBundle("testdata");
 bundle.getString("TEST_KEY");
 ----
 
-== Change runtime locale
+== Change locale from command line (_recommended_)
 
 The best way to change the locale for your tests is, to pass the language property as command line argument.
 
@@ -74,10 +74,19 @@ before running the command
 mvn test -Duser.language=de -Duser.country=DE
 ----
 
-## Change browser locale
+== Change locale from property
 
-The WebDriver API official doesn't support changing the language of a browser session. But there exists
-non-standard or experimental ways on https://stackoverflow.com/questions/33016300/selenium-change-language-browser-chrome-firefox[Stackoverflow]
+When you want to change the locale from a property. Do the following
+
+[source,java]
+----
+String testLanguage = PropertyManager.getProperty("test.language", "de");
+Locale.setDefault(Locale.forLanguageTag(testLanguage));
+----
+
+== Change locale for the user agent
+
+The WebDriver API official doesn't support changing the language of a browser session. But there exists non-standard or experimental ways on https://stackoverflow.com/questions/33016300/selenium-change-language-browser-chrome-firefox[Stackoverflow]
 to change your browser locale.
 
-Anyways, it's currently the better way to visit your SUT with an undefined language and change it there with the ability it's providing for that.
+Anyways, it's currently the better way to visit your SUT with a predefined language and change it there (with a language switcher).

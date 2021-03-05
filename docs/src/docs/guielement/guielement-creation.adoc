@@ -87,8 +87,8 @@ Using prepared expressions makes complex selectors more readable.
 
 [source,java]
 ----
-Locate byText = LOCATE.prepare("//button[text()='%s'])");
-Locate byClass = LOCATE.prepare("//%s[contains(@class, '%s')][%d]");
+PreparedLocator byText = LOCATE.prepare("//button[text()='%s'])");
+PreparedLocator byClass = LOCATE.prepare("//%s[contains(@class, '%s')][%d]");
 
 UiElement loginButton = find(byText.with("Login"));
 UiElement logoutButton = find(byClass.with("button", "btn-logout", 1));
@@ -176,7 +176,7 @@ To prevent null pointers or any other exception that will break you program flow
 
 [source,java]
 ----
-UiElement empty = createEmpty(Locate locator);
+UiElement empty = createEmpty(Locator);
 ----
 
 All interactive operations on this element will do nothing, all wait methods will be false and all assertions will fail.

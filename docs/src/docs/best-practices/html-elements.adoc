@@ -16,7 +16,7 @@ Its better to select both options separately.
 [source,java]
 ----
 // Good practice
-Locate locator = Locate.prepare("//input[@name='%s' and @value='%s']").unique();
+PreparedLocator locator = LOCATE.prepare("//input[@name='%s' and @value='%s']").unique();
 UiElement teeOption = find(locator.with("beverage", "tee"));
 UiElement coffeeOption = find(locator.with("beverage", "coffee"));
 

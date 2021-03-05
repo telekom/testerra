@@ -47,7 +47,7 @@ dependencies {
 
     // <ExceptionUtils>
     // Comes already implicit from reflections
-    implementation 'org.javassist:javassist:3.20.0-GA'
+    //implementation 'org.javassist:javassist:3.20.0-GA'
     // </ExceptionUtils>
 
     compile('org.testng:testng:7.3.0') {
@@ -55,8 +55,6 @@ dependencies {
         // This will lead to a version clash with selenium and this will produce ImmutableMapErrors on WebDriverManager.getWebDriver
         exclude group: 'com.google.guava', module: 'guava'
     }
-
-    //implementation 'org.javassist:javassist:3.20.0-GA'
 
     // <FileUtils>
     implementation 'net.lingala.zip4j:zip4j:1.3.2'

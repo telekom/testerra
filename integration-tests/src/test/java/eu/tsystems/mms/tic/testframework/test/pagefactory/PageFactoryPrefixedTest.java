@@ -51,6 +51,7 @@ import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /**
@@ -111,14 +112,17 @@ public class PageFactoryPrefixedTest extends AbstractWebDriverTest implements Lo
     @BeforeClass(alwaysRun = true)
     public void before() {
         PageFactory.clearCache();
-        PAGE_FACTORY.setGlobalPagesPrefix("Prefix");
         WebDriverManagerConfig config = WEB_DRIVER_MANAGER.getConfig();
         config.setShutdownSessionAfterTestMethod(false);
     }
 
+    @BeforeMethod(alwaysRun = true)
+    public void beforeMethod() {
+        PAGE_FACTORY.setThreadLocalPagesPrefix("Prefix");
+    }
+
     @AfterClass(alwaysRun = true)
     public void after() {
-        PAGE_FACTORY.setGlobalPagesPrefix(null);
         WebDriverManagerConfig config = WEB_DRIVER_MANAGER.getConfig();
         config.setShutdownSessionAfterTestMethod(true);
     }

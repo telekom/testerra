@@ -60,8 +60,7 @@ public class DefaultPageFactory implements PageFactory, Loggable {
         return createPageWithCheckRule(pageClass, webDriver, CheckRule.DEFAULT);
     }
 
-    @Deprecated
-    protected String getConfiguredPrefix() {
+    private String getConfiguredPrefix() {
         String pagesPrefix = GLOBAL_PAGES_PREFIX;
         if (!StringUtils.isStringEmpty(THREAD_LOCAL_PAGES_PREFIX.get())) {
             pagesPrefix = THREAD_LOCAL_PAGES_PREFIX.get();

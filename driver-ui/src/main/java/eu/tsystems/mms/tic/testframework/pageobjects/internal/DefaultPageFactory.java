@@ -70,11 +70,11 @@ public class DefaultPageFactory implements PageFactory, Loggable {
     }
 
     private <T extends Page> Class<T> findBestMatchingClass(Class<T> pageClass) {
+        String pageClassString = String.format("%s.%s%s",pageClass.getPackage().getName(), getConfiguredPrefix(), pageClass.getSimpleName());
         try {
-            return (Class<T>) Class.forName(String.format("%s.%s%s",pageClass.getPackage().getName(), getConfiguredPrefix(), pageClass.getSimpleName()));
+            return (Class<T>) Class.forName(pageClassString);
         } catch (ClassNotFoundException e) {
-            log().error(e.getMessage(), e);
-            return null;
+            throw new PageFactoryException(pageClassString, null, e);
         }
     }
 

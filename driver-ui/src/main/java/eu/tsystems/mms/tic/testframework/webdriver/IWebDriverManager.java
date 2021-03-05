@@ -21,6 +21,7 @@
 
 package eu.tsystems.mms.tic.testframework.webdriver;
 
+import eu.tsystems.mms.tic.testframework.common.IProperties;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
@@ -40,6 +41,31 @@ import org.openqa.selenium.WebDriver;
  * @todo Rename to {@link WebDriverManager}
  */
 public interface IWebDriverManager extends WebDriverRetainer {
+
+    enum Properties implements IProperties {
+        BROWSER("tt.browser", ""),
+        BROWSER_VERSION("tt.browser.version", ""),
+        BROWSER_SETTING("tt.browser.setting", ""),
+        ;
+        private final String property;
+        private final Object defaultValue;
+
+        Properties(String property, Object defaultValue) {
+            this.property = property;
+            this.defaultValue = defaultValue;
+        }
+
+        @Override
+        public String toString() {
+            return property;
+        }
+
+        @Override
+        public Object getDefault() {
+            return defaultValue;
+        }
+    }
+
     @Override
     default WebDriver getWebDriver() {
         return WebDriverManager.getWebDriver();

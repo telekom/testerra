@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.enums.Position;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import java.net.MalformedURLException;
 
@@ -86,7 +87,7 @@ public class WebDriverManagerConfig extends AbstractWebDriverConfiguration imple
     }
 
     private void initBrowser() {
-        String browserSetting = PropertyManager.getProperty(TesterraProperties.BROWSER_SETTING);
+        String browserSetting = IWebDriverManager.Properties.BROWSER_SETTING.asString();
         if (!StringUtils.isStringEmpty(browserSetting)) {
             String[] split = browserSetting.split(":");
             if (split.length > 0) this.setBrowser(split[0].trim());
@@ -94,10 +95,10 @@ public class WebDriverManagerConfig extends AbstractWebDriverConfiguration imple
         }
 
         if (StringUtils.isStringEmpty(this.getBrowser())) {
-            this.setBrowser(PropertyManager.getProperty(TesterraProperties.BROWSER, ""));
+            this.setBrowser(IWebDriverManager.Properties.BROWSER.asString());
         }
         if (StringUtils.isStringEmpty(this.getBrowserVersion())) {
-            this.setBrowserVersion(PropertyManager.getProperty(TesterraProperties.BROWSER_VERSION, ""));
+            this.setBrowserVersion(IWebDriverManager.Properties.BROWSER_VERSION.asString());
         }
     }
 

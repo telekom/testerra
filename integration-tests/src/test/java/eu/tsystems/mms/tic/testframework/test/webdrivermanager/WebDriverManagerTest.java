@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import java.util.Map;
@@ -58,7 +59,7 @@ public class WebDriverManagerTest extends TesterraTest {
     public void testT02_introduceOwnDriver() {
 
         final String webDriverMode = Testerra.Properties.WEBDRIVER_MODE.asString();
-        final String browser = PropertyManager.getProperty(TesterraProperties.BROWSER, Browsers.chromeHeadless);
+        String browser = IWebDriverManager.Properties.BROWSER.asString();
 
         // Exit options for testcase
         if (!browser.equalsIgnoreCase(Browsers.chrome) && !browser.equalsIgnoreCase(Browsers.chromeHeadless)) {

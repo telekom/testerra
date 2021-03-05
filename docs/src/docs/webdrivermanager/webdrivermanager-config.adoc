@@ -9,7 +9,6 @@ A global configuration applies to all new sessions created by WebDriverManager.
 You can set a global configuration by
 
 * `test.properties`
-* at runtime by `System.setProperty()`
 * at runtime by `WebDriverManager.getConfig()` (only browser session behaviour)
 
 === Configure with `test.properties`
@@ -17,16 +16,6 @@ You can set a global configuration by
 Like shown above all session properties can be set in `test.properties`.
 
 include::../properties/webdriver-props.adoc[leveloffset=+1]
-
-=== Configure with `System.setProperty()`
-
-At runtime you can change the global configuration of all properties with `System.setProperty()`.
-
-[source,java]
-----
-System.setProperty(TesterraProperties.BROWSER, Browsers.firefox);
-System.setProperty(TesterraProperties.BROWSER_VERSION, "66");
-----
 
 === Configure with `WebDriverManager.getConfig()`
 

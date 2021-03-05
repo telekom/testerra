@@ -37,16 +37,6 @@ public final class TesterraProperties {
     }
 
     /**
-     * Property to set the browser used by Selenium/ Webdriver.
-     */
-    public static final String BROWSER = "tt.browser";
-    public static final String BROWSER_VERSION = "tt.browser.version";
-
-    // BROWSER_SETTING syntax: browser:version
-    // BROWSER_SETTING overrides BROWSER and BROWSER_VERSION
-    public static final String BROWSER_SETTING = "tt.browser.setting";
-
-    /**
      * Failed tests maximum number of retries.
      */
     public static final String FAILED_TESTS_MAX_RETRIES = "tt.failed.tests.max.retries";

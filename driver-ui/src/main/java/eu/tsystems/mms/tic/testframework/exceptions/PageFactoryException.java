@@ -26,16 +26,12 @@ import org.openqa.selenium.WebDriver;
 
 public class PageFactoryException extends RuntimeException {
 
-    public PageFactoryException(String pageClass, WebDriver webDriver, Throwable cause) {
+    public PageFactoryException(Class<? extends PageObject> pageClass, WebDriver webDriver, Throwable cause) {
         super(String.format("Could not create instance of %s with WebDriver: %s \"%s\" (%s)",
-                pageClass,
+                pageClass.getSimpleName(),
                 webDriver,
                 (webDriver!=null)?webDriver.getTitle():"null",
                 (webDriver!=null)?webDriver.getCurrentUrl():"null"
-            ), cause);
-    }
-
-    public PageFactoryException(Class<? extends PageObject> pageClass, WebDriver webDriver, Throwable cause) {
-        this(pageClass.getSimpleName(), webDriver, cause);
+        ), cause);
     }
 }

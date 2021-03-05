@@ -25,16 +25,16 @@ import eu.tsystems.mms.tic.testframework.exceptions.PageFactoryException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Component;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageObject;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import org.openqa.selenium.WebDriver;
 
 public class DefaultPageFactory implements PageFactory, Loggable {
 
+    @Deprecated
     private String GLOBAL_PAGES_PREFIX = null;
+    @Deprecated
     private final ThreadLocal<String> THREAD_LOCAL_PAGES_PREFIX = new ThreadLocal<>();
 
     @Override
@@ -68,15 +68,6 @@ public class DefaultPageFactory implements PageFactory, Loggable {
         return (pagesPrefix!=null?pagesPrefix:"");
     }
 
-    private <T extends Page> Class<T> findBestMatchingClass(Class<T> pageClass) {
-        String pageClassString = String.format("%s.%s%s",pageClass.getPackage().getName(), getConfiguredPrefix(), pageClass.getSimpleName());
-        try {
-            return (Class<T>) Class.forName(pageClassString);
-        } catch (ClassNotFoundException e) {
-            throw new PageFactoryException(pageClassString, null, e);
-        }
-    }
-
     @Override
     public <T extends Component> T createComponent(Class<T> componentClass, UiElement rootElement) {
         try {
@@ -92,8 +83,10 @@ public class DefaultPageFactory implements PageFactory, Loggable {
     @Override
     @Deprecated
     public <T extends Page> T createPageWithCheckRule(Class<T> pageClass, WebDriver webDriver, CheckRule checkRule) {
-        pageClass = findBestMatchingClass(pageClass);
         try {
+            String pageClassString = String.format("%s.%s%s",pageClass.getPackage().getName(), getConfiguredPrefix(), pageClass.getSimpleName());
+            pageClass = (Class<T>) Class.forName(pageClassString);
+
             Constructor<T> constructor = pageClass.getConstructor(WebDriver.class);
             T page = constructor.newInstance(webDriver);
             ((AbstractPage)page).checkUiElements(checkRule);

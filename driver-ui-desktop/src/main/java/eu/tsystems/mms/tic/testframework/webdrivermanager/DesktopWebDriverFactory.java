@@ -29,7 +29,6 @@ import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.enums.Position;
 import eu.tsystems.mms.tic.testframework.exceptions.SetupException;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
-import eu.tsystems.mms.tic.testframework.internal.Defaults;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.TimingInfo;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
@@ -261,8 +260,8 @@ public class DesktopWebDriverFactory extends AbstractWebDriverFactory<DesktopWeb
     }
 
     private void setWindowSizeBasedOnDisplayResolution(WebDriver.Window window, String browser) {
-        log().debug("Trying to set window size to: " + Defaults.DISPLAY_RESOLUTION);
-        String[] split = Defaults.DISPLAY_RESOLUTION.split("x");
+        log().debug("Trying to set window size to: " + Testerra.Properties.DISPLAY_RESOLUTION.asString());
+        String[] split = Testerra.Properties.DISPLAY_RESOLUTION.asString().split("x");
         int width = Integer.parseInt(split[0]);
         int height = Integer.parseInt(split[1]);
         try {

@@ -80,6 +80,7 @@ public class TesterraListener implements
      * Default package namespace for project tests
      */
     public final static String DEFAULT_PACKAGE = "eu.tsystems.mms.tic";
+    @Deprecated
     public static final String PROJECT_PACKAGE = PropertyManager.getProperty(TesterraProperties.PROJECT_PACKAGE, DEFAULT_PACKAGE);
 
     /**

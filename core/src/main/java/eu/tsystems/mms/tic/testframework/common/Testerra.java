@@ -92,6 +92,7 @@ public class Testerra {
         SCREENCASTER_ACTIVE("tt.screencaster.active", false),
         SCREENSHOTTER_ACTIVE("tt.screenshotter.active", true),
         SCREENSHOT_ON_PAGELOAD("tt.screenshot.on.pageload", false),
+        DISPLAY_RESOLUTION("tt.display.resolution", "1920x1200"),
         ;
 
         private final String property;

@@ -102,6 +102,7 @@ public final class TesterraProperties {
     /*
      * Package the project is located in.
      */
+    @Deprecated
     public static final String PROJECT_PACKAGE = "tt.project.package";
 
     /**
@@ -109,36 +110,22 @@ public final class TesterraProperties {
      */
     @Deprecated
     public static final String PERF_PAGE_THINKTIME_MS = "tt.perf.page.thinktime.ms";
-    /**
-     * reuse existing driver for a thread of dataprovider
-     */
-    public static final String REUSE_DATAPROVIDER_DRIVER_BY_THREAD = "tt.reuse.dataprovider.driver.by.thread";
-    /**
-     * Perf test Property, used to activate performance test related behaviour and to set default values for the performance test
-     */
-    public static final String PERF_TEST = "tt.perf.test";
 
     /**
      * If true, screenshot after page is loaded will be taken.
      */
     public static final String SCREENSHOT_ON_PAGELOAD = "tt.screenshot.on.pageload";
 
-    public static final String DB_TIMEOUT = "tt.db.timeout";
-
     public static final String BROWSER_MAXIMIZE = "tt.browser.maximize";
     public static final String BROWSER_MAXIMIZE_POSITION = "tt.browser.maximize.position";
 
     public static final String SYSTEM_SETTINGS_FILE = "tt.system.settings.file";
-
 
     public static final String RUNCFG = "tt.runcfg";
 
     public static final String WATCHDOG_ENABLE = "tt.watchdog.enable";
     public static final String WATCHDOG_TIMEOUT_SECONDS = "tt.watchdog.timeout.seconds";
 
-    public static final String DISPLAY_RESOLUTION = "tt.display.resolution";
-
-    public static final String PAGE_FACTORY_LOOPS = "tt.page.factory.loops";
     public static final String SCREENCASTER_ACTIVE_ON_SUCCESS = "tt.screencaster.active.on.success";
     public static final String SCREENCASTER_ACTIVE_ON_FAILED = "tt.screencaster.active.on.failed";
 }

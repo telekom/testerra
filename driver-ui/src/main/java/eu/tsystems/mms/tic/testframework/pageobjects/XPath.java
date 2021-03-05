@@ -107,7 +107,7 @@ public class XPath {
         } else if (split[0].startsWith("By.tagName")) {
             return "//" + split[1];
         }
-        return "(not-supported)";
+        return "byToXPath("+by.toString()+") not supported";
     }
 
     public class Test {
@@ -243,9 +243,11 @@ public class XPath {
     }
 
     public XPath encloses(XPath selector) {
-        XPath contains = new XPath(selector.toString());
-        prepareContainsSelect(contains);
-        return contains;
+        return this.encloses(selector.toString());
+    }
+
+    public XPath encloses(By by) {
+        return this.encloses(byToXPath(by));
     }
 
     private void prepareContainsSelect(XPath contains) {
@@ -266,9 +268,11 @@ public class XPath {
     }
 
     public XPath select(XPath selector) {
-        XPath sub = new XPath(translateSubSelection(selector.toString()));
-        prepareSubSelect(sub);
-        return sub;
+        return this.select(selector.toString());
+    }
+
+    public XPath select(By by) {
+        return this.select(byToXPath(by));
     }
 
     private void prepareSubSelect(XPath sub) {

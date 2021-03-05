@@ -24,6 +24,7 @@ package eu.tsystems.mms.tic.testframework.test.utils;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.XPath;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -59,5 +60,19 @@ public class XPathTest extends TesterraTest  {
     @Test
     public void classSelection() {
         Assert.assertEquals(XPath.from("body").select("nav").classes("container").toString(), "//body//nav[contains(concat(' ', normalize-space(@class), ' '), ' container ')]");
+    }
+
+    @Test
+    public void xPath_with_xPath() {
+        Assert.assertEquals(XPath.from("body").encloses(XPath.from("div")).toString(), "//body[descendant::div]");
+        Assert.assertEquals(XPath.from("body").encloses(XPath.from("./div")).toString(), "//body[child::div]");
+        Assert.assertEquals(XPath.from("body").select(XPath.from("div")).toString(), "//body//div");
+        Assert.assertEquals(XPath.from("body").select(XPath.from("./div")).toString(), "//body/div");
+    }
+
+    @Test
+    public void xPath_with_By() {
+        Assert.assertEquals(XPath.from("body").encloses(By.name("name")).toString(), "//body[descendant::*[@name='name']]");
+        Assert.assertEquals(XPath.from("body").select(By.id("id")).toString(), "//body//*[@id='id']");
     }
 }

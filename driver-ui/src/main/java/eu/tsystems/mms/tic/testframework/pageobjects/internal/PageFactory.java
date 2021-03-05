@@ -41,9 +41,8 @@ public interface PageFactory extends WebDriverManagerProvider {
     default <T extends Page> T createPage(Class<T> pageClass) {
         return createPage(pageClass, WEB_DRIVER_MANAGER.getWebDriver());
     }
-    default <T extends Page> T createPage(Class<T> pageClass, WebDriver webDriver) {
-        return createPageWithCheckRule(pageClass, webDriver, CheckRule.DEFAULT);
-    }
+    <T extends Page> T createPage(Class<T> pageClass, WebDriver webDriver);
+
     default <T extends Page> Optional<T> tryCreatePage(Class<T> pageClass) {
         return tryCreatePage(pageClass, WEB_DRIVER_MANAGER.getWebDriver());
     }
@@ -55,10 +54,11 @@ public interface PageFactory extends WebDriverManagerProvider {
         }
     }
 
-    @Deprecated
-    <T extends Page> Class<T> findBestMatchingClass(Class<T> pageClass, WebDriver webDriver);
     <T extends Component> T createComponent(Class<T> componentClass, UiElement rootElement);
 
+    /**
+     * @deprecated Use {@link #createPage(Class, WebDriver)} instead
+     */
     @Deprecated
     <T extends Page> T createPageWithCheckRule(Class<T> pageClass, WebDriver webDriver, CheckRule checkRule);
 }

@@ -47,16 +47,7 @@ public class CheckPageTest extends AbstractTestSitesTest implements PageFactoryP
 
     @Test(expectedExceptions = PageFactoryException.class)
     public void testT02_checkNotExistingElement() throws Throwable {
-        try {
-            PAGE_FACTORY.createPage(PageWithNotExistingElement.class, getClassExclusiveWebDriver());
-        } catch (Throwable e) {
-            do {
-                e = e.getCause();
-                if (e instanceof PageFactoryException) {
-                    throw e;
-                }
-            } while (e != null);
-        }
+        PAGE_FACTORY.createPage(PageWithNotExistingElement.class, getClassExclusiveWebDriver());
     }
 
     @Test(expectedExceptions = RuntimeException.class)

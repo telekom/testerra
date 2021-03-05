@@ -276,7 +276,7 @@ public class Page extends AbstractPage<Page> implements TestablePage {
     }
 
     private TestableUiElement anyElementContainsText(String text) {
-        return this.getFinder().findDeep(LOCATE.by(XPath.from("*").text().contains(text)));
+        return this.getFinder().findDeep(XPath.from("*").text().contains(text));
     }
 
     @Override

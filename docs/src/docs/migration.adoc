@@ -114,6 +114,21 @@ page.checkPage(); <2>
 <2> Calling `checkPage()` as `public` member is prohibited
 ====
 
+== Responsive PageFactory
+
+The responsive page factory features have been removed from the default implementation. To use it anyway, you need to inject in in your <<Modules>> configuration.
+
+[source,java]
+----
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.ResponsivePageFactory;
+
+public class MyModule extends AbstractModule {
+    protected void configure() {
+        bind(PageFactory.class).to(ResponsivePageFactory.class).in(Scopes.SINGLETON);
+    }
+}
+----
+
 == Element creation changes
 
 The new standard way to instantiate GuiElements is now
@@ -185,18 +200,18 @@ list.forEach(anchor -> Assert.assertTrue(anchor.getAttribute("href").startsWith(
 For elements in frames
 ```java
 class MyPage extends Page {
-    private UiElement frame = find(By.tagName("frame"));
-    private UiElement uiElement = frame.findById(14);
+    private UiElement frame = find(By.tagName("frame")); <1>
+    private UiElement uiElement = frame.findById(14); <2>
 }
 ```
 
-[NOTE]
-.Passing frames to the constructor is now `@deprecated`
+[IMPORTANT]
+.Passing frames to the constructor is *not supported* anymore.
 ====
 ```java
 class MyPage extends Page {
-    private GuiElement frame = new GuiElement(By.tagName("frame"), driver);
-    private GuiElement guiElement = new GuiElement(By.id(14), driver, frame);
+    private GuiElement frame = new GuiElement(By.tagName("frame"), driver); <1>
+    private GuiElement guiElement = new GuiElement(By.id(14), driver, frame); <2>
 }
 ```
 ====
@@ -206,21 +221,20 @@ class MyPage extends Page {
 === Element assertions
 
 The new standard way to perform assertions on elements like Pages and GuiElements is now
-```java
+
+[source,java]
+----
 uiElement.expect().displayed(true); <1>
 uiElement.expect().value().contains("Hallo Welt").is(true); <2>
-page.expect().url().endsWith("index.html").is(true); <3>
-page.anyElementContainsText("You see me").expect().displayed(true); <4>
-```
+----
 [NOTE]
 .Using the GuiElement assertions is now `@deprecated`
 ====
-```java
+[source,java]
+----
 guiElement.asserts().assertIsDisplayed(); <1>
 guiElement.asserts().assertAttributeContains("value", "Hallo Welt"); <2>
-Assert.assertTrue(page.getWebDriver().getCurrentUrl().endsWith("index.html")); <3>
-page.assertIsTextDisplayed("You see me"); <4>
-```
+----
 ====
 
 Perform decisions on occurrence with the `waitFor` prefix.
@@ -241,18 +255,40 @@ if (guiElement.waits().waitForIsDisplayed()) {
 Support of more features through consistent assertion API
 ```java
 uiElement.expect().css("display").is("none"); <1>
-uiElement.expect().text().map(value -> value.toLowerCase()).matches("^hello\\s.orld").is(true); <2,3>
-page.anyElementContainsText("You see me").expect().foundElements().is(1); <4>
+uiElement.expect().text().map(value -> value.toLowerCase()).matches("^hello\\s.orld").is(true); <2> <3>
 ```
 <1> Perform assertions on the element's CSS properties
 <2> Map values
 <3> Regular expression assertions
-<4> Perform GuiElement assertions on found text nodes
 
 Custom failure messages
 ```java
-uiElement.expect().displayed(true, "This element should be displayed");
+uiElement.expect().displayed(true, "Element is displayed");
 ```
+
+=== Page assertions
+
+Assert that a text is visible on a page
+
+[source,java]
+----
+page.expect().url().endsWith("index.html").is(true); <1>
+
+class MyPage extends Page {
+    public void checkIfPageContainsText(String text) {
+        this.getFinder().findDeep(XPath.from("*").text().contains(text)).expect().displayed(true); <2>
+    }
+}
+----
+[NOTE]
+.Using the text assertions is now `@deprecated`
+====
+[source,java]
+----
+Assert.assertTrue(page.getWebDriver().getCurrentUrl().endsWith("index.html")); <1>
+page.assertIsTextDisplayed("You see me"); <2>
+----
+====
 
 === Screenshot based Assertions
 The new standard way to perform screenshot based assertions is now

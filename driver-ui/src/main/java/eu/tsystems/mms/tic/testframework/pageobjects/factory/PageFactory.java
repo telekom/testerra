@@ -21,57 +21,44 @@
  */
  package eu.tsystems.mms.tic.testframework.pageobjects.factory;
 
-import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
+import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
 import org.openqa.selenium.WebDriver;
 
 /**
  * @deprecated Use {@link eu.tsystems.mms.tic.testframework.pageobjects.internal.PageFactory} instead
  */
 @Deprecated
-public final class PageFactory {
-
-    private static eu.tsystems.mms.tic.testframework.pageobjects.internal.PageFactory pageFactory = Testerra.getInjector().getInstance(eu.tsystems.mms.tic.testframework.pageobjects.internal.PageFactory.class);
+public final class PageFactory implements PageFactoryProvider {
 
     private PageFactory() {
 
     }
 
-    /**
-     * @deprecated Use {@link eu.tsystems.mms.tic.testframework.pageobjects.internal.PageFactory#setGlobalPagesPrefix(String)} instead
-     */
+    @Deprecated
     public static void setGlobalPagesPrefix(String prefix) {
-        pageFactory.setGlobalPagesPrefix(prefix);
+        PAGE_FACTORY.setGlobalPagesPrefix(prefix);
     }
 
-    /**
-     * @deprecated Use {@link eu.tsystems.mms.tic.testframework.pageobjects.internal.PageFactory#setThreadLocalPagesPrefix(String)} instead
-     */
     @Deprecated
     public static void setThreadLocalPagesPrefix(String threadLocalPagesPrefix) {
-        pageFactory.setThreadLocalPagesPrefix(threadLocalPagesPrefix);
+        PAGE_FACTORY.setThreadLocalPagesPrefix(threadLocalPagesPrefix);
     }
 
     @Deprecated
     public static void clearThreadLocalPagesPrefix() {
-        pageFactory.clearThreadLocalPagesPrefix();
+        PAGE_FACTORY.clearThreadLocalPagesPrefix();
     }
 
-    /**
-     * @deprecated Use {@link eu.tsystems.mms.tic.testframework.pageobjects.internal.PageFactory#createPageWithCheckRule(Class, WebDriver, CheckRule)} instead
-     */
     @Deprecated
     public static <T extends Page> T checkNot(Class<T> pageClass, WebDriver driver) {
-        return pageFactory.createPageWithCheckRule(pageClass, driver, CheckRule.IS_NOT_DISPLAYED);
+        return PAGE_FACTORY.createPageWithCheckRule(pageClass, driver, CheckRule.IS_NOT_DISPLAYED);
     }
 
-    /**
-     * @deprecated Use {@link eu.tsystems.mms.tic.testframework.pageobjects.internal.PageFactory#createPage(Class, WebDriver)} instead
-     */
     @Deprecated
     public static <T extends Page> T create(Class<T> pageClass, WebDriver driver) {
-        return pageFactory.createPage(pageClass, driver);
+        return PAGE_FACTORY.createPage(pageClass, driver);
     }
 
     @Deprecated

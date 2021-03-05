@@ -55,6 +55,12 @@ public class DefaultPageFactory implements PageFactory, Loggable {
         return this;
     }
 
+    @Override
+    public <T extends Page> T createPage(Class<T> pageClass, WebDriver webDriver) {
+        return createPageWithCheckRule(pageClass, webDriver, CheckRule.DEFAULT);
+    }
+
+    @Deprecated
     protected String getConfiguredPrefix() {
         String pagesPrefix = GLOBAL_PAGES_PREFIX;
         if (!StringUtils.isStringEmpty(THREAD_LOCAL_PAGES_PREFIX.get())) {
@@ -63,8 +69,7 @@ public class DefaultPageFactory implements PageFactory, Loggable {
         return (pagesPrefix!=null?pagesPrefix:"");
     }
 
-    @Override
-    public <T extends Page> Class<T> findBestMatchingClass(Class<T> pageClass, WebDriver webDriver) {
+    private <T extends Page> Class<T> findBestMatchingClass(Class<T> pageClass) {
         try {
             return (Class<T>) Class.forName(String.format("%s.%s%s",pageClass.getPackage().getName(), getConfiguredPrefix(), pageClass.getSimpleName()));
         } catch (ClassNotFoundException e) {
@@ -86,8 +91,9 @@ public class DefaultPageFactory implements PageFactory, Loggable {
     }
 
     @Override
+    @Deprecated
     public <T extends Page> T createPageWithCheckRule(Class<T> pageClass, WebDriver webDriver, CheckRule checkRule) {
-        pageClass = findBestMatchingClass(pageClass, webDriver);
+        pageClass = findBestMatchingClass(pageClass);
         try {
             Constructor<T> constructor = pageClass.getConstructor(WebDriver.class);
             T page = constructor.newInstance(webDriver);

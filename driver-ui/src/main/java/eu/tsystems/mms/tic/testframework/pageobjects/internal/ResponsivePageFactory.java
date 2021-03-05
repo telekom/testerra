@@ -20,6 +20,7 @@
  */
  package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
+import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.ClassFinder;
 import org.openqa.selenium.WebDriver;
@@ -28,9 +29,10 @@ import org.openqa.selenium.WebDriver;
  * A page factory that supports the instantiation of responsive page objects
  */
 public class ResponsivePageFactory extends DefaultPageFactory {
+
     @Override
-    public <T extends Page> Class<T> findBestMatchingClass(Class<T> pageClass, WebDriver webDriver) {
-        return ClassFinder.getBestMatchingClass(pageClass, webDriver, getConfiguredPrefix());
+    public <T extends Page> T createPageWithCheckRule(Class<T> pageClass, WebDriver webDriver, CheckRule checkRule) {
+        return super.createPageWithCheckRule(ClassFinder.getBestMatchingClass(pageClass, webDriver, ""), webDriver, checkRule);
     }
 
     @Override

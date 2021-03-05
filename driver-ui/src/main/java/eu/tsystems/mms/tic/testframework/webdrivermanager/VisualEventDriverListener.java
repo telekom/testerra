@@ -21,7 +21,6 @@
  */
  package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
@@ -111,16 +110,14 @@ public class VisualEventDriverListener implements WebDriverEventListener {
     @Override
     public void beforeClickOn(WebElement webElement, WebDriver webDriver) {
         if (webElement != null) {
-            if (Testerra.Properties.DEMO_MODE.asBool()) {
 
 // deactivated click animation since it may disturb test somehow, wait is needed and we dont want to wait - pele 24.11.2016
 //                if (lastClickedElement != null && !lastClickedElement.equals(webElement)) {
 //                    JSUtils.highlightWebElementClick(webDriver, webElement);
 //                }
 
-                JSUtils.highlightWebElement(webDriver, webElement, new Color(0, 0, 255));
-                //lastClickedElement = webElement;
-            }
+            JSUtils.highlightWebElement(webDriver, webElement, new Color(0, 0, 255));
+            //lastClickedElement = webElement;
         }
     }
 
@@ -131,9 +128,7 @@ public class VisualEventDriverListener implements WebDriverEventListener {
     @Override
     public void beforeChangeValueOf(WebElement webElement, WebDriver webDriver, CharSequence[] charSequences) {
         if (webElement != null) {
-            if (Testerra.Properties.DEMO_MODE.asBool()) {
-                JSUtils.highlightWebElement(webDriver, webElement, new Color(0, 255, 0));
-            }
+            JSUtils.highlightWebElement(webDriver, webElement, new Color(0, 255, 0));
         }
     }
 

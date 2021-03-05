@@ -36,6 +36,7 @@ import eu.tsystems.mms.tic.testframework.internal.asserts.PropertyAssertionConfi
 import eu.tsystems.mms.tic.testframework.internal.asserts.PropertyAssertionFactory;
 import eu.tsystems.mms.tic.testframework.internal.asserts.QuantityAssertion;
 import eu.tsystems.mms.tic.testframework.internal.asserts.StringAssertion;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
@@ -53,11 +54,12 @@ import org.openqa.selenium.Rectangle;
 public class DefaultUiElementAssertion implements UiElementAssertion {
     private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.getInjector().getInstance(PropertyAssertionFactory.class);
     private static final Report report = Testerra.getInjector().getInstance(Report.class);
+    private static final boolean demoModeEnabled = Testerra.Properties.DEMO_MODE.asBool();
     private final PropertyAssertionConfig propertyAssertionConfig;
     private final GuiElementCore core;
     private final GuiElement guiElement;
 
-    abstract class UiElementAssertionProvider<T> extends AssertionProvider<T> {
+    abstract class UiElementAssertionProvider<T> extends AssertionProvider<T> implements Loggable {
 
         @Override
         public AssertionError wrapAssertionError(AssertionError assertionError) {
@@ -66,15 +68,23 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
 
         @Override
         public void passed(AbstractPropertyAssertion<T> assertion) {
-            if (Testerra.Properties.DEMO_MODE.asBool()) {
-                guiElement.highlight(new Color(0, 255, 0));
+            if (demoModeEnabled) {
+                try {
+                    guiElement.getCore().highlight(new Color(0, 255, 0));
+                } catch (ElementNotFoundException e) {
+                    log().warn("Unable to highlight a PASSED assertion", e);
+                }
             }
         }
 
         @Override
         public void failed(AbstractPropertyAssertion<T> assertion) {
-            if (Testerra.Properties.DEMO_MODE.asBool()) {
-                guiElement.highlight(new Color(255, 0, 0));
+            if (demoModeEnabled) {
+                try {
+                    guiElement.getCore().highlight(new Color(255, 0, 0));
+                } catch (ElementNotFoundException e) {
+                    // ignore
+                }
             }
         }
     }

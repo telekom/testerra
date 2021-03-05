@@ -174,6 +174,9 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
         this(driver, LOCATE.by(by));
     }
 
+    /**
+     * Returns the raw core without any decorators
+     */
     public GuiElementCore getCore() {
         return this.core;
     }

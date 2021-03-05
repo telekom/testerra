@@ -192,7 +192,10 @@ public class DesktopWebDriverFactory extends AbstractWebDriverFactory<DesktopWeb
         final String browser = request.getBrowser();
 
         // add event listeners
-        eventFiringWebDriver.register(new VisualEventDriverListener());
+        if (Testerra.Properties.DEMO_MODE.asBool()) {
+            eventFiringWebDriver.register(new VisualEventDriverListener());
+        }
+
         eventFiringWebDriver.register(new EventLoggingEventDriverListener());
 
         /*

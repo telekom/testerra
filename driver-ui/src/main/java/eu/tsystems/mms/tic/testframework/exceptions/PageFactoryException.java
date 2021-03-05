@@ -27,6 +27,11 @@ import org.openqa.selenium.WebDriver;
 public class PageFactoryException extends RuntimeException {
 
     public PageFactoryException(Class<? extends PageObject> pageClass, WebDriver webDriver, Throwable cause) {
-        super("Could not create instance of " + pageClass.getSimpleName() + " on page \"" + webDriver.getTitle() + "\" ("+webDriver.getCurrentUrl()+")", cause);
+        super(String.format("Could not create instance of %s with WebDriver: %s \"%s\" (%s)",
+                pageClass.getSimpleName(),
+                webDriver,
+                (webDriver!=null)?webDriver.getTitle():"null",
+                (webDriver!=null)?webDriver.getCurrentUrl():"null"
+            ), cause);
     }
 }

@@ -41,17 +41,12 @@ public interface UiElement extends
     enum Properties implements IProperties {
         @Deprecated
         DEFAULT_ASSERT_IS_COLLECTOR("tt.guielement.default.assertcollector", false),
-        DELAY_AFTER_FIND_MILLIS("tt.delay.after.guielement.find.millis", 0),
         DELAY_BEFORE_ACTION_MILLIS("tt.delay.before.guielement.action.millis",0),
         DELAY_AFTER_ACTION_MILLIS("tt.delay.after.guielement.action.millis", 0),
         CHECK_RULE("tt.guielement.checkrule", CheckRule.IS_DISPLAYED.name()),
         ELEMENT_TIMEOUT_SECONDS("tt.element.timeout.seconds", 8),
         ELEMENT_WAIT_INTERVAL_MS("tt.element.wait.ms", 200),
         QA_ATTRIBUTE("tt.element.qa.attribute", "data-qa"),
-        /**
-         * The user's input speed in characters per minute
-         */
-        USER_INPUT_CPM("tt.user.input.cpm", 200),
         ;
         private final String property;
         private final Object defaultValue;

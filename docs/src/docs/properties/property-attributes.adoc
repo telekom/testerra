@@ -30,9 +30,7 @@
 // guielement
 :element_timeout_seconds:                       tt.element.timeout.seconds
 :guielement_default_assertcollector:            tt.guielement.default.assertcollector
-:guielement_use_js_alternatives:                tt.guielement.use.js.alternatives
 :guielement_checkrule:                          tt.guielement.checkrule
-:delay_after_guielement_find_millis:            tt.delay.after.guielement.find.millis
 :delay_before_guielement_action_millis:         tt.delay.before.guielement.action.millis
 :delay_after_guielement_action_millis:          tt.delay.after.guielement.action.millis
 

@@ -71,8 +71,8 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
             if (demoModeEnabled) {
                 try {
                     guiElement.getCore().highlight(new Color(0, 255, 0));
-                } catch (ElementNotFoundException e) {
-                    log().warn("Unable to highlight a PASSED assertion", e);
+                } catch (Throwable e) {
+                    log().warn("Unable to highlight a PASSED assertion:" + e.getMessage());
                 }
             }
         }
@@ -82,7 +82,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
             if (demoModeEnabled) {
                 try {
                     guiElement.getCore().highlight(new Color(255, 0, 0));
-                } catch (ElementNotFoundException e) {
+                } catch (Throwable e) {
                     // ignore
                 }
             }

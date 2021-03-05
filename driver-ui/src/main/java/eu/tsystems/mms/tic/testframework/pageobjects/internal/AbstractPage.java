@@ -201,7 +201,7 @@ public abstract class AbstractPage<SELF> implements
         SetNameFieldAction setNameFieldAction = new SetNameFieldAction(field, declaringPage);
         fieldActions.add(setNameFieldAction);
 
-        addCustomFieldActions(field, declaringPage).ifPresent(customFieldActions -> fieldActions.addAll(customFieldActions));
+        addCustomFieldActions(field, declaringPage).ifPresent(fieldActions::addAll);
 
         GuiElementCheckFieldAction guiElementCheckFieldAction = new GuiElementCheckFieldAction(field, checkRule, declaringPage);
         fieldActions.add(guiElementCheckFieldAction);

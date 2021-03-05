@@ -250,6 +250,10 @@ public class XPath {
         return this.encloses(byToXPath(by));
     }
 
+    public XPath encloses(Locator locator) {
+        return this.encloses(locator.getBy());
+    }
+
     private void prepareContainsSelect(XPath contains) {
         contains.root = this.root;
         contains.parentSelect = this.parentSelect;
@@ -273,6 +277,10 @@ public class XPath {
 
     public XPath select(By by) {
         return this.select(byToXPath(by));
+    }
+
+    public XPath select(Locator locator) {
+        return this.select(locator.getBy());
     }
 
     private void prepareSubSelect(XPath sub) {

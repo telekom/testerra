@@ -19,10 +19,7 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.pageobjects.internal;
-
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
-import eu.tsystems.mms.tic.testframework.testing.TestController;
+package eu.tsystems.mms.tic.testframework.testing;
 
 /**
  * Default implementation of {@link ThreadLocal} {@link TestController.Overrides}
@@ -42,11 +39,9 @@ public class DefaultTestControllerOverrides implements TestController.Overrides 
 
     @Override
     public int getTimeoutInSeconds() {
-        Integer timeout = threadLocalTimeout.get();
-        if (timeout == null) {
-            timeout = UiElement.Properties.ELEMENT_TIMEOUT_SECONDS.asLong().intValue();
-        }
-        return timeout;
+        Integer integer = threadLocalTimeout.get();
+        if (integer == null) return -1;
+        else return integer;
     }
 
     @Override

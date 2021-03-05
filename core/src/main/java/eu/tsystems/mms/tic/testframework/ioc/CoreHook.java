@@ -50,6 +50,7 @@ import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.utils.DefaultTestNGContextGenerator;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGContextNameGenerator;
 import eu.tsystems.mms.tic.testframework.testing.DefaultTestController;
+import eu.tsystems.mms.tic.testframework.testing.DefaultTestControllerOverrides;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
 import eu.tsystems.mms.tic.testframework.utils.DefaultFormatter;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
@@ -64,12 +65,10 @@ public class CoreHook extends AbstractModule implements ModuleHook {
         bind(CollectedAssertion.class).to(DefaultCollectedAssertion.class).in(Scopes.SINGLETON);
         bind(OptionalAssertion.class).to(DefaultOptionalAssertion.class).in(Scopes.SINGLETON);
         bind(InstantAssertion.class).to(ThrowingAssertion.class).in(Scopes.SINGLETON);
+        bind(TestController.Overrides.class).to(DefaultTestControllerOverrides.class).in(Scopes.SINGLETON);
         bind(TestController.class).to(DefaultTestController.class).in(Scopes.SINGLETON);
         bind(TestNGContextNameGenerator.class).to(DefaultTestNGContextGenerator.class).in(Scopes.SINGLETON);
         bind(IdGenerator.class).to(SequenceIdGenerator.class).in(Scopes.SINGLETON);
-
-//        Multibinder<ModuleHook> hookBinder = Multibinder.newSetBinder(binder(), ModuleHook.class);
-//        hookBinder.addBinding().to(CoreHook.class).in(Scopes.SINGLETON);
     }
 
     @Override

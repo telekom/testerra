@@ -24,7 +24,6 @@ package eu.tsystems.mms.tic.testframework.hooks;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
-import com.google.inject.multibindings.Multibinder;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
@@ -43,7 +42,7 @@ import eu.tsystems.mms.tic.testframework.listeners.WatchdogStartupListener;
 import eu.tsystems.mms.tic.testframework.pageobjects.DefaultUiElementFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.AriaElementLocator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultPageFactory;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultTestControllerOverrides;
+import eu.tsystems.mms.tic.testframework.testing.UiElementOverrides;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultUiElementFinderFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.PageFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFactory;
@@ -68,7 +67,7 @@ public class DriverUiHook extends AbstractModule implements ModuleHook {
         // Singletons
         bind(UiElementFactory.class).to(DefaultUiElementFactory.class).in(Scopes.SINGLETON);
         bind(PageFactory.class).to(DefaultPageFactory.class).in(Scopes.SINGLETON);
-        bind(TestController.Overrides.class).to(DefaultTestControllerOverrides.class).in(Scopes.SINGLETON);
+        bind(TestController.Overrides.class).to(UiElementOverrides.class).in(Scopes.SINGLETON);
         bind(IWebDriverManager.class).to(DefaultWebDriverManager.class).in(Scopes.SINGLETON);
         bind(UiElementLabelLocator.class).to(AriaElementLocator.class).in(Scopes.SINGLETON);
         bind(UiElementFinderFactory.class).to(DefaultUiElementFinderFactory.class).in(Scopes.SINGLETON);

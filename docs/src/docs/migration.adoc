@@ -205,7 +205,7 @@ class MyPage extends Page {
 }
 ```
 
-[IMPORTANT]
+[CAUTION]
 .Passing frames to the constructor is *not supported* anymore.
 ====
 ```java
@@ -255,7 +255,10 @@ if (guiElement.waits().waitForIsDisplayed()) {
 Support of more features through consistent assertion API
 ```java
 uiElement.expect().css("display").is("none"); <1>
-uiElement.expect().text().map(value -> value.toLowerCase()).matches("^hello\\s.orld").is(true); <2> <3>
+uiElement.expect().text()
+    .map(value -> value.toLowerCase()) <2>
+    .matches("^hello\\s.orld") <3>
+    .is(true);
 ```
 <1> Perform assertions on the element's CSS properties
 <2> Map values
@@ -276,7 +279,9 @@ page.expect().url().endsWith("index.html").is(true); <1>
 
 class MyPage extends Page {
     public void checkIfPageContainsText(String text) {
-        this.getFinder().findDeep(XPath.from("*").text().contains(text)).expect().displayed(true); <2>
+        this.getFinder()
+            .findDeep(XPath.from("*").text().contains(text))
+            .expect().displayed(true); <2>
     }
 }
 ----

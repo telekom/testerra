@@ -100,7 +100,7 @@ You can also filter elements during find.
 
 [source,java]
 ----
-Locate byText = LOCATE.by(By.xpath("//button"))
+Locator byText = LOCATE.by(By.xpath("//button"))
                     .filter(webElement -> webElement.getText().equals("Open again"));
 
 UiElement buttonContainsText = find(byText);

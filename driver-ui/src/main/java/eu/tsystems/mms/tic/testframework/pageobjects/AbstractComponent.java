@@ -103,13 +103,13 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     }
 
     public SELF setName(String name) {
-        this.rootElement.setName(name);
+        this.rootElement.setName(getClass().getSimpleName()+"("+name+")");
         return (SELF)this;
     }
 
     @Override
     public String getName(boolean detailed) {
-        return getClass().getSimpleName()+"("+rootElement.getName(detailed)+")";
+        return rootElement.getName(detailed);
     }
 
     @Override

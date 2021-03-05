@@ -72,7 +72,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
                 try {
                     guiElement.getCore().highlight(new Color(0, 255, 0));
                 } catch (Throwable e) {
-                    log().warn("Unable to highlight a PASSED assertion:" + e.getMessage());
+                    log().warn("Unable to highlight a PASSED assertion: " + e.getMessage());
                 }
             }
         }

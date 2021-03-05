@@ -47,6 +47,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import org.apache.commons.io.IOUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
@@ -169,17 +170,7 @@ public final class JSUtils {
      */
     public static Object executeScriptWOCatch(final WebDriver driver, final String script, final Object... parameters) {
         JavascriptExecutor javascriptExecutor = (JavascriptExecutor) driver;
-        try {
-            return javascriptExecutor.executeScript(script, parameters);
-        } catch (Exception e) {
-            String message = String.format("Error executing Javascript\n-----\n%s\n-----", script);
-            if (parameters.length > 0) {
-                message += "\nwith parameters:\n" + Arrays.stream(parameters).map(o -> (o==null?"null":o.toString())).collect(Collectors.joining("\n"));
-                message += "\n-----";
-            }
-            LOGGER.error(message);
-            throw e;
-        }
+        return javascriptExecutor.executeScript(script, parameters);
     }
 
     /**
@@ -194,7 +185,12 @@ public final class JSUtils {
         try {
             return executeScriptWOCatch(driver, script, parameters);
         } catch (Exception e) {
-            LOGGER.error("", e);
+            String message = String.format("Error executing Javascript\n-----\n%s\n-----", script);
+            if (parameters.length > 0) {
+                message += "\nwith parameters:\n" + Arrays.stream(parameters).map(o -> (o==null?"null":o.toString())).collect(Collectors.joining("\n"));
+                message += "\n-----";
+            }
+            LOGGER.error(message, e);
             return null;
         }
     }
@@ -228,17 +224,21 @@ public final class JSUtils {
             Color color
     ) {
         int ms = 2000;
-        executeScript(
-                driver,
-                String.format(
-                    "%s\n"+
-                    "ttHighlight(arguments[0], '%s', %d)",
-                    readSnippets(Snippet.HIGHLIGHT),
-                    toHex(color),
-                    ms
-                ),
-                webElement
-        );
+        try {
+            executeScriptWOCatch(
+                    driver,
+                    String.format(
+                            "%s\n"+
+                                    "ttHighlight(arguments[0], '%s', %d)",
+                            readSnippets(Snippet.HIGHLIGHT),
+                            toHex(color),
+                            ms
+                    ),
+                    webElement
+            );
+        } catch (Exception e) {
+            LOGGER.error("Unable to highlight WebElement: " + e.getMessage());
+        }
     }
 
     /**
@@ -286,18 +286,20 @@ public final class JSUtils {
             WebElement webElement,
             Color color
     ) {
-        LOGGER.debug("Static highlighting WebElement " + webElement);
-        executeScript(
-                driver,
-                String.format(
-                        "%s\n"+
-                        "ttAddStyle(arguments[0], 'outline: 5px dotted %s !important');",
-                        readSnippets(Snippet.HIGHLIGHT),
-                        toHex(color)
-                ),
-                webElement
-        );
-        LOGGER.debug("Finished static highlighting WebElement" + webElement);
+        try {
+            executeScript(
+                    driver,
+                    String.format(
+                            "%s\n" +
+                                    "ttAddStyle(arguments[0], 'outline: 5px dotted %s !important');",
+                            readSnippets(Snippet.HIGHLIGHT),
+                            toHex(color)
+                    ),
+                    webElement
+            );
+        } catch (Exception e) {
+            LOGGER.error("Unable to highlight WebElement: " + e.getMessage());
+        }
     }
 
     private static boolean isJavascriptImplementedOnPage(final WebDriver driver, final String id) {

@@ -128,7 +128,7 @@ public class VisualEventDriverListener implements WebDriverEventListener {
     @Override
     public void beforeChangeValueOf(WebElement webElement, WebDriver webDriver, CharSequence[] charSequences) {
         if (webElement != null) {
-            JSUtils.highlightWebElement(webDriver, webElement, new Color(0, 255, 0));
+            JSUtils.highlightWebElement(webDriver, webElement, new Color(0, 0, 255));
         }
     }
 

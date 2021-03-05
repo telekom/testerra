@@ -158,13 +158,11 @@ public interface IWebDriverManager extends WebDriverRetainer {
     }
 
     default WebDriver switchToWindowTitle(WebDriver mainWebDriver, String windowTitle) {
-        ArrayList<String> availableWindowTitles = new ArrayList<>();
         Optional<WebDriver> optionalWebDriver = WebDriverUtils.switchToWindow(mainWebDriver, webDriver -> {
-            availableWindowTitles.add(webDriver.getTitle());
             return webDriver.getTitle().equals(windowTitle);
         });
         if (!optionalWebDriver.isPresent()) {
-            throw new RuntimeException(String.format("Window title \"%s\" not found in open windows \"%s\"", windowTitle, String.join("\", \"", availableWindowTitles)));
+            throw new RuntimeException(String.format("Window title \"%s\" not found", windowTitle));
         }
         return optionalWebDriver.get();
     }

@@ -469,6 +469,21 @@ POConfig.removeThreadLocalUiElementTimeout();
 ```
 ====
 
+== Modul migration
+
+We want to make Testerra more SOLID. Thats why we finally introduced Dependency Injection via. Google Guice.
+
+To enable you `ModuleHook` for v2, you need to extend this class from `AbstractModule`.
+
+[source,java]
+----
+import com.google.inject.AbstractModule;
+import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
+
+public class MyModuleHook extends AbstractModule implements ModuleHook {
+}
+----
+
 == The internals
 
 This chapter explains how the new API works internally.
@@ -519,7 +534,3 @@ This is what the hierarchy looks like when you perform `uiElement.screenshot().f
 . Return a generic `StringAssertion` with the given file name extension
 
 This implementation helps to keep the internal assertion code small, easy extensible and maintainable.
-
-=== Dependency Injection
-
-We want to make Testerra more SOLID. Thats why we finally introduced Dependency Injection via. Google Guice.

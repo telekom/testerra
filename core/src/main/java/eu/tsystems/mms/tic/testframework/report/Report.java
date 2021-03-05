@@ -22,7 +22,6 @@
 package eu.tsystems.mms.tic.testframework.report;
 
 import eu.tsystems.mms.tic.testframework.common.IProperties;
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import java.io.File;
@@ -38,7 +37,7 @@ public interface Report {
         LIST_TESTS("list.tests", false)
         ;
         private final String property;
-        private Object defaultValue;
+        private final Object defaultValue;
 
         Properties(String property, Object defaultValue) {
             this.property = property;
@@ -49,26 +48,10 @@ public interface Report {
         public String toString() {
             return String.format("tt.report.%s",property);
         }
+
         @Override
-        public IProperties newDefault(Object defaultValue) {
-            this.defaultValue = defaultValue;
-            return this;
-        }
-        @Override
-        public Double asDouble() {
-            return PropertyManager.getPropertiesParser().getDoubleProperty(toString(), defaultValue);
-        }
-        @Override
-        public Long asLong() {
-            return PropertyManager.getPropertiesParser().getLongProperty(toString(), defaultValue);
-        }
-        @Override
-        public Boolean asBool() {
-            return PropertyManager.getPropertiesParser().getBooleanProperty(toString(), defaultValue);
-        }
-        @Override
-        public String asString() {
-            return PropertyManager.getPropertiesParser().getProperty(toString(), defaultValue);
+        public Object getDefault() {
+            return defaultValue;
         }
     }
 

@@ -20,7 +20,6 @@
 package eu.tsystems.mms.tic.testframework.test.common;
 
 import eu.tsystems.mms.tic.testframework.common.IProperties;
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -39,7 +38,7 @@ public class PropertiesTest extends TesterraTest {
         ;
 
         private final String property;
-        private Object defaultValue;
+        private final Object defaultValue;
 
         Properties(String property, Object defaultValue) {
             this.property = property;
@@ -47,28 +46,13 @@ public class PropertiesTest extends TesterraTest {
         }
 
         @Override
-        public IProperties newDefault(Object defaultValue) {
-            return null;
+        public Object getDefault() {
+            return defaultValue;
         }
 
         @Override
-        public Double asDouble() {
-            return PropertyManager.getPropertiesParser().getDoubleProperty(property, defaultValue);
-        }
-
-        @Override
-        public Long asLong() {
-            return PropertyManager.getPropertiesParser().getLongProperty(property, defaultValue);
-        }
-
-        @Override
-        public Boolean asBool() {
-            return PropertyManager.getPropertiesParser().getBooleanProperty(property, defaultValue);
-        }
-
-        @Override
-        public String asString() {
-            return PropertyManager.getPropertiesParser().getProperty(property, defaultValue);
+        public String toString() {
+            return property;
         }
     }
 

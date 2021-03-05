@@ -26,13 +26,10 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
-import com.google.inject.Scopes;
-import com.google.inject.multibindings.Multibinder;
 import com.google.inject.util.Modules;
 import eu.tsystems.mms.tic.testframework.events.ModulesInitializedEvent;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.internal.BuildInformation;
-import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.io.BufferedReader;
@@ -98,7 +95,7 @@ public class Testerra {
         ;
 
         private final String property;
-        private Object defaultValue;
+        private final Object defaultValue;
 
         Properties(String property, Object defaultValue) {
             this.property = property;
@@ -111,26 +108,8 @@ public class Testerra {
         }
 
         @Override
-        public IProperties newDefault(Object defaultValue) {
-            this.defaultValue = defaultValue;
-            return this;
-        }
-
-        @Override
-        public Double asDouble() {
-            return PropertyManager.getPropertiesParser().getDoubleProperty(toString(),defaultValue);
-        }
-        @Override
-        public Long asLong() {
-            return PropertyManager.getPropertiesParser().getLongProperty(toString(), defaultValue);
-        }
-        @Override
-        public Boolean asBool() {
-            return PropertyManager.getPropertiesParser().getBooleanProperty(toString(), defaultValue);
-        }
-        @Override
-        public String asString() {
-            return PropertyManager.getPropertiesParser().getProperty(toString(), defaultValue);
+        public Object getDefault() {
+            return defaultValue;
         }
     }
 

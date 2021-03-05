@@ -1,7 +1,5 @@
 = Checks
 
-Similar to the assertion methods UiElement provide so called check methods.
-
 Checks if the element is present in the DOM
 [source,java]
 ----

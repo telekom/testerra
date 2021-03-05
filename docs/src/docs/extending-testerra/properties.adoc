@@ -1,0 +1,55 @@
+= Provide Properties
+
+When you want to provide some properties, you can use the `IProperties` interface within your module.
+
+[source,java]
+----
+package eu.tsystems.mms.tic.mymodule;
+
+import eu.tsystems.mms.tic.testframework.common.IProperties;
+
+public class MyModule {
+
+    public enum Properties implements IProperties {
+        GREETING("greeting", "hello world"),
+        ENABLED("enabled", false),
+        ANSWER("answer", 42),
+        ;
+        private final String property;
+        private final Object defaultValue;
+
+        Properties(String property, Object defaultValue) {
+            this.property = property;
+            this.defaultValue = defaultValue;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("tt.mymodule.%s",property);
+        }
+
+        @Override
+        public Object getDefault() {
+            return defaultValue;
+        }
+    }
+}
+----
+
+Override the default values in a `.properties` file.
+
+[source,properties]
+----
+tt.mymodule.greeting=hello planet
+tt.mymodule.enabled=true
+----
+
+And access them in your code like
+
+[source,java]
+----
+MyModule.Properties.GREETING.toString();    // tt.mymodule.greeting
+MyModule.Properties.GREETING.asString();    // hello planet
+MyModule.Properties.ENABLED.asBool();       // true
+MyModule.Properties.ANSWER.asLong();        // 42
+----

@@ -27,27 +27,27 @@ package eu.tsystems.mms.tic.testframework.common;
  */
 public interface IProperties {
     /**
-     * Sets a new default value
-     * @param defaultValue
-     * @return this
+     * Gets the default value
      */
-    IProperties newDefault(Object defaultValue);
+    Object getDefault();
     /**
      * @return Value as double
      */
-    Double asDouble();
+    default Double asDouble() {
+        return PropertyManager.getPropertiesParser().getDoubleProperty(toString(), getDefault());
+    }
     /**
      * @return Value as long
      */
-    Long asLong();
+    default Long asLong() { return PropertyManager.getPropertiesParser().getLongProperty(toString(), getDefault()); }
     /**
      * @return Value as boolean
      */
-    Boolean asBool();
+    default Boolean asBool() { return PropertyManager.getPropertiesParser().getBooleanProperty(toString(), getDefault()); }
     /**
      * @return Value as string
      */
-    String asString();
+    default String asString() { return PropertyManager.getPropertiesParser().getProperty(toString(), getDefault()); }
     /**
      * @return Property string
      */

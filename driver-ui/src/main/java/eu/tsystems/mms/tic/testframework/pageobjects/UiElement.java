@@ -54,7 +54,7 @@ public interface UiElement extends
         USER_INPUT_CPM("tt.user.input.cpm", 200),
         ;
         private final String property;
-        private Object defaultValue;
+        private final Object defaultValue;
 
         Properties(String property, Object defaultValue) {
             this.property = property;
@@ -67,21 +67,9 @@ public interface UiElement extends
         }
 
         @Override
-        public IProperties newDefault(Object defaultValue) {
-            this.defaultValue = defaultValue;
-            return this;
+        public Object getDefault() {
+            return defaultValue;
         }
-
-        @Override
-        public Double asDouble() {
-            return PropertyManager.getPropertiesParser().getDoubleProperty(toString(), defaultValue);
-        }
-        @Override
-        public Long asLong() { return PropertyManager.getPropertiesParser().getLongProperty(toString(), defaultValue); }
-        @Override
-        public Boolean asBool() { return PropertyManager.getPropertiesParser().getBooleanProperty(toString(), defaultValue); }
-        @Override
-        public String asString() { return PropertyManager.getPropertiesParser().getProperty(toString(), defaultValue); }
     }
 
     UiElementList<UiElement> list();

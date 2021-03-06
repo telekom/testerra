@@ -184,4 +184,15 @@ public interface IWebDriverManager extends WebDriverRetainer {
     default void stopKeepingAlive(WebDriver webDriver) {
         WebDriverUtils.removeKeepAliveForWebDriver(webDriver);
     }
+
+    default void setThreadCapability(String key, Object value) {
+        WebDriverManager.addThreadCapability(key, value);
+    }
+
+    default void setGlobalCapability(String key, Object value) {
+        WebDriverManager.setGlobalExtraCapability(key, value);
+    }
+    default void removeGlobalCapability(String key) {
+        WebDriverManager.removeGlobalExtraCapability(key);
+    }
 }

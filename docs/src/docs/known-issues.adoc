@@ -6,9 +6,8 @@ Every known issue in our dependencies that will lead to an error, an unexpected 
 
 == Issues with Selenium
 
-=== Closing `WebDriver` sessions without using Testerra `WebDriverManager`
+=== Close WebDriver sessions without WebDriverManager
 
-When closing `WebDriver` sessions without using Testerra <<WebDriverManager>> you will may encounter problems or some kind of unexpected issues, because the session is not marked as closed in Testerra `WebDriverManager` session store.
-Therefore we always suggest to use `WebDriverManager.shutdown()` instead of `WebDriverManager.getWebDriver().close()`.
+CAUTION: Never close WebDriver sessions calling `WebDriver.quit()`. This may encounter problems or some kind of unexpected issues, because the session is not marked as closed in `WebDriverManager` 's session store.
 
 

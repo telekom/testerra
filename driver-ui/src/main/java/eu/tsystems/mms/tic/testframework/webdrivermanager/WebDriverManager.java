@@ -84,6 +84,7 @@ public final class WebDriverManager {
      *
      * @param desiredCapabilities .
      */
+    @Deprecated
     public static void setGlobalExtraCapabilities(final DesiredCapabilities desiredCapabilities) {
         WebDriverCapabilities.setGlobalExtraCapabilities(desiredCapabilities);
     }

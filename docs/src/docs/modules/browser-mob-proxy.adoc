@@ -57,7 +57,7 @@ public abstract class AbstractTest extends TesterraTest {
             .setFtpProxy(bmpProxyAddress)
             .setSslProxy(bmpProxyAddress);
 
-        WebDriverManager.setGlobalExtraCapability(CapabilityType.PROXY, proxy);
+        WEB_DRIVER_MANAGER.setGlobalCapability(CapabilityType.PROXY, proxy);
     }
 
     @AfterSuite

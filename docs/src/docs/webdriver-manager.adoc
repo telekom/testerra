@@ -2,9 +2,7 @@
 
 == Overview
 
-The `IWebDriverManager` is the central component to create and close your `WebDriver` sessions and becomes available by implementing the `WebDriverManagerProvider` interface. It uses the standard Selenium Webdriver but it is easier to configure.
-
-To create a new browser session you only need a single call.
+The `WEB_DRIVER_MANAGER` is the central component to create and close your `WebDriver` sessions and becomes available by implementing the `WebDriverManagerProvider` interface. It uses the standard Selenium Webdriver, but it is easier to configure.
 
 include::webdrivermanager/webdrivermanager-sessions.adoc[leveloffset=+1]
 include::webdrivermanager/webdrivermanager-config.adoc[leveloffset=+1]

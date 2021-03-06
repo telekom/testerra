@@ -1,32 +1,46 @@
-= Setting global capabilities
+== Global capabilities
 
-You can customize your browser session by setting so called capabilities for every browser type before
+You can customize your browser session by setting capabilities for every browser type before
 the WebDriver has been initialized.
+
+[source,java]
+----
+WEB_DRIVER_MANAGER.setGlobalCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
+WEB_DRIVER_MANAGER.removeGlobalCapability(CapabilityType.ACCEPT_INSECURE_CERTS);
+----
+
+
+== Thread local capabilities
+
+Thread local capabilities only exists for the current thread.
+
+[source,java]
+----
+WEB_DRIVER_MANAGER.setThreadCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
+----
+
+== Request capabilities
+
+Some WebDriverRequests support setting capabilities, like the `DesktopWebDriverRequest`.
+
+[source,java]
+----
+WebDriverRequest myRequest = new DesktopWebDriverRequest();
+myRequest.getDesiredCapabilities().put(CapabilityType.ACCEPT_INSECURE_CERTS, true);
+WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(myRequest);
+----
+
+== User agent configuration
+
+The user agent configuration is most precise, because it provides explicit browser options based on the Selenium driver.
 
 [source,java]
 ----
 import eu.tsystems.mms.tic.testframework.useragents.FirefoxConfig;
 
-class MyTest extends TesterraTest {
-    @BeforeSuite
-    void setupBrowsers() {
-        WebDriverManager.setUserAgentConfig(Browsers.firefox, (FirefoxConfig) options -> {
-            options.addPreference("intl.accept_languages", "de-DE");
-        });
-    }
-}
+WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.firefox, (FirefoxConfig) options -> {
+    options.addPreference("intl.accept_languages", "de-DE");
+});
 ----
 
-== Setting local capabilities
-
-A local defined capability means its only available in the current test execution (current TestNG testmethod).
-
-[source,java]
-----
-WebDriverManager.addThreadCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
-----
-
-[NOTE]
-=====
-Have a look into <<Useful browser capabilities>> for specific browser options.
-=====
+NOTE: Have a look into <<Browser specific knowledge>> for specific browser options.

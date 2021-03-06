@@ -60,7 +60,7 @@ import org.testng.annotations.Test;
 
 public class CoreHook extends AbstractModule implements ModuleHook {
 
-    private static final IPropertyManager propertyManager = new DefaultPropertyManager();
+    private IPropertyManager propertyManager;
 
     @Override
     protected void configure() {
@@ -74,6 +74,8 @@ public class CoreHook extends AbstractModule implements ModuleHook {
         bind(TestController.class).to(DefaultTestController.class).in(Scopes.SINGLETON);
         bind(TestNGContextNameGenerator.class).to(DefaultTestNGContextGenerator.class).in(Scopes.SINGLETON);
         bind(IdGenerator.class).to(SequenceIdGenerator.class).in(Scopes.SINGLETON);
+
+        propertyManager = new DefaultPropertyManager();
         bind(IPropertyManager.class).toInstance(propertyManager);
     }
 

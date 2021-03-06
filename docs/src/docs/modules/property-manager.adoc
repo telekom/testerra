@@ -4,9 +4,9 @@ The `PropertyManagerProvider` interface provides a `PROPERTY_MANAGER` instance o
 
 [source, java]
 ----
-String property = PROPERTY_MANAGER.getProperty("my.property", "default");
-Long long = PROPERTY_MANAGER.getLongProperty("my.long", 200L);
-Double doubleProperty = PROPERTY_MANAGER.getDoubleProperty("my.double", 200.0);
+String property         = PROPERTY_MANAGER.getProperty("my.property", "default");
+Long longProperty       = PROPERTY_MANAGER.getLongProperty("my.long", 200L);
+Double doubleProperty   = PROPERTY_MANAGER.getDoubleProperty("my.double", 200.0);
 Boolean booleanProperty = PROPERTY_MANAGER.getBooleanProperty("my.boolean", false);
 ----
 
@@ -16,7 +16,7 @@ It will look for the property definition appearance in the following order:
 - `System.getProperties()` (`system.properties`)
 - <<Property files>> (`test.properties`)
 
-When it's still not defined, in will fall back to the given `default` value.
+When it's still not defined, in will fall back to the given default value.
 
 == Property files
 
@@ -33,12 +33,14 @@ You can load additional properties files at any time.
 PROPERTY_MANAGER.loadProperties("my.property.file");
 ----
 
+NOTE: This will override already defined properties.
+
 == System properties
 
 
 When a `system.properties` exists, Testerra loads and sets the given properties via `System.setProperty()` if they are not present already.
 
-NOTE: This will not override system properties given by thte command line.
+NOTE: This will **not** override already defined system properties given by the command line.
 
 The path of this file can be changed by `{system_settings_file}` and will be automatically loaded with the following message
 

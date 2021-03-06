@@ -4,9 +4,13 @@ import org.gradle.internal.jvm.Jvm
 dependencies {
     compile project(':logging')
 
+    // <Testerra>
     // @see https://github.com/google/guice/issues/1256
     compile 'com.google.inject:guice:4.2.2:no_aop'
     compile 'com.google.inject.extensions:guice-assistedinject:4.2.2'
+    implementation 'org.reflections:reflections:0.9.12'
+    // </Testerra>
+
     compile 'commons-io:commons-io:2.6'
     compile 'org.apache.commons:commons-lang3:3.9'
 
@@ -40,10 +44,6 @@ dependencies {
     // <CSVTestDataReader>
     implementation 'com.opencsv:opencsv:3.9'
     // </CSVTestDataReader>
-
-    // <Booter>
-    implementation 'org.reflections:reflections:0.9.12'
-    // </Booter>
 
     // <ExceptionUtils>
     // Comes already implicit from reflections

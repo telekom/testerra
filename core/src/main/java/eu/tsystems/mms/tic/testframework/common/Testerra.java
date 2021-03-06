@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.DefaultConfiguration;
@@ -55,13 +56,6 @@ import org.slf4j.LoggerFactory;
  * @author Mike Reiche <mike.reiche@t-systems.com>
  */
 public class Testerra {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(Testerra.class);
-    private static final List<ModuleHook> MODULE_HOOKS = new LinkedList<>();
-    private static final Injector injector = initIoc();
-    private static final EventBus eventBus;
-    private static final LoggerContext loggerContext;
-    private static final BuildInformation buildInformation;
 
     public enum Properties implements IProperties {
         DRY_RUN("tt.dryrun", false),
@@ -114,11 +108,20 @@ public class Testerra {
         }
     }
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Testerra.class);
+    private static final List<ModuleHook> moduleHooks;
+    private static final Injector injector;
+    private static final EventBus eventBus;
+    private static final LoggerContext loggerContext;
+    private static final BuildInformation buildInformation;
+
     static {
         DefaultConfiguration defaultConfiguration = new DefaultConfiguration();
         loggerContext = Configurator.initialize(defaultConfiguration);
         buildInformation = new BuildInformation();
         printTesterraBanner();
+        moduleHooks = new LinkedList<>();
+        injector = initIoc();
         eventBus = new EventBus();
         initHooks();
         Runtime.getRuntime().addShutdownHook(new Thread(Testerra::shutdown));
@@ -162,7 +165,7 @@ public class Testerra {
             LOGGER.info(String.format("Register IoC modules: %s", String.join(", ", sortedModules.keySet())));
             for (Module overrideModule : sortedModules.values()) {
                 if (overrideModule instanceof ModuleHook) {
-                    MODULE_HOOKS.add((ModuleHook)overrideModule);
+                    moduleHooks.add((ModuleHook)overrideModule);
                 }
                 if (prevModule!=null) {
                     overrideModule = Modules.override(prevModule).with(overrideModule);
@@ -186,7 +189,7 @@ public class Testerra {
         // MODULE_HOOKS = new ArrayList<>(Testerra.getInjector().getInstance(Key.get(new TypeLiteral<Set<ModuleHook>>() {})));
 
 
-        MODULE_HOOKS.forEach(moduleHook -> {
+        moduleHooks.forEach(moduleHook -> {
             LOGGER.debug("Init " + moduleHook.getClass().getSimpleName() + "...");
             moduleHook.init();
         });
@@ -195,7 +198,7 @@ public class Testerra {
     }
 
     public static void shutdown() {
-        MODULE_HOOKS.forEach(moduleHook -> {
+        moduleHooks.forEach(moduleHook -> {
             LOGGER.debug("Terminate " + moduleHook.getClass().getSimpleName());
             moduleHook.terminate();
         });
@@ -226,13 +229,13 @@ public class Testerra {
         bannerVersions.add("build.os.version:   " + buildInformation.buildOsVersion);
         bannerVersions.add("build.user.name:    " + buildInformation.buildUserName);
         bannerVersions.add("build.timestamp:    " + buildInformation.buildTimestamp);
-
+        bannerVersions = bannerVersions.stream().map(s -> " " + s + " ").collect(Collectors.toList());
         buildVersion = buildInformation.buildVersion;
 
         /*
         beautify
          */
-        String wall = " ° ";
+        String wall = "#";
         final int widthLogo = frameworkBanner.stream().mapToInt(String::length).max().getAsInt();
         frameworkBanner = frameworkBanner.stream().map(s -> s + StringUtils.repeat(" ", widthLogo - s.length())).collect(Collectors.toList());
         final int width = bannerVersions.stream().mapToInt(String::length).max().getAsInt();

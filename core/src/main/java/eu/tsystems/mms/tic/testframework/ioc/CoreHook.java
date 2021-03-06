@@ -27,6 +27,7 @@ import com.google.inject.Scopes;
 import com.google.inject.multibindings.Multibinder;
 import eu.tsystems.mms.tic.testframework.common.DefaultPropertyManager;
 import eu.tsystems.mms.tic.testframework.common.IPropertyManager;
+import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.DefaultCollectedAssertion;
@@ -58,9 +59,7 @@ import eu.tsystems.mms.tic.testframework.utils.DefaultFormatter;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import org.testng.annotations.Test;
 
-public class CoreHook extends AbstractModule implements ModuleHook {
-
-    private IPropertyManager propertyManager;
+public class CoreHook extends AbstractModule implements ModuleHook, PropertyManagerProvider {
 
     @Override
     protected void configure() {
@@ -74,9 +73,6 @@ public class CoreHook extends AbstractModule implements ModuleHook {
         bind(TestController.class).to(DefaultTestController.class).in(Scopes.SINGLETON);
         bind(TestNGContextNameGenerator.class).to(DefaultTestNGContextGenerator.class).in(Scopes.SINGLETON);
         bind(IdGenerator.class).to(SequenceIdGenerator.class).in(Scopes.SINGLETON);
-
-        propertyManager = new DefaultPropertyManager();
-        bind(IPropertyManager.class).toInstance(propertyManager);
     }
 
     @Override
@@ -93,7 +89,7 @@ public class CoreHook extends AbstractModule implements ModuleHook {
         eventBus.register(new OmitInDevelopmentMethodInterceptor());
         eventBus.register(new SortMethodsByPriorityMethodInterceptor());
         eventBus.register(new ExecutionEndListener());
-        eventBus.register(propertyManager);
+        eventBus.register(PROPERTY_MANAGER);
     }
 
     @Override

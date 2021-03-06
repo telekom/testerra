@@ -27,9 +27,13 @@ import eu.tsystems.mms.tic.testframework.transfer.BooleanPackedResponse;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Properties;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 /**
  * Path Parser utility class.
@@ -39,10 +43,19 @@ import java.util.regex.Pattern;
 public final class PropertiesParser implements Loggable {
 
     private static final Pattern patternReplace = Pattern.compile("\\{[^\\}]*\\}");
+    /**
+     * @deprecated Undocumented feature
+     */
     private static final String REGEX_SENSIBLE = "@SENSIBLE@";
+    /**
+     * @deprecated Undocumented feature
+     */
     private static final Pattern PATTERN_SENSIBLE = Pattern.compile(REGEX_SENSIBLE);
+    private final Supplier<Stream<Properties>> propertiesSupplier;
 
-    public final List<Properties> properties = new LinkedList();
+    PropertiesParser(Supplier<Stream<Properties>> propertiesSupplier) {
+        this.propertiesSupplier = propertiesSupplier;
+    }
 
     /**
      * Parses a property and searches for testerra properties replacement marks: "{...}".
@@ -57,11 +70,11 @@ public final class PropertiesParser implements Loggable {
      */
     private String parseLine(String line, List<String> searchedStrings) {
         if (searchedStrings == null) {
-            searchedStrings = new ArrayList<String>(1);
+            searchedStrings = new ArrayList<>(1);
         }
 
         Matcher matcherReplace = patternReplace.matcher(line);
-        List<String> matches = new ArrayList<String>(1);
+        List<String> matches = new ArrayList<>(1);
         while (matcherReplace.find()) {
             String match = line.substring(matcherReplace.start(), matcherReplace.end());
             matches.add(match);
@@ -78,7 +91,7 @@ public final class PropertiesParser implements Loggable {
                 /*
                 ask
                  */
-                String value = pGetPrioritizedProperty(key);
+                String value = findProperty(key).orElse(null);
 
                 if (value == null) {
                     log().warn("Property " + match + " not found");
@@ -89,7 +102,7 @@ public final class PropertiesParser implements Loggable {
                     boolean sensible = response.getBoolean();
 
                     // 1. remember the key because it was replaced
-                    List<String> listCopy = new ArrayList<String>(searchedStrings.size() + 1);
+                    List<String> listCopy = new ArrayList<>(searchedStrings.size() + 1);
                     listCopy.addAll(searchedStrings);
                     // 2. check recursive replacements
                     listCopy.add(key);
@@ -107,16 +120,19 @@ public final class PropertiesParser implements Loggable {
         return line;
     }
 
+    /**
+     * @deprecated Undocumented feature
+     */
     private static BooleanPackedResponse<String> findAndVoidSENSIBLETag(String value) {
         if (value == null) {
-            return new BooleanPackedResponse<String>(value, false);
+            return new BooleanPackedResponse<>(value, false);
         }
         final Matcher matcherSensible = PATTERN_SENSIBLE.matcher(value);
         if (matcherSensible.find()) {
             value = value.replaceAll(REGEX_SENSIBLE, "");
-            return new BooleanPackedResponse<String>(value, true);
+            return new BooleanPackedResponse<>(value, true);
         }
-        return new BooleanPackedResponse<String>(value, false);
+        return new BooleanPackedResponse<>(value, false);
     }
 
     /**
@@ -133,7 +149,7 @@ public final class PropertiesParser implements Loggable {
     }
 
     public String getProperty(String key) {
-        String value = pGetPrioritizedProperty(key);
+        String value = findProperty(key).orElse(null);
 
         // replace marked system properties in this value (bla_{huhu} to bla_blubb if huhu=blubb)
         if (value != null) {
@@ -158,12 +174,8 @@ public final class PropertiesParser implements Loggable {
         return value;
     }
 
-    private String pGetPrioritizedProperty(final String key) {
-        String value = null;
-        for (Properties property : properties) {
-            value = property.getProperty(key, value);
-        }
-        return value;
+    private Optional<String> findProperty(String key) {
+        return this.propertiesSupplier.get().map(properties -> properties.getProperty(key)).filter(Objects::nonNull).findFirst();
     }
 
     /**

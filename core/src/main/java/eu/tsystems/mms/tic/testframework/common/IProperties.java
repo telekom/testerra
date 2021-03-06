@@ -25,7 +25,7 @@ package eu.tsystems.mms.tic.testframework.common;
  * New Properties with overridable default value
  * @author Mike Reiche
  */
-public interface IProperties {
+public interface IProperties extends PropertyManagerProvider {
     /**
      * Gets the default value
      */
@@ -34,20 +34,20 @@ public interface IProperties {
      * @return Value as double
      */
     default Double asDouble() {
-        return PropertyManager.getPropertiesParser().getDoubleProperty(toString(), getDefault());
+        return PROPERTY_MANAGER.getDoubleProperty(toString(), getDefault());
     }
     /**
      * @return Value as long
      */
-    default Long asLong() { return PropertyManager.getPropertiesParser().getLongProperty(toString(), getDefault()); }
+    default Long asLong() { return PROPERTY_MANAGER.getLongProperty(toString(), getDefault()); }
     /**
      * @return Value as boolean
      */
-    default Boolean asBool() { return PropertyManager.getPropertiesParser().getBooleanProperty(toString(), getDefault()); }
+    default Boolean asBool() { return PROPERTY_MANAGER.getBooleanProperty(toString(), getDefault()); }
     /**
      * @return Value as string
      */
-    default String asString() { return PropertyManager.getPropertiesParser().getProperty(toString(), getDefault()); }
+    default String asString() { return PROPERTY_MANAGER.getProperty(toString(), getDefault()); }
     /**
      * @return Property string
      */

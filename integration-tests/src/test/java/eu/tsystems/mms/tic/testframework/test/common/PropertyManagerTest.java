@@ -22,11 +22,12 @@
  package eu.tsystems.mms.tic.testframework.test.common;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class PropertyManagerTest extends TesterraTest {
+public class PropertyManagerTest extends TesterraTest implements PropertyManagerProvider {
 
     /**
      * property test with system properties and replacement system
@@ -406,6 +407,7 @@ public class PropertyManagerTest extends TesterraTest {
         Assert.assertNull(PropertyManager.getThreadLocalProperties().getProperty("thread.property"));
 
         PropertyManager.clearGlobalProperties();
+        PROPERTY_MANAGER.removeSystemProperty("thread.property");
         Assert.assertNull(PropertyManager.getGlobalProperties().getProperty("thread.property"));
 
         Assert.assertEquals(PropertyManager.getProperty("thread.property"), "file");

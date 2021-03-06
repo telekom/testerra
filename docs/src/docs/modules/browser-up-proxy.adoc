@@ -102,7 +102,7 @@ If your SUT is protected by HTTP basic auth, you can set up these credentials as
 
 [source,java]
 ----
-URL baseUrl = new URL(PropertyManager.getProperty("tt.baseurl"));
+URL baseUrl = WEB_DRIVER_MANAGER.getConfig().getBaseUrl();
 final String basicAuthUser;
 final String basicAuthPassword;
 

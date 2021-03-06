@@ -80,7 +80,7 @@ When you want to change the locale from a property. Do the following
 
 [source,java]
 ----
-String testLanguage = PropertyManager.getProperty("test.language", "de");
+String testLanguage = PROPERTY_MANAGER.getProperty("test.language", "de");
 Locale.setDefault(Locale.forLanguageTag(testLanguage));
 ----
 

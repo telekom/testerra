@@ -89,7 +89,7 @@ If your SUT is protected by HTTP basic auth, you can setup these credentials as 
 import java.net.URL;
 
 /* Additional Proxy setup here */
-URL baseUrl = new URL(PropertyManager.getProperty("tt.baseurl"));
+URL baseUrl = WEB_DRIVER_MANAGER.getConfig().getBaseUrl();
 final String basicAuthUser;
 final String basicAuthPassword;
 bmpClient.setBasicAuth(baseUrl.getHost(), basicAuthUser, basicAuthPassword);

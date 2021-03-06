@@ -1,18 +1,20 @@
 = PropertyManager
 
-The `PropertyManager` provides a static interfaces for reading properties.
+The `PropertyManagerProvider` interface provides a `PROPERTY_MANAGER` instance of `IPropertyManager`
 
 [source, java]
 ----
-String property = PropertyManager.getProperty("my.property", "default");
+String property = PROPERTY_MANAGER.getProperty("my.property", "default");
+Long long = PROPERTY_MANAGER.getLongProperty("my.long", 200L);
+Double doubleProperty = PROPERTY_MANAGER.getDoubleProperty("my.double", 200.0);
+Boolean booleanProperty = PROPERTY_MANAGER.getBooleanProperty("my.boolean", false);
 ----
 
-It will look for the property definition appearance in the following order.
+It will look for the property definition appearance in the following order:
 
-- `PropertyManager.getThreadLocalProperties()`
-- `PropertyManager.getGlobalProperties()`
-- `System.getProperties()`
-- `test.properties`
+- <<Test local properties>>
+- `System.getProperties()` (`system.properties`)
+- <<Property files>> (`test.properties`)
 
 When it's still not defined, in will fall back to the given `default` value.
 
@@ -24,12 +26,33 @@ Testerra supports and loads automatically `.properties` files located under  `te
 
 The `test.properties` is called the Test Configuration and contains everything required by the test, like Browser setup, SUT credentials or Layout test thresholds.
 
+You can load additional properties files at any time.
+
+[source,java]
+----
+PROPERTY_MANAGER.loadProperties("my.property.file");
+----
+
+== System properties
+
+
 When a `system.properties` exists, Testerra loads and sets the given properties via `System.setProperty()` if they are not present already.
 
-NOTE: You cannot override system properties given by command line.
+NOTE: This will not override system properties given by thte command line.
 
 The path of this file can be changed by `{system_settings_file}` and will be automatically loaded with the following message
 
 ----
 common.PropertyManager - Load system properties: /path/to/your/system.properties
 ----
+
+== Test local properties
+
+If you want to set properties for a test method only, you can use
+
+[source,java]
+----
+PROPERTY_MANAGER.setTestLocalProperty("myproperty", "myvalue");
+----
+
+This property will be removed after every test method.

@@ -32,6 +32,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.Properties;
+import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +40,7 @@ import org.slf4j.LoggerFactory;
  * Contains methods for reading from properties files.
  *
  * @author mibu, pele, mrgi, sepr
+ * @deprecated Use {@link PropertyManagerProvider} instead
  */
 public final class PropertyManager {
 
@@ -47,16 +49,13 @@ public final class PropertyManager {
     /**
      * Threadlocal Properties.
      */
-    static final ThreadLocal<Properties> THREAD_LOCAL_PROPERTIES = new ThreadLocal<>();
+    private static final ThreadLocal<Properties> THREAD_LOCAL_PROPERTIES = new ThreadLocal<>();
 
     /**
      * The static properties.
      */
-    static final Properties FILEPROPERTIES = new Properties();
-
-    static final Properties GLOBALPROPERTIES = new Properties();
-
-    private static ThreadLocal<PropertiesParser> PROPERTIES_PARSER = new ThreadLocal<>();
+    private static final Properties FILEPROPERTIES = new Properties();
+    private static final PropertiesParser propertiesParser;
 
     /*
      * Static constructor, creating static Properties object.
@@ -64,11 +63,13 @@ public final class PropertyManager {
      * NOTE: DO NOT USE LOGGER in this static block!
      */
     static {
+        propertiesParser = new PropertiesParser(() -> {
+            return Stream.of(getThreadLocalProperties(), System.getProperties(), FILEPROPERTIES);
+        });
         // set static properties
         String propertyFile = "test.properties";
         pLoadPropertiesFromResource(FILEPROPERTIES, propertyFile, null);
         initializeSystemProperties();
-        getPropertiesParser();
     }
 
     /**
@@ -315,13 +316,16 @@ public final class PropertyManager {
     /**
      * Removes all loaded properties from PropertyManager.
      */
+    @Deprecated
     public static void clearProperties() {
         THREAD_LOCAL_PROPERTIES.remove();
         FILEPROPERTIES.clear();
-        GLOBALPROPERTIES.clear();
-        PROPERTIES_PARSER.remove();
     }
 
+    /**
+     * Returns properties of test.properties
+     */
+    @Deprecated
     public static Properties getFileProperties() {
         return FILEPROPERTIES;
     }
@@ -331,10 +335,10 @@ public final class PropertyManager {
      *
      * @return local properties of the thread
      */
+    @Deprecated
     public static Properties getThreadLocalProperties() {
         if (THREAD_LOCAL_PROPERTIES.get() == null) {
             THREAD_LOCAL_PROPERTIES.set(new Properties());
-            getPropertiesParser().properties.add(THREAD_LOCAL_PROPERTIES.get());
         }
         return THREAD_LOCAL_PROPERTIES.get();
     }
@@ -342,36 +346,30 @@ public final class PropertyManager {
     /**
      * clear the local thread properties
      */
+    @Deprecated
     public static void clearThreadlocalProperties() {
-
-        if (THREAD_LOCAL_PROPERTIES.get() != null) {
-            getPropertiesParser().properties.remove(THREAD_LOCAL_PROPERTIES.get());
-        }
-
         THREAD_LOCAL_PROPERTIES.remove();
     }
 
+    /**
+     * @deprecated Use {@link IPropertyManager#setSystemProperty(String, Object)}
+     */
+    @Deprecated
     public static void clearGlobalProperties() {
-        GLOBALPROPERTIES.clear();
+
     }
 
+    /**
+     * @deprecated Use {@link System#getProperties()} instead
+     * @return
+     */
+    @Deprecated
     public static Properties getGlobalProperties() {
-        return GLOBALPROPERTIES;
+        return System.getProperties();
     }
 
+    @Deprecated
     public static PropertiesParser getPropertiesParser() {
-
-        if (PROPERTIES_PARSER.get() == null) {
-
-            final PropertiesParser propertiesParser = new PropertiesParser();
-            propertiesParser.properties.add(FILEPROPERTIES);
-            propertiesParser.properties.add(System.getProperties());
-            propertiesParser.properties.add(GLOBALPROPERTIES);
-
-            PROPERTIES_PARSER.set(propertiesParser);
-        }
-
-        return PROPERTIES_PARSER.get();
+        return propertiesParser;
     }
-
 }

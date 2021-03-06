@@ -31,9 +31,9 @@ Load your custom property file at test startup if its necessary.
 ----
 @BeforeSuite
 public void setup() {
-    String env = PropertyManager.getProperty("env", "");
+    String env = PROPERTY_MANAGER.getProperty("env", "");
     if (!"".equals(env)) {
-        PropertyManager.loadProperties("test_" + env + ".properties");
+        PROPERTY_MANAGER.loadProperties("test_" + env + ".properties");
     }
 }
 ----

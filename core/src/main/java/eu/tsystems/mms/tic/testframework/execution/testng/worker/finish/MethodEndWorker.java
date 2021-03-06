@@ -73,11 +73,6 @@ public class MethodEndWorker implements MethodEndEvent.Listener, Loggable {
             log().warn(sb.toString(), testResult.getThrowable());
         }
 
-        if (testMethod.isTest()) {
-            // cleanup thread locals from PropertyManager
-            PropertyManager.clearThreadlocalProperties();
-        }
-
         try {
             /*
              * Read stored method infos, publish to method container and clean

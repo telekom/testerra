@@ -21,6 +21,8 @@
 
 package eu.tsystems.mms.tic.testframework.testing;
 
+import java.util.function.Supplier;
+
 /**
  * Allows to run blocks of code in a {@link Runnable} with {@link Overrides}
  * @author Mike Reiche

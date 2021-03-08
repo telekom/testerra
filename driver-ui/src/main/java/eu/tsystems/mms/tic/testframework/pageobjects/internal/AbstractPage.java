@@ -66,7 +66,8 @@ public abstract class AbstractPage<SELF> implements
         Loggable,
         TestControllerProvider,
         PageObject<SELF>,
-        LocatorFactoryProvider
+        LocatorFactoryProvider,
+        PageCreator
 {
     protected static final PageFactory pageFactory = Testerra.getInjector().getInstance(PageFactory.class);
 
@@ -267,11 +268,13 @@ public abstract class AbstractPage<SELF> implements
         return pageFactory.createComponent(componentClass, rootElement);
     }
 
+    @Override
     public <T extends Page> T createPage(final Class<T> pageClass) {
         return pageFactory.createPage(pageClass, getWebDriver());
     }
 
-    public <T extends Page> Optional<T> tryCreatePage(final Class<T> pageClass) {
-        return pageFactory.tryCreatePage(pageClass, getWebDriver());
+    @Override
+    public <T extends Page> Optional<T> waitForPage(final Class<T> pageClass, int seconds) {
+        return pageFactory.waitForPage(pageClass, getWebDriver(), seconds);
     }
 }

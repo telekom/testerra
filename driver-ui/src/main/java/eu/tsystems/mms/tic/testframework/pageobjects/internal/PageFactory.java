@@ -23,14 +23,18 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.exceptions.PageFactoryException;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Component;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.testing.TestControllerProvider;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
+import org.checkerframework.checker.units.qual.A;
 import org.openqa.selenium.WebDriver;
 
-public interface PageFactory extends WebDriverManagerProvider {
+public interface PageFactory extends WebDriverManagerProvider, TestControllerProvider, Loggable {
     @Deprecated
     PageFactory setGlobalPagesPrefix(String pagePrefix);
     @Deprecated
@@ -43,15 +47,24 @@ public interface PageFactory extends WebDriverManagerProvider {
     }
     <T extends Page> T createPage(Class<T> pageClass, WebDriver webDriver);
 
-    default <T extends Page> Optional<T> tryCreatePage(Class<T> pageClass) {
-        return tryCreatePage(pageClass, WEB_DRIVER_MANAGER.getWebDriver());
+    default <T extends Page> Optional<T> waitForPage(Class<T> pageClass, int seconds) {
+        return waitForPage(pageClass, WEB_DRIVER_MANAGER.getWebDriver(), seconds);
     }
-    default <T extends Page> Optional<T> tryCreatePage(Class<T> pageClass, WebDriver webDriver) {
-        try {
-            return Optional.of(createPage(pageClass, webDriver));
-        } catch (PageFactoryException e) {
-            return Optional.empty();
-        }
+
+    default <T extends Page> Optional<T> waitForPage(Class<T> pageClass, WebDriver webDriver) {
+        return waitForPage(pageClass, webDriver, -1);
+    }
+
+    default <T extends Page> Optional<T> waitForPage(Class<T> pageClass, WebDriver webDriver, int seconds) {
+        AtomicReference<T> atomicPage = new AtomicReference<>();
+        CONTROL.withTimeout(seconds, () -> {
+            try {
+                atomicPage.set(createPage(pageClass, webDriver));
+            } catch (Exception e) {
+                log().warn("Waiting for page ended: " + e.getMessage());
+            }
+        });
+        return Optional.ofNullable(atomicPage.get());
     }
 
     <T extends Component> T createComponent(Class<T> componentClass, UiElement rootElement);

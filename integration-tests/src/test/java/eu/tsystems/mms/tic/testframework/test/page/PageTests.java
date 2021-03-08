@@ -67,6 +67,16 @@ public class PageTests extends AbstractExclusiveTestSitesTest<WebTestPage> imple
     }
 
     @Test
+    public void test_waitForPage() {
+        WebTestPage page = getPage();
+        long start = System.currentTimeMillis();
+        page.waitForPage(InvalidComponentPage.class, 1).ifPresent(invalidComponentPage -> {
+
+        });
+        ASSERT.assertLowerThan((System.currentTimeMillis()-start)/1000, 2);
+    }
+
+    @Test
     public void test_Page_waitFor() {
         WebTestPage page = getPage();
         CONTROL.withTimeout(0, () -> {

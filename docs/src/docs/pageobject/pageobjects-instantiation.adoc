@@ -26,7 +26,8 @@ You can also try to create a page, when you want to handle unexpected redirects 
 
 [source,java]
 ----
-homePage.tryCreatePage(OtherPage.class).ifPresent(otherPage -> {});
+homePage.waitForPage(OtherPage.class).ifPresent(otherPage -> {});
+homePage.waitForPage(OtherPage.class, int seconds).ifPresent(otherPage -> {});
 ----
 
 

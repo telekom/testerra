@@ -36,18 +36,16 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementDat
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
 import java.awt.Color;
 import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Array;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.apache.commons.io.IOUtils;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
@@ -79,13 +77,17 @@ public final class JSUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JSUtils.class);
 
+    public void addJavascriptResources(WebDriver webDriver, Stream<String> resourceFiles) {
+        executeScript(webDriver, readScriptResources(resourceFiles));
+    }
+
     /**
      * try to implement javascript on page
      *
      * @param driver       .
      * @param resourceFile .
      * @param id           .
-     * @deprecated Use {@link #readSnippets(Snippet...)} instead
+     * @deprecated Use {@link #addJavascriptResources(WebDriver, Stream)} instead
      */
     @Deprecated
     public static void implementJavascriptOnPage(final WebDriver driver, final String resourceFile, final String id) {
@@ -95,34 +97,17 @@ public final class JSUtils {
         // isn't active anymore
         // driver.switchTo().defaultContent();
         if (isJavascriptImplementedOnPage(driver, id)) {
-            LOGGER.debug("Already injected: " + resourceFile);
+            LOGGER.warn("Already injected: " + resourceFile);
             return;
         }
-
-        LOGGER.debug("JS inject: " + resourceFile);
-        /*
-         * Build inline string
-         */
-        String inline = "";
-
-        try (final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceFile)) {
-
-            if (inputStream == null) {
-                throw new SystemException("Could not load resource file: " + resourceFile);
-            }
-
-            inline = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
-        } catch (Exception e) {
-            throw new SystemException(e);
-        }
-
+        String inline = readScriptResources(Stream.of(resourceFile));
         implementJavascriptOnPage(id, driver, inline);
     }
 
     /**
-     * @deprecated Use {@link #readSnippets(Snippet...)} instead
+     * @deprecated Use {@link #addJavascriptResources(WebDriver, Stream)} instead
      */
-    public static void implementJavascriptOnPage(
+    private static void implementJavascriptOnPage(
             String scriptId,
             WebDriver driver,
             String script
@@ -195,28 +180,13 @@ public final class JSUtils {
         }
     }
 
-    /**
-     * Highlight a webelement on an actual driver session
-     *
-     * @param driver     .
-     * @param webElement .
-     * @param r          .
-     * @param g          .
-     * @param b          .
-     */
-    @Deprecated
-    public static void highlightWebElement(
-            final WebDriver driver,
-            final WebElement webElement,
-            final int r,
-            final int g,
-            final int b
-    ) {
-        highlightWebElement(driver, webElement, new Color(r, g, b));
+    public void highlight(WebDriver webDriver, WebElement webElement, Color color) {
+        highlightWebElement(webDriver, webElement, color);
     }
 
     /**
      * Highlights an element for a specified time.
+     * @deprecated Use {@link #highlight(WebDriver, WebElement, Color)} instead
      */
     public static void highlightWebElement(
             WebDriver driver,
@@ -229,7 +199,7 @@ public final class JSUtils {
                     driver,
                     String.format(
                             "%s\n"+
-                                    "ttHighlight(arguments[0], '%s', %d)",
+                            "ttHighlight(arguments[0], '%s', %d)",
                             readSnippets(Snippet.HIGHLIGHT),
                             toHex(color),
                             ms
@@ -241,65 +211,24 @@ public final class JSUtils {
         }
     }
 
-    /**
-     * Highlight a webelement on an actual driver session
-     *
-     * @param driver     .
-     * @param webElement .
-     * @param r          .
-     * @param g          .
-     * @param b          .
-     */
-    @Deprecated
-    public static void highlightWebElementStatic(
-            final WebDriver driver,
-            final WebElement webElement,
-            final int r,
-            final int g,
-            final int b
-    ) {
-        highlightWebElementStatic(driver, webElement, new Color(r, g, b));
+    private static String readSnippets(Snippet...snippets) {
+        return readScriptResources(Arrays.stream(snippets).map(Snippet::getResourcePath));
     }
 
-
-    private static String readSnippets(Snippet...snippets) {
+    private static String readScriptResources(Stream<String> resourceFiles) {
         StringBuilder sb = new StringBuilder();
-        for (Snippet snippet : snippets) {
+        resourceFiles.forEach(resourceFile -> {
             try {
-                sb.append(new String(IOUtils.toByteArray(JSUtils.class.getClassLoader().getResourceAsStream(snippet.getResourcePath()))));
+                sb.append(new String(IOUtils.toByteArray(Objects.requireNonNull(JSUtils.class.getClassLoader().getResourceAsStream(resourceFile)))));
             } catch (IOException e) {
-                LOGGER.error("Unable to read snippet", e);
+                LOGGER.error("Unable to read resourceFile", e);
             }
-        }
+        });
         return sb.toString();
     }
 
-    public static String toHex(Color color) {
+    private static String toHex(Color color) {
         return String.format("#%02x%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
-    }
-
-    /**
-     * Static element highlight doesn't fade out.
-     */
-    public static void highlightWebElementStatic(
-            WebDriver driver,
-            WebElement webElement,
-            Color color
-    ) {
-        try {
-            executeScript(
-                    driver,
-                    String.format(
-                            "%s\n" +
-                                    "ttAddStyle(arguments[0], 'outline: 5px dotted %s !important');",
-                            readSnippets(Snippet.HIGHLIGHT),
-                            toHex(color)
-                    ),
-                    webElement
-            );
-        } catch (Exception e) {
-            LOGGER.error("Unable to highlight WebElement: " + e.getMessage());
-        }
     }
 
     private static boolean isJavascriptImplementedOnPage(final WebDriver driver, final String id) {

@@ -131,49 +131,6 @@ public class Page extends AbstractPage<Page> implements TestablePage {
         TimerUtils.sleep(timeToWait);
     }
 
-    @Deprecated
-    public boolean isTextPresent(String text) {
-        WebDriver driver = getWebDriver();
-        driver.switchTo().defaultContent();
-
-        // check frames recursive
-        boolean out = pIsTextPresentRecursive(false, text);
-
-        // switch back to default frame
-        driver.switchTo().defaultContent();
-        return out;
-    }
-
-    @Deprecated
-    public boolean isTextDisplayed(String text) {
-        WebDriver driver = getWebDriver();
-        driver.switchTo().defaultContent();
-
-        // check frames recursive
-        boolean out = pIsTextPresentRecursive(true, text);
-
-        // switch back to default frame
-        driver.switchTo().defaultContent();
-        return out;
-    }
-
-    @Fails(validFor = "unsupportedBrowser=true")
-    private boolean pIsTextPresentRecursive(final boolean isDisplayed, final String text) {
-        UiElement textElement = (UiElement)anyElementContainsText(text);
-        if (
-            isDisplayed && textElement.waitFor().displayed().getActual()
-            || textElement.waitFor().present().getActual()
-        ) {
-            WebDriver driver = getWebDriver();
-            textElement.findWebElement(webElement -> {
-                JSUtils.highlightWebElementStatic(driver, webElement, new Color(0, 255, 0));
-            });
-            return true;
-        }
-
-        return false;
-    }
-
     /**
      * Waits for a text to be not present.
      *

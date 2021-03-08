@@ -33,6 +33,8 @@ public enum Attribute {
     SRC("src"),
     READONLY("readonly"),
     DISABLED("disabled"),
+    ARIA_LABEL("aria-label"),
+    ARIA_EXPANDED("aria-expanded")
     ;
 
     private final String attrib;

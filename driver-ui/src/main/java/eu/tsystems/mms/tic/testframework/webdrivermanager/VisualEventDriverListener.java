@@ -35,6 +35,8 @@ import java.awt.*;
  */
 public class VisualEventDriverListener implements WebDriverEventListener {
 
+    private final JSUtils jsUtils = new JSUtils();
+
     @Override
     public void beforeAlertAccept(WebDriver webDriver) {
 
@@ -116,7 +118,7 @@ public class VisualEventDriverListener implements WebDriverEventListener {
 //                    JSUtils.highlightWebElementClick(webDriver, webElement);
 //                }
 
-            JSUtils.highlightWebElement(webDriver, webElement, new Color(0, 0, 255));
+            jsUtils.highlight(webDriver, webElement, new Color(0, 0, 255));
             //lastClickedElement = webElement;
         }
     }
@@ -128,7 +130,7 @@ public class VisualEventDriverListener implements WebDriverEventListener {
     @Override
     public void beforeChangeValueOf(WebElement webElement, WebDriver webDriver, CharSequence[] charSequences) {
         if (webElement != null) {
-            JSUtils.highlightWebElement(webDriver, webElement, new Color(0, 0, 255));
+            jsUtils.highlight(webDriver, webElement, new Color(0, 0, 255));
         }
     }
 

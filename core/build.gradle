@@ -63,12 +63,4 @@ test {
     exclude '**'
 }
 
-task cleanDist {
-    doLast {
-        delete "out"
-    }
-}
-
-clean.dependsOn(cleanDist)
-
 

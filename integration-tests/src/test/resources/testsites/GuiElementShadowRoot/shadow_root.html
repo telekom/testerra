@@ -44,7 +44,7 @@
 
 <script>
     var shadow = document.querySelector('#shadow-host').attachShadow({mode: 'open'});
-    shadow.innerHTML = '<div id="shadow-content"><p>This text is inside of the shadow-host, its selector is "#shadow-content p"</p><input></div>';
+    shadow.innerHTML = '<div id="shadow-content" class="shadow-content"><p>This text is inside of the shadow-host, its selector is "#shadow-content p"</p><input></div>';
     shadow.innerHTML += '<style>p { color: red; border: 1px dotted; }</style>';
 </script>
 </body>

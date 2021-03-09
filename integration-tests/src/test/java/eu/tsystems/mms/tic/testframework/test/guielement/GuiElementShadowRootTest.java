@@ -26,9 +26,15 @@ import eu.tsystems.mms.tic.testframework.AbstractExclusiveTestSitesTest;
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.GuiElementShadowRootPage;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
+import eu.tsystems.mms.tic.testframework.exceptions.UiElementAssertionError;
+import eu.tsystems.mms.tic.testframework.exceptions.UiElementException;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.XPath;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
+import org.junit.Assert;
+import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 
 public class GuiElementShadowRootTest extends AbstractExclusiveTestSitesTest<GuiElementShadowRootPage> {
@@ -66,6 +72,20 @@ public class GuiElementShadowRootTest extends AbstractExclusiveTestSitesTest<Gui
 
         TestStep.begin("Step 3 - assert '" + expectedText + "' is in displayed in shadow root input");
         page.assertInputText(expectedText);
+    }
+
+    @Test(expectedExceptions = UiElementAssertionError.class)
+    public void test_ShadowRoot_find_byClassName_fails() {
+        GuiElement shadowRootElement = getPage().shadowRootElement;
+        Assert.assertTrue(shadowRootElement.find(XPath.from("div").classes("shadow-content")).waitFor().displayed(true));
+        shadowRootElement.find(By.className("shadow-content")).expect().present(true);
+    }
+
+    @Test(expectedExceptions = UiElementAssertionError.class)
+    public void test_ShadowRoot_findById_fails() {
+        GuiElement shadowRootElement = getPage().shadowRootElement;
+        Assert.assertTrue(shadowRootElement.find(XPath.from("div").attribute("id", "shadow-content")).waitFor().displayed(true));
+        shadowRootElement.findById("shadow-content").expect().present(true);
     }
 
 }

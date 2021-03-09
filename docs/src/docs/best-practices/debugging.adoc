@@ -1,0 +1,26 @@
+= Debugging tests
+
+When you want to debug tests in your IDE, you can use the following setup to debug tests after they failed.
+
+[source,java]
+----
+// Check if the JVM is in Debug mode
+boolean isDebug = java.lang.management.ManagementFactory.getRuntimeMXBean().getInputArguments().toString().indexOf("-agentlib:jdwp") > 0;
+if (isDebug) {
+    // Disable close windows after test
+    WEB_DRIVER_MANAGER.getConfig().setShutdownSessionAfterTestMethod(false);
+
+    // Register to the end event
+    EventBus eventBus = Testerra.getEventBus();
+    eventBus.register(new MethodEndEvent.Listener() {
+        @Override
+        @Subscribe
+        public void onMethodEnd(MethodEndEvent event) {
+            if (event.isFailed()) {
+                // Set your breakpoint here
+                log().error("Failed");
+            }
+        }
+    });
+}
+----

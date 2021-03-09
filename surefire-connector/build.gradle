@@ -5,3 +5,11 @@ dependencies {
         exclude module: 'testng'
     }
 }
+
+task cleanDist {
+    doLast {
+        delete "out"
+    }
+}
+
+clean.dependsOn(cleanDist)

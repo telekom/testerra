@@ -63,10 +63,17 @@ Connectors:
 Additional modules:
 * [bmp](bmp/README.md)
 
-
 ### Publishing
 
-#### ... to a Maven repo
+#### Build report-ng
+
+The `report-ng` module needs to build separately **before** publishing
+
+```shell
+gradle buildReport
+```
+
+#### Publish to a Maven repo
 
 _Preparation_
 
@@ -94,12 +101,18 @@ _Set a custom version_
 gradle publish -DttVersion=<version>
 ```
 
-#### ... to GitHub
+#### Publish to GitHub
 
 Some hints for using GitHub Packages as Maven repository
 
 * Deploy URL is https://maven.pkg.github.com/OWNER/REPOSITRY
 * As password generate an access token and grant permissions to ``write:packages`` (Settings -> Developer settings -> Personal access token)
+
+### Cleaning
+
+```shell
+gradle clean cleanReports cleanNpm
+```
   
 ## Contributing
 Thank you for considering contributing to the Testerra framework! The contribution guide can be found here: [CONTRIBUTING.md](CONTRIBUTING.md).

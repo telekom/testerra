@@ -30,3 +30,9 @@ test {
         suites 'src/test/resources/test.xml'
     }
 }
+
+task cleanReports {
+    doLast {
+        delete "test-report"
+    }
+}

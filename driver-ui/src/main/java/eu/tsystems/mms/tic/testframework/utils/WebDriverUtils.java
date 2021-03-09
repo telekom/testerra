@@ -245,6 +245,15 @@ public final class WebDriverUtils {
     }
 
     /**
+     * deletes all cookies of the given Webdriver
+     *
+     * @param driver Webdriver
+     */
+    public static void deleteAllCookies(final WebDriver driver) {
+        driver.manage().deleteAllCookies();
+    }
+
+    /**
      * Checks for all links in the current frame to be accessable (response code 200).
      * Response codes other than 200 generate nonfunctional errors.
      *

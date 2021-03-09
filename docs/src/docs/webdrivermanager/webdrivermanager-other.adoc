@@ -16,10 +16,25 @@ Optional<SessionContext> sessionContext = WebDriverSessionsManager.getSessionCon
 
 == Working with cookies
 
-If you want get and store the cookies of your current `WebDriver` session you can use `WebDriverUtils.getCookieString(WebDriver driver)`.
-It will give you access to the complete cookie string, which you can use to open plain HTTP connections or make HTTP calls with your actual session cookies.
+.Get current cookies from driver.
+[source,java]
+----
+WebDriver driver = WebDriverManager.getWebDriver();
 
-To delete all the cookies of your current `WebDriver` session just call `WebDriverManagerUtils.deleteAllCookies(WebDriver driver)`.
+// Get all cookies from driver
+Set<Cookie> cookieSet = driver.manage().getCookies();
+
+// Returns all cookies like "cookie1=value1;cookie2=value2;... as string
+// You can use it to open plain HTTP connections or make HTTP calls with your actual session cookies.
+String cookieString = WebDriverUtils.getCookieString(driver);
+----
+
+.Delete all cookies.
+[source,java]
+----
+WebDriver driver = WebDriverManager.getWebDriver();
+WebDriverUtils.deleteAllCookies(driver)
+----
 
 == Switching windows
 

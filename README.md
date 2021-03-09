@@ -59,7 +59,7 @@ public class MyTest extends TesterraTest {
 
 ## Documentation
 
-Check out our comprehensive [Testerra documentation](https://tapas-docs.s3.eu-central-1.amazonaws.com/testerra/latest/index.html)!
+Check out our comprehensive [Testerra documentation](http://docs.testerra.io)!
 
 ## Development
 

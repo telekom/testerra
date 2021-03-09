@@ -1,10 +1,5 @@
 = Working with sessions
 
-If you want to interact with your `WebDriver` session you can use the utilities provided by Testerra:
-
-* WebDriverManagerUtils
-* WebDriverUtils
-
 == Get current session
 
 .Get the current session context with information about your WebDriver session.
@@ -44,7 +39,8 @@ To switch windows in a easy way Testerra provides some methods, which will autom
 [source,java]
 ----
 // Switch to a window by matching title
-Optional<WebDriver> optionalWebDriver = WebDriverUtils.switchToWindow(webDriver -> webDriver.getTitle().equals(windowTitle));
+Optional<WebDriver> optionalWebDriver
+    = WebDriverUtils.switchToWindow(webDriver -> webDriver.getTitle().equals(windowTitle));
 
 // Window context switched
 optionalWebDriver.isPresent();

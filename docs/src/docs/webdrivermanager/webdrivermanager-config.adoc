@@ -28,6 +28,13 @@ System.setProperty(TesterraProperties.BROWSER, Browsers.firefox);
 System.setProperty(TesterraProperties.BROWSER_VERSION, "66");
 ----
 
+[NOTE]
+====
+This is not recommended.
+
+Decide before test start about your global browser settings or use `WebDriverRequest` (<<Local configuration>>) for custom configuration.
+====
+
 === Configure with `WebDriverManager.getConfig()`
 
 Some of the WebdriverManager settings you can change as follows

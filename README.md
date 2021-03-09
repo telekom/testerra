@@ -25,7 +25,7 @@ You may see Testerra as an open source test automation library for web frontend 
 
 ## Installation
 
-_Comming soon:_ Testerra and its components are published on GitHub packages and Maven Central.
+_Comming soon:_ Testerra and its components are published at GitHub packages and Maven Central.
 
 Maven:
 ````xml

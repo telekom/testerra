@@ -5,6 +5,15 @@ If you want to interact with your `WebDriver` session you can use the utilities 
 * WebDriverManagerUtils
 * WebDriverUtils
 
+== Get current session
+
+.Get the current session context with information about your WebDriver session.
+[source,java]
+----
+WebDriver driver = WebDriverManager.getWebDriver();
+Optional<SessionContext> sessionContext = WebDriverSessionsManager.getSessionContext(driver);
+----
+
 == Working with cookies
 
 If you want get and store the cookies of your current `WebDriver` session you can use `WebDriverUtils.getCookieString(WebDriver driver)`.

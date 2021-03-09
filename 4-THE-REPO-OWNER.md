@@ -8,16 +8,13 @@ By initializing your repository the TOSCom has generated some useful documents. 
 - If you are going to use it, please replace the contact address ``opensource@telekom.de`` by your own address
 * **CODEOWNERS** :- a list of persons denoted by their GitHub accounts who are shall handle with pull requests
 - You may erase this file if you do not need it - but to have such a file (and the respective persons) is a good practice if you use GitHub
-- Append your code owners identifiers to the initially inserted person @kreincke.
-- Erase the initially inserted codeowner ``kreincke``
 * **codestyle/checkstyle.xml** :- a description how to write source code
 - You may erase or replace this file in accordance to your needs.
 * **CONTRIBUTING.md** :- a description how the community can contribute to your project
 - You may erase this file if you do not need it.
 - If you delete it, find another method (CLA etc.) to enforce your contributors also to license their work under the terms of the same license you've selected for your project.
 - If you are going to use it, please replace the contact address ``opensource@telekom.de`` by your own address
-* The licens text of and for your project
-- _YOU MAY NOT DELETE THIS FILE!_
+* The license text of and for your project
 * **NOTICE** :- the Apache v2 specific file to communicate with the recipients of your source code / repository:
 - _YOU MAY NOT DELETE THIS FILE!_
 - Complete the list of contributors by your main contributors.

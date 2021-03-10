@@ -25,9 +25,6 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.useragents.UapBrowserInformation;
-import java.net.URL;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
@@ -36,6 +33,10 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.net.URL;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Class containing utility methods for WebDriverManager. To keep the WebDriverManager Class cleaner.
@@ -114,15 +115,6 @@ public final class WebDriverManagerUtils {
         }
     }
 
-    /**
-     * deletes all cookies of the given Webdriver
-     *
-     * @param driver Webdriver
-     */
-    public static void deleteAllCookies(final WebDriver driver) {
-        driver.manage().deleteAllCookies();
-    }
-
     public static void addBrowserVersionToCapabilities(final DesiredCapabilities capabilities, final String version) {
 //        capabilities.setCapability(CapabilityType.VERSION, version);
 //        capabilities.setCapability(CapabilityType.BROWSER_VERSION, version);
@@ -132,8 +124,8 @@ public final class WebDriverManagerUtils {
     /**
      * Add proxy settings to capabilities. proxyString may be "proxyhost:8080".
      *
-     * @param capabilities  .
-     * @param proxyString   .
+     * @param capabilities .
+     * @param proxyString .
      * @param noProxyString .
      * @deprecated
      */
@@ -146,7 +138,7 @@ public final class WebDriverManagerUtils {
      * Add proxy settings to capabilities. proxyString may be "proxyhost:8080".
      *
      * @param capabilities {@link DesiredCapabilities}
-     * @param proxyUrl     {@link URL}
+     * @param proxyUrl {@link URL}
      * @deprecated
      */
     @Deprecated
@@ -159,7 +151,7 @@ public final class WebDriverManagerUtils {
      * Add proxy settings to capabilities. proxyString may be "proxyhost:8080".
      *
      * @param capabilities {@link DesiredCapabilities}
-     * @param proxyString  {@link String}
+     * @param proxyString {@link String}
      * @deprecated
      */
     @Deprecated

@@ -1,16 +1,13 @@
 = Working with sessions
 
-If you want to interact with your `WebDriver` session you can use the utilities provided by Testerra:
+== Get current session
 
-* WebDriverManagerUtils
-* WebDriverUtils
-
-== Working with cookies
-
-If you want get and store the cookies of your current `WebDriver` session you can use `WebDriverUtils.getCookieString(WebDriver driver)`.
-It will give you access to the complete cookie string, which you can use to open plain HTTP connections or make HTTP calls with your actual session cookies.
-
-To delete all the cookies of your current `WebDriver` session just call `WebDriverManagerUtils.deleteAllCookies(WebDriver driver)`.
+.Get the current session context with information about your WebDriver session.
+[source,java]
+----
+WebDriver driver = WebDriverManager.getWebDriver();
+Optional<SessionContext> sessionContext = WebDriverSessionsManager.getSessionContext(driver);
+----
 
 == Switching windows
 

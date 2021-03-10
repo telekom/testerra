@@ -15,7 +15,7 @@ NOTE: Comming soon: Testerra will be available at MavenCentral.
 //.Gradle
 //[source,gradle,role="primary"]
 //----
-//// Update your gradle configuration
+// Update your gradle configuration
 //repositories {
 //    jCenter()
 //    maven {
@@ -162,7 +162,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 public class ExamplePage extends Page {
 
     @Check
-    private UiElement moreInformationLink = find(By.partialLinkText("More information"));
+    private UiElement moreInformationLink =
+        find(By.partialLinkText("More information"));
 
     public ExamplePage(WebDriver driver) {
         super(driver);

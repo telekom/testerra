@@ -298,11 +298,12 @@ public final class WebDriverSessionsManager {
         return exclusiveSessionKey;
     }
 
-    static void shutdownExclusiveSession(final String key) {
-        final WebDriver driver = EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.get(key);
-        if (driver != null) {
-            shutdownWebDriver(driver);
+    public static void shutdownSessionKey(final String key) {
+        if (EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.containsKey(key)) {
+            shutdownWebDriver(EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.get(key));
             EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.remove(key);
+        } else if (THREAD_SESSION_KEY_WEBDRIVER_MAP.containsKey(key)) {
+            shutdownWebDriver(THREAD_SESSION_KEY_WEBDRIVER_MAP.get(key));
         }
     }
 

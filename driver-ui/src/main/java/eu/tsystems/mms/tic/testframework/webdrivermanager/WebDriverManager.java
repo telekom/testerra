@@ -325,15 +325,11 @@ public final class WebDriverManager {
      * @return UUID of this session.
      */
     public static String makeSessionExclusive(final WebDriver driver) {
-        if (driver == null) {
-            return null;
-        }
-        final String uuid = WebDriverSessionsManager.makeSessionExclusive(driver);
-        return uuid;
+        return WebDriverSessionsManager.makeSessionExclusive(driver);
     }
 
     public static void shutdownExclusiveSession(final String key) {
-        WebDriverSessionsManager.shutdownExclusiveSession(key);
+        WebDriverSessionsManager.shutdownSessionKey(key);
     }
 
     public static Stream<WebDriver> getWebDriversFromThread(final long threadId) {

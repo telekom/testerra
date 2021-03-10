@@ -80,7 +80,7 @@ public interface IWebDriverManager extends WebDriverRetainer {
     }
 
     default void shutdownSession(String sessionKey) {
-        WebDriverManager.shutdownExclusiveSession(sessionKey);
+        WebDriverSessionsManager.shutdownSessionKey(sessionKey);
     }
 
     default void shutdownSession(WebDriver webDriver) {

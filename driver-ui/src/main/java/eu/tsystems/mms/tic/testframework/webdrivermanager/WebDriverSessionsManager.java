@@ -423,7 +423,11 @@ public final class WebDriverSessionsManager {
     }
 
     public static WebDriverFactory getWebDriverFactory(String browser) {
-        return WEB_DRIVER_FACTORIES.getOrDefault(browser, null);
+        if (WEB_DRIVER_FACTORIES.containsKey(browser)) {
+            return WEB_DRIVER_FACTORIES.get(browser);
+        } else {
+            throw new RuntimeException("No " + WebDriverFactory.class.getSimpleName() + " registered for browser: " + browser);
+        }
     }
 
     public static Stream<SessionContext> readSessionContexts() {

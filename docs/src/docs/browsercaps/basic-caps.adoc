@@ -9,16 +9,6 @@ WEB_DRIVER_MANAGER.setGlobalCapability(CapabilityType.ACCEPT_INSECURE_CERTS, tru
 WEB_DRIVER_MANAGER.removeGlobalCapability(CapabilityType.ACCEPT_INSECURE_CERTS);
 ----
 
-
-== Thread local capabilities
-
-Thread local capabilities only exists for the current thread.
-
-[source,java]
-----
-WEB_DRIVER_MANAGER.setThreadCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
-----
-
 == Request capabilities
 
 Some WebDriverRequests support setting capabilities, like the `DesktopWebDriverRequest`.

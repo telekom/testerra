@@ -21,10 +21,8 @@
  */
 package eu.tsystems.mms.tic.testframework.test.webdrivermanager;
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -122,17 +120,4 @@ public class WebDriverManagerTest extends TesterraTest {
         globalExtraCapabilities = WebDriverManager.getGlobalExtraCapabilities();
         Assert.assertFalse(globalExtraCapabilities.containsKey("foo"));
     }
-
-    @Test
-    public void testT05_ManageThreadCapabilities() {
-
-        WebDriverManager.addThreadCapability("foo", "bar");
-
-        Assert.assertTrue(WebDriverManager.getThreadCapabilities().containsKey("foo"));
-        Assert.assertEquals(WebDriverManager.getThreadCapabilities().get("foo"), "bar");
-
-        WebDriver driver = WebDriverManager.getWebDriver();
-        WebDriverManager.getThreadCapabilities().clear();
-    }
-
 }

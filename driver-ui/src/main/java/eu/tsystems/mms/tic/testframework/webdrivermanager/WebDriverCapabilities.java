@@ -38,8 +38,6 @@ public class WebDriverCapabilities {
      * Extra capabilities.
      */
     protected static final Map<String, Object> GLOBALCAPABILITIES = new HashMap<>();
-    protected static final ThreadLocal<Map<String, Object>> THREAD_CAPABILITIES = new ThreadLocal<>();
-
     protected static final Logger LOGGER = LoggerFactory.getLogger(WebDriverCapabilities.class);
 
     protected static void safelyAddCapsValue(DesiredCapabilities caps, String key, Object value) {
@@ -66,22 +64,6 @@ public class WebDriverCapabilities {
         GLOBALCAPABILITIES.put(key, value);
     }
 
-    static void addThreadCapability(String key, Object value) {
-        if (CapabilityType.BROWSER_NAME.equals(key)) {
-            LOGGER.warn("Skipping extra desired capability " + key);
-            return;
-        }
-
-        getThreadCapabilities().put(key, value);
-    }
-
-    public static Map<String, Object> getThreadCapabilities() {
-        if (THREAD_CAPABILITIES.get() == null) {
-            THREAD_CAPABILITIES.set(new HashMap<>());
-        }
-        return THREAD_CAPABILITIES.get();
-    }
-
     /**
      * Remove extra capability from capabilities.
      *
@@ -96,10 +78,6 @@ public class WebDriverCapabilities {
      */
     static void clearGlobalCapabilities() {
         GLOBALCAPABILITIES.clear();
-    }
-
-    static void clearThreadCapabilities() {
-        THREAD_CAPABILITIES.remove();
     }
 
     /**

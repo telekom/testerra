@@ -109,25 +109,6 @@ public final class WebDriverManager {
     }
 
     /**
-     * Get set ThreadCapabilities or null.
-     *
-     * @return .
-     */
-    public static Map<String, Object> getThreadCapabilities() {
-        return WebDriverCapabilities.getThreadCapabilities();
-    }
-
-    /**
-     * Add a thread local capability. Will be removed when shutdown is called.
-     *
-     * @param key   .
-     * @param value .
-     */
-    public static void addThreadCapability(String key, Object value) {
-        WebDriverCapabilities.addThreadCapability(key, value);
-    }
-
-    /**
      * Remove extra capability from capabilities.
      *
      * @param key The key of the capability to remove.
@@ -205,7 +186,6 @@ public final class WebDriverManager {
         if (getConfig().shouldShutdownSessions() || force) {
             if (WebDriverManager.isWebDriverActive()) {
                 WebDriverSessionsManager.shutdownAllThreadSessions();
-                WebDriverCapabilities.clearThreadCapabilities();
             }
 
             if (Testerra.Properties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD.asBool()) {

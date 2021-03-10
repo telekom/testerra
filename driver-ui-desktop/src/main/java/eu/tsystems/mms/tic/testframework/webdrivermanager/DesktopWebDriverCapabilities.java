@@ -54,17 +54,6 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
          */
         getGlobalExtraCapabilities().forEach((s, o) -> safelyAddCapsValue(baseCapabilities, s, o));
 
-       /*
-        add thread local caps
-         */
-        Map<String, Object> threadLocalCaps = getThreadCapabilities();
-        if (threadLocalCaps != null) {
-            for (String key : threadLocalCaps.keySet()) {
-                Object value = threadLocalCaps.get(key);
-                safelyAddCapsValue(baseCapabilities, key, value);
-            }
-        }
-
         Map<String, ?> stringMap = desktopWebDriverRequest.getDesiredCapabilities().asMap();
         for (String key : stringMap.keySet()) {
             Object value = stringMap.get(key);

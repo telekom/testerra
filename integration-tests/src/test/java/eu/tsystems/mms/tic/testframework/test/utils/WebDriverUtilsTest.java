@@ -124,13 +124,6 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
     }
 
     @Test
-    public void testT10_linkChecker() throws Exception {
-        WebDriver driver = WebDriverManager.getWebDriver();
-        WebDriverUtils.linkChecker("Test", driver);
-    }
-
-
-    @Test
     public void testT11_WebDriverKeepAliveTimedOut() {
 
         WebDriver driver = WebDriverManager.getWebDriver();

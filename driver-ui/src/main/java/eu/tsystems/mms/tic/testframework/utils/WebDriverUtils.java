@@ -228,7 +228,7 @@ public final class WebDriverUtils {
      * @param driver WebDriver the current driver
      * @return String
      */
-    public static String getCookieString(final WebDriver driver) {
+    static String getCookieString(final WebDriver driver) {
 
         String cookieString = "";
 
@@ -249,86 +249,8 @@ public final class WebDriverUtils {
      *
      * @param driver Webdriver
      */
-    public static void deleteAllCookies(final WebDriver driver) {
+    static void deleteAllCookies(final WebDriver driver) {
         driver.manage().deleteAllCookies();
-    }
-
-    /**
-     * Checks for all links in the current frame to be accessable (response code 200).
-     * Response codes other than 200 generate nonfunctional errors.
-     *
-     * @param description A desciption for the current linkChecker run.
-     * @param driver      the current driver.
-     */
-    public static void linkChecker(final String description, final WebDriver driver) {
-        LOGGER.info("LinkChecker: " + description);
-        final List<WebElement> links = driver.findElements(By.tagName("a"));
-        Map<String, String> hrefs = new HashMap<String, String>(links.size());
-        for (WebElement link : links) {
-            String linkname = "unknown";
-            final String id = link.getAttribute("id");
-            final String name = link.getAttribute("name");
-            final String alt = link.getAttribute("alt");
-
-            if (!StringUtils.isAnyStringEmpty(id)) {
-                linkname = "id: " + id;
-            } else if (!StringUtils.isAnyStringEmpty(name)) {
-                linkname = "name: " + name;
-            } else if (!StringUtils.isAnyStringEmpty(alt)) {
-                linkname = "alt: " + alt;
-            }
-
-            final Object o = JSUtils.executeScript(driver, "return arguments[0].href;", link);
-            if (o instanceof String) {
-                hrefs.put(linkname, (String) o);
-            } else {
-                hrefs.put(linkname, null);
-            }
-        }
-
-        // show found links
-        String foundLinks = "";
-        for (String linkname : hrefs.keySet()) {
-            foundLinks += linkname + " - " + hrefs.get(linkname) + "\n";
-        }
-
-        LOGGER.info(description + " - Found links:\n" + foundLinks);
-
-        /*
-         * Get Webdriver cookies
-         */
-        final String cookieString = getCookieString(driver);
-
-        /*
-         * Check these links
-         */
-        int timeoutInMilliseconds = Constants.PAGE_LOAD_TIMEOUT_SECONDS * 1000;
-        for (String key : hrefs.keySet()) {
-            LOGGER.info("Checking " + key);
-            final String url = hrefs.get(key);
-            if (url != null) {
-                try {
-                    LOGGER.info("Connect to " + url);
-                    URL u = new URL(url);
-                    HttpURLConnection huc = (HttpURLConnection) u.openConnection();
-                    huc.setRequestMethod("GET");
-                    huc.setConnectTimeout(timeoutInMilliseconds);
-
-                    if (cookieString.length() > 0) {
-                        huc.setRequestProperty("Cookie", cookieString);
-                    }
-
-                    huc.connect();
-                    final int responseCode = huc.getResponseCode();
-                    LOGGER.info("Response code: " + responseCode);
-                    NonFunctionalAssert.assertEquals(responseCode, 200, description + " Link " + key + ": " + url);
-                } catch (Exception e) {
-                    LOGGER.error("Error connecting to " + url, e);
-                }
-            } else {
-                LOGGER.info("Skipping. No URL.");
-            }
-        }
     }
 
     /**

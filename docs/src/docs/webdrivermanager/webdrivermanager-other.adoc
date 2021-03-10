@@ -9,28 +9,6 @@ WebDriver driver = WebDriverManager.getWebDriver();
 Optional<SessionContext> sessionContext = WebDriverSessionsManager.getSessionContext(driver);
 ----
 
-== Working with cookies
-
-.Get current cookies from driver.
-[source,java]
-----
-WebDriver driver = WebDriverManager.getWebDriver();
-
-// Get all cookies from driver
-Set<Cookie> cookieSet = driver.manage().getCookies();
-
-// Returns all cookies like "cookie1=value1;cookie2=value2;... as string
-// You can use it to open plain HTTP connections or make HTTP calls with your actual session cookies.
-String cookieString = WebDriverUtils.getCookieString(driver);
-----
-
-.Delete all cookies.
-[source,java]
-----
-WebDriver driver = WebDriverManager.getWebDriver();
-WebDriverUtils.deleteAllCookies(driver)
-----
-
 == Switching windows
 
 Sometimes you will come across testing websites with multiple windows, such as popups or something similar.

@@ -45,12 +45,12 @@ Please mind that you also can pass already implemented methods.
 [source,java]
 ----
 @Test
-public void test_TestSomething_fast() {
-    CONTROL.withTimeout(0, () -> test_TestSomething());
+public void test_something_fast() {
+    CONTROL.withTimeout(0, this::test_something);
 }
 ----
 
-NOTE: `Control.withTimeout()` overrides all internal timeouts except the explicity used timeout in `waitFor(int seconds)`
+NOTE: `withTimeout()` overrides all internal timeouts except the explicit set timeout in `waitFor(int seconds)` methods.
 
 == Retries
 
@@ -70,7 +70,7 @@ You can also perform something when the retry block fails.
 
 [source,java]
 ----
-CONTROL.retryFor(int seconds, () -> {
+CONTROL.retryFor(int seconds,() -> {
     element.expect().text(String);
 }, () -> {
     element.getWebDriver().reload();
@@ -96,10 +96,7 @@ If you need to wait for something to happen. You can use the control method `wai
 
 [source,java]
 ----
-findById("login").click();
-
-if (CONTROL.waitFor(int seconds, () -> WEB_DRIVER_MANAGER.switchToWindowTitle("Login"))) {
-    LoginPage loginPage = createPage(LoginPage.class);
-    loginPage.performLogin();
-}
+boolean loginOpened = CONTROL.waitFor(int seconds, () -> {
+    WEB_DRIVER_MANAGER.switchToWindowTitle("Login");
+});
 ----

@@ -21,7 +21,6 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
@@ -34,9 +33,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.PageUiElementFinde
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultPageAssertions;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PageAssertions;
 import eu.tsystems.mms.tic.testframework.report.Report;
-import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
-import java.awt.Color;
 import java.util.Random;
 import org.openqa.selenium.WebDriver;
 

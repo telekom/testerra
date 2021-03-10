@@ -13,6 +13,8 @@ HomePage homePage = PAGE_FACTORY.createPage(HomePage.class);
 HomePage homePage = PAGE_FACTORY.createPage(HomePage.class, WebDriver otherWebDriver);
 ----
 
+== Inline creating
+
 Once you created a page, you can create other pages directly from this page, to keep track of the same WebDriver.
 
 [source,java]
@@ -30,6 +32,22 @@ homePage.waitForPage(OtherPage.class).ifPresent(otherPage -> {});
 homePage.waitForPage(OtherPage.class, int seconds).ifPresent(otherPage -> {});
 ----
 
+== Lifecycle
+
+When a page has been created and all <<Check Annotations>> have been performed, the `pageLoaded()` method will be called, which can be used to perform some additional initializing without any test related interaction.
+
+[source,java]
+----
+class MyPage extends Page {
+
+    @Override
+    protected void pageLoaded() {
+        super.pageLoaded();
+
+        // additional actions
+    }
+}
+----
 
 == Page Prefixes (*deprecated*)
 

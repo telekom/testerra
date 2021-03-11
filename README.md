@@ -82,7 +82,7 @@ The following channels are available for discussions, feedback, and support requ
 | **General Discussion**   | <a href="https://github.com/telekom/testerra/issues/new/choose" title="General Discussion"><img src="https://img.shields.io/github/issues/telekom/testerra/question.svg?style=flat-square"></a> </a>   |
 | **Feedback**    | <a href="https://github.com/telekom/testerra/issues/new/choose" title="Open Concept Feedback"><img src="https://img.shields.io/github/issues/telekom/testerra/architecture.svg?style=flat-square"></a>  |
 | **Testerra**    | <a href="https://github.com/telekom/testerra/issues" title="Open Issues"><img src="https://img.shields.io/github/issues/telekom/testerra?style=flat"></a>  |
-| **Other Requests**    | <a href="mailto:opensource@telekom.de" title="Email us"><img src="https://img.shields.io/badge/email-CWA%20team-green?logo=mail.ru&style=flat-square&logoColor=white"></a>   |
+| **Other Requests**    | <a href="mailto:testerra@t-systems-mms.com" title="Email us"><img src="https://img.shields.io/badge/email-CWA%20team-green?logo=mail.ru&style=flat-square&logoColor=white"></a>   |
 
 ## How to Contribute
 

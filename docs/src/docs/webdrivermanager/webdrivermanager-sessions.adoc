@@ -92,9 +92,9 @@ WebDriver driver = WebDriverManager.getWebDriver();
 WebDriver driverWindow2 = WebDriverManager.getWebDriver("window2");
 
 // Get the session key
-String key1 = WebDriverManagerUtils.getSessionId(driver);        // key1 contains 'default'
+String key1 = WebDriverManagerUtils.getSessionKeyFrom(driver);        // key1 contains 'default'
 
-String key2 = WebDriverManagerUtils.getSessionId(driverWindow2); // key2 contains 'window2'
+String key2 = WebDriverManagerUtils.getSessionKeyFrom(driverWindow2); // key2 contains 'window2'
 ----
 
 == Close a session

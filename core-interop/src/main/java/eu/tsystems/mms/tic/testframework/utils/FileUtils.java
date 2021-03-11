@@ -22,14 +22,10 @@
 
 package eu.tsystems.mms.tic.testframework.utils;
 
-import static java.lang.Thread.currentThread;
-
-
-import de.idyl.winzipaes.AesZipFileEncrypter;
-import de.idyl.winzipaes.impl.AESEncrypter;
-import de.idyl.winzipaes.impl.AESEncrypterJCA;
 import eu.tsystems.mms.tic.testframework.exceptions.FileNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
+import org.apache.commons.io.FilenameUtils;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,10 +39,8 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Objects;
 import java.util.UUID;
-import net.lingala.zip4j.core.ZipFile;
-import net.lingala.zip4j.exception.ZipException;
-import net.lingala.zip4j.model.ZipParameters;
-import org.apache.commons.io.FilenameUtils;
+
+import static java.lang.Thread.currentThread;
 
 public final class FileUtils extends org.apache.commons.io.FileUtils {
 
@@ -227,80 +221,6 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
 
     public static void setLineBreak(String lineBreak) {
         FileUtils.lineBreak = lineBreak;
-    }
-
-    public static void zip(final File targetFile, final File... filesToAdd) throws ZipException {
-        zip(targetFile, new ZipParameters(), filesToAdd);
-    }
-
-    public static void zip(final File targetFile, ZipParameters params, final File... filesToAdd) throws ZipException {
-        if (params == null) {
-            params = new ZipParameters();
-        }
-        if (filesToAdd == null) {
-            throw new IllegalArgumentException("No files named to zip.");
-        }
-        final ZipFile zipFile = new ZipFile(targetFile);
-        for (File file : filesToAdd) {
-            zipFile.addFile(file, params);
-        }
-    }
-
-    public static void zip(final File targetFile, final InputStream... inputStreams) throws ZipException {
-        zip(targetFile, new ZipParameters(), inputStreams);
-    }
-
-    public static void zip(final File targetFile, ZipParameters params, final InputStream... inputStreams) throws ZipException {
-        if (params == null) {
-            params = new ZipParameters();
-        }
-        if (inputStreams == null) {
-            throw new IllegalArgumentException("No files named to zip.");
-        }
-        final ZipFile zipFile = new ZipFile(targetFile);
-        for (InputStream is : inputStreams) {
-            zipFile.addStream(is, params);
-        }
-    }
-
-    public static void zipWinZipAes256(final File targetFile, final String password, final File... filesToAdd) throws IOException {
-        AESEncrypter aesEncrypter = new AESEncrypterJCA();
-        aesEncrypter.init(password, 256);
-        AesZipFileEncrypter zip = new AesZipFileEncrypter(targetFile.getAbsolutePath(), aesEncrypter);
-
-        for (File file : filesToAdd) {
-            final String name = file.getName();
-            final String absolutePath = file.getAbsolutePath();
-            zip.add(name, new FileInputStream(absolutePath), password);
-        }
-        zip.close();
-    }
-
-    /**
-     * Unzip utility.
-     *
-     * @param infile               Name of zipped File
-     * @param destinationDirectory Directoy to unzip
-     */
-    public static void unzip(final String infile, final String destinationDirectory) throws ZipException {
-        unzip(infile, destinationDirectory, null);
-    }
-
-    /**
-     * Unzip utility.
-     *
-     * @param infile               Name of zipped File
-     * @param destinationDirectory Directoy to unzip
-     * @param password             Password
-     */
-    public static void unzip(final String infile, final String destinationDirectory, final String password) throws ZipException {
-        ZipFile zipFile = new ZipFile(infile);
-        if (password != null) {
-            if (zipFile.isEncrypted()) {
-                zipFile.setPassword(password);
-            }
-        }
-        zipFile.extractAll(destinationDirectory);
     }
 
     public static URL getResourceURL(String resourceFile) {

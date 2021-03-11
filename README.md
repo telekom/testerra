@@ -79,8 +79,32 @@ The following channels are available for discussions, feedback, and support requ
 
 | Type                     | Channel                                                |
 | ------------------------ | ------------------------------------------------------ |
-| **Issues**   | <a href="https://github.com/telekom/testerra/issues/new/choose" title="Issues"><img src="https://img.shields.io/github/issues/telekom/testerra?style=flat"></a> </a>   |
+| **Issues**   | <a href="https://github.com/telekom/testerra/issues/new/choose" title="Issues"><img src="https://img.shields.io/github/issues/telekom/testerra?style=flat"></a> |
 | **Other Requests**    | <a href="mailto:testerra@t-systems-mms.com" title="Email us"><img src="https://img.shields.io/badge/email-CWA%20team-green?logo=mail.ru&style=flat-square&logoColor=white"></a>   |
+
+## Repositories
+
+| Repository          | Description                                                           |
+| ------------------- | --------------------------------------------------------------------- |
+| [testerra] | Testerra |
+| [testerra-skeleton] | Testerra Skeleton Project |
+| [testerra-selenoid-connector] | Testerra Selenoid Connector |
+| [testerra-hpqc-connector] | Testerra HPQC Connector |
+| [testerra-teamcity-connector] | Testerra TeamCity Connector |
+| [testerra-cucumber-connector] | Testerra Cucumber Connector |
+| [testerra-xray-connector] | Testerra Xray Connector |
+| [testerra-appium-connector] | Testerra Appium Connector |
+| [testerra-azure-devops-connector] | Testerra Azure DevOps Connector |
+
+[testerra]: https://github.com/telekom/testerra
+[testerra-skeleton]: https://github.com/telekom/testerra-skeleton
+[testerra-selenoid-connector]: https://github.com/telekom/testerra-selenoid-connector
+[testerra-hpqc-connector]: https://github.com/telekom/testerra-hpqc-connector
+[testerra-teamcity-connector]: https://github.com/telekom/testerra-teamcity-connector
+[testerra-cucumber-connector]: https://github.com/telekom/testerra-cucumber-connector
+[testerra-xray-connector]: https://github.com/telekom/testerra-xray-connector
+[testerra-appium-connector]: https://github.com/telekom/testerra-appium-connector
+[testerra-azure-devops-connector]: https://github.com/telekom/testerra-azure-devops-connector
 
 ## How to Contribute
 

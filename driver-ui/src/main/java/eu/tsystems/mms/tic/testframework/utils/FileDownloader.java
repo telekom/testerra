@@ -297,7 +297,7 @@ public class FileDownloader implements Loggable {
             String cookieString,
             boolean useSecondConnection
     ) throws IOException {
-        log().info("Start downloading " + url);
+        log().info("Download " + url + " to " + targetFile.getAbsolutePath());
 
         String targetFileName = "";
         URLConnection connection = openConnection(url, proxy, timeoutMS, trustAll, cookieString, sslSocketFactory);
@@ -323,8 +323,6 @@ public class FileDownloader implements Loggable {
         }
 
         FileUtils.copyInputStreamToFile(inputStream, targetFile);
-
-        log().info(String.format("Downloaded to %s", targetFile.getAbsolutePath()));
 
         synchronized (downloadList) {
             downloadList.add(targetFile.getAbsolutePath());

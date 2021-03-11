@@ -60,6 +60,15 @@ subprojects {
             systemProperties(System.getProperties())
         }
     }
+
+    task cleanDist {
+        doLast {
+            delete "out"
+        }
+    }
+
+    clean.dependsOn(cleanDist)
+
 }
 
 // Helper function to prevent publishing

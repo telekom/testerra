@@ -38,7 +38,7 @@ task buildReport(type: NpmTask) {
 
 build.dependsOn(buildReport)
 
-task npmClean {
+task cleanNpm {
     doLast {
         delete "node_modules"
         delete "package-lock.json"

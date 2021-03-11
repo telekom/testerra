@@ -3,9 +3,9 @@
 </h1>
 
 <p align="center">
-    <a href="https://github.com/telekom/testerra/commits/" title="Last Commit"><img src="https://img.shields.io/github/last-commit/telekom/testerra?style=flat"></a>
-    <a href="https://github.com/telekom/testerra/issues" title="Open Issues"><img src="https://img.shields.io/github/issues/telekom/testerra?style=flat"></a>
-    <a href="https://github.com/telekom/testerra/blob/master/LICENSE" title="License"><img src="https://img.shields.io/badge/License-Apache%202.0-green.svg?style=flat"></a>
+    <a href="/../../commits/" title="Last Commit"><img src="https://img.shields.io/github/last-commit/telekom/testerra?style=flat"></a>
+    <a href="/../../issues" title="Open Issues"><img src="https://img.shields.io/github/issues/telekom/testerra?style=flat"></a>
+    <a href="./LICENSE" title="License"><img src="https://img.shields.io/badge/License-Apache%202.0-green.svg?style=flat"></a>
 </p>
 
 <p align="center">
@@ -79,9 +79,7 @@ The following channels are available for discussions, feedback, and support requ
 
 | Type                     | Channel                                                |
 | ------------------------ | ------------------------------------------------------ |
-| **General Discussion**   | <a href="https://github.com/telekom/testerra/issues/new/choose" title="General Discussion"><img src="https://img.shields.io/github/issues/telekom/testerra/question.svg?style=flat-square"></a> </a>   |
-| **Feedback**    | <a href="https://github.com/telekom/testerra/issues/new/choose" title="Open Concept Feedback"><img src="https://img.shields.io/github/issues/telekom/testerra/architecture.svg?style=flat-square"></a>  |
-| **Testerra**    | <a href="https://github.com/telekom/testerra/issues" title="Open Issues"><img src="https://img.shields.io/github/issues/telekom/testerra?style=flat"></a>  |
+| **Issues**   | <a href="https://github.com/telekom/testerra/issues/new/choose" title="Issues"><img src="https://img.shields.io/github/issues/telekom/testerra?style=flat"></a> </a>   |
 | **Other Requests**    | <a href="mailto:testerra@t-systems-mms.com" title="Email us"><img src="https://img.shields.io/badge/email-CWA%20team-green?logo=mail.ru&style=flat-square&logoColor=white"></a>   |
 
 ## How to Contribute

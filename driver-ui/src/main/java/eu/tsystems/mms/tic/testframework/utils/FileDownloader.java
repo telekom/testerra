@@ -294,7 +294,7 @@ public class FileDownloader {
             String cookieString,
             boolean useSecondConnection
     ) throws IOException {
-        LOGGER.info("Downloading file " + url);
+        LOGGER.info("Download " + url + " to " + targetFile.getAbsolutePath());
 
         String targetFileName = "";
         URLConnection connection = openConnection(url, proxy, timeoutMS, trustAll, cookieString, sslSocketFactory);
@@ -320,9 +320,7 @@ public class FileDownloader {
         }
 
         FileUtils.copyInputStreamToFile(inputStream, targetFile);
-
-        LOGGER.info(String.format("Download to location >%s< successful", targetFile.getAbsolutePath()));
-
+        
         synchronized (downloadList) {
             downloadList.add(targetFile.getAbsolutePath());
         }

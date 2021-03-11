@@ -33,3 +33,10 @@ test {
         systemProperties(System.getProperties())
     }
 }
+
+task cleanReports {
+    doLast {
+        delete "test-report"
+        delete "logs"
+    }
+}

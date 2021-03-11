@@ -81,3 +81,14 @@ def setFailureCorridor(nr) {
 def setCloseWindows() {
     System.setProperty("tt.wdm.closeWindows.afterTestMethods", "false")
 }
+
+task cleanReports {
+    doLast {
+        delete "test-report"
+        delete "target"
+        delete "logs"
+        for(int nr=0; nr < 10; ++nr) {
+            delete "report-testsundertest-0$nr"
+        }
+    }
+}

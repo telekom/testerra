@@ -33,20 +33,20 @@ Maven:
     <dependency>
         <groupId>eu.tsystems.mms.tic.testerra</groupId>
         <artifactId>driver-ui-desktop</artifactId>
-        <version>1-SNAPSHOT</version>
+        <version>2-SNAPSHOT</version>
     </dependecy>
     <dependency>
         <groupId>eu.tsystems.mms.tic.testerra</groupId>
         <artifactId>report-ng</artifactId>
-        <version>1-SNAPSHOT</version>
+        <version>2-SNAPSHOT</version>
     </dependecy>
 </dependencies>
 ````
 
 Gradle:
 ````groovy
-compile 'eu.tsystems.mms.tic.testerra:driver-ui-desktop:1-SNAPSHOT'
-compile 'eu.tsystems.mms.tic.testerra:report-ng:1-SNAPSHOT'
+compile 'eu.tsystems.mms.tic.testerra:driver-ui-desktop:2-SNAPSHOT'
+compile 'eu.tsystems.mms.tic.testerra:report-ng:2-SNAPSHOT'
 ````
 
 ### Using testerra functionality:
@@ -65,7 +65,7 @@ public class MyTest extends TesterraTest {
 
 ## Documentation
 
-Check out our comprehensive [Testerra documentation](http://docs.testerra.io)!
+Check out our comprehensive [Testerra documentation](http://docs.testerra.io/testerra/2.0-RC-3/)!
 
 ## Development
 

@@ -1,46 +1,88 @@
-# CONTRIBUTING to Testerra
+# Contributing
+
+## Code of conduct
+
+All members of the project community must abide by the [Contributor Covenant, version 2.0](CODE_OF_CONDUCT.md).
+Only by respecting each other can we develop a productive, collaborative community.
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting [opensource@telekom.de](mailto:opensource@telekom.de) and/or a project maintainer.
+
+We appreciate your courtesy of avoiding political questions here. Issues which are not related to the project itself will be closed by our community managers.
+
+## Engaging in our project
+
+We use GitHub to manage reviews of pull requests.
+
+* If you are a new contributor, see: [Steps to Contribute](#steps-to-contribute)
+
+* If you have a trivial fix or improvement, go ahead and create a pull request, addressing (with `@...`) a suitable maintainer of this repository (see [CODEOWNERS](CODEOWNERS) of the  repository you want to contribute to) in the description of the pull request.
+
+* If you have found a bug, go ahead and follow the instructions of [Bug Reports](#bug-reports).
+
+* If you plan to do something more involved or have feature request, please feel free and create an GitHub issue describing your proposal. This will avoid unnecessary work and surely give you and us a good deal of inspiration, but please be willing to implement at least some code for the new feature.
+
+* Relevant coding style guidelines are available in the respective sub-repositories as they are programming language-dependent.
 
 ## Bug Reports
-Before opening a new bug in our GitHub issue tracker, please have a look at the open issues to avoid duplicates as early as possible.
 
-If you don't find an open or - even better - already closed issue addressing your problem, please feel free to create an issue providing at least the information that will be asked in the issue template.
+* Before opening a new bug in our GitHub issue tracker, please have a look at the open issues to avoid duplicates as early as possible.
 
-To give your bug more credit you may add a testcase addressing your problem to make it easier for us to reproduce your error. But, please don't worry if you don't. 
+* If you don't find an open or - even better - already closed issue addressing your problem, please feel free to create an issue providing at least the information that will be asked in the issue template.
 
-Remember that bug reports should be able to reproduce and allow other members of the community to collaborate on it.
+* To give your bug more credit you may add a testcase addressing your problem to make it easier for us to reproduce your error. But, please don't worry if you don't. 
+
+* Remember that bug reports should be able to reproduce and allow other members of the community to collaborate on it.
 Please do not expect that the bug will automatically see any activity to fix it. Creating a bug just is the start of the path of fixing a problem. 
 
-## Support Questions
-Currently we support any kind of issues in our GitHub issue tracker. Please open a new issue, after checking for already present duplicates. 
+## Steps to Contribute
 
-Take a look at the given template for issues of type `support question` to make things as clear as possible.
+Should you wish to work on an issue, please claim it first by commenting on the GitHub issue that you want to work on. This is to prevent duplicated efforts from other contributors on the same issue.
 
-## Improvements and Feature Requests
-We're open to any new feature requests or improvements of existing Testerra behavior. 
-If you want to propose a new feature, please just create a new issue in our GitHub issue tracker, but please be willing to implement at least some code for the new feature.
+If you have questions about one of the issues, please comment on them, and one of the maintainers will clarify.
 
-### How To
-- Fork the Testerra repository
-- Clone your forked repository
-- Create a new branch in your cloned repository to represent your changes
-- Add your code, comments, testcases and update the `CHANGES.md` file with a small comment addressing
-- Add commit messages that provide benefit and add the GitHub issue number to it
-- Push your code to your forked repository
+We kindly ask you to follow the [Pull Request Checklist](#Pull-Request-Checklist) to ensure reviews can happen accordingly.
 
-### Which branch?
+## Contributing Code
 
-All *bug fixes* should be sent to the latest stable branch because they are fixing actual behaviour.
-We will then take care of merging it to other branches as well.
+You are welcome to contribute code in order to fix a bug or to implement a new feature.
 
-*Fully backwards compatible* (minor) features / improvements should be sent to the latest stable branch.
+The following rule governs code contributions:
 
-New *major* features should always be sent to the `development` branch, which contains all work for the next release. 
+* Contributions must be licensed under the [Apache 2.0 License](LICENSE)
+* Newly created files must be opened by an instantiated version to the file 'templates/file-header.txt'
+* At least if you add a new file to the repository, add your name into the contributor section of the file NOTICE (please respect the preset entry structure)
 
-## Coding Style
-Try to match our present coding style as well as possible. He're some facts about it:
-* Spaces / Indents: 4 spaces - NO tabs
-* No wildcard imports
-* TBD...
+## Contributing Documentation
 
-Please be not offended personally, when we decline a pull request that won't match our coding style. 
-We just want to ensure that any contributor is able to hop in your code and is able to code in a defined way.
+You are welcome to contribute documentation to the project.
+
+The following rule governs documentation contributions:
+
+* Contributions must be licensed under the same license as code, the [Apache 2.0 License](LICENSE)
+
+## Pull Request Checklist
+
+* Branch from the master branch and, if needed, rebase to the current master branch before submitting your pull request. If it doesn't merge cleanly with master you may be asked to rebase your changes.
+
+* Commits should be as small as possible while ensuring that each commit is correct independently (i.e., each commit should compile and pass tests).
+
+* Test your changes as thoroughly as possible before you commit them. Preferably, automate your test by unit/integration tests. If tested manually, provide information about the test scope in the PR description (e.g. “Test passed: Upgrade version from 0.42 to 0.42.23.”).
+
+* Create _Work In Progress [WIP]_ pull requests only if you need clarification or an explicit review before you can continue your work item.
+
+* If your patch is not getting reviewed or you need a specific person to review it, you can @-reply a reviewer asking for a review in the pull request or a comment.
+
+* Post review:
+  * If a review requires you to change your commit(s), please test the changes again.
+  * Amend the affected commit(s) and force push onto your branch.
+  * Set respective comments in your GitHub review to resolved.
+  * Create a general PR comment to notify the reviewers that your amendments are ready for another round of review.
+
+## Issues and Planning
+
+* We use GitHub issues to track bugs and enhancement requests.
+
+* Please provide as much context as possible when you open an issue. The information you provide must be comprehensive enough to reproduce that issue for the assignee. Therefore, contributors may use but aren't restricted to the issue template provided by the project maintainers.
+
+* When creating an issue, try using one of our issue templates which already contain some guidelines on which content is expected to process the issue most efficiently. If no template applies, you can of course also create an issue from scratch.
+
+* LABLEs :- TBD

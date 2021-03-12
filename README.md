@@ -1,42 +1,53 @@
-# Testerra
-Testerra is an open source test automation library for web frontend testing. It provides a tool suite for many use cases: 
-a base API for Page Object Pattern (including responsive layouts) and GuiElements (smarter WebElements (Selenium)), 
-enhanced reporting functionality, a utility collection and some additional helpful modules.
+<h1 align="center">
+    Testerra
+</h1>
 
-## Installation / Usage
+<p align="center">
+    <a href="/../../commits/" title="Last Commit"><img src="https://img.shields.io/github/last-commit/telekom/testerra?style=flat"></a>
+    <a href="/../../issues" title="Open Issues"><img src="https://img.shields.io/github/issues/telekom/testerra?style=flat"></a>
+    <a href="./LICENSE" title="License"><img src="https://img.shields.io/badge/License-Apache%202.0-green.svg?style=flat"></a>
+</p>
 
-Check out our comprehensive [Testerra documentation](http://docs.testerra.io)!
+<p align="center">
+  <a href="#installation">Installation</a> •
+  <a href="#documentation">Documentation</a> •
+  <a href="#development">Development</a> •
+  <a href="#support-and-feedback">Support</a> •
+  <a href="#how-to-contribute">Contribute</a> •
+  <a href="#contributors">Contributors</a> •
+  <a href="#licensing">Licensing</a>
+</p>
 
-At least you have to put the core module into your project dependencies:
+## About Testerra
+Testerra is an integrated framework for automating tests for (web) applications. Testerra can also be understood as a building block for test automation projects with various basic components. It also includes a prepared "foundation" on which complex test automation environments can be built. Testerra is developed by our Test Automation Experts at T-Systems Multimedia Solutions GmbH Dresden (Website). In numerous projects Testerra is used as the standard test automation framework.
 
-For maven:
+You may see Testerra as an open source test automation library for web frontend testing. It provides a tool suite for many use cases: a base API for Page Object Pattern (including responsive layouts) and GuiElements (smarter WebElements (Selenium)), enhanced reporting functionality, a utility collection and some additional helpful modules.
 
-```xml
+## Installation
+
+_Comming soon:_ Testerra and its components are published at GitHub packages and Maven Central.
+
+Maven:
+````xml
 <dependencies>
     <dependency>
         <groupId>eu.tsystems.mms.tic.testerra</groupId>
         <artifactId>driver-ui-desktop</artifactId>
         <version>1-SNAPSHOT</version>
     </dependecy>
-    <dependency>
-        <groupId>eu.tsystems.mms.tic.testerra</groupId>
-        <artifactId>report-ng</artifactId>
-        <version>1-SNAPSHOT</version>
-    </dependecy>
 </dependencies>
-```
+````
 
-For gradle:
-```text
+Gradle:
+````text
 compile 'eu.tsystems.mms.tic.testerra:driver-ui-desktop:1-SNAPSHOT'
-compile 'eu.tsystems.mms.tic.testerra:report-ng:1-SNAPSHOT'
-```
+````
 
-## Using testerra functionality:
+### Using testerra functionality:
 
 Create a Test Class and extend the TesterraTest class:
 
-```java
+````java
 public class MyTest extends TesterraTest {
     
     @Test
@@ -44,79 +55,71 @@ public class MyTest extends TesterraTest {
         // ...
     }
 }
-```
-## Some internals
+````
 
-### Main modules
+## Documentation
 
-Framework core:
-* [core](core/README.md)
-* ([core-interop](core-interop/README.md))
+Check out our comprehensive [Testerra documentation](http://docs.testerra.io)!
 
-UI Testing modules:
-* [driver-ui](driver-ui/README.md)
-* [driver-ui-desktop](driver-ui-desktop/README.md)
+## Development
 
-Connectors:
-* [mail-connector](mail-connector/README.md)
+## Code of Conduct
 
-Additional modules:
-* [bmp](bmp/README.md)
+This project has adopted the [Contributor Covenant](https://www.contributor-covenant.org/) in version 2.0 as our code of conduct. Please see the details in our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). All contributors must abide by the code of conduct.
 
-### Publishing
+## Working Language
 
-#### Build report-ng
+We decided to apply _English_ as the primary project language.  
 
-The `report-ng` module needs to build separately **before** publishing
+Consequently, all content will be made available primarily in English. We also ask all interested people to use English as language to create issues, in their code (comments, documentation etc.) and when you send requests to us. The application itself and all end-user faing content will be made available in other languages as needed.
 
-```shell
-gradle buildReport
-```
 
-#### Publish to a Maven repo
+## Support and Feedback
+The following channels are available for discussions, feedback, and support requests:
 
-_Preparation_
+| Type                     | Channel                                                |
+| ------------------------ | ------------------------------------------------------ |
+| **Issues**   | <a href="https://github.com/telekom/testerra/issues/new/choose" title="Issues"><img src="https://img.shields.io/github/issues/telekom/testerra?style=flat"></a> |
+| **Other Requests**    | <a href="mailto:testerra@t-systems-mms.com" title="Email us"><img src="https://img.shields.io/badge/email-CWA%20team-green?logo=mail.ru&style=flat-square&logoColor=white"></a>   |
 
-* All publish settings are located in ``publish.gradle``.
-* All modules will be published.
-* To prevent publishing, add the following line to the ``build.gradle`` of the module:
-  ```groovy
-  doNotPublish(this)
-  ```
-  
-_Publishing to local repo_
+## Repositories
 
-```shell
-gradle publishToMavenLocal
-```
+| Repository          | Description                                                           |
+| ------------------- | --------------------------------------------------------------------- |
+| [testerra] | Testerra |
+| [testerra-skeleton] | Testerra Skeleton Project |
+| [testerra-selenoid-connector] | Testerra Selenoid Connector |
+| [testerra-hpqc-connector] | Testerra HPQC Connector |
+| [testerra-teamcity-connector] | Testerra TeamCity Connector |
+| [testerra-cucumber-connector] | Testerra Cucumber Connector |
+| [testerra-xray-connector] | Testerra Xray Connector |
+| [testerra-appium-connector] | Testerra Appium Connector |
+| [testerra-azure-devops-connector] | Testerra Azure DevOps Connector |
 
-_Publishing to remote repo_
+[testerra]: https://github.com/telekom/testerra
+[testerra-skeleton]: https://github.com/telekom/testerra-skeleton
+[testerra-selenoid-connector]: https://github.com/telekom/testerra-selenoid-connector
+[testerra-hpqc-connector]: https://github.com/telekom/testerra-hpqc-connector
+[testerra-teamcity-connector]: https://github.com/telekom/testerra-teamcity-connector
+[testerra-cucumber-connector]: https://github.com/telekom/testerra-cucumber-connector
+[testerra-xray-connector]: https://github.com/telekom/testerra-xray-connector
+[testerra-appium-connector]: https://github.com/telekom/testerra-appium-connector
+[testerra-azure-devops-connector]: https://github.com/telekom/testerra-azure-devops-connector
 
-```shell
-gradle publish -DdeployUrl=<repo-url> -DdeployUsername=<repo-user> -DdeployPassword=<repo-password>
-```
+## How to Contribute
 
-_Set a custom version_
-```shell
-gradle publish -DttVersion=<version>
-```
+Contribution and feedback is encouraged and always welcome. For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](./CONTRIBUTING.md). By participating in this project, you agree to abide by its [Code of Conduct](./CODE_OF_CONDUCT.md) at all times.
 
-#### Publish to GitHub
+## Contributors
 
-Some hints for using GitHub Packages as Maven repository
+At the same time our commitment to open source means that we are enabling -in fact encouraging- all interested parties to contribute and become part of its developer community.
 
-* Deploy URL is https://maven.pkg.github.com/OWNER/REPOSITRY
-* As password generate an access token and grant permissions to ``write:packages`` (Settings -> Developer settings -> Personal access token)
+## Licensing
 
-### Cleaning
+Copyright (c) 2020 Deutsche Telekom AG.
 
-```shell
-gradle clean cleanReports cleanNpm
-```
-  
-## Contributing
-Thank you for considering contributing to the Testerra framework! The contribution guide can be found here: [CONTRIBUTING.md](CONTRIBUTING.md).
+Licensed under the **Apache License, Version 2.0** (the "License"); you may not use this file except in compliance with the License.
 
-## License
-The Testerra framework is open-sourced software licensed under the [Apache License Version 2.0](LICENSE).
+You may obtain a copy of the License at https://www.apache.org/licenses/LICENSE-2.0.
 
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the [LICENSE](./LICENSE) for the specific language governing permissions and limitations under the License.

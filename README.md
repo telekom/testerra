@@ -35,12 +35,18 @@ Maven:
         <artifactId>driver-ui-desktop</artifactId>
         <version>1-SNAPSHOT</version>
     </dependecy>
+    <dependency>
+        <groupId>eu.tsystems.mms.tic.testerra</groupId>
+        <artifactId>report-ng</artifactId>
+        <version>1-SNAPSHOT</version>
+    </dependecy>
 </dependencies>
 ````
 
 Gradle:
-````text
+````groovy
 compile 'eu.tsystems.mms.tic.testerra:driver-ui-desktop:1-SNAPSHOT'
+compile 'eu.tsystems.mms.tic.testerra:report-ng:1-SNAPSHOT'
 ````
 
 ### Using testerra functionality:

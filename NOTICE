@@ -1,5 +1,12 @@
-Testerra
-Copyright 2020 T-Systems Multimedia Solutions GmbH
+Copyright (c) 2020 Deutsche Telekom AG.
 
-This product includes software developed at
-T-Systems Multimedia Solutions GmbH (https://www.t-systems-mms.com/).
+This project is licensed under Apache License, Version 2.0;
+you may not use them except in compliance with the License.
+
+Contributors:
+-------------
+
+Mike Reiche [mreiche], T-Systems MMS GmbH
+Martin Großmann [martingrossmann], T-Systems MMS GmbH
+Eric Kubenka [erickubenka]
+Karsten Reincke [kreincke], Deutsche Telekom AG

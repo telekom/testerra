@@ -104,7 +104,7 @@ public class FailsAnnotationFilterTest extends TesterraTest {
     }
 
     @Test
-    @Fails(validFor = {"test.foobar.fails.annotation.test.property.one=two"}, description = "This should fail", ticketString = "https://jira.t-systems-mms.eu/browse/TAP2DEV-340")
+    @Fails(validFor = {"test.foobar.fails.annotation.test.property.one=two"}, description = "This should fail", ticketString = "https://jira.com/TICKET-ID")
     public void testNotValidForKeyValue() {
 
         final String[] validFor = {"test.foobar.fails.annotation.test.property.one=two"};

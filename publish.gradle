@@ -12,12 +12,15 @@ ext {
     libraryDescription = "Testerra ${project.getName()} module"
 
     siteUrl = 'https://testerra.io'
-    gitUrl = 'https://github.com/telekom/testerra-selenoid-connector.git'
-    issueUrl = 'https://github.com/telekom/testerra-selenoid-connector/issues'
+    gitUrl = 'scm:git:git://github.com/telekom/testerra.git'
+    issueUrl = 'https://github.com/telekom/testerra.git'
 
     developerId = 'MMS'
     developerName = 'Testerra Team T-Systems MMS'
     developerEmail = 'testerra@t-systems-mms.com'
+    developerOrganization = 'T-Systems MMS'
+    developerOrganizationUrl = 'https://www.t-systems-mms.com/'
+
 
     licenseName = 'The Apache Software License, Version 2.0'
     licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
@@ -50,6 +53,8 @@ install {
                     id developerId
                     name developerName
                     email developerEmail
+                    organization developerOrganization
+                    organizationUrl
                 }
             }
             scm {

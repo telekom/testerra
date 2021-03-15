@@ -1,0 +1,16 @@
+syntax = "proto3";
+option java_package = "eu.tsystems.mms.tic.testframework.report.model";
+option java_multiple_files = true;
+
+import "framework.proto";
+
+package data;
+
+message ExecutionAggregate {
+    ExecutionContext execution_context = 1;
+    map<string, SuiteContext> suite_contexts = 2;
+    map<string, TestContext> test_contexts = 3;
+    map<string, ClassContext> class_contexts = 4;
+    map<string, MethodContext> method_contexts = 5;
+    map<string, SessionContext> session_contexts = 6;
+}

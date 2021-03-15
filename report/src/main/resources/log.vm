@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="" lang="">
+    <head>
+        <title>Test Results Report - Log Output</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+        <meta name="description" content="Test Report - Log Output"/>
+
+        #parse("styleincludes.vm")
+
+    </head>
+    <body onload="initDataTable('#datatable')">
+
+        #set($tabcontext = "l")
+        #set($pagetitle = "Logs")
+        #parse("header.vm")
+
+        <div id="dataTable_Filter" class="dataTables_filter">
+            <label for="tableFilterInput">Exclude:
+                <input id="datatable_filterInp" type="search" />
+            </label>
+        </div>
+
+        <table id="datatable" class="datatable log">
+            <thead class="textcenter">
+                <tr>
+                    <th>
+                        Level
+                    </th>
+                    <th>
+                        Time
+                    </th>
+                    <th>
+                        Thread
+                    </th>
+                    <th>
+                        Logger
+                    </th>
+                    <th>
+                        Message
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="textleft">
+                <!-- unrelated logs -->
+                #if ("$!unrelatedLogMessages" != "")
+                    #foreach ($logMessage in $unrelatedLogMessages)
+                    #set ($ll = $logMessage.logLevel)
+                    #if ($ll.contains("WARN"))
+                <tr class="unrelated ll_warning">
+                #elseif ($ll.contains("ERROR"))
+                <tr class="unrelated ll_error">
+                #elseif ($ll.contains("DEBUG"))
+                <tr class="unrelated ll_debug">
+                #elseif ($ll.contains("TRACE"))
+                <tr class="unrelated ll_trace">
+                #else
+                <tr class="unrelated">
+                    #end
+                        <td class="top">
+                            $ll
+                        </td>
+                        <td class="top">
+                            $logMessage.date
+                        </td>
+                        <td class="top">
+                            $logMessage.threadName
+                        </td>
+                        <td class="top">
+                            $logMessage.loggerName
+                        </td>
+                        <td class="top">
+                            $logMessage.message
+                        </td>
+                    </tr>
+                    #end
+                #end
+
+            </tbody>
+        </table>
+    </body>
+
+    #parse("scriptincludes.vm")
+</html>

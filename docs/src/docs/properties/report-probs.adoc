@@ -1,0 +1,21 @@
+include::property-attributes.adoc[]
+
+[cols="2,^1,4a",options="header"]
+|===
+| Property | default | Description
+| {reportdir} | /target/surefire-reports/report/ | Creates the report in the specified directory below the working directory.
+| {reportname} | na. | Names the report (e.g. the project where Testerra is used)
+| {runcfg} | na. | Set a run configuration to use different variations (test sets) of a test scope within a build task.
+| {screenshotter_active} | true | If true, screenshots are fetched and added to the report.
+| {report_screenshots_preview} | true | If true a screenshots preview is added to the test methods in the report
+| {screenshot_on_pageload} | false | If true, screenshot after page is loaded will be taken
+| {screencaster_active} | true | If true, all screencasts are fetchted and added to the report depending on the enabled test method states by {screencaster_active_on_failed} and {screencaster_active_on_success}.
+| {screencaster_active_on_failed} | true | If true, all screencasts for failed tests are fetchted and added to the report.
+| {screencaster_active_on_success} | false | If true, all screencasts for successful tests are fetchted and added to the report.
+
+
+| {source_utils_activate_sources} | true | If true, adds source information to report
+| {source_utils_root} | src | Root directory for searching source info.
+| {source_utils_line_prefetch} | 5 | Amount of lines taken into account before the actual error occurred (print lines between error line and error line minus {source_utils_line_prefetch})
+
+|===

@@ -1,0 +1,44 @@
+= JavaScript Utilities
+
+`JSUtils` provide some helper methods to inject and execute JavaScript code via `WebDriver`.
+
+== Execute JavaScript
+
+Sometimes in automated testing for web applications you want to access your system under test by JavaScript or you just want to implement a code snippet to run custom validations.
+For example, Testerras <<Demo mode>> will use this behaviour to highlight elements while asserting or typing to visualize current actions.
+
+.Executing JavaScript
+[source,java]
+----
+final WebDriver driver = WebDriverManager.getWebDriver();
+final GuiElement hiddenUploadField = new GuiElement(driver, Locate.by().id("hidden-upload-field"));
+hiddenUploadField.asserts().assertIsPresent();
+
+// will change style to display a hidden element
+JSUtils.executeScript(driver, "arguments[0].setAttribute('style', 'display:block; opacity: 1')", hiddenUploadField.getWebElement());
+----
+
+== Inject JavaScript
+
+For executing more than a single line of JavaScript code it is recommended to write a JavaScript file and store it in `src/main/resources` or `src/test/resources` directory.
+Then you can inject the full JavaScript file with following method.
+
+.Implementing own JavaScript code
+[source,java]
+----
+final WebDriver driver = WebDriverManager.getWebDriver();
+
+// WebDriver, Path to resource file, id of the script-tag
+JSUtils.implementJavascriptOnPage(driver, "js/inject/custom.js", "customJs");
+
+
+----
+
+Testerra will then inject your resource file into the current DOM of your `WebDriver` instance according to the template.
+[source,html]
+----
+<script id="customJs" type="text/javascript">
+    // your javascript code here.
+</script>
+----
+

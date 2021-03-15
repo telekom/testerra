@@ -1,0 +1,53 @@
+<!--
+  ~ Testerra
+  ~
+  ~ (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+  ~
+  ~ Deutsche Telekom AG and all other contributors /
+  ~ copyright owners license this file to you under the Apache
+  ~ License, Version 2.0 (the "License"); you may not use this
+  ~ file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<template>
+    <div class="flex space-between card-actions">
+        <div></div>
+        <div class="flex vcenter">
+            <button mdc-icon-button icon="keyboard_arrow_left" click.delegate="_left()" if.bind="_screenshots.length>1"></button>
+            <div class="flex">
+                <ul class="mdc-list mdc-list--dense ml1 mr1">
+                    <li class="mdc-custom-list-item">
+                        <span class="secondary sr1">Title</span>${_current.meta.Title}
+                    </li>
+                    <li class="mdc-custom-list-item" if.bind="_current.meta.URL.length">
+                        <span class="secondary sr1">URL</span><a href="${_current.meta.URL}" rel="noopener" target="_blank">${_current.meta.URL}</a>
+                    </li>
+                </ul>
+                <ul class="mdc-list mdc-list--dense ml1 mr1">
+                    <li class="mdc-custom-list-item">
+                        <span class="secondary sr1">Taken</span><span title="${_current.lastModified|dateFormat}">${_current.lastModified | dateFormat:"ddd MMM D HH:mm:ss"}</span>
+                    </li>
+                    <li class="mdc-custom-list-item" if.bind="_sessionContext">
+                        <span class="secondary sr1">Session</span><session-context-markup session-context.bind="_sessionContext"></session-context-markup>
+                    </li>
+                </ul>
+            </div>
+            <button mdc-icon-button icon="fullscreen" click.delegate="_fullscreen()" title="Open fullscreen in new tab"></button>
+            <button mdc-icon-button icon="keyboard_arrow_right" click.delegate="_right()" if.bind="_screenshots.length>1"></button>
+        </div>
+        <button mdc-icon-button class="icon-button--dense" icon="clear" title="Close dialog" data-mdc-dialog-action="cancel"></button>
+    </div>
+    <mdc-dialog-content class="pt0">
+        <img src="${_current.relativePath}" class="screenshot-image"/>
+    </mdc-dialog-content>
+</template>

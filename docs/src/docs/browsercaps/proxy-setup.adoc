@@ -1,0 +1,47 @@
+= Proxy setup
+
+If you want that the browser uses a proxy for the SUT, you can just configure that by default Selenium capabilites.
+
+IMPORTANT: Make sure that your WebDriver supports the Proxy-Capability. Some WebDrivers, like the MicrosoftWebDriver, don't (see https://docs.microsoft.com/en-us/microsoft-edge/webdriver#w3c-webdriver[Edge WebDriver Capabilities]).
+
+NOTE: If you want to setup a proxy for the runtime environment but the browser, you have to follow the instructions at <<Using a proxy>>
+
+== Default configuration
+
+The following code setups a proxy based on the <<Using a proxy,System's proxy configuration>> and a custom proxy.
+[source,java]
+----
+import org.testng.annotations.BeforeSuite;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerUtils;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverProxyUtils;
+import org.openqa.selenium.Proxy;
+
+public abstract class AbstractTest extends TesterraTest {
+
+    @BeforeSuite
+    public void proxySetup() {
+        WebDriverProxyUtils utils = new WebDriverProxyUtils();
+        final Proxy defaultProxy = utils.getDefaultHttpProxy();
+        final Proxy otherProxy = utils.createHttpProxyFromUrl(
+                new URL("http://proxyUser:secretPassword@my-proxy:3128"));
+
+        /**
+         * Global browser proxy configuration
+         */
+        DesiredCapabilities dc = new DesiredCapabilities();
+        dc.setCapability(CapabilityType.PROXY, defaultProxy);
+        WebDriverManager.setGlobalExtraCapabilities(dc);
+
+         /**
+         * Browser specific proxy configuration
+         */
+        WebDriverManager.setUserAgentConfig(Browsers.chrome, new ChromeConfig() {
+            @Override
+            public void configure(ChromeOptions options) {
+                options.setProxy(otherProxy);
+            }
+        });
+    }
+}
+----

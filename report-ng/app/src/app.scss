@@ -1,0 +1,115 @@
+/*!
+ * Testerra
+ *
+ * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+@import "styles/mdc";
+@import "styles/statuses";
+@import "src/styles/layout";
+
+/*General style settings______________________________________________________________________________________________*/
+
+//Body has a native margin for some reason
+body {
+    margin: 0;
+    //height: 100%;
+}
+html {
+    //height: 100%;
+}
+
+.logo {
+    width: 60px;
+    height: 60px;
+}
+
+.alert {
+    margin: 0 auto;
+    @extend .p1;
+    min-height: 10em;
+    text-align: center;
+    vertical-align: center;
+}
+
+.thumbnail {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    overflow: hidden;
+}
+
+.thumbnail-fixed {
+    width:120px;
+    height:120px;
+    object-fit: cover;
+    overflow: hidden;
+}
+
+.code-view {
+    padding: 0.5rem;
+    background-color: #2b2b2b;
+    //@extend .secondary;
+    //border: 2px solid #495561; /*gray-300*/
+    //border-radius: 2px;
+    //word-break: break-all;
+    overflow-x: auto;
+    color: #c0dee0;
+    line-height: 1.5em;
+    font-family: monospace;
+    word-break: break-all;
+    //
+    //.line {
+    //    padding: 0.3em;
+    //}
+
+    .error {
+        background: darken($failed, 36)
+    }
+
+    .warn {
+        background: darken($skipped, 36)
+    }
+
+    .indicator {
+        width:1rem;
+        display: inline-block;
+    }
+
+    .number {
+        width:2rem;
+        color: #808080 !important;
+    }
+
+    .line {
+        padding: 0.1rem 0.4rem;
+    }
+    .pre {
+        white-space: pre;
+    }
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+//a {
+//    mdc-icon {
+//        text-decoration: none !important;
+//    }
+//}

@@ -1,0 +1,142 @@
+/*!
+ * Testerra
+ *
+ * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+.mb0 {
+    margin-bottom: 0;
+}
+
+.mb1 {
+    margin-bottom: 1em;
+}
+
+.mt0 {
+    margin-top: 0;
+}
+
+.mt1 {
+    margin-top: 1em;
+}
+
+.mt2 {
+    margin-top: 2em;
+}
+
+.m0 {
+    margin: 0;
+}
+
+.m1 {
+    margin: 1em;
+}
+
+.ml1 {
+    margin-left: 1em;
+}
+
+.mr1 {
+    margin-right: 1em;
+}
+
+.p0 {
+    padding: 0;
+}
+
+.p1 {
+    padding: 1em;
+}
+
+.pl1 {
+    padding-left: 1em;
+}
+
+.pt0 {
+    padding-top: 0 !important;
+}
+
+.w100 {
+    width: 100%;
+}
+.w75 {
+    width: 75%;
+}
+.w50 {
+    width: 50%;
+}
+.w25 {
+    width: 25%;
+}
+
+.h100 {
+    height: 100%;
+}
+
+//prevents app-content overflowing out of screen
+.flex {
+    display: flex;
+}
+
+.vcenter {
+    @extend .flex;
+    align-items: center;
+}
+
+.hcenter {
+    @extend .flex;
+    justify-content: center;
+}
+
+.space-evenly {
+    @extend .flex;
+    justify-content: space-evenly;
+}
+
+.space-between {
+    @extend .flex;
+    justify-content: space-between;
+}
+
+// Space right
+.sr1 {
+    margin-right: 8px;
+}
+
+.sl1 {
+    margin-left: 8px;
+}
+
+// Space bottom
+.sb1 {
+    margin-bottom: 8px;
+}
+
+// Space top
+.st1 {
+    margin-top: 8px;
+}
+
+.right-aligned {
+    margin-left: auto;
+}
+
+.wrapable {
+    white-space: normal;
+    line-break: anywhere;
+}

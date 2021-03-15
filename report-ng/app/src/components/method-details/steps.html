@@ -1,0 +1,62 @@
+<!--
+  ~ Testerra
+  ~
+  ~ (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+  ~
+  ~ Deutsche Telekom AG and all other contributors /
+  ~ copyright owners license this file to you under the Apache
+  ~ License, Version 2.0 (the "License"); you may not use this
+  ~ file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<template>
+    <require from="./expandable-error-context.html"></require>
+    <div class="container">
+        <div id="timeline">
+            <div class="timeline">
+                <section class="step"
+                         repeat.for="testStep of _methodDetails.methodContext.testSteps"
+                >
+                    <let step-index.bind="$index+1"></let>
+                    <div mdc-headline5 class="teststep-headline" id="step${stepIndex}">${stepIndex} ${testStep.name}</div>
+                    <div repeat.for="action of testStep.actions" mdc-body1>
+                        <div class="teststep-headline mt1 sticky">${stepIndex}.${$index+1} ${action.name}<br>
+                            <span class="secondary" mdc-body2 title="${action.timestamp|dateFormat}">${action.timestamp|dateFormat:"ddd MMM D HH:mm:ss"}</span>
+                        </div>
+                        <section>
+                            <div repeat.for="group of action.groups" class="teststep-group">
+                                <expandable-error-context repeat.for="errorContext of group.assertions"
+                                                          error-context.bind="errorContext"
+                                ></expandable-error-context>
+                                <div if.bind="group.screenshotIds.length > 0" class="flex">
+                                    <mdc-card
+                                        repeat.for="screenshotId of group.screenshotIds"
+                                        class="thumbnail-fixed sr1"
+                                        outlined
+                                    >
+                                        <lazy-image
+                                            file-id.bind="screenshotId"
+                                            class="thumbnail-fixed clickable"
+                                            click.delegate="_showScreenshot($event)"
+                                        ></lazy-image>
+                                    </mdc-card>
+                                </div>
+                                <log-view log-messages.bind="group.logMessages" if.bind="group.logMessages.length > 0"></log-view>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</template>

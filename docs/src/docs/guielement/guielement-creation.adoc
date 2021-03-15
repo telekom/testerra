@@ -1,0 +1,138 @@
+= Creation
+
+== Create default GuiElement
+
+For every GuiElement you need the current WebDriver object and a locator (https://seleniumhq.github.io/selenium/docs/api/java/org/openqa/selenium/By.html[Selenium docs]).
+
+[source,java]
+----
+GuiElement myElement = new GuiElement(driver, By.id("elementId"));
+GuiElement button1 = new GuiElement(driver, By.name("button"));
+GuiElement textOutputField = new GuiElement(driver, By.xpath("//p[@id='99']"));
+----
+
+== Create SubElements
+
+The Method `getSubElement()` generates a new GuiElement. It will only be searched in the DOM tree below the element on which the method was called.
+
+[source,java]
+----
+GuiElement upper = new GuiElement(driver, By.name("upperElement"));
+
+// Create the sub elements
+GuiElement lower = upper.getSubElement(By.name("lowerElement"));
+GuiElement lower = upper.getSubElement(By.xpath(".//p[@id='element']")); <1>
+GuiElement lower = upper.getSubElement(By.xpath("//p[@id='element']")); <2>
+GuiElement lower = upper.getSubElement(By.xpath("./p[@id='element']")); <3>
+----
+<1> Find any matching descendant
+<2> Corrects the selector prefix to './/'
+<3> Find any matching child
+
+== Advanced GuiElement locating
+
+The `Locate` extension provides more features than standard Selenium `By`.
+
+=== Locate unique elements
+
+If you want to make sure, that your element is unique.
+
+[source,java]
+----
+import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
+
+GuiElement myElement = new GuiElement(driver, Locate.by(By.id("elementId")).unique());
+----
+
+This will throw an exception, if not one WebElement has been found.
+
+=== Locate displayed items only
+
+[source,java]
+----
+GuiElement myElement = new GuiElement(driver, Locate.by(By.xpath(".//button")).displayed());
+----
+
+=== Prepared xpath expressions
+
+Using prepared expressions makes your selectors more readable.
+
+[source,java]
+----
+Locate byText = Locate.prepare("//button[text()='%s'])");
+Locate byClass = Locate.prepare("//%s[contains(@class, '%s')][%d]");
+
+GuiElement loginButton = new GuiElement(driver, byText.with("Login"));
+GuiElement logoutButton = new GuiElement(driver, byClass.with("button", "btn-logout", 1));
+----
+
+=== Filtering elements
+
+You can also filter elements during find.
+
+[source,java]
+----
+Locate byText = Locate.by(By.xpath("//button")).filter(webElement -> webElement.getText().equals("Open again"));
+
+GuiElement buttonContainsText = new GuiElement(driver, byText);
+----
+
+=== GuiElements inside frames
+
+Accessing WebElements inside frames requires changing the active frame before any action. GuiElements do that automatically.
+
+For creating new GuiElements within one or more frames, the frames have to be passed to the constructor. A frame can be the HTML element `<frame>` inside a `<frameset>` or `<iframe>`.
+
+[source,java]
+----
+GuiElement frame1 = new GuiElement(driver, By.id("frame1"));
+
+// frame2 is child of frame1
+GuiElement frame2 = new GuiElement(driver, By.id("frame2"), frame1);
+
+// target is child of frame2 which is child of frame1,
+// in this case the frames are searched recurse automatically
+GuiElement target = new GuiElement(driver, By.id("target"), frame2);
+----
+
+When accessing the `WebElement` instance, you are responsible for frame switches by yourself.
+You can perform these as following.
+```java
+WebElement webElement = target.getWebElement();
+if (target.hasFrameLogic()) {
+    target.getFrameLogic().switchToCorrectFrame();
+}
+
+// Perform your actions on webElement here
+webElement.findElements("//div");
+
+if (target.hasFrameLogic()) {
+    target.getFrameLogic().switchToDefaultFrame();
+}
+```
+
+//
+//== GuiElement by image
+//
+//You can also define GuiElements defined by a snippet from a screenshot. Testerra tries to locate the image on the viewport and looking for the surrounding webelement.
+//
+//[source,java]
+//----
+//
+// //The second parameter for TesterraBy.image() needs a Url object to the image
+//GuiElement byimage = new GuiElement(driver,
+//        TesterraBy.image(driver, ClassLoader.getSystemResource("gui-elements/button.png")));
+//----
+//
+//It is recommended to locate the images in `src/main/resources` and create the Url object via `ClassLoader.getSystemResource()`.
+
+
+
+== Sensible Data
+
+Sensible data, such as passwords, can be displayed obfuscated in the logs during the actions type and sendKeys.
+
+[source,java]
+GuiElement myElement = new GuiElement(driver, By..).sensibleData();
+
+Only the placeholder * is logged in the report instead of the real value.

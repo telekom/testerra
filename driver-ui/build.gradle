@@ -1,0 +1,30 @@
+dependencies {
+    compile core
+    compile image_processing
+
+    // <UITestUtils>
+    compile 'org.sikuli:sikuli-api:1.2.0'
+    // </UITestUtils>
+
+    // <PageFactory>
+//    implementation 'org.glassfish.jersey.core:jersey-common:2.22.2'
+    // </PageFactory>
+
+    // <JSUtils>
+    implementation 'com.google.code.gson:gson:2.8.6'
+    // </JSUtils>
+
+//    implementation 'com.sun.jersey:jersey-client:1.19.3'
+//    implementation 'commons-codec:commons-codec:1.13'
+    implementation 'commons-collections:commons-collections:3.2.2'
+    implementation 'org.reflections:reflections:0.9.12'
+
+    // <BrowserInformation>
+    //implementation 'nl.basjes.parse.useragent:yauaa:4.5'
+    implementation group: 'com.github.ua-parser', name: 'uap-java', version: '1.4.3'
+    // </BrowserInformation>
+}
+
+test {
+    exclude '**'
+}

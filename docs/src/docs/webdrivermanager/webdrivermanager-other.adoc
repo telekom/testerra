@@ -1,0 +1,42 @@
+= Working with sessions
+
+== Get current session
+
+.Get the current session context with information about your WebDriver session.
+[source,java]
+----
+WebDriver driver = WebDriverManager.getWebDriver();
+Optional<SessionContext> sessionContext = WebDriverSessionsManager.getSessionContext(driver);
+----
+
+== Switching windows
+
+Sometimes you will come across testing websites with multiple windows, such as popups or something similar.
+To switch windows in a easy way Testerra provides some methods, which will automatically retry the window switching for maximum of seconds you can define with `{wdm_timeouts_window_switch}`.
+
+[source,java]
+----
+// Switch to a window by matching title
+Optional<WebDriver> optionalWebDriver
+    = WebDriverUtils.switchToWindow(webDriver -> webDriver.getTitle().equals(windowTitle));
+
+// Window context switched
+optionalWebDriver.isPresent();
+----
+
+== Difference in session key and session id
+
+There is a difference between session key and session id.
+The session key is value that you can declare and provide to handle multiple web driver sessions in one test method, as you can read in section "Multiple sessions".
+The session id is an internal id of Selenium itself.
+
+[source,java]
+----
+WebDriver driver = WebDriverManager.getWebDriver("mySession");
+
+// Returns generated UUID of the Selenium session
+String sessionId = WebDriverUtils.getSessionId(driver);
+
+// will be "mySession"
+String sessionKey = WebDriverManagerUtils.getSessionKey(driver);
+----

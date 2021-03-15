@@ -1,0 +1,88 @@
+<!-- left col -->
+<!-- left col -->
+
+    <td class="method" width="100%">
+
+        <div class="ttwrapper">
+            <a onclick="showLoadingIn(null);" href="methods/${testMethod.methodRunIndex}.html#${testMethod.name}">
+                $testMethod.name
+
+                #if ($testMethod.infos)
+                    <i>
+                        #foreach ($i in $testMethod.infos)
+                            $i<br>
+                        #end
+                    </i>
+                #end
+
+##                #if (${testMethod.dashboardInfos.size()} > 0)
+##                    #foreach ($msg in ${testMethod.dashboardInfos})
+##                        <small class="ttwrapper-additional-dashboard-info">$msg</small>
+##                    #end
+##                #end
+
+                #if ($testMethod.priorityMessage)
+                    <div class="skipped">
+                        $testMethod.priorityMessage
+                    </div>
+                #end
+            </a>
+
+            #if ($testMethod.isFailed())
+                <div class="tttooltip textleft">
+                    #if ($testMethod.getErrorContext().readableErrorMessage)
+                        $testMethod.getErrorContext().readableErrorMessage
+                    #else
+                        Please take a look at the details page...
+                    #end
+                </div>
+            #end
+
+            #parse("methodTags.vm")
+
+        </div>
+
+    </td>
+
+    <td class="cellCenter">
+            #if (${testMethod.screenshots.size()} > 0)
+                <div class="fotoramaControl">
+                    <a class="fotoramaSwitchOn fotoramaSwitchOn$index" href="javascript:showFotorama('$index');">
+                        <!--<img alt="F" title="Show Screenshots" src="style/paper-clip-attach-interface-symbol.png" style="width: 21px;"/>-->
+                        <i class="fa fa-info-circle fa-2x"></i>
+                    </a>
+                    <a class="fotoramaSwitchOff fotoramaSwitchOff$index hidden" href="javascript:hideFotorama('$index');">
+                        <!--<img alt="F" title="Hide..." src="style/cancel.png" style="width: 21px;"/>-->
+                        <i class="fa fa-close fa-2x"></i>
+                    </a>
+
+                    <div id="fotorama$index" class="hidden fotoramaContainer">
+                        <div class="fotorama"
+                             data-height="300"
+                             data-width="500"
+                             data-navposition="top"
+                             data-allowfullscreen="native"
+                             data-nav="thumbs"
+                             data-arrows="true"
+                             data-click="true"
+                             data-swipe="true"
+                             data-fit="scaledown"
+                             data-thumbwidth="32"
+                             data-thumbheight="32"
+                        >
+                            #foreach( $screenshot in $testMethod.screenshots )
+                                <div data-img="../screenshots/${screenshot.getScreenshotFile().getName()}">
+                                    <!-- Quit fullscreen -->
+                                    <a class="gallerybutton" href="#">
+                                        <!--<img id="fullscreenButton" alt="F" title="Fullscreen" src="style/thumb_full-screen.png" style="width: 21px; background-color: white;"/>-->
+                                        <!--<img id="closeFullscreenButton" class="hidden" alt="F" title="Close" src="style/cancel.png" style="width: 21px; background-color: white;"/>-->
+                                        <i id="fullscreenButton" class="fa fa-arrows-alt"></i>
+                                        <!--<i id="closeFullscreenButton" class="fa fa-close fa-2x"></i>-->
+                                    </a>
+                                </div>
+                            #end
+                        </div>
+                    </div>
+                </div>
+            #end
+    </td>

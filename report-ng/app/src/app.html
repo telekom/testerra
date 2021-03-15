@@ -1,0 +1,86 @@
+<!--
+  ~ Testerra
+  ~
+  ~ (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+  ~
+  ~ Deutsche Telekom AG and all other contributors /
+  ~ copyright owners license this file to you under the Apache
+  ~ License, Version 2.0 (the "License"); you may not use this
+  ~ file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<template id="main">
+    <head>
+        <!--
+        Need to be included by MDC components as described in the official documentation
+        https://github.com/material-components/material-components-web-components
+        -->
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    </head>
+    <body>
+    <mdc-top-app-bar fixed style="position: unset">
+        <mdc-top-app-bar-row>
+
+            <mdc-top-app-bar-section align="start" >
+                <!--<button click.delegate="_drawer.toggle()"
+                        mdc-ripple="unbounded.bind: true"
+                        class="mdc-top-app-bar__navigation-icon mdc-icon-button mdc-ripple-upgraded&#45;&#45;unbounded mdc-ripple-upgraded"
+                        role="button"
+                        style="&#45;&#45;mdc-ripple-fg-size:28px; &#45;&#45;mdc-ripple-fg-scale:1.71429; &#45;&#45;mdc-ripple-left:10px; &#45;&#45;mdc-ripple-top:10px;"
+                ><i class="material-icons">menu</i></button>-->
+                <mdc-top-app-bar-title class="vcenter sl0 p0">
+                    <a href="#"><img src="${_logo}" class="logo" title="Framework logo" /></a> ${_router.title}
+                </mdc-top-app-bar-title>
+            </mdc-top-app-bar-section>
+
+            <mdc-top-app-bar-section align="end"
+                                     role="toolbar"
+            >
+                <a href="http://docs.testerra.io/testerra/${_executionContext.runConfig.buildInformation.buildVersion}"
+                   title="Documentation"
+                   class="mdc-top-app-bar__action-item"
+                   rel="noopener"
+                   role="button"
+                   mdc-body2
+                >${_executionContext.runConfig.buildInformation.buildVersion}</a>
+            </mdc-top-app-bar-section>
+
+        </mdc-top-app-bar-row>
+    </mdc-top-app-bar>
+    <div class="flex">
+        <mdc-drawer view-model.ref="_drawer" > <!--add : type="dismissible"-->
+
+            <mdc-drawer-header title="Execution" subtitle="${_executionContext.contextValues.name}"></mdc-drawer-header>
+            <mdc-drawer-content>
+                <mdc-list repeat.for="nav of _router.navigation" aria-orientation="vertical">
+                    <mdc-list-item
+                        click.delegate="navigateTo(nav)"
+                        class="mdc-list-item mdc-ripple-upgraded"
+                        class.bind="nav.isActive ? 'mdc-list-item--activated' : ''"
+                    >
+                        <div class="mdc-list-item__ripple"></div>
+                        <span class="mdc-list-item__text">${nav.title}</span>
+                        <span if.bind="nav.settings.count>0">(${nav.settings.count})</span>
+                    </mdc-list-item>
+                </mdc-list>
+            </mdc-drawer-content>
+
+        </mdc-drawer>
+
+        <mdc-drawer-app-content>
+            <router-view class="w100"></router-view>
+        </mdc-drawer-app-content>
+    </div>
+    </body>
+</template>

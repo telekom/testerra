@@ -1,0 +1,60 @@
+#if ($testMethod.failureCorridorValue.show)
+    <font style="font-size: small; margin: 2px;
+    padding: 6px;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    font-family: sans-serif;
+    background: $testMethod.failureCorridorValue.color;
+    border-radius: 10px;">$testMethod.failureCorridorValue</font>
+#end
+#foreach ($tag in $testMethod.methodTags)
+    #if ($tag.name())
+        <font style="font-size: small; margin: 2px;
+    padding: 6px;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    font-family: sans-serif;
+    background: $tag.color();
+    border-radius: 10px;">$tag.name()</font>
+    #end
+#end
+#if ($testMethod.hasBeenRetried())
+    <font style="font-size: small; margin: 2px;
+    padding: 6px;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    font-family: sans-serif;
+    background: #d6d6d6;
+    border-radius: 10px;">Retried</font>
+#end
+#if (${testMethod.nonFunctionalInfos.size()} > 0)
+    <font style="font-size: small; margin: 2px;
+    padding: 6px;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    font-family: sans-serif;
+    background: ${status_MINOR.color};
+    border-radius: 10px;">Minor Errors</font>
+#end
+#if (${testMethod.isConfigMethod()})
+    <font style="font-size: small; margin: 2px;
+    padding: 6px;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    font-family: sans-serif;
+    background: orange;
+    border-radius: 10px;">Configuration Method</font>
+#end
+#if (${testMethod.getParameterValues()})
+    #set ($i = 0)
+    #foreach ($param in $testMethod.getParameterValues())
+        #set ($i = $i + 1)
+        <font style="font-size: small; margin: 2px;
+        padding: 6px;
+        color: rgb(255, 255, 255);
+        font-weight: bold;
+        font-family: sans-serif;
+        background: lightblue;
+        border-radius: 10px;">($i) $param.toString()</font>
+    #end
+#end

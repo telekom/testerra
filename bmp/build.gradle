@@ -1,0 +1,16 @@
+dependencies {
+    compile core_interop
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'javax.ws.rs:javax.ws.rs-api:2.0.1'
+
+//    compile 'net.lightbody.bmp:browsermob-proxy:2.1.1'
+    implementation group: 'net.lightbody.bmp', name: 'browsermob-proxy', version: '2.1.1', ext: 'pom'
+    implementation 'org.apache.httpcomponents:httpcore:4.4.13'
+    implementation 'net.lightbody.bmp:browsermob-legacy:2.1.1'
+
+    testCompile driver_ui_desktop
+}
+
+test {
+    exclude '**'
+}

@@ -1,0 +1,19 @@
+= Assert Utilities
+
+This class provides some extra assertion methods for TestNG:
+
+[source,java]
+----
+AssertUtils.assertContains("Hello World", "Martin", "Greeting");
+// Greeting [Hello World] contains [Martin] expected [true] but found [false]
+
+AssertUtils.assertContainsNot("Hello World", "World", "Greeting");
+// Greeting [Hello World] contains [World] expected [false] but found [true]
+
+AssertUtils.assertGreaterEqualThan(new BigDecimal(2), new BigDecimal(4), "High number");
+// High number [2] is greater or equal than [4] expected [true] but found [false]
+
+AssertUtils.assertLowerThan(new BigDecimal(2), new BigDecimal(-1), "Low number");
+// Low number [2] is lower than [-1] expected [true] but found [false]
+
+----

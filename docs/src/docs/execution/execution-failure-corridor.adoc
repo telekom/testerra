@@ -1,0 +1,68 @@
+= Failure Corridor
+include::../properties/property-attributes.adoc[]
+
+This mechanism is used to define the test goal of test runs so that it only fails with an invalid failure corridor.
+
+This feature is enabled by default with the following property.
+
+[source, properties, subs="attributes"]
+----
+{failure_corridor_active}=true
+----
+
+With an enabled failure corridor, you need to define the maximum amount of failures per weight:
+
+.test.properties
+[source, properties, subs="attributes"]
+----
+{failure_corridor_allowed_failed_tests_high}=0
+{failure_corridor_allowed_failed_tests_mid}=1
+{failure_corridor_allowed_failed_tests_low}=2
+----
+
+[IMPORTANT]
+====
+If you do not define any failure corridor, the default value `0` is used for all three levels.
+====
+
+To change the weight for each test, just annotate it with `@FailureCorridor`, where `High` is default.
+
+.Examples of method weighting
+[source, java]
+----
+// This testcase is marked with a high weight.
+@FailureCorridor.High
+@Test
+public void test1() throws Exception {
+    Assert.fail();
+}
+
+// This testcase is not marked, but the default weight is high.
+@Test
+public void test2() throws Exception {
+    Assert.fail();
+}
+
+// This testcase is marked with a middle weight.
+@FailureCorridor.Mid
+@Test
+public void test3() throws Exception {
+    Assert.fail();
+}
+
+// This testcase is additional marked with @Fails.
+// So the test result is ignored by the Failure corridor.
+@Fails
+@FailureCorridor.Mid
+@Test
+public void test4() throws Exception {
+    Assert.fail();
+}
+
+// This testcase is marked with a low weight.
+@FailureCorridor.Low
+@Test
+public void test5() throws Exception {
+    Assert.fail();
+}
+----

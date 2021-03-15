@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="" lang="">
+<head>
+    <title>Test Results Report</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <meta name="description" content="TestNG unit test results."/>
+
+    #parse("styleincludesrelative.vm")
+
+    <link rel="stylesheet" href="../style/fotorama.css"/>
+
+    #parse("scriptincludesrelative.vm")
+    <script type="text/javascript" src="../js/highlight.pack.js"></script>
+    <script type="text/javascript">hljs.initHighlightingOnLoad();</script>
+    <!--<script type="text/javascript" src="../js/pace.min.js"></script>-->
+
+    <script type="text/javascript" src="../js/fotorama.js"></script>
+    <script type="text/javascript" src="../js/cytoscape.min.js"></script>
+    <script type="text/javascript" src="../js/dagre.js"></script>
+    <script type="text/javascript" src="../js/cytoscape-drage.js"></script>
+
+    <!-- http://www.1001fonts.com/pwfreearrows-font.html#character-map -->
+    <style type="text/css">
+        @font-face {
+            font-family: 'DancingScript';
+            src: url('style/font/DancingScript.ttf');
+        }
+
+        @font-face {
+            font-family: 'PWFreeArrows';
+            src: url('style/font/PWFreeArrows.ttf');
+        }
+
+    </style>
+
+    <script type="application/javascript">
+        function toggleFotoramaFullscreen(fotoramaContainerSelector) {
+            var fotoramaContainer = $(fotoramaContainerSelector);
+            if (!fotoramaContainer.hasClass("fotorama--fullscreen")) {
+                fotoramaContainer.fotorama().data('fotorama').requestFullScreen();
+            } else {
+                fotoramaContainer.fotorama().data('fotorama').cancelFullScreen();
+            }
+        }
+
+        $('.fotorama').on('fotorama:load', function () {
+            $('.fotorama').fotorama().resize();
+        });
+    </script>
+
+</head>
+
+<body>
+    #set($cols = 3)
+
+<!--<body onload="loadComments('$!{testStatistics.startTime}')">-->
+
+    #set($velocityCount1 = 1)
+    #set($velocityCount2 = 1)
+
+    #set($pagetitle = "Method Details")
+    #parse("headerrelative.vm")
+
+<table width="100%" style="margin-top:14px;">
+    <tbody>
+
+    <tr>
+        <td colspan="2">
+            <!-- menu bar -->
+
+            <div onclick="history.back();" title="Back" class="detailsmenu">
+                <h6><i class="symbols fa fa-arrow-left fa-2x"></i>Back</h6>
+            </div>
+
+            <div id="buttondetails" onclick="toggleDetailsView('details', 'toggleview', 'buttondetails', 'togglebutton');"
+                 title="Show Details" class="detailsmenu togglebutton">
+                <h6><i class="symbols fa fa-search-plus fa-2x"></i>Details</h6>
+            </div>
+
+            <div id="buttonlogs" onclick="toggleDetailsView('logs', 'toggleview', 'buttonlogs', 'togglebutton');" title="Show Steps"
+                 class="detailsmenu togglebutton">
+                <h6><i class="symbols fa fa-file-text-o fa-2x"></i>Steps</h6>
+            </div>
+
+            #if ($testMethod.getErrorContext().stackTrace)
+                <div id="buttonstack" onclick="toggleDetailsView('exception', 'toggleview', 'buttonstack', 'togglebutton');"
+                     title="Show Stacktrace" class="detailsmenu togglebutton">
+                    <h6><i class="symbols fa fa-align-left fa-2x fa-flip-vertical"></i>Stack</h6>
+                </div>
+            #end
+
+            <!-- collected assertions -->
+            #if (${testMethod.collectedAssertions.size()} > 0)
+                <div id="buttoncollectedasserts"
+                     onclick="toggleDetailsView('collectedAsserts', 'toggleview', 'buttoncollectedasserts', 'togglebutton');"
+                     title="Show Collected Assertions" class="detailsmenu togglebutton">
+                    <h6><i class="symbols fa fa-dot-circle-o fa-2x"></i>Assertions</h6>
+                </div>
+            #end
+
+            <!-- minor errors -->
+            #if (${testMethod.nonFunctionalInfos.size()} > 0)
+                <div id="buttonminor" onclick="toggleDetailsView('minorError', 'toggleview', 'buttonminor', 'togglebutton');"
+                     title="Show Minor Error" class="detailsmenu togglebutton">
+                    <h6><i class="symbols fa fa-eye fa-2x"></i>Minor Errors</h6>
+                </div>
+            #end
+
+            <!-- screens link-->
+            #if (${testMethod.screenshots.size()} > 0)
+                <div id="buttonscreen" onclick="toggleDetailsView('screenshotarea', 'toggleview', 'buttonscreen', 'togglebutton');"
+                     title="Show screenshots" class="detailsmenu togglebutton">
+                    <h6><i class="symbols fa fa-photo fa-2x"></i>Screenshots</h6>
+                </div>
+            #end
+
+            <!-- video -->
+            #if (${testMethod.getVideos().size()} > 0)
+                <div id="buttonvideo" onclick="toggleDetailsView('videoarea', 'toggleview', 'buttonvideo', 'togglebutton');"
+                     title="Show video" class="detailsmenu togglebutton">
+                    <h6><i class="symbols fa fa-file-video-o fa-2x"></i>Videos</h6>
+                </div>
+            #end
+
+            <!-- dependencies -->
+            <div id="buttondeps" onclick="toggleDetailsView('depsarea', 'toggleview', 'buttondeps', 'togglebutton');"
+                 title="Dependencies" class="detailsmenu togglebutton">
+                <h6><i class="symbols fa fa-link fa-2x"></i>Dependencies</h6>
+            </div>
+
+        </td>
+    </tr>
+
+    <!-- details -->
+    <tr id="details" class="toggleview hidden">
+        <td colspan="2">
+            <div style="margin-top: 20px; line-height: 30px;">
+
+                <table class="standardTable">
+
+                    <tr>
+                        <td class="cellTop" colspan="2">
+                            <h5>Method</h5>
+                            <br/>
+
+                            <div class="dashboardTextSmall" style="color:#888;">
+                                $testMethod.name
+
+                                #if ($testMethod.infos)
+                                    <br/>
+                                    <i>
+                                        #foreach ($i in $testMethod.infos)
+                                            $i<br>
+                                        #end
+                                    </i>
+                                #end
+
+                                #parse("methodTags.vm")
+                            </div>
+                            <br/>
+
+                            <div style="font-size: 30px; margin:10px;">
+                                <div data-qa="methodTestStatus" style="color:${testMethod.status.color};">${testMethod.status.title}</div>
+
+                                #if ($testMethod.isRetry())
+                                    <img src="../style/retry.png" alt="Retry" style="width:40px;" title="Retry"/>
+                                #end
+
+                                #if ($testMethod.getLastFailedStep())
+                                    <div class="dashboardTextSmall">
+                                        <br/>
+                                        in
+                                        <br/>
+                                        $testMethod.getLastFailedStep()
+                                        <br/>
+                                    </div>
+                                #end
+                            </div>
+                        </td>
+
+                        <td class="cellCenter">
+                            <div class="dashboardVerticalSpacer"></div>
+                        </td> <!-- spacer -->
+
+                        <td class="cellTop">
+                            <h5>Duration</h5>
+                            <div class="dashboardTextBig"
+                                 id="actualRunDuration">$!{testMethod.getDurationAsString()}</div>
+                            <div class="dashboardTextVerySmall"></div>
+                            <br/>
+                            <div class="dashboardTextSmall">Start $!{testMethod.startTime}</div>
+                            <br/>
+                            <div class="dashboardTextSmall">End $!{testMethod.endTime}</div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="8" class="cellTop" style="height:200px;">
+
+                            <div>
+                                <h5>
+                                    <a href="#" onclick="toggleElement('context');" title="Show Fingerprint">
+                                        Context <i class="fa fa-hand-pointer-o" style="opacity: 0.6;"></i>
+                                    </a>
+                                </h5>
+
+                                <div id="context" class="dashboardTextVerySmall hidden" style="line-height: 22px; color:#888;">
+                                    Class: <a href="../classes/${testMethod.getClassContext().getId()}.html"
+                                              title="Jump to class">${testMethod.getClassContext().getName()}</a><br/>
+                                    Test: ${testMethod.getTestContext().getName()}<br/>
+                                    Suite: ${testMethod.suiteContext.name}<br/>
+                                    <br/>
+                                    Thread: $testMethod.threadName<br/>
+                                    RunIdx: ($testMethod.methodRunIndex)<br/>
+
+                                    #foreach ($info in $testMethod.infos)
+                                        $info
+                                        <br/>
+                                    #end
+                                </div>
+                            </div>
+
+                            <div style="padding: 20px;">
+                                <div class="dashboardHorizontalSpacer"></div>
+                            </div>
+
+                            <!-- priority extra message -->
+                            #if ($testMethod.priorityMessage)
+                                <div class="skipped">
+                                    $testMethod.priorityMessage
+                                </div>
+                            #end
+
+                        <div style="font-size: 30px;">
+                            #if ($testMethod.isFailed())
+                                <!-- retry -->
+
+                                <div>
+                                    <!-- error infos -->
+                                    <div>
+                                        #set($fingerprint = $testMethod.getErrorContext().getExitFingerprint())
+                                        <div>
+                                            <h5 style="position:relative;">
+                                                <a href="#" onclick="toggleElement('fingerprint');" title="Show Fingerprint">
+                                                    Error Message <i class="fa fa-hand-pointer-o" style="opacity: 0.6;"></i>
+                                                </a>
+                                            </h5>
+
+                                            #if (${testMethod.status} == $status_FAILED_EXPECTED)
+                                            <div style="color: Grey; font-size: 30px; padding: 25px; line-height: 40px;">
+                                            #else
+                                            <div style="color: red; font-size: 30px; padding: 25px; line-height: 40px;">
+                                            #end
+
+                                            #if ($testMethod.getErrorContext().getReadableMessageFormatted())
+                                                $testMethod.getErrorContext().getReadableMessageFormatted()
+                                            #end
+                                            #if ($testMethod.getErrorContext().getAdditionalErrorMessageFormatted())
+                                                <div style="color: Grey; font-size: 30px; padding: 25px; line-height: 40px;">
+                                                    $testMethod.getErrorContext().getAdditionalErrorMessageFormatted()
+                                                </div>
+                                            #end
+                                            #if ($testMethod.priorityMessage)
+                                                <div class="skipped">
+                                                    $testMethod.priorityMessage
+                                                </div>
+                                            #end
+
+                                        </div>
+
+                                        </div>
+
+                                            <!-- exit fingerprint -->
+                                            #if ($fingerprint)
+                                                <div id="fingerprint" class="hidden">
+                                                    <div style="opacity: 0.4;">
+                                                        <br/>
+                                                        <h5>Fingerprint</h5>
+                                                        <div class="error">
+                                                            $fingerprint
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            #end
+
+                                            <div style="padding: 20px;">
+                                                <div class="dashboardHorizontalSpacer"></div>
+                                            </div>
+
+                                            #macro(displayLines $source $id)
+                                                #if ($source)
+                                                    <div id="$id" style="text-align: initial">
+<pre><code>  // $source.fileName
+    #foreach($s in $source.lines)
+        #if ($source.getMarkedLineNumber() == $s.lineNumber)
+            &#8623; $s.lineNumber : $s.line
+        #else
+            $s.lineNumber : $s.line
+        #end
+    #end
+</code></pre>
+                                                    </div>
+                                                #else
+                                                    No test sources
+                                                #end
+                                            #end
+
+                                            <div style="font-size:15px;">
+                                                <table class="dashboardBorder">
+                                                    <thead class="dashboardTextVerySmall">
+                                                    <tr>
+                                                        <td>Test Case source snippet</td>
+                                                        <td>Page Object source snippet</td>
+                                                    </tr>
+                                                    </thead>
+                                                    <tr>
+                                                        <td width="50%">
+                                                            #displayLines($testMethod.getErrorContext().getScriptSource().orElse(null), "scriptSource")
+                                                        </td>
+                                                        <td width="50%">
+                                                            #displayLines($testMethod.getErrorContext().getExecutionObjectSource().orElse(null),
+                                                                "executionObjectSource")
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            #end
+
+                            #if ($testMethod.customContexts.size()>0)
+                                #foreach ($customError in $testMethod.customContexts)
+                                    #if ($customError.name == "LayoutCheckContext")
+                                        <div style="padding: 20px;">
+                                            <div class="dashboardHorizontalSpacer"></div>
+                                        </div>
+                                        <h3>Layout check: $customError.image</h3>
+                                        <div class="dashboardTextSmall">Pixel distance: $customError.distance%</div>
+                                        #set($fotoramaClassName="layoutCheck$foreach.count")
+                                        <div class="fotorama $fotoramaClassName"
+                                             data-navposition="top"
+                                             data-allowfullscreen="native"
+                                             data-arrows="false"
+                                             data-nav="thumbs"
+                                             data-thumbwidth="64"
+                                             data-thumbheight="64"
+                                             data-height="80%"
+                                             data-width="90%"
+                                             data-swipe="true"
+                                             data-click="false"
+                                             data-fit="scaledown"
+                                        >
+                                            #set($imageNames=[$customError.actualScreenshot.getScreenshotFile().getName(),$customError.expectedScreenshot.getScreenshotFile().getName(),$customError.distanceScreenshot.getScreenshotFile().getName()])
+                                            #set($imageCaptions=["Actual","Expected reference", "Distance"])
+
+                                            #foreach ($imageName in $imageNames)
+                                                #if ($imageName)
+                                                    #set ($path = "../../screenshots/$imageName")
+                                                    <div data-img="$path" data-caption="$imageCaptions[$foreach.index]">
+                                                        <div class="centeredItems">
+                                                            <a class="gallerybutton" href="#" title="Fullscreen"
+                                                               onclick="toggleFotoramaFullscreen('.$fotoramaClassName')">
+                                                                <i class="bgwhite fa fa-arrows-alt"></i>
+                                                            </a>
+                                                            <!-- pic download link -->
+                                                            <a class="gallerybutton" target="_blank" title="Download" href="$path">
+                                                                <i class="bgwhite fa fa-cloud-download"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                #end
+                                            #end
+                                        </div>
+                                    #end
+                                #end
+                            #end
+
+                            #set ($size = ${testMethod.nonFunctionalInfos.size()})
+                            #if ($size > 0)
+                                <!-- minor -->
+                                <div style="font-size: 30px;">
+                                    <div class="error clickable" style="color:SkyBlue;"
+                                         onclick="toggleDetailsView('minorError', 'toggleview', 'buttonminor', 'togglebutton')">
+                                        #if ($size > 1)
+                                            There are $size MINOR errors.
+                                        #else
+                                            There is $size MINOR error.
+                                        #end
+                                    </div>
+                                </div>
+                            #end
+
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </td>
+    </tr>
+
+    <!-- videos -->
+    <tr id="videoarea" class="hidden toggleview">
+        <td colspan="2">
+            #if (${testMethod.getVideos().size()} > 0)
+                <div>
+                    <br/>
+                    <br/>
+                    #foreach($video in ${testMethod.getVideos()})
+                        <div style="margin: 10px; float: left;">
+                            <div>
+                                <video width="1024" height="512" controls autoplay>
+                                    <source src="../../videos/$video.getVideoFile().getName()" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                            <div>
+                                <a href="../../videos/$video" download="../../videos/$video.getVideoFile().getName()" title="Video">Download</a>
+                            </div>
+                        </div>
+                    #end
+                </div>
+            #end
+        </td>
+    </tr>
+
+    <!-- dependencies -->
+    <tr id="depsarea" class="hidden toggleview">
+        <td colspan="2">
+            <div id="cy">
+            </div>
+            <script type="text/javascript">
+                var methods = [];
+
+                    #parse('methodDependencies.vm')
+            </script>
+            <script type="text/javascript" src="../js/dependencies-tree-view.js"></script>
+        </td>
+    </tr>
+
+    <!-- screenshots -->
+    <tr id="screenshotarea" class="hidden toggleview">
+        <td colspan="2">
+            #set($methodInfo = $testMethod)
+            #parse("screenshotsFullscreen.vm")
+        </td>
+    </tr>
+
+    <!-- stacktrace -->
+    <tr id="exception" class="toggleview stackTrace">
+        <td colspan="2">
+            <!-- stacktrace -->
+            <div>
+                <div id="st" class="textLeft" style="padding:30px !important; text-align: left !important; margin-left: 20px;">
+                    #if($testMethod.getErrorContext().stackTrace)
+                        #set($stackTrace = $testMethod.getErrorContext().stackTrace)
+                        #parse("stackTrace.vm")
+                    #end
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <!-- minor error -->
+    <tr id="minorError" class="hidden toggleview">
+        <td colspan="2" class="cellCenter">
+            #set($velocityCountNF = 0)
+            <br/>
+            <br/>
+            <h5>Minor Error Information</h5>
+            <br/>
+            <br/>
+            <div style="margin-left: 70px; margin-right: 70px;">
+                <table class="standardTable">
+                    <tr class="standardTable tr" style="background-color: #cccccc">
+                        <th style="text-align:left;"><h6>Minor Error</h6></th>
+                        <th style="text-align:center; left: 20px;"><h6>Screenshots</h6></th>
+                    </tr>
+                    #if (${testMethod.nonFunctionalInfos.size()} > 0)
+                        #foreach($nfi in $testMethod.nonFunctionalInfos)
+                            #if($velocityCountNF % 2 == 0)
+                                #set($backgroundColor = "#fefefe")
+                            #else
+                                #set($backgroundColor = "#efefef")
+                            #end
+                            <tr class="standardTable tr" style="background-color: $backgroundColor">
+                                <td width="100%" style="text-align:left;">
+                                    <a href="javascript:void(0);"
+                                       onclick="toggleElement('non-functional-exception-$velocityCountNF')"
+                                       title="Click to expand/collapse" style="color:SkyBlue; font-weight: bold;">
+                                        ${nfi.readableErrorMessage}
+                                    </a>
+                                    <div style="display: none;" id="non-functional-exception-$velocityCountNF">
+                                        <div style="margin-left: 10px;">
+                                            #if($nfi.stackTrace)
+                                                #set($stackTrace = $nfi.stackTrace)
+                                                #parse("stackTrace.vm")
+                                            #end
+                                        </div>
+                                    </div>
+                                </td>
+                                ##                                <td width="" style="">
+                                ##                                          <span class="screenshots">
+                                ##                                              <!-- screenshots -->
+                                ##                                              #set($methodInfo=$nfi)
+                                ##                                              #parse("screenshotsSmall.vm")
+                                ##                                          </span>
+                                ##                                </td>
+                            </tr>
+                            #set($velocityCountNF = $velocityCountNF + 1)
+                        #end
+                    #end
+                </table>
+            </div>
+        </td>
+    </tr>
+
+    <!-- collected asserts -->
+    <tr id="collectedAsserts" class="hidden toggleview">
+        #set($velocityCountCA = 0)
+        <td colspan="2" class="cellCenter">
+            <br/>
+            <br/>
+            <h5>Collected Assertions</h5>
+            <br/>
+            <br/>
+            <div style="margin-left: 70px; margin-right: 70px;">
+                <table class="standardTable">
+                    <tr class="standardTable tr" style="background-color: #cccccc">
+                        <th style="text-align:left;"><h6>Assertion</h6></th>
+                        <th style="text-align:center; left: 20px;"><h6>Screenshots</h6></th>
+                    </tr>
+                    #if (${testMethod.collectedAssertions.size()} > 0)
+                        #foreach($ai in $testMethod.collectedAssertions)
+                            #if($velocityCountCA % 2 == 0)
+                                #set($backgroundColor = "#fefefe")
+                            #else
+                                #set($backgroundColor = "#efefef")
+                            #end
+                            <tr class="standardTable tr" style="background-color: $backgroundColor">
+                                <td width="100%" style="text-align:left;">
+                                    <a href="javascript:void(0);"
+                                       onclick="toggleElement('collected-assert-exception-$velocityCountCA')"
+                                       title="Click to expand/collapse" style="color:red; font-weight: bold;">
+                                        ${ai.readableErrorMessage}
+                                    </a>
+                                    <div style="display: none;" id="collected-assert-exception-$velocityCountCA">
+                                        <div style="margin-left: 10px;">
+                                            #if($ai.stackTrace)
+                                                #set($stackTrace = $ai.stackTrace)
+                                                #parse("stackTrace.vm")
+                                            #end
+                                        </div>
+                                    </div>
+                                </td>
+                                <td width="" style="">
+                                          <span class="screenshots">
+                                              <!-- screenshots -->
+                                              #set($methodInfo = $testMethod)
+                                              #parse("screenshotsSmall.vm")
+                                          </span>
+                                </td>
+                            </tr>
+                            #set($velocityCountCA = $velocityCountCA + 1)
+                        #end
+                    #end
+                </table>
+            </div>
+        </td>
+    </tr>
+
+    <!-- logs -->
+    <tr id="logs" class="toggleview hidden">
+        <!-- content loaded by js below -->
+        <td id="logstd">
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    toggleDetailsView('details', 'toggleview', 'buttondetails', 'togglebutton');
+</script>
+<script type="text/javascript">
+    var e = "#logstd";
+    $(e).empty();
+    $(e).load("steps${testMethod.methodRunIndex}.html", function () {
+        // nothing so far
+    });
+</script>
+
+</body>
+</html>

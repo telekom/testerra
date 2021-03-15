@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<test>
+    <child1 attr1="</"'">
+        <subchild1 attr1="default"/>
+    </child1>
+</test>

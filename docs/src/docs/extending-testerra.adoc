@@ -1,0 +1,7 @@
+= Extending Testerra
+
+Testerra provides several ways for extensions.
+
+include::extending-testerra/hooks.adoc[leveloffset=+1]
+include::extending-testerra/events-and-listener.adoc[leveloffset=+1]
+include::extending-testerra/create-report.adoc[leveloffset=+1]

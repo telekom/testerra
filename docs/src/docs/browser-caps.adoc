@@ -1,0 +1,4 @@
+= Browser capabilities
+
+include::browsercaps/basic-caps.adoc[leveloffset=+1]
+include::browsercaps/proxy-setup.adoc[leveloffset=+1]

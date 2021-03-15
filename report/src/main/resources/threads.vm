@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Threads</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+
+        #parse("styleincludes.vm")
+        #parse("scriptincludes.vm")
+
+        <link rel="stylesheet" type="text/css" href="../threadvisualizer/timeline.css"/>
+
+    </head>
+    <body>
+
+        #set($tabcontext = "t")
+        #set($pagetitle = "Threads")
+        #parse("header.vm")
+
+        <div id="mytimeline" style="margin-top:50px;"></div>
+        <div id="info"></div>
+
+    </body>
+
+    <!-- See https://developers.google.com/chart/interactive/docs/basic_load_libs -->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="../threadvisualizer/timeline.js"></script>
+
+    <script type="text/javascript">
+      var timeline = null;
+      var data = null;
+      var once = 0;
+
+      google.load("visualization", "1");
+
+      // Set callback to run when API is loaded
+      google.setOnLoadCallback(drawVisualization);
+
+      // Called when the Visualization API is loaded.
+      function drawVisualization() {
+
+        // Instantiate our timeline object.
+        timeline = new links.Timeline(document.getElementById('mytimeline'));
+
+        // Create and populate a data table.
+        data = new google.visualization.DataTable();
+        data.addColumn('datetime', 'start');
+        data.addColumn('datetime', 'end');
+        data.addColumn('string', 'content');
+        data.addColumn('string', 'group');
+
+        addData();
+
+        // specify options
+        options = {
+          showCustomTime: true
+        };
+
+        // Draw our timeline with the created data and options
+        timeline.draw(data, options);
+
+        if (once == 0) {
+            window.onresize = function() {
+                timeline.checkResize();
+            }
+            timeline.checkResize();
+            once = 1;
+        }
+      }
+
+      // data.addRow([start, end, orderText, truckText]);
+      function addData() {
+        $data
+      }
+
+    </script>
+</html>

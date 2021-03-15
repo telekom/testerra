@@ -1,0 +1,31 @@
+= Waiters
+
+In testing practice the test automation code must tolerate delays caused e.g. by page loading or javascript activities when checking conditions on GuiElements.
+
+Therefore GuiElement provides dedicated methods to wait for a condition that operate
+on the following principle:
+
+If the condition (which is checked continuously) is met within the timeout
+then the wait methods return true.
+
+Otherwise, after the timeout has passed they return false without any further
+action or assertion.
+
+See also <<PageObjects,Timeout-Settings>>
+
+.Usage:
+[source,java]
+----
+boolean result;
+
+result = element.waits().waitForIsDisplayed();
+result = element.waits().waitForText(String text);
+result = element.waits().waitForAttribute(String attribute, String value);
+result = element.waits().waitForAttributeContains(String attribute, String value);
+result = element.waits().waitForAttributeContainsNot(String attribute, String value);
+result = element.waits().waitForIsSelected();
+result = element.waits().waitForTextContains("Hello");
+result = element.waits().waitForTextContainsNot("Foo bar");
+result = element.waits().waitForCssClassIsPresent("active");
+result = element.waits().waitForCssClassIsGone("disabled");
+----

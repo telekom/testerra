@@ -1,0 +1,135 @@
+= Browser Mob Proxy (*deprecated*)
+
+Browser Mob Proxy (BMP) is a utility for manipulating network traffic.
+You can use it to enable Basic Auth for your SUT and other features.
+
+== Project setup
+
+Current release image:https://img.shields.io/bintray/v/testerra-io/Testerra/eu.tsystems.mms.tic.testerra:bmp?label=Testerra%20BMP[Bintray]
+
+.build.gradle
+[source,groovy,role="primary",subs="attributes"]
+----
+compile 'eu.tsystems.mms.tic.testerra:bmp:{revnumber}'
+----
+
+.pom.xml
+[source,xml,role="secondary",subs="attributes+"]
+----
+<dependencies>
+    <dependency>
+        <groupId>eu.tsystems.mms.tic.testerra</groupId>
+        <artifactId>bmp</artifactId>
+        <version>{revnumber}</version>
+    </dependency>
+</dependencies>
+----
+
+== External BMP server (recommended)
+
+Best practice for using a Testerra with a proxy, is to use a dedicated BMP instance.
+
+[source,java]
+----
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.AfterSuite;
+import eu.tsystems.mms.tic.testframework.bmp.BmpRestClient;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import org.openqa.selenium.Proxy;
+
+public abstract class AbstractTest extends TesterraTest {
+
+    private static BmpRestClient bmpClient;
+
+    @BeforeSuite
+    public void proxySetup() {
+
+        final URL apiUrl = new URL("http://localhost:8080");
+        bmpClient = new BmpRestClient(apiUrl);
+
+        /* Additional Proxy setup here */
+        final int proxyPort = bmpClient.startServer();
+        final String bmpProxyAddress = String.format("%s:%d", apiUrl.getHost(), proxyPort);
+
+        // For selenium usage.
+        final Proxy proxy = new Proxy();
+        proxy.setHttpProxy(bmpProxyAddress)
+            .setFtpProxy(bmpProxyAddress)
+            .setSslProxy(bmpProxyAddress);
+
+        WebDriverManager.setGlobalExtraCapability(CapabilityType.PROXY, proxy);
+    }
+
+    @AfterSuite
+    public void proxyTeardown() {
+        bmpClient.stopServer();
+    }
+}
+----
+
+BMP creates a new proxy server at the next free port beginning with port 8081 (BMP default).
+
+If you need a dedicated port, use `startServer` with a port number.
+If the port already used, BMP client only returns the port number.
+
+[source,java]
+----
+...
+int customPort = 8085;
+final int proxyPort = bmpClient.startServer(customPort);
+...
+----
+
+== Basic Auth
+
+If your SUT is protected by HTTP basic auth, you can setup these credentials as following.
+
+[source,java]
+----
+import java.net.URL;
+
+/* Additional Proxy setup here */
+URL baseUrl = new URL(PropertyManager.getProperty("tt.baseurl"));
+final String basicAuthUser;
+final String basicAuthPassword;
+bmpClient.setBasicAuth(baseUrl.getHost(), basicAuthUser, basicAuthPassword);
+----
+
+== Upstream proxy
+
+If your SUT should use proxy, you can setup BMP to use a upstream proxy like in link:[SUT Browser Proxy]
+
+[source,java]
+----
+import eu.tsystems.mms.tic.testframework.utils.ProxyUtils;
+
+bmpClient.setUpstreamProxy(ProxyUtils.getSystemHttpProxyUrl());
+----
+
+== Other features
+
+[source,java]
+----
+/*
+ Checks if a proxy server is available by a custom port.
+ */
+int port = 8085;
+boolean isUsed = bmpClient.isProxyRunningAtPort(port);
+
+/*
+ Maps specifc host names to another host names or IP adresses
+ */
+bmpClient.setHostMapping(Map<String, String> hostNameMapping);
+
+/*
+ Capture the traffic and return it as a JsonElement
+ You can choose, if you want to capture only the headers, the content or both via the boolean flags.
+ */
+bmpClient.startCapture(boolean headers, boolean content);
+JsonElement element = client.stopCapture();
+
+/*
+ Adds additional key-value pairs to the headers.
+*/
+bmpClient.setHeader(String key, String value);
+----

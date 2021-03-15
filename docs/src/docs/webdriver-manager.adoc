@@ -1,0 +1,12 @@
+= WebDriverManager
+
+== Overview
+
+`WebDriverManager` is the central component to create and close your `WebDriver` sessions.
+
+WebDriverManager uses the standard Selenium Webdriver but it is easier to configure your.
+To create a new browser session you only need a single call.
+
+include::webdrivermanager/webdrivermanager-sessions.adoc[leveloffset=+1]
+include::webdrivermanager/webdrivermanager-config.adoc[leveloffset=+1]
+include::webdrivermanager/webdrivermanager-other.adoc[leveloffset=+1]

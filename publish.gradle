@@ -1,0 +1,106 @@
+/**
+ * Maven publishing configuration
+ * */
+
+
+// Maven basis attributes
+ext {
+    libraryName = 'Testerra'
+    artifact = project.getName().toLowerCase()
+    packagingType = 'jar'
+
+    libraryDescription = "Testerra ${project.getName()} module"
+
+    siteUrl = 'https://testerra.io'
+    gitUrl = 'https://github.com/telekom/testerra-selenoid-connector.git'
+    issueUrl = 'https://github.com/telekom/testerra-selenoid-connector/issues'
+
+    developerId = 'MMS'
+    developerName = 'Testerra Team T-Systems MMS'
+    developerEmail = 'testerra@t-systems-mms.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+// Set up the Maven publication.
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom.project {
+            packaging packagingType
+            groupId group
+            artifactId artifact
+
+            // Add your description here
+            name libraryName
+            description libraryDescription
+            url siteUrl
+
+            // Set your license
+            licenses {
+                license {
+                    name licenseName
+                    url licenseUrl
+                }
+            }
+            developers {
+                developer {
+                    id developerId
+                    name developerName
+                    email developerEmail
+                }
+            }
+            scm {
+                connection gitUrl
+                developerConnection gitUrl
+                url siteUrl
+            }
+
+        }
+    }
+}
+
+subprojects {
+
+    // custom tasks for creating source/javadoc jars
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        archiveClassifier.set('sources')
+        from sourceSets.main.allSource
+    }
+
+    // add source jar tasks as artifacts
+    artifacts {
+        archives sourcesJar
+    }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+                artifact sourcesJar
+            }
+        }
+
+        repositories {
+            maven {
+                url System.getProperty("deployUrl", "none")
+                credentials {
+                    username System.getProperty("deployUsername", "none")
+                    password System.getProperty("deployPassword", "none")
+                }
+            }
+        }
+    }
+
+    tasks.whenTaskAdded { t ->
+        if (t.name.startsWith("publish")) {
+            boolean e = t.project.publish.enabled
+            if (!e) {
+                println "Not running publish for " + t.project.name
+                t.enabled = false
+            }
+        }
+    }
+}

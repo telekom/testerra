@@ -1,0 +1,69 @@
+= Date Utilities
+
+This is a static helper class based on Apache date utils which offers a lot
+of methods for converting dates and diffrent formats of dates.
+
+It extends the https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/time/DateUtils.html[Apache date]
+utils and adds some extra methods to it. The original methods are described on the Apache page, the additional methods are described below.
+
+.Returns the current date in format dd.mm.yyyy_HH:MM:ss
+[source,java]
+----
+String today = DateUtils.getDate();
+// results in "21.06.2019_12:10:22
+----
+
+.Returns the current date in the given format
+[source,java]
+----
+SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd'T'HH:MM:ss_SSS");
+String isoNow = DateUtils.getDate(format);
+// results in "2019-14-21T12:06:37_854"
+----
+
+.Returns the passed date in the given format.
+[source,java]
+----
+
+Date specificDate = new Date(1561035793982L);
+SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd'T'HH:MM:ss_SSS");
+String formattedSpecificDate DateUtils.getDate(format, specificDate);
+// results in "2019-03-20T15:06:13_982"
+----
+
+.Converts the calendars time to a date.
+[source,java]
+----
+XMLGregorianCalendar xmlCalendar = ...
+Date myDate = DateUtils.getDate(xmlCalendar);
+----
+
+.Converts a date to the the calendars time.
+[source,java]
+----
+Date date = ...
+XMLGregorianCalendar myCalendar = DateUtils.getXMLGregorianCalender(date);
+----
+
+.Returns the current date plus a given delta.
+[source,java]
+----
+// Adds (or subtracs if value is negative) the passed difference
+// to the current date and returns it as Date.
+// Date getDateWithDiff(int monthDiff, int dayOfMonthDiff, int dayOfWeekDiff,
+//     int hourDiff, int minuteDiff, int secondDiff);
+
+Date dateDiff = DateUtils.getDateWithDiff(0, 0, 0, 1, 0, 0);
+// results in a time one hour in the future
+----
+
+.Returns a formatted duration.
+[source,java]
+----
+// Converts and returns the passed duration in milliseconds in the
+// format "[days]d [hours]h [minutes]m [seconds]s".
+// String getFormattedDuration(long durationInMs, boolean showMs)
+
+String diffTime = DateUtils.getFormattedDuration(5123, true);
+// results in "00h 00m 05s 123ms"
+----

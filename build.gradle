@@ -1,0 +1,113 @@
+plugins {
+    id 'com.github.jk1.dependency-license-report' version '1.13'
+}
+
+ext {
+    /*
+    module stuff
+     */
+    core_interop = project(':core-interop')
+    driver_ui = project(':driver-ui')
+    driver_ui_desktop = project(':driver-ui-desktop')
+    image_processing = project(':image-processing')
+    core = project(':core')
+    report = project(':report')
+
+    seleniumVersion = '3.141.59'
+    guavaVersion = "28.1-jre"
+
+    // Flags
+    doNotPublish = this.&dnp
+
+    moduleVersion = '1-SNAPSHOT'
+    if (System.properties.containsKey('ttVersion')) {
+        moduleVersion = System.getProperty('ttVersion')
+    }
+}
+
+subprojects {
+
+    group 'eu.tsystems.mms.tic.testerra'
+    version moduleVersion
+
+    apply plugin: 'java'
+    apply plugin: 'maven'
+    apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
+    apply plugin: 'jacoco'
+
+
+    // important!
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+    }
+
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
+    jacoco {
+        toolVersion = "0.8.5"
+    }
+
+    test {
+
+        ignoreFailures = true
+        useTestNG()
+        testLogging {
+            outputs.upToDateWhen { false }
+            showStandardStreams = true
+        }
+        options {
+            systemProperties(System.getProperties())
+        }
+    }
+
+    task cleanDist {
+        doLast {
+            delete "out"
+        }
+    }
+
+    clean.dependsOn(cleanDist)
+
+}
+
+// Helper function to prevent publishing
+def dnp(prj) {
+    prj.jar.enabled = true
+    prj.publish.enabled = false
+    prj.publishToMavenLocal.enabled = false
+
+    println("Do not publish stuff from " + prj)
+}
+
+// Do not move this integration because `group` and `version` is needed for publishing
+apply from: rootProject.file('publish.gradle')
+
+task jacocoAggregateReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
+
+    additionalSourceDirs(files(subprojects.sourceSets.main.allSource.srcDirs))
+
+    def srcdirs = files(subprojects.sourceSets.main.allSource.srcDirs)
+    def classdirs = files(subprojects.sourceSets.main.output)
+    sourceDirectories.setFrom(srcdirs)
+    classDirectories.setFrom(classdirs)
+
+    executionData(project.fileTree(dir: '.', include: '**/build/jacoco/test.exec'))
+
+    reports {
+        html.enabled = true
+        xml.enabled = true
+        csv.enabled = false
+    }
+    onlyIf = {
+        true
+    }
+
+    doFirst {
+        executionData(files(executionData.findAll {
+            it.exists()
+        }))
+    }
+}

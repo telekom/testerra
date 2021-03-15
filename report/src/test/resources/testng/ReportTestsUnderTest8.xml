@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Before Scenario" verbose="1" parallel="methods" thread-count="10" data-provider-thread-count="10">
+
+    <test name="Before Suite Failed">
+        <groups>
+            <run>
+                <include name="SYSTEMTESTSFILTER8"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestBeforeScenarios"/>
+        </classes>
+    </test>
+
+</suite>

@@ -1,0 +1,42 @@
+doNotPublish(this)
+
+dependencies {
+    compile driver_ui_desktop
+    testImplementation project(':report-ng')
+    testImplementation project(':report')
+
+    // <XML>
+    implementation 'org.xmlunit:xmlunit-core:2.5.0'
+    // </XML
+
+    compile 'org.seleniumhq.selenium:selenium-server:' + seleniumVersion
+    // https://mvnrepository.com/artifact/com.github.tomakehurst/wiremock
+    testCompile "com.github.tomakehurst:wiremock-jre8:2.26.3"
+}
+
+test {
+    String[] s = [
+            'src/test/resources/Integration.xml',
+    ]
+
+    def smokeTest = findProperty("smoke")
+    if (smokeTest) {
+        s = ['src/test/resources/Smoke.xml']
+    }
+
+    useTestNG() {
+        suites s
+//        configFailurePolicy "continue"
+    }
+
+    options {
+        systemProperties(System.getProperties())
+    }
+}
+
+task cleanReports {
+    doLast {
+        delete "test-report"
+        delete "logs"
+    }
+}

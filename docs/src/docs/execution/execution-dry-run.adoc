@@ -1,0 +1,24 @@
+= Dry Run
+include::../properties/property-attributes.adoc[]
+
+== Overview
+With this execution mode all methods marked with TestNG Annotations are only called but their code isn't executed, hence the name dry run.
+It's designed to simply check the callstack of TestNG related methods without executing their logic, e.g. to find missing method calls in your test setup.
+For using this you just need to set the following property.
+
+.test.properties
+[source, properties, subs="attributes"]
+----
+# activate the dry run, default = false
+{dryrun}=true
+----
+
+The report indicates a dry run with the suffix `Dry Run` in the headlines of each section.
+
+NOTE: The rest is visually identical to a normal run.
+
+All called methods are shown, but probably as passed. With a closer look into the report details you will just notice a really low test duration, something below one second.
+
+== @DismissDryRun
+When this is annotated at a method it will be executed completely, regardless of the value of {dryrun}.
+There is no dedicated visual elevation for these methods in the report.

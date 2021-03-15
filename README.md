@@ -19,7 +19,7 @@
 </p>
 
 ## About Testerra
-Testerra is an integrated framework for automating tests for (web) applications. Testerra can also be understood as a building block for test automation projects with various basic components. It also includes a prepared "foundation" on which complex test automation environments can be built. Testerra is developed by our Test Automation Experts at T-Systems Multimedia Solutions GmbH Dresden (Website). In numerous projects Testerra is used as the standard test automation framework.
+Testerra is an integrated framework for automating tests for (web) applications. Testerra can also be understood as a building block for test automation projects with various basic components. It also includes a prepared "foundation" on which complex test automation environments can be built. Testerra is developed by our Test Automation Experts at T-Systems MMS GmbH Dresden (Website). In numerous projects Testerra is used as the standard test automation framework.
 
 You may see Testerra as an open source test automation library for web frontend testing. It provides a tool suite for many use cases: a base API for Page Object Pattern (including responsive layouts) and GuiElements (smarter WebElements (Selenium)), enhanced reporting functionality, a utility collection and some additional helpful modules.
 
@@ -35,12 +35,18 @@ Maven:
         <artifactId>driver-ui-desktop</artifactId>
         <version>1-SNAPSHOT</version>
     </dependecy>
+    <dependency>
+        <groupId>eu.tsystems.mms.tic.testerra</groupId>
+        <artifactId>report-ng</artifactId>
+        <version>1-SNAPSHOT</version>
+    </dependecy>
 </dependencies>
 ````
 
 Gradle:
-````text
+````groovy
 compile 'eu.tsystems.mms.tic.testerra:driver-ui-desktop:1-SNAPSHOT'
+compile 'eu.tsystems.mms.tic.testerra:report-ng:1-SNAPSHOT'
 ````
 
 ### Using testerra functionality:

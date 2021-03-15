@@ -1,0 +1,55 @@
+= Browser specific knowledge
+
+== Firefox
+
+=== Prevent Firefox download confirmation dialog
+
+[source,java]
+----
+FirefoxOptions firefoxOptions = new FirefoxOptions();
+// You have to add every mimetype you want no confirmation for
+firefoxOptions.addPreference("browser.helperApps.neverAsk.saveToDisk", "application/zip");
+firefoxOptions.addPreference("browser.download.manager.showAlertOnComplete", false);
+firefoxOptions.addPreference("browser.download.manager.showWhenStarting", false);
+----
+
+== Chrome
+
+=== Chrome in a container
+
+If using Selenium with Chrome in a Docker container it may comes to some random `WebDriverException`, because of some internal container limits.
+
+If you are getting random ``selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash`, may this code snippet will solve your problem, by disabling the usage of `dev/shm` memory and enabling the usage of `/tmp` instead.
+This will may slow down your execution time, because you are using disk instead of memory.
+The reason is, that chrome / chrome driver leads to errors when `/dev/shm` is too small.
+
+.Java snippet for test classes
+[source,java]
+----
+@BeforeSuite
+void configureChromeOptions() {
+    WebDriverManager.setUserAgentConfig(Browsers.chromeHeadless, new ChromeConfig() {
+        @Override
+        public void configure(ChromeOptions options) {
+            options.addArguments("--disable-dev-shm-usage");
+        }
+    });
+}
+----
+
+== Internet Explorer
+
+=== Skip certificate warning page
+
+When testing websites with own certificates you may encounter issues and warning pages in each browser you use.
+For Chrome or Firefox these warnings can be skipped by setting properties, but for the Internet Explorer you have to define a small helper method, that you can call right after opening the base url.
+
+[source,java]
+----
+public void skipInternetExplorerSecurityWarning(WebDriver driver, boolean handleAlert) {
+    driver.navigate().to("javascript:document.getElementById('overridelink').click()");
+    if (handleAlert) {
+        driver.switchTo().alert().accept();
+    }
+}
+----

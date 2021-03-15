@@ -1,0 +1,38 @@
+= Using a proxy
+
+include::../properties/property-attributes.adoc[]
+
+There are three ways for setting up a proxy for your test run environment.
+
+- System proxy settings for the build environment (Maven, Gradle), TestNG, JVM and Selenium
+- Browser proxy settings for the SUT, which is done by capabilities as described here <<Browser capabilities,Proxy setup>>
+
+== Command line (recommended)
+To setup a proxy for the whole system, including the build environment (Maven, Gradle), the JVM and Testerra, the recommended way is to pass it by command line arguments like
+[source]
+----
+gradle test -Dhttps.proxyHost=your-proxy-host.com -Dhttps.proxyPort=8080
+----
+
+== Property file
+
+You can also put your proxy settings to the system <<PropertyManager, Property files>> with the following content
+
+.Example of system.properties
+[source,properties]
+----
+https.proxyHost=your-proxy-host.com
+https.proxyPort=8080
+https.proxyUser=
+https.proxyPassword=
+https.nonProxyHosts=localhost|192.168.0.1
+
+http.proxyHost=your-proxy-host.com
+http.proxyPort=8080
+http.proxyUser=
+http.proxyPassword=
+----
+
+== Access the system proxy URL
+
+The system proxy can be accessed by <<Proxy Utilities>>

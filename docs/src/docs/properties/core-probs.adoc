@@ -1,0 +1,9 @@
+include::property-attributes.adoc[]
+
+
+[cols="2,^1,4",options="header"]
+|===
+| Property | default | Description
+| {system_settings_file} | system.properties | File name of property file for proxy settings.
+| {cert_trusted_hosts} | (empty) | Whitespace separated list of trusted hosts (for SSL sockets)
+|===

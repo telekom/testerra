@@ -1,0 +1,14 @@
+        <script type="text/javascript" src="js/datatables.min.js"></script><!-- Enthält jQuery -->
+
+        <script type="text/javascript" src="js/chart.2.7.2.bundle.min.js"></script>
+        <script type="text/javascript" src="js/moment2.22.2.js"></script>
+
+        <script type="text/javascript" src="js/easy.js"></script>
+        <script type="text/javascript" src="js/kis/main.js"></script>
+        <script type="text/javascript" src="js/kis/modernizr.js"></script>
+        <script type="text/javascript" src="js/kis/jquery-migrate-1.2.1.min.js"></script>
+        <script type="text/javascript" src="js/main.js"></script>
+        <script type="text/javascript" src="js/report.js"></script>
+        <!-- jira -->
+        <!--<script type="text/javascript" src="js/jira.js"></script>-->
+        <script type="text/javascript" src="js/piechart.js"></script>

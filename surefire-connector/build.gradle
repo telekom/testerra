@@ -1,0 +1,7 @@
+dependencies {
+    compileOnly core
+    implementation (group: 'org.apache.maven.surefire', name: 'surefire-testng', version: '2.19.1') {
+        exclude group: 'org.testng'
+        exclude module: 'testng'
+    }
+}

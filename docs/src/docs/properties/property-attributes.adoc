@@ -1,0 +1,119 @@
+// Defintion of property attributes
+// If a property was changed in Testerra, change it here!
+
+// Testerra core
+:system_settings_file:                           tt.system.settings.file
+
+// webdriver
+:browser:                                       tt.browser
+:browser_version:                               tt.browser.version
+:browser_setting:                               tt.browser.setting
+:baseurl:                                       tt.baseurl
+:webdriver_mode:                                tt.webdriver.mode
+:selenium_server_url:                           tt.selenium.server.url
+:selenium_server_host:                          tt.selenium.server.host
+:selenium_server_port:                          tt.selenium.server.port
+:browser_maximize:                              tt.browser.maximize
+:browser_maximize_position:                     tt.browser.maximize.position
+:display_resolution:                            tt.display.resolution
+:wdm_closewindows_aftertestmethods:             tt.wdm.closewindows.aftertestmethods
+:wdm_closewindows_onfailure:                    tt.wdm.closewindows.onfailure
+:wdm_timeouts_selenium_command_stuck:           tt.wdm.timeouts.seconds.selenium.command.stuck
+:wdm_timeouts_window_switch:                    tt.wdm.timeouts.seconds.window.switch.duration
+:webdriver_timeouts_seconds_pageload:           webdriver.timeouts.seconds.pageload
+:webdriver_timeouts_seconds_script:             webdriver.timeouts.seconds.script
+
+// pagefactory
+:project_package:                               tt.project.package
+:page_factory_loops:                            tt.page.factory.loops
+
+// guielement
+:element_timeout_seconds:                       tt.element.timeout.seconds
+:guielement_default_assertcollector:            tt.guielement.default.assertcollector
+:guielement_use_js_alternatives:                tt.guielement.use.js.alternatives
+:guielement_checkrule:                          tt.guielement.checkrule
+:delay_after_guielement_find_millis:            tt.delay.after.guielement.find.millis
+:delay_before_guielement_action_millis:         tt.delay.before.guielement.action.millis
+:delay_after_guielement_action_millis:          tt.delay.after.guielement.action.millis
+
+// report
+:reportdir:                                     tt.report.dir
+:reportname:                                    tt.report.name
+:runcfg:                                        tt.runcfg
+:screenshotter_active:                          tt.screenshotter.active
+:report_screenshots_preview:                    tt.report.screenshots.preview
+:screenshot_on_pageload:                        tt.screenshot.on.pageload
+:screencaster_active:                           tt.screencaster.active
+:screencaster_active_on_failed:                 tt.screencaster.active.on.failed
+:screencaster_active_on_success:                tt.screencaster.active.on.success
+
+// execution
+:dryrun:                                        tt.dryrun
+:demomode:                                      tt.demomode
+:list_tests:                                    tt.list.tests
+:on_state_testfailed_skip_shutdown:             tt.on.state.testfailed.skip.shutdown
+:on_state_testfailed_skip_following_tests:      tt.on.state.testfailed.skip.following.tests
+:failed_tests_if_throwable_classes:             tt.failed.tests.if.throwable.classes
+:failed_tests_if_throwable_messages:            tt.failed.tests.if.throwable.messages
+:failed_tests_max_retries:                      tt.failed.tests.max.retries
+:reuse_dataprovider_driver_by_thread:           tt.reuse.dataprovider.driver.by.thread
+:execution_omit_indevelopment:                  tt.execution.omit.indevelopment
+
+:watchdog_enable:                               tt.watchdog.enable
+:watchdog_timeout_seconds:                      tt.watchdog.timeout.seconds
+
+:failure_corridor_active:                       tt.failure.corridor.active
+:failure_corridor_allowed_failed_tests_high:    tt.failure.corridor.allowed.failed.tests.high
+:failure_corridor_allowed_failed_tests_mid:     tt.failure.corridor.allowed.failed.tests.mid
+:failure_corridor_allowed_failed_tests_low:     tt.failure.corridor.allowed.failed.tests.low
+
+:layoutcheck_takereference:                     tt.layoutcheck.takereference
+:layoutcheck_reference_path:                    tt.layoutcheck.reference.path
+:layoutcheck_reference_nametemplate:            tt.layoutcheck.reference.nametemplate
+:layoutcheck_ignore_color:                      tt.layoutcheck.use.ignore.color
+
+:layoutcheck_use_area_color:                    tt.layoutcheck.use.area.color
+// :layoutcheck_mode:                              tt.layoutcheck.mode
+:layoutcheck_actual_template:                   tt.layoutcheck.actual.nametemplate
+:layoutcheck_distance_template:                 tt.layoutcheck.distance.nametemplate
+:layoutcheck_distance_path:                     tt.layoutcheck.distance.path
+:layoutcheck_actual_path:                       tt.layoutcheck.actual.path
+:layoutcheck_pixel_rgb_deviation_percent:       tt.layout.pixel.rgb.deviation.percent
+
+:layoutcheck_pixel_rgb_deviation_percent:       tt.layoutcheck.match.threshold
+:layoutcheck_displacement_threshold:            tt.layoutcheck.displacement.threshold
+:layoutcheck_intra_grouping_threshold:          tt.layoutcheck.intra.grouping.threshold
+:layoutcheck_min_match_distance:                tt.layoutcheck.min.match.distance
+:layoutcheck_min_size_difference_sub_images:    tt.layoutcheck.min.size.difference.sub.images
+:layoutcheck_distance_multiple_matches:         tt.layoutcheck.distance.multiple.matches
+
+// error classes
+:layoutcheck_ignore_ambiguous_movement:         tt.layoutcheck.ignore.ambiguous.movement
+:layoutcheck_ignore_movement:                   tt.layoutcheck.ignore.movement
+:layoutcheck_ignore_group_movement:             tt.layoutcheck.ignore.group.movement
+:layoutcheck_ignore_missing_elements:           tt.layoutcheck.ignore.missing.elements
+:layoutcheck_ignore_ambiguous_match:            tt.layoutcheck.ignore.ambiguous.match
+
+// annotated mode related
+// :layoutcheck_annotated_nametemplate:            tt.layoutcheck.annotated.nametemplate
+// :layoutcheck_annotationdata_nametemplate:       tt.layoutcheck.annotationdata.nametemplate
+// :layoutcheck_min_similar_movement_errors:       tt.layoutcheck.min.similar.movement.errors
+// :layoutcheck_min_marked_pixels:                 tt.layoutcheck.minimum.marked.pixels
+// :layoutcheck_max_marked_pixels_ratio:           tt.layoutcheck.maximum.marked.pixels.ratio
+
+// :layoutcheck_error_detector_min_line_length:    tt.layoutcheck.text.error.detector.minimal.line.length
+// :layoutcheck_error_detector_min_edge_strength:  tt.layoutcheck.text.error.detector.minimal.edge.strength
+// :layoutcheck_assert_info_mode:                  tt.layoutcheck.assert.info.mode
+
+// source utils
+:source_utils_root:                             tt.module.source.root
+:source_utils_line_prefetch:                    tt.source.lines.prefetch
+:source_utils_activate_sources:                 tt.report.activate.sources
+
+// perf
+:perf_test:                                     tt.perf.test
+:perf_generate_statistics:                      tt.perf.generate.statistics
+:perf_thinktime_ms:                             tt.perf.page.thinktime.ms
+
+:cert_trusted_hosts:                    tt.cert.trusted.hosts
+

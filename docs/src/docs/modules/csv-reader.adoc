@@ -1,0 +1,125 @@
+= CSV Reader (*deprecated*)
+
+NOTE: This class is not supported anymore and therefore marked as `@deprecated`. If you want to read CSV files into Java beans, please consider the documentation of the http://opencsv.sourceforge.net/#reading_into_beans[OpenCSV library]
+
+The CSV reader class provides a basic reader for CSV files.
+This is useful to handle testdata.
+It provides two ways to read a csv file.
+
+For all code examples we assume the following CSV files located in your project resource directory, e.g. `src/test/resources`.
+
+.TestCsvReader.csv
+[source,csv]
+----
+id;name;firstName
+AH_1;Muster;Max
+AH_2;Paula;Paul
+----
+
+.TestCsvReaderWithSubBean.csv
+[source,csv]
+----
+id;name;firstName;subModel
+AH_1;Muster;Max;SUB_1
+AH_2;Paula;Paul;SUB_2
+----
+
+.TestCsvReaderSubModel.csv
+[source,csv]
+----
+id;street;city
+SUB_1;Street A 12;Dresden
+SUB_2;Street B 13;Leipzig
+----
+
+== Read file into map
+
+With following code snippet you can read a CSV file into a simple key-value based map.
+
+The values of the  header row will be used as key. All other rows are then values of the given key.
+
+[source,java]
+----
+final CSVTestDataReader csvTestDataReader = new CSVTestDataReader();
+
+final List<Map<String, String>> testDataMap = csvTestDataReader.readCsvTestDataFromResource("testfiles/TestCsvReader.csv");
+
+Assert.assertEquals(testDataMap.size(), 2);
+Assert.assertEquals(testDataMap.get(0).get("id"), "AH_1");
+Assert.assertEquals(testDataMap.get(1).get("id"), "AH_2");
+----
+
+== Read files into beans
+
+The other way to read a CSV file is to convert it into Java models.
+Therefore you have to specify the class matches the Java domain model pattern.
+
+[source,java]
+----
+final CSVTestDataReader csvTestDataReader = new CSVTestDataReader();
+
+final List<TestCsvReaderBean> testDataList = csvTestDataReader.readCsvIntoBeans("testfiles/TestCsvReader.csv", TestCsvReaderBean.class);
+
+Assert.assertNotNull(testDataList);####
+Assert.assertNotEquals(testDataList.size(), 0);
+
+final TestCsvReaderBean testCSVReader = testDataList.get(0);
+final String id = testCSVReader.getId();
+Assert.assertEquals(id, "AH_1");
+----
+
+Further to this approach it is possible to concat objects like you do in your Java model as well.
+
+Given the following classes and the given CSV, you will notice, that `TestCsvReaderWithSubModel` has a property of type `TestCsvReaderSubModel`.
+In order to solve this, the CSV reader will try to find a CSV file named like your class `TestCsvReaderSubModel` in your resources.
+If it exists, the CSV reader will read this "sub-file" as well and will inject the object into the main type.
+
+Just ensure that you provide a unique line identifier. The CSV reader will then take care.
+
+.TestCsvReaderWithSubModel.java
+[source,java]
+----
+public class TestCsvReaderBeanWithSubModel {
+
+    private String id;
+    private String name;
+    private String firstName;
+    private TestCsvReaderSubModel subModel;
+
+    // getter and setter here...
+}
+----
+
+.TestCsvReaderSubModel.java
+[source,java]
+----
+public class TestCsvReaderSubModel {
+
+    private String id;
+    private String street;
+    private String city;
+
+    // getter and setter here...
+}
+----
+
+[IMPORTANT]
+=====
+Simple data types must be represented by their object data types.
+
+E.g.
+* `int` &#8594; `Integer`
+* `boolean` &#8594; `Boolean`
+=====
+
+== Customize the CSV reader
+
+The following table shows how you can customize the CSV reader.
+
+[cols="2,1,2",options="header"]
+|===
+| Method | Default value | Description
+| `setHeaderRow(int headerRow)` | 0 | Set the row of the hedaer in CSV file, beginning with 0.
+| `setSeparator(char separator)` | ; | Set the column separater.
+| setQuoteChar(char quoteChar) | \" | Set the characters, how strings can be quoted.
+|===

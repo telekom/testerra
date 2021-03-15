@@ -1,0 +1,29 @@
+= Hooks
+
+The interface `ModuleHook` of Testerra framework offers you an entry point to extend the framework and register listeners, add workers or apply filters to methods.
+All you have to do is to implement the interfaces `ModuleHook.init()` and `ModuleHook.terminate()` methods.
+Testerra will then search for all present implementations of `ModuleHook` in the class path and will register it.
+
+While the `init()` method is called on startup of Testerra as one of the earliest steps, you are able to make your customizations as soon as possible and you are able to register to all <<Events and Listener>> of Testerra framework as well.
+
+The `terminate()` method of your custom module hook is called at the most latest point for Testerra right before terminating the execution.
+You should use this method to cleanup your module, if necessary, for example closing database connections in a database module.
+
+.Simple Testerra ModuleHook
+[source,java]
+----
+import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
+
+public class SimpleCustomHook implements ModuleHook {
+
+    @Override
+    public void init() {
+        //
+    }
+
+    @Override
+    public void terminate() {
+        //
+    }
+}
+----

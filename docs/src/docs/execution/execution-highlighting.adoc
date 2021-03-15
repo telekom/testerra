@@ -1,0 +1,26 @@
+= Element Highlighting
+include::../properties/property-attributes.adoc[]
+
+== Demo mode
+In the demo mode actions on pages are marked with distinctive coloured frames around the element of the action. This mechanism is set by a property
+
+.test.properties
+[source, properties]
+----
+# activate demo mode, default = false
+{demomode}=true
+----
+The following colours are used for highlighting
+
+* [red]#red#: failed visibility checks and asserts
+* [green]#green#: successful visibility checks and asserts
+* [yellow]#yellow#: mouseOver
+* [blue]#blue#: click
+
+== Explicit Highlighting
+For debugging purposes a `GuiElement` can call its highlight method to activate the demo mode and highlight the Element just for the current page.
+
+[source, java]
+GuiElement loginButton = new GuiElement(driver, By.id('login'));
+loginButton.highlight();
+// renders a green frame around the loginButton Element of the current Page

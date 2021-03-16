@@ -21,9 +21,11 @@
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import java.io.Serializable;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 public abstract class AbstractWebDriverRequest extends AbstractWebDriverConfiguration implements Serializable, WebDriverRequest {
     private String sessionKey;
+    private DesiredCapabilities desiredCapabilities;
 
     public String getSessionKey() {
         return sessionKey;
@@ -32,5 +34,12 @@ public abstract class AbstractWebDriverRequest extends AbstractWebDriverConfigur
     public AbstractWebDriverRequest setSessionKey(String sessionKey) {
         this.sessionKey = sessionKey;
         return this;
+    }
+
+    public DesiredCapabilities getDesiredCapabilities() {
+        if (this.desiredCapabilities == null) {
+            this.desiredCapabilities = new DesiredCapabilities();
+        }
+        return desiredCapabilities;
     }
 }

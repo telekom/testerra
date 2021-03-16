@@ -402,7 +402,7 @@ public final class WebDriverSessionsManager {
     }
 
     public static Optional<String> getRequestedBrowser(WebDriver webDriver) {
-        return getSessionContext(webDriver).map(SessionContext::getWebDriverRequest).map(AbstractWebDriverRequest::getBrowser);
+        return getSessionContext(webDriver).map(SessionContext::getWebDriverRequest).map(WebDriverRequest::getBrowser);
     }
 
     public static Stream<SessionContext> readSessionContexts() {

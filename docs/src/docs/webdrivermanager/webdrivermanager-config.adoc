@@ -57,7 +57,7 @@ NOTE: If an attribute is not set the global definition is used.
 
 [source,java]
 ----
-WebDriverRequest myRequest = new DesktopWebDriverRequest();
+DesktopWebDriverRequest myRequest = new DesktopWebDriverRequest();
 myRequest.setBaseUrl("http://example.org");
 myRequest.setBrowser(Browsers.firefox);
 myRequest.setBrowserVersion("66");

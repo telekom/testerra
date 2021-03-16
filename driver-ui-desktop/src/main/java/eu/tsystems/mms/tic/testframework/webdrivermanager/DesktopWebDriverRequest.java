@@ -28,19 +28,11 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class DesktopWebDriverRequest extends AbstractWebDriverRequest implements Loggable, Serializable {
-    private DesiredCapabilities desiredCapabilities;
+
     private URL seleniumServerURL;
     private WebDriverMode webDriverMode;
-
-    public DesiredCapabilities getDesiredCapabilities() {
-        if (this.desiredCapabilities == null) {
-            this.desiredCapabilities = new DesiredCapabilities();
-        }
-        return desiredCapabilities;
-    }
 
     public URL getSeleniumServerUrl() {
         if (seleniumServerURL == null) {
@@ -73,18 +65,5 @@ public class DesktopWebDriverRequest extends AbstractWebDriverRequest implements
     public DesktopWebDriverRequest setWebDriverMode(WebDriverMode webDriverMode) {
         this.webDriverMode = webDriverMode;
         return this;
-    }
-
-    @Override
-    public String toString() {
-        return "DesktopWebDriverRequest{" +
-                ", desiredCapabilities=" + desiredCapabilities +
-                ", seleniumServerURL='" + getSeleniumServerUrl() + '\'' +
-                ", webDriverMode=" + webDriverMode +
-                ", browser=" + getBrowser() +
-                ", sessionKey='" + getSessionKey() + '\'' +
-                ", baseUrl='" + getBaseUrl() + '\'' +
-                ", browserVersion='" + getBrowserVersion() + '\'' +
-                '}';
     }
 }

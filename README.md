@@ -63,6 +63,8 @@ public class MyTest extends TesterraTest {
 }
 ````
 
+Feel free to try out our ready-to-use Skeleton project: [testerra-skeleton].
+
 ## Documentation
 
 Check out our comprehensive [Testerra documentation](http://docs.testerra.io/testerra/2.0-RC-3/)!
@@ -88,11 +90,10 @@ The following channels are available for discussions, feedback, and support requ
 | **Issues**   | <a href="https://github.com/telekom/testerra/issues/new/choose" title="Issues"><img src="https://img.shields.io/github/issues/telekom/testerra?style=flat"></a> |
 | **Other Requests**    | <a href="mailto:testerra@t-systems-mms.com" title="Email us"><img src="https://img.shields.io/badge/email-CWA%20team-green?logo=mail.ru&style=flat-square&logoColor=white"></a>   |
 
-## Repositories
+## Additional repositories
 
 | Repository          | Description                                                           |
 | ------------------- | --------------------------------------------------------------------- |
-| [testerra] | Testerra |
 | [testerra-skeleton] | Testerra Skeleton Project |
 | [testerra-selenoid-connector] | Testerra Selenoid Connector |
 | [testerra-hpqc-connector] | Testerra HPQC Connector |

@@ -90,10 +90,11 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
             // input --> ./input
             // ./input --> No corrections
             // .//input --> No corrections
+            // (.//input) --> No corrections
             if (xpath.startsWith("/")) {
                 xpath = xpath.replaceFirst("/", "./");
                 corrected = true;
-            } else if (!xpath.startsWith(".")) {
+            } else if (!xpath.startsWith("(")) {
                 xpath = "./" + xpath;
                 corrected = true;
             }

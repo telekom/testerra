@@ -22,7 +22,7 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import java.io.Serializable;
 
-public abstract class AbstractWebDriverRequest extends AbstractWebDriverConfiguration implements Serializable {
+public abstract class AbstractWebDriverRequest extends AbstractWebDriverConfiguration implements Serializable, WebDriverRequest {
     private String sessionKey;
 
     public String getSessionKey() {

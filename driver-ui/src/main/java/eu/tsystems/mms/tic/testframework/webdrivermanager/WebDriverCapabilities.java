@@ -77,7 +77,7 @@ public class WebDriverCapabilities {
     }
 
     @Deprecated
-    public static Map<String, Object> getThreadCapabilities() {
+    static Map<String, Object> getThreadCapabilities() {
         if (THREAD_CAPABILITIES.get() == null) {
             THREAD_CAPABILITIES.set(new HashMap<>());
         }

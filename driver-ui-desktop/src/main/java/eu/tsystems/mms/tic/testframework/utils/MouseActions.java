@@ -22,6 +22,7 @@
  package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
@@ -81,6 +82,10 @@ public final class MouseActions {
         final WebDriver driver = drag.getWebDriver();
 
         dragAndDropOverFrames(driver, drag, drop, dragFromX, dragFromY, dragToX, dragToY);
+    }
+
+    public void dragAndDropJs(UiElement drag, UiElement drop) {
+        dragAndDropJS((GuiElement) drag, (GuiElement) drop);
     }
 
     /**

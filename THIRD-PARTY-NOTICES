@@ -1,6 +1,6 @@
 ThirdPartyNotices
 -----------------
-Testerra uses third-party software or other resources that may be distributed 
+Testerra uses third-party software or other resources that may be distributed
 under licenses different from Testerra.
 
 In the event that we overlooked to list a required notice, please bring this
@@ -8,4 +8,170 @@ to our attention by contacting us via an GitHub issue.
 
 
 Components:
------------
+------------
+
+
+BMP:
+----
+
+Component: 	com.google.code.gson:gson
+Version:	2.8.6
+Website:   	https://github.com/google/gson
+Repository:	https://github.com/google/gson
+License:   	Apache-2.0
+
+Component:  javax.ws.rs:javax.ws.rs-api
+Version:    2.0.1
+Website:    https://javaee.github.io/glassfish/
+Repository: https://github.com/jax-rs/api
+License:    CDDL
+
+Component:  net.lightbody.bmp:browsermob-proxy
+Version:    2.1.1
+Website:    https://bmp.lightbody.net/
+Repository: https://github.com/lightbody/browsermob-proxy
+License:    Apache 2.0
+
+Component:  net.lightbody.bmp:browsermob-legacy
+Version:    2.1.1
+Website:    https://bmp.lightbody.net/
+Repository: https://github.com/lightbody/browsermob-proxy
+License:    Apache 2.0
+
+Component:  org.apache.httpcomponents:httpcore
+Version:    4.4.13
+Website:    http://hc.apache.org/httpcomponents-core-ga
+Repository: https://github.com/apache/httpcomponents-core
+License:    Apache 2.0
+
+BUP:
+----
+
+Component: 	com.google.code.gson:gson
+Version:	2.8.6
+Website:   	https://github.com/google/gson
+Repository:	https://github.com/google/gson
+License:   	Apache-2.0
+
+Component:  org.json:json
+Version:    20140107
+Website:    https://github.com/stleary/JSON-java
+Repository: https://github.com/stleary/JSON-java
+License:    JSON.org
+
+Component:  org.apache.httpcomponents:httpcore
+Version:    4.4.13
+Website:    http://hc.apache.org/httpcomponents-core-ga
+Repository: https://github.com/apache/httpcomponents-core
+License:    Apache 2.0
+
+Component:  org.apache.httpcomponents:httpclient
+Version:    4.4.12
+Website:    http://hc.apache.org/httpcomponents-client
+Repository: https://github.com/apache/httpcomponents-client
+License:    Apache 2.0
+
+Component:  com.browserup:browserup-proxy-core
+Version:    2.1.0
+Website:    https://github.com/browserup/browserup-proxy
+Repository: https://github.com/browserup/browserup-proxy
+License:    Apache 2.0
+
+Component:  com.github.tomakehurst:wiremock-jre8
+Version:    2.26.3
+Website:    http://wiremock.org/
+Repository: https://github.com/tomakehurst/wiremock
+License:    Apache 2.0
+
+CORE:
+-----
+
+CORE-INTEROP:
+-------------
+
+DRIVER-UI:
+----------
+
+Component:
+Version:
+Website:
+Repository:
+License:
+
+Component:
+Version:
+Website:
+Repository:
+License:
+
+Component:
+Version:
+Website:
+Repository:
+License:
+
+Component:
+Version:
+Website:
+Repository:
+License:
+
+Component:
+Version:
+Website:
+Repository:
+License:
+
+Component:
+Version:
+Website:
+Repository:
+License:
+
+Component:
+Version:
+Website:
+Repository:
+License:
+
+Component:
+Version:
+Website:
+Repository:
+License:
+
+Component:
+Version:
+Website:
+Repository:
+License:
+
+Component:
+Version:
+Website:
+Repository:
+License:
+
+Component:
+Version:
+Website:
+Repository:
+License:
+
+Component:
+Version:
+Website:
+Repository:
+License:
+
+Component:
+Version:
+Website:
+Repository:
+License:
+
+Component:
+Version:
+Website:
+Repository:
+License:

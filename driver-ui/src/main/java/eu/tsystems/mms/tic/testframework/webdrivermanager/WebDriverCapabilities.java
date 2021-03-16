@@ -66,6 +66,7 @@ public class WebDriverCapabilities {
         GLOBALCAPABILITIES.put(key, value);
     }
 
+    @Deprecated
     static void addThreadCapability(String key, Object value) {
         if (CapabilityType.BROWSER_NAME.equals(key)) {
             LOGGER.warn("Skipping extra desired capability " + key);
@@ -75,6 +76,7 @@ public class WebDriverCapabilities {
         getThreadCapabilities().put(key, value);
     }
 
+    @Deprecated
     public static Map<String, Object> getThreadCapabilities() {
         if (THREAD_CAPABILITIES.get() == null) {
             THREAD_CAPABILITIES.set(new HashMap<>());
@@ -98,6 +100,7 @@ public class WebDriverCapabilities {
         GLOBALCAPABILITIES.clear();
     }
 
+    @Deprecated
     static void clearThreadCapabilities() {
         THREAD_CAPABILITIES.remove();
     }

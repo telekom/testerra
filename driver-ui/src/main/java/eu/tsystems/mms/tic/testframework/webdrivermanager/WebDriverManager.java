@@ -109,6 +109,7 @@ public final class WebDriverManager {
      *
      * @return .
      */
+    @Deprecated
     public static Map<String, Object> getThreadCapabilities() {
         return WebDriverCapabilities.getThreadCapabilities();
     }
@@ -119,6 +120,7 @@ public final class WebDriverManager {
      * @param key   .
      * @param value .
      */
+    @Deprecated
     public static void addThreadCapability(String key, Object value) {
         WebDriverCapabilities.addThreadCapability(key, value);
     }

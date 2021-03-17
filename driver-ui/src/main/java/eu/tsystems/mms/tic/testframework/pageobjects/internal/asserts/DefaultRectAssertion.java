@@ -91,7 +91,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
 
             @Override
             public String createSubject() {
-                return String.format("leftOf(%s)", uiElement);
+                return String.format("left of %s", uiElement);
             }
         });
     }
@@ -106,7 +106,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
 
             @Override
             public String createSubject() {
-                return String.format("rightOf(%s)", uiElement);
+                return String.format("right of %s", uiElement);
             }
         });
     }
@@ -121,7 +121,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
 
             @Override
             public String createSubject() {
-                return String.format("above(%s)", uiElement);
+                return String.format("above %s", uiElement);
             }
         });
     }
@@ -136,7 +136,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
 
             @Override
             public String createSubject() {
-                return String.format("below(%s)", uiElement);
+                return String.format("below %s", uiElement);
             }
         });
     }
@@ -152,7 +152,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
 
             @Override
             public String createSubject() {
-                return "fromRight";
+                return "from right";
             }
         });
     }
@@ -168,7 +168,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
 
             @Override
             public String createSubject() {
-                return "fromLeft";
+                return "from left";
             }
         });
     }
@@ -184,7 +184,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
 
             @Override
             public String createSubject() {
-                return "fromTop";
+                return "from top";
             }
         });
     }
@@ -200,7 +200,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
 
             @Override
             public String createSubject() {
-                return "fromBottom";
+                return "from bottom";
             }
         });
     }

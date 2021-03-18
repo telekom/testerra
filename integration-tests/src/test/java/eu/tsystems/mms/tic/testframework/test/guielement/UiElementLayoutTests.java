@@ -241,22 +241,37 @@ public class UiElementLayoutTests extends AbstractExclusiveTestSitesTest<WebTest
         e1.expect().bounds().fromRight().toRightOf(e2).absolute().isLowerEqualThan(150);
     }
 
-    /*
-    Inner
-     */
-
-    @Test(enabled = false)
-    /**
-     * There is no implementation for inner borders
-     */
-    public void testT81_InnerBorders()  {
+    private void testParentContainsElement(boolean test) {
+        WebTestPage page = getPage();
+        UiElement element = page.getFinder().findById(1);
+        UiElement parent = page.getFinder().findById("inputbox");
+        parent.expect().bounds().contains(element).is(test);
     }
 
-    @Test(enabled = false)
-    /**
-     * There is no implementation for inner borders
-     */
-    public void testT82_Checkon_Assert() {
+    @Test
+    public void test_contains() {
+        testParentContainsElement(true);
+    }
 
+    @Test(expectedExceptions = AssertionError.class)
+    public void test_contains_fails() {
+        CONTROL.withTimeout(0, () -> this.testElementIntersectsParent(false));
+    }
+
+    @Test
+    public void test_intersects() {
+        testParentContainsElement(true);
+    }
+
+    @Test(expectedExceptions = AssertionError.class)
+    public void test_intersects_fails() {
+        CONTROL.withTimeout(0, () -> this.testElementIntersectsParent(false));
+    }
+
+    private void testElementIntersectsParent(boolean test) {
+        WebTestPage page = getPage();
+        UiElement element = page.getFinder().findById("disableRDButton");
+        UiElement parent = page.getFinder().findById("waiterDiv");
+        element.expect().bounds().intersects(parent).is(test);
     }
 }

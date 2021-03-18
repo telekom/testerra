@@ -61,7 +61,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
 
             @Override
             public String createSubject() {
-                return Format.separate(format(provider.getActual()), Format.enclose("contains", uiElement), format(uiElement.waitFor().bounds().getActual()));
+                return Format.separate(format(provider.getActual()),"contains", uiElement, format(uiElement.waitFor().bounds().getActual()));
             }
         });
     }
@@ -76,7 +76,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
 
             @Override
             public String createSubject() {
-                return Format.separate(format(provider.getActual()), Format.enclose("intersects", uiElement), format(uiElement.waitFor().bounds().getActual()));
+                return Format.separate(format(provider.getActual()), "intersects", uiElement, format(uiElement.waitFor().bounds().getActual()));
             }
         });
     }

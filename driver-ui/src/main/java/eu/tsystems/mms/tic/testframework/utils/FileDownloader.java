@@ -28,7 +28,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
@@ -42,7 +41,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Utility class for downloading files to executing host
+ * Utility class for downloading files to executing host.
  * <p>
  * Date: 14.12.2015
  * Time: 07:35
@@ -90,32 +89,30 @@ public class FileDownloader {
      * @param downloadLocation     String Download target location
      * @param imitateCookies       boolean Imitate cookies?
      * @param trustAllCertificates boolean Accept all certificates?
+     * @deprecated Use {@link #FileDownloader()} instead
      */
-    public FileDownloader(final String downloadLocation, final boolean imitateCookies,
-                          boolean trustAllCertificates) {
+    public FileDownloader(
+            String downloadLocation,
+            boolean imitateCookies,
+            boolean trustAllCertificates
+    ) {
         this.downloadLocation = downloadLocation;
         this.imitateCookies = imitateCookies;
         this.trustAllCertificates = trustAllCertificates;
-
-        final URL systemHttpProxyUrl = ProxyUtils.getSystemHttpProxyUrl();
-        if (systemHttpProxyUrl != null) {
-            this.proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(systemHttpProxyUrl.getHost(), systemHttpProxyUrl.getPort()));
-        }
     }
 
     /**
      * Instantiate FileDownloader
      *
      * @param downloadLocation String
+     * @deprecated
      */
     public FileDownloader(final String downloadLocation) {
         this.downloadLocation = downloadLocation;
     }
 
-    /**
-     * Instantiate FileDownloader
-     */
     public FileDownloader() {
+
     }
 
     /**
@@ -294,7 +291,8 @@ public class FileDownloader {
             String cookieString,
             boolean useSecondConnection
     ) throws IOException {
-        LOGGER.info("Download " + url + " to " + targetFile.getAbsolutePath());
+
+        LOGGER.info("Start downloading " + url);
 
         String targetFileName = "";
         URLConnection connection = openConnection(url, proxy, timeoutMS, trustAll, cookieString, sslSocketFactory);
@@ -319,8 +317,10 @@ public class FileDownloader {
             targetFile = FileUtils.getFile(this.getDownloadLocation() + "/" + targetFileName);
         }
 
+        LOGGER.info("Downloaded " + url + " to " + targetFile.getAbsolutePath());
+
         FileUtils.copyInputStreamToFile(inputStream, targetFile);
-        
+
         synchronized (downloadList) {
             downloadList.add(targetFile.getAbsolutePath());
         }

@@ -3,8 +3,6 @@ plugins {
     id "jp.classmethod.aws.s3" version "0.40"
 }
 
-doNotPublish(this)
-
 import com.amazonaws.services.s3.model.ObjectMetadata
 import jp.classmethod.aws.gradle.s3.AmazonS3FileUploadTask
 import jp.classmethod.aws.gradle.s3.SyncTask
@@ -22,6 +20,13 @@ ext {
 aws {
     profileName = 'tapas'
     region = 'eu-central-1'
+}
+
+// Deactivate JAR publishing
+project.afterEvaluate {
+    project.tasks.jar.enabled = false
+    project.tasks.publish.enabled = false
+    project.tasks.publishToMavenLocal.enabled = false
 }
 
 asciidoctor {

@@ -16,9 +16,6 @@ ext {
     seleniumVersion = '3.141.59'
     guavaVersion = "28.1-jre"
 
-    // Flags
-    doNotPublish = this.&dnp
-
     moduleVersion = '1-SNAPSHOT'
     if (System.properties.containsKey('ttVersion')) {
         moduleVersion = System.getProperty('ttVersion')
@@ -69,17 +66,18 @@ subprojects {
         }
     }
 
+    tasks.whenTaskAdded { t ->
+        if (t.name.startsWith("publish")) {
+            boolean e = t.project.publish.enabled
+            if (!e) {
+                println "Not running publish for " + t.project.name
+                t.enabled = false
+            }
+        }
+    }
+
     clean.dependsOn(cleanDist)
 
-}
-
-// Helper function to prevent publishing
-def dnp(prj) {
-    prj.jar.enabled = true
-    prj.publish.enabled = false
-    prj.publishToMavenLocal.enabled = false
-
-    println("Do not publish stuff from " + prj)
 }
 
 // Do not move this integration because `group` and `version` is needed for publishing

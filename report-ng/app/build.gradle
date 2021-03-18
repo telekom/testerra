@@ -23,7 +23,11 @@ plugins {
     id "com.github.node-gradle.node" version "3.0.0-rc6"
 }
 
-doNotPublish(this)
+project.afterEvaluate {
+    project.tasks.jar.enabled = false
+    project.tasks.publish.enabled = false
+    project.tasks.publishToMavenLocal.enabled = false
+}
 
 node {
     download = true

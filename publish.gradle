@@ -98,14 +98,4 @@ subprojects {
             }
         }
     }
-
-    tasks.whenTaskAdded { t ->
-        if (t.name.startsWith("publish")) {
-            boolean e = t.project.publish.enabled
-            if (!e) {
-                println "Not running publish for " + t.project.name
-                t.enabled = false
-            }
-        }
-    }
 }

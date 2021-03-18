@@ -318,22 +318,6 @@ public final class WebDriverSessionsManager {
 
 
     public static WebDriver getWebDriver(AbstractWebDriverRequest webDriverRequest) {
-        /*
-        get session key
-         */
-        if (StringUtils.isEmpty(webDriverRequest.getSessionKey())) {
-            webDriverRequest.setSessionKey(WebDriverManager.DEFAULT_SESSION_KEY);
-        }
-
-        if (StringUtils.isEmpty(webDriverRequest.getBrowser())) {
-            webDriverRequest.setBrowser(WebDriverManager.getConfig().getBrowser());
-        }
-
-        if (StringUtils.isEmpty(webDriverRequest.getBrowserVersion())) {
-            webDriverRequest.setBrowserVersion(WebDriverManager.getConfig().getBrowserVersion());
-        }
-
-        String browser = webDriverRequest.getBrowser();
         String sessionKey = webDriverRequest.getSessionKey();
         /*
         Check for exclusive session
@@ -362,8 +346,28 @@ public final class WebDriverSessionsManager {
          */
 
         /*
+        get session key
+         */
+        if (StringUtils.isEmpty(webDriverRequest.getSessionKey())) {
+            webDriverRequest.setSessionKey(WebDriverManager.DEFAULT_SESSION_KEY);
+        }
+
+        if (StringUtils.isEmpty(webDriverRequest.getBrowser())) {
+            webDriverRequest.setBrowser(WebDriverManager.getConfig().getBrowser());
+        }
+
+        if (StringUtils.isEmpty(webDriverRequest.getBrowserVersion())) {
+            webDriverRequest.setBrowserVersion(WebDriverManager.getConfig().getBrowserVersion());
+        }
+
+        if (StringUtils.isEmpty(webDriverRequest.getBrowser())) {
+            webDriverRequest.setBrowser(WebDriverManager.getConfig().getBrowser());
+        }
+
+        /*
         decide which session manager to use
          */
+        String browser = webDriverRequest.getBrowser();
         if (WEB_DRIVER_FACTORIES.containsKey(browser)) {
             WebDriverFactory webDriverFactory = WEB_DRIVER_FACTORIES.get(browser);
 

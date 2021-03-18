@@ -97,13 +97,11 @@ public class DesktopWebDriverFactory extends AbstractWebDriverFactory<DesktopWeb
         DesktopWebDriverRequest finalRequest;
         if (request instanceof DesktopWebDriverRequest) {
             finalRequest = (DesktopWebDriverRequest) request;
-        } else if (request instanceof UnspecificWebDriverRequest) {
+        } else {
             finalRequest = new DesktopWebDriverRequest();
             finalRequest.setSessionKey(request.getSessionKey());
             finalRequest.setBrowser(request.getBrowser());
             finalRequest.setBrowserVersion(request.getBrowserVersion());
-        } else {
-            throw new SystemException(request.getClass().getSimpleName() + " is not allowed here");
         }
 
         /*

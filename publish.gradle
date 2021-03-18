@@ -54,7 +54,7 @@ install {
                     name developerName
                     email developerEmail
                     organization developerOrganization
-                    organizationUrl
+                    organizationUrl developerOrganizationUrl
                 }
             }
             scm {

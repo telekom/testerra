@@ -30,7 +30,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
@@ -44,7 +43,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Utility class for downloading files to executing host
+ * Utility class for downloading files to executing host.
  * <p>
  * Date: 14.12.2015
  * Time: 07:35
@@ -56,15 +55,9 @@ public class FileDownloader implements Loggable {
     private static int DEFAULT_TIMEOUT_MS = 10 * 1000;
 
     /**
-     * Logging Instance
-     */
-    @Deprecated
-    private static final Logger LOGGER = LoggerFactory.getLogger(FileDownloader.class);
-
-    /**
      * List of downloaded files. need for cleanup
      */
-    private static final List<String> downloadList = new ArrayList<String>();
+    private static final List<String> downloadList = new ArrayList<>();
 
     /**
      * Determines download Location of this instance
@@ -93,32 +86,30 @@ public class FileDownloader implements Loggable {
      * @param downloadLocation     String Download target location
      * @param imitateCookies       boolean Imitate cookies?
      * @param trustAllCertificates boolean Accept all certificates?
+     * @deprecated Use {@link #FileDownloader()} instead
      */
-    public FileDownloader(final String downloadLocation, final boolean imitateCookies,
-                          boolean trustAllCertificates) {
+    public FileDownloader(
+            String downloadLocation,
+            boolean imitateCookies,
+            boolean trustAllCertificates
+    ) {
         this.downloadLocation = downloadLocation;
         this.imitateCookies = imitateCookies;
         this.trustAllCertificates = trustAllCertificates;
-
-        final URL systemHttpProxyUrl = ProxyUtils.getSystemHttpProxyUrl();
-        if (systemHttpProxyUrl != null) {
-            this.proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(systemHttpProxyUrl.getHost(), systemHttpProxyUrl.getPort()));
-        }
     }
 
     /**
      * Instantiate FileDownloader
      *
      * @param downloadLocation String
+     * @deprecated
      */
     public FileDownloader(final String downloadLocation) {
         this.downloadLocation = downloadLocation;
     }
 
-    /**
-     * Instantiate FileDownloader
-     */
     public FileDownloader() {
+
     }
 
     /**
@@ -128,21 +119,21 @@ public class FileDownloader implements Loggable {
      */
     @Deprecated
     public static void deleteDownloads() {
+        new FileDownloader().cleanup();
+    }
+
+    public FileDownloader cleanup() {
         synchronized (downloadList) {
             for (String path : downloadList) {
                 File file = FileUtils.getFile(path);
                 if (!file.delete()) {
-                    LOGGER.warn(String.format("File >%s< couldn't be deleted on cleanup. Please remove file manually.",
+                    log().warn(String.format("File >%s< couldn't be deleted on cleanup. Please remove file manually.",
                             file.getAbsolutePath()));
                 }
             }
 
             downloadList.clear();
         }
-    }
-
-    public FileDownloader cleanup() {
-        deleteDownloads();
         return this;
     }
 
@@ -297,7 +288,8 @@ public class FileDownloader implements Loggable {
             String cookieString,
             boolean useSecondConnection
     ) throws IOException {
-        log().info("Download " + url + " to " + targetFile.getAbsolutePath());
+
+        log().info("Start downloading " + url);
 
         String targetFileName = "";
         URLConnection connection = openConnection(url, proxy, timeoutMS, trustAll, cookieString, sslSocketFactory);
@@ -321,6 +313,8 @@ public class FileDownloader implements Loggable {
             }
             targetFile = FileUtils.getFile(this.getDownloadLocation() + "/" + targetFileName);
         }
+
+        log().info("Downloaded " + url + " to " + targetFile.getAbsolutePath());
 
         FileUtils.copyInputStreamToFile(inputStream, targetFile);
 
@@ -356,19 +350,19 @@ public class FileDownloader implements Loggable {
             connection = url.openConnection();
         } else {
             connection = url.openConnection(proxy);
-            log().debug("Using proxy " + proxy);
+            log().info("Using proxy " + proxy);
         }
 
         connection.setConnectTimeout(timeoutMS);
         connection.setReadTimeout(timeoutMS);
 
         if (trustAll && isHttpsUrl(url)) {
-            log().debug("Trust all certificates on download is set to " + trustAll);
+            log().info("Trust all certificates on download is set to " + trustAll);
             connection = CertUtils.trustAllCerts((HttpsURLConnection) connection, sslSocketFactory);
         }
 
         if (cookieString != null) {
-            log().debug("Imitating cookies");
+            log().info("Imitating cookies");
             connection.setRequestProperty("Cookie", cookieString);
         }
 

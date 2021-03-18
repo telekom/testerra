@@ -66,6 +66,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 
+/**
+ * @todo Rename to AbstractWebDriverCore
+ */
 public class DesktopGuiElementCore extends AbstractGuiElementCore implements Loggable {
 
     private static final Assertion assertion = Testerra.getInjector().getInstance(InstantAssertion.class);

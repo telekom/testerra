@@ -24,28 +24,25 @@
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import java.net.MalformedURLException;
+import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
-public abstract class AbstractWebDriverFactory<R extends AbstractWebDriverRequest> implements Loggable {
+public abstract class AbstractWebDriverFactory<R extends WebDriverRequest> implements Loggable, WebDriverFactory {
 
-    protected abstract R buildRequest(AbstractWebDriverRequest webDriverRequest);
+    protected abstract R buildRequest(WebDriverRequest webDriverRequest);
 
     protected abstract DesiredCapabilities buildCapabilities(DesiredCapabilities preSetCaps, R request);
 
     protected abstract WebDriver getRawWebDriver(R webDriverRequest, DesiredCapabilities desiredCapabilities, SessionContext sessionContext);
 
+    /**
+     * @deprecated Use {@link #setupNewWebDriverSession(EventFiringWebDriver, SessionContext)} instead
+     */
     protected abstract void setupSession(EventFiringWebDriver eventFiringWebDriver, R request);
 
-    public EventFiringWebDriver createWebDriver(AbstractWebDriverRequest request, SessionContext sessionContext) {
-        if (!request.getBaseUrl().isPresent() && WebDriverManager.getConfig().getBaseUrl().isPresent()) {
-            request.setBaseUrl(WebDriverManager.getConfig().getBaseUrl().get());
-        }
-
+    public WebDriver createWebDriver(WebDriverRequest request, SessionContext sessionContext) {
         /*
         build the final request (filled with all requested values)
          */
@@ -69,45 +66,11 @@ public abstract class AbstractWebDriverFactory<R extends AbstractWebDriverReques
         /*
         create the web driver session
          */
-        WebDriver rawDriver = getRawWebDriver(finalRequest, preparedCaps, sessionContext);
-
-        /*
-        wrap the driver with the proxy
-         */
-        /*
-         * Watch out when wrapping the driver here. Any more wraps than EventFiringWebDriver will break at least
-         * the MobileDriverAdapter. This is because we need to compare the lowermost implementation of WebDriver in this case.
-         * It can be made more robust, if we always can retrieve the storedSessionId of the WebDriver, given a WebDriver object.
-         * For more info, please ask @rnhb
-         */
-        try {
-            Class[] interfaces = ObjectUtils.getAllInterfacesOf(rawDriver);
-            rawDriver = ObjectUtils.simpleProxy(WebDriver.class, rawDriver, WebDriverProxy.class, interfaces);
-        } catch (Exception e) {
-            log().error("Could not create proxy for raw webdriver", e);
-        }
-        EventFiringWebDriver eventFiringWebDriver = wrapRawWebDriverWithEventFiringWebDriver(rawDriver);
-
-        /*
-        store session
-         */
-        WebDriverSessionsManager.storeWebDriverSession(finalRequest, eventFiringWebDriver, sessionContext);
-        /*
-        finalize the session setup
-         */
-        setupSession(eventFiringWebDriver, finalRequest);
-
-        return eventFiringWebDriver;
+        return getRawWebDriver(finalRequest, preparedCaps, sessionContext);
     }
 
-    /**
-     * Get EventFiringWebDriver from default WebDriver instance.
-     *
-     * @param driver The default WebDriver instance.
-     * @return An EventFiringWebDriver instance.
-     */
-    static EventFiringWebDriver wrapRawWebDriverWithEventFiringWebDriver(final WebDriver driver) {
-        return new EventFiringWebDriver(driver);
+    @Override
+    public void setupNewWebDriverSession(EventFiringWebDriver webDriver, SessionContext sessionContext) {
+        setupSession(webDriver, (R)sessionContext.getWebDriverRequest());
     }
-
 }

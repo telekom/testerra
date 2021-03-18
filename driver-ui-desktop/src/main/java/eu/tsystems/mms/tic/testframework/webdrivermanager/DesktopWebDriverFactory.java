@@ -93,7 +93,7 @@ public class DesktopWebDriverFactory extends AbstractWebDriverFactory<DesktopWeb
     private static File phantomjsFile = null;
 
     @Override
-    protected DesktopWebDriverRequest buildRequest(AbstractWebDriverRequest request) {
+    protected DesktopWebDriverRequest buildRequest(WebDriverRequest request) {
         DesktopWebDriverRequest finalRequest;
         if (request instanceof DesktopWebDriverRequest) {
             finalRequest = (DesktopWebDriverRequest) request;
@@ -102,7 +102,6 @@ public class DesktopWebDriverFactory extends AbstractWebDriverFactory<DesktopWeb
             finalRequest.setSessionKey(request.getSessionKey());
             finalRequest.setBrowser(request.getBrowser());
             finalRequest.setBrowserVersion(request.getBrowserVersion());
-            request.getBaseUrl().ifPresent(finalRequest::setBaseUrl);
         } else {
             throw new SystemException(request.getClass().getSimpleName() + " is not allowed here");
         }
@@ -127,6 +126,9 @@ public class DesktopWebDriverFactory extends AbstractWebDriverFactory<DesktopWeb
         start the session
          */
         WebDriver driver = startSession(request, desiredCapabilities, sessionContext);
+        if (!request.getBaseUrl().isPresent() && WebDriverManager.getConfig().getBaseUrl().isPresent()) {
+            request.setBaseUrl(WebDriverManager.getConfig().getBaseUrl().get());
+        }
 
         request.getBaseUrl().ifPresent(baseUrl -> {
             try {

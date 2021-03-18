@@ -27,11 +27,13 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
+import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.DefaultWebDriverManager;
@@ -53,7 +55,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import static eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverFactory.wrapRawWebDriverWithEventFiringWebDriver;
 
 /**
  * @todo Migrate to {@link DefaultWebDriverManager}
@@ -97,13 +98,14 @@ public final class WebDriverSessionsManager {
         webDriverFactories.forEach(webDriverFactory -> webDriverFactory.getSupportedBrowsers().forEach(browser -> WEB_DRIVER_FACTORIES.put(browser, webDriverFactory)));
     }
 
-    static void storeWebDriverSession(AbstractWebDriverRequest webDriverRequest, WebDriver eventFiringWebDriver, SessionContext sessionContext) {
+    private static void storeWebDriverSession(WebDriver webDriver, SessionContext sessionContext) {
+        WebDriverRequest webDriverRequest = sessionContext.getWebDriverRequest();
         final String sessionKey = webDriverRequest.getSessionKey();
         final String threadSessionKey = getThreadSessionKey(sessionKey);
-        THREAD_SESSION_KEY_WEBDRIVER_MAP.put(threadSessionKey, eventFiringWebDriver);
+        THREAD_SESSION_KEY_WEBDRIVER_MAP.put(threadSessionKey, webDriver);
 
         final long threadId = Thread.currentThread().getId();
-        WEBDRIVER_THREAD_ID_MAP.put(eventFiringWebDriver, threadId);
+        WEBDRIVER_THREAD_ID_MAP.put(webDriver, threadId);
 
         /*
         storing driver into driver storage, for whatever reason
@@ -113,14 +115,14 @@ public final class WebDriverSessionsManager {
             if (methodName != null) {
                 String threadName = Thread.currentThread().getId() + "";
                 LOGGER.debug("Saving driver in " + DriverStorage.class.getSimpleName() + " for : " + methodName + ": " + threadName);
-                DriverStorage.saveDriverForTestMethod(eventFiringWebDriver, threadName, methodName);
+                DriverStorage.saveDriverForTestMethod(webDriver, threadName, methodName);
             }
         }
 
         /*
         store driver to session context relation
          */
-        WEBDRIVER_SESSIONS_CONTEXTS_MAP.put(WebDriverUtils.getLowestWebDriver(eventFiringWebDriver), sessionContext);
+        WEBDRIVER_SESSIONS_CONTEXTS_MAP.put(WebDriverUtils.getLowestWebDriver(webDriver), sessionContext);
     }
 
     private static void unlinkFromThread(String sessionKey, WebDriver eventFiringWebDriver) {
@@ -164,16 +166,16 @@ public final class WebDriverSessionsManager {
     /**
      * Introduce an own webdriver object. Selenium session will be released in this case.
      *
-     * @param driver     .
+     * @param webDriver     .
      * @param sessionKey .
      */
-    static void introduceWebDriver(final String sessionKey, final WebDriver driver) {
-        if (!(driver instanceof RemoteWebDriver)) {
+    static void introduceWebDriver(final String sessionKey, final WebDriver webDriver) {
+        if (!(webDriver instanceof RemoteWebDriver)) {
             throw new IllegalArgumentException(
                     "The driver object of the argument must be an instance of RemoteWebDriver");
         }
         LOGGER.info("Introducing webdriver object");
-        EventFiringWebDriver eventFiringWebDriver = wrapRawWebDriverWithEventFiringWebDriver(driver);
+        //EventFiringWebDriver eventFiringWebDriver = wrapRawWebDriverWithEventFiringWebDriver(driver);
 
         UnspecificWebDriverRequest request = new UnspecificWebDriverRequest();
         request.setSessionKey(sessionKey);
@@ -183,7 +185,7 @@ public final class WebDriverSessionsManager {
 
         // store to method context
         ExecutionContextController.getCurrentMethodContext().addSessionContext(sessionContext);
-        storeWebDriverSession(request, eventFiringWebDriver, sessionContext);
+        storeWebDriverSession(webDriver, sessionContext);
     }
 
     public static void registerWebDriverBeforeShutdownHandler(Consumer<WebDriver> beforeQuit) {
@@ -383,6 +385,7 @@ public final class WebDriverSessionsManager {
             setup new session
              */
             WebDriver newWebDriver = webDriverFactory.createWebDriver(webDriverRequest, sessionContext);
+            storeWebDriverSession(newWebDriver, sessionContext);
             Testerra.getEventBus().post(new ContextUpdateEvent().setContext(sessionContext));
             String sessionIdentifier = createSessionIdentifier(newWebDriver, sessionKey);
             /*
@@ -436,5 +439,25 @@ public final class WebDriverSessionsManager {
 
     public static Stream<WebDriver> readWebDrivers() {
         return WEBDRIVER_SESSIONS_CONTEXTS_MAP.keySet().stream();
+    }
+
+    private EventFiringWebDriver wrapWebDriver(WebDriver webDriver) {
+        /*
+        wrap the driver with the proxy
+         */
+        /*
+         * Watch out when wrapping the driver here. Any more wraps than EventFiringWebDriver will break at least
+         * the MobileDriverAdapter. This is because we need to compare the lowermost implementation of WebDriver in this case.
+         * It can be made more robust, if we always can retrieve the storedSessionId of the WebDriver, given a WebDriver object.
+         * For more info, please ask @rnhb
+         */
+        try {
+            Class[] interfaces = ObjectUtils.getAllInterfacesOf(webDriver);
+            webDriver = ObjectUtils.simpleProxy(WebDriver.class, webDriver, WebDriverProxy.class, interfaces);
+        } catch (Exception e) {
+            LOGGER.error("Could not create proxy for raw webdriver", e);
+        }
+
+        return new EventFiringWebDriver(webDriver);
     }
 }

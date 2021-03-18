@@ -26,11 +26,21 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCor
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverRequest;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import java.util.List;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 public interface WebDriverFactory {
-    EventFiringWebDriver createWebDriver(AbstractWebDriverRequest request, SessionContext sessionContext);
+    WebDriver createWebDriver(WebDriverRequest request, SessionContext sessionContext);
+
+    /**
+     * This method get called after the WebDriver has been accepted by the {@link IWebDriverManager}
+     * Use it to perform initial session setups like calling the base URL, maximize or rotate windows.
+     */
+    default void setupNewWebDriverSession(EventFiringWebDriver webDriver, SessionContext sessionContext) {
+
+    }
 
     List<String> getSupportedBrowsers();
 

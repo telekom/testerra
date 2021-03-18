@@ -190,7 +190,7 @@ public class DesktopWebDriverFactory extends AbstractWebDriverFactory<DesktopWeb
     }
 
     @Override
-    public void setupSession(EventFiringWebDriver eventFiringWebDriver, DesktopWebDriverRequest request) {
+    public void setupSession(EventFiringWebDriver eventFiringWebDriver, WebDriverRequest request) {
         final String browser = request.getBrowser();
 
         // add event listeners

@@ -165,16 +165,24 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
         if (parentData != null) {
             parentData.getGuiElement().getCore().findWebElement(parentWebElement -> {
                 if (parentData.isFrame()) {
-                    webDriver.switchTo().frame(parentWebElement);
+                    switchToFrame(webDriver, parentWebElement);
                     consumer.accept(findElementsFromWebDriver(webDriver, by));
                 } else {
                     consumer.accept(findElementsFromWebElement(parentWebElement, correctToRelativeXPath(parentData, by)));
                 }
             });
         } else {
-            webDriver.switchTo().defaultContent();
+            switchToDefaultContent(webDriver);
             consumer.accept(findElementsFromWebDriver(webDriver, by));
         }
+    }
+
+    protected void switchToDefaultContent(WebDriver webDriver) {
+        webDriver.switchTo().defaultContent();
+    }
+
+    protected void switchToFrame(WebDriver webDriver, WebElement webElement) {
+        webDriver.switchTo().frame(webElement);
     }
 
     /**
@@ -245,7 +253,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
 
                 // We have to switch back to the default content at the end
                 if (guiElementData.isFrame()) {
-                    webDriver.switchTo().defaultContent();
+                    switchToDefaultContent(webDriver);
                 }
 
                 logTimings(start, Timings.getFindCounter());

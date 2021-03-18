@@ -268,24 +268,20 @@ public final class WebDriverSessionsManager {
         return getWebDriversFromThread(threadId).findAny().isPresent();
     }
 
-    static synchronized String makeSessionExclusive(final WebDriver eventFiringWebDriver) {
-        if (!(eventFiringWebDriver instanceof EventFiringWebDriver)) {
-            throw new RuntimeException("Nah, your WebDriver is not an EventFiringWebDriver.");
-        }
-
-        if (EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.containsValue(eventFiringWebDriver)) {
+    static synchronized String makeSessionExclusive(final WebDriver webDriver) {
+        if (EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.containsValue(webDriver)) {
             LOGGER.error("Session already set exclusive.");
             return null;
         }
 
-        SessionContext sessionContext = getSessionContext(eventFiringWebDriver).get();
+        SessionContext sessionContext = getSessionContext(webDriver).get();
         String sessionKey = sessionContext.getSessionKey();
-        unlinkFromThread(sessionKey, eventFiringWebDriver);
+        unlinkFromThread(sessionKey, webDriver);
         /*
         Add session to exclusive map.
          */
         String exclusiveSessionKey = EXCLUSIVE_PREFIX + UUID.randomUUID().toString();
-        EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.put(exclusiveSessionKey, eventFiringWebDriver);
+        EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.put(exclusiveSessionKey, webDriver);
 
         /*
         introduce session context to execution context
@@ -296,7 +292,7 @@ public final class WebDriverSessionsManager {
         // fire sync
         Testerra.getEventBus().post(new ContextUpdateEvent().setContext(sessionContext));
 
-        LOGGER.info("Promoted " + createSessionIdentifier(eventFiringWebDriver, sessionKey) + " to " + createSessionIdentifier(eventFiringWebDriver, exclusiveSessionKey));
+        LOGGER.info("Promoted " + createSessionIdentifier(webDriver, sessionKey) + " to " + createSessionIdentifier(webDriver, exclusiveSessionKey));
         return exclusiveSessionKey;
     }
 
@@ -386,6 +382,8 @@ public final class WebDriverSessionsManager {
              */
             WebDriver newWebDriver = webDriverFactory.createWebDriver(webDriverRequest, sessionContext);
             storeWebDriverSession(newWebDriver, sessionContext);
+            EventFiringWebDriver eventFiringWebDriver = wrapWebDriver(newWebDriver);
+            webDriverFactory.setupNewWebDriverSession(eventFiringWebDriver, sessionContext);
             Testerra.getEventBus().post(new ContextUpdateEvent().setContext(sessionContext));
             String sessionIdentifier = createSessionIdentifier(newWebDriver, sessionKey);
             /*
@@ -441,7 +439,7 @@ public final class WebDriverSessionsManager {
         return WEBDRIVER_SESSIONS_CONTEXTS_MAP.keySet().stream();
     }
 
-    private EventFiringWebDriver wrapWebDriver(WebDriver webDriver) {
+    private static EventFiringWebDriver wrapWebDriver(WebDriver webDriver) {
         /*
         wrap the driver with the proxy
          */

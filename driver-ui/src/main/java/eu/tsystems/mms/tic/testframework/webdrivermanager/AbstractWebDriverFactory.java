@@ -40,7 +40,7 @@ public abstract class AbstractWebDriverFactory<R extends WebDriverRequest> imple
     /**
      * @deprecated Use {@link #setupNewWebDriverSession(EventFiringWebDriver, SessionContext)} instead
      */
-    protected abstract void setupSession(EventFiringWebDriver eventFiringWebDriver, R request);
+    protected abstract void setupSession(EventFiringWebDriver eventFiringWebDriver, WebDriverRequest request);
 
     public WebDriver createWebDriver(WebDriverRequest request, SessionContext sessionContext) {
         /*
@@ -71,6 +71,6 @@ public abstract class AbstractWebDriverFactory<R extends WebDriverRequest> imple
 
     @Override
     public void setupNewWebDriverSession(EventFiringWebDriver webDriver, SessionContext sessionContext) {
-        setupSession(webDriver, (R)sessionContext.getWebDriverRequest());
+        setupSession(webDriver, sessionContext.getWebDriverRequest());
     }
 }

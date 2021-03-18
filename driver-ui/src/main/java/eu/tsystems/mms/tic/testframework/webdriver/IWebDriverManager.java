@@ -191,4 +191,13 @@ public interface IWebDriverManager extends WebDriverRetainer {
     default void removeGlobalCapability(String key) {
         WebDriverManager.removeGlobalExtraCapability(key);
     }
+
+    default <WEBDRIVER> Optional<WEBDRIVER> unwrapWebDriver(WebDriver webDriver, Class<WEBDRIVER> targetWebDriverClass) {
+        WebDriver lowestWebDriver = WebDriverUtils.getLowestWebDriver(webDriver);
+        if (targetWebDriverClass.isInstance(lowestWebDriver)) {
+            return Optional.of((WEBDRIVER)lowestWebDriver);
+        } else {
+            return Optional.empty();
+        }
+    }
 }

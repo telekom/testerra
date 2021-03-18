@@ -108,7 +108,9 @@ public final class WebDriverManager {
      * Get set ThreadCapabilities or null.
      *
      * @return .
+     * @deprecated Use {@link AbstractWebDriverRequest#getDesiredCapabilities()} instead
      */
+    @Deprecated
     public static Map<String, Object> getThreadCapabilities() {
         return WebDriverCapabilities.getThreadCapabilities();
     }
@@ -118,7 +120,9 @@ public final class WebDriverManager {
      *
      * @param key   .
      * @param value .
+     * @deprecated Use {@link AbstractWebDriverRequest#getDesiredCapabilities()} instead
      */
+    @Deprecated
     public static void addThreadCapability(String key, Object value) {
         WebDriverCapabilities.addThreadCapability(key, value);
     }

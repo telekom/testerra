@@ -24,7 +24,7 @@ ext {
 
 subprojects {
 
-    group 'eu.tsystems.mms.tic.testerra'
+    group 'io.testerra'
     version moduleVersion
 
     apply plugin: 'java'

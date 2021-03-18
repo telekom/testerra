@@ -25,6 +25,7 @@ ext {
     licenseName = 'The Apache Software License, Version 2.0'
     licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
     allLicenses = ["Apache-2.0"]
+
 }
 
 // Set up the Maven publication.
@@ -67,6 +68,14 @@ install {
     }
 }
 
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+        }
+    }
+}
+
 subprojects {
 
     // custom tasks for creating source/javadoc jars
@@ -98,4 +107,9 @@ subprojects {
             }
         }
     }
+
+    signing {
+        sign publishing.publications.mavenJava
+    }
+
 }

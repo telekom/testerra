@@ -26,11 +26,14 @@ subprojects {
 
     group 'io.testerra'
     version moduleVersion
+    archivesBaseName = "testerra"
+
 
     apply plugin: 'java'
     apply plugin: 'maven'
     apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
     apply plugin: 'jacoco'
+    apply plugin: 'signing'
 
 
     // important!

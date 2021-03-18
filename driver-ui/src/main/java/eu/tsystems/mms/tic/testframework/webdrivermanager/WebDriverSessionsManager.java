@@ -318,6 +318,13 @@ public final class WebDriverSessionsManager {
 
 
     public static WebDriver getWebDriver(AbstractWebDriverRequest webDriverRequest) {
+        /*
+        get session key
+         */
+        if (StringUtils.isEmpty(webDriverRequest.getSessionKey())) {
+            webDriverRequest.setSessionKey(WebDriverManager.DEFAULT_SESSION_KEY);
+        }
+
         String sessionKey = webDriverRequest.getSessionKey();
         /*
         Check for exclusive session
@@ -344,13 +351,6 @@ public final class WebDriverSessionsManager {
         /*
          **** STARTING NEW SESSION ****
          */
-
-        /*
-        get session key
-         */
-        if (StringUtils.isEmpty(webDriverRequest.getSessionKey())) {
-            webDriverRequest.setSessionKey(WebDriverManager.DEFAULT_SESSION_KEY);
-        }
 
         if (StringUtils.isEmpty(webDriverRequest.getBrowser())) {
             webDriverRequest.setBrowser(WebDriverManager.getConfig().getBrowser());

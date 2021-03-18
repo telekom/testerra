@@ -2,7 +2,7 @@
 
 == FileDownloader
 
-The `FileDownloader` utility provides methods for downloading resources from web sites.
+The `FileDownloader` utility provides methods for downloading resources from web sites. It uses the <<Using a proxy,default proxy configuration>>.
 
 .Basic example how to use the FileDownloader
 [source,java]

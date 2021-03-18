@@ -75,4 +75,11 @@ public class XPathTest extends TesterraTest  {
         Assert.assertEquals(XPath.from("body").encloses(By.name("name")).toString(), "//body[descendant::*[@name='name']]");
         Assert.assertEquals(XPath.from("body").select(By.id("id")).toString(), "//body//*[@id='id']");
     }
+
+    @Test
+    public void XPath_from_Group() {
+        Assert.assertEquals(XPath.from("(//body|//iframe)").toString(), "(//body|//iframe)");
+        Assert.assertEquals(XPath.from("(//body|//iframe)").select("textarea").toString(), "(//body|//iframe)//textarea");
+        Assert.assertEquals(XPath.from("(//body|//iframe)").encloses("textarea").toString(), "(//body|//iframe)[descendant::textarea]");
+    }
 }

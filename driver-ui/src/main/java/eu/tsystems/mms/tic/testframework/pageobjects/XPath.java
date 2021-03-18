@@ -209,9 +209,19 @@ public class XPath {
 
     protected static String translateSubSelection(String selector) {
         selector = selector.trim();
-        if (selector.startsWith("./")) {
+
+        // If the select starts with a group, do nothing
+        if (selector.startsWith("(")) {
+            return selector;
+        }
+
+        // Correct './' to '/'
+        else if (selector.startsWith("./")) {
             selector = selector.replaceFirst("^\\./", "/");
-        } else if (!selector.startsWith("/")) {
+        }
+
+        // Correct '' to '//'
+        else if (!selector.startsWith("/")) {
             selector = "//" + selector;
         }
         return selector;

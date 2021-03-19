@@ -75,7 +75,7 @@ export class TestClassesCard {
                 return this._filteredStatuses.find(status => classStatistic.getStatusesCount(this._statusConverter.groupStatus(status))>0);
             })
             .sort((a, b) => {
-                return b.overallTestCases - a.overallTestCases
+                return b.getStatusesCount(this._filteredStatuses) - a.getStatusesCount(this._filteredStatuses)
             })
             .forEach(classStats => {
                 for (const status of this._filteredStatuses) {

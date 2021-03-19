@@ -5,10 +5,7 @@
 // Maven pom.xml attributes
 ext {
     libraryName = 'Testerra'
-    artifact = project.getName().toLowerCase()
     packagingType = 'jar'
-
-    libraryDescription = "Testerra ${project.getName()} module"
 
     siteUrl = 'https://testerra.io'
     gitUrl = 'scm:git:git://github.com/telekom/testerra.git'
@@ -29,15 +26,21 @@ ext {
 
 subprojects {
 
-    // custom tasks for creating source/javadoc jars
+    def libraryDescription = "Testerra ${project.getName()} module"
+
     task sourcesJar(type: Jar, dependsOn: classes) {
         archiveClassifier.set('sources')
         from sourceSets.main.allSource
     }
 
-    // add source jar tasks as artifacts
+//    task javadocJar(type: Jar) {
+//        archiveClassifier.set('javadoc')
+//        from javadoc
+//    }
+
     artifacts {
         archives sourcesJar
+//        archives javadocJar
     }
 
     publishing {
@@ -45,12 +48,10 @@ subprojects {
             mavenJava(MavenPublication) {
                 from components.java
                 artifact sourcesJar
+//                artifact javadocJar
 
                 // Custom pom
                 pom {
-                    packaging = packagingType
-                    groupId = group
-                    artifactId = artifact
 
                     name = libraryName
                     description = libraryDescription
@@ -97,12 +98,12 @@ subprojects {
         sign publishing.publications.mavenJava
     }
 
-    uploadArchives {
-        repositories {
-            mavenDeployer {
-                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-            }
-        }
-    }
+//    uploadArchives {
+//        repositories {
+//            mavenDeployer {
+//                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+//            }
+//        }
+//    }
 
 }

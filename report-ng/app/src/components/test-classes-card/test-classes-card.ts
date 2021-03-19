@@ -54,10 +54,11 @@ export class TestClassesCard {
 
     private _prepareHorizontalBarChart(classStatistics: ClassStatistics[]): void {
         let data: Map<ResultStatusType, Array<number>> = new Map();
-        let xlabels: Array<string> = [];
+        let yLabels: Array<string> = [];
 
         const series = [];
         this._filteredStatuses = this._statusConverter.relevantStatuses.filter(status => (!this.filter?.status || status === this.filter.status) );
+
 
         this._filteredStatuses.forEach(status => {
             data.set(status, []);
@@ -73,19 +74,26 @@ export class TestClassesCard {
             .filter(classStatistic => {
                 return this._filteredStatuses.find(status => classStatistic.getStatusesCount(this._statusConverter.groupStatus(status))>0);
             })
+            .sort((a, b) => {
+                return b.overallTestCases - a.overallTestCases
+            })
             .forEach(classStats => {
                 for (const status of this._filteredStatuses) {
                     data.get(status).push(classStats.getStatusCount(status));
                 }
-                //Push Class Names in array for x-axis labels
-                xlabels.push(classStats.classIdentifier);
+                const className = classStats.classIdentifier;
+                //Push Class Names in array for y-axis labels
+                yLabels.push(className);
             });
 
-        const dataAvailable = xlabels.length > 0;
+
+        // Break yLabels
+        const yLabelsMaxWidth = 400;
+        const dataAvailable = yLabels.length > 0;
 
         //set size by amount of bars to have consistent bar height
         //amount of classes * 60px + offset due to legend and labels
-        let height: string = xlabels.length * 60 + 67.65 + 'px'
+        let height: string = yLabels.length * 60 + 67.65 + 'px'
 
         this._apexBarOptions = {
             chart: {
@@ -122,7 +130,7 @@ export class TestClassesCard {
                     trim: false,    //ignored apparently, documentation: https://apexcharts.com/docs/options/xaxis/#trim
                     maxHeight: undefined,
                 },
-                categories: xlabels,
+                categories: yLabels,
                 axisBorder: {
                     show: dataAvailable,
                 },
@@ -131,9 +139,12 @@ export class TestClassesCard {
                 }
             },
             yaxis: {
+
                 labels:{
                     show: dataAvailable,
-                }
+                    //minWidth: 200,    // Does not work
+                    maxWidth: yLabelsMaxWidth
+                },
             },
             grid: {
                 show: false,

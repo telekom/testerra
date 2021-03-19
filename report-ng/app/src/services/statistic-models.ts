@@ -53,6 +53,9 @@ class Statistics {
         return statuses;
     }
 
+    /**
+     * Returns the number of test cases including passed retried
+     */
     get overallTestCases() {
         return this.getStatusesCount([
             ResultStatusType.PASSED,

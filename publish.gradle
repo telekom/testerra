@@ -2,8 +2,7 @@
  * Maven publishing configuration
  * */
 
-
-// Maven basis attributes
+// Maven pom.xml attributes
 ext {
     libraryName = 'Testerra'
     artifact = project.getName().toLowerCase()
@@ -28,54 +27,6 @@ ext {
 
 }
 
-// Set up the Maven publication.
-install {
-    repositories.mavenInstaller {
-        // This generates POM.xml with proper parameters
-        pom.project {
-            packaging packagingType
-            groupId group
-            artifactId artifact
-
-            // Add your description here
-            name libraryName
-            description libraryDescription
-            url siteUrl
-
-            // Set your license
-            licenses {
-                license {
-                    name licenseName
-                    url licenseUrl
-                }
-            }
-            developers {
-                developer {
-                    id developerId
-                    name developerName
-                    email developerEmail
-                    organization developerOrganization
-                    organizationUrl developerOrganizationUrl
-                }
-            }
-            scm {
-                connection gitUrl
-                developerConnection gitUrl
-                url siteUrl
-            }
-
-        }
-    }
-}
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-        }
-    }
-}
-
 subprojects {
 
     // custom tasks for creating source/javadoc jars
@@ -94,6 +45,40 @@ subprojects {
             mavenJava(MavenPublication) {
                 from components.java
                 artifact sourcesJar
+
+                // Custom pom
+                pom {
+                    packaging = packagingType
+                    groupId = group
+                    artifactId = artifact
+
+                    name = libraryName
+                    description = libraryDescription
+                    url = siteUrl
+
+                    licenses {
+                        license {
+                            name = licenseName
+                            url = licenseUrl
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id = developerId
+                            name = developerName
+                            email = developerEmail
+                            organization = developerOrganization
+                            organizationUrl = developerOrganizationUrl
+                        }
+                    }
+
+                    scm {
+                        connection = gitUrl
+                        developerConnection = gitUrl
+                        url = siteUrl
+                    }
+                }
             }
         }
 
@@ -110,6 +95,14 @@ subprojects {
 
     signing {
         sign publishing.publications.mavenJava
+    }
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+            }
+        }
     }
 
 }

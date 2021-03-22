@@ -22,7 +22,7 @@
  package eu.tsystems.mms.tic.testframework.constants;
 
 /**
- * <Beschreibung der Klasse>
+ *
  *
  * @author pele
  */

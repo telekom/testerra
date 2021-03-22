@@ -29,11 +29,6 @@ import java.util.Map;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
-/**
- * <Beschreibung der Klasse>
- *
- * @author pele
- */
 public class XLSTestDataReader extends AbstractXLSIO {
 
     /**

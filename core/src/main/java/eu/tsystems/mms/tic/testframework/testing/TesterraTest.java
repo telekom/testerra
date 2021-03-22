@@ -31,7 +31,7 @@ public abstract class TesterraTest {
         /**
          * Make sure the framework is initialized before any other
          * This is already called in {@link TesterraListener}
-         * @todo Remove this when everything is based on objects without any static context
+         * // TODO Remove this when everything is based on objects without any static context
          */
         Booter.bootOnce();
     }

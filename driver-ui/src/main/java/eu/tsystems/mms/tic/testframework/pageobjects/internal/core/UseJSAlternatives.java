@@ -29,7 +29,6 @@ public interface UseJSAlternatives {
     /**
      * Clicks on a web element using javascript.
      *
-     * @return .
      */
     @Deprecated
     void clickJS();
@@ -37,7 +36,6 @@ public interface UseJSAlternatives {
     /**
      * click
      *
-     * @return .
      */
     @Deprecated
     void clickAbsolute();
@@ -45,7 +43,6 @@ public interface UseJSAlternatives {
     /**
      * hover mouse over 2 axis
      *
-     * @return .
      */
     @Deprecated
     void mouseOverAbsolute2Axis();
@@ -53,7 +50,6 @@ public interface UseJSAlternatives {
     /**
      * Mouseover directly over js event.
      *
-     * @return this.
      */
     @Deprecated
     void mouseOverJS();

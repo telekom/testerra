@@ -58,7 +58,7 @@ public abstract class WebDriverFactory<R extends AbstractWebDriverRequest> imple
         DesiredCapabilities preparedCaps = buildCapabilities(caps, finalRequest);
 
         /**
-         * @todo Move these options to the platform-connector
+         * // TODO Move these options to the platform-connector
          */
         DesiredCapabilities tapOptions = new DesiredCapabilities();
         ExecutionContextController.getCurrentExecutionContext().getMetaData().forEach(tapOptions::setCapability);

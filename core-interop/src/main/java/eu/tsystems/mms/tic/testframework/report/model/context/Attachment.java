@@ -22,6 +22,7 @@
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -34,7 +35,7 @@ public class Attachment implements Loggable {
     private Map<String, String> metaData;
 
     /**
-     * @todo We may pass name and extension later.
+     * // TODO We may pass name and extension later.
      */
     public Attachment(String name) {
         int count = counter.getOrDefault(name, 1);

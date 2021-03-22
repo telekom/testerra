@@ -39,7 +39,7 @@ public class GuiElementData {
 
     public final By by;
     /**
-     * @todo This will not @deprecated in Testerra 2
+     * // TODO This will not @deprecated in Testerra 2
      */
     @Deprecated // Evil, should never be used!!! <<< why, i need it?? pele 23.08.2019
     public final GuiElement guiElement;
@@ -54,7 +54,7 @@ public class GuiElementData {
     public final int timerSleepTimeInMs = 500;
     public boolean sensibleData = false;
     /**
-     * @todo This will be @deprecated in Testerra 2
+     * // TODO This will be @deprecated in Testerra 2
      */
     @Deprecated
     public GuiElementCore parent;

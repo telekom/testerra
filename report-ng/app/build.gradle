@@ -23,12 +23,15 @@ plugins {
     id "com.github.node-gradle.node" version "3.0.0-rc6"
 }
 
+// Deactivate JAR publishing
 project.afterEvaluate {
-    project.tasks.jar.enabled = false
-    project.tasks.publish.enabled = false
-    project.tasks.publishToMavenLocal.enabled = false
-//    project.tasks.publishMavenJavaPublicationToMavenLocal = false
-    project.tasks.publishMavenJavaPublicationToMavenRepository.enabled = false
+    println "Deactivate publishing for " + project.name
+    project.tasks.each { t ->
+        if (t.name.startsWith("publish")) {
+            t.enabled = false
+//            println "Task " + t.name + " - " + t.enabled
+        }
+    }
 }
 
 node {

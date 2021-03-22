@@ -35,7 +35,6 @@ subprojects {
     apply plugin: 'jacoco'
     apply plugin: 'signing'
 
-
     // important!
     repositories {
         mavenLocal()

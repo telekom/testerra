@@ -98,12 +98,4 @@ subprojects {
         sign publishing.publications.mavenJava
     }
 
-//    uploadArchives {
-//        repositories {
-//            mavenDeployer {
-//                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-//            }
-//        }
-//    }
-
 }

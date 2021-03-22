@@ -6,6 +6,17 @@ dependencies {
     implementation project(':report-model')
 }
 
+// Deactivate JAR publishing
+project.afterEvaluate {
+    println "Deactivate publishing for " + project.name
+    project.tasks.each { t ->
+        if (t.name.startsWith("publish")) {
+            t.enabled = false
+//            println "Task " + t.name + " - " + t.enabled
+        }
+    }
+}
+
 task destClean {
     doLast {
         delete "src/main/resources/report-ng"

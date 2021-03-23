@@ -9,7 +9,7 @@ ext {
 
     siteUrl = 'https://testerra.io'
     gitUrl = 'scm:git:git://github.com/telekom/testerra.git'
-    gitHttpsUrl = 'https://github.com/telekom/testerra.git'
+    gitHttpsUrl = 'https://github.com/telekom/testerra'
 
     developerId = 'MMS'
     developerName = 'Testerra Team T-Systems MMS'

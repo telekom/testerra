@@ -69,6 +69,27 @@ Feel free to try out our ready-to-use Skeleton project: [testerra-skeleton].
 
 Check out our comprehensive [Testerra documentation](http://docs.testerra.io)!
 
+## Publishing
+
+Testerra is deployed and published to Maven Central. All JAR files are signed via Gradle signing plugin.
+
+The following properties have to be set via command line or ``~/.gradle/gradle.properties``
+
+| Property                      | Description                                           |
+| ----------------------------- | ----------------------------------------------------- |
+| `ttVersion`                   | Version of deployed Testerra, default is `1-SNAPSHOT` |
+| `deployUrl`                   | Maven repository URL                                  |
+| `deployUsername`              | Maven repository username                             |
+| `deployPassword`              | Maven repository password                             |
+| `signing.keyId`               | GPG private key ID (short form)                       |
+| `signing.password`            | GPG private key password                              |
+| `signing.secretKeyRingFile`   | Path to GPG private key                               |
+
+If all properties are set, call the following to build, deploy and release Testerra:
+````shell
+gradle buildReport publish closeAndReleaseRepository
+````
+
 ## Code of Conduct
 
 This project has adopted the [Contributor Covenant](https://www.contributor-covenant.org/) in version 2.0 as our code of conduct. Please see the details in our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). All contributors must abide by the code of conduct.

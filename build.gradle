@@ -1,6 +1,9 @@
 plugins {
     id 'com.github.jk1.dependency-license-report' version '1.13'
+    id "io.codearte.nexus-staging" version "0.30.0"
 }
+
+apply plugin: 'io.codearte.nexus-staging'
 
 ext {
     /*

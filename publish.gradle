@@ -24,6 +24,13 @@ ext {
 
 }
 
+nexusStaging {
+    serverUrl = "https://s01.oss.sonatype.org/service/local/"
+    packageGroup = "io.testerra"
+    username = System.getProperty("deployUsername")
+    password = System.getProperty("deployPassword")
+}
+
 subprojects {
 
     def libraryDescription = "Testerra test automation framework - ${project.getName()} module"

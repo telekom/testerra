@@ -8,13 +8,13 @@ Please take a look at the following list if there is a connetcor mapping your ne
 
 [cols="2,^1,4a",options="header"]
 |===
-| Name | Documentation | Description
+| Name | Latest release | Description
 // | Ai4test Connector | https://github.com/telekom/testerra-ai4test-connector/[GitHub] | Experimental AI augmented testing for Testerra
-| Appium Connector | https://github.com/telekom/testerra-appium-connector/[GitHub] | Uses the open source standard Appium to run web tests based on Testerra on mobile devices.
-| Azure DevOps Connector | https://github.com/telekom/testerra-azure-devops-connector/[GitHub] | Automatic test result synchronization for Microsoft AzureDevOps platform.
-| Cucumber Connector | https://github.com/telekom/testerra-cucumber-connector/[GitHub] | Provides the opportunity to use Cucumber and Gherkin to specify `.feature` files and combine it with the advantages of Testerra.
-| HPQC Connector | https://github.com/telekom/testerra-hpqc-connector/[GitHub] | Automatic test result synchronization to HP Application Lifecycle Management, former called HP QualityCenter.
-| Selenoid Connector | https://github.com/telekom/testerra-selenoid-connector/[GitHub] | Using a Selenium Grid based on https://github.com/aerokube/selenoid[Selenoid] this module provides access to videos and VNC streams.
-| TeamCity Connector | https://github.com/telekom/testerra-teamcity-connector/[GitHub] | A simple notification service for Jetbrains TeamCity.
-| Xray Connector | https://github.com/telekom/testerra-xray-connector/[GitHub] | Automatic test result synchronization Jira XRay.
+| https://github.com/telekom/testerra-appium-connector[Appium Connector] | image:https://img.shields.io/maven-central/v/io.testerra/appium?label=Appium%20Connector[Maven Central] | Uses the open source standard Appium to run web tests based on Testerra on mobile devices.
+| https://github.com/telekom/testerra-azure-devops-connector[Azure DevOps Connector] | image:https://img.shields.io/maven-central/v/io.testerra/azure-devops-connector?label=AzureDevOps%20Connector[Maven Central] | Automatic test result synchronization for Microsoft AzureDevOps platform.
+| https://github.com/telekom/testerra-cucumber-connector[Cucumber Connector] | image:https://img.shields.io/maven-central/v/io.testerra/cucumber-connector?label=Cucumber%20Connector[Maven Central] | Provides the opportunity to use Cucumber and Gherkin to specify `.feature` files and combine it with the advantages of Testerra.
+| https://github.com/telekom/testerra-hpqc-connector[HPQC Connector] | image:https://img.shields.io/maven-central/v/io.testerra/qc11-connector?label=HPQC%20Connector[Maven Central] | Automatic test result synchronization to HP Application Lifecycle Management, former called HP QualityCenter.
+| https://github.com/telekom/testerra-selenoid-connector[Selenoid Connector] | image:https://img.shields.io/maven-central/v/io.testerra/selenoid-connector?label=Selenoid%20Connector[Maven Central] | Using a Selenium Grid based on https://github.com/aerokube/selenoid[Selenoid] this module provides access to videos and VNC streams.
+| https://github.com/telekom/testerra-teamcity-connector[TeamCity Connector] | image:https://img.shields.io/maven-central/v/io.testerra/teamcity-connector?label=TeamCity%20Connector[Maven Central] | A simple notification service for Jetbrains TeamCity.
+| https://github.com/telekom/testerra-xray-connector[Xray Connector] | image:https://img.shields.io/maven-central/v/io.testerra/xray-connector?label=Xray%20Connector[Maven Central] | Automatic test result synchronization Jira XRay.
 |===

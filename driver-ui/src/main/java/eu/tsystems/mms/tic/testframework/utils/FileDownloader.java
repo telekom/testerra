@@ -23,12 +23,12 @@
 package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
@@ -42,26 +42,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Utility class for downloading files to executing host
+ * Utility class for downloading files to executing host.
  * <p>
  * Date: 14.12.2015
  * Time: 07:35
  *
  * @author erku
  */
-public class FileDownloader {
+public class FileDownloader implements Loggable {
 
     private static int DEFAULT_TIMEOUT_MS = 10 * 1000;
 
     /**
-     * Logging Instance
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(FileDownloader.class);
-
-    /**
      * List of downloaded files. need for cleanup
      */
-    private static final List<String> downloadList = new ArrayList<String>();
+    private static final List<String> downloadList = new ArrayList<>();
 
     /**
      * Determines download Location of this instance
@@ -90,32 +85,30 @@ public class FileDownloader {
      * @param downloadLocation     String Download target location
      * @param imitateCookies       boolean Imitate cookies?
      * @param trustAllCertificates boolean Accept all certificates?
+     * @deprecated Use {@link #FileDownloader()} instead
      */
-    public FileDownloader(final String downloadLocation, final boolean imitateCookies,
-                          boolean trustAllCertificates) {
+    public FileDownloader(
+            String downloadLocation,
+            boolean imitateCookies,
+            boolean trustAllCertificates
+    ) {
         this.downloadLocation = downloadLocation;
         this.imitateCookies = imitateCookies;
         this.trustAllCertificates = trustAllCertificates;
-
-        final URL systemHttpProxyUrl = ProxyUtils.getSystemHttpProxyUrl();
-        if (systemHttpProxyUrl != null) {
-            this.proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(systemHttpProxyUrl.getHost(), systemHttpProxyUrl.getPort()));
-        }
     }
 
     /**
      * Instantiate FileDownloader
      *
      * @param downloadLocation String
+     * @deprecated
      */
     public FileDownloader(final String downloadLocation) {
         this.downloadLocation = downloadLocation;
     }
 
-    /**
-     * Instantiate FileDownloader
-     */
     public FileDownloader() {
+
     }
 
     /**
@@ -125,21 +118,21 @@ public class FileDownloader {
      */
     @Deprecated
     public static void deleteDownloads() {
+        new FileDownloader().cleanup();
+    }
+
+    public FileDownloader cleanup() {
         synchronized (downloadList) {
             for (String path : downloadList) {
                 File file = FileUtils.getFile(path);
                 if (!file.delete()) {
-                    LOGGER.warn(String.format("File >%s< couldn't be deleted on cleanup. Please remove file manually.",
+                    log().warn(String.format("File >%s< couldn't be deleted on cleanup. Please remove file manually.",
                             file.getAbsolutePath()));
                 }
             }
 
             downloadList.clear();
         }
-    }
-
-    public FileDownloader cleanup() {
-        deleteDownloads();
         return this;
     }
 
@@ -188,10 +181,10 @@ public class FileDownloader {
      */
     public String download(GuiElement element, String targetFileName) throws IOException {
 
-        LOGGER.info("Try to get href attribute of GuiElement");
+        log().info("Try to get href attribute of GuiElement");
         String link = element.getAttribute("href");
         if (link == null || link.length() == 0) {
-            LOGGER.info("No href attribute found. Try src attribute.");
+            log().info("No href attribute found. Try src attribute.");
             link = element.getAttribute("src");
         }
 
@@ -294,7 +287,8 @@ public class FileDownloader {
             String cookieString,
             boolean useSecondConnection
     ) throws IOException {
-        LOGGER.info("Download " + url + " to " + targetFile.getAbsolutePath());
+
+        log().info("Start downloading " + url);
 
         String targetFileName = "";
         URLConnection connection = openConnection(url, proxy, timeoutMS, trustAll, cookieString, sslSocketFactory);
@@ -319,8 +313,10 @@ public class FileDownloader {
             targetFile = FileUtils.getFile(this.getDownloadLocation() + "/" + targetFileName);
         }
 
+        log().info("Downloaded " + url + " to " + targetFile.getAbsolutePath());
+
         FileUtils.copyInputStreamToFile(inputStream, targetFile);
-        
+
         synchronized (downloadList) {
             downloadList.add(targetFile.getAbsolutePath());
         }
@@ -340,7 +336,7 @@ public class FileDownloader {
         return fileName;
     }
 
-    private static URLConnection openConnection(
+    private URLConnection openConnection(
             URL url,
             Proxy proxy,
             int timeoutMS,
@@ -353,19 +349,19 @@ public class FileDownloader {
             connection = url.openConnection();
         } else {
             connection = url.openConnection(proxy);
-            LOGGER.info("Using proxy " + proxy);
+            log().info("Using proxy " + proxy);
         }
 
         connection.setConnectTimeout(timeoutMS);
         connection.setReadTimeout(timeoutMS);
 
         if (trustAll && isHttpsUrl(url)) {
-            LOGGER.info("Trust all certificates on download is set to " + trustAll);
+            log().info("Trust all certificates on download is set to " + trustAll);
             connection = CertUtils.trustAllCerts((HttpsURLConnection) connection, sslSocketFactory);
         }
 
         if (cookieString != null) {
-            LOGGER.info("Imitating cookies");
+            log().info("Imitating cookies");
             connection.setRequestProperty("Cookie", cookieString);
         }
 

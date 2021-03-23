@@ -9,7 +9,7 @@ There are three ways for setting up a proxy for your test run environment.
 
 == Command line (recommended)
 To setup a proxy for the whole system, including the build environment (Maven, Gradle), the JVM and Testerra, the recommended way is to pass it by command line arguments like
-[source]
+[source,bash]
 ----
 gradle test -Dhttps.proxyHost=your-proxy-host.com -Dhttps.proxyPort=8080
 ----
@@ -36,3 +36,12 @@ http.proxyPassword=
 == Access the system proxy URL
 
 The system proxy can be accessed by <<Proxy Utilities>>
+
+== Implicit setup (not recommended)
+Since Java 11, it is possible to pass the system's preconfigured proxy into the JVM.
+[source,bash]
+----
+gradle test -Djava.net.useSystemProxies=true
+----
+This affects all Java internal network connections which uses `ProxySelector`, but it will not set the environment variables and are transparent to <<Proxy Utilities>> and any <<Browser capabilities>>.
+

@@ -114,7 +114,9 @@ public class WebDriverProxyUtils {
      * @return Proxy settings without socks proxy based on {@link ProxyUtils#getSystemHttpsProxyUrl()}.
      */
     public Proxy getDefaultHttpProxy() {
-        Proxy proxy = createHttpProxyFromUrl(ProxyUtils.getSystemHttpsProxyUrl());
+        URL systemProxyUrl = ProxyUtils.getSystemHttpsProxyUrl();
+        if (systemProxyUrl == null) systemProxyUrl = ProxyUtils.getSystemHttpProxyUrl();
+        Proxy proxy = createHttpProxyFromUrl(systemProxyUrl);
         proxy.setNoProxy(PropertyManager.getProperty("https.nonProxyHosts"));
         return proxy;
     }

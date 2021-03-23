@@ -7,12 +7,12 @@ Testerra offers a simple integration to spin multiple local proxy servers or man
 
 == Project setup
 
-Current release image:https://img.shields.io/bintray/v/testerra-io/Testerra/eu.tsystems.mms.tic.testerra:bup?label=Testerra%20BUP[Bintray]
+Latest release image:https://img.shields.io/maven-central/v/io.testerra/bup?label=Testerra%20BUP[Maven Central]
 
 .build.gradle
 [source,groovy,role="primary",subs="attributes"]
 ----
-compile 'eu.tsystems.mms.tic.testerra:bup:{revnumber}'
+compile 'io.testerra:bup:{revnumber}'
 ----
 
 .pom.xml
@@ -20,7 +20,7 @@ compile 'eu.tsystems.mms.tic.testerra:bup:{revnumber}'
 ----
 <dependencies>
     <dependency>
-        <groupId>eu.tsystems.mms.tic.testerra</groupId>
+        <groupId>io.testerra</groupId>
         <artifactId>bup</artifactId>
         <version>{revnumber}</version>
     </dependency>

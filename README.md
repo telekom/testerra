@@ -3,6 +3,7 @@
 </h1>
 
 <p align="center">
+    <a href="https://mvnrepository.com/artifact/io.testerra" title="MavenCentral"><img src="https://img.shields.io/maven-central/v/io.testerra/core?label=Maven%20Central"></a>
     <a href="/../../commits/" title="Last Commit"><img src="https://img.shields.io/github/last-commit/telekom/testerra?style=flat"></a>
     <a href="/../../issues" title="Open Issues"><img src="https://img.shields.io/github/issues/telekom/testerra?style=flat"></a>
     <a href="./LICENSE" title="License"><img src="https://img.shields.io/badge/License-Apache%202.0-green.svg?style=flat"></a>
@@ -30,12 +31,12 @@ Maven:
 ````xml
 <dependencies>
     <dependency>
-        <groupId>eu.tsystems.mms.tic.testerra</groupId>
+        <groupId>io.testerra</groupId>
         <artifactId>driver-ui-desktop</artifactId>
         <version>1-SNAPSHOT</version>
     </dependecy>
     <dependency>
-        <groupId>eu.tsystems.mms.tic.testerra</groupId>
+        <groupId>io.testerra</groupId>
         <artifactId>report-ng</artifactId>
         <version>1-SNAPSHOT</version>
     </dependecy>
@@ -44,8 +45,8 @@ Maven:
 
 Gradle:
 ````groovy
-compile 'eu.tsystems.mms.tic.testerra:driver-ui-desktop:1-SNAPSHOT'
-compile 'eu.tsystems.mms.tic.testerra:report-ng:1-SNAPSHOT'
+compile 'io.testerra:driver-ui-desktop:1-SNAPSHOT'
+compile 'io.testerra:report-ng:1-SNAPSHOT'
 ````
 
 ### Using testerra functionality:

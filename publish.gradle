@@ -9,7 +9,7 @@ ext {
 
     siteUrl = 'https://testerra.io'
     gitUrl = 'scm:git:git://github.com/telekom/testerra.git'
-    issueUrl = 'https://github.com/telekom/testerra.git'
+    gitHttpsUrl = 'https://github.com/telekom/testerra.git'
 
     developerId = 'MMS'
     developerName = 'Testerra Team T-Systems MMS'
@@ -26,7 +26,7 @@ ext {
 
 subprojects {
 
-    def libraryDescription = "Testerra ${project.getName()} module"
+    def libraryDescription = "Testerra test automation framework - ${project.getName()} module"
 
     javadoc {
         // Support JDK 8 annotations
@@ -88,7 +88,7 @@ subprojects {
                     scm {
                         connection = gitUrl
                         developerConnection = gitUrl
-                        url = siteUrl
+                        url = gitHttpsUrl
                     }
                 }
             }

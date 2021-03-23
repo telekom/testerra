@@ -23,7 +23,6 @@ package eu.tsystems.mms.tic.testframework.adapters;
 
 import com.google.common.net.MediaType;
 import com.google.gson.Gson;
-import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
@@ -64,7 +63,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -534,7 +532,7 @@ public class ContextExporter implements Loggable {
         apply(buildContextValues(sessionContext), builder::setContextValues);
         //apply(sessionContext.getSessionKey(), builder::setSessionKey);
         //apply(sessionContext.getProvider(), builder::setProvider);
-        apply(sessionContext.getRemoteSessionId(), builder::setSessionId);
+        sessionContext.getRemoteSessionId().ifPresent(builder::setSessionId);
         sessionContext.getVideo().ifPresent(video -> {
             Optional<File.Builder> optional = Optional.ofNullable(buildVideo(video));
             optional.ifPresent(fileBuilder -> builder.setVideoId(fileBuilder.getId()));

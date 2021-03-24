@@ -54,7 +54,10 @@ public final class WebDriverManager {
         UITestUtils.initializePerfTest();
     }
 
-    public static final String DEFAULT_SESSION_KEY = "default";
+    /**
+     * @deprecated Use {@link WebDriverRequest#DEFAULT_SESSION_KEY} instead
+     */
+    public static final String DEFAULT_SESSION_KEY = WebDriverRequest.DEFAULT_SESSION_KEY;
 
     /**
      * WebDriverManager configuration set. Modify by config() call!

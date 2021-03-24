@@ -24,6 +24,7 @@ import java.io.Serializable;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 public abstract class AbstractWebDriverRequest extends AbstractWebDriverConfiguration implements Serializable, WebDriverRequest {
+
     private String sessionKey;
     private DesiredCapabilities desiredCapabilities;
 

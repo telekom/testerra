@@ -28,6 +28,7 @@ import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverProxy;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -35,6 +36,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 /**
  * Replacement for static {@link WebDriverManager}
@@ -192,6 +194,10 @@ public interface IWebDriverManager extends WebDriverRetainer {
         WebDriverManager.removeGlobalExtraCapability(key);
     }
 
+    /**
+     * Unwraps the raw {@link WebDriver} from {@link EventFiringWebDriver} and {@link WebDriverProxy}
+     * and tries to cast it to the target class implementation.
+     */
     default <WEBDRIVER> Optional<WEBDRIVER> unwrapWebDriver(WebDriver webDriver, Class<WEBDRIVER> targetWebDriverClass) {
         WebDriver lowestWebDriver = WebDriverUtils.getLowestWebDriver(webDriver);
         if (targetWebDriverClass.isInstance(lowestWebDriver)) {

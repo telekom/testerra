@@ -530,13 +530,17 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
         pMouseOver();
     }
 
+    protected void highlightWebElement(WebElement webElement, Color color) {
+        JSUtils utils = new JSUtils();
+        utils.highlight(guiElementData.getWebDriver(), webElement, color);
+    }
+
     /**
      * Hidden method.
      */
     private void pMouseOver() {
         this.findWebElement(webElement -> {
-            JSUtils utils = new JSUtils();
-            utils.highlight(guiElementData.getWebDriver(), webElement, new Color(255, 255, 0));
+            this.highlightWebElement(webElement, new Color(255, 255, 0));
             final Point location = webElement.getLocation();
             final int x = location.getX();
             final int y = location.getY();
@@ -612,8 +616,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
     @Override
     public void highlight(Color color) {
         this.findWebElement(webElement -> {
-            JSUtils utils = new JSUtils();
-            utils.highlight(guiElementData.getWebDriver(), webElement, color);
+            this.highlightWebElement(webElement, color);
         });
     }
 

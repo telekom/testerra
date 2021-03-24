@@ -27,25 +27,41 @@ import java.util.ResourceBundle;
 
 public class LocalizedBundle {
     private Locale locale;
+    private boolean useDefaultLocale;
     private ResourceBundle currentResourceBundle;
     private final String bundleName;
 
-
+    /**
+     * Initialize the bundle with default locale and reloads the internal
+     * resource bundle when the default locale changes.
+     */
     public LocalizedBundle(String bundleName) {
+        this(bundleName, Locale.getDefault());
+        this.useDefaultLocale = true;
+    }
+
+    /**
+     * Initializes the bundle with a final locale.
+     */
+    public LocalizedBundle(String bundleName, Locale useLocale) {
         this.bundleName = bundleName;
-        updateResourceBundle();
+        this.locale = useLocale;
+        this.useDefaultLocale = false;
     }
 
     private ResourceBundle getResourceBundle() {
-        if (Locale.getDefault() != locale) {
-            updateResourceBundle();
+        // When we should use the default locale
+        // and is has changed, than invalidate the bundle
+        if (this.useDefaultLocale && this.locale != Locale.getDefault()) {
+            this.locale = Locale.getDefault();
+            this.currentResourceBundle = null;
+        }
+
+        // Initialize the resource bundle on demand
+        if (this.currentResourceBundle == null) {
+            currentResourceBundle = ResourceBundle.getBundle(bundleName, this.locale, new UTF8ResourceBundleControl());
         }
         return currentResourceBundle;
-    }
-
-    private void updateResourceBundle() {
-        currentResourceBundle = ResourceBundle.getBundle(bundleName, new UTF8ResourceBundleControl());
-        locale = Locale.getDefault();
     }
 
     public String getString(final String label) {

@@ -31,6 +31,7 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.Sequence;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import org.testng.Assert;
 
 /**
  * Default implementation of {@link TestController}
@@ -71,7 +72,7 @@ public class DefaultTestController implements TestController, Loggable {
     }
 
     @Override
-    public void retryFor(int seconds, Runnable runnable, Runnable whenFail) {
+    public void retryFor(int seconds, Assert.ThrowingRunnable runnable, Runnable whenFail) {
         Throwable throwable = _waitFor(seconds, runnable, whenFail);
         if (throwable != null) {
             throw new TimeoutException("Retry sequence timed out", throwable);
@@ -79,11 +80,11 @@ public class DefaultTestController implements TestController, Loggable {
     }
 
     @Override
-    public boolean waitFor(int seconds, Runnable runnable, Runnable whenFail) {
+    public boolean waitFor(int seconds, Assert.ThrowingRunnable runnable, Runnable whenFail) {
         return _waitFor(seconds, runnable, whenFail) == null;
     }
 
-    private Throwable _waitFor(int seconds, Runnable runnable, Runnable whenFail) {
+    private Throwable _waitFor(int seconds, Assert.ThrowingRunnable runnable, Runnable whenFail) {
         Sequence sequence = new Sequence()
                 .setTimeoutMs(seconds * 1000L);
 

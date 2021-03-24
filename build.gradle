@@ -25,13 +25,18 @@ ext {
     }
 }
 
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'maven'
+
+    sourceCompatibility = 1.8
+}
+
 subprojects {
 
     group 'eu.tsystems.mms.tic.testerra'
     version moduleVersion
 
-    apply plugin: 'java'
-    apply plugin: 'maven'
     apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
     apply plugin: 'jacoco'
 

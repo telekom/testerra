@@ -11,7 +11,6 @@
 <p align="center">
   <a href="#installation">Installation</a> •
   <a href="#documentation">Documentation</a> •
-  <a href="#development">Development</a> •
   <a href="#support-and-feedback">Support</a> •
   <a href="#how-to-contribute">Contribute</a> •
   <a href="#contributors">Contributors</a> •
@@ -68,8 +67,6 @@ Feel free to try out our ready-to-use Skeleton project: [testerra-skeleton].
 ## Documentation
 
 Check out our comprehensive [Testerra documentation](http://docs.testerra.io/testerra/2.0-RC-3/)!
-
-## Development
 
 ## Code of Conduct
 

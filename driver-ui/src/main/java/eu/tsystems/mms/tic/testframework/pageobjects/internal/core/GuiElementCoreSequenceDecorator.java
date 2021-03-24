@@ -109,6 +109,14 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
     }
 
     @Override
+    public void hover() {
+        sequenced(true, () -> {
+            decoratedCore.hover();
+            return true;
+        });
+    }
+
+    @Override
     public void select() {
         sequenced(true, () -> {
             decoratedCore.select();

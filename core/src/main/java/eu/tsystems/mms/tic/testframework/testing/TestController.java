@@ -21,7 +21,7 @@
 
 package eu.tsystems.mms.tic.testframework.testing;
 
-import java.util.function.Supplier;
+import org.testng.Assert;
 
 /**
  * Allows to run blocks of code in a {@link Runnable} with {@link Overrides}
@@ -65,9 +65,9 @@ public interface TestController {
     void withTimeout(int seconds, Runnable runnable);
 
     /**
-     * Does the same like {@link #retryFor(int, Runnable, Runnable)}
+     * Does the same like {@link #retryFor(int, Assert.ThrowingRunnable, Runnable)}
      */
-    default void retryFor(int seconds, Runnable runnable) {
+    default void retryFor(int seconds, Assert.ThrowingRunnable runnable) {
         retryFor(seconds, runnable, null);
     }
 
@@ -77,10 +77,10 @@ public interface TestController {
      * @param runnable Runnable
      * @param whenFail Runnable which gets called when a throwable occurred.
      */
-    void retryFor(int seconds, Runnable runnable, Runnable whenFail);
+    void retryFor(int seconds, Assert.ThrowingRunnable runnable, Runnable whenFail);
 
-    default boolean waitFor(int seconds, Runnable runnable) {
+    default boolean waitFor(int seconds, Assert.ThrowingRunnable runnable) {
         return waitFor(seconds, runnable, null);
     }
-    boolean waitFor(int seconds, Runnable runnable, Runnable whenFail);
+    boolean waitFor(int seconds, Assert.ThrowingRunnable runnable, Runnable whenFail);
 }

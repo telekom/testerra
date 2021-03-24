@@ -31,6 +31,9 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.Sequence;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import org.testng.Assert;
 
 /**
@@ -73,18 +76,32 @@ public class DefaultTestController implements TestController, Loggable {
 
     @Override
     public void retryFor(int seconds, Assert.ThrowingRunnable runnable, Runnable whenFail) {
-        Throwable throwable = _waitFor(seconds, runnable, whenFail);
-        if (throwable != null) {
-            throw new TimeoutException("Retry sequence timed out", throwable);
+        final Throwable finalThrowable = _waitFor(seconds, runnable, (sequence, throwable) -> {
+            log().info("Retry after " + sequence.getDurationMs() + "ms because of: " + throwable.getMessage());
+            if (whenFail != null) {
+                whenFail.run();
+            }
+        });
+        if (finalThrowable != null) {
+            throw new TimeoutException("Retry sequence timed out", finalThrowable);
         }
     }
 
     @Override
     public boolean waitFor(int seconds, Assert.ThrowingRunnable runnable, Runnable whenFail) {
-        return _waitFor(seconds, runnable, whenFail) == null;
+        return _waitFor(seconds, runnable, (sequence,throwable) -> {
+            log().info("Giving up after " + sequence.getDurationMs() + "ms because of: " + throwable.getMessage());
+            if (whenFail != null) {
+                whenFail.run();
+            }
+        }) == null;
     }
 
-    private Throwable _waitFor(int seconds, Assert.ThrowingRunnable runnable, Runnable whenFail) {
+    private Throwable _waitFor(
+            int seconds,
+            Assert.ThrowingRunnable runnable,
+            BiConsumer<Sequence, Throwable> whenFail
+    ) {
         Sequence sequence = new Sequence()
                 .setTimeoutMs(seconds * 1000L);
 
@@ -92,14 +109,13 @@ public class DefaultTestController implements TestController, Loggable {
         sequence.run(() -> {
             try {
                 runnable.run();
+                // No throwable catched, reset the atomic value
                 atomicThrowable.set(null);
             } catch (Throwable throwable) {
-                log().info("Retry after " + sequence.getDurationMs() + "ms because of: " + throwable.getMessage());
                 atomicThrowable.set(throwable);
-                if (whenFail != null) {
-                    whenFail.run();
-                }
+                whenFail.accept(sequence, throwable);
             }
+            // Sequence ends when throwable is empty
             return atomicThrowable.get()==null;
         });
         return atomicThrowable.get();

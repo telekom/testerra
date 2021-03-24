@@ -24,11 +24,6 @@
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 
-/**
- * <Beschreibung der Klasse>
- *
- * @author pele
- */
 public final class Flags {
 
     private Flags() {

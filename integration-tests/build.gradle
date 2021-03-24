@@ -1,5 +1,3 @@
-doNotPublish(this)
-
 dependencies {
     compile driver_ui_desktop
     testImplementation project(':report-ng')
@@ -12,6 +10,17 @@ dependencies {
     compile 'org.seleniumhq.selenium:selenium-server:' + seleniumVersion
     // https://mvnrepository.com/artifact/com.github.tomakehurst/wiremock
     testCompile "com.github.tomakehurst:wiremock-jre8:2.26.3"
+}
+
+// Deactivate JAR publishing
+project.afterEvaluate {
+    println "Deactivate publishing for " + project.name
+    project.tasks.each { t ->
+        if (t.name.startsWith("publish")) {
+            t.enabled = false
+//            println "Task " + t.name + " - " + t.enabled
+        }
+    }
 }
 
 test {

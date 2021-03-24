@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Path Parser utility class.
- * <p/>
+ *
  * Created by peter on 01.09.14.
  */
 public final class PropertiesParser {

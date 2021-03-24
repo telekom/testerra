@@ -55,7 +55,6 @@ public interface GuiElementCore extends
     /**
      * Scroll to the position of this element.
      *
-     * @return this.
      */
     @Deprecated
     default void scrollToElement() {
@@ -80,14 +79,12 @@ public interface GuiElementCore extends
     /**
      * Select a selectable element.
      *
-     * @return this.
      */
     void select();
 
     /**
      * Deselect a selectable element.
      *
-     * @return this.
      */
     void deselect();
 
@@ -95,21 +92,18 @@ public interface GuiElementCore extends
      * Types text into element method with delete of prior content and following check if content was correct written.
      *
      * @param text The text to type.
-     * @return this.
      */
     void type(String text);
 
     /**
      * Click on element with prior mouseover.
      *
-     * @return .
      */
     void click();
 
     /**
      * submit
      *
-     * @return .
      */
     void submit();
 
@@ -117,14 +111,12 @@ public interface GuiElementCore extends
      * WebElement.sendKeys.
      *
      * @param charSequences .
-     * @return send Keys
      */
     void sendKeys(CharSequence... charSequences);
 
     /**
      * WebElement.clear.
      *
-     * @return clear webelement
      */
     void clear();
 
@@ -184,7 +176,6 @@ public interface GuiElementCore extends
     /**
      * Mouseover using WebDriver.
      *
-     * @return this.
      */
     void mouseOver();
 
@@ -219,14 +210,12 @@ public interface GuiElementCore extends
     /**
      * doubleclick
      *
-     * @return .
      */
     void doubleClick();
 
     /**
      * Highlight element.
      *
-     * @return element.
      */
     default void highlight() {
         highlight(new Color(0, 0, 255));

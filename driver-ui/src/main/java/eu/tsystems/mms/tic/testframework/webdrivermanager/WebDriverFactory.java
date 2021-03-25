@@ -24,11 +24,13 @@
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import java.net.MalformedURLException;
+import org.apache.commons.lang3.time.StopWatch;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.SessionId;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 public abstract class WebDriverFactory<R extends AbstractWebDriverRequest> implements Loggable {
@@ -69,7 +71,29 @@ public abstract class WebDriverFactory<R extends AbstractWebDriverRequest> imple
         /*
         create the web driver session
          */
+        StopWatch sw = new StopWatch();
+        sw.start();
         WebDriver rawDriver = getRawWebDriver(finalRequest, preparedCaps, sessionContext);
+        sw.stop();
+
+        BrowserInformation browserInformation = WebDriverManagerUtils.getBrowserInformation(rawDriver);
+
+        if (rawDriver instanceof RemoteWebDriver) {
+            SessionId sessionId = ((RemoteWebDriver) rawDriver).getSessionId();
+            sessionContext.setRemoteSessionId(sessionId.toString());
+        }
+
+        sessionContext.setActualBrowserName(browserInformation.getBrowserName());
+        sessionContext.setActualBrowserVersion(browserInformation.getBrowserVersion());
+        log().info(String.format(
+                "Started %s (sessionKey=%s, sessionId=%s, node=%s, userAgent=%s) in %s",
+                rawDriver.getClass().getSimpleName(),
+                sessionContext.getSessionKey(),
+                sessionContext.getRemoteSessionId().orElse("(local)"),
+                sessionContext.getNodeInfo().map(Object::toString).orElse("(unknown)"),
+                browserInformation.getBrowserName() + ":" + browserInformation.getBrowserVersion(),
+                sw.toString()
+        ));
 
         /*
         wrap the driver with the proxy

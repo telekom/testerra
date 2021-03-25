@@ -33,7 +33,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
 import java.util.Date;
@@ -317,14 +316,7 @@ public final class WebDriverSessionsManager {
         return WEBDRIVER_THREAD_ID_MAP.entrySet().stream().filter(entry -> entry.getValue() == threadId).map(Map.Entry::getKey);
     }
 
-    public static WebDriver getWebDriver(AbstractWebDriverRequest webDriverRequest) {
-        /*
-        get session key
-         */
-        if (StringUtils.isEmpty(webDriverRequest.getSessionKey())) {
-            webDriverRequest.setSessionKey(WebDriverManager.DEFAULT_SESSION_KEY);
-        }
-
+    public static WebDriver getWebDriver(WebDriverRequest webDriverRequest) {
         String sessionKey = webDriverRequest.getSessionKey();
         /*
         Check for exclusive session

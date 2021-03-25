@@ -116,7 +116,7 @@ public interface IWebDriverManager extends WebDriverRetainer, Loggable {
         return WebDriverManager.getWebDriver(sessionKey);
     }
 
-    default WebDriver getWebDriver(AbstractWebDriverRequest request) {
+    default WebDriver getWebDriver(WebDriverRequest request) {
         return WebDriverManager.getWebDriver(request);
     }
 

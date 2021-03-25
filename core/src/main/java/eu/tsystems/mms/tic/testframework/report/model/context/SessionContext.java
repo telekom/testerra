@@ -34,12 +34,10 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
     private String browserName;
     private String browserVersion;
     private Map<String, Object> capabilities;
-    private final WebDriverRequest webDriverRequest;
+    private WebDriverRequest webDriverRequest;
 
     public SessionContext(WebDriverRequest webDriverRequest) {
-        this.webDriverRequest = webDriverRequest;
-        this.name = webDriverRequest.getSessionKey();
-
+        setWebDriverRequest(webDriverRequest);
 //        this.provider = provider;
 //
 //        final MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
@@ -48,6 +46,15 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
 //        } else {
 //            this.name = "";
 //        }
+    }
+
+    public void setWebDriverRequest(WebDriverRequest webDriverRequest) {
+        this.webDriverRequest = webDriverRequest;
+    }
+
+    @Override
+    public String getName() {
+        return this.getWebDriverRequest().getSessionKey();
     }
 
     public WebDriverRequest getWebDriverRequest() {

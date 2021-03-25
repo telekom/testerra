@@ -20,14 +20,14 @@
  *
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
-import com.sun.org.apache.xerces.internal.impl.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import org.openqa.selenium.WebDriver;
 
 /**
- * Class holding configuration settings for the WebDriverManager. Some are writable. This class is not ThreadSafe, some
- * settings may not be valid.
+ * This is the default request configuration for {@link DesktopWebDriverRequest}.
+ * @deprecated Create your {@link WebDriver} from {@link IWebDriverManager#getWebDriver(WebDriverRequest)}
  */
 @Deprecated
 public class WebDriverManagerConfig extends DesktopWebDriverRequest implements

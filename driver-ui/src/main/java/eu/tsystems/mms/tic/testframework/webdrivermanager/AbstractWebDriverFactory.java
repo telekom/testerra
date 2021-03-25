@@ -29,6 +29,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
+/**
+ * @deprecated It's not necessary to use this implementation when you just need to implement {@link WebDriverFactory}
+ */
 public abstract class AbstractWebDriverFactory<R extends WebDriverRequest> implements Loggable, WebDriverFactory {
 
     protected abstract R buildRequest(WebDriverRequest webDriverRequest);
@@ -47,6 +50,7 @@ public abstract class AbstractWebDriverFactory<R extends WebDriverRequest> imple
         build the final request (filled with all requested values)
          */
         R finalRequest = buildRequest(request);
+        sessionContext.setWebDriverRequest(finalRequest);
 
         /*
         create capabilities

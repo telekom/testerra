@@ -141,7 +141,7 @@ public final class WebDriverManager {
         return getWebDriver(webDriverRequest);
     }
 
-    public static WebDriver getWebDriver(AbstractWebDriverRequest webDriverRequest) {
+    public static WebDriver getWebDriver(WebDriverRequest webDriverRequest) {
         return WebDriverSessionsManager.getWebDriver(webDriverRequest);
     }
 

@@ -248,6 +248,8 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
                 Class[] interfaces = ObjectUtils.getAllInterfacesOf(webElement);
                 webElement = ObjectUtils.simpleProxy(WebElement.class, webElementProxy, interfaces);
 
+                logTimings(start, Timings.getFindCounter());
+
                 // Finally pass the web element to the consumer
                 consumer.accept(webElement);
 
@@ -256,7 +258,6 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
                     switchToDefaultContent(webDriver);
                 }
 
-                logTimings(start, Timings.getFindCounter());
             } else {
                 throwNotFoundException(new AssertionError(assertion.formatExpectGreaterEqualThan(assertion.toBigDecimal(0), assertion.toBigDecimal(1), formatLocateSubject(locate, numElementsBeforeFilter))));
             }
@@ -287,7 +288,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
 
             final long limit = Timings.LARGE_LIMIT;
             if (ms >= limit) {
-                log().warn("find()#" + findCounter + " of GuiElement " + toString() + " took longer than " + limit + " ms.");
+                log().warn("find() #" + findCounter + " of " + toString() + " took " + ms + " ms.");
             }
         }
     }

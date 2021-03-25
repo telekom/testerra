@@ -31,6 +31,7 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Optional;
 
 public class DesktopWebDriverRequest extends SeleniumWebDriverRequest implements Loggable, Serializable {
 
@@ -43,37 +44,41 @@ public class DesktopWebDriverRequest extends SeleniumWebDriverRequest implements
         this.webDriverMode = WebDriverMode.valueOf(Testerra.Properties.WEBDRIVER_MODE.asString());
         this.maximize = PropertyManager.getBooleanProperty(TesterraProperties.BROWSER_MAXIMIZE, false);
         this.maximizePosition = Position.valueOf(PropertyManager.getProperty(TesterraProperties.BROWSER_MAXIMIZE_POSITION, Position.CENTER.toString()).toUpperCase());
-        try {
-            this.setSeleniumServerUrl(new URL(StringUtils.getFirstValidString(
-                    Testerra.Properties.SELENIUM_SERVER_URL.asString(),
-                    "http://" + Testerra.Properties.SELENIUM_SERVER_HOST.asString() + ":" + Testerra.Properties.SELENIUM_SERVER_PORT.asString() + "/wd/hub"
-            )));
-        } catch (MalformedURLException e) {
-            throw new RuntimeException("Unable to retrieve default Selenium URL from properties", e);
-        }
     }
 
     public WebDriverMode getWebDriverMode() {
         return webDriverMode;
     }
 
-    public DesktopWebDriverRequest setWebDriverMode(WebDriverMode webDriverMode) {
+    public void setWebDriverMode(WebDriverMode webDriverMode) {
         this.webDriverMode = webDriverMode;
-        return this;
     }
 
-    public DesktopWebDriverRequest setMaximizeBrowser(boolean maximize) {
+    @Override
+    public Optional<URL> getSeleniumServerUrl() {
+        if (!super.getSeleniumServerUrl().isPresent()) {
+            try {
+                this.setSeleniumServerUrl(new URL(StringUtils.getFirstValidString(
+                        Testerra.Properties.SELENIUM_SERVER_URL.asString(),
+                        "http://" + Testerra.Properties.SELENIUM_SERVER_HOST.asString() + ":" + Testerra.Properties.SELENIUM_SERVER_PORT.asString() + "/wd/hub"
+                )));
+            } catch (MalformedURLException e) {
+                throw new RuntimeException("Unable to retrieve default Selenium URL from properties", e);
+            }
+        }
+        return super.getSeleniumServerUrl();
+    }
+
+    public void setMaximizeBrowser(boolean maximize) {
         this.maximize = maximize;
-        return this;
     }
 
     public boolean getMaximizeBrowser() {
         return this.maximize;
     }
 
-    public DesktopWebDriverRequest setMaximizePosition(Position position) {
+    public void setMaximizePosition(Position position) {
         this.maximizePosition = position;
-        return this;
     }
 
     public Position getMaximizePosition() {

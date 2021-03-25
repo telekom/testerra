@@ -35,16 +35,6 @@ public class ConditionalBehaviourWorker implements Loggable, MethodEndEvent.List
     @Subscribe
     public void onMethodEnd(MethodEndEvent event) {
         if (event.getTestMethod().isTest() && event.isFailed()) {
-
-            // check state condition: shutdown
-            boolean skipShutdown = PropertyManager.getBooleanProperty(
-                    TesterraProperties.ON_STATE_TESTFAILED_SKIP_SHUTDOWN, false);
-            if (skipShutdown) {
-                log().debug("ON_STATE_TESTFAILED_SKIP_SHUTDOWN: true");
-                // leave all windows open when this condition is true (except you call forceShutdown)
-                WebDriverManager.getConfig().setShutdownSessions(false);
-            }
-
             // check state condition: skip test methods
             boolean skipFollowingTests = PropertyManager.getBooleanProperty(
                     TesterraProperties.ON_STATE_TESTFAILED_SKIP_FOLLOWING_TESTS, false);

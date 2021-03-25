@@ -19,7 +19,7 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.webdriver;
+package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 public class DefaultWebDriverManager implements IWebDriverManager {
 }

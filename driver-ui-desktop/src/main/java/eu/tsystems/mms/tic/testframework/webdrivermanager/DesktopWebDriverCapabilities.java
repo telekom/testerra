@@ -22,6 +22,7 @@
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -90,11 +91,13 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
     @Deprecated
     private static void addEndPointCapabilities(DesktopWebDriverRequest desktopWebDriverRequest) {
         for (Pattern pattern : ENDPOINT_CAPABILITIES.keySet()) {
-            if (pattern.matcher(desktopWebDriverRequest.getSeleniumServerUrl().getHost()).find()) {
-                Capabilities capabilities = ENDPOINT_CAPABILITIES.get(pattern);
-                desktopWebDriverRequest.getDesiredCapabilities().merge(capabilities);
-                LOGGER.info("Applying EndPoint Capabilities: " + capabilities);
-            }
+            desktopWebDriverRequest.getSeleniumServerUrl().ifPresent(url -> {
+                if (pattern.matcher(url.getHost()).find()) {
+                    Capabilities capabilities = ENDPOINT_CAPABILITIES.get(pattern);
+                    desktopWebDriverRequest.getDesiredCapabilities().merge(capabilities);
+                    LOGGER.info("Applying EndPoint Capabilities: " + capabilities);
+                }
+            });
         }
     }
 

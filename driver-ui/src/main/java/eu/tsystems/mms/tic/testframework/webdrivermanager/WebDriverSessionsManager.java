@@ -27,7 +27,6 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
-import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
@@ -36,7 +35,6 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
-import eu.tsystems.mms.tic.testframework.webdriver.DefaultWebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
 import java.util.Date;
 import java.util.HashMap;
@@ -73,7 +71,7 @@ public final class WebDriverSessionsManager {
     private static final Map<String, WebDriver> EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP = new ConcurrentHashMap<>();
     private static final Map<String, WebDriver> THREAD_SESSION_KEY_WEBDRIVER_MAP = new ConcurrentHashMap<>();
     private static final Map<WebDriver, Long> WEBDRIVER_THREAD_ID_MAP = new ConcurrentHashMap<>();
-    private static final Map<WebDriver, SessionContext> WEBDRIVER_SESSIONS_CONTEXTS_MAP = new ConcurrentHashMap<>();
+    static final Map<WebDriver, SessionContext> WEBDRIVER_SESSIONS_CONTEXTS_MAP = new ConcurrentHashMap<>();
     private static final Queue<Consumer<WebDriver>> beforeQuitActions = new ConcurrentLinkedQueue<>();
     private static final Queue<Consumer<WebDriver>> afterQuitActions = new ConcurrentLinkedQueue<>();
     private static final Queue<Consumer<WebDriver>> WEBDRIVER_STARTUP_HANDLERS = new ConcurrentLinkedQueue<>();
@@ -231,6 +229,9 @@ public final class WebDriverSessionsManager {
         });
         unlinkFromThread(sessionKey, webDriver);
         WEBDRIVER_SESSIONS_CONTEXTS_MAP.remove(WebDriverUtils.getLowestWebDriver(webDriver));
+        if (sessionKey.startsWith(EXCLUSIVE_PREFIX)) {
+            EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.remove(sessionKey);
+        }
     }
 
 
@@ -248,10 +249,10 @@ public final class WebDriverSessionsManager {
         EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.values().forEach(WebDriverSessionsManager::shutdownWebDriver);
 
         // This should not be necessary but we do it anyway
-        THREAD_SESSION_KEY_WEBDRIVER_MAP.clear();
-        WEBDRIVER_THREAD_ID_MAP.clear();
-        EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.clear();
-        WEBDRIVER_SESSIONS_CONTEXTS_MAP.clear();
+//        THREAD_SESSION_KEY_WEBDRIVER_MAP.clear();
+//        WEBDRIVER_THREAD_ID_MAP.clear();
+//        EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.clear();
+//        WEBDRIVER_SESSIONS_CONTEXTS_MAP.clear();
     }
 
     /**
@@ -316,7 +317,6 @@ public final class WebDriverSessionsManager {
         return WEBDRIVER_THREAD_ID_MAP.entrySet().stream().filter(entry -> entry.getValue() == threadId).map(Map.Entry::getKey);
     }
 
-
     public static WebDriver getWebDriver(AbstractWebDriverRequest webDriverRequest) {
         /*
         get session key
@@ -351,18 +351,6 @@ public final class WebDriverSessionsManager {
         /*
          **** STARTING NEW SESSION ****
          */
-
-        if (StringUtils.isEmpty(webDriverRequest.getBrowser())) {
-            webDriverRequest.setBrowser(WebDriverManager.getConfig().getBrowser());
-        }
-
-        if (StringUtils.isEmpty(webDriverRequest.getBrowserVersion())) {
-            webDriverRequest.setBrowserVersion(WebDriverManager.getConfig().getBrowserVersion());
-        }
-
-        if (StringUtils.isEmpty(webDriverRequest.getBrowser())) {
-            webDriverRequest.setBrowser(WebDriverManager.getConfig().getBrowser());
-        }
 
         /*
         decide which session manager to use
@@ -421,6 +409,13 @@ public final class WebDriverSessionsManager {
 
     public static Optional<SessionContext> getSessionContext(WebDriver webDriver) {
         return Optional.ofNullable(WEBDRIVER_SESSIONS_CONTEXTS_MAP.get(WebDriverUtils.getLowestWebDriver(webDriver)));
+    }
+
+    public static Optional<WebDriver> getWebDriver(SessionContext sessionContext) {
+        return WEBDRIVER_SESSIONS_CONTEXTS_MAP.entrySet().stream()
+                .filter(entry -> entry.getValue() == sessionContext)
+                .map(Map.Entry::getKey)
+                .findFirst();
     }
 
     public static Optional<String> getRequestedBrowser(WebDriver webDriver) {

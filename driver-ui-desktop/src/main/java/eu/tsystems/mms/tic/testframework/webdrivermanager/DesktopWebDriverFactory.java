@@ -103,13 +103,6 @@ public class DesktopWebDriverFactory extends AbstractWebDriverFactory<DesktopWeb
             finalRequest.setBrowser(request.getBrowser());
             finalRequest.setBrowserVersion(request.getBrowserVersion());
         }
-
-        /*
-        set webdriver mode
-         */
-        if (finalRequest.getWebDriverMode() == null) {
-            finalRequest.setWebDriverMode(WebDriverManager.getConfig().getWebDriverMode());
-        }
         return finalRequest;
     }
 
@@ -124,10 +117,6 @@ public class DesktopWebDriverFactory extends AbstractWebDriverFactory<DesktopWeb
         start the session
          */
         WebDriver driver = startSession(request, desiredCapabilities, sessionContext);
-        if (!request.getBaseUrl().isPresent() && WebDriverManager.getConfig().getBaseUrl().isPresent()) {
-            request.setBaseUrl(WebDriverManager.getConfig().getBaseUrl().get());
-        }
-
         request.getBaseUrl().ifPresent(baseUrl -> {
             try {
                 log().info("Opening " + baseUrl.toString());
@@ -203,21 +192,23 @@ public class DesktopWebDriverFactory extends AbstractWebDriverFactory<DesktopWeb
           */
         StopWatch.startPageLoad(eventFiringWebDriver);
 
-        WebDriverManagerConfig config = WebDriverManager.getConfig();
+        DesktopWebDriverRequest desktopWebDriverRequest = (DesktopWebDriverRequest)request;
+
         WebDriver.Window window = eventFiringWebDriver.manage().window();
         /*
          Maximize
          */
-        if (config.shouldMaximizeViewport()) {
+        if (desktopWebDriverRequest.getMaximizeBrowser()) {
             log().debug("Trying to maximize window");
             try {
                 Dimension originWindowSize = window.getSize();
                 // Maximize to detect window size
                 window.maximize();
-                if (config.getMaximizePosition() != Position.CENTER) {
-                    log().debug(String.format("Setting maximized window position to: %s", config.getMaximizePosition()));
+                Position maximizePosition = desktopWebDriverRequest.getMaximizePosition();
+                if (maximizePosition != Position.CENTER) {
+                    log().debug(String.format("Setting maximized window position to: %s", maximizePosition));
                     Point targetPosition = new Point(0, 0);
-                    switch (config.getMaximizePosition()) {
+                    switch (maximizePosition) {
                         case LEFT:
                             targetPosition.x = -originWindowSize.width;
                             break;
@@ -309,24 +300,23 @@ public class DesktopWebDriverFactory extends AbstractWebDriverFactory<DesktopWeb
         WebDriver newDriver;
         URL remoteAddress = null;
         if (desktopWebDriverRequest.getWebDriverMode() == WebDriverMode.remote) {
-            remoteAddress = desktopWebDriverRequest.getSeleniumServerUrl();
+            remoteAddress = desktopWebDriverRequest.getSeleniumServerUrl().get();
         }
 
-
-            /*
-             * Start a new web driver session.
-             */
-            try {
-                if (browser.equals(Browsers.htmlunit)) {
-                    capabilities.setBrowserName(BrowserType.HTMLUNIT);
-                    capabilities.setJavascriptEnabled(false);
-                    log().info("Starting HtmlUnitRemoteWebDriver.");
-                        newDriver = new RemoteWebDriver(remoteAddress, capabilities);
-                        } else {
-                    newDriver = startNewWebDriverSession(desktopWebDriverRequest, capabilities, remoteAddress, sessionContext);
-                }
-            } catch (final SetupException e) {
-                int ms = Testerra.Properties.WEBDRIVER_TIMEOUT_SECONDS_RETRY.asLong().intValue()*1000;
+        /*
+         * Start a new web driver session.
+         */
+        try {
+            if (browser.equals(Browsers.htmlunit)) {
+                capabilities.setBrowserName(BrowserType.HTMLUNIT);
+                capabilities.setJavascriptEnabled(false);
+                log().info("Starting HtmlUnitRemoteWebDriver.");
+                    newDriver = new RemoteWebDriver(remoteAddress, capabilities);
+                    } else {
+                newDriver = startNewWebDriverSession(desktopWebDriverRequest, capabilities, remoteAddress, sessionContext);
+            }
+        } catch (final SetupException e) {
+            int ms = Testerra.Properties.WEBDRIVER_TIMEOUT_SECONDS_RETRY.asLong().intValue()*1000;
             log().error(String.format("Error starting WebDriver. Trying again in %d seconds", (ms / 1000)), e);
             TimerUtils.sleep(ms);
             newDriver = startNewWebDriverSession(desktopWebDriverRequest, capabilities, remoteAddress, sessionContext);

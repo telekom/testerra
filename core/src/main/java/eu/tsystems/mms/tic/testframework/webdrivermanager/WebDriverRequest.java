@@ -7,4 +7,7 @@ public interface WebDriverRequest extends Serializable {
     String getSessionKey();
     String getBrowser();
     String getBrowserVersion();
+    boolean getShutdownAfterTest();
+    boolean getShutdownAfterTestFailed();
+    boolean getShutdownAfterExecution();
 }

@@ -20,122 +20,55 @@
  *
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
-
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.common.Testerra;
+import com.sun.org.apache.xerces.internal.impl.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.enums.Position;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverManager;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
-import java.net.MalformedURLException;
 
 /**
  * Class holding configuration settings for the WebDriverManager. Some are writable. This class is not ThreadSafe, some
  * settings may not be valid.
  */
-public class WebDriverManagerConfig extends AbstractWebDriverConfiguration implements Loggable {
-    /**
-     * Specifies if windows should be closed.
-     */
-    private boolean executeCloseWindows = true;
-
-    /**
-     * WebDriverMode that is used.
-     */
-    public WebDriverMode webDriverMode;
-
-    /**
-     * Close windows after Test Methods.
-     */
-    private boolean closeWindowsAfterTestMethod;
-
-    /**
-     * Close windows on failure.
-     */
-    private boolean closeWindowsOnFailure;
-
-    private boolean maximize;
-
-    private Position maximizePosition;
-
-    /**
-     * Default constructor.
-     */
-    public WebDriverManagerConfig() {
-        this.reset();
-    }
-
+@Deprecated
+public class WebDriverManagerConfig extends DesktopWebDriverRequest implements
+        Loggable,
+        PropertyManagerProvider
+{
+    @Deprecated
     public WebDriverManagerConfig reset() {
-        this.executeCloseWindows = true;
-        this.webDriverMode = WebDriverMode.valueOf(Testerra.Properties.WEBDRIVER_MODE.asString());
-        this.closeWindowsAfterTestMethod = PropertyManager.getBooleanProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, true);
-        this.closeWindowsOnFailure = PropertyManager.getBooleanProperty(TesterraProperties.CLOSE_WINDOWS_ON_FAILURE, true);
-        this.maximize = PropertyManager.getBooleanProperty(TesterraProperties.BROWSER_MAXIMIZE, false);
-        this.maximizePosition = Position.valueOf(PropertyManager.getProperty(TesterraProperties.BROWSER_MAXIMIZE_POSITION, Position.CENTER.toString()).toUpperCase());
-        String baseUrl = Testerra.Properties.BASEURL.asString();
-        if (!baseUrl.isEmpty()) {
-            try {
-                this.setBaseUrl(baseUrl);
-            } catch (MalformedURLException e) {
-                log().error("Unable to read " + baseUrl, e);
-            }
-        }
-        this.initBrowser();
+        // do nothing here
         return this;
     }
 
-    private void initBrowser() {
-        String browserSetting = IWebDriverManager.Properties.BROWSER_SETTING.asString();
-        if (!StringUtils.isStringEmpty(browserSetting)) {
-            String[] split = browserSetting.split(":");
-            if (split.length > 0) this.setBrowser(split[0].trim());
-            if (split.length > 1) this.setBrowserVersion(split[1].trim());
-        }
-
-        if (StringUtils.isStringEmpty(this.getBrowser())) {
-            this.setBrowser(IWebDriverManager.Properties.BROWSER.asString());
-        }
-        if (StringUtils.isStringEmpty(this.getBrowserVersion())) {
-            this.setBrowserVersion(IWebDriverManager.Properties.BROWSER_VERSION.asString());
-        }
-    }
-
-    public WebDriverMode getWebDriverMode() {
-        return webDriverMode;
-    }
-
+    @Deprecated
     public boolean shouldShutdownSessions() {
-        return executeCloseWindows;
+        return true;
     }
 
+    @Deprecated
     public WebDriverManagerConfig setShutdownSessions(boolean close) {
-        this.executeCloseWindows = close;
         return this;
     }
 
+    @Deprecated
     public boolean shouldShutdownSessionAfterTestMethod() {
-        return executeCloseWindows && closeWindowsAfterTestMethod;
+        return getShutdownAfterTest();
     }
 
+    @Deprecated
     public WebDriverManagerConfig setShutdownSessionAfterTestMethod(boolean shutdown) {
-        if (shutdown) {
-            this.setShutdownSessions(true);
-        }
-        this.closeWindowsAfterTestMethod = shutdown;
+        PROPERTY_MANAGER.setSystemProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, shutdown);
+        this.setShutdownAfterTest(shutdown);
         return this;
     }
 
+    @Deprecated
     public boolean shouldShutdownSessionOnFailure() {
-        return executeCloseWindows && closeWindowsOnFailure;
+        return getShutdownAfterTestFailed();
     }
 
+    @Deprecated
     public boolean shouldMaximizeViewport() {
-        return maximize;
-    }
-
-    public Position getMaximizePosition() {
-        return maximizePosition;
+        return getMaximizeBrowser();
     }
 }

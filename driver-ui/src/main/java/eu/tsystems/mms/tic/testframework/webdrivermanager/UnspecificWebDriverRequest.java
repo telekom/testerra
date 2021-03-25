@@ -21,5 +21,5 @@
  */
  package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-public class UnspecificWebDriverRequest extends AbstractWebDriverRequest {
+public class UnspecificWebDriverRequest extends SeleniumWebDriverRequest {
 }

@@ -39,7 +39,7 @@ import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.MouseActions;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
-import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverManager;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebElementProxy;
 import java.awt.Color;
 import java.awt.image.BufferedImage;

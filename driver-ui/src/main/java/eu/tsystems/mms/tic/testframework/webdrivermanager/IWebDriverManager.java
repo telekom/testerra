@@ -19,18 +19,15 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.webdriver;
+package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.IProperties;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverRequest;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverProxy;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
-import java.util.ArrayList;
+import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
+import eu.tsystems.mms.tic.testframework.webdriver.WebDriverRetainer;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -42,7 +39,7 @@ import org.openqa.selenium.support.events.EventFiringWebDriver;
  * Replacement for static {@link WebDriverManager}
  * @todo Rename to {@link WebDriverManager}
  */
-public interface IWebDriverManager extends WebDriverRetainer {
+public interface IWebDriverManager extends WebDriverRetainer, Loggable {
 
     enum Properties implements IProperties {
         BROWSER("tt.browser", ""),
@@ -89,10 +86,28 @@ public interface IWebDriverManager extends WebDriverRetainer {
         WebDriverSessionsManager.shutdownWebDriver(webDriver);
     }
 
+    /**
+     * Requests to shutdown all sessions, that are able to shutdown by its {@link WebDriverRequest} configuration.
+     */
+    default void requestShutdownAllSessions() {
+        log().debug("Request shutdown of all sessions");
+        WebDriverSessionsManager.WEBDRIVER_SESSIONS_CONTEXTS_MAP.forEach((webDriver, sessionContext) -> {
+            if (sessionContext.getWebDriverRequest().getShutdownAfterExecution()) {
+                WebDriverSessionsManager.shutdownWebDriver(webDriver);
+            }
+        });
+    }
+
+    /**
+     * This will shutdown all thread sessions, no matter how they are configured.
+     */
     default void shutdownAllThreadSessions() {
         WebDriverManager.forceShutdown();
     }
 
+    /**
+     * This will shutdown all sessions, no matter how they are configured.
+     */
     default void shutdownAllSessions() {
         WebDriverManager.forceShutdownAllThreads();
     }
@@ -109,6 +124,10 @@ public interface IWebDriverManager extends WebDriverRetainer {
         return WebDriverSessionsManager.getSessionContext(webDriver);
     }
 
+    default Optional<WebDriver> getWebDriver(SessionContext sessionContext) {
+        return WebDriverSessionsManager.getWebDriver(sessionContext);
+    }
+
     default Optional<String>getRequestedBrowser(WebDriver webDriver) {
         return WebDriverSessionsManager.getRequestedBrowser(webDriver);
     }
@@ -117,6 +136,7 @@ public interface IWebDriverManager extends WebDriverRetainer {
         return WebDriverManager.getSessionKeyFrom(webDriver);
     }
 
+    @Deprecated
     default WebDriverManagerConfig getConfig() {
         return WebDriverManager.getConfig();
     }

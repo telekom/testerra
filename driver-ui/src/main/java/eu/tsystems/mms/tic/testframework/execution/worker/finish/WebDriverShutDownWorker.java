@@ -26,47 +26,46 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.AfterShutdownWebDriverSessionsEvent;
 import eu.tsystems.mms.tic.testframework.events.BeforeShutdownWebDriverSessionsEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
+import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
+import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
+import java.util.ArrayList;
+import java.util.List;
 import org.testng.ITestResult;
 
-public class WebDriverShutDownWorker implements MethodEndEvent.Listener {
+public class WebDriverShutDownWorker implements MethodEndEvent.Listener, WebDriverManagerProvider {
 
     @Override
     @Subscribe
     public void onMethodEnd(MethodEndEvent methodEndEvent) {
-        if (WebDriverManager.hasAnySessionActive()) {
-            ITestResult iTestResult = methodEndEvent.getTestResult();
+        ITestResult iTestResult = methodEndEvent.getTestResult();
 
-            /*
-             * Take Screenshot of failure and log it into report.
-             */
-            if (iTestResult != null) {
-                WebDriverManagerConfig config = WebDriverManager.getConfig();
-
-                if (iTestResult.getMethod().isTest()) {
-                    // shutdown in case of a test method
-                    boolean close = true;
-                    if (config.shouldShutdownSessions()) {
-                        if (!config.shouldShutdownSessionAfterTestMethod()) {
-                            close = false;
-                        } else {
-                            if (!iTestResult.isSuccess() && !config.shouldShutdownSessionOnFailure()) {
-                                close = false;
-                            }
-                        }
-                    } else {
-                        close = false;
-                    }
-
-                    if (close) {
-                        Testerra.getEventBus().post(new BeforeShutdownWebDriverSessionsEvent(methodEndEvent));
-                        WebDriverManager.shutdown();
-                        Testerra.getEventBus().post(new AfterShutdownWebDriverSessionsEvent(methodEndEvent));
-                    }
+        /*
+         * Take Screenshot of failure and log it into report.
+         */
+        if (iTestResult != null) {
+            List<SessionContext> sessionsToCloseAtOnce = new ArrayList<>();
+            methodEndEvent.getMethodContext().readSessionContexts().forEach(sessionContext -> {
+                WebDriverRequest webDriverRequest = sessionContext.getWebDriverRequest();
+                boolean shouldClose = false;
+                if (iTestResult.getMethod().isTest() && webDriverRequest.getShutdownAfterTest()) {
+                    shouldClose = true;
+                } else if (!iTestResult.isSuccess() && webDriverRequest.getShutdownAfterTestFailed()) {
+                    shouldClose = true;
                 }
+
+                if (shouldClose) {
+                    sessionsToCloseAtOnce.add(sessionContext);
+                }
+            });
+
+            if (sessionsToCloseAtOnce.size() > 0) {
+                Testerra.getEventBus().post(new BeforeShutdownWebDriverSessionsEvent(methodEndEvent));
+                sessionsToCloseAtOnce.forEach(sessionContext -> {
+                    WEB_DRIVER_MANAGER.getWebDriver(sessionContext).ifPresent(WEB_DRIVER_MANAGER::shutdownSession);
+                });
+                Testerra.getEventBus().post(new AfterShutdownWebDriverSessionsEvent(methodEndEvent));
             }
-            // nothing more here!!
         }
     }
 }

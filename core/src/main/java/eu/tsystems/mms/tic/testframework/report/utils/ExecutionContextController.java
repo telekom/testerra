@@ -53,8 +53,8 @@ public class ExecutionContextController {
     private static final ThreadLocal<SessionContext> CURRENT_SESSION_CONTEXT = new ThreadLocal<>();
 
     /**
+     * //TODO Make {@link Optional}
      * @return The current method context or NULL if there was no method initialized.
-     * @todo Make {@link Optional}
      */
     public static MethodContext getCurrentMethodContext() {
         return CURRENT_METHOD_CONTEXT.get();

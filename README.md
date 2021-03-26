@@ -3,6 +3,7 @@
 </h1>
 
 <p align="center">
+    <a href="https://mvnrepository.com/artifact/io.testerra" title="MavenCentral"><img src="https://img.shields.io/maven-central/v/io.testerra/core?label=Maven%20Central"></a>
     <a href="/../../commits/" title="Last Commit"><img src="https://img.shields.io/github/last-commit/telekom/testerra?style=flat"></a>
     <a href="/../../issues" title="Open Issues"><img src="https://img.shields.io/github/issues/telekom/testerra?style=flat"></a>
     <a href="./LICENSE" title="License"><img src="https://img.shields.io/badge/License-Apache%202.0-green.svg?style=flat"></a>
@@ -30,12 +31,12 @@ Maven:
 ````xml
 <dependencies>
     <dependency>
-        <groupId>eu.tsystems.mms.tic.testerra</groupId>
+        <groupId>io.testerra</groupId>
         <artifactId>driver-ui-desktop</artifactId>
         <version>2-SNAPSHOT</version>
     </dependecy>
     <dependency>
-        <groupId>eu.tsystems.mms.tic.testerra</groupId>
+        <groupId>io.testerra</groupId>
         <artifactId>report-ng</artifactId>
         <version>2-SNAPSHOT</version>
     </dependecy>
@@ -44,8 +45,8 @@ Maven:
 
 Gradle:
 ````groovy
-compile 'eu.tsystems.mms.tic.testerra:driver-ui-desktop:2-SNAPSHOT'
-compile 'eu.tsystems.mms.tic.testerra:report-ng:2-SNAPSHOT'
+compile 'io.testerra:driver-ui-desktop:2-SNAPSHOT'
+compile 'io.testerra:report-ng:2-SNAPSHOT'
 ````
 
 ### Using testerra functionality:
@@ -67,6 +68,27 @@ Feel free to try out our ready-to-use Skeleton project: [testerra-skeleton].
 ## Documentation
 
 Check out our comprehensive [Testerra documentation](http://docs.testerra.io/testerra/2.0-RC-3/)!
+
+## Publishing
+
+Testerra is deployed and published to Maven Central. All JAR files are signed via Gradle signing plugin.
+
+The following properties have to be set via command line or ``~/.gradle/gradle.properties``
+
+| Property                      | Description                                           |
+| ----------------------------- | ----------------------------------------------------- |
+| `ttVersion`                   | Version of deployed Testerra, default is `1-SNAPSHOT` |
+| `deployUrl`                   | Maven repository URL                                  |
+| `deployUsername`              | Maven repository username                             |
+| `deployPassword`              | Maven repository password                             |
+| `signing.keyId`               | GPG private key ID (short form)                       |
+| `signing.password`            | GPG private key password                              |
+| `signing.secretKeyRingFile`   | Path to GPG private key                               |
+
+If all properties are set, call the following to build, deploy and release Testerra:
+````shell
+gradle buildReport publish closeAndReleaseRepository
+````
 
 ## Code of Conduct
 

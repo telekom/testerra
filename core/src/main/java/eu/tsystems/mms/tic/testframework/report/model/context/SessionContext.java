@@ -70,8 +70,8 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
         return this;
     }
 
-    public String getRemoteSessionId() {
-        return remoteSessionId;
+    public Optional<String> getRemoteSessionId() {
+        return Optional.ofNullable(remoteSessionId);
     }
 
     public SessionContext setRemoteSessionId(String sessionId) {

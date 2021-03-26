@@ -27,11 +27,6 @@ import org.apache.poi.ss.usermodel.Row;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-/**
- * <Beschreibung der Klasse>
- *
- * @author pele
- */
 public class XLSWriter extends AbstractXLSIO {
 
     @Override

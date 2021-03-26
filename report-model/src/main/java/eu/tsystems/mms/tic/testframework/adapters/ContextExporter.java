@@ -63,7 +63,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -534,7 +533,7 @@ public class ContextExporter implements Loggable {
         apply(buildContextValues(sessionContext), builder::setContextValues);
         //apply(sessionContext.getSessionKey(), builder::setSessionKey);
         //apply(sessionContext.getProvider(), builder::setProvider);
-        apply(sessionContext.getRemoteSessionId(), builder::setSessionId);
+        sessionContext.getRemoteSessionId().ifPresent(builder::setSessionId);
         sessionContext.getVideo().ifPresent(video -> {
             Optional<File.Builder> optional = Optional.ofNullable(buildVideo(video));
             optional.ifPresent(fileBuilder -> builder.setVideoId(fileBuilder.getId()));

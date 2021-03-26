@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <Beschreibung der Klasse>
+ *
  *
  * @author pele
  */

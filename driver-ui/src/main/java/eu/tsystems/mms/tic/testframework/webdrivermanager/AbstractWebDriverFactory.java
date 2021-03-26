@@ -25,8 +25,13 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
+import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
+import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
+import org.apache.commons.lang3.time.StopWatch;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.SessionId;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 /**
@@ -59,7 +64,7 @@ public abstract class AbstractWebDriverFactory<R extends WebDriverRequest> imple
         DesiredCapabilities preparedCaps = buildCapabilities(caps, finalRequest);
 
         /**
-         * @todo Move these options to the platform-connector
+         * // TODO Move these options to the platform-connector
          */
         DesiredCapabilities tapOptions = new DesiredCapabilities();
         ExecutionContextController.getCurrentExecutionContext().getMetaData().forEach(tapOptions::setCapability);
@@ -70,6 +75,46 @@ public abstract class AbstractWebDriverFactory<R extends WebDriverRequest> imple
         /*
         create the web driver session
          */
+        StopWatch sw = new StopWatch();
+        sw.start();
+        WebDriver rawDriver = getRawWebDriver(finalRequest, preparedCaps, sessionContext);
+        sw.stop();
+
+        BrowserInformation browserInformation = WebDriverManagerUtils.getBrowserInformation(rawDriver);
+
+        if (rawDriver instanceof RemoteWebDriver) {
+            SessionId sessionId = ((RemoteWebDriver) rawDriver).getSessionId();
+            sessionContext.setRemoteSessionId(sessionId.toString());
+        }
+
+        sessionContext.setActualBrowserName(browserInformation.getBrowserName());
+        sessionContext.setActualBrowserVersion(browserInformation.getBrowserVersion());
+        log().info(String.format(
+                "Started %s (sessionKey=%s, sessionId=%s, node=%s, userAgent=%s) in %s",
+                rawDriver.getClass().getSimpleName(),
+                sessionContext.getSessionKey(),
+                sessionContext.getRemoteSessionId().orElse("(local)"),
+                sessionContext.getNodeInfo().map(Object::toString).orElse("(unknown)"),
+                browserInformation.getBrowserName() + ":" + browserInformation.getBrowserVersion(),
+                sw.toString()
+        ));
+
+        /*
+        wrap the driver with the proxy
+         */
+        /*
+         * Watch out when wrapping the driver here. Any more wraps than EventFiringWebDriver will break at least
+         * the MobileDriverAdapter. This is because we need to compare the lowermost implementation of WebDriver in this case.
+         * It can be made more robust, if we always can retrieve the storedSessionId of the WebDriver, given a WebDriver object.
+         * For more info, please ask @rnhb
+         */
+        try {
+            Class[] interfaces = ObjectUtils.getAllInterfacesOf(rawDriver);
+            rawDriver = ObjectUtils.simpleProxy(WebDriver.class, rawDriver, WebDriverProxy.class, interfaces);
+        } catch (Exception e) {
+            log().error("Could not create proxy for raw webdriver", e);
+        }
+        EventFiringWebDriver eventFiringWebDriver = wrapRawWebDriverWithEventFiringWebDriver(rawDriver);
         return getRawWebDriver(finalRequest, preparedCaps, sessionContext);
     }
 

@@ -261,7 +261,7 @@ public class JDom extends AbstractXMLUtils {
      * @param doc Document
      * @param elementName Element-Name
      * @param attributeName Attribut-Name
-     * @return <true> Attribute exists in the element, <false> Attribut doesn't exist
+     * @return true - Attribute exists in the element, false - Attribut doesn't exist
      */
     public boolean isExistsAttribute(Document doc, String elementName, String attributeName) {
         Element rootElement = doc.getRootElement();

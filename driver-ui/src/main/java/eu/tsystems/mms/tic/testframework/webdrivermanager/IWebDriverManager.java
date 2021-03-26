@@ -29,6 +29,7 @@ import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverRetainer;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -165,6 +166,10 @@ public interface IWebDriverManager extends WebDriverRetainer, Loggable {
 
     default void registerWebDriverAfterStartupHandler(Consumer<WebDriver> afterStart) {
         WebDriverSessionsManager.registerWebDriverAfterStartupHandler(afterStart);
+    }
+
+    default void registerWebDriverRequestConfigurator(BiConsumer<WebDriverRequest, SessionContext> handler) {
+        WebDriverSessionsManager.webDriverRequestConfigurators.add(handler);
     }
 
     default Optional<WebDriver> switchToWindow(Predicate<WebDriver> predicate) {

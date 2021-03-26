@@ -58,6 +58,7 @@ import eu.tsystems.mms.tic.testframework.useragents.UapBrowserInformation;
 import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DefaultWebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverCapabilities;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 
 public class DriverUiHook extends AbstractModule implements ModuleHook, WebDriverManagerProvider {
@@ -79,6 +80,8 @@ public class DriverUiHook extends AbstractModule implements ModuleHook, WebDrive
 
     @Override
     public void init() {
+
+        WEB_DRIVER_MANAGER.registerWebDriverRequestConfigurator(new WebDriverCapabilities());
         /*
         init test step integration
          */

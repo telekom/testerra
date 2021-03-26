@@ -26,12 +26,10 @@ import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExistingElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverCapabilities;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import java.util.Map;
-import java.util.regex.Pattern;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
@@ -70,14 +68,12 @@ public class DriverAndGuiElementTest extends AbstractTestSitesTest {
         create caps
          */
         DesiredCapabilities caps = new DesiredCapabilities();
-        // register caps
-        DesktopWebDriverCapabilities.registerEndPointCapabilities(Pattern.compile(".*localhost.*"), caps);
 
         // start session
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver(request);
 
         SessionContext sessionContext = WebDriverSessionsManager.getSessionContext(driver).get();
-        Map<String, Object> sessionCapabilities = sessionContext.getCapabilities().get();
+        Map<String, Object> sessionCapabilities = sessionContext.getWebDriverRequest().getCapabilities();
 
         Assert.assertEquals(sessionCapabilities.get("projectId"), caps.getCapability("projectId"), "EndPoint Capability is set");
     }

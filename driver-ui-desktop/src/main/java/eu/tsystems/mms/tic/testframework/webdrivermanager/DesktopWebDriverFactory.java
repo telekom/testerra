@@ -39,15 +39,12 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementDat
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.sikuli.SikuliWebDriver;
-import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
-import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.Sequence;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
-import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import java.io.File;
 import java.lang.reflect.Constructor;
@@ -83,7 +80,7 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
-public class DesktopWebDriverFactory extends AbstractWebDriverFactory<DesktopWebDriverRequest> implements
+public class DesktopWebDriverFactory implements
         WebDriverFactory,
         Loggable
 {
@@ -92,50 +89,11 @@ public class DesktopWebDriverFactory extends AbstractWebDriverFactory<DesktopWeb
     private static File phantomjsFile = null;
 
     @Override
-    protected DesktopWebDriverRequest buildRequest(WebDriverRequest request) {
-        DesktopWebDriverRequest finalRequest;
-        if (request instanceof DesktopWebDriverRequest) {
-            finalRequest = (DesktopWebDriverRequest) request;
-        } else {
-            finalRequest = new DesktopWebDriverRequest();
-            finalRequest.setSessionKey(request.getSessionKey());
-            finalRequest.setBrowser(request.getBrowser());
-            finalRequest.setBrowserVersion(request.getBrowserVersion());
-        }
-        return finalRequest;
+    public WebDriver createWebDriver(WebDriverRequest request, SessionContext sessionContext) {
+        return startSession((DesktopWebDriverRequest)request, sessionContext);
     }
 
-    @Override
-    protected DesiredCapabilities buildCapabilities(DesiredCapabilities preSetCaps, DesktopWebDriverRequest desktopWebDriverRequest) {
-        return DesktopWebDriverCapabilities.createCapabilities(WebDriverManager.getConfig(), preSetCaps, desktopWebDriverRequest);
-    }
-
-    @Override
-    public WebDriver getRawWebDriver(DesktopWebDriverRequest request, DesiredCapabilities desiredCapabilities, SessionContext sessionContext) {
-        /*
-        start the session
-         */
-        WebDriver driver = startSession(request, desiredCapabilities, sessionContext);
-        request.getBaseUrl().ifPresent(baseUrl -> {
-            try {
-                log().info("Opening " + baseUrl.toString());
-                StopWatch.startPageLoad(driver);
-                driver.get(baseUrl.toString());
-            } catch (Exception e) {
-                if (StringUtils.containsAll(e.getMessage(), true, "Reached error page", "connectionFailure")) {
-                    throw new RuntimeException("Could not start driver session, because of unreachable url: " + baseUrl, e);
-                }
-                throw e;
-            }
-        });
-        return driver;
-    }
-
-    private WebDriver startSession(
-            DesktopWebDriverRequest desktopWebDriverRequest,
-            DesiredCapabilities desiredCapabilities,
-            SessionContext sessionContext
-    ) {
+    private WebDriver startSession(DesktopWebDriverRequest desktopWebDriverRequest, SessionContext sessionContext) {
 
         /*
         if there is a factories entry for the requested browser, then create the new (raw) instance here and wrap it directly in EventFiringWD
@@ -151,33 +109,40 @@ public class DesktopWebDriverFactory extends AbstractWebDriverFactory<DesktopWeb
 
                     // cleanup session
                     driver.manage().deleteAllCookies();
-
-                    /*
-                    Open url
-                     */
-                    desktopWebDriverRequest.getBaseUrl().ifPresent(baseUrl -> {
-                        log().info("Opening baseUrl with reused driver: " + baseUrl);
-                        StopWatch.startPageLoad(driver);
-                        driver.get(baseUrl.toString());
-                    });
                     return driver;
                 } else {
-                    return newWebDriver(desktopWebDriverRequest, desiredCapabilities, sessionContext);
+                    return newWebDriver(desktopWebDriverRequest, sessionContext);
                 }
             }
         } else {
             /*
             regular branch to create a new web driver session
              */
-            return newWebDriver(desktopWebDriverRequest, desiredCapabilities, sessionContext);
+            return newWebDriver(desktopWebDriverRequest, sessionContext);
         }
 
         throw new SystemException("WebDriverManager is in a bad state. Please report this to the tt. developers.");
     }
 
     @Override
-    public void setupSession(EventFiringWebDriver eventFiringWebDriver, WebDriverRequest request) {
-        final String browser = request.getBrowser();
+    public WebDriverRequest prepareWebDriverRequest(WebDriverRequest webDriverRequest) {
+        DesktopWebDriverRequest finalRequest;
+        if (webDriverRequest instanceof DesktopWebDriverRequest) {
+            finalRequest = (DesktopWebDriverRequest) webDriverRequest;
+        } else {
+            finalRequest = new DesktopWebDriverRequest();
+            finalRequest.setSessionKey(webDriverRequest.getSessionKey());
+            finalRequest.setBrowser(webDriverRequest.getBrowser());
+            finalRequest.setBrowserVersion(webDriverRequest.getBrowserVersion());
+        }
+        return finalRequest;
+    }
+
+    @Override
+    public void setupNewWebDriverSession(EventFiringWebDriver eventFiringWebDriver, SessionContext sessionContext) {
+
+        DesktopWebDriverRequest desktopWebDriverRequest = (DesktopWebDriverRequest)sessionContext.getWebDriverRequest();
+        final String browser = desktopWebDriverRequest.getBrowser();
 
         // add event listeners
         if (Testerra.Properties.DEMO_MODE.asBool()) {
@@ -189,9 +154,17 @@ public class DesktopWebDriverFactory extends AbstractWebDriverFactory<DesktopWeb
         /*
          start StopWatch
           */
-        StopWatch.startPageLoad(eventFiringWebDriver);
-
-        DesktopWebDriverRequest desktopWebDriverRequest = (DesktopWebDriverRequest)request;
+        desktopWebDriverRequest.getBaseUrl().ifPresent(baseUrl -> {
+            try {
+                StopWatch.startPageLoad(eventFiringWebDriver);
+                eventFiringWebDriver.get(baseUrl.toString());
+            } catch (Exception e) {
+                if (StringUtils.containsAll(e.getMessage(), true, "Reached error page", "connectionFailure")) {
+                    throw new RuntimeException("Could not start driver session, because of unreachable url: " + baseUrl, e);
+                }
+                throw e;
+            }
+        });
 
         WebDriver.Window window = eventFiringWebDriver.manage().window();
         /*
@@ -282,12 +255,9 @@ public class DesktopWebDriverFactory extends AbstractWebDriverFactory<DesktopWeb
         }
     }
 
-    private WebDriver newWebDriver(
-            DesktopWebDriverRequest desktopWebDriverRequest,
-            DesiredCapabilities capabilities,
-            SessionContext sessionContext
-    ) {
+    private WebDriver newWebDriver(DesktopWebDriverRequest desktopWebDriverRequest, SessionContext sessionContext) {
         final String browser = desktopWebDriverRequest.getBrowser();
+        DesiredCapabilities capabilities = desktopWebDriverRequest.getDesiredCapabilities();
 
         /*
          * Remote or local
@@ -306,15 +276,15 @@ public class DesktopWebDriverFactory extends AbstractWebDriverFactory<DesktopWeb
                 capabilities.setBrowserName(BrowserType.HTMLUNIT);
                 capabilities.setJavascriptEnabled(false);
                 log().info("Starting HtmlUnitRemoteWebDriver.");
-                    newDriver = new RemoteWebDriver(remoteAddress, capabilities);
-                    } else {
-                newDriver = startNewWebDriverSession(desktopWebDriverRequest, capabilities, remoteAddress, sessionContext);
+                newDriver = new RemoteWebDriver(remoteAddress, capabilities);
+            } else {
+                newDriver = startNewWebDriverSession(desktopWebDriverRequest, remoteAddress, sessionContext);
             }
         } catch (final SetupException e) {
             int ms = Testerra.Properties.WEBDRIVER_TIMEOUT_SECONDS_RETRY.asLong().intValue()*1000;
             log().error(String.format("Error starting WebDriver. Trying again in %d seconds", (ms / 1000)), e);
             TimerUtils.sleep(ms);
-            newDriver = startNewWebDriverSession(desktopWebDriverRequest, capabilities, remoteAddress, sessionContext);
+            newDriver = startNewWebDriverSession(desktopWebDriverRequest, remoteAddress, sessionContext);
         }
 
         /*
@@ -335,13 +305,13 @@ public class DesktopWebDriverFactory extends AbstractWebDriverFactory<DesktopWeb
      */
     private WebDriver startNewWebDriverSession(
             AbstractWebDriverRequest request,
-            DesiredCapabilities capabilities,
             URL remoteAddress,
             SessionContext sessionContext
     ) {
 
         String browser = request.getBrowser();
         UserAgentConfig userAgentConfig = WebDriverManager.getUserAgentConfig(browser);
+        DesiredCapabilities capabilities = request.getDesiredCapabilities();
         Capabilities finalCapabilities;
         Class<? extends RemoteWebDriver> driverClass;
 
@@ -425,8 +395,6 @@ public class DesktopWebDriverFactory extends AbstractWebDriverFactory<DesktopWeb
         }
 
         Map<String, Object> cleanedCapsMap = new WebDriverCapabilityLogHelper().clean(finalCapabilities);
-        sessionContext.setCapabilities(cleanedCapsMap);
-
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         log().info(String.format(
                 "Requesting%s WebDriver (sessionKey=%s)%s with capabilities:\n%s",

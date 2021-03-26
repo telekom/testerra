@@ -32,6 +32,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
+import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
@@ -45,10 +46,13 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
+import org.apache.commons.lang3.time.StopWatch;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.SessionId;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,6 +80,8 @@ public final class WebDriverSessionsManager {
     private static final Queue<Consumer<WebDriver>> WEBDRIVER_STARTUP_HANDLERS = new ConcurrentLinkedQueue<>();
 
     private static final String FULL_SESSION_KEY_SPLIT_MARKER = "___";
+    private static final Set<WebDriverFactory> webDriverFactories = Testerra.getInjector().getInstance(Key.get(new TypeLiteral<Set<WebDriverFactory>>(){}));
+    static final Queue<BiConsumer<WebDriverRequest, SessionContext>> webDriverRequestConfigurators = new ConcurrentLinkedQueue();
 
     private WebDriverSessionsManager() {
 
@@ -91,8 +97,9 @@ public final class WebDriverSessionsManager {
          * Getting multi binder set programmatically
          * @see {https://groups.google.com/forum/#!topic/google-guice/EUnNStmrhOk}
          */
-        Set<WebDriverFactory> webDriverFactories = Testerra.getInjector().getInstance(Key.get(new TypeLiteral<Set<WebDriverFactory>>(){}));
-        webDriverFactories.forEach(webDriverFactory -> webDriverFactory.getSupportedBrowsers().forEach(browser -> WEB_DRIVER_FACTORIES.put(browser, webDriverFactory)));
+        webDriverFactories.forEach(webDriverFactory -> {
+            webDriverFactory.getSupportedBrowsers().forEach(browser -> WEB_DRIVER_FACTORIES.put(browser, webDriverFactory));
+        });
     }
 
     private static void storeWebDriverSession(WebDriver webDriver, SessionContext sessionContext) {
@@ -316,7 +323,7 @@ public final class WebDriverSessionsManager {
         return WEBDRIVER_THREAD_ID_MAP.entrySet().stream().filter(entry -> entry.getValue() == threadId).map(Map.Entry::getKey);
     }
 
-    public static WebDriver getWebDriver(WebDriverRequest webDriverRequest) {
+    public static WebDriver getWebDriver(final WebDriverRequest webDriverRequest) {
         String sessionKey = webDriverRequest.getSessionKey();
         /*
         Check for exclusive session
@@ -351,10 +358,28 @@ public final class WebDriverSessionsManager {
         if (WEB_DRIVER_FACTORIES.containsKey(browser)) {
             WebDriverFactory webDriverFactory = WEB_DRIVER_FACTORIES.get(browser);
 
-            /*
+             /*
             create session context and link to method context
              */
-            SessionContext sessionContext = new SessionContext(webDriverRequest);
+            final WebDriverRequest finalWebDriverRequest = webDriverFactory.prepareWebDriverRequest(webDriverRequest);
+
+            SessionContext sessionContext = new SessionContext(finalWebDriverRequest);
+            webDriverRequestConfigurators.forEach(handler -> {
+                handler.accept(finalWebDriverRequest, sessionContext);
+            });
+
+            /**
+             * // TODO Move these options to the platform-connector
+             */
+//            if (webDriverRequest instanceof AbstractWebDriverRequest) {
+//                DesiredCapabilities preparedCaps = ((AbstractWebDriverRequest) finalWebDriverRequest).getDesiredCapabilities();
+//                DesiredCapabilities tapOptions = new DesiredCapabilities();
+//                ExecutionContextController.getCurrentExecutionContext().getMetaData().forEach(tapOptions::setCapability);
+//                tapOptions.setCapability("scid", sessionContext.getId());
+//                tapOptions.setCapability("sessionKey", webDriverRequest.getSessionKey());
+//                preparedCaps.setCapability("tapOptions", tapOptions);
+//            }
+
             MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
             if (methodContext != null) {
                 methodContext.addSessionContext(sessionContext);
@@ -364,7 +389,29 @@ public final class WebDriverSessionsManager {
             /*
             setup new session
              */
-            WebDriver newWebDriver = webDriverFactory.createWebDriver(webDriverRequest, sessionContext);
+            StopWatch sw = new StopWatch();
+            sw.start();
+            WebDriver newWebDriver = webDriverFactory.createWebDriver(finalWebDriverRequest, sessionContext);
+            sw.stop();
+
+            BrowserInformation browserInformation = WebDriverManagerUtils.getBrowserInformation(newWebDriver);
+
+            if (newWebDriver instanceof RemoteWebDriver) {
+                SessionId sessionId = ((RemoteWebDriver) newWebDriver).getSessionId();
+                sessionContext.setRemoteSessionId(sessionId.toString());
+            }
+
+            sessionContext.setActualBrowserName(browserInformation.getBrowserName());
+            sessionContext.setActualBrowserVersion(browserInformation.getBrowserVersion());
+            LOGGER.info(String.format(
+                    "Started %s (sessionKey=%s, sessionId=%s, node=%s, userAgent=%s) in %s",
+                    newWebDriver.getClass().getSimpleName(),
+                    sessionContext.getSessionKey(),
+                    sessionContext.getRemoteSessionId().orElse("(local)"),
+                    sessionContext.getNodeInfo().map(Object::toString).orElse("(unknown)"),
+                    browserInformation.getBrowserName() + ":" + browserInformation.getBrowserVersion(),
+                    sw.toString()
+            ));
             storeWebDriverSession(newWebDriver, sessionContext);
             EventFiringWebDriver eventFiringWebDriver = wrapWebDriver(newWebDriver);
             webDriverFactory.setupNewWebDriverSession(eventFiringWebDriver, sessionContext);

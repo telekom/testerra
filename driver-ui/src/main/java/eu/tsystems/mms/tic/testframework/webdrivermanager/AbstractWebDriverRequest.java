@@ -23,6 +23,7 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import java.io.Serializable;
+import java.util.Map;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 public abstract class AbstractWebDriverRequest implements Serializable, WebDriverRequest {
@@ -32,8 +33,6 @@ public abstract class AbstractWebDriverRequest implements Serializable, WebDrive
     private boolean shutdownAfterTest = false;
     private boolean shutdownAfterTestFailed = false;
     private boolean shutdownAfterExecution = true;
-    private String browser;
-    private String browserVersion;
 
     public AbstractWebDriverRequest() {
         setShutdownAfterTest(PropertyManager.getBooleanProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, true));
@@ -46,19 +45,19 @@ public abstract class AbstractWebDriverRequest implements Serializable, WebDrive
     }
 
     public String getBrowser() {
-        return browser;
+        return getDesiredCapabilities().getBrowserName();
     }
 
     public void setBrowser(String browser) {
-        this.browser = browser;
+        getDesiredCapabilities().setBrowserName(browser);
     }
 
     public String getBrowserVersion() {
-        return browserVersion;
+        return getDesiredCapabilities().getVersion();
     }
 
     public void setBrowserVersion(String browserVersion) {
-        this.browserVersion = browserVersion;
+        this.getDesiredCapabilities().setVersion(browserVersion);
     }
 
     public String getSessionKey() {
@@ -90,6 +89,11 @@ public abstract class AbstractWebDriverRequest implements Serializable, WebDrive
     @Override
     public boolean getShutdownAfterExecution() {
         return shutdownAfterExecution;
+    }
+
+    @Override
+    public Map<String, Object> getCapabilities() {
+        return getDesiredCapabilities().asMap();
     }
 
     public void setSessionKey(String sessionKey) {

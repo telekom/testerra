@@ -32,6 +32,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 public interface WebDriverFactory {
+    WebDriverRequest prepareWebDriverRequest(WebDriverRequest webDriverRequest);
     WebDriver createWebDriver(WebDriverRequest request, SessionContext sessionContext);
 
     /**

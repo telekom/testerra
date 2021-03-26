@@ -55,15 +55,10 @@ public final class WebDriverManagerUtils {
     private WebDriverManagerUtils() {
     }
 
-    private static final Map<WebDriver, BrowserInformation> CACHED_BROWSER_INFOS = new ConcurrentHashMap<>();
 
     public static BrowserInformation getBrowserInformation(final WebDriver driver) {
         if (driver == null) {
             return null;
-        }
-
-        if (CACHED_BROWSER_INFOS.containsKey(driver)) {
-            return CACHED_BROWSER_INFOS.get(driver);
         }
 
         BrowserInformation browserInformation;
@@ -87,14 +82,7 @@ public final class WebDriverManagerUtils {
             browserInformation = Testerra.getInjector().getInstance(BrowserInformation.class);
         }
 
-        CACHED_BROWSER_INFOS.put(driver, browserInformation);
         return browserInformation;
-    }
-
-    static void removeCachedBrowserInformation(WebDriver eventFiringWebDriver) {
-        if (CACHED_BROWSER_INFOS.containsKey(eventFiringWebDriver)) {
-            CACHED_BROWSER_INFOS.remove(eventFiringWebDriver);
-        }
     }
 
     /**
@@ -108,7 +96,6 @@ public final class WebDriverManagerUtils {
                 LOGGER.info("No WebDriver found. Maybe it has already been closed.");
             } else {
                 driver.quit();
-                removeCachedBrowserInformation(driver);
             }
         } catch (final Throwable e) {
             LOGGER.info("WebDriver could not be quit. May someone did before.", e);

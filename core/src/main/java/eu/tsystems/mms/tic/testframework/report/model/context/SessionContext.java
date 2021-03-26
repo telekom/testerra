@@ -25,15 +25,13 @@ import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import java.util.Map;
 import java.util.Optional;
-import org.apache.commons.lang3.SerializationUtils;
 
 public class SessionContext extends AbstractContext implements SynchronizableContext {
     private String remoteSessionId;
     private Video video;
     private NodeInfo nodeInfo;
-    private String browserName;
-    private String browserVersion;
-    private Map<String, Object> capabilities;
+    private String actualBrowserName;
+    private String actualBrowserVersion;
     private WebDriverRequest webDriverRequest;
 
     public SessionContext(WebDriverRequest webDriverRequest) {
@@ -106,29 +104,20 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
     }
 
     public String getActualBrowserName() {
-        return browserName;
+        return actualBrowserName;
     }
 
     public SessionContext setActualBrowserName(String browserName) {
-        this.browserName = browserName;
+        this.actualBrowserName = browserName;
         return this;
     }
 
     public String getActualBrowserVersion() {
-        return browserVersion;
+        return actualBrowserVersion;
     }
 
     public SessionContext setActualBrowserVersion(String browserVersion) {
-        this.browserVersion = browserVersion;
-        return this;
-    }
-
-    public Optional<Map<String, Object>> getCapabilities() {
-        return Optional.ofNullable(capabilities);
-    }
-
-    public SessionContext setCapabilities(Map<String, Object> capabilities) {
-        this.capabilities = capabilities;
+        this.actualBrowserVersion = browserVersion;
         return this;
     }
 }

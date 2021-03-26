@@ -41,11 +41,6 @@ import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * <Beschreibung der Klasse>
- *
- * @author pele
- */
 public final class SourceUtils {
 
     private SourceUtils() {

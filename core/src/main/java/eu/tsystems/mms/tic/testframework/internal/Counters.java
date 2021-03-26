@@ -21,11 +21,6 @@
  */
  package eu.tsystems.mms.tic.testframework.internal;
 
-/**
- * <Beschreibung der Klasse>
- *
- * @author pele
- */
 public final class Counters {
 
     private static int methodExecutionCounter = 0;

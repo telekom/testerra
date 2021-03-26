@@ -286,7 +286,7 @@ public final class WebDriverUtils {
      * @param driver {@link WebDriver}
      * @return String
      * @deprecated Use {@link WebDriverSessionsManager#getSessionContext(WebDriver)} instead
-     * @todo Should be package private
+     * // TODO Should be package private
      */
     public static String getSessionId(WebDriver driver) {
         driver = getLowestWebDriver(driver);

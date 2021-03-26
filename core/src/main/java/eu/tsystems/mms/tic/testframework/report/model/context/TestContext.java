@@ -138,7 +138,7 @@ public class TestContext extends AbstractContext implements SynchronizableContex
     //                // this must be our class context
     //                ClassContext classContext = optionalFoundClassContext.get();
     //                /**
-    //                 * @todo erku Setting the name doesn't behave like before (#setExplicitName())
+    //                 * // TODO erku Setting the name doesn't behave like before (#setExplicitName())
     //                 */
     //                classContext.setName(realClass.getSimpleName() + "_" + getSuiteContext().getName() + "_" + this.getName());
     //                return classContext;

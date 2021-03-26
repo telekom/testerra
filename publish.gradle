@@ -2,77 +2,63 @@
  * Maven publishing configuration
  * */
 
-
-// Maven basis attributes
+// Maven pom.xml attributes
 ext {
     libraryName = 'Testerra'
-    artifact = project.getName().toLowerCase()
     packagingType = 'jar'
 
-    libraryDescription = "Testerra ${project.getName()} module"
-
     siteUrl = 'https://testerra.io'
-    gitUrl = 'https://github.com/telekom/testerra-selenoid-connector.git'
-    issueUrl = 'https://github.com/telekom/testerra-selenoid-connector/issues'
+    gitUrl = 'scm:git:git://github.com/telekom/testerra.git'
+    gitHttpsUrl = 'https://github.com/telekom/testerra'
 
     developerId = 'MMS'
     developerName = 'Testerra Team T-Systems MMS'
     developerEmail = 'testerra@t-systems-mms.com'
+    developerOrganization = 'T-Systems MMS'
+    developerOrganizationUrl = 'https://www.t-systems-mms.com/'
+
 
     licenseName = 'The Apache Software License, Version 2.0'
     licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
     allLicenses = ["Apache-2.0"]
+
 }
 
-// Set up the Maven publication.
-install {
-    repositories.mavenInstaller {
-        // This generates POM.xml with proper parameters
-        pom.project {
-            packaging packagingType
-            groupId group
-            artifactId artifact
-
-            // Add your description here
-            name libraryName
-            description libraryDescription
-            url siteUrl
-
-            // Set your license
-            licenses {
-                license {
-                    name licenseName
-                    url licenseUrl
-                }
-            }
-            developers {
-                developer {
-                    id developerId
-                    name developerName
-                    email developerEmail
-                }
-            }
-            scm {
-                connection gitUrl
-                developerConnection gitUrl
-                url siteUrl
-            }
-
-        }
-    }
+nexusStaging {
+    serverUrl = "https://s01.oss.sonatype.org/service/local/"
+    packageGroup = "io.testerra"
+    username = System.getProperty("deployUsername")
+    password = System.getProperty("deployPassword")
 }
 
 subprojects {
 
-    // custom tasks for creating source/javadoc jars
+    def libraryDescription = "Testerra test automation framework - ${project.getName()} module"
+
+    javadoc {
+        // Support JDK 8 annotations
+        options.tags = [
+                "implNote:a:Implementation Note:",
+                "apiNote:a:API Note:",
+                "implSpec:a:Implementation Requirements:"
+        ]
+        // Prevent errors during generation
+        options.addStringOption('Xdoclint:none', '-quiet')
+    }
+
     task sourcesJar(type: Jar, dependsOn: classes) {
         archiveClassifier.set('sources')
         from sourceSets.main.allSource
     }
 
-    // add source jar tasks as artifacts
+    task javadocJar(type: Jar) {
+        archiveClassifier.set('javadoc')
+        from javadoc
+    }
+
     artifacts {
         archives sourcesJar
+        archives javadocJar
     }
 
     publishing {
@@ -80,6 +66,38 @@ subprojects {
             mavenJava(MavenPublication) {
                 from components.java
                 artifact sourcesJar
+                artifact javadocJar
+
+                // Custom pom
+                pom {
+
+                    name = libraryName
+                    description = libraryDescription
+                    url = siteUrl
+
+                    licenses {
+                        license {
+                            name = licenseName
+                            url = licenseUrl
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id = developerId
+                            name = developerName
+                            email = developerEmail
+                            organization = developerOrganization
+                            organizationUrl = developerOrganizationUrl
+                        }
+                    }
+
+                    scm {
+                        connection = gitUrl
+                        developerConnection = gitUrl
+                        url = gitHttpsUrl
+                    }
+                }
             }
         }
 
@@ -94,13 +112,8 @@ subprojects {
         }
     }
 
-    tasks.whenTaskAdded { t ->
-        if (t.name.startsWith("publish")) {
-            boolean e = t.project.publish.enabled
-            if (!e) {
-                println "Not running publish for " + t.project.name
-                t.enabled = false
-            }
-        }
+    signing {
+        sign publishing.publications.mavenJava
     }
+
 }

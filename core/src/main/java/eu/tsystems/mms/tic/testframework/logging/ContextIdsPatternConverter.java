@@ -32,7 +32,7 @@ import org.apache.logging.log4j.core.pattern.PatternConverter;
 
 /**
  * Replaces %contextIds by [MCID:xxx][SID:xxx] in the log pattern layout
- * @todo Try to find a way to initialize this programmatically
+ * // TODO Try to find a way to initialize this programmatically
  * @author Mike Reiche
  */
 @Plugin(name = "ContextIdsPatternConverter", category = PatternConverter.CATEGORY)

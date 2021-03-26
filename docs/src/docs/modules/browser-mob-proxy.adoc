@@ -5,12 +5,12 @@ You can use it to enable Basic Auth for your SUT and other features.
 
 == Project setup
 
-Current release image:https://img.shields.io/bintray/v/testerra-io/Testerra/eu.tsystems.mms.tic.testerra:bmp?label=Testerra%20BMP[Bintray]
+Latest release image:https://img.shields.io/maven-central/v/io.testerra/bmp?label=Testerra%20BMP[Maven Central]
 
 .build.gradle
 [source,groovy,role="primary",subs="attributes"]
 ----
-compile 'eu.tsystems.mms.tic.testerra:bmp:{revnumber}'
+compile 'io.testerra:bmp:{revnumber}'
 ----
 
 .pom.xml
@@ -18,7 +18,7 @@ compile 'eu.tsystems.mms.tic.testerra:bmp:{revnumber}'
 ----
 <dependencies>
     <dependency>
-        <groupId>eu.tsystems.mms.tic.testerra</groupId>
+        <groupId>io.testerra</groupId>
         <artifactId>bmp</artifactId>
         <version>{revnumber}</version>
     </dependency>

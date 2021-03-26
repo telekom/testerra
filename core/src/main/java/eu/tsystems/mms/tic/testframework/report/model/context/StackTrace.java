@@ -21,7 +21,7 @@
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
 /**
- * @todo Replace by {@link Cause}
+ * // TODO Replace by {@link Cause}
  */
 @Deprecated
 public class StackTrace {

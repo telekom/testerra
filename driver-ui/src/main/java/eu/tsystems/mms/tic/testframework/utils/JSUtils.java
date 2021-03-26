@@ -58,7 +58,7 @@ import org.slf4j.LoggerFactory;
  * JavaScript Utils.
  *
  * @author pele
- * @todo Move this class to driver-ui-desktop
+ * // TODO Move this class to driver-ui-desktop
  */
 public final class JSUtils {
 

@@ -30,9 +30,7 @@ import eu.tsystems.mms.tic.testframework.enums.Position;
 import eu.tsystems.mms.tic.testframework.exceptions.SetupException;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
-import eu.tsystems.mms.tic.testframework.internal.TimingInfo;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
-import eu.tsystems.mms.tic.testframework.internal.utils.TimingInfosCollector;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.DesktopGuiElementCore;
@@ -42,6 +40,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.sikuli.SikuliWebDriver;
 import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
+import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.Sequence;
@@ -88,7 +87,7 @@ public class DesktopWebDriverFactory extends AbstractWebDriverFactory<DesktopWeb
         WebDriverFactory,
         Loggable
 {
-    public static final TimingInfosCollector STARTUP_TIME_COLLECTOR = new TimingInfosCollector();
+    //public static final TimingInfosCollector STARTUP_TIME_COLLECTOR = new TimingInfosCollector();
 
     private static File phantomjsFile = null;
 
@@ -297,11 +296,7 @@ public class DesktopWebDriverFactory extends AbstractWebDriverFactory<DesktopWeb
             DesiredCapabilities capabilities,
             SessionContext sessionContext
     ) {
-        String sessionKey = desktopWebDriverRequest.getSessionKey();
         final String browser = desktopWebDriverRequest.getBrowser();
-
-        org.apache.commons.lang3.time.StopWatch sw = new org.apache.commons.lang3.time.StopWatch();
-        sw.start();
 
         /*
          * Remote or local
@@ -333,34 +328,14 @@ public class DesktopWebDriverFactory extends AbstractWebDriverFactory<DesktopWeb
         }
 
         /*
-        Log session id
-         */
-        String remoteSessionId = WebDriverUtils.getSessionId(newDriver);
-        sessionContext.setRemoteSessionId(remoteSessionId);
-        /*
         Log User Agent and executing host
          */
-        NodeInfo nodeInfo = null;
-        if (remoteAddress != null) {
+        if (remoteAddress != null && newDriver instanceof RemoteWebDriver) {
             DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
-            nodeInfo = utils.getNodeInfo(remoteAddress, remoteSessionId);
+            NodeInfo nodeInfo = utils.getNodeInfo(remoteAddress, ((RemoteWebDriver) newDriver).getSessionId().toString());
             sessionContext.setNodeInfo(nodeInfo);
         }
-        sw.stop();
-
-        BrowserInformation browserInformation = WebDriverManagerUtils.getBrowserInformation(newDriver);
-        sessionContext.setActualBrowserName(browserInformation.getBrowserName());
-        sessionContext.setActualBrowserVersion(browserInformation.getBrowserVersion());
-        log().info(String.format(
-                "Started %s (sessionKey=%s, sessionId=%s, node=%s, userAgent=%s) in %s",
-                newDriver.getClass().getSimpleName(),
-                sessionKey,
-                remoteSessionId,
-                (nodeInfo != null ? nodeInfo.toString() : "local webdriver"),
-                browserInformation.getBrowserName() + ":" + browserInformation.getBrowserVersion(),
-                sw.toString()
-        ));
-        STARTUP_TIME_COLLECTOR.add(new TimingInfo("SessionStartup", "", sw.getTime(TimeUnit.MILLISECONDS), System.currentTimeMillis()));
+        //STARTUP_TIME_COLLECTOR.add(new TimingInfo("SessionStartup", "", sw.getTime(TimeUnit.MILLISECONDS), System.currentTimeMillis()));
 
         return newDriver;
     }

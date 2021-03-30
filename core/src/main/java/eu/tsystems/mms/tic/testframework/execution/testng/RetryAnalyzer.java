@@ -34,6 +34,12 @@ import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.FailsAnnotationFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.IRetryAnalyzer;
+import org.testng.ITestNGMethod;
+import org.testng.ITestResult;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,11 +48,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.IRetryAnalyzer;
-import org.testng.ITestNGMethod;
-import org.testng.ITestResult;
 
 /**
  * Testng Retry Analyzer.
@@ -251,7 +252,9 @@ public class RetryAnalyzer implements IRetryAnalyzer {
         Object[] parameters = testResult.getParameters();
         if (parameters != null && parameters.length > 0) {
             for (Object parameter : parameters) {
-                id += "#" + parameter.toString();
+                if (parameter != null) {
+                    id += "#" + parameter.toString();
+                }
             }
         }
 

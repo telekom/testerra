@@ -197,7 +197,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest implements Locat
         final WebDriver driver = getPage().getWebDriver();
         GuiElement elementsWithCSS = new GuiElement(driver, By.xpath(".//*[@id]"))
                 .withWebElementFilter(WebElementFilter.CSS.exists("visibility"));
-        elementsWithCSS.asserts().assertAttributeContains("id", "1");
+        elementsWithCSS.expect().displayed(true);
     }
 
     @Test

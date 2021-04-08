@@ -2,24 +2,44 @@
 
 include::../properties/property-attributes.adoc[]
 
-== Global configuration
+An WebDriver can be configured in the following ways.
 
 A global configuration applies to all new sessions created by WebDriverManager.
+You can set a global configuration by.
 
-You can set a global configuration by
+* Setting defaults as <<Property configuration, Properties>>
+* Configure the WebDriver <<Request configuration, on request>>
+* at runtime by using the <<Configure with WebDriverManagerConfig (`@deprecated`), WebDriverManagerConfig>> (`@deprecated`)
 
-* `test.properties`
-* at runtime by `WebDriverManager.getConfig()` (only browser session behaviour)
-
-=== Configure with `test.properties`
+== Property configuration
 
 Like shown above all session properties can be set in `test.properties`.
 
 include::../properties/webdriver-props.adoc[leveloffset=+1]
 
-=== Configure with `WebDriverManager.getConfig()`
+== Request configuration
 
-Some of the WebdriverManager settings you can change as follows
+If you only want to change the settings for one session, you can use `WebDriverRequest`.
+All defined attributes overrides the standard configuration.
+
+NOTE: If an attribute is not set, the global definition is used.
+
+[source,java]
+----
+DesktopWebDriverRequest myRequest = new DesktopWebDriverRequest();
+myRequest.setBaseUrl("http://example.org");
+myRequest.setBrowser(Browsers.firefox);
+myRequest.setBrowserVersion("66");
+myRequest.setSessionKey("mysession");     // if no custom session defined, the default value 'default' is set
+
+WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver(myRequest);
+----
+
+== Configure with WebDriverManagerConfig (`@deprecated`)
+
+Since this `WebDriverManagerConfig` is actually a `DesktopWebDriverRequest`, you should prefer using that when creating a new WebDriver.
+
+Some of the WebDriverManager settings you can change as follows
 
 [source,java]
 ----
@@ -35,7 +55,7 @@ WEB_DRIVER_MANAGER.getConfig().setMaximizeViewport(true);
 
 [NOTE]
 ======
-`WEB_DRIVER_MANAGER.getConfig().setShutdownSessions()` controls closing of browser windows after every test method in general,
+`setShutdownSessions()` controls closing of browser windows after every test method in general,
 when its set to `false`, this also affects `shouldShutdownSessionOnFailure()` and `shouldShutdownSessionAfterTestMethod()`.
 
 Keep in mind, that after the complete test run a session shutdown is being forced.
@@ -46,22 +66,4 @@ You can reset the settings to the default values or defined in `test.properties`
 [source,java]
 ----
 WEB_DRIVER_MANAGER.getConfig().reset();
-----
-
-== Local configuration
-
-If you only want to change the settings for one session, you can use `AbstractWebDriverRequest`.
-All defined attributes overrides the standard configuration.
-
-NOTE: If an attribute is not set the global definition is used.
-
-[source,java]
-----
-DesktopWebDriverRequest myRequest = new DesktopWebDriverRequest();
-myRequest.setBaseUrl("http://example.org");
-myRequest.setBrowser(Browsers.firefox);
-myRequest.setBrowserVersion("66");
-myRequest.setSessionKey("mysession");     // if no custom session defined, the default value 'default' is set
-
-WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver(myRequest);
 ----

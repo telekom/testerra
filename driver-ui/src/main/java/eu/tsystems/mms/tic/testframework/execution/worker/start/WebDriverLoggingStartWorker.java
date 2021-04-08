@@ -47,10 +47,9 @@ public class WebDriverLoggingStartWorker implements MethodStartEvent.Listener, L
             WebDriverSessionsManager.readSessionContexts()
                     .forEach(sessionContext -> {
                         StringBuilder statusLogEntry = new StringBuilder();
-                        statusLogEntry.append(sessionContext.getActualBrowserName()).append(":").append(sessionContext.getActualBrowserVersion());
-                        sessionContext.getNodeInfo().ifPresent(nodeInfo -> {
-                            statusLogEntry.append(" on ").append(nodeInfo.getHost()).append(":").append(nodeInfo.getPort());
-                        });
+                        sessionContext.getActualBrowserName().ifPresent(statusLogEntry::append);
+                        sessionContext.getActualBrowserVersion().ifPresent(s -> statusLogEntry.append(":").append(s));
+                        sessionContext.getNodeUrl().ifPresent(url -> statusLogEntry.append(" on ").append(url));
                         statusLog.add(statusLogEntry.toString());
                     });
 

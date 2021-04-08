@@ -390,22 +390,24 @@ public final class WebDriverSessionsManager {
             WebDriver newWebDriver = webDriverFactory.createWebDriver(finalWebDriverRequest, sessionContext);
             sw.stop();
 
-            BrowserInformation browserInformation = WebDriverManagerUtils.getBrowserInformation(newWebDriver);
+            if (!sessionContext.getActualBrowserName().isPresent()) {
+                BrowserInformation browserInformation = WebDriverManagerUtils.getBrowserInformation(newWebDriver);
+                sessionContext.setActualBrowserName(browserInformation.getBrowserName());
+                sessionContext.setActualBrowserVersion(browserInformation.getBrowserVersion());
+            }
 
             if (newWebDriver instanceof RemoteWebDriver) {
                 SessionId sessionId = ((RemoteWebDriver) newWebDriver).getSessionId();
                 sessionContext.setRemoteSessionId(sessionId.toString());
             }
 
-            sessionContext.setActualBrowserName(browserInformation.getBrowserName());
-            sessionContext.setActualBrowserVersion(browserInformation.getBrowserVersion());
             LOGGER.info(String.format(
                     "Started %s (sessionKey=%s, sessionId=%s, node=%s, userAgent=%s) in %s",
                     newWebDriver.getClass().getSimpleName(),
                     sessionContext.getSessionKey(),
                     sessionContext.getRemoteSessionId().orElse("(local)"),
                     sessionContext.getNodeUrl().map(Object::toString).orElse("(unknown)"),
-                    browserInformation.getBrowserName() + ":" + browserInformation.getBrowserVersion(),
+                    sessionContext.getActualBrowserName().orElse("(unknown)") + ":" + sessionContext.getActualBrowserVersion().orElse("(unknown)"),
                     sw.toString()
             ));
             storeWebDriverSession(newWebDriver, sessionContext);

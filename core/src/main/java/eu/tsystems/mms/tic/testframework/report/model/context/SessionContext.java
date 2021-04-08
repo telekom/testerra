@@ -109,21 +109,19 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
         return Optional.ofNullable(nodeUrl);
     }
 
-    public String getActualBrowserName() {
-        return actualBrowserName;
+    public Optional<String> getActualBrowserName() {
+        return Optional.ofNullable(actualBrowserName);
     }
 
-    public SessionContext setActualBrowserName(String browserName) {
+    public void setActualBrowserName(String browserName) {
         this.actualBrowserName = browserName;
-        return this;
     }
 
-    public String getActualBrowserVersion() {
-        return actualBrowserVersion;
+    public Optional<String> getActualBrowserVersion() {
+        return Optional.ofNullable(actualBrowserVersion);
     }
 
-    public SessionContext setActualBrowserVersion(String browserVersion) {
+    public  void setActualBrowserVersion(String browserVersion) {
         this.actualBrowserVersion = browserVersion;
-        return this;
     }
 }

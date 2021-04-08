@@ -12,4 +12,7 @@ public interface WebDriverRequest extends Serializable {
     boolean getShutdownAfterTestFailed();
     boolean getShutdownAfterExecution();
     Map<String, Object> getCapabilities();
+    void setShutdownAfterTest(boolean shutdownAfterTest);
+    void setShutdownAfterTestFailed(boolean shutdownAfterTestFailed);
+    void setShutdownAfterExecution(boolean shutdownAfterExecution);
 }

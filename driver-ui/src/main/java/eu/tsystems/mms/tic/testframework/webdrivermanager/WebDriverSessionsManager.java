@@ -288,6 +288,7 @@ public final class WebDriverSessionsManager {
         introduce session context to execution context
          */
         sessionContext.setSessionKey(exclusiveSessionKey);
+        sessionContext.getWebDriverRequest().setShutdownAfterTest(false);
         executionContextController.getExecutionContext().addExclusiveSessionContext(sessionContext);
         Testerra.getEventBus().post(new ContextUpdateEvent().setContext(sessionContext));
 

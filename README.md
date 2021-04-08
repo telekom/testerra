@@ -34,12 +34,12 @@ Maven:
         <groupId>io.testerra</groupId>
         <artifactId>driver-ui-desktop</artifactId>
         <version>1-SNAPSHOT</version>
-    </dependecy>
+    </dependency>
     <dependency>
         <groupId>io.testerra</groupId>
         <artifactId>report-ng</artifactId>
         <version>1-SNAPSHOT</version>
-    </dependecy>
+    </dependency>
 </dependencies>
 ````
 

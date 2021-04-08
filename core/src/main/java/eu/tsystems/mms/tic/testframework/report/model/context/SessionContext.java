@@ -23,16 +23,17 @@ package eu.tsystems.mms.tic.testframework.report.model.context;
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
+import java.net.URL;
 import java.util.Map;
 import java.util.Optional;
 
 public class SessionContext extends AbstractContext implements SynchronizableContext {
     private String remoteSessionId;
     private Video video;
-    private NodeInfo nodeInfo;
     private String actualBrowserName;
     private String actualBrowserVersion;
     private WebDriverRequest webDriverRequest;
+    private URL nodeUrl;
 
     public SessionContext(WebDriverRequest webDriverRequest) {
         setWebDriverRequest(webDriverRequest);
@@ -95,13 +96,17 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
         return this;
     }
 
+    @Deprecated
     public Optional<NodeInfo> getNodeInfo() {
-        return Optional.ofNullable(nodeInfo);
+        return getNodeUrl().map(NodeInfo::new);
     }
 
-    public SessionContext setNodeInfo(NodeInfo nodeInfo) {
-        this.nodeInfo = nodeInfo;
-        return this;
+    public void setNodeUrl(URL url) {
+        this.nodeUrl = url;
+    }
+
+    public Optional<URL> getNodeUrl() {
+        return Optional.ofNullable(nodeUrl);
     }
 
     public String getActualBrowserName() {

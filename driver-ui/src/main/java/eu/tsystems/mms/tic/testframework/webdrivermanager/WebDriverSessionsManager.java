@@ -21,6 +21,8 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
@@ -34,6 +36,7 @@ import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
+import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -48,6 +51,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.time.StopWatch;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.SessionId;
@@ -400,7 +404,7 @@ public final class WebDriverSessionsManager {
                     newWebDriver.getClass().getSimpleName(),
                     sessionContext.getSessionKey(),
                     sessionContext.getRemoteSessionId().orElse("(local)"),
-                    sessionContext.getNodeInfo().map(Object::toString).orElse("(unknown)"),
+                    sessionContext.getNodeUrl().map(Object::toString).orElse("(unknown)"),
                     browserInformation.getBrowserName() + ":" + browserInformation.getBrowserVersion(),
                     sw.toString()
             ));
@@ -423,6 +427,25 @@ public final class WebDriverSessionsManager {
         } else {
             throw new SystemException("No webdriver factory registered for browser: '" + browser + "'");
         }
+    }
+
+    static void logRequest(
+            Class driverClass,
+            Capabilities finalCapabilities,
+            SessionContext sessionContext,
+            URL remoteAddress
+    ) {
+        Map<String, Object> cleanedCapsMap = new WebDriverCapabilityLogHelper().clean(finalCapabilities);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        LOGGER.info(String.format(
+                "Requesting%s %s (sessionKey=%s)%s with capabilities:\n%s",
+                (remoteAddress != null ? " remote" : ""),
+                driverClass.getSimpleName(),
+                sessionContext.getSessionKey(),
+                (remoteAddress != null ? " on host " + remoteAddress : ""),
+                gson.toJson(cleanedCapsMap)
+        ));
+        LOGGER.debug(String.format("Starting (session key=%s) here", sessionContext.getSessionKey()), new Throwable());
     }
 
     @Deprecated

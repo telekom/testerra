@@ -22,8 +22,6 @@
 
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.enums.Position;
@@ -32,7 +30,6 @@ import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.DesktopGuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
@@ -52,7 +49,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import net.anthavio.phanbedder.Phanbedder;
 import org.openqa.selenium.Capabilities;
@@ -257,9 +253,9 @@ public class DesktopWebDriverFactory implements
          * Remote or local
          */
         WebDriver newDriver;
-        URL remoteAddress = null;
+        URL seleniumUrl = null;
         if (desktopWebDriverRequest.getWebDriverMode() == WebDriverMode.remote) {
-            remoteAddress = desktopWebDriverRequest.getSeleniumServerUrl().get();
+            seleniumUrl = desktopWebDriverRequest.getSeleniumServerUrl().get();
         }
 
         /*
@@ -270,24 +266,23 @@ public class DesktopWebDriverFactory implements
                 capabilities.setBrowserName(BrowserType.HTMLUNIT);
                 capabilities.setJavascriptEnabled(false);
                 log().info("Starting HtmlUnitRemoteWebDriver.");
-                newDriver = new RemoteWebDriver(remoteAddress, capabilities);
+                newDriver = new RemoteWebDriver(seleniumUrl, capabilities);
             } else {
-                newDriver = startNewWebDriverSession(desktopWebDriverRequest, remoteAddress, sessionContext);
+                newDriver = startNewWebDriverSession(desktopWebDriverRequest, seleniumUrl, sessionContext);
             }
         } catch (final SetupException e) {
             int ms = Testerra.Properties.WEBDRIVER_TIMEOUT_SECONDS_RETRY.asLong().intValue()*1000;
             log().error(String.format("Error starting WebDriver. Trying again in %d seconds", (ms / 1000)), e);
             TimerUtils.sleep(ms);
-            newDriver = startNewWebDriverSession(desktopWebDriverRequest, remoteAddress, sessionContext);
+            newDriver = startNewWebDriverSession(desktopWebDriverRequest, seleniumUrl, sessionContext);
         }
 
         /*
         Log User Agent and executing host
          */
-        if (remoteAddress != null && newDriver instanceof RemoteWebDriver) {
+        if (seleniumUrl != null && newDriver instanceof RemoteWebDriver) {
             DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
-            NodeInfo nodeInfo = utils.getNodeInfo(remoteAddress, ((RemoteWebDriver) newDriver).getSessionId().toString());
-            sessionContext.setNodeInfo(nodeInfo);
+            sessionContext.setNodeUrl(utils.getNodeInfo(seleniumUrl, ((RemoteWebDriver) newDriver).getSessionId().toString()));
         }
         //STARTUP_TIME_COLLECTOR.add(new TimingInfo("SessionStartup", "", sw.getTime(TimeUnit.MILLISECONDS), System.currentTimeMillis()));
 
@@ -388,16 +383,7 @@ public class DesktopWebDriverFactory implements
         finalCapabilities.merge(desiredCapabilities);
         finalCapabilities.merge(userAgentCapabilities);
 
-        Map<String, Object> cleanedCapsMap = new WebDriverCapabilityLogHelper().clean(finalCapabilities);
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        log().info(String.format(
-                "Requesting%s WebDriver (sessionKey=%s)%s with capabilities:\n%s",
-                (remoteAddress != null ? " remote" : ""),
-                sessionContext.getSessionKey(),
-                (remoteAddress != null ? " on host " + remoteAddress : ""),
-                gson.toJson(cleanedCapsMap)
-        ));
-        log().debug(String.format("Starting (session key=%s) here", sessionContext.getSessionKey()), new Throwable());
+        WebDriverSessionsManager.logRequest(driverClass, finalCapabilities, sessionContext, remoteAddress);
 
         WebDriver driver;
         try {

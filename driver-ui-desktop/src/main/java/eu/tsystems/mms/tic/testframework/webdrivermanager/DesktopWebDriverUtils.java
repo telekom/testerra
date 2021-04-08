@@ -24,7 +24,6 @@
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.RESTUtils;
@@ -39,7 +38,7 @@ public final class DesktopWebDriverUtils implements Loggable {
 
     }
 
-    public NodeInfo getNodeInfo(URL seleniumUrl, String sessionId) {
+    public URL getNodeInfo(URL seleniumUrl, String sessionId) {
         String url = seleniumUrl.toString();
 
         url = url.replace("/wd/hub", "");
@@ -52,10 +51,10 @@ public final class DesktopWebDriverUtils implements Loggable {
             Gson gson = new GsonBuilder().create();
             Map map = gson.fromJson(nodeResponse, Map.class);
             double port = Double.parseDouble(map.get("Port").toString());
-            return new NodeInfo(map.get("Name").toString(), (int) port);
+            return new URL(map.get("Scheme").toString(), map.get("Name").toString(), (int) port, "");
         } catch (Exception e) {
             log().warn("Could not get node info. Falling back to " + seleniumUrl.toString(), e);
-            return new NodeInfo(seleniumUrl.getHost(), seleniumUrl.getPort());
+            return seleniumUrl;
         }
     }
 

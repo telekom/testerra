@@ -52,7 +52,6 @@ import eu.tsystems.mms.tic.testframework.report.ScreenshotGrabber;
 import eu.tsystems.mms.tic.testframework.report.SourceGrabber;
 import eu.tsystems.mms.tic.testframework.report.UITestStepIntegration;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
-import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.useragents.UapBrowserInformation;
 import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
@@ -61,7 +60,9 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverCapabilities;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 
-public class DriverUiHook extends AbstractModule implements ModuleHook, WebDriverManagerProvider {
+public class DriverUiHook extends AbstractModule implements ModuleHook {
+
+    private static IWebDriverManager webDriverManager;
 
     @Override
     protected void configure() {
@@ -80,8 +81,8 @@ public class DriverUiHook extends AbstractModule implements ModuleHook, WebDrive
 
     @Override
     public void init() {
-
-        WEB_DRIVER_MANAGER.registerWebDriverRequestConfigurator(new WebDriverCapabilities());
+        webDriverManager = Testerra.getInjector().getInstance(IWebDriverManager.class);
+        webDriverManager.registerWebDriverRequestConfigurator(new WebDriverCapabilities());
         /*
         init test step integration
          */
@@ -127,11 +128,11 @@ public class DriverUiHook extends AbstractModule implements ModuleHook, WebDrive
 
     @Override
     public void terminate() {
-        shutdownModule();
+        Testerra.getEventBus().post(new ShutdownSessionsListener());
     }
 
     public static void shutdownModule() {
-        WEB_DRIVER_MANAGER.requestShutdownAllSessions();
+        webDriverManager.requestShutdownAllSessions();
         WebDriverWatchDog.stop();
     }
 }

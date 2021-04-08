@@ -38,8 +38,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCor
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
-import eu.tsystems.mms.tic.testframework.sikuli.SikuliWebDriver;
-import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
+import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.Sequence;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -54,7 +53,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 import net.anthavio.phanbedder.Phanbedder;
 import org.openqa.selenium.Capabilities;
@@ -82,7 +80,8 @@ import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 public class DesktopWebDriverFactory implements
         WebDriverFactory,
-        Loggable
+        Loggable,
+        WebDriverManagerProvider
 {
     //public static final TimingInfosCollector STARTUP_TIME_COLLECTOR = new TimingInfosCollector();
 
@@ -101,18 +100,15 @@ public class DesktopWebDriverFactory implements
         if (Testerra.Properties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD.asBool()) {
             String threadName = Thread.currentThread().getId() + "";
             String testMethodName = ExecutionContextUtils.getMethodNameFromCurrentTestResult();
+            WebDriver driver = DriverStorage.getDriverByTestMethodName(testMethodName, threadName);
+            if (driver != null) {
+                log().info("Re-Using WebDriver for " + testMethodName + ": " + threadName + " driver: " + driver);
 
-            if (testMethodName != null) {
-                WebDriver driver = DriverStorage.getDriverByTestMethodName(testMethodName, threadName);
-                if (driver != null) {
-                    log().info("Re-Using WebDriver for " + testMethodName + ": " + threadName + " driver: " + driver);
-
-                    // cleanup session
-                    driver.manage().deleteAllCookies();
-                    return driver;
-                } else {
-                    return newWebDriver(desktopWebDriverRequest, sessionContext);
-                }
+                // cleanup session
+                driver.manage().deleteAllCookies();
+                return driver;
+            } else {
+                return newWebDriver(desktopWebDriverRequest, sessionContext);
             }
         } else {
             /*
@@ -120,8 +116,6 @@ public class DesktopWebDriverFactory implements
              */
             return newWebDriver(desktopWebDriverRequest, sessionContext);
         }
-
-        throw new SystemException("WebDriverManager is in a bad state. Please report this to the tt. developers.");
     }
 
     @Override
@@ -309,90 +303,90 @@ public class DesktopWebDriverFactory implements
             SessionContext sessionContext
     ) {
 
-        String browser = request.getBrowser();
-        UserAgentConfig userAgentConfig = WebDriverManager.getUserAgentConfig(browser);
-        DesiredCapabilities capabilities = request.getDesiredCapabilities();
-        Capabilities finalCapabilities;
-        Class<? extends RemoteWebDriver> driverClass;
+        final String browser = request.getBrowser();
+        final DesiredCapabilities desiredCapabilities = request.getDesiredCapabilities();
+        final Capabilities userAgentCapabilities;
+        final Class<? extends RemoteWebDriver> driverClass;
 
         switch (browser) {
             case Browsers.firefox:
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
-                if (capabilities.getCapabilityNames().contains(FirefoxOptions.FIREFOX_OPTIONS)) {
-                    final TreeMap predefinedFirefoxOptions = (TreeMap) capabilities.getCapability(FirefoxOptions.FIREFOX_OPTIONS);
-                    predefinedFirefoxOptions.forEach((s, o) -> firefoxOptions.setCapability(s.toString(), o));
-                }
-                if (userAgentConfig != null) {
+//                if (capabilities.getCapabilityNames().contains(FirefoxOptions.FIREFOX_OPTIONS)) {
+//                    final TreeMap predefinedFirefoxOptions = (TreeMap) capabilities.getCapability(FirefoxOptions.FIREFOX_OPTIONS);
+//                    predefinedFirefoxOptions.forEach((s, o) -> firefoxOptions.setCapability(s.toString(), o));
+//                }
+                WEB_DRIVER_MANAGER.getUserAgentConfig(browser).ifPresent(userAgentConfig -> {
                     userAgentConfig.configure(firefoxOptions);
-                }
-                firefoxOptions.merge(capabilities);
-                finalCapabilities = firefoxOptions;
+                });
+                userAgentCapabilities = firefoxOptions;
                 driverClass = FirefoxDriver.class;
                 break;
             case Browsers.ie:
                 InternetExplorerOptions ieOptions = new InternetExplorerOptions();
-                if (userAgentConfig != null) {
+                WEB_DRIVER_MANAGER.getUserAgentConfig(browser).ifPresent(userAgentConfig -> {
                     userAgentConfig.configure(ieOptions);
-                }
-                ieOptions.merge(capabilities);
+                });
                 ieOptions.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
-                finalCapabilities = ieOptions;
+                userAgentCapabilities = ieOptions;
                 driverClass = InternetExplorerDriver.class;
                 break;
             case Browsers.chrome:
             case Browsers.chromeHeadless:
                 ChromeOptions chromeOptions = new ChromeOptions();
-                if (capabilities.getCapabilityNames().contains(ChromeOptions.CAPABILITY)) {
-                    final TreeMap predefinedChromeOptions = (TreeMap) capabilities.getCapability(ChromeOptions.CAPABILITY);
-                    predefinedChromeOptions.forEach((s, o) -> chromeOptions.setCapability(s.toString(), o));
-                }
+//                if (capabilities.getCapabilityNames().contains(ChromeOptions.CAPABILITY)) {
+//                    final TreeMap predefinedChromeOptions = (TreeMap) capabilities.getCapability(ChromeOptions.CAPABILITY);
+//                    predefinedChromeOptions.forEach((s, o) -> chromeOptions.setCapability(s.toString(), o));
+//                }
 
-                if (userAgentConfig != null) {
+                WEB_DRIVER_MANAGER.getUserAgentConfig(browser).ifPresent(userAgentConfig -> {
                     userAgentConfig.configure(chromeOptions);
-                }
+                });
 
-                chromeOptions.merge(capabilities);
                 chromeOptions.addArguments("--no-sandbox");
                 if (browser.equals(Browsers.chromeHeadless)) {
                     chromeOptions.setHeadless(true);
                 }
-                finalCapabilities = chromeOptions;
+                userAgentCapabilities = chromeOptions;
                 driverClass = ChromeDriver.class;
                 break;
             case Browsers.phantomjs:
                 File phantomjsFile = getPhantomJSBinary();
-                capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, phantomjsFile.getAbsolutePath());
-                capabilities.setBrowserName(BrowserType.PHANTOMJS);
-                capabilities.setJavascriptEnabled(true);
+                DesiredCapabilities phantomJsOptions = new DesiredCapabilities();
+                phantomJsOptions.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, phantomjsFile.getAbsolutePath());
+                phantomJsOptions.setBrowserName(BrowserType.PHANTOMJS);
+                phantomJsOptions.setJavascriptEnabled(true);
 
                 String[] args = {
                         "--ssl-protocol=any"
                 };
-                capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, args);
-                finalCapabilities = capabilities;
+                phantomJsOptions.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, args);
+                userAgentCapabilities = phantomJsOptions;
                 driverClass = PhantomJSDriver.class;
                 break;
             case Browsers.safari:
                 SafariOptions safariOptions = new SafariOptions();
-                if (userAgentConfig != null) {
+                WEB_DRIVER_MANAGER.getUserAgentConfig(browser).ifPresent(userAgentConfig -> {
                     userAgentConfig.configure(safariOptions);
-                }
-                safariOptions.merge(capabilities);
-                finalCapabilities = safariOptions;
+                });
+                userAgentCapabilities = safariOptions;
                 driverClass = SafariDriver.class;
                 break;
             case Browsers.edge:
                 EdgeOptions edgeOptions = new EdgeOptions();
-                if (userAgentConfig != null) {
+                WEB_DRIVER_MANAGER.getUserAgentConfig(browser).ifPresent(userAgentConfig -> {
                     userAgentConfig.configure(edgeOptions);
-                }
-                edgeOptions.merge(capabilities);
-                finalCapabilities = edgeOptions;
+                });
+                userAgentCapabilities = edgeOptions;
                 driverClass = EdgeDriver.class;
                 break;
             default:
                 throw new SystemException("Browser must be set through SystemProperty 'browser' or in test.properties file! + is: " + browser);
         }
+
+        // Finalize capabilities
+        final DesiredCapabilities finalCapabilities = new DesiredCapabilities();
+        finalCapabilities.merge(desiredCapabilities);
+        finalCapabilities.merge(userAgentCapabilities);
 
         Map<String, Object> cleanedCapsMap = new WebDriverCapabilityLogHelper().clean(finalCapabilities);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -409,7 +403,7 @@ public class DesktopWebDriverFactory implements
         try {
             if (remoteAddress != null) {
                 final HttpCommandExecutor httpCommandExecutor = new HttpCommandExecutor(new HashMap<>(), remoteAddress, new HttpClientFactory());
-                driver = new SikuliWebDriver(httpCommandExecutor, finalCapabilities);
+                driver = new RemoteWebDriver(httpCommandExecutor, finalCapabilities);
                 ((RemoteWebDriver) driver).setFileDetector(new LocalFileDetector());
             } else {
                 log().warn("Local WebDriver setups may cause side effects. It's highly recommended to use a remote Selenium configurations for all environments!");

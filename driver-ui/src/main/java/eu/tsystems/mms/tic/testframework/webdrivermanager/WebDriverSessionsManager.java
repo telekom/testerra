@@ -19,7 +19,7 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.webdrivermanager;
+package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
@@ -27,11 +27,9 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
-import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
+import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
@@ -81,7 +79,8 @@ public final class WebDriverSessionsManager {
 
     private static final String FULL_SESSION_KEY_SPLIT_MARKER = "___";
     private static final Set<WebDriverFactory> webDriverFactories = Testerra.getInjector().getInstance(Key.get(new TypeLiteral<Set<WebDriverFactory>>(){}));
-    static final Queue<BiConsumer<WebDriverRequest, SessionContext>> webDriverRequestConfigurators = new ConcurrentLinkedQueue();
+    static final Queue<BiConsumer<WebDriverRequest, SessionContext>> webDriverRequestConfigurators = new ConcurrentLinkedQueue<>();
+    private static final IExecutionContextController executionContextController = Testerra.getInjector().getInstance(IExecutionContextController.class);
 
     private WebDriverSessionsManager() {
 
@@ -116,11 +115,9 @@ public final class WebDriverSessionsManager {
          */
         if (Testerra.Properties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD.asBool()) {
             String methodName = ExecutionContextUtils.getMethodNameFromCurrentTestResult();
-            if (methodName != null) {
-                String threadName = Thread.currentThread().getId() + "";
-                LOGGER.debug("Saving driver in " + DriverStorage.class.getSimpleName() + " for : " + methodName + ": " + threadName);
-                DriverStorage.saveDriverForTestMethod(webDriver, threadName, methodName);
-            }
+            String threadName = Thread.currentThread().getId() + "";
+            LOGGER.debug("Saving driver in " + DriverStorage.class.getSimpleName() + " for : " + methodName + ": " + threadName);
+            DriverStorage.saveDriverForTestMethod(webDriver, threadName, methodName);
         }
 
         /*
@@ -141,11 +138,9 @@ public final class WebDriverSessionsManager {
          */
         if (Testerra.Properties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD.asBool()) {
             String methodName = ExecutionContextUtils.getMethodNameFromCurrentTestResult();
-            if (methodName != null) {
-                String threadName = Thread.currentThread().getId() + "";
-                LOGGER.info("Removing driver in " + DriverStorage.class.getSimpleName() + " for : " + methodName + ": " + threadName);
-                DriverStorage.removeSpecificDriver(methodName);
-            }
+            String threadName = Thread.currentThread().getId() + "";
+            LOGGER.info("Removing driver in " + DriverStorage.class.getSimpleName() + " for : " + methodName + ": " + threadName);
+            DriverStorage.removeSpecificDriver(methodName);
         }
 
         /*
@@ -157,9 +152,6 @@ public final class WebDriverSessionsManager {
         for (WebDriver webDriver : WEBDRIVER_THREAD_ID_MAP.keySet()) {
             Long tid = WEBDRIVER_THREAD_ID_MAP.get(webDriver);
             String key = getSessionKey(webDriver);
-            if (key == null) {
-                key = "!!unknown!!";
-            }
             msg += "\n  " + key + " in thread " + tid;
             i++;
         }
@@ -188,7 +180,9 @@ public final class WebDriverSessionsManager {
         SessionContext sessionContext = new SessionContext(request);
 
         // store to method context
-        ExecutionContextController.getCurrentMethodContext().addSessionContext(sessionContext);
+        executionContextController.getCurrentMethodContext().ifPresent(methodContext -> {
+            methodContext.addSessionContext(sessionContext);
+        });
         storeWebDriverSession(webDriver, sessionContext);
     }
 
@@ -294,9 +288,7 @@ public final class WebDriverSessionsManager {
         introduce session context to execution context
          */
         sessionContext.setSessionKey(exclusiveSessionKey);
-        ExecutionContext currentExecutionContext = ExecutionContextController.getCurrentExecutionContext();
-        currentExecutionContext.addExclusiveSessionContext(sessionContext);
-        // fire sync
+        executionContextController.getExecutionContext().addExclusiveSessionContext(sessionContext);
         Testerra.getEventBus().post(new ContextUpdateEvent().setContext(sessionContext));
 
         LOGGER.info("Promoted " + createSessionIdentifier(webDriver, sessionKey) + " to " + createSessionIdentifier(webDriver, exclusiveSessionKey));
@@ -380,11 +372,10 @@ public final class WebDriverSessionsManager {
 //                preparedCaps.setCapability("tapOptions", tapOptions);
 //            }
 
-            MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-            if (methodContext != null) {
+            executionContextController.getCurrentMethodContext().ifPresent(methodContext -> {
                 methodContext.addSessionContext(sessionContext);
-            }
-            ExecutionContextController.setCurrentSessionContext(sessionContext);
+            });
+            executionContextController.setCurrentSessionContext(sessionContext);
 
             /*
             setup new session

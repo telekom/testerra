@@ -48,15 +48,16 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
 
     public void setWebDriverRequest(WebDriverRequest webDriverRequest) {
         this.webDriverRequest = webDriverRequest;
-    }
-
-    @Override
-    public String getName() {
-        return this.getWebDriverRequest().getSessionKey();
+        this.setSessionKey(webDriverRequest.getSessionKey());
     }
 
     public WebDriverRequest getWebDriverRequest() {
         return this.webDriverRequest;
+    }
+
+    @Override
+    public String getName() {
+        return this.getSessionKey();
     }
 
     public String getSessionKey() {

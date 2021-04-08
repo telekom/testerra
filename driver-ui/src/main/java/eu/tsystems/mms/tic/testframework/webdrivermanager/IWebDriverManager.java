@@ -71,6 +71,10 @@ public interface IWebDriverManager extends WebDriverRetainer, Loggable {
         return WebDriverManager.getWebDriver();
     }
 
+    default Optional<UserAgentConfig> getUserAgentConfig(String browser) {
+        return Optional.ofNullable(WebDriverManager.getUserAgentConfig(browser));
+    }
+
     default String makeExclusive(WebDriver webDriver) {
         return WebDriverManager.makeSessionExclusive(webDriver);
     }

@@ -238,9 +238,9 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
                 }
 
                 // proxy the web element for logging
-                WebElementProxy webElementProxy = new WebElementProxy(webDriver, webElement);
-                Class[] interfaces = ObjectUtils.getAllInterfacesOf(webElement);
-                webElement = ObjectUtils.simpleProxy(WebElement.class, webElementProxy, interfaces);
+//                WebElementProxy webElementProxy = new WebElementProxy(webDriver, webElement);
+//                Class[] interfaces = ObjectUtils.getAllInterfacesOf(webElement);
+//                webElement = ObjectUtils.simpleProxy(WebElement.class, webElementProxy, interfaces);
 
                 logTimings(start, Timings.getFindCounter());
 

@@ -63,6 +63,8 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 /**
  * @todo Rename to AbstractWebDriverCore
@@ -129,6 +131,10 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
      * @throws ElementNotFoundException with the internal selenium exception cause.
      */
     private List<WebElement> findElementsFromWebDriver(WebDriver webDriver, By by) {
+        // Prevent finding EventFiringWebDriver$EventFiringWebElement
+        if (webDriver instanceof EventFiringWebDriver) {
+            webDriver = ((EventFiringWebDriver)webDriver).getWrappedDriver();
+        }
         try {
             return webDriver.findElements(by);
         } catch (Throwable throwable) {

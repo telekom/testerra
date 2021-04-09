@@ -35,6 +35,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -135,13 +136,13 @@ public final class WebDriverManager {
      * @param sessionKey The storedSessionId to get the webDriver instance from map.
      * @return instance of WebDriver object.
      */
-    public static WebDriver getWebDriver(final String sessionKey) {
+    public static EventFiringWebDriver getWebDriver(final String sessionKey) {
         UnspecificWebDriverRequest webDriverRequest = new UnspecificWebDriverRequest();
         webDriverRequest.setSessionKey(sessionKey);
         return getWebDriver(webDriverRequest);
     }
 
-    public static WebDriver getWebDriver(WebDriverRequest webDriverRequest) {
+    public static EventFiringWebDriver getWebDriver(WebDriverRequest webDriverRequest) {
         return WebDriverSessionsManager.getWebDriver(webDriverRequest);
     }
 
@@ -291,7 +292,7 @@ public final class WebDriverManager {
         WebDriverSessionsManager.shutdownSessionKey(key);
     }
 
-    public static Stream<WebDriver> getWebDriversFromThread(final long threadId) {
+    public static Stream<EventFiringWebDriver> getWebDriversFromThread(final long threadId) {
         return WebDriverSessionsManager.getWebDriversFromThread(threadId);
     }
 

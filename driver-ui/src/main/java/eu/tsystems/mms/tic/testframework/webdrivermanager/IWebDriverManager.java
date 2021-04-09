@@ -117,11 +117,11 @@ public interface IWebDriverManager extends WebDriverRetainer, Loggable {
         WebDriverManager.forceShutdownAllThreads();
     }
 
-    default WebDriver getWebDriver(String sessionKey) {
+    default EventFiringWebDriver getWebDriver(String sessionKey) {
         return WebDriverManager.getWebDriver(sessionKey);
     }
 
-    default WebDriver getWebDriver(WebDriverRequest request) {
+    default EventFiringWebDriver getWebDriver(WebDriverRequest request) {
         return WebDriverManager.getWebDriver(request);
     }
 
@@ -129,7 +129,7 @@ public interface IWebDriverManager extends WebDriverRetainer, Loggable {
         return WebDriverSessionsManager.getSessionContext(webDriver);
     }
 
-    default Optional<WebDriver> getWebDriver(SessionContext sessionContext) {
+    default Optional<EventFiringWebDriver> getWebDriver(SessionContext sessionContext) {
         return WebDriverSessionsManager.getWebDriver(sessionContext);
     }
 
@@ -146,11 +146,11 @@ public interface IWebDriverManager extends WebDriverRetainer, Loggable {
         return WebDriverManager.getConfig();
     }
 
-    default Stream<WebDriver> readWebDriversFromCurrentThread() {
+    default Stream<EventFiringWebDriver> readWebDriversFromCurrentThread() {
         return WebDriverSessionsManager.getWebDriversFromCurrentThread();
     }
 
-    default Stream<WebDriver> readWebDrivers() {
+    default Stream<EventFiringWebDriver> readWebDrivers() {
         return WebDriverSessionsManager.readWebDrivers();
     }
 

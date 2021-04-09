@@ -95,7 +95,6 @@ public interface IWebDriverManager extends WebDriverRetainer, Loggable {
      * Requests to shutdown all sessions, that are able to shutdown by its {@link WebDriverRequest} configuration.
      */
     default void requestShutdownAllSessions() {
-        log().debug("Request shutdown of all sessions");
         WebDriverSessionsManager.WEBDRIVER_SESSIONS_CONTEXTS_MAP.forEach((webDriver, sessionContext) -> {
             if (sessionContext.getWebDriverRequest().getShutdownAfterExecution()) {
                 WebDriverSessionsManager.shutdownWebDriver(webDriver);

@@ -128,7 +128,7 @@ public class DriverUiHook extends AbstractModule implements ModuleHook {
 
     @Override
     public void terminate() {
-        Testerra.getEventBus().post(new ShutdownSessionsListener());
+        shutdownModule();
     }
 
     public static void shutdownModule() {

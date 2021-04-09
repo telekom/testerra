@@ -23,12 +23,16 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Map;
+import java.util.Optional;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-public abstract class AbstractWebDriverRequest implements Serializable, WebDriverRequest {
+public class AbstractWebDriverRequest implements Serializable, WebDriverRequest {
 
     private String sessionKey = DEFAULT_SESSION_KEY;
+    private URL serverUrl;
     private DesiredCapabilities desiredCapabilities;
     private boolean shutdownAfterTest = false;
     private boolean shutdownAfterTestFailed = false;
@@ -74,6 +78,19 @@ public abstract class AbstractWebDriverRequest implements Serializable, WebDrive
 
     public void setShutdownAfterExecution(boolean shutdownAfterExecution) {
         this.shutdownAfterExecution = shutdownAfterExecution;
+    }
+
+    @Override
+    public Optional<URL> getServerUrl() {
+        return Optional.ofNullable(this.serverUrl);
+    }
+
+    public void setServerUrl(String url) throws MalformedURLException {
+        setServerUrl(new URL(url));
+    }
+
+    public void setServerUrl(URL url) {
+        this.serverUrl = url;
     }
 
     @Override

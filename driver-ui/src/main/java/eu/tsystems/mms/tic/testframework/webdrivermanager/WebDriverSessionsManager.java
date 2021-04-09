@@ -382,6 +382,8 @@ public final class WebDriverSessionsManager {
             });
             executionContextController.setCurrentSessionContext(sessionContext);
 
+            logRequest(finalWebDriverRequest, sessionContext);
+
             /*
             setup new session
              */
@@ -431,23 +433,17 @@ public final class WebDriverSessionsManager {
         }
     }
 
-    static void logRequest(
-            Class driverClass,
-            Capabilities finalCapabilities,
-            SessionContext sessionContext,
-            URL remoteAddress
-    ) {
-        Map<String, Object> cleanedCapsMap = new WebDriverCapabilityLogHelper().clean(finalCapabilities);
+    private static void logRequest(WebDriverRequest request, SessionContext sessionContext) {
+        Map<String, Object> cleanedCapsMap = new WebDriverCapabilityLogHelper().clean(request.getCapabilities());
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         LOGGER.info(String.format(
-                "Requesting%s %s (sessionKey=%s)%s with capabilities:\n%s",
-                (remoteAddress != null ? " remote" : ""),
-                driverClass.getSimpleName(),
+                "New %s (sessionKey=%s, server=%s) with capabilities:\n%s",
+                request.getClass().getSimpleName(),
                 sessionContext.getSessionKey(),
-                (remoteAddress != null ? " on host " + remoteAddress : ""),
+                (request.getServerUrl().isPresent()?request.getServerUrl().get(): "local"),
                 gson.toJson(cleanedCapsMap)
         ));
-        LOGGER.debug(String.format("Starting (session key=%s) here", sessionContext.getSessionKey()), new Throwable());
+        LOGGER.debug(String.format("Starting (sessionKey=%s) here", sessionContext.getSessionKey()), new Throwable());
     }
 
     @Deprecated

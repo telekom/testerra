@@ -32,7 +32,6 @@ import java.util.Optional;
 
 public class SeleniumWebDriverRequest extends AbstractWebDriverRequest implements Loggable, Serializable {
 
-    private URL seleniumServerURL;
     private URL baseUrl = null;
 
     public SeleniumWebDriverRequest() {
@@ -72,20 +71,6 @@ public class SeleniumWebDriverRequest extends AbstractWebDriverRequest implement
 
     public SeleniumWebDriverRequest setBaseUrl(URL baseUrl) {
         this.baseUrl = baseUrl;
-        return this;
-    }
-
-    public Optional<URL> getSeleniumServerUrl() {
-        return Optional.ofNullable(this.seleniumServerURL);
-    }
-
-    public SeleniumWebDriverRequest setSeleniumServerUrl(String url) throws MalformedURLException {
-        this.seleniumServerURL = new URL(url);
-        return this;
-    }
-
-    public SeleniumWebDriverRequest setSeleniumServerUrl(URL url) {
-        this.seleniumServerURL = url;
         return this;
     }
 }

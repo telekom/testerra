@@ -427,7 +427,7 @@ public final class WebDriverSessionsManager {
                     LOGGER.error("Failed executing handler after starting up " + sessionIdentifier, e);
                 }
             });
-            return newWebDriver;
+            return eventFiringWebDriver;
         } else {
             throw new SystemException("No webdriver factory registered for browser: '" + browser + "'");
         }
@@ -435,7 +435,10 @@ public final class WebDriverSessionsManager {
 
     private static void logRequest(WebDriverRequest request, SessionContext sessionContext) {
         Map<String, Object> cleanedCapsMap = new WebDriverCapabilityLogHelper().clean(request.getCapabilities());
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .disableHtmlEscaping()
+                .create();
         LOGGER.info(String.format(
                 "New %s (sessionKey=%s, server=%s) with capabilities:\n%s",
                 request.getClass().getSimpleName(),

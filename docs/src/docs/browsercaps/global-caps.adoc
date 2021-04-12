@@ -17,16 +17,17 @@ class MyTest extends TesterraTest {
 }
 ----
 
-== Setting local capabilities
+[IMPORTANT]
+====
+Do NOT set browser capabilities with WebDriverManager like:
 
-A local defined capability means its only available in the current test execution (current TestNG testmethod).
-
-[source,java]
+[source, java]
 ----
-WebDriverManager.addThreadCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
+FirefoxOptions options = new FirefoxOptions();
+options.addPreference("intl.accept_languages", "de-DE");
+// This cannot be merged correctly!
+WebDriverManager.setGlobalExtraCapability(FirefoxOptions.FIREFOX_OPTIONS, options);
 ----
 
-[NOTE]
-=====
-Have a look into <<Useful browser capabilities>> for specific browser options.
-=====
+====
+

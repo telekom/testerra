@@ -176,8 +176,8 @@ public final class WebDriverManager {
 
     /**
      * Closes all windows and active Selenium and/or WebDriver instances.
+     * @deprecated Use {@link IWebDriverManager#shutdownAllThreadSessions()} instead
      */
-    @Deprecated
     public static void forceShutdown() {
         WebDriverSessionsManager.shutdownAllThreadSessions();
         if (Testerra.Properties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD.asBool()) {
@@ -200,6 +200,9 @@ public final class WebDriverManager {
         return webdriverManagerConfig;
     }
 
+    /**
+     * @deprecated Use {@link #getWebDriver(WebDriverRequest)} instead
+     */
     @Deprecated
     public static WebDriverManagerConfig getConfig() {
         return config();

@@ -51,7 +51,7 @@ public class Page extends AbstractPage<Page> implements TestablePage {
         this.driver = webDriver;
 
         // performance test stop timer
-        //perfTestExtras();
+        perfTestExtras();
     }
 
     /**

@@ -205,7 +205,8 @@ public class ErrorContext {
             return getClass().getName() + " " + msgDependsOn + split[1];
         }
         else if (line.startsWith(AssertionError.class.getName())) {
-            return "Assert" + line.split(AssertionError.class.getName())[1];
+            String[] split = line.split(AssertionError.class.getName());
+            return "Assert" + (split.length>1?split[1]:"");
         }
         else if (line.startsWith("java.lang.")) {
             return line.replace("java.lang.", "");

@@ -271,7 +271,7 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
         if (locator.getFilter() != null) {
             return "found elements";
         } else {
-            return String.format("[%d] filtered elements", numElementsBeforeFilter);
+            return String.format("total elements [%d] filtered", numElementsBeforeFilter);
         }
     }
 

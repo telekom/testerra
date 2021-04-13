@@ -380,18 +380,6 @@ public final class WebDriverSessionsManager {
                 handler.accept(finalWebDriverRequest, sessionContext);
             });
 
-            /**
-             * // TODO Move these options to the platform-connector
-             */
-//            if (webDriverRequest instanceof AbstractWebDriverRequest) {
-//                DesiredCapabilities preparedCaps = ((AbstractWebDriverRequest) finalWebDriverRequest).getDesiredCapabilities();
-//                DesiredCapabilities tapOptions = new DesiredCapabilities();
-//                ExecutionContextController.getCurrentExecutionContext().getMetaData().forEach(tapOptions::setCapability);
-//                tapOptions.setCapability("scid", sessionContext.getId());
-//                tapOptions.setCapability("sessionKey", webDriverRequest.getSessionKey());
-//                preparedCaps.setCapability("tapOptions", tapOptions);
-//            }
-
             executionContextController.getCurrentMethodContext().ifPresent(methodContext -> {
                 methodContext.addSessionContext(sessionContext);
             });

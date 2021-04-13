@@ -32,14 +32,9 @@ public class Sequence implements Loggable {
     private long waitMsAfterRun = 0;
     private long timeoutMs = 0;
     private long startTime;
-    private long endTime;
 
     public long getStartTimeMs() {
         return startTime;
-    }
-
-    public long getEndTimeMs() {
-        return endTime;
     }
 
     public Sequence setWaitMsAfterRun(long millis) {
@@ -53,7 +48,7 @@ public class Sequence implements Loggable {
     }
 
     public long getDurationMs() {
-        return endTime - startTime;
+        return System.currentTimeMillis() - startTime;
     }
 
     /**
@@ -62,13 +57,11 @@ public class Sequence implements Loggable {
     public Sequence run(Supplier<Boolean> runnable) {
         try {
             startTime = System.currentTimeMillis();
-            endTime = startTime;
             do {
                 if (runnable.get()) {
                     break;
                 }
                 Thread.sleep(waitMsAfterRun);
-                endTime = System.currentTimeMillis();
             } while (getDurationMs() < timeoutMs);
 
         } catch (InterruptedException e) {

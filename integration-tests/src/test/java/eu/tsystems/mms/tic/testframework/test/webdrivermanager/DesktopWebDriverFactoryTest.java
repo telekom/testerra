@@ -23,12 +23,10 @@ package eu.tsystems.mms.tic.testframework.test.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverCapabilities;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import java.util.Map;
-import java.util.regex.Pattern;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
@@ -74,13 +72,10 @@ public class DesktopWebDriverFactoryTest extends TesterraTest {
         caps.setCapability("enableVideo", true);
         caps.setCapability("enableVNC", true);
 
-        // register caps
-        DesktopWebDriverCapabilities.registerEndPointCapabilities(Pattern.compile(".*localhost.*"), caps);
-
         // start session
         WebDriver driver = WebDriverManager.getWebDriver(request);
         SessionContext sessionContext = WebDriverSessionsManager.getSessionContext(driver).get();
-        Map<String, Object> sessionCapabilities = sessionContext.getCapabilities().get();
+        Map<String, Object> sessionCapabilities = sessionContext.getWebDriverRequest().getCapabilities();
 
         Assert.assertEquals(sessionCapabilities.get("tap:projectId"), caps.getCapability("tap:projectId"), "EndPoint Capability is set");
     }

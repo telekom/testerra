@@ -19,23 +19,24 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.webdrivermanager;
+package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
-import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
+import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
+import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
-import eu.tsystems.mms.tic.testframework.webdriver.DefaultWebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
+import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -46,14 +47,17 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
+import org.apache.commons.lang3.time.StopWatch;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.SessionId;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import static eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverFactory.wrapRawWebDriverWithEventFiringWebDriver;
 
 /**
  * @todo Migrate to {@link DefaultWebDriverManager}
@@ -69,15 +73,18 @@ public final class WebDriverSessionsManager {
 
     public static final Map<Date, Throwable> SESSION_STARTUP_ERRORS = new LinkedHashMap<>();
 
-    private static final Map<String, WebDriver> EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP = new ConcurrentHashMap<>();
-    private static final Map<String, WebDriver> THREAD_SESSION_KEY_WEBDRIVER_MAP = new ConcurrentHashMap<>();
-    private static final Map<WebDriver, Long> WEBDRIVER_THREAD_ID_MAP = new ConcurrentHashMap<>();
-    private static final Map<WebDriver, SessionContext> WEBDRIVER_SESSIONS_CONTEXTS_MAP = new ConcurrentHashMap<>();
+    private static final Map<String, EventFiringWebDriver> EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP = new ConcurrentHashMap<>();
+    private static final Map<String, EventFiringWebDriver> THREAD_SESSION_KEY_WEBDRIVER_MAP = new ConcurrentHashMap<>();
+    private static final Map<EventFiringWebDriver, Long> WEBDRIVER_THREAD_ID_MAP = new ConcurrentHashMap<>();
+    static final Map<EventFiringWebDriver, SessionContext> WEBDRIVER_SESSIONS_CONTEXTS_MAP = new ConcurrentHashMap<>();
     private static final Queue<Consumer<WebDriver>> beforeQuitActions = new ConcurrentLinkedQueue<>();
     private static final Queue<Consumer<WebDriver>> afterQuitActions = new ConcurrentLinkedQueue<>();
     private static final Queue<Consumer<WebDriver>> WEBDRIVER_STARTUP_HANDLERS = new ConcurrentLinkedQueue<>();
 
     private static final String FULL_SESSION_KEY_SPLIT_MARKER = "___";
+    private static final Set<WebDriverFactory> webDriverFactories = Testerra.getInjector().getInstance(Key.get(new TypeLiteral<Set<WebDriverFactory>>(){}));
+    static final Queue<BiConsumer<WebDriverRequest, SessionContext>> webDriverRequestConfigurators = new ConcurrentLinkedQueue<>();
+    private static final IExecutionContextController executionContextController = Testerra.getInjector().getInstance(IExecutionContextController.class);
 
     private WebDriverSessionsManager() {
 
@@ -93,11 +100,13 @@ public final class WebDriverSessionsManager {
          * Getting multi binder set programmatically
          * @see {https://groups.google.com/forum/#!topic/google-guice/EUnNStmrhOk}
          */
-        Set<WebDriverFactory> webDriverFactories = Testerra.getInjector().getInstance(Key.get(new TypeLiteral<Set<WebDriverFactory>>(){}));
-        webDriverFactories.forEach(webDriverFactory -> webDriverFactory.getSupportedBrowsers().forEach(browser -> WEB_DRIVER_FACTORIES.put(browser, webDriverFactory)));
+        webDriverFactories.forEach(webDriverFactory -> {
+            webDriverFactory.getSupportedBrowsers().forEach(browser -> WEB_DRIVER_FACTORIES.put(browser, webDriverFactory));
+        });
     }
 
-    static void storeWebDriverSession(AbstractWebDriverRequest webDriverRequest, WebDriver eventFiringWebDriver, SessionContext sessionContext) {
+    private static void storeWebDriverSession(EventFiringWebDriver eventFiringWebDriver, SessionContext sessionContext) {
+        WebDriverRequest webDriverRequest = sessionContext.getWebDriverRequest();
         final String sessionKey = webDriverRequest.getSessionKey();
         final String threadSessionKey = getThreadSessionKey(sessionKey);
         THREAD_SESSION_KEY_WEBDRIVER_MAP.put(threadSessionKey, eventFiringWebDriver);
@@ -110,17 +119,15 @@ public final class WebDriverSessionsManager {
          */
         if (Testerra.Properties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD.asBool()) {
             String methodName = ExecutionContextUtils.getMethodNameFromCurrentTestResult();
-            if (methodName != null) {
-                String threadName = Thread.currentThread().getId() + "";
-                LOGGER.debug("Saving driver in " + DriverStorage.class.getSimpleName() + " for : " + methodName + ": " + threadName);
-                DriverStorage.saveDriverForTestMethod(eventFiringWebDriver, threadName, methodName);
-            }
+            String threadName = Thread.currentThread().getId() + "";
+            LOGGER.debug("Saving driver in " + DriverStorage.class.getSimpleName() + " for : " + methodName + ": " + threadName);
+            DriverStorage.saveDriverForTestMethod(eventFiringWebDriver, threadName, methodName);
         }
 
         /*
         store driver to session context relation
          */
-        WEBDRIVER_SESSIONS_CONTEXTS_MAP.put(WebDriverUtils.getLowestWebDriver(eventFiringWebDriver), sessionContext);
+        WEBDRIVER_SESSIONS_CONTEXTS_MAP.put(eventFiringWebDriver, sessionContext);
     }
 
     private static void unlinkFromThread(String sessionKey, WebDriver eventFiringWebDriver) {
@@ -135,11 +142,9 @@ public final class WebDriverSessionsManager {
          */
         if (Testerra.Properties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD.asBool()) {
             String methodName = ExecutionContextUtils.getMethodNameFromCurrentTestResult();
-            if (methodName != null) {
-                String threadName = Thread.currentThread().getId() + "";
-                LOGGER.info("Removing driver in " + DriverStorage.class.getSimpleName() + " for : " + methodName + ": " + threadName);
-                DriverStorage.removeSpecificDriver(methodName);
-            }
+            String threadName = Thread.currentThread().getId() + "";
+            LOGGER.info("Removing driver in " + DriverStorage.class.getSimpleName() + " for : " + methodName + ": " + threadName);
+            DriverStorage.removeSpecificDriver(methodName);
         }
 
         /*
@@ -151,9 +156,6 @@ public final class WebDriverSessionsManager {
         for (WebDriver webDriver : WEBDRIVER_THREAD_ID_MAP.keySet()) {
             Long tid = WEBDRIVER_THREAD_ID_MAP.get(webDriver);
             String key = getSessionKey(webDriver);
-            if (key == null) {
-                key = "!!unknown!!";
-            }
             msg += "\n  " + key + " in thread " + tid;
             i++;
         }
@@ -164,16 +166,25 @@ public final class WebDriverSessionsManager {
     /**
      * Introduce an own webdriver object. Selenium session will be released in this case.
      *
-     * @param driver     .
+     * @param webDriver     .
      * @param sessionKey .
      */
-    static void introduceWebDriver(final String sessionKey, final WebDriver driver) {
-        if (!(driver instanceof RemoteWebDriver)) {
+    static void introduceWebDriver(final String sessionKey, WebDriver webDriver) {
+        if (!(webDriver instanceof RemoteWebDriver)) {
             throw new IllegalArgumentException(
                     "The driver object of the argument must be an instance of RemoteWebDriver");
         }
+
+        EventFiringWebDriver eventFiringWebDriver;
+
+        if (webDriver instanceof EventFiringWebDriver) {
+            eventFiringWebDriver = (EventFiringWebDriver)webDriver;
+        } else {
+            eventFiringWebDriver = wrapWebDriver(webDriver);
+        }
+
         LOGGER.info("Introducing webdriver object");
-        EventFiringWebDriver eventFiringWebDriver = wrapRawWebDriverWithEventFiringWebDriver(driver);
+        //EventFiringWebDriver eventFiringWebDriver = wrapRawWebDriverWithEventFiringWebDriver(driver);
 
         UnspecificWebDriverRequest request = new UnspecificWebDriverRequest();
         request.setSessionKey(sessionKey);
@@ -182,8 +193,10 @@ public final class WebDriverSessionsManager {
         SessionContext sessionContext = new SessionContext(request);
 
         // store to method context
-        ExecutionContextController.getCurrentMethodContext().addSessionContext(sessionContext);
-        storeWebDriverSession(request, eventFiringWebDriver, sessionContext);
+        executionContextController.getCurrentMethodContext().ifPresent(methodContext -> {
+            methodContext.addSessionContext(sessionContext);
+        });
+        storeWebDriverSession(eventFiringWebDriver, sessionContext);
     }
 
     public static void registerWebDriverBeforeShutdownHandler(Consumer<WebDriver> beforeQuit) {
@@ -228,7 +241,10 @@ public final class WebDriverSessionsManager {
             }
         });
         unlinkFromThread(sessionKey, webDriver);
-        WEBDRIVER_SESSIONS_CONTEXTS_MAP.remove(WebDriverUtils.getLowestWebDriver(webDriver));
+        WEBDRIVER_SESSIONS_CONTEXTS_MAP.remove(webDriver);
+        if (sessionKey.startsWith(EXCLUSIVE_PREFIX)) {
+            EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.remove(sessionKey);
+        }
     }
 
 
@@ -236,7 +252,7 @@ public final class WebDriverSessionsManager {
         getWebDriversFromCurrentThread().forEach(WebDriverSessionsManager::shutdownWebDriver);
     }
 
-    public static Stream<WebDriver> getWebDriversFromCurrentThread() {
+    public static Stream<EventFiringWebDriver> getWebDriversFromCurrentThread() {
         long threadId = Thread.currentThread().getId();
         return getWebDriversFromThread(threadId);
     }
@@ -246,10 +262,10 @@ public final class WebDriverSessionsManager {
         EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.values().forEach(WebDriverSessionsManager::shutdownWebDriver);
 
         // This should not be necessary but we do it anyway
-        THREAD_SESSION_KEY_WEBDRIVER_MAP.clear();
-        WEBDRIVER_THREAD_ID_MAP.clear();
-        EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.clear();
-        WEBDRIVER_SESSIONS_CONTEXTS_MAP.clear();
+//        THREAD_SESSION_KEY_WEBDRIVER_MAP.clear();
+//        WEBDRIVER_THREAD_ID_MAP.clear();
+//        EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.clear();
+//        WEBDRIVER_SESSIONS_CONTEXTS_MAP.clear();
     }
 
     /**
@@ -266,19 +282,21 @@ public final class WebDriverSessionsManager {
         return getWebDriversFromThread(threadId).findAny().isPresent();
     }
 
-    static synchronized String makeSessionExclusive(final WebDriver eventFiringWebDriver) {
-        if (!(eventFiringWebDriver instanceof EventFiringWebDriver)) {
-            throw new RuntimeException("Nah, your WebDriver is not an EventFiringWebDriver.");
+    static synchronized String makeSessionExclusive(final WebDriver webDriver) {
+        if (!(webDriver instanceof EventFiringWebDriver)) {
+            throw new RuntimeException(webDriver.getClass().getSimpleName() + " is no instance of " + EventFiringWebDriver.class.getSimpleName());
         }
 
-        if (EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.containsValue(eventFiringWebDriver)) {
+        EventFiringWebDriver eventFiringWebDriver = (EventFiringWebDriver)webDriver;
+
+        if (EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.containsValue(webDriver)) {
             LOGGER.error("Session already set exclusive.");
             return null;
         }
 
-        SessionContext sessionContext = getSessionContext(eventFiringWebDriver).get();
+        SessionContext sessionContext = getSessionContext(webDriver).get();
         String sessionKey = sessionContext.getSessionKey();
-        unlinkFromThread(sessionKey, eventFiringWebDriver);
+        unlinkFromThread(sessionKey, webDriver);
         /*
         Add session to exclusive map.
          */
@@ -289,12 +307,11 @@ public final class WebDriverSessionsManager {
         introduce session context to execution context
          */
         sessionContext.setSessionKey(exclusiveSessionKey);
-        ExecutionContext currentExecutionContext = ExecutionContextController.getCurrentExecutionContext();
-        currentExecutionContext.addExclusiveSessionContext(sessionContext);
-        // fire sync
+        sessionContext.getWebDriverRequest().setShutdownAfterTest(false);
+        executionContextController.getExecutionContext().addExclusiveSessionContext(sessionContext);
         Testerra.getEventBus().post(new ContextUpdateEvent().setContext(sessionContext));
 
-        LOGGER.info("Promoted " + createSessionIdentifier(eventFiringWebDriver, sessionKey) + " to " + createSessionIdentifier(eventFiringWebDriver, exclusiveSessionKey));
+        LOGGER.info("Promoted " + createSessionIdentifier(webDriver, sessionKey) + " to " + createSessionIdentifier(webDriver, exclusiveSessionKey));
         return exclusiveSessionKey;
     }
 
@@ -314,28 +331,11 @@ public final class WebDriverSessionsManager {
         return getSessionContext(webDriver).map(SessionContext::getSessionKey).orElse("no session");
     }
 
-    static Stream<WebDriver> getWebDriversFromThread(final long threadId) {
+    static Stream<EventFiringWebDriver> getWebDriversFromThread(final long threadId) {
         return WEBDRIVER_THREAD_ID_MAP.entrySet().stream().filter(entry -> entry.getValue() == threadId).map(Map.Entry::getKey);
     }
 
-
-    public static WebDriver getWebDriver(AbstractWebDriverRequest webDriverRequest) {
-        /*
-        get session key
-         */
-        if (StringUtils.isEmpty(webDriverRequest.getSessionKey())) {
-            webDriverRequest.setSessionKey(WebDriverManager.DEFAULT_SESSION_KEY);
-        }
-
-        if (StringUtils.isEmpty(webDriverRequest.getBrowser())) {
-            webDriverRequest.setBrowser(WebDriverManager.getConfig().getBrowser());
-        }
-
-        if (StringUtils.isEmpty(webDriverRequest.getBrowserVersion())) {
-            webDriverRequest.setBrowserVersion(WebDriverManager.getConfig().getBrowserVersion());
-        }
-
-        String browser = webDriverRequest.getBrowser();
+    public static EventFiringWebDriver getWebDriver(final WebDriverRequest webDriverRequest) {
         String sessionKey = webDriverRequest.getSessionKey();
         /*
         Check for exclusive session
@@ -350,7 +350,7 @@ public final class WebDriverSessionsManager {
         }
 
         String fullSessionKey = getThreadSessionKey(sessionKey);
-        WebDriver existingWebDriver = THREAD_SESSION_KEY_WEBDRIVER_MAP.get(fullSessionKey);
+        EventFiringWebDriver existingWebDriver = THREAD_SESSION_KEY_WEBDRIVER_MAP.get(fullSessionKey);
 
         /*
         session already exists?
@@ -366,23 +366,71 @@ public final class WebDriverSessionsManager {
         /*
         decide which session manager to use
          */
+        String browser = webDriverRequest.getBrowser();
         if (WEB_DRIVER_FACTORIES.containsKey(browser)) {
             WebDriverFactory webDriverFactory = WEB_DRIVER_FACTORIES.get(browser);
 
-            /*
+             /*
             create session context and link to method context
              */
-            SessionContext sessionContext = new SessionContext(webDriverRequest);
-            MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-            if (methodContext != null) {
+            final WebDriverRequest finalWebDriverRequest = webDriverFactory.prepareWebDriverRequest(webDriverRequest);
+
+            SessionContext sessionContext = new SessionContext(finalWebDriverRequest);
+            webDriverRequestConfigurators.forEach(handler -> {
+                handler.accept(finalWebDriverRequest, sessionContext);
+            });
+
+            /**
+             * // TODO Move these options to the platform-connector
+             */
+//            if (webDriverRequest instanceof AbstractWebDriverRequest) {
+//                DesiredCapabilities preparedCaps = ((AbstractWebDriverRequest) finalWebDriverRequest).getDesiredCapabilities();
+//                DesiredCapabilities tapOptions = new DesiredCapabilities();
+//                ExecutionContextController.getCurrentExecutionContext().getMetaData().forEach(tapOptions::setCapability);
+//                tapOptions.setCapability("scid", sessionContext.getId());
+//                tapOptions.setCapability("sessionKey", webDriverRequest.getSessionKey());
+//                preparedCaps.setCapability("tapOptions", tapOptions);
+//            }
+
+            executionContextController.getCurrentMethodContext().ifPresent(methodContext -> {
                 methodContext.addSessionContext(sessionContext);
-            }
-            ExecutionContextController.setCurrentSessionContext(sessionContext);
+            });
+            executionContextController.setCurrentSessionContext(sessionContext);
+
+            logRequest(finalWebDriverRequest, sessionContext);
 
             /*
             setup new session
              */
-            WebDriver newWebDriver = webDriverFactory.createWebDriver(webDriverRequest, sessionContext);
+            StopWatch sw = new StopWatch();
+            sw.start();
+            WebDriver newWebDriver = webDriverFactory.createWebDriver(finalWebDriverRequest, sessionContext);
+            sw.stop();
+
+            if (!sessionContext.getActualBrowserName().isPresent()) {
+                BrowserInformation browserInformation = WebDriverManagerUtils.getBrowserInformation(newWebDriver);
+                sessionContext.setActualBrowserName(browserInformation.getBrowserName());
+                sessionContext.setActualBrowserVersion(browserInformation.getBrowserVersion());
+            }
+
+            if (newWebDriver instanceof RemoteWebDriver) {
+                SessionId sessionId = ((RemoteWebDriver) newWebDriver).getSessionId();
+                sessionContext.setRemoteSessionId(sessionId.toString());
+            }
+
+            LOGGER.info(String.format(
+                    "Started %s (sessionKey=%s, sessionId=%s, node=%s, userAgent=%s) in %s",
+                    newWebDriver.getClass().getSimpleName(),
+                    sessionContext.getSessionKey(),
+                    sessionContext.getRemoteSessionId().orElse("(local)"),
+                    sessionContext.getNodeUrl().map(Object::toString).orElse("(unknown)"),
+                    sessionContext.getActualBrowserName().orElse("(unknown)") + ":" + sessionContext.getActualBrowserVersion().orElse("(unknown)"),
+                    sw.toString()
+            ));
+            EventFiringWebDriver eventFiringWebDriver = wrapWebDriver(newWebDriver);
+            storeWebDriverSession(eventFiringWebDriver, sessionContext);
+
+            webDriverFactory.setupNewWebDriverSession(eventFiringWebDriver, sessionContext);
             Testerra.getEventBus().post(new ContextUpdateEvent().setContext(sessionContext));
             String sessionIdentifier = createSessionIdentifier(newWebDriver, sessionKey);
             /*
@@ -395,10 +443,26 @@ public final class WebDriverSessionsManager {
                     LOGGER.error("Failed executing handler after starting up " + sessionIdentifier, e);
                 }
             });
-            return newWebDriver;
+            return eventFiringWebDriver;
         } else {
             throw new SystemException("No webdriver factory registered for browser: '" + browser + "'");
         }
+    }
+
+    private static void logRequest(WebDriverRequest request, SessionContext sessionContext) {
+        Map<String, Object> cleanedCapsMap = new WebDriverCapabilityLogHelper().clean(request.getCapabilities());
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .disableHtmlEscaping()
+                .create();
+        LOGGER.info(String.format(
+                "New %s (sessionKey=%s, server=%s) with capabilities:\n%s",
+                request.getClass().getSimpleName(),
+                sessionContext.getSessionKey(),
+                (request.getServerUrl().isPresent()?request.getServerUrl().get(): "local"),
+                gson.toJson(cleanedCapsMap)
+        ));
+        LOGGER.debug(String.format("Starting (sessionKey=%s) here", sessionContext.getSessionKey()), new Throwable());
     }
 
     @Deprecated
@@ -415,7 +479,14 @@ public final class WebDriverSessionsManager {
     }
 
     public static Optional<SessionContext> getSessionContext(WebDriver webDriver) {
-        return Optional.ofNullable(WEBDRIVER_SESSIONS_CONTEXTS_MAP.get(WebDriverUtils.getLowestWebDriver(webDriver)));
+        return Optional.ofNullable(WEBDRIVER_SESSIONS_CONTEXTS_MAP.get(webDriver));
+    }
+
+    public static Optional<EventFiringWebDriver> getWebDriver(SessionContext sessionContext) {
+        return WEBDRIVER_SESSIONS_CONTEXTS_MAP.entrySet().stream()
+                .filter(entry -> entry.getValue() == sessionContext)
+                .map(Map.Entry::getKey)
+                .findFirst();
     }
 
     public static Optional<String> getRequestedBrowser(WebDriver webDriver) {
@@ -434,7 +505,27 @@ public final class WebDriverSessionsManager {
         return WEBDRIVER_SESSIONS_CONTEXTS_MAP.values().stream();
     }
 
-    public static Stream<WebDriver> readWebDrivers() {
+    public static Stream<EventFiringWebDriver> readWebDrivers() {
         return WEBDRIVER_SESSIONS_CONTEXTS_MAP.keySet().stream();
+    }
+
+    private static EventFiringWebDriver wrapWebDriver(WebDriver webDriver) {
+        /*
+        wrap the driver with the proxy
+         */
+        /*
+         * Watch out when wrapping the driver here. Any more wraps than EventFiringWebDriver will break at least
+         * the MobileDriverAdapter. This is because we need to compare the lowermost implementation of WebDriver in this case.
+         * It can be made more robust, if we always can retrieve the storedSessionId of the WebDriver, given a WebDriver object.
+         * For more info, please ask @rnhb
+         */
+        try {
+            Class[] interfaces = ObjectUtils.getAllInterfacesOf(webDriver);
+            webDriver = ObjectUtils.simpleProxy(WebDriver.class, webDriver, WebDriverProxy.class, interfaces);
+        } catch (Exception e) {
+            LOGGER.error("Could not create proxy for raw webdriver", e);
+        }
+
+        return new EventFiringWebDriver(webDriver);
     }
 }

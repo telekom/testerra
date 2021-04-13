@@ -32,6 +32,7 @@ import org.openqa.selenium.WebDriver;
 /**
  * Contains the intersecting information of {@link GuiElement} and {@link GuiElementCore}
  * required for communication or creating new elements.
+ * @todo We don't need that actually, when we can have everything in the core
  */
 public class GuiElementData implements
     Nameable<GuiElementData>,
@@ -52,7 +53,7 @@ public class GuiElementData implements
      * by setting the GuiElementData as parent.
      */
     public GuiElementData(GuiElementData parent, Locator locator) {
-        this(parent.getWebDriver(), locator);
+        this(parent.webDriver, locator);
         this.parent = parent;
         this.guiElement = parent.guiElement;
     }

@@ -23,23 +23,20 @@ package eu.tsystems.mms.tic.testframework.report.model.context;
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
+import java.net.URL;
 import java.util.Map;
 import java.util.Optional;
-import org.apache.commons.lang3.SerializationUtils;
 
 public class SessionContext extends AbstractContext implements SynchronizableContext {
     private String remoteSessionId;
     private Video video;
-    private NodeInfo nodeInfo;
-    private String browserName;
-    private String browserVersion;
-    private Map<String, Object> capabilities;
-    private final WebDriverRequest webDriverRequest;
+    private String actualBrowserName;
+    private String actualBrowserVersion;
+    private WebDriverRequest webDriverRequest;
+    private URL nodeUrl;
 
     public SessionContext(WebDriverRequest webDriverRequest) {
-        this.webDriverRequest = SerializationUtils.clone(webDriverRequest);
-        this.name = webDriverRequest.getSessionKey();
-
+        setWebDriverRequest(webDriverRequest);
 //        this.provider = provider;
 //
 //        final MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
@@ -50,8 +47,18 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
 //        }
     }
 
+    public void setWebDriverRequest(WebDriverRequest webDriverRequest) {
+        this.webDriverRequest = webDriverRequest;
+        this.setSessionKey(webDriverRequest.getSessionKey());
+    }
+
     public WebDriverRequest getWebDriverRequest() {
         return this.webDriverRequest;
+    }
+
+    @Override
+    public String getName() {
+        return this.getSessionKey();
     }
 
     public String getSessionKey() {
@@ -89,39 +96,32 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
         return this;
     }
 
+    @Deprecated
     public Optional<NodeInfo> getNodeInfo() {
-        return Optional.ofNullable(nodeInfo);
+        return getNodeUrl().map(NodeInfo::new);
     }
 
-    public SessionContext setNodeInfo(NodeInfo nodeInfo) {
-        this.nodeInfo = nodeInfo;
-        return this;
+    public void setNodeUrl(URL url) {
+        this.nodeUrl = url;
     }
 
-    public String getActualBrowserName() {
-        return browserName;
+    public Optional<URL> getNodeUrl() {
+        return Optional.ofNullable(nodeUrl);
     }
 
-    public SessionContext setActualBrowserName(String browserName) {
-        this.browserName = browserName;
-        return this;
+    public Optional<String> getActualBrowserName() {
+        return Optional.ofNullable(actualBrowserName);
     }
 
-    public String getActualBrowserVersion() {
-        return browserVersion;
+    public void setActualBrowserName(String browserName) {
+        this.actualBrowserName = browserName;
     }
 
-    public SessionContext setActualBrowserVersion(String browserVersion) {
-        this.browserVersion = browserVersion;
-        return this;
+    public Optional<String> getActualBrowserVersion() {
+        return Optional.ofNullable(actualBrowserVersion);
     }
 
-    public Optional<Map<String, Object>> getCapabilities() {
-        return Optional.ofNullable(capabilities);
-    }
-
-    public SessionContext setCapabilities(Map<String, Object> capabilities) {
-        this.capabilities = capabilities;
-        return this;
+    public  void setActualBrowserVersion(String browserVersion) {
+        this.actualBrowserVersion = browserVersion;
     }
 }

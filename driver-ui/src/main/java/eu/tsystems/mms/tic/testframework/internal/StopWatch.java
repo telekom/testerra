@@ -23,6 +23,7 @@
 
 import eu.tsystems.mms.tic.testframework.report.perf.PerfTestContainer;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.testng.ITestResult;
 
 import java.util.ArrayList;
@@ -62,10 +63,13 @@ public final class StopWatch {
      * @param page .
      */
     public static void stopPageLoad(WebDriver driver, Class page) {
-        String currentUrl = "URL unknown";
-        if (driver != null) {
+        String currentUrl;
+        try {
             currentUrl = driver.getCurrentUrl();
+        } catch (WebDriverException e) {
+            currentUrl = "Url unknown: " + e.getMessage();
         }
+
         // endTime of measurement
         long timeStampMillis = System.currentTimeMillis();
 
@@ -85,7 +89,7 @@ public final class StopWatch {
 
         // store
         if (PAGE_LOAD_INFOS.get() == null) {
-            PAGE_LOAD_INFOS.set(new ArrayList<TimingInfo>());
+            PAGE_LOAD_INFOS.set(new ArrayList<>());
         }
         List<TimingInfo> timingInfoList = PAGE_LOAD_INFOS.get();
         timingInfoList.add(timingInfo);

@@ -22,7 +22,7 @@
 package eu.tsystems.mms.tic.testframework.testing;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverManager;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
 
 /**
  * Provides a {@link IWebDriverManager}

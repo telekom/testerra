@@ -110,6 +110,12 @@ Anyway, to close active sessions manually, do the following:
 
 [source,java]
 ----
+// Shutdown a session by key
+WEB_DRIVER_MANAGER.shutdownSession(String);
+
+// Shutdown an explicit driver
+WEB_DRIVER_MANAGER.shutdownSession(WebDriver);
+
 // Close all active session in the current test context.
 WEB_DRIVER_MANAGER.shutdownAllThreadSessions();
 

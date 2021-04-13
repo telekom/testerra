@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020,  Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2021, Mike Reiche, T-Systems MMS GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -17,30 +17,26 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
- package eu.tsystems.mms.tic.testframework.model;
 
-public class HostInfo {
+package eu.tsystems.mms.tic.testframework.utils;
 
-    private final String host;
-    private final int port;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 
-    public HostInfo(String host, int port) {
-        this.host = host;
-        this.port = port;
+public interface Sleepy extends Loggable {
+    /**
+     * Logs and sleeps for {@link UiElement.Properties#ELEMENT_WAIT_INTERVAL_MS}
+     */
+    default void sleep() {
+        sleep(UiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong());
     }
 
-    public String getHost() {
-        return host;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    @Override
-    public String toString() {
-        return host + ':' + port;
+    /**
+     * Logs and sleeps by given milliseconds
+     */
+    default void sleep(long ms) {
+        log().info(String.format("sleep(%dms) on %s", ms, this.toString()));
+        TimerUtils.sleepSilent(ms);
     }
 }

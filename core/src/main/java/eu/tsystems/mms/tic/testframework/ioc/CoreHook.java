@@ -50,7 +50,9 @@ import eu.tsystems.mms.tic.testframework.internal.SequenceIdGenerator;
 import eu.tsystems.mms.tic.testframework.report.DefaultReport;
 import eu.tsystems.mms.tic.testframework.report.ExecutionEndListener;
 import eu.tsystems.mms.tic.testframework.report.Report;
+import eu.tsystems.mms.tic.testframework.report.utils.DefaultExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.DefaultTestNGContextGenerator;
+import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGContextNameGenerator;
 import eu.tsystems.mms.tic.testframework.testing.DefaultTestController;
 import eu.tsystems.mms.tic.testframework.testing.DefaultTestControllerOverrides;
@@ -73,6 +75,7 @@ public class CoreHook extends AbstractModule implements ModuleHook, PropertyMana
         bind(TestController.class).to(DefaultTestController.class).in(Scopes.SINGLETON);
         bind(TestNGContextNameGenerator.class).to(DefaultTestNGContextGenerator.class).in(Scopes.SINGLETON);
         bind(IdGenerator.class).to(SequenceIdGenerator.class).in(Scopes.SINGLETON);
+        bind(IExecutionContextController.class).to(DefaultExecutionContextController.class).in(Scopes.SINGLETON);
     }
 
     @Override

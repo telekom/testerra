@@ -1,6 +1,29 @@
 = Timer Utilities
 
-The timer utilities mainly provide two important classes for you.
+The timer utilities provide some useful time related classes.
+
+== Sleepy interface
+
+The `Sleepy` interface provides for proper sleep logging.
+
+[source,java]
+----
+import eu.tsystems.mms.tic.testframework.utils.Sleepy;
+
+class MyWorkflow implements Sleepy {
+    public void doSomething() {
+        sleep();        // Sleeps for an internal default timeout
+        sleep(long);    // Sleeps for milliseconds
+    }
+}
+----
+
+This will log something like
+
+[source]
+----
+MyWorkflow - sleep(200ms) on MyWorkflow@62b635fe
+----
 
 == TimerUtils
 

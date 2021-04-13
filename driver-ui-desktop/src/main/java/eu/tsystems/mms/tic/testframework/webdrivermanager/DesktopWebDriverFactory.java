@@ -22,8 +22,6 @@
 
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.enums.Position;
@@ -32,22 +30,17 @@ import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.DesktopGuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
-import eu.tsystems.mms.tic.testframework.sikuli.SikuliWebDriver;
-import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
-import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
-import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
+import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.Sequence;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
-import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import java.io.File;
 import java.lang.reflect.Constructor;
@@ -56,8 +49,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 import net.anthavio.phanbedder.Phanbedder;
 import org.openqa.selenium.Capabilities;
@@ -83,70 +74,21 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
-public class DesktopWebDriverFactory extends AbstractWebDriverFactory<DesktopWebDriverRequest> implements
+public class DesktopWebDriverFactory implements
         WebDriverFactory,
-        Loggable
+        Loggable,
+        WebDriverManagerProvider
 {
     //public static final TimingInfosCollector STARTUP_TIME_COLLECTOR = new TimingInfosCollector();
 
     private static File phantomjsFile = null;
 
     @Override
-    protected DesktopWebDriverRequest buildRequest(AbstractWebDriverRequest request) {
-        DesktopWebDriverRequest finalRequest;
-        if (request instanceof DesktopWebDriverRequest) {
-            finalRequest = (DesktopWebDriverRequest) request;
-        } else if (request instanceof UnspecificWebDriverRequest) {
-            finalRequest = new DesktopWebDriverRequest();
-            finalRequest.setSessionKey(request.getSessionKey());
-            finalRequest.setBrowser(request.getBrowser());
-            finalRequest.setBrowserVersion(request.getBrowserVersion());
-            request.getBaseUrl().ifPresent(finalRequest::setBaseUrl);
-        } else {
-            throw new SystemException(request.getClass().getSimpleName() + " is not allowed here");
-        }
-
-        /*
-        set webdriver mode
-         */
-        if (finalRequest.getWebDriverMode() == null) {
-            finalRequest.setWebDriverMode(WebDriverManager.getConfig().getWebDriverMode());
-        }
-        return finalRequest;
+    public WebDriver createWebDriver(WebDriverRequest request, SessionContext sessionContext) {
+        return startSession((DesktopWebDriverRequest)request, sessionContext);
     }
 
-    @Override
-    protected DesiredCapabilities buildCapabilities(DesiredCapabilities preSetCaps, DesktopWebDriverRequest desktopWebDriverRequest) {
-        return DesktopWebDriverCapabilities.createCapabilities(WebDriverManager.getConfig(), preSetCaps, desktopWebDriverRequest);
-    }
-
-    @Override
-    public WebDriver getRawWebDriver(DesktopWebDriverRequest request, DesiredCapabilities desiredCapabilities, SessionContext sessionContext) {
-        /*
-        start the session
-         */
-        WebDriver driver = startSession(request, desiredCapabilities, sessionContext);
-
-        request.getBaseUrl().ifPresent(baseUrl -> {
-            try {
-                log().info("Opening " + baseUrl.toString());
-                StopWatch.startPageLoad(driver);
-                driver.get(baseUrl.toString());
-            } catch (Exception e) {
-                if (StringUtils.containsAll(e.getMessage(), true, "Reached error page", "connectionFailure")) {
-                    throw new RuntimeException("Could not start driver session, because of unreachable url: " + baseUrl, e);
-                }
-                throw e;
-            }
-        });
-        return driver;
-    }
-
-    private WebDriver startSession(
-            DesktopWebDriverRequest desktopWebDriverRequest,
-            DesiredCapabilities desiredCapabilities,
-            SessionContext sessionContext
-    ) {
+    private WebDriver startSession(DesktopWebDriverRequest desktopWebDriverRequest, SessionContext sessionContext) {
 
         /*
         if there is a factories entry for the requested browser, then create the new (raw) instance here and wrap it directly in EventFiringWD
@@ -154,41 +96,118 @@ public class DesktopWebDriverFactory extends AbstractWebDriverFactory<DesktopWeb
         if (Testerra.Properties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD.asBool()) {
             String threadName = Thread.currentThread().getId() + "";
             String testMethodName = ExecutionContextUtils.getMethodNameFromCurrentTestResult();
+            WebDriver driver = DriverStorage.getDriverByTestMethodName(testMethodName, threadName);
+            if (driver != null) {
+                log().info("Re-Using WebDriver for " + testMethodName + ": " + threadName + " driver: " + driver);
 
-            if (testMethodName != null) {
-                WebDriver driver = DriverStorage.getDriverByTestMethodName(testMethodName, threadName);
-                if (driver != null) {
-                    log().info("Re-Using WebDriver for " + testMethodName + ": " + threadName + " driver: " + driver);
-
-                    // cleanup session
-                    driver.manage().deleteAllCookies();
-
-                    /*
-                    Open url
-                     */
-                    desktopWebDriverRequest.getBaseUrl().ifPresent(baseUrl -> {
-                        log().info("Opening baseUrl with reused driver: " + baseUrl);
-                        StopWatch.startPageLoad(driver);
-                        driver.get(baseUrl.toString());
-                    });
-                    return driver;
-                } else {
-                    return newWebDriver(desktopWebDriverRequest, desiredCapabilities, sessionContext);
-                }
+                // cleanup session
+                driver.manage().deleteAllCookies();
+                return driver;
+            } else {
+                return newWebDriver(desktopWebDriverRequest, sessionContext);
             }
         } else {
             /*
             regular branch to create a new web driver session
              */
-            return newWebDriver(desktopWebDriverRequest, desiredCapabilities, sessionContext);
+            return newWebDriver(desktopWebDriverRequest, sessionContext);
         }
-
-        throw new SystemException("WebDriverManager is in a bad state. Please report this to the tt. developers.");
     }
 
     @Override
-    public void setupSession(EventFiringWebDriver eventFiringWebDriver, DesktopWebDriverRequest request) {
-        final String browser = request.getBrowser();
+    public WebDriverRequest prepareWebDriverRequest(WebDriverRequest webDriverRequest) {
+        DesktopWebDriverRequest finalRequest;
+        if (webDriverRequest instanceof DesktopWebDriverRequest) {
+            finalRequest = (DesktopWebDriverRequest) webDriverRequest;
+        } else {
+            finalRequest = new DesktopWebDriverRequest();
+            finalRequest.setSessionKey(webDriverRequest.getSessionKey());
+            finalRequest.setBrowser(webDriverRequest.getBrowser());
+            finalRequest.setBrowserVersion(webDriverRequest.getBrowserVersion());
+        }
+
+        final String browser = finalRequest.getBrowser();
+        Capabilities userAgentCapabilities = null;
+
+        switch (browser) {
+            case Browsers.firefox:
+                FirefoxOptions firefoxOptions = new FirefoxOptions();
+//                if (capabilities.getCapabilityNames().contains(FirefoxOptions.FIREFOX_OPTIONS)) {
+//                    final TreeMap predefinedFirefoxOptions = (TreeMap) capabilities.getCapability(FirefoxOptions.FIREFOX_OPTIONS);
+//                    predefinedFirefoxOptions.forEach((s, o) -> firefoxOptions.setCapability(s.toString(), o));
+//                }
+                WEB_DRIVER_MANAGER.getUserAgentConfig(browser).ifPresent(userAgentConfig -> {
+                    userAgentConfig.configure(firefoxOptions);
+                });
+                userAgentCapabilities = firefoxOptions;
+                break;
+            case Browsers.ie:
+                InternetExplorerOptions ieOptions = new InternetExplorerOptions();
+                WEB_DRIVER_MANAGER.getUserAgentConfig(browser).ifPresent(userAgentConfig -> {
+                    userAgentConfig.configure(ieOptions);
+                });
+                ieOptions.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
+                userAgentCapabilities = ieOptions;
+                break;
+            case Browsers.chrome:
+            case Browsers.chromeHeadless:
+                ChromeOptions chromeOptions = new ChromeOptions();
+//                if (capabilities.getCapabilityNames().contains(ChromeOptions.CAPABILITY)) {
+//                    final TreeMap predefinedChromeOptions = (TreeMap) capabilities.getCapability(ChromeOptions.CAPABILITY);
+//                    predefinedChromeOptions.forEach((s, o) -> chromeOptions.setCapability(s.toString(), o));
+//                }
+
+                WEB_DRIVER_MANAGER.getUserAgentConfig(browser).ifPresent(userAgentConfig -> {
+                    userAgentConfig.configure(chromeOptions);
+                });
+
+                chromeOptions.addArguments("--no-sandbox");
+                if (browser.equals(Browsers.chromeHeadless)) {
+                    chromeOptions.setHeadless(true);
+                }
+                userAgentCapabilities = chromeOptions;
+                break;
+            case Browsers.phantomjs:
+                File phantomjsFile = getPhantomJSBinary();
+                DesiredCapabilities phantomJsOptions = new DesiredCapabilities();
+                phantomJsOptions.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, phantomjsFile.getAbsolutePath());
+                phantomJsOptions.setBrowserName(BrowserType.PHANTOMJS);
+                phantomJsOptions.setJavascriptEnabled(true);
+
+                String[] args = {
+                        "--ssl-protocol=any"
+                };
+                phantomJsOptions.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, args);
+                userAgentCapabilities = phantomJsOptions;
+                break;
+            case Browsers.safari:
+                SafariOptions safariOptions = new SafariOptions();
+                WEB_DRIVER_MANAGER.getUserAgentConfig(browser).ifPresent(userAgentConfig -> {
+                    userAgentConfig.configure(safariOptions);
+                });
+                userAgentCapabilities = safariOptions;
+                break;
+            case Browsers.edge:
+                EdgeOptions edgeOptions = new EdgeOptions();
+                WEB_DRIVER_MANAGER.getUserAgentConfig(browser).ifPresent(userAgentConfig -> {
+                    userAgentConfig.configure(edgeOptions);
+                });
+                userAgentCapabilities = edgeOptions;
+                break;
+        }
+
+        if (userAgentCapabilities != null) {
+            finalRequest.getDesiredCapabilities().merge(userAgentCapabilities);
+        }
+
+        return finalRequest;
+    }
+
+    @Override
+    public void setupNewWebDriverSession(EventFiringWebDriver eventFiringWebDriver, SessionContext sessionContext) {
+
+        DesktopWebDriverRequest desktopWebDriverRequest = (DesktopWebDriverRequest)sessionContext.getWebDriverRequest();
+        final String browser = desktopWebDriverRequest.getBrowser();
 
         // add event listeners
         if (Testerra.Properties.DEMO_MODE.asBool()) {
@@ -200,23 +219,33 @@ public class DesktopWebDriverFactory extends AbstractWebDriverFactory<DesktopWeb
         /*
          start StopWatch
           */
-        StopWatch.startPageLoad(eventFiringWebDriver);
+        desktopWebDriverRequest.getBaseUrl().ifPresent(baseUrl -> {
+            try {
+                StopWatch.startPageLoad(eventFiringWebDriver);
+                eventFiringWebDriver.get(baseUrl.toString());
+            } catch (Exception e) {
+                if (StringUtils.containsAll(e.getMessage(), true, "Reached error page", "connectionFailure")) {
+                    throw new RuntimeException("Could not start driver session, because of unreachable url: " + baseUrl, e);
+                }
+                throw e;
+            }
+        });
 
-        WebDriverManagerConfig config = WebDriverManager.getConfig();
         WebDriver.Window window = eventFiringWebDriver.manage().window();
         /*
          Maximize
          */
-        if (config.shouldMaximizeViewport()) {
+        if (desktopWebDriverRequest.getMaximizeBrowser()) {
             log().debug("Trying to maximize window");
             try {
                 Dimension originWindowSize = window.getSize();
                 // Maximize to detect window size
                 window.maximize();
-                if (config.getMaximizePosition() != Position.CENTER) {
-                    log().debug(String.format("Setting maximized window position to: %s", config.getMaximizePosition()));
+                Position maximizePosition = desktopWebDriverRequest.getMaximizePosition();
+                if (maximizePosition != Position.CENTER) {
+                    log().debug(String.format("Setting maximized window position to: %s", maximizePosition));
                     Point targetPosition = new Point(0, 0);
-                    switch (config.getMaximizePosition()) {
+                    switch (maximizePosition) {
                         case LEFT:
                             targetPosition.x = -originWindowSize.width;
                             break;
@@ -291,179 +320,80 @@ public class DesktopWebDriverFactory extends AbstractWebDriverFactory<DesktopWeb
         }
     }
 
-    private WebDriver newWebDriver(
-            DesktopWebDriverRequest desktopWebDriverRequest,
-            DesiredCapabilities capabilities,
-            SessionContext sessionContext
-    ) {
-        final String browser = desktopWebDriverRequest.getBrowser();
-
+    private WebDriver newWebDriver(DesktopWebDriverRequest desktopWebDriverRequest, SessionContext sessionContext) {
         /*
          * Remote or local
          */
         WebDriver newDriver;
-        URL remoteAddress = null;
-        if (desktopWebDriverRequest.getWebDriverMode() == WebDriverMode.remote) {
-            remoteAddress = desktopWebDriverRequest.getSeleniumServerUrl();
-        }
-
-
-            /*
-             * Start a new web driver session.
-             */
-            try {
-                if (browser.equals(Browsers.htmlunit)) {
-                    capabilities.setBrowserName(BrowserType.HTMLUNIT);
-                    capabilities.setJavascriptEnabled(false);
-                    log().info("Starting HtmlUnitRemoteWebDriver.");
-                        newDriver = new RemoteWebDriver(remoteAddress, capabilities);
-                        } else {
-                    newDriver = startNewWebDriverSession(desktopWebDriverRequest, capabilities, remoteAddress, sessionContext);
-                }
-            } catch (final SetupException e) {
-                int ms = Testerra.Properties.WEBDRIVER_TIMEOUT_SECONDS_RETRY.asLong().intValue()*1000;
+        /*
+         * Start a new web driver session.
+         */
+        try {
+            newDriver = startNewWebDriverSession(desktopWebDriverRequest, sessionContext);
+        } catch (final SetupException e) {
+            int ms = Testerra.Properties.WEBDRIVER_TIMEOUT_SECONDS_RETRY.asLong().intValue()*1000;
             log().error(String.format("Error starting WebDriver. Trying again in %d seconds", (ms / 1000)), e);
             TimerUtils.sleep(ms);
-            newDriver = startNewWebDriverSession(desktopWebDriverRequest, capabilities, remoteAddress, sessionContext);
-        }
-
-        /*
-        Log User Agent and executing host
-         */
-        if (remoteAddress != null && newDriver instanceof RemoteWebDriver) {
-            DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
-            NodeInfo nodeInfo = utils.getNodeInfo(remoteAddress, ((RemoteWebDriver) newDriver).getSessionId().toString());
-            sessionContext.setNodeInfo(nodeInfo);
+            newDriver = startNewWebDriverSession(desktopWebDriverRequest, sessionContext);
         }
         //STARTUP_TIME_COLLECTOR.add(new TimingInfo("SessionStartup", "", sw.getTime(TimeUnit.MILLISECONDS), System.currentTimeMillis()));
-
         return newDriver;
     }
 
     /**
      * Remote when remoteAdress != null, local need browser to be set.
      */
-    private WebDriver startNewWebDriverSession(
-            AbstractWebDriverRequest request,
-            DesiredCapabilities capabilities,
-            URL remoteAddress,
-            SessionContext sessionContext
-    ) {
+    private WebDriver startNewWebDriverSession(DesktopWebDriverRequest request, SessionContext sessionContext) {
 
-        String browser = request.getBrowser();
-        UserAgentConfig userAgentConfig = WebDriverManager.getUserAgentConfig(browser);
-        Capabilities finalCapabilities;
-        Class<? extends RemoteWebDriver> driverClass;
+        final Class<? extends RemoteWebDriver> driverClass;
+        final String browser = request.getBrowser();
 
         switch (browser) {
             case Browsers.firefox:
-                FirefoxOptions firefoxOptions = new FirefoxOptions();
-                if (capabilities.getCapabilityNames().contains(FirefoxOptions.FIREFOX_OPTIONS)) {
-                    final TreeMap predefinedFirefoxOptions = (TreeMap) capabilities.getCapability(FirefoxOptions.FIREFOX_OPTIONS);
-                    predefinedFirefoxOptions.forEach((s, o) -> firefoxOptions.setCapability(s.toString(), o));
-                }
-                if (userAgentConfig != null) {
-                    userAgentConfig.configure(firefoxOptions);
-                }
-                firefoxOptions.merge(capabilities);
-                finalCapabilities = firefoxOptions;
                 driverClass = FirefoxDriver.class;
                 break;
             case Browsers.ie:
-                InternetExplorerOptions ieOptions = new InternetExplorerOptions();
-                if (userAgentConfig != null) {
-                    userAgentConfig.configure(ieOptions);
-                }
-                ieOptions.merge(capabilities);
-                ieOptions.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
-                finalCapabilities = ieOptions;
                 driverClass = InternetExplorerDriver.class;
                 break;
             case Browsers.chrome:
             case Browsers.chromeHeadless:
-                ChromeOptions chromeOptions = new ChromeOptions();
-                if (capabilities.getCapabilityNames().contains(ChromeOptions.CAPABILITY)) {
-                    final TreeMap predefinedChromeOptions = (TreeMap) capabilities.getCapability(ChromeOptions.CAPABILITY);
-                    predefinedChromeOptions.forEach((s, o) -> chromeOptions.setCapability(s.toString(), o));
-                }
-
-                if (userAgentConfig != null) {
-                    userAgentConfig.configure(chromeOptions);
-                }
-
-                chromeOptions.merge(capabilities);
-                chromeOptions.addArguments("--no-sandbox");
-                if (browser.equals(Browsers.chromeHeadless)) {
-                    chromeOptions.setHeadless(true);
-                }
-                finalCapabilities = chromeOptions;
                 driverClass = ChromeDriver.class;
                 break;
             case Browsers.phantomjs:
-                File phantomjsFile = getPhantomJSBinary();
-                capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, phantomjsFile.getAbsolutePath());
-                capabilities.setBrowserName(BrowserType.PHANTOMJS);
-                capabilities.setJavascriptEnabled(true);
-
-                String[] args = {
-                        "--ssl-protocol=any"
-                };
-                capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, args);
-                finalCapabilities = capabilities;
                 driverClass = PhantomJSDriver.class;
                 break;
             case Browsers.safari:
-                SafariOptions safariOptions = new SafariOptions();
-                if (userAgentConfig != null) {
-                    userAgentConfig.configure(safariOptions);
-                }
-                safariOptions.merge(capabilities);
-                finalCapabilities = safariOptions;
                 driverClass = SafariDriver.class;
                 break;
             case Browsers.edge:
-                EdgeOptions edgeOptions = new EdgeOptions();
-                if (userAgentConfig != null) {
-                    userAgentConfig.configure(edgeOptions);
-                }
-                edgeOptions.merge(capabilities);
-                finalCapabilities = edgeOptions;
                 driverClass = EdgeDriver.class;
                 break;
             default:
-                throw new SystemException("Browser must be set through SystemProperty 'browser' or in test.properties file! + is: " + browser);
+                throw new SystemException("Browser not supported: " + browser);
         }
 
-        Map<String, Object> cleanedCapsMap = new WebDriverCapabilityLogHelper().clean(finalCapabilities);
-        sessionContext.setCapabilities(cleanedCapsMap);
-
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        log().info(String.format(
-                "Requesting%s WebDriver (sessionKey=%s)%s with capabilities:\n%s",
-                (remoteAddress != null ? " remote" : ""),
-                sessionContext.getSessionKey(),
-                (remoteAddress != null ? " on host " + remoteAddress : ""),
-                gson.toJson(cleanedCapsMap)
-        ));
-        log().debug(String.format("Starting (session key=%s) here", sessionContext.getSessionKey()), new Throwable());
-
-        WebDriver driver;
+        // Finalize capabilities
+        final DesiredCapabilities requestCapabilities = request.getDesiredCapabilities();
+        RemoteWebDriver webDriver;
         try {
-            if (remoteAddress != null) {
-                final HttpCommandExecutor httpCommandExecutor = new HttpCommandExecutor(new HashMap<>(), remoteAddress, new HttpClientFactory());
-                driver = new SikuliWebDriver(httpCommandExecutor, finalCapabilities);
-                ((RemoteWebDriver) driver).setFileDetector(new LocalFileDetector());
+            if (request.getWebDriverMode() == WebDriverMode.remote && request.getServerUrl().isPresent()) {
+                final URL seleniumUrl = request.getServerUrl().get();
+                final HttpCommandExecutor httpCommandExecutor = new HttpCommandExecutor(new HashMap<>(), seleniumUrl, new HttpClientFactory());
+                webDriver = new RemoteWebDriver(httpCommandExecutor, requestCapabilities);
+                webDriver.setFileDetector(new LocalFileDetector());
+                DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
+                sessionContext.setNodeUrl(utils.getNodeInfo(seleniumUrl, webDriver.getSessionId().toString()));
             } else {
                 log().warn("Local WebDriver setups may cause side effects. It's highly recommended to use a remote Selenium configurations for all environments!");
                 Constructor<? extends RemoteWebDriver> constructor = driverClass.getConstructor(Capabilities.class);
-                driver = constructor.newInstance(finalCapabilities);
+                webDriver = constructor.newInstance(requestCapabilities);
             }
         } catch (Exception e) {
             WebDriverSessionsManager.SESSION_STARTUP_ERRORS.put(new Date(), e);
             throw new SetupException("Error starting browser session", e);
         }
 
-        return driver;
+        return webDriver;
     }
 
     private File getPhantomJSBinary() {

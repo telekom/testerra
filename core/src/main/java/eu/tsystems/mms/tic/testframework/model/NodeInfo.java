@@ -19,11 +19,29 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.model;
+package eu.tsystems.mms.tic.testframework.model;
 
-public class NodeInfo extends HostInfo {
+import java.net.URL;
 
-    public NodeInfo(String host, int port) {
-        super(host, port);
+@Deprecated
+public class NodeInfo {
+
+    private final URL url;
+
+    public NodeInfo(URL url) {
+        this.url = url;
+    }
+
+    public String getHost() {
+        return url.getHost();
+    }
+
+    public int getPort() {
+        return url.getPort();
+    }
+
+    @Override
+    public String toString() {
+        return url.getHost() + ':' + url.getPort();
     }
 }

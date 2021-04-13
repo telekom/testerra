@@ -27,7 +27,6 @@ import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
-import eu.tsystems.mms.tic.testframework.webdriver.DefaultWebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +35,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,11 +54,15 @@ public final class WebDriverManager {
         UITestUtils.initializePerfTest();
     }
 
-    public static final String DEFAULT_SESSION_KEY = "default";
+    /**
+     * @deprecated Use {@link WebDriverRequest#DEFAULT_SESSION_KEY} instead
+     */
+    public static final String DEFAULT_SESSION_KEY = WebDriverRequest.DEFAULT_SESSION_KEY;
 
     /**
      * WebDriverManager configuration set. Modify by config() call!
      */
+    @Deprecated
     private static WebDriverManagerConfig webdriverManagerConfig;
 
     private static final HashMap<String, UserAgentConfig> userAgentConfigurators = new HashMap<>();
@@ -132,13 +136,13 @@ public final class WebDriverManager {
      * @param sessionKey The storedSessionId to get the webDriver instance from map.
      * @return instance of WebDriver object.
      */
-    public static WebDriver getWebDriver(final String sessionKey) {
+    public static EventFiringWebDriver getWebDriver(final String sessionKey) {
         UnspecificWebDriverRequest webDriverRequest = new UnspecificWebDriverRequest();
         webDriverRequest.setSessionKey(sessionKey);
         return getWebDriver(webDriverRequest);
     }
 
-    public static WebDriver getWebDriver(AbstractWebDriverRequest webDriverRequest) {
+    public static EventFiringWebDriver getWebDriver(WebDriverRequest webDriverRequest) {
         return WebDriverSessionsManager.getWebDriver(webDriverRequest);
     }
 
@@ -172,34 +176,14 @@ public final class WebDriverManager {
 
     /**
      * Closes all windows and active Selenium and/or WebDriver instances.
+     * @deprecated Use {@link IWebDriverManager#shutdownAllThreadSessions()} instead
      */
     public static void forceShutdown() {
-        realShutdown(true);
-    }
-
-    /**
-     * Closes all windows and active Selenium and/or WebDriver instances.
-     *
-     * @param force Handles the report of Windows beside WebDriverManagerConfig.executeCloseWindows.
-     */
-    private static void realShutdown(final boolean force) {
-        if (getConfig().shouldShutdownSessions() || force) {
-            if (WebDriverManager.isWebDriverActive()) {
-                WebDriverSessionsManager.shutdownAllThreadSessions();
-            }
-
-            if (Testerra.Properties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD.asBool()) {
-                String testMethodName = ExecutionContextUtils.getMethodNameFromCurrentTestResult();
-                DriverStorage.removeSpecificDriver(testMethodName);
-            }
+        WebDriverSessionsManager.shutdownAllThreadSessions();
+        if (Testerra.Properties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD.asBool()) {
+            String testMethodName = ExecutionContextUtils.getMethodNameFromCurrentTestResult();
+            DriverStorage.removeSpecificDriver(testMethodName);
         }
-    }
-
-    /**
-     * Closes all windows and active Selenium and/or WebDriver instances.
-     */
-    public static void shutdown() {
-        realShutdown(false);
     }
 
     /**
@@ -209,13 +193,17 @@ public final class WebDriverManager {
      * @deprecated Use {@link #getConfig()} instead
      */
     @Deprecated
-    public static WebDriverManagerConfig config() {
+    private static WebDriverManagerConfig config() {
         if (webdriverManagerConfig == null) {
             webdriverManagerConfig = new WebDriverManagerConfig();
         }
         return webdriverManagerConfig;
     }
 
+    /**
+     * @deprecated Use {@link #getWebDriver(WebDriverRequest)} instead
+     */
+    @Deprecated
     public static WebDriverManagerConfig getConfig() {
         return config();
     }
@@ -276,24 +264,19 @@ public final class WebDriverManager {
      *
      * @deprecated Use forceShotDownAllThreads, does the same thing, but sounds more dangerous.
      */
-    @Deprecated
-    public static void shutdownAllThreads() {
-        pRealShutdownAllThreads(false);
-    }
+//    @Deprecated
+//    public static void shutdownAllThreads() {
+//        pRealShutdownAllThreads(false);
+//    }
 
     /**
      * Are you sure you want do that?? This action quits all browser sessions in all threads.
      */
+    @Deprecated
     public static void forceShutdownAllThreads() {
-        LOGGER.debug("Forcing all WebDrivers to shutdown (close all windows)");
-        pRealShutdownAllThreads(true);
-    }
-
-    private static void pRealShutdownAllThreads(final boolean force) {
-        if (getConfig().shouldShutdownSessions() || force) {
-            WebDriverSessionsManager.shutdownAllSessions();
-            WDInternal.cleanupDriverReferencesInCurrentThread();
-        }
+        LOGGER.info("Forcing all WebDrivers to shutdown (close all windows)");
+        WebDriverSessionsManager.shutdownAllSessions();
+        WDInternal.cleanupDriverReferencesInCurrentThread();
     }
 
     /**
@@ -312,7 +295,7 @@ public final class WebDriverManager {
         WebDriverSessionsManager.shutdownSessionKey(key);
     }
 
-    public static Stream<WebDriver> getWebDriversFromThread(final long threadId) {
+    public static Stream<EventFiringWebDriver> getWebDriversFromThread(final long threadId) {
         return WebDriverSessionsManager.getWebDriversFromThread(threadId);
     }
 

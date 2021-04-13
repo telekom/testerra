@@ -63,7 +63,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
     private void sequenced(boolean throwException, Supplier<Boolean> runnable) {
 
         Sequence sequence = new Sequence()
-                .setTimeoutMs(overrides.getTimeoutInSeconds()*1000)
+                .setTimeoutMs(overrides.getTimeoutInSeconds()* 1000L)
                 .setWaitMsAfterRun(UiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong());
 
         AtomicReference<Throwable> atomicThrowable = new AtomicReference<>();
@@ -104,6 +104,14 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
     public void scrollIntoView(Point offset) {
         sequenced(true, () -> {
             decoratedCore.scrollIntoView(offset);
+            return true;
+        });
+    }
+
+    @Override
+    public void hover() {
+        sequenced(true, () -> {
+            decoratedCore.hover();
             return true;
         });
     }

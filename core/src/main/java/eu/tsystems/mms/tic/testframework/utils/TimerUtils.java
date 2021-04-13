@@ -50,9 +50,16 @@ public final class TimerUtils {
         sleepSilent(milliSeconds);
     }
 
-    public static void sleepSilent(final int milliSeconds) {
+    /**
+     * @deprecated Use {@link #sleepSilent(long)} instead
+     */
+    public static void sleepSilent(final Integer milliSeconds) {
+        sleepSilent(milliSeconds.longValue());
+    }
+
+    public static void sleepSilent(final long ms) {
         try {
-            Thread.sleep(milliSeconds);
+            Thread.sleep(ms);
         } catch (final InterruptedException e) {
             LOGGER.error("Sleeping was interrupted", e);
         }

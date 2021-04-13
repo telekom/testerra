@@ -46,15 +46,19 @@ class WebDriverCapabilityLogHelper {
      * @return Map
      */
     public Map<String, Object> clean(Capabilities capabilities) {
+        return clean(capabilities.asMap());
+    }
+
+    public Map<String, Object> clean(Map<String, Object> capabilityMap) {
 
         // 1. make map modifiable.
-        Map<String, Object> capabilityMap = new TreeMap<>(capabilities.asMap());
+        Map<String, Object> mutableCapabilityMap = new TreeMap<>(capabilityMap);
 
         // 2. do all the operations
-        capabilityMap = shortChromeExtensionStrings(capabilityMap);
+        mutableCapabilityMap = shortChromeExtensionStrings(mutableCapabilityMap);
 
         // 3. make the map unmodifiable again.
-        return Collections.unmodifiableMap(capabilityMap);
+        return Collections.unmodifiableMap(mutableCapabilityMap);
     }
 
     /**

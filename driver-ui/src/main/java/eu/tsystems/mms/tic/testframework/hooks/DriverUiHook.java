@@ -55,12 +55,14 @@ import eu.tsystems.mms.tic.testframework.testing.TestController;
 import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.useragents.UapBrowserInformation;
 import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
-import eu.tsystems.mms.tic.testframework.webdriver.DefaultWebDriverManager;
-import eu.tsystems.mms.tic.testframework.webdriver.IWebDriverManager;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.DefaultWebDriverManager;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverCapabilities;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 
 public class DriverUiHook extends AbstractModule implements ModuleHook {
+
+    private static IWebDriverManager webDriverManager;
 
     @Override
     protected void configure() {
@@ -79,6 +81,8 @@ public class DriverUiHook extends AbstractModule implements ModuleHook {
 
     @Override
     public void init() {
+        webDriverManager = Testerra.getInjector().getInstance(IWebDriverManager.class);
+        webDriverManager.registerWebDriverRequestConfigurator(new WebDriverCapabilities());
         /*
         init test step integration
          */
@@ -128,7 +132,7 @@ public class DriverUiHook extends AbstractModule implements ModuleHook {
     }
 
     public static void shutdownModule() {
-        WebDriverManager.forceShutdownAllThreads();
+        webDriverManager.requestShutdownAllSessions();
         WebDriverWatchDog.stop();
     }
 }

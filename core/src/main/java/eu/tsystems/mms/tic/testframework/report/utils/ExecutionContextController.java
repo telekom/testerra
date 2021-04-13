@@ -41,6 +41,9 @@ import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 
+/**
+ * @deprecated Use {@link IExecutionContextController} instead
+ */
 public class ExecutionContextController {
 
     private static ExecutionContext EXECUTION_CONTEXT;
@@ -53,8 +56,8 @@ public class ExecutionContextController {
     private static final ThreadLocal<SessionContext> CURRENT_SESSION_CONTEXT = new ThreadLocal<>();
 
     /**
-     * //TODO Make {@link Optional}
      * @return The current method context or NULL if there was no method initialized.
+     * @deprecated Use {@link IExecutionContextController#getCurrentMethodContext()} instead
      */
     public static MethodContext getCurrentMethodContext() {
         return CURRENT_METHOD_CONTEXT.get();
@@ -64,6 +67,9 @@ public class ExecutionContextController {
         return CURRENT_TEST_RESULT.get();
     }
 
+    /**
+     * @deprecated Use {@link IExecutionContextController#getExecutionContext()} instead
+     */
     public static synchronized ExecutionContext getCurrentExecutionContext() {
         if (EXECUTION_CONTEXT == null) {
             EXECUTION_CONTEXT = new ExecutionContext();

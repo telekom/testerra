@@ -21,7 +21,9 @@
  */
  package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import java.util.function.BiConsumer;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -32,23 +34,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Deprecated
-public class WebDriverCapabilities {
+public class WebDriverCapabilities implements BiConsumer<WebDriverRequest, SessionContext> {
 
     /**
      * Extra capabilities.
      */
     protected static final Map<String, Object> GLOBALCAPABILITIES = new HashMap<>();
     protected static final Logger LOGGER = LoggerFactory.getLogger(WebDriverCapabilities.class);
-
-    protected static void safelyAddCapsValue(DesiredCapabilities caps, String key, Object value) {
-        if (value == null) {
-            return;
-        }
-        if (StringUtils.isStringEmpty("" + value)) {
-            return;
-        }
-        caps.setCapability(key, value);
-    }
+//
+//    protected static void safelyAddCapsValue(DesiredCapabilities caps, String key, Object value) {
+//        if (value == null) {
+//            return;
+//        }
+//        if (StringUtils.isStringEmpty("" + value)) {
+//            return;
+//        }
+//        caps.setCapability(key, value);
+//    }
 
     /**
      * Adds a capability.
@@ -97,4 +99,11 @@ public class WebDriverCapabilities {
         return GLOBALCAPABILITIES;
     }
 
+    @Override
+    public void accept(WebDriverRequest webDriverRequest, SessionContext sessionContext) {
+        if (webDriverRequest instanceof AbstractWebDriverRequest) {
+            DesiredCapabilities desiredCapabilities = ((AbstractWebDriverRequest) webDriverRequest).getDesiredCapabilities();
+            desiredCapabilities.merge(new DesiredCapabilities(GLOBALCAPABILITIES));
+        }
+    }
 }

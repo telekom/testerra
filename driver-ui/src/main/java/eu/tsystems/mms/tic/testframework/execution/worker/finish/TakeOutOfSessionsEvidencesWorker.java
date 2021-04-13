@@ -39,7 +39,7 @@ public class TakeOutOfSessionsEvidencesWorker implements Loggable, AfterShutdown
     private final boolean SCREENCASTER_ACTIVE_ON_FAILED = PropertyManager.getBooleanProperty(TesterraProperties.SCREENCASTER_ACTIVE_ON_FAILED, true);
 
     protected void collect(MethodEndEvent methodEndEvent) {
-        if (methodEndEvent.getTestMethod().isTest() && WebDriverManager.getConfig().shouldShutdownSessionAfterTestMethod()) {
+        if (methodEndEvent.getTestMethod().isTest()) {
             /*
             videos are now fetched only after test methods
              */

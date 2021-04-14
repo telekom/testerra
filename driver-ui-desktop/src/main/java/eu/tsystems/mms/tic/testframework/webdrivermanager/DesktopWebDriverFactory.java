@@ -382,7 +382,7 @@ public class DesktopWebDriverFactory implements
                 final HttpCommandExecutor httpCommandExecutor = new HttpCommandExecutor(new HashMap<>(), seleniumUrl, new HttpClientFactory());
                 webDriver = new RemoteWebDriver(httpCommandExecutor, requestCapabilities);
                 webDriver.setFileDetector(new LocalFileDetector());
-                sessionContext.setNodeInfo(new NodeInfo(remoteAddress.getHost(), remoteAddress.getPort()));
+                sessionContext.setNodeUrl(seleniumUrl);
             } else {
                 log().warn("Local WebDriver setups may cause side effects. It's highly recommended to use a remote Selenium configurations for all environments!");
                 Constructor<? extends RemoteWebDriver> constructor = driverClass.getConstructor(Capabilities.class);

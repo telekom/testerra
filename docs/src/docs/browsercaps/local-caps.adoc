@@ -1,0 +1,13 @@
+= Setting local capabilities
+
+A local defined capability means its only available in the current test execution (current TestNG testmethod).
+
+[source,java]
+----
+WebDriverManager.addThreadCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
+----
+
+[NOTE]
+=====
+Have a look into <<Useful browser capabilities>> for specific browser options.
+=====

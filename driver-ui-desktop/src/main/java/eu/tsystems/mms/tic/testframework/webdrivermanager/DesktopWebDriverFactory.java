@@ -47,14 +47,6 @@ import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
-import java.io.File;
-import java.lang.reflect.Constructor;
-import java.net.URL;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.concurrent.TimeUnit;
 import net.anthavio.phanbedder.Phanbedder;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Dimension;
@@ -78,6 +70,14 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
+
+import java.io.File;
+import java.lang.reflect.Constructor;
+import java.net.URL;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRequest> implements Loggable {
 
@@ -356,8 +356,10 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             case Browsers.firefox:
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
                 if (capabilities.getCapabilityNames().contains(FirefoxOptions.FIREFOX_OPTIONS)) {
-                    final TreeMap predefinedFirefoxOptions = (TreeMap) capabilities.getCapability(FirefoxOptions.FIREFOX_OPTIONS);
-                    predefinedFirefoxOptions.forEach((s, o) -> firefoxOptions.setCapability(s.toString(), o));
+                    log().warn("Do not add FirefoxOptions via 'WebDriverManager.setGlobalExtraCapability(..)'! It will be ignored.");
+                    log().warn("Use 'WebDriverManager.setUserAgentConfig(Browsers.firefox, (FirefoxConfig) options -> {...}' instead.");
+//                    final TreeMap predefinedFirefoxOptions = (TreeMap) capabilities.getCapability(FirefoxOptions.FIREFOX_OPTIONS);
+//                    predefinedFirefoxOptions.forEach((s, o) -> firefoxOptions.setCapability(s.toString(), o));
                 }
                 if (userAgentConfig != null) {
                     userAgentConfig.configure(firefoxOptions);
@@ -380,8 +382,10 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             case Browsers.chromeHeadless:
                 ChromeOptions chromeOptions = new ChromeOptions();
                 if (capabilities.getCapabilityNames().contains(ChromeOptions.CAPABILITY)) {
-                    final TreeMap predefinedChromeOptions = (TreeMap) capabilities.getCapability(ChromeOptions.CAPABILITY);
-                    predefinedChromeOptions.forEach((s, o) -> chromeOptions.setCapability(s.toString(), o));
+                    log().warn("Do not add ChromeOptions via 'WebDriverManager.setGlobalExtraCapability(..)'! It will be ignored.");
+                    log().warn("Use 'WebDriverManager.setUserAgentConfig(Browsers.chrome, (ChromeConfig) options -> {...}' instead.");
+//                    final TreeMap predefinedChromeOptions = (TreeMap) capabilities.getCapability(ChromeOptions.CAPABILITY);
+//                    predefinedChromeOptions.forEach((s, o) -> chromeOptions.setCapability(s.toString(), o));
                 }
 
                 if (userAgentConfig != null) {

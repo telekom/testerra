@@ -21,40 +21,14 @@
  */
  package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
-import eu.tsystems.mms.tic.testframework.utils.RESTUtils;
-import java.net.URL;
-import java.util.Map;
 
 public final class DesktopWebDriverUtils implements Loggable {
 
     public DesktopWebDriverUtils() {
 
-    }
-
-    public NodeInfo getNodeInfo(URL seleniumUrl, String sessionId) {
-        String url = seleniumUrl.toString();
-
-        url = url.replace("/wd/hub", "");
-
-        /*
-        grid3 mode
-         */
-        try {
-            String nodeResponse = RESTUtils.requestGET(url + "/host/" + sessionId, 30 * 1000, String.class);
-            Gson gson = new GsonBuilder().create();
-            Map map = gson.fromJson(nodeResponse, Map.class);
-            double port = Double.parseDouble(map.get("Port").toString());
-            return new NodeInfo(map.get("Name").toString(), (int) port);
-        } catch (Exception e) {
-            log().error("Could not get node info: " + e.getMessage());
-            return new NodeInfo(seleniumUrl.getHost(), seleniumUrl.getPort());
-        }
     }
 
     public void clickAbsolute(GuiElement guiElement) {

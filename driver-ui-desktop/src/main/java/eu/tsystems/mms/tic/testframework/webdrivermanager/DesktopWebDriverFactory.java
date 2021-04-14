@@ -324,14 +324,6 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             newDriver = startNewWebDriverSession(desktopWebDriverRequest, capabilities, remoteAddress, sessionContext);
         }
 
-        /*
-        Log User Agent and executing host
-         */
-        if (remoteAddress != null && newDriver instanceof RemoteWebDriver) {
-            DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
-            NodeInfo nodeInfo = utils.getNodeInfo(remoteAddress, ((RemoteWebDriver) newDriver).getSessionId().toString());
-            sessionContext.setNodeInfo(nodeInfo);
-        }
         //STARTUP_TIME_COLLECTOR.add(new TimingInfo("SessionStartup", "", sw.getTime(TimeUnit.MILLISECONDS), System.currentTimeMillis()));
 
         return newDriver;
@@ -454,6 +446,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 final HttpCommandExecutor httpCommandExecutor = new HttpCommandExecutor(new HashMap<>(), remoteAddress, new HttpClientFactory());
                 driver = new SikuliWebDriver(httpCommandExecutor, finalCapabilities);
                 ((RemoteWebDriver) driver).setFileDetector(new LocalFileDetector());
+                sessionContext.setNodeInfo(new NodeInfo(remoteAddress.getHost(), remoteAddress.getPort()));
             } else {
                 log().warn("Local WebDriver setups may cause side effects. It's highly recommended to use a remote Selenium configurations for all environments!");
                 Constructor<? extends RemoteWebDriver> constructor = driverClass.getConstructor(Capabilities.class);

@@ -36,7 +36,6 @@ import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.sikuli.SikuliWebDriver;
@@ -324,14 +323,6 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             newDriver = startNewWebDriverSession(desktopWebDriverRequest, capabilities, remoteAddress, sessionContext);
         }
 
-        /*
-        Log User Agent and executing host
-         */
-        if (remoteAddress != null && newDriver instanceof RemoteWebDriver) {
-            DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
-            NodeInfo nodeInfo = utils.getNodeInfo(remoteAddress, ((RemoteWebDriver) newDriver).getSessionId().toString());
-            sessionContext.setNodeInfo(nodeInfo);
-        }
         //STARTUP_TIME_COLLECTOR.add(new TimingInfo("SessionStartup", "", sw.getTime(TimeUnit.MILLISECONDS), System.currentTimeMillis()));
 
         return newDriver;

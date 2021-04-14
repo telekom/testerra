@@ -36,6 +36,7 @@ import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.sikuli.SikuliWebDriver;
@@ -445,6 +446,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 final HttpCommandExecutor httpCommandExecutor = new HttpCommandExecutor(new HashMap<>(), remoteAddress, new HttpClientFactory());
                 driver = new SikuliWebDriver(httpCommandExecutor, finalCapabilities);
                 ((RemoteWebDriver) driver).setFileDetector(new LocalFileDetector());
+                sessionContext.setNodeInfo(new NodeInfo(remoteAddress.getHost(), remoteAddress.getPort()));
             } else {
                 log().warn("Local WebDriver setups may cause side effects. It's highly recommended to use a remote Selenium configurations for all environments!");
                 Constructor<? extends RemoteWebDriver> constructor = driverClass.getConstructor(Capabilities.class);

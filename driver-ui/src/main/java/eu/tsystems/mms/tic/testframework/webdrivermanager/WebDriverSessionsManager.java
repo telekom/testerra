@@ -392,41 +392,41 @@ public final class WebDriverSessionsManager {
              */
             StopWatch sw = new StopWatch();
             sw.start();
-            WebDriver newWebDriver = webDriverFactory.createWebDriver(finalWebDriverRequest, sessionContext);
+            WebDriver newRawWebDriver = webDriverFactory.createWebDriver(finalWebDriverRequest, sessionContext);
             sw.stop();
 
             if (!sessionContext.getActualBrowserName().isPresent()) {
-                BrowserInformation browserInformation = WebDriverManagerUtils.getBrowserInformation(newWebDriver);
+                BrowserInformation browserInformation = WebDriverManagerUtils.getBrowserInformation(newRawWebDriver);
                 sessionContext.setActualBrowserName(browserInformation.getBrowserName());
                 sessionContext.setActualBrowserVersion(browserInformation.getBrowserVersion());
             }
 
-            if (newWebDriver instanceof RemoteWebDriver) {
-                SessionId sessionId = ((RemoteWebDriver) newWebDriver).getSessionId();
+            if (newRawWebDriver instanceof RemoteWebDriver) {
+                SessionId sessionId = ((RemoteWebDriver) newRawWebDriver).getSessionId();
                 sessionContext.setRemoteSessionId(sessionId.toString());
             }
 
             LOGGER.info(String.format(
                     "Started %s (sessionKey=%s, sessionId=%s, node=%s, userAgent=%s) in %s",
-                    newWebDriver.getClass().getSimpleName(),
+                    newRawWebDriver.getClass().getSimpleName(),
                     sessionContext.getSessionKey(),
                     sessionContext.getRemoteSessionId().orElse("(local)"),
                     sessionContext.getNodeUrl().map(Object::toString).orElse("(unknown)"),
                     sessionContext.getActualBrowserName().orElse("(unknown)") + ":" + sessionContext.getActualBrowserVersion().orElse("(unknown)"),
                     sw.toString()
             ));
-            EventFiringWebDriver eventFiringWebDriver = wrapWebDriver(newWebDriver);
+            EventFiringWebDriver eventFiringWebDriver = wrapWebDriver(newRawWebDriver);
             storeWebDriverSession(eventFiringWebDriver, sessionContext);
 
             webDriverFactory.setupNewWebDriverSession(eventFiringWebDriver, sessionContext);
             Testerra.getEventBus().post(new ContextUpdateEvent().setContext(sessionContext));
-            String sessionIdentifier = createSessionIdentifier(newWebDriver, sessionKey);
+            String sessionIdentifier = createSessionIdentifier(newRawWebDriver, sessionKey);
             /*
             run the handlers
              */
             WEBDRIVER_STARTUP_HANDLERS.forEach(webDriverConsumer -> {
                 try {
-                    webDriverConsumer.accept(newWebDriver);
+                    webDriverConsumer.accept(eventFiringWebDriver);
                 } catch (Exception e) {
                     LOGGER.error("Failed executing handler after starting up " + sessionIdentifier, e);
                 }

@@ -19,7 +19,7 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.webdrivermanager;
+package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
@@ -33,10 +33,9 @@ public final class DesktopWebDriverUtils implements Loggable {
 
     }
 
-    public void clickAbsolute(GuiElement guiElement) {
-        log().trace("Absolute navigation and click on: " + guiElement.toString());
-        JSUtils utils = new JSUtils();
-        utils.clickAbsolute(guiElement.getWebDriver(), guiElement.getWebElement());
+    public void clickAbsolute(UiElement guiElement) {
+        log().debug("Absolute navigation and click on: " + guiElement.toString());
+        guiElement.findWebElement(webElement -> utils.clickAbsolute(guiElement.getWebDriver(), webElement));
     }
 
     public void mouseOverAbsolute2Axis(UiElement guiElement) {

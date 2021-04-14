@@ -74,14 +74,6 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
-import java.io.File;
-import java.lang.reflect.Constructor;
-import java.net.URL;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
 public class DesktopWebDriverFactory implements
         WebDriverFactory,
         Loggable,
@@ -389,8 +381,6 @@ public class DesktopWebDriverFactory implements
                 final HttpCommandExecutor httpCommandExecutor = new HttpCommandExecutor(new HashMap<>(), seleniumUrl, new HttpClientFactory());
                 webDriver = new RemoteWebDriver(httpCommandExecutor, requestCapabilities);
                 webDriver.setFileDetector(new LocalFileDetector());
-                DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
-                sessionContext.setNodeUrl(utils.getNodeInfo(seleniumUrl, webDriver.getSessionId().toString()));
             } else {
                 log().warn("Local WebDriver setups may cause side effects. It's highly recommended to use a remote Selenium configurations for all environments!");
                 Constructor<? extends RemoteWebDriver> constructor = driverClass.getConstructor(Capabilities.class);

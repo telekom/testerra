@@ -9,8 +9,6 @@ dependencies {
         exclude group: 'org.seleniumhq.selenium', module: 'selenium-remote-driver'
     }
     // </PhantomJS>
-
-    implementation 'com.google.code.gson:gson:2.8.6'
 }
 
 test {

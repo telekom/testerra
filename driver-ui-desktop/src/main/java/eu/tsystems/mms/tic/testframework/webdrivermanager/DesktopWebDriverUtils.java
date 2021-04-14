@@ -21,14 +21,9 @@
  */
  package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
-import eu.tsystems.mms.tic.testframework.utils.RESTUtils;
-import java.net.URL;
-import java.util.Map;
 
 public final class DesktopWebDriverUtils implements Loggable {
 
@@ -38,29 +33,10 @@ public final class DesktopWebDriverUtils implements Loggable {
 
     }
 
-    public URL getNodeInfo(URL seleniumUrl, String sessionId) {
-        String url = seleniumUrl.toString();
-
-        url = url.replace("/wd/hub", "");
-
-        /*
-        grid3 mode
-         */
-        try {
-            String nodeResponse = RESTUtils.requestGET(url + "/host/" + sessionId, 30 * 1000, String.class);
-            Gson gson = new GsonBuilder().create();
-            Map map = gson.fromJson(nodeResponse, Map.class);
-            double port = Double.parseDouble(map.get("Port").toString());
-            return new URL(map.get("Scheme").toString(), map.get("Name").toString(), (int) port, "");
-        } catch (Exception e) {
-            log().warn("Could not get node info. Falling back to " + seleniumUrl.toString(), e);
-            return seleniumUrl;
-        }
-    }
-
-    public void clickAbsolute(UiElement guiElement) {
-        log().debug("Absolute navigation and click on: " + guiElement.toString());
-        guiElement.findWebElement(webElement -> utils.clickAbsolute(guiElement.getWebDriver(), webElement));
+    public void clickAbsolute(GuiElement guiElement) {
+        log().trace("Absolute navigation and click on: " + guiElement.toString());
+        JSUtils utils = new JSUtils();
+        utils.clickAbsolute(guiElement.getWebDriver(), guiElement.getWebElement());
     }
 
     public void mouseOverAbsolute2Axis(UiElement guiElement) {

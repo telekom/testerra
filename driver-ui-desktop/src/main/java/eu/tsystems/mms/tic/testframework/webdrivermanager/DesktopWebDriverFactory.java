@@ -74,6 +74,14 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
+import java.io.File;
+import java.lang.reflect.Constructor;
+import java.net.URL;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
 public class DesktopWebDriverFactory implements
         WebDriverFactory,
         Loggable,

@@ -30,6 +30,10 @@ import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import org.testng.ITestContext;
+import org.testng.ITestNGMethod;
+import org.testng.ITestResult;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
@@ -37,6 +41,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
@@ -92,9 +97,9 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     /**
      * Public constructor. Creates a new <code>MethodContext</code> object.
      *
-     * @param name             The test method name.
-     * @param methodType       method type.
-     * @param classContext     .
+     * @param name The test method name.
+     * @param methodType method type.
+     * @param classContext .
      */
     public MethodContext(
             final String name,
@@ -167,7 +172,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     public ClassContext getClassContext() {
-        return (ClassContext)this.parentContext;
+        return (ClassContext) this.parentContext;
     }
 
     @Deprecated
@@ -219,6 +224,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
 
     /**
      * Used in methodDependencies.vm
+     *
      * @deprecated Use {@link #readRelatedMethodContexts()} instead
      */
     public List<MethodContext> getRelatedMethodContexts() {
@@ -231,6 +237,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
 
     /**
      * Used in methodDependencies.vm
+     *
      * @deprecated Use {@link #readDependsOnMethodContexts()} instead
      */
     public List<MethodContext> getDependsOnMethodContexts() {
@@ -511,7 +518,8 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     public MethodContext setParameterValues(Object[] parameters) {
-        this.parameterValues = Arrays.asList(parameters);
+        // TestNG method parameters can be NULL
+        this.parameterValues = Arrays.stream(parameters).filter(Objects::nonNull).collect(Collectors.toList());
         return this;
     }
 

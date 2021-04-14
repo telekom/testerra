@@ -2,7 +2,7 @@
 
 If you want that the browser uses a proxy for the SUT, you can just configure that by default Selenium capabilities.
 
-IMPORTANT: Make sure that your WebDriver supports the Proxy-Capability. Some WebDrivers, like the MicrosoftWebDriver, don't (see https://docs.microsoft.com/en-us/microsoft-edge/webdriver#w3c-webdriver[Edge WebDriver Capabilities]).
+IMPORTANT: Make sure that your WebDriver supports the Proxy-Capability. For example the MicrosoftWebDriver for Legacy Edge does not support proxy setup (see https://docs.microsoft.com/en-us/archive/microsoft-edge/legacy/developer/webdriver/[Edge WebDriver Capabilities]).
 
 NOTE: If you want to setup a proxy for the runtime environment but the browser, you have to follow the instructions at <<Using a proxy>>
 

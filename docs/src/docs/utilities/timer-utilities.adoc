@@ -74,7 +74,8 @@ You can also return an object. In that case no `TimeoutException` will occur. Th
 
 public MyObject runTimer() {
     final Timer timer = new Timer(500, 15_000);
-    ThrowablePackedResponse<MyObject> myObjectResponse = timer.executeSequenceThread(new Timer.Sequence<Boolean>() {
+    ThrowablePackedResponse<MyObject> myObjectResponse
+        = timer.executeSequenceThread(new Timer.Sequence<MyObject>() {
         @Override
         public void run() throws Throwable {
             // sequence code here

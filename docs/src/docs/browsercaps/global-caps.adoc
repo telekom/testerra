@@ -9,6 +9,21 @@ WEB_DRIVER_MANAGER.setGlobalCapability(CapabilityType.ACCEPT_INSECURE_CERTS, tru
 WEB_DRIVER_MANAGER.removeGlobalCapability(CapabilityType.ACCEPT_INSECURE_CERTS);
 ----
 
+[IMPORTANT]
+====
+Do NOT set browser capabilities with WebDriverManager like:
+
+[source, java]
+----
+FirefoxOptions options = new FirefoxOptions();
+options.addPreference("intl.accept_languages", "de-DE");
+// This cannot be merged correctly!
+WEB_DRIVER_MANAGER.setGlobalCapability(FirefoxOptions.FIREFOX_OPTIONS, options);
+----
+
+====
+
+
 == Request capabilities
 
 Some WebDriverRequests support setting capabilities, like the `DesktopWebDriverRequest`.
@@ -24,7 +39,7 @@ WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(myRequest);
 
 The user agent configuration is most precise, because it provides explicit browser options based on the Selenium driver.
 
-[source,java]
+[source, java]
 ----
 import eu.tsystems.mms.tic.testframework.useragents.FirefoxConfig;
 

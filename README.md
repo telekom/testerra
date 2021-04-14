@@ -25,7 +25,7 @@ You may see Testerra as an open source test automation library for web frontend 
 
 ## Installation
 
-_Comming soon:_ Testerra and its components are published at GitHub packages and Maven Central.
+Testerra and its components are published to [Maven Central](https://search.maven.org/search?q=g:io.testerra).
 
 Maven:
 ````xml
@@ -34,12 +34,12 @@ Maven:
         <groupId>io.testerra</groupId>
         <artifactId>driver-ui-desktop</artifactId>
         <version>2-SNAPSHOT</version>
-    </dependecy>
+    </dependency>
     <dependency>
         <groupId>io.testerra</groupId>
         <artifactId>report-ng</artifactId>
         <version>2-SNAPSHOT</version>
-    </dependecy>
+    </dependency>
 </dependencies>
 ````
 

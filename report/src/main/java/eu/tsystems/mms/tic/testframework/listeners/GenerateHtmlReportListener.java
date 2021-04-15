@@ -157,11 +157,10 @@ public class GenerateHtmlReportListener implements
 
         unexpectedFailedMethodContexts.forEach(
                 context -> {
-                    final Optional<MethodContext> methodContext = findMatchingMethodContext(context, expectedFailedMethodContexts);
+                    final Optional<MethodContext> optionalMethodContext = findMatchingMethodContext(context, expectedFailedMethodContexts);
 
-                    if (methodContext.isPresent()) {
-
-                        final Fails failsAnnotation = methodContext.get().testResult.getMethod().getConstructorOrMethod().getMethod().getAnnotation(Fails.class);
+                    optionalMethodContext.flatMap(MethodContext::getTestNgResult).ifPresent(testResult -> {
+                        final Fails failsAnnotation = testResult.getMethod().getConstructorOrMethod().getMethod().getAnnotation(Fails.class);
                         String additionalErrorMessage = "Failure aspect matches known issue:";
 
                         if (StringUtils.isNotBlank(failsAnnotation.description())) {
@@ -179,7 +178,7 @@ public class GenerateHtmlReportListener implements
                         }
 
                         context.getErrorContext().additionalErrorMessage = additionalErrorMessage;
-                    }
+                    });
                 });
     }
 

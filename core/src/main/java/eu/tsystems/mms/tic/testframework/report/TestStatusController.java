@@ -88,10 +88,11 @@ public class TestStatusController {
         /*
         set status
          */
-        if (methodContext.testResult != null) {
-            Throwable throwable = methodContext.testResult.getThrowable();
+        if (methodContext.getTestNgResult().isPresent()) {
+            ITestResult testResult = methodContext.getTestNgResult().get();
+            Throwable throwable = testResult.getThrowable();
 
-            if (methodContext.testResult.getStatus() == ITestResult.CREATED && status == Status.FAILED) {
+            if (testResult.getStatus() == ITestResult.CREATED && status == Status.FAILED) {
                 LOGGER.warn("TestNG bug - result status is CREATED, which is wrong. Method status is " + Status.FAILED +
                         ", which is also wrong. Assuming SKIPPED.");
                 status = Status.SKIPPED;

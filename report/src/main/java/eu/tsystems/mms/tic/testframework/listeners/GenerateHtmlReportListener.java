@@ -27,6 +27,8 @@ import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
 import eu.tsystems.mms.tic.testframework.events.FinalizeExecutionEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
+import eu.tsystems.mms.tic.testframework.exceptions.TestFailureException;
+import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
@@ -34,11 +36,13 @@ import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.ReportingData;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.perf.PerfTestReportUtils;
 import eu.tsystems.mms.tic.testframework.report.threadvisualizer.DataSet;
 import eu.tsystems.mms.tic.testframework.report.threadvisualizer.DataStorage;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.report.utils.FailsAnnotationFilter;
 import eu.tsystems.mms.tic.testframework.utils.DateUtils;
 import eu.tsystems.mms.tic.testframework.utils.ReportUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -54,6 +58,8 @@ import java.util.Optional;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+import org.testng.ITestResult;
+import org.testng.annotations.Test;
 
 public class GenerateHtmlReportListener implements
         Loggable,
@@ -183,15 +189,17 @@ public class GenerateHtmlReportListener implements
     }
 
     //find method context of expected failed test where it's underlying cause matches the cause of the given context
-    private static Optional<MethodContext> findMatchingMethodContext(MethodContext context,
-                                                                     List<MethodContext> methodContexts) {
+    private static Optional<MethodContext> findMatchingMethodContext(MethodContext context, List<MethodContext> methodContexts) {
         return methodContexts.stream()
-                .filter(expectedFailedMethodContext ->
-                        expectedFailedMethodContext.isExpectedFailed()
-                                && context.getErrorContext().getThrowable().getMessage() != null
-                                && expectedFailedMethodContext.getErrorContext().getThrowable().getCause().getMessage() != null
-                                && expectedFailedMethodContext.getErrorContext().getThrowable().getCause().getMessage()
-                                .equals(context.getErrorContext().getThrowable().getMessage()))
+                .filter(expectedFailedMethodContext -> {
+                    ErrorContext errorContext = context.getErrorContext();
+                    Throwable throwable = errorContext.getThrowable();
+                    return expectedFailedMethodContext.isExpectedFailed()
+                                && throwable.getMessage() != null
+                                && throwable.getCause() != null
+                                && throwable.getCause().getMessage() != null
+                                && throwable.getCause().getMessage().equals(throwable.getMessage());
+                })
                 .findFirst();
     }
 
@@ -199,6 +207,9 @@ public class GenerateHtmlReportListener implements
         Map<TestStatusController.Status, Integer> methodStats = classContext.createStats();
         Map<TestStatusController.Status, Integer> configMethodStats = classContext.createStats();
         classContext.readMethodContexts().forEach(methodContext -> {
+
+            handleAnnotations(methodContext);
+
             if (methodContext.isTestMethod()) {
                 classContext.addToStats(methodStats, methodContext);
             } else if (methodContext.isConfigMethod()) {
@@ -272,6 +283,60 @@ public class GenerateHtmlReportListener implements
         reportingData.methodStatsPerClass = reportingData.methodStatsPerClass.entrySet().stream().sorted(Map.Entry.comparingByValue(comp))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
                         (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+    }
+
+
+    private void handleAnnotations(MethodContext methodContext) {
+
+        methodContext.readAnnotations()
+                .forEach(annotation -> {
+                    if (annotation instanceof Test) {
+                        if (!((Test) annotation).dataProvider().isEmpty()) {
+                            // fails annotation in conjunction with dataProvider -> warn
+                            methodContext.addPriorityMessage("@Fails and @DataProvider should not be used together. Please remove @Fails from this test method.");
+                        }
+                    } else if (annotation instanceof Fails) {
+                        methodContext.getTestNgResult().ifPresent(testResult -> {
+
+                            if (testResult.isSuccess()) {
+                                ReportInfo.getDashboardInfo().addInfo(0, "Repaired >" + methodContext.getName() + "< marked @Fails", "methods/" + methodContext.methodRunIndex + ".html");
+                                methodContext.addPriorityMessage("@Fails annotation can be removed: " + annotation);
+
+                            } else if (testResult.getStatus() != ITestResult.SKIP && testResult.getThrowable() != null) {
+                                Fails fails = (Fails)annotation;
+                                Throwable throwable = testResult.getThrowable();
+
+                                // override throwable with found annotation
+                                if (FailsAnnotationFilter.isFailsAnnotationValid(fails)) {
+                                    final StringBuilder stringBuilder = new StringBuilder();
+                                    stringBuilder.append("Failing of test expected.");
+
+                                    if (fails.ticketId() != 0) {
+                                        stringBuilder.append(" TicketID: ").append(fails.ticketId()).append(".");
+                                    }
+                                    if (!"".equals(fails.ticketString())) {
+                                        stringBuilder.append(" Ticket: ").append(fails.ticketString()).append(".");
+                                    }
+                                    if (!"".equals(fails.description())) {
+                                        stringBuilder.append(" Description: ").append(fails.description()).append(".");
+                                    }
+
+                                    final String message = stringBuilder.toString();
+
+                                    // set throwable
+                                    final TestFailureException testFailureException = new TestFailureException(message, throwable);
+                                    testResult.setThrowable(testFailureException);
+
+                                    // set readable message
+                                    methodContext.getErrorContext().setThrowable(null, throwable, true);
+                                    String formerReadableMessage = methodContext.getErrorContext().getReadableErrorMessage();
+                                    methodContext.addPriorityMessage(formerReadableMessage);
+                                    methodContext.getErrorContext().setThrowable(message, throwable, true);
+                                }
+                            }
+                        });
+                    }
+                });
     }
 
     @Override

@@ -34,7 +34,6 @@ import eu.tsystems.mms.tic.testframework.events.MethodStartEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.ListenerUtils;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.HandleCollectedAssertsWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodAnnotationCheckerWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodContextUpdateWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.RemoveTestMethodIfRetryPassedWorker;
@@ -130,7 +129,6 @@ public class TesterraListener implements
         eventBus.register(new MethodStartWorker());
         eventBus.register(new MethodParametersWorker());
         eventBus.register(new HandleCollectedAssertsWorker());// !! must be invoked before MethodAnnotationCheckerWorker
-        eventBus.register(new MethodAnnotationCheckerWorker()); // !! must be invoked before Container Update
         eventBus.register(new MethodContextUpdateWorker());
         eventBus.register(new RemoveTestMethodIfRetryPassedWorker());
 

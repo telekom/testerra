@@ -69,6 +69,19 @@ Feel free to try out our ready-to-use Skeleton project: [testerra-skeleton].
 
 Check out our comprehensive [Testerra documentation](http://docs.testerra.io)!
 
+## Testing
+
+Every module contains tests that can be run like
+```shell
+gradle test
+```
+
+The following optional properties can be set.
+
+| Property                      | Description                                           |
+| ----------------------------- | ----------------------------------------------------- |
+| `withJacoco`                   | Enables Jacoco code coverage analysis |
+
 ## Publishing
 
 Testerra is deployed and published to Maven Central. All JAR files are signed via Gradle signing plugin.

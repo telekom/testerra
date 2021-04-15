@@ -3,6 +3,8 @@ plugins {
     id "io.codearte.nexus-staging" version "0.30.0"
 }
 
+def jacocoVersion = "0.8.6"
+
 apply plugin: 'io.codearte.nexus-staging'
 
 ext {
@@ -27,7 +29,8 @@ allprojects {
     apply plugin: 'java'
     apply plugin: 'maven'
 
-    sourceCompatibility = 1.8
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 subprojects {
@@ -35,7 +38,6 @@ subprojects {
     group 'io.testerra'
     version moduleVersion
     archivesBaseName = "testerra"
-
 
     apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
     apply plugin: 'jacoco'
@@ -48,11 +50,8 @@ subprojects {
         jcenter()
     }
 
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-
     jacoco {
-        toolVersion = "0.8.5"
+        toolVersion = jacocoVersion
     }
 
     test {
@@ -65,6 +64,11 @@ subprojects {
         }
         options {
             systemProperties(System.getProperties())
+        }
+
+        jacoco {
+            enabled = System.properties.containsKey("withJacoco")
+            //excludes = ['jdk.internal.*']
         }
     }
 

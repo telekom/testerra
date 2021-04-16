@@ -48,10 +48,12 @@ public class RemoveTestMethodIfRetryPassedWorker implements MethodEndEvent.Liste
         if (testResult.isSuccess()) {
             if (methodContext.getStatus().equals(TestStatusController.Status.PASSED_RETRY)) {
                 methodContext.readDependsOnMethodContexts()
-                        .filter(dependsOnMethodContexts -> dependsOnMethodContexts.isSame(methodContext) && dependsOnMethodContexts.isRetry())
-                        .forEach(dependsOnMethodContexts -> {
-                            testResult.getTestContext().getFailedTests().removeResult(dependsOnMethodContexts.testResult);
-                            testResult.getTestContext().getSkippedTests().removeResult(dependsOnMethodContexts.testResult);
+                        .filter(dependsOnMethodContext -> dependsOnMethodContext.isSame(methodContext) && dependsOnMethodContext.isRetry())
+                        .forEach(dependsOnMethodContext -> {
+                            dependsOnMethodContext.getTestNgResult().ifPresent(dependsOnTestResult -> {
+                                testResult.getTestContext().getFailedTests().removeResult(dependsOnTestResult);
+                                testResult.getTestContext().getSkippedTests().removeResult(dependsOnTestResult);
+                            });
                         });
             }
         }

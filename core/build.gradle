@@ -42,7 +42,7 @@ dependencies {
 
     // <ExceptionUtils>
     // Comes already implicit from reflections
-    //implementation 'org.javassist:javassist:3.20.0-GA'
+    // implementation 'org.javassist:javassist:3.20.0-GA'
     // </ExceptionUtils>
 
     compile('org.testng:testng:7.3.0') {

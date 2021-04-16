@@ -27,6 +27,9 @@ import org.slf4j.LoggerFactory;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * TODO: Move this class to legacy report module
+ */
 public class ReportInfo {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReportInfo.class);

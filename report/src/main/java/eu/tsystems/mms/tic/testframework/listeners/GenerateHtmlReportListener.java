@@ -58,6 +58,7 @@ import java.util.Optional;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.testng.ITestResult;
 import org.testng.annotations.Test;
 
@@ -148,22 +149,17 @@ public class GenerateHtmlReportListener implements
 
     // check if failed tests have an expected failed with the same root cause and a message about it to the failed test
     private static void addMatchingExpectedFailedMessage(Map<String, List<MethodContext>> failureAspects) {
-        List<MethodContext> expectedFailedMethodContexts =
-                failureAspects.values().stream()
-                        //only one context per expected failed required
-                        .map(e -> e.get(0))
-                        .filter(MethodContext::isExpectedFailed)
-                        .collect(Collectors.toList());
+        failureAspects.values().stream()
+                .flatMap(Collection::stream)
+                .filter(methodContext -> !methodContext.isExpectedFailed())
+                .forEach(methodContext -> {
 
-        List<MethodContext> unexpectedFailedMethodContexts =
-                failureAspects.values().stream()
-                        .flatMap(Collection::stream)
-                        .filter(methodContext -> !methodContext.isExpectedFailed())
-                        .collect(Collectors.toList());
+                    Stream<MethodContext> expectedFailedMethodContexts = failureAspects.values().stream()
+                                    //only one context per expected failed required
+                                    .map(e -> e.get(0))
+                                    .filter(MethodContext::isExpectedFailed);
 
-        unexpectedFailedMethodContexts.forEach(
-                context -> {
-                    final Optional<MethodContext> optionalMethodContext = findMatchingMethodContext(context, expectedFailedMethodContexts);
+                    final Optional<MethodContext> optionalMethodContext = findMethodContextMatchingThrowableOfMethodContexts(methodContext, expectedFailedMethodContexts);
 
                     optionalMethodContext.flatMap(MethodContext::getTestNgResult).ifPresent(testResult -> {
                         final Fails failsAnnotation = testResult.getMethod().getConstructorOrMethod().getMethod().getAnnotation(Fails.class);
@@ -171,34 +167,39 @@ public class GenerateHtmlReportListener implements
 
                         if (StringUtils.isNotBlank(failsAnnotation.description())) {
                             additionalErrorMessage += " Description: " + failsAnnotation.description();
-                            context.getErrorContext().setDescription(failsAnnotation.description());
+                            methodContext.getErrorContext().setDescription(failsAnnotation.description());
                         }
 
                         if (failsAnnotation.ticketId() > 0) {
                             additionalErrorMessage += " Ticket: " + failsAnnotation.ticketId();
-                            context.getErrorContext().setTicketId(failsAnnotation.ticketId());
+                            methodContext.getErrorContext().setTicketId(failsAnnotation.ticketId());
                         }
 
                         if (!failsAnnotation.ticketString().isEmpty()) {
-                            context.getErrorContext().setTicketId(failsAnnotation.ticketString());
+                            methodContext.getErrorContext().setTicketId(failsAnnotation.ticketString());
                         }
 
-                        context.getErrorContext().additionalErrorMessage = additionalErrorMessage;
+                        methodContext.getErrorContext().additionalErrorMessage = additionalErrorMessage;
                     });
                 });
     }
 
     //find method context of expected failed test where it's underlying cause matches the cause of the given context
-    private static Optional<MethodContext> findMatchingMethodContext(MethodContext context, List<MethodContext> methodContexts) {
-        return methodContexts.stream()
-                .filter(expectedFailedMethodContext -> {
-                    ErrorContext errorContext = context.getErrorContext();
-                    Throwable throwable = errorContext.getThrowable();
-                    return expectedFailedMethodContext.isExpectedFailed()
-                                && throwable.getMessage() != null
-                                && throwable.getCause() != null
-                                && throwable.getCause().getMessage() != null
-                                && throwable.getCause().getMessage().equals(throwable.getMessage());
+    private static Optional<MethodContext> findMethodContextMatchingThrowableOfMethodContexts(MethodContext needle, Stream<MethodContext> haystack) {
+        return haystack
+                .filter(haystackMethodContext -> {
+                    Throwable needleThrowable = needle.getErrorContext().getThrowable();
+                    String needleMessage = needleThrowable.getMessage();
+                    if (needleMessage == null) return false;
+
+                    Throwable haystackThrowable = haystackMethodContext.getErrorContext().getThrowable();
+                    while (haystackThrowable != null) {
+                        String hayStackMessage = haystackThrowable.getMessage();
+                        if (hayStackMessage == null) return false;
+                        else if (hayStackMessage.equals(needleMessage)) return true;
+                        haystackThrowable = haystackThrowable.getCause();
+                    }
+                    return false;
                 })
                 .findFirst();
     }

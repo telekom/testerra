@@ -33,20 +33,20 @@ Maven:
     <dependency>
         <groupId>io.testerra</groupId>
         <artifactId>driver-ui-desktop</artifactId>
-        <version>2-SNAPSHOT</version>
+        <version>2.0-RC-4/version>
     </dependency>
     <dependency>
         <groupId>io.testerra</groupId>
         <artifactId>report-ng</artifactId>
-        <version>2-SNAPSHOT</version>
+        <version>2.0-RC-4</version>
     </dependency>
 </dependencies>
 ````
 
 Gradle:
 ````groovy
-compile 'io.testerra:driver-ui-desktop:2-SNAPSHOT'
-compile 'io.testerra:report-ng:2-SNAPSHOT'
+compile 'io.testerra:driver-ui-desktop:2.0-RC-4'
+compile 'io.testerra:report-ng:2.0-RC-4'
 ````
 
 ### Using testerra functionality:
@@ -67,7 +67,7 @@ Feel free to try out our ready-to-use Skeleton project: [testerra-skeleton].
 
 ## Documentation
 
-Check out our comprehensive [Testerra documentation](http://docs.testerra.io/testerra/2.0-RC-3/)!
+Check out our comprehensive [Testerra documentation](http://docs.testerra.io/testerra/2.0-RC-4/)!
 
 ## Testing
 
@@ -90,7 +90,7 @@ The following properties have to be set via command line or ``~/.gradle/gradle.p
 
 | Property                      | Description                                           |
 | ----------------------------- | ----------------------------------------------------- |
-| `ttVersion`                   | Version of deployed Testerra, default is `1-SNAPSHOT` |
+| `ttVersion`                   | Version of deployed Testerra, default is `2-SNAPSHOT` |
 | `deployUrl`                   | Maven repository URL                                  |
 | `deployUsername`              | Maven repository username                             |
 | `deployPassword`              | Maven repository password                             |

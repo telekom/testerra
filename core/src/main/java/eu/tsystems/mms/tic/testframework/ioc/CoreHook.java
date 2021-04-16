@@ -24,9 +24,6 @@ package eu.tsystems.mms.tic.testframework.ioc;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
-import com.google.inject.multibindings.Multibinder;
-import eu.tsystems.mms.tic.testframework.common.DefaultPropertyManager;
-import eu.tsystems.mms.tic.testframework.common.IPropertyManager;
 import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
@@ -36,7 +33,6 @@ import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.ThrowingAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.HandleCollectedAssertsWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodAnnotationCheckerWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodContextUpdateWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.RemoveTestMethodIfRetryPassedWorker;
@@ -59,7 +55,6 @@ import eu.tsystems.mms.tic.testframework.testing.DefaultTestControllerOverrides;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
 import eu.tsystems.mms.tic.testframework.utils.DefaultFormatter;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
-import org.testng.annotations.Test;
 
 public class CoreHook extends AbstractModule implements ModuleHook, PropertyManagerProvider {
 
@@ -85,7 +80,6 @@ public class CoreHook extends AbstractModule implements ModuleHook, PropertyMana
         eventBus.register(new MethodStartWorker());
         eventBus.register(new MethodParametersWorker());
         eventBus.register(new HandleCollectedAssertsWorker());// !! must be invoked before MethodAnnotationCheckerWorker
-        eventBus.register(new MethodAnnotationCheckerWorker()); // !! must be invoked before Container Update
         eventBus.register(new MethodContextUpdateWorker());
         eventBus.register(new RemoveTestMethodIfRetryPassedWorker());
         eventBus.register(new MethodEndWorker());

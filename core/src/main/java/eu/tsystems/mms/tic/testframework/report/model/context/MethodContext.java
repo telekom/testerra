@@ -31,8 +31,7 @@ import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import org.testng.ITestContext;
-import org.testng.ITestNGMethod;
+import java.util.ArrayList;
 import org.testng.ITestResult;
 
 import java.lang.annotation.Annotation;
@@ -59,19 +58,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         CONFIGURATION_METHOD
     }
 
-    /**
-     * @deprecated
-     */
-    public ITestResult testResult;
-    /**
-     * @deprecated
-     */
-    public ITestContext iTestContext;
-    /**
-     * @deprecated
-     */
-    public ITestNGMethod iTestNgMethod;
-
+    private ITestResult testResult;
     private TestStatusController.Status status = TestStatusController.Status.NO_RUN;
     private final Type methodType;
     private List<Object> parameterValues;
@@ -82,15 +69,16 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     private Class failureCorridorClass = FailureCorridor.High.class;
     private int hashCodeOfTestResult = 0;
     public final List<String> infos = new LinkedList<>();
-    private List<SessionContext> sessionContexts = new LinkedList<>();
+    private final List<SessionContext> sessionContexts = new LinkedList<>();
     public String priorityMessage = null;
     private final TestStepController testStepController = new TestStepController();
     private List<MethodContext> relatedMethodContexts = new LinkedList<>();
-    private List<MethodContext> dependsOnMethodContexts = new LinkedList<>();
+    private final List<MethodContext> dependsOnMethodContexts = new LinkedList<>();
     private List<CustomContext> customContexts;
     private ErrorContext errorContext;
     private int numAssertions = 0;
     private int numOptionalAssertions = 0;
+    private final List<Annotation> annotationList = new ArrayList<>();
 
     /**
      * Public constructor. Creates a new <code>MethodContext</code> object.
@@ -506,7 +494,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
      * Proper parameter names are available by setting {https://stackoverflow.com/questions/6759880/getting-the-name-of-a-method-parameter}
      */
     public Parameter[] getParameters() {
-        return iTestNgMethod.getConstructorOrMethod().getMethod().getParameters();
+        return getTestNgResult().map(testResult -> testResult.getMethod().getConstructorOrMethod().getMethod().getParameters()).orElse(new Parameter[]{});
     }
 
     public MethodContext setParameterValues(Object[] parameters) {
@@ -523,8 +511,8 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         }
     }
 
-    public ITestResult getTestNgResult() {
-        return testResult;
+    public Optional<ITestResult> getTestNgResult() {
+        return Optional.ofNullable(this.testResult);
     }
 
     public MethodContext setTestNgResult(ITestResult testResult) {
@@ -532,26 +520,18 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return this;
     }
 
-    public ITestContext getTestNgContext() {
-        return iTestContext;
-    }
-
-    public MethodContext setTestNgContext(ITestContext iTestContext) {
-        this.iTestContext = iTestContext;
-        return this;
-    }
-
-    public ITestNGMethod getTestNgMethod() {
-        return iTestNgMethod;
-    }
-
-    public MethodContext setTestNgMethod(ITestNGMethod iTestNgMethod) {
-        this.iTestNgMethod = iTestNgMethod;
-        return this;
-    }
-
     public Stream<Annotation> readAnnotations() {
-        return Stream.of(this.iTestNgMethod.getConstructorOrMethod().getMethod().getAnnotations());
+        return Stream.concat(
+                this.annotationList.stream(),
+                getTestNgResult()
+                    .map(testResult -> Stream.of(testResult.getMethod().getConstructorOrMethod().getMethod().getAnnotations()))
+                    .orElse(Stream.empty())
+        );
+    }
+
+    public MethodContext addAnnotation(Annotation annotation) {
+        this.annotationList.add(annotation);
+        return this;
     }
 
     /**

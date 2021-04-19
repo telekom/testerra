@@ -141,15 +141,19 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
 
         if (testResult != null) {
             found = methodContexts.stream()
-                    .filter(mc -> testResult == mc.getTestNgResult())
+                    .filter(methodContext -> methodContext.getTestNgResult().isPresent())
+                    .filter(methodContext -> testResult == methodContext.getTestNgResult().get())
                     .findFirst();
             methodContextName = TesterraListener.getContextGenerator().getMethodContextName(testResult);
         } else {
             // TODO: (!!!!) this is not eindeutig
             found = methodContexts.stream()
-                    .filter(mc -> testContext == mc.getTestNgContext())
-                    .filter(mc -> testNGMethod == mc.getTestNgMethod())
-                    .filter(mc -> mc.getParameterValues().containsAll(parametersList))
+                    .filter(methodContext -> methodContext.getTestNgResult().isPresent())
+                    .filter(methodContext -> {
+                        ITestResult iTestResult = methodContext.getTestNgResult().get();
+                        return testContext == iTestResult.getTestContext() && testNGMethod == iTestResult.getMethod();
+                    })
+                    .filter(methodContext -> methodContext.getParameterValues().containsAll(parametersList))
                     .findFirst();
 
             methodContextName = TesterraListener.getContextGenerator().getMethodContextName(testContext, testNGMethod, parameters);
@@ -170,8 +174,6 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
             //fillBasicContextValues(methodContext, this, name);
 
             methodContext.setTestNgResult(testResult);
-            methodContext.setTestNgContext(testContext);
-            methodContext.setTestNgMethod(testNGMethod);
             methodContext.setParameterValues(testResult.getParameters());
 //
 //            if (parameters.length > 0) {

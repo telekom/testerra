@@ -61,5 +61,14 @@ public class GuiElementAdditionalTests extends AbstractTestSitesTest {
         LogAssertUtils.assertEntryNotInLogFile("pageobjects.GuiElement - type \"testT02_SensibleData\" on By.id: 1");
     }
 
+    @Test
+    public void testT03_GetElementsWithParenthesisInXpath() {
+        final WebDriver driver = WebDriverManager.getWebDriver();
+        GuiElement box = new GuiElement(driver, By.xpath("//div[@class='box'][1]"));
+        GuiElement subElement = box.getSubElement(By.xpath("(//input[@id=\"2\"])"));
+
+        subElement.asserts().assertIsPresent();
+
+    }
 
 }

@@ -396,8 +396,11 @@ public class DesktopGuiElementCore implements GuiElementCore, Loggable {
             // input --> ./input
             // ./input --> No corrections
             // .//input --> No corrections
+            // (//input) --> No corrections
             if (xpath.startsWith("/")) {
                 xpath = xpath.replaceFirst("/", "./");
+            } else if (xpath.startsWith("(")) {
+                // do nothing with grouped xPathes
             } else if (!xpath.startsWith(".")) {
                 xpath = "./" + xpath;
             }

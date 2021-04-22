@@ -37,6 +37,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class MethodRelations {
 
@@ -88,10 +89,10 @@ public class MethodRelations {
             Test test = method.getAnnotation(Test.class);
             String[] dependsOnMethods = test.dependsOnMethods();
             for (String dependsOnMethod : dependsOnMethods) {
-                MethodContext methodContext1 = methodContext.getClassContext().findTestMethodContainer(dependsOnMethod);
-                if (methodContext1 != null) {
-                    methodContext.addDependsOnMethod(methodContext1);
-                }
+                // In case of retried dependsOn methods the correct dependsOn-context has a passed state
+                Optional<MethodContext> foundContext = methodContext.getClassContext().readMethodContexts().filter(
+                        context -> context.getName().equals(dependsOnMethod) && context.getStatus() != TestStatusController.Status.FAILED_RETRIED).findFirst();
+                foundContext.ifPresent(methodContext::addDependsOnMethod);
             }
 
             /*

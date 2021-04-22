@@ -27,7 +27,7 @@ public class TestNgDependsOnRetryTest extends TesterraTest {
 
     }
 
-    @Test(dependsOnMethods = "testCaseTwo", priority = 2, groups = "SEQUENTIAL")
+    @Test(dependsOnMethods = "testCaseOne", priority = 2, groups = "SEQUENTIAL")
     public void testCaseTwo() {
         this.counter.incrementAndGet();
         Assert.assertTrue(true);
@@ -35,7 +35,7 @@ public class TestNgDependsOnRetryTest extends TesterraTest {
 
     @Test(priority = 999, groups = "SEQUENTIAL")
     public void testCaseThree() {
-        Assert.assertEquals(this.counter.get() == 3, "testCaseTwo should executed after retried 'dependsOn' method.");
+        Assert.assertEquals(this.counter.get(), 3, "testCaseTwo should executed after retried 'dependsOn' method.");
     }
 
 

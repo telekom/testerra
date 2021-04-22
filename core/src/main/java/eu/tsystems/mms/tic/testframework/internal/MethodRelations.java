@@ -19,22 +19,24 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.internal;
+package eu.tsystems.mms.tic.testframework.internal;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
+import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import java.lang.reflect.Method;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeGroups;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+
+import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class MethodRelations {
 
@@ -96,7 +98,7 @@ public class MethodRelations {
             check for retries
              */
             RetryAnalyzer.getRetriedMethods().forEach(retriedMethod -> {
-                if (methodContext.isSame(retriedMethod)) {
+                if (retriedMethod.getName().equals(methodContext.getName()) && retriedMethod.getStatus() == TestStatusController.Status.FAILED_RETRIED) {
                     methodContext.addDependsOnMethod(retriedMethod);
                 }
             });

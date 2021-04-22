@@ -67,6 +67,10 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     public String threadName = "unrelated";
     private TestStep lastFailedStep;
     private Class failureCorridorClass = FailureCorridor.High.class;
+    /**
+     * @deprecated It not needed any more
+     */
+    @Deprecated
     private int hashCodeOfTestResult = 0;
     public final List<String> infos = new LinkedList<>();
     private final List<SessionContext> sessionContexts = new LinkedList<>();

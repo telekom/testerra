@@ -97,7 +97,9 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
             if (xpath.startsWith("/")) {
                 xpath = xpath.replaceFirst("/", "./");
                 corrected = true;
-            } else if (!xpath.startsWith("(")) {
+            } else if (xpath.startsWith("(")) {
+                // do nothing with grouped xPathes
+            } else if (!xpath.startsWith(".")) {
                 xpath = "./" + xpath;
                 corrected = true;
             }

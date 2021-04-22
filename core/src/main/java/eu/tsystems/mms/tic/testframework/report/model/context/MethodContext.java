@@ -31,11 +31,11 @@ import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import java.util.ArrayList;
 import org.testng.ITestResult;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Parameter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -243,7 +243,9 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     public void addDependsOnMethod(MethodContext methodContext) {
-        this.dependsOnMethodContexts.add(methodContext);
+        if (!this.dependsOnMethodContexts.contains(methodContext)) {
+            this.dependsOnMethodContexts.add(methodContext);
+        }
     }
 
     private Stream<TestStepAction> readTestStepActions() {
@@ -528,8 +530,8 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return Stream.concat(
                 this.annotationList.stream(),
                 getTestNgResult()
-                    .map(testResult -> Stream.of(testResult.getMethod().getConstructorOrMethod().getMethod().getAnnotations()))
-                    .orElse(Stream.empty())
+                        .map(testResult -> Stream.of(testResult.getMethod().getConstructorOrMethod().getMethod().getAnnotations()))
+                        .orElse(Stream.empty())
         );
     }
 

@@ -65,11 +65,10 @@ public class MyTest extends TesterraTest {
 }
 ````
 
-Feel free to try out our ready-to-use Skeleton project: [testerra-skeleton].
-
 ## Documentation
 
-Check out our comprehensive [Testerra documentation](http://docs.testerra.io)!
+* Check out our comprehensive [Testerra documentation](http://docs.testerra.io)!
+* Feel free to try out our ready-to-use [Skeleton project][testerra-skeleton].
 
 ## Testing
 

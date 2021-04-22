@@ -1,6 +1,7 @@
 package eu.tsystems.mms.tic.testframework.playground;
 
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
+import eu.tsystems.mms.tic.testframework.annotations.Retry;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -26,9 +27,10 @@ public class DependsOnTests extends AbstractWebDriverTest {
     }
 
     @Test(dependsOnMethods = "testCaseOne")
+    @Retry(maxRetries = 2)
     public void testCaseTwo() {
         this.counter.incrementAndGet();
-        if (counter.get() == 1) {
+        if (counter.get() < 3) {
             // Message is already defined in test.properties
             Assert.assertTrue(false, "test_FailedToPassedHistoryWithRetry");
         } else {

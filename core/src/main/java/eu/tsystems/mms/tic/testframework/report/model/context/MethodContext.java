@@ -67,11 +67,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     public String threadName = "unrelated";
     private TestStep lastFailedStep;
     private Class failureCorridorClass = FailureCorridor.High.class;
-    /**
-     * @deprecated It not needed any more
-     */
-    @Deprecated
-    private int hashCodeOfTestResult = 0;
+
     public final List<String> infos = new LinkedList<>();
     private final List<SessionContext> sessionContexts = new LinkedList<>();
     public String priorityMessage = null;
@@ -328,11 +324,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return obj.toString().equals(toString());
     }
 
-    @Override
-    public int hashCode() {
-        return hashCodeOfTestResult;
-    }
-
     /**
      * checks if test was skipped
      *
@@ -423,13 +414,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
 
     public boolean hasBeenRetried() {
         return retryNumber > 0;
-    }
-
-    /**
-     * // TODO What is this?
-     */
-    public boolean isSame(MethodContext methodContext) {
-        return methodContext.hashCodeOfTestResult == hashCodeOfTestResult;
     }
 
     @Override

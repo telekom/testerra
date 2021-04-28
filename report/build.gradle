@@ -3,8 +3,8 @@ plugins {
 }
 
 dependencies {
-    compile core
-    compile core_interop
+    api core
+    api core_interop
 
     // <Report>
     implementation 'org.apache.velocity:velocity:1.7'
@@ -12,9 +12,9 @@ dependencies {
     implementation 'org.jfree:jfreechart:1.0.19'
     // </Report>
 
-    testCompile driver_ui_desktop
-    testCompile project(':integration-tests')
-    testCompile project(':report-ng')
+    testImplementation driver_ui_desktop
+    testImplementation project(':integration-tests')
+    testImplementation project(':report-ng')
 }
 
 test {

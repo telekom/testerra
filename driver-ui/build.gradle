@@ -1,9 +1,9 @@
 dependencies {
-    compile core
-    compile image_processing
+    api core
+    api image_processing
 
     // <UITestUtils>
-    compile 'org.sikuli:sikuli-api:1.2.0'
+    api 'org.sikuli:sikuli-api:1.2.0'
     // </UITestUtils>
 
     // <PageFactory>

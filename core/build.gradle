@@ -2,28 +2,28 @@ import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.internal.jvm.Jvm
 
 dependencies {
-    compile core_interop
+    api core_interop
 
     // <PdfUtils>
     implementation 'org.apache.pdfbox:pdfbox:1.8.10'
     // </PdfUtils>
 
     // <RESTUtils>
-    compile 'com.sun.jersey:jersey-client:1.19.3'
+    api 'com.sun.jersey:jersey-client:1.19.3'
     // </RESTUtils
 
-    compile "com.google.guava:guava:${guavaVersion}"
+    api "com.google.guava:guava:${guavaVersion}"
 
     // <XML>
     // These dependencies are exposed by XMLUtils.java
     implementation 'org.apache.poi:poi-ooxml:3.17'
-    compile 'org.jsoup:jsoup:1.7.2'
-    compile 'org.jdom:jdom2:2.0.6'
-    compile "javax.xml.bind:jaxb-api:2.3.0"
-    compile "com.sun.xml.bind:jaxb-core:2.3.0"
-    compile "com.sun.xml.bind:jaxb-impl:2.3.0"
-    compile "javax.activation:activation:1.1"
-    compile "xerces:xercesImpl:2.8.0"
+    api 'org.jsoup:jsoup:1.7.2'
+    api 'org.jdom:jdom2:2.0.6'
+    api "javax.xml.bind:jaxb-api:2.3.0"
+    api "com.sun.xml.bind:jaxb-core:2.3.0"
+    api "com.sun.xml.bind:jaxb-impl:2.3.0"
+    api "javax.activation:activation:1.1"
+    api "xerces:xercesImpl:2.8.0"
     // </XML
 
     // <CSVTestDataReader>

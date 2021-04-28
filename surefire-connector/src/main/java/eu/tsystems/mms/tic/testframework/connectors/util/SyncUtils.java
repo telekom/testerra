@@ -188,6 +188,9 @@ public final class SyncUtils {
         return testSuiteDefinition.getSuiteXmlFiles() != null && testSuiteDefinition.getSuiteXmlFiles().size() > 0;
     }
 
+    /**
+     * @deprecated This feature is deprecated. See {@link TestEvidenceCollector#collectVideos()} for details.
+     */
     public static List<File> getVideoFiles() {
 
         final List<Video> videoList = TestEvidenceCollector.collectVideos();

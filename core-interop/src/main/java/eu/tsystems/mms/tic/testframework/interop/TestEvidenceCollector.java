@@ -43,6 +43,9 @@ public final class TestEvidenceCollector {
         SCREENSHOT_COLLECTORS.add(screenshotCollector);
     }
 
+    /**
+     * @deprecated This feature is deprecated
+     */
     public static void registerVideoCollector(VideoCollector videoCollector) {
         VIDEO_COLLECTORS.add(videoCollector);
     }
@@ -70,6 +73,14 @@ public final class TestEvidenceCollector {
         return screenshots;
     }
 
+    /**
+     * @deprecated This feature is deprecated.
+     * Collecting videos cannot be done all the time, because the session need to be closed at the moment.
+     * So every plugin like selenoid-connector, which provides Videos for Selenoid VNC sessions,
+     * is currently responsible to collect videos on closing sessions.
+     *
+     * When you want to get the videos from a test execution, use the SessionContext.getVideo() method instead.
+     */
     public static List<Video> collectVideos() {
         if (!Flags.SCREENCASTER_ACTIVE) {
             return null;

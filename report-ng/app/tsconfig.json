@@ -4,6 +4,7 @@
         "target": "es6",
         "module": "esnext",
         "skipLibCheck": true,
+        "sourceMap": true,
         "removeComments": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,

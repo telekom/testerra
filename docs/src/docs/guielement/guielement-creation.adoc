@@ -39,7 +39,7 @@ You can get the amount of found elements by calling.
 [source,java]
 ----
 GuiElement span = new GuiElement(driver, By.xpath("//a/span"));
-int count = span.getNumberOfFoundElements();        // returns 2
+int count = span.getNumberOfFoundElements();
 ----
 
 And access the elements by using the `getList()` method.
@@ -47,6 +47,8 @@ And access the elements by using the `getList()` method.
 ----
 List<GuiElement> allSpans = span.getList();
 ----
+
+From this moment, every GuiElement of the list is now a pointer to the exact index position of the element results and behaves as the selector would by like `//a/span[n]`.
 
 == Advanced GuiElement locating
 

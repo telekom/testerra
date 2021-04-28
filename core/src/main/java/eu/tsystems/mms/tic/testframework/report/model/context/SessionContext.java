@@ -26,6 +26,9 @@ import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.stream.Stream;
 import org.apache.commons.lang3.SerializationUtils;
 
 public class SessionContext extends AbstractContext implements SynchronizableContext {
@@ -36,6 +39,7 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
     private String browserVersion;
     private Map<String, Object> capabilities;
     private final WebDriverRequest webDriverRequest;
+    private final Queue<MethodContext> methodContexts = new ConcurrentLinkedQueue<>();
 
     public SessionContext(WebDriverRequest webDriverRequest) {
         this.webDriverRequest = SerializationUtils.clone(webDriverRequest);
@@ -124,5 +128,13 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
     public SessionContext setCapabilities(Map<String, Object> capabilities) {
         this.capabilities = capabilities;
         return this;
+    }
+
+    void addMethodContext(MethodContext methodContext) {
+        this.methodContexts.add(methodContext);
+    }
+
+    public Stream<MethodContext> readMethodContexts() {
+        return this.methodContexts.stream();
     }
 }

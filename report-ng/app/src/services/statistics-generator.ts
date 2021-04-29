@@ -31,8 +31,6 @@ import {StatusConverter} from "./status-converter";
 import ITestContext = data.ITestContext;
 import ISuiteContext = data.ISuiteContext;
 import ISessionContext = data.ISessionContext;
-import ClassContext = data.ClassContext;
-import IClassContext = data.IClassContext;
 
 export class FailsAnnotation {
     constructor(

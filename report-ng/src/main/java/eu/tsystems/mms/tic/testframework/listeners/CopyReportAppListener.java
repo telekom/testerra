@@ -75,7 +75,7 @@ public class CopyReportAppListener implements FinalizeExecutionEvent.Listener, L
                 .getCodeSource()
                 .getLocation()
                 .toURI()
-                .getPath();
+                .getRawPath();
 
         List<Path> result;
 

@@ -46,7 +46,4 @@ GuiElement provide some more special methods which could helpful for assertions.
 ----
 GuiElement link = new GuiElement(driver, By.xpath("//a"));
 List<String> list = link.getTextsFromChildren();    // returns a list ["My", "Link"]
-
-GuiElement span = new GuiElement(driver, By.xpath("//a/span"));
-int count = span.getNumberOfFoundElements();        // returns 2
 ----

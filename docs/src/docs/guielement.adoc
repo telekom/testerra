@@ -2,20 +2,11 @@
 
 == Overview
 
-GuiElements are Java objects which represent the interactive elements of the tested website. For example: buttons, search fields, checkboxes etc.
+GuiElements are representations of elements of the tested website, like buttons, search fields, checkboxes or even just DOM elements.
 
-GuiElements are based on the *Selenium WebElement* and add more functionality to them. GuiElements are using the same locator definition like WebElements (using the `By` expressions https://seleniumhq.github.io/selenium/docs/api/java/org/openqa/selenium/By.html[Selenium docs]).
+GuiElements are not, but based on the *Selenium WebElement* and add more functionality to them. Since a GuiElement is just a pointer to a locator, it's using the same definition as WebElements `By` (https://seleniumhq.github.io/selenium/docs/api/java/org/openqa/selenium/By.html[Selenium docs]).
 
-GuiElements are *self refreshing*: Every action on it will trigger a find call, so the current state is always up to date when the requested action takes place. There is *no StaleElementReferenceException* on GuiElements like it could be on Selenium WebElements.
-
-The `find` mechanism for a `GuiElement` in Testerra works different as in plain Selenium.
-When using a constructor for a `GuiElement` instantiation, Testerra internally will add some facades / decorators to make things easier.
-The most important decorator that is added by default is the `GuiElementCoreSequenceDecorator` -which adds a sequence to all method calls against a `GuiElement`.
-
-Example: When calling the `isPresent()` method on a `GuiElement` the added `GuiElementSequenceDecorator` will fire up an internal `find()` call to the `GuiElement` and therefore a `find()` call to the underlying Selenium `WebElement`.
-But instead of calling the `find()` method once, it will execute this call in a default sequence every 500ms.
-Therefore the property {element_timeout_seconds} defined in `test.properties` will be used as a *hard* timeout for this sequence.
-If the `find()` does not run successfully after the defined timeout it will fail.
+GuiElements are *self refreshing*: Every action on it will trigger a find call, so the current state is always up to date when the requested action takes place. There is de facto *no StaleElementReferenceException* on GuiElements like it could be when using vanilla WebElements.
 
 include::guielement/guielement-creation.adoc[leveloffset=+1]
 include::guielement/guielement-actions.adoc[leveloffset=+1]
@@ -23,3 +14,15 @@ include::guielement/guielement-assertions.adoc[leveloffset=+1]
 include::guielement/guielement-checks.adoc[leveloffset=+1]
 include::guielement/guielement-properties.adoc[leveloffset=+1]
 include::guielement/guielement-waiters.adoc[leveloffset=+1]
+
+== Internals
+
+The `find` mechanism for a `GuiElement` in Testerra works different as in plain Selenium.
+When using a constructor for a `GuiElement` instantiation, Testerra internally will add some facades / decorators to make things easier.
+The most important decorator that is added by default is the `GuiElementCoreSequenceDecorator` -which adds a sequence to all method calls against a `GuiElement`.
+
+Example: When calling the `isPresent()` method on a `GuiElement` the added `GuiElementSequenceDecorator` will fire up an internal `find()` call to the `GuiElement` and therefore a `find()` call to the underlying Selenium `WebElement`.
+But instead of calling the `find()` method once, it will execute this call in a default sequence every 500ms.
+
+Therefor the property {element_timeout_seconds} defined in `test.properties` will be used as a *hard* timeout for this sequence.
+If the `find()` does not run successfully after the defined timeout it will fail.

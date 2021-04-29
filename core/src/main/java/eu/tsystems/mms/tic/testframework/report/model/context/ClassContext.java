@@ -28,7 +28,6 @@ import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
@@ -46,10 +45,6 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.testng.ITestContext;
-import org.testng.ITestNGMethod;
-import org.testng.ITestResult;
-import org.testng.SkipException;
 
 /**
  * Holds the informations of a test class.

@@ -33,13 +33,6 @@ import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodStartEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.ListenerUtils;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.HandleCollectedAssertsWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodContextUpdateWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodParametersWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.OmitInDevelopmentMethodInterceptor;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.SortMethodsByPriorityMethodInterceptor;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
@@ -50,8 +43,6 @@ import eu.tsystems.mms.tic.testframework.report.hooks.TestMethodHook;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import java.util.List;
-import eu.tsystems.mms.tic.testframework.report.utils.DefaultTestNGContextGenerator;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.testng.IConfigurable;
 import org.testng.IConfigureCallBack;
@@ -69,8 +60,6 @@ import org.testng.ITestListener;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 import org.testng.xml.XmlSuite;
-
-import java.util.List;
 
 /**
  * Listener for JUnit and TestNg, collects test informations for testreport.

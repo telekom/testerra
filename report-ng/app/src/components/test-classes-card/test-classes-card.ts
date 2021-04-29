@@ -24,16 +24,16 @@ import {autoinject, bindable} from "aurelia-framework";
 import {IFilter, StatusConverter} from "../../services/status-converter";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {ClassStatistics} from "../../services/statistic-models";
-import ResultStatusType = data.ResultStatusType;
 import {ApexOptions} from "apexcharts";
 import {bindingMode} from "aurelia-binding";
+import ResultStatusType = data.ResultStatusType;
 
 @autoinject
 export class TestClassesCard {
-    @bindable({bindingMode: bindingMode.toView}) filter:IFilter;
+    @bindable({bindingMode: bindingMode.toView}) filter: IFilter;
     @bindable classStatistics: ClassStatistics[];
     private _apexBarOptions: ApexOptions = undefined;
-    private _filteredStatuses:number[];
+    private _filteredStatuses: number[];
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -46,8 +46,8 @@ export class TestClassesCard {
         this._prepareHorizontalBarChart(this.classStatistics);
     }
 
-    filterChanged(){
-        if (this.classStatistics?.length > 0 ) {
+    filterChanged() {
+        if (this.classStatistics?.length > 0) {
             this._prepareHorizontalBarChart(this.classStatistics);
         }
     }
@@ -57,8 +57,7 @@ export class TestClassesCard {
         let yLabels: Array<string> = [];
 
         const series = [];
-        this._filteredStatuses = this._statusConverter.relevantStatuses.filter(status => (!this.filter?.status || status === this.filter.status) );
-
+        this._filteredStatuses = this._statusConverter.relevantStatuses.filter(status => (!this.filter?.status || status === this.filter.status));
 
         this._filteredStatuses.forEach(status => {
             data.set(status, []);
@@ -72,14 +71,20 @@ export class TestClassesCard {
         //Iterate through classStatistics array to fill map with data for series
         classStatistics
             .filter(classStatistic => {
-                return this._filteredStatuses.find(status => classStatistic.getStatusesCount(this._statusConverter.groupStatus(status))>0);
+                return this._filteredStatuses.find(status => classStatistic.getStatusesCount(this._statusConverter.groupStatus(status)) > 0);
             })
             .sort((a, b) => {
                 return b.getStatusesCount(this._filteredStatuses) - a.getStatusesCount(this._filteredStatuses)
             })
             .forEach(classStats => {
                 for (const status of this._filteredStatuses) {
-                    data.get(status).push(classStats.getStatusCount(status));
+                    if (status == ResultStatusType.PASSED) {
+                        // For PASSED we need all passed states
+                        data.get(status).push(classStats.getStatusesCount(this._statusConverter.passedStatuses));
+                    } else {
+                        data.get(status).push(classStats.getStatusCount(status));
+                    }
+
                 }
                 const className = classStats.classIdentifier;
                 //Push Class Names in array for y-axis labels
@@ -140,7 +145,7 @@ export class TestClassesCard {
             },
             yaxis: {
 
-                labels:{
+                labels: {
                     show: dataAvailable,
                     //minWidth: 200,    // Does not work
                     maxWidth: yLabelsMaxWidth
@@ -169,7 +174,7 @@ export class TestClassesCard {
     private _barClicked(event, chartContext, config): void {
         event?.stopPropagation();
 
-        const params:IFilter = {
+        const params: IFilter = {
             class: this._apexBarOptions.xaxis.categories[config.dataPointIndex],
             status: this._filteredStatuses[config.seriesIndex]
         }

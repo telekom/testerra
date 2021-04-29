@@ -33,6 +33,13 @@ import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodStartEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.ListenerUtils;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.HandleCollectedAssertsWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodContextUpdateWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodParametersWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.OmitInDevelopmentMethodInterceptor;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.SortMethodsByPriorityMethodInterceptor;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
@@ -43,6 +50,8 @@ import eu.tsystems.mms.tic.testframework.report.hooks.TestMethodHook;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import java.util.List;
+import eu.tsystems.mms.tic.testframework.report.utils.DefaultTestNGContextGenerator;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.testng.IConfigurable;
 import org.testng.IConfigureCallBack;
@@ -61,6 +70,8 @@ import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 import org.testng.xml.XmlSuite;
 
+import java.util.List;
+
 /**
  * Listener for JUnit and TestNg, collects test informations for testreport.
  *
@@ -74,8 +85,7 @@ public class TesterraListener implements
         IMethodInterceptor,
         ITestListener,
         ISuiteListener,
-        Loggable
-{
+        Loggable {
     /**
      * Default package namespace for project tests
      */
@@ -137,7 +147,7 @@ public class TesterraListener implements
             // increment instance counter
             instances++;
 
-            if (instances==1) {
+            if (instances == 1) {
                 // The finalize listener has to be registered AFTER all modules ONCE
                 Testerra.getEventBus().register(new FinalizeListener());
             }
@@ -153,7 +163,7 @@ public class TesterraListener implements
      * It is possible to filter methods an remove them completely from execution
      * Or you do a dependency analysis for execution filter
      *
-     * @param list         All methods that should be run due to current XML-Test
+     * @param list All methods that should be run due to current XML-Test
      * @param iTestContext .
      * @return All methods that should be executed
      */
@@ -167,7 +177,7 @@ public class TesterraListener implements
     }
 
     /**
-     * @param method     .
+     * @param method .
      * @param testResult .
      */
     @Override
@@ -176,8 +186,8 @@ public class TesterraListener implements
     }
 
     /**
-     * @param method     .
-     * @param method     .
+     * @param method .
+     * @param method .
      * @param testResult .
      */
     @Override
@@ -188,9 +198,9 @@ public class TesterraListener implements
     /**
      * Override before invocation, to visualize threads.
      *
-     * @param method     invoked method.
+     * @param method invoked method.
      * @param testResult result of invoked method.
-     * @param context    steps of test.
+     * @param context steps of test.
      */
     @Override
     public void beforeInvocation(
@@ -210,7 +220,7 @@ public class TesterraListener implements
      * Override before invocation, to visualize threads.
      *
      * @param invokedMethod invoked method.
-     * @param testResult    result of invoked method.
+     * @param testResult result of invoked method.
      * @param testContext
      */
     private void pBeforeInvocation(
@@ -254,9 +264,9 @@ public class TesterraListener implements
     /**
      * Override after invocation, to visualize threads and finish reporting.
      *
-     * @param method     invoked method.
+     * @param method invoked method.
      * @param testResult result of invoked method.
-     * @param context    steps of test.
+     * @param context steps of test.
      */
     @Override
     public void afterInvocation(
@@ -288,8 +298,8 @@ public class TesterraListener implements
      * Override after invocation, to visualize threads and finish reporting.
      *
      * @param invokedMethod invoked method.
-     * @param testResult    result of invoked method.
-     * @param testContext   steps of test.
+     * @param testResult result of invoked method.
+     * @param testContext steps of test.
      */
     // CHECKSTYLE:OFF
     private void pAfterInvocation(
@@ -328,7 +338,7 @@ public class TesterraListener implements
 
             if (
                     testResult.getStatus() == ITestResult.CREATED
-                    || testResult.getStatus() == ITestResult.SKIP
+                            || testResult.getStatus() == ITestResult.SKIP
             ) {
                 /*
                  * TestNG bug or whatever ?!?!

@@ -29,6 +29,11 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
+import org.testng.ITestContext;
+import org.testng.ITestNGMethod;
+import org.testng.ITestResult;
+import org.testng.SkipException;
+
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
@@ -105,15 +110,11 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
     }
 
     public TestContext getTestContext() {
-        return (TestContext)this.parentContext;
+        return (TestContext) this.parentContext;
     }
 
     public Class getTestClass() {
         return testClass;
-    }
-
-    public MethodContext findTestMethodContainer(String methodName) {
-        return getOrCreateContext(methodContexts, methodName, null, null);
     }
 
     public MethodContext getMethodContext(ITestResult testResult) {
@@ -136,7 +137,6 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
 
         Optional<MethodContext> found;
         String methodContextName;
-
 
         if (testResult != null) {
             found = methodContexts.stream()
@@ -236,7 +236,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
 
     public void addToStats(Map<TestStatusController.Status, Integer> stats, MethodContext methodContext) {
         TestStatusController.Status status = methodContext.getStatus();
-        int value = stats.getOrDefault(status,0);
+        int value = stats.getOrDefault(status, 0);
         stats.put(status, value + 1);
     }
 

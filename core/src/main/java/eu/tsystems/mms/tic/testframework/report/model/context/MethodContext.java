@@ -30,11 +30,11 @@ import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import java.util.ArrayList;
 import org.testng.ITestResult;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Parameter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -66,7 +66,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     public String threadName = "unrelated";
     private TestStep lastFailedStep;
     private Class failureCorridorClass = FailureCorridor.High.class;
-    private int hashCodeOfTestResult = 0;
+
     public final List<String> infos = new LinkedList<>();
     private final List<SessionContext> sessionContexts = new LinkedList<>();
     public String priorityMessage = null;
@@ -238,7 +238,9 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     public void addDependsOnMethod(MethodContext methodContext) {
-        this.dependsOnMethodContexts.add(methodContext);
+        if (!this.dependsOnMethodContexts.contains(methodContext)) {
+            this.dependsOnMethodContexts.add(methodContext);
+        }
     }
 
     private Stream<TestStepAction> readTestStepActions() {
@@ -322,11 +324,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         }
 
         return obj.toString().equals(toString());
-    }
-
-    @Override
-    public int hashCode() {
-        return hashCodeOfTestResult;
     }
 
     /**
@@ -419,13 +416,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
 
     public boolean hasBeenRetried() {
         return retryNumber > 0;
-    }
-
-    /**
-     * // TODO What is this?
-     */
-    public boolean isSame(MethodContext methodContext) {
-        return methodContext.hashCodeOfTestResult == hashCodeOfTestResult;
     }
 
     @Override
@@ -529,8 +519,8 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return Stream.concat(
                 this.annotationList.stream(),
                 getTestNgResult()
-                    .map(testResult -> Stream.of(testResult.getMethod().getConstructorOrMethod().getMethod().getAnnotations()))
-                    .orElse(Stream.empty())
+                        .map(testResult -> Stream.of(testResult.getMethod().getConstructorOrMethod().getMethod().getAnnotations()))
+                        .orElse(Stream.empty())
         );
     }
 

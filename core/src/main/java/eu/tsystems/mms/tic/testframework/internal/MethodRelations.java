@@ -19,22 +19,24 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.internal;
+package eu.tsystems.mms.tic.testframework.internal;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import java.lang.reflect.Method;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeGroups;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+
+import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class MethodRelations {
 
@@ -84,19 +86,20 @@ public class MethodRelations {
             dependsOnMethods
              */
             Test test = method.getAnnotation(Test.class);
+            // TODO: dependsOnGroups is not checked at the moment and it's also missing in dependency graph
             String[] dependsOnMethods = test.dependsOnMethods();
             for (String dependsOnMethod : dependsOnMethods) {
-                MethodContext methodContext1 = methodContext.getClassContext().findTestMethodContainer(dependsOnMethod);
-                if (methodContext1 != null) {
-                    methodContext.addDependsOnMethod(methodContext1);
-                }
+                // In case of retried dependsOn methods the correct dependsOn-context was not retried
+                Optional<MethodContext> foundContext = methodContext.getClassContext().readMethodContexts().filter(
+                        context -> context.getName().equals(dependsOnMethod) && !context.hasBeenRetried()).findFirst();
+                foundContext.ifPresent(methodContext::addDependsOnMethod);
             }
 
             /*
             check for retries
              */
             RetryAnalyzer.getRetriedMethods().forEach(retriedMethod -> {
-                if (methodContext.isSame(retriedMethod)) {
+                if (retriedMethod.getName().equals(methodContext.getName()) && retriedMethod.hasBeenRetried()) {
                     methodContext.addDependsOnMethod(retriedMethod);
                 }
             });

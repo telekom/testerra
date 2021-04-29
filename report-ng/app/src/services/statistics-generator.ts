@@ -31,6 +31,8 @@ import {StatusConverter} from "./status-converter";
 import ITestContext = data.ITestContext;
 import ISuiteContext = data.ISuiteContext;
 import ISessionContext = data.ISessionContext;
+import ClassContext = data.ClassContext;
+import IClassContext = data.IClassContext;
 
 export class FailsAnnotation {
     constructor(
@@ -144,7 +146,7 @@ export class StatisticsGenerator {
                     const methodContext = executionAggregate.methodContexts[id];
                     const classContext = executionAggregate.classContexts[methodContext.classContextId];
 
-                    let currentClassStatistics:ClassStatistics = new ClassStatistics().setClassContext(classContext);
+                    let currentClassStatistics:ClassStatistics = new ClassStatistics(classContext);
                     const existingClassStatistics = executionStatistics.classStatistics.find(classStatistics => classStatistics.classIdentifier === currentClassStatistics.classIdentifier);
                     if (!existingClassStatistics) {
                         executionStatistics.addClassStatistics(currentClassStatistics);
@@ -164,24 +166,22 @@ export class StatisticsGenerator {
     getMethodDetails(methodId:string):Promise<MethodDetails> {
         return this._cacheService.getForKeyWithLoadingFunction("method:"+methodId, () => {
             return this.getExecutionStatistics().then(executionStatistics => {
-                for (const classStatistic of executionStatistics.classStatistics) {
-                    const methodContext = classStatistic.methodContexts.find(methodContext => methodContext.contextValues.id == methodId);
-                    if (methodContext) {
-                        const classContext = classStatistic.classContext;
-                        const testContext = executionStatistics.executionAggregate.testContexts[classContext.testContextId];
-                        const suiteContext = executionStatistics.executionAggregate.suiteContexts[testContext.suiteContextId];
-                        const sessionContexts = [];
-                        methodContext.sessionContextIds.forEach(value => {
-                            sessionContexts.push(executionStatistics.executionAggregate.sessionContexts[value]);
-                        })
+                const methodContext = executionStatistics.executionAggregate.methodContexts[methodId];
+                if (methodContext) {
+                    const classContext = executionStatistics.executionAggregate.classContexts[methodContext.classContextId];
+                    const testContext = executionStatistics.executionAggregate.testContexts[classContext.testContextId];
+                    const suiteContext = executionStatistics.executionAggregate.suiteContexts[testContext.suiteContextId];
+                    const sessionContexts = [];
+                    methodContext.sessionContextIds.forEach(value => {
+                        sessionContexts.push(executionStatistics.executionAggregate.sessionContexts[value]);
+                    })
 
-                        const methodDetails = new MethodDetails(methodContext, classStatistic);
-                        methodDetails.executionStatistics = executionStatistics;
-                        methodDetails.testContext = testContext;
-                        methodDetails.suiteContext = suiteContext;
-                        methodDetails.sessionContexts = sessionContexts;
-                        return methodDetails;
-                    }
+                    const methodDetails = new MethodDetails(methodContext, new ClassStatistics(classContext));
+                    methodDetails.executionStatistics = executionStatistics;
+                    methodDetails.testContext = testContext;
+                    methodDetails.suiteContext = suiteContext;
+                    methodDetails.sessionContexts = sessionContexts;
+                    return methodDetails;
                 }
             });
         });

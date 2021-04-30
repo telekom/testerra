@@ -11,6 +11,8 @@ GuiElement button1 = new GuiElement(driver, By.name("button"));
 GuiElement textOutputField = new GuiElement(driver, By.xpath("//p[@id='99']"));
 ----
 
+IMPORTANT: A GuiElement always points to the first element found by the given locator. Even when your locator would return multiple elements, it just represents one. You can make your <<Locate unique elements, locators to force uniqueness>> or use <<Element lists, element lists>>.
+
 == Create SubElements
 
 The Method `getSubElement()` generates a new GuiElement. It will only be searched in the DOM tree below the element on which the method was called.
@@ -28,6 +30,25 @@ GuiElement lower = upper.getSubElement(By.xpath("./p[@id='element']")); <3>
 <1> Find any matching descendant
 <2> Corrects the selector prefix to './/'
 <3> Find any matching child
+
+== Element lists
+
+A locator can always return multiple elements. Even if a GuiElement is just a pointer to the first element of the result, it could contain more than one.
+
+You can get the amount of found elements by calling.
+[source,java]
+----
+GuiElement span = new GuiElement(driver, By.xpath("//a/span"));
+int count = span.getNumberOfFoundElements();
+----
+
+And access the elements by using the `getList()` method.
+[source,java]
+----
+List<GuiElement> allSpans = span.getList();
+----
+
+From this moment, every GuiElement of the list is now a pointer to the exact index position of the element results and behaves as the selector would by like `(//a/span)[n]`.
 
 == Advanced GuiElement locating
 

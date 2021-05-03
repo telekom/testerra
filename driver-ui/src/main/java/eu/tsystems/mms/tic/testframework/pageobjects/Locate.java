@@ -51,6 +51,9 @@ public class Locate {
         return locate;
     }
 
+    /**
+     * Sets a global configurator callback for all created {@link Locate} instances
+     */
     public static void setConfigurator(Consumer<Locate> callback) {
         LoggerFactory.getLogger(Locate.class).info("Using global locator configurator");
         locatorConfigurator = callback;

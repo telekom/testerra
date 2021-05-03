@@ -33,6 +33,7 @@ import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodStartEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.ListenerUtils;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorker;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
@@ -137,10 +138,11 @@ public class TesterraListener implements
             instances++;
 
             if (instances == 1) {
+                EventBus eventBus = Testerra.getEventBus();
                 // this is the last worker to be called
                 eventBus.register(new MethodEndWorker());
                 // The finalize listener has to be registered AFTER all modules ONCE
-                Testerra.getEventBus().register(new FinalizeListener());
+                eventBus.register(new FinalizeListener());
             }
         }
     }

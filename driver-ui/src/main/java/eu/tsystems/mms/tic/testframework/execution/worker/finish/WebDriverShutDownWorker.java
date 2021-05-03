@@ -22,15 +22,9 @@
 package eu.tsystems.mms.tic.testframework.execution.worker.finish;
 
 import com.google.common.eventbus.Subscribe;
-import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.events.AfterShutdownWebDriverSessionsEvent;
-import eu.tsystems.mms.tic.testframework.events.BeforeShutdownWebDriverSessionsEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
-import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
-import java.util.ArrayList;
-import java.util.List;
 import org.testng.ITestResult;
 
 public class WebDriverShutDownWorker implements MethodEndEvent.Listener, WebDriverManagerProvider {
@@ -44,7 +38,6 @@ public class WebDriverShutDownWorker implements MethodEndEvent.Listener, WebDriv
          * Take Screenshot of failure and log it into report.
          */
         if (iTestResult != null) {
-            List<SessionContext> sessionsToCloseAtOnce = new ArrayList<>();
             methodEndEvent.getMethodContext().readSessionContexts().forEach(sessionContext -> {
                 WebDriverRequest webDriverRequest = sessionContext.getWebDriverRequest();
                 boolean shouldClose = false;
@@ -55,17 +48,9 @@ public class WebDriverShutDownWorker implements MethodEndEvent.Listener, WebDriv
                 }
 
                 if (shouldClose) {
-                    sessionsToCloseAtOnce.add(sessionContext);
+                    WEB_DRIVER_MANAGER.getWebDriver(sessionContext).ifPresent(WEB_DRIVER_MANAGER::shutdownSession);
                 }
             });
-
-            if (sessionsToCloseAtOnce.size() > 0) {
-                Testerra.getEventBus().post(new BeforeShutdownWebDriverSessionsEvent(methodEndEvent));
-                sessionsToCloseAtOnce.forEach(sessionContext -> {
-                    WEB_DRIVER_MANAGER.getWebDriver(sessionContext).ifPresent(WEB_DRIVER_MANAGER::shutdownSession);
-                });
-                Testerra.getEventBus().post(new AfterShutdownWebDriverSessionsEvent(methodEndEvent));
-            }
         }
     }
 }

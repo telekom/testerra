@@ -1,5 +1,5 @@
 dependencies {
-    api core_interop
+    implementation core
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'javax.ws.rs:javax.ws.rs-api:2.0.1'
 

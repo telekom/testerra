@@ -28,7 +28,6 @@ import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.execution.testng.WebDriverRetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.ConditionalBehaviourWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.TakeInSessionEvidencesWorker;
-import eu.tsystems.mms.tic.testframework.execution.worker.finish.TakeOutOfSessionsEvidencesWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverShutDownWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.start.PerformanceTestWorker;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
@@ -68,7 +67,6 @@ public class DriverUiHook implements ModuleHook {
         ********* SESSIONS SHUTDOWN *********
          */
         eventBus.register(new WebDriverShutDownWorker());
-        eventBus.register(new TakeOutOfSessionsEvidencesWorker());
         eventBus.register(new ShutdownSessionsListener());
 
         /*

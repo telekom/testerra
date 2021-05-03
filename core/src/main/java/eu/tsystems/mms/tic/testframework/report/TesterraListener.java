@@ -130,9 +130,6 @@ public class TesterraListener implements
         eventBus.register(new HandleCollectedAssertsWorker());// !! must be invoked before MethodAnnotationCheckerWorker
         eventBus.register(new MethodContextUpdateWorker());
 
-        // this is the last worker to be called
-        eventBus.register(new MethodEndWorker());
-
         eventBus.register(new OmitInDevelopmentMethodInterceptor());
         eventBus.register(new SortMethodsByPriorityMethodInterceptor());
 
@@ -188,6 +185,8 @@ public class TesterraListener implements
             instances++;
 
             if (instances == 1) {
+                // this is the last worker to be called
+                eventBus.register(new MethodEndWorker());
                 // The finalize listener has to be registered AFTER all modules ONCE
                 eventBus.register(new FinalizeListener());
             }

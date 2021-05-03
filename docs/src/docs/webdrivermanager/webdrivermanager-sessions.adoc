@@ -72,13 +72,22 @@ WebDriver driver = WebDriverManager.getWebDriver();
 Selenium is triggered to open a new Browser windows with the defined URL.
 
 TIP: Use remote Selenium server as often as possible, also for development.
-So your project is independent from any `WebDriver` configuration and needed Webdriver binary files.
+So your project is independent of any `WebDriver` configuration and needed Webdriver binary files.
 
 For every other call of `getWebDriver()` in the *same test context* WebDriverManager always returns the existing session.
 
 This makes it possible to retrieve the current session in any context and avoids to force the user to pass the instance around.
 
-== Multiple sessions
+== WebDriver lifecycle
+
+The default behaviour of Testerra's `WebDriverManager` is, to create unique WebDrivers for each thread and/or test method.
+That prevents issues in mutual interference between multiple threads.
+
+- Every WebDriver created in a thread, will be closed in this thread after the test method. See <<Use multiple sessions>>
+- You can keep a WebDriver in a thread over multiple methods. See <<Shared sessions in one thread>>
+- You can reuse WebDrivers by <<Shared sessions over different threads, sharing sessions over different threads>>
+
+== Use multiple sessions
 
 The WebDriverManager can handle more than one session in one test context.
 Every session has a defined session key.
@@ -101,15 +110,6 @@ String key2 = WebDriverManagerUtils.getSessionKeyFrom(driverWindow2); // key2 co
 
 In most cases it is not needed to close your session manually.
 Testerra always closes all open session at the end of a test method.
-
-If you want to reuse a session in the next test method, you can deactivate the automatic close.
-
-.test.properties
-[source,properties,subs="attributes"]
-----
-// Default value is true
-{wdm_closewindows_aftertestmethods}=false
-----
 
 To close active sessions manually, do the following:
 
@@ -137,7 +137,7 @@ Have a further read in our known issue section: <<Closing `WebDriver` sessions w
 
 == Shared sessions in one thread
 
-You can reuse the wedriver session in the following test by setting the following property:
+You can reuse the WebDriver session over multiple methods in the same thread by setting the following property:
 
 .test.properties
 [source,properties,subs="attributes"]
@@ -151,14 +151,12 @@ You can reuse the wedriver session in the following test by setting the followin
 @Test
 public void test1() {
     WebDriver driver = WebDriverManager.getWebDriver();
-    ...
 }
 
 @Test
 public void test2() {
     // You get the already opened session from test1
     WebDriver driver = WebDriverManager.getWebDriver();
-    ...
 }
 ----
 
@@ -167,6 +165,27 @@ If you run parallel tests, you have no access to the session between parallel te
 
 .Limitations of reusing shared sessions
 image::resuse_webdriver_sessions_1.png[]
+
+=== Special behaviour for config methods (*deprecated*)
+
+When you create a WebDriver in a **setup method** by is annotated with `@Before...` or `@After...`, the session will not be closed after that method, even when `{wdm_closewindows_aftertestmethods}` is true.
+
+.Reuse sessions in setup methods
+[source,java]
+----
+@BeforeMethod
+public void setupWebDriver() {
+    // This WebDriver will not be closed, because its a setup method
+    WebDriver driver = WebDriverManager.getWebDriver();
+}
+
+@Test
+public void test1() {
+    // You get the already opened session
+    WebDriver driver = WebDriverManager.getWebDriver();
+}
+----
+
 
 == Shared sessions over different threads
 

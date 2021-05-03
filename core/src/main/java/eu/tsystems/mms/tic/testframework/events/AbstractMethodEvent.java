@@ -88,15 +88,27 @@ public abstract class AbstractMethodEvent {
         this.invokedMethod = invokedMethod;
         return this;
     }
+
+    /**
+     * @deprecated Use {@link #getMethodContext()} instead
+     */
     public boolean isSkipped() {
-        return testResult.getStatus() == ITestResult.SKIP;
+        //return testResult.getStatus() == ITestResult.SKIP;
+        return methodContext.isSkipped();
     }
 
+    /**
+     * @deprecated Use {@link #getMethodContext()} instead
+     */
     public boolean isFailed() {
-        return (!isPassed() && !isSkipped());
+        return methodContext.isFailed();
     }
 
+    /**
+     * @deprecated Use {@link #getMethodContext()} instead
+     */
     public boolean isPassed() {
-        return testResult.isSuccess();
+        //return testResult.isSuccess();
+        return methodContext.isPassed();
     }
 }

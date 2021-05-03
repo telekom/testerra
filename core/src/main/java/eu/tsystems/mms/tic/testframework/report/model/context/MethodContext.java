@@ -151,6 +151,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     public void addSessionContext(SessionContext sessionContext) {
         if (!this.sessionContexts.contains(sessionContext)) {
             this.sessionContexts.add(sessionContext);
+            sessionContext.addMethodContext(this);
             sessionContext.parentContext = this;
             Testerra.getEventBus().post(new ContextUpdateEvent().setContext(this));
         }

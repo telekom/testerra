@@ -11,7 +11,7 @@ def opencv = [
 
 
 dependencies {
-    compile core
+    api core
     implementation opencv
 
     // <LayoutCheck AnnotationContainer, JSUtils>
@@ -19,7 +19,7 @@ dependencies {
     // </LayoutCheck AnnotationContainer, JSUtils>
 
     // <UITestUtils>
-    compile 'org.sikuli:sikuli-api:1.2.0'
+    api 'org.sikuli:sikuli-api:1.2.0'
     // </UITestUtils>
 
     // <PageFactory>

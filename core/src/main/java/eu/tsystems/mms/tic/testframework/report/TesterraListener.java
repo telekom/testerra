@@ -137,6 +137,8 @@ public class TesterraListener implements
             instances++;
 
             if (instances == 1) {
+                // this is the last worker to be called
+                eventBus.register(new MethodEndWorker());
                 // The finalize listener has to be registered AFTER all modules ONCE
                 Testerra.getEventBus().register(new FinalizeListener());
             }

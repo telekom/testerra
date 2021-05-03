@@ -26,6 +26,10 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import java.net.URL;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.stream.Stream;
+import org.apache.commons.lang3.SerializationUtils;
 
 public class SessionContext extends AbstractContext implements SynchronizableContext {
     private String remoteSessionId;
@@ -34,6 +38,7 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
     private String actualBrowserVersion;
     private WebDriverRequest webDriverRequest;
     private URL nodeUrl;
+    private final Queue<MethodContext> methodContexts = new ConcurrentLinkedQueue<>();
 
     public SessionContext(WebDriverRequest webDriverRequest) {
         setWebDriverRequest(webDriverRequest);
@@ -123,5 +128,13 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
 
     public  void setActualBrowserVersion(String browserVersion) {
         this.actualBrowserVersion = browserVersion;
+    }
+
+    void addMethodContext(MethodContext methodContext) {
+        this.methodContexts.add(methodContext);
+    }
+
+    public Stream<MethodContext> readMethodContexts() {
+        return this.methodContexts.stream();
     }
 }

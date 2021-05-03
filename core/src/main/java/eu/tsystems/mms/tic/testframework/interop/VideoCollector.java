@@ -23,6 +23,9 @@
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import java.util.List;
 
+/**
+ * @deprecated This feature is deprecated. See {@link TestEvidenceCollector#collectVideos()} for details.
+ */
 public interface VideoCollector extends Collector {
 
     /**

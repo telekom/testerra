@@ -11,6 +11,8 @@ UiElement button1 = find(By.name("button"));
 UiElement textOutputField = find(By.xpath("//p[@id='99']"));
 ----
 
+IMPORTANT: A GuiElement always points to the first element found by the given locator. Even when your locator would return multiple elements, it just represents one. You can make your <<Locate unique elements, locators to force uniqueness>> or use <<Element lists, element lists>>.
+
 == Create SubElements
 
 The `UiElement` also implements `UiElementFinder`. Elements will only be searched in the DOM tree below the given parent element on which the method was called.

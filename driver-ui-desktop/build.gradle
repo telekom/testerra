@@ -1,5 +1,5 @@
 dependencies {
-    compile driver_ui
+    api driver_ui
 
     // <PhantomJS>
     implementation 'net.anthavio:phanbedder-2.1.1:1.0.0'

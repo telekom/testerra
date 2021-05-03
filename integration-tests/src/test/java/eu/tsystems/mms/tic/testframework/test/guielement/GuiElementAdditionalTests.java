@@ -25,6 +25,7 @@ package eu.tsystems.mms.tic.testframework.test.guielement;
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.utils.LogAssertUtils;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.io.File;
@@ -71,4 +72,14 @@ public class GuiElementAdditionalTests extends AbstractTestSitesTest {
 
     }
 
+    /**
+     *
+     */
+    @Test
+    public void test04_LocateWithUniqueConfigurator_fails() {
+        Locate.setConfigurator(Locate::unique);
+        final WebDriver driver = WebDriverManager.getWebDriver();
+        GuiElement div = new GuiElement(driver, By.id("//div"));
+        div.asserts().assertIsDisplayed();
+    }
 }

@@ -21,6 +21,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -35,14 +36,22 @@ public class Locate {
     private boolean unique = false;
     private By by;
     private String preparedFormat;
+    private static Consumer<Locate> locatorConfigurator;
 
     private Locate() {
-
+        if (locatorConfigurator != null) {
+            locatorConfigurator.accept(this);
+        }
     }
+
     public static Locate by(By by) {
         final Locate locate = new Locate();
         locate.by = by;
         return locate;
+    }
+
+    public static void setConfigurator(Consumer<Locate> callback) {
+        locatorConfigurator = callback;
     }
 
     /**

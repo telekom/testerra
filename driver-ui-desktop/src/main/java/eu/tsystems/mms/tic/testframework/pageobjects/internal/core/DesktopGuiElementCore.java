@@ -425,7 +425,7 @@ public class DesktopGuiElementCore implements GuiElementCore, Loggable {
 
         // override locator, because we made an auto correction to the given xpath
         if (StringUtils.isNotBlank(xpath)) {
-            locate = Locate.by(By.xpath(xpath));
+            locate = Locate.by(By.xpath(xpath), locate);
         }
 
         GuiElement subElement = new GuiElement(webDriver, locate, frames);

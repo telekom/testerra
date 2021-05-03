@@ -45,6 +45,18 @@ public class Locate {
         return locate;
     }
 
+    /**
+     * Creates a copy of the given locate with new By
+     */
+    public static Locate by(By by, Locate locate) {
+        final Locate newLocate = new Locate();
+        newLocate.by = by;
+        newLocate.filter = locate.filter;
+        newLocate.unique = locate.unique;
+        newLocate.preparedFormat = locate.preparedFormat;
+        return newLocate;
+    }
+
     public static Locate byQa(String qa) {
         return by(new By.ByXPath(String.format("//*[@data-qa='%s']", qa)));
     }

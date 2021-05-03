@@ -1,10 +1,10 @@
 def mailVersion = '1.6.5'
 
 dependencies {
-    compile "com.sun.mail:jakarta.mail:${mailVersion}"
-    compile "jakarta.mail:jakarta.mail-api:${mailVersion}"
-    compile 'org.bouncycastle:bcmail-jdk15on:1.52'
-    compile 'net.iharder:base64:2.3.8'
+    api "com.sun.mail:jakarta.mail:${mailVersion}"
+    api "jakarta.mail:jakarta.mail-api:${mailVersion}"
+    api 'org.bouncycastle:bcmail-jdk15on:1.52'
+    api 'net.iharder:base64:2.3.8'
     compileOnly core
 
     testImplementation core

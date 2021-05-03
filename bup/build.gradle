@@ -4,8 +4,8 @@ plugins {
 
 dependencies {
 
-    compile core
-    testCompile report
+    api core
+    testImplementation report
 
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
     implementation 'com.google.code.gson:gson:2.8.6'
@@ -18,10 +18,10 @@ dependencies {
     implementation 'org.apache.httpcomponents:httpcore:4.4.13'
 
     // https://mvnrepository.com/artifact/com.browserup/browserup-proxy-core
-    compile 'com.browserup:browserup-proxy-core:2.1.0'
+    api 'com.browserup:browserup-proxy-core:2.1.0'
 
     // https://mvnrepository.com/artifact/com.github.tomakehurst/wiremock
-    testCompile "com.github.tomakehurst:wiremock-jre8:2.26.3"
+    testImplementation "com.github.tomakehurst:wiremock-jre8:2.26.3"
 
 }
 

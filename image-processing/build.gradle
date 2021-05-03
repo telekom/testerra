@@ -9,12 +9,12 @@ def opencv = [
 ]
 
 dependencies {
-    compile core
+    api core
     implementation opencv
 
     // <core>
     // Todo: Solve this circular dependency when moving to module: driver-ui
-    compile 'org.seleniumhq.selenium:selenium-java:' + seleniumVersion
+    api 'org.seleniumhq.selenium:selenium-java:' + seleniumVersion
     // </core>
 
     // <LayoutCheck AnnotationContainer>

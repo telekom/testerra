@@ -1,18 +1,18 @@
 dependencies {
 
-    compile('org.testng:testng:7.3.0') {
+    api('org.testng:testng:7.3.0') {
         // We have to exclude this here, because testng is using 25.1-android in dependency com.google.inject:guice:4.1.0
         // This will lead to a version clash with selenium and this will produce ImmutableMapErrors on WebDriverManager.getWebDriver
         exclude group: 'com.google.guava', module: 'guava'
     }
 
-    compile 'commons-io:commons-io:2.6'
-    compile 'org.apache.commons:commons-lang3:3.9'
+    api 'commons-io:commons-io:2.6'
+    api 'org.apache.commons:commons-lang3:3.9'
 
     // <TesterraLogger>
-    compile 'org.apache.logging.log4j:log4j-slf4j18-impl:2.13.2'
-    compile 'org.apache.logging.log4j:log4j-api:2.13.2'
-    compile 'org.apache.logging.log4j:log4j-core:2.13.2'
+    api 'org.apache.logging.log4j:log4j-slf4j18-impl:2.13.2'
+    api 'org.apache.logging.log4j:log4j-api:2.13.2'
+    api 'org.apache.logging.log4j:log4j-core:2.13.2'
     // </TesterraLogger>
 
     //implementation 'org.javassist:javassist:3.20.0-GA'

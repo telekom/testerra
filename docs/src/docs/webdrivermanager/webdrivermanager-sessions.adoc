@@ -86,9 +86,6 @@ That prevents issues in mutual interference between multiple threads.
 - Every WebDriver created in a thread, will be closed in this thread after the test method. See <<Use multiple sessions>>
 - You can keep a WebDriver in a thread over multiple methods. See <<Shared sessions in one thread>>
 - You can reuse WebDrivers by <<Shared sessions over different threads, sharing sessions over different threads>>
-Testerra's best practice is to create new WebDrivers for every test method.
-Sessions will
-When
 
 == Use multiple sessions
 

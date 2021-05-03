@@ -25,6 +25,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.slf4j.LoggerFactory;
 
 /**
  * Advanced selector for elements as replacement for By
@@ -51,6 +52,7 @@ public class Locate {
     }
 
     public static void setConfigurator(Consumer<Locate> callback) {
+        LoggerFactory.getLogger(Locate.class).info("Using global locator configurator");
         locatorConfigurator = callback;
     }
 

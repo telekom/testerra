@@ -31,7 +31,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.io.File;
-import java.sql.Time;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -75,9 +74,6 @@ public class GuiElementAdditionalTests extends AbstractTestSitesTest {
 
     }
 
-    /**
-     *
-     */
     @Test()
     public void test04_LocateSubElementWithUniqueConfigurator_fails() {
         Locate.setConfigurator(Locate::unique);

@@ -98,6 +98,16 @@ Locate byText = Locate.by(By.xpath("//button")).filter(webElement -> webElement.
 GuiElement buttonContainsText = new GuiElement(driver, byText);
 ----
 
+=== Default locator configurator
+
+When you want to preconfigure all locators, you can use
+[source,java]
+----
+Locate.setConfigurator(locator -> {
+   // Configure your locator here
+});
+----
+
 === GuiElements inside frames
 
 Accessing WebElements inside frames requires changing the active frame before any action. GuiElements do that automatically.

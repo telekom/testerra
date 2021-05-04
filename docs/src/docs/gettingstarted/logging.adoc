@@ -8,3 +8,9 @@ If you want to have more control over several log levels of classes, add a `log4
 ----
 include::../../res/log4j2.xml[]
 ----
+
+You can also change the root log level from the command line via.
+[source, bash]
+----
+-Dlog4j.level=DEBUG
+----

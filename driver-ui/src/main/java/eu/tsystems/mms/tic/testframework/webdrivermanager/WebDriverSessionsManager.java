@@ -109,6 +109,8 @@ public final class WebDriverSessionsManager {
     }
 
     private static void unlinkFromThread(String sessionKey, WebDriver eventFiringWebDriver) {
+        final String sessionIdentifier = createSessionIdentifier(eventFiringWebDriver, sessionKey);
+        LOGGER.trace("Unlink from thread: " + sessionIdentifier);
         String threadSessionKey = getThreadSessionKey(sessionKey);
         THREAD_SESSION_KEY_WEBDRIVER_MAP.remove(threadSessionKey, eventFiringWebDriver);
 
@@ -197,6 +199,7 @@ public final class WebDriverSessionsManager {
 
         beforeQuitActions.forEach(webDriverConsumer -> {
             try {
+                LOGGER.trace("Call before shutdown handler");
                 webDriverConsumer.accept(webDriver);
             } catch (Exception e) {
                 LOGGER.error("Failed executing before shutdown handler", e);
@@ -207,6 +210,7 @@ public final class WebDriverSessionsManager {
 
         afterQuitActions.forEach(webDriverConsumer -> {
             try {
+                LOGGER.trace("Call after shutdown handler");
                 webDriverConsumer.accept(webDriver);
             } catch (Exception e) {
                 LOGGER.error("Failed executing after shutdown handler", e);
@@ -214,6 +218,7 @@ public final class WebDriverSessionsManager {
         });
         unlinkFromThread(sessionKey, webDriver);
         WEBDRIVER_SESSIONS_CONTEXTS_MAP.remove(WebDriverUtils.getLowestWebDriver(webDriver));
+        LOGGER.debug("Shut down: " + sessionIdentifier);
     }
 
 

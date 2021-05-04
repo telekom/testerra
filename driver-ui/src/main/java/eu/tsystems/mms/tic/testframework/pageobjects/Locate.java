@@ -21,9 +21,11 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.slf4j.LoggerFactory;
 
 /**
  * Advanced selector for elements as replacement for By
@@ -35,14 +37,38 @@ public class Locate {
     private boolean unique = false;
     private By by;
     private String preparedFormat;
+    private static Consumer<Locate> locatorConfigurator;
 
     private Locate() {
-
+        if (locatorConfigurator != null) {
+            locatorConfigurator.accept(this);
+        }
     }
+
     public static Locate by(By by) {
         final Locate locate = new Locate();
         locate.by = by;
         return locate;
+    }
+
+    /**
+     * Sets a global configurator callback for all created {@link Locate} instances
+     */
+    public static void setConfigurator(Consumer<Locate> callback) {
+        LoggerFactory.getLogger(Locate.class).info("Using global locator configurator");
+        locatorConfigurator = callback;
+    }
+
+    /**
+     * Creates a copy of the given locate with new By
+     */
+    public static Locate by(By by, Locate locate) {
+        final Locate newLocate = new Locate();
+        newLocate.by = by;
+        newLocate.filter = locate.filter;
+        newLocate.unique = locate.unique;
+        newLocate.preparedFormat = locate.preparedFormat;
+        return newLocate;
     }
 
     public static Locate byQa(String qa) {

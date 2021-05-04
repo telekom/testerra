@@ -24,7 +24,10 @@ package eu.tsystems.mms.tic.testframework.test.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.utils.LogAssertUtils;
+import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
+import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.io.File;
@@ -71,4 +74,22 @@ public class GuiElementAdditionalTests extends AbstractTestSitesTest {
 
     }
 
+    @Test()
+    public void test04_LocateSubElementWithUniqueConfigurator_fails() {
+        Locate.setConfigurator(Locate::unique);
+        final WebDriver driver = WebDriverManager.getWebDriver();
+        GuiElement body = new GuiElement(driver, By.xpath("//body"));
+        GuiElement div = body.getSubElement(By.xpath("//div"));
+
+        Throwable notFoundException = null;
+        try {
+            div.click();
+        } catch (TimeoutException e) {
+            notFoundException = e.getCause();
+        } catch (ElementNotFoundException e) {
+            notFoundException = e;
+        }
+
+        Assert.assertTrue(notFoundException.getCause().getMessage().contains("To many WebElements found"), "Expect to fail because of to many WebElements found");
+    }
 }

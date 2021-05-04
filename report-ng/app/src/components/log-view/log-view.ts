@@ -38,10 +38,10 @@ export class LogView {
 
     private _filteredLogMessages:ILogEntry[];
 
-    @bindable({bindingMode: bindingMode.toView})
-    showThreads;
+    // @bindable({bindingMode: bindingMode.toView})
+    // showThreads;
 
-    private _showThreads = false;
+    // private _showThreads = false;
 
     @bindable({bindingMode: bindingMode.toView})
     search:RegExp;
@@ -94,7 +94,7 @@ export class LogView {
         this._filter();
     }
 
-    showThreadsChanged() {
-        this._showThreads = this.showThreads.toLowerCase() === "true";
-    }
+    // showThreadsChanged() {
+    //     this._showThreads = this.showThreads.toLowerCase() === "true";
+    // }
 }

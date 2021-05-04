@@ -22,14 +22,8 @@
 import {autoinject} from "aurelia-framework";
 import {bindable} from "aurelia-templating";
 import {bindingMode} from "aurelia-binding";
-import {data} from "../../services/report-model";
-import ILogMessage = data.ILogMessage;
 import {StatusConverter} from "../../services/status-converter";
-
-interface LogMessage extends ILogMessage {
-    index:number,
-    cause:string;
-}
+import {ILogEntry} from "../../services/statistics-generator";
 
 @autoinject()
 export class LogView {
@@ -40,9 +34,9 @@ export class LogView {
     }
 
     @bindable({bindingMode: bindingMode.toView})
-    logMessages:LogMessage[];
+    logMessages:ILogEntry[];
 
-    private _filteredLogMessages:LogMessage[];
+    private _filteredLogMessages:ILogEntry[];
 
     @bindable({bindingMode: bindingMode.toView})
     showThreads;
@@ -52,7 +46,7 @@ export class LogView {
     @bindable({bindingMode: bindingMode.toView})
     search:RegExp;
 
-    private _toggleCause(logMessage:LogMessage) {
+    private _toggleCause(logMessage:ILogEntry) {
         if (logMessage.cause) {
             logMessage.cause = null;
         } else {
@@ -60,7 +54,7 @@ export class LogView {
         }
     }
 
-    private _open(logMessage:LogMessage) {
+    private _open(logMessage:ILogEntry) {
         let msg = "";
         logMessage.stackTrace.forEach(cause => {
             if (msg.length > 0) {

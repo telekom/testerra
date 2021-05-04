@@ -22,16 +22,15 @@
 import {autoinject} from 'aurelia-framework';
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import {AbstractViewModel} from "../abstract-view-model";
-import {StatisticsGenerator} from "../../services/statistics-generator";
-import {StatusConverter} from "../../services/status-converter";
-import {data} from "../../services/report-model";
-import ILogMessage = data.ILogMessage;
+import {ILogEntry, StatisticsGenerator} from "services/statistics-generator";
+import {StatusConverter} from "services/status-converter";
+import {data} from "services/report-model";
 
 @autoinject()
 export class Logs extends AbstractViewModel {
     private _searchRegexp: RegExp;
     private _loading = false;
-    private _logMessages:ILogMessage[];
+    private _logMessages:ILogEntry[];
     private _availableLogLevels;
     private _selectedLogLevel;
 
@@ -57,33 +56,39 @@ export class Logs extends AbstractViewModel {
 
         this._loading = true;
         this._statistics.getExecutionStatistics().then(executionStatistics => {
-            const logMessages:ILogMessage[] = [];
+            const logMessages:ILogEntry[] = [];
             const logLevels = {};
 
-            const filterPredicate = (this._selectedLogLevel?(logMessage:ILogMessage) => this._selectedLogLevel == logMessage.type:(logMessage:ILogMessage) => logMessage);
+            const filterPredicate = (this._selectedLogLevel?(logMessage:data.ILogMessage) => this._selectedLogLevel == logMessage.type:(logMessage:data.ILogMessage) => logMessage);
 
-            const addLevel = (value:ILogMessage) => {
-                logLevels[value.type] = 1;
-                return value;
+            const collectLogLevel = (logMessage:data.ILogMessage) => {
+                logLevels[logMessage.type] = 1;
+                return logMessage;
+            }
+
+            const add = (logEntry:ILogEntry) => {
+                logMessages.push(logEntry)
             }
 
             executionStatistics.executionAggregate.executionContext.logMessages
-                .map(addLevel)
+                .map(collectLogLevel)
                 .filter(filterPredicate)
-                .forEach(value => {
-                    logMessages.push(value);
-                });
+                .forEach(add)
 
             Object.values(executionStatistics.executionAggregate.methodContexts)
-                .flatMap(value => value.testSteps)
-                .flatMap(value => value.actions)
-                .flatMap(value => value.entries)
-                .filter(value => value.logMessage)
-                .map(value => value.logMessage)
-                .map(addLevel)
-                .filter(filterPredicate)
-                .forEach(value => {
-                    logMessages.push(value)
+                .forEach(methodContext => {
+                    methodContext.testSteps
+                        .flatMap(value => value.actions)
+                        .flatMap(value => value.entries)
+                        .filter(value => value.logMessage)
+                        .map(value => {
+                            const logEntry: ILogEntry = value.logMessage;
+                            logEntry.methodContext = methodContext;
+                            return logEntry;
+                        })
+                        .map(collectLogLevel)
+                        .filter(filterPredicate)
+                        .forEach(add)
                 });
 
             this._logMessages = logMessages.sort((a, b) => a.timestamp-b.timestamp);

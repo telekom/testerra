@@ -25,12 +25,7 @@ import {ClassStatistics, ExecutionStatistics, FailureAspectStatistics} from "./s
 import {CacheService} from "t-systems-aurelia-components/src/services/cache-service";
 import {Config} from "./config-dev";
 import {data} from "./report-model";
-import IFile = data.IFile;
-import IMethodContext = data.IMethodContext;
 import {StatusConverter} from "./status-converter";
-import ITestContext = data.ITestContext;
-import ISuiteContext = data.ISuiteContext;
-import ISessionContext = data.ISessionContext;
 
 export class FailsAnnotation {
     constructor(
@@ -42,12 +37,18 @@ export class FailsAnnotation {
     }
 }
 
+export interface ILogEntry extends data.ILogMessage {
+    methodContext?: data.IMethodContext;
+    index?:number,
+    cause?:string;
+}
+
 export class MethodDetails {
     executionStatistics: ExecutionStatistics;
-    testContext: ITestContext;
-    suiteContext: ISuiteContext;
+    testContext: data.ITestContext;
+    suiteContext: data.ISuiteContext;
     failureAspectStatistics:FailureAspectStatistics;
-    sessionContexts:ISessionContext[];
+    sessionContexts:data.ISessionContext[];
     private _identifier:string = null;
     static readonly FAIL_ANNOTATION_NAME="eu.tsystems.mms.tic.testframework.annotations.Fails";
     private _decodedAnnotations = {};
@@ -55,7 +56,7 @@ export class MethodDetails {
     private _failsAnnotation:FailsAnnotation;
 
     constructor(
-        readonly methodContext:IMethodContext,
+        readonly methodContext:data.IMethodContext,
         readonly classStatistics:ClassStatistics,
     ) {
     }
@@ -185,7 +186,7 @@ export class StatisticsGenerator {
         });
     }
 
-    getScreenshotIdsFromMethodContext(methodContext:IMethodContext):string[] {
+    getScreenshotIdsFromMethodContext(methodContext:data.IMethodContext):string[] {
         return methodContext.testSteps
             .flatMap(value => value.actions)
             .flatMap(value => value.entries)
@@ -194,7 +195,7 @@ export class StatisticsGenerator {
     }
 
     getFilesForIds(fileIds:string[]) {
-        const files:IFile[] = [];
+        const files:data.IFile[] = [];
         const allFilePromises = [];
         fileIds.forEach(fileId => {
             const loadingPromise = this._getFileForId(fileId).then(file => {

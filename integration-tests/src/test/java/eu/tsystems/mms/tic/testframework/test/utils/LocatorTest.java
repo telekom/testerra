@@ -115,4 +115,14 @@ public class LocatorTest extends AbstractTestSitesTest implements UiElementFinde
         UiElement div = finder.find(XPath.from("*").text().hasWords("Login", "here"));
         div.expect().attribute("data-qa").is("action/login");
     }
+
+    @Test
+    public void test_cloneLocateWithNewBy() {
+        Locate locator = Locate.by(By.xpath("//body")).displayed().unique();
+        Locate clonedLocator = Locate.by(By.xpath("//head"), locator);
+
+        Assert.assertSame(clonedLocator.getFilter(), locator.getFilter());
+        Assert.assertEquals("By.xpath: //head", clonedLocator.getBy().toString());
+        Assert.assertTrue(locator.isUnique());
+    }
 }

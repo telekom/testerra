@@ -108,6 +108,17 @@ Locator byText = LOCATE.by(By.xpath("//button"))
 UiElement buttonContainsText = find(byText);
 ----
 
+=== Default locator configurator
+
+When you want to preconfigure all locators, you can use
+[source,java]
+----
+LOCATE.setConfigurator(locator -> {
+   // Configure your locator here
+});
+----
+
+=== GuiElements inside frames
 == UiElements inside frames
 
 Accessing WebElements inside frames requires changing the active frame before any action. UiElements do that automatically as long you identify every `<frame>` or `<iframe>` as own element.

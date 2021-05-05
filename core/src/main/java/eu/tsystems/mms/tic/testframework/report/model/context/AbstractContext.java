@@ -86,8 +86,12 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
             Supplier<T> newContextSupplier,
             Consumer<T> whenAddedToQueue
     ) {
+        /**
+         * We have to filter by raw {@link #name} instead of {@link #getName()}
+         * which could be generated.
+         */
         List<T> list = contexts.stream()
-                .filter(context -> name.equals(context.getName()))
+                .filter(context -> name.equals(context.name))
                 .collect(Collectors.toList());
 
         if (list.size() == 0) {

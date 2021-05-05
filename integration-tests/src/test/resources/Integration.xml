@@ -26,37 +26,37 @@
         </packages>
     </test>
 
-<!--    <suite-files>-->
-<!--        <suite-file path="GuiElementStandard.xml"></suite-file>-->
-<!--        <suite-file path="GuiElementVariations.xml"></suite-file>-->
-<!--        <suite-file path="PageObjects.xml"></suite-file>-->
-<!--    </suite-files>-->
+    <suite-files>
+        <suite-file path="GuiElementStandard.xml"></suite-file>
+        <suite-file path="GuiElementVariations.xml"></suite-file>
+        <suite-file path="PageObjects.xml"></suite-file>
+    </suite-files>
 
-<!--    <test name="Events" parallel="false">-->
-<!--        <packages>-->
-<!--            <package name="eu.tsystems.mms.tic.testframework.test.events"/>-->
-<!--        </packages>-->
-<!--    </test>-->
+    <test name="Events" parallel="false">
+        <packages>
+            <package name="eu.tsystems.mms.tic.testframework.test.events"/>
+        </packages>
+    </test>
 
-<!--    <test name="WebDriver" parallel="methods">-->
-<!--        <groups>-->
-<!--            <run>-->
-<!--                <exclude name="SEQUENTIAL"/>-->
-<!--            </run>-->
-<!--        </groups>-->
-<!--        <packages>-->
-<!--            <package name="eu.tsystems.mms.tic.testframework.test.webdrivermanager"/>-->
-<!--        </packages>-->
-<!--    </test>-->
+    <test name="WebDriver" parallel="methods">
+        <groups>
+            <run>
+                <exclude name="SEQUENTIAL"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="eu.tsystems.mms.tic.testframework.test.webdrivermanager"/>
+        </packages>
+    </test>
 
-<!--    <test name="Utils" parallel="methods">-->
-<!--        <groups>-->
-<!--            <run>-->
-<!--                <exclude name="SEQUENTIAL"/>-->
-<!--            </run>-->
-<!--        </groups>-->
-<!--        <packages>-->
-<!--            <package name="eu.tsystems.mms.tic.testframework.test.utils"/>-->
-<!--        </packages>-->
-<!--    </test>-->
+    <test name="Utils" parallel="methods">
+        <groups>
+            <run>
+                <exclude name="SEQUENTIAL"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="eu.tsystems.mms.tic.testframework.test.utils"/>
+        </packages>
+    </test>
 </suite>

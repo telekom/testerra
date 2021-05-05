@@ -39,9 +39,11 @@ import java.lang.reflect.Constructor;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.DefaultConfiguration;
@@ -114,6 +116,11 @@ public class Testerra {
     private static final BuildInformation buildInformation;
 
     static {
+        String logLevel = System.getProperty("log4j.level");
+        if (logLevel != null) {
+            Level desiredLogLevel = Level.valueOf(logLevel.trim().toUpperCase(Locale.ROOT));
+            Configurator.setRootLevel(desiredLogLevel);
+        }
         DefaultConfiguration defaultConfiguration = new DefaultConfiguration();
         loggerContext = Configurator.initialize(defaultConfiguration);
         buildInformation = new BuildInformation();

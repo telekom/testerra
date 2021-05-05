@@ -22,11 +22,15 @@
 package eu.tsystems.mms.tic.testframework.test.utils;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
 import eu.tsystems.mms.tic.testframework.pageobjects.XPath;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultLocator;
 import eu.tsystems.mms.tic.testframework.testing.UiElementFinderFactoryProvider;
 import org.openqa.selenium.By;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class LocatorTest extends AbstractTestSitesTest implements UiElementFinderFactoryProvider {
@@ -116,13 +120,16 @@ public class LocatorTest extends AbstractTestSitesTest implements UiElementFinde
         div.expect().attribute("data-qa").is("action/login");
     }
 
-    @Test
+    /**
+     * This feature is not necessary anymore
+     */
+    @Test(enabled = false)
     public void test_cloneLocateWithNewBy() {
-        Locate locator = Locate.by(By.xpath("//body")).displayed().unique();
-        Locate clonedLocator = Locate.by(By.xpath("//head"), locator);
+        DefaultLocator locator = (DefaultLocator)Locate.by(By.xpath("//body")).displayed().unique();
+        DefaultLocator clonedLocator = (DefaultLocator)Locate.by(By.xpath("//head"), locator);
 
         Assert.assertSame(clonedLocator.getFilter(), locator.getFilter());
         Assert.assertEquals("By.xpath: //head", clonedLocator.getBy().toString());
-        Assert.assertTrue(locator.isUnique());
+        Assert.assertTrue(clonedLocator.isUnique());
     }
 }

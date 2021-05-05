@@ -28,6 +28,8 @@ import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
+import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import java.io.File;
 import org.openqa.selenium.By;
@@ -35,7 +37,7 @@ import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class GuiElementAdditionalTests extends AbstractTestSitesTest {
+public class GuiElementAdditionalTests extends AbstractTestSitesTest implements AssertProvider {
 
     @Test
     public void testT01_Upload() {
@@ -74,8 +76,8 @@ public class GuiElementAdditionalTests extends AbstractTestSitesTest {
 
     @Test()
     public void test04_LocateSubElementWithUniqueConfigurator_fails() {
-        Locate.setConfigurator(Locate::unique);
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        Locate.setConfigurator(Locator::unique);
+        final WebDriver driver = getWebDriver();
         GuiElement body = new GuiElement(driver, By.xpath("//body"));
         GuiElement div = body.getSubElement(By.xpath("//div"));
 
@@ -88,6 +90,6 @@ public class GuiElementAdditionalTests extends AbstractTestSitesTest {
             notFoundException = e;
         }
 
-        Assert.assertTrue(notFoundException.getCause().getMessage().contains("To many WebElements found"), "Expect to fail because of to many WebElements found");
+        ASSERT.assertEndsWith(notFoundException.getCause().getMessage(), "equals [1]");
     }
 }

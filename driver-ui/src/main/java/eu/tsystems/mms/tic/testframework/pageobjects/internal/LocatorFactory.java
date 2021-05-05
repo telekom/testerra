@@ -21,10 +21,12 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
 import eu.tsystems.mms.tic.testframework.pageobjects.PreparedLocator;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.XPath;
+import java.util.function.Consumer;
 import org.openqa.selenium.By;
 
 /**
@@ -32,7 +34,9 @@ import org.openqa.selenium.By;
  *
  * @author Mike Reiche
  */
-public class LocatorFactory {
+public class LocatorFactory implements Loggable {
+    Consumer<Locator> locatorConsumer;
+
     public Locator by(By by) {
         return new DefaultLocator(by);
     }
@@ -46,5 +50,12 @@ public class LocatorFactory {
     }
     public PreparedLocator prepare(final String format) {
         return new DefaultPreparedLocator(format);
+    }
+
+    public void setConfigurator(Consumer<Locator> consumer) {
+        if (consumer != null) {
+            log().info("Using global configurator");
+        }
+        this.locatorConsumer = consumer;
     }
 }

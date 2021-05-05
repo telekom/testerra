@@ -21,6 +21,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
+import eu.tsystems.mms.tic.testframework.pageobjects.LocatorFactoryProvider;
 import java.util.function.Predicate;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -29,13 +30,16 @@ import org.openqa.selenium.WebElement;
  * Advanced selector for elements as replacement for By
  * @author Mike Reiche
  */
-public class DefaultLocator implements Locator {
+public class DefaultLocator implements Locator, LocatorFactoryProvider {
     private By by;
     protected Predicate<WebElement> filter;
     protected boolean unique = false;
 
     DefaultLocator(By by) {
         this.by = by;
+        if (LOCATE.locatorConsumer != null) {
+            LOCATE.locatorConsumer.accept(this);
+        }
     }
 
     public By getBy() {

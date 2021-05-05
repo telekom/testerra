@@ -50,7 +50,7 @@ public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implem
         }
     }
 
-    @BeforeMethod()
+    @BeforeMethod(alwaysRun = true)
     public void visitTestPage(Method method) {
         visitTestPage(getWebDriver());
     }

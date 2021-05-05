@@ -1,0 +1,15 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="UiElement Sequential" verbose="10" configfailurepolicy="continue">
+
+    <test name="UiElement core features" parallel="none">
+        <groups>
+            <run>
+                <include name="SEQUENTIAL"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="eu.tsystems.mms.tic.testframework.test.guielement.GuiElementAdditionalTests"/>
+        </classes>
+    </test>
+
+</suite>

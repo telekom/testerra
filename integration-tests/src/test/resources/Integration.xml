@@ -17,6 +17,7 @@
 
     <suite-files>
         <suite-file path="GuiElementStandard.xml"></suite-file>
+        <suite-file path="UiElementSequential.xml"></suite-file>
         <suite-file path="GuiElementVariations.xml"></suite-file>
         <suite-file path="PageObjects.xml"></suite-file>
     </suite-files>

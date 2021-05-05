@@ -115,7 +115,7 @@ public class DesktopGuiElementCore implements GuiElementCore, Loggable {
                     elements.removeIf(webElement -> !filter.test(webElement));
                 }
                 if (selector.isUnique() && elements.size() > 1) {
-                    throw new Exception("To many WebElements found (" + elements.size() + ")");
+                    throw new Exception("Too many WebElements found (" + elements.size() + ")");
                 }
                 numberOfFoundElements = elements.size();
 

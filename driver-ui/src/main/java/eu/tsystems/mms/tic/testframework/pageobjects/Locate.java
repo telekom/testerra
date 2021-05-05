@@ -25,6 +25,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -55,7 +56,12 @@ public class Locate {
      * Sets a global configurator callback for all created {@link Locate} instances
      */
     public static void setConfigurator(Consumer<Locate> callback) {
-        LoggerFactory.getLogger(Locate.class).info("Using global locator configurator");
+        Logger logger = LoggerFactory.getLogger(Locate.class);
+        if (callback != null) {
+            logger.info("Using global configurator");
+        } else {
+            logger.info("Unset global configurator");
+        }
         locatorConfigurator = callback;
     }
 

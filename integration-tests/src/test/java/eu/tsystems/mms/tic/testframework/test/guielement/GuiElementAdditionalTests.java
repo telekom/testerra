@@ -90,6 +90,7 @@ public class GuiElementAdditionalTests extends AbstractTestSitesTest {
             notFoundException = e;
         }
 
-        Assert.assertTrue(notFoundException.getCause().getMessage().contains("To many WebElements found"), "Expect to fail because of to many WebElements found");
+        Assert.assertTrue(notFoundException.getCause().getMessage().contains("Too many WebElements found"), "Expect to fail because of too many WebElements found");
+        Locate.setConfigurator(null);
     }
 }

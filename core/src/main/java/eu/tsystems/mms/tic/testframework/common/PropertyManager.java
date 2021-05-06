@@ -54,7 +54,7 @@ public final class PropertyManager {
     /**
      * The static properties.
      */
-    private static final Properties FILEPROPERTIES = new Properties();
+    static final Properties FILEPROPERTIES = new Properties();
     private static final PropertiesParser propertiesParser;
 
     /*
@@ -113,20 +113,25 @@ public final class PropertyManager {
         }
     }
 
-    /*
-    LOADERS section
+    /**
+     * Loads properties from a resource file into existing {@link Properties}
+     * @param properties
+     * @param resourceFile
+     * @param charset If null, the default charset is used
+     * @return TRUE if the properties have been loaded
      */
-    private static void pLoadPropertiesFromResource(final Properties properties, final String resourceFile, String charset) {
+    static boolean pLoadPropertiesFromResource(final Properties properties, final String resourceFile, String charset) {
         FileUtils fileUtils = new FileUtils();
         try {
             File file = fileUtils.getLocalOrResourceFile(resourceFile);
-            LOGGER.info("Load " + file.getAbsolutePath());
             final InputStream propertiesInputStream = new FileInputStream(file);
             if (charset == null) {
                 charset = Charset.defaultCharset().name();
             }
             InputStreamReader inputStreamReader = new InputStreamReader(propertiesInputStream, charset);
             properties.load(inputStreamReader);
+            LOGGER.info("Loaded " + file.getAbsolutePath());
+            return true;
         } catch (FileNotFoundException e) {
             // ignore
         } catch (final IOException ioEx) {
@@ -134,6 +139,7 @@ public final class PropertyManager {
         } catch (final IllegalArgumentException illArgEx) {
             throw new IllegalStateException(String.format("The properties file %s contains illegal characters!", resourceFile), illArgEx);
         }
+        return false;
     }
 
     private static Properties pLoadThreadLocalProperties(final String resourceFile, final String charset) {

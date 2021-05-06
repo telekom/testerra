@@ -1,22 +1,22 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
 <suite name="Testerra Integration Test Suite" verbose="10" configfailurepolicy="continue" thread-count="10" parallel="false">
 
-    <suite-files>
-        <suite-file path="GuiElementStandard.xml"></suite-file>
-        <suite-file path="GuiElementVariations.xml"></suite-file>
-        <suite-file path="PageObjects.xml"></suite-file>
-        <suite-file path="UiElement.xml"></suite-file>
-        <suite-file path="MethodParallel.xml"></suite-file>
-    </suite-files>
+<!--    <suite-files>-->
+<!--        <suite-file path="GuiElementStandard.xml"></suite-file>-->
+<!--        <suite-file path="GuiElementVariations.xml"></suite-file>-->
+<!--        <suite-file path="PageObjects.xml"></suite-file>-->
+<!--        <suite-file path="UiElement.xml"></suite-file>-->
+<!--        <suite-file path="MethodParallel.xml"></suite-file>-->
+<!--    </suite-files>-->
 
-    <test name="Priority tests" parallel="false">
+    <test name="Sequential tests" parallel="false">
         <groups>
             <run>
                 <include name="SEQUENTIAL"/>
             </run>
         </groups>
         <packages>
-            <package name="eu.tsystems.mms.tic.testframework.test.execution"/>
+            <package name="eu.tsystems.mms.tic.testframework.test.*"/>
         </packages>
     </test>
 </suite>

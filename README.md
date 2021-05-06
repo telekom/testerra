@@ -35,20 +35,20 @@ Maven:
     <dependency>
         <groupId>io.testerra</groupId>
         <artifactId>driver-ui-desktop</artifactId>
-        <version>2.0-RC-4/version>
+        <version>2.0-RC-5</version>
     </dependency>
     <dependency>
         <groupId>io.testerra</groupId>
         <artifactId>report-ng</artifactId>
-        <version>2.0-RC-4</version>
+        <version>2.0-RC-5</version>
     </dependency>
 </dependencies>
 ````
 
 Gradle:
 ````groovy
-compile 'io.testerra:driver-ui-desktop:2.0-RC-4'
-compile 'io.testerra:report-ng:2.0-RC-4'
+compile 'io.testerra:driver-ui-desktop:2.0-RC-5'
+compile 'io.testerra:report-ng:2.0-RC-5'
 ````
 
 ### Using testerra functionality:
@@ -67,7 +67,7 @@ public class MyTest extends TesterraTest {
 
 ## Documentation
 
-* Check out our comprehensive [Testerra documentation](http://docs.testerra.io/testerra/2.0-RC-4/)!
+* Check out our comprehensive [Testerra documentation](http://docs.testerra.io/testerra/2.0-RC-5/)!
 * Feel free to try out our ready-to-use [Skeleton project][testerra-skeleton].
 
 ## Testing

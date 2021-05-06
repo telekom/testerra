@@ -33,8 +33,8 @@ public class DefaultPropertyManager implements IPropertyManager, MethodEndEvent.
     }
 
     @Override
-    public void loadProperties(String resourceFile) {
-        PropertyManager.loadProperties(resourceFile);
+    public boolean loadProperties(String resourceFile) {
+        return PropertyManager.pLoadPropertiesFromResource(PropertyManager.FILEPROPERTIES, resourceFile, null);
     }
 
     public String getProperty(String key, Object defaultValue) {

@@ -9,7 +9,10 @@ public interface IPropertyManager {
 
     void removeTestLocalProperty(String key);
 
-    void loadProperties(String resourceFile);
+    /**
+     * @return TRUE if the properties file has been loaded
+     */
+    boolean loadProperties(String resourceFile);
 
     default String getProperty(String key) {
         return getProperty(key, null);

@@ -20,6 +20,7 @@
  *
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
+import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
@@ -36,7 +37,8 @@ public class WebDriverManagerConfig extends DesktopWebDriverRequest implements
 {
     @Deprecated
     public WebDriverManagerConfig reset() {
-        // do nothing here
+        setShutdownAfterTest(PropertyManager.getBooleanProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, true));
+        setShutdownAfterTestFailed(PropertyManager.getBooleanProperty(TesterraProperties.CLOSE_WINDOWS_ON_FAILURE, true));
         return this;
     }
 

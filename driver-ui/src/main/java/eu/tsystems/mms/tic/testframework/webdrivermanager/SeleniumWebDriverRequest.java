@@ -54,7 +54,7 @@ public class SeleniumWebDriverRequest extends AbstractWebDriverRequest implement
             try {
                 this.setBaseUrl(baseUrl);
             } catch (MalformedURLException e) {
-                throw new RuntimeException("Unable to read base url from property " + Testerra.Properties.BASEURL.toString(), e);
+                throw new RuntimeException("Unable to read base url from property " + Testerra.Properties.BASEURL, e);
             }
         }
     }

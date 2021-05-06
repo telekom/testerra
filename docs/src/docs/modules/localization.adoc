@@ -3,6 +3,31 @@
 Websites come in many languages, where the functionality may not change, but labels of buttons, input or other interactive elements.
 Testerra provides an easy and simple way to support the localization of GuiElements.
 
+== Enable Unicode for your project
+
+In build environments, where Unicode is not default, you should force to use it in your project by setting the Java compile options.
+
+.build.gradle
+[source, groovy, role="primary"]
+----
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = "UTF-8"
+----
+
+.pom.xml
+[source, xml, role="secondary"]
+----
+<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+----
+
+For Gradle, you should also set your system-wide or local `gradle.properties`.
+
+.gradle.properties
+[source, groovy]
+----
+systemProp.file.encoding=utf-8
+----
+
 == Add localization resource bundle
 
 The localization is based on **Unicode** `.properties` files loaded during runtime.

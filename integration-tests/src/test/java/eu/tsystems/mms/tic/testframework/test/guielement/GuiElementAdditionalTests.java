@@ -74,7 +74,7 @@ public class GuiElementAdditionalTests extends AbstractTestSitesTest implements 
         subElement.asserts().assertIsPresent();
     }
 
-    @Test()
+    @Test(groups = {"SEQUENTIAL"})
     public void test04_LocateSubElementWithUniqueConfigurator_fails() {
         Locate.setConfigurator(Locator::unique);
         final WebDriver driver = getWebDriver();
@@ -91,5 +91,6 @@ public class GuiElementAdditionalTests extends AbstractTestSitesTest implements 
         }
 
         ASSERT.assertEndsWith(notFoundException.getCause().getMessage(), "equals [1]");
+        Locate.setConfigurator(null);
     }
 }

@@ -290,7 +290,7 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
 
             final long limit = Timings.LARGE_LIMIT;
             if (ms >= limit) {
-                log().warn("find() #" + findCounter + " of " + toString() + " took " + ms + " ms.");
+                log().warn(String.format("find() #%d of %s took %.2fs of %.0fs", findCounter, this, ms/1000f, limit/1000f));
             }
         }
     }

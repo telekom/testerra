@@ -24,16 +24,12 @@ package eu.tsystems.mms.tic.testframework.testing;
 import com.google.inject.Inject;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
-import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssertion;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.Sequence;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 import org.testng.Assert;
 
 /**
@@ -74,10 +70,14 @@ public class DefaultTestController implements TestController, Loggable {
         overrides.setTimeout(prevTimeout);
     }
 
+    private String createSequenceLog(int timeoutSeconds, Sequence sequence) {
+        return String.format("after %.2fs of %ds", sequence.getDurationMs()/1000f, timeoutSeconds);
+    }
+
     @Override
     public void retryFor(int seconds, Assert.ThrowingRunnable runnable, Runnable whenFail) {
         final Throwable finalThrowable = _waitFor(seconds, runnable, (sequence, throwable) -> {
-            log().info("Retry after " + sequence.getDurationMs() + "ms because of: " + throwable.getMessage());
+            log().info("Retry " + createSequenceLog(seconds, sequence) + " because of: " + throwable.getMessage());
             if (whenFail != null) {
                 whenFail.run();
             }
@@ -90,7 +90,7 @@ public class DefaultTestController implements TestController, Loggable {
     @Override
     public boolean waitFor(int seconds, Assert.ThrowingRunnable runnable, Runnable whenFail) {
         return _waitFor(seconds, runnable, (sequence,throwable) -> {
-            log().info("Giving up after " + sequence.getDurationMs() + "ms because of: " + throwable.getMessage());
+            log().info("Giving up " + createSequenceLog(seconds, sequence) + " because of: " + throwable.getMessage());
             if (whenFail != null) {
                 whenFail.run();
             }

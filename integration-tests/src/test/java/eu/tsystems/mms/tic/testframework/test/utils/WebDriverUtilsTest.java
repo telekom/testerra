@@ -166,19 +166,17 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
         openPopUpWindow(driver);
 
-        Optional<WebDriver> optionalWebDriver = WebDriverUtils.switchToWindow(driver, webDriver -> webDriver.getTitle().equals("List"));
+        boolean switched = WebDriverUtils.switchToWindow(driver, webDriver -> webDriver.getTitle().equals("List"));
 
-        Assert.assertTrue(optionalWebDriver.isPresent());
-        WebDriver popupDriver = optionalWebDriver.get();
-        Assert.assertEquals(popupDriver.getTitle(), "List", msgSwitchSuccessfully);
+        Assert.assertTrue(switched);
         Assert.assertEquals(driver.getTitle(), "List", msgSwitchSuccessfully);
 
         // Close popup
-        popupDriver.close();
+        driver.close();
 
         // And switch back
-        optionalWebDriver = WebDriverUtils.switchToWindow(driver, webDriver -> webDriver.getTitle().contains("Input"));
-        Assert.assertTrue(optionalWebDriver.isPresent());
+        switched = WebDriverUtils.switchToWindow(driver, webDriver -> webDriver.getTitle().contains("Input"));
+        Assert.assertTrue(switched);
     }
 
     @Test
@@ -189,9 +187,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
         String titleBeforeSwitch = driver.getTitle();
 
-        Optional<WebDriver> optionalWebDriver = WebDriverUtils.switchToWindow(driver, webDriver -> false);
-
-        Assert.assertFalse(optionalWebDriver.isPresent());
+        Assert.assertFalse(WebDriverUtils.switchToWindow(driver, webDriver -> false));
         Assert.assertEquals(driver.getTitle(), titleBeforeSwitch);
     }
 

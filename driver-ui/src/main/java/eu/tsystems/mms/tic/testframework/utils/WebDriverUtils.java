@@ -59,7 +59,7 @@ public final class WebDriverUtils {
     /**
      * Timeout / maximum duration for Window Switching
      */
-    private static long WINDOW_SWITCH_MAX_DURATION_TIME_SECONDS = PropertyManager.getLongProperty(TesterraProperties.WEBDRIVER_WINDOW_SWITCH_MAX_DURATION, 3);
+    private static final long WINDOW_SWITCH_MAX_DURATION_TIME_SECONDS = PropertyManager.getLongProperty(TesterraProperties.WEBDRIVER_WINDOW_SWITCH_MAX_DURATION, 3);
 
     /**
      * Hidden constructor.
@@ -67,11 +67,11 @@ public final class WebDriverUtils {
     private WebDriverUtils() {
     }
 
-    public static Optional<WebDriver> switchToWindow(Predicate<WebDriver> predicate) {
+    public static boolean switchToWindow(Predicate<WebDriver> predicate) {
         return switchToWindow(WebDriverManager.getWebDriver(), predicate);
     }
 
-    public static Optional<WebDriver> switchToWindow(WebDriver mainWebDriver, Predicate<WebDriver> predicate) {
+    public static boolean switchToWindow(WebDriver mainWebDriver, Predicate<WebDriver> predicate) {
         String mainWindowHandle;
         try {
             mainWindowHandle = mainWebDriver.getWindowHandle();
@@ -83,13 +83,13 @@ public final class WebDriverUtils {
         return mainWebDriver.getWindowHandles().stream()
                 .filter(windowHandle -> !windowHandle.equals(finalMainWindowHandle))
                 .map(windowHandle -> mainWebDriver.switchTo().window(windowHandle))
-                .filter(webDriver -> {
+                .anyMatch(webDriver -> {
                     boolean valid = predicate.test(webDriver);
                     if (!valid && !finalMainWindowHandle.isEmpty()) {
                         mainWebDriver.switchTo().window(finalMainWindowHandle);
                     }
                     return valid;
-                }).findFirst();
+                });
     }
 
     /**

@@ -16,13 +16,13 @@ Sometimes you will come across testing websites with multiple windows, such as p
 [source,java]
 ----
 // Switch to a window by matching title
-WebDriver webDriver = WEB_DRIVER_MANAGER.switchToWindowTitle(WebDriver webDriver, String windowTitle);
+WEB_DRIVER_MANAGER.switchToWindowTitle(WebDriver webDriver, String windowTitle);
 
 // Switch to a given window handle
-WebDriver webDriver = WEB_DRIVER_MANAGER.switchToWindowHandle(WebDriver webDriver, String windowHandle);
+WEB_DRIVER_MANAGER.switchToWindowHandle(WebDriver webDriver, String windowHandle);
 
 // Switch to a window by a custom condition
-Optional<WebDriver> optionalWebDriver = WEB_DRIVER_MANAGER.switchToWindow(WebDriver webDriver, webDriver -> webDriver.getCurrentUrl().contains("login"));
+boolean switched = WEB_DRIVER_MANAGER.switchToWindow(WebDriver webDriver, webDriver -> webDriver.getCurrentUrl().contains("login"));
 
-Assert.assertTrue(optionalWebDriver.isPresent(), "Login window not found");
+Assert.assertTrue(switched, "Login window not found");
 ----

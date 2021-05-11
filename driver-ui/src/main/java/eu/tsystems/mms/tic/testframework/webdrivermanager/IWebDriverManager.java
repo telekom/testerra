@@ -175,36 +175,36 @@ public interface IWebDriverManager extends WebDriverRetainer, Loggable {
         WebDriverSessionsManager.webDriverRequestConfigurators.add(handler);
     }
 
-    default Optional<WebDriver> switchToWindow(Predicate<WebDriver> predicate) {
+    default boolean switchToWindow(Predicate<WebDriver> predicate) {
         return WebDriverUtils.switchToWindow(getWebDriver(), predicate);
     }
 
-    default WebDriver switchToWindowTitle(String windowTitle) {
+    default boolean switchToWindowTitle(String windowTitle) {
         return switchToWindowTitle(getWebDriver(), windowTitle);
     }
 
-    default Optional<WebDriver> switchToWindow(WebDriver mainWebDriver, Predicate<WebDriver> predicate) {
+    default boolean switchToWindow(WebDriver mainWebDriver, Predicate<WebDriver> predicate) {
         return WebDriverUtils.switchToWindow(mainWebDriver, predicate);
     }
 
-    default WebDriver switchToWindowTitle(WebDriver mainWebDriver, String windowTitle) {
-        Optional<WebDriver> optionalWebDriver = WebDriverUtils.switchToWindow(mainWebDriver, webDriver -> {
+    default boolean switchToWindowTitle(WebDriver mainWebDriver, String windowTitle) {
+        boolean switched = WebDriverUtils.switchToWindow(mainWebDriver, webDriver -> {
             return webDriver.getTitle().equals(windowTitle);
         });
-        if (!optionalWebDriver.isPresent()) {
+        if (!switched) {
             throw new RuntimeException(String.format("Window title \"%s\" not found", windowTitle));
         }
-        return optionalWebDriver.get();
+        return switched;
     }
 
-    default WebDriver switchToWindowHandle(WebDriver mainWebDriver, String windowHandle) {
-        Optional<WebDriver> optionalWebDriver = WebDriverUtils.switchToWindow(mainWebDriver, webDriver -> {
+    default boolean switchToWindowHandle(WebDriver mainWebDriver, String windowHandle) {
+        boolean switched = WebDriverUtils.switchToWindow(mainWebDriver, webDriver -> {
             return webDriver.getWindowHandle().equals(windowHandle);
         });
-        if (!optionalWebDriver.isPresent()) {
+        if (!switched) {
             throw new RuntimeException(String.format("Window handle \"%s\" not found", windowHandle));
         }
-        return optionalWebDriver.get();
+        return switched;
     }
 
     default void keepAlive(WebDriver webDriver, int intervalSleepTimeInSeconds, int durationInSeconds) {

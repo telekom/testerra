@@ -93,8 +93,8 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     }
 
     @Override
-    public UiElementBaseAssertion waitFor() {
-        return rootElement.waitFor();
+    public UiElementBaseAssertion waitFor(int seconds) {
+        return rootElement.waitFor(seconds);
     }
 
     @Override

@@ -33,9 +33,11 @@ public interface TestableUiElement extends UiElementBase {
     default UiElementAssertion waitFor() {
         return waitFor(-1);
     }
+    @Override
     UiElementAssertion waitFor(int seconds);
     @Override
     UiElementAssertion expect();
+    @Override
     default UiElementAssertion assertThat() {
         return expect();
     }

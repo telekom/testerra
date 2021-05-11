@@ -22,7 +22,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageObject;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementActions;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementBaseAssertion;
 
@@ -31,8 +30,26 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementB
  * @author Mike Reiche
  */
 public interface UiElementBase extends WebElementActions {
-    UiElementBaseAssertion waitFor();
+    /**
+     * The same linke {@link #waitFor(int)} with default timeout
+     */
+    default UiElementBaseAssertion waitFor() {
+        return waitFor(-1);
+    }
+    /**
+     * Doesn't throw any {@link AssertionError}
+     */
+    UiElementBaseAssertion waitFor(int seconds);
+    /**
+     * Throws {@link AssertionError} when condition not matched
+     */
     UiElementBaseAssertion expect();
+    /**
+     * Another name for {@link #expect()}
+     */
+    default UiElementBaseAssertion assertThat() {
+        return expect();
+    }
     /**
      * Creates a xpath of the given {@link Locator} hierarchy NOT the actual element hierarchy
      */

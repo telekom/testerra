@@ -18,7 +18,8 @@ ext {
 }
 
 aws {
-    profileName = 'tapas'
+    // Used for local publishing
+    profileName = 'testerra'
     region = 'eu-central-1'
 }
 

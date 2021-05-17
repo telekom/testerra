@@ -1,7 +1,7 @@
 # docs
 docs contains the complete Testerra user documentation as Asciidoctor files.
 
-You will find the latest manual at https://tapas-docs.s3.eu-central-1.amazonaws.com/testerra/latest/index.html
+You will find the latest manual at http://docs.testerra.io
 
 ## Usage of highlight.js
 

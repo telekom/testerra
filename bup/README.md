@@ -5,7 +5,7 @@ It offers functionality to track, manipulate and modify HTTP requests and respon
 
 Testerra offers a simple integration to spin multiple local proxy servers or manage remote proxy servers via HTTP API.
 
-For a detailed documentation please take a look at [Testerra framework documentation.](https://tapas-docs.s3.eu-central-1.amazonaws.com/testerra/latest/index.html#_browserup_proxy)
+For a detailed documentation please take a look at [Testerra framework documentation.](http://docs.testerra.io/testerra/stable/index.html#_browserup_proxy)
 
 ## Project setup
 

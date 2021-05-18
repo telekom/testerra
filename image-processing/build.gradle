@@ -5,7 +5,6 @@ def opencv = [
         'org.bytedeco.javacpp-presets:opencv:2.4.9-0.9:linux-x86',
         'org.bytedeco.javacpp-presets:opencv:2.4.9-0.9:linux-x86_64',
         'nu.pattern:opencv:2.4.9-7',
-        'org.javatuples:javatuples:1.2'
 ]
 
 dependencies {

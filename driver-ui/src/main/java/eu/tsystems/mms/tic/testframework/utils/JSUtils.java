@@ -169,7 +169,7 @@ public final class JSUtils {
             }
         }
 
-        LOGGER.debug(msg);
+        LOGGER.trace(msg);
 
         return javascriptExecutor.executeScript(script, parameters);
     }
@@ -289,7 +289,6 @@ public final class JSUtils {
                 ),
                 webElement
         );
-        LOGGER.debug("Finished static highlighting WebElement" + webElement);
     }
 
     private static boolean isJavascriptImplementedOnPage(final WebDriver driver, final String id) {

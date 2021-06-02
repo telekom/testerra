@@ -779,6 +779,12 @@ export namespace data {
 
         /** SessionContext capabilities */
         capabilities?: (string|null);
+
+        /** SessionContext serverUrl */
+        serverUrl?: (string|null);
+
+        /** SessionContext nodeUrl */
+        nodeUrl?: (string|null);
     }
 
     /** Represents a SessionContext. */
@@ -810,6 +816,12 @@ export namespace data {
 
         /** SessionContext capabilities. */
         public capabilities: string;
+
+        /** SessionContext serverUrl. */
+        public serverUrl: string;
+
+        /** SessionContext nodeUrl. */
+        public nodeUrl: string;
 
         /**
          * Decodes a SessionContext message from the specified reader or buffer.

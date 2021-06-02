@@ -29,6 +29,7 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Optional;
 
 public class DesktopWebDriverRequest extends AbstractWebDriverRequest implements Loggable, Serializable {
 
@@ -66,5 +67,10 @@ public class DesktopWebDriverRequest extends AbstractWebDriverRequest implements
     public DesktopWebDriverRequest setWebDriverMode(WebDriverMode webDriverMode) {
         this.webDriverMode = webDriverMode;
         return this;
+    }
+
+    @Override
+    public Optional<URL> getServerUrl() {
+        return Optional.ofNullable(this.getSeleniumServerUrl());
     }
 }

@@ -19,7 +19,14 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.webdrivermanager;
+package eu.tsystems.mms.tic.testframework.webdrivermanager;
+
+import java.net.URL;
+import java.util.Optional;
 
 public class UnspecificWebDriverRequest extends AbstractWebDriverRequest {
+    @Override
+    public Optional<URL> getServerUrl() {
+        return Optional.empty();
+    }
 }

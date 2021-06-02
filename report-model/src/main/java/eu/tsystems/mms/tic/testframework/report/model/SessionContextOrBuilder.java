@@ -105,4 +105,28 @@ public interface SessionContextOrBuilder extends
    */
   com.google.protobuf.ByteString
       getCapabilitiesBytes();
+
+  /**
+   * <code>string server_url = 12;</code>
+   * @return The serverUrl.
+   */
+  java.lang.String getServerUrl();
+  /**
+   * <code>string server_url = 12;</code>
+   * @return The bytes for serverUrl.
+   */
+  com.google.protobuf.ByteString
+      getServerUrlBytes();
+
+  /**
+   * <code>string node_url = 13;</code>
+   * @return The nodeUrl.
+   */
+  java.lang.String getNodeUrl();
+  /**
+   * <code>string node_url = 13;</code>
+   * @return The bytes for nodeUrl.
+   */
+  com.google.protobuf.ByteString
+      getNodeUrlBytes();
 }

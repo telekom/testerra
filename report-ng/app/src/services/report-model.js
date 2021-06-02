@@ -1722,6 +1722,8 @@ export const data = $root.data = (() => {
          * @property {string|null} [browserName] SessionContext browserName
          * @property {string|null} [browserVersion] SessionContext browserVersion
          * @property {string|null} [capabilities] SessionContext capabilities
+         * @property {string|null} [serverUrl] SessionContext serverUrl
+         * @property {string|null} [nodeUrl] SessionContext nodeUrl
          */
 
         /**
@@ -1796,6 +1798,22 @@ export const data = $root.data = (() => {
         SessionContext.prototype.capabilities = "";
 
         /**
+         * SessionContext serverUrl.
+         * @member {string} serverUrl
+         * @memberof data.SessionContext
+         * @instance
+         */
+        SessionContext.prototype.serverUrl = "";
+
+        /**
+         * SessionContext nodeUrl.
+         * @member {string} nodeUrl
+         * @memberof data.SessionContext
+         * @instance
+         */
+        SessionContext.prototype.nodeUrl = "";
+
+        /**
          * Decodes a SessionContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.SessionContext
@@ -1833,6 +1851,12 @@ export const data = $root.data = (() => {
                     break;
                 case 11:
                     m.capabilities = r.string();
+                    break;
+                case 12:
+                    m.serverUrl = r.string();
+                    break;
+                case 13:
+                    m.nodeUrl = r.string();
                     break;
                 default:
                     r.skipType(t & 7);

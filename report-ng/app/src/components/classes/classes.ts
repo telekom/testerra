@@ -33,9 +33,9 @@ import "./classes.scss"
 
 @autoinject()
 export class Classes extends AbstractViewModel {
-
+    readonly CUSTOM_STATUS_REPAIRED="repaired";
     private _executionStatistics: ExecutionStatistics;
-    private _selectedStatus:number;
+    private _selectedStatus:data.ResultStatusType|string;
     private _availableStatuses = this._statusConverter.relevantStatuses;
     private _filteredMethodDetails:MethodDetails[];
     private _showConfigurationMethods:boolean = null;
@@ -58,7 +58,9 @@ export class Classes extends AbstractViewModel {
         navInstruction: NavigationInstruction
     ) {
         super.activate(params, routeConfig, navInstruction);
-        if (params.status) {
+        if (params.status === this.CUSTOM_STATUS_REPAIRED) {
+            this._selectedStatus = params.status;
+        } else if (params.status) {
             this._selectedStatus = this._statusConverter.getStatusForClass(params.status);
         } else {
             this._selectedStatus = null;
@@ -84,16 +86,20 @@ export class Classes extends AbstractViewModel {
             delete this.queryParams.q;
         }
 
-        if (this._selectedStatus && this._selectedStatus >= 0) {
+        const relevantStatuses:ResultStatusType[] = [];
+
+        if (this._selectedStatus === this.CUSTOM_STATUS_REPAIRED) {
+            relevantStatuses.push(...this._statusConverter.passedStatuses);
+            this.queryParams.status = this.CUSTOM_STATUS_REPAIRED;
+        } else if (this._selectedStatus >= 0) {
             this.queryParams.status = this._statusConverter.getClassForStatus(this._selectedStatus);
+            relevantStatuses.push(...this._statusConverter.groupStatus(this._selectedStatus as data.ResultStatusType));
         } else {
             delete this.queryParams.status;
         }
 
         const uniqueClasses = {};
         const uniqueStatuses = {};
-
-        const relevantStatuses:ResultStatusType[] = this._selectedStatus?this._statusConverter.groupStatus(this._selectedStatus):null;
         this._filteredMethodDetails = [];
 
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
@@ -118,37 +124,38 @@ export class Classes extends AbstractViewModel {
                     return !this.queryParams.class || this.queryParams.class == classStatistic.classIdentifier
                 })
                 .forEach(classStatistic => {
-                    classStatistic.methodContexts
-                        .filter(methodContext => {
-                            return (!relevantStatuses || relevantStatuses.indexOf(methodContext.resultStatus) >= 0)
-                        })
-                        .filter(methodContext => {
-                            return (!filterByFailureAspect || relevantFailureAspect.methodContexts.indexOf(methodContext) >= 0);
-                        })
-                        .filter(methodContext => {
-                            return (this._showConfigurationMethods == true
-                                || (this._showConfigurationMethods == false && methodContext.methodType == MethodType.TEST_METHOD)
-                            )
-                        })
-                        .map(methodContext => {
-                            const methodDetails = new MethodDetails(methodContext, classStatistic);
-                            methodDetails.failureAspectStatistics = (relevantFailureAspect?relevantFailureAspect:(methodContext.errorContext?new FailureAspectStatistics(methodContext.errorContext):null));
-                            return methodDetails;
-                        })
-                        .filter(methodDetails => {
-                            return (
-                                !this._searchRegexp
-                                || (
-                                    methodDetails.failureAspectStatistics?.identifier.match(this._searchRegexp)
-                                    || methodDetails.identifier.match(this._searchRegexp)
-                                )
-                            );
-                        })
-                        .forEach(methodDetails => {
-                            uniqueClasses[classStatistic.classContext.fullClassName] = true;
-                            uniqueStatuses[methodDetails.methodContext.resultStatus] = true;
-                            this._filteredMethodDetails.push(methodDetails);
-                        })
+                    let methodContexts = classStatistic.methodContexts;
+                    if (relevantStatuses.length > 0) {
+                        methodContexts = methodContexts.filter(methodContext => relevantStatuses.indexOf(methodContext.resultStatus) >= 0);
+                    }
+
+                    if (filterByFailureAspect) {
+                        methodContexts = methodContexts.filter(methodContext => relevantFailureAspect.methodContexts.indexOf(methodContext) >= 0);
+                    }
+
+                    if (this._showConfigurationMethods === false) {
+                        methodContexts = methodContexts.filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD);
+                    }
+
+                    let methodDetails = methodContexts.map(methodContext => {
+                        const methodDetails = new MethodDetails(methodContext, classStatistic);
+                        methodDetails.failureAspectStatistics = (relevantFailureAspect?relevantFailureAspect:(methodContext.errorContext?new FailureAspectStatistics(methodContext.errorContext):null));
+                        return methodDetails;
+                    });
+
+                    if (this._selectedStatus === this.CUSTOM_STATUS_REPAIRED) {
+                        methodDetails = methodDetails.filter(methodDetails => methodDetails.isRepaired);
+                    }
+
+                    if (this._searchRegexp) {
+                        methodDetails = methodDetails.filter(methodDetails => methodDetails.failureAspectStatistics?.identifier.match(this._searchRegexp) || methodDetails.identifier.match(this._searchRegexp))
+                    }
+
+                    methodDetails.forEach(methodDetails => {
+                        uniqueClasses[classStatistic.classContext.fullClassName] = true;
+                        uniqueStatuses[methodDetails.methodContext.resultStatus] = true;
+                        this._filteredMethodDetails.push(methodDetails);
+                    })
                 });
 
             // Sort by method name

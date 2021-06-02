@@ -36,6 +36,7 @@
                         >
                             <span class="badge status-${status|statusClass}">${status|statusName}</span>
                         </mdc-list-item>
+                        <mdc-list-item value="repaired" if.bind="_executionStatistics.repairedTests>0"><span class="badge status-passed">Repaired</span></mdc-list-item>
                     </mdc-list>
                 </mdc-select>
             </mdc-layout-grid-cell>
@@ -66,7 +67,7 @@
                     <mdc-icon mdc-text-field-icon leading>search</mdc-icon>
                 </mdc-text-field>
             </mdc-layout-grid-cell>
-            <mdc-layout-grid-cell span="2" position="middle" class="flex">
+            <mdc-layout-grid-cell span="2" position="middle">
                 <mdc-form-field class="right-aligned">
                     <mdc-switch checked.bind="_showConfigurationMethods"
                                 change.delegate="_showConfigurationChanged()"
@@ -89,8 +90,7 @@
                     <mdc-data-table-content>
                         <mdc-data-table-row repeat.for="methodDetails of _filteredMethodDetails">
                             <mdc-data-table-cell>
-                                <a class="badge status-${methodDetails.methodContext.resultStatus|statusClass}"
-                                >${methodDetails.methodContext.resultStatus|statusName}</a>
+                                <a class="badge status-${methodDetails.methodContext.resultStatus|statusClass}"><span if.bind="methodDetails.isRepaired">Repaired</span><span else>${methodDetails.methodContext.resultStatus|statusName}</span></a>
                             </mdc-data-table-cell>
                             <mdc-data-table-cell class="wrapable">
                                 <a route-href="route: tests; params.bind: withQueryParams({class: methodDetails.classStatistics.classIdentifier})"

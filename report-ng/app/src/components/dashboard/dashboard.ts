@@ -94,8 +94,16 @@ export class Dashboard extends AbstractViewModel {
             });
             this._filterItems.push({
                 status: ResultStatusType.PASSED,
-                counts: [this._executionStatistics.overallPassed,(this._passedRetried>0?`&sup; ${this._passedRetried}`:null)],
-                labels: [this._statusConverter.getLabelForStatus(ResultStatusType.PASSED), (this._passedRetried>0?this._statusConverter.getLabelForStatus(ResultStatusType.PASSED_RETRY):null)],
+                counts: [
+                    this._executionStatistics.overallPassed,
+                    (this._executionStatistics.repairedTests>0?`&sup; ${this._executionStatistics.repairedTests}`:null),
+                    (this._passedRetried>0?`&sup; ${this._passedRetried}`:null),
+                ],
+                labels: [
+                    this._statusConverter.getLabelForStatus(ResultStatusType.PASSED),
+                    (this._executionStatistics.repairedTests>0?"Repaired":null),
+                    (this._passedRetried>0?this._statusConverter.getLabelForStatus(ResultStatusType.PASSED_RETRY):null),
+                ],
                 active:false
             });
 

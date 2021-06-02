@@ -23,6 +23,7 @@ import {Aurelia} from 'aurelia-framework';
 import {PLATFORM} from 'aurelia-pal';
 import {Config} from "./services/config-dev";
 import {DateFormatValueConverter} from "t-systems-aurelia-components/src/value-converters/date-format-value-converter";
+import {ObjectStorage} from "t-systems-aurelia-components/src/utils/object-storage";
 
 export function configure(aurelia: Aurelia) {
 
@@ -55,16 +56,17 @@ export function configure(aurelia: Aurelia) {
         .globalResources([
             PLATFORM.moduleName('components/apex-chart/apex-chart'),
             PLATFORM.moduleName('components/class-name-markup/class-name-markup'),
-            PLATFORM.moduleName('components/session-context-markup/session-context-markup'),
             PLATFORM.moduleName('components/method-tags/method-tags'),
             PLATFORM.moduleName('components/log-view/log-view'),
             PLATFORM.moduleName('components/code-view/code-view'),
             PLATFORM.moduleName('components/alert/alert.html'),
             PLATFORM.moduleName('components/lazy-image/lazy-image'),
+            PLATFORM.moduleName('components/lazy-video/lazy-video'),
             PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/date-format-value-converter'),
             PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/object-values-value-converter'),
             PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/highlight-text-value-converter'),
             PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/duration-format-value-converter'),
+            PLATFORM.moduleName('value-converters/json-value-converter'),
             PLATFORM.moduleName('value-converters/status-icon-name-value-converter'),
             PLATFORM.moduleName('value-converters/status-name-value-converter'),
             PLATFORM.moduleName('value-converters/status-class-value-converter'),
@@ -82,7 +84,11 @@ export function configure(aurelia: Aurelia) {
         aurelia.use.developmentLogging("debug");
     }
 
+    // Setup defaults
     DateFormatValueConverter.setDefaultFormat("ddd MMM D HH:mm:ss ZZ YYYY");
+
+    const objectStorage = aurelia.container.get(ObjectStorage);
+    objectStorage.setStorage(localStorage);
 
     aurelia.start().then(() => aurelia.setRoot(PLATFORM.moduleName('app')));
 }

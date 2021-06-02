@@ -21,19 +21,28 @@
 
 <template>
     <mdc-layout-grid class="pt0">
-        <mdc-layout-grid-inner repeat.for="videoSessionContext of _videoSessionContexts">
+        <mdc-layout-grid-inner repeat.for="sessionContext of _sessionContexts">
             <mdc-layout-grid-cell span="4">
-                <div mdc-subtitle1>Session: ${videoSessionContext.sessionContext.contextValues.name}</div>
-                <div class="secondary">ID: ${videoSessionContext.sessionContext.contextValues.id}</div>
-
-                <!--                <video width="100%" controls repeat.for="video of _videos" ref="video.element">-->
-                <!--                    <source src="${video.file.relativePath}">-->
-                <!--                </video>-->
+                <div mdc-subtitle1>Session: ${sessionContext.contextValues.name}</div>
+                <ul class="mdc-list mdc-list--dense">
+                    <li class="mdc-custom-list-item">
+                        <span class="secondary sr1">ID</span>${sessionContext.contextValues.id}
+                    </li>
+                    <li class="mdc-custom-list-item">
+                        <span class="secondary sr1">User agent</span>${sessionContext.browserName}:${sessionContext.browserVersion}
+                    </li>
+                    <li class="mdc-custom-list-item" if.bind="sessionContext.serverUrl.length>0">
+                        <span class="secondary sr1">Server</span><a href="${sessionContext.serverUrl}">${sessionContext.serverUrl}</a>
+                    </li>
+                    <li class="mdc-custom-list-item" if.bind="sessionContext.nodeUrl.length>0">
+                        <span class="secondary sr1">Node</span><a href="${sessionContext.nodeUrl}">${sessionContext.nodeUrl}</a>
+                    </li>
+                </ul>
+                <div mdc-subtitle2>Capabilities</div>
+                <div class="code-view capabilities-view" mdc-body2>${sessionContext.capabilities|json}</div>
             </mdc-layout-grid-cell>
-            <mdc-layout-grid-cell span="8" if.bind="videoSessionContext.video">
-                <video width="100%" controls ref="videoSessionContext.video.element">
-                    <source src="${videoSessionContext.video.file.relativePath}">
-                </video>
+            <mdc-layout-grid-cell span="8" if.bind="sessionContext.videoId">
+                <lazy-video file-id.bind="sessionContext.videoId"></lazy-video>
             </mdc-layout-grid-cell>
         </mdc-layout-grid-inner>
     </mdc-layout-grid>

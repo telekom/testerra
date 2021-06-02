@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2021, Mike Reiche,  T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -18,16 +18,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import {autoinject} from "aurelia-framework";
-import 'ts-replace-all'
 
 @autoinject()
-export class HtmlValueConverter {
-    toView(value?: string) {
-        if (!value) {
-            return value;
-        }
-        return value.replaceAll("\n","<br/>");
+export class JsonValueConverter {
+    toView(value: string) {
+        return JSON.stringify(JSON.parse(value), null, 2);
     }
 }

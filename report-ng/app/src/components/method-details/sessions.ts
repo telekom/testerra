@@ -19,86 +19,19 @@
  * under the License.
  */
 
-import {autoinject, Container} from 'aurelia-framework';
+import {autoinject} from 'aurelia-framework';
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import {data} from "../../services/report-model";
-import IFile = data.IFile;
-import {ObjectStorage} from "t-systems-aurelia-components/src/utils/object-storage";
 import ISessionContext = data.ISessionContext;
-
-interface IVideoInfo {
-    time:number;
-}
-
-interface IVideo {
-    element?:HTMLVideoElement,
-    file:IFile;
-}
-
-class VideoSessionContext {
-    video: IVideo;
-    constructor(
-        readonly sessionContext:ISessionContext,
-    ) {
-        const statisticsGenerator = Container.instance.get(StatisticsGenerator);
-        const videoStorage = Container.instance.get(VideoStorage);
-        if (sessionContext.videoId) {
-            statisticsGenerator.getFilesForIds([sessionContext.videoId]).then(videoFiles => {
-                this.video = <IVideo>{
-                    file: videoFiles[0]
-                }
-
-                // Set the start time of the video
-                if (this.video.element) {
-                    const videoInfo = videoStorage.getVideoInfo(this.video.file.id);
-                    if (videoInfo) {
-                        this.video.element.currentTime = videoInfo.time;
-                    }
-                }
-            });
-        }
-
-    }
-}
-
-@autoinject()
-class VideoStorage {
-    private _videoInfos:{[key:string]:IVideoInfo};
-
-    constructor(
-        private _objectStorage:ObjectStorage
-    ) {
-        this._objectStorage.setStorage(localStorage);
-        this._videoInfos = this._objectStorage.getItem("videos");
-        if (!this._videoInfos) {
-            this._videoInfos = {};
-        }
-    }
-
-    getVideoInfo(videoFileId:string) {
-        return this._videoInfos[videoFileId];
-    }
-
-    persist(videoSessionContexts:VideoSessionContext[]) {
-        videoSessionContexts
-            .filter(videoSessionContexts => videoSessionContexts.video)
-            .forEach(videoSessionContext => {
-                this._videoInfos[videoSessionContext.video.file.id] = {
-                    time: videoSessionContext.video.element.currentTime,
-                };
-        });
-        this._objectStorage.setItem("videos", this._videoInfos);
-    }
-}
+import "./sessions.scss"
 
 @autoinject()
 export class Sessions {
-    private _videoSessionContexts:VideoSessionContext[];
+    private _sessionContexts:ISessionContext[];
 
     constructor(
         private _statistics: StatisticsGenerator,
-        private _videoStorage: VideoStorage,
     ) {
     }
 
@@ -107,15 +40,8 @@ export class Sessions {
         routeConfig: RouteConfig,
         navInstruction: NavigationInstruction
     ) {
-        this._videoSessionContexts = [];
         this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
-            methodDetails.sessionContexts.forEach(sessionContext => {
-                this._videoSessionContexts.push(new VideoSessionContext(sessionContext))
-            })
+            this._sessionContexts = methodDetails.sessionContexts;
         });
-    }
-
-    detached() {
-        this._videoStorage.persist(this._videoSessionContexts);
     }
 }

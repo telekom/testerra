@@ -74,30 +74,53 @@ export class Dashboard extends AbstractViewModel {
             this._passedRetried = this._executionStatistics.getStatusesCount([ResultStatusType.PASSED_RETRY,ResultStatusType.MINOR_RETRY]);
 
             this._filterItems = [];
-            this._filterItems.push({
-                status: ResultStatusType.FAILED,
-                counts: [this._executionStatistics.overallFailed],
-                labels: [this._statusConverter.getLabelForStatus(ResultStatusType.FAILED)],
-                active:false,
-            });
-            this._filterItems.push({
-                status: ResultStatusType.FAILED_EXPECTED,
-                counts: [this._executionStatistics.getStatusCount(ResultStatusType.FAILED_EXPECTED)],
-                labels: [this._statusConverter.getLabelForStatus(ResultStatusType.FAILED_EXPECTED)],
-                active:false
-            });
-            this._filterItems.push({
-                status: ResultStatusType.SKIPPED,
-                counts: [this._executionStatistics.getStatusCount(ResultStatusType.SKIPPED)],
-                labels: [this._statusConverter.getLabelForStatus(ResultStatusType.SKIPPED)],
-                active:false
-            });
-            this._filterItems.push({
-                status: ResultStatusType.PASSED,
-                counts: [this._executionStatistics.overallPassed,(this._passedRetried>0?`&sup; ${this._passedRetried}`:null)],
-                labels: [this._statusConverter.getLabelForStatus(ResultStatusType.PASSED), (this._passedRetried>0?this._statusConverter.getLabelForStatus(ResultStatusType.PASSED_RETRY):null)],
-                active:false
-            });
+            let count = this._executionStatistics.overallFailed;
+            if (count > 0) {
+                this._filterItems.push({
+                    status: ResultStatusType.FAILED,
+                    counts: [count],
+                    labels: [this._statusConverter.getLabelForStatus(ResultStatusType.FAILED)],
+                    active:false,
+                });
+            }
+
+            count = this._executionStatistics.getStatusCount(ResultStatusType.FAILED_EXPECTED);
+            if (count > 0) {
+                this._filterItems.push({
+                    status: ResultStatusType.FAILED_EXPECTED,
+                    counts: [count],
+                    labels: [this._statusConverter.getLabelForStatus(ResultStatusType.FAILED_EXPECTED)],
+                    active:false
+                });
+            }
+
+            count = this._executionStatistics.getStatusCount(ResultStatusType.SKIPPED);
+            if (count > 0) {
+                this._filterItems.push({
+                    status: ResultStatusType.SKIPPED,
+                    counts: [count],
+                    labels: [this._statusConverter.getLabelForStatus(ResultStatusType.SKIPPED)],
+                    active:false
+                });
+            }
+
+            count = this._executionStatistics.overallPassed;
+            if (count > 0) {
+                this._filterItems.push({
+                    status: ResultStatusType.PASSED,
+                    counts: [
+                        count,
+                        (this._executionStatistics.repairedTests>0?`&sup; ${this._executionStatistics.repairedTests}`:null),
+                        (this._passedRetried>0?`&sup; ${this._passedRetried}`:null),
+                    ],
+                    labels: [
+                        this._statusConverter.getLabelForStatus(ResultStatusType.PASSED),
+                        (this._executionStatistics.repairedTests>0?"Repaired":null),
+                        (this._passedRetried>0?this._statusConverter.getLabelForStatus(ResultStatusType.PASSED_RETRY):null),
+                    ],
+                    active:false
+                });
+            }
 
             this._executionStatistics.failureAspectStatistics.forEach(failureAspectStatistics => {
                 if (failureAspectStatistics.isMinor) {

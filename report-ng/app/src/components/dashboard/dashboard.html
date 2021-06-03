@@ -43,8 +43,19 @@
                                       class="colored-icon big-icon status-${item.status|statusClass}"
                                       title="${item.status|statusName}"
                             >${item.status|statusIconName}</mdc-icon>
-                            <mdc-list-item-primary-text><span class="item-label" repeat.for="count of item.counts" innerhtml="${count}"></span></mdc-list-item-primary-text>
-                            <mdc-list-item-secondary-text><span class="item-label" repeat.for="label of item.labels" innerhtml="${label}"></span></mdc-list-item-secondary-text>
+                            <mdc-list-item-primary-text>
+                                <span class="item-label"
+                                      repeat.for="count of item.counts"
+                                      innerhtml="${count}"
+                                      if.bind="count"
+                                ></span>
+                            </mdc-list-item-primary-text>
+                            <mdc-list-item-secondary-text>
+                                <span class="item-label"
+                                      repeat.for="label of item.labels"
+                                      innerhtml="${label}"
+                                      if.bind="label"
+                                ></span></mdc-list-item-secondary-text>
                         </mdc-list-item>
                     </mdc-list>
                 </mdc-card>

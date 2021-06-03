@@ -29,6 +29,7 @@ import IMethodContext = data.IMethodContext;
 import IClassContext = data.IClassContext;
 import IErrorContext = data.IErrorContext;
 import IStackTraceCause = data.IStackTraceCause;
+import {MethodDetails} from "./statistics-generator";
 
 class Statistics {
     private _statusConverter: StatusConverter
@@ -116,20 +117,18 @@ class Statistics {
 }
 
 export class ExecutionStatistics extends Statistics {
-    private _executionAggregate: ExecutionAggregate;
     private _classStatistics: ClassStatistics[] = [];
     private _failureAspectStatistics:FailureAspectStatistics[] = [];
+    private _repairedTests = 0;
 
-    setExecutionAggregate(executionAggregate: ExecutionAggregate) {
-        this._executionAggregate = executionAggregate;
-        return this;
+    constructor(
+        readonly executionAggregate: ExecutionAggregate
+    ) {
+        super();
     }
 
-    addClassStatistics(classStatistics: ClassStatistics) {
-        this._classStatistics.push(classStatistics);
-    }
-
-    updateStatistics() {
+    setClassStatistics(classStatistics:ClassStatistics[]) {
+        this._classStatistics = classStatistics;
         this._classStatistics.forEach(classStatistics => this.addStatistics(classStatistics));
     }
 
@@ -148,10 +147,18 @@ export class ExecutionStatistics extends Statistics {
         failureAspectStatistics.addMethodContext(methodContext);
     }
 
+    get repairedTests() {
+        return this._repairedTests;
+    }
+
     protected addStatistics(classStatistics: ClassStatistics) {
         super.addStatistics(classStatistics);
         classStatistics.methodContexts
             .forEach(methodContext => {
+
+                if (methodContext.resultStatus == data.ResultStatusType.PASSED && methodContext.annotations[MethodDetails.FAIL_ANNOTATION_NAME]) {
+                    this._repairedTests++;
+                }
 
                 if (methodContext.errorContext) {
                     this._addUniqueFailureAspect(methodContext.errorContext, methodContext);
@@ -184,10 +191,6 @@ export class ExecutionStatistics extends Statistics {
         for (let i = 0; i < this._failureAspectStatistics.length; ++i) {
             this._failureAspectStatistics[i].index = i;
         }
-    }
-
-    get executionAggregate() {
-        return this._executionAggregate;
     }
 
     get classStatistics() {

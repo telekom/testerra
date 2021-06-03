@@ -30,7 +30,7 @@ class GraphColors {
     static readonly SKIPPED = '#f7af3e'; // $dark #8a929a
     static readonly FAILED = '#e63946'; // $danger
     static readonly CRASHED = '#5d6f81'; // $secondary
-    static readonly RUNNING = '#0089b6'; // $info
+    //static readonly RUNNING = '#0089b6'; // $info
     //static readonly FAILED_MINOR = '#f7af3e'; // $failedMinor
     static readonly FAILED_EXPECTED = '#4f031b'; // $failedExpected
 }
@@ -92,7 +92,7 @@ export class StatusConverter {
         return status;
     }
 
-    getLabelForStatus(status: ResultStatusType | string): string {
+    getLabelForStatus(status: ResultStatusType|string): string {
         switch (this._normalizeStatus(status)) {
             case ResultStatusType.SKIPPED:
                 return "Skipped";
@@ -101,9 +101,9 @@ export class StatusConverter {
                 return "Passed";
             case ResultStatusType.MINOR_RETRY:
             case ResultStatusType.PASSED_RETRY:
-                return "Passed Retried";
+                return "Retried";
             case ResultStatusType.FAILED_RETRIED:
-                return "Failed Retried";
+                return "Failed on retry";
             case ResultStatusType.FAILED:
                 return "Failed";
             case ResultStatusType.FAILED_EXPECTED:
@@ -143,7 +143,7 @@ export class StatusConverter {
             case ResultStatusType.SKIPPED:
                 return GraphColors.SKIPPED;
             case ResultStatusType.NO_RUN:
-                return GraphColors.RUNNING;
+                return GraphColors.CRASHED;
         }
     }
 

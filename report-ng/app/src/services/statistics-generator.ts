@@ -61,6 +61,10 @@ export class MethodDetails {
     ) {
     }
 
+    get isRepaired() {
+        return this.methodContext.resultStatus === data.ResultStatusType.PASSED && this.methodContext.annotations[MethodDetails.FAIL_ANNOTATION_NAME];
+    }
+
     get failsAnnotation():FailsAnnotation|null {
         if (this._failsAnnotation === undefined) {
             const data = this.decodeAnnotation(MethodDetails.FAIL_ANNOTATION_NAME);
@@ -138,25 +142,24 @@ export class StatisticsGenerator {
         return this._cacheService.getForKeyWithLoadingFunction("executionStatistics", () => {
             return this._dataLoader.getExecutionAggregate().then(executionAggregate => {
 
-                const executionStatistics = new ExecutionStatistics();
-                executionStatistics.setExecutionAggregate(executionAggregate);
+                const executionStatistics = new ExecutionStatistics(executionAggregate);
+                const classStatistics = {}
 
                 for (const id in executionAggregate.methodContexts) {
                     const methodContext = executionAggregate.methodContexts[id];
                     const classContext = executionAggregate.classContexts[methodContext.classContextId];
 
                     let currentClassStatistics:ClassStatistics = new ClassStatistics(classContext);
-                    const existingClassStatistics = executionStatistics.classStatistics.find(classStatistics => classStatistics.classIdentifier === currentClassStatistics.classIdentifier);
-                    if (!existingClassStatistics) {
-                        executionStatistics.addClassStatistics(currentClassStatistics);
+                    if (!classStatistics[currentClassStatistics.classIdentifier]) {
+                        classStatistics[currentClassStatistics.classIdentifier] = currentClassStatistics;
                     } else {
-                        currentClassStatistics = existingClassStatistics;
+                        currentClassStatistics = classStatistics[currentClassStatistics.classIdentifier];
                     }
 
                     methodContext.resultStatus = this._statusConverter.correctStatus(methodContext.resultStatus);
                     currentClassStatistics.addMethodContext(methodContext);
                 }
-                executionStatistics.updateStatistics();
+                executionStatistics.setClassStatistics(Object.values(classStatistics));
                 return executionStatistics;
             });
         })

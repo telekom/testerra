@@ -66,6 +66,16 @@ CONTROL.retryFor(int seconds, () -> {
 });
 ----
 
+Or if you want to retry something multiple times.
+
+[source,java]
+----
+CONTROL.retryTimes(int times, () -> {
+    button.click();
+    button.expect().enabled(false);
+});
+----
+
 You can also perform something when the retry block fails.
 
 [source,java]
@@ -100,3 +110,13 @@ boolean loginOpened = CONTROL.waitFor(int seconds, () -> {
     WEB_DRIVER_MANAGER.switchToWindowTitle("Login");
 });
 ----
+
+Or use `waitTimes` similar to `retryTimes`.
+
+[source,java]
+----
+boolean loginOpened = CONTROL.waitTimes(int times, () -> {
+    WEB_DRIVER_MANAGER.switchToWindowTitle("Login");
+});
+----
+

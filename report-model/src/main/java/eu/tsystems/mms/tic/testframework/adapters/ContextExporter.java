@@ -542,6 +542,8 @@ public class ContextExporter implements Loggable {
         apply(sessionContext.getActualBrowserName(), builder::setBrowserName);
         apply(sessionContext.getActualBrowserVersion(), builder::setBrowserVersion);
         sessionContext.getCapabilities().ifPresent(map -> builder.setCapabilities(jsonEncoder.toJson(map)));
+        sessionContext.getWebDriverRequest().getServerUrl().ifPresent(url -> builder.setServerUrl(url.toString()));
+        sessionContext.getNodeInfo().ifPresent(nodeInfo -> builder.setNodeUrl(nodeInfo.toString()));
         return builder;
     }
 

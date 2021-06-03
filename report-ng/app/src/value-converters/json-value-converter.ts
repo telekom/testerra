@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2021, Mike Reiche,  T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -17,16 +17,12 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
-package eu.tsystems.mms.tic.testframework.webdrivermanager;
+import {autoinject} from "aurelia-framework";
 
-import java.net.URL;
-import java.util.Optional;
-
-public class UnspecificWebDriverRequest extends AbstractWebDriverRequest {
-    @Override
-    public Optional<URL> getServerUrl() {
-        return Optional.empty();
+@autoinject()
+export class JsonValueConverter {
+    toView(value: string) {
+        return JSON.stringify(JSON.parse(value), null, 2);
     }
 }

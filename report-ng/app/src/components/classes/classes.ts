@@ -60,7 +60,7 @@ export class Classes extends AbstractViewModel {
         super.activate(params, routeConfig, navInstruction);
         if (params.status === this.CUSTOM_STATUS_REPAIRED) {
             this._selectedStatus = params.status;
-        } else if (params.status) {
+        } else if (params.status > 0) {
             this._selectedStatus = this._statusConverter.getStatusForClass(params.status);
         } else {
             this._selectedStatus = null;
@@ -91,7 +91,7 @@ export class Classes extends AbstractViewModel {
         if (this._selectedStatus === this.CUSTOM_STATUS_REPAIRED) {
             relevantStatuses.push(...this._statusConverter.passedStatuses);
             this.queryParams.status = this.CUSTOM_STATUS_REPAIRED;
-        } else if (this._selectedStatus >= 0) {
+        } else if (this._selectedStatus > 0) {
             this.queryParams.status = this._statusConverter.getClassForStatus(this._selectedStatus);
             relevantStatuses.push(...this._statusConverter.groupStatus(this._selectedStatus as data.ResultStatusType));
         } else {

@@ -19,15 +19,29 @@
  * under the License.
  */
 
-import {autoinject} from "aurelia-framework";
-import 'ts-replace-all'
+import {autoinject} from 'aurelia-framework';
+import {StatisticsGenerator} from "../../services/statistics-generator";
+import {NavigationInstruction, RouteConfig} from "aurelia-router";
+import {data} from "../../services/report-model";
+import ISessionContext = data.ISessionContext;
+import "./sessions.scss"
 
 @autoinject()
-export class HtmlValueConverter {
-    toView(value?: string) {
-        if (!value) {
-            return value;
-        }
-        return value.replaceAll("\n","<br/>");
+export class Sessions {
+    private _sessionContexts:ISessionContext[];
+
+    constructor(
+        private _statistics: StatisticsGenerator,
+    ) {
+    }
+
+    activate(
+        params: any,
+        routeConfig: RouteConfig,
+        navInstruction: NavigationInstruction
+    ) {
+        this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
+            this._sessionContexts = methodDetails.sessionContexts;
+        });
     }
 }

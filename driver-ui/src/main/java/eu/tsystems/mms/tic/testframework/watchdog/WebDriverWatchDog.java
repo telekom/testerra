@@ -195,7 +195,7 @@ public final class WebDriverWatchDog {
                 try {
                     Thread.sleep(TimingConstants.WATCHDOG_THREAD_POLL_INTERVAL_SECONDS * 1000);
                 } catch (InterruptedException e) {
-                    LOGGER.debug("Interrupted", e);
+                    LOGGER.error("Interrupted", e);
                 }
             }
         }
@@ -210,9 +210,10 @@ public final class WebDriverWatchDog {
             return;
         }
 
+        started = true;
+
         LOGGER.debug("Starting...");
         WATCH_DOG_THREAD.start();
-        started = true;
     }
 
     public static void stop() {

@@ -22,6 +22,8 @@ private static final long serialVersionUID = 0L;
     browserName_ = "";
     browserVersion_ = "";
     capabilities_ = "";
+    serverUrl_ = "";
+    nodeUrl_ = "";
   }
 
   @java.lang.Override
@@ -101,6 +103,18 @@ private static final long serialVersionUID = 0L;
             java.lang.String s = input.readStringRequireUtf8();
 
             capabilities_ = s;
+            break;
+          }
+          case 98: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            serverUrl_ = s;
+            break;
+          }
+          case 106: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            nodeUrl_ = s;
             break;
           }
           default: {
@@ -401,6 +415,82 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int SERVER_URL_FIELD_NUMBER = 12;
+  private volatile java.lang.Object serverUrl_;
+  /**
+   * <code>string server_url = 12;</code>
+   * @return The serverUrl.
+   */
+  @java.lang.Override
+  public java.lang.String getServerUrl() {
+    java.lang.Object ref = serverUrl_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      serverUrl_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string server_url = 12;</code>
+   * @return The bytes for serverUrl.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getServerUrlBytes() {
+    java.lang.Object ref = serverUrl_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      serverUrl_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int NODE_URL_FIELD_NUMBER = 13;
+  private volatile java.lang.Object nodeUrl_;
+  /**
+   * <code>string node_url = 13;</code>
+   * @return The nodeUrl.
+   */
+  @java.lang.Override
+  public java.lang.String getNodeUrl() {
+    java.lang.Object ref = nodeUrl_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      nodeUrl_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string node_url = 13;</code>
+   * @return The bytes for nodeUrl.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getNodeUrlBytes() {
+    java.lang.Object ref = nodeUrl_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      nodeUrl_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -436,6 +526,12 @@ private static final long serialVersionUID = 0L;
     if (!getCapabilitiesBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 11, capabilities_);
     }
+    if (!getServerUrlBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 12, serverUrl_);
+    }
+    if (!getNodeUrlBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 13, nodeUrl_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -466,6 +562,12 @@ private static final long serialVersionUID = 0L;
     }
     if (!getCapabilitiesBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, capabilities_);
+    }
+    if (!getServerUrlBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(12, serverUrl_);
+    }
+    if (!getNodeUrlBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(13, nodeUrl_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -499,6 +601,10 @@ private static final long serialVersionUID = 0L;
         .equals(other.getBrowserVersion())) return false;
     if (!getCapabilities()
         .equals(other.getCapabilities())) return false;
+    if (!getServerUrl()
+        .equals(other.getServerUrl())) return false;
+    if (!getNodeUrl()
+        .equals(other.getNodeUrl())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -526,6 +632,10 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getBrowserVersion().hashCode();
     hash = (37 * hash) + CAPABILITIES_FIELD_NUMBER;
     hash = (53 * hash) + getCapabilities().hashCode();
+    hash = (37 * hash) + SERVER_URL_FIELD_NUMBER;
+    hash = (53 * hash) + getServerUrl().hashCode();
+    hash = (37 * hash) + NODE_URL_FIELD_NUMBER;
+    hash = (53 * hash) + getNodeUrl().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -677,6 +787,10 @@ private static final long serialVersionUID = 0L;
 
       capabilities_ = "";
 
+      serverUrl_ = "";
+
+      nodeUrl_ = "";
+
       return this;
     }
 
@@ -714,6 +828,8 @@ private static final long serialVersionUID = 0L;
       result.browserName_ = browserName_;
       result.browserVersion_ = browserVersion_;
       result.capabilities_ = capabilities_;
+      result.serverUrl_ = serverUrl_;
+      result.nodeUrl_ = nodeUrl_;
       onBuilt();
       return result;
     }
@@ -787,6 +903,14 @@ private static final long serialVersionUID = 0L;
       }
       if (!other.getCapabilities().isEmpty()) {
         capabilities_ = other.capabilities_;
+        onChanged();
+      }
+      if (!other.getServerUrl().isEmpty()) {
+        serverUrl_ = other.serverUrl_;
+        onChanged();
+      }
+      if (!other.getNodeUrl().isEmpty()) {
+        nodeUrl_ = other.nodeUrl_;
         onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
@@ -1419,6 +1543,158 @@ private static final long serialVersionUID = 0L;
   checkByteStringIsUtf8(value);
       
       capabilities_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object serverUrl_ = "";
+    /**
+     * <code>string server_url = 12;</code>
+     * @return The serverUrl.
+     */
+    public java.lang.String getServerUrl() {
+      java.lang.Object ref = serverUrl_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        serverUrl_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string server_url = 12;</code>
+     * @return The bytes for serverUrl.
+     */
+    public com.google.protobuf.ByteString
+        getServerUrlBytes() {
+      java.lang.Object ref = serverUrl_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        serverUrl_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string server_url = 12;</code>
+     * @param value The serverUrl to set.
+     * @return This builder for chaining.
+     */
+    public Builder setServerUrl(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      serverUrl_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string server_url = 12;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearServerUrl() {
+      
+      serverUrl_ = getDefaultInstance().getServerUrl();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string server_url = 12;</code>
+     * @param value The bytes for serverUrl to set.
+     * @return This builder for chaining.
+     */
+    public Builder setServerUrlBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      serverUrl_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object nodeUrl_ = "";
+    /**
+     * <code>string node_url = 13;</code>
+     * @return The nodeUrl.
+     */
+    public java.lang.String getNodeUrl() {
+      java.lang.Object ref = nodeUrl_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        nodeUrl_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string node_url = 13;</code>
+     * @return The bytes for nodeUrl.
+     */
+    public com.google.protobuf.ByteString
+        getNodeUrlBytes() {
+      java.lang.Object ref = nodeUrl_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        nodeUrl_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string node_url = 13;</code>
+     * @param value The nodeUrl to set.
+     * @return This builder for chaining.
+     */
+    public Builder setNodeUrl(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      nodeUrl_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string node_url = 13;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearNodeUrl() {
+      
+      nodeUrl_ = getDefaultInstance().getNodeUrl();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string node_url = 13;</code>
+     * @param value The bytes for nodeUrl to set.
+     * @return This builder for chaining.
+     */
+    public Builder setNodeUrlBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      nodeUrl_ = value;
       onChanged();
       return this;
     }

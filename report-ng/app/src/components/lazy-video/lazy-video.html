@@ -1,7 +1,7 @@
 <!--
   ~ Testerra
   ~
-  ~ (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+  ~ (C) 2021, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
   ~
   ~ Deutsche Telekom AG and all other contributors /
   ~ copyright owners license this file to you under the Apache
@@ -18,13 +18,6 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   -->
-
 <template>
-    <mdc-layout-grid class="pt0">
-        <mdc-layout-grid-cell span="12">
-            <video width="100%" controls repeat.for="video of _videos" ref="video.element">
-                <source src="${video.file.relativePath}">
-            </video>
-        </mdc-layout-grid-cell>
-    </mdc-layout-grid>
+    <video width="100%" controls ref="_videoElement"></video>
 </template>

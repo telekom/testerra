@@ -188,6 +188,8 @@ message SessionContext {
     string browser_name = 9;
     string browser_version = 10;
     string capabilities = 11;
+    string server_url = 12;
+    string node_url = 13;
 }
 
 message RunConfig {

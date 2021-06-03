@@ -78,13 +78,13 @@ export class Method {
                 }
             },
             {
-                route: 'videos',
-                moduleId: PLATFORM.moduleName('./videos'),
+                route: 'sessions',
+                moduleId: PLATFORM.moduleName('./sessions'),
                 nav: true,
-                name: "videos",
-                title: 'Videos',
+                name: "sessions",
+                title: 'Sessions',
                 settings: {
-                    icon: "videocam"
+                    icon: "devices"
                 }
             },
             {
@@ -128,12 +128,11 @@ export class Method {
                         }
                         break;
                     }
-                    case "videos": {
-                        const videos = methodDetails.sessionContexts.filter(value => value.videoId).map(value => value.videoId);
-                        if (videos.length == 0) {
+                    case "sessions": {
+                        if (methodDetails.sessionContexts.length == 0) {
                             routeConfig.nav = false;
                         } else {
-                            routeConfig.settings.count = videos.length;
+                            routeConfig.settings.count = methodDetails.sessionContexts.length;
                             routeConfig.nav = true;
                         }
                         break;

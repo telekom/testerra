@@ -38,7 +38,7 @@
                         <span class="secondary sr1">Taken</span><span title="${_current.lastModified|dateFormat}">${_current.lastModified | dateFormat:"ddd MMM D HH:mm:ss"}</span>
                     </li>
                     <li class="mdc-custom-list-item" if.bind="_sessionContext">
-                        <span class="secondary sr1">Session</span><session-context-markup session-context.bind="_sessionContext"></session-context-markup>
+                        <span class="secondary sr1">Session</span>${_sessionContext.contextValues.name} (ID: ${_sessionContext.contextValues.id})
                     </li>
                 </ul>
             </div>

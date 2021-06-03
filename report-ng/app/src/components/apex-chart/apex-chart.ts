@@ -36,12 +36,22 @@ export class ApexChart {
     @bindable data: ApexOptions;
     @bindable selection: ISelection;
 
-    constructor() {
+    private _attached:boolean = false;
+
+    attached() {
+        this._attached = true;
+        if (this.data) {
+            this._createChart();
+        }
 
     }
 
-    attached() {
-        this._createChart();
+    detached() {
+        this._attached = false;
+        if (this._myApexChart) {
+            this._myApexChart.destroy();
+            this._myApexChart = null;
+        }
     }
 
     dataChanged(newData) {
@@ -61,9 +71,7 @@ export class ApexChart {
     }
 
     private _createChart() {
-        if (this.data && this._apex) {
-            this._myApexChart = new ApexCharts(this._apex, this.data);
-            this._myApexChart.render();
-        }
+        this._myApexChart = new ApexCharts(this._apex, this.data);
+        this._myApexChart.render();
     }
 }

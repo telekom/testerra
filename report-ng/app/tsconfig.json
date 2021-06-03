@@ -15,8 +15,5 @@
         ],
         "moduleResolution": "node",
         "baseUrl": "src"
-    },
-    "atom": {
-        "rewriteTsconfig": false
     }
 }

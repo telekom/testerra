@@ -65,22 +65,56 @@ public interface TestController {
     void withTimeout(int seconds, Runnable runnable);
 
     /**
-     * Does the same like {@link #retryFor(int, Assert.ThrowingRunnable, Runnable)}
+     * Runs a {@link Runnable} while {@link Throwable} occurs for a specified period.
+     * @param seconds Period in seconds
+     * @param runnable Runnable
+     * @param whenFail Runnable which gets called when a throwable occurred
+     */
+    void retryFor(int seconds, Assert.ThrowingRunnable runnable, Runnable whenFail);
+
+    /**
+     * See {@link #retryFor(int, Assert.ThrowingRunnable, Runnable)}
      */
     default void retryFor(int seconds, Assert.ThrowingRunnable runnable) {
         retryFor(seconds, runnable, null);
     }
 
     /**
-     * Runs a {@link Runnable} while {@link Throwable} occurs for a specified period.
-     * @param seconds Period in seconds
+     * Runs a {@link Runnable} while {@link Throwable} occurs n times.
+     * @param times Retry n times
      * @param runnable Runnable
-     * @param whenFail Runnable which gets called when a throwable occurred.
+     * @param whenFail Runnable which gets called when a throwable occurred
      */
-    void retryFor(int seconds, Assert.ThrowingRunnable runnable, Runnable whenFail);
+    void retryTimes(int times, Assert.ThrowingRunnable runnable, Runnable whenFail);
 
+    /**
+     * See {@link #retryTimes(int, Assert.ThrowingRunnable, Runnable)}
+     */
+    default void retryTimes(int times, Assert.ThrowingRunnable runnable) {
+        retryTimes(times, runnable, null);
+    }
+
+    /**
+     * Does the same like {@link #retryFor(int, Assert.ThrowingRunnable, Runnable)} but without throwing any exception
+     */
+    boolean waitFor(int seconds, Assert.ThrowingRunnable runnable, Runnable whenFail);
+
+    /**
+     * See {@link #waitFor(int, Assert.ThrowingRunnable, Runnable)}
+     */
     default boolean waitFor(int seconds, Assert.ThrowingRunnable runnable) {
         return waitFor(seconds, runnable, null);
     }
-    boolean waitFor(int seconds, Assert.ThrowingRunnable runnable, Runnable whenFail);
+
+    /**
+     * Does the same like {@link #retryTimes(int, Assert.ThrowingRunnable, Runnable)} but without throwing any exception
+     */
+    boolean waitTimes(int times, Assert.ThrowingRunnable runnable, Runnable whenFail);
+
+    /**
+     * See {@link #waitTimes(int, Assert.ThrowingRunnable, Runnable)}
+     */
+    default boolean waitTimes(int times, Assert.ThrowingRunnable runnable) {
+        return waitTimes(times, runnable, null);
+    }
 }

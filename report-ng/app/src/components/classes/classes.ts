@@ -60,7 +60,7 @@ export class Classes extends AbstractViewModel {
         super.activate(params, routeConfig, navInstruction);
         if (params.status === this.CUSTOM_STATUS_REPAIRED) {
             this._selectedStatus = params.status;
-        } else if (params.status > 0) {
+        } else if (params.status) {
             this._selectedStatus = this._statusConverter.getStatusForClass(params.status);
         } else {
             this._selectedStatus = null;

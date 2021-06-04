@@ -53,44 +53,38 @@ export class TestClassesCard {
     }
 
     private _prepareHorizontalBarChart(classStatistics: ClassStatistics[]): void {
-        let data: Map<ResultStatusType, Array<number>> = new Map();
-        let yLabels: Array<string> = [];
+        const data: Map<ResultStatusType, Array<number>> = new Map();
+        const yLabels:string[] = [];
 
-        const series = [];
         this._filteredStatuses = this._statusConverter.relevantStatuses.filter(status => (!this.filter?.status || status === this.filter.status));
 
-        this._filteredStatuses.forEach(status => {
-            data.set(status, []);
+        //Iterate through classStatistics array to fill map with data for series
+        classStatistics
+            .sort((a, b) => {
+                return b.getStatusesCount(this._filteredStatuses) - a.getStatusesCount(this._filteredStatuses)
+            })
+            .forEach(classStatistics => {
+                this._filteredStatuses.forEach(status => {
+                    const count = classStatistics.getStatusesCount(this._statusConverter.groupStatus(status));
+                    if (count > 0) {
+                        if (!data.has(status)) {
+                            data.set(status, []);
+                        }
+                        data.get(status).push(count);
+                    }
+                })
+                //Push Class Names in array for y-axis labels
+                yLabels.push(classStatistics.classIdentifier);
+            });
+
+        const series = [];
+        data.forEach((numbers, status) => {
             series.push({
                 name: this._statusConverter.getLabelForStatus(status),
                 data: data.get(status),
                 color: this._statusConverter.getColorForStatus(status)
             })
-        })
-
-        //Iterate through classStatistics array to fill map with data for series
-        classStatistics
-            .filter(classStatistic => {
-                return this._filteredStatuses.find(status => classStatistic.getStatusesCount(this._statusConverter.groupStatus(status)) > 0);
-            })
-            .sort((a, b) => {
-                return b.getStatusesCount(this._filteredStatuses) - a.getStatusesCount(this._filteredStatuses)
-            })
-            .forEach(classStats => {
-                for (const status of this._filteredStatuses) {
-                    if (status == ResultStatusType.PASSED) {
-                        // For PASSED we need all passed states
-                        data.get(status).push(classStats.getStatusesCount(this._statusConverter.passedStatuses));
-                    } else {
-                        data.get(status).push(classStats.getStatusCount(status));
-                    }
-
-                }
-                const className = classStats.classIdentifier;
-                //Push Class Names in array for y-axis labels
-                yLabels.push(className);
-            });
-
+        });
 
         // Break yLabels
         const yLabelsMaxWidth = 400;
@@ -98,7 +92,7 @@ export class TestClassesCard {
 
         //set size by amount of bars to have consistent bar height
         //amount of classes * 60px + offset due to legend and labels
-        let height: string = yLabels.length * 60 + 67.65 + 'px'
+        const height: string = yLabels.length * 60 + 67.65 + 'px'
 
         this._apexBarOptions = {
             chart: {
@@ -144,7 +138,6 @@ export class TestClassesCard {
                 }
             },
             yaxis: {
-
                 labels: {
                     show: dataAvailable,
                     //minWidth: 200,    // Does not work

@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <a href="#installation">Installation</a> •
+  <a href="#setup">Setup</a> •
   <a href="#documentation">Documentation</a> •
   <a href="#support-and-feedback">Support</a> •
   <a href="#how-to-contribute">Contribute</a> •
@@ -25,12 +25,18 @@ Testerra is an integrated framework for automating tests for (web) applications.
 
 You may see Testerra as an open source test automation library for web frontend testing. It provides a tool suite for many use cases: a base API for Page Object Pattern (including responsive layouts) and GuiElements (smarter WebElements (Selenium)), enhanced reporting functionality, a utility collection and some additional helpful modules.
 
-## Installation
+## Setup
 
-Testerra and its components are published to [Maven Central](https://search.maven.org/search?q=g:io.testerra).
+Include the following dependency in your project. Please replace `1-SNAPSHOT` with the latest version.
+
+Gradle:
+```groovy
+compile 'io.testerra:driver-ui-desktop:1-SNAPSHOT'
+compile 'io.testerra:report-ng:1-SNAPSHOT'
+```
 
 Maven:
-````xml
+```xml
 <dependencies>
     <dependency>
         <groupId>io.testerra</groupId>
@@ -43,15 +49,9 @@ Maven:
         <version>2.0-RC-5</version>
     </dependency>
 </dependencies>
-````
+```
 
-Gradle:
-````groovy
-compile 'io.testerra:driver-ui-desktop:2.0-RC-5'
-compile 'io.testerra:report-ng:2.0-RC-5'
-````
-
-### Using testerra functionality:
+### Using Testerra functionality
 
 Create a Test Class and extend the TesterraTest class:
 

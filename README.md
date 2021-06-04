@@ -5,7 +5,7 @@
 
 
 <p align="center">
-    <a href="https://mvnrepository.com/artifact/io.testerra" title="MavenCentral"><img alt="Maven Central" src="https://img.shields.io/maven-central/v/io.testerra/core/1?label=Maven%20Central"></a>
+    <a href="https://mvnrepository.com/artifact/io.testerra" title="MavenCentral"><img alt="Maven Central" src="https://img.shields.io/maven-central/v/io.testerra/core/2?label=Maven%20Central"></a>
     <a href="/../../commits/" title="Last Commit"><img src="https://img.shields.io/github/last-commit/telekom/testerra?style=flat"></a>
     <a href="/../../issues" title="Open Issues"><img src="https://img.shields.io/github/issues/telekom/testerra?style=flat"></a>
     <a href="./LICENSE" title="License"><img src="https://img.shields.io/badge/License-Apache%202.0-green.svg?style=flat"></a>
@@ -27,12 +27,12 @@ You may see Testerra as an open source test automation library for web frontend 
 
 ## Setup
 
-Include the following dependency in your project. Please replace `1-SNAPSHOT` with the latest version.
+Include the following dependency in your project. Please replace `2-SNAPSHOT` with the latest version.
 
 Gradle:
 ```groovy
-compile 'io.testerra:driver-ui-desktop:1-SNAPSHOT'
-compile 'io.testerra:report-ng:1-SNAPSHOT'
+compile 'io.testerra:driver-ui-desktop:2-SNAPSHOT'
+compile 'io.testerra:report-ng:2-SNAPSHOT'
 ```
 
 Maven:
@@ -41,12 +41,12 @@ Maven:
     <dependency>
         <groupId>io.testerra</groupId>
         <artifactId>driver-ui-desktop</artifactId>
-        <version>2.0-RC-5</version>
+        <version>2-SNAPSHOT</version>
     </dependency>
     <dependency>
         <groupId>io.testerra</groupId>
         <artifactId>report-ng</artifactId>
-        <version>2.0-RC-5</version>
+        <version>2-SNAPSHOT</version>
     </dependency>
 </dependencies>
 ```
@@ -67,7 +67,7 @@ public class MyTest extends TesterraTest {
 
 ## Documentation
 
-* Check out our comprehensive [Testerra documentation](http://docs.testerra.io/testerra/2.0-RC-5/)!
+* Check out our comprehensive [Testerra documentation](http://docs.testerra.io/testerra/2.0-RC-6/)!
 * Feel free to try out our ready-to-use [Skeleton project][testerra-skeleton].
 
 ## Testing

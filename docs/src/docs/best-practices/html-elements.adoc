@@ -61,10 +61,10 @@ Given the following HTML code snippet it will be easier how to get the correspon
 WebDriver driver = WebDriverManager.getWebDriver();
 
 GuiElement shadowRootElement = new GuiElement(driver, By.cssSelector("my-custom-shadow-root-element")).shadowRoot();
-GuiElement inputName = shadowRootElement.getSubElement(By.cssSelector("#custom-component-login-name"));
+GuiElement inputName = shadowRootElement.getSubElement(By.xpath("//*[@id='custom-component-login-name']"));
 ----
 
 IMPORTANT: Calling `isDisplayed()` on `shadowRoot()`-notated `GuiElement` will always return false, but `isPresent()` will work as designed.
 
-IMPORTANT: Because of technical limitations and internal handling of browser-different access to Shadow DOM elements, it is not possible to use any other `By`Selector-type than `By.xpath()` working with `getSubElement()` on a shadow root.
+IMPORTANT: Because of technical limitations and internal handling of browser-different access to Shadow DOM elements, it is not possible to use any other selector type than `By.xpath()` working with `getSubElement()` on a shadow root.
 

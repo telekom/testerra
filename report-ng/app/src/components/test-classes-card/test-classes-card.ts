@@ -54,37 +54,42 @@ export class TestClassesCard {
 
     private _prepareHorizontalBarChart(classStatistics: ClassStatistics[]): void {
         const data: Map<ResultStatusType, Array<number>> = new Map();
-        const yLabels:string[] = [];
-
-        this._filteredStatuses = this._statusConverter.relevantStatuses.filter(status => (!this.filter?.status || status === this.filter.status));
-
-        //Iterate through classStatistics array to fill map with data for series
-        classStatistics
-            .sort((a, b) => {
-                return b.getStatusesCount(this._filteredStatuses) - a.getStatusesCount(this._filteredStatuses)
-            })
-            .forEach(classStatistics => {
-                this._filteredStatuses.forEach(status => {
-                    const count = classStatistics.getStatusesCount(this._statusConverter.groupStatus(status));
-                    if (count > 0) {
-                        if (!data.has(status)) {
-                            data.set(status, []);
-                        }
-                        data.get(status).push(count);
-                    }
-                })
-                //Push Class Names in array for y-axis labels
-                yLabels.push(classStatistics.classIdentifier);
-            });
+        const yLabels: string[] = [];
 
         const series = [];
-        data.forEach((numbers, status) => {
+        this._filteredStatuses = this._statusConverter.relevantStatuses.filter(status => (!this.filter?.status || status === this.filter.status));
+
+        this._filteredStatuses.forEach(status => {
+            data.set(status, []);
             series.push({
                 name: this._statusConverter.getLabelForStatus(status),
                 data: data.get(status),
                 color: this._statusConverter.getColorForStatus(status)
             })
-        });
+        })
+
+        //Iterate through classStatistics array to fill map with data for series
+        classStatistics
+            .filter(classStatistic => {
+                return this._filteredStatuses.find(status => classStatistic.getStatusesCount(this._statusConverter.groupStatus(status)) > 0);
+            })
+            .sort((a, b) => {
+                return b.getStatusesCount(this._filteredStatuses) - a.getStatusesCount(this._filteredStatuses)
+            })
+            .forEach(classStats => {
+                for (const status of this._filteredStatuses) {
+                    const count = classStats.getStatusesCount(this._statusConverter.groupStatus(status));
+                    if (count > 0) {
+                        data.get(status).push(count);
+                    } else {
+                        data.get(status).push(null);
+                    }
+                }
+                const className = classStats.classIdentifier;
+                //Push Class Names in array for y-axis labels
+                yLabels.push(className);
+            });
+
 
         // Break yLabels
         const yLabelsMaxWidth = 400;

@@ -310,6 +310,9 @@ export namespace data {
 
         /** MethodContext annotations */
         annotations?: ({ [k: string]: string }|null);
+
+        /** MethodContext testName */
+        testName?: (string|null);
     }
 
     /** Represents a MethodContext. */
@@ -386,6 +389,9 @@ export namespace data {
 
         /** MethodContext annotations. */
         public annotations: { [k: string]: string };
+
+        /** MethodContext testName. */
+        public testName: string;
 
         /**
          * Decodes a MethodContext message from the specified reader or buffer.
@@ -559,7 +565,7 @@ export namespace data {
         public clickPathEvent?: (data.IClickPathEvent|null);
 
         /** TestStepActionEntry screenshotId. */
-        public screenshotId: string;
+        public screenshotId?: (string|null);
 
         /** TestStepActionEntry logMessage. */
         public logMessage?: (data.ILogMessage|null);

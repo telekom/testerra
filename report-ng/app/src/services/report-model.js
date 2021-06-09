@@ -578,6 +578,7 @@ export const data = $root.data = (() => {
          * @property {Object.<string,string>|null} [parameters] MethodContext parameters
          * @property {Object.<string,string>|null} [customContexts] MethodContext customContexts
          * @property {Object.<string,string>|null} [annotations] MethodContext annotations
+         * @property {string|null} [testName] MethodContext testName
          */
 
         /**
@@ -780,6 +781,14 @@ export const data = $root.data = (() => {
         MethodContext.prototype.annotations = $util.emptyObject;
 
         /**
+         * MethodContext testName.
+         * @member {string} testName
+         * @memberof data.MethodContext
+         * @instance
+         */
+        MethodContext.prototype.testName = "";
+
+        /**
          * Decodes a MethodContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.MethodContext
@@ -929,6 +938,9 @@ export const data = $root.data = (() => {
                         }
                     }
                     m.annotations[k] = value;
+                    break;
+                case 38:
+                    m.testName = r.string();
                     break;
                 default:
                     r.skipType(t & 7);
@@ -1260,11 +1272,11 @@ export const data = $root.data = (() => {
 
         /**
          * TestStepActionEntry screenshotId.
-         * @member {string} screenshotId
+         * @member {string|null|undefined} screenshotId
          * @memberof data.TestStepActionEntry
          * @instance
          */
-        TestStepActionEntry.prototype.screenshotId = "";
+        TestStepActionEntry.prototype.screenshotId = null;
 
         /**
          * TestStepActionEntry logMessage.

@@ -28,6 +28,22 @@ import {ApexOptions} from "apexcharts";
 import {bindingMode} from "aurelia-binding";
 import ResultStatusType = data.ResultStatusType;
 
+export interface IClassBarClickedDetails {
+    mouseEvent: MouseEvent,
+    filter: IFilter,
+}
+
+export class ClassBarClick extends CustomEvent<IClassBarClickedDetails> {
+    constructor(
+        details: IClassBarClickedDetails
+    ) {
+        super("class-bar-click", {
+            detail: details,
+            bubbles: true
+        });
+    }
+}
+
 @autoinject
 export class TestClassesCard {
     @bindable({bindingMode: bindingMode.toView}) filter: IFilter;
@@ -169,19 +185,17 @@ export class TestClassesCard {
         }
     }
 
-    private _barClicked(event, chartContext, config): void {
+    private _barClicked(event:MouseEvent, chartContext, config): void {
         event?.stopPropagation();
 
-        const params: IFilter = {
+        const filter: IFilter = {
             class: this._apexBarOptions.xaxis.categories[config.dataPointIndex],
             status: this._filteredStatuses[config.seriesIndex]
         }
 
-        const customEvent = new CustomEvent("filter-changed", {
-            detail: params,
-            bubbles: true
-        });
-        // console.log(params, this._element);
-        this._element.dispatchEvent(customEvent)
+        this._element.dispatchEvent(new ClassBarClick({
+            mouseEvent: event,
+            filter: filter
+        }))
     }
 }

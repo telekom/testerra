@@ -80,12 +80,10 @@ export class MethodDetails {
 
     get identifier() {
         if (!this._identifier) {
-            this._identifier = this.methodContext.contextValues.name;
-            const otherMethodWithSameName = this.classStatistics.methodContexts
-                .find(otherMethodContext => {
-                    return (otherMethodContext.contextValues.id !== this.methodContext.contextValues.id && this.methodContext.contextValues.name === otherMethodContext.contextValues.name)
-                });
-            if (otherMethodWithSameName) {
+            if (this.methodContext.testName) {
+                this._identifier = this.methodContext.testName;
+            } else {
+                this._identifier = this.methodContext.contextValues.name;
                 const params = [];
                 for (const name in this.methodContext.parameters) {
                     params.push(name + ": " + this.methodContext.parameters[name]);

@@ -32,7 +32,7 @@
     <mdc-top-app-bar fixed style="position: unset">
         <mdc-top-app-bar-row>
 
-            <mdc-top-app-bar-section align="start" >
+            <mdc-top-app-bar-section start>
                 <!--<button click.delegate="_drawer.toggle()"
                         mdc-ripple="unbounded.bind: true"
                         class="mdc-top-app-bar__navigation-icon mdc-icon-button mdc-ripple-upgraded&#45;&#45;unbounded mdc-ripple-upgraded"
@@ -44,7 +44,7 @@
                 </mdc-top-app-bar-title>
             </mdc-top-app-bar-section>
 
-            <mdc-top-app-bar-section align="end"
+            <mdc-top-app-bar-section end
                                      role="toolbar"
             >
                 <a href="http://docs.testerra.io/testerra/${_executionContext.runConfig.buildInformation.buildVersion}"
@@ -59,7 +59,7 @@
         </mdc-top-app-bar-row>
     </mdc-top-app-bar>
     <div class="flex">
-        <mdc-drawer view-model.ref="_drawer" > <!--add : type="dismissible"-->
+        <mdc-drawer view-model.ref="_drawer">
 
             <mdc-drawer-header title="Execution" subtitle="${_executionContext.contextValues.name}"></mdc-drawer-header>
             <mdc-drawer-content>

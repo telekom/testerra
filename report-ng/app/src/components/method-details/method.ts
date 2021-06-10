@@ -106,6 +106,16 @@ export class Method {
         routeConfig: RouteConfig,
         navInstruction: NavigationInstruction
     ) {
+        /**
+         * We should not disable this route when it has been directly requested in the URL
+         * because this will lead into an error in the mdc-tab.
+         */
+        function disableRoute(routeConfig: RouteConfig) {
+            if (navInstruction.params.childRoute != routeConfig.name) {
+                routeConfig.nav = false;
+            }
+        }
+
         this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
             this._methodDetails = methodDetails;
             this._failsAnnotation = this._methodDetails.failsAnnotation;
@@ -124,16 +134,16 @@ export class Method {
                             routeConfig.nav = true;
                             routeConfig.settings.count = count;
                         } else {
-                            routeConfig.nav = false;
+                            disableRoute(routeConfig);
                         }
                         break;
                     }
                     case "sessions": {
-                        if (methodDetails.sessionContexts.length == 0) {
-                            routeConfig.nav = false;
-                        } else {
+                        if (methodDetails.sessionContexts.length > 0) {
                             routeConfig.settings.count = methodDetails.sessionContexts.length;
                             routeConfig.nav = true;
+                        } else {
+                            disableRoute(routeConfig);
                         }
                         break;
                     }
@@ -142,7 +152,7 @@ export class Method {
                             routeConfig.nav = true;
                             routeConfig.settings.count = methodDetails.numDetails;
                         } else {
-                            routeConfig.nav = false;
+                            disableRoute(routeConfig);
                         }
                         break;
                     }
@@ -165,7 +175,7 @@ export class Method {
                             routeConfig.nav = true;
                             routeConfig.settings.count = `${allCollected}/${allOptional}`;
                         } else {
-                            routeConfig.nav = false;
+                            disableRoute(routeConfig);
                         }
                         break;
                     }

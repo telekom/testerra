@@ -136,7 +136,7 @@ public class ContextExporter implements Loggable {
                     builder.putAnnotations(annotation.annotationType().getName(), this.jsonEncoder.toJson(getAnnotationParameters(annotation)));
                 });
 
-        apply(methodContext.retryNumber, builder::setRetryNumber);
+        apply(methodContext.getRetryCounter(), builder::setRetryNumber);
         apply(methodContext.methodRunIndex, builder::setMethodRunIndex);
 
         apply(methodContext.priorityMessage, builder::setPriorityMessage);

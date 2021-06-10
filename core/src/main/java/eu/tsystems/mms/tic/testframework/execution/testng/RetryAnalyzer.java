@@ -29,11 +29,13 @@ import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.InheritedFailedException;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.FailsAnnotationFilter;
+import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.IRetryAnalyzer;
@@ -54,7 +56,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  *
  * @author pele
  */
-public class RetryAnalyzer implements IRetryAnalyzer {
+public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
 
     /**
      * Logger.
@@ -66,16 +68,16 @@ public class RetryAnalyzer implements IRetryAnalyzer {
     /**
      * Classes list.
      */
-    private static final List<Class> CLASSES_LIST = new ArrayList<>();
+    private final List<Class> CLASSES_LIST = new ArrayList<>();
 
     /**
      * Messages list.
      */
-    private static final List<String> MESSAGES_LIST = new ArrayList<>();
+    private final List<String> MESSAGES_LIST = new ArrayList<>();
 
     private static final Queue<MethodContext> RETRIED_METHODS = new ConcurrentLinkedQueue<>();
 
-    static {
+    public RetryAnalyzer() {
         final String classes = PropertyManager.getProperty(TesterraProperties.FAILED_TESTS_IF_THROWABLE_CLASSES);
         if (classes != null) {
             String[] split = classes.split(",");
@@ -84,7 +86,7 @@ public class RetryAnalyzer implements IRetryAnalyzer {
                     Class<?> aClass = Class.forName(clazz.trim());
                     CLASSES_LIST.add(aClass);
                 } catch (ClassNotFoundException e) {
-                    LOGGER.error("Error finding class", e);
+                    log().error("Error finding class", e);
                 }
             }
         }
@@ -101,13 +103,13 @@ public class RetryAnalyzer implements IRetryAnalyzer {
     /**
      * The retry counter.
      */
-    private static Map<String, Integer> retryCounters = Collections.synchronizedMap(new HashMap<String, Integer>());
+    private final Map<String, Integer> retryCounters = new ConcurrentHashMap<>();
 
     /**
      * The maximum number of retries. Loading every time to be able to set programmatically with System.setProperty().
      * A static final definition would be loaded to early (@ suite init).
      */
-    private static int getMaxRetries(ITestResult testResult) {
+    private int getMaxRetries(ITestResult testResult) {
         if (testResult != null) {
             // check for annotation
             Method method = testResult.getMethod().getConstructorOrMethod().getMethod();
@@ -138,7 +140,7 @@ public class RetryAnalyzer implements IRetryAnalyzer {
 
         if (retryCounter >= maxRetries) {
             raiseCounterAndChangeMethodContext(testResult, maxRetries);
-            LOGGER.warn("Not retrying " + testMethodName + " because run limit (" + maxRetries + ")");
+            log().warn("Not retrying " + testMethodName + " because run limit (" + maxRetries + ")");
             return false;
         }
 
@@ -158,7 +160,7 @@ public class RetryAnalyzer implements IRetryAnalyzer {
             // BUT ONLY: No retry for methods that hav a validFor
             final Fails failsAnnotation = testResult.getMethod().getConstructorOrMethod().getMethod().getAnnotation(Fails.class);
             if (FailsAnnotationFilter.isFailsAnnotationValid(failsAnnotation)) {
-                LOGGER.warn("Not retrying this method, because test is @Fails annotated.");
+                log().warn("Not retrying this method, because test is @Fails annotated.");
                 return false;
             }
         }
@@ -207,7 +209,7 @@ public class RetryAnalyzer implements IRetryAnalyzer {
 
             RETRIED_METHODS.add(methodContext);
 
-            LOGGER.error(retryReason + ", send signal for retrying the test " + retryMessageString + "\n" + methodContext);
+            log().error(retryReason + ", send signal for retrying the test " + retryMessageString + "\n" + methodContext);
 
             testResult.getTestContext().getFailedTests().removeResult(testResult);
             testResult.getTestContext().getSkippedTests().removeResult(testResult);
@@ -228,21 +230,21 @@ public class RetryAnalyzer implements IRetryAnalyzer {
 
             final String retryLog = "(" + retryCounter + "/" + (maxRetries + 1) + ")";
             methodContext.infos.add(retryLog);
-            methodContext.retryNumber = retryCounter;
+            methodContext.setRetryCounter(retryCounter);
         }
 
         return methodContext;
     }
 
-    private static int raiseRetryCounter(ITestResult iTestResult) {
+    private int raiseRetryCounter(ITestResult iTestResult) {
         return getRetryCounter(iTestResult, true);
     }
 
-    private static int getRetryCounter(ITestResult iTestResult) {
+    private int getRetryCounter(ITestResult iTestResult) {
         return getRetryCounter(iTestResult, false);
     }
 
-    private static int getRetryCounter(ITestResult testResult, boolean raise) {
+    private int getRetryCounter(ITestResult testResult, boolean raise) {
         ITestNGMethod testNGMethod = testResult.getMethod();
 
         String id = testResult.getTestContext().getCurrentXmlTest().getName() + "/" +
@@ -269,7 +271,6 @@ public class RetryAnalyzer implements IRetryAnalyzer {
             retryCounters.remove(id);
             retryCounters.put(id, counter);
         }
-        LOGGER.debug("Retry counter = " + counter + " for " + id);
         return counter;
     }
 
@@ -279,7 +280,7 @@ public class RetryAnalyzer implements IRetryAnalyzer {
      * @param testResult .
      * @return .
      */
-    public static boolean isTestResultContainingFilteredThrowable(final ITestResult testResult) {
+    private boolean isTestResultContainingFilteredThrowable(final ITestResult testResult) {
         if (testResult.getStatus() != ITestResult.FAILURE) {
             return false;
         }
@@ -309,52 +310,34 @@ public class RetryAnalyzer implements IRetryAnalyzer {
      * @param throwable The throwable to check.
      * @return a cause or null
      */
-    private static Throwable checkThrowable(Throwable throwable) {
-        /*
-         * Make a list of throwables
-         */
-        List<Throwable> throwables = new ArrayList<Throwable>();
-        throwables.add(throwable);
-        Throwable cause = throwable.getCause();
-        while (cause != null) {
-            throwables.add(cause);
-            cause = cause.getCause();
-        }
-
+    private Throwable checkThrowable(Throwable throwable) {
         Throwable retryCause = null;
-        for (Throwable t : throwables) {
-            String tMessage = t.getMessage();
+        do {
+            String tMessage = throwable.getMessage();
 
-            if (t instanceof TimeoutException) {
-                if (tMessage != null) {
-                    if (tMessage.contains("Timed out waiting for page load")) {
-                        retryCause = t;
-                    }
-                }
-            }
-
-            if (retryCause == null) {
-                for (AdditionalRetryAnalyzer additionalRetryAnalyzer : ADDITIONAL_RETRY_ANALYZERS) {
-                    if (retryCause == null) {
-                        retryCause = additionalRetryAnalyzer.analyzeThrowable(t, tMessage);
-                    }
+            for (AdditionalRetryAnalyzer additionalRetryAnalyzer : ADDITIONAL_RETRY_ANALYZERS) {
+                if (retryCause == null) {
+                    retryCause = additionalRetryAnalyzer.analyzeThrowable(throwable, tMessage);
                 }
             }
 
             for (Class aClass : CLASSES_LIST) {
-                if (t.getClass() == aClass) {
-                    LOGGER.info("Retrying test because of: " + aClass);
-                    retryCause = t;
+                if (throwable.getClass() == aClass) {
+                    log().info("Retrying test because of: " + aClass);
+                    retryCause = throwable;
                 }
             }
 
             for (String message : MESSAGES_LIST) {
                 if (tMessage != null && tMessage.contains(message)) {
-                    LOGGER.info("Retrying test because of: " + message);
-                    retryCause = t;
+                    log().info("Retrying test because of: " + message);
+                    retryCause = throwable;
                 }
             }
+
+            throwable = throwable.getCause();
         }
+        while (retryCause == null && throwable != null);
 
         return retryCause;
     }

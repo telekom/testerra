@@ -103,7 +103,7 @@ export class StatusConverter {
             case ResultStatusType.PASSED_RETRY:
                 return "Retried";
             case ResultStatusType.FAILED_RETRIED:
-                return "Failed on retry";
+                return "Retry Failed";
             case ResultStatusType.FAILED:
                 return "Failed";
             case ResultStatusType.FAILED_EXPECTED:

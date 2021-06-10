@@ -36,7 +36,7 @@ export class Classes extends AbstractViewModel {
     readonly CUSTOM_STATUS_REPAIRED="repaired";
     private _executionStatistics: ExecutionStatistics;
     private _selectedStatus:data.ResultStatusType|string;
-    private _availableStatuses = this._statusConverter.relevantStatuses;
+    private _availableStatuses = [];
     private _filteredMethodDetails:MethodDetails[];
     private _showConfigurationMethods:boolean = null;
     private _searchRegexp:RegExp;
@@ -101,8 +101,21 @@ export class Classes extends AbstractViewModel {
         const uniqueClasses = {};
         const uniqueStatuses = {};
         this._filteredMethodDetails = [];
+        this._availableStatuses = [];
 
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
+
+            this._statusConverter.relevantStatuses.forEach(status => {
+                if (executionStatistics.getStatusesCount(this._statusConverter.groupStatus(status)) > 0) {
+                    this._availableStatuses.push(status);
+                }
+            });
+
+            [data.ResultStatusType.FAILED_RETRIED, data.ResultStatusType.PASSED_RETRY].forEach(status => {
+                if (executionStatistics.getStatusCount(status) > 0) {
+                    this._availableStatuses.push(status);
+                }
+            });
 
             let relevantFailureAspect:FailureAspectStatistics;
             let filterByFailureAspect = false;

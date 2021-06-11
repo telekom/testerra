@@ -1,7 +1,6 @@
 = Retry analyzer
 include::../properties/property-attributes.adoc[]
 
-== Common
 Testerra provides an adjustable mechanism to automatically retry failed tests.
 
 The default retry count is `1`. Each failed method is executed exactly one more time, when matching the <<Specific retries, retry criteria>>.
@@ -27,9 +26,16 @@ You can change the retry count for specific test methods.
 @Test()
 @Retry(maxRetries = 2)
 public void testMethod() {
-    ...
+    // ...
 }
 ----
+
+== Default retries
+
+The following default retry analyzers are registered from modules:
+
+* `driver-ui` registeres `WebDriverRetryAnalyzer` which retries tests on specific internal WebDriver exceptions they look like temporary communication problems.
+* `driver-ui-desktop` registeres `SeleniumRetryAnalyzer` which retries tests on general Selenium communication problems with requested Desktop user agents.
 
 == Specific retries
 
@@ -67,18 +73,18 @@ public class InstantiationExceptionRetryAnalyzer implements AdditionalRetryAnaly
     final String message = "failed instantiation";
 
     @Override
-    public Throwable analyzeThrowable(Throwable throwable, String tMessage) {
+    public Optional<Throwable> analyzeThrowable(Throwable throwable, String tMessage) {
         if (throwable instanceof InstantiationException) {
             if (tMessage != null) {
                 final String tMessageLC = tMessage.toLowerCase();
                 boolean match = tMessageLC.contains(message);
                 if (match) {
-                return throwable;
+                    return Optional.of(throwable);
                 }
             }
         }
 
-        return null;
+        return Optional.empty();
     }
 }
 ----

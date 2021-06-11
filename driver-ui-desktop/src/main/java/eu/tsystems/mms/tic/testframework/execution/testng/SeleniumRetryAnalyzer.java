@@ -21,16 +21,17 @@
 
 package eu.tsystems.mms.tic.testframework.execution.testng;
 
+import java.util.Optional;
 import org.openqa.selenium.json.JsonException;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 
 public class SeleniumRetryAnalyzer implements AdditionalRetryAnalyzer {
     @Override
-    public Throwable analyzeThrowable(Throwable throwable, String tMessage) {
-        if (throwable.getClass().isAssignableFrom(UnreachableBrowserException.class) && throwable.getClass().isAssignableFrom(JsonException.class)) {
-            return throwable;
+    public Optional<Throwable> analyzeThrowable(Throwable throwable, String tMessage) {
+        if (throwable instanceof UnreachableBrowserException || throwable instanceof JsonException) {
+            return Optional.of(throwable);
         } else {
-            return null;
+            return Optional.empty();
         }
     }
 }

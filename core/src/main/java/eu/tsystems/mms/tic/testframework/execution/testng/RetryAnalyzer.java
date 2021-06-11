@@ -35,6 +35,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.FailsAnnotationFilter;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,6 +78,11 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
 
     private static final Queue<MethodContext> RETRIED_METHODS = new ConcurrentLinkedQueue<>();
 
+    /**
+     * The retry counter.
+     */
+    private final Map<String, Integer> retryCounters = new ConcurrentHashMap<>();
+
     public RetryAnalyzer() {
         final String classes = PropertyManager.getProperty(TesterraProperties.FAILED_TESTS_IF_THROWABLE_CLASSES);
         if (classes != null) {
@@ -99,11 +105,6 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
             }
         }
     }
-
-    /**
-     * The retry counter.
-     */
-    private final Map<String, Integer> retryCounters = new ConcurrentHashMap<>();
 
     /**
      * The maximum number of retries. Loading every time to be able to set programmatically with System.setProperty().
@@ -316,8 +317,10 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
             String tMessage = throwable.getMessage();
 
             for (AdditionalRetryAnalyzer additionalRetryAnalyzer : ADDITIONAL_RETRY_ANALYZERS) {
-                if (retryCause == null) {
-                    retryCause = additionalRetryAnalyzer.analyzeThrowable(throwable, tMessage);
+                Optional<Throwable> optionalRetryCause = additionalRetryAnalyzer.analyzeThrowable(throwable, tMessage);
+                if (optionalRetryCause.isPresent()) {
+                    retryCause = optionalRetryCause.get();
+                    break;
                 }
             }
 
@@ -325,6 +328,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
                 if (throwable.getClass() == aClass) {
                     log().info("Retrying test because of: " + aClass);
                     retryCause = throwable;
+                    break;
                 }
             }
 
@@ -332,6 +336,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
                 if (tMessage != null && tMessage.contains(message)) {
                     log().info("Retrying test because of: " + message);
                     retryCause = throwable;
+                    break;
                 }
             }
 

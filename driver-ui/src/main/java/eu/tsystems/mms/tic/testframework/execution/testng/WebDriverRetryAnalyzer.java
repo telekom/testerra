@@ -21,6 +21,8 @@
  */
  package eu.tsystems.mms.tic.testframework.execution.testng;
 
+import java.util.Optional;
+import org.checkerframework.checker.nullness.Opt;
 import org.openqa.selenium.WebDriverException;
 
 import java.util.Arrays;
@@ -36,17 +38,17 @@ public class WebDriverRetryAnalyzer implements AdditionalRetryAnalyzer {
         };
 
     @Override
-    public Throwable analyzeThrowable(Throwable throwable, String tMessage) {
+    public Optional<Throwable> analyzeThrowable(Throwable throwable, String tMessage) {
         if (throwable instanceof WebDriverException) {
             if (tMessage != null) {
                 final String tMessageLC = tMessage.toLowerCase();
                 boolean anyMatch = Arrays.stream(messages).anyMatch(m -> tMessageLC.contains(m.toLowerCase()));
                 if (anyMatch) {
-                    return throwable;
+                    return Optional.of(throwable);
                 }
             }
         }
 
-        return null;
+        return Optional.empty();
     }
 }

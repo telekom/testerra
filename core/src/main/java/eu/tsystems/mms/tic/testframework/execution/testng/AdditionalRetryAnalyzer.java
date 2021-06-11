@@ -21,8 +21,12 @@
  */
  package eu.tsystems.mms.tic.testframework.execution.testng;
 
-public interface AdditionalRetryAnalyzer {
+import java.util.Optional;
 
-    Throwable analyzeThrowable(Throwable throwable, String tMessage);
+public interface AdditionalRetryAnalyzer {
+    /**
+     * When the return value of this method is not empty, the test should be retried.
+     */
+    Optional<Throwable> analyzeThrowable(Throwable throwable, String tMessage);
 
 }

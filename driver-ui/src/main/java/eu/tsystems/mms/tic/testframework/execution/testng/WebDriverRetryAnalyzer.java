@@ -19,22 +19,20 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.execution.testng;
+package eu.tsystems.mms.tic.testframework.execution.testng;
 
-import java.util.Optional;
-import org.checkerframework.checker.nullness.Opt;
 import org.openqa.selenium.WebDriverException;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 public class WebDriverRetryAnalyzer implements AdditionalRetryAnalyzer {
 
     final String[] messages = {
             "was terminated due to TIMEOUT",
             "was terminated due to SO_TIMEOUT",
-            "The requested URL could not be retrieved",
-            "Squid is unable to create a TCP socket"
-        };
+            "The requested URL could not be retrieved"
+    };
 
     @Override
     public Optional<Throwable> analyzeThrowable(Throwable throwable, String tMessage) {

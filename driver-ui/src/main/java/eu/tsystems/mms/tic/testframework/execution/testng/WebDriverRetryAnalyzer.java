@@ -29,8 +29,7 @@ import java.util.Arrays;
 
 public class WebDriverRetryAnalyzer implements AdditionalRetryAnalyzer {
 
-    String[] messages = {
-            "Error communicating with the remote browser. It may have died",
+    final String[] messages = {
             "was terminated due to TIMEOUT",
             "was terminated due to SO_TIMEOUT",
             "The requested URL could not be retrieved",

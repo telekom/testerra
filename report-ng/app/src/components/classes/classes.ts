@@ -36,7 +36,7 @@ export class Classes extends AbstractViewModel {
     readonly CUSTOM_STATUS_REPAIRED="repaired";
     private _executionStatistics: ExecutionStatistics;
     private _selectedStatus:data.ResultStatusType|string;
-    private _availableStatuses = [];
+    private _availableStatuses;
     private _filteredMethodDetails:MethodDetails[];
     private _showConfigurationMethods:boolean = null;
     private _searchRegexp:RegExp;
@@ -88,8 +88,12 @@ export class Classes extends AbstractViewModel {
 
         const relevantStatuses:ResultStatusType[] = [];
 
+        console.log("selected", this._selectedStatus);
+        let filterRepairedOnly = false;
+
         if (this._selectedStatus === this.CUSTOM_STATUS_REPAIRED) {
             relevantStatuses.push(...this._statusConverter.passedStatuses);
+            filterRepairedOnly = true;
             this.queryParams.status = this.CUSTOM_STATUS_REPAIRED;
         } else if (this._selectedStatus > 0) {
             this.queryParams.status = this._statusConverter.getClassForStatus(this._selectedStatus);
@@ -104,18 +108,13 @@ export class Classes extends AbstractViewModel {
         this._availableStatuses = [];
 
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
-
-            this._statusConverter.relevantStatuses.forEach(status => {
-                if (executionStatistics.getStatusesCount(this._statusConverter.groupStatus(status)) > 0) {
-                    this._availableStatuses.push(status);
-                }
-            });
-
-            [data.ResultStatusType.FAILED_RETRIED, data.ResultStatusType.PASSED_RETRY].forEach(status => {
-                if (executionStatistics.getStatusCount(status) > 0) {
-                    this._availableStatuses.push(status);
-                }
-            });
+            this._statusConverter.relevantStatuses
+                .concat(...[data.ResultStatusType.FAILED_RETRIED, data.ResultStatusType.PASSED_RETRY])
+                .forEach(status => {
+                    if (executionStatistics.getStatusesCount(this._statusConverter.groupStatus(status)) > 0) {
+                        this._availableStatuses.push(status)
+                    }
+                });
 
             let relevantFailureAspect:FailureAspectStatistics;
             let filterByFailureAspect = false;
@@ -156,7 +155,7 @@ export class Classes extends AbstractViewModel {
                         return methodDetails;
                     });
 
-                    if (this._selectedStatus === this.CUSTOM_STATUS_REPAIRED) {
+                    if (filterRepairedOnly) {
                         methodDetails = methodDetails.filter(methodDetails => methodDetails.isRepaired);
                     }
 

@@ -35,7 +35,9 @@ public void testMethod() {
 The following default retry analyzers are registered from modules:
 
 * `driver-ui` registeres `WebDriverRetryAnalyzer` which retries tests on specific internal WebDriver exceptions they look like temporary communication problems.
-* `driver-ui-desktop` registeres `SeleniumRetryAnalyzer` which retries tests on general Selenium communication problems with requested Desktop user agents.
+* `driver-ui-desktop` registeres `SeleniumRetryAnalyzer` which retries tests on general Selenium communication problems with requested Desktop user agents:
+** `org.openqa.selenium.json.JsonException`
+** `org.openqa.selenium.remote.UnreachableBrowserException`
 
 == Specific retries
 
@@ -45,18 +47,10 @@ The filtering process contains of checks of classes and messages matching the th
 .test.properties
 [source, properties, subs="attributes"]
 ----
-# set additional classes that engage a retry,
-# instances of TimeoutException are always retried
+# Set additional classes that engage a retry,
 {failed_tests_if_throwable_classes}=java.sql.SQLRecoverableException
 
-# set additional messages of Throwable that engage a retry,
-# by default the following messages are evaluated
-#           "Error communicating with the remote browser. It may have died",
-#           "was terminated due to TIMEOUT",
-#           "was terminated due to SO_TIMEOUT",
-#           "The requested URL could not be retrieved",
-#           "Squid is unable to create a TCP socket"
-
+# Set additional messages of Throwable that engage a retry,
 {failed_tests_if_throwable_messages}=failed to connect, error communicating with database
 ----
 

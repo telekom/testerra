@@ -22,6 +22,7 @@ package eu.tsystems.mms.tic.testframework.test.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractExclusiveTestSitesTest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.WebTestPage;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
@@ -32,6 +33,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementAssertion;
 import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
+import eu.tsystems.mms.tic.testframework.testing.TestController;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -270,12 +272,20 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
 
     @Test
     public void test_UiElement_click_retry() {
+        TestController.Overrides overrides = Testerra.getInjector().getInstance(TestController.Overrides.class);
+
+        // Get default timeout and check if its not the test timeout
+        int defaultTimeout = overrides.getTimeoutInSeconds();
+        int useTimeoutForTest = 1;
+        ASSERT.assertNotEquals(defaultTimeout, useTimeoutForTest);
+
         WebTestPage page = getPage();
         UiElement disableMyselfBtn = page.getFinder().findById("disableMyselfBtn");
+
         disableMyselfBtn.expect().enabled(true);
         AtomicInteger retryCount = new AtomicInteger();
         CONTROL.retryFor(10, () -> {
-            CONTROL.withTimeout(1, () -> {
+            CONTROL.withTimeout(useTimeoutForTest, () -> {
                 retryCount.incrementAndGet();
                 disableMyselfBtn.click();
                 disableMyselfBtn.expect().enabled(false);
@@ -283,6 +293,9 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
         });
         ASSERT.assertEquals(retryCount.get(), 5, "Retry count");
         disableMyselfBtn.expect().enabled(false);
+
+        // Check if the timeout is default
+        ASSERT.assertEquals(overrides.getTimeoutInSeconds(), defaultTimeout);
     }
 
     @Test

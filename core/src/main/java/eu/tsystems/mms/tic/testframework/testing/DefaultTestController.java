@@ -67,8 +67,13 @@ public class DefaultTestController implements TestController, Loggable {
     @Override
     public void withTimeout(int seconds, Runnable runnable) {
         int prevTimeout = overrides.setTimeout(seconds);
-        runnable.run();
-        overrides.setTimeout(prevTimeout);
+        try {
+            runnable.run();
+            overrides.setTimeout(prevTimeout);
+        } catch (Throwable throwable) {
+            overrides.setTimeout(prevTimeout);
+            throw throwable;
+        }
     }
 
     private String createSequenceLog(int timeoutSeconds, Sequence sequence) {

@@ -50,7 +50,6 @@ build.dependsOn(buildReport)
 task cleanNpm {
     doLast {
         delete "node_modules"
-        delete "package-lock.json"
         delete "dist"
     }
 }

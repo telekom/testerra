@@ -31,7 +31,7 @@
         "@aurelia-mdc-web/top-app-bar": "^3.0.3",
         "@aurelia-mdc-web/typography": "^3.0.3",
         "@types/moment-duration-format": "^2.2.2",
-        "apexcharts": "^3.22.3",
+        "apexcharts": "^3.26.3",
         "aurelia-animator-css": "^1.0.4",
         "aurelia-binding": "^2.5.4",
         "aurelia-bootstrapper": "^2.3.3",

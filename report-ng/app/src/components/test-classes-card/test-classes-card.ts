@@ -28,6 +28,22 @@ import {ApexOptions} from "apexcharts";
 import {bindingMode} from "aurelia-binding";
 import ResultStatusType = data.ResultStatusType;
 
+export interface IClassBarClickedDetails {
+    mouseEvent: MouseEvent,
+    filter: IFilter,
+}
+
+export class ClassBarClick extends CustomEvent<IClassBarClickedDetails> {
+    constructor(
+        details: IClassBarClickedDetails
+    ) {
+        super("class-bar-click", {
+            detail: details,
+            bubbles: true
+        });
+    }
+}
+
 @autoinject
 export class TestClassesCard {
     @bindable({bindingMode: bindingMode.toView}) filter: IFilter;
@@ -53,8 +69,8 @@ export class TestClassesCard {
     }
 
     private _prepareHorizontalBarChart(classStatistics: ClassStatistics[]): void {
-        let data: Map<ResultStatusType, Array<number>> = new Map();
-        let yLabels: Array<string> = [];
+        const data: Map<ResultStatusType, Array<number>> = new Map();
+        const yLabels: string[] = [];
 
         const series = [];
         this._filteredStatuses = this._statusConverter.relevantStatuses.filter(status => (!this.filter?.status || status === this.filter.status));
@@ -78,13 +94,12 @@ export class TestClassesCard {
             })
             .forEach(classStats => {
                 for (const status of this._filteredStatuses) {
-                    if (status == ResultStatusType.PASSED) {
-                        // For PASSED we need all passed states
-                        data.get(status).push(classStats.getStatusesCount(this._statusConverter.passedStatuses));
+                    const count = classStats.getStatusesCount(this._statusConverter.groupStatus(status));
+                    if (count > 0) {
+                        data.get(status).push(count);
                     } else {
-                        data.get(status).push(classStats.getStatusCount(status));
+                        data.get(status).push(null);
                     }
-
                 }
                 const className = classStats.classIdentifier;
                 //Push Class Names in array for y-axis labels
@@ -98,7 +113,7 @@ export class TestClassesCard {
 
         //set size by amount of bars to have consistent bar height
         //amount of classes * 60px + offset due to legend and labels
-        let height: string = yLabels.length * 60 + 67.65 + 'px'
+        const height: string = yLabels.length * 60 + 67.65 + 'px'
 
         this._apexBarOptions = {
             chart: {
@@ -144,7 +159,6 @@ export class TestClassesCard {
                 }
             },
             yaxis: {
-
                 labels: {
                     show: dataAvailable,
                     //minWidth: 200,    // Does not work
@@ -171,19 +185,17 @@ export class TestClassesCard {
         }
     }
 
-    private _barClicked(event, chartContext, config): void {
+    private _barClicked(event:MouseEvent, chartContext, config): void {
         event?.stopPropagation();
 
-        const params: IFilter = {
+        const filter: IFilter = {
             class: this._apexBarOptions.xaxis.categories[config.dataPointIndex],
             status: this._filteredStatuses[config.seriesIndex]
         }
 
-        const customEvent = new CustomEvent("filter-changed", {
-            detail: params,
-            bubbles: true
-        });
-        // console.log(params, this._element);
-        this._element.dispatchEvent(customEvent)
+        this._element.dispatchEvent(new ClassBarClick({
+            mouseEvent: event,
+            filter: filter
+        }))
     }
 }

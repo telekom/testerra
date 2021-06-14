@@ -106,14 +106,29 @@ public class ContextExporter implements Loggable {
     public MethodContext.Builder buildMethodContext(eu.tsystems.mms.tic.testframework.report.model.context.MethodContext methodContext) {
         MethodContext.Builder builder = MethodContext.newBuilder();
 
-        apply(buildContextValues(methodContext), builder::setContextValues);
+        ContextValues.Builder contextValuesBuilder = buildContextValues(methodContext);
+
+
+        methodContext.getTestNgResult().ifPresent(iTestResult -> {
+            String testName = methodContext.getName();
+            String methodName = iTestResult.getMethod().getMethodName();
+            // When the context name differs from the method name
+            if (!testName.equals(methodName)) {
+                // Set the context name to the method name
+                contextValuesBuilder.setName(methodName);
+                // And the test name to the actual generated test name
+                builder.setTestName(testName);
+            }
+        });
+
+        builder.setContextValues(contextValuesBuilder);
+
         map(methodContext.getStatus(), this::getMappedStatus, builder::setResultStatus);
         map(methodContext.getMethodType(), type -> MethodType.valueOf(type.name()), builder::setMethodType);
         List<Object> parameterValues = methodContext.getParameterValues();
         for (int i = 0; i < parameterValues.size(); ++i) {
             builder.putParameters(methodContext.getParameters()[i].getName(), parameterValues.get(i).toString());
         }
-
 
         methodContext.readAnnotations()
                 // Skip TestNG annotations

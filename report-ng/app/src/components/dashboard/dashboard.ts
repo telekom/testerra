@@ -29,6 +29,7 @@ import MethodType = data.MethodType;
 import FailureCorridorValue = data.FailureCorridorValue;
 import ResultStatusType = data.ResultStatusType;
 import "./dashboard.scss"
+import {ClassBarClick} from "../test-classes-card/test-classes-card";
 
 class FailureCorridor {
     count:number = 0;
@@ -174,11 +175,17 @@ export class Dashboard extends AbstractViewModel {
         })
     }
 
-    private _barFilterChanged(ev:CustomEvent) {
-        const filter:IFilter = ev.detail;
-        const queryParams:any = filter;
-        queryParams.status = this._statusConverter.getClassForStatus(filter.status);
-        this.navInstruction.router.navigateToRoute("tests", queryParams);
+    private _barFilterChanged(ev:ClassBarClick) {
+        const queryParams:any = ev.detail.filter;
+        queryParams.status = this._statusConverter.getClassForStatus(ev.detail.filter.status);
+        if (ev.detail.mouseEvent.button == 0) {
+            this.navInstruction.router.navigateToRoute("tests", queryParams);
+        } else {
+            // Open window in new tab
+            const classView = window.open(this.navInstruction.router.generate("tests", queryParams));
+            classView.blur();
+            window.focus()
+        }
     }
 
     private _gotoFailureAspect(failureAspect:FailureAspectStatistics) {

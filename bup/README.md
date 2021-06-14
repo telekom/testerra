@@ -11,14 +11,14 @@ For a detailed documentation please take a look at [Testerra framework documenta
 
 Gradle:  
 ````groovy
-compile 'eu.tsystems.mms.tic.testerra:bup:1-SNAPSHOT'
+compile 'io.testerra:bup:1-SNAPSHOT'
 ````
 
 Maven:  
 ````xml
 <dependencies>
     <dependency>
-        <groupId>eu.tsystems.mms.tic.testerra</groupId>
+        <groupId>io.testerra</groupId>
         <artifactId>bup</artifactId>
         <version>1-SNAPSHOT</version>
     </dependency>

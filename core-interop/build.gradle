@@ -1,11 +1,13 @@
 dependencies {
 
     api('org.testng:testng:7.4.0')
-//            {
-        // We have to exclude this here, because testng is using 25.1-android in dependency com.google.inject:guice:4.1.0
-        // This will lead to a version clash with selenium and this will produce ImmutableMapErrors on WebDriverManager.getWebDriver
-//        exclude group: 'com.google.guava', module: 'guava'
-//    }
+    //  {
+    // Update TestNG 7.4.0: This is not needed anymore because TestNG extremly reduced transitive dependencies.
+    //
+    // We have to exclude this here, because testng is using 25.1-android in dependency com.google.inject:guice:4.1.0
+    // This will lead to a version clash with selenium and this will produce ImmutableMapErrors on WebDriverManager.getWebDriver
+    //        exclude group: 'com.google.guava', module: 'guava'
+    //    }
 
     api 'commons-io:commons-io:2.6'
     api 'org.apache.commons:commons-lang3:3.9'

@@ -11,10 +11,10 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
 
     // https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
-    implementation 'org.apache.httpcomponents:httpclient:4.5.12'
+    implementation 'org.apache.httpcomponents:httpclient:4.5.13'
 
     // https://mvnrepository.com/artifact/org.apache.httpcomponents/httpcore
-    implementation 'org.apache.httpcomponents:httpcore:4.4.13'
+    implementation 'org.apache.httpcomponents:httpcore:4.4.14'
 
     // https://mvnrepository.com/artifact/com.browserup/browserup-proxy-core
     api 'com.browserup:browserup-proxy-core:2.1.2'

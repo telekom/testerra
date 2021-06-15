@@ -14,6 +14,7 @@
 <p align="center">
   <a href="#setup">Setup</a> •
   <a href="#documentation">Documentation</a> •
+  <a href="#extras">Extras</a> •
   <a href="#support-and-feedback">Support</a> •
   <a href="#how-to-contribute">Contribute</a> •
   <a href="#contributors">Contributors</a> •
@@ -31,8 +32,8 @@ Include the following dependency in your project. Please replace `1-SNAPSHOT` wi
 
 Gradle:
 ```groovy
-compile 'io.testerra:driver-ui-desktop:1-SNAPSHOT'
-compile 'io.testerra:report-ng:1-SNAPSHOT'
+compile 'io.testerra:driver-ui-desktop:1.0'
+compile 'io.testerra:report-ng:1.0'
 ```
 
 Maven:
@@ -41,12 +42,12 @@ Maven:
     <dependency>
         <groupId>io.testerra</groupId>
         <artifactId>driver-ui-desktop</artifactId>
-        <version>1-SNAPSHOT</version>
+        <version>1.0</version>
     </dependency>
     <dependency>
         <groupId>io.testerra</groupId>
         <artifactId>report-ng</artifactId>
-        <version>1-SNAPSHOT</version>
+        <version>1.0</version>
     </dependency>
 </dependencies>
 ```
@@ -70,7 +71,9 @@ public class MyTest extends TesterraTest {
 * Check out our comprehensive [Testerra documentation](http://docs.testerra.io)!
 * Feel free to try out our ready-to-use [Skeleton project][testerra-skeleton].
 
-## Testing
+## Extras
+
+### Testing
 
 Every module contains tests that can be run like
 ```shell
@@ -83,7 +86,17 @@ The following optional properties can be set.
 | ----------------------------- | ----------------------------------------------------- |
 | `withJacoco`                   | Enables Jacoco code coverage analysis |
 
-## Publishing
+### Dependency report
+
+Create a report about used dependencies, for example in HTML style:
+
+``gradle htmlDependencyReport``
+
+You will find the report in every module under ``build/reports/project/dependencies/index.html``.
+
+See more details here: https://docs.gradle.org/current/userguide/project_report_plugin.html
+
+### Publishing
 
 Testerra is deployed and published to Maven Central. All JAR files are signed via Gradle signing plugin.
 

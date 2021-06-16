@@ -37,6 +37,7 @@ public class AbstractWebDriverRequest implements Serializable, WebDriverRequest 
     private boolean shutdownAfterTest = false;
     private boolean shutdownAfterTestFailed = false;
     private boolean shutdownAfterExecution = true;
+    private String browserName;
 
     public AbstractWebDriverRequest() {
         setShutdownAfterTest(PropertyManager.getBooleanProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, true));
@@ -49,11 +50,11 @@ public class AbstractWebDriverRequest implements Serializable, WebDriverRequest 
     }
 
     public String getBrowser() {
-        return getDesiredCapabilities().getBrowserName();
+        return this.browserName;
     }
 
     public void setBrowser(String browser) {
-        getDesiredCapabilities().setBrowserName(browser);
+        this.browserName = browser;
     }
 
     public String getBrowserVersion() {

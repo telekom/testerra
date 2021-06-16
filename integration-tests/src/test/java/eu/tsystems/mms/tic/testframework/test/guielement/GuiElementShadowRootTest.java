@@ -23,24 +23,18 @@
 package eu.tsystems.mms.tic.testframework.test.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractExclusiveTestSitesTest;
-import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.GuiElementShadowRootPage;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.exceptions.UiElementAssertionError;
-import eu.tsystems.mms.tic.testframework.exceptions.UiElementException;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.XPath;
-import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
-import eu.tsystems.mms.tic.testframework.test.page.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 
-public class GuiElementShadowRootTest extends AbstractExclusiveTestSitesTest<GuiElementShadowRootPage> {
+public class GuiElementShadowRootTest extends AbstractExclusiveTestSitesTest<GuiElementShadowRootPage> implements PageFactoryTest {
 
     @Override
     protected TestPage getTestPage() {
@@ -90,11 +84,4 @@ public class GuiElementShadowRootTest extends AbstractExclusiveTestSitesTest<Gui
         Assert.assertTrue(shadowRootElement.find(XPath.from("div").attribute("id", "shadow-content")).waitFor().displayed(true));
         shadowRootElement.findById("shadow-content").expect().present(true);
     }
-
-    @Test(expectedExceptions = TimeoutException.class)
-    public void test_ShadowRoot_getSubElement_nonXPath_fails() {
-        final GuiElementShadowRootPage page = getPage();
-        page.shadowRootElement.getSubElement(By.id("shadow-content'"));
-    }
-
 }

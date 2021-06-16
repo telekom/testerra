@@ -5,7 +5,7 @@ dependencies {
     api core_interop
 
     // <PdfUtils>
-    implementation 'org.apache.pdfbox:pdfbox:1.8.10'
+    implementation 'org.apache.pdfbox:pdfbox:1.8.16'
     // </PdfUtils>
 
     // <RESTUtils>

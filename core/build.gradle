@@ -15,7 +15,7 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.9'
 
     // <PdfUtils>
-    implementation 'org.apache.pdfbox:pdfbox:1.8.10'
+    implementation 'org.apache.pdfbox:pdfbox:1.8.16'
     // </PdfUtils>
 
     // <RESTUtils>

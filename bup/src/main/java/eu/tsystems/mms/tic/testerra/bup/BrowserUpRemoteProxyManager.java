@@ -41,7 +41,6 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -212,14 +211,13 @@ public class BrowserUpRemoteProxyManager implements Loggable {
         return jsonResponse != null && jsonResponse.equals("");
     }
 
-
     /**
      * Calls POST /proxy/[port]/headers with parameter.
      * Sets header for all outgoing requests.
      *
      * @param proxyServer {@link BrowserUpRemoteProxyServer}
-     * @param key         {@link String}
-     * @param value       {@link String}
+     * @param key {@link String}
+     * @param value {@link String}
      * @implNote can only be called after a BMP already started.
      */
     public boolean addHeader(final BrowserUpRemoteProxyServer proxyServer, final String key, final String value) {
@@ -243,10 +241,10 @@ public class BrowserUpRemoteProxyManager implements Loggable {
      * Calls PUT /proxy/[port]/har with parameters
      * Start capturing the network traffic
      *
-     * @param proxyServer      {@link BrowserUpRemoteProxyServer} proxyserver to start capturing on
+     * @param proxyServer {@link BrowserUpRemoteProxyServer} proxyserver to start capturing on
      * @param isCaptureHeaders Enables capture of headers.
      * @param isCaptureContent Enables capture of content
-     * @param initialPageRef   Set page reference for first page, defaults to "Page 1"
+     * @param initialPageRef Set page reference for first page, defaults to "Page 1"
      */
     public boolean startCapture(BrowserUpRemoteProxyServer proxyServer, String initialPageRef, boolean isCaptureHeaders, boolean isCaptureContent) {
 
@@ -292,7 +290,7 @@ public class BrowserUpRemoteProxyManager implements Loggable {
      * Please ensure you called {@link #startCapture(BrowserUpRemoteProxyServer, String, boolean, boolean)} before.
      *
      * @param proxyServer {@link BrowserUpRemoteProxyServer}
-     * @param pageRef     {@link String} pageRef
+     * @param pageRef {@link String} pageRef
      */
     public boolean addNewPage(final BrowserUpRemoteProxyServer proxyServer, final String pageRef) {
 
@@ -317,10 +315,10 @@ public class BrowserUpRemoteProxyManager implements Loggable {
 
         final URIBuilder hostUriBuilder = url().setPath("/proxy/" + proxyServer.getPort() + "/hosts");
 
-        final JSONObject jsonHostnameIpMap = new JSONObject();
+        final JsonObject jsonHostnameIpMap = new JsonObject();
         for (final String hostname : hostnameIpMap.keySet()) {
             final String ip = hostnameIpMap.get(hostname);
-            jsonHostnameIpMap.put(hostname, ip);
+            jsonHostnameIpMap.addProperty(hostname, ip);
         }
 
         final URI uri = buildUri(hostUriBuilder, "Error parsing URL for POST /proxy/[port]/har BrowserUp proxy server.");

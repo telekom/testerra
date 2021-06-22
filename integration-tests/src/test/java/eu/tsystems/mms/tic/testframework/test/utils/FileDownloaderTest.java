@@ -29,6 +29,9 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -104,6 +107,16 @@ public class FileDownloaderTest extends AbstractTestSitesTest {
         File file = FileUtils.getFile(download);
 
         Assert.assertTrue(file.exists(), "File was downloaded correctly.");
+    }
+
+    @Test
+    public void test_ContentDisposition_parsing() {
+        String header = "inline; filename=\"011_062_D00257172.pdf\"";
+        Pattern pattern = Pattern.compile("filename=\\\"?([^\\\"]+)\\\"?");
+        Matcher matcher = pattern.matcher(header);
+        Assert.assertTrue(matcher.find());
+        Assert.assertEquals("011_062_D00257172.pdf", matcher.group(1));
+
     }
 
     @Test

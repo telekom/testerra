@@ -34,12 +34,12 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSocketFactory;
 import org.apache.commons.io.FilenameUtils;
 import org.openqa.selenium.WebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Utility class for downloading files to executing host.
@@ -328,9 +328,10 @@ public class FileDownloader implements Loggable {
 
         String disposition = connection.getHeaderField("Content-Disposition");
         if (disposition != null) {
-            int index = disposition.indexOf("filename=");
-            if (index > 0) {
-                fileName = disposition.substring(index + 10, disposition.length() - 1);
+            Pattern pattern = Pattern.compile("filename=\\\"?([^\\\"]+)\\\"?");
+            Matcher matcher = pattern.matcher(disposition);
+            if (matcher.find()) {
+                return matcher.group(1);
             }
         }
         return fileName;

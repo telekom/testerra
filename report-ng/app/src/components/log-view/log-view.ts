@@ -28,23 +28,24 @@ import {ILogEntry} from "../../services/statistics-generator";
 @autoinject()
 export class LogView {
 
+    @bindable({defaultBindingMode: bindingMode.toView})
+    class:string;
+
+    // @bindable({defaultBindingMode: bindingMode.fromView})
+    // logView:HTMLDivElement;
+
+    @bindable({defaultBindingMode: bindingMode.toView})
+    logMessages:ILogEntry[];
+
+    @bindable({defaultBindingMode: bindingMode.toView})
+    search:RegExp;
+
+    private _filteredLogMessages:ILogEntry[];
+
     constructor(
         private _statusConverter:StatusConverter,
     ) {
     }
-
-    @bindable({bindingMode: bindingMode.toView})
-    logMessages:ILogEntry[];
-
-    private _filteredLogMessages:ILogEntry[];
-
-    // @bindable({bindingMode: bindingMode.toView})
-    // showThreads;
-
-    // private _showThreads = false;
-
-    @bindable({bindingMode: bindingMode.toView})
-    search:RegExp;
 
     private _toggleCause(logMessage:ILogEntry) {
         if (logMessage.cause) {

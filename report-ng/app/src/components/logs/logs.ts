@@ -25,6 +25,7 @@ import {AbstractViewModel} from "../abstract-view-model";
 import {ILogEntry, StatisticsGenerator} from "services/statistics-generator";
 import {StatusConverter} from "services/status-converter";
 import {data} from "services/report-model";
+import "./logs.scss"
 
 @autoinject()
 export class Logs extends AbstractViewModel {

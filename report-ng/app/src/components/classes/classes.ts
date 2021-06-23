@@ -30,6 +30,7 @@ import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import MethodType = data.MethodType;
 import ResultStatusType = data.ResultStatusType;
 import "./classes.scss"
+import chain from 'lodash/chain';
 
 @autoinject()
 export class Classes extends AbstractViewModel {
@@ -104,6 +105,11 @@ export class Classes extends AbstractViewModel {
 
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
 
+            const startTime = Date.now();
+
+            // chain(executionStatistics.classStatistics)
+            //     .map(classStatistics => classStatistics.classIdentifier)
+
             let relevantFailureAspect:FailureAspectStatistics;
             let filterByFailureAspect = false;
             if (this.queryParams.failureAspect > 0) {
@@ -155,8 +161,11 @@ export class Classes extends AbstractViewModel {
                         uniqueClasses[classStatistic.classContext.fullClassName] = true;
                         uniqueStatuses[methodDetails.methodContext.resultStatus] = true;
                         this._filteredMethodDetails.push(methodDetails);
-                    })
+                    });
+
                 });
+
+
 
             // Sort by method name
             //this._filteredMethodDetails = this._filteredMethodDetails.sort((a, b) => a.methodContext.contextValues.name.localeCompare(b.methodContext.contextValues.name));
@@ -173,6 +182,8 @@ export class Classes extends AbstractViewModel {
 
             this.updateUrl(this.queryParams);
             this._loading = false;
+            console.log("filter time in seconds", (Date.now() - startTime)/1000);
+
         });
     }
 

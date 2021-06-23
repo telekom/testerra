@@ -47,7 +47,7 @@ export interface ILayoutComparisonContext {
 
 @autoinject
 export class LayoutComparison {
-    @bindable({bindingMode:bindingMode.toView}) context:ILayoutComparisonContext;
+    @bindable({defaultBindingMode:bindingMode.toView}) context:ILayoutComparisonContext;
     private _images:ICompareImages;
     private _actualImageElement:HTMLImageElement;
     private _expectedImageElement:HTMLImageElement;

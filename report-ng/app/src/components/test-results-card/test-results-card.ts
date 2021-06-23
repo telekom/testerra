@@ -31,11 +31,17 @@ import {bindingMode} from "aurelia-binding";
 
 @autoinject
 export class TestResultsCard {
-    @bindable({bindingMode: bindingMode.toView}) filter:IFilter;
-    @bindable executionStatistics: ExecutionStatistics;
+    @bindable({defaultBindingMode: bindingMode.toView})
+    filter:IFilter;
+
+    @bindable({defaultBindingMode: bindingMode.toView})
+    executionStatistics: ExecutionStatistics;
+
     private _apexPieOptions: ApexOptions = undefined;
     private _selection:ISelection;
-    @bindable({bindingMode: bindingMode.toView}) class:string;
+
+    @bindable({defaultBindingMode: bindingMode.toView})
+    class:string;
 
     constructor(
         private _statusConverter: StatusConverter,

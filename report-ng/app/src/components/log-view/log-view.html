@@ -19,9 +19,8 @@
   ~ under the License.
   -->
 <template>
-    <div class="code-view">
-        <div repeat.for="logMessage of _filteredLogMessages"
-             if.bind="_filteredLogMessages.length > 0"
+    <div class="code-view" class.bind="class">
+        <div virtual-repeat.for="logMessage of _filteredLogMessages"
              class="line"
              class.bind="(logMessage.type==1?'error':(logMessage.type==2?'warn':''))"
         >

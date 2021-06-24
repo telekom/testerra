@@ -104,29 +104,21 @@ public final class CertUtils {
     /**
      * Sets a new DefaultSSLSocketFactory which accepts all certs. ALso it sets a new DefaultHostnameVerifier which
      * accepts all host names.
+     * @deprecated Use {@link #setDefault(CertUtils)} instead
      */
     public static void trustAllCerts() {
-        // Install the all-trusting trust manager
-        SSLContext sc = null;
-        String msg = "Unable to create socket factory";
-        try {
-            sc = SSLContext.getInstance("SSL");
-            sc.init(null, ALL_TRUSTING_TRUST_MANAGER, new java.security.SecureRandom());
-        } catch (Exception e) {
-            LOGGER.error(msg, e);
-        }
-        if (sc != null) {
-            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-        }
-
         CertUtils certUtils = new CertUtils();
         certUtils.setTrustAllHosts(true);
+        certUtils.setDefault(certUtils);
+    }
 
-        // set default hostname verifier for https
+    public void setDefault(CertUtils certUtils) {
+        HttpsURLConnection.setDefaultSSLSocketFactory(certUtils.createTrustingSslSocketFactory());
         HttpsURLConnection.setDefaultHostnameVerifier(certUtils.getHostnameVerifier());
     }
 
     /**
+     * @deprecated
      * Overrides the SSL TrustManager and HostnameVerifier to allow all certs and hostnames. WARNING: This should only
      * be used for testing, or in a "safe" (i.e. firewalled) environment.
      *
@@ -135,24 +127,15 @@ public final class CertUtils {
      */
     public static HttpsURLConnection trustAllCerts(HttpsURLConnection connection, SSLSocketFactory sslSocketFactory) {
 
+        CertUtils certUtils = new CertUtils();
+
         // Create the socket factory.
         // Reusing the same socket factory allows sockets to be
         // reused, supporting persistent connections.
         if (null == sslSocketFactory) {
-            try {
-                SSLContext sc = SSLContext.getInstance("SSL");
-                sc.init(null, ALL_TRUSTING_TRUST_MANAGER, new java.security.SecureRandom());
-                sslSocketFactory = sc.getSocketFactory();
-            } catch (NoSuchAlgorithmException e) {
-                throw new SystemException("Error trusting all certificates.", e);
-            } catch (KeyManagementException e) {
-                throw new SystemException("Error trusting all certificates.", e);
-            }
+            sslSocketFactory = certUtils.createTrustingSslSocketFactory();
         }
-
         connection.setSSLSocketFactory(sslSocketFactory);
-
-        CertUtils certUtils = new CertUtils();
         certUtils.setTrustAllHosts(true);
 
         // Since we may be using a cert with a different name, we need to ignore
@@ -160,6 +143,18 @@ public final class CertUtils {
         connection.setHostnameVerifier(certUtils.getHostnameVerifier());
 
         return connection;
+    }
+
+    public SSLSocketFactory createTrustingSslSocketFactory() {
+        try {
+            SSLContext sc = SSLContext.getInstance("SSL");
+            sc.init(null, ALL_TRUSTING_TRUST_MANAGER, new java.security.SecureRandom());
+            return sc.getSocketFactory();
+        } catch (NoSuchAlgorithmException e) {
+            throw new SystemException("Error trusting all certificates.", e);
+        } catch (KeyManagementException e) {
+            throw new SystemException("Error trusting all certificates.", e);
+        }
     }
 
     public String[] getTrustedHosts() {

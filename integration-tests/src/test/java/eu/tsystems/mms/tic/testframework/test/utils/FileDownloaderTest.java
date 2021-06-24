@@ -23,15 +23,14 @@
 package eu.tsystems.mms.tic.testframework.test.utils;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.utils.CertUtils;
+import eu.tsystems.mms.tic.testframework.utils.DefaultConnectionConfigurator;
 import eu.tsystems.mms.tic.testframework.utils.FileDownloader;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -52,6 +51,15 @@ public class FileDownloaderTest extends AbstractTestSitesTest {
         new FileDownloader().cleanup();
     }
 
+    public DefaultConnectionConfigurator createConnectionConfigurator() {
+        CertUtils certUtils = new CertUtils();
+        certUtils.setTrustAllHosts(true);
+        DefaultConnectionConfigurator defaultConnectionConfigurator = new DefaultConnectionConfigurator();
+        defaultConnectionConfigurator.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36");
+        defaultConnectionConfigurator.useCertUtils(certUtils);
+        return defaultConnectionConfigurator;
+    }
+
     /**
      * Tests download and deletion
      *
@@ -59,12 +67,10 @@ public class FileDownloaderTest extends AbstractTestSitesTest {
      */
     @Test()
     public void testT01_downloadFileAndDelete() throws IOException {
-
         final WebDriver driver = WebDriverManager.getWebDriver();
-        FileDownloader downloader = new FileDownloader(FileUtils.getUserDirectoryPath(), true, true).setProxy(null);
-        String download = downloader.download(driver, WebDriverManager.getWebDriver().getCurrentUrl(),
-                "testT01_downloadFile.htm");
-        File file = FileUtils.getFile(download);
+        FileDownloader downloader = new FileDownloader(FileUtils.getUserDirectoryPath(), false, false).setProxy(null);
+        downloader.setConnectionConfigurator(this.createConnectionConfigurator());
+        File file = downloader.download(driver.getCurrentUrl(), "testT01_downloadFile.htm");
 
         Assert.assertTrue(file.exists(), "File was downloaded correctly.");
 
@@ -79,14 +85,9 @@ public class FileDownloaderTest extends AbstractTestSitesTest {
      */
     @Test
     public void testT02_downloadFileOfHttpsUrl() throws IOException {
-
-        final WebDriver driver = WebDriverManager.getWebDriver();
-        driver.get("https://google.de");
-
-        FileDownloader downloader = new FileDownloader(FileUtils.getUserDirectoryPath(), true, true);
-
-        String download = downloader.download(driver, "https://google.de", "testT02_downloadFileOfHttpsUrl.htm");
-        File file = FileUtils.getFile(download);
+        FileDownloader downloader = new FileDownloader(FileUtils.getUserDirectoryPath(), false, false);
+        downloader.setConnectionConfigurator(createConnectionConfigurator());
+        File file = downloader.download( "https://google.de", "testT02_downloadFileOfHttpsUrl.htm");
 
         Assert.assertTrue(file.exists(), "File was downloaded correctly.");
     }
@@ -100,39 +101,28 @@ public class FileDownloaderTest extends AbstractTestSitesTest {
     public void test03_downloadFileToLongLocation() throws IOException {
 
         final WebDriver driver = WebDriverManager.getWebDriver();
-        FileDownloader downloader = new FileDownloader(FileUtils.getUserDirectoryPath() + "/foo/bar\\test", true, true).setProxy(null);
+        FileDownloader downloader = new FileDownloader(FileUtils.getUserDirectoryPath() + "/foo/bar\\test", false, false).setProxy(null);
+        downloader.setConnectionConfigurator(createConnectionConfigurator());
 
-        String download = downloader.download(driver, WebDriverManager.getWebDriver().getCurrentUrl(),
-                "test03_downloadFileToLongLocation.htm");
-        File file = FileUtils.getFile(download);
+        File file = downloader.download(driver.getCurrentUrl(), "test03_downloadFileToLongLocation.htm");
 
         Assert.assertTrue(file.exists(), "File was downloaded correctly.");
     }
 
     @Test
-    public void test_ContentDisposition_parsing() {
-        String header = "inline; filename=\"011_062_D00257172.pdf\"";
-        Pattern pattern = Pattern.compile("filename=\\\"?([^\\\"]+)\\\"?");
-        Matcher matcher = pattern.matcher(header);
-        Assert.assertTrue(matcher.find());
-        Assert.assertEquals("011_062_D00257172.pdf", matcher.group(1));
-
-    }
-
-    @Test
     public void test04_readFileNameFromResponseHeader() throws IOException {
-        WebDriver driver = WebDriverManager.getWebDriver();
         FileDownloader downloader = new FileDownloader();
-        File file = downloader.download(driver, "https://upload.wikimedia.org/wikipedia/de/thumb/e/e1/Java-Logo.svg/800px-Java-Logo.svg.png");
-        Assert.assertEquals(file.getName(), "800px-Java-Logo.svg");
+        DefaultConnectionConfigurator connectionConfigurator = createConnectionConfigurator();
+        connectionConfigurator.setHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
+        downloader.setConnectionConfigurator(connectionConfigurator);
+        File file = downloader.download( "https://images.pexels.com/users/avatars/616468/kira-schwarz-869.jpeg?auto=compress&fit=crop&h=256&w=256");
+        Assert.assertEquals(file.getName(), "kira-schwarz-869.webp");
     }
 
     @Test
     public void test05_readFileFromUrl() throws IOException {
-        WebDriver driver = WebDriverManager.getWebDriver();
         FileDownloader downloader = new FileDownloader();
-        File file = downloader.download(driver, "https://httpbin.org/image/png");
+        File file = downloader.download("https://httpbin.org/image/png");
         Assert.assertEquals(file.getName(), "png");
     }
-
 }

@@ -33,7 +33,11 @@ import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.net.ssl.HttpsURLConnection;
@@ -79,6 +83,8 @@ public class FileDownloader implements Loggable {
     //private SSLSocketFactory sslSocketFactory;
     private Proxy proxy = null;
 
+    private Consumer<URLConnection> connectionConfigurator;
+
     /**
      * Instantiate FileDownloader
      *
@@ -109,6 +115,16 @@ public class FileDownloader implements Loggable {
 
     public FileDownloader() {
 
+    }
+
+    /**
+     * Sets the connection configurator.
+     * When set, all the @deprecated features like {@link #setImitateCookies(boolean), {@link #setDefaultTimeoutMs(int)} and {@link #setTrustAllCertificates(boolean)}}
+     * are disabled.
+     */
+    public FileDownloader setConnectionConfigurator(Consumer<URLConnection> connectionConfigurator) {
+        this.connectionConfigurator = connectionConfigurator;
+        return this;
     }
 
     /**
@@ -145,20 +161,30 @@ public class FileDownloader implements Loggable {
         return this;
     }
 
+    /**
+     * @deprecated Use {@link #setConnectionConfigurator(Consumer)} instead
+     */
     public boolean isTrustAllCertificates() {
         return this.trustAllCertificates;
     }
 
+    /**
+     * @deprecated Use {@link #setConnectionConfigurator(Consumer)} instead
+     */
     public FileDownloader setTrustAllCertificates(final boolean trustAllCertificates) {
         this.trustAllCertificates = trustAllCertificates;
         return this;
     }
 
+    /**
+     * @deprecated Use {@link #setConnectionConfigurator(Consumer)} instead
+     */
     public boolean isImitateCookies() {
         return this.imitateCookies;
     }
 
     /**
+     * @deprecated Use {@link #setConnectionConfigurator(Consumer)} instead
      * Imitate cookies (Default: true)
      *
      * @param value boolean
@@ -195,12 +221,36 @@ public class FileDownloader implements Loggable {
         return this.download(element.getWebDriver(), link, targetFileName);
     }
 
+    public File download(URL url) throws IOException {
+        return this.download(url.toString());
+    }
+
+    public File download(String urlString) throws IOException {
+        return this.download(urlString, null);
+    }
+
+    public File download(URL url, String targetFileName) throws IOException {
+        return this.download(url.toString(), targetFileName);
+    }
+
+    public File download(String urlString, String targetFileName) throws IOException {
+        return new File(this.pDownload(null, urlString, targetFileName, DEFAULT_TIMEOUT_MS));
+    }
+
+    /**
+     * @deprecated Use {@link #setConnectionConfigurator(Consumer)} and {@link #download(String)} instead
+     * @param driver
+     * @param urlString
+     * @return
+     * @throws IOException
+     */
     public File download(WebDriver driver, String urlString) throws IOException {
         String filePath = this.download(driver, urlString, null);
         return new File(filePath);
     }
 
     /**
+     * @deprecated Use {@link #setConnectionConfigurator(Consumer)} and {@link #download(String, String)} instead
      * Download file by URL
      *
      * @param driver         WebDriver
@@ -212,6 +262,9 @@ public class FileDownloader implements Loggable {
         return this.pDownload(driver, url, targetFileName, DEFAULT_TIMEOUT_MS);
     }
 
+    /**
+     * @deprecated Use {@link #setConnectionConfigurator(Consumer)} and {@link #download(String, String)} instead
+     */
     public String download(WebDriver driver, String url, String targetFileName, int timeoutMS) throws IOException {
         return this.pDownload(driver, url, targetFileName, timeoutMS);
     }
@@ -247,25 +300,6 @@ public class FileDownloader implements Loggable {
     }
 
     /**
-     * @deprecated Use instance {@link #download(WebDriver, String, String)} instead
-     */
-    @Deprecated
-    public static String download(
-            String urlString,
-            File targetFile,
-            Proxy proxy,
-            int timeoutMS,
-            boolean trustAll,
-            SSLSocketFactory sslSocketFactory,
-            String cookieString,
-            boolean useSecondConnection
-    ) throws IOException {
-        URL url = new URL(urlString);
-        FileDownloader downloader = new FileDownloader();
-        return downloader.download(url, targetFile, proxy, timeoutMS, trustAll, sslSocketFactory, cookieString, useSecondConnection);
-    }
-
-    /**
      * Returns the absolute path to the target file as a String.
      *
      * @param url
@@ -296,15 +330,6 @@ public class FileDownloader implements Loggable {
             targetFileName = readFileNameFromConnection((HttpURLConnection) connection);
         }
         InputStream inputStream = connection.getInputStream();
-
-        if (useSecondConnection) {
-            TimerUtils.sleep(3000, "FileDownloader flaky connections workaround");
-            connection = openConnection(url, proxy, timeoutMS, trustAll, cookieString, sslSocketFactory);
-            if (connection instanceof HttpURLConnection) {
-                targetFileName = readFileNameFromConnection((HttpURLConnection) connection);
-            }
-            inputStream = connection.getInputStream();
-        }
 
         if (targetFile == null) {
             if (targetFileName.isEmpty()) {
@@ -353,19 +378,22 @@ public class FileDownloader implements Loggable {
             log().info("Using proxy " + proxy);
         }
 
-        connection.setConnectTimeout(timeoutMS);
-        connection.setReadTimeout(timeoutMS);
+        if (this.connectionConfigurator != null) {
+            this.connectionConfigurator.accept(connection);
+        } else {
+            connection.setConnectTimeout(timeoutMS);
+            connection.setReadTimeout(timeoutMS);
 
-        if (trustAll && isHttpsUrl(url)) {
-            log().info("Trust all certificates on download is set to " + trustAll);
-            connection = CertUtils.trustAllCerts((HttpsURLConnection) connection, sslSocketFactory);
+            if (trustAll && isHttpsUrl(url)) {
+                log().info("Trust all certificates on download is set to " + trustAll);
+                connection = CertUtils.trustAllCerts((HttpsURLConnection) connection, sslSocketFactory);
+            }
+
+            if (cookieString != null) {
+                log().info("Imitating cookies");
+                connection.setRequestProperty("Cookie", cookieString);
+            }
         }
-
-        if (cookieString != null) {
-            log().info("Imitating cookies");
-            connection.setRequestProperty("Cookie", cookieString);
-        }
-
 
         return connection;
     }
@@ -385,6 +413,9 @@ public class FileDownloader implements Loggable {
         return downloadLoc.exists() || downloadLoc.mkdirs();
     }
 
+    /**
+     * @deprecated Use {@link #setConnectionConfigurator(Consumer)} instead
+     */
     public static void setDefaultTimeoutMs(int defaultTimeoutMs) {
         DEFAULT_TIMEOUT_MS = defaultTimeoutMs;
     }

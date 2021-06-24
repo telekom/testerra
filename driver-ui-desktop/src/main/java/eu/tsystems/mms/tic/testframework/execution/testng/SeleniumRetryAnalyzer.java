@@ -21,17 +21,30 @@
 
 package eu.tsystems.mms.tic.testframework.execution.testng;
 
+import java.util.Arrays;
 import java.util.Optional;
 import org.openqa.selenium.json.JsonException;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 
 public class SeleniumRetryAnalyzer implements AdditionalRetryAnalyzer {
+
+    final String[] jsonExceptionMessages = {
+            "Expected to read a START_MAP but instead have: END",
+    };
+
     @Override
-    public Optional<Throwable> analyzeThrowable(Throwable throwable, String tMessage) {
-        if (throwable instanceof UnreachableBrowserException || throwable instanceof JsonException) {
+    public Optional<Throwable> analyzeThrowable(Throwable throwable) {
+        if (throwable instanceof JsonException) {
+            String message = throwable.getMessage();
+            if (message != null) {
+                String messageLc = message.toLowerCase();
+                if (Arrays.stream(jsonExceptionMessages).anyMatch(m -> messageLc.contains(m.toLowerCase()))) {
+                    return Optional.of(throwable);
+                }
+            }
+        } else if (throwable instanceof UnreachableBrowserException) {
             return Optional.of(throwable);
-        } else {
-            return Optional.empty();
         }
+        return Optional.empty();
     }
 }

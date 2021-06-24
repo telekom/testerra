@@ -35,12 +35,12 @@ public class WebDriverRetryAnalyzer implements AdditionalRetryAnalyzer {
     };
 
     @Override
-    public Optional<Throwable> analyzeThrowable(Throwable throwable, String tMessage) {
+    public Optional<Throwable> analyzeThrowable(Throwable throwable) {
         if (throwable instanceof WebDriverException) {
-            if (tMessage != null) {
-                final String tMessageLC = tMessage.toLowerCase();
-                boolean anyMatch = Arrays.stream(messages).anyMatch(m -> tMessageLC.contains(m.toLowerCase()));
-                if (anyMatch) {
+            String message = throwable.getMessage();
+            if (message != null) {
+                String messageLc = message.toLowerCase();
+                if (Arrays.stream(messages).anyMatch(m -> messageLc.contains(m.toLowerCase()))) {
                     return Optional.of(throwable);
                 }
             }

@@ -27,6 +27,6 @@ public interface AdditionalRetryAnalyzer {
     /**
      * When the return value of this method is not empty, the test should be retried.
      */
-    Optional<Throwable> analyzeThrowable(Throwable throwable, String tMessage);
+    Optional<Throwable> analyzeThrowable(Throwable throwable);
 
 }

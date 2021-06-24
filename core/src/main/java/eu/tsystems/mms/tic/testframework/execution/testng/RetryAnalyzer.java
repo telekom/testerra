@@ -314,29 +314,32 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
     private Throwable checkThrowable(Throwable throwable) {
         Throwable retryCause = null;
         do {
-            String tMessage = throwable.getMessage();
 
             for (AdditionalRetryAnalyzer additionalRetryAnalyzer : ADDITIONAL_RETRY_ANALYZERS) {
-                Optional<Throwable> optionalRetryCause = additionalRetryAnalyzer.analyzeThrowable(throwable, tMessage);
+                Optional<Throwable> optionalRetryCause = additionalRetryAnalyzer.analyzeThrowable(throwable);
                 if (optionalRetryCause.isPresent()) {
                     retryCause = optionalRetryCause.get();
+                    log().info("Retrying test because of: " + retryCause.getMessage());
                     break;
                 }
             }
 
             for (Class aClass : CLASSES_LIST) {
                 if (throwable.getClass() == aClass) {
-                    log().info("Retrying test because of: " + aClass);
+                    log().info("Retrying test because of exception class: " + aClass.getName());
                     retryCause = throwable;
                     break;
                 }
             }
 
-            for (String message : MESSAGES_LIST) {
-                if (tMessage != null && tMessage.contains(message)) {
-                    log().info("Retrying test because of: " + message);
-                    retryCause = throwable;
-                    break;
+            String tMessage = throwable.getMessage();
+            if (tMessage != null) {
+                for (String message : MESSAGES_LIST) {
+                    if (tMessage.contains(message)) {
+                        log().info("Retrying test because of exception message: " + message);
+                        retryCause = throwable;
+                        break;
+                    }
                 }
             }
 

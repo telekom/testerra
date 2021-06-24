@@ -25,12 +25,15 @@ package eu.tsystems.mms.tic.testframework.test.guielement;
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.GuiElementShadowRootPage;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
+import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
+import eu.tsystems.mms.tic.testframework.test.page.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 
-public class GuiElementShadowRootTest extends AbstractTestSitesTest {
+public class GuiElementShadowRootTest extends AbstractTestSitesTest implements PageFactoryTest {
 
     @Override
     protected TestPage getTestPage() {
@@ -41,7 +44,7 @@ public class GuiElementShadowRootTest extends AbstractTestSitesTest {
     public void testShadowRootVisibility() {
 
         TestStep.begin("Step 1 - Call shadow root page");
-        final GuiElementShadowRootPage page = preparePage();
+        final GuiElementShadowRootPage page = getPage();
 
         TestStep.begin("Step 2 - Assert correct visibility");
         page.assertShadowRootVisibility();
@@ -53,7 +56,7 @@ public class GuiElementShadowRootTest extends AbstractTestSitesTest {
         final String expectedText = "asserting your shadow";
 
         TestStep.begin("Step 1 - Call shadow root page");
-        final GuiElementShadowRootPage page = preparePage();
+        final GuiElementShadowRootPage page = getPage();
 
         TestStep.begin("Step 2 - type '" + expectedText + "' to shadow root input");
         page.typeText(expectedText);
@@ -62,7 +65,13 @@ public class GuiElementShadowRootTest extends AbstractTestSitesTest {
         page.assertInputText(expectedText);
     }
 
-    private GuiElementShadowRootPage preparePage() {
+    @Test(expectedExceptions = TimeoutException.class)
+    public void test_ShadowRoot_getSubElement_nonXPath_fails() {
+        final GuiElementShadowRootPage page = getPage();
+        page.shadowRootElement.getSubElement(By.id("shadow-content'"));
+    }
+
+    public GuiElementShadowRootPage getPage() {
         return PageFactory.create(GuiElementShadowRootPage.class, WebDriverManager.getWebDriver());
     }
 }

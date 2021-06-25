@@ -1,7 +1,6 @@
 = Modules
 
 include::modules/browser-up-proxy.adoc[leveloffset=+1]
-include::modules/browser-mob-proxy.adoc[leveloffset=+1]
 include::modules/csv-reader.adoc[leveloffset=+1]
 include::modules/layout-check.adoc[leveloffset=+1]
 include::modules/localization.adoc[leveloffset=+1]

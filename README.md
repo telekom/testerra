@@ -28,7 +28,7 @@ You may see Testerra as an open source test automation library for web frontend 
 
 ## Setup
 
-Include the following dependency in your project. Please replace `1-SNAPSHOT` with the latest version.
+Include the following dependency in your project. Please replace `1.0` with the latest version.
 
 Gradle:
 ```groovy
@@ -138,6 +138,8 @@ The following channels are available for discussions, feedback, and support requ
 
 ## Additional repositories
 
+### Testerra extensions
+
 | Repository          | Description                                                           |
 | ------------------- | --------------------------------------------------------------------- |
 | [testerra-skeleton] | Testerra Skeleton Project |
@@ -158,6 +160,10 @@ The following channels are available for discussions, feedback, and support requ
 [testerra-xray-connector]: https://github.com/telekom/testerra-xray-connector
 [testerra-appium-connector]: https://github.com/telekom/testerra-appium-connector
 [testerra-azure-devops-connector]: https://github.com/telekom/testerra-azure-devops-connector
+
+### Legacy Testerra modules
+
+You will find outdated Testerra modules here: https://github.com/telekom/testerra-legacy
 
 ## How to Contribute
 

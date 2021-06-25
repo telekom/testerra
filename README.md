@@ -28,7 +28,7 @@ You may see Testerra as an open source test automation library for web frontend 
 
 ## Setup
 
-Include the following dependency in your project. Please replace `1-SNAPSHOT` with the latest version.
+Include the following dependency in your project. Please replace `1.0` with the latest version.
 
 Gradle:
 ```groovy

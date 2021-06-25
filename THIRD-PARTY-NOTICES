@@ -10,40 +10,6 @@ to our attention by contacting us via an GitHub issue.
 Components:
 ------------
 
-
-BMP:
-----
-
-Component: 	com.google.code.gson:gson
-Version:	2.8.6
-Website:   	https://github.com/google/gson
-Repository:	https://github.com/google/gson
-License:   	Apache-2.0
-
-Component:  javax.ws.rs:javax.ws.rs-api
-Version:    2.0.1
-Website:    https://javaee.github.io/glassfish/
-Repository: https://github.com/jax-rs/api
-License:    CDDL
-
-Component:  net.lightbody.bmp:browsermob-proxy
-Version:    2.1.1
-Website:    https://bmp.lightbody.net/
-Repository: https://github.com/lightbody/browsermob-proxy
-License:    Apache 2.0
-
-Component:  net.lightbody.bmp:browsermob-legacy
-Version:    2.1.1
-Website:    https://bmp.lightbody.net/
-Repository: https://github.com/lightbody/browsermob-proxy
-License:    Apache 2.0
-
-Component:  org.apache.httpcomponents:httpcore
-Version:    4.4.13
-Website:    http://hc.apache.org/httpcomponents-core-ga
-Repository: https://github.com/apache/httpcomponents-core
-License:    Apache 2.0
-
 BUP:
 ----
 

@@ -30,9 +30,9 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.XPath;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
-import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.testng.annotations.Test;
+import org.testng.Assert;
 
 public class GuiElementShadowRootTest extends AbstractExclusiveTestSitesTest<GuiElementShadowRootPage> implements PageFactoryTest {
 

@@ -24,13 +24,27 @@ package eu.tsystems.mms.tic.testframework.ioc;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 import com.google.inject.multibindings.Multibinder;
+import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
+import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverFactory;
+import eu.tsystems.mms.tic.testframework.execution.testng.SeleniumRetryAnalyzer;
 
-public class DriverUi_Desktop extends AbstractModule {
+public class DriverUi_Desktop extends AbstractModule implements ModuleHook {
+
     @Override
     protected void configure() {
         Multibinder<WebDriverFactory> webDriverFactoryBinder = Multibinder.newSetBinder(binder(), WebDriverFactory.class);
         webDriverFactoryBinder.addBinding().to(DesktopWebDriverFactory.class).in(Scopes.SINGLETON);
+    }
+
+    @Override
+    public void init() {
+        RetryAnalyzer.registerAdditionalRetryAnalyzer(new SeleniumRetryAnalyzer());
+    }
+
+    @Override
+    public void terminate() {
+
     }
 }

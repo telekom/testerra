@@ -61,12 +61,15 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     private TestStatusController.Status status = TestStatusController.Status.NO_RUN;
     private final Type methodType;
     private List<Object> parameterValues;
-    public int retryNumber = 0;
+    private int retryNumber = 0;
     public int methodRunIndex = -1;
     public String threadName = "unrelated";
     private TestStep lastFailedStep;
     private Class failureCorridorClass = FailureCorridor.High.class;
 
+    /**
+     * @deprecated
+     */
     public final List<String> infos = new LinkedList<>();
     private final List<SessionContext> sessionContexts = new LinkedList<>();
     public String priorityMessage = null;
@@ -95,6 +98,21 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         this.parentContext = classContext;
         this.methodRunIndex = Counters.increaseMethodExecutionCounter();
         this.methodType = methodType;
+    }
+
+    public void setRetryCounter(int retryCounter) {
+        this.retryNumber = retryCounter;
+    }
+
+    public int getRetryCounter() {
+        return this.retryNumber;
+    }
+
+    /**
+     * @deprecated use {@link #getRetryCounter()} instead
+     */
+    public int getRetryNumber() {
+        return this.getRetryCounter();
     }
 
     /**

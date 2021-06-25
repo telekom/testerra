@@ -22,8 +22,6 @@
 import {data} from "./report-model";
 import {autoinject} from "aurelia-framework";
 import ResultStatusType = data.ResultStatusType;
-import IExecutionContext = data.IExecutionContext;
-import IStackTraceCause = data.IStackTraceCause;
 
 class GraphColors {
     static readonly PASSED = '#417336'; // $success
@@ -52,11 +50,14 @@ export class StatusConverter {
         return [
             ResultStatusType.FAILED,
             ResultStatusType.FAILED_MINOR,
+            /**
+             * Expected failed is no actual failed status and explicitly featured
+             */
             //ResultStatusType.FAILED_EXPECTED,
             /**
              * {@link ResultStatusType.FAILED_RETRIED} is not a statistical relevant status
              */
-            //ResultStatusType.FAILED_RETRIED
+            ResultStatusType.FAILED_RETRIED
         ]
     }
 
@@ -78,9 +79,14 @@ export class StatusConverter {
         ];
     }
 
+    /**
+     * Groups a status to relevant combined statuses
+     * @param status
+     */
     groupStatus(status:ResultStatusType):ResultStatusType[] {
         switch (status) {
             case ResultStatusType.PASSED: return this.passedStatuses;
+            case ResultStatusType.FAILED: return this.failedStatuses
             default: return [status];
         }
     }
@@ -103,7 +109,7 @@ export class StatusConverter {
             case ResultStatusType.PASSED_RETRY:
                 return "Retried";
             case ResultStatusType.FAILED_RETRIED:
-                return "Failed on retry";
+                return "Retry Failed";
             case ResultStatusType.FAILED:
                 return "Failed";
             case ResultStatusType.FAILED_EXPECTED:

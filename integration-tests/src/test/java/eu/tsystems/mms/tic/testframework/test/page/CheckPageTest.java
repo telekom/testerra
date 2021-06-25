@@ -120,24 +120,30 @@ public class CheckPageTest extends AbstractTestSitesTest {
 
         final File reportScreenshotDirectory = TesterraListener.getReport().getReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
         Assert.assertNotNull(reportScreenshotDirectory);
-        Assert.assertTrue(reportScreenshotDirectory.exists());
-        Assert.assertTrue(reportScreenshotDirectory.isDirectory());
-        Assert.assertNotNull(reportScreenshotDirectory.listFiles());
 
         final WebDriver driver = WebDriverManager.getWebDriver();
 
-        final int fileCountBeforeAction = reportScreenshotDirectory.listFiles().length;
+        final int fileCountBeforeAction = getNumFiles(reportScreenshotDirectory);
         PropertyManager.getFileProperties().setProperty(TesterraProperties.SCREENSHOT_ON_PAGELOAD, "false");
         new PageWithExistingElement(driver);
 
-        final int fileCountAfterCheckPageWithoutScreenshot = reportScreenshotDirectory.listFiles().length;
+        final int fileCountAfterCheckPageWithoutScreenshot = getNumFiles(reportScreenshotDirectory);
         Assert.assertEquals(fileCountBeforeAction, fileCountAfterCheckPageWithoutScreenshot, "Record Screenshot count not altered.");
 
         PropertyManager.getFileProperties().setProperty(TesterraProperties.SCREENSHOT_ON_PAGELOAD, "true");
         new PageWithExistingElement(driver);
-        final int fileCountAfterCheckPageWithScreenshot = reportScreenshotDirectory.listFiles().length;
+        final int fileCountAfterCheckPageWithScreenshot = getNumFiles(reportScreenshotDirectory);
 
         Assert.assertNotEquals(fileCountAfterCheckPageWithoutScreenshot, fileCountAfterCheckPageWithScreenshot, "Record Screenshot count altered.");
+    }
+
+    private int getNumFiles(File directory) {
+        File[] files = directory.listFiles();
+        if (files == null) {
+            return 0;
+        } else {
+            return files.length;
+        }
     }
 
     @AfterMethod(alwaysRun = true)

@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2021, Mike Reiche,  T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -17,35 +17,34 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
-package eu.tsystems.mms.tic.testframework.execution.testng;
 
-import org.openqa.selenium.WebDriverException;
+package eu.tsystems.mms.tic.testframework.execution.testng;
 
 import java.util.Arrays;
 import java.util.Optional;
+import org.openqa.selenium.json.JsonException;
+import org.openqa.selenium.remote.UnreachableBrowserException;
 
-public class WebDriverRetryAnalyzer implements AdditionalRetryAnalyzer {
+public class SeleniumRetryAnalyzer implements AdditionalRetryAnalyzer {
 
-    final String[] messages = {
-            "was terminated due to TIMEOUT",
-            "was terminated due to SO_TIMEOUT",
-            "The requested URL could not be retrieved"
+    final String[] jsonExceptionMessages = {
+            "Expected to read a START_MAP but instead have: END",
     };
 
     @Override
     public Optional<Throwable> analyzeThrowable(Throwable throwable) {
-        if (throwable instanceof WebDriverException) {
+        if (throwable instanceof JsonException) {
             String message = throwable.getMessage();
             if (message != null) {
                 String messageLc = message.toLowerCase();
-                if (Arrays.stream(messages).anyMatch(m -> messageLc.contains(m.toLowerCase()))) {
+                if (Arrays.stream(jsonExceptionMessages).anyMatch(m -> messageLc.contains(m.toLowerCase()))) {
                     return Optional.of(throwable);
                 }
             }
+        } else if (throwable instanceof UnreachableBrowserException) {
+            return Optional.of(throwable);
         }
-
         return Optional.empty();
     }
 }

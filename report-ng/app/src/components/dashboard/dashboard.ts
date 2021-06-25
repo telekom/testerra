@@ -75,12 +75,19 @@ export class Dashboard extends AbstractViewModel {
             this._passedRetried = this._executionStatistics.getStatusesCount([ResultStatusType.PASSED_RETRY,ResultStatusType.MINOR_RETRY]);
 
             this._filterItems = [];
-            let count = this._executionStatistics.overallFailed;
+            let count = this._executionStatistics.getStatusCount(data.ResultStatusType.FAILED);
             if (count > 0) {
+                const failedRetriedCount = this._executionStatistics.getStatusCount(data.ResultStatusType.FAILED_RETRIED);
                 this._filterItems.push({
                     status: ResultStatusType.FAILED,
-                    counts: [count],
-                    labels: [this._statusConverter.getLabelForStatus(ResultStatusType.FAILED)],
+                    counts: [
+                        count,
+                        failedRetriedCount>0?" + " + failedRetriedCount:null
+                    ],
+                    labels: [
+                        this._statusConverter.getLabelForStatus(ResultStatusType.FAILED),
+                        failedRetriedCount>0?this._statusConverter.getLabelForStatus(data.ResultStatusType.FAILED_RETRIED):null
+                    ],
                     active:false,
                 });
             }

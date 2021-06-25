@@ -22,6 +22,8 @@
  package eu.tsystems.mms.tic.testframework.hooks;
 
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
+import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
+import eu.tsystems.mms.tic.testframework.execution.testng.SeleniumRetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.DesktopGuiElementCoreFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverFactory;
@@ -43,6 +45,7 @@ public class DriverUiHookDesktop implements ModuleHook {
     public void init() {
         WebDriverManager.registerWebDriverFactory(new DesktopWebDriverFactory(), browsers);
         GuiElement.registerGuiElementCoreFactory(new DesktopGuiElementCoreFactory(), browsers);
+        RetryAnalyzer.registerAdditionalRetryAnalyzer(new SeleniumRetryAnalyzer());
     }
 
     @Override

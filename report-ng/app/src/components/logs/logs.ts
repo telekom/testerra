@@ -36,7 +36,7 @@ export class Logs extends AbstractViewModel {
     private _selectedLogLevel;
     private _logView:LogView;
     private _prevSearch:string;
-    private _searchRegexp:RegExp;
+    private _searchRegexp:RegExp = null;
 
     constructor(
         private _statistics: StatisticsGenerator,
@@ -47,7 +47,9 @@ export class Logs extends AbstractViewModel {
 
     activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
         super.activate(params, routeConfig, navInstruction);
-        this._searchRegexp = this._statusConverter.createRegexpFromSearchString(this.queryParams.q);
+        if (this.queryParams.q) {
+            this._searchRegexp = this._statusConverter.createRegexpFromSearchString(this.queryParams.q);
+        }
         this._filter();
     }
 

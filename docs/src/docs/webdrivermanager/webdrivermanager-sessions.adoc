@@ -148,6 +148,8 @@ You can reuse the WebDriver session over multiple methods in the same thread by 
 {wdm_closewindows_aftertestmethods}=false
 ----
 
+In this case, the sessions will not be closed until the very end of the execution.
+
 .Working with shared sessions
 [source,java]
 ----
@@ -163,6 +165,30 @@ public void test2() {
 }
 ----
 
+You can implement that behaviour in a slightly different way, by setting up your sessions in `@Before` methods and close them in `@After` methods, which gives you more control.
+
+.Setting up and closing sessions
+[source,java]
+----
+@BeforeMethod
+public void setupBrowser() {
+    DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+    request.setShutdownAfterTest(false);
+    WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver(request);
+}
+
+@Test
+public void test() {
+    WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+}
+
+@AfterMethod(alwaysRun = true)
+public void shutdownBrowser() {
+    WEB_DRIVER_MANAGER.shutdownAllThreadSessions();
+}
+----
+
+
 IMPORTANT: You can only reuse the session in the current thread.
 If you run parallel tests, you have no access to the session between parallel test threads.
 
@@ -171,7 +197,7 @@ image::resuse_webdriver_sessions_1.png[]
 
 === Special behaviour for config methods (*deprecated*)
 
-When you create a WebDriver in a **setup method** by is annotated with `@Before...` or `@After...`, the session will not be closed after that method, even when `{wdm_closewindows_aftertestmethods}` is true.
+When you create a WebDriver in a **setup method** annotated with `@Before...` or `@After...`, the session will not be closed after that method, even when `{wdm_closewindows_aftertestmethods}` is true.
 
 .Reuse sessions in setup methods
 [source,java]
@@ -189,6 +215,7 @@ public void test1() {
 }
 ----
 
+IMPORTANT: This implicit behaviour is `@deprecated` and will be removed in future versions.
 
 == Shared sessions over different threads
 

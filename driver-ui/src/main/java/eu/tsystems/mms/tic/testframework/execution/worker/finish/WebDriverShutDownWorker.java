@@ -41,6 +41,10 @@ public class WebDriverShutDownWorker implements MethodEndEvent.Listener, WebDriv
             methodEndEvent.getMethodContext().readSessionContexts().forEach(sessionContext -> {
                 WebDriverRequest webDriverRequest = sessionContext.getWebDriverRequest();
                 boolean shouldClose = false;
+                /**
+                 * Shutting down sessions when the method is ONLY a test is @deprecated.
+                 * Testerra is going to shutdown ALL sessions after method in the future.
+                 */
                 if (iTestResult.getMethod().isTest() && webDriverRequest.getShutdownAfterTest()) {
                     shouldClose = true;
                 } else if (!iTestResult.isSuccess() && webDriverRequest.getShutdownAfterTestFailed()) {

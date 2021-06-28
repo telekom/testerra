@@ -21,16 +21,14 @@
  */
 package eu.tsystems.mms.tic.testframework.core.pageobjects.testdata;
 
-import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import org.openqa.selenium.WebDriver;
 
-@PageOptions(elementTimeoutInSeconds = 3)
-public class PageWithPageOptions extends Page {
+public class PageWithCheckTimeout extends Page {
 
-    @Check
+    @Check(timeout = 3)
     public UiElement inexistentElement = findById("inexistent");
 
     /**
@@ -38,7 +36,7 @@ public class PageWithPageOptions extends Page {
      *
      * @param driver .
      */
-    public PageWithPageOptions(WebDriver driver) {
+    public PageWithCheckTimeout(WebDriver driver) {
         super(driver);
     }
 }

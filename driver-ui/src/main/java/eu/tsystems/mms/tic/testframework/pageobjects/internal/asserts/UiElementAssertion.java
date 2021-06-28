@@ -75,10 +75,26 @@ public interface UiElementAssertion extends UiElementBaseAssertion {
     default StringAssertion<String> classes() {
         return this.attribute(Attribute.CLASS);
     }
+
+    /**
+     * @deprecated Use {@link #hasClasses(String...)} instead
+     */
     default BinaryAssertion<Boolean> classes(String ... classes) {
         return classes().hasWords(classes);
     }
+
+    /**
+     * @deprecated Use {@link #hasClasses(List)} instead
+     */
     default BinaryAssertion<Boolean> classes(List<String> classes) {
+        return classes().hasWords(classes);
+    }
+
+    default BinaryAssertion<Boolean> hasClasses(String ... classes) {
+        return classes().hasWords(classes);
+    }
+
+    default BinaryAssertion<Boolean> hasClasses(List<String> classes) {
         return classes().hasWords(classes);
     }
 }

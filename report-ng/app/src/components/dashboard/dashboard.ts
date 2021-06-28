@@ -59,6 +59,7 @@ export class Dashboard extends AbstractViewModel {
     private _breakdownFilter:IFilter;
     private _classFilter:IFilter;
     private _topFailureAspects:FailureAspectStatistics[];
+    private _loading = true;
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -149,6 +150,8 @@ export class Dashboard extends AbstractViewModel {
                         }
                     }
                 });
+
+            this._loading = false;
         });
     };
 

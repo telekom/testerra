@@ -80,7 +80,6 @@ public class CoreHook extends AbstractModule implements ModuleHook, PropertyMana
         eventBus.register(new MethodParametersWorker());
         eventBus.register(new HandleCollectedAssertsWorker());// !! must be invoked before MethodAnnotationCheckerWorker
         eventBus.register(new MethodContextUpdateWorker());
-        eventBus.register(new MethodEndWorker());
         eventBus.register(new OmitInDevelopmentMethodInterceptor());
         eventBus.register(new SortMethodsByPriorityMethodInterceptor());
         eventBus.register(new ExecutionEndListener());

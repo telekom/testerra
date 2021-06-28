@@ -22,14 +22,40 @@
 package eu.tsystems.mms.tic.testframework.test.pagefactory;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithCheckTimeout;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithPageOptions;
-import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
+import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
+import org.openqa.selenium.WebDriver;
+import org.testng.annotations.Test;
 
-public class PageOptionsTest extends AbstractTestSitesTest implements PageFactoryProvider, PageFactoryTest {
+public class PageOptionsTest extends AbstractTestSitesTest implements PageFactoryProvider, AssertProvider {
 
-    @Override
-    public PageWithPageOptions getPage() {
-        return PAGE_FACTORY.createPage(PageWithPageOptions.class, getWebDriver());
+    @Test
+    public void testPageOptionsTimeout() {
+        WebDriver webDriver = getClassExclusiveWebDriver();
+        long start = System.currentTimeMillis();
+        long end = start;
+        try {
+            PAGE_FACTORY.createPage(PageWithPageOptions.class, webDriver);
+        } catch (Throwable throwable) {
+            end = System.currentTimeMillis();
+        }
+
+        ASSERT.assertBetween(end-start, 3000, 3500);
+    }
+
+    @Test
+    public void testCheckTimeout() {
+        WebDriver webDriver = getClassExclusiveWebDriver();
+        long start = System.currentTimeMillis();
+        long end = start;
+        try {
+            PAGE_FACTORY.createPage(PageWithCheckTimeout.class, webDriver);
+        } catch (Throwable throwable) {
+            end = System.currentTimeMillis();
+        }
+
+        ASSERT.assertBetween(end-start, 3000, 3500);
     }
 }

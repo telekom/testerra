@@ -27,6 +27,7 @@ import hljs from "highlight.js/lib/core";
 import java from 'highlight.js/lib/languages/java';
 import 'highlight.js/styles/darcula.css';
 import IScriptSource = data.IScriptSource;
+import './code-view.scss'
 
 @autoinject()
 export class CodeView {

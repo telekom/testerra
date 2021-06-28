@@ -40,7 +40,7 @@
                 <mdc-text-field label="Search"
                                 outlined
                                 value.bind="queryParams.q"
-                                keydown.delegate="_filter() & debounce:300"
+                                keyup.trigger="_search($event)"
                                 class="w100"
                 >
                     <mdc-icon mdc-text-field-icon leading>search</mdc-icon>
@@ -51,8 +51,9 @@
                 <mdc-linear-progress if.bind="_loading"></mdc-linear-progress>
                 <log-view else
                           class="logs"
+                          log-view.bind="_logView"
                           log-messages.bind="_logMessages"
-                          search.bind="_searchRegexp"
+                          search-regexp.bind="_searchRegexp"
                 ></log-view>
             </mdc-layout-grid-cell>
         </mdc-layout-grid-inner>

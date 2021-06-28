@@ -61,57 +61,6 @@ html {
     overflow: hidden;
 }
 
-.code-view {
-    padding: 0.5em;
-    font-size: 14px;
-    background-color: #2b2b2b;
-    //@extend .secondary;
-    //border: 2px solid #495561; /*gray-300*/
-    //border-radius: 2px;
-    //word-break: break-all;
-    overflow-x: auto;
-    color: #c0dee0;
-    line-height: 1.5em;
-    font-family: monospace;
-    word-break: break-all;
-
-    a {
-        color: cornflowerblue;
-    }
-    //a:visited {
-    //    color: #c0dee0;
-    //}
-    //
-    //.line {
-    //    padding: 0.3em;
-    //}
-
-    .error {
-        background: darken($failed, 36)
-    }
-
-    .warn {
-        background: darken($skipped, 36)
-    }
-
-    .indicator {
-        width:1rem;
-        display: inline-block;
-    }
-
-    .number {
-        width:2rem;
-        color: #808080 !important;
-    }
-
-    .line {
-        padding: 0.1rem 0.4rem;
-    }
-    .pre {
-        white-space: pre;
-    }
-}
-
 .clickable {
     cursor: pointer;
 }

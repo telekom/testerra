@@ -78,13 +78,15 @@ export class LogView {
 
             const foundLogMessage = logMessagesToSearch.find(logMessage => {
                 const foundInMessage = logMessage.message.match(this.searchRegexp);
-                // const foundInStackTrace = logMessage.stackTrace.flatMap(stackTrace => stackTrace.stackTraceElements).filter(line => line.match(this.searchRegexp));
-                //
-                // if (foundInStackTrace.length>0) {
-                //     this._open(logMessage);
-                // }
+                const foundInStackTrace = logMessage.stackTrace
+                    .flatMap(stackTrace => stackTrace.stackTraceElements)
+                    .filter(line => line.match(this.searchRegexp));
 
-                return foundInMessage //  || foundInStackTrace.length>0;
+                if (foundInStackTrace.length>0) {
+                    this._open(logMessage);
+                }
+
+                return foundInMessage || foundInStackTrace.length>0;
             });
 
             if (foundLogMessage) {

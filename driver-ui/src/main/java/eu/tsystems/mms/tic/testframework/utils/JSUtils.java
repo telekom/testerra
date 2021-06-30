@@ -192,6 +192,36 @@ public final class JSUtils {
     }
 
     /**
+     * Repeatedly colors the background of a webelement on an actual driver session
+     *
+     * @param driver     .
+     * @param webElement .
+     * @param color      .
+     */
+    public static void repeatedFillWebElement(
+            WebDriver driver,
+            WebElement webElement,
+            Color color
+    ) {
+        int ms = 500;
+        for (int i = 0; i < 3; i++) {
+            LOGGER.info("repeated highlight");
+            executeScript(
+                    driver,
+                    String.format(
+                            "%s\n"+
+                                    "ttFill(arguments[0], '%s', %d)",
+                            readSnippets(Snippet.HIGHLIGHT),
+                            toHex(color),
+                            ms
+                    ),
+                    webElement
+            );
+            TimerUtils.sleep(2*ms);
+        }
+    }
+
+    /**
      * Highlight a webelement on an actual driver session
      *
      * @param driver     .

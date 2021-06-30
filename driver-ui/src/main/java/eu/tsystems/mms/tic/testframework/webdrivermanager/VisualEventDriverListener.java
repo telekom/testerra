@@ -118,7 +118,7 @@ public class VisualEventDriverListener implements WebDriverEventListener {
 //                    JSUtils.highlightWebElementClick(webDriver, webElement);
 //                }
 
-                JSUtils.highlightWebElement(webDriver, webElement, new Color(0, 0, 255));
+                JSUtils.repeatedFillWebElement(webDriver, webElement, new Color(0, 255, 0));
                 //lastClickedElement = webElement;
             }
         }

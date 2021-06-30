@@ -21,6 +21,7 @@
  */
  package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
@@ -325,6 +326,11 @@ public final class WebDriverSessionsManager {
         }
 
         String browser = webDriverRequest.getBrowser();
+
+        if (StringUtils.isBlank(browser)) {
+            throw new SystemException(String.format("No browser configured. Please define one in %s.setBrowser() or property '%s'", WebDriverRequest.class.getSimpleName(), TesterraProperties.BROWSER));
+        }
+
         String sessionKey = webDriverRequest.getSessionKey();
         /*
         Check for exclusive session
@@ -386,7 +392,7 @@ public final class WebDriverSessionsManager {
             });
             return newWebDriver;
         } else {
-            throw new SystemException("No webdriver factory registered for browser " + browser);
+            throw new SystemException(String.format("No %s registered for browser '%s'", WebDriverFactory.class.getSimpleName(), browser));
         }
     }
 

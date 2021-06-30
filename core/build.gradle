@@ -9,7 +9,7 @@ dependencies {
     // </PdfUtils>
 
     // <RESTUtils>
-    api 'com.sun.jersey:jersey-client:1.19.3'
+    implementation 'com.sun.jersey:jersey-client:1.19.3'
     // </RESTUtils
 
     api "com.google.guava:guava:${guavaVersion}"

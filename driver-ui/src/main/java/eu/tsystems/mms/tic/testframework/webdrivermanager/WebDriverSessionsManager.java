@@ -26,6 +26,7 @@ import com.google.gson.GsonBuilder;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
@@ -34,6 +35,7 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
+import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
 import java.net.URL;
@@ -372,6 +374,11 @@ public final class WebDriverSessionsManager {
         decide which session manager to use
          */
         String browser = webDriverRequest.getBrowser();
+
+        if (StringUtils.isBlank(browser)) {
+            throw new SystemException(String.format("No browser configured. Please define one in %s.setBrowser() or property '%s'", WebDriverRequest.class.getSimpleName(), TesterraProperties.BROWSER));
+        }
+
         if (WEB_DRIVER_FACTORIES.containsKey(browser)) {
             WebDriverFactory webDriverFactory = WEB_DRIVER_FACTORIES.get(browser);
 
@@ -438,7 +445,7 @@ public final class WebDriverSessionsManager {
             });
             return eventFiringWebDriver;
         } else {
-            throw new SystemException("No webdriver factory registered for browser: '" + browser + "'");
+            throw new SystemException(String.format("No %s registered for browser '%s'", WebDriverFactory.class.getSimpleName(), browser));
         }
     }
 

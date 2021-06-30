@@ -2,8 +2,12 @@ plugins {
     id 'java'
 }
 
+def protobufVersion = '3.14.0'
+
 dependencies {
+    implementation core
     implementation project(':report-model')
+    implementation "com.google.protobuf:protobuf-java:$protobufVersion"
 }
 
 task destClean {

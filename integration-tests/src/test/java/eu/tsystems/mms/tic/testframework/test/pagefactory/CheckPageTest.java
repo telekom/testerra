@@ -36,6 +36,7 @@ import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
 import java.io.File;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
 public class CheckPageTest extends AbstractTestSitesTest implements PageFactoryProvider {

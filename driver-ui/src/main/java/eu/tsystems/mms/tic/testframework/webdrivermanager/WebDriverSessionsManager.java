@@ -376,7 +376,7 @@ public final class WebDriverSessionsManager {
         String browser = webDriverRequest.getBrowser();
 
         if (StringUtils.isBlank(browser)) {
-            throw new SystemException(String.format("No browser configured. Please define one in %s.setBrowser() or property '%s'", WebDriverRequest.class.getSimpleName(), TesterraProperties.BROWSER));
+            throw new SystemException(String.format("No browser configured. Please define one in %s.setBrowser() or property '%s'", WebDriverRequest.class.getSimpleName(), IWebDriverManager.Properties.BROWSER_SETTING));
         }
 
         if (WEB_DRIVER_FACTORIES.containsKey(browser)) {

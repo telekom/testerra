@@ -29,7 +29,7 @@ import {DateFormatValueConverter} from "t-systems-aurelia-components/src/value-c
 export class TestDurationCard {
     @bindable start: number;
     @bindable end: number;
-    @bindable({bindingMode: bindingMode.toView}) class:string;
+    @bindable({defaultBindingMode: bindingMode.toView}) class:string;
     private _duration:number;
     private _hasEnded = false;
     private _startTooltip:string;

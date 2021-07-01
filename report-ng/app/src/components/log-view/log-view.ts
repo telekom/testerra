@@ -28,23 +28,29 @@ import {ILogEntry} from "../../services/statistics-generator";
 @autoinject()
 export class LogView {
 
+    @bindable({defaultBindingMode: bindingMode.toView})
+    class:string;
+
+    // @bindable({defaultBindingMode: bindingMode.fromView})
+    // logView:HTMLDivElement;
+
+    @bindable({defaultBindingMode: bindingMode.toView})
+    logMessages:ILogEntry[];
+
+    @bindable({defaultBindingMode: bindingMode.fromView})
+    readonly logView:LogView = this;
+
+    @bindable({defaultBindingMode: bindingMode.toView})
+    searchRegexp:RegExp;
+
+    private _logView:HTMLDivElement;
+    private _lastFoundIndex = -1;
+    private _initialScrollOffset:number;
+
     constructor(
         private _statusConverter:StatusConverter,
     ) {
     }
-
-    @bindable({bindingMode: bindingMode.toView})
-    logMessages:ILogEntry[];
-
-    private _filteredLogMessages:ILogEntry[];
-
-    // @bindable({bindingMode: bindingMode.toView})
-    // showThreads;
-
-    // private _showThreads = false;
-
-    @bindable({bindingMode: bindingMode.toView})
-    search:RegExp;
 
     private _toggleCause(logMessage:ILogEntry) {
         if (logMessage.cause) {
@@ -65,11 +71,16 @@ export class LogView {
         logMessage.cause = msg;
     }
 
-    private _filter() {
-        if (this.search) {
-            this._filteredLogMessages = this.logMessages.filter(logMessage => {
-                const foundInMessage = logMessage.message.match(this.search);
-                const foundInStackTrace = logMessage.stackTrace.flatMap(stackTrace => stackTrace.stackTraceElements).filter(line => line.match(this.search));
+    private _scrollToNextFound() {
+        if (this.searchRegexp && this._logView) {
+            const firstItem = this._logView.children.item(1) as HTMLDivElement;
+            const logMessagesToSearch = this.logMessages.slice(this._lastFoundIndex+1, -1);
+
+            const foundLogMessage = logMessagesToSearch.find(logMessage => {
+                const foundInMessage = logMessage.message.match(this.searchRegexp);
+                const foundInStackTrace = logMessage.stackTrace
+                    .flatMap(stackTrace => stackTrace.stackTraceElements)
+                    .filter(line => line.match(this.searchRegexp));
 
                 if (foundInStackTrace.length>0) {
                     this._open(logMessage);
@@ -77,24 +88,32 @@ export class LogView {
 
                 return foundInMessage || foundInStackTrace.length>0;
             });
-        } else {
-            this._filteredLogMessages = this.logMessages;
+
+            if (foundLogMessage) {
+                this._lastFoundIndex = this.logMessages.indexOf(foundLogMessage);
+                console.log("found at index", this._lastFoundIndex);
+                const scrollY = this._initialScrollOffset + (firstItem.clientHeight * this._lastFoundIndex);
+                console.log(this._initialScrollOffset);
+                console.log("scroll to ", this._initialScrollOffset, " + found index", this._lastFoundIndex, " * ", firstItem.clientHeight);
+                const options = {top: scrollY};
+
+                window.setTimeout(() => {
+                    window.scroll(options);
+                }, 1);
+            }
         }
     }
 
-    bind() {
-        this._filter();
+    attached() {
+        this._initialScrollOffset = this._logView.getBoundingClientRect().top;
     }
 
-    logMessagesChanged() {
-        this._filter();
+    searchNext() {
+        this._scrollToNextFound();
     }
 
-    searchChanged() {
-        this._filter();
+    resetSearch() {
+        console.log("reset search");
+        this._lastFoundIndex = -1;
     }
-
-    // showThreadsChanged() {
-    //     this._showThreads = this.showThreads.toLowerCase() === "true";
-    // }
 }

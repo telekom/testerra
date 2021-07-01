@@ -19,15 +19,14 @@
   ~ under the License.
   -->
 <template>
-    <div class="code-view">
-        <div repeat.for="logMessage of _filteredLogMessages"
-             if.bind="_filteredLogMessages.length > 0"
+    <div class="code-view" class.bind="class" ref="_logView">
+        <div virtual-repeat.for="logMessage of logMessages"
              class="line"
              class.bind="(logMessage.type==1?'error':(logMessage.type==2?'warn':''))"
         >
             <let logger.bind="_statusConverter.separateNamespace(logMessage.loggerName)"></let>
-            <div class="indicator"><span if.bind="logMessage.stackTrace.length>0" click.delegate="_toggleCause(logMessage)" class="clickable" innerhtml.bind="logMessage.cause?'-':'+'"></span></div>${logMessage.timestamp|dateFormat:"HH:mm:ss.SSS"}<span if.bind="logMessage.methodContext"> [<a route-href="route: method; params.bind: {methodId: logMessage.methodContext.contextValues.id}">${logMessage.threadName}</a>]</span> [${logMessage.type|logLevel}]: <span title="${logger.package}.${logger.class}">${logger.class}</span> - <span innerhtml.bind="logMessage.message|highlightText:search"></span>
-            <div if.bind="logMessage.cause" innerhtml.bind="logMessage.cause|highlightText:search"></div>
+            <div class="indicator"><span if.bind="logMessage.stackTrace.length>0" click.delegate="_toggleCause(logMessage)" class="clickable" innerhtml.bind="logMessage.cause?'-':'+'"></span></div>${logMessage.timestamp|dateFormat:"HH:mm:ss.SSS"}<span if.bind="logMessage.methodContext"> [<a route-href="route: method; params.bind: {methodId: logMessage.methodContext.contextValues.id}">${logMessage.threadName}</a>]</span> [${logMessage.type|logLevel}]: <span title="${logger.package}.${logger.class}">${logger.class}</span> - <span innerhtml.bind="logMessage.message|highlightText:searchRegexp"></span>
+            <div if.bind="logMessage.cause" innerhtml.bind="logMessage.cause|highlightText:searchRegexp"></div>
         </div>
         <div if.bind="_filteredLogMessages.length == 0" class="line">(No log messages matching this criteria)</div>
     </div>

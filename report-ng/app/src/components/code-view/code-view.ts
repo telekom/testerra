@@ -27,20 +27,21 @@ import hljs from "highlight.js/lib/core";
 import java from 'highlight.js/lib/languages/java';
 import 'highlight.js/styles/darcula.css';
 import IScriptSource = data.IScriptSource;
+import './code-view.scss'
 
 @autoinject()
 export class CodeView {
     private _hljs = hljs;
 
+    @bindable({defaultBindingMode: bindingMode.toView})
+    source:IScriptSource;
+
+    @bindable({defaultBindingMode: bindingMode.toView})
+    markClass:string = "error";
+
     constructor() {
         this._hljs.registerLanguage("java", java);
     }
-
-    @bindable({bindingMode: bindingMode.toView})
-    source:IScriptSource;
-
-    @bindable({bindingMode: bindingMode.toView})
-    markClass:string = "error";
     //
     // sourceChanged() {
     //     console.log(this.source);

@@ -46,7 +46,7 @@ export class ClassBarClick extends CustomEvent<IClassBarClickedDetails> {
 
 @autoinject
 export class TestClassesCard {
-    @bindable({bindingMode: bindingMode.toView}) filter: IFilter;
+    @bindable({defaultBindingMode: bindingMode.toView}) filter: IFilter;
     @bindable classStatistics: ClassStatistics[];
     private _apexBarOptions: ApexOptions = undefined;
     private _filteredStatuses: number[];

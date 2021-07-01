@@ -25,14 +25,18 @@ import {AbstractViewModel} from "../abstract-view-model";
 import {ILogEntry, StatisticsGenerator} from "services/statistics-generator";
 import {StatusConverter} from "services/status-converter";
 import {data} from "services/report-model";
+import "./logs.scss"
+import {LogView} from "../log-view/log-view";
 
 @autoinject()
 export class Logs extends AbstractViewModel {
-    private _searchRegexp: RegExp;
     private _loading = false;
     private _logMessages:ILogEntry[];
     private _availableLogLevels;
     private _selectedLogLevel;
+    private _logView:LogView;
+    private _prevSearch:string;
+    private _searchRegexp:RegExp = null;
 
     constructor(
         private _statistics: StatisticsGenerator,
@@ -43,17 +47,34 @@ export class Logs extends AbstractViewModel {
 
     activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
         super.activate(params, routeConfig, navInstruction);
+        if (this.queryParams.q) {
+            this._searchRegexp = this._statusConverter.createRegexpFromSearchString(this.queryParams.q);
+        }
         this._filter();
     }
 
-    private _filter() {
-        if (this.queryParams?.q?.trim().length > 0) {
-            this._searchRegexp = this._statusConverter.createRegexpFromSearchString(this.queryParams.q);
-        } else {
-            this._searchRegexp = null;
-            delete this.queryParams.q;
+    private _search($event:KeyboardEvent) {
+        //console.log($event.key);
+        this._searchRegexp = this._statusConverter.createRegexpFromSearchString(this.queryParams.q);
+        if (window.scrollY === 0) {
+            this._logView.resetSearch();
         }
 
+        if ($event.key == "Enter") {
+            if (this._prevSearch != this.queryParams.q) {
+                this._logView.resetSearch();
+            }
+            this._prevSearch = this.queryParams.q;
+            if (this.queryParams.q.trim().length > 0) {
+                this._logView.searchNext();
+            } else {
+                delete this.queryParams.q;
+            }
+            this.updateUrl(this.queryParams);
+        }
+    }
+
+    private _filter() {
         this._loading = true;
         this._statistics.getExecutionStatistics().then(executionStatistics => {
             const logMessages:ILogEntry[] = [];

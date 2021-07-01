@@ -167,8 +167,11 @@ export class Classes extends AbstractViewModel {
                         uniqueClasses[classStatistic.classContext.fullClassName] = true;
                         uniqueStatuses[methodDetails.methodContext.resultStatus] = true;
                         this._filteredMethodDetails.push(methodDetails);
-                    })
+                    });
+
                 });
+
+
 
             // Sort by method name
             //this._filteredMethodDetails = this._filteredMethodDetails.sort((a, b) => a.methodContext.contextValues.name.localeCompare(b.methodContext.contextValues.name));

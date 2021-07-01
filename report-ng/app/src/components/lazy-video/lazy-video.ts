@@ -32,7 +32,7 @@ interface IVideoInfo {
 @autoinject()
 export class LazyVideo {
 
-    @bindable({bindingMode: bindingMode.toView})
+    @bindable({defaultBindingMode: bindingMode.toView})
     fileId:string;
 
     // @bindable({bindingMode: bindingMode.toView})

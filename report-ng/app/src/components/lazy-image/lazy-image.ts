@@ -29,10 +29,10 @@ import IFile = data.IFile;
 @autoinject()
 export class LazyImage {
 
-    @bindable({bindingMode: bindingMode.toView})
+    @bindable({defaultBindingMode: bindingMode.toView})
     fileId:string;
 
-    @bindable({bindingMode: bindingMode.toView})
+    @bindable({defaultBindingMode: bindingMode.toView})
     class:string;
 
     private _file:IFile;

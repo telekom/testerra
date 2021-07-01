@@ -39,7 +39,7 @@
                     </li>
                 </ul>
                 <div mdc-subtitle2>Capabilities</div>
-                <div class="code-view capabilities-view" mdc-body2>${sessionContext.capabilities|json}</div>
+                <div class="code-view capabilities-view">${sessionContext.capabilities|json}</div>
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="8" if.bind="sessionContext.videoId">
                 <lazy-video file-id.bind="sessionContext.videoId"></lazy-video>

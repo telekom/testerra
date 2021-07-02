@@ -454,7 +454,7 @@ public class DesktopGuiElementCore implements GuiElementCore, Loggable {
     }
 
     @Override
-    public boolean isVisible(final boolean complete) {
+    public boolean isVisible(final boolean fullyVisible) {
         if (!isDisplayed()) {
             return false;
         }
@@ -465,7 +465,7 @@ public class DesktopGuiElementCore implements GuiElementCore, Loggable {
         Dimension elementSize = webElement.getSize();
         java.awt.Rectangle viewportRect = new java.awt.Rectangle(viewport.x, viewport.y, viewport.width, viewport.height);
         java.awt.Rectangle elementRect = new java.awt.Rectangle(elementLocation.x, elementLocation.y, elementSize.width, elementSize.height);
-        return ((complete && viewportRect.contains(elementRect)) || viewportRect.intersects(elementRect));
+        return ((fullyVisible && viewportRect.contains(elementRect)) || viewportRect.intersects(elementRect));
     }
 
     @Override

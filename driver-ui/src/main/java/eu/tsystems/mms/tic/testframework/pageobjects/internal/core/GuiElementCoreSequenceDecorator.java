@@ -619,14 +619,14 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator {
     }
 
     @Override
-    public boolean isVisible(boolean complete) {
+    public boolean isVisible(boolean fullyVisible) {
         Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
             @Override
             public void run() {
                 setReturningObject(false);
                 setSkipThrowingException(true);
 
-                boolean visible = guiElementCore.isVisible(complete);
+                boolean visible = guiElementCore.isVisible(fullyVisible);
                 setReturningObject(visible);
                 setPassState(visible);
             }

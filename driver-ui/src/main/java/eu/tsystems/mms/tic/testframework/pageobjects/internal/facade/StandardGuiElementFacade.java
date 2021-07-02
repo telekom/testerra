@@ -171,8 +171,8 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     }
 
     @Override
-    public boolean isVisible(boolean complete) {
-        return guiElementCore.isVisible(complete);
+    public boolean isVisible(boolean fullyVisible) {
+        return guiElementCore.isVisible(fullyVisible);
     }
 
     @Override

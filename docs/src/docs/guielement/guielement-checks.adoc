@@ -18,7 +18,7 @@ and it's `width` and `height` are both greater than 0.
 element.isDisplayed();
 ----
 
-Checks if the element is displayed and if it's partially or `fully` visible
+Checks if the element is displayed and if it's partially or fully visible
 in the scroll area of the viewport.
 
 [source,java]

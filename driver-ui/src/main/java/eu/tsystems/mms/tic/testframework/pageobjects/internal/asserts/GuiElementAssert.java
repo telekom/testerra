@@ -124,7 +124,7 @@ public interface GuiElementAssert {
      * Checks if the GuiElement, contains the given texts. Please note that this will only assert successfully, if the
      * elements text is actually visible.
      * Use {@link #assertTextContains(String...)} instead
-     * 
+     *
      * @param text Strings that should be contained in text. Will NOT be trimmed.
      */
     @Deprecated
@@ -237,9 +237,9 @@ public interface GuiElementAssert {
 
     /**
      * Asserts the visibility of this element
-     * @param complete The element is completely visible
+     * @param fullyVisible @param fullyVisible If TRUE, the bounding box of the element need to be fully contained in the viewport. Otherwise, only an intersection is needed.
      */
-    void assertVisible(final boolean complete);
+    void assertVisible(final boolean fullyVisible);
 
     /**
      * Asserts the invisibility of this element

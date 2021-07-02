@@ -301,8 +301,8 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     }
 
     @Override
-    public boolean waitForIsVisible(boolean complete) {
-        return guiElementWait.waitForIsVisible(complete);
+    public boolean waitForIsVisible(boolean fullyVisible) {
+        return guiElementWait.waitForIsVisible(fullyVisible);
     }
 
     @Override

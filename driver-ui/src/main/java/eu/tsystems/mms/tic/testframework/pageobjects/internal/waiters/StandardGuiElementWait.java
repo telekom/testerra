@@ -141,8 +141,8 @@ public class StandardGuiElementWait implements GuiElementWait {
     }
 
     @Override
-    public boolean waitForIsVisible(boolean complete) {
-        return pWaitForVisibleStatus(true, complete);
+    public boolean waitForIsVisible(boolean fullyVisible) {
+        return pWaitForVisibleStatus(true, fullyVisible);
     }
 
     @Override

@@ -251,7 +251,7 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
 
     @Override
     public void assertVisible(boolean fullyVisible) {
-        configuredAssert.assertTrue(guiElementWait.waitForIsVisible(fullyVisible), guiElementData + " is " + (fullyVisible ? "complete " : "") + "visible");
+        configuredAssert.assertTrue(guiElementWait.waitForIsVisible(fullyVisible), guiElementData + " is " + (fullyVisible ? "fully " : "") + "visible");
     }
 
     @Override

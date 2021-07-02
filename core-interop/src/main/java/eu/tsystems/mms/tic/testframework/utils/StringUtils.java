@@ -29,7 +29,10 @@ import java.util.regex.Pattern;
 
 /**
  * Sammlung von StringUtils.
+ *
+ * @deprecated This class is mainly used for Legacy Report. Please use {@link org.apache.commons.lang3.StringUtils} instead.
  */
+@Deprecated
 public final class StringUtils extends org.apache.commons.lang3.StringUtils {
 
     /**

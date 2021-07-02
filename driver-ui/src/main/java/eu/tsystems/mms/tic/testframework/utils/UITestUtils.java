@@ -28,15 +28,24 @@ import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.internal.Constants;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
+import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
-import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverConfiguration;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.sikuli.api.ScreenLocation;
+import org.sikuli.api.ScreenRegion;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -53,15 +62,6 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Stream;
-import javax.imageio.ImageIO;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
-import org.sikuli.api.ScreenLocation;
-import org.sikuli.api.ScreenRegion;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Helper class containing some util methods for tt.
@@ -223,7 +223,7 @@ public class UITestUtils {
     /**
      * Utility to store a Screenshot at the specified location.
      *
-     * @param image      BufferedImage
+     * @param image BufferedImage
      * @param targetFile filePath with fileName
      */
     private static void saveBufferedImage(BufferedImage image, File targetFile) {
@@ -240,7 +240,7 @@ public class UITestUtils {
     /**
      * Save page source to file.
      *
-     * @param pageSource       page source.
+     * @param pageSource page source.
      * @param sourceTargetFile target file.
      */
     private static void savePageSource(final String pageSource, final File sourceTargetFile) {

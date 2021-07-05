@@ -61,12 +61,20 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
         }
     }
 
+    private BigDecimal toBigDecimal(Object given) {
+        if (given == null) {
+            return null;
+        } else {
+            return new BigDecimal(given.toString());
+        }
+    }
+
     @Override
     public boolean isGreaterThan(BigDecimal expected, String failMessage) {
         return testSequence(
                 provider,
-                (actual) -> testAssertion.isGreaterThan(new BigDecimal(actual.toString()), expected),
-                (actual) -> testAssertion.formatExpectGreaterThan(new BigDecimal(actual.toString()), expected, createFailMessage(failMessage))
+                (actual) -> testAssertion.isGreaterThan(toBigDecimal(actual), expected),
+                (actual) -> testAssertion.formatExpectGreaterThan(toBigDecimal(actual), expected, createFailMessage(failMessage))
         );
     }
 
@@ -74,8 +82,8 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
     public boolean isLowerThan(BigDecimal expected, String failMessage) {
         return testSequence(
                 provider,
-                (actual) -> testAssertion.isLowerThan(new BigDecimal(actual.toString()), expected),
-                (actual) -> testAssertion.formatExpectLowerThan(new BigDecimal(actual.toString()), expected, createFailMessage(failMessage))
+                (actual) -> testAssertion.isLowerThan(toBigDecimal(actual), expected),
+                (actual) -> testAssertion.formatExpectLowerThan(toBigDecimal(actual), expected, createFailMessage(failMessage))
         );
     }
 
@@ -83,8 +91,8 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
     public boolean isGreaterEqualThan(BigDecimal expected, String failMessage) {
         return testSequence(
                 provider,
-                (actual) -> testAssertion.isGreaterEqualThan(new BigDecimal(actual.toString()), expected),
-                (actual) -> testAssertion.formatExpectGreaterEqualThan(new BigDecimal(actual.toString()), expected, createFailMessage(failMessage))
+                (actual) -> testAssertion.isGreaterEqualThan(toBigDecimal(actual), expected),
+                (actual) -> testAssertion.formatExpectGreaterEqualThan(toBigDecimal(actual), expected, createFailMessage(failMessage))
         );
     }
 
@@ -92,8 +100,8 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
     public boolean isLowerEqualThan(BigDecimal expected, String failMessage) {
         return testSequence(
                 provider,
-                (actual) -> testAssertion.isLowerEqualThan(new BigDecimal(actual.toString()), expected),
-                (actual) -> testAssertion.formatExpectLowerEqualThan(new BigDecimal(actual.toString()), expected, createFailMessage(failMessage))
+                (actual) -> testAssertion.isLowerEqualThan(toBigDecimal(actual), expected),
+                (actual) -> testAssertion.formatExpectLowerEqualThan(toBigDecimal(actual), expected, createFailMessage(failMessage))
         );
     }
 
@@ -101,8 +109,8 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
     public boolean isBetween(BigDecimal lower, BigDecimal higher, String failMessage) {
         return testSequence(
                 provider,
-                (actual) -> testAssertion.isBetween(new BigDecimal(actual.toString()), lower, higher),
-                (actual) -> testAssertion.formatExpectIsBetween(new BigDecimal(actual.toString()), lower, higher, createFailMessage(failMessage))
+                (actual) -> testAssertion.isBetween(toBigDecimal(actual), lower, higher),
+                (actual) -> testAssertion.formatExpectIsBetween(toBigDecimal(actual), lower, higher, createFailMessage(failMessage))
         );
     }
 

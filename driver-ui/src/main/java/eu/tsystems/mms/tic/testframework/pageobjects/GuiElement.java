@@ -468,8 +468,8 @@ public class GuiElement implements
     }
 
     @Override
-    public boolean isVisible(final boolean complete) {
-        return guiElementFacade.isVisible(complete);
+    public boolean isVisible(final boolean fullyVisible) {
+        return guiElementFacade.isVisible(fullyVisible);
     }
 
     /**

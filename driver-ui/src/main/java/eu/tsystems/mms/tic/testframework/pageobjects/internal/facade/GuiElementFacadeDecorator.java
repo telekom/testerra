@@ -323,9 +323,9 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public boolean isVisible(boolean complete) {
+    public boolean isVisible(boolean fullyVisible) {
         beforeDelegation("isVisible");
-        boolean visible = decoratedFacade.isVisible(complete);
+        boolean visible = decoratedFacade.isVisible(fullyVisible);
         afterDelegation("isVisible() = " + visible);
         return visible;
     }
@@ -502,9 +502,9 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public boolean waitForIsVisible(boolean complete) {
+    public boolean waitForIsVisible(boolean fullyVisible) {
         beforeDelegation("waitForIsVisible");
-        boolean b = decoratedFacade.waitForIsVisible(complete);
+        boolean b = decoratedFacade.waitForIsVisible(fullyVisible);
         afterDelegation("waitForIsVisible() = " + b);
         return b;
     }

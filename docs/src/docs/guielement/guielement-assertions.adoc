@@ -27,7 +27,9 @@ element.asserts().assertIsNotDisplayed();
 element.asserts().assertCssClassIsPresent("active");
 element.asserts().assertCssClassIsGone("disabled");
 
-// ... and many more
+// Visibility checks
+element.asserts().assertVisible(boolean fullyVisible);
+element.asserts().assertNotVisible();
 ----
 
 == Assert collector of functional asserts

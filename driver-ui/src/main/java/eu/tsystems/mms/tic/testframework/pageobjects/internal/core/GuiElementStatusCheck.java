@@ -53,9 +53,10 @@ public interface GuiElementStatusCheck {
 
     /**
      * Checks if the element is visible in the current viewport
-     * @return
+     * @param fullyVisible If TRUE, the bounding box of the element need to be fully contained in the viewport. Otherwise, only an intersection is needed.
+     * @return TRUE is visible
      */
-    boolean isVisible(final boolean complete);
+    boolean isVisible(boolean fullyVisible);
 
     /**
      * WebElement.isSelected.

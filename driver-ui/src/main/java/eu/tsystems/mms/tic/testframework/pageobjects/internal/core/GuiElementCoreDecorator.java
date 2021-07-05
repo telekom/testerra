@@ -242,9 +242,9 @@ public abstract class GuiElementCoreDecorator extends GuiElementStatusCheckDecor
     }
 
     @Override
-    public boolean isVisible(boolean complete) {
+    public boolean isVisible(boolean fullyVisible) {
         beforeDelegation();
-        boolean visible = decoratedGuiElementCore.isVisible(complete);
+        boolean visible = decoratedGuiElementCore.isVisible(fullyVisible);
         afterDelegation();
         return visible;
     }

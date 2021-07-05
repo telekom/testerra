@@ -667,22 +667,25 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
 
                 Point elementPosition = webElement.getLocation();
                 Dimension elementSize = webElement.getSize();
+                int imageX = elementPosition.getX() - viewport.getX();
+                int imageY = elementPosition.getY() - viewport.getY();
                 int imageWidth = elementSize.getWidth();
                 int imageHeight = elementSize.getHeight();
 
-                Point imagePosition = new Point(elementPosition.getX() - viewport.getX(), elementPosition.getY() - viewport.getY());
+                if (imageX > fullImg.getWidth()) imageX = 0;
+                if (imageY > fullImg.getHeight()) imageY = 0;
 
                 // Make sure the image bounding box doesn't overflows the image dimension
-                if (imagePosition.getX() + imageWidth > fullImg.getWidth()) {
-                    imageWidth = fullImg.getWidth() - imagePosition.getX();
+                if (imageX + imageWidth > fullImg.getWidth()) {
+                    imageWidth = fullImg.getWidth() - imageX;
                 }
-                if (imagePosition.getY() + imageHeight > fullImg.getHeight()) {
-                    imageHeight = fullImg.getHeight() - imagePosition.getY();
+                if (imageY + imageHeight > fullImg.getHeight()) {
+                    imageHeight = fullImg.getHeight() - imageY;
                 }
 
                 BufferedImage eleScreenshot = fullImg.getSubimage(
-                        imagePosition.getX(),
-                        imagePosition.getY(),
+                        imageX,
+                        imageY,
                         imageWidth,
                         imageHeight
                 );

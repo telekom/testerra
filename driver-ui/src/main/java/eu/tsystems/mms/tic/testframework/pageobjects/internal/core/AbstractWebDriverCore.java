@@ -665,15 +665,26 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
                 File screenshot = driver.getScreenshotAs(OutputType.FILE);
                 BufferedImage fullImg = ImageIO.read(screenshot);
 
-                Point point = webElement.getLocation();
-                int eleWidth = webElement.getSize().getWidth();
-                int eleHeight = webElement.getSize().getHeight();
+                Point elementPosition = webElement.getLocation();
+                Dimension elementSize = webElement.getSize();
+                int imageWidth = elementSize.getWidth();
+                int imageHeight = elementSize.getHeight();
+
+                Point imagePosition = new Point(elementPosition.getX() - viewport.getX(), elementPosition.getY() - viewport.getY());
+
+                // Make sure the image bounding box doesn't overflows the image dimension
+                if (imagePosition.getX() + imageWidth > fullImg.getWidth()) {
+                    imageWidth = fullImg.getWidth() - imagePosition.getX();
+                }
+                if (imagePosition.getY() + imageHeight > fullImg.getHeight()) {
+                    imageHeight = fullImg.getHeight() - imagePosition.getY();
+                }
 
                 BufferedImage eleScreenshot = fullImg.getSubimage(
-                        point.getX() - viewport.getX(),
-                        point.getY() - viewport.getY(),
-                        eleWidth,
-                        eleHeight
+                        imagePosition.getX(),
+                        imagePosition.getY(),
+                        imageWidth,
+                        imageHeight
                 );
                 ImageIO.write(eleScreenshot, "png", screenshot);
                 atomicReference.set(screenshot);

@@ -308,6 +308,14 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
         });
     }
 
+    @Override
+    public void scrollToTop() {
+        this.findWebElement(webElement -> {
+            JSUtils utils = new JSUtils();
+            utils.scrollElementToTop(guiElementData.getWebDriver(), webElement);
+        });
+    }
+
     /**
      * Private scroll to element.
      */
@@ -453,7 +461,7 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
     }
 
     @Override
-    public boolean isVisible(boolean complete) {
+    public boolean isVisible(boolean fullyVisible) {
         AtomicBoolean atomicBoolean = new AtomicBoolean(false);
         this.findWebElement(webElement -> {
             if (!webElement.isDisplayed()) {
@@ -465,7 +473,7 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
             Dimension elementSize = webElement.getSize();
             java.awt.Rectangle viewportRect = new java.awt.Rectangle(viewport.x, viewport.y, viewport.width, viewport.height);
             java.awt.Rectangle elementRect = new java.awt.Rectangle(elementLocation.x, elementLocation.y, elementSize.width, elementSize.height);
-            atomicBoolean.set(((complete && viewportRect.contains(elementRect)) || viewportRect.intersects(elementRect)));
+            atomicBoolean.set(((fullyVisible && viewportRect.contains(elementRect)) || viewportRect.intersects(elementRect)));
         });
         return atomicBoolean.get();
     }
@@ -656,7 +664,7 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
         AtomicReference<File> atomicReference = new AtomicReference<>();
         this.findWebElement(webElement -> {
             if (!isVisible(false)) {
-                scrollIntoView();
+                scrollToTop();
             }
             Rectangle viewport = WebDriverUtils.getViewport(guiElementData.getWebDriver());
             try {

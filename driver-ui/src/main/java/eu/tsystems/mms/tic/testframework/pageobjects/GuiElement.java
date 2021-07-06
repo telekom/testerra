@@ -276,6 +276,12 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
         return this;
     }
 
+    @Override
+    public UiElement scrollToTop() {
+        decoratedCore.scrollToTop();
+        return this;
+    }
+
     @Deprecated
     public By getBy() {
         return guiElementData.getLocate().getBy();

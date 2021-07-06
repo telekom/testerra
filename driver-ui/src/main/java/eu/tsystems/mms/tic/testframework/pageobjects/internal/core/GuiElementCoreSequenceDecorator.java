@@ -327,10 +327,10 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
     }
 
     @Override
-    public boolean isVisible(boolean complete) {
+    public boolean isVisible(boolean fullyVisible) {
         AtomicBoolean atomicReference = new AtomicBoolean();
         sequenced(false, () -> {
-            atomicReference.set(decoratedCore.isVisible(complete));
+            atomicReference.set(decoratedCore.isVisible(fullyVisible));
             return atomicReference.get();
         });
         return atomicReference.get();

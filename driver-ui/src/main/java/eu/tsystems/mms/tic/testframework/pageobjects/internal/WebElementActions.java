@@ -45,6 +45,11 @@ public interface WebElementActions extends WebElementRetainer {
     InteractiveUiElement scrollIntoView(Point offset);
 
     /**
+     * Scroll the element to the top of the viewport
+     */
+    InteractiveUiElement scrollToTop();
+
+    /**
      * Highlights the element with a specified color
      */
     InteractiveUiElement highlight(Color color);

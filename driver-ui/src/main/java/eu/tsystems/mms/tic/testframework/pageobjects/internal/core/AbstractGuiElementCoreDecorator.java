@@ -182,9 +182,9 @@ public abstract class AbstractGuiElementCoreDecorator extends AbstractGuiElement
     }
 
     @Override
-    public boolean isVisible(boolean complete) {
-        beforeDelegation("isVisible", complete);
-        boolean visible = decoratedCore.isVisible(complete);
+    public boolean isVisible(boolean fullyVisible) {
+        beforeDelegation("isVisible", fullyVisible);
+        boolean visible = decoratedCore.isVisible(fullyVisible);
         afterDelegation();
         return visible;
     }

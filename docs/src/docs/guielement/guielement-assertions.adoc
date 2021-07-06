@@ -23,7 +23,10 @@ element.expect().value().matches("^hello\\s.orld").is(boolean);
 element.expect().css("display").is("none");
 
 // CSS class checks
-element.expect().classes("active", "button").is(boolean);
+element.expect().hasClasses("active", "button").is(boolean);
+
+// Visibility checks
+element.expect().visible(boolean fullyVisible).is(boolean);
 ----
 
 == Layout assertions

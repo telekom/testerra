@@ -73,9 +73,10 @@ public interface GuiElementWait {
     boolean waitForIsNotDisplayed();
 
     /**
-     * Wait till element is not visible within the viewport
+     * Wait till element is visible within the viewport
+     * @param fullyVisible If TRUE, the bounding box of the element need to be fully contained in the viewport. Otherwise, only an intersection is needed.
      */
-    boolean waitForIsVisible(final boolean complete);
+    boolean waitForIsVisible(final boolean fullyVisible);
 
     /**
      * Wait till element is not more visible within the viewport

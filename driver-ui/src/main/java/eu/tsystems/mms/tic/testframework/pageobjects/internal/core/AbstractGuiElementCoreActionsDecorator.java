@@ -57,6 +57,13 @@ public abstract class AbstractGuiElementCoreActionsDecorator implements GuiEleme
     }
 
     @Override
+    public void scrollToTop() {
+        beforeDelegation("scrollToTop");
+        decoratedCore.scrollToTop();
+        afterDelegation();
+    }
+
+    @Override
     public void select() {
         beforeDelegation("select");
         decoratedCore.select();

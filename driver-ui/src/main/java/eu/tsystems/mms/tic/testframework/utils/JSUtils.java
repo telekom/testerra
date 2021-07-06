@@ -266,11 +266,24 @@ public final class JSUtils {
     /**
      * Scroll to top of page.
      *
-     * @param driver WebDriver instance.
+     * @param webDriver WebDriver instance.
      */
-    public static void scrollToTop(final WebDriver driver) {
-        final JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+    public void scrollToTop(WebDriver webDriver) {
+        final JavascriptExecutor jsExecutor = (JavascriptExecutor) webDriver;
         jsExecutor.executeScript("scroll(0,0);");
+    }
+
+    /**
+     * Scrolls an element to the top of a page.
+     * @param webDriver
+     * @param webElement
+     */
+    public void scrollElementToTop(WebDriver webDriver, WebElement webElement) {
+        executeScript(
+                webDriver,
+                "window.scrollTo({ top: arguments[0].offsetTop, left: arguments[0].offsetLeft });",
+                webElement
+        );
     }
 
     /**
@@ -505,32 +518,6 @@ public final class JSUtils {
         return 0;
     }
 
-    public static Point getElementLocationInViewPort(UiElement guiElement) {
-        int x = 0;
-        int y = 0;
-
-        /*
-        calculate frames
-         */
-//        if (guiElement.getFrameLogic() != null) {
-//            UiElement[] frames = guiElement.getFrameLogic().getFrames();
-//            for (UiElement frame : frames) {
-//                Point elementLocationInParent = getElementLocationInParent(frame, Where.TOP_LEFT);
-//                x += elementLocationInParent.x;
-//                y += elementLocationInParent.y;
-//            }
-//        }
-
-        /*
-        calculate element
-         */
-        Point point = getElementLocationInParent(guiElement, Where.CENTER);
-        x += point.x;
-        y += point.y;
-
-        return new Point(x, y);
-    }
-
     enum Where {
         CENTER,
         TOP_LEFT
@@ -566,13 +553,6 @@ public final class JSUtils {
 
         return atomicPoint.get();
 
-    }
-
-    public static Point getRelativePositionVector(UiElement from, UiElement to) {
-        Point start = getElementLocationInViewPort(from);
-        Point end = getElementLocationInViewPort(to);
-
-        return new Point(end.x - start.x, end.y - start.y);
     }
 
     /**

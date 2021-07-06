@@ -80,7 +80,7 @@ public class UiElementListTests extends AbstractExclusiveTestSitesTest<UiElement
         list.last().expect().text("Third");
 
         list.stream()
-                .filter(uiElement -> uiElement.waitFor().classes("odd").is(true))
+                .filter(uiElement -> uiElement.waitFor().hasClasses("odd").is(true))
                 .forEach(uiElement -> {});
     }
 

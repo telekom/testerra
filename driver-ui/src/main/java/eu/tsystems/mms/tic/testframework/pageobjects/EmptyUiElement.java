@@ -30,7 +30,7 @@ public class EmptyUiElement extends GuiElement {
         }
 
         @Override
-        public boolean isVisible(boolean complete) {
+        public boolean isVisible(boolean fullyVisible) {
             return false;
         }
 
@@ -161,6 +161,11 @@ public class EmptyUiElement extends GuiElement {
 
         @Override
         public void scrollIntoView(Point offset) {
+
+        }
+
+        @Override
+        public void scrollToTop() {
 
         }
 

@@ -382,11 +382,11 @@ public abstract class GuiElementAssertDecorator implements GuiElementAssert, Log
     }
 
     @Override
-    public void assertVisible(boolean complete) {
+    public void assertVisible(boolean fullyVisible) {
         callBeforeAssertion();
         AssertionError thrownAssertionError = null;
         try {
-            decoratedAssert.assertVisible(complete);
+            decoratedAssert.assertVisible(fullyVisible);
         } catch (AssertionError e) {
             thrownAssertionError = e;
         }

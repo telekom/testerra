@@ -23,7 +23,6 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementRetainer;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -66,7 +65,7 @@ public interface GuiElementCore extends
      * Checks if the element is visible in the current viewport
      * @return
      */
-    boolean isVisible(final boolean complete);
+    boolean isVisible(boolean fullyVisible);
 
     /**
      * WebElement.isSelected.

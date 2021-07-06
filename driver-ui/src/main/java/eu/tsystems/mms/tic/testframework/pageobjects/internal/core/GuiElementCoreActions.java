@@ -78,6 +78,8 @@ public interface GuiElementCoreActions {
 
     void scrollIntoView(Point offset);
 
+    void scrollToTop();
+
     /**
      * doubleclick
      *

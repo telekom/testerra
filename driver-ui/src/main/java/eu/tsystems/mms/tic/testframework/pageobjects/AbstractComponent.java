@@ -68,6 +68,11 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     }
 
     @Override
+    public InteractiveUiElement scrollToTop() {
+        return rootElement.scrollToTop();
+    }
+
+    @Override
     public UiElementList<SELF> list() {
         return new DefaultComponentList<>((SELF)this);
     }

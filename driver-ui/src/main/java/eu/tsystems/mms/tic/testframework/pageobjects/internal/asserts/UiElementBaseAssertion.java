@@ -40,7 +40,7 @@ public interface UiElementBaseAssertion extends ScreenshotAssertion {
     default boolean displayed(boolean expected) {
         return displayed().is(expected);
     }
-    BinaryAssertion<Boolean> visible(boolean complete);
+    BinaryAssertion<Boolean> visible(boolean fullyVisible);
     StringAssertion<String> tagName();
     RectAssertion bounds();
 }

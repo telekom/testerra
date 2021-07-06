@@ -65,7 +65,7 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
         UiElementAssertion expect = page.notDisplayedElement().expect();
         expect.attribute(Attribute.STYLE).contains("display: none");
         expect.displayed(false);
-        expect.classes("button").is(false);
+        expect.hasClasses("button").is(false);
     }
 
     @Test(expectedExceptions = AssertionError.class)
@@ -92,7 +92,7 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
         page.notVisibleElement().expect().visible(true).is(false);
         page.notVisibleElement().expect().visible(false).is(false);
         page.notDisplayedElement().expect().css("display").is("none");
-        page.notDisplayedElement().expect().classes("mumu").is(false);
+        page.notDisplayedElement().expect().hasClasses("mumu").is(false);
     }
 
     @Test

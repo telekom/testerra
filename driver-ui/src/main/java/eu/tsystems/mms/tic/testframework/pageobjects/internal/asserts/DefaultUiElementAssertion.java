@@ -184,16 +184,16 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
     }
 
     @Override
-    public BinaryAssertion<Boolean> visible(boolean complete) {
+    public BinaryAssertion<Boolean> visible(boolean fullyVisible) {
         return propertyAssertionFactory.createWithConfig(DefaultBinaryAssertion.class, this.propertyAssertionConfig, new UiElementAssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return core.isVisible(complete);
+                return core.isVisible(fullyVisible);
             }
 
             @Override
             public String createSubject() {
-                return Format.separate(guiElement.toString(), (complete?"complete ":"")+"visible");
+                return Format.separate(guiElement.toString(), (fullyVisible ?"complete ":"")+"visible");
             }
         });
     }

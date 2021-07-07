@@ -666,11 +666,11 @@ public class DesktopGuiElementCore implements GuiElementCore, Loggable {
 
     @Override
     public File takeScreenshot() {
-        final WebElement element = getWebElement();
+        final WebElement webElement = getWebElement();
         final boolean isSelenium4 = false;
 
         if (isSelenium4) {
-            return element.getScreenshotAs(OutputType.FILE);
+            return webElement.getScreenshotAs(OutputType.FILE);
         } else {
             if (!isVisible(false)) {
                 scrollIntoView();
@@ -682,15 +682,29 @@ public class DesktopGuiElementCore implements GuiElementCore, Loggable {
                 File screenshot = driver.getScreenshotAs(OutputType.FILE);
                 BufferedImage fullImg = ImageIO.read(screenshot);
 
-                Point point = element.getLocation();
-                int eleWidth = element.getSize().getWidth();
-                int eleHeight = element.getSize().getHeight();
+                Point elementPosition = webElement.getLocation();
+                Dimension elementSize = webElement.getSize();
+                int imageX = elementPosition.getX() - viewport.getX();
+                int imageY = elementPosition.getY() - viewport.getY();
+                int imageWidth = elementSize.getWidth();
+                int imageHeight = elementSize.getHeight();
+
+                if (imageX > fullImg.getWidth()) imageX = 0;
+                if (imageY > fullImg.getHeight()) imageY = 0;
+
+                // Make sure the image bounding box doesn't overflows the image dimension
+                if (imageX + imageWidth > fullImg.getWidth()) {
+                    imageWidth = fullImg.getWidth() - imageX;
+                }
+                if (imageY + imageHeight > fullImg.getHeight()) {
+                    imageHeight = fullImg.getHeight() - imageY;
+                }
 
                 BufferedImage eleScreenshot = fullImg.getSubimage(
-                        point.getX() - viewport.getX(),
-                        point.getY() - viewport.getY(),
-                        eleWidth,
-                        eleHeight
+                        imageX,
+                        imageY,
+                        imageWidth,
+                        imageHeight
                 );
                 ImageIO.write(eleScreenshot, "png", screenshot);
                 return screenshot;

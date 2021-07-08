@@ -383,7 +383,6 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
 
     @Override
     public void click() {
-        By by = this.guiElementData.getLocate().getBy();
         this.findWebElement(webElement -> {
             // Start the StopWatch for measuring the loading time of a Page
             //StopWatch.startPageLoad(this.guiElementData.getWebDriver());
@@ -544,11 +543,6 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
     private void pMouseOver() {
         this.findWebElement(webElement -> {
             this.highlightWebElement(webElement, new Color(255, 255, 0));
-            final Point location = webElement.getLocation();
-            final int x = location.getX();
-            final int y = location.getY();
-            webElement.getSize();
-            log().debug("MouseOver: " + toString() + " at x: " + x + " y: " + y);
 
             Actions action = new Actions(guiElementData.getWebDriver());
             action.moveToElement(webElement).build().perform();

@@ -54,9 +54,24 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
     }
 
     @Test(expectedExceptions = TimeoutException.class)
-    public void test_UiElement_click_fails() {
+    public void test_nonExistent_UiElement_click_fails() {
         WebTestPage page = getPage();
         page.nonExistentElement().click();
+    }
+
+    @Test
+    public void test_nonExistent_UiElement_foundElements() {
+        getPage().nonExistentElement().expect().foundElements().is(0);
+    }
+
+    @Test
+    public void test_unique_UiElement_foundElements() {
+        getPage().uniqueElement().expect().foundElements().is(1);
+    }
+
+    @Test
+    public void test_not_unique_UiElement_foundElements() {
+        getPage().notUniqueElement().expect().foundElements().isNot(1);
     }
 
     @Test

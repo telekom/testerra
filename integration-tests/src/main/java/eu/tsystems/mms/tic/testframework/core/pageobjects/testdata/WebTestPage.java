@@ -120,4 +120,12 @@ public class WebTestPage extends BasePage {
     public InteractiveUiElement nonExistentElement() {
         return findById("schnullifacks");
     }
+
+    public TestableUiElement uniqueElement() {
+        return find(LOCATE.by(By.id("1")).unique());
+    }
+
+    public TestableUiElement notUniqueElement() {
+        return find(LOCATE.by(By.tagName("div")).unique());
+    }
 }

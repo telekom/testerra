@@ -2,18 +2,18 @@ import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.internal.jvm.Jvm
 
 dependencies {
-    compile project(':logging')
+    api project(':logging')
 
     // <Testerra>
     // @see https://github.com/google/guice/issues/1256
-    compile 'com.google.inject:guice:4.2.2:no_aop'
-    compile 'com.google.inject.extensions:guice-assistedinject:4.2.2'
+    api 'com.google.inject:guice:4.2.2:no_aop'
+    api 'com.google.inject.extensions:guice-assistedinject:4.2.2'
     implementation 'org.reflections:reflections:0.9.12'
     // </Testerra>
 
-    compile 'commons-io:commons-io:2.6'
+    api 'commons-io:commons-io:2.6'
     // StringUtils needs api dep
-    compile 'org.apache.commons:commons-lang3:3.9'
+    api 'org.apache.commons:commons-lang3:3.9'
 
     // <PdfUtils>
     implementation 'org.apache.pdfbox:pdfbox:1.8.16'

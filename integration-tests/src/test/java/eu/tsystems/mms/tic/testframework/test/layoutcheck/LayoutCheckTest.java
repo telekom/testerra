@@ -74,7 +74,7 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements LocatorFac
         guiElement.asserts().assertScreenshot("TestArticleFailed", 1);
     }
 
-    @Test()
+    @Test(expectedExceptions = TimeoutException.class)
     public void testCheckElementLayoutSize_fails() {
         GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
         guiElement.asserts().assertScreenshot("TestArticle-90-percent-width", 1);

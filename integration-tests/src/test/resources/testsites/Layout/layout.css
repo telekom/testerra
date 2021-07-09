@@ -1,13 +1,7 @@
-@font-face {
-    src:local("fonts/OpenSans-Light.ttf");
-    font-family: 'OpenSans Light';
-    font-style: normal;
-    font-weight: 400;
+body {
+    font-family: sans-serif;
 }
 
-body {
-    font-family: 'OpenSans Light', sans-serif;
-}
 section {
     width: 700px;
 }

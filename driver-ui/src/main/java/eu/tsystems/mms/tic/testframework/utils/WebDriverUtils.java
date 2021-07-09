@@ -22,26 +22,20 @@
  package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.Constants;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
-import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverProxy;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
-import org.openqa.selenium.By;
+import java.util.stream.Collectors;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebDriver;
@@ -301,9 +295,14 @@ public final class WebDriverUtils {
      * @return Rectangle
      */
     public static Rectangle getViewport(WebDriver driver) {
-
-        final ArrayList<String> list = (ArrayList<String>) JSUtils.executeScript(driver, "return [window.pageXOffset.toString(), window.pageYOffset.toString(), window.innerWidth.toString(), window.innerHeight.toString()];");
-        return new Rectangle(Integer.valueOf(list.get(0)), Integer.valueOf(list.get(1)), Integer.valueOf(list.get(3)), Integer.valueOf(list.get(2)));
+        Object result = JSUtils.executeScript(driver, "return [window.pageXOffset.toString(), window.pageYOffset.toString(), window.innerWidth.toString(), window.innerHeight.toString()];");
+        if (result != null) {
+            final ArrayList<String> list = (ArrayList<String>)result;
+            List<Double> numbers = list.stream().map(Double::valueOf).collect(Collectors.toList());
+            return new Rectangle(numbers.get(0).intValue(), numbers.get(1).intValue(), numbers.get(3).intValue(), numbers.get(2).intValue());
+        } else {
+            return new Rectangle(-1,-1,-1,-1);
+        }
     }
 
 

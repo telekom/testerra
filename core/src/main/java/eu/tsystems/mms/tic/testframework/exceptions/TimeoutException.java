@@ -27,7 +27,7 @@ public class TimeoutException extends java.lang.RuntimeException {
      *
      */
     public TimeoutException() {
-        this("Timeout");
+        super();
     }
 
     /**

@@ -30,7 +30,6 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.Sequence;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import org.testng.Assert;
 
 /**
@@ -83,9 +82,13 @@ public class DefaultTestController implements TestController, Loggable {
     @Override
     public void retryFor(int seconds, Assert.ThrowingRunnable runnable, Runnable whenFail) {
         final Throwable finalThrowable = _waitFor(seconds, runnable, (sequence, throwable) -> {
-            log().info("Retry " + createSequenceLog(seconds, sequence) + " because of: " + throwable.getMessage());
             if (whenFail != null) {
                 whenFail.run();
+            }
+            if (!sequence.timedOut()) {
+                log().info("Retry " + createSequenceLog(seconds, sequence) + " because of: " + throwable.getMessage());
+            } else {
+                log().warn("Not retrying " + createSequenceLog(seconds, sequence) + " because of: " + throwable.getMessage());
             }
         });
         if (finalThrowable != null) {
@@ -96,10 +99,10 @@ public class DefaultTestController implements TestController, Loggable {
     @Override
     public void retryTimes(int times, Assert.ThrowingRunnable runnable, Runnable whenFail) {
         final Throwable finalThrowable = _waitTimes(times, runnable, (s, throwable) -> {
-            log().info(String.format("Retry attempt %d/%d because of: %s", s, times, throwable.getMessage()));
             if (whenFail != null) {
                 whenFail.run();
             }
+            log().info(String.format("Retry attempt %d/%d because of: %s", s, times, throwable.getMessage()));
         });
         if (finalThrowable != null) {
             throw new RuntimeException("Retry sequence failed", finalThrowable);
@@ -156,6 +159,7 @@ public class DefaultTestController implements TestController, Loggable {
             try {
                 runnable.run();
                 catchedThrowable = null;
+                break;
             } catch (Throwable throwable) {
                 catchedThrowable = throwable;
                 whenFail.accept(s+1, throwable);

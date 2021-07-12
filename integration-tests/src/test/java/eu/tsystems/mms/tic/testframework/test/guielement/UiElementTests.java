@@ -286,7 +286,7 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
 //    }
 
     @Test
-    public void test_UiElement_click_retry() {
+    public void test_UiElement_click_retry_timeout() {
         TestController.Overrides overrides = Testerra.getInjector().getInstance(TestController.Overrides.class);
 
         // Get default timeout and check if its not the test timeout
@@ -314,7 +314,7 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
     }
 
     @Test
-    public void test_UiElement_click_retry_fails() {
+    public void test_UiElement_click_retry_timeout_fails() {
         WebTestPage page = PAGE_FACTORY.createPage(WebTestPage.class, getWebDriver());
         UiElement disableMyselfBtn = page.getFinder().findById("disableMyselfBtn");
         disableMyselfBtn.expect().enabled(true);
@@ -331,6 +331,22 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
             ASSERT.assertStartsWith(e.getMessage(), "Retry sequence timed out", e.getClass().getSimpleName());
         }
         ASSERT.assertEquals(retryCount.get(), 3, "Retry count");
+    }
+
+    @Test
+    public void test_UiElement_click_retry_times() {
+        WebTestPage page = getPage();
+        UiElement disableMyselfBtn = page.getFinder().findById("disableMyselfImmediatelyBtn");
+        disableMyselfBtn.expect().enabled(true);
+        AtomicInteger retryCount = new AtomicInteger();
+        CONTROL.retryTimes(3, () -> {
+            CONTROL.withTimeout(1, () -> {
+                retryCount.incrementAndGet();
+                disableMyselfBtn.click();
+            });
+        });
+        disableMyselfBtn.expect().enabled(false);
+        ASSERT.assertEquals(retryCount.get(), 1, "Retry count");
     }
 
     @Test(expectedExceptions = UiElementAssertionError.class)

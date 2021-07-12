@@ -62,11 +62,15 @@ public class Sequence implements Loggable {
                     break;
                 }
                 Thread.sleep(waitMsAfterRun);
-            } while (getDurationMs() < timeoutMs);
+            } while (!timedOut());
 
         } catch (InterruptedException e) {
             log().error(e.getMessage(), e);
         }
         return this;
+    }
+
+    public boolean timedOut() {
+        return getDurationMs() >= timeoutMs;
     }
 }

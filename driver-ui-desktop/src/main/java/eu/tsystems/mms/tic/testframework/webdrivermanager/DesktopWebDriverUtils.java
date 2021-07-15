@@ -23,6 +23,7 @@
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 
 public final class DesktopWebDriverUtils implements Loggable {
@@ -31,34 +32,57 @@ public final class DesktopWebDriverUtils implements Loggable {
 
     }
 
+    private void inFrame(GuiElement guiElement, Runnable runnable) {
+        FrameLogic frameLogic = guiElement.getFrameLogic();
+        if (frameLogic != null) {
+            frameLogic.switchToCorrectFrame();
+        }
+        runnable.run();
+        if (frameLogic != null) {
+            frameLogic.switchToDefaultFrame();
+        }
+    }
+
     public void clickAbsolute(GuiElement guiElement) {
         log().trace("Absolute navigation and click on: " + guiElement.toString());
         JSUtils utils = new JSUtils();
-        utils.clickAbsolute(guiElement.getWebDriver(), guiElement.getWebElement());
+        inFrame(guiElement, () -> {
+            utils.clickAbsolute(guiElement.getWebDriver(), guiElement.getWebElement());
+        });
     }
 
     public void mouseOverAbsolute2Axis(GuiElement guiElement) {
         JSUtils utils = new JSUtils();
-        utils.mouseOverAbsolute2Axis(guiElement.getWebDriver(), guiElement.getWebElement());
+        inFrame(guiElement, () -> {
+            utils.mouseOverAbsolute2Axis(guiElement.getWebDriver(), guiElement.getWebElement());
+        });
     }
 
     public void mouseOverJS(GuiElement guiElement) {
         JSUtils utils = new JSUtils();
-        utils.mouseOver(guiElement.getWebDriver(), guiElement.getWebElement());
+        inFrame(guiElement, () -> {
+            utils.mouseOver(guiElement.getWebDriver(), guiElement.getWebElement());
+        });
     }
 
     public void clickJS(GuiElement guiElement) {
         JSUtils utils = new JSUtils();
-        utils.click(guiElement.getWebDriver(), guiElement.getWebElement());
+        inFrame(guiElement, () -> {
+            utils.click(guiElement.getWebDriver(), guiElement.getWebElement());
+        });
     }
 
     public void rightClickJS(GuiElement guiElement) {
         JSUtils utils = new JSUtils();
-        utils.rightClick(guiElement.getWebDriver(), guiElement.getWebElement());
+        inFrame(guiElement, () -> {
+            utils.rightClick(guiElement.getWebDriver(), guiElement.getWebElement());
+        });
     }
 
     public void doubleClickJS(GuiElement guiElement) {
         JSUtils utils = new JSUtils();
-        utils.doubleClick(guiElement.getWebDriver(), guiElement.getWebElement());
+        inFrame(guiElement, () -> {
+            utils.doubleClick(guiElement.getWebDriver(), guiElement.getWebElement());
+        });
     }
 }

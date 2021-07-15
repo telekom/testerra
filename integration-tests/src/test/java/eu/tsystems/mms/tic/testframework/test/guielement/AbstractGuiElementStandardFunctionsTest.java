@@ -29,6 +29,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.PreparedLocator;
 import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.ThrowableUtils;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils;
 import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.By;
@@ -526,6 +527,15 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
 
         element.mouseOver();
         desktopWebDriverUtils.clickJS(element);
+        out.asserts().assertContainsText("Form 16 submit");
+    }
+
+    @Test
+    public void test_DesktopWebDriverUtils_clickJS() {
+        GuiElement element = getClickableElement();
+        DesktopWebDriverUtils desktopWebDriverUtils = new DesktopWebDriverUtils();
+        desktopWebDriverUtils.clickJS(element);
+        GuiElement out = getLoggerTableElement();
         out.asserts().assertContainsText("Form 16 submit");
     }
 

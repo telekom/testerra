@@ -32,6 +32,7 @@ export class Method {
     private _lastScreenshotId:string;
     private _methodDetails:MethodDetails;
     private _failsAnnotation:FailsAnnotation;
+    private _loading:boolean = false;
 
     constructor(
         private _statistics: StatisticsGenerator,
@@ -116,11 +117,13 @@ export class Method {
             }
         }
 
+        this._loading = true;
         this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
             this._methodDetails = methodDetails;
             this._failsAnnotation = this._methodDetails.failsAnnotation;
             this._allScreenshotIds = this._statistics.getScreenshotIdsFromMethodContext(methodDetails.methodContext);
             this._lastScreenshotId = this._allScreenshotIds.reverse().find(() => true);
+            this._loading = false;
 
             this._router.routes.forEach(routeConfig => {
                 switch (routeConfig.name) {

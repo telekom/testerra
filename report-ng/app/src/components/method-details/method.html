@@ -25,7 +25,7 @@
     <mdc-layout-grid>
         <mdc-layout-grid-inner if.bind="!_methodDetails">
             <mdc-layout-grid-cell span="12">
-                <mdc-linear-progress if.bind="loading"></mdc-linear-progress>
+                <mdc-linear-progress if.bind="_loading"></mdc-linear-progress>
                 <div else
                      mdc-ripple
                      class="alert vcenter hcenter"

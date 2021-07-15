@@ -23,7 +23,6 @@
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 
 public final class DesktopWebDriverUtils implements Loggable {
 
@@ -32,33 +31,26 @@ public final class DesktopWebDriverUtils implements Loggable {
     }
 
     public void clickAbsolute(GuiElement guiElement) {
-        log().trace("Absolute navigation and click on: " + guiElement.toString());
-        JSUtils utils = new JSUtils();
-        utils.clickAbsolute(guiElement.getWebDriver(), guiElement.getWebElement());
+        guiElement.clickAbsolute();
     }
 
     public void mouseOverAbsolute2Axis(GuiElement guiElement) {
-        JSUtils utils = new JSUtils();
-        utils.mouseOverAbsolute2Axis(guiElement.getWebDriver(), guiElement.getWebElement());
+        guiElement.mouseOverAbsolute2Axis();
     }
 
     public void mouseOverJS(GuiElement guiElement) {
-        JSUtils utils = new JSUtils();
-        utils.mouseOver(guiElement.getWebDriver(), guiElement.getWebElement());
+        guiElement.mouseOverJS();
     }
 
     public void clickJS(GuiElement guiElement) {
-        JSUtils utils = new JSUtils();
-        utils.click(guiElement.getWebDriver(), guiElement.getWebElement());
+        guiElement.clickJS();
     }
 
     public void rightClickJS(GuiElement guiElement) {
-        JSUtils utils = new JSUtils();
-        utils.rightClick(guiElement.getWebDriver(), guiElement.getWebElement());
+        guiElement.rightClickJS();
     }
 
     public void doubleClickJS(GuiElement guiElement) {
-        JSUtils utils = new JSUtils();
-        utils.doubleClick(guiElement.getWebDriver(), guiElement.getWebElement());
+        guiElement.doubleClickJS();
     }
 }

@@ -43,7 +43,7 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
         return testSequence(
                 provider,
                 (actual) -> testAssertion.equals(actual, expected),
-                (actual) -> testAssertion.formatExpectEquals(null, expected, createFailMessage(failMessage, actual))
+                (actual) -> testAssertion.formatExpectEquals(null, expected ,createFailMessage(failMessage))
         );
     }
 
@@ -56,7 +56,7 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
             return testSequence(
                     provider,
                     (actual) -> testAssertion.notEquals(actual, expected),
-                    (actual) -> testAssertion.formatExpectNotEquals(null, expected, createFailMessage(failMessage, actual))
+                    (actual) -> testAssertion.formatExpectNotEquals(null, expected, createFailMessage(failMessage))
             );
         }
     }
@@ -74,7 +74,7 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
         return testSequence(
                 provider,
                 (actual) -> testAssertion.isGreaterThan(toBigDecimal(actual), expected),
-                (actual) -> testAssertion.formatExpectGreaterThan(toBigDecimal(actual), expected, createFailMessage(failMessage, actual))
+                (actual) -> testAssertion.formatExpectGreaterThan(toBigDecimal(actual), expected, createFailMessage(failMessage))
         );
     }
 
@@ -83,7 +83,7 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
         return testSequence(
                 provider,
                 (actual) -> testAssertion.isLowerThan(toBigDecimal(actual), expected),
-                (actual) -> testAssertion.formatExpectLowerThan(toBigDecimal(actual), expected, createFailMessage(failMessage, actual))
+                (actual) -> testAssertion.formatExpectLowerThan(toBigDecimal(actual), expected, createFailMessage(failMessage))
         );
     }
 
@@ -92,7 +92,7 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
         return testSequence(
                 provider,
                 (actual) -> testAssertion.isGreaterEqualThan(toBigDecimal(actual), expected),
-                (actual) -> testAssertion.formatExpectGreaterEqualThan(toBigDecimal(actual), expected, createFailMessage(failMessage, actual))
+                (actual) -> testAssertion.formatExpectGreaterEqualThan(toBigDecimal(actual), expected, createFailMessage(failMessage))
         );
     }
 
@@ -101,7 +101,7 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
         return testSequence(
                 provider,
                 (actual) -> testAssertion.isLowerEqualThan(toBigDecimal(actual), expected),
-                (actual) -> testAssertion.formatExpectLowerEqualThan(toBigDecimal(actual), expected, createFailMessage(failMessage, actual))
+                (actual) -> testAssertion.formatExpectLowerEqualThan(toBigDecimal(actual), expected, createFailMessage(failMessage))
         );
     }
 
@@ -110,7 +110,7 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
         return testSequence(
                 provider,
                 (actual) -> testAssertion.isBetween(toBigDecimal(actual), lower, higher),
-                (actual) -> testAssertion.formatExpectIsBetween(toBigDecimal(actual), lower, higher, createFailMessage(failMessage, actual))
+                (actual) -> testAssertion.formatExpectIsBetween(toBigDecimal(actual), lower, higher, createFailMessage(failMessage))
         );
     }
 
@@ -128,7 +128,7 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
             }
 
             @Override
-            public String createSubject(MAPPED_TYPE actual) {
+            public String createSubject() {
                 return "map";
             }
         });
@@ -149,7 +149,7 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
             }
 
             @Override
-            public String createSubject(BigDecimal actual) {
+            public String createSubject() {
                 return "absolute";
             }
         });

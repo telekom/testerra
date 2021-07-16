@@ -25,7 +25,6 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -57,10 +56,7 @@ public abstract class AssertionProvider<T> implements ActualProperty<T> {
         }
 
         public static String shortString(Object param) {
-            if (param != null) {
-                param = cut(param.toString());
-            }
-            return param(param);
+            return param(cut(param.toString()));
         }
 
         public static String param(Object param) {
@@ -76,11 +72,9 @@ public abstract class AssertionProvider<T> implements ActualProperty<T> {
     abstract public T getActual();
 
     /**
-     * This method creates a readable assertion subject passing to the user.
-     * @param actual The actual value given from {@link #getActual()}. Could be NULL!
-     * @return String
+     * @return The subject ob the property (ea. "name", "url", ...)
      */
-    abstract public String createSubject(T actual);
+    abstract public String createSubject();
 
     /**
      * This method will be called recurisve from parent to descendants

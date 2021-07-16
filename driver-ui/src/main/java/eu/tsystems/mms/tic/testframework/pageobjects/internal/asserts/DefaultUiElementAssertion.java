@@ -45,7 +45,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import java.awt.Color;
 import java.io.File;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import org.openqa.selenium.Rectangle;
 
@@ -118,8 +117,8 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
             }
 
             @Override
-            public String createSubject(String actual) {
-                return Format.separate(guiElement.toString(), "tagName="+Format.param(actual));
+            public String createSubject() {
+                return Format.separate(guiElement.toString(), "tagName="+Format.param(getActual()));
             }
         });
     }
@@ -133,8 +132,8 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
             }
 
             @Override
-            public String createSubject(String actual) {
-                return Format.separate(guiElement.toString(), "text="+Format.shortString(actual));
+            public String createSubject() {
+                return Format.separate(guiElement.toString(), "text="+Format.shortString(getActual()));
             }
         });
     }
@@ -148,8 +147,8 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
             }
 
             @Override
-            public String createSubject(String actual) {
-                return Format.separate(guiElement.toString(), attribute+"="+Format.param(actual));
+            public String createSubject() {
+                return Format.separate(guiElement.toString(), attribute+"="+Format.param(getActual()));
             }
         });
     }
@@ -163,8 +162,8 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
             }
 
             @Override
-            public String createSubject(String actual) {
-                return Format.separate(guiElement.toString(),"css { "+Format.label(property, actual) + " }");
+            public String createSubject() {
+                return Format.separate(guiElement.toString(),"css { "+Format.label(property, getActual()) + " }");
             }
         });
     }
@@ -178,7 +177,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
             }
 
             @Override
-            public String createSubject(Boolean actual) {
+            public String createSubject() {
                 return Format.separate(guiElement.toString(), "present");
             }
         });
@@ -193,8 +192,8 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
             }
 
             @Override
-            public String createSubject(Boolean actual) {
-                return Format.separate(guiElement.toString(), (fullyVisible ?"fully ":"")+"visible");
+            public String createSubject() {
+                return Format.separate(guiElement.toString(), (fullyVisible ?"complete ":"")+"visible");
             }
         });
     }
@@ -211,7 +210,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
                 }
             }
             @Override
-            public String createSubject(Boolean actual) {
+            public String createSubject() {
                 return Format.separate(guiElement.toString(), "displayed");
             }
         });
@@ -226,7 +225,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
             }
 
             @Override
-            public String createSubject(Boolean actual) {
+            public String createSubject() {
                 return Format.separate(guiElement.toString(), "enabled");
             }
         });
@@ -241,7 +240,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
             }
 
             @Override
-            public String createSubject(Boolean actual) {
+            public String createSubject() {
                 return Format.separate(guiElement.toString(), "selected");
             }
         });
@@ -256,7 +255,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
             }
 
             @Override
-            public String createSubject(Boolean actual) {
+            public String createSubject() {
                 return Format.separate(guiElement.toString(), "selectable");
             }
         });
@@ -271,7 +270,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
             }
 
             @Override
-            public String createSubject(Rectangle actual) {
+            public String createSubject() {
                 return Format.separate(guiElement.toString(), "bounds");
             }
         });
@@ -290,7 +289,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
             }
 
             @Override
-            public String createSubject(Integer actual) {
+            public String createSubject() {
                 return Format.separate(guiElement.toString(), "numberOfElements");
             }
         });
@@ -330,7 +329,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
             }
 
             @Override
-            public String createSubject(File actual) {
+            public String createSubject() {
                 return Format.separate(guiElement.toString(), "screenshot");
             }
         });

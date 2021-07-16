@@ -48,7 +48,7 @@ public class DefaultVerticalDistanceAssertion extends AbstractPropertyAssertion<
             }
 
             @Override
-            public String createSubject(Integer actual) {
+            public String createSubject() {
                 return String.format("to top of %s", uiElement);
             }
         });
@@ -64,7 +64,7 @@ public class DefaultVerticalDistanceAssertion extends AbstractPropertyAssertion<
             }
 
             @Override
-            public String createSubject(Integer actual) {
+            public String createSubject() {
                 return String.format("to bottom of %s", uiElement);
             }
         });

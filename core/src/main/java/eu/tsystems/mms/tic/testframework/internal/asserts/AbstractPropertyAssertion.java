@@ -50,18 +50,18 @@ public abstract class AbstractPropertyAssertion<T> implements ActualProperty<T> 
         return provider.getActual();
     }
 
-    protected String createFailMessage(String givenSubject, T actual) {
+    protected String createFailMessage(String givenSubject) {
         if (givenSubject != null && givenSubject.length() > 0) {
             return givenSubject;
         }
 
         StringBuilder sb = new StringBuilder();
         traceAncestors(propertyAssertion -> {
-            String subject = propertyAssertion.provider.createSubject(actual);
+            String subject = propertyAssertion.provider.createSubject();
             if (subject != null) sb.append(subject).append(AssertionProvider.Format.SEPARATOR);
         });
 
-        String subject = this.provider.createSubject(actual);
+        String subject = this.provider.createSubject();
         if (subject != null) sb.append(subject);
 
         return sb.toString();

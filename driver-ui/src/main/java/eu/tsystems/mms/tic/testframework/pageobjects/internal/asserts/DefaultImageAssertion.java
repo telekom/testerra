@@ -54,7 +54,7 @@ public class DefaultImageAssertion extends AbstractPropertyAssertion<File> imple
             }
 
             @Override
-            public String createSubject(Double actual) {
+            public String createSubject() {
                 return "pixel distance to image="+Format.param(referenceImageName);
             }
 
@@ -78,8 +78,8 @@ public class DefaultImageAssertion extends AbstractPropertyAssertion<File> imple
             }
 
             @Override
-            public String createSubject(File actual) {
-                return actual.getAbsolutePath();
+            public String createSubject() {
+                return provider.getActual().getAbsolutePath();
             }
         });
     }

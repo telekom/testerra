@@ -44,7 +44,7 @@ public class DefaultBinaryAssertion<T> extends AbstractTestedPropertyAssertion<T
                                 || actualString.equalsIgnoreCase("yes")
                         );
                     },
-                    (actual) -> testAssertion.format(null, "is true", createFailMessage(failMessage))
+                    (actual) -> testAssertion.format(null, "is true", createFailMessage(failMessage, actual))
             );
         } else {
             return testSequence(
@@ -58,7 +58,7 @@ public class DefaultBinaryAssertion<T> extends AbstractTestedPropertyAssertion<T
                                 || actualString.equalsIgnoreCase("no")
                         );
                     },
-                    (actual) -> testAssertion.format(null, "is false", createFailMessage(failMessage)));
+                    (actual) -> testAssertion.format(null, "is false", createFailMessage(failMessage, actual)));
         }
     }
 }

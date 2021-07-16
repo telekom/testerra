@@ -60,7 +60,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
             }
 
             @Override
-            public String createSubject() {
+            public String createSubject(Boolean actual) {
                 return Format.separate(format(provider.getActual()),"contains", uiElement, format(uiElement.waitFor().bounds().getActual()));
             }
         });
@@ -75,7 +75,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
             }
 
             @Override
-            public String createSubject() {
+            public String createSubject(Boolean actual) {
                 return Format.separate(format(provider.getActual()), "intersects", uiElement, format(uiElement.waitFor().bounds().getActual()));
             }
         });
@@ -90,7 +90,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
             }
 
             @Override
-            public String createSubject() {
+            public String createSubject(Boolean actual) {
                 return String.format("left of %s", uiElement);
             }
         });
@@ -105,7 +105,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
             }
 
             @Override
-            public String createSubject() {
+            public String createSubject(Boolean actual) {
                 return String.format("right of %s", uiElement);
             }
         });
@@ -120,7 +120,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
             }
 
             @Override
-            public String createSubject() {
+            public String createSubject(Boolean actual) {
                 return String.format("above %s", uiElement);
             }
         });
@@ -135,7 +135,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
             }
 
             @Override
-            public String createSubject() {
+            public String createSubject(Boolean actual) {
                 return String.format("below %s", uiElement);
             }
         });
@@ -151,7 +151,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
             }
 
             @Override
-            public String createSubject() {
+            public String createSubject(Integer actual) {
                 return "from right";
             }
         });
@@ -167,7 +167,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
             }
 
             @Override
-            public String createSubject() {
+            public String createSubject(Integer actual) {
                 return "from left";
             }
         });
@@ -183,7 +183,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
             }
 
             @Override
-            public String createSubject() {
+            public String createSubject(Integer actual) {
                 return "from top";
             }
         });
@@ -199,7 +199,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
             }
 
             @Override
-            public String createSubject() {
+            public String createSubject(Integer actual) {
                 return "from bottom";
             }
         });

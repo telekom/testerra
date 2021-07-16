@@ -58,8 +58,8 @@ public class DefaultPageAssertions implements PageAssertions {
             }
 
             @Override
-            public String createSubject() {
-                return Format.separate(page.toString(), "title="+Format.shortString(getActual()));
+            public String createSubject(String actual) {
+                return Format.separate(page.toString(), "title="+Format.shortString(actual));
             }
         });
     }
@@ -73,8 +73,8 @@ public class DefaultPageAssertions implements PageAssertions {
             }
 
             @Override
-            public String createSubject() {
-                return Format.separate(page.toString(), "url="+Format.param(getActual()));
+            public String createSubject(String actual) {
+                return Format.separate(page.toString(), "url="+Format.param(actual));
             }
         });
     }
@@ -115,7 +115,7 @@ public class DefaultPageAssertions implements PageAssertions {
             }
 
             @Override
-            public String createSubject() {
+            public String createSubject(File actual) {
                 return page.toString();
             }
         });

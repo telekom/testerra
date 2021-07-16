@@ -117,7 +117,7 @@ public class WebTestPage extends BasePage {
         return findById("notVisibleElement");
     }
 
-    public InteractiveUiElement nonExistentElement() {
+    public InteractiveUiElement inexistentElement() {
         return findById("schnullifacks");
     }
 

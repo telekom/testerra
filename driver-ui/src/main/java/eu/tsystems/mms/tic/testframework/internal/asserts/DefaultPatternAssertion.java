@@ -43,7 +43,7 @@ public class DefaultPatternAssertion extends AbstractTestedPropertyAssertion<Mat
         return testSequence(
                 provider,
                 (actual) -> testAssertion.equals(actual.find(), expected),
-                (actual) -> testAssertion.formatExpectEquals(actual.find(), expected, createFailMessage(failMessage))
+                (actual) -> testAssertion.formatExpectEquals(actual.find(), expected, createFailMessage(failMessage, actual))
         );
     }
 }

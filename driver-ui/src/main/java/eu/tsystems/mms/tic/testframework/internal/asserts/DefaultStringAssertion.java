@@ -46,7 +46,7 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
             }
 
             @Override
-            public String createSubject() {
+            public String createSubject(Boolean actual) {
                 return "contains " + Format.param(expected);
             }
         });
@@ -61,7 +61,7 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
             }
 
             @Override
-            public String createSubject() {
+            public String createSubject(Boolean actual) {
                 return "starts with " + Format.param(expected);
             }
         });
@@ -76,7 +76,7 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
             }
 
             @Override
-            public String createSubject() {
+            public String createSubject(Boolean actual) {
                 return "ends with " + Format.param(expected);
             }
         });
@@ -91,7 +91,7 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
             }
 
             @Override
-            public String createSubject() {
+            public String createSubject(Matcher actual) {
                 return "matches " + Format.param(pattern);
             }
         });
@@ -112,7 +112,7 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
             }
 
             @Override
-            public String createSubject() {
+            public String createSubject(Boolean actual) {
                 return "has words " + Format.param(wordsList);
             }
         });
@@ -128,7 +128,7 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
             }
 
             @Override
-            public String createSubject() {
+            public String createSubject(Integer actual) {
                 return "length";
             }
         });

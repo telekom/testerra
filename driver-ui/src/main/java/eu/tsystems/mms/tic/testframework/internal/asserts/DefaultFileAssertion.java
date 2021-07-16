@@ -45,7 +45,7 @@ public class DefaultFileAssertion extends AbstractPropertyAssertion<File> implem
             }
 
             @Override
-            public String createSubject() {
+            public String createSubject(Long actual) {
                 return "bytes";
             }
         });
@@ -60,7 +60,7 @@ public class DefaultFileAssertion extends AbstractPropertyAssertion<File> implem
             }
 
             @Override
-            public String createSubject() {
+            public String createSubject(String actual) {
                 return "name";
             }
         });
@@ -75,7 +75,7 @@ public class DefaultFileAssertion extends AbstractPropertyAssertion<File> implem
             }
 
             @Override
-            public String createSubject() {
+            public String createSubject(String actual) {
                 return "extension";
             }
         });
@@ -94,7 +94,7 @@ public class DefaultFileAssertion extends AbstractPropertyAssertion<File> implem
             }
 
             @Override
-            public String createSubject() {
+            public String createSubject(String actual) {
                 return "mimetype";
             }
         });
@@ -109,7 +109,7 @@ public class DefaultFileAssertion extends AbstractPropertyAssertion<File> implem
             }
 
             @Override
-            public String createSubject() {
+            public String createSubject(Boolean actual) {
                 return "exists";
             }
         });

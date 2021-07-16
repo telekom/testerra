@@ -54,14 +54,19 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
     }
 
     @Test(expectedExceptions = TimeoutException.class)
-    public void test_nonExistent_UiElement_click_fails() {
+    public void test_inexistent_UiElement_click_fails() {
         WebTestPage page = getPage();
-        page.nonExistentElement().click();
+        page.inexistentElement().click();
     }
 
     @Test
-    public void test_nonExistent_UiElement_foundElements() {
-        getPage().nonExistentElement().expect().foundElements().is(0);
+    public void test_inexistent_UiElement_foundElements() {
+        getPage().inexistentElement().expect().foundElements().is(0);
+    }
+
+    @Test(expectedExceptions = UiElementAssertionError.class, expectedExceptionsMessageRegExp = ".*text=\\[null] equals \\[]$")
+    public void test_inexistent_UiElement_AssertionError() {
+        getPage().inexistentElement().expect().text().is("");
     }
 
     @Test
@@ -229,7 +234,7 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
     @Test
     public void test_inexistent_UiElement_present() {
         WebTestPage page = getPage();
-        page.nonExistentElement().expect().present().is(false);
+        page.inexistentElement().expect().present().is(false);
     }
 
     @Test
@@ -237,7 +242,7 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
         WebTestPage page = getPage();
         String msg = null;
         try {
-            page.nonExistentElement().expect().present().is(true);
+            page.inexistentElement().expect().present().is(true);
         } catch (AssertionError e) {
             msg = e.getMessage();
         }
@@ -252,7 +257,7 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
     @Test()
     public void test_inexistent_UiElement_displayed_fails() {
         WebTestPage page = getPage();
-        page.nonExistentElement().expect().displayed().is(false);
+        page.inexistentElement().expect().displayed().is(false);
     }
 
     @Test
@@ -267,7 +272,7 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
         WebTestPage page = getPage();
         String msg=null;
         try {
-            page.nonExistentElement().expect().screenshot().file().exists().is(true);
+            page.inexistentElement().expect().screenshot().file().exists().is(true);
         } catch (ElementNotFoundException e) {
             msg = e.getMessage();
         }

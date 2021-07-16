@@ -24,6 +24,9 @@
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
+import org.openqa.selenium.WebElement;
+
+import java.awt.*;
 
 public final class DesktopWebDriverUtils implements Loggable {
 
@@ -48,8 +51,18 @@ public final class DesktopWebDriverUtils implements Loggable {
     }
 
     public void clickJS(GuiElement guiElement) {
+        WebElement webElement = guiElement.getWebElement();
+        if (guiElement.hasFrameLogic()) {
+            guiElement.getFrameLogic().switchToCorrectFrame();
+        }
+
+        JSUtils.highlightBlinkWebElement(guiElement.getWebDriver(), webElement, new Color(0, 255, 0));
         JSUtils utils = new JSUtils();
-        utils.click(guiElement.getWebDriver(), guiElement.getWebElement());
+        utils.click(guiElement.getWebDriver(), webElement);
+
+        if (guiElement.hasFrameLogic()) {
+            guiElement.getFrameLogic().switchToDefaultFrame();
+        }
     }
 
     public void rightClickJS(GuiElement guiElement) {

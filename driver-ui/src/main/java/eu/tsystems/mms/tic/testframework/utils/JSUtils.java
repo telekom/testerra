@@ -198,7 +198,7 @@ public final class JSUtils {
      * @param webElement .
      * @param color      .
      */
-    public static void repeatedFillWebElement(
+    public static void highlightBlinkWebElement(
             WebDriver driver,
             WebElement webElement,
             Color color

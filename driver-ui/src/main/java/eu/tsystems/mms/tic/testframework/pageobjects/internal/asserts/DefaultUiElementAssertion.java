@@ -87,6 +87,18 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
                 }
             }
         }
+
+        /**
+         * Gets the actual value ignoring {@link ElementNotFoundException}.
+         * @return NULL if the exception occurs.
+         */
+        public T getSafeActual() {
+            try {
+                return getActual();
+            } catch (ElementNotFoundException e) {
+                return null;
+            }
+        }
     }
 
     public DefaultUiElementAssertion(UiElement uiElement, PropertyAssertionConfig config) {
@@ -118,7 +130,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
 
             @Override
             public String createSubject() {
-                return Format.separate(guiElement.toString(), "tagName="+Format.param(getActual()));
+                return Format.separate(guiElement.toString(), "tagName="+Format.param(getSafeActual()));
             }
         });
     }
@@ -133,7 +145,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
 
             @Override
             public String createSubject() {
-                return Format.separate(guiElement.toString(), "text="+Format.shortString(getActual()));
+                return Format.separate(guiElement.toString(), "text="+Format.shortString(getSafeActual()));
             }
         });
     }
@@ -148,7 +160,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
 
             @Override
             public String createSubject() {
-                return Format.separate(guiElement.toString(), attribute+"="+Format.param(getActual()));
+                return Format.separate(guiElement.toString(), attribute+"="+Format.param(getSafeActual()));
             }
         });
     }
@@ -163,7 +175,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
 
             @Override
             public String createSubject() {
-                return Format.separate(guiElement.toString(),"css { "+Format.label(property, getActual()) + " }");
+                return Format.separate(guiElement.toString(),"css { "+Format.label(property, getSafeActual()) + " }");
             }
         });
     }

@@ -56,7 +56,10 @@ public abstract class AssertionProvider<T> implements ActualProperty<T> {
         }
 
         public static String shortString(Object param) {
-            return param(cut(param.toString()));
+            if (param != null) {
+                param = cut(param.toString());
+            }
+            return param(param);
         }
 
         public static String param(Object param) {

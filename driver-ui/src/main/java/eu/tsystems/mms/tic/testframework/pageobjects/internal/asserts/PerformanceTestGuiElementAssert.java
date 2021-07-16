@@ -166,7 +166,7 @@ public class PerformanceTestGuiElementAssert implements GuiElementAssert {
     }
 
     @Override
-    public void assertVisible(boolean complete) {
+    public void assertVisible(boolean fullyVisible) {
 
     }
 

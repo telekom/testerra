@@ -23,24 +23,26 @@ package eu.tsystems.mms.tic.testframework.report;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
+import java.util.Arrays;
 
 public class DefaultReport implements Report, Loggable {
 
-    private File REPORT_DIRECTORY;
-    private final String BASE_DIR = PropertyManager.getProperty(TesterraProperties.REPORTDIR, "test-report");
+    private File currentReportDirectory;
+    private final String baseDir = PropertyManager.getProperty(TesterraProperties.REPORTDIR, "test-report");
+    private final File finalReportDirectory = new File(baseDir);
+    private final File tempReportDirectory;
 
     public DefaultReport() {
         FileUtils fileUtils = new FileUtils();
-        REPORT_DIRECTORY = fileUtils.createTempDir(BASE_DIR);
-        log().debug("Prepare report in " + REPORT_DIRECTORY.getAbsolutePath());
+        tempReportDirectory = fileUtils.createTempDir(baseDir);
+        log().debug("Prepare report in " + tempReportDirectory.getAbsolutePath());
+
+        currentReportDirectory = tempReportDirectory;
     }
 
 
@@ -63,15 +65,14 @@ public class DefaultReport implements Report, Loggable {
     }
 
     public File finalizeReport() {
-        File finalReportDirectory = new File(BASE_DIR);
         try {
             if (finalReportDirectory.exists()) {
                 FileUtils.deleteDirectory(finalReportDirectory);
             }
 
-            if (REPORT_DIRECTORY.exists()) {
-                FileUtils.moveDirectory(REPORT_DIRECTORY, finalReportDirectory);
-                REPORT_DIRECTORY = finalReportDirectory;
+            if (tempReportDirectory.exists()) {
+                FileUtils.moveDirectory(tempReportDirectory, finalReportDirectory);
+                currentReportDirectory = finalReportDirectory;
                 log().info("Report written to " + finalReportDirectory.getAbsolutePath());
             }
         } catch (IOException e) {
@@ -122,17 +123,25 @@ public class DefaultReport implements Report, Loggable {
      * @return Final report directory defined by the user
      */
     public File getReportDirectory() {
-        return REPORT_DIRECTORY;
+        return currentReportDirectory;
     }
     /**
      * @return Final report directory defined by the user
      */
     public File getFinalReportDirectory() {
-        return new File(BASE_DIR);
+        return finalReportDirectory;
     }
 
     @Override
     public String getRelativePath(File file) {
-        return file.getAbsolutePath().replace(getReportDirectory().getAbsolutePath(), "");
+        String absFilePath = file.getAbsolutePath();
+
+        for (File dir : Arrays.asList(tempReportDirectory, finalReportDirectory)) {
+            String absDirPath = dir.getAbsolutePath();
+            if (absFilePath.startsWith(absDirPath)) {
+                return absFilePath.replace(absDirPath, "");
+            }
+        }
+        return absFilePath;
     }
 }

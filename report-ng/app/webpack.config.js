@@ -118,7 +118,10 @@ module.exports = ({production} = {}, {analyze, tests, hmr, port, host} = {}) => 
             rules: [
                 {
                     test: /\.html$/i,
-                    loader: 'html-loader'
+                    loader: 'html-loader',
+                    options: {
+                        minimize: true,
+                    }
                 },
                 {
                     test: /\.ts$/,

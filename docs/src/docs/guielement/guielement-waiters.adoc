@@ -28,4 +28,6 @@ result = element.waits().waitForTextContains("Hello");
 result = element.waits().waitForTextContainsNot("Foo bar");
 result = element.waits().waitForCssClassIsPresent("active");
 result = element.waits().waitForCssClassIsGone("disabled");
+result = element.waits().waitForIsVisible(boolean fullyVisible);
+result = element.waits().waitForIsNotVisible();
 ----

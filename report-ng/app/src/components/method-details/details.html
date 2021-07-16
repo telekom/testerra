@@ -40,7 +40,7 @@
                     <div mdc-subtitle2 class="card-headline">Failure Aspect</div>
                     <mdc-list-divider></mdc-list-divider>
                     <div class="card-content status-${_methodDetails.methodContext.resultStatus|statusClass}">
-                        <div mdc-headline5><class-name-markup namespace.bind="_failureAspect.relevantCause.className">:</class-name-markup>${_failureAspect.message}</div>
+                        <div mdc-headline5><class-name-markup namespace.bind="_failureAspect.relevantCause.className">:</class-name-markup><span innerhtml="${_failureAspect.message|html}"></span></div>
                         <div class="mt1" if.bind="_layoutComparisonContext">
                             <layout-comparison context.bind="_layoutComparisonContext"></layout-comparison>
                         </div>

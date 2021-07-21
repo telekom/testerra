@@ -719,6 +719,7 @@ public class DesktopGuiElementCore implements GuiElementCore, Loggable {
     @Override
     public void clickJS() {
         JSUtils utils = new JSUtils();
+        JSUtils.highlightBlinkWebElement(guiElementData.webDriver, getWebElement(), new Color(0, 255, 0));
         utils.click(guiElementData.webDriver, getWebElement());
     }
 

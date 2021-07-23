@@ -187,6 +187,13 @@ public final class WebDriverManager {
     }
 
     /**
+     * @deprecated Use {@link IWebDriverManager#shutdownAllThreadSessions()} instead
+     */
+    public static void shutdown() {
+        forceShutdown();
+    }
+
+    /**
      * Returns the WebDriverManagerConfig Object.
      *
      * @return .

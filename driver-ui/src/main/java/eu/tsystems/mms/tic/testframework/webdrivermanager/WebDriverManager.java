@@ -200,7 +200,7 @@ public final class WebDriverManager {
      * @deprecated Use {@link #getConfig()} instead
      */
     @Deprecated
-    private static WebDriverManagerConfig config() {
+    public static WebDriverManagerConfig config() {
         if (webdriverManagerConfig == null) {
             webdriverManagerConfig = new WebDriverManagerConfig();
         }

@@ -217,6 +217,10 @@ public class DesktopWebDriverFactory implements
 
         eventFiringWebDriver.register(new EventLoggingEventDriverListener());
 
+        if (!desktopWebDriverRequest.getBaseUrl().isPresent()) {
+            WebDriverManager.getConfig().getBaseUrl().ifPresent(desktopWebDriverRequest::setBaseUrl);
+        }
+
         /*
          start StopWatch
           */

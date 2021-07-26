@@ -42,41 +42,25 @@ enum EntryType {
 }
 
 class TestStepActionGroup {
-    private _screenshotIds:string[]=[];
-    private _clickPathEvents:IClickPathEvent[]=[];
-    private _logMessages:ILogMessage[]=[];
-    private _assertions:IErrorContext[]=[];
+    readonly screenshotIds:string[]=[];
+    readonly clickPathEvents:IClickPathEvent[]=[];
+    readonly logMessages:ILogMessage[]=[];
+    readonly assertions:IErrorContext[]=[];
 
     addScreenshotId(screenshotId:string) {
-        this._screenshotIds.push(screenshotId);
+        this.screenshotIds.push(screenshotId);
     }
 
     addAssertion(assertion:IErrorContext) {
-        this._assertions.push(assertion);
+        this.assertions.push(assertion);
     }
 
     addClickPathEvent(clickPathEvent:IClickPathEvent) {
-        this._clickPathEvents.push(clickPathEvent);
+        this.clickPathEvents.push(clickPathEvent);
     }
 
     addLogMessage(logMessage:ILogMessage) {
-        this._logMessages.push(logMessage);
-    }
-
-    get screenshotIds() {
-        return this._screenshotIds;
-    }
-
-    get logMessages() {
-        return this._logMessages;
-    }
-
-    get assertions() {
-        return this._assertions;
-    }
-
-    get clickPathEvents() {
-        return this._clickPathEvents;
+        this.logMessages.push(logMessage);
     }
 
     static getEntryType(entry:ITestStepActionEntry) {

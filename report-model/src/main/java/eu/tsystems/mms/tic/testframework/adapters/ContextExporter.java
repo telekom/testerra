@@ -69,6 +69,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 
 public class ContextExporter implements Loggable {
@@ -332,7 +333,7 @@ public class ContextExporter implements Loggable {
                     entryBuilder.hasAssertion()
                     || entryBuilder.hasLogMessage()
                     || entryBuilder.hasClickPathEvent()
-                    || entryBuilder.getScreenshotId() != null
+                    || StringUtils.isNotBlank(entryBuilder.getScreenshotId())
             ) {
                 actionBuilder.addEntries(entryBuilder);
             }

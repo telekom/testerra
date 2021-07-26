@@ -28,11 +28,6 @@ import {MdcDialogService} from '@aurelia-mdc-web/dialog';
 import {IScreenshotsDialogParams, ScreenshotsDialog} from "../screenshots-dialog/screenshots-dialog";
 import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
 import './steps.scss'
-import IClickPathEvent = data.IClickPathEvent;
-import ILogMessage = data.ILogMessage;
-import IErrorContext = data.IErrorContext;
-import ITestStepAction = data.ITestStepAction;
-import ITestStepActionEntry = data.ITestStepActionEntry;
 
 enum EntryType {
     SCREENSHOT,
@@ -43,27 +38,27 @@ enum EntryType {
 
 class TestStepActionGroup {
     readonly screenshotIds:string[]=[];
-    readonly clickPathEvents:IClickPathEvent[]=[];
-    readonly logMessages:ILogMessage[]=[];
-    readonly assertions:IErrorContext[]=[];
+    readonly clickPathEvents:data.IClickPathEvent[]=[];
+    readonly logMessages:data.ILogMessage[]=[];
+    readonly assertions:data.IErrorContext[]=[];
 
     addScreenshotId(screenshotId:string) {
         this.screenshotIds.push(screenshotId);
     }
 
-    addAssertion(assertion:IErrorContext) {
+    addAssertion(assertion:data.IErrorContext) {
         this.assertions.push(assertion);
     }
 
-    addClickPathEvent(clickPathEvent:IClickPathEvent) {
+    addClickPathEvent(clickPathEvent:data.IClickPathEvent) {
         this.clickPathEvents.push(clickPathEvent);
     }
 
-    addLogMessage(logMessage:ILogMessage) {
+    addLogMessage(logMessage:data.ILogMessage) {
         this.logMessages.push(logMessage);
     }
 
-    static getEntryType(entry:ITestStepActionEntry) {
+    static getEntryType(entry:data.ITestStepActionEntry) {
         if (entry.screenshotId) {
             return EntryType.SCREENSHOT;
         } else if (entry.assertion) {
@@ -76,7 +71,7 @@ class TestStepActionGroup {
     }
 }
 
-interface TestStepActionDetails extends ITestStepAction {
+interface TestStepActionDetails extends data.ITestStepAction {
     groups:TestStepActionGroup[];
 }
 

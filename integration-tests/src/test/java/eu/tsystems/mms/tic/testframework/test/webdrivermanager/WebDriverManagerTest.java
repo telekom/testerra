@@ -25,14 +25,19 @@ import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
-import java.util.Map;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Tests for WebDriverManager
@@ -133,4 +138,15 @@ public class WebDriverManagerTest extends AbstractWebDriverTest {
         WebDriverManager.getThreadCapabilities().clear();
     }
 
+    @Test
+    public void testT06_WithDesktopWebDriverRequest() {
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        request.setSessionKey("testT06");
+        DesiredCapabilities caps = request.getDesiredCapabilities();
+        caps.setCapability("MyCap", "myValue");
+
+        WebDriver webDriver = WebDriverManager.getWebDriver(request);
+        Optional<Map<String, Object>> capabilities = ExecutionContextController.getCurrentSessionContext().getCapabilities();
+
+    }
 }

@@ -9,4 +9,5 @@ public interface WebDriverRequest extends Serializable {
     String getBrowser();
     String getBrowserVersion();
     Optional<URL> getServerUrl();
+    WebDriverRequest clone();
 }

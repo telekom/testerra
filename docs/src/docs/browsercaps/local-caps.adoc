@@ -9,5 +9,5 @@ WebDriverManager.addThreadCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true)
 
 [NOTE]
 =====
-Have a look into <<Useful browser capabilities>> for specific browser options.
+Have a look into <<Browser specific knowledge>> for specific browser options.
 =====

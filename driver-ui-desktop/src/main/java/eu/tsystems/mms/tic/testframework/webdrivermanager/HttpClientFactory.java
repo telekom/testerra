@@ -45,11 +45,8 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  * @author Eric Kubenka
  */
 class HttpClientFactory implements HttpClient.Factory {
-
-    private static long WDM_TIMEOUT_STUCK_SELENIUM_COMMANDS = PropertyManager.getLongProperty(TesterraProperties.WEBDRIVER_TIMEOUT_SECONDS_STUCK_COMMAND, 300);
-
-    private Duration factoryConnectionTimeout = Duration.ofSeconds(120); // Kill, when connect does not succeed in this timeout
-    private Duration factoryReadTimeout = Duration.ofSeconds(WDM_TIMEOUT_STUCK_SELENIUM_COMMANDS); // Kill hanging / stuck selenium commands after this timeout.
+    private final Duration factoryConnectionTimeout = Duration.ofSeconds(120); // Kill, when connect does not succeed in this timeout
+    private final Duration factoryReadTimeout = factoryConnectionTimeout; // Kill hanging / stuck selenium commands after this timeout.
     private final ConnectionPool pool = new ConnectionPool();
 
     @Override

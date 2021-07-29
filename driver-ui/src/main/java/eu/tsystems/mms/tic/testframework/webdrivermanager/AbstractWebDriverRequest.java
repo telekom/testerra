@@ -53,21 +53,31 @@ public abstract class AbstractWebDriverRequest extends AbstractWebDriverConfigur
      * @return
      */
     public AbstractWebDriverRequest clone() {
-        Class<? extends AbstractWebDriverRequest> aClass = this.getClass();
+        Class<? extends AbstractWebDriverRequest> clazz = this.getClass();
         DesiredCapabilities cloneCaps = new DesiredCapabilities();
-        boolean isCaps = this.desiredCapabilities != null;
-        // Backup original caps
-        if (isCaps) {
-            cloneCaps = new DesiredCapabilities();
-            cloneCaps.merge(this.desiredCapabilities);
-            this.desiredCapabilities = null;
-        }
+
+        // Backup original caps and set this caps to NULL to be cloneable
+        cloneCaps.merge(this.getDesiredCapabilities());
+        this.desiredCapabilities = null;
         AbstractWebDriverRequest clone = SerializationUtils.clone(this);
+
         // Write back original caps to this and to clone object.
-        if (isCaps) {
-            clone.getDesiredCapabilities().merge(cloneCaps);
-            this.desiredCapabilities = cloneCaps;
-        }
-        return aClass.cast(clone);
+        clone.getDesiredCapabilities().merge(cloneCaps);
+        this.desiredCapabilities = cloneCaps;
+
+//        boolean isCaps = this.desiredCapabilities != null;
+//        // Backup original caps
+//        if (isCaps) {
+//            cloneCaps = new DesiredCapabilities();
+//            cloneCaps.merge(this.desiredCapabilities);
+//            this.desiredCapabilities = null;
+//        }
+//        AbstractWebDriverRequest clone = SerializationUtils.clone(this);
+//        // Write back original caps to this and to clone object.
+//        if (isCaps) {
+//            clone.getDesiredCapabilities().merge(cloneCaps);
+//            this.desiredCapabilities = cloneCaps;
+//        }
+        return clazz.cast(clone);
     }
 }

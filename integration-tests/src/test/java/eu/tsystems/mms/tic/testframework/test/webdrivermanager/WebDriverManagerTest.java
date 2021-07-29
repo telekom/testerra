@@ -146,7 +146,8 @@ public class WebDriverManagerTest extends AbstractWebDriverTest {
         caps.setCapability("MyCap", "myValue");
 
         WebDriver webDriver = WebDriverManager.getWebDriver(request);
-        Optional<Map<String, Object>> capabilities = ExecutionContextController.getCurrentSessionContext().getCapabilities();
-
+        Map<String, Object> capabilities = ExecutionContextController.getCurrentSessionContext().getCapabilities().get();
+        Assert.assertTrue(capabilities.containsKey("MyCap"));
+        Assert.assertEquals(capabilities.get("MyCap"), "myValue");
     }
 }

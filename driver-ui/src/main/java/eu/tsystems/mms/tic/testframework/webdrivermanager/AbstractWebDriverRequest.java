@@ -64,20 +64,7 @@ public abstract class AbstractWebDriverRequest extends AbstractWebDriverConfigur
         // Write back original caps to this and to clone object.
         clone.getDesiredCapabilities().merge(cloneCaps);
         this.desiredCapabilities = cloneCaps;
-
-//        boolean isCaps = this.desiredCapabilities != null;
-//        // Backup original caps
-//        if (isCaps) {
-//            cloneCaps = new DesiredCapabilities();
-//            cloneCaps.merge(this.desiredCapabilities);
-//            this.desiredCapabilities = null;
-//        }
-//        AbstractWebDriverRequest clone = SerializationUtils.clone(this);
-//        // Write back original caps to this and to clone object.
-//        if (isCaps) {
-//            clone.getDesiredCapabilities().merge(cloneCaps);
-//            this.desiredCapabilities = cloneCaps;
-//        }
+        
         return clazz.cast(clone);
     }
 }

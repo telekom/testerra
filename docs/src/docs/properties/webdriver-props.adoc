@@ -5,8 +5,9 @@ include::property-attributes.adoc[]
 
 | Property | default | Description
 
-| {browser} | na.
-a| Browser label, the following browsers are possible
+| {browser_setting} | na.
+a| Define browser type and optional browser version as single string like `firefox` or `firefox:65` (overrides {browser} and {browser_version}) (recommended). +
+The following types of browsrs are supported:
 
 * firefox
 * chrome
@@ -17,9 +18,10 @@ a| Browser label, the following browsers are possible
 * htmlunit
 * chromeHeadless
 
-| {browser_version} | na. | Version label
-| {browser_setting} | | You can combine browser type and version as single string like `firefox:65` (overrides {browser} and {browser_version})
-| {baseurl} | na. | URL of the first site called in a new browser session
+| {browser} | na.
+a| Only defines the browser type, will be overwritten by {browser_setting}.
+| {browser_version} | na. | Only defines the browser version, will be overwritten by {browser_setting}.
+| {baseurl} | na. | URL of the first site called in a new browser session.
 | {webdriver_mode} | remote | Sets the webdriver mode. remote uses an external Selenium server
 | {selenium_server_url} | na. | The complete URL to a remote Selenium server. +
 (e.g.: `http://localhost:4444/wd/hub`)

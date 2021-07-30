@@ -6,7 +6,7 @@ The `WebDriverWatchDog` is your vigilant pet watching the test execution and rea
 .test.properties
 [source, properties, subs="attributes"]
 ----
-# activate watchdog, default = true
+# activate watchdog, default = false
 {watchdog_enable} = true
 
 # timeout in seconds after the test execution is terminated, default = 300

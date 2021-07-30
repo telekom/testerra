@@ -25,6 +25,7 @@ import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -139,15 +140,27 @@ public class WebDriverManagerTest extends AbstractWebDriverTest {
     }
 
     @Test
-    public void testT06_WithDesktopWebDriverRequest() {
+    public void testT06_clonedWebDriverRequest() {
+        final String sessionKey = "testT06";
+        final String capKey = "MyCap";
+        final String capVal = "myValue";
+
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-        request.setSessionKey("testT06");
-        DesiredCapabilities caps = request.getDesiredCapabilities();
-        caps.setCapability("MyCap", "myValue");
+        request.setSessionKey(sessionKey);
+        DesiredCapabilities baseCaps = request.getDesiredCapabilities();
+        baseCaps.setCapability(capKey, capVal);
 
         WebDriver webDriver = WebDriverManager.getWebDriver(request);
-        Map<String, Object> capabilities = ExecutionContextController.getCurrentSessionContext().getCapabilities().get();
-        Assert.assertTrue(capabilities.containsKey("MyCap"));
-        Assert.assertEquals(capabilities.get("MyCap"), "myValue");
+        SessionContext sessionContext = WebDriverSessionsManager.getSessionContext(webDriver).get();
+        DesktopWebDriverRequest clonedRequest = (DesktopWebDriverRequest) sessionContext.getWebDriverRequest();
+
+        Assert.assertEquals(sessionKey, clonedRequest.getSessionKey());
+
+        DesiredCapabilities clonedCaps = clonedRequest.getDesiredCapabilities();
+        Assert.assertEquals(capVal, clonedCaps.getCapability(capKey));
+        Assert.assertEquals(clonedCaps.getCapability(capKey), baseCaps.getCapability(capKey));
+
+        clonedCaps.setCapability(capKey, "newValue");
+        Assert.assertNotEquals(clonedCaps.getCapability(capKey), baseCaps.getCapability(capKey));
     }
 }

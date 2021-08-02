@@ -20,12 +20,9 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import org.apache.commons.lang3.SerializationUtils;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-import java.io.Serializable;
-
-public abstract class AbstractWebDriverRequest extends AbstractWebDriverConfiguration implements Serializable, WebDriverRequest {
+public abstract class AbstractWebDriverRequest extends AbstractWebDriverConfiguration implements WebDriverRequest {
     private String sessionKey;
     private DesiredCapabilities desiredCapabilities;
 
@@ -52,19 +49,12 @@ public abstract class AbstractWebDriverRequest extends AbstractWebDriverConfigur
      *
      * @return
      */
-    public AbstractWebDriverRequest clone() {
-        Class<? extends AbstractWebDriverRequest> clazz = this.getClass();
-        DesiredCapabilities cloneCaps = new DesiredCapabilities();
-
-        // Backup original caps and set this caps to NULL to be cloneable
-        cloneCaps.merge(this.getDesiredCapabilities());
-        this.desiredCapabilities = null;
-        AbstractWebDriverRequest clone = SerializationUtils.clone(this);
-
-        // Write back original caps to this and to clone object.
-        clone.getDesiredCapabilities().merge(cloneCaps);
-        this.desiredCapabilities = cloneCaps;
-        
-        return clazz.cast(clone);
+    public AbstractWebDriverRequest clone() throws CloneNotSupportedException {
+        AbstractWebDriverRequest clone = (AbstractWebDriverRequest) super.clone();
+        if (this.desiredCapabilities != null) {
+            clone.desiredCapabilities = new DesiredCapabilities();
+            clone.desiredCapabilities.merge(this.desiredCapabilities);
+        }
+        return clone;
     }
 }

@@ -154,8 +154,12 @@ public class WebDriverManagerTest extends AbstractWebDriverTest {
         SessionContext sessionContext = WebDriverSessionsManager.getSessionContext(webDriver).get();
         DesktopWebDriverRequest clonedRequest = (DesktopWebDriverRequest) sessionContext.getWebDriverRequest();
 
+        // Test for cloned primitives
         Assert.assertEquals(sessionKey, clonedRequest.getSessionKey());
+        clonedRequest.setSessionKey("NewSessionKey");
+        Assert.assertNotEquals(sessionKey, clonedRequest.getSessionKey());
 
+        // Test for not shallow copy of capabilities
         DesiredCapabilities clonedCaps = clonedRequest.getDesiredCapabilities();
         Assert.assertEquals(capVal, clonedCaps.getCapability(capKey));
         Assert.assertEquals(clonedCaps.getCapability(capKey), baseCaps.getCapability(capKey));

@@ -43,7 +43,11 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
     private final Queue<MethodContext> methodContexts = new ConcurrentLinkedQueue<>();
 
     public SessionContext(WebDriverRequest webDriverRequest) {
-        this.webDriverRequest = SerializationUtils.clone(webDriverRequest);
+        try {
+            this.webDriverRequest = webDriverRequest.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
         this.name = webDriverRequest.getSessionKey();
 
 //        this.provider = provider;

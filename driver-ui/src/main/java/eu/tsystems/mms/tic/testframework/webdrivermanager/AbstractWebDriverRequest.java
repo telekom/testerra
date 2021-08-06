@@ -20,10 +20,9 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import java.io.Serializable;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-public abstract class AbstractWebDriverRequest extends AbstractWebDriverConfiguration implements Serializable, WebDriverRequest {
+public abstract class AbstractWebDriverRequest extends AbstractWebDriverConfiguration implements WebDriverRequest {
     private String sessionKey;
     private DesiredCapabilities desiredCapabilities;
 
@@ -41,5 +40,21 @@ public abstract class AbstractWebDriverRequest extends AbstractWebDriverConfigur
             this.desiredCapabilities = new DesiredCapabilities();
         }
         return desiredCapabilities;
+    }
+
+    /**
+     * Cloning of DesiredCapabilites with SerializationUtils occurs org.apache.commons.lang3.SerializationException: IOException while reading or closing cloned object data
+     * -> We have to backup the current caps and clone WebDriverRequest without caps. After cloning the original caps are added again.
+     * -> Caps can cloned via merge() method.
+     *
+     * @return
+     */
+    public AbstractWebDriverRequest clone() throws CloneNotSupportedException {
+        AbstractWebDriverRequest clone = (AbstractWebDriverRequest) super.clone();
+        if (this.desiredCapabilities != null) {
+            clone.desiredCapabilities = new DesiredCapabilities();
+            clone.desiredCapabilities.merge(this.desiredCapabilities);
+        }
+        return clone;
     }
 }

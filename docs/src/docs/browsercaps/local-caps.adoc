@@ -1,13 +1,19 @@
 = Setting local capabilities
 
-A local defined capability means its only available in the current test execution (current TestNG testmethod).
+A local defined capability means its only available in a specific browser session.
 
+.Set capabilities to a DesktopWebDriverRequest object
 [source,java]
 ----
-WebDriverManager.addThreadCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
+DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+DesiredCapabilities caps = request.getDesiredCapabilities();
+caps.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
+
+// Start your session with the DesktopWebDriverRequest object
+WebDriver driver = WebDriverManager.getWebDriver(request);
 ----
 
 [NOTE]
 =====
-Have a look into <<Useful browser capabilities>> for specific browser options.
+Have a look into <<Browser specific knowledge>> for specific browser options.
 =====

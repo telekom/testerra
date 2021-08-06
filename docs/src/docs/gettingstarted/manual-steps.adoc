@@ -85,14 +85,14 @@ Create a new file at `src/test/resources` with the name `test.properties`.
 [source, properties, subs="attributes"]
 ----
 # Setting the browser
-{browser}=chrome
+{browser_setting}=chrome
 
 # Setting the start page
 {baseurl}=http://example.org
 ----
 
-TIP: All defined properties can be overwritten later by adding system parameters to your command +
-(e.a `-D{browser}=firefox`)
+TIP: All defined properties can be overwritten later by adding system parameters to your command. +
+(e.a `-D{browser_setting}=firefox`)
 
 All supported browsers are listed in <<WebdriverManager properties>>
 

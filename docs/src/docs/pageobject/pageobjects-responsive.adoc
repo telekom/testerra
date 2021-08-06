@@ -42,7 +42,7 @@ In the test method only the base class will be instantiated. The `PageFactory` w
 
 [source,java]
 ----
-ResponsiveTestPage testPage = Pagefactory.create(ResponsiveTestPage.class, driver);
+ResponsiveTestPage testPage = Pagefactory.create(ResponsiveTestPage.class, this.getWebDriver());
 ----
 
 The parameters for the factory are the base class and the current webdriver instance.

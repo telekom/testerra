@@ -48,19 +48,27 @@ You can also pass the wedriver by the command line using
 -Dwebdriver.gecko.driver=C:\absolute\path\to\your\geckodriver.exe
 ```
 
-== Usage of WebDriver sessions
+== Define browser type and version
 
 Before starting a `WebDriver` session, you should configure your desired browser like.
 
 [source,properties,subs="attributes"]
 ----
-# ...this way
-{browser}=firefox
-{browser_version}=65
+# Only browser type
+{browser_setting}=firefox
 
-# ... or that way
+# ... or with version
 {browser_setting}=firefox:65
 ----
+
+[NOTE]
+====
+You can also define browser config via the settings `{browser}` and `{browser_version}`, but the version is independent from browser type.
+
+If you have different browser configurations in your Selenium grid you have to take care about the correct combination!
+====
+
+== Usage of WebDriver sessions
 
 On the first call of
 

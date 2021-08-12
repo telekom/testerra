@@ -6,7 +6,7 @@ import java.net.URL;
 import java.util.Map;
 import java.util.Optional;
 
-public interface WebDriverRequest extends Serializable {
+public interface WebDriverRequest extends Cloneable {
     String DEFAULT_SESSION_KEY = "default";
     String getSessionKey();
     String getBrowser();
@@ -21,4 +21,5 @@ public interface WebDriverRequest extends Serializable {
     void setShutdownAfterExecution(boolean shutdownAfterExecution);
 
     Optional<URL> getServerUrl();
+    WebDriverRequest clone() throws CloneNotSupportedException;
 }

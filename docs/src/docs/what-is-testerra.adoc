@@ -1,5 +1,11 @@
-= Test automation
+= What is Testerra?
+
+image::s_Testerra_Logo_0512px.png[align="center", alt="Testerra logo",width=256,height=256]
+
 ****
-It is an integrated framework for automating tests for (web) applications. Testerra can also be understood as a building block for test automation projects with various basic components. It also includes a prepared "foundation" on which complex test automation environments can be built.
-Testerra is developed by our Test Automation Experts at T-Systems MMS GmbH in Dresden (link:https://test-and-integration.t-systems-mms.com[Website]). In numerous projects Testerra is used as the standard test automation framework.
+It is an integrated Java framework for automating tests for (web) applications. Testerra can also be understood as a building block for test automation projects with various basic components.
+
+Testerra is based on Selenium but makes it much easier to create your automation solution to test your application.
+
+The framework is developed by our Test Automation Experts at T-Systems MMS in Dresden (link:https://test-and-integration.t-systems-mms.com[Website]). In numerous projects Testerra is used as the standard test automation framework and includes the experience of more then 10 years of test automation.
 ****

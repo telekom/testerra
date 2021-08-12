@@ -22,9 +22,16 @@
 </p>
 
 ## About Testerra
-Testerra is an integrated framework for automating tests for (web) applications. Testerra can also be understood as a building block for test automation projects with various basic components. It also includes a prepared "foundation" on which complex test automation environments can be built. Testerra is developed by our Test Automation Experts at T-Systems MMS GmbH Dresden (Website). In numerous projects Testerra is used as the standard test automation framework.
+
+<p align="center">
+    <img src="docs/src/images/s_Testerra_Logo_0256px.png" alt="Testerra logo">
+</p>
+
+It is an integrated Java framework for automating tests for (web) applications. Testerra can also be understood as a building block for test automation projects with various basic components.
 
 You may see Testerra as an open source test automation library for web frontend testing. It provides a tool suite for many use cases: a base API for Page Object Pattern (including responsive layouts) and GuiElements (smarter WebElements (Selenium)), enhanced reporting functionality, a utility collection and some additional helpful modules.
+
+Testerra is developed by our Test Automation Experts at T-Systems MMS in Dresden. In numerous projects Testerra is used as the standard test automation framework and includes the experience of more then 10 years of test automation.
 
 ## Setup
 

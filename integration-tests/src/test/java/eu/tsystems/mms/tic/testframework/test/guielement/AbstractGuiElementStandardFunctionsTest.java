@@ -625,6 +625,18 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
         element.asserts().assertIsDisabled();
     }
 
+    @Test(expectedExceptions = {TimeoutException.class})
+    public void test_inexistent_GuiElement_assertIsDisabled() {
+        GuiElement element = getNotExistingElement();
+        element.asserts().assertIsDisabled();
+    }
+
+    @Test(expectedExceptions = {TimeoutException.class})
+    public void test_inexistent_GuiElement_assertIsNotSelected() {
+        GuiElement element = getNotExistingElement();
+        element.asserts().assertIsNotSelected();
+    }
+
     @Test
     public void testT59_GuiElement_assertIsNotPresentFast() {
         getNotExistingElement().asserts().assertIsNotPresentFast();

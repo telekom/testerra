@@ -28,11 +28,6 @@ import {MdcDialogService} from '@aurelia-mdc-web/dialog';
 import {IScreenshotsDialogParams, ScreenshotsDialog} from "../screenshots-dialog/screenshots-dialog";
 import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
 import './steps.scss'
-import IClickPathEvent = data.IClickPathEvent;
-import ILogMessage = data.ILogMessage;
-import IErrorContext = data.IErrorContext;
-import ITestStepAction = data.ITestStepAction;
-import ITestStepActionEntry = data.ITestStepActionEntry;
 
 enum EntryType {
     SCREENSHOT,
@@ -42,44 +37,28 @@ enum EntryType {
 }
 
 class TestStepActionGroup {
-    private _screenshotIds:string[]=[];
-    private _clickPathEvents:IClickPathEvent[]=[];
-    private _logMessages:ILogMessage[]=[];
-    private _assertions:IErrorContext[]=[];
+    readonly screenshotIds:string[]=[];
+    readonly clickPathEvents:data.IClickPathEvent[]=[];
+    readonly logMessages:data.ILogMessage[]=[];
+    readonly assertions:data.IErrorContext[]=[];
 
     addScreenshotId(screenshotId:string) {
-        this._screenshotIds.push(screenshotId);
+        this.screenshotIds.push(screenshotId);
     }
 
-    addAssertion(assertion:IErrorContext) {
-        this._assertions.push(assertion);
+    addAssertion(assertion:data.IErrorContext) {
+        this.assertions.push(assertion);
     }
 
-    addClickPathEvent(clickPathEvent:IClickPathEvent) {
-        this._clickPathEvents.push(clickPathEvent);
+    addClickPathEvent(clickPathEvent:data.IClickPathEvent) {
+        this.clickPathEvents.push(clickPathEvent);
     }
 
-    addLogMessage(logMessage:ILogMessage) {
-        this._logMessages.push(logMessage);
+    addLogMessage(logMessage:data.ILogMessage) {
+        this.logMessages.push(logMessage);
     }
 
-    get screenshotIds() {
-        return this._screenshotIds;
-    }
-
-    get logMessages() {
-        return this._logMessages;
-    }
-
-    get assertions() {
-        return this._assertions;
-    }
-
-    get clickPathEvents() {
-        return this._clickPathEvents;
-    }
-
-    static getEntryType(entry:ITestStepActionEntry) {
+    static getEntryType(entry:data.ITestStepActionEntry) {
         if (entry.screenshotId) {
             return EntryType.SCREENSHOT;
         } else if (entry.assertion) {
@@ -92,7 +71,7 @@ class TestStepActionGroup {
     }
 }
 
-interface TestStepActionDetails extends ITestStepAction {
+interface TestStepActionDetails extends data.ITestStepAction {
     groups:TestStepActionGroup[];
 }
 

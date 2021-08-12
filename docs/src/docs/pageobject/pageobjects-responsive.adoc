@@ -40,9 +40,10 @@ Responsive Page Objects work also together with Page Prefixes.
 
 In the test method only the base class will be instantiated. The `PageFactory` will detect the naming scheme and then use the correct classes automatically. Instantiating a responsive page in the example above would look like this:
 
-```java
+[source,java]
+----
 ResponsiveTestPage testPage = pagefactory.createPage(ResponsiveTestPage.class);
-```
+----
 
 The parameters for the factory are the base class and the current webdriver instance.
 

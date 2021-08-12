@@ -5,7 +5,6 @@ include::common-attributes.adoc[]
 
 :sectnums!:
 
-= What is Testerra?
 include::what-is-testerra.adoc[leveloffset=+1]
 
 :sectnums:

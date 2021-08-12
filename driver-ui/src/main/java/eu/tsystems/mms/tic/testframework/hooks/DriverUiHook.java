@@ -118,7 +118,7 @@ public class DriverUiHook extends AbstractModule implements ModuleHook {
         TestEvidenceCollector.registerSourceCollector(new SourceGrabber());
 
         // start WatchDog for hanging sessions
-        boolean watchdogEnabled = PropertyManager.getBooleanProperty(TesterraProperties.WATCHDOG_ENABLE, true);
+        boolean watchdogEnabled = PropertyManager.getBooleanProperty(TesterraProperties.WATCHDOG_ENABLE, false);
         if (watchdogEnabled) {
             WebDriverSessionsManager.registerWebDriverAfterStartupHandler(new WatchdogStartupListener());
         }

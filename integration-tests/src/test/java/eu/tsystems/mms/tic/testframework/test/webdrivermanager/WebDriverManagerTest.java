@@ -25,14 +25,20 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
+import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
-import java.util.Map;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Tests for WebDriverManager
@@ -119,5 +125,46 @@ public class WebDriverManagerTest extends TesterraTest {
         WebDriverManager.removeGlobalExtraCapability("foo");
         globalExtraCapabilities = WebDriverManager.getGlobalExtraCapabilities();
         Assert.assertFalse(globalExtraCapabilities.containsKey("foo"));
+    }
+
+    @Test
+    public void testT05_ManageThreadCapabilities() {
+
+        WebDriverManager.addThreadCapability("foo", "bar");
+
+        Assert.assertTrue(WebDriverManager.getThreadCapabilities().containsKey("foo"));
+        Assert.assertEquals(WebDriverManager.getThreadCapabilities().get("foo"), "bar");
+
+        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriverManager.getThreadCapabilities().clear();
+    }
+
+    @Test
+    public void testT06_clonedWebDriverRequest() {
+        final String sessionKey = "testT06";
+        final String capKey = "MyCap";
+        final String capVal = "myValue";
+
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        request.setSessionKey(sessionKey);
+        DesiredCapabilities baseCaps = request.getDesiredCapabilities();
+        baseCaps.setCapability(capKey, capVal);
+
+        WebDriver webDriver = WebDriverManager.getWebDriver(request);
+        SessionContext sessionContext = WebDriverSessionsManager.getSessionContext(webDriver).get();
+        DesktopWebDriverRequest clonedRequest = (DesktopWebDriverRequest) sessionContext.getWebDriverRequest();
+
+        // Test for cloned primitives
+        Assert.assertEquals(sessionKey, clonedRequest.getSessionKey());
+        clonedRequest.setSessionKey("NewSessionKey");
+        Assert.assertNotEquals(sessionKey, clonedRequest.getSessionKey());
+
+        // Test for not shallow copy of capabilities
+        DesiredCapabilities clonedCaps = clonedRequest.getDesiredCapabilities();
+        Assert.assertEquals(capVal, clonedCaps.getCapability(capKey));
+        Assert.assertEquals(clonedCaps.getCapability(capKey), baseCaps.getCapability(capKey));
+
+        clonedCaps.setCapability(capKey, "newValue");
+        Assert.assertNotEquals(clonedCaps.getCapability(capKey), baseCaps.getCapability(capKey));
     }
 }

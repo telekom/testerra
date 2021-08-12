@@ -21,6 +21,8 @@
 
 package eu.tsystems.mms.tic.testframework.testing;
 
+import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.SimpleAssertion;
 import org.testng.Assert;
 
 /**
@@ -47,6 +49,10 @@ public interface TestController {
          * @return Returns the previously configured timeout
          */
         int setTimeout(int seconds);
+
+        Assertion getAssertionImpl();
+
+        Assertion setAssertionImpl(Assertion newAssertionImpl);
     }
 
     /**

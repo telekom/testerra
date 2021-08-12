@@ -52,7 +52,7 @@ public abstract class AbstractAssertion implements Assertion {
     }
 
     @Override
-    abstract public void fail(AssertionError error);
+    abstract public void fail(Error error);
 
     @Override
     public boolean isTrue(boolean actual) {

@@ -42,8 +42,8 @@ public class DefaultPatternAssertion extends AbstractTestedPropertyAssertion<Mat
     public boolean is(boolean expected, String failMessage) {
         return testSequence(
                 provider,
-                (actual) -> testAssertion.equals(actual.find(), expected),
-                (actual) -> testAssertion.formatExpectEquals(actual.find(), expected, createFailMessage(failMessage))
+                (actual) -> assertionImpl.equals(actual.find(), expected),
+                (actual) -> assertionImpl.formatExpectEquals(actual.find(), expected, createFailMessage(failMessage))
         );
     }
 }

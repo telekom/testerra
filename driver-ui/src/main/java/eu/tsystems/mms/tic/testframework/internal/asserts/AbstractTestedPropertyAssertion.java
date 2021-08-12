@@ -23,7 +23,7 @@ package eu.tsystems.mms.tic.testframework.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
-import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.DefaultAssertionWrapper;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
@@ -40,7 +40,10 @@ import java.util.function.Supplier;
  * @author Mike Reiche
  */
 public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropertyAssertion<T> implements Loggable {
-    protected static final Assertion testAssertion = Testerra.getInjector().getInstance(InstantAssertion.class);
+    /**
+     * This instance should always be an {@link DefaultAssertionWrapper}
+     */
+    protected static final Assertion assertionImpl = Testerra.getInjector().getInstance(Assertion.class);
     private static final TestController.Overrides overrides = Testerra.getInjector().getInstance(TestController.Overrides.class);
 
     public AbstractTestedPropertyAssertion(AbstractPropertyAssertion parentAssertion, AssertionProvider<T> provider) {
@@ -101,7 +104,7 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
                 if (config.useAssertion != null) {
                     useAssertion = config.useAssertion;
                 } else {
-                    useAssertion = testAssertion;
+                    useAssertion = assertionImpl;
                 }
 
                 String message = null;

@@ -127,19 +127,23 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
     }
 
     @Test
-    public void test_UiElement_nonfunctional_assert() {
+    public void test_UiElement_optional_assert() {
         CONTROL.optionalAssertions(() -> {
-            CONTROL.withTimeout(1, () -> {
-                getPage().notDisplayedElement().expect().displayed(true);
-            });
+            CONTROL.withTimeout(1, this::performFails);
         });
+    }
+
+    private void performFails() {
+        ASSERT.fail("This fails");
+        this.getPage().inexistentElement().expect().present(true);
+        ASSERT.fail("And this also fails");
     }
 
     @Test
     @Fails()
     public void test_collected_assert() {
         CONTROL.collectAssertions(() -> {
-            Assert.assertTrue(false);
+            CONTROL.withTimeout(1, this::performFails);
         });
     }
 

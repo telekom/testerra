@@ -24,6 +24,7 @@ package eu.tsystems.mms.tic.testframework.testing;
 import com.google.inject.Inject;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
+import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssertion;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
@@ -47,20 +48,26 @@ public class DefaultTestController implements TestController, Loggable {
 
     @Override
     public void collectAssertions(Runnable runnable) {
+        CollectedAssertion assertionImpl = Testerra.getInjector().getInstance(CollectedAssertion.class);
+        Assertion previousAssertionImpl = this.overrides.setAssertionImpl(assertionImpl);
         try {
             runnable.run();
-        } catch (AssertionError assertionError) {
-            Testerra.getInjector().getInstance(CollectedAssertion.class).fail(assertionError);
+        } catch (Throwable t) {
+            assertionImpl.fail(new Error(t));
         }
+        this.overrides.setAssertionImpl(previousAssertionImpl);
     }
 
     @Override
     public void optionalAssertions(Runnable runnable) {
+        OptionalAssertion assertionImpl = Testerra.getInjector().getInstance(OptionalAssertion.class);
+        Assertion previousAssertionImpl = this.overrides.setAssertionImpl(assertionImpl);
         try {
             runnable.run();
-        } catch (AssertionError assertionError) {
-            Testerra.getInjector().getInstance(OptionalAssertion.class).fail(assertionError);
+        } catch (Throwable t) {
+            assertionImpl.fail(new Error(t));
         }
+        this.overrides.setAssertionImpl(previousAssertionImpl);
     }
 
     @Override

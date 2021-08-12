@@ -26,7 +26,7 @@ package eu.tsystems.mms.tic.testframework.execution.testng;
  */
 public class ThrowingAssertion extends AbstractAssertion implements InstantAssertion {
     @Override
-    public void fail(AssertionError error) {
+    public void fail(Error error) {
         throw error;
     }
 }

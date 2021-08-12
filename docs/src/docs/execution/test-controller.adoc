@@ -12,7 +12,7 @@ Collecting assertion means, that a failing assertion will not abort the test met
 CONTROL.collectAssertions(() -> {
     element.expect().text("Hello World");
     page.performLogin();
-    Assert.assertEquals("hello", "world");
+    ASSERT.assertEquals("hello", "world");
 });
 ----
 
@@ -25,7 +25,7 @@ Optional asserts do not let the test fail, but the assertion message will be add
 CONTROL.optionalAssertions(() -> {
     element.expect().text("Hello World");
     page.performLogin();
-    Assert.assertEquals("hello", "world");
+    ASSERT.assertEquals("hello", "world");
 });
 ----
 

@@ -38,7 +38,7 @@ public interface SimpleAssertion {
     default void fail(String message) {
         fail(message, null);
     }
-    void fail(AssertionError error);
+    void fail(Error error);
 
     default BigDecimal toBigDecimal(Object number) {
         return new BigDecimal(number.toString());

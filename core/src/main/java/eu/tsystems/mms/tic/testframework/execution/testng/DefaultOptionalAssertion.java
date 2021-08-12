@@ -36,7 +36,7 @@ public class DefaultOptionalAssertion extends AbstractAssertion implements
         Loggable
 {
     @Override
-    public void fail(AssertionError error) {
+    public void fail(Error error) {
         log().warn("Failed optional assertion: " + error.getMessage());
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         if (methodContext != null) {

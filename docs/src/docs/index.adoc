@@ -23,8 +23,8 @@ include::pageobjects.adoc[leveloffset=+1]
 
 '''
 = Excecution and controlling
-include::execution/test-controller.adoc[leveloffset=+1]
 include::execution/assertion-interface.adoc[leveloffset=+1]
+include::execution/test-controller.adoc[leveloffset=+1]
 include::execution.adoc[leveloffset=+1]
 
 '''

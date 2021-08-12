@@ -29,6 +29,10 @@ import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
  */
 public class PropertyAssertionConfig {
     public boolean throwErrors = false;
+    /**
+     * @deprecated This is only required for {@link LegacyGuiElementAssertWrapper}
+     * and can be removed with these interface features.
+     */
     @Deprecated
     public Assertion useAssertion;
     public int useTimeout = -1;

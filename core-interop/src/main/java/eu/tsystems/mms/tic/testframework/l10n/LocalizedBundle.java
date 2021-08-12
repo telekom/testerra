@@ -27,21 +27,18 @@ import java.util.ResourceBundle;
 
 public class LocalizedBundle {
     private ResourceBundle resourceBundle;
-    private final String bundleName;
     /**
-     * When locale is NULL, it's fixed
+     * When the bundle name is NULL, the {@link #resourceBundle} is fixed
      */
-    private final Locale locale;
+    private final String bundleName;
 
     public LocalizedBundle(String bundleName, Locale locale) {
-        this.bundleName = bundleName;
-        this.locale = null;
-        this.resourceBundle = ResourceBundle.getBundle(bundleName, new UTF8ResourceBundleControl(locale));
+        this.bundleName = null;
+        this.resourceBundle = ResourceBundle.getBundle(bundleName, locale, new UTF8ResourceBundleControl());
     }
 
     public LocalizedBundle(String bundleName) {
         this.bundleName = bundleName;
-        this.locale = Locale.getDefault();
         recreateLocalizedResourceBundle();
     }
 
@@ -50,7 +47,7 @@ public class LocalizedBundle {
          * When the locale is not fixed and differs from the default locale
          * than recreate the bundle.
          */
-        if (this.locale != null && Locale.getDefault() != this.locale) {
+        if (this.bundleName != null && Locale.getDefault() != this.resourceBundle.getLocale()) {
             recreateLocalizedResourceBundle();
         }
         return resourceBundle;

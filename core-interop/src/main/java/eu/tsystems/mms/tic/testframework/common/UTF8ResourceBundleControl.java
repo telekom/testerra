@@ -39,16 +39,6 @@ import java.util.ResourceBundle;
  */
 public class UTF8ResourceBundleControl extends ResourceBundle.Control {
 
-    private final Locale useLocale;
-
-    public UTF8ResourceBundleControl() {
-        this.useLocale = null;
-    }
-
-    public UTF8ResourceBundleControl(Locale locale) {
-        this.useLocale = locale;
-    }
-
     public ResourceBundle newBundle(
             String baseName,
             Locale locale,
@@ -58,10 +48,6 @@ public class UTF8ResourceBundleControl extends ResourceBundle.Control {
     )
         throws IllegalAccessException, InstantiationException, IOException
     {
-
-        if (this.useLocale != null) {
-            locale = this.useLocale;
-        }
 
         // The below is a copy of the default implementation.
         String bundleName = toBundleName(baseName, locale);

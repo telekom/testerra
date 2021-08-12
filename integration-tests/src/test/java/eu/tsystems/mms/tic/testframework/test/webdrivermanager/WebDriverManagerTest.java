@@ -130,13 +130,13 @@ public class WebDriverManagerTest extends TesterraTest {
     @Test
     public void testT05_ManageThreadCapabilities() {
 
-        WebDriverManager.addThreadCapability("foo", "bar");
-
-        Assert.assertTrue(WebDriverManager.getThreadCapabilities().containsKey("foo"));
-        Assert.assertEquals(WebDriverManager.getThreadCapabilities().get("foo"), "bar");
-
-        WebDriver driver = WebDriverManager.getWebDriver();
-        WebDriverManager.getThreadCapabilities().clear();
+//        WebDriverManager.addThreadCapability("foo", "bar");
+//
+//        Assert.assertTrue(WebDriverManager.getThreadCapabilities().containsKey("foo"));
+//        Assert.assertEquals(WebDriverManager.getThreadCapabilities().get("foo"), "bar");
+//
+//        WebDriver driver = WebDriverManager.getWebDriver();
+//        WebDriverManager.getThreadCapabilities().clear();
     }
 
     @Test

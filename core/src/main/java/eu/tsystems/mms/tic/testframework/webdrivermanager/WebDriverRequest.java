@@ -1,7 +1,5 @@
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import java.io.Serializable;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 import java.util.Optional;

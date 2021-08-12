@@ -67,11 +67,6 @@ public final class TesterraProperties {
     public static final String WEBDRIVER_WINDOW_SWITCH_MAX_DURATION = "tt.wdm.timeouts.seconds.window.switch.duration";
 
     /**
-     * WDM: Kill WebDriver on stucking selenium command after this.
-     */
-    public static final String WEBDRIVER_TIMEOUT_SECONDS_STUCK_COMMAND = "tt.wdm.timeouts.seconds.selenium.command.stuck";
-
-    /**
      * State condition.
      */
     public static final String ON_STATE_TESTFAILED_SKIP_FOLLOWING_TESTS = "tt.on.state.testfailed.skip.following.tests";

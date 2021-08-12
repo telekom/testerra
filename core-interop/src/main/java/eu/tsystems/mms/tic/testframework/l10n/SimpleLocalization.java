@@ -22,7 +22,8 @@
 package eu.tsystems.mms.tic.testframework.l10n;
 
 final public class SimpleLocalization {
-    private static final LocalizedBundle bundle = new LocalizedBundle("lang");
+    public static final String BUNDLE_NAME="lang";
+    private static final LocalizedBundle bundle = new LocalizedBundle(BUNDLE_NAME);
 
     public static String getText(final String label) {
         return bundle.getString(label);

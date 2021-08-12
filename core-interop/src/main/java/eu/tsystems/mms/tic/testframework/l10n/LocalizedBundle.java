@@ -27,6 +27,7 @@ import java.util.ResourceBundle;
 
 public class LocalizedBundle {
     private ResourceBundle resourceBundle;
+    private static final ResourceBundle.Control resourceBundleController = new UTF8ResourceBundleControl();
     /**
      * When the bundle name is NULL, the {@link #resourceBundle} is fixed
      */
@@ -34,7 +35,7 @@ public class LocalizedBundle {
 
     public LocalizedBundle(String bundleName, Locale locale) {
         this.bundleName = null;
-        this.resourceBundle = ResourceBundle.getBundle(bundleName, locale, new UTF8ResourceBundleControl());
+        this.resourceBundle = ResourceBundle.getBundle(bundleName, locale, resourceBundleController);
     }
 
     public LocalizedBundle(String bundleName) {
@@ -54,7 +55,7 @@ public class LocalizedBundle {
     }
 
     private void recreateLocalizedResourceBundle() {
-        this.resourceBundle = ResourceBundle.getBundle(this.bundleName, new UTF8ResourceBundleControl());
+        this.resourceBundle = ResourceBundle.getBundle(this.bundleName, resourceBundleController);
     }
 
     public String getString(String label) {

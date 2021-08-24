@@ -166,14 +166,17 @@ export class Dashboard extends AbstractViewModel {
         });
     };
 
-    private _setFilter(filter:IFilter) {
+    private _setFilter(filter:IFilter, updateUrl:boolean = true) {
         this._filter = filter;
         if (filter) {
             this.queryParams.status = this._statusConverter.getClassForStatus(this._filter.status);
+            this.queryParams.class = this._filter.class;
         } else {
             delete this.queryParams.status;
         }
-        this.updateUrl(this.queryParams);
+        if (updateUrl) {
+            this.updateUrl(this.queryParams);
+        }
     }
 
     private _resultItemClicked(item:IItem) {
@@ -199,6 +202,7 @@ export class Dashboard extends AbstractViewModel {
     }
 
     private _classBarClicked(ev:ClassBarClick) {
+        this._setFilter(ev.detail.filter, false);
         if (ev.detail.mouseEvent.button == 0) {
             this.navInstruction.router.navigateToRoute("tests", this.queryParams);
         } else {

@@ -36,8 +36,8 @@
                               class="card-content"
                     >
                         <mdc-list-item repeat.for="item of _filterItems"
-                                       click.delegate="_resultClicked(item)"
-                                       activated.bind="item.active"
+                                       click.delegate="_resultItemClicked(item)"
+                                       activated.bind="item.status === _filter.status"
                         >
                             <mdc-icon mdc-list-item-graphic
                                       class="colored-icon big-icon status-${item.status|statusClass}"
@@ -72,10 +72,10 @@
                         <span class="badge__dense sr1" class.bind="_lowCorridor.matched?'status-passed':'status-failed'">${_lowCorridor.count} Low</span><span class="secondary" mdc-body2>of ${_lowCorridor.limit}</span>
                     </div>
                 </mdc-card>
-                <test-results-card filter.bind="_breakdownFilter"
+                <test-results-card filter.bind="_filter"
                                    execution-statistics.bind="_executionStatistics"
                                    class="mt1"
-                                   filter-changed.delegate="_pieFilterChanged($event)"
+                                   piece-clicked.delegate="_piePieceClicked($event)"
                 ></test-results-card>
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="3">
@@ -108,7 +108,10 @@
                 ></test-duration-card>
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="12">
-                <test-classes-card filter.bind="_classFilter" class-statistics.bind="_executionStatistics.classStatistics" class-bar-click.delegate="_barFilterChanged($event)"></test-classes-card>
+                <test-classes-card filter.bind="_filter"
+                                   class-statistics.bind="_executionStatistics.classStatistics"
+                                   class-bar-click.delegate="_classBarClicked($event)"
+                ></test-classes-card>
             </mdc-layout-grid-cell>
         </mdc-layout-grid-inner>
     </mdc-layout-grid>

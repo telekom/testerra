@@ -195,8 +195,16 @@ public class XPath {
         return text().is(value);
     }
 
+    private boolean isFunction(String property) {
+        return property.trim().endsWith(")");
+    }
+
     public Test attribute(String attribute) {
-        return new Test(this, "@"+attribute);
+        // If the given attribute is not a function like "local-name()" then prefix "@"
+        if (!isFunction(attribute)) {
+            attribute = "@" + attribute;
+        }
+        return new Test(this, attribute);
     }
 
     public XPath attribute(String attribute, Object value) {

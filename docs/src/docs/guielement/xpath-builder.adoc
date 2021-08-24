@@ -36,11 +36,18 @@ XPath.from("/body").select("/div");
 
 which equivalent would be `/body/div`
 
-It is also possible to pass groups in the `from` method only.
+It is also possible to pass groups in the `from` method only:
 
 [source,java]
 ----
 XPath.from("(//iframe|//frame)");
+----
+
+Or use functions:
+
+[source,java]
+----
+XPath.from("*").attribute("local-name()", "svg");
 ----
 
 == Elements that have classes

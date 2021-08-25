@@ -43,7 +43,6 @@ import eu.tsystems.mms.tic.testframework.sikuli.SikuliWebDriver;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
@@ -127,10 +126,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 StopWatch.startPageLoad(driver);
                 driver.get(baseUrl.toString());
             } catch (Exception e) {
-                if (StringUtils.containsAll(e.getMessage(), true, "Reached error page", "connectionFailure")) {
-                    throw new RuntimeException("Could not start driver session, because of unreachable url: " + baseUrl, e);
-                }
-                throw e;
+                log().error("Unable to open baseUrl", e);
             }
         });
         return driver;

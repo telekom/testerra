@@ -94,6 +94,8 @@ message MethodContext {
     map<string,string> parameters = 35;
     map<string,string> custom_contexts = 36;
     map<string,string> annotations = 37;
+    // A custom generated test name (e.a. cucumber scenario)
+    string test_name = 38;
 }
 
 message ContextValues {

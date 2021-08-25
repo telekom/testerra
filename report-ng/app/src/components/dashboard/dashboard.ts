@@ -30,6 +30,8 @@ import FailureCorridorValue = data.FailureCorridorValue;
 import ResultStatusType = data.ResultStatusType;
 import "./dashboard.scss"
 import {ClassBarClick} from "../test-classes-card/test-classes-card";
+import {NavigationInstruction, RouteConfig} from "aurelia-router";
+import {PieceClickedEvent} from "../test-results-card/test-results-card";
 
 class FailureCorridor {
     count:number = 0;
@@ -42,7 +44,6 @@ class FailureCorridor {
 interface IItem {
     status: ResultStatusType,
     counts: (string|number)[],
-    active: boolean,
     labels: string[],
 }
 
@@ -56,8 +57,7 @@ export class Dashboard extends AbstractViewModel {
     private _midCorridor = new FailureCorridor();
     private _lowCorridor = new FailureCorridor();
     private _filterItems:IItem[];
-    private _breakdownFilter:IFilter;
-    private _classFilter:IFilter;
+    private _filter:IFilter;
     private _topFailureAspects:FailureAspectStatistics[];
     private _loading = true;
 
@@ -68,6 +68,14 @@ export class Dashboard extends AbstractViewModel {
         super();
     }
 
+    activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
+        super.activate(params, routeConfig, navInstruction);
+        if (this.queryParams.status) {
+            this._filter = {
+                status: this._statusConverter.getStatusForClass(this.queryParams.status)
+            }
+        }
+    }
 
     attached() {
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
@@ -89,7 +97,6 @@ export class Dashboard extends AbstractViewModel {
                         this._statusConverter.getLabelForStatus(ResultStatusType.FAILED),
                         failedRetriedCount>0?this._statusConverter.getLabelForStatus(data.ResultStatusType.FAILED_RETRIED):null
                     ],
-                    active:false,
                 });
             }
 
@@ -99,7 +106,6 @@ export class Dashboard extends AbstractViewModel {
                     status: ResultStatusType.FAILED_EXPECTED,
                     counts: [count],
                     labels: [this._statusConverter.getLabelForStatus(ResultStatusType.FAILED_EXPECTED)],
-                    active:false
                 });
             }
 
@@ -109,7 +115,6 @@ export class Dashboard extends AbstractViewModel {
                     status: ResultStatusType.SKIPPED,
                     counts: [count],
                     labels: [this._statusConverter.getLabelForStatus(ResultStatusType.SKIPPED)],
-                    active:false
                 });
             }
 
@@ -127,7 +132,6 @@ export class Dashboard extends AbstractViewModel {
                         (this._executionStatistics.repairedTests>0?"Repaired":null),
                         (this._passedRetried>0?this._statusConverter.getLabelForStatus(ResultStatusType.PASSED_RETRY):null),
                     ],
-                    active:false
                 });
             }
 
@@ -162,37 +166,48 @@ export class Dashboard extends AbstractViewModel {
         });
     };
 
-    private _resultClicked(item:IItem) {
+    private _setFilter(filter:IFilter, updateUrl:boolean = true) {
+        this._filter = filter;
+        if (filter) {
+            this.queryParams.status = this._statusConverter.getClassForStatus(this._filter.status);
+            this.queryParams.class = this._filter.class;
+        } else {
+            delete this.queryParams.status;
+        }
+        if (updateUrl) {
+            this.updateUrl(this.queryParams);
+        }
+    }
+
+    private _resultItemClicked(item:IItem) {
         /**
          * It still happens that items keep selected when they shouldn't
          * https://gist.dumber.app/?gist=f09831456ae377d1121e8a41eece1c42
          */
-        this._filterItems.filter(value => value !== item).forEach(value => value.active = false);
-        item.active = !item.active;
-        if (item.active) {
-            this._classFilter = this._breakdownFilter = {
-                status: item.status
-            };
+        if (item.status === this._filter?.status) {
+            this._setFilter(null);
         } else {
-            this._classFilter = this._breakdownFilter = null;
+            this._setFilter({
+                status: item.status
+            });
         }
     }
 
-    private _pieFilterChanged(ev:CustomEvent) {
-        this._classFilter = ev.detail;
-        this._filterItems.forEach(value => {
-            value.active = ev.detail?.status === value.status;
-        })
+    private _piePieceClicked(ev:PieceClickedEvent) {
+        if (ev.detail.filter?.status === this._filter?.status) {
+            this._setFilter(null);
+        } else {
+            this._setFilter(ev.detail.filter);
+        }
     }
 
-    private _barFilterChanged(ev:ClassBarClick) {
-        const queryParams:any = ev.detail.filter;
-        queryParams.status = this._statusConverter.getClassForStatus(ev.detail.filter.status);
+    private _classBarClicked(ev:ClassBarClick) {
+        this._setFilter(ev.detail.filter, false);
         if (ev.detail.mouseEvent.button == 0) {
-            this.navInstruction.router.navigateToRoute("tests", queryParams);
+            this.navInstruction.router.navigateToRoute("tests", this.queryParams);
         } else {
             // Open window in new tab
-            const classView = window.open(this.navInstruction.router.generate("tests", queryParams));
+            const classView = window.open(this.navInstruction.router.generate("tests", this.queryParams));
             classView.blur();
             window.focus()
         }

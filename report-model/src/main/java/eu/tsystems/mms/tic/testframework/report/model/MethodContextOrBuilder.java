@@ -424,24 +424,4 @@ public interface MethodContextOrBuilder extends
 
   java.lang.String getAnnotationsOrThrow(
       java.lang.String key);
-
-  /**
-   * <pre>
-   * A custom generated test name (e.a. cucumber scenario)
-   * </pre>
-   *
-   * <code>string test_name = 38;</code>
-   * @return The testName.
-   */
-  java.lang.String getTestName();
-  /**
-   * <pre>
-   * A custom generated test name (e.a. cucumber scenario)
-   * </pre>
-   *
-   * <code>string test_name = 38;</code>
-   * @return The bytes for testName.
-   */
-  com.google.protobuf.ByteString
-      getTestNameBytes();
 }

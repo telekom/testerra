@@ -94,8 +94,6 @@ message MethodContext {
     map<string,string> parameters = 35;
     map<string,string> custom_contexts = 36;
     map<string,string> annotations = 37;
-    // A custom generated test name (e.a. cucumber scenario)
-    string test_name = 38;
 }
 
 message ContextValues {
@@ -269,7 +267,7 @@ message File {
 enum ResultStatusType {
     RST_NOT_SET = 0;
     NO_RUN = 1; // default status when entity is spawned, basically an illegal end status
-    INFO = 2; // info status, not representative
+    INFO = 2 [deprecated = true]; // info status, not representative
     SKIPPED = 3; // skipped
 
     PASSED = 4; // passed status, without any issue

@@ -30,7 +30,6 @@ private static final long serialVersionUID = 0L;
     suiteContextId_ = "";
     sessionContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     resultStatus_ = 0;
-    testName_ = "";
   }
 
   @java.lang.Override
@@ -241,12 +240,6 @@ private static final long serialVersionUID = 0L;
                 AnnotationsDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
             annotations_.getMutableMap().put(
                 annotations__.getKey(), annotations__.getValue());
-            break;
-          }
-          case 306: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            testName_ = s;
             break;
           }
           default: {
@@ -1144,52 +1137,6 @@ private static final long serialVersionUID = 0L;
     return map.get(key);
   }
 
-  public static final int TEST_NAME_FIELD_NUMBER = 38;
-  private volatile java.lang.Object testName_;
-  /**
-   * <pre>
-   * A custom generated test name (e.a. cucumber scenario)
-   * </pre>
-   *
-   * <code>string test_name = 38;</code>
-   * @return The testName.
-   */
-  @java.lang.Override
-  public java.lang.String getTestName() {
-    java.lang.Object ref = testName_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      testName_ = s;
-      return s;
-    }
-  }
-  /**
-   * <pre>
-   * A custom generated test name (e.a. cucumber scenario)
-   * </pre>
-   *
-   * <code>string test_name = 38;</code>
-   * @return The bytes for testName.
-   */
-  @java.lang.Override
-  public com.google.protobuf.ByteString
-      getTestNameBytes() {
-    java.lang.Object ref = testName_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      testName_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
-
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -1279,9 +1226,6 @@ private static final long serialVersionUID = 0L;
         internalGetAnnotations(),
         AnnotationsDefaultEntryHolder.defaultEntry,
         37);
-    if (!getTestNameBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 38, testName_);
-    }
     unknownFields.writeTo(output);
   }
 
@@ -1407,9 +1351,6 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(37, annotations__);
     }
-    if (!getTestNameBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(38, testName_);
-    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -1472,8 +1413,6 @@ private static final long serialVersionUID = 0L;
         other.internalGetCustomContexts())) return false;
     if (!internalGetAnnotations().equals(
         other.internalGetAnnotations())) return false;
-    if (!getTestName()
-        .equals(other.getTestName())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -1549,8 +1488,6 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + ANNOTATIONS_FIELD_NUMBER;
       hash = (53 * hash) + internalGetAnnotations().hashCode();
     }
-    hash = (37 * hash) + TEST_NAME_FIELD_NUMBER;
-    hash = (53 * hash) + getTestName().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -1768,8 +1705,6 @@ private static final long serialVersionUID = 0L;
       internalGetMutableParameters().clear();
       internalGetMutableCustomContexts().clear();
       internalGetMutableAnnotations().clear();
-      testName_ = "";
-
       return this;
     }
 
@@ -1854,7 +1789,6 @@ private static final long serialVersionUID = 0L;
       result.customContexts_.makeImmutable();
       result.annotations_ = internalGetAnnotations();
       result.annotations_.makeImmutable();
-      result.testName_ = testName_;
       onBuilt();
       return result;
     }
@@ -2023,10 +1957,6 @@ private static final long serialVersionUID = 0L;
           other.internalGetCustomContexts());
       internalGetMutableAnnotations().mergeFrom(
           other.internalGetAnnotations());
-      if (!other.getTestName().isEmpty()) {
-        testName_ = other.testName_;
-        onChanged();
-      }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
       return this;
@@ -4165,102 +4095,6 @@ private static final long serialVersionUID = 0L;
         java.util.Map<java.lang.String, java.lang.String> values) {
       internalGetMutableAnnotations().getMutableMap()
           .putAll(values);
-      return this;
-    }
-
-    private java.lang.Object testName_ = "";
-    /**
-     * <pre>
-     * A custom generated test name (e.a. cucumber scenario)
-     * </pre>
-     *
-     * <code>string test_name = 38;</code>
-     * @return The testName.
-     */
-    public java.lang.String getTestName() {
-      java.lang.Object ref = testName_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        testName_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <pre>
-     * A custom generated test name (e.a. cucumber scenario)
-     * </pre>
-     *
-     * <code>string test_name = 38;</code>
-     * @return The bytes for testName.
-     */
-    public com.google.protobuf.ByteString
-        getTestNameBytes() {
-      java.lang.Object ref = testName_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        testName_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <pre>
-     * A custom generated test name (e.a. cucumber scenario)
-     * </pre>
-     *
-     * <code>string test_name = 38;</code>
-     * @param value The testName to set.
-     * @return This builder for chaining.
-     */
-    public Builder setTestName(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      testName_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <pre>
-     * A custom generated test name (e.a. cucumber scenario)
-     * </pre>
-     *
-     * <code>string test_name = 38;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearTestName() {
-      
-      testName_ = getDefaultInstance().getTestName();
-      onChanged();
-      return this;
-    }
-    /**
-     * <pre>
-     * A custom generated test name (e.a. cucumber scenario)
-     * </pre>
-     *
-     * <code>string test_name = 38;</code>
-     * @param value The bytes for testName to set.
-     * @return This builder for chaining.
-     */
-    public Builder setTestNameBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      testName_ = value;
-      onChanged();
       return this;
     }
     @java.lang.Override

@@ -29,6 +29,22 @@ import ResultStatusType = data.ResultStatusType;
 import {ISelection} from "../apex-chart/apex-chart";
 import {bindingMode} from "aurelia-binding";
 
+export interface IPieceClickedDetails {
+    mouseEvent: MouseEvent,
+    filter: IFilter,
+}
+
+export class PieceClickedEvent extends CustomEvent<IPieceClickedDetails> {
+    constructor(
+        details: IPieceClickedDetails
+    ) {
+        super("piece-clicked", {
+            detail: details,
+            bubbles: true
+        });
+    }
+}
+
 @autoinject
 export class TestResultsCard {
     @bindable({defaultBindingMode: bindingMode.toView})
@@ -130,22 +146,21 @@ export class TestResultsCard {
         };
     }
 
-    private _pieceToggled(event, chartContext, config) {
+    private _pieceToggled(event:Event, chartContext, config) {
         event?.stopPropagation();
-        let filter:IFilter = null;
 
-        if (config.selectedDataPoints[0]?.length > 0) {
-            filter = {
-                status: this._getStatusByIndex(config.selectedDataPoints[0][0])
-            };
+        if (event instanceof MouseEvent) {
+            let filter:IFilter = null;
+
+            if (config.selectedDataPoints[0]?.length > 0) {
+                filter = {
+                    status: this._getStatusByIndex(config.selectedDataPoints[0][0])
+                };
+            }
+            this._element.dispatchEvent(new PieceClickedEvent({
+                mouseEvent: event,
+                filter: filter
+            }));
         }
-
-        // console.log("piece clicked", filter);
-
-        const customEvent = new CustomEvent("filter-changed", {
-            detail: filter,
-            bubbles: true
-        });
-        this._element.dispatchEvent(customEvent);
     }
 }

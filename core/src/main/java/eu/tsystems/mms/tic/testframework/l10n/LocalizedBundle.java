@@ -26,45 +26,39 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class LocalizedBundle {
-    private Locale locale;
-    private boolean useDefaultLocale;
-    private ResourceBundle currentResourceBundle;
+    private ResourceBundle resourceBundle;
+    private static final ResourceBundle.Control resourceBundleController = new UTF8ResourceBundleControl();
+    /**
+     * When the bundle name is NULL, the {@link #resourceBundle} is fixed
+     */
     private final String bundleName;
 
-    /**
-     * Initialize the bundle with default locale and reloads the internal
-     * resource bundle when the default locale changes.
-     */
-    public LocalizedBundle(String bundleName) {
-        this(bundleName, Locale.getDefault());
-        this.useDefaultLocale = true;
+    public LocalizedBundle(String bundleName, Locale locale) {
+        this.bundleName = null;
+        this.resourceBundle = ResourceBundle.getBundle(bundleName, locale, resourceBundleController);
     }
 
-    /**
-     * Initializes the bundle with a final locale.
-     */
-    public LocalizedBundle(String bundleName, Locale useLocale) {
+    public LocalizedBundle(String bundleName) {
         this.bundleName = bundleName;
-        this.locale = useLocale;
-        this.useDefaultLocale = false;
+        recreateLocalizedResourceBundle();
     }
 
     private ResourceBundle getResourceBundle() {
-        // When we should use the default locale
-        // and is has changed, than invalidate the bundle
-        if (this.useDefaultLocale && this.locale != Locale.getDefault()) {
-            this.locale = Locale.getDefault();
-            this.currentResourceBundle = null;
+        /**
+         * When the locale is not fixed and differs from the default locale
+         * than recreate the bundle.
+         */
+        if (this.bundleName != null && Locale.getDefault() != this.resourceBundle.getLocale()) {
+            recreateLocalizedResourceBundle();
         }
-
-        // Initialize the resource bundle on demand
-        if (this.currentResourceBundle == null) {
-            currentResourceBundle = ResourceBundle.getBundle(bundleName, this.locale, new UTF8ResourceBundleControl());
-        }
-        return currentResourceBundle;
+        return resourceBundle;
     }
 
-    public String getString(final String label) {
+    private void recreateLocalizedResourceBundle() {
+        this.resourceBundle = ResourceBundle.getBundle(this.bundleName, resourceBundleController);
+    }
+
+    public String getString(String label) {
         ResourceBundle resourceBundle = getResourceBundle();
         if (resourceBundle.containsKey(label)) {
             return resourceBundle.getString(label);

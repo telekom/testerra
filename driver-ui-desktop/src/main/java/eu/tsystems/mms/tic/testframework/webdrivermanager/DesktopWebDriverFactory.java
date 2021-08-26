@@ -40,6 +40,7 @@ import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.Sequence;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
@@ -226,13 +227,11 @@ public class DesktopWebDriverFactory implements
           */
         desktopWebDriverRequest.getBaseUrl().ifPresent(baseUrl -> {
             try {
-                StopWatch.startPageLoad(eventFiringWebDriver);
-                eventFiringWebDriver.get(baseUrl.toString());
+                log().info("Opening baseUrl: " + baseUrl.toString());
+                StopWatch.startPageLoad(driver);
+                driver.get(baseUrl.toString());
             } catch (Exception e) {
-                if (StringUtils.containsAll(e.getMessage(), true, "Reached error page", "connectionFailure")) {
-                    throw new RuntimeException("Could not start driver session, because of unreachable url: " + baseUrl, e);
-                }
-                throw e;
+                log().error("Unable to open baseUrl", e);
             }
         });
 

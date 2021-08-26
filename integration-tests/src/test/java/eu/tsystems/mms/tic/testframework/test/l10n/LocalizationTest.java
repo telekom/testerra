@@ -21,6 +21,8 @@
  */
 package eu.tsystems.mms.tic.testframework.test.l10n;
 
+import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
+import eu.tsystems.mms.tic.testframework.l10n.LocalizedBundle;
 import eu.tsystems.mms.tic.testframework.l10n.SimpleLocalization;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import java.util.Locale;
@@ -28,7 +30,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class SimpleLocalizationTest extends TesterraTest {
+public class LocalizationTest extends TesterraTest {
 
     @Test(dataProvider = "locales")
     public void test_readUtf8FromResourceBundle(String locale, String expected) {
@@ -48,4 +50,16 @@ public class SimpleLocalizationTest extends TesterraTest {
             {"en", "üöäß-english"},
         };
     }
+
+    @Test
+    public void test_fixedLocale() {
+        Locale.setDefault(Locale.ENGLISH);
+        LocalizedBundle germanBundle = new LocalizedBundle(SimpleLocalization.BUNDLE_NAME, Locale.GERMAN);
+        LocalizedBundle defaultBundle = new LocalizedBundle(SimpleLocalization.BUNDLE_NAME);
+        Assert.assertNotEquals(germanBundle.getString("TEST"), defaultBundle.getString("TEST"));
+
+        Locale.setDefault(Locale.GERMAN);
+        Assert.assertEquals(germanBundle.getString("TEST"), defaultBundle.getString("TEST"));
+    }
+
 }

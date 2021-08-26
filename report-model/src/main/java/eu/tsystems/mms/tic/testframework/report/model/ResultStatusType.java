@@ -29,8 +29,9 @@ public enum ResultStatusType
    * info status, not representative
    * </pre>
    *
-   * <code>INFO = 2;</code>
+   * <code>INFO = 2 [deprecated = true];</code>
    */
+  @java.lang.Deprecated
   INFO(2),
   /**
    * <pre>
@@ -127,9 +128,9 @@ public enum ResultStatusType
    * info status, not representative
    * </pre>
    *
-   * <code>INFO = 2;</code>
+   * <code>INFO = 2 [deprecated = true];</code>
    */
-  public static final int INFO_VALUE = 2;
+  @java.lang.Deprecated public static final int INFO_VALUE = 2;
   /**
    * <pre>
    * skipped

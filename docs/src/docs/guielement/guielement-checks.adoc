@@ -32,7 +32,7 @@ NOTE: It doesn't relate to `opacity` or `z-index` style properties. If you need 
 ======
 It is not recommended to use these methods for assertions because they return the current state of the element without observing of changes of the element or the page.
 
-The assertion `element.asserts().assertIsDisplayed()` always uses the default GuiElement timeout until it fails.
+The assertion `element.asserts().assertIsDisplayed()` always uses the default GuiElement timeout until it fails. This should always used for verifications.
 ======
 
 == Standard WebElement checks

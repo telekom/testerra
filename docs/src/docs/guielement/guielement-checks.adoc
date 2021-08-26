@@ -28,6 +28,13 @@ element.isVisible(boolean fullyVisible);
 
 NOTE: It doesn't relate to `opacity` or `z-index` style properties. If you need to test the perceptually visibility to the human eye, you should consider to implement <<Layout Check>>.
 
+[IMPORTANT]
+======
+It is not recommended to use these methods for assertions because they return the current state of the element without observing of changes of the element or the page.
+
+The assertion `element.asserts().assertIsDisplayed()` always uses the default GuiElement timeout until it fails.
+======
+
 == Standard WebElement checks
 
 [source,java]

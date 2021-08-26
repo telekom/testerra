@@ -46,48 +46,43 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
         // !!! do nothing when state is RETRY (already set from RetryAnalyzer)
         if (methodContext.getStatus() != TestStatusController.Status.FAILED_RETRIED) {
 
-            // in case of info method
-            if (method.isAnnotationPresent(InfoMethod.class) && (event.isSkipped() || testResult.isSuccess())) {
-                TestStatusController.setMethodStatus(methodContext, TestStatusController.Status.INFO, method);
-            } else {
+            /*
+             * method container status and steps
+             */
+            if (event.isFailed()) {
 
                 /*
-                 * method container status and steps
+                 * set throwable
                  */
-                if (event.isFailed()) {
+                Throwable throwable = testResult.getThrowable();
+                methodContext.getErrorContext().setThrowable(null, throwable);
 
-                    /*
-                     * set throwable
-                     */
-                    Throwable throwable = testResult.getThrowable();
-                    methodContext.getErrorContext().setThrowable(null, throwable);
-
-                    /*
-                     * set status
-                     */
-                    if (testMethod.isTest()) {
-                        Fails fails = testMethod.getConstructorOrMethod().getMethod().getAnnotation(Fails.class);
-                        if (fails != null && !fails.intoReport()) {
-                            // expected failed
-                            TestStatusController.setMethodStatus(methodContext, TestStatusController.Status.FAILED_EXPECTED, method);
-                        } else {
-                            // regular failed
-                            TestStatusController.Status status = TestStatusController.Status.FAILED;
-                            if (methodContext.getNumOptionalAssertions() > 0) {
-                                status = TestStatusController.Status.FAILED_MINOR;
-                            }
-
-                            TestStatusController.setMethodStatus(methodContext, status, method);
-                        }
+                /*
+                 * set status
+                 */
+                if (testMethod.isTest()) {
+                    Fails fails = testMethod.getConstructorOrMethod().getMethod().getAnnotation(Fails.class);
+                    if (fails != null && !fails.intoReport()) {
+                        // expected failed
+                        TestStatusController.setMethodStatus(methodContext, TestStatusController.Status.FAILED_EXPECTED, method);
                     } else {
-                        TestStatusController.setMethodStatus(methodContext, TestStatusController.Status.FAILED, method);
-                    }
+                        // regular failed
+                        TestStatusController.Status status = TestStatusController.Status.FAILED;
+                        if (methodContext.getNumOptionalAssertions() > 0) {
+                            status = TestStatusController.Status.FAILED_MINOR;
+                        }
 
-                    /*
-                     * Enhance step infos
-                     */
-                    TestStep failedStep = methodContext.getCurrentTestStep();
-                    methodContext.setFailedStep(failedStep);
+                        TestStatusController.setMethodStatus(methodContext, status, method);
+                    }
+                } else {
+                    TestStatusController.setMethodStatus(methodContext, TestStatusController.Status.FAILED, method);
+                }
+
+                /*
+                 * Enhance step infos
+                 */
+                TestStep failedStep = methodContext.getCurrentTestStep();
+                methodContext.setFailedStep(failedStep);
 //                    String msg = "";
 //                    String readableMessage = methodContext.errorContext().getReadableErrorMessage();
 //                    if (!StringUtils.isStringEmpty(readableMessage)) {
@@ -99,26 +94,25 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
 //                        msg += additionalErrorMessage;
 //                    }
 //                    failedStep.getCurrentTestStepAction().addFailingLogMessage(msg);
-                } else if (testResult.isSuccess()) {
-                    TestStatusController.Status status = TestStatusController.Status.PASSED;
+            } else if (testResult.isSuccess()) {
+                TestStatusController.Status status = TestStatusController.Status.PASSED;
 
-                    boolean hasOptionalAssertion = methodContext.getNumOptionalAssertions() > 0;
+                boolean hasOptionalAssertion = methodContext.getNumOptionalAssertions() > 0;
 
-                    // is it a retried test?
-                    if (RetryAnalyzer.hasMethodBeenRetried(methodContext)) {
-                        status = TestStatusController.Status.PASSED_RETRY;
-                        if (hasOptionalAssertion) {
-                            status = TestStatusController.Status.MINOR_RETRY;
-                        }
-                    } else if (hasOptionalAssertion) {
-                        status = TestStatusController.Status.MINOR;
+                // is it a retried test?
+                if (RetryAnalyzer.hasMethodBeenRetried(methodContext)) {
+                    status = TestStatusController.Status.PASSED_RETRY;
+                    if (hasOptionalAssertion) {
+                        status = TestStatusController.Status.MINOR_RETRY;
                     }
-
-                    // set status
-                    TestStatusController.setMethodStatus(methodContext, status, method);
-                } else if (event.isSkipped()) {
-                    TestStatusController.setMethodStatus(methodContext, TestStatusController.Status.SKIPPED, method);
+                } else if (hasOptionalAssertion) {
+                    status = TestStatusController.Status.MINOR;
                 }
+
+                // set status
+                TestStatusController.setMethodStatus(methodContext, status, method);
+            } else if (event.isSkipped()) {
+                TestStatusController.setMethodStatus(methodContext, TestStatusController.Status.SKIPPED, method);
             }
         }
     }

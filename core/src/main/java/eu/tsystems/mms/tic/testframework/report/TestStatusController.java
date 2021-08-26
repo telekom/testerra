@@ -113,11 +113,6 @@ public class TestStatusController {
             // stop here
         }
 
-        // dont count if infoStatusMethod
-        if (methodContext.getStatus() == Status.INFO) {
-            return;
-        }
-
         // raise counters
         switch (status) {
             case NO_RUN:
@@ -272,6 +267,9 @@ public class TestStatusController {
          * @deprecated Remove this after discontinuing 'report' module
          */
         MINOR_RETRY("#60bd8e", "&#x2714;", "Minor after Retry", false, true),
+        /**
+         * @deprecated Remove this after discontinuing 'report' module
+         */
         INFO("#b9b900", "i", "Info", true, false),
 
         FAILED("red", "&#x2718;", "Failed", true, true),

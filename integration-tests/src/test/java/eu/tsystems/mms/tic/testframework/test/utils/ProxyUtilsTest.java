@@ -19,18 +19,19 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.test.utils;
+package eu.tsystems.mms.tic.testframework.test.utils;
 
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.ProxyUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverProxyUtils;
-import java.net.MalformedURLException;
-import java.net.URL;
 import org.openqa.selenium.Proxy;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Tests class for {@link ProxyUtils} and {@link WebDriverProxyUtils}
@@ -131,8 +132,19 @@ public class ProxyUtilsTest extends TesterraTest {
         WebDriverProxyUtils utils = new WebDriverProxyUtils();
         String proxyString = "http://proxyUser:secretPassword@my-proxy:3128";
         Proxy proxy = utils.createSocksProxyFromUrl(new URL(proxyString));
-        Assert.assertEquals(proxy.getHttpProxy(),"my-proxy:3128");
-        Assert.assertEquals(proxy.getSocksUsername(),"proxyUser");
+        Assert.assertEquals(proxy.getHttpProxy(), "my-proxy:3128");
+        Assert.assertEquals(proxy.getSocksUsername(), "proxyUser");
         Assert.assertEquals(proxy.getSocksPassword(), "secretPassword");
+    }
+
+    @Test
+    public void test06_createDefaultProxyFromUrl() {
+        WebDriverProxyUtils utils = new WebDriverProxyUtils();
+        Proxy proxy = utils.getDefaultHttpProxy();
+
+        Assert.assertEquals(proxy.getHttpProxy(), PROXY_HOST_HTTPS + ":" + PROXY_PORT_HTTPS);
+        Assert.assertEquals(proxy.getSslProxy(), PROXY_HOST_HTTPS + ":" + PROXY_PORT_HTTPS);
+        Assert.assertNull(proxy.getFtpProxy());
+        Assert.assertNull(proxy.getSocksProxy());
     }
 }

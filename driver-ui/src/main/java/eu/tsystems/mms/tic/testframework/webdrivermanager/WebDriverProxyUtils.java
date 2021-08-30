@@ -27,7 +27,9 @@ import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.ProxyUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+
 import java.net.URL;
+
 import org.openqa.selenium.Proxy;
 
 public class WebDriverProxyUtils {
@@ -96,7 +98,6 @@ public class WebDriverProxyUtils {
         String proxyString = toProxyString(url);
         Proxy proxy = new Proxy();
         proxy.setHttpProxy(proxyString);
-        proxy.setFtpProxy(proxyString);
         proxy.setSslProxy(proxyString);
         return proxy;
     }
@@ -115,7 +116,9 @@ public class WebDriverProxyUtils {
      */
     public Proxy getDefaultHttpProxy() {
         URL systemProxyUrl = ProxyUtils.getSystemHttpsProxyUrl();
-        if (systemProxyUrl == null) systemProxyUrl = ProxyUtils.getSystemHttpProxyUrl();
+        if (systemProxyUrl == null) {
+            systemProxyUrl = ProxyUtils.getSystemHttpProxyUrl();
+        }
         Proxy proxy = createHttpProxyFromUrl(systemProxyUrl);
         proxy.setNoProxy(PropertyManager.getProperty("https.nonProxyHosts"));
         return proxy;

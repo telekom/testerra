@@ -57,7 +57,7 @@
 @use '@material/select/_index' as select;
 @use '@material/snackbar/mdc-snackbar';
 @use '@material/snackbar';
-@use '@material/switch/mdc-switch';
+//@use '@material/switch/mdc-switch';
 @use '@material/switch';
 //@use '@material/radio/mdc-radio';
 //@use '@material/radio';
@@ -83,7 +83,7 @@
 @include drawer.core-styles;
 @include drawer.dismissible-core-styles;
 @include drawer.modal-core-styles;
-@include list.core-styles;
+//@include list.core-styles;
 
 // MDC overrides
 

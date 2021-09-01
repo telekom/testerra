@@ -19,12 +19,13 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.utils;
+package eu.tsystems.mms.tic.testframework.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,6 +36,7 @@ public class ProxyUtils {
     /**
      * Will return proxy url like http://{http.proxyUser}:{http.proxyPassword}@{http.proxyHost}:{http.proxyPort}
      * based on the System's proxy settings ea. from the proxysettings.properties file
+     *
      * @return null If there is no URL configured
      */
     public static URL getSystemHttpProxyUrl() {
@@ -44,6 +46,7 @@ public class ProxyUtils {
     /**
      * Will return proxy url like http://{https.proxyUser}:{https.proxyPassword}@{https.proxyHost}:{https.proxyPort}
      * based on the System's proxy settings ea. from the proxysettings.properties file
+     *
      * @return null If there is no URL configured
      */
     public static URL getSystemHttpsProxyUrl() {
@@ -73,7 +76,7 @@ public class ProxyUtils {
      * ProxyType can be "http" or "https" according to java env properties proxy.httpHost or proxy.httpsHost
      *
      * @param proxyType {@link String} http or https
-     * @param prefix    {@link String} Prefix for URL Scheme
+     * @param prefix {@link String} Prefix for URL Scheme
      * @return URL
      */
     private static URL getSpecificProxyTypeUrlWithPrefix(final String proxyType, final String prefix) {
@@ -84,16 +87,16 @@ public class ProxyUtils {
         try {
 
             final String user = System.getProperty(proxyType + ".proxyUser");
-            if (StringUtils.isNotBlank(user)) {
+            if (org.apache.commons.lang3.StringUtils.isNotEmpty(user)) {
                 proxyUrlString += URLEncoder.encode(user, urlEncoding);
             }
 
             final String password = System.getProperty(proxyType + ".proxyPassword");
-            if (StringUtils.isNotBlank(password)) {
+            if (org.apache.commons.lang3.StringUtils.isNotEmpty(password)) {
                 proxyUrlString += ":" + URLEncoder.encode(password, urlEncoding);
             }
 
-            if (StringUtils.isNotBlank(user)) {
+            if (org.apache.commons.lang3.StringUtils.isNotEmpty(user)) {
                 proxyUrlString += "@";
             }
 

@@ -45,3 +45,5 @@ public abstract class AbstractTest extends TesterraTest {
     }
 }
 ----
+
+NOTE: `WebDriverProxyUtils.getDefaultHttpProxy()` only returns the proxy configuration for HTTP, HTTPS and non-proxy connections.

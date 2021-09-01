@@ -57,7 +57,7 @@
 @use '@material/select/_index' as select;
 @use '@material/snackbar/mdc-snackbar';
 @use '@material/snackbar';
-//@use '@material/switch/mdc-switch';
+@use '@material/switch/styles' as switch-styles;
 @use '@material/switch';
 //@use '@material/radio/mdc-radio';
 //@use '@material/radio';

@@ -30,6 +30,7 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -166,5 +167,24 @@ public class WebDriverManagerTest extends AbstractWebDriverTest {
 
         clonedCaps.setCapability(capKey, "newValue");
         Assert.assertNotEquals(clonedCaps.getCapability(capKey), baseCaps.getCapability(capKey));
+    }
+
+    @Test
+    public void test_WindowSize() {
+        assertNewWebDriverWindowSize(new Dimension(800, 600));
+        PropertyManager.getThreadLocalProperties().setProperty(TesterraProperties.WINDOW_SIZE, "katze");
+        assertNewWebDriverWindowSize(new Dimension(1920, 1080));
+        PropertyManager.getThreadLocalProperties().setProperty(TesterraProperties.WINDOW_SIZE, "1024x768");
+        assertNewWebDriverWindowSize(new Dimension(1024, 768));
+
+        PropertyManager.clearThreadlocalProperties();
+    }
+
+    private void assertNewWebDriverWindowSize(Dimension expected) {
+        WebDriver webDriver = WebDriverManager.getWebDriver();
+        Dimension size = webDriver.manage().window().getSize();
+        Assert.assertEquals(size.getWidth(), expected.getWidth());
+        Assert.assertEquals(size.getHeight(), expected.getHeight());
+        WebDriverManager.shutdown();
     }
 }

@@ -45,6 +45,8 @@ import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import net.anthavio.phanbedder.Phanbedder;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Dimension;
@@ -253,10 +255,20 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
     }
 
     private Dimension getTargetWindowSize() {
-        String windowSizeProperty = PropertyManager.getProperty(TesterraProperties.WINDOW_SIZE, PropertyManager.getProperty(TesterraProperties.DISPLAY_RESOLUTION, "1920x1080"));
-        String[] split = windowSizeProperty.split("x");
-        int width = Integer.parseInt(split[0]);
-        int height = Integer.parseInt(split[1]);
+        String windowSizeProperty = PropertyManager.getProperty(TesterraProperties.WINDOW_SIZE, PropertyManager.getProperty(TesterraProperties.DISPLAY_RESOLUTION));
+        Pattern pattern = Pattern.compile("(\\d+)x(\\d+)");
+        Matcher matcher = pattern.matcher(windowSizeProperty);
+        int width;
+        int height;
+
+        if (matcher.find()) {
+            width = Integer.parseInt(matcher.group(1));
+            height = Integer.parseInt(matcher.group(2));
+        } else {
+            log().error(String.format("Unable to parse property %s=%s, failling back to default", TesterraProperties.WINDOW_SIZE, windowSizeProperty));
+            width = 1920;
+            height = 1080;
+        }
         return new Dimension(width, height);
     }
 

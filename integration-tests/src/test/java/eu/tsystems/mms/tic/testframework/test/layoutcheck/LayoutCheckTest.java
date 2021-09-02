@@ -22,6 +22,8 @@
  package eu.tsystems.mms.tic.testframework.test.layoutcheck;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
@@ -86,11 +88,7 @@ public class LayoutCheckTest extends AbstractTestSitesTest {
 
     @Test
     public void testCheckPageLayout() {
-        WebDriver webDriver = WebDriverManager.getWebDriver();
-        Dimension size = webDriver.manage().window().getSize();
-        Assert.assertEquals(size.getWidth(), 800);
-        Assert.assertEquals(size.getHeight(), 600);
-        LayoutCheck.assertScreenshot(webDriver, "LayoutTestPage", 5);
+        LayoutCheck.assertScreenshot(WebDriverManager.getWebDriver(), "LayoutTestPage", 5);
     }
 
 }

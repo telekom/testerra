@@ -78,20 +78,23 @@ public class DesktopWebDriverRequest extends AbstractWebDriverRequest implements
     }
 
     public Dimension getWindowSize() {
-        String windowSizeProperty = PropertyManager.getProperty(TesterraProperties.WINDOW_SIZE, PropertyManager.getProperty(TesterraProperties.DISPLAY_RESOLUTION));
-        Pattern pattern = Pattern.compile("(\\d+)x(\\d+)");
-        Matcher matcher = pattern.matcher(windowSizeProperty);
-        int width;
-        int height;
+        int width = 1920;
+        int height = 1080;
 
-        if (matcher.find()) {
-            width = Integer.parseInt(matcher.group(1));
-            height = Integer.parseInt(matcher.group(2));
-        } else {
-            log().error(String.format("Unable to parse property %s=%s, falling back to default", TesterraProperties.WINDOW_SIZE, windowSizeProperty));
-            width = 1920;
-            height = 1080;
+        String windowSizeProperty = PropertyManager.getProperty(TesterraProperties.WINDOW_SIZE, PropertyManager.getProperty(TesterraProperties.DISPLAY_RESOLUTION));
+
+        if (windowSizeProperty != null) {
+            Pattern pattern = Pattern.compile("(\\d+)x(\\d+)");
+            Matcher matcher = pattern.matcher(windowSizeProperty);
+
+            if (matcher.find()) {
+                width = Integer.parseInt(matcher.group(1));
+                height = Integer.parseInt(matcher.group(2));
+            } else {
+                log().error(String.format("Unable to parse property %s=%s, falling back to default", TesterraProperties.WINDOW_SIZE, windowSizeProperty));
+            }
         }
+
         return new Dimension(width, height);
     }
 }

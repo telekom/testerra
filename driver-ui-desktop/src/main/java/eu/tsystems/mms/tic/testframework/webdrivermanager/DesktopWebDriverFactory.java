@@ -252,7 +252,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         window.setSize(dimension);
     }
 
-    protected Dimension getTargetWindowSize() {
+    private Dimension getTargetWindowSize() {
         String windowSizeProperty = PropertyManager.getProperty(TesterraProperties.WINDOW_SIZE, PropertyManager.getProperty(TesterraProperties.DISPLAY_RESOLUTION, "1920x1080"));
         String[] split = windowSizeProperty.split("x");
         int width = Integer.parseInt(split[0]);

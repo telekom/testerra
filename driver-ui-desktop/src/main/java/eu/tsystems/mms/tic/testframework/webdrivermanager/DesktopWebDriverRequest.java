@@ -30,6 +30,9 @@ import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.openqa.selenium.Dimension;
 
 public class DesktopWebDriverRequest extends AbstractWebDriverRequest implements Loggable, Serializable {
 
@@ -72,5 +75,23 @@ public class DesktopWebDriverRequest extends AbstractWebDriverRequest implements
     @Override
     public Optional<URL> getServerUrl() {
         return Optional.ofNullable(this.getSeleniumServerUrl());
+    }
+
+    public Dimension getWindowSize() {
+        String windowSizeProperty = PropertyManager.getProperty(TesterraProperties.WINDOW_SIZE, PropertyManager.getProperty(TesterraProperties.DISPLAY_RESOLUTION));
+        Pattern pattern = Pattern.compile("(\\d+)x(\\d+)");
+        Matcher matcher = pattern.matcher(windowSizeProperty);
+        int width;
+        int height;
+
+        if (matcher.find()) {
+            width = Integer.parseInt(matcher.group(1));
+            height = Integer.parseInt(matcher.group(2));
+        } else {
+            log().error(String.format("Unable to parse property %s=%s, falling back to default", TesterraProperties.WINDOW_SIZE, windowSizeProperty));
+            width = 1920;
+            height = 1080;
+        }
+        return new Dimension(width, height);
     }
 }

@@ -45,8 +45,6 @@ import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import net.anthavio.phanbedder.Phanbedder;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Dimension;
@@ -225,10 +223,10 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 }
             } catch (Throwable t1) {
                 log().error("Could not maximize window", t1);
-                setWindowSizeBasedOnDisplayResolution(window, browser);
+                setWindowSizeBasedOnDisplayResolution(window, request);
             }
         } else {
-            setWindowSizeBasedOnDisplayResolution(window, browser);
+            setWindowSizeBasedOnDisplayResolution(window, request);
         }
 
         if (!Browsers.safari.equalsIgnoreCase(browser)) {
@@ -254,32 +252,15 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         window.setSize(dimension);
     }
 
-    private Dimension getTargetWindowSize() {
-        String windowSizeProperty = PropertyManager.getProperty(TesterraProperties.WINDOW_SIZE, PropertyManager.getProperty(TesterraProperties.DISPLAY_RESOLUTION));
-        Pattern pattern = Pattern.compile("(\\d+)x(\\d+)");
-        Matcher matcher = pattern.matcher(windowSizeProperty);
-        int width;
-        int height;
+    private void setWindowSizeBasedOnDisplayResolution(WebDriver.Window window, DesktopWebDriverRequest request) {
+        Dimension dimension = request.getWindowSize();
 
-        if (matcher.find()) {
-            width = Integer.parseInt(matcher.group(1));
-            height = Integer.parseInt(matcher.group(2));
-        } else {
-            log().error(String.format("Unable to parse property %s=%s, falling back to default", TesterraProperties.WINDOW_SIZE, windowSizeProperty));
-            width = 1920;
-            height = 1080;
-        }
-        return new Dimension(width, height);
-    }
-
-    private void setWindowSizeBasedOnDisplayResolution(WebDriver.Window window, String browser) {
-        Dimension dimension = getTargetWindowSize();
         try {
             setWindowSize(window, dimension);
         } catch (Throwable t) {
             log().error("Could not set window size", t);
 
-            if (Browsers.edge.equals(browser)) {
+            if (Browsers.edge.equals(request.getBrowser())) {
                 log().debug("Edge Browser was requested, trying workaround");
 
                 Timer timer = new Timer(500, 5000);

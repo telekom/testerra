@@ -265,7 +265,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             width = Integer.parseInt(matcher.group(1));
             height = Integer.parseInt(matcher.group(2));
         } else {
-            log().error(String.format("Unable to parse property %s=%s, failling back to default", TesterraProperties.WINDOW_SIZE, windowSizeProperty));
+            log().error(String.format("Unable to parse property %s=%s, falling back to default", TesterraProperties.WINDOW_SIZE, windowSizeProperty));
             width = 1920;
             height = 1080;
         }

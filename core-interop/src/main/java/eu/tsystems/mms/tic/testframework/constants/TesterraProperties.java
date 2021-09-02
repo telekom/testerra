@@ -205,7 +205,9 @@ public final class TesterraProperties {
     public static final String FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_MID = "tt.failure.corridor.allowed.failed.tests.mid";
     public static final String FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_LOW = "tt.failure.corridor.allowed.failed.tests.low";
 
+    @Deprecated
     public static final String DISPLAY_RESOLUTION = "tt.display.resolution";
+    public static final String WINDOW_SIZE="tt.window.size";
 
     public static final String PAGE_FACTORY_LOOPS = "tt.page.factory.loops";
     public static final String EXECUTION_OMIT_IN_DEVELOPMENT = "tt.execution.omit.indevelopment";

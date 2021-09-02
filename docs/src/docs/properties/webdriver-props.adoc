@@ -31,8 +31,8 @@ This setting overrides the following two properties.
 | {selenium_server_port} | 4444 | The port of the remote Selenium server.
 | {browser_maximize} | false | Try to maximize the browser window.
 | {browser_maximize_position} | self | Screen position for the window to maximize. If you have several screens and want to maximize the window on another screen than your default screen, you can choose between (left, right, top or bottom)
-| {display_resolution} | 1920x1200 | Fall-back resolution, if maximize does not work. +
-For custom window browser size use `driver.manage().window().setSize(new Dimensions(x, y))`
+| {window_size} | 1920x1080 | Default window size for all new sessions (when {browser_maximize} is `false`).
+| {display_resolution} | 1920x1080 | Deprecated by {window_size}
 | {wdm_closewindows_aftertestmethods} | true | If true, after every test method all open browser windows are closed.
 | {wdm_closewindows_onfailure} | true | If true, after failed test methods all open browser windows are closed
 | {wdm_timeouts_window_switch} | 5 | Maximum duration to wait for on a `WebDriverUtils.findWindowAndSwitchTo()` in seconds.

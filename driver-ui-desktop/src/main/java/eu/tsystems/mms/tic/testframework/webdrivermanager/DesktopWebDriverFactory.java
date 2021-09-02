@@ -31,7 +31,6 @@ import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.enums.Position;
 import eu.tsystems.mms.tic.testframework.exceptions.SetupException;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
-import eu.tsystems.mms.tic.testframework.internal.Defaults;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
@@ -248,33 +247,35 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         }
     }
 
-    private void setWindowSizeBasedOnDisplayResolution(WebDriver.Window window, String browser) {
-        log().debug("Trying to set window size to: " + Defaults.DISPLAY_RESOLUTION);
-        String[] split = Defaults.DISPLAY_RESOLUTION.split("x");
+    private void setWindowSize(WebDriver.Window window, Dimension dimension) {
+        window.setPosition(new Point(0, 0));
+        window.setSize(dimension);
+    }
+
+    protected Dimension getTargetWindowSize() {
+        String windowSizeProperty = PropertyManager.getProperty(TesterraProperties.WINDOW_SIZE, PropertyManager.getProperty(TesterraProperties.DISPLAY_RESOLUTION, "1920x1080"));
+        String[] split = windowSizeProperty.split("x");
         int width = Integer.parseInt(split[0]);
         int height = Integer.parseInt(split[1]);
+        return new Dimension(width, height);
+    }
+
+    private void setWindowSizeBasedOnDisplayResolution(WebDriver.Window window, String browser) {
+        Dimension dimension = getTargetWindowSize();
         try {
-            window.setSize(new Dimension(width, height));
-        } catch (Throwable t2) {
-            log().error("Could not set window size", t2);
+            setWindowSize(window, dimension);
+        } catch (Throwable t) {
+            log().error("Could not set window size", t);
 
             if (Browsers.edge.equals(browser)) {
-                log().debug("Edge Browser was requested, trying a second workaround");
+                log().debug("Edge Browser was requested, trying workaround");
 
                 Timer timer = new Timer(500, 5000);
                 ThrowablePackedResponse<Object> response = timer.executeSequence(new Timer.Sequence<Object>() {
                     @Override
                     public void run() throws Throwable {
                         setSkipThrowingException(true);
-                        log().debug("Trying setPosition() and setSize()");
-                        try {
-                            window.setPosition(new Point(0, 0));
-                            window.setSize(new Dimension(width, height));
-                            log().debug("Yup, success!");
-                        } catch (Exception e) {
-                            log().warn("Nope. Got error: " + e.getMessage());
-                            throw e;
-                        }
+                        setWindowSize(window, dimension);
                     }
                 });
 

@@ -28,6 +28,8 @@ import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -84,7 +86,11 @@ public class LayoutCheckTest extends AbstractTestSitesTest {
 
     @Test
     public void testCheckPageLayout() {
-        LayoutCheck.assertScreenshot(WebDriverManager.getWebDriver(), "LayoutTestPage", 5);
+        WebDriver webDriver = WebDriverManager.getWebDriver();
+        Dimension size = webDriver.manage().window().getSize();
+        Assert.assertEquals(size.getWidth(), 800);
+        Assert.assertEquals(size.getHeight(), 600);
+        LayoutCheck.assertScreenshot(webDriver, "LayoutTestPage", 5);
     }
 
 }

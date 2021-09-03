@@ -57,7 +57,7 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
 //        }
     }
 
-    public void setWebDriverRequest(WebDriverRequest webDriverRequest) {
+    private void setWebDriverRequest(WebDriverRequest webDriverRequest) {
         this.webDriverRequest = webDriverRequest;
         this.setSessionKey(webDriverRequest.getSessionKey());
     }

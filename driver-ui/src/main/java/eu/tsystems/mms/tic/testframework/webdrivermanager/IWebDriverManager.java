@@ -171,7 +171,7 @@ public interface IWebDriverManager extends WebDriverRetainer, Loggable {
         WebDriverSessionsManager.registerWebDriverAfterStartupHandler(afterStart);
     }
 
-    default void registerWebDriverRequestConfigurator(BiConsumer<WebDriverRequest, SessionContext> handler) {
+    default void registerWebDriverRequestConfigurator(Consumer<WebDriverRequest> handler) {
         WebDriverSessionsManager.webDriverRequestConfigurators.add(handler);
     }
 

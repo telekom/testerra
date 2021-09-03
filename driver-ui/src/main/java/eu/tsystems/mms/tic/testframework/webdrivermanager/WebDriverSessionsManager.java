@@ -85,7 +85,7 @@ public final class WebDriverSessionsManager {
 
     private static final String FULL_SESSION_KEY_SPLIT_MARKER = "___";
     private static final Set<WebDriverFactory> webDriverFactories = Testerra.getInjector().getInstance(Key.get(new TypeLiteral<Set<WebDriverFactory>>(){}));
-    static final Queue<BiConsumer<WebDriverRequest, SessionContext>> webDriverRequestConfigurators = new ConcurrentLinkedQueue<>();
+    static final Queue<Consumer<WebDriverRequest>> webDriverRequestConfigurators = new ConcurrentLinkedQueue<>();
     private static final IExecutionContextController executionContextController = Testerra.getInjector().getInstance(IExecutionContextController.class);
 
     private WebDriverSessionsManager() {
@@ -386,12 +386,9 @@ public final class WebDriverSessionsManager {
             create session context and link to method context
              */
             final WebDriverRequest finalWebDriverRequest = webDriverFactory.prepareWebDriverRequest(webDriverRequest);
+            webDriverRequestConfigurators.forEach(handler -> handler.accept(finalWebDriverRequest));
 
             SessionContext sessionContext = new SessionContext(finalWebDriverRequest);
-            webDriverRequestConfigurators.forEach(handler -> {
-                handler.accept(finalWebDriverRequest, sessionContext);
-            });
-
             executionContextController.getCurrentMethodContext().ifPresent(methodContext -> {
                 methodContext.addSessionContext(sessionContext);
             });

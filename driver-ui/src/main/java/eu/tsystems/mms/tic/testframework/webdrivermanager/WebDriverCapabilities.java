@@ -21,10 +21,7 @@
  */
  package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import java.util.function.BiConsumer;
-import org.openqa.selenium.Proxy;
+import java.util.function.Consumer;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
@@ -34,7 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Deprecated
-public class WebDriverCapabilities implements BiConsumer<WebDriverRequest, SessionContext> {
+public class WebDriverCapabilities implements Consumer<WebDriverRequest> {
 
     /**
      * Extra capabilities.
@@ -100,7 +97,7 @@ public class WebDriverCapabilities implements BiConsumer<WebDriverRequest, Sessi
     }
 
     @Override
-    public void accept(WebDriverRequest webDriverRequest, SessionContext sessionContext) {
+    public void accept(WebDriverRequest webDriverRequest) {
         if (webDriverRequest instanceof AbstractWebDriverRequest) {
             DesiredCapabilities desiredCapabilities = ((AbstractWebDriverRequest) webDriverRequest).getDesiredCapabilities();
             desiredCapabilities.merge(new DesiredCapabilities(GLOBALCAPABILITIES));

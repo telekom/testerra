@@ -94,7 +94,7 @@ public class DesktopWebDriverRequest extends SeleniumWebDriverRequest implements
 
         String windowSizeProperty = Testerra.Properties.WINDOW_SIZE.asString();
 
-        if (windowSizeProperty != null) {
+        if (windowSizeProperty.trim().length() > 0) {
             Pattern pattern = Pattern.compile("(\\d+)x(\\d+)");
             Matcher matcher = pattern.matcher(windowSizeProperty);
 

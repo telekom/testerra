@@ -21,12 +21,12 @@
  */
 package eu.tsystems.mms.tic.testframework.test.webdrivermanager;
 
+import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
@@ -39,7 +39,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Tests for WebDriverManager
@@ -49,7 +48,7 @@ import java.util.Optional;
  *
  * @author Eric Kubenka
  */
-public class WebDriverManagerTest extends TesterraTest {
+public class WebDriverManagerTest extends TesterraTest implements PropertyManagerProvider {
 
     @Test
     public void testT01_isJavaScriptActivated() {
@@ -172,12 +171,10 @@ public class WebDriverManagerTest extends TesterraTest {
     @Test
     public void test_WindowSize() {
         assertNewWebDriverWindowSize(new Dimension(800, 600));
-        PropertyManager.getThreadLocalProperties().setProperty(TesterraProperties.WINDOW_SIZE, "katze");
+        PROPERTY_MANAGER.setTestLocalProperty(Testerra.Properties.WINDOW_SIZE, "katze");
         assertNewWebDriverWindowSize(new Dimension(1920, 1080));
-        PropertyManager.getThreadLocalProperties().setProperty(TesterraProperties.WINDOW_SIZE, "1024x768");
+        PROPERTY_MANAGER.setTestLocalProperty(Testerra.Properties.WINDOW_SIZE, "1024x768");
         assertNewWebDriverWindowSize(new Dimension(1024, 768));
-
-        PropertyManager.clearThreadlocalProperties();
     }
 
     private void assertNewWebDriverWindowSize(Dimension expected) {

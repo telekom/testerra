@@ -27,21 +27,18 @@ import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.enums.Position;
 import eu.tsystems.mms.tic.testframework.exceptions.SetupException;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
-import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.DesktopGuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
-import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
+import eu.tsystems.mms.tic.testframework.testing.TestControllerProvider;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
-import eu.tsystems.mms.tic.testframework.utils.Sequence;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import eu.tsystems.mms.tic.testframework.utils.Timer;
+import eu.tsystems.mms.tic.testframework.utils.Sleepy;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
@@ -80,7 +77,9 @@ import org.openqa.selenium.support.events.EventFiringWebDriver;
 public class DesktopWebDriverFactory implements
         WebDriverFactory,
         Loggable,
-        WebDriverManagerProvider
+        WebDriverManagerProvider,
+        TestControllerProvider,
+        Sleepy
 {
     //public static final TimingInfosCollector STARTUP_TIME_COLLECTOR = new TimingInfosCollector();
 
@@ -271,10 +270,10 @@ public class DesktopWebDriverFactory implements
                 }
             } catch (Throwable t1) {
                 log().error("Could not maximize window", t1);
-                setWindowSizeBasedOnDisplayResolution(window, request);
+                setWindowSizeBasedOnDisplayResolution(window, desktopWebDriverRequest);
             }
         } else {
-            setWindowSizeBasedOnDisplayResolution(window, request);
+            setWindowSizeBasedOnDisplayResolution(window, desktopWebDriverRequest);
         }
 
         if (!Browsers.safari.equalsIgnoreCase(browser)) {
@@ -310,25 +309,9 @@ public class DesktopWebDriverFactory implements
 
             if (Browsers.edge.equals(request.getBrowser())) {
                 log().debug("Edge Browser was requested, trying workaround");
-
-                Timer timer = new Timer(500, 5000);
-                ThrowablePackedResponse<Object> response = timer.executeSequence(new Timer.Sequence<Object>() {
-                    @Override
-                    public void run() throws Throwable {
-                        setSkipThrowingException(true);
-                        setWindowSize(window, dimension);
-                Sequence sequence = new Sequence()
-                        .setWaitMsAfterRun(500)
-                        .setTimeoutMs(5000);
-                sequence.run(() -> {
-                    try {
-                        window.setPosition(new Point(0, 0));
-                        window.setSize(new Dimension(width, height));
-                        return true;
-                    } catch (Throwable throwable) {
-                        log().warn("Got error: " + throwable.getMessage());
-                        return false;
-                    }
+                CONTROL.retryFor(5, () -> {
+                    setWindowSize(window, dimension);
+                    sleep(500);
                 });
             }
         }

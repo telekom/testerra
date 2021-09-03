@@ -32,6 +32,9 @@ import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.openqa.selenium.Dimension;
 
 public class DesktopWebDriverRequest extends SeleniumWebDriverRequest implements Loggable, Serializable {
 
@@ -83,6 +86,27 @@ public class DesktopWebDriverRequest extends SeleniumWebDriverRequest implements
 
     public Position getMaximizePosition() {
         return this.maximizePosition;
+    }
+
+    public Dimension getWindowSize() {
+        int width = 1920;
+        int height = 1080;
+
+        String windowSizeProperty = Testerra.Properties.WINDOW_SIZE.asString();
+
+        if (windowSizeProperty != null) {
+            Pattern pattern = Pattern.compile("(\\d+)x(\\d+)");
+            Matcher matcher = pattern.matcher(windowSizeProperty);
+
+            if (matcher.find()) {
+                width = Integer.parseInt(matcher.group(1));
+                height = Integer.parseInt(matcher.group(2));
+            } else {
+                log().error(String.format("Unable to parse property %s=%s, falling back to default", Testerra.Properties.WINDOW_SIZE, windowSizeProperty));
+            }
+        }
+
+        return new Dimension(width, height);
     }
 
 }

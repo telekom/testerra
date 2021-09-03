@@ -7,8 +7,8 @@ element.expect().present(boolean);
 ----
 
 Checks if the element is present in the Viewport,
-if it's visible by it's `display` and `visibility` style properties
-and it's `width` and `height` are both greater than 0.
+if it is visible by it's `display` and `visibility` style properties
+and if it's `width` and `height` are both greater than 0.
 [source,java]
 ----
 element.expect().displayed(boolean);

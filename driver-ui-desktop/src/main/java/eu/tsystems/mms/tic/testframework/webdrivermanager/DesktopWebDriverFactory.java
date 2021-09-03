@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.enums.Position;
 import eu.tsystems.mms.tic.testframework.exceptions.SetupException;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
+import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
@@ -270,10 +271,10 @@ public class DesktopWebDriverFactory implements
                 }
             } catch (Throwable t1) {
                 log().error("Could not maximize window", t1);
-                setWindowSizeBasedOnDisplayResolution(window, browser);
+                setWindowSizeBasedOnDisplayResolution(window, request);
             }
         } else {
-            setWindowSizeBasedOnDisplayResolution(window, browser);
+            setWindowSizeBasedOnDisplayResolution(window, request);
         }
 
         if (!Browsers.safari.equalsIgnoreCase(browser)) {
@@ -294,19 +295,28 @@ public class DesktopWebDriverFactory implements
         }
     }
 
-    private void setWindowSizeBasedOnDisplayResolution(WebDriver.Window window, String browser) {
-        log().debug("Trying to set window size to: " + Testerra.Properties.DISPLAY_RESOLUTION.asString());
-        String[] split = Testerra.Properties.DISPLAY_RESOLUTION.asString().split("x");
-        int width = Integer.parseInt(split[0]);
-        int height = Integer.parseInt(split[1]);
+    private void setWindowSize(WebDriver.Window window, Dimension dimension) {
+        window.setPosition(new Point(0, 0));
+        window.setSize(dimension);
+    }
+
+    private void setWindowSizeBasedOnDisplayResolution(WebDriver.Window window, DesktopWebDriverRequest request) {
+        Dimension dimension = request.getWindowSize();
+
         try {
-            window.setSize(new Dimension(width, height));
-        } catch (Throwable t2) {
-            log().error("Could not set window size", t2);
+            setWindowSize(window, dimension);
+        } catch (Throwable t) {
+            log().error("Could not set window size", t);
 
-            if (Browsers.edge.equals(browser)) {
-                log().debug("Edge Browser was requested, trying a second workaround");
+            if (Browsers.edge.equals(request.getBrowser())) {
+                log().debug("Edge Browser was requested, trying workaround");
 
+                Timer timer = new Timer(500, 5000);
+                ThrowablePackedResponse<Object> response = timer.executeSequence(new Timer.Sequence<Object>() {
+                    @Override
+                    public void run() throws Throwable {
+                        setSkipThrowingException(true);
+                        setWindowSize(window, dimension);
                 Sequence sequence = new Sequence()
                         .setWaitMsAfterRun(500)
                         .setTimeoutMs(5000);

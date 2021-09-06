@@ -106,7 +106,7 @@ export class TestResultsCard {
             chart: {
                 type: 'pie',
                 //width: '400px',
-                height:'300px',
+                //height:'300px',
                 fontFamily: 'Roboto',
                 events: {
                     dataPointSelection: (event, chartContext, config) => {

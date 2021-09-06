@@ -62,13 +62,16 @@
                 >
                     <table>
                         <thead>
-                            <th class="rank-column">Rank</th>
+                            <th class="centered-text">Rank</th>
                             <th class="w75">Failure Aspect</th>
                             <th>Statuses</th>
                         </thead>
                         <tbody>
                             <tr repeat.for="failureAspect of _filteredFailureAspects">
-                                <td mdc-body1 class="rank-column" css="font-size: ${_calcFontSize(failureAspect.index)}rem;">${failureAspect.index+1}</td>
+                                <td mdc-body1
+                                    class="centered-text"
+                                    css="font-size: ${_calcFontSize(failureAspect.index)}rem;"
+                                >${failureAspect.index+1}</td>
                                 <td class="p1 wrapable" mdc-body1>
                                     <a route-href="route: tests; params.bind: {failureAspect: failureAspect.index+1}"
                                     ><class-name-markup namespace.bind="failureAspect.relevantCause.className" highlight.bind="_searchRegexp">:</class-name-markup><span innerhtml="${failureAspect.message|html|highlightText:_searchRegexp}"></span></a>

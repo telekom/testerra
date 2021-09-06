@@ -85,7 +85,7 @@
                     <table>
 
                     <thead>
-                        <th class="status-column">Status (${_uniqueStatuses})</th>
+                        <th class="status-column centered-text">Status (${_uniqueStatuses})</th>
                         <th>Class (${_uniqueClasses})</th>
                         <th class="run-index-column">#</th>
                         <th>Method (${_filteredMethodDetails.length})</th>
@@ -93,7 +93,7 @@
                     </thead>
                     <tbody>
                         <tr repeat.for="methodDetails of _filteredMethodDetails">
-                            <td class="p1">
+                            <td class="p1 centered-text">
                                 <a class="badge status-${methodDetails.methodContext.resultStatus|statusClass}"><span if.bind="methodDetails.isRepaired">Repaired</span><span else>${methodDetails.methodContext.resultStatus|statusName}</span></a>
                             </td>
                             <td class="p1 wrapable">

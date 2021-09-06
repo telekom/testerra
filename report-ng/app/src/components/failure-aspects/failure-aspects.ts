@@ -25,7 +25,6 @@ import {AbstractViewModel} from "../abstract-view-model";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {StatusConverter} from "../../services/status-converter";
 import {FailureAspectStatistics} from "../../services/statistic-models";
-import './failure-aspects.scss'
 import {data} from "../../services/report-model";
 import ResultStatusType = data.ResultStatusType;
 

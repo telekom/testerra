@@ -31,7 +31,7 @@
                     <div mdc-subtitle2 class="card-headline">Tests: ${_executionStatistics.overallTestCases}</div>
                     <mdc-list-divider></mdc-list-divider>
                     <mdc-list single-selection
-                              class="card-content"
+                              class="p0"
                     >
                         <mdc-list-item repeat.for="item of _filterItems"
                                        click.delegate="_resultItemClicked(item)"
@@ -70,6 +70,7 @@
                     <mdc-list
                         single-selection
                         class="mdc-list--dense card-content"
+                        if.bind="_topFailureAspects.length > 0"
                     >
                         <mdc-list-item repeat.for="failureAspect of _topFailureAspects"
                                        click.delegate="_gotoFailureAspect(failureAspect)"
@@ -81,6 +82,10 @@
                             <mdc-list-item-text><class-name-markup namespace.bind="failureAspect.relevantCause.className">:</class-name-markup>${failureAspect.message}</mdc-list-item-text>
                         </mdc-list-item>
                     </mdc-list>
+                    <div class="vcenter hcenter p1" else>
+                        <mdc-icon class="sr1">celebration</mdc-icon>
+                        <div mdc-body1>No failure aspects</div>
+                    </div>
                 </mdc-card>
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="3">

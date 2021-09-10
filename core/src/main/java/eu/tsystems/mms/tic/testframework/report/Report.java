@@ -24,6 +24,7 @@ package eu.tsystems.mms.tic.testframework.report;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import java.io.File;
+import java.lang.annotation.Annotation;
 
 public interface Report {
     String SCREENSHOTS_FOLDER_NAME = "screenshots";

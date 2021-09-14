@@ -55,24 +55,37 @@
                     </div>
                     <mdc-list-divider if.bind="_failsAnnotation"></mdc-list-divider>
                     <div class="flex">
-                        <ul class="mdc-list mdc-list--dense w50">
+                        <ul class="mdc-list mdc-list--dense w50" mdc-caption>
                             <li class="mdc-custom-list-item">
-                                <span class="secondary sr1">Class</span><a route-href="route: tests; params.bind: {class: _methodDetails.classStatistics.classIdentifier}">${_methodDetails.classStatistics.classIdentifier}</a>
+                                <span class="secondary sr1">Class</span>
+                                <a class="two-lines"
+                                   route-href="route: tests; params.bind: {class: _methodDetails.classStatistics.classIdentifier}"
+                                >${_methodDetails.classStatistics.classIdentifier}</a>
                             </li>
                             <li class="mdc-custom-list-item">
-                                <span class="secondary sr1">Test Context</span>${_methodDetails.testContext.contextValues.name}
+                                <span class="secondary sr1">Test Context</span>
+                                <span class="two-lines">${_methodDetails.testContext.contextValues.name}</span>
                             </li>
                             <li class="mdc-custom-list-item">
-                                <span class="secondary sr1">Suite</span>${_methodDetails.suiteContext.contextValues.name}
+                                <span class="secondary sr1">Suite</span>
+                                <span class="two-lines">${_methodDetails.suiteContext.contextValues.name}</span>
                             </li>
 
                         </ul>
-                        <ul class="mdc-list mdc-list--dense">
-                            <li class="mdc-custom-list-item" if.bind="_methodDetails.failedStep">
-                                <span class="secondary sr1">Failed in</span><a route-href="route: steps; params.bind: {step: _methodDetails.methodContext.failedStepIndex+1}">${_methodDetails.failedStep.name}</a>
+                        <ul class="mdc-list mdc-list--dense" mdc-caption>
+                            <li class="mdc-custom-list-item"
+                                if.bind="_methodDetails.failedStep"
+                            >
+                                <span class="secondary sr1">Failed in</span>
+                                <a class="two-lines"
+                                   route-href="route: steps; params.bind: {step: _methodDetails.methodContext.failedStepIndex+1}"
+                                >${_methodDetails.failedStep.name}</a>
                             </li>
                             <li class="mdc-custom-list-item">
-                                <span class="secondary sr1">Thread</span><a route-href="route: threads; params.bind: {methodId: _methodDetails.methodContext.contextValues.id}">${_methodDetails.methodContext.threadName}</a>
+                                <span class="secondary sr1">Thread</span>
+                                <a class="two-lines"
+                                   route-href="route: threads; params.bind: {methodId: _methodDetails.methodContext.contextValues.id}"
+                                >${_methodDetails.methodContext.threadName}</a>
                             </li>
 <!--                            <li class="mdc-custom-list-item" if.bind="_methodDetails.sessionContexts.length > 0">-->
 <!--                                <span class="secondary sr1">Sessions</span><session-context-markup session-context.bind="sessionContext" repeat.for="sessionContext of _methodDetails.sessionContexts"></session-context-markup>-->
@@ -82,7 +95,7 @@
                 </mdc-card>
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="2" if.bind="_lastScreenshotId">
-                <mdc-card class="header-card">
+                <mdc-card class="">
                     <div mdc-subtitle2 class="card-headline">Last Screenshot</div>
                     <mdc-list-divider></mdc-list-divider>
                     <lazy-image
@@ -93,7 +106,7 @@
                 </mdc-card>
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="3" position="right">
-                <test-duration-card class="header-card"
+                <test-duration-card class=""
                                     start.bind="_methodDetails.methodContext.contextValues.startTime"
                                     end.bind="_methodDetails.methodContext.contextValues.endTime"
                 ></test-duration-card>

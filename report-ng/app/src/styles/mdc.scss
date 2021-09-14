@@ -57,7 +57,7 @@
 @use '@material/select/_index' as select;
 @use '@material/snackbar/mdc-snackbar';
 @use '@material/snackbar';
-@use '@material/switch/mdc-switch';
+@use '@material/switch/styles' as switch-styles;
 @use '@material/switch';
 //@use '@material/radio/mdc-radio';
 //@use '@material/radio';
@@ -83,7 +83,7 @@
 @include drawer.core-styles;
 @include drawer.dismissible-core-styles;
 @include drawer.modal-core-styles;
-@include list.core-styles;
+//@include list.core-styles;
 
 // MDC overrides
 
@@ -130,16 +130,11 @@
 }
 
 .card-content {
-    @extend .p1;
-    //margin: auto 0;
+    padding: 16px;
 }
 
 .card-actions {
     padding: 8px;
-}
-
-.header-card {
-    height:188px;
 }
 
 //adapt router view size to drawer because it doesn't do that on it's own for some reason

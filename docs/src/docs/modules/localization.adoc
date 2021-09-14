@@ -76,8 +76,7 @@ Or bundles with a fixed locale.
 ----
 LocalizedBundle germanBundle = new LocalizedBundle("testdata", Locale.GERMAN);
 germanBundle.getString("TEST_KEY");
-----R
-
+----
 
 == Change runtime locale
 

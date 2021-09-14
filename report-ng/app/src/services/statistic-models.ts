@@ -156,7 +156,7 @@ export class ExecutionStatistics extends Statistics {
         classStatistics.methodContexts
             .forEach(methodContext => {
 
-                if (methodContext.resultStatus == data.ResultStatusType.PASSED && methodContext.annotations[MethodDetails.FAIL_ANNOTATION_NAME]) {
+                if (methodContext.resultStatus == data.ResultStatusType.PASSED && methodContext.annotations[MethodDetails.FAILS_ANNOTATION_NAME]) {
                     this._repairedTests++;
                 }
 

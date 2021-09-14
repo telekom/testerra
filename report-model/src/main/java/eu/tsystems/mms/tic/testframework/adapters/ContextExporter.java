@@ -24,7 +24,7 @@ package eu.tsystems.mms.tic.testframework.adapters;
 import com.google.common.net.MediaType;
 import com.google.gson.Gson;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.report.Report;
+import eu.tsystems.mms.tic.testframework.report.DefaultReport;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent;
 import eu.tsystems.mms.tic.testframework.internal.IDUtils;
@@ -57,11 +57,8 @@ import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,34 +71,34 @@ import org.apache.logging.log4j.Level;
 
 public class ContextExporter implements Loggable {
     private static final Map<TestStatusController.Status, ResultStatusType> STATUS_MAPPING = new LinkedHashMap<>();
-    private final Report report = TesterraListener.getReport();
+    private final DefaultReport report = (DefaultReport)TesterraListener.getReport();
     private final Gson jsonEncoder = new Gson();
 
-    private Map<String,Object> getAnnotationParameters(Annotation annotation) {
-        Method[] methods = annotation.annotationType().getMethods();
-        Map<String,Object> params = new HashMap<>();
-        for (Method method : methods) {
-            if (method.getDeclaringClass() == annotation.annotationType()) { //this filters out built-in methods, like hashCode etc
-                try {
-                    Object value = method.invoke(annotation);
-                    if (value == null) continue;
-
-                    if (value.getClass().isArray()) {
-                        Object[] values = (Object[])value;
-                        if (values.length == 0) continue;
-                        value = Arrays.asList(values);
-                    } else {
-                        value = value.toString();
-                        if (((String) value).isEmpty()) continue;
-                    }
-                    params.put(method.getName(), value);
-                } catch (Exception e) {
-                    log().error("Unable to retrieve annotation parameter", e);
-                }
-            }
-        }
-        return params;
-    }
+//    private Map<String,Object> getAnnotationParameters(Annotation annotation) {
+//        Method[] methods = annotation.annotationType().getMethods();
+//        Map<String,Object> params = new HashMap<>();
+//        for (Method method : methods) {
+//            if (method.getDeclaringClass() == annotation.annotationType()) { //this filters out built-in methods, like hashCode etc
+//                try {
+//                    Object value = method.invoke(annotation);
+//                    if (value == null) continue;
+//
+//                    if (value.getClass().isArray()) {
+//                        Object[] values = (Object[])value;
+//                        if (values.length == 0) continue;
+//                        value = Arrays.asList(values);
+//                    } else {
+//                        value = value.toString();
+//                        if (((String) value).isEmpty()) continue;
+//                    }
+//                    params.put(method.getName(), value);
+//                } catch (Exception e) {
+//                    log().error("Unable to retrieve annotation parameter", e);
+//                }
+//            }
+//        }
+//        return params;
+//    }
 
     public MethodContext.Builder buildMethodContext(eu.tsystems.mms.tic.testframework.report.model.context.MethodContext methodContext) {
         MethodContext.Builder builder = MethodContext.newBuilder();
@@ -131,10 +128,10 @@ public class ContextExporter implements Loggable {
         }
 
         methodContext.readAnnotations()
-                // Skip TestNG annotations
-                .filter(annotation -> !annotation.annotationType().getName().startsWith("org.testng"))
                 .forEach(annotation -> {
-                    builder.putAnnotations(annotation.annotationType().getName(), this.jsonEncoder.toJson(getAnnotationParameters(annotation)));
+                    report.getAnnotationConverter(annotation).ifPresent(annotationExporter -> {
+                        builder.putAnnotations(annotation.annotationType().getName(), this.jsonEncoder.toJson(annotationExporter.toMap(annotation)));
+                    });
                 });
 
         apply(methodContext.getRetryCounter(), builder::setRetryNumber);

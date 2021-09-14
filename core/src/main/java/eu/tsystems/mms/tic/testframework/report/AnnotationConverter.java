@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2021, Mike Reiche,  T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -19,18 +19,14 @@
  * under the License.
  */
 
-import {autoinject} from "aurelia-framework";
-import 'ts-replace-all'
+package eu.tsystems.mms.tic.testframework.report;
 
-@autoinject()
-export class HtmlValueConverter {
-    private static readonly URL_REGEX = /(\w+\:\/\/\S+)/ig;
-    toView(value?: string) {
-        if (!value) {
-            return value;
-        }
-        return value
-            .replaceAll("\n","<br/>")
-            .replaceAll(HtmlValueConverter.URL_REGEX,'<a href="$1">$1</a>');
-    }
+import java.lang.annotation.Annotation;
+import java.util.Map;
+
+public interface AnnotationConverter<T extends Annotation> {
+    /**
+     * Exports the annotation parameters
+     */
+    Map<String, Object> toMap(T annotation);
 }

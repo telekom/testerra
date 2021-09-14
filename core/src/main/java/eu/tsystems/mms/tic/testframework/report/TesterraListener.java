@@ -23,6 +23,7 @@
 package eu.tsystems.mms.tic.testframework.report;
 
 import com.google.common.eventbus.EventBus;
+import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.boot.Booter;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
@@ -71,6 +72,7 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
+import org.testng.annotations.Test;
 import org.testng.xml.XmlSuite;
 
 import java.util.List;
@@ -108,7 +110,7 @@ public class TesterraListener implements
     private static final Object LOCK = new Object();
     private static final LoggerContext loggerContext;
     private static final BuildInformation buildInformation;
-    private static final Report report;
+    private static final DefaultReport report;
     private static DefaultTestNGContextGenerator contextGenerator;
 
     static {
@@ -122,6 +124,8 @@ public class TesterraListener implements
         buildInformation = new BuildInformation();
         eventBus = new EventBus();
         report = new DefaultReport();
+        report.registerAnnotationConverter(Fails.class, new FailsAnnotationConverter());
+        report.registerAnnotationConverter(Test.class, new TestAnnotationConverter());
         contextGenerator = new DefaultTestNGContextGenerator();
 
         /*

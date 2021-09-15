@@ -35,6 +35,6 @@ public final class CollectedAssertions {
         add info
          */
         MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
-        currentMethodContext.addCollectedAssertion(throwable);
+        currentMethodContext.addError(throwable);
     }
 }

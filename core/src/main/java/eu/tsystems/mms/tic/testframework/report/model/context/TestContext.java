@@ -41,11 +41,7 @@ import org.testng.ITestResult;
  * Representation of a TestNG {@link ITestContext}
  */
 public class TestContext extends AbstractContext implements SynchronizableContext {
-
-    /**
-     * @deprecated Use {@link #readClassContexts()} instead
-     */
-    public final Queue<ClassContext> classContexts = new ConcurrentLinkedQueue<>();
+    private final Queue<ClassContext> classContexts = new ConcurrentLinkedQueue<>();
 
     public TestContext(SuiteContext suiteContext) {
         this.parentContext = suiteContext;
@@ -103,55 +99,6 @@ public class TestContext extends AbstractContext implements SynchronizableContex
                 });
 
     }
-
-    //    private synchronized ClassContext createAndAddClassContext(Class realClass) {
-    //
-    //        /*
-    //        create a new class context, maybe this is later thrown away
-    //         */
-    //        final ClassContext newClassContext = new ClassContext(realClass, this);
-    //
-    //        //fillBasicContextValues(newClassContext, this, newClassContext.getTestClass().getSimpleName());
-    //
-    //        // lets check if we already know about it
-    //        if (readClassContexts().anyMatch(classContext -> classContext.getTestClass().getName().equals(realClass.getName()))) {
-    //
-    //            // a context for this class is already present
-    ////            newClassContext.setName(realClass.getSimpleName() + "_" + getSuiteContext().getName() + "_" + this.getName());
-    //
-    //            // Does a marker entry with this swi exist?
-    //            Optional<ClassContext> optionalFoundClassContext = readClassContexts().filter(classContext -> {
-    //                if (classContext.getTestClass().getName().equals(realClass.getName())) {
-    //                    AbstractContext context = newClassContext;
-    //                    AbstractContext cContext = classContext;
-    //                    while (context.getParentContext() != null) {
-    //                        if (!context.getParentContext().equals(cContext.getParentContext())) {
-    //                            return false;
-    //                        }
-    //                        context = context.getParentContext();
-    //                        cContext = cContext.getParentContext();
-    //                    }
-    //                }
-    //                return true;
-    //            }).findFirst();
-    //
-    //            if (optionalFoundClassContext.isPresent()) {
-    //                // this must be our class context
-    //                ClassContext classContext = optionalFoundClassContext.get();
-    //                /**
-    //                 * // TODO erku Setting the name doesn't behave like before (#setExplicitName())
-    //                 */
-    //                classContext.setName(realClass.getSimpleName() + "_" + getSuiteContext().getName() + "_" + this.getName());
-    //                return classContext;
-    //            }
-    //        } else {
-    //            newClassContext.setName(realClass.getSimpleName());
-    //        }
-    //
-    //        // Our new class is the first time coming up.
-    //        classContexts.add(newClassContext);
-    //        return newClassContext;
-    //    }
 
     @Override
     public TestStatusController.Status getStatus() {

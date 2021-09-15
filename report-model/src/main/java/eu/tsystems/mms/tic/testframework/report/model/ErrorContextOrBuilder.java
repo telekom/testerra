@@ -48,31 +48,31 @@ public interface ErrorContextOrBuilder extends
    *    ScriptSource execution_object_source = 8 [deprecated = true];
    * </pre>
    *
-   * <code>string ticketId = 9;</code>
+   * <code>string ticketId = 9 [deprecated = true];</code>
    * @return The ticketId.
    */
-  java.lang.String getTicketId();
+  @java.lang.Deprecated java.lang.String getTicketId();
   /**
    * <pre>
    *    ScriptSource execution_object_source = 8 [deprecated = true];
    * </pre>
    *
-   * <code>string ticketId = 9;</code>
+   * <code>string ticketId = 9 [deprecated = true];</code>
    * @return The bytes for ticketId.
    */
-  com.google.protobuf.ByteString
+  @java.lang.Deprecated com.google.protobuf.ByteString
       getTicketIdBytes();
 
   /**
-   * <code>string description = 10;</code>
+   * <code>string description = 10 [deprecated = true];</code>
    * @return The description.
    */
-  java.lang.String getDescription();
+  @java.lang.Deprecated java.lang.String getDescription();
   /**
-   * <code>string description = 10;</code>
+   * <code>string description = 10 [deprecated = true];</code>
    * @return The bytes for description.
    */
-  com.google.protobuf.ByteString
+  @java.lang.Deprecated com.google.protobuf.ByteString
       getDescriptionBytes();
 
   /**
@@ -104,4 +104,16 @@ public interface ErrorContextOrBuilder extends
    * @return The optional.
    */
   boolean getOptional();
+
+  /**
+   * <code>string screenshot_id = 13;</code>
+   * @return The screenshotId.
+   */
+  java.lang.String getScreenshotId();
+  /**
+   * <code>string screenshot_id = 13;</code>
+   * @return The bytes for screenshotId.
+   */
+  com.google.protobuf.ByteString
+      getScreenshotIdBytes();
 }

@@ -23,13 +23,14 @@ package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
 
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.annotations.InfoMethod;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import java.lang.reflect.Method;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 
@@ -43,6 +44,29 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
         ITestResult testResult = event.getTestResult();
         ITestNGMethod testMethod = event.getTestMethod();
 
+        // Handle collected assertions if we have more than one
+        if (testResult.isSuccess() && methodContext.readErrors().filter(ErrorContext::isNotOptional).count() > 1) {
+            // let the test fail
+            testResult.setStatus(ITestResult.FAILURE);
+            StringBuilder sb = new StringBuilder();
+            sb.append("The following assertions failed:");
+            AtomicInteger i = new AtomicInteger();
+            methodContext.readErrors()
+                    .filter(ErrorContext::isNotOptional)
+                    .forEach(errorContext -> {
+                        i.incrementAndGet();
+                        sb.append("\n").append(i).append(") ").append(errorContext.getThrowable().getMessage());
+                    });
+
+            AssertionError testMethodContainerError = new AssertionError(sb.toString());
+            testResult.setThrowable(testMethodContainerError);
+        } else {
+            Throwable throwable = testResult.getThrowable();
+            if (throwable != null) {
+                methodContext.addError(throwable);
+            }
+        }
+
         // !!! do nothing when state is RETRY (already set from RetryAnalyzer)
         if (methodContext.getStatus() != TestStatusController.Status.FAILED_RETRIED) {
 
@@ -50,12 +74,13 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
              * method container status and steps
              */
             if (event.isFailed()) {
-
                 /*
                  * set throwable
                  */
-                Throwable throwable = testResult.getThrowable();
-                methodContext.getErrorContext().setThrowable(null, throwable);
+//                Throwable throwable = testResult.getThrowable();
+//                if (throwable != null) {
+//                    methodContext.addError(throwable);
+//                }
 
                 /*
                  * set status

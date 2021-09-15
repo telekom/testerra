@@ -44,7 +44,7 @@ public class MethodContextTest extends AbstractWebDriverTest {
     @Test
     public void testT01_SetThrowable() throws Exception {
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-        methodContext.getErrorContext().setThrowable(null, getStackedThrowable());
+        methodContext.addError(getStackedThrowable());
 
         StackTrace stackTrace = methodContext.getErrorContext().getStackTrace();
 

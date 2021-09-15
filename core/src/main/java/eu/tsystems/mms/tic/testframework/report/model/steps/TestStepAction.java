@@ -113,5 +113,9 @@ public class TestStepAction implements Serializable {
     public Stream<Object> readEntries() {
         return this.entries.stream();
     }
+
+    public Stream<ErrorContext> readErrors() {
+        return readEntries(ErrorContext.class);
+    }
 }
 

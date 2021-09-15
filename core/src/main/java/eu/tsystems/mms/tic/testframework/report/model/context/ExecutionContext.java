@@ -27,33 +27,19 @@ import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 
 public class ExecutionContext extends AbstractContext implements SynchronizableContext {
-
-    /**
-     * @deprecated Use {@link #readSuiteContexts()} instead
-     */
-    public final Queue<SuiteContext> suiteContexts = new ConcurrentLinkedQueue<>();
-    @Deprecated
-    public Map<String, List<MethodContext>> failureAspects;
+    private final Queue<SuiteContext> suiteContexts = new ConcurrentLinkedQueue<>();
     public final RunConfig runConfig = new RunConfig();
-
-    /**
-     * @deprecated Use {@link #getMetaData()} instead
-     */
-    public final Map<String, String> metaData = new LinkedHashMap<>();
+    private final Map<String, String> metaData = new LinkedHashMap<>();
     public boolean crashed = false;
-
     private Queue<SessionContext> exclusiveSessionContexts;
 
     public int estimatedTestMethodCount;
@@ -131,49 +117,6 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
         } else {
             return getStatusFromContexts(suiteContexts.stream());
         }
-    }
-
-    /**
-     * Used in dashboard.vm
-     */
-    @Deprecated
-    public long getNumberOfRepresentationalTests() {
-        AtomicLong i = new AtomicLong();
-        i.set(0);
-        suiteContexts.forEach(suiteContext -> {
-            suiteContext.readTestContexts().forEach(testContext -> {
-                testContext.readClassContexts().forEach(classContext -> {
-                    i.set(i.get() + classContext.getRepresentationalMethods().count());
-                });
-            });
-        });
-        return i.get();
-    }
-
-    /**
-     * Used in dashboard.vm and methodsDashboard.vm
-     */
-    @Deprecated
-    public Map<TestStatusController.Status, Integer> getMethodStats(boolean includeTestMethods, boolean includeConfigMethods) {
-        Map<TestStatusController.Status, Integer> counts = new LinkedHashMap<>();
-
-        // initialize with 0
-        Arrays.stream(TestStatusController.Status.values()).forEach(status -> counts.put(status, 0));
-
-        suiteContexts.forEach(suiteContext -> {
-            suiteContext.readTestContexts().forEach(testContext -> {
-                testContext.readClassContexts().forEach(classContext -> {
-                    Map<TestStatusController.Status, Integer> methodStats = classContext.getMethodStats(includeTestMethods, includeConfigMethods);
-                    methodStats.keySet().forEach(status -> {
-                        Integer oldValue = counts.get(status);
-                        int newValue = oldValue + methodStats.get(status);
-                        counts.put(status, newValue);
-                    });
-                });
-            });
-        });
-
-        return counts;
     }
 
     public TestStatusController.Status[] getAvailableStatuses() {

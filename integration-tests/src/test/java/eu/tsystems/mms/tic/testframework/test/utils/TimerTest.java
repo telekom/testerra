@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
+import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import org.testng.Assert;
@@ -400,7 +401,7 @@ public class TimerTest extends AbstractWebDriverTest implements Loggable {
         Assert.assertTrue(isTimeoutExceptionThrown, msgTimeoutExceptionThrown);
         String readableErrorMessage = ExecutionContextController.getCurrentMethodContext().getErrorContext().getReadableErrorMessage();
         Assert.assertNotNull(readableErrorMessage, "Readable error message must not be null.");
-        Assert.assertEquals(readableErrorMessage, msgTesterraRuntimeException, "Readable error message was set correctly.");
+        AssertUtils.assertContains(readableErrorMessage, msgTesterraRuntimeException, "Readable error message was set correctly.");
     }
 
     @Test

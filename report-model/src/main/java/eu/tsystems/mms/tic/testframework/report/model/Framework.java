@@ -167,96 +167,97 @@ public final class Framework {
       "s\030\020 \003(\01321.data.ExecutionContext.FailureC" +
       "orridorLimitsEntry\032<\n\032FailureCorridorLim" +
       "itsEntry\022\013\n\003key\030\001 \001(\005\022\r\n\005value\030\002 \001(\005:\0028\001" +
-      "\"\354\007\n\rMethodContext\022+\n\016context_values\030\001 \001" +
+      "\"\364\007\n\rMethodContext\022+\n\016context_values\030\001 \001" +
       "(\0132\023.data.ContextValues\022%\n\013method_type\030\007" +
       " \001(\0162\020.data.MethodType\022\024\n\014retry_number\030\n" +
       " \001(\005\022\030\n\020method_run_index\030\013 \001(\005\022\023\n\013thread" +
       "_name\030\014 \001(\t\022:\n\026failure_corridor_value\030\016 " +
       "\001(\0162\032.data.FailureCorridorValue\022\030\n\020class" +
       "_context_id\030\017 \001(\t\022 \n\024execution_context_i" +
-      "d\030\020 \001(\tB\002\030\001\022\r\n\005infos\030\023 \003(\t\022\030\n\020priority_m" +
-      "essage\030\025 \001(\t\022\"\n\032related_method_context_i" +
-      "ds\030\027 \003(\t\022%\n\035depends_on_method_context_id" +
-      "s\030\030 \003(\t\022)\n\rerror_context\030\031 \001(\0132\022.data.Er" +
-      "rorContext\022\"\n\ntest_steps\030\032 \003(\0132\016.data.Te" +
-      "stStep\022\033\n\017test_context_id\030\033 \001(\tB\002\030\001\022\034\n\020s" +
-      "uite_context_id\030\034 \001(\tB\002\030\001\022\033\n\023session_con" +
-      "text_ids\030\035 \003(\t\022\031\n\021failed_step_index\030! \001(" +
-      "\005\022-\n\rresult_status\030\" \001(\0162\026.data.ResultSt" +
-      "atusType\0227\n\nparameters\030# \003(\0132#.data.Meth" +
-      "odContext.ParametersEntry\022@\n\017custom_cont" +
-      "exts\030$ \003(\0132\'.data.MethodContext.CustomCo" +
-      "ntextsEntry\0229\n\013annotations\030% \003(\0132$.data." +
-      "MethodContext.AnnotationsEntry\022\021\n\ttest_n" +
-      "ame\030& \001(\t\0321\n\017ParametersEntry\022\013\n\003key\030\001 \001(" +
-      "\t\022\r\n\005value\030\002 \001(\t:\0028\001\0325\n\023CustomContextsEn" +
-      "try\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\0322\n\020A" +
-      "nnotationsEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 " +
-      "\001(\t:\0028\001\"`\n\rContextValues\022\n\n\002id\030\001 \001(\t\022\017\n\007" +
-      "created\030\002 \001(\003\022\014\n\004name\030\003 \001(\t\022\022\n\nstart_tim" +
-      "e\030\004 \001(\003\022\020\n\010end_time\030\005 \001(\003\"?\n\010TestStep\022\014\n" +
-      "\004name\030\001 \001(\t\022%\n\007actions\030\003 \003(\0132\024.data.Test" +
-      "StepAction\"]\n\016TestStepAction\022\014\n\004name\030\001 \001" +
-      "(\t\022\021\n\ttimestamp\030\003 \001(\003\022*\n\007entries\030\007 \003(\0132\031" +
-      ".data.TestStepActionEntry\"\273\001\n\023TestStepAc" +
-      "tionEntry\0220\n\020click_path_event\030\001 \001(\0132\024.da" +
-      "ta.ClickPathEventH\000\022\027\n\rscreenshot_id\030\002 \001" +
-      "(\tH\000\022\'\n\013log_message\030\003 \001(\0132\020.data.LogMess" +
-      "ageH\000\022\'\n\tassertion\030\004 \001(\0132\022.data.ErrorCon" +
-      "textH\000B\007\n\005entry\"]\n\016ClickPathEvent\022&\n\004typ" +
-      "e\030\001 \001(\0162\030.data.ClickPathEventType\022\017\n\007sub" +
-      "ject\030\002 \001(\t\022\022\n\nsession_id\030\003 \001(\t\"\252\001\n\nLogMe" +
-      "ssage\022\"\n\004type\030\001 \001(\0162\024.data.LogMessageTyp" +
-      "e\022\023\n\013logger_name\030\002 \001(\t\022\017\n\007message\030\003 \001(\t\022" +
-      "\021\n\ttimestamp\030\004 \001(\003\022\023\n\013thread_name\030\005 \001(\t\022" +
-      "*\n\013stack_trace\030\006 \003(\0132\025.data.StackTraceCa" +
-      "use\"\236\001\n\014ErrorContext\022)\n\rscript_source\030\007 " +
-      "\001(\0132\022.data.ScriptSource\022\020\n\010ticketId\030\t \001(" +
-      "\t\022\023\n\013description\030\n \001(\t\022*\n\013stack_trace\030\013 " +
-      "\003(\0132\025.data.StackTraceCause\022\020\n\010optional\030\014" +
-      " \001(\010\"\354\001\n\016SessionContext\022+\n\016context_value" +
-      "s\030\001 \001(\0132\023.data.ContextValues\022\022\n\nsession_" +
-      "id\030\006 \001(\t\022\020\n\010video_id\030\007 \001(\t\022\034\n\024execution_" +
-      "context_id\030\010 \001(\t\022\024\n\014browser_name\030\t \001(\t\022\027" +
-      "\n\017browser_version\030\n \001(\t\022\024\n\014capabilities\030" +
-      "\013 \001(\t\022\022\n\nserver_url\030\014 \001(\t\022\020\n\010node_url\030\r " +
-      "\001(\t\"c\n\tRunConfig\022\016\n\006runcfg\030\001 \001(\t\0221\n\021buil" +
-      "d_information\030\002 \001(\0132\026.data.BuildInformat" +
-      "ion\022\023\n\013report_name\030\003 \001(\t\"\250\001\n\020BuildInform" +
-      "ation\022\032\n\022build_java_version\030\001 \001(\t\022\025\n\rbui" +
-      "ld_os_name\030\002 \001(\t\022\030\n\020build_os_version\030\003 \001" +
-      "(\t\022\027\n\017build_user_name\030\004 \001(\t\022\025\n\rbuild_ver" +
-      "sion\030\005 \001(\t\022\027\n\017build_timestamp\030\006 \001(\t\"T\n\017S" +
-      "tackTraceCause\022\022\n\nclass_name\030\001 \001(\t\022\017\n\007me" +
-      "ssage\030\002 \001(\t\022\034\n\024stack_trace_elements\030\003 \003(" +
-      "\t\"k\n\014ScriptSource\022\021\n\tfile_name\030\001 \001(\t\022\023\n\013" +
-      "method_name\030\002 \001(\t\022%\n\005lines\030\003 \003(\0132\026.data." +
-      "ScriptSourceLine\022\014\n\004mark\030\004 \001(\005\"5\n\020Script" +
-      "SourceLine\022\014\n\004line\030\001 \001(\t\022\023\n\013line_number\030" +
-      "\002 \001(\005\"\253\002\n\004File\022\n\n\002id\030\001 \001(\t\022\014\n\004size\030\002 \001(\003" +
-      "\022\020\n\010mimetype\030\003 \001(\t\022\025\n\rrelative_path\030\004 \001(" +
-      "\t\022\031\n\021created_timestamp\030\005 \001(\003\022\025\n\rsha1_che" +
-      "cksum\030\006 \001(\014\022\"\n\004meta\030\007 \003(\0132\024.data.File.Me" +
-      "taEntry\022\025\n\rlast_modified\030\t \001(\003\022\022\n\nprojec" +
-      "t_id\030\n \001(\t\022\016\n\006job_id\030\013 \001(\t\022\024\n\014is_directo" +
-      "ry\030\014 \001(\010\022\014\n\004name\030\r \001(\t\032+\n\tMetaEntry\022\013\n\003k" +
-      "ey\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001*t\n\022ClickPath" +
-      "EventType\022\020\n\014CPET_NOT_SET\020\000\022\017\n\013CPET_WIND" +
-      "OW\020\001\022\016\n\nCPET_CLICK\020\002\022\016\n\nCPET_VALUE\020\003\022\r\n\t" +
-      "CPET_PAGE\020\004\022\014\n\010CPET_URL\020\005*W\n\016LogMessageT" +
-      "ype\022\013\n\007LMT_OFF\020\000\022\r\n\tLMT_ERROR\020\001\022\014\n\010LMT_W" +
-      "ARN\020\002\022\014\n\010LMT_INFO\020\003\022\r\n\tLMT_DEBUG\020\004*O\n\024Fa" +
-      "ilureCorridorValue\022\017\n\013FCV_NOT_SET\020\000\022\014\n\010F" +
-      "CV_HIGH\020\001\022\013\n\007FCV_MID\020\002\022\013\n\007FCV_LOW\020\003*G\n\nM" +
-      "ethodType\022\016\n\nMT_NOT_SET\020\000\022\017\n\013TEST_METHOD" +
-      "\020\001\022\030\n\024CONFIGURATION_METHOD\020\002*\327\001\n\020ResultS" +
-      "tatusType\022\017\n\013RST_NOT_SET\020\000\022\n\n\006NO_RUN\020\001\022\014" +
-      "\n\004INFO\020\002\032\002\010\001\022\013\n\007SKIPPED\020\003\022\n\n\006PASSED\020\004\022\r\n" +
-      "\005MINOR\020\005\032\002\010\001\022\n\n\006FAILED\020\007\022\024\n\014FAILED_MINOR" +
-      "\020\010\032\002\010\001\022\022\n\016FAILED_RETRIED\020\t\022\023\n\017FAILED_EXP" +
-      "ECTED\020\n\022\020\n\014PASSED_RETRY\020\013\022\023\n\013MINOR_RETRY" +
-      "\020\014\032\002\010\001B2\n.eu.tsystems.mms.tic.testframew" +
-      "ork.report.modelP\001b\006proto3"
+      "d\030\020 \001(\tB\002\030\001\022\021\n\005infos\030\023 \003(\tB\002\030\001\022\030\n\020priori" +
+      "ty_message\030\025 \001(\t\022\"\n\032related_method_conte" +
+      "xt_ids\030\027 \003(\t\022%\n\035depends_on_method_contex" +
+      "t_ids\030\030 \003(\t\022-\n\rerror_context\030\031 \001(\0132\022.dat" +
+      "a.ErrorContextB\002\030\001\022\"\n\ntest_steps\030\032 \003(\0132\016" +
+      ".data.TestStep\022\033\n\017test_context_id\030\033 \001(\tB" +
+      "\002\030\001\022\034\n\020suite_context_id\030\034 \001(\tB\002\030\001\022\033\n\023ses" +
+      "sion_context_ids\030\035 \003(\t\022\031\n\021failed_step_in" +
+      "dex\030! \001(\005\022-\n\rresult_status\030\" \001(\0162\026.data." +
+      "ResultStatusType\0227\n\nparameters\030# \003(\0132#.d" +
+      "ata.MethodContext.ParametersEntry\022@\n\017cus" +
+      "tom_contexts\030$ \003(\0132\'.data.MethodContext." +
+      "CustomContextsEntry\0229\n\013annotations\030% \003(\013" +
+      "2$.data.MethodContext.AnnotationsEntry\022\021" +
+      "\n\ttest_name\030& \001(\t\0321\n\017ParametersEntry\022\013\n\003" +
+      "key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\0325\n\023CustomCo" +
+      "ntextsEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:" +
+      "\0028\001\0322\n\020AnnotationsEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005" +
+      "value\030\002 \001(\t:\0028\001\"`\n\rContextValues\022\n\n\002id\030\001" +
+      " \001(\t\022\017\n\007created\030\002 \001(\003\022\014\n\004name\030\003 \001(\t\022\022\n\ns" +
+      "tart_time\030\004 \001(\003\022\020\n\010end_time\030\005 \001(\003\"?\n\010Tes" +
+      "tStep\022\014\n\004name\030\001 \001(\t\022%\n\007actions\030\003 \003(\0132\024.d" +
+      "ata.TestStepAction\"]\n\016TestStepAction\022\014\n\004" +
+      "name\030\001 \001(\t\022\021\n\ttimestamp\030\003 \001(\003\022*\n\007entries" +
+      "\030\007 \003(\0132\031.data.TestStepActionEntry\"\273\001\n\023Te" +
+      "stStepActionEntry\0220\n\020click_path_event\030\001 " +
+      "\001(\0132\024.data.ClickPathEventH\000\022\027\n\rscreensho" +
+      "t_id\030\002 \001(\tH\000\022\'\n\013log_message\030\003 \001(\0132\020.data" +
+      ".LogMessageH\000\022\'\n\tassertion\030\004 \001(\0132\022.data." +
+      "ErrorContextH\000B\007\n\005entry\"]\n\016ClickPathEven" +
+      "t\022&\n\004type\030\001 \001(\0162\030.data.ClickPathEventTyp" +
+      "e\022\017\n\007subject\030\002 \001(\t\022\022\n\nsession_id\030\003 \001(\t\"\252" +
+      "\001\n\nLogMessage\022\"\n\004type\030\001 \001(\0162\024.data.LogMe" +
+      "ssageType\022\023\n\013logger_name\030\002 \001(\t\022\017\n\007messag" +
+      "e\030\003 \001(\t\022\021\n\ttimestamp\030\004 \001(\003\022\023\n\013thread_nam" +
+      "e\030\005 \001(\t\022*\n\013stack_trace\030\006 \003(\0132\025.data.Stac" +
+      "kTraceCause\"\275\001\n\014ErrorContext\022)\n\rscript_s" +
+      "ource\030\007 \001(\0132\022.data.ScriptSource\022\024\n\010ticke" +
+      "tId\030\t \001(\tB\002\030\001\022\027\n\013description\030\n \001(\tB\002\030\001\022*" +
+      "\n\013stack_trace\030\013 \003(\0132\025.data.StackTraceCau" +
+      "se\022\020\n\010optional\030\014 \001(\010\022\025\n\rscreenshot_id\030\r " +
+      "\001(\t\"\354\001\n\016SessionContext\022+\n\016context_values" +
+      "\030\001 \001(\0132\023.data.ContextValues\022\022\n\nsession_i" +
+      "d\030\006 \001(\t\022\020\n\010video_id\030\007 \001(\t\022\034\n\024execution_c" +
+      "ontext_id\030\010 \001(\t\022\024\n\014browser_name\030\t \001(\t\022\027\n" +
+      "\017browser_version\030\n \001(\t\022\024\n\014capabilities\030\013" +
+      " \001(\t\022\022\n\nserver_url\030\014 \001(\t\022\020\n\010node_url\030\r \001" +
+      "(\t\"c\n\tRunConfig\022\016\n\006runcfg\030\001 \001(\t\0221\n\021build" +
+      "_information\030\002 \001(\0132\026.data.BuildInformati" +
+      "on\022\023\n\013report_name\030\003 \001(\t\"\250\001\n\020BuildInforma" +
+      "tion\022\032\n\022build_java_version\030\001 \001(\t\022\025\n\rbuil" +
+      "d_os_name\030\002 \001(\t\022\030\n\020build_os_version\030\003 \001(" +
+      "\t\022\027\n\017build_user_name\030\004 \001(\t\022\025\n\rbuild_vers" +
+      "ion\030\005 \001(\t\022\027\n\017build_timestamp\030\006 \001(\t\"T\n\017St" +
+      "ackTraceCause\022\022\n\nclass_name\030\001 \001(\t\022\017\n\007mes" +
+      "sage\030\002 \001(\t\022\034\n\024stack_trace_elements\030\003 \003(\t" +
+      "\"k\n\014ScriptSource\022\021\n\tfile_name\030\001 \001(\t\022\023\n\013m" +
+      "ethod_name\030\002 \001(\t\022%\n\005lines\030\003 \003(\0132\026.data.S" +
+      "criptSourceLine\022\014\n\004mark\030\004 \001(\005\"5\n\020ScriptS" +
+      "ourceLine\022\014\n\004line\030\001 \001(\t\022\023\n\013line_number\030\002" +
+      " \001(\005\"\253\002\n\004File\022\n\n\002id\030\001 \001(\t\022\014\n\004size\030\002 \001(\003\022" +
+      "\020\n\010mimetype\030\003 \001(\t\022\025\n\rrelative_path\030\004 \001(\t" +
+      "\022\031\n\021created_timestamp\030\005 \001(\003\022\025\n\rsha1_chec" +
+      "ksum\030\006 \001(\014\022\"\n\004meta\030\007 \003(\0132\024.data.File.Met" +
+      "aEntry\022\025\n\rlast_modified\030\t \001(\003\022\022\n\nproject" +
+      "_id\030\n \001(\t\022\016\n\006job_id\030\013 \001(\t\022\024\n\014is_director" +
+      "y\030\014 \001(\010\022\014\n\004name\030\r \001(\t\032+\n\tMetaEntry\022\013\n\003ke" +
+      "y\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001*t\n\022ClickPathE" +
+      "ventType\022\020\n\014CPET_NOT_SET\020\000\022\017\n\013CPET_WINDO" +
+      "W\020\001\022\016\n\nCPET_CLICK\020\002\022\016\n\nCPET_VALUE\020\003\022\r\n\tC" +
+      "PET_PAGE\020\004\022\014\n\010CPET_URL\020\005*W\n\016LogMessageTy" +
+      "pe\022\013\n\007LMT_OFF\020\000\022\r\n\tLMT_ERROR\020\001\022\014\n\010LMT_WA" +
+      "RN\020\002\022\014\n\010LMT_INFO\020\003\022\r\n\tLMT_DEBUG\020\004*O\n\024Fai" +
+      "lureCorridorValue\022\017\n\013FCV_NOT_SET\020\000\022\014\n\010FC" +
+      "V_HIGH\020\001\022\013\n\007FCV_MID\020\002\022\013\n\007FCV_LOW\020\003*G\n\nMe" +
+      "thodType\022\016\n\nMT_NOT_SET\020\000\022\017\n\013TEST_METHOD\020" +
+      "\001\022\030\n\024CONFIGURATION_METHOD\020\002*\327\001\n\020ResultSt" +
+      "atusType\022\017\n\013RST_NOT_SET\020\000\022\n\n\006NO_RUN\020\001\022\014\n" +
+      "\004INFO\020\002\032\002\010\001\022\013\n\007SKIPPED\020\003\022\n\n\006PASSED\020\004\022\r\n\005" +
+      "MINOR\020\005\032\002\010\001\022\n\n\006FAILED\020\007\022\024\n\014FAILED_MINOR\020" +
+      "\010\032\002\010\001\022\022\n\016FAILED_RETRIED\020\t\022\023\n\017FAILED_EXPE" +
+      "CTED\020\n\022\020\n\014PASSED_RETRY\020\013\022\023\n\013MINOR_RETRY\020" +
+      "\014\032\002\010\001B2\n.eu.tsystems.mms.tic.testframewo" +
+      "rk.report.modelP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -357,7 +358,7 @@ public final class Framework {
     internal_static_data_ErrorContext_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_data_ErrorContext_descriptor,
-        new java.lang.String[] { "ScriptSource", "TicketId", "Description", "StackTrace", "Optional", });
+        new java.lang.String[] { "ScriptSource", "TicketId", "Description", "StackTrace", "Optional", "ScreenshotId", });
     internal_static_data_SessionContext_descriptor =
       getDescriptor().getMessageTypes().get(12);
     internal_static_data_SessionContext_fieldAccessorTable = new

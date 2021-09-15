@@ -244,18 +244,8 @@ public class Timer implements Loggable {
 
     private void addThrowableToMethodContext(Throwable catchedThrowable) {
         if (catchedThrowable != null) {
-            String catchedThrowableMessage;
-            if (catchedThrowable instanceof AssertionError) {
-                catchedThrowableMessage = catchedThrowable.toString();
-            } else {
-                catchedThrowableMessage = catchedThrowable.getMessage();
-            }
-            if (catchedThrowableMessage != null) {
-                MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
-                if (currentMethodContext != null) {
-                    currentMethodContext.getErrorContext().setThrowable(catchedThrowableMessage, catchedThrowable);
-                }
-            }
+            MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
+            currentMethodContext.addError(catchedThrowable);
         }
     }
 

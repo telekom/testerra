@@ -78,10 +78,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     private List<MethodContext> relatedMethodContexts = new LinkedList<>();
     private final List<MethodContext> dependsOnMethodContexts = new LinkedList<>();
     private List<CustomContext> customContexts;
-    private ErrorContext errorContext;
-    private int numAssertions = 0;
-    private int numOptionalAssertions = 0;
-    private final List<Annotation> annotationList = new ArrayList<>();
 
     /**
      * Public constructor. Creates a new <code>MethodContext</code> object.
@@ -107,13 +103,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
 
     public int getRetryCounter() {
         return this.retryNumber;
-    }
-
-    /**
-     * @deprecated use {@link #getRetryCounter()} instead
-     */
-    public int getRetryNumber() {
-        return this.getRetryCounter();
     }
 
     /**
@@ -195,58 +184,18 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return this.getSuiteContext().getExecutionContext();
     }
 
+    @Deprecated
     public int getNumAssertions() {
-        return numAssertions;
+        return (int)readErrors().filter(errorContext -> !errorContext.isOptional()).count();
     }
 
+    @Deprecated
     public int getNumOptionalAssertions() {
-        return numOptionalAssertions;
-    }
-
-    /**
-     * @deprecated Use {@link #readTestSteps()} instead
-     */
-    public List<ErrorContext> getNonFunctionalInfos() {
-        return this.readTestStepActions()
-                .flatMap(TestStepAction::readOptionalAssertions)
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * @deprecated Use {@link #readCollectedAssertions()} instead
-     */
-    public List<ErrorContext> getCollectedAssertions() {
-        return readCollectedAssertions().collect(Collectors.toList());
-    }
-
-    /**
-     * @deprecated Use {@link #readTestSteps()} instead
-     */
-    public Stream<ErrorContext> readCollectedAssertions() {
-        return this.readTestStepActions()
-                .flatMap(TestStepAction::readCollectedAssertions);
-    }
-
-    /**
-     * Used in methodDependencies.vm
-     *
-     * @deprecated Use {@link #readRelatedMethodContexts()} instead
-     */
-    public List<MethodContext> getRelatedMethodContexts() {
-        return this.relatedMethodContexts;
+        return (int)readErrors().filter(ErrorContext::isOptional).count();
     }
 
     public Stream<MethodContext> readRelatedMethodContexts() {
         return this.relatedMethodContexts.stream();
-    }
-
-    /**
-     * Used in methodDependencies.vm
-     *
-     * @deprecated Use {@link #readDependsOnMethodContexts()} instead
-     */
-    public List<MethodContext> getDependsOnMethodContexts() {
-        return this.dependsOnMethodContexts;
     }
 
     public Stream<MethodContext> readDependsOnMethodContexts() {
@@ -267,28 +216,8 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return this.readTestSteps().flatMap(testStep -> testStep.getTestStepActions().stream());
     }
 
-    private Stream<Screenshot> readScreenshots() {
-        return this.readTestStepActions()
-                .flatMap(testStepAction -> testStepAction.readEntries(Screenshot.class));
-    }
-
-    /**
-     * @deprecated Use {@link #readTestSteps()} instead
-     * Use in methodsDashboard.vm
-     */
-    public Collection<Screenshot> getScreenshots() {
-        return readScreenshots().collect(Collectors.toList());
-    }
-
     public TestStepAction addLogMessage(LogMessage logMessage) {
         return testStepController.addLogMessage(logMessage);
-    }
-
-    /**
-     * @deprecated Use {@link #readTestSteps()} instead
-     */
-    public List<TestStep> getTestSteps() {
-        return this.testStepController.getTestSteps();
     }
 
     public TestStep getTestStep(String name) {
@@ -303,13 +232,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return this.testStepController.getCurrentTestStep();
     }
 
-    /**
-     * Used in methodDetails.vm
-     */
-    public TestStep getLastFailedStep() {
-        return this.lastFailedStep;
-    }
-
     public int getLastFailedTestStepIndex() {
         return this.testStepController.getTestSteps().indexOf(this.lastFailedStep);
     }
@@ -318,15 +240,16 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         this.lastFailedStep = step;
     }
 
-    public boolean hasErrorContext() {
-        return this.errorContext != null && this.errorContext.getThrowable() != null;
+    /**
+     * Returns the first found error context
+     * @deprecated Used in methodDetails.vm
+     */
+    public ErrorContext getErrorContext() {
+        return readErrors().findFirst().orElseGet(ErrorContext::new);
     }
 
-    public ErrorContext getErrorContext() {
-        if (errorContext == null) {
-            errorContext = new ErrorContext();
-        }
-        return errorContext;
+    public Stream<ErrorContext> readErrors() {
+        return readTestStepActions().flatMap(TestStepAction::readErrors);
     }
 
     @Override
@@ -363,12 +286,14 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
 
     public void addOptionalAssertion(Throwable throwable) {
         getCurrentTestStep().getCurrentTestStepAction().addAssertion(new ErrorContext(throwable, true));
-        this.numOptionalAssertions++;
     }
 
-    public void addCollectedAssertion(Throwable throwable) {
-        getCurrentTestStep().getCurrentTestStepAction().addAssertion(new ErrorContext(throwable, false));
-        this.numAssertions++;
+    public void addError(Throwable throwable) {
+        addError(new ErrorContext(throwable, false));
+    }
+
+    public void addError(ErrorContext errorContext) {
+        getCurrentTestStep().getCurrentTestStepAction().addAssertion(errorContext);
     }
 
     public boolean isRetry() {
@@ -486,20 +411,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     /**
-     * @deprecated Use {@link #readSessionContexts()} instead
-     */
-    public Collection<Video> getVideos() {
-        return this.readVideos().collect(Collectors.toList());
-    }
-
-    /**
-     * @deprecated Use {@link #readSessionContexts()} instead
-     */
-    public Stream<Video> readVideos() {
-        return this.readSessionContexts().map(SessionContext::getVideo).filter(Optional::isPresent).map(Optional::get);
-    }
-
-    /**
      * Proper parameter names are available by setting {https://stackoverflow.com/questions/6759880/getting-the-name-of-a-method-parameter}
      */
     public Parameter[] getParameters() {
@@ -530,23 +441,9 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     public Stream<Annotation> readAnnotations() {
-        return Stream.concat(
-                this.annotationList.stream(),
-                getTestNgResult()
+        return getTestNgResult()
                         .map(testResult -> Stream.of(testResult.getMethod().getConstructorOrMethod().getMethod().getAnnotations()))
-                        .orElse(Stream.empty())
-        );
+                        .orElse(Stream.empty());
     }
 
-    public MethodContext addAnnotation(Annotation annotation) {
-        this.annotationList.add(annotation);
-        return this;
-    }
-
-    /**
-     * @deprecated Used in methodTags.vm, methodBodyDashboard.vm, methodsDashboard.vm
-     */
-    public List<Annotation> getMethodTags() {
-        return readAnnotations().collect(Collectors.toList());
-    }
 }

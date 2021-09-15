@@ -533,10 +533,10 @@ private static final long serialVersionUID = 0L;
    *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
    * </pre>
    *
-   * <code>repeated string infos = 19;</code>
+   * <code>repeated string infos = 19 [deprecated = true];</code>
    * @return A list containing the infos.
    */
-  public com.google.protobuf.ProtocolStringList
+  @java.lang.Deprecated public com.google.protobuf.ProtocolStringList
       getInfosList() {
     return infos_;
   }
@@ -546,10 +546,10 @@ private static final long serialVersionUID = 0L;
    *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
    * </pre>
    *
-   * <code>repeated string infos = 19;</code>
+   * <code>repeated string infos = 19 [deprecated = true];</code>
    * @return The count of infos.
    */
-  public int getInfosCount() {
+  @java.lang.Deprecated public int getInfosCount() {
     return infos_.size();
   }
   /**
@@ -558,11 +558,11 @@ private static final long serialVersionUID = 0L;
    *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
    * </pre>
    *
-   * <code>repeated string infos = 19;</code>
+   * <code>repeated string infos = 19 [deprecated = true];</code>
    * @param index The index of the element to return.
    * @return The infos at the given index.
    */
-  public java.lang.String getInfos(int index) {
+  @java.lang.Deprecated public java.lang.String getInfos(int index) {
     return infos_.get(index);
   }
   /**
@@ -571,11 +571,11 @@ private static final long serialVersionUID = 0L;
    *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
    * </pre>
    *
-   * <code>repeated string infos = 19;</code>
+   * <code>repeated string infos = 19 [deprecated = true];</code>
    * @param index The index of the value to return.
    * @return The bytes of the infos at the given index.
    */
-  public com.google.protobuf.ByteString
+  @java.lang.Deprecated public com.google.protobuf.ByteString
       getInfosBytes(int index) {
     return infos_.getByteString(index);
   }
@@ -691,26 +691,26 @@ private static final long serialVersionUID = 0L;
   public static final int ERROR_CONTEXT_FIELD_NUMBER = 25;
   private eu.tsystems.mms.tic.testframework.report.model.ErrorContext errorContext_;
   /**
-   * <code>.data.ErrorContext error_context = 25;</code>
+   * <code>.data.ErrorContext error_context = 25 [deprecated = true];</code>
    * @return Whether the errorContext field is set.
    */
   @java.lang.Override
-  public boolean hasErrorContext() {
+  @java.lang.Deprecated public boolean hasErrorContext() {
     return errorContext_ != null;
   }
   /**
-   * <code>.data.ErrorContext error_context = 25;</code>
+   * <code>.data.ErrorContext error_context = 25 [deprecated = true];</code>
    * @return The errorContext.
    */
   @java.lang.Override
-  public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getErrorContext() {
+  @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getErrorContext() {
     return errorContext_ == null ? eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance() : errorContext_;
   }
   /**
-   * <code>.data.ErrorContext error_context = 25;</code>
+   * <code>.data.ErrorContext error_context = 25 [deprecated = true];</code>
    */
   @java.lang.Override
-  public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getErrorContextOrBuilder() {
+  @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getErrorContextOrBuilder() {
     return getErrorContext();
   }
 
@@ -2622,10 +2622,10 @@ private static final long serialVersionUID = 0L;
      *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
      * </pre>
      *
-     * <code>repeated string infos = 19;</code>
+     * <code>repeated string infos = 19 [deprecated = true];</code>
      * @return A list containing the infos.
      */
-    public com.google.protobuf.ProtocolStringList
+    @java.lang.Deprecated public com.google.protobuf.ProtocolStringList
         getInfosList() {
       return infos_.getUnmodifiableView();
     }
@@ -2635,10 +2635,10 @@ private static final long serialVersionUID = 0L;
      *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
      * </pre>
      *
-     * <code>repeated string infos = 19;</code>
+     * <code>repeated string infos = 19 [deprecated = true];</code>
      * @return The count of infos.
      */
-    public int getInfosCount() {
+    @java.lang.Deprecated public int getInfosCount() {
       return infos_.size();
     }
     /**
@@ -2647,11 +2647,11 @@ private static final long serialVersionUID = 0L;
      *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
      * </pre>
      *
-     * <code>repeated string infos = 19;</code>
+     * <code>repeated string infos = 19 [deprecated = true];</code>
      * @param index The index of the element to return.
      * @return The infos at the given index.
      */
-    public java.lang.String getInfos(int index) {
+    @java.lang.Deprecated public java.lang.String getInfos(int index) {
       return infos_.get(index);
     }
     /**
@@ -2660,11 +2660,11 @@ private static final long serialVersionUID = 0L;
      *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
      * </pre>
      *
-     * <code>repeated string infos = 19;</code>
+     * <code>repeated string infos = 19 [deprecated = true];</code>
      * @param index The index of the value to return.
      * @return The bytes of the infos at the given index.
      */
-    public com.google.protobuf.ByteString
+    @java.lang.Deprecated public com.google.protobuf.ByteString
         getInfosBytes(int index) {
       return infos_.getByteString(index);
     }
@@ -2674,12 +2674,12 @@ private static final long serialVersionUID = 0L;
      *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
      * </pre>
      *
-     * <code>repeated string infos = 19;</code>
+     * <code>repeated string infos = 19 [deprecated = true];</code>
      * @param index The index to set the value at.
      * @param value The infos to set.
      * @return This builder for chaining.
      */
-    public Builder setInfos(
+    @java.lang.Deprecated public Builder setInfos(
         int index, java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
@@ -2695,11 +2695,11 @@ private static final long serialVersionUID = 0L;
      *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
      * </pre>
      *
-     * <code>repeated string infos = 19;</code>
+     * <code>repeated string infos = 19 [deprecated = true];</code>
      * @param value The infos to add.
      * @return This builder for chaining.
      */
-    public Builder addInfos(
+    @java.lang.Deprecated public Builder addInfos(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
@@ -2715,11 +2715,11 @@ private static final long serialVersionUID = 0L;
      *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
      * </pre>
      *
-     * <code>repeated string infos = 19;</code>
+     * <code>repeated string infos = 19 [deprecated = true];</code>
      * @param values The infos to add.
      * @return This builder for chaining.
      */
-    public Builder addAllInfos(
+    @java.lang.Deprecated public Builder addAllInfos(
         java.lang.Iterable<java.lang.String> values) {
       ensureInfosIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -2733,10 +2733,10 @@ private static final long serialVersionUID = 0L;
      *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
      * </pre>
      *
-     * <code>repeated string infos = 19;</code>
+     * <code>repeated string infos = 19 [deprecated = true];</code>
      * @return This builder for chaining.
      */
-    public Builder clearInfos() {
+    @java.lang.Deprecated public Builder clearInfos() {
       infos_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
@@ -2748,11 +2748,11 @@ private static final long serialVersionUID = 0L;
      *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
      * </pre>
      *
-     * <code>repeated string infos = 19;</code>
+     * <code>repeated string infos = 19 [deprecated = true];</code>
      * @param value The bytes of the infos to add.
      * @return This builder for chaining.
      */
-    public Builder addInfosBytes(
+    @java.lang.Deprecated public Builder addInfosBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
@@ -3064,17 +3064,17 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> errorContextBuilder_;
     /**
-     * <code>.data.ErrorContext error_context = 25;</code>
+     * <code>.data.ErrorContext error_context = 25 [deprecated = true];</code>
      * @return Whether the errorContext field is set.
      */
-    public boolean hasErrorContext() {
+    @java.lang.Deprecated public boolean hasErrorContext() {
       return errorContextBuilder_ != null || errorContext_ != null;
     }
     /**
-     * <code>.data.ErrorContext error_context = 25;</code>
+     * <code>.data.ErrorContext error_context = 25 [deprecated = true];</code>
      * @return The errorContext.
      */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getErrorContext() {
+    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getErrorContext() {
       if (errorContextBuilder_ == null) {
         return errorContext_ == null ? eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance() : errorContext_;
       } else {
@@ -3082,9 +3082,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.data.ErrorContext error_context = 25;</code>
+     * <code>.data.ErrorContext error_context = 25 [deprecated = true];</code>
      */
-    public Builder setErrorContext(eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
+    @java.lang.Deprecated public Builder setErrorContext(eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
       if (errorContextBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -3098,9 +3098,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.data.ErrorContext error_context = 25;</code>
+     * <code>.data.ErrorContext error_context = 25 [deprecated = true];</code>
      */
-    public Builder setErrorContext(
+    @java.lang.Deprecated public Builder setErrorContext(
         eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder builderForValue) {
       if (errorContextBuilder_ == null) {
         errorContext_ = builderForValue.build();
@@ -3112,9 +3112,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.data.ErrorContext error_context = 25;</code>
+     * <code>.data.ErrorContext error_context = 25 [deprecated = true];</code>
      */
-    public Builder mergeErrorContext(eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
+    @java.lang.Deprecated public Builder mergeErrorContext(eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
       if (errorContextBuilder_ == null) {
         if (errorContext_ != null) {
           errorContext_ =
@@ -3130,9 +3130,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.data.ErrorContext error_context = 25;</code>
+     * <code>.data.ErrorContext error_context = 25 [deprecated = true];</code>
      */
-    public Builder clearErrorContext() {
+    @java.lang.Deprecated public Builder clearErrorContext() {
       if (errorContextBuilder_ == null) {
         errorContext_ = null;
         onChanged();
@@ -3144,17 +3144,17 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.data.ErrorContext error_context = 25;</code>
+     * <code>.data.ErrorContext error_context = 25 [deprecated = true];</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder getErrorContextBuilder() {
+    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder getErrorContextBuilder() {
       
       onChanged();
       return getErrorContextFieldBuilder().getBuilder();
     }
     /**
-     * <code>.data.ErrorContext error_context = 25;</code>
+     * <code>.data.ErrorContext error_context = 25 [deprecated = true];</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getErrorContextOrBuilder() {
+    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getErrorContextOrBuilder() {
       if (errorContextBuilder_ != null) {
         return errorContextBuilder_.getMessageOrBuilder();
       } else {
@@ -3163,7 +3163,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.data.ErrorContext error_context = 25;</code>
+     * <code>.data.ErrorContext error_context = 25 [deprecated = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 

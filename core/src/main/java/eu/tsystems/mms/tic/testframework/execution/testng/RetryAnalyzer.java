@@ -27,7 +27,6 @@ import eu.tsystems.mms.tic.testframework.annotations.Retry;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.InheritedFailedException;
-import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
@@ -186,17 +185,6 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
             Method realMethod = testResult.getMethod().getConstructorOrMethod().getMethod();
             // explicitly set status if it is not set atm
             TestStatusController.setMethodStatus(methodContext, TestStatusController.Status.FAILED_RETRIED, realMethod);
-
-            // explicitly set status if it is not set atm
-            if (methodContext.getErrorContext().getThrowable() == null) {
-                final Throwable throwable = testResult.getThrowable();
-                final String message = "Retrying this method " + retryMessageString;
-                if (throwable != null) {
-                    methodContext.getErrorContext().setThrowable(message, throwable);
-                } else {
-                    methodContext.getErrorContext().setThrowable(message, new SystemException(message));
-                }
-            }
 
             RETRIED_METHODS.add(methodContext);
 

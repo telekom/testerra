@@ -89,11 +89,9 @@ public abstract class AbstractPage implements Loggable {
             set readable message
              */
             String message = "Page check failed on " + this.getClass().getSimpleName();
-
-            MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-            if (methodContext != null) {
-                methodContext.getErrorContext().setThrowable(message, t);
-            }
+//
+//            MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
+//            methodContext.addError(new Throwable(message, t));
 
             /*
             exception
@@ -187,15 +185,15 @@ public abstract class AbstractPage implements Loggable {
                 /*
                 set readable message
                  */
-                String throwableMessage = throwable.getMessage();
-                if (throwableMessage == null) {
-                    throwableMessage = message;
-                }
+//                String throwableMessage = throwable.getMessage();
+//                if (throwableMessage == null) {
+//                    throwableMessage = message;
+//                }
 
-                MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-                if (methodContext != null) {
-                    methodContext.getErrorContext().setThrowable(throwableMessage, importantThrowable);
-                }
+//                MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
+//                if (methodContext != null) {
+//                    methodContext.getErrorContext().setThrowable(throwableMessage, importantThrowable);
+//                }
 
                 if (importantThrowable instanceof Error) {
                     throw (Error) importantThrowable;

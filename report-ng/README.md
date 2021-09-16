@@ -13,12 +13,13 @@ Cleans the application build environment (including `node_modules`)
 gradle npmClean
 ```
 
-Builds the Report NG from `app` and copies the files to `src/main/resources`
+Builds the Report NG from `app` and copies the files to `src/main/resources`.
+
 ```shell
-gradle build
+gradle buildReport
 ```
 
 ## Testing
 
 When using the report with integration tests from source (without built JAR),
-you need to build it first in order to be able to access the resources.
+you need to run `buildReport` before `build` or `test` in order to be able to access the resources.

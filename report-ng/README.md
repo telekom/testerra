@@ -22,4 +22,4 @@ gradle buildReport
 ## Testing
 
 When using the report with integration tests from source (without built JAR),
-you need to run `buildReport` before `build` or `test` in order to be able to access the resources.
+you need to run `buildReport` before `processResources` in `build` or `test` in order to be able to access the resources.

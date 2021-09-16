@@ -24,6 +24,7 @@ package eu.tsystems.mms.tic.testframework.listeners;
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.events.FinalizeExecutionEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import java.net.URL;
 import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.io.IOException;
@@ -101,9 +102,9 @@ public class CopyReportAppListener implements FinalizeExecutionEvent.Listener, L
             Path resourceDirPath = fs.getPath(folder);
             return Files.walk(resourceDirPath).filter(Files::isRegularFile);
         } catch (IOException | ProviderNotFoundException e) {
-            URI resourceDirUri = getClass().getClassLoader().getResource(folder).toURI();
-            log().warn(String.format("Unable to read from resource JAR: %s, trying local resources: %s", e.getMessage(), resourceDirUri));
-            Path resourceDirPath = Paths.get(resourceDirUri);
+            URL resourceUrl = getClass().getClassLoader().getResource(folder);
+            log().warn(String.format("Unable to read from resource JAR: %s, trying local resources: %s", e.getMessage(), resourceUrl));
+            Path resourceDirPath = Paths.get(resourceUrl.toURI());
             return Files.walk(resourceDirPath)
                     .filter(Files::isRegularFile)
                     .map(resourceFilePath -> resourceDirPath.getParent().relativize(resourceFilePath));

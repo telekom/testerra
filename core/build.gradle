@@ -8,10 +8,6 @@ dependencies {
     implementation 'org.apache.pdfbox:pdfbox:1.8.16'
     // </PdfUtils>
 
-    // <RESTUtils>
-    implementation 'com.sun.jersey:jersey-client:1.19.3'
-    // </RESTUtils
-
     api "com.google.guava:guava:${guavaVersion}"
 
     // <XML>

@@ -34,6 +34,10 @@ public class BrowserUpRemoteProxyServer {
     private Integer port;
     private URL upstreamProxy;
 
+    private String upstreamNonProxy;
+
+    private String bindAddress;
+
     public Integer getPort() {
         return port;
     }
@@ -48,5 +52,21 @@ public class BrowserUpRemoteProxyServer {
 
     public void setUpstreamProxy(URL upstreamProxy) {
         this.upstreamProxy = upstreamProxy;
+    }
+
+    public String getUpstreamNonProxy() {
+        return upstreamNonProxy;
+    }
+
+    public void setUpstreamNonProxy(String upstreamNonProxy) {
+        this.upstreamNonProxy = upstreamNonProxy;
+    }
+
+    public String getBindAddress() {
+        return bindAddress;
+    }
+
+    public void setBindAddress(String bindAddress) {
+        this.bindAddress = bindAddress;
     }
 }

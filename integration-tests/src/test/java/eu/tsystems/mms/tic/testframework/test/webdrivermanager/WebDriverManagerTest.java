@@ -29,6 +29,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
@@ -186,5 +187,14 @@ public class WebDriverManagerTest extends AbstractWebDriverTest {
         Assert.assertEquals(size.getWidth(), expected.getWidth());
         Assert.assertEquals(size.getHeight(), expected.getHeight());
         WebDriverManager.shutdown();
+    }
+
+    @Test
+    public void test_propagatedBrowserSettingProperty() {
+        PropertyManager.getThreadLocalProperties().setProperty(TesterraProperties.BROWSER_SETTING, "mybrowser:myversion");
+        WebDriverManager.getConfig().reset();
+        Assert.assertEquals(WebDriverManager.getConfig().getBrowser(), "mybrowser");
+        Assert.assertEquals(PropertyManager.getProperty(TesterraProperties.BROWSER), "mybrowser");
+        Assert.assertEquals( PropertyManager.getProperty(TesterraProperties.BROWSER_VERSION), "myversion");
     }
 }

@@ -20,6 +20,8 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -35,6 +37,7 @@ public abstract class AbstractWebDriverConfiguration implements Serializable {
     }
 
     public AbstractWebDriverConfiguration setBrowser(String browser) {
+        PropertyManager.getThreadLocalProperties().setProperty(TesterraProperties.BROWSER, browser);
         this.browser = browser;
         return this;
     }
@@ -44,6 +47,7 @@ public abstract class AbstractWebDriverConfiguration implements Serializable {
     }
 
     public AbstractWebDriverConfiguration setBrowserVersion(String browserVersion) {
+        PropertyManager.getThreadLocalProperties().setProperty(TesterraProperties.BROWSER_VERSION, browserVersion);
         this.browserVersion = browserVersion;
         return this;
     }

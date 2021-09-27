@@ -41,8 +41,6 @@ import org.slf4j.LoggerFactory;
 
 public final class CertUtils {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CertUtils.class);
-
     private String[] trustedHosts;
     private boolean trustAllHosts = false;
 

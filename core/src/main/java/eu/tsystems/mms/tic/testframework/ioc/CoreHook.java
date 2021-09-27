@@ -24,6 +24,7 @@ package eu.tsystems.mms.tic.testframework.ioc;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
+import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
@@ -45,7 +46,9 @@ import eu.tsystems.mms.tic.testframework.internal.IdGenerator;
 import eu.tsystems.mms.tic.testframework.internal.SequenceIdGenerator;
 import eu.tsystems.mms.tic.testframework.report.DefaultReport;
 import eu.tsystems.mms.tic.testframework.report.ExecutionEndListener;
+import eu.tsystems.mms.tic.testframework.report.FailsAnnotationConverter;
 import eu.tsystems.mms.tic.testframework.report.Report;
+import eu.tsystems.mms.tic.testframework.report.TestAnnotationConverter;
 import eu.tsystems.mms.tic.testframework.report.utils.DefaultExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.DefaultTestNGContextGenerator;
 import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
@@ -55,6 +58,7 @@ import eu.tsystems.mms.tic.testframework.testing.DefaultTestControllerOverrides;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
 import eu.tsystems.mms.tic.testframework.utils.DefaultFormatter;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
+import org.testng.annotations.Test;
 
 public class CoreHook extends AbstractModule implements ModuleHook, PropertyManagerProvider {
 
@@ -76,6 +80,11 @@ public class CoreHook extends AbstractModule implements ModuleHook, PropertyMana
 
     @Override
     public void init() {
+
+        Report report = Testerra.getInjector().getInstance(Report.class);
+        report.registerAnnotationConverter(Fails.class, new FailsAnnotationConverter());
+        report.registerAnnotationConverter(Test.class, new TestAnnotationConverter());
+
         EventBus eventBus = Testerra.getEventBus();
 
         eventBus.register(new MethodStartWorker());

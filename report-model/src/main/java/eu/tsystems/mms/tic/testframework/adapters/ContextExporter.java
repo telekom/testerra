@@ -23,6 +23,7 @@ package eu.tsystems.mms.tic.testframework.adapters;
 
 import com.google.common.net.MediaType;
 import com.google.gson.Gson;
+import com.google.inject.Injector;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.internal.IdGenerator;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
@@ -70,9 +71,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 
 public class ContextExporter implements Loggable {
-    private final IdGenerator idGenerator = Testerra.getInjector().getInstance(IdGenerator.class);
+    private final Injector injector = Testerra.getInjector();
+    private final IdGenerator idGenerator = injector.getInstance(IdGenerator.class);
     private final Map<TestStatusController.Status, ResultStatusType> STATUS_MAPPING = new LinkedHashMap<>();
-    private final Report report = Testerra.getInjector().getInstance(Report.class);
+    private final Report report = injector.getInstance(Report.class);
     private final Gson jsonEncoder = new Gson();
 
 //    private Map<String,Object> getAnnotationParameters(Annotation annotation) {

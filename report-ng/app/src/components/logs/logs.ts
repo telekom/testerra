@@ -26,7 +26,7 @@ import {ILogEntry, StatisticsGenerator} from "services/statistics-generator";
 import {StatusConverter} from "services/status-converter";
 import {data} from "services/report-model";
 import "./logs.scss"
-import {VirtualLogView} from "../virtual-log-view/virtual-log-view";
+import {VirtualLogView} from "../log-view/virtual-log-view";
 
 @autoinject()
 export class Logs extends AbstractViewModel {

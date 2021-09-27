@@ -70,8 +70,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 
 public class ContextExporter implements Loggable {
-    private static final IdGenerator idGenerator = Testerra.getInjector().getInstance(IdGenerator.class);
-    private static final Map<TestStatusController.Status, ResultStatusType> STATUS_MAPPING = new LinkedHashMap<>();
+    private final IdGenerator idGenerator = Testerra.getInjector().getInstance(IdGenerator.class);
+    private final Map<TestStatusController.Status, ResultStatusType> STATUS_MAPPING = new LinkedHashMap<>();
     private final Report report = Testerra.getInjector().getInstance(Report.class);
     private final Gson jsonEncoder = new Gson();
 

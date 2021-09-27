@@ -25,6 +25,8 @@ import eu.tsystems.mms.tic.testframework.common.IProperties;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import java.io.File;
+import java.lang.annotation.Annotation;
+import java.util.Optional;
 
 public interface Report {
     enum Properties implements IProperties {
@@ -111,4 +113,24 @@ public interface Report {
      * Returns the relative path of a given report file.
      */
     String getRelativePath(File file);
+
+    /**
+     * Registers a converter for a specific annotation class
+     * @param annotationClass
+     * @param annotationExporter
+     */
+    void registerAnnotationConverter(Class<? extends Annotation> annotationClass, AnnotationConverter annotationExporter);
+
+    /**
+     * Unregisters a converter
+     * @param annotationClass
+     */
+    void unregisterAnnotationConverter(Class<? extends Annotation> annotationClass);
+
+    /**
+     * Gets a converter for a specific annotation class
+     * @param annotation
+     * @return
+     */
+    Optional<AnnotationConverter> getAnnotationConverter(Annotation annotation);
 }

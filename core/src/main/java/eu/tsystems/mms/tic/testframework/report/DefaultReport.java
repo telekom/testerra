@@ -26,7 +26,10 @@ import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import java.io.File;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.Arrays;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DefaultReport implements Report, Loggable {
 
@@ -34,6 +37,7 @@ public class DefaultReport implements Report, Loggable {
     private final String baseDir = Properties.BASE_DIR.asString();
     private final File finalReportDirectory = new File(baseDir);
     private final File tempReportDirectory;
+    private final ConcurrentHashMap<Class<? extends Annotation>, AnnotationConverter> annotationConverters = new ConcurrentHashMap<>();
 
     public DefaultReport() {
         FileUtils fileUtils = new FileUtils();
@@ -141,5 +145,17 @@ public class DefaultReport implements Report, Loggable {
             }
         }
         return absFilePath;
+    }
+
+    public void registerAnnotationConverter(Class<? extends Annotation> annotationClass, AnnotationConverter annotationExporter) {
+        annotationConverters.put(annotationClass, annotationExporter);
+    }
+
+    public void unregisterAnnotationConverter(Class<? extends Annotation> annotationClass) {
+        annotationConverters.remove(annotationClass);
+    }
+
+    public Optional<AnnotationConverter> getAnnotationConverter(Annotation annotation) {
+        return Optional.ofNullable(annotationConverters.get(annotation.annotationType()));
     }
 }

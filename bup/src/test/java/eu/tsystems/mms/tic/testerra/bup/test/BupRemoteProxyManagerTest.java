@@ -198,6 +198,51 @@ public class BupRemoteProxyManagerTest extends TesterraTest {
     }
 
     @Test
+    public void testT03a_StartProxyServerWithExtendedOptionsAndVerifyRunning() throws IOException {
+
+        stubFor(post(urlMatching("/proxy\\?port=8088.*"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "text/json")
+                        .withBody(Response.POST_PROXY_8088.getResponse())));
+
+        final StubMapping emptyListStub = stubFor(get(urlEqualTo("/proxy"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "text/json")
+                        .withBody(Response.GET_PROXY_EMPTY.getResponse())));
+
+        // ### Test Start ###
+
+        final URL apiBaseUrl = new URL(LOCAL_PROXY_FOR_TEST);
+        final BrowserUpRemoteProxyManager browserUpRemoteProxyManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
+
+        BrowserUpRemoteProxyServer browserUpRemoteProxyServer = new BrowserUpRemoteProxyServer();
+        browserUpRemoteProxyServer.setPort(8088);
+        // Set other options for proxy server
+        // Unfortunately, BrowsreUP proxy REST API does not allow to verify such settings.
+        browserUpRemoteProxyServer.setBindAddress("192.168.100.1");
+        browserUpRemoteProxyServer.setUpstreamProxy(new URL("http://proxy.company.example.org:8080"));
+        browserUpRemoteProxyServer.setUpstreamNonProxy(".internal.example.org|.mystuff.example.org");
+
+        browserUpRemoteProxyServer = browserUpRemoteProxyManager.startServer(browserUpRemoteProxyServer);
+        Assert.assertNotNull(browserUpRemoteProxyServer, "Proxy object generated.");
+
+        Assert.assertEquals(browserUpRemoteProxyServer.getPort().intValue(), 8088, "Port equals desired.");
+
+        // ### Change stubbing ###
+        removeStub(emptyListStub);
+        stubFor(get(urlEqualTo("/proxy"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "text/json")
+                        .withBody(Response.GET_PROXY_8088.getResponse())));
+
+        final boolean running = browserUpRemoteProxyManager.isRunning(browserUpRemoteProxyServer);
+        Assert.assertTrue(running, "BrowserUp Proxy is running.");
+    }
+
+    @Test
     public void testT04_StopProxyServer() throws IOException {
 
         stubFor(delete(urlEqualTo("/proxy/8088"))

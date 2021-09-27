@@ -27,8 +27,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -125,25 +125,33 @@ public class BrowserUpRemoteProxyManager implements Loggable {
 
         if (proxyServer.getPort() != null) {
 
-            // check if port already in use...
+            // Check if port already in use...
             if (this.isRunning(proxyServer)) {
                 log().info("Remote proxy session already running on this port.");
                 return proxyServer;
             }
 
-            // set port to start proxyserver on.
+            // Set port to start proxyserver on.
             startServerUriBuilder.setParameter("port", String.valueOf(proxyServer.getPort()));
         }
 
-        // always trust them.
+        // Always trust them.
         startServerUriBuilder.setParameter("trustAllServers", "true");
 
-        // always set bindAddress
-        startServerUriBuilder.setParameter("bindAddress", this.baseUrl.getHost());
+        // Set bind address
+        if (StringUtils.isNotBlank(proxyServer.getBindAddress())) {
+            startServerUriBuilder.setParameter("bindAddress", proxyServer.getBindAddress());
+        }
 
-        // set upstream proxy.
+        // Set upstream proxy.
         if (proxyServer.getUpstreamProxy() != null) {
             startServerUriBuilder.setParameter("httpProxy", String.format("%s:%d", proxyServer.getUpstreamProxy().getHost(), proxyServer.getUpstreamProxy().getPort()));
+            startServerUriBuilder.setParameter("proxyHTTPS", String.format("%s:%d", proxyServer.getUpstreamProxy().getHost(), proxyServer.getUpstreamProxy().getPort()));
+
+            // Set non proxy exceptions for upstream proxy
+            if (StringUtils.isNotBlank(proxyServer.getUpstreamNonProxy())) {
+                startServerUriBuilder.setParameter("httpNonProxyHosts", proxyServer.getUpstreamNonProxy());
+            }
         }
 
         final URI uri = buildUri(startServerUriBuilder, "Error parsing URL for POST /proxy for BrowserUp proxy server.");

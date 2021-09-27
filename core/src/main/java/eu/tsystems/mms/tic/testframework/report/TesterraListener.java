@@ -62,6 +62,7 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
+import org.testng.annotations.Test;
 import org.testng.xml.XmlSuite;
 
 /**

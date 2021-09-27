@@ -68,9 +68,6 @@ import eu.tsystems.mms.tic.testframework.l10n.LocalizedBundle;
 
 LocalizedBundle bundle = new LocalizedBundle("testdata");
 bundle.getString("TEST_KEY");
-
-LocalizedBundle germanBundle = new LocalizedBundle("testdata", Locale.GERMAN);
-germanBundle.getString("TEST_KEY");
 ----
 
 Or bundles with a fixed locale.
@@ -80,7 +77,6 @@ Or bundles with a fixed locale.
 LocalizedBundle germanBundle = new LocalizedBundle("testdata", Locale.GERMAN);
 germanBundle.getString("TEST_KEY");
 ----
-
 
 == Change locale from command line (_recommended_)
 

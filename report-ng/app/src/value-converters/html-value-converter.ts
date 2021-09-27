@@ -24,10 +24,13 @@ import 'ts-replace-all'
 
 @autoinject()
 export class HtmlValueConverter {
+    private static readonly URL_REGEX = /(\w+\:\/\/\S+)/ig;
     toView(value?: string) {
         if (!value) {
             return value;
         }
-        return value.replaceAll("\n","<br/>");
+        return value
+            .replaceAll("\n","<br/>")
+            .replaceAll(HtmlValueConverter.URL_REGEX,'<a href="$1">$1</a>');
     }
 }

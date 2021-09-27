@@ -27,16 +27,6 @@ import {Config} from "./config-dev";
 import {data} from "./report-model";
 import {StatusConverter} from "./status-converter";
 
-export class FailsAnnotation {
-    constructor(
-        readonly annotation:any
-    ) {
-    }
-    get ticketIsUrl() {
-        return this.annotation.ticketString?.match(StatusConverter.urlRegexp);
-    }
-}
-
 export interface ILogEntry extends data.ILogMessage {
     methodContext?: data.IMethodContext;
     index?:number,
@@ -50,10 +40,13 @@ export class MethodDetails {
     failureAspectStatistics:FailureAspectStatistics;
     sessionContexts:data.ISessionContext[];
     private _identifier:string = null;
-    static readonly FAIL_ANNOTATION_NAME="eu.tsystems.mms.tic.testframework.annotations.Fails";
+    static readonly FAILS_ANNOTATION_NAME="eu.tsystems.mms.tic.testframework.annotations.Fails";
+    static readonly TEST_ANNOTATION_NAME="org.testng.annotations.Test";
+    static readonly XRAY_ANNOTATION_NAME="eu.tsystems.mms.tic.testerra.plugins.xray.annotation.XrayTest";
+
     private _decodedAnnotations = {};
     private _decodedCustomContexts = {};
-    private _failsAnnotation:FailsAnnotation;
+    private _references = undefined;
 
     constructor(
         readonly methodContext:data.IMethodContext,
@@ -62,21 +55,20 @@ export class MethodDetails {
     }
 
     get isRepaired() {
-        return this.methodContext.resultStatus === data.ResultStatusType.PASSED && this.methodContext.annotations[MethodDetails.FAIL_ANNOTATION_NAME];
+        return this.methodContext.resultStatus === data.ResultStatusType.PASSED && this.methodContext.annotations[MethodDetails.FAILS_ANNOTATION_NAME];
     }
 
-    get failsAnnotation():FailsAnnotation|null {
-        if (this._failsAnnotation === undefined) {
-            const data = this.decodeAnnotation(MethodDetails.FAIL_ANNOTATION_NAME);
-            if (data) {
-                this._failsAnnotation = new FailsAnnotation(data);
-            } else {
-                this._failsAnnotation = null;
-            }
-        }
-        return this._failsAnnotation;
+    get failsAnnotation() {
+        return this.decodeAnnotation(MethodDetails.FAILS_ANNOTATION_NAME);
     }
 
+    get testAnnotation() {
+        return this.decodeAnnotation(MethodDetails.TEST_ANNOTATION_NAME);
+    }
+
+    get xrayAnnotation() {
+        return this.decodeAnnotation(MethodDetails.XRAY_ANNOTATION_NAME);
+    }
 
     get identifier() {
         if (!this._identifier) {

@@ -23,8 +23,8 @@
     <mdc-layout-grid class="pt0">
         <mdc-layout-grid-inner repeat.for="sessionContext of _sessionContexts">
             <mdc-layout-grid-cell span="4">
-                <div mdc-subtitle1>Session: ${sessionContext.contextValues.name}</div>
-                <ul class="mdc-list mdc-list--dense">
+                <div mdc-headline5>Session: ${sessionContext.contextValues.name}</div>
+                <ul class="mdc-list mdc-list--dense" mdc-caption>
                     <li class="mdc-custom-list-item">
                         <span class="secondary sr1">ID</span>${sessionContext.contextValues.id}
                     </li>

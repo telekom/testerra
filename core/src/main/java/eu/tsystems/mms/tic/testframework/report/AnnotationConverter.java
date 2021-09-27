@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2021, Mike Reiche,  T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -17,21 +17,16 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
- package eu.tsystems.mms.tic.testframework.annotations;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+package eu.tsystems.mms.tic.testframework.report;
 
-/**
- * Flags a method (mainly a @test method) as a support method. Retests wont skip these if previously passed.
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Deprecated
-public @interface SupportMethod {
+import java.lang.annotation.Annotation;
+import java.util.Map;
 
-    String color() default "#848282";
-    String name() default "Support Method";
-
+public interface AnnotationConverter<T extends Annotation> {
+    /**
+     * Exports the annotation parameters
+     */
+    Map<String, Object> toMap(T annotation);
 }

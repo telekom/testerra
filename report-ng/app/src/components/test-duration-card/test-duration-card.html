@@ -28,7 +28,7 @@
           <mdc-icon class="sr1">timer</mdc-icon>${_duration|durationFormat:"h[h] m[min] s[s] S[ms]"}
         </div>
         <mdc-list-divider></mdc-list-divider>
-        <ul class="mdc-list mdc-list--dense timings">
+        <ul class="mdc-list mdc-list--dense timings" mdc-caption>
             <li class="mdc-custom-list-item">
                 <span class="secondary time-column sr1">Started</span><span title="${_startTooltip}">${start | dateFormat:"ddd MMM D HH:mm:ss"}</span>
             </li>

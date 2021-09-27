@@ -22,9 +22,20 @@
 import {autoinject} from "aurelia-framework";
 import {StatusConverter} from "services/status-converter";
 import {ILogEntry} from "services/statistics-generator";
+import {bindable} from "aurelia-templating";
+import {bindingMode} from "aurelia-binding";
 
 @autoinject()
 export abstract class AbstractLogView {
+
+    @bindable({defaultBindingMode: bindingMode.toView})
+    class:string;
+
+    @bindable({defaultBindingMode: bindingMode.toView})
+    logMessages:ILogEntry[];
+
+    @bindable({defaultBindingMode: bindingMode.toView})
+    searchRegexp:RegExp;
 
     constructor(
         readonly statusConverter:StatusConverter,

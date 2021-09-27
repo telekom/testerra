@@ -19,27 +19,19 @@
  * under the License.
  */
 
-import {AbstractLogView} from "components/abstract-log-view";
+import {AbstractLogView} from "./abstract-log-view";
 import {bindable} from "aurelia-templating";
 import {bindingMode} from "aurelia-binding";
-import {ILogEntry} from "../../services/statistics-generator";
+import {customElement} from "aurelia-framework";
 
 /**
  * A virtual log view with search support
  */
+@customElement("virtual-log-view")
 export class VirtualLogView extends AbstractLogView {
-
-    @bindable({defaultBindingMode: bindingMode.toView})
-    class:string;
-
-    @bindable({defaultBindingMode: bindingMode.toView})
-    logMessages:ILogEntry[];
 
     @bindable({defaultBindingMode: bindingMode.fromView})
     readonly logView:VirtualLogView = this;
-
-    @bindable({defaultBindingMode: bindingMode.toView})
-    searchRegexp:RegExp;
 
     private _lastFoundIndex = -1;
     private _initialScrollOffset:number;

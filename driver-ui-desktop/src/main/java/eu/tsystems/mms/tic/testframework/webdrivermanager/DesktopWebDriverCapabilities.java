@@ -21,11 +21,13 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import eu.tsystems.mms.tic.testframework.utils.CertUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 @Deprecated
@@ -94,6 +96,11 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
         add own desired capabilities
          */
         addContextCapabilities(desiredCapabilities, desktopWebDriverRequest);
+
+        CertUtils certUtils = new CertUtils();
+        if (certUtils.isTrustAllHosts() || certUtils.getTrustedHosts().length > 0) {
+            desiredCapabilities.setAcceptInsecureCerts(true);
+        }
 
         return desiredCapabilities;
     }

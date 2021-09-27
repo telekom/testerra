@@ -7,7 +7,7 @@ A local defined capability means its only available in a specific browser sessio
 ----
 DesktopWebDriverRequest request = new DesktopWebDriverRequest();
 DesiredCapabilities caps = request.getDesiredCapabilities();
-caps.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
+caps.setCapability(CapabilityType.PLATFORM_NAME, "linux");
 
 // Start your session with the DesktopWebDriverRequest object
 WebDriver driver = WebDriverManager.getWebDriver(request);

@@ -7,18 +7,13 @@ IMPORTANT: Accepting all SSL certs is a risk and should only be used in trusted 
 
 [source,java]
 ----
+CertUtils certUtils = new CertUtils();
 // Trust all certificates in the current Java VM instance.
-CertUtils.trustAllCerts();
+certUtils.setTrustAllHosts();
+certUtils.setDefault(certUtils)
 ----
 
-[source,java]
-----
-// Trust only certificates for a special connection and a SSL socket factory.
-HttpsURLConnection CertUtils.trustAllCerts(
-    HttpsURLConnection connection,
-    SSLSocketFactory sslSocketFactory
-);
-----
+This will set default `SSLSocketFactory` and `HostnameVerifier` for `HttpsURLConnection`.
 
 == Trusting hosts
 

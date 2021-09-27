@@ -35,6 +35,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
@@ -103,8 +104,11 @@ public class UITestUtils implements WebDriverManagerProvider {
         Screenshot screenshot = takeScreenshot(driver, driver.getWindowHandle());
 
         if (intoReport) {
-            ExecutionContextController.getCurrentMethodContext().addScreenshot(screenshot);
-            report.addScreenshot(screenshot, Report.FileMode.MOVE);
+            IExecutionContextController executionContextController = Testerra.getInjector().getInstance(IExecutionContextController.class);
+            executionContextController.getCurrentMethodContext().ifPresent(methodContext -> {
+                methodContext.addScreenshot(screenshot);
+                report.addScreenshot(screenshot, Report.FileMode.MOVE);
+            });
         }
 
         return screenshot;
@@ -128,30 +132,34 @@ public class UITestUtils implements WebDriverManagerProvider {
         /*
         get infos
          */
-        Map<String, String> metaData = screenshot.getMetaData();
-        metaData.put(Screenshot.MetaData.SESSION_KEY, sessionContext.map(SessionContext::getSessionKey).orElse(null));
-        metaData.put(Screenshot.MetaData.SESSION_CONTEXT_ID, sessionContext.map(SessionContext::getId).orElse(null));
-        metaData.put(Screenshot.MetaData.TITLE, webDriver.getTitle());
+        try {
+            Map<String, String> metaData = screenshot.getMetaData();
+            metaData.put(Screenshot.MetaData.SESSION_KEY, sessionContext.map(SessionContext::getSessionKey).orElse(null));
+            metaData.put(Screenshot.MetaData.SESSION_CONTEXT_ID, sessionContext.map(SessionContext::getId).orElse(null));
+            metaData.put(Screenshot.MetaData.TITLE, webDriver.getTitle());
 
-        /*
-        window and focus infos
-         */
-        String window = "";
-        String windowHandle = webDriver.getWindowHandle();
-        Set<String> windowHandles = webDriver.getWindowHandles();
-        if (windowHandles.size() < 2) {
-            window = "#1/1";
-        } else {
-            String[] handleStrings = windowHandles.toArray(new String[0]);
-            for (int i = 0; i < handleStrings.length; i++) {
-                if (handleStrings[i].equals(windowHandle)) {
-                    window = "#" + (i + 1) + "/" + handleStrings.length;
+            /*
+            window and focus infos
+             */
+            String window = "";
+            String windowHandle = webDriver.getWindowHandle();
+            Set<String> windowHandles = webDriver.getWindowHandles();
+            if (windowHandles.size() < 2) {
+                window = "#1/1";
+            } else {
+                String[] handleStrings = windowHandles.toArray(new String[0]);
+                for (int i = 0; i < handleStrings.length; i++) {
+                    if (handleStrings[i].equals(windowHandle)) {
+                        window = "#" + (i + 1) + "/" + handleStrings.length;
+                    }
                 }
             }
-        }
 
-        screenshot.getMetaData().put(Screenshot.MetaData.WINDOW, window);
-        screenshot.getMetaData().put(Screenshot.MetaData.URL, webDriver.getCurrentUrl());
+            screenshot.getMetaData().put(Screenshot.MetaData.WINDOW, window);
+            screenshot.getMetaData().put(Screenshot.MetaData.URL, webDriver.getCurrentUrl());
+        } catch (Exception e) {
+            LOGGER.warn("Unable to fullfil screenshot meta data: " + e.getMessage());
+        }
     }
 
     private static Screenshot takeScreenshot(WebDriver eventFiringWebDriver, String originalWindowHandle) {

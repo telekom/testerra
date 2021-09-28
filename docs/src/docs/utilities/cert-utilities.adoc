@@ -1,22 +1,6 @@
 = Certificate Utilities
 include::../properties/property-attributes.adoc[]
 
-This is an utility class that offers the possibility to trust all SSL certificates.
-
-IMPORTANT: Accepting all SSL certs is a risk and should only be used in trusted environments.
-
-[source,java]
-----
-CertUtils certUtils = new CertUtils();
-// Trust all certificates in the current Java VM instance.
-certUtils.setTrustAllHosts();
-certUtils.setDefault(certUtils)
-----
-
-This will set default `SSLSocketFactory` and `HostnameVerifier` for `HttpsURLConnection`.
-
-== Trusting hosts
-
 You can trust specified hosts in a whitespace separated list like
 
 [source, properties,subs="attributes"]
@@ -29,4 +13,27 @@ Or just trust any (**not recommended**)
 [source, properties,subs="attributes"]
 ----
 {cert_trusted_hosts}=*
+----
+
+You can also configure this programatically like
+
+[source,java]
+----
+CertUtils certUtils = CertUtils.getInstance();
+String trustedHosts[] = {"t-systems.com"};
+certUtils.setTrustedHosts(trustedHosts);
+certUtils.setTrustAllHosts();
+----
+
+This will configure accepting certificates where possible:
+
+- User agents `ACCEPT_INSECURE_CERTS` capability
+- All internal APIs that use `HttpsURLConnection` like `FileDownloader` or `MailConnector`
+
+You can also set defaults for all created `SSLSocketFactory` and `HostnameVerifier`.
+
+[source,java]
+----
+// Trust all certificates in the current Java VM instance.
+certUtils.makeDefault();
 ----

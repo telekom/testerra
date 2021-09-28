@@ -97,7 +97,7 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
          */
         addContextCapabilities(desiredCapabilities, desktopWebDriverRequest);
 
-        CertUtils certUtils = new CertUtils();
+        CertUtils certUtils = CertUtils.getInstance();
         if (certUtils.isTrustAllHosts() || certUtils.getTrustedHosts().length > 0) {
             desiredCapabilities.setAcceptInsecureCerts(true);
         }

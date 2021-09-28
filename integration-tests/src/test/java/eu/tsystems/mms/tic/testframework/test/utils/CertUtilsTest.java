@@ -33,7 +33,7 @@ public class CertUtilsTest {
     @Test
     public void test_trustAllHosts() {
         PropertyManager.getThreadLocalProperties().setProperty(CertUtils.TRUSTED_HOSTS, "*");
-        CertUtils certUtils = CertUtils.getInstance();
+        CertUtils certUtils = new CertUtils();
         Assert.assertTrue(certUtils.isTrustAllHosts());
         Assert.assertEquals(0, certUtils.getTrustedHosts().length);
     }
@@ -41,7 +41,7 @@ public class CertUtilsTest {
     @Test
     public void test_trustSpecificHosts() {
         PropertyManager.getThreadLocalProperties().setProperty(CertUtils.TRUSTED_HOSTS, "t-systems.com example.com");
-        CertUtils certUtils = CertUtils.getInstance();
+        CertUtils certUtils = new CertUtils();
         String[] trustedHosts = certUtils.getTrustedHosts();
         Assert.assertEquals(2, trustedHosts.length);
 

@@ -193,8 +193,8 @@ public class WebDriverManagerTest extends AbstractWebDriverTest {
 
     @Test
     public void test_acceptInSecureCertificates() {
-        PropertyManager.getThreadLocalProperties().setProperty(CertUtils.TRUSTED_HOSTS, "*");
         CertUtils certUtils = CertUtils.getInstance();
+        certUtils.setTrustAllHosts(true);
         Assert.assertTrue(certUtils.isTrustAllHosts());
 
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();

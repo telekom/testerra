@@ -232,7 +232,7 @@ public final class WebDriverSessionsManager {
         return getWebDriversFromThread(threadId);
     }
 
-    public static Stream<WebDriver> getExclusiveWebDrivers() {
+    public static Stream<WebDriver> readExclusiveWebDrivers() {
         return EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.values().stream();
     }
 

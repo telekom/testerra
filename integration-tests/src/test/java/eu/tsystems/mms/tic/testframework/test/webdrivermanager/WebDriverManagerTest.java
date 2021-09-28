@@ -27,13 +27,17 @@ import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.utils.CertUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
+import java.awt.Desktop;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -183,5 +187,18 @@ public class WebDriverManagerTest extends TesterraTest implements PropertyManage
         Assert.assertEquals(size.getWidth(), expected.getWidth());
         Assert.assertEquals(size.getHeight(), expected.getHeight());
         WebDriverManager.shutdown();
+    }
+
+    @Test
+    public void test_acceptInSecureCertificates() {
+        PropertyManager.getThreadLocalProperties().setProperty(CertUtils.TRUSTED_HOSTS, "*");
+        CertUtils certUtils = CertUtils.getInstance();
+        Assert.assertTrue(certUtils.isTrustAllHosts());
+
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+
+        WebDriverManager.getWebDriver(request);
+
+        Assert.assertTrue(request.getDesiredCapabilities().acceptInsecureCerts());
     }
 }

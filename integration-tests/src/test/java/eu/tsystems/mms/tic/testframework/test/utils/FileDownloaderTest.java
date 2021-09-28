@@ -51,7 +51,7 @@ public class FileDownloaderTest extends AbstractTestSitesTest {
     }
 
     public DefaultConnectionConfigurator createConnectionConfigurator() {
-        CertUtils certUtils = new CertUtils();
+        CertUtils certUtils = CertUtils.getInstance();
         certUtils.setTrustAllHosts(true);
         DefaultConnectionConfigurator defaultConnectionConfigurator = new DefaultConnectionConfigurator();
         defaultConnectionConfigurator.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36");

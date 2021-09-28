@@ -60,6 +60,7 @@ export function configure(aurelia: Aurelia) {
             PLATFORM.moduleName('components/class-name-markup/class-name-markup'),
             PLATFORM.moduleName('components/method-tags/method-tags'),
             PLATFORM.moduleName('components/log-view/log-view'),
+            PLATFORM.moduleName('components/log-view/virtual-log-view'),
             PLATFORM.moduleName('components/code-view/code-view'),
             PLATFORM.moduleName('components/alert/alert.html'),
             PLATFORM.moduleName('components/lazy-image/lazy-image'),

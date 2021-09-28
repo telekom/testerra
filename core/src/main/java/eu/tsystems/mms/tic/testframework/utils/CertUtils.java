@@ -36,16 +36,20 @@ import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509ExtendedTrustManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public final class CertUtils {
 
-    private String[] trustedHosts;
+    private static final CertUtils instance = new CertUtils();
+
+    public static final String TRUSTED_HOSTS = "tt.cert.trusted.hosts";
+    private String[] trustedHosts = new String[0];
     private boolean trustAllHosts = false;
 
+    /**
+     * @deprecated Use {@link #getInstance()} instead
+     */
     public CertUtils() {
-        String trustHostsProperty = PropertyManager.getProperty("tt.cert.trusted.hosts","").trim();
+        String trustHostsProperty = PropertyManager.getProperty(TRUSTED_HOSTS,"").trim();
         if (!trustHostsProperty.isEmpty()) {
             if (trustHostsProperty.equals("*")) {
                 setTrustAllHosts(true);
@@ -53,6 +57,10 @@ public final class CertUtils {
                 setTrustedHosts(trustHostsProperty.split("\\s+"));
             }
         }
+    }
+
+    public static CertUtils getInstance() {
+        return instance;
     }
 
     /**
@@ -94,9 +102,8 @@ public final class CertUtils {
         if (trustAllHosts) {
             return (hostname, sslSession) -> true;
         } else {
-            return (hostname, sslSession) -> Arrays.stream(trustedHosts).anyMatch(trustedHostname -> trustedHostname.equals(hostname));
+            return (hostname, sslSession) -> Arrays.asList(trustedHosts).contains(hostname);
         }
-
     }
 
     /**
@@ -105,14 +112,22 @@ public final class CertUtils {
      * @deprecated Use {@link #setDefault(CertUtils)} instead
      */
     public static void trustAllCerts() {
-        CertUtils certUtils = new CertUtils();
+        CertUtils certUtils = getInstance();
         certUtils.setTrustAllHosts(true);
-        certUtils.setDefault(certUtils);
+        certUtils.makeDefault();
     }
 
+    /**
+     * @deprecated Use {@link #makeDefault()} instead
+     * @param certUtils
+     */
     public void setDefault(CertUtils certUtils) {
         HttpsURLConnection.setDefaultSSLSocketFactory(certUtils.createTrustingSslSocketFactory());
         HttpsURLConnection.setDefaultHostnameVerifier(certUtils.getHostnameVerifier());
+    }
+
+    public void makeDefault() {
+        setDefault(this);
     }
 
     /**

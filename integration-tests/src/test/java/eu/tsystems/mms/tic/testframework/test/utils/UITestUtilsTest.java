@@ -23,9 +23,12 @@
 package eu.tsystems.mms.tic.testframework.test.utils;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import java.util.stream.Stream;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -46,12 +49,26 @@ public class UITestUtilsTest extends AbstractTestSitesTest {
     @Test
     public void testT01_takeScreenshotTwice() {
 
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver webDriver = WebDriverManager.getWebDriver();
 
-        final Screenshot screenshot = UITestUtils.takeScreenshot(driver, true);
-        Assert.assertNotNull(screenshot, "Screenshot taken");
+        UITestUtils.takeScreenshot(webDriver, true);
+        UITestUtils.takeScreenshot(webDriver, true);
 
-        final Screenshot screenshot2 = UITestUtils.takeScreenshot(driver, true);
-        Assert.assertNotNull(screenshot2, "Screenshot taken");
+        Assert.assertEquals(readScreenshots(ExecutionContextController.getCurrentMethodContext()).count(), 2);
     }
+
+    private Stream<Screenshot> readScreenshots(MethodContext methodContext) {
+        return methodContext.readTestSteps().flatMap(testStep -> testStep.getCurrentTestStepAction().readEntries(Screenshot.class));
+    }
+
+    @Test
+    public void test_takeScreenshotOnExclusiveSession() {
+        WebDriver webDriver = WebDriverManager.getWebDriver();
+        WebDriverManager.makeSessionExclusive(webDriver);
+
+        UITestUtils.takeScreenshot(webDriver, true);
+
+        Assert.assertEquals(readScreenshots(ExecutionContextController.getCurrentMethodContext()).count(), 1);
+    }
+
 }

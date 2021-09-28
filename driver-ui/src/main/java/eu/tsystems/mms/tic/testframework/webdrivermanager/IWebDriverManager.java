@@ -149,6 +149,10 @@ public interface IWebDriverManager extends WebDriverRetainer, Loggable {
         return WebDriverSessionsManager.getWebDriversFromCurrentThread();
     }
 
+    default Stream<EventFiringWebDriver> readExclusiveWebDrivers() {
+        return WebDriverSessionsManager.readExclusiveWebDrivers();
+    }
+
     default Stream<EventFiringWebDriver> readWebDrivers() {
         return WebDriverSessionsManager.readWebDrivers();
     }

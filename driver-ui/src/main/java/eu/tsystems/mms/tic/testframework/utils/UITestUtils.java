@@ -39,6 +39,8 @@ import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextControlle
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
+import java.util.Collection;
+import java.util.stream.Collectors;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -92,6 +94,7 @@ public class UITestUtils implements WebDriverManagerProvider {
      */
     private static final DateFormat FILES_DATE_FORMAT = new SimpleDateFormat("dd_MM_yyyy__HH_mm_ss");
     private static final Report report = Testerra.getInjector().getInstance(Report.class);
+    private static final IExecutionContextController executionContextController = Testerra.getInjector().getInstance(IExecutionContextController.class);
 
     private static int IE_SCREENSHOT_LIMIT = 1200;
 
@@ -345,19 +348,17 @@ public class UITestUtils implements WebDriverManagerProvider {
      * @return ScreenshotPaths.
      */
     public static List<Screenshot> takeScreenshots(final boolean publishToReport) {
-        List<Screenshot> allScreenshots = new LinkedList<>();
-        WEB_DRIVER_MANAGER.readWebDriversFromCurrentThread()
+        Stream<Screenshot> screenshotStream = Stream.concat(WEB_DRIVER_MANAGER.readWebDriversFromCurrentThread(), WEB_DRIVER_MANAGER.readExclusiveWebDrivers())
                 .map(UITestUtils::pTakeAllScreenshotsForSession)
-                .forEach(webDriverScreenshots -> {
-                    if (publishToReport) {
-                        webDriverScreenshots.forEach(screenshot -> {
-                            ExecutionContextController.getCurrentMethodContext().addScreenshot(screenshot);
-                            report.addScreenshot(screenshot, Report.FileMode.MOVE);
-                        });
-                    }
-                    allScreenshots.addAll(webDriverScreenshots);
-                });
+                .flatMap(Collection::stream);
 
-        return allScreenshots;
+        if (publishToReport && executionContextController.getCurrentMethodContext().isPresent()) {
+            MethodContext methodContext = executionContextController.getCurrentMethodContext().get();
+            screenshotStream = screenshotStream.peek(screenshot -> {
+                methodContext.addScreenshot(screenshot);
+                report.addScreenshot(screenshot, Report.FileMode.MOVE);
+            });
+        }
+        return screenshotStream.collect(Collectors.toList());
     }
 }

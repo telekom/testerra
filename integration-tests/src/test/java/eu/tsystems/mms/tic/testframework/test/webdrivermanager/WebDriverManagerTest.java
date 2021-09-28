@@ -102,14 +102,17 @@ public class WebDriverManagerTest extends TesterraTest implements PropertyManage
 
     @Test
     public void testT03_MakeSessionExclusive() {
+        WebDriver exclusiveDriver = WebDriverManager.getWebDriver();
+        Assert.assertEquals(WebDriverSessionsManager.getWebDriversFromCurrentThread().count(), 1);
 
-        final WebDriver exclusiveDriver = WebDriverManager.getWebDriver();
-        final String sessionId = WebDriverManager.makeSessionExclusive(exclusiveDriver);
+        String sessionId = WebDriverManager.makeSessionExclusive(exclusiveDriver);
+
+        Assert.assertEquals(WebDriverSessionsManager.getWebDriversFromCurrentThread().count(), 0);
 
         Assert.assertNotNull(WebDriverSessionsManager.getSessionContext(exclusiveDriver).get());
 
-        final WebDriver driver2 = WebDriverManager.getWebDriver("Session2");
-        final WebDriver exclusiveDriverActual = WebDriverManager.getWebDriver(sessionId);
+        WebDriver driver2 = WebDriverManager.getWebDriver("Session2");
+        WebDriver exclusiveDriverActual = WebDriverManager.getWebDriver(sessionId);
 
         Assert.assertEquals(exclusiveDriver, exclusiveDriverActual, "Got the same WebDriver!");
         WebDriverManager.shutdownExclusiveSession(sessionId);

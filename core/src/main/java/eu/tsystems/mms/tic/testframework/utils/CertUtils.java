@@ -39,15 +39,12 @@ import javax.net.ssl.X509ExtendedTrustManager;
 
 public final class CertUtils {
 
-    private static final CertUtils instance = new CertUtils();
+    private static CertUtils instance;
 
     public static final String TRUSTED_HOSTS = "tt.cert.trusted.hosts";
     private String[] trustedHosts = new String[0];
     private boolean trustAllHosts = false;
 
-    /**
-     * @deprecated Use {@link #getInstance()} instead
-     */
     public CertUtils() {
         String trustHostsProperty = PropertyManager.getProperty(TRUSTED_HOSTS,"").trim();
         if (!trustHostsProperty.isEmpty()) {
@@ -60,6 +57,9 @@ public final class CertUtils {
     }
 
     public static CertUtils getInstance() {
+        if (instance == null) {
+            instance = new CertUtils();
+        }
         return instance;
     }
 

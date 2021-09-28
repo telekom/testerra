@@ -191,8 +191,8 @@ public class WebDriverManagerTest extends TesterraTest implements PropertyManage
 
     @Test
     public void test_acceptInSecureCertificates() {
-        PROPERTY_MANAGER.setTestLocalProperty(CertUtils.TRUSTED_HOSTS, "*");
         CertUtils certUtils = CertUtils.getInstance();
+        certUtils.setTrustAllHosts(true);
         Assert.assertTrue(certUtils.isTrustAllHosts());
 
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();

@@ -21,6 +21,7 @@
  */
  package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import eu.tsystems.mms.tic.testframework.utils.CertUtils;
 import java.util.function.Consumer;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -30,7 +31,6 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
-@Deprecated
 public class WebDriverCapabilities implements Consumer<WebDriverRequest> {
 
     /**
@@ -54,6 +54,7 @@ public class WebDriverCapabilities implements Consumer<WebDriverRequest> {
      *
      * @param key   The key of the capability to set.
      * @param value The value of the capability to set.
+     * @deprecated Configure capabilities on your {@link WebDriverRequest}
      */
     static void addGlobalCapability(String key, Object value) {
         if (CapabilityType.BROWSER_NAME.equals(key)) {
@@ -67,6 +68,7 @@ public class WebDriverCapabilities implements Consumer<WebDriverRequest> {
      * Remove extra capability from capabilities.
      *
      * @param key The key of the capability to remove.
+     * @deprecated Configure capabilities on your {@link WebDriverRequest}
      */
     static void removeGlobalExtraCapability(final String key) {
         GLOBALCAPABILITIES.remove(key);
@@ -74,6 +76,7 @@ public class WebDriverCapabilities implements Consumer<WebDriverRequest> {
 
     /**
      * Clear capabilities.
+     * @deprecated Configure capabilities on your {@link WebDriverRequest}
      */
     static void clearGlobalCapabilities() {
         GLOBALCAPABILITIES.clear();
@@ -83,6 +86,7 @@ public class WebDriverCapabilities implements Consumer<WebDriverRequest> {
      * Adds extra capabilities to desired capabilities.
      *
      * @param desiredCapabilities .
+     * @deprecated Configure capabilities on your {@link WebDriverRequest}
      */
     static void setGlobalExtraCapabilities(final DesiredCapabilities desiredCapabilities) {
         Map<String, ?> map = desiredCapabilities.asMap();
@@ -101,6 +105,11 @@ public class WebDriverCapabilities implements Consumer<WebDriverRequest> {
         if (webDriverRequest instanceof AbstractWebDriverRequest) {
             DesiredCapabilities desiredCapabilities = ((AbstractWebDriverRequest) webDriverRequest).getDesiredCapabilities();
             desiredCapabilities.merge(new DesiredCapabilities(GLOBALCAPABILITIES));
+
+            CertUtils certUtils = CertUtils.getInstance();
+            if (certUtils.isTrustAllHosts() || certUtils.getTrustedHosts().length > 0) {
+                desiredCapabilities.setAcceptInsecureCerts(true);
+            }
         }
     }
 }

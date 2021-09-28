@@ -78,6 +78,7 @@ public final class WebDriverManager {
      *
      * @param key   The key of the capability to set.
      * @param value The value of the capability to set.
+     * @deprecated Configure capabilities on your {@link WebDriverRequest}
      */
     public static void setGlobalExtraCapability(final String key, final Object value) {
         addGlobalCapability(key, value);
@@ -87,6 +88,7 @@ public final class WebDriverManager {
      * Adds extra capabilities to desired capabilities.
      *
      * @param desiredCapabilities .
+     * @deprecated Configure capabilities on your {@link WebDriverRequest}
      */
     @Deprecated
     public static void setGlobalExtraCapabilities(final DesiredCapabilities desiredCapabilities) {
@@ -97,6 +99,7 @@ public final class WebDriverManager {
      * Get all set extra capabilities (not the DesiredCapabilities that are set automatically
      *
      * @return
+     * @deprecated Configure capabilities on your {@link WebDriverRequest}
      */
     public static Map<String, Object> getGlobalExtraCapabilities() {
         return WebDriverCapabilities.getGlobalExtraCapabilities();
@@ -107,6 +110,7 @@ public final class WebDriverManager {
      *
      * @param key   The key of the capability to set.
      * @param value The value of the capability to set.
+     * @deprecated Configure capabilities on your {@link WebDriverRequest}
      */
     private static void addGlobalCapability(String key, Object value) {
         WebDriverCapabilities.addGlobalCapability(key, value);

@@ -28,6 +28,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import java.util.stream.Stream;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -66,7 +67,9 @@ public class UITestUtilsTest extends AbstractTestSitesTest {
         WebDriver webDriver = WebDriverManager.getWebDriver();
         WebDriverManager.makeSessionExclusive(webDriver);
 
-        UITestUtils.takeScreenshot(webDriver, true);
+        Assert.assertEquals(WebDriverSessionsManager.getWebDriversFromCurrentThread().count(), 0);
+        
+        UITestUtils.takeScreenshots(true);
 
         Assert.assertEquals(readScreenshots(ExecutionContextController.getCurrentMethodContext()).count(), 1);
     }

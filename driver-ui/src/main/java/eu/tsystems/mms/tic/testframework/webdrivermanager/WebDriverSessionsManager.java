@@ -232,6 +232,10 @@ public final class WebDriverSessionsManager {
         return getWebDriversFromThread(threadId);
     }
 
+    public static Stream<WebDriver> getExclusiveWebDrivers() {
+        return EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.values().stream();
+    }
+
     static void shutdownAllSessions() {
         THREAD_SESSION_KEY_WEBDRIVER_MAP.values().forEach(WebDriverSessionsManager::shutdownWebDriver);
         EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.values().forEach(WebDriverSessionsManager::shutdownWebDriver);

@@ -26,21 +26,21 @@ public interface IPropertyManager {
      */
     boolean loadProperties(String resourceFile);
 
-    default void getProperty(IProperties property) {
-        getProperty(property.toString());
+    default String getProperty(IProperties property) {
+        return getProperty(property.toString());
     }
 
     default String getProperty(String key) {
         return getProperty(key, null);
     }
 
-    default void getProperty(IProperties property, Object defaultValue) {
-        getProperty(property.toString(), defaultValue);
+    default String getProperty(IProperties property, Object defaultValue) {
+        return getProperty(property.toString(), defaultValue);
     }
     String getProperty(String key, Object defaultValue);
 
-    default void getDoubleProperty(IProperties property, Object defaultValue) {
-        getDoubleProperty(property.toString(), defaultValue);
+    default double getDoubleProperty(IProperties property, Object defaultValue) {
+        return getDoubleProperty(property.toString(), defaultValue);
     }
     /**
      * Gets the value of the property or the default identified by its key.
@@ -52,8 +52,8 @@ public interface IPropertyManager {
      */
     double getDoubleProperty(String key, Object defaultValue);
 
-    default void getDoubleProperty(IProperties property) {
-        getDoubleProperty(property.toString());
+    default double getDoubleProperty(IProperties property) {
+        return getDoubleProperty(property.toString());
     }
     /**
      * Gets the value of the property identified by its key.
@@ -66,8 +66,8 @@ public interface IPropertyManager {
         return getDoubleProperty(key, -1);
     }
 
-    default void getLongProperty(IProperties property, Object defaultValue) {
-        getLongProperty(property.toString(), defaultValue);
+    default long getLongProperty(IProperties property, Object defaultValue) {
+        return getLongProperty(property.toString(), defaultValue);
     }
     /**
      * Gets the value of the property or the default identified by its key.
@@ -79,8 +79,8 @@ public interface IPropertyManager {
      */
     long getLongProperty(String key, Object defaultValue);
 
-    default void getLongProperty(IProperties property) {
-        getLongProperty(property.toString());
+    default long getLongProperty(IProperties property) {
+        return getLongProperty(property.toString());
     }
     /**
      * Gets the value of the property identified by its key.
@@ -93,8 +93,8 @@ public interface IPropertyManager {
         return getLongProperty(key, -1);
     }
 
-    default void getBooleanProperty(IProperties property, Object defaultValue) {
-        getBooleanProperty(property.toString(), defaultValue);
+    default boolean getBooleanProperty(IProperties property, Object defaultValue) {
+        return getBooleanProperty(property.toString(), defaultValue);
     }
     /**
      * Get boolean property.
@@ -109,8 +109,8 @@ public interface IPropertyManager {
         return getBooleanProperty(key, false);
     }
 
-    default void getBooleanProperty(IProperties property) {
-        getLongProperty(property.toString());
+    default boolean getBooleanProperty(IProperties property) {
+        return getBooleanProperty(property.toString());
     }
     /**
      * Gets the value of the property or the default identified by its key.

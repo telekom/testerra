@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
@@ -42,7 +43,7 @@ import org.testng.annotations.Test;
  *
  * @author Eric Kubenka
  */
-public class UITestUtilsTest extends AbstractTestSitesTest {
+public class UITestUtilsTest extends AbstractTestSitesTest implements AssertProvider {
 
     /**
      * Tests #1063
@@ -68,10 +69,10 @@ public class UITestUtilsTest extends AbstractTestSitesTest {
         WebDriverManager.makeSessionExclusive(webDriver);
 
         Assert.assertEquals(WebDriverSessionsManager.getWebDriversFromCurrentThread().count(), 0);
-        
+
         UITestUtils.takeScreenshots(true);
 
-        Assert.assertEquals(readScreenshots(ExecutionContextController.getCurrentMethodContext()).count(), 1);
+        ASSERT.assertGreaterEqualThan(readScreenshots(ExecutionContextController.getCurrentMethodContext()).count(), 1);
     }
 
 }

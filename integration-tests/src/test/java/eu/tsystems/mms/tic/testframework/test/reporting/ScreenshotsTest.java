@@ -32,6 +32,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
+import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import java.util.Optional;
 import org.openqa.selenium.By;
 import org.testng.Assert;
@@ -42,7 +43,7 @@ import org.testng.annotations.Test;
  * Tests if screenshots are added to the MethodContext when a test fails.
  * @author Mike Reiche
  */
-public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactoryTest {
+public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactoryTest, AssertProvider {
 
     @Override
     public BasePage getPage() {
@@ -87,7 +88,7 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
                     .flatMap(testStep -> testStep.getTestStepActions().stream())
                     .flatMap(testStepAction -> testStepAction.readEntries(Screenshot.class))
                     .count();
-            Assert.assertEquals(count, 1, "Screenshots in MethodContext " + methodName);
+            ASSERT.assertGreaterEqualThan(count, 1, "Screenshots in MethodContext " + methodName);
         });
     }
 

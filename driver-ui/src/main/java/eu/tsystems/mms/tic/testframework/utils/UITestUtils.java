@@ -387,7 +387,8 @@ public class UITestUtils {
      * @return
      */
     private static Stream<List<Screenshot>> takeScreenshotsFromThreadSessions() {
-        return WebDriverSessionsManager.getWebDriversFromCurrentThread().map(UITestUtils::pTakeAllScreenshotsForSession);
+        return Stream.concat(WebDriverSessionsManager.getWebDriversFromCurrentThread(), WebDriverSessionsManager.readExclusiveWebDrivers())
+                .map(UITestUtils::pTakeAllScreenshotsForSession);
     }
 
 }

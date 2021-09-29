@@ -208,6 +208,11 @@ public abstract class AbstractPage implements Loggable {
         }
 
         screenShotOnPageLoad();
+        pageLoaded();
+    }
+
+    protected void pageLoaded() {
+
     }
 
     protected void checkPagePreparation() {

@@ -36,12 +36,15 @@ import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.ResponsiveWeb
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.ResponsiveWebTestPage_Min_600px;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
+import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.UnspecificWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
 import java.net.MalformedURLException;
+import java.util.concurrent.atomic.AtomicBoolean;
+import org.checkerframework.checker.units.qual.A;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -145,5 +148,22 @@ public class PageFactoryTest extends AbstractTestSitesTest {
 
         final PageWithExistingElement pageWithExistingElement = PageFactory.create(PageWithExistingElement.class, driver);
         final PageWithNotExistingElementWithoutCheckPage pageWithNotExistingElement = PageFactory.checkNot(PageWithNotExistingElementWithoutCheckPage.class, driver);
+    }
+
+    @Test
+    public void test_pageLoadedCallback() {
+        WebDriver webDriver = getWebDriver();
+        AtomicBoolean atomicBoolean = new AtomicBoolean();
+
+        Page testPage = new Page(webDriver) {
+            @Override
+            protected void pageLoaded() {
+                super.pageLoaded();
+                atomicBoolean.set(true);
+            }
+        };
+
+        testPage.checkPage();
+        Assert.assertTrue(atomicBoolean.get());
     }
 }

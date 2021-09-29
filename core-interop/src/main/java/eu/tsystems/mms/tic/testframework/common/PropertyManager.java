@@ -334,20 +334,22 @@ public final class PropertyManager {
      * @return local properties of the thread
      */
     public static Properties getThreadLocalProperties() {
-        if (THREAD_LOCAL_PROPERTIES.get() == null) {
-            THREAD_LOCAL_PROPERTIES.set(new Properties());
-            getPropertiesParser().properties.add(THREAD_LOCAL_PROPERTIES.get());
+        Properties properties = THREAD_LOCAL_PROPERTIES.get();
+        if (properties == null) {
+            properties = new Properties();
+            THREAD_LOCAL_PROPERTIES.set(properties);
+            getPropertiesParser().properties.add(properties);
         }
-        return THREAD_LOCAL_PROPERTIES.get();
+        return properties;
     }
 
     /**
      * clear the local thread properties
      */
     public static void clearThreadlocalProperties() {
-
-        if (THREAD_LOCAL_PROPERTIES.get() != null) {
-            getPropertiesParser().properties.remove(THREAD_LOCAL_PROPERTIES.get());
+        Properties properties = THREAD_LOCAL_PROPERTIES.get();
+        if (properties != null) {
+            getPropertiesParser().properties.remove(properties);
         }
 
         THREAD_LOCAL_PROPERTIES.remove();

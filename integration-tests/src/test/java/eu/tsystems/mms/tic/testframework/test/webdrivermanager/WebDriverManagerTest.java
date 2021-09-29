@@ -175,10 +175,24 @@ public class WebDriverManagerTest extends AbstractWebDriverTest {
     @Test
     public void test_WindowSize() {
         assertNewWebDriverWindowSize(new Dimension(800, 600));
-        PropertyManager.getThreadLocalProperties().setProperty(TesterraProperties.WINDOW_SIZE, "katze");
-        assertNewWebDriverWindowSize(new Dimension(1920, 1080));
+
         PropertyManager.getThreadLocalProperties().setProperty(TesterraProperties.WINDOW_SIZE, "1024x768");
         assertNewWebDriverWindowSize(new Dimension(1024, 768));
+
+        PropertyManager.clearThreadlocalProperties();
+    }
+
+    @Test
+    public void test_invalidWindowSize() {
+        PropertyManager.getThreadLocalProperties().setProperty(TesterraProperties.WINDOW_SIZE, "katze");
+        String property = PropertyManager.getProperty(TesterraProperties.WINDOW_SIZE, PropertyManager.getProperty(TesterraProperties.DISPLAY_RESOLUTION));
+        Assert.assertEquals(property, "katze");
+
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        Dimension windowSize = request.getWindowSize();
+        Assert.assertEquals(windowSize.getWidth(), 1920);
+        Assert.assertEquals(windowSize.getHeight(), 1080);
+        assertNewWebDriverWindowSize(new Dimension(1920, 1080));
 
         PropertyManager.clearThreadlocalProperties();
     }

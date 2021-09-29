@@ -26,23 +26,20 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.CertUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
-import java.awt.Desktop;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Tests for WebDriverManager
@@ -193,16 +190,21 @@ public class WebDriverManagerTest extends AbstractWebDriverTest {
         String property = PropertyManager.getProperty(TesterraProperties.WINDOW_SIZE, PropertyManager.getProperty(TesterraProperties.DISPLAY_RESOLUTION));
         Assert.assertEquals(property, "katze");
 
-        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-        Dimension windowSize = request.getWindowSize();
-        Assert.assertEquals(windowSize.getWidth(), 1920);
-        Assert.assertEquals(windowSize.getHeight(), 1080);
         assertNewWebDriverWindowSize(new Dimension(1920, 1080));
 
         PropertyManager.clearThreadlocalProperties();
     }
 
     private void assertNewWebDriverWindowSize(Dimension expected) {
+        WebDriverManagerConfig config = WebDriverManager.getConfig();
+        config.reset();
+        Assert.assertFalse(config.shouldMaximizeViewport());
+
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        Dimension windowSize = request.getWindowSize();
+        Assert.assertEquals(windowSize.getWidth(), expected.getWidth());
+        Assert.assertEquals(windowSize.getHeight(), expected.getHeight());
+
         WebDriver webDriver = WebDriverManager.getWebDriver();
         Dimension size = webDriver.manage().window().getSize();
         Assert.assertEquals(size.getWidth(), expected.getWidth());
@@ -211,7 +213,7 @@ public class WebDriverManagerTest extends AbstractWebDriverTest {
     }
 
     @Test
-    public void test_acceptInSecureCertificates() {
+    public void test_acceptInsecureCertificates() {
         CertUtils certUtils = CertUtils.getInstance();
         certUtils.setTrustAllHosts(true);
         Assert.assertTrue(certUtils.isTrustAllHosts());

@@ -1,0 +1,17 @@
+= Page loaded callback
+
+You can add a custom action if a page was loaded successfully.
+
+[source,java]
+----
+public class MyPage extends Page {
+
+    ...
+
+    @Override
+    protected void pageLoaded() {
+        super.pageLoaded();
+        // Add here your custom action
+    }
+}
+----

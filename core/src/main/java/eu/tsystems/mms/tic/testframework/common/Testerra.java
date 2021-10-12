@@ -181,7 +181,7 @@ public class Testerra {
             }
             //return Guice.createInjector(prevModule);
         } catch (Exception e) {
-            LOGGER.error(e.getMessage());
+            LOGGER.error("Unable to initialize modules", e);
         }
         return Guice.createInjector(prevModule);
     }

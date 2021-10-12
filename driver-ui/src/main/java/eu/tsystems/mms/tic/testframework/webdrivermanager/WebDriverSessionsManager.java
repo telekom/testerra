@@ -39,6 +39,7 @@ import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
 import java.net.URL;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -102,9 +103,11 @@ public final class WebDriverSessionsManager {
          * Getting multi binder set programmatically
          * @see {https://groups.google.com/forum/#!topic/google-guice/EUnNStmrhOk}
          */
-        webDriverFactories.forEach(webDriverFactory -> {
-            webDriverFactory.getSupportedBrowsers().forEach(browser -> WEB_DRIVER_FACTORIES.put(browser, webDriverFactory));
-        });
+        webDriverFactories.stream()
+                .sorted(Comparator.comparing(f -> f.getClass().getSimpleName()))
+                .forEach(webDriverFactory -> {
+                    webDriverFactory.getSupportedBrowsers().forEach(browser -> WEB_DRIVER_FACTORIES.put(browser, webDriverFactory));
+                });
     }
 
     private static void storeWebDriverSession(EventFiringWebDriver eventFiringWebDriver, SessionContext sessionContext) {

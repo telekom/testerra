@@ -24,6 +24,7 @@ package eu.tsystems.mms.tic.testframework.test.reporting;
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.BasePage;
+import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.WebTestPage;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
@@ -31,10 +32,14 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.test.page.PageFactoryTest;
+import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
+import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import java.io.IOException;
 import java.util.Optional;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.reporters.Files;
 
 /**
  * Tests if screenshots are added to the MethodContext when a test fails.
@@ -99,5 +104,19 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
     @Test(dependsOnMethods = "test_take_screenshot_via_collected_assertion", alwaysRun = true)
     public void test_Screenshot_is_present_in_MethodContext_on_collected_assertion() {
         this.screenshot_is_present_in_MethodContext("test_take_screenshot_via_collected_assertion");
+    }
+
+    @Test
+    public void test_DOMSource() throws IOException {
+        WebTestPage page = new WebTestPage(WebDriverManager.getWebDriver());
+
+        for (int s = 0; s < 3; ++s) {
+            page.getOpenAgain().click();
+        }
+        Screenshot screenshot = UITestUtils.takeScreenshot(page.getWebDriver(), false);
+        String screenshotSource = Files.readFile(screenshot.getPageSourceFile());
+
+        String expected = "<p id=\"99\">Open again clicked<br>Open again clicked<br>Open again clicked<br>";
+        AssertUtils.assertContains(screenshotSource, expected);
     }
 }

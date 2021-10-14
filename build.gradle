@@ -29,6 +29,8 @@ allprojects {
     apply plugin: 'java-library'
     apply plugin: 'project-report'
 
+    compileJava.options.encoding = 'UTF-8'
+    compileTestJava.options.encoding = "UTF-8"
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
 }

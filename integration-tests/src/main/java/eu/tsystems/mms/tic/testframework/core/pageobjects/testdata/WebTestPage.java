@@ -87,6 +87,10 @@ public class WebTestPage extends BasePage {
         return new WebTestPage(this.getWebDriver());
     }
 
+    public GuiElement getOpenAgain() {
+        return this.openAgainLink;
+    }
+
     /**
      * Click on not existing element
      *

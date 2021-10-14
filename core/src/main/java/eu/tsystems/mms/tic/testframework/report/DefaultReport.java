@@ -61,7 +61,7 @@ public class DefaultReport implements Report, Loggable {
                     break;
             }
         } catch (IOException e) {
-            log().error(e.getMessage());
+            log().error("Could not add file", e);
         }
         return new File(directory, sourceFile.getName());
     }

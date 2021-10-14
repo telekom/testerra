@@ -60,17 +60,14 @@ import eu.tsystems.mms.tic.testframework.l10n.SimpleLocalization;
 UiElement loginBtn = find(By.linkText(SimpleLocalization.getText("BTN_LOGIN")));
 ----
 
-But you can use your own localized bundles.
-
+`SimpleLocalization` uses `Locale.getDefault()` by default, but
+you can switch the default locale the following way.
 [source, java]
 ----
-import eu.tsystems.mms.tic.testframework.l10n.LocalizedBundle;
-
-LocalizedBundle bundle = new LocalizedBundle("testdata");
-bundle.getString("TEST_KEY");
+LocalizedBundle bundle = SimpleLocalization.setDefault(Locale.GERMAN);
 ----
 
-Or bundles with a fixed locale.
+But you can use your own localized bundles:
 
 [source, java]
 ----

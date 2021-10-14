@@ -92,7 +92,7 @@ public class DefaultReport implements Report, Loggable {
         }
 
         screenshot.getPageSourceFile().ifPresent(file -> {
-            addFile(file, screenshotsDirectory, fileMode);
+            screenshot.setPageSourceFile(addFile(file, screenshotsDirectory, fileMode));
         });
     }
 

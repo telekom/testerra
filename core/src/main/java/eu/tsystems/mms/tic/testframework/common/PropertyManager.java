@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2021, Mike Reiche,  T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -17,9 +17,8 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
- package eu.tsystems.mms.tic.testframework.common;
+package eu.tsystems.mms.tic.testframework.common;
 
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
@@ -32,6 +31,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.Properties;
+import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,24 +39,16 @@ import org.slf4j.LoggerFactory;
  * Contains methods for reading from properties files.
  *
  * @author mibu, pele, mrgi, sepr
+ * @deprecated Use {@link PropertyManagerProvider} instead
  */
 public final class PropertyManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PropertyManager.class);
-
-    /**
-     * Threadlocal Properties.
-     */
-    static final ThreadLocal<Properties> THREAD_LOCAL_PROPERTIES = new ThreadLocal<>();
-
-    /**
-     * The static properties.
-     */
-    static final Properties FILEPROPERTIES = new Properties();
-
-    static final Properties GLOBALPROPERTIES = new Properties();
-
-    private static ThreadLocal<PropertiesParser> PROPERTIES_PARSER = new ThreadLocal<>();
+    private static final Properties FILEPROPERTIES = new Properties();
+    private static final PropertiesParser propertiesParser;
+    private static final ThreadLocalPropertyResolver threadLocalPropertyResolver = new ThreadLocalPropertyResolver();
+    private static final PropertyResolver filePropertyResolver = new PropertiesPropertyResolver(FILEPROPERTIES);
+    private static final PropertyResolver systemPropertyResolver = new PropertiesPropertyResolver(System.getProperties());
 
     /*
      * Static constructor, creating static Properties object.
@@ -64,11 +56,17 @@ public final class PropertyManager {
      * NOTE: DO NOT USE LOGGER in this static block!
      */
     static {
+        propertiesParser = new PropertiesParser(() -> {
+            return Stream.of(
+                    threadLocalPropertyResolver,
+                    filePropertyResolver,
+                    systemPropertyResolver
+            );
+        });
         // set static properties
         String propertyFile = "test.properties";
         pLoadPropertiesFromResource(FILEPROPERTIES, propertyFile, null);
         initializeSystemProperties();
-        getPropertiesParser();
     }
 
     /**
@@ -112,34 +110,38 @@ public final class PropertyManager {
         }
     }
 
-    /*
-    LOADERS section
+    /**
+     * Loads properties from a resource file into existing {@link Properties}
+     * @param properties
+     * @param resourceFile
+     * @param charset If null, the default charset is used
+     * @return TRUE if the properties have been loaded
      */
-    private static void pLoadPropertiesFromResource(final Properties properties, final String resourceFile, String charset) {
+    static boolean pLoadPropertiesFromResource(final Properties properties, final String resourceFile, String charset) {
         FileUtils fileUtils = new FileUtils();
         try {
             File file = fileUtils.getLocalOrResourceFile(resourceFile);
-            LOGGER.info("Load " + file.getAbsolutePath());
             final InputStream propertiesInputStream = new FileInputStream(file);
             if (charset == null) {
                 charset = Charset.defaultCharset().name();
             }
             InputStreamReader inputStreamReader = new InputStreamReader(propertiesInputStream, charset);
             properties.load(inputStreamReader);
+            LOGGER.info("Loaded " + file.getAbsolutePath());
+            return true;
         } catch (FileNotFoundException e) {
-            LOGGER.error(e.getMessage());
+            // ignore
         } catch (final IOException ioEx) {
             throw new IllegalStateException(String.format("An error occurred during reading from properties file %s.", resourceFile), ioEx);
         } catch (final IllegalArgumentException illArgEx) {
             throw new IllegalStateException(String.format("The properties file %s contains illegal characters!", resourceFile), illArgEx);
         }
+        return false;
     }
 
     private static Properties pLoadThreadLocalProperties(final String resourceFile, final String charset) {
         Properties threadLocalProperties = getThreadLocalProperties();
         pLoadPropertiesFromResource(threadLocalProperties, resourceFile, charset);
-
-        LOGGER.info("ThreadLocalProperties: " + threadLocalProperties);
         return threadLocalProperties;
     }
 
@@ -162,18 +164,6 @@ public final class PropertyManager {
      */
     public static Properties loadThreadLocalProperties(final String resourceFile, final String charset) {
         return pLoadThreadLocalProperties(resourceFile, charset);
-    }
-
-    /**
-     * Load static properties from a property file.
-     *
-     * @param resourceFile The property file to load.
-     * @param localOnly    Deprecated, Testerra only loads local files
-     * @return Return loaded properties.
-     */
-    @Deprecated
-    public static Properties loadProperties(final String resourceFile, boolean localOnly) {
-        return loadProperties(resourceFile);
     }
 
     /**
@@ -297,7 +287,7 @@ public final class PropertyManager {
      *
      * @param key true or false.
      * @return boolean property value or default false, if property is not set
-     * @see java.lang.Boolean#parseBoolean(String)
+     * @see Boolean#parseBoolean(String)
      */
     public static boolean getBooleanProperty(final String key) {
         return getPropertiesParser().getBooleanProperty(key);
@@ -317,13 +307,16 @@ public final class PropertyManager {
     /**
      * Removes all loaded properties from PropertyManager.
      */
+    @Deprecated
     public static void clearProperties() {
-        THREAD_LOCAL_PROPERTIES.remove();
+        clearThreadlocalProperties();
         FILEPROPERTIES.clear();
-        GLOBALPROPERTIES.clear();
-        PROPERTIES_PARSER.remove();
     }
 
+    /**
+     * Returns properties of test.properties
+     */
+    @Deprecated
     public static Properties getFileProperties() {
         return FILEPROPERTIES;
     }
@@ -333,49 +326,30 @@ public final class PropertyManager {
      *
      * @return local properties of the thread
      */
+    @Deprecated
     public static Properties getThreadLocalProperties() {
-        Properties properties = THREAD_LOCAL_PROPERTIES.get();
-        if (properties == null) {
-            properties = new Properties();
-            THREAD_LOCAL_PROPERTIES.set(properties);
-            getPropertiesParser().properties.add(properties);
-        }
-        return properties;
+       return threadLocalPropertyResolver.getProperties();
     }
 
     /**
      * clear the local thread properties
      */
+    @Deprecated
     public static void clearThreadlocalProperties() {
-        Properties properties = THREAD_LOCAL_PROPERTIES.get();
-        if (properties != null) {
-            getPropertiesParser().properties.remove(properties);
-        }
-
-        THREAD_LOCAL_PROPERTIES.remove();
+        threadLocalPropertyResolver.clearProperties();
     }
 
-    public static void clearGlobalProperties() {
-        GLOBALPROPERTIES.clear();
-    }
-
+    /**
+     * @deprecated Use {@link System#getProperties()} instead
+     * @return
+     */
+    @Deprecated
     public static Properties getGlobalProperties() {
-        return GLOBALPROPERTIES;
+        return System.getProperties();
     }
 
+    @Deprecated
     public static PropertiesParser getPropertiesParser() {
-
-        if (PROPERTIES_PARSER.get() == null) {
-
-            final PropertiesParser propertiesParser = new PropertiesParser();
-            propertiesParser.properties.add(FILEPROPERTIES);
-            propertiesParser.properties.add(System.getProperties());
-            propertiesParser.properties.add(GLOBALPROPERTIES);
-
-            PROPERTIES_PARSER.set(propertiesParser);
-        }
-
-        return PROPERTIES_PARSER.get();
+        return propertiesParser;
     }
-
 }

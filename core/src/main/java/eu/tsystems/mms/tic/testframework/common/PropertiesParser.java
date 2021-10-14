@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2021, Mike Reiche,  T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -17,35 +17,43 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
- package eu.tsystems.mms.tic.testframework.common;
+package eu.tsystems.mms.tic.testframework.common;
 
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.transfer.BooleanPackedResponse;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Properties;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.stream.Stream;
 
 /**
  * Path Parser utility class.
  *
  * Created by peter on 01.09.14.
  */
-public final class PropertiesParser {
+public final class PropertiesParser implements Loggable {
 
     private static final Pattern patternReplace = Pattern.compile("\\{[^\\}]*\\}");
+    /**
+     * @deprecated Undocumented feature
+     */
     private static final String REGEX_SENSIBLE = "@SENSIBLE@";
+    /**
+     * @deprecated Undocumented feature
+     */
     private static final Pattern PATTERN_SENSIBLE = Pattern.compile(REGEX_SENSIBLE);
+    private final Supplier<Stream<PropertyResolver>> propertyResolvers;
 
-    public final List<Properties> properties = new LinkedList();
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(PropertiesParser.class);
+    PropertiesParser(Supplier<Stream<PropertyResolver>> propertyResolversSupplier) {
+        this.propertyResolvers = propertyResolversSupplier;
+    }
 
     /**
      * Parses a property and searches for testerra properties replacement marks: "{...}".
@@ -60,11 +68,11 @@ public final class PropertiesParser {
      */
     private String parseLine(String line, List<String> searchedStrings) {
         if (searchedStrings == null) {
-            searchedStrings = new ArrayList<String>(1);
+            searchedStrings = new ArrayList<>(1);
         }
 
         Matcher matcherReplace = patternReplace.matcher(line);
-        List<String> matches = new ArrayList<String>(1);
+        List<String> matches = new ArrayList<>(1);
         while (matcherReplace.find()) {
             String match = line.substring(matcherReplace.start(), matcherReplace.end());
             matches.add(match);
@@ -81,10 +89,10 @@ public final class PropertiesParser {
                 /*
                 ask
                  */
-                String value = pGetPrioritizedProperty(key);
+                String value = findProperty(key).orElse(null);
 
                 if (value == null) {
-                    LOGGER.warn("Property " + match + " not found");
+                    log().warn("Property " + match + " not found");
                 } else {
                     // look if SENSIBLE
                     final BooleanPackedResponse<String> response = findAndVoidSENSIBLETag(value);
@@ -92,7 +100,7 @@ public final class PropertiesParser {
                     boolean sensible = response.getBoolean();
 
                     // 1. remember the key because it was replaced
-                    List<String> listCopy = new ArrayList<String>(searchedStrings.size() + 1);
+                    List<String> listCopy = new ArrayList<>(searchedStrings.size() + 1);
                     listCopy.addAll(searchedStrings);
                     // 2. check recursive replacements
                     listCopy.add(key);
@@ -103,23 +111,26 @@ public final class PropertiesParser {
                     if (sensible) {
                         value = "###########";
                     }
-                    LOGGER.trace("Replace '" + match + "' by '" + value + "'");
+                    log().trace("Replace '" + match + "' by '" + value + "'");
                 }
             }
         }
         return line;
     }
 
+    /**
+     * @deprecated Undocumented feature
+     */
     private static BooleanPackedResponse<String> findAndVoidSENSIBLETag(String value) {
         if (value == null) {
-            return new BooleanPackedResponse<String>(value, false);
+            return new BooleanPackedResponse<>(value, false);
         }
         final Matcher matcherSensible = PATTERN_SENSIBLE.matcher(value);
         if (matcherSensible.find()) {
             value = value.replaceAll(REGEX_SENSIBLE, "");
-            return new BooleanPackedResponse<String>(value, true);
+            return new BooleanPackedResponse<>(value, true);
         }
-        return new BooleanPackedResponse<String>(value, false);
+        return new BooleanPackedResponse<>(value, false);
     }
 
     /**
@@ -136,7 +147,7 @@ public final class PropertiesParser {
     }
 
     public String getProperty(String key) {
-        String value = pGetPrioritizedProperty(key);
+        String value = findProperty(key).orElse(null);
 
         // replace marked system properties in this value (bla_{huhu} to bla_blubb if huhu=blubb)
         if (value != null) {
@@ -152,21 +163,21 @@ public final class PropertiesParser {
         return value;
     }
 
-    public String getProperty(final String key, final String defaultValue) {
-        final String value = getProperty(key);
-        if (value == null || value.length() <= 0) {
-            return defaultValue;
-        } else {
-            return value;
-        }
-    }
-
-    private String pGetPrioritizedProperty(final String key) {
-        String value = null;
-        for (Properties property : properties) {
-            value = property.getProperty(key, value);
+    public String getProperty(String key, Object defaultValue) {
+        String value = getProperty(key);
+        if (value == null || value.isEmpty()) {
+            if (defaultValue != null) value = defaultValue.toString();
+            else value = "";
         }
         return value;
+    }
+
+    private Optional<String> findProperty(String key) {
+        return this.propertyResolvers.get()
+                .map(properties -> properties.resolveProperty(key))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .findFirst();
     }
 
     /**
@@ -177,12 +188,15 @@ public final class PropertiesParser {
      *
      * @return property value
      */
-    public int getIntProperty(final String key, final int defaultValue) {
-        final String prop = getProperty(key);
+    public int getIntProperty(String key, Object defaultValue) {
+        String prop = getProperty(key);
+        if (prop == null) {
+            prop = defaultValue.toString();
+        }
         try {
             return Integer.parseInt(prop);
         } catch (final NumberFormatException e) {
-            return defaultValue;
+            return (Integer)defaultValue;
         }
     }
 
@@ -193,13 +207,8 @@ public final class PropertiesParser {
      *
      * @return property value or -1 if value cannot be parsed.
      */
-    public int getIntProperty(final String key) {
-        final String prop = getProperty(key);
-        try {
-            return Integer.parseInt(prop);
-        } catch (NumberFormatException e) {
-            return -1;
-        }
+    public int getIntProperty(String key) {
+        return getIntProperty(key, -1);
     }
 
     /**
@@ -210,15 +219,15 @@ public final class PropertiesParser {
      *
      * @return property value
      */
-    public double getDoubleProperty(String key, double defaultValue) {
-        final String prop = getProperty(key);
+    public double getDoubleProperty(String key, Object defaultValue) {
+        String prop = getProperty(key);
         if (prop == null) {
-            return defaultValue;
+            prop = defaultValue.toString();
         }
         try {
             return Double.parseDouble(prop);
         } catch (final NumberFormatException e) {
-            return defaultValue;
+            return (Double)defaultValue;
         }
     }
 
@@ -229,16 +238,8 @@ public final class PropertiesParser {
      *
      * @return property value or -1 if value cannot be parsed or is not set.
      */
-    public double getDoubleProperty(final String key) {
-        final String prop = getProperty(key);
-        if (prop == null) {
-            return -1;
-        }
-        try {
-            return Double.parseDouble(prop);
-        } catch (NumberFormatException e) {
-            return -1;
-        }
+    public double getDoubleProperty(String key) {
+        return getDoubleProperty(key, -1);
     }
 
     /**
@@ -249,15 +250,15 @@ public final class PropertiesParser {
      *
      * @return property value
      */
-    public long getLongProperty(String key, long defaultValue) {
-        final String prop = getProperty(key);
+    public long getLongProperty(String key, Object defaultValue) {
+        String prop = getProperty(key);
         if (prop == null) {
-            return defaultValue;
+            prop = defaultValue.toString();
         }
         try {
             return Long.parseLong(prop);
         } catch (final NumberFormatException e) {
-            return defaultValue;
+            return (Long)defaultValue;
         }
     }
 
@@ -268,16 +269,8 @@ public final class PropertiesParser {
      *
      * @return property value or -1 if value cannot be parsed or is not set.
      */
-    public long getLongProperty(final String key) {
-        final String prop = getProperty(key);
-        if (prop == null) {
-            return -1;
-        }
-        try {
-            return Long.parseLong(prop);
-        } catch (NumberFormatException e) {
-            return -1;
-        }
+    public long getLongProperty(String key) {
+        return getLongProperty(key, -1);
     }
 
     /**
@@ -287,14 +280,10 @@ public final class PropertiesParser {
      *
      * @return boolean property value or default false, if property is not set
      *
-     * @see java.lang.Boolean#parseBoolean(String)
+     * @see Boolean#parseBoolean(String)
      */
-    public boolean getBooleanProperty(final String key) {
-        final String prop = getProperty(key);
-        if (prop == null) {
-            return false;
-        }
-        return Boolean.parseBoolean(prop.trim());
+    public boolean getBooleanProperty(String key) {
+        return getBooleanProperty(key, false);
     }
 
     /**
@@ -305,18 +294,12 @@ public final class PropertiesParser {
      *
      * @return property value
      */
-    public boolean getBooleanProperty(final String key, final boolean defaultValue) {
-        final String prop = getProperty(key);
+    public boolean getBooleanProperty(final String key, Object defaultValue) {
+        String prop = getProperty(key);
         if (prop == null) {
-            return defaultValue;
+            prop = defaultValue.toString();
         }
-        if (prop.equalsIgnoreCase("true")) {
-            return true;
-        } else if (prop.equalsIgnoreCase("false")) {
-            return false;
-        } else {
-            return defaultValue;
-        }
+        return Boolean.parseBoolean(prop.trim());
     }
 
 }

@@ -100,7 +100,7 @@ public final class LayoutCheck {
     private static final File ACTUAL_IMAGES_PATH = new File(
             PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_ACTUAL_PATH, "src/test/resources/" + Constants.SCREENREFERENCES_PATH + "/actual"));
 
-    private static HashMap<String, Integer> runCount = new HashMap<String, Integer>();
+    private static final HashMap<String, Integer> runCount = new HashMap<>();
 
     static {
         // ensure the folders to save the images exist

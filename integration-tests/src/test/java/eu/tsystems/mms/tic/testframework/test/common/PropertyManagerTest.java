@@ -405,9 +405,6 @@ public class PropertyManagerTest extends AbstractWebDriverTest {
         PropertyManager.clearThreadlocalProperties();
         Assert.assertNull(PropertyManager.getThreadLocalProperties().getProperty("thread.property"));
 
-        PropertyManager.clearGlobalProperties();
-        Assert.assertNull(PropertyManager.getGlobalProperties().getProperty("thread.property"));
-
         Assert.assertEquals(PropertyManager.getProperty("thread.property"), "file");
     }
 

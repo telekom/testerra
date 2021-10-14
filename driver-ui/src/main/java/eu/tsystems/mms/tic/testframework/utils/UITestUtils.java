@@ -274,10 +274,7 @@ public class UITestUtils implements WebDriverManagerProvider {
                 // switch to
                 try {
                     webDriver.switchTo().window(windowHandle);
-                    Screenshot screenshot = takeScreenshot(webDriver, originalWindowHandle);
-                    if (screenshot != null) {
-                        screenshots.add(screenshot);
-                    }
+                    screenshots.add(takeScreenshot(webDriver, originalWindowHandle));
                 } catch (Exception e) {
                     LOGGER.error("Unable to switch to window " + windowHandle + " and take a screenshot", e);
                 }
@@ -285,10 +282,7 @@ public class UITestUtils implements WebDriverManagerProvider {
             // Switch back to original window handle
             webDriver.switchTo().window(originalWindowHandle);
         } else {
-            Screenshot screenshot = takeScreenshot(webDriver, originalWindowHandle);
-            if (screenshot != null) {
-                screenshots.add(screenshot);
-            }
+            screenshots.add(takeScreenshot(webDriver, originalWindowHandle));
         }
 
         return screenshots;

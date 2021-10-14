@@ -173,6 +173,7 @@ public final class PropertiesParser implements Loggable {
     }
 
     private Optional<String> findProperty(String key) {
+        // TODO: Use Optional.stream
         return this.propertyResolvers.get()
                 .map(properties -> properties.resolveProperty(key))
                 .filter(Optional::isPresent)

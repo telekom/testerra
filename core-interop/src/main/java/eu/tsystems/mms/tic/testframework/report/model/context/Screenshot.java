@@ -24,6 +24,7 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Optional;
 import org.apache.commons.io.FilenameUtils;
 
 public class Screenshot extends Attachment implements Loggable {
@@ -47,6 +48,10 @@ public class Screenshot extends Attachment implements Loggable {
 
     public Screenshot(String name) {
         super(name);
+    }
+
+    public Screenshot(File screenshotFile) {
+        this(screenshotFile, null);
     }
 
     public Screenshot(File screenshotFile, File pageSourceFile) {
@@ -74,16 +79,7 @@ public class Screenshot extends Attachment implements Loggable {
         return this;
     }
 
-    public File getPageSourceFile() {
-        if (pageSourceFile==null) {
-            try {
-                File file = File.createTempFile(FilenameUtils.getBaseName(getScreenshotFile().getName()), ".html");
-                if (file.exists()) file.delete();
-                setPageSourceFile(file);
-            } catch (IOException e) {
-                log().error(e.getMessage());
-            }
-        }
-        return pageSourceFile;
+    public Optional<File> getPageSourceFile() {
+        return Optional.ofNullable(pageSourceFile);
     }
 }

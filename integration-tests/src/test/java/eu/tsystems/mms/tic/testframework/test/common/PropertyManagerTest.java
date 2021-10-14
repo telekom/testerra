@@ -22,7 +22,10 @@
  package eu.tsystems.mms.tic.testframework.test.common;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.PropertyResolver;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+import java.util.Optional;
+import java.util.stream.Stream;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -420,5 +423,17 @@ public class PropertyManagerTest extends TesterraTest {
         Assert.assertNull(PropertyManager.getThreadLocalProperties().getProperty("thread.property"));
         Assert.assertNull(PropertyManager.getGlobalProperties().getProperty("thread.property"));
         Assert.assertNull(PropertyManager.getProperty("thread.property"));
+    }
+
+    @Test
+    public void test_resolvePriorityProperty() {
+        final String propertyKey = "any-property";
+        final String expected = "I-have-been-resolved";
+
+        PropertyManager.setPriorityResolvers(property -> Optional.of(expected));
+        Assert.assertEquals(PropertyManager.getProperty(propertyKey), expected);
+
+        PropertyManager.clearPriorityResolvers();
+        Assert.assertNull(PropertyManager.getProperty(propertyKey));
     }
 }

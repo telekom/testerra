@@ -30,6 +30,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 import java.util.stream.Stream;
 import org.slf4j.Logger;
@@ -39,7 +41,6 @@ import org.slf4j.LoggerFactory;
  * Contains methods for reading from properties files.
  *
  * @author mibu, pele, mrgi, sepr
- * @deprecated Use {@link PropertyManagerProvider} instead
  */
 public final class PropertyManager {
 
@@ -49,6 +50,7 @@ public final class PropertyManager {
     private static final ThreadLocalPropertyResolver threadLocalPropertyResolver = new ThreadLocalPropertyResolver();
     private static final PropertyResolver filePropertyResolver = new PropertiesPropertyResolver(FILEPROPERTIES);
     private static final PropertyResolver systemPropertyResolver = new PropertiesPropertyResolver(System.getProperties());
+    private static final ThreadLocal<List<PropertyResolver>> priorityPropertyResolvers = new ThreadLocal<>();
 
     /*
      * Static constructor, creating static Properties object.
@@ -57,16 +59,34 @@ public final class PropertyManager {
      */
     static {
         propertiesParser = new PropertiesParser(() -> {
-            return Stream.of(
-                    threadLocalPropertyResolver,
-                    filePropertyResolver,
-                    systemPropertyResolver
+            List<PropertyResolver> propertyResolvers = priorityPropertyResolvers.get();
+            return Stream.concat(
+                    (propertyResolvers != null?propertyResolvers.stream():Stream.empty()),
+                    Stream.of(
+                            threadLocalPropertyResolver,
+                            filePropertyResolver,
+                            systemPropertyResolver
+                    )
             );
         });
         // set static properties
         String propertyFile = "test.properties";
         pLoadPropertiesFromResource(FILEPROPERTIES, propertyFile, null);
         initializeSystemProperties();
+    }
+
+    /**
+     * Sets thread local property resolvers
+     */
+    public static void setPriorityResolvers(PropertyResolver... resolvers) {
+        priorityPropertyResolvers.set(Arrays.asList(resolvers));
+    }
+
+    /**
+     * Clears the thread local property resolvers
+     */
+    public static void clearPriorityResolvers() {
+        priorityPropertyResolvers.remove();
     }
 
     /**

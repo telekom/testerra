@@ -25,7 +25,6 @@ package eu.tsystems.mms.tic.testframework.utils;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.internal.Constants;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
 import eu.tsystems.mms.tic.testframework.report.Report;
@@ -84,6 +83,7 @@ public class UITestUtils {
      * A date format for files like screenshots.
      */
     private static final DateFormat FILES_DATE_FORMAT = new SimpleDateFormat("dd_MM_yyyy__HH_mm_ss");
+    public static int IE_SCREENSHOT_LIMIT = 1200;
 
     private UITestUtils() {
 
@@ -115,10 +115,11 @@ public class UITestUtils {
          */
         if (eventFiringWebDriver != null) {
             try {
-                FileUtils fileUtis = new FileUtils();
-                final File screenShotTargetFile = fileUtis.createTempFileName("screenshot.png");
-                final File sourceTargetFile = fileUtis.createTempFileName("pagesource.html");
+                FileUtils fileUtils = new FileUtils();
+                final File screenShotTargetFile = fileUtils.createTempFileName("screenshot.png");
+                final File sourceTargetFile = fileUtils.createTempFileName("pagesource.html");
                 takeWebDriverScreenshotToFile(eventFiringWebDriver, screenShotTargetFile);
+                Screenshot screenshot = new Screenshot(screenShotTargetFile);
 
                 // get page source (webdriver)
                 String pageSource = eventFiringWebDriver.getPageSource();
@@ -129,10 +130,10 @@ public class UITestUtils {
 
                     // save page source to file
                     savePageSource(pageSource, sourceTargetFile);
+                    screenshot.setPageSourceFile(sourceTargetFile);
                 }
 
                 Report report = TesterraListener.getReport();
-                Screenshot screenshot = new Screenshot(screenShotTargetFile, sourceTargetFile);
                 report.addScreenshot(screenshot, Report.FileMode.MOVE);
 
                 Map<String, String> metaData = screenshot.getMetaData();
@@ -201,8 +202,8 @@ public class UITestUtils {
         if (Browsers.ie.equalsIgnoreCase(WebDriverSessionsManager.getRequestedBrowser(eventFiringWebDriver).orElse(null))) {
             Viewport viewport = JSUtils.getViewport(driver);
 
-            if (viewport.height > Constants.IE_SCREENSHOT_LIMIT) {
-                LOGGER.warn("IE: Not taking screenshot because screen size is larger than height limit of " + Constants.IE_SCREENSHOT_LIMIT);
+            if (viewport.height > IE_SCREENSHOT_LIMIT) {
+                LOGGER.warn("IE: Not taking screenshot because screen size is larger than height limit of " + IE_SCREENSHOT_LIMIT);
                 return;
             }
         }

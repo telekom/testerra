@@ -265,31 +265,16 @@ public class UITestUtils implements WebDriverManagerProvider {
         }
     }
 
-    private static List<Screenshot> pTakeAllScreenshotsForSession(WebDriver driver) {
-
+    private static List<Screenshot> pTakeAllScreenshotsForSession(WebDriver webDriver) {
         final List<Screenshot> screenshots = new LinkedList<>();
-
-        String originalWindowHandle = null;
-        Set<String> windowHandles = null;
-        if (driver != null) {
-            // get actual window to switch back later
-            try {
-                originalWindowHandle = driver.getWindowHandle();
-            } catch (Exception e) {
-                LOGGER.error("Error getting actual window handle from driver", e);
-            }
-            // get all windows
-            if (driver.getWindowHandles().size() > 0) {
-                windowHandles = driver.getWindowHandles();
-            }
-        }
-
-        if (windowHandles != null) {
+        String originalWindowHandle = webDriver.getWindowHandle();
+        Set<String> windowHandles = webDriver.getWindowHandles();
+        if (windowHandles.size() > 1) {
             for (String windowHandle : windowHandles) {
                 // switch to
                 try {
-                    driver.switchTo().window(windowHandle);
-                    Screenshot screenshot = takeScreenshot(driver, originalWindowHandle);
+                    webDriver.switchTo().window(windowHandle);
+                    Screenshot screenshot = takeScreenshot(webDriver, originalWindowHandle);
                     if (screenshot != null) {
                         screenshots.add(screenshot);
                     }
@@ -297,12 +282,12 @@ public class UITestUtils implements WebDriverManagerProvider {
                     LOGGER.error("Unable to switch to window " + windowHandle + " and take a screenshot", e);
                 }
             }
-
-            // switch back to original window handle
-            try {
-                driver.switchTo().window(originalWindowHandle);
-            } catch (Exception e) {
-                LOGGER.error("Unable to switch back to original window handle after taking all screenshots", e);
+            // Switch back to original window handle
+            webDriver.switchTo().window(originalWindowHandle);
+        } else {
+            Screenshot screenshot = takeScreenshot(webDriver, originalWindowHandle);
+            if (screenshot != null) {
+                screenshots.add(screenshot);
             }
         }
 

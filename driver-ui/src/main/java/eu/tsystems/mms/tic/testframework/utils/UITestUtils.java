@@ -26,20 +26,13 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
-import eu.tsystems.mms.tic.testframework.report.Report;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import java.util.Collection;
 import java.util.stream.Collectors;
 import org.openqa.selenium.OutputType;
@@ -120,7 +113,8 @@ public class UITestUtils implements WebDriverManagerProvider {
 
     public static void takeScreenshot(WebDriver webDriver, Screenshot screenshot) {
         Optional<SessionContext> sessionContext = WEB_DRIVER_MANAGER.getSessionContext(webDriver);
-        takeWebDriverScreenshotToFile(webDriver, screenshot.getScreenshotFile());
+        File screenshotFile = screenshot.getScreenshotFile();
+        takeWebDriverScreenshotToFile(webDriver, screenshotFile);
 
         // get page source (webdriver)
         String pageSource = webDriver.getPageSource();
@@ -128,9 +122,8 @@ public class UITestUtils implements WebDriverManagerProvider {
         if (pageSource == null) {
             LOGGER.error("getPageSource() returned nothing, skipping to add page source");
         } else {
-
             // save page source to file
-            savePageSource(pageSource, screenshot.getPageSourceFile());
+            savePageSource(pageSource, screenshot.createPageSourceFile());
         }
 
         /*
@@ -167,10 +160,8 @@ public class UITestUtils implements WebDriverManagerProvider {
     }
 
     private static Screenshot takeScreenshot(WebDriver eventFiringWebDriver, String originalWindowHandle) {
-        FileUtils fileUtis = new FileUtils();
-        final File screenShotTargetFile = fileUtis.createTempFileName("screenshot.png");
-        final File sourceTargetFile = fileUtis.createTempFileName("pagesource.html");
-        Screenshot screenshot = new Screenshot(screenShotTargetFile, sourceTargetFile);
+        FileUtils fileUtils = new FileUtils();
+        Screenshot screenshot = new Screenshot(fileUtils.createTempFileName("screenshot.png"));
         takeScreenshot(eventFiringWebDriver, screenshot);
 
         String windowHandle = eventFiringWebDriver.getWindowHandle();

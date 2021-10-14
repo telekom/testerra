@@ -21,13 +21,13 @@
 
 package eu.tsystems.mms.tic.testframework.common;
 
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
+import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
 import java.util.Optional;
 import org.openqa.selenium.WebDriver;
 
-public class WebDriverPropertyResolver implements PropertyResolver {
+public class WebDriverPropertyResolver implements PropertyResolver, WebDriverManagerProvider {
 
     private final WebDriver webDriver;
 
@@ -37,11 +37,10 @@ public class WebDriverPropertyResolver implements PropertyResolver {
 
     @Override
     public Optional<String> resolveProperty(String property) {
-        switch (property) {
-            case TesterraProperties.BROWSER:
-                return WebDriverSessionsManager.getSessionContext(webDriver).map(SessionContext::getActualBrowserName);
-            case TesterraProperties.BROWSER_VERSION:
-                return WebDriverSessionsManager.getSessionContext(webDriver).map(SessionContext::getActualBrowserVersion);
+        if (property.equals(IWebDriverManager.Properties.BROWSER.toString())) {
+            return WEB_DRIVER_MANAGER.getSessionContext(webDriver).flatMap(SessionContext::getActualBrowserName);
+        } else if (property.equals(IWebDriverManager.Properties.BROWSER_VERSION.toString())) {
+            return WEB_DRIVER_MANAGER.getSessionContext(webDriver).flatMap(SessionContext::getActualBrowserVersion);
         }
         return Optional.empty();
     }

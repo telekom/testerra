@@ -23,6 +23,7 @@ package eu.tsystems.mms.tic.testframework.layout;
 
 import eu.tsystems.mms.tic.testframework.common.IProperties;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
@@ -58,7 +59,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author mibu
  */
-public final class LayoutCheck {
+public final class LayoutCheck implements PropertyManagerProvider {
 
     public enum Properties implements IProperties {
         MODE("mode", "pixel"),
@@ -247,20 +248,20 @@ public final class LayoutCheck {
     ) {
         final MatchStep step = new MatchStep();
 
-        Path referenceImagesDir = getDir(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_REFERENCE_PATH, "src/test/resources/screenreferences/reference"));
-        Path actualImagesDir = getDir(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_ACTUAL_PATH, "src/test/resources/screenreferences/actual"));
-        Path distanceImagesDir = getDir(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_DISTANCE_PATH, "src/test/resources/screenreferences/distance"));
+        Path referenceImagesDir = getDir(PROPERTY_MANAGER.getProperty(Properties.REFERENCE_PATH, "src/test/resources/screenreferences/reference"));
+        Path actualImagesDir = getDir(PROPERTY_MANAGER.getProperty(Properties.ACTUAL_PATH, "src/test/resources/screenreferences/actual"));
+        Path distanceImagesDir = getDir(PROPERTY_MANAGER.getProperty(Properties.DISTANCE_PATH, "src/test/resources/screenreferences/distance"));
 
         step.referenceFileName = referenceImagesDir.resolve(String.format(
-                PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_REFERENCE_NAMETEMPLATE, "Reference%s.png"),
+                PROPERTY_MANAGER.getProperty(Properties.REFERENCE_NAMETEMPLATE, "Reference%s.png"),
                 targetImageName
         ));
         step.annotationDataFileName = referenceImagesDir.resolve(String.format(
-                PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_ANNOTATIONDATA_NAMETEMPLATE, "Reference%s_data.json"),
+                PROPERTY_MANAGER.getProperty(Properties.ANNOTATIONDATA_NAMETEMPLATE, "Reference%s_data.json"),
                 targetImageName
         ));
         step.annotatedReferenceFileName = referenceImagesDir.resolve(String.format(
-                PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_ANNOTATED_NAMETEMPLATE, "ReferenceAnnotated%s.png"),
+                PROPERTY_MANAGER.getProperty(Properties.ANNOTATED_NAMETEMPLATE, "ReferenceAnnotated%s.png"),
                 targetImageName
         ));
 

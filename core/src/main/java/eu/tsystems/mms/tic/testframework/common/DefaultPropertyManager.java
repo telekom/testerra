@@ -34,7 +34,7 @@ public class DefaultPropertyManager implements IPropertyManager, MethodEndEvent.
 
     @Override
     public boolean loadProperties(String resourceFile) {
-        return PropertyManager.pLoadPropertiesFromResource(PropertyManager.FILEPROPERTIES, resourceFile, null);
+        return PropertyManager.pLoadPropertiesFromResource(PropertyManager.FILEPROPERTIES, resourceFile);
     }
 
     public String getProperty(String key, Object defaultValue) {

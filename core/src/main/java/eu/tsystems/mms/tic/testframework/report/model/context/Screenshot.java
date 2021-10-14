@@ -82,4 +82,9 @@ public class Screenshot extends Attachment implements Loggable {
     public Optional<File> getPageSourceFile() {
         return Optional.ofNullable(pageSourceFile);
     }
+
+    public File createPageSourceFile() {
+        this.pageSourceFile = this.getOrCreateTempFile(".html");
+        return this.pageSourceFile;
+    }
 }

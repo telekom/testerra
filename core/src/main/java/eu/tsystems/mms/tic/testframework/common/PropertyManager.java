@@ -41,11 +41,12 @@ import org.slf4j.LoggerFactory;
  *
  * @author mibu, pele, mrgi, sepr
  * @author Mike Reiche <mike.reiche@t-systems.com>
+ * @deprecated Use {@link IPropertyManager} instead
  */
 public final class PropertyManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PropertyManager.class);
-    private static final Properties FILEPROPERTIES = new Properties();
+    static final Properties FILEPROPERTIES = new Properties();
     private static final PropertiesParser propertiesParser;
     private static final ThreadLocalPropertyResolver threadLocalPropertyResolver = new ThreadLocalPropertyResolver();
     private static final PropertyResolver filePropertyResolver = new PropertiesPropertyResolver(FILEPROPERTIES);
@@ -112,7 +113,7 @@ public final class PropertyManager {
         }
     }
 
-    private static boolean pLoadPropertiesFromResource(final Properties properties, final String resourceFile) {
+    static boolean pLoadPropertiesFromResource(final Properties properties, final String resourceFile) {
         return pLoadPropertiesFromResource(properties, resourceFile, Charset.defaultCharset().name());
     }
 
@@ -123,7 +124,7 @@ public final class PropertyManager {
      * @param charset If null, the default charset is used
      * @return TRUE if the properties have been loaded
      */
-    private static boolean pLoadPropertiesFromResource(final Properties properties, final String resourceFile, String charset) {
+    static boolean pLoadPropertiesFromResource(final Properties properties, final String resourceFile, String charset) {
         FileUtils fileUtils = new FileUtils();
         try {
             File file = fileUtils.getLocalOrResourceFile(resourceFile);

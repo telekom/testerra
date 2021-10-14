@@ -24,7 +24,6 @@
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
-import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import java.util.Collections;
 import java.util.Optional;
 import org.testng.Assert;
@@ -409,7 +408,6 @@ public class PropertyManagerTest extends TesterraTest implements PropertyManager
         PropertyManager.clearThreadlocalProperties();
         Assert.assertNull(PropertyManager.getThreadLocalProperties().getProperty("thread.property"));
 
-        PropertyManager.clearGlobalProperties();
         PROPERTY_MANAGER.removeSystemProperty("thread.property");
         Assert.assertNull(PropertyManager.getGlobalProperties().getProperty("thread.property"));
 

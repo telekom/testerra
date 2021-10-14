@@ -102,7 +102,7 @@ public class DefaultReport implements Report, Loggable {
 
     @Override
     public Screenshot provideScreenshot(File file, FileMode fileMode) {
-        Screenshot screenshot = new Screenshot(file, null);
+        Screenshot screenshot = new Screenshot(file);
         addScreenshotFiles(screenshot, fileMode);
         return screenshot;
     }

@@ -115,11 +115,8 @@ public class UITestUtils {
          */
         if (eventFiringWebDriver != null) {
             try {
-                FileUtils fileUtils = new FileUtils();
-                final File screenShotTargetFile = fileUtils.createTempFileName("screenshot.png");
-                final File sourceTargetFile = fileUtils.createTempFileName("pagesource.html");
-                takeWebDriverScreenshotToFile(eventFiringWebDriver, screenShotTargetFile);
-                Screenshot screenshot = new Screenshot(screenShotTargetFile);
+                Screenshot screenshot = new Screenshot();
+                takeWebDriverScreenshotToFile(eventFiringWebDriver, screenshot.getScreenshotFile());
 
                 // get page source (webdriver)
                 String pageSource = eventFiringWebDriver.getPageSource();
@@ -129,8 +126,7 @@ public class UITestUtils {
                 } else {
 
                     // save page source to file
-                    savePageSource(pageSource, sourceTargetFile);
-                    screenshot.setPageSourceFile(sourceTargetFile);
+                    savePageSource(pageSource, screenshot.createPageSourceFile());
                 }
 
                 Report report = TesterraListener.getReport();

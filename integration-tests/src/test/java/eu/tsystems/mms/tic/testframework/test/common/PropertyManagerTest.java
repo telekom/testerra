@@ -23,6 +23,7 @@
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+import java.util.Collections;
 import java.util.Optional;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -428,10 +429,9 @@ public class PropertyManagerTest extends TesterraTest {
         final String propertyKey = "any-property";
         final String expected = "I-have-been-resolved";
 
-        PropertyManager.setPriorityResolvers(property -> Optional.of(expected));
-        Assert.assertEquals(PropertyManager.getProperty(propertyKey), expected);
-
-        PropertyManager.clearPriorityResolvers();
+        PropertyManager.withResolvers(Collections.singletonList(property -> Optional.of(expected)), () -> {
+            Assert.assertEquals(PropertyManager.getProperty(propertyKey), expected);
+        });
         Assert.assertNull(PropertyManager.getProperty(propertyKey));
     }
 }

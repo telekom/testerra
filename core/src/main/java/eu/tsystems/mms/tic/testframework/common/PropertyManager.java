@@ -22,7 +22,7 @@ package eu.tsystems.mms.tic.testframework.common;
 
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Stream;
@@ -41,6 +40,7 @@ import org.slf4j.LoggerFactory;
  * Contains methods for reading from properties files.
  *
  * @author mibu, pele, mrgi, sepr
+ * @author Mike Reiche <mike.reiche@t-systems.com>
  */
 public final class PropertyManager {
 
@@ -51,6 +51,7 @@ public final class PropertyManager {
     private static final PropertyResolver filePropertyResolver = new PropertiesPropertyResolver(FILEPROPERTIES);
     private static final PropertyResolver systemPropertyResolver = new PropertiesPropertyResolver(System.getProperties());
     private static final ThreadLocal<List<PropertyResolver>> priorityPropertyResolvers = new ThreadLocal<>();
+    private static final String TEST_PROPERTIES = "test.properties";
 
     /*
      * Static constructor, creating static Properties object.
@@ -70,57 +71,38 @@ public final class PropertyManager {
             );
         });
         // set static properties
-        String propertyFile = "test.properties";
-        pLoadPropertiesFromResource(FILEPROPERTIES, propertyFile, null);
+        pLoadPropertiesFromResource(FILEPROPERTIES, TEST_PROPERTIES);
         initializeSystemProperties();
     }
 
     /**
-     * Sets thread local property resolvers
+     * Runs the runnable with a list of prioritized resolvers
+     * @param resolvers
+     * @param runnable
      */
-    public static void setPriorityResolvers(PropertyResolver... resolvers) {
-        priorityPropertyResolvers.set(Arrays.asList(resolvers));
-    }
-
-    /**
-     * Clears the thread local property resolvers
-     */
-    public static void clearPriorityResolvers() {
-        priorityPropertyResolvers.remove();
+    public static void withResolvers(List<PropertyResolver> resolvers, Runnable runnable) {
+        priorityPropertyResolvers.set(resolvers);
+        try {
+            runnable.run();
+            priorityPropertyResolvers.remove();
+        } catch (Throwable throwable) {
+            priorityPropertyResolvers.remove();
+            throw throwable;
+        }
     }
 
     /**
      * Loads properties from a file and sets them as system properties when not already defined
      */
     private static void initializeSystemProperties() {
-        FileUtils fileUtils = new FileUtils();
-        String filename = PropertyManager.getProperty(TesterraProperties.SYSTEM_SETTINGS_FILE, "system.properties");
-        try {
-            File file = fileUtils.getLocalOrResourceFile(filename);
-            if (file.exists()) {
-                loadSystemProperties(file);
-            }
-        } catch (FileNotFoundException e) {
-            //
-        }
-    }
+        String resourceFile = PropertyManager.getProperty(TesterraProperties.SYSTEM_SETTINGS_FILE, "system.properties");
+        Properties temporarySystemProperties = new Properties();
+        pLoadPropertiesFromResource(temporarySystemProperties, resourceFile);
 
-    private static void loadSystemProperties(File file) {
-        Properties props;
-        try {
-            InputStream inputStream = new FileInputStream(file);
-            LOGGER.info("Load system properties: " + file.getAbsolutePath());
-            props = new Properties();
-            props.load(inputStream);
-        } catch (Exception e) {
-            LOGGER.warn(e.getMessage());
-            return;
-        }
-
-        for (String property : props.stringPropertyNames()) {
+        for (String property : temporarySystemProperties.stringPropertyNames()) {
             final String systemPropertyValue = System.getProperty(property);
-            if (StringUtils.isStringEmpty(systemPropertyValue)) {
-                String propertyValue = props.getProperty(property);
+            if (StringUtils.isBlank(systemPropertyValue)) {
+                String propertyValue = temporarySystemProperties.getProperty(property);
                 System.setProperty(property, propertyValue);
                 LOGGER.debug("Setting system property " + property + " = " + propertyValue);
             } else {
@@ -128,6 +110,10 @@ public final class PropertyManager {
                         + systemPropertyValue);
             }
         }
+    }
+
+    private static boolean pLoadPropertiesFromResource(final Properties properties, final String resourceFile) {
+        return pLoadPropertiesFromResource(properties, resourceFile, Charset.defaultCharset().name());
     }
 
     /**
@@ -142,9 +128,6 @@ public final class PropertyManager {
         try {
             File file = fileUtils.getLocalOrResourceFile(resourceFile);
             final InputStream propertiesInputStream = new FileInputStream(file);
-            if (charset == null) {
-                charset = Charset.defaultCharset().name();
-            }
             InputStreamReader inputStreamReader = new InputStreamReader(propertiesInputStream, charset);
             properties.load(inputStreamReader);
             LOGGER.info("Loaded " + file.getAbsolutePath());
@@ -159,7 +142,24 @@ public final class PropertyManager {
         return false;
     }
 
-    private static Properties pLoadThreadLocalProperties(final String resourceFile, final String charset) {
+    /**
+     * Loads a local property file.
+     *
+     * @param resourceFile
+     * @return
+     */
+    public static Properties loadThreadLocalProperties(final String resourceFile) {
+       return loadThreadLocalProperties(resourceFile, Charset.defaultCharset().name());
+    }
+
+    /**
+     * Loads a local property file.
+     *
+     * @param resourceFile
+     * @param charset
+     * @return
+     */
+    public static Properties loadThreadLocalProperties(final String resourceFile, final String charset) {
         Properties threadLocalProperties = getThreadLocalProperties();
         pLoadPropertiesFromResource(threadLocalProperties, resourceFile, charset);
         return threadLocalProperties;
@@ -171,29 +171,8 @@ public final class PropertyManager {
      * @param resourceFile
      * @return
      */
-    public static Properties loadThreadLocalProperties(final String resourceFile) {
-        return loadThreadLocalProperties(resourceFile, null);
-    }
-
-    /**
-     * Loads a local property file.
-     *
-     * @param resourceFile
-     * @param charset
-     * @return
-     */
-    public static Properties loadThreadLocalProperties(final String resourceFile, final String charset) {
-        return pLoadThreadLocalProperties(resourceFile, charset);
-    }
-
-    /**
-     * Loads a local property file.
-     *
-     * @param resourceFile
-     * @return
-     */
     public static Properties loadProperties(final String resourceFile) {
-        return loadProperties(resourceFile, null);
+        return loadProperties(resourceFile, Charset.defaultCharset().name());
     }
 
     /**

@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2021, Mike Reiche,  T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -17,15 +17,13 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
- package eu.tsystems.mms.tic.testframework.common;
+package eu.tsystems.mms.tic.testframework.common;
 
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.transfer.BooleanPackedResponse;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -51,10 +49,10 @@ public final class PropertiesParser implements Loggable {
      * @deprecated Undocumented feature
      */
     private static final Pattern PATTERN_SENSIBLE = Pattern.compile(REGEX_SENSIBLE);
-    private final Supplier<Stream<Properties>> propertiesSupplier;
+    private final Supplier<Stream<PropertyResolver>> propertyResolvers;
 
-    PropertiesParser(Supplier<Stream<Properties>> propertiesSupplier) {
-        this.propertiesSupplier = propertiesSupplier;
+    PropertiesParser(Supplier<Stream<PropertyResolver>> propertyResolversSupplier) {
+        this.propertyResolvers = propertyResolversSupplier;
     }
 
     /**
@@ -175,7 +173,12 @@ public final class PropertiesParser implements Loggable {
     }
 
     private Optional<String> findProperty(String key) {
-        return this.propertiesSupplier.get().map(properties -> properties.getProperty(key)).filter(Objects::nonNull).findFirst();
+        // TODO: Use Optional.stream
+        return this.propertyResolvers.get()
+                .map(properties -> properties.resolveProperty(key))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .findFirst();
     }
 
     /**
@@ -206,7 +209,7 @@ public final class PropertiesParser implements Loggable {
      * @return property value or -1 if value cannot be parsed.
      */
     public int getIntProperty(String key) {
-       return getIntProperty(key, -1);
+        return getIntProperty(key, -1);
     }
 
     /**
@@ -278,7 +281,7 @@ public final class PropertiesParser implements Loggable {
      *
      * @return boolean property value or default false, if property is not set
      *
-     * @see java.lang.Boolean#parseBoolean(String)
+     * @see Boolean#parseBoolean(String)
      */
     public boolean getBooleanProperty(String key) {
         return getBooleanProperty(key, false);

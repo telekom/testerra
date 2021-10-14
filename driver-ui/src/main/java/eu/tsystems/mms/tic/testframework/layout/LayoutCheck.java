@@ -42,7 +42,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -173,92 +172,31 @@ public final class LayoutCheck {
     private static final double NO_DISTANCE = 0;
     private static final int RGB_DEVIATION_PERCENT = Properties.PIXEL_RGB_DEVIATION_PERCENT.asLong().intValue();
     private static final double RGB_MAX_DEVIATION = 255;
-    private static final File REFERENCE_IMAGES_PATH = new File(
-            Properties.REFERENCE_PATH.asString());
-    private static final File DISTANCE_IMAGES_PATH = new File(
-            Properties.DISTANCE_PATH.asString());
-    private static final File ACTUAL_IMAGES_PATH = new File(
-            Properties.ACTUAL_PATH.asString());
 
-    private static HashMap<String, Integer> runCount = new HashMap<String, Integer>();
-
-    static {
-        // ensure the folders to save the images exist
-        REFERENCE_IMAGES_PATH.mkdirs();
-        DISTANCE_IMAGES_PATH.mkdirs();
-        ACTUAL_IMAGES_PATH.mkdirs();
-    }
+    private static final HashMap<String, Integer> runCount = new HashMap<>();
 
     /**
      * Logger.
      */
+    @Deprecated
     private static final Logger LOGGER = LoggerFactory.getLogger(LayoutCheck.class);
 
-    /**
-     * @param webDriver Web driver instance, has to implement TakesScreenshot
-     * @param targetImageName filename of the reference screenshot/distance image (extended by a given prefix from the properties)
-     * @return Percents of pixels that are different
-     */
-    public static double run(WebDriver webDriver, String targetImageName) {
-        String modeString = Properties.MODE.toString().trim().toUpperCase();
-        Mode mode = Mode.valueOf(modeString);
-
-        return run(webDriver, targetImageName, mode);
-    }
-
-    /**
-     * @param webDriver Web driver instance, has to implement TakesScreenshot
-     * @param targetImageName filename of the reference screenshot/distance image (extended by a given prefix from the properties
-     * @param mode PIXEL or ANNOTATED
-     * @return Percents of pixels that are different
-     */
-    @Deprecated
-    public static double run(WebDriver webDriver, final String targetImageName, final Mode mode) {
-        if (TakesScreenshot.class.isAssignableFrom(webDriver.getClass())) {
-            return pRun((TakesScreenshot) webDriver, targetImageName, mode).distance;
-        } else {
-            throw new RuntimeException("Passed WebDriver does not implement TakesScreenshot. WebDriver is of class " + webDriver.getClass());
+    public static Path getDir(String basePath) {
+        File baseDir = new File(basePath);
+        if (!baseDir.exists()) {
+            baseDir.mkdirs();
         }
-    }
-
-    /**
-     * Handles a screenshot action called from a test. Takes a new reference screenshot if the property
-     * 'Testerra.layoutcheck.takereference' is set to true. Otherwise takes a screenshot and creates a new distance
-     * image comparing the actual shown website to an existing reference screenshot.
-     *
-     * @param driver Web driver instance
-     * @param targetImageName filename of the reference screenshot/distance image (extended by a given prefix from the properties)
-     * @return Percents of pixels that are different (0 if reference is taken)
-     */
-    @Deprecated
-    public static double run(final TakesScreenshot driver, final String targetImageName) {
-        String modeString = Properties.MODE.toString().trim().toUpperCase();
-        Mode mode = Mode.valueOf(modeString);
-
-        return pRun(driver, targetImageName, mode).distance;
-    }
-
-    /**
-     * Creates directories for the images/ screenshots and creates distance image
-     *
-     * @param driver WebDriver used
-     * @param targetImageName name of the target image
-     * @param mode PIXEL or ANNOTATED
-     * @return distance between the images
-     */
-    @Deprecated
-    public static double run(final TakesScreenshot driver, final String targetImageName, final Mode mode) {
-        return pRun(driver, targetImageName, mode).distance;
+        return baseDir.toPath();
     }
 
     /**
      * Matches annotations and returns
      */
     public static MatchStep matchAnnotations(
-            final TakesScreenshot driver,
+            final TakesScreenshot takesScreenshot,
             final String targetImageName
     ) {
-        final File screenshot = driver.getScreenshotAs(OutputType.FILE);
+        final File screenshot = takesScreenshot.getScreenshotAs(OutputType.FILE);
         return matchAnnotations(screenshot, targetImageName);
     }
 
@@ -308,15 +246,23 @@ public final class LayoutCheck {
             final String targetImageName
     ) {
         final MatchStep step = new MatchStep();
-        step.referenceFileName = Paths.get(REFERENCE_IMAGES_PATH + "/" +
-            String.format(Properties.REFERENCE_NAMETEMPLATE.asString(), targetImageName)
-        );
-        step.annotationDataFileName = Paths.get(REFERENCE_IMAGES_PATH + "/" +
-            String.format(Properties.ANNOTATIONDATA_NAMETEMPLATE.asString(), targetImageName)
-        );
-        step.annotatedReferenceFileName = Paths.get(REFERENCE_IMAGES_PATH + "/" +
-            String.format(Properties.ANNOTATED_NAMETEMPLATE.asString(), targetImageName)
-        );
+
+        Path referenceImagesDir = getDir(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_REFERENCE_PATH, "src/test/resources/screenreferences/reference"));
+        Path actualImagesDir = getDir(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_ACTUAL_PATH, "src/test/resources/screenreferences/actual"));
+        Path distanceImagesDir = getDir(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_DISTANCE_PATH, "src/test/resources/screenreferences/distance"));
+
+        step.referenceFileName = referenceImagesDir.resolve(String.format(
+                PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_REFERENCE_NAMETEMPLATE, "Reference%s.png"),
+                targetImageName
+        ));
+        step.annotationDataFileName = referenceImagesDir.resolve(String.format(
+                PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_ANNOTATIONDATA_NAMETEMPLATE, "Reference%s_data.json"),
+                targetImageName
+        ));
+        step.annotatedReferenceFileName = referenceImagesDir.resolve(String.format(
+                PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_ANNOTATED_NAMETEMPLATE, "ReferenceAnnotated%s.png"),
+                targetImageName
+        ));
 
         String runCountModifier = "";
         if (!runCount.containsKey(targetImageName)) {
@@ -339,8 +285,8 @@ public final class LayoutCheck {
             LOGGER.info(String.format("Saved reference screenshot at '%s'.", step.referenceFileName.toString()));
         } else {
             step.consecutiveTargetImageName = targetImageName + runCountModifier;
-            step.actualFileName = Paths.get(
-                ACTUAL_IMAGES_PATH + "/" +
+
+            step.actualFileName = actualImagesDir.resolve(
                 String.format(Properties.ACTUAL_NAMETEMPLATE.asString(), step.consecutiveTargetImageName)
             );
 
@@ -353,7 +299,7 @@ public final class LayoutCheck {
             LOGGER.debug(String.format("Saved actual screenshot at '%s'.", step.actualFileName.toString()));
 
             // create distance file name
-            step.distanceFileName = Paths.get(DISTANCE_IMAGES_PATH + "/" +
+            step.distanceFileName = distanceImagesDir.resolve(
                 String.format(Properties.DISTANCE_NAMETEMPLATE.asString(), step.consecutiveTargetImageName)
             );
         }
@@ -364,8 +310,8 @@ public final class LayoutCheck {
     /**
      * Matches image pixels and returns an absolute distance value
      */
-    public static MatchStep matchPixels(final TakesScreenshot driver, final String targetImageName) {
-        final File screenshot = driver.getScreenshotAs(OutputType.FILE);
+    public static MatchStep matchPixels(final TakesScreenshot takesScreenshot, final String targetImageName) {
+        final File screenshot = takesScreenshot.getScreenshotAs(OutputType.FILE);
         return matchPixels(screenshot, targetImageName);
     }
 
@@ -406,43 +352,6 @@ public final class LayoutCheck {
         } catch (Exception e) {
             throw new LayoutCheckException(matchStep, e);
         }
-    }
-
-    /**
-     * (private method) Creates directories for the images/ screenshots and creates distance image
-     *
-     * @param driver WebDriver used
-     * @param targetImageName name of the target image
-     * @param mode PIXEL or ANNOTATED
-     * @return distance between the images
-     */
-    private static synchronized MatchStep pRun(
-            final TakesScreenshot driver,
-            final String targetImageName,
-            final Mode mode
-    ) {
-        LOGGER.debug("Starting ScreenReferencer in " + mode.name() + " mode.");
-        final File screenshot = driver.getScreenshotAs(OutputType.FILE);
-        final MatchStep step = prepare(screenshot, targetImageName);
-
-        if (!step.takeReferenceOnly) {
-            step.mode = mode;
-            switch (mode) {
-                case PIXEL:
-                    matchPixels(step);
-                    toReport(step);
-                    break;
-                case ANNOTATED:
-                    matchAnnotations(step);
-                    toReport(step);
-                    break;
-                default:
-                    LOGGER.error("Mode" + mode.name() + "not supported");
-                    throw new SystemException("Mode " + mode.name() + " not supported.");
-            }
-        }
-
-        return step;
     }
 
     /**
@@ -658,9 +567,10 @@ public final class LayoutCheck {
         context.actualScreenshot = report.provideScreenshot(actualScreenshotPath.toFile(), Report.FileMode.MOVE);
         context.distanceScreenshot = report.provideScreenshot(distanceScreenshotPath.toFile(), Report.FileMode.MOVE);
         context.distanceScreenshot.getMetaData().put("Distance", Double.toString(step.distance));
-        if (step.annotatedReferenceFileName!=null) {
-            final Path annotatedReferenceScreenshotPath = step.annotatedReferenceFileName;
-            context.annotatedScreenshot = report.provideScreenshot(annotatedReferenceScreenshotPath.toFile(), Report.FileMode.MOVE);
+
+        File annotatedReferenceFile =step.annotatedReferenceFileName.toFile();
+        if (annotatedReferenceFile.exists()) {
+            context.annotatedScreenshot = report.provideScreenshot(annotatedReferenceFile, Report.FileMode.MOVE);
         }
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         methodContext.addCustomContext(context);
@@ -670,7 +580,9 @@ public final class LayoutCheck {
         LayoutCheck.MatchStep matchStep;
         final String assertMessage = String.format("Expected that pixel distance (%%) of WebDriver screenshot to image '%s'", targetImageName);
         try {
+            //PropertyManager.setPriorityResolvers(Stream.of(new WebDriverPropertyResolver(webDriver)));
             matchStep = LayoutCheck.matchPixels((TakesScreenshot) webDriver, targetImageName);
+            //PropertyManager.clearPriorityResolvers();
             if (!matchStep.takeReferenceOnly) {
                 LayoutCheck.toReport(matchStep);
             }

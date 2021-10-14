@@ -89,9 +89,9 @@ public class DefaultReport implements Report, Loggable {
             screenshot.setFile(addFile(screenshot.getScreenshotFile(), screenshotsDirectory, fileMode));
         }
 
-        if (screenshot.getPageSourceFile() != null) {
-            screenshot.setPageSourceFile(addFile(screenshot.getPageSourceFile(), screenshotsDirectory, fileMode));
-        }
+        screenshot.getPageSourceFile().ifPresent(file -> {
+            addFile(file, screenshotsDirectory, fileMode);
+        });
     }
 
     @Override

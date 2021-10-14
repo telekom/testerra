@@ -56,8 +56,8 @@ public class LocalizationTest extends AbstractWebDriverTest {
         LocalizedBundle germanBundle = new LocalizedBundle(SimpleLocalization.BUNDLE_NAME, Locale.GERMAN);
         Assert.assertNotEquals(germanBundle.getString("TEST"), defaultBundle.getString("TEST"));
 
-        Locale.setDefault(Locale.GERMAN);
-        Assert.assertEquals(defaultBundle.getString("TEST"), defaultBundle.getString("TEST"));
+        defaultBundle = SimpleLocalization.setDefault(Locale.GERMAN);
+        Assert.assertEquals(germanBundle.getString("TEST"), defaultBundle.getString("TEST"));
     }
 
 }

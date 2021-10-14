@@ -32,7 +32,7 @@ import org.apache.commons.io.FilenameUtils;
 
 public class Attachment implements Loggable {
     private static final HashMap<String, Integer> counter = new HashMap<>();
-    private String tmpName;
+    private final String tmpName;
     protected File file;
     private Map<String, String> metaData;
 

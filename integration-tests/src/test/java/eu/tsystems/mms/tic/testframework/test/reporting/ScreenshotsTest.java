@@ -21,14 +21,11 @@
 
 package eu.tsystems.mms.tic.testframework.test.reporting;
 
-import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.AbstractExclusiveTestSitesTest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.BasePage;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.WebTestPage;
-import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
-import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -40,7 +37,6 @@ import java.io.IOException;
 import java.util.Optional;
 import org.openqa.selenium.By;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import org.testng.reporters.Files;
 
@@ -48,11 +44,11 @@ import org.testng.reporters.Files;
  * Tests if screenshots are added to the MethodContext when a test fails.
  * @author Mike Reiche
  */
-public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactoryTest, AssertProvider {
+public class ScreenshotsTest extends AbstractExclusiveTestSitesTest<WebTestPage> implements PageFactoryTest, AssertProvider {
 
     @Override
-    public BasePage getPage() {
-        return PAGE_FACTORY.createPage(BasePage.class, WEB_DRIVER_MANAGER.getWebDriver());
+    public Class<WebTestPage> getPageClass() {
+        return WebTestPage.class;
     }
 
 //    @Test()
@@ -117,7 +113,7 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
 
     @Test
     public void test_DOMSource() throws IOException {
-        WebTestPage page = new WebTestPage(WebDriverManager.getWebDriver());
+        WebTestPage page = getPage();
 
         for (int s = 0; s < 3; ++s) {
             page.getOpenAgain().click();

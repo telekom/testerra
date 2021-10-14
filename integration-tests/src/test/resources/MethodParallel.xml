@@ -5,7 +5,6 @@
         <packages>
             <package name="eu.tsystems.mms.tic.testframework.test.common"/>
             <package name="eu.tsystems.mms.tic.testframework.test.events"/>
-            <package name="eu.tsystems.mms.tic.testframework.test.l10n"/>
             <package name="eu.tsystems.mms.tic.testframework.test.reporting"/>
             <package name="eu.tsystems.mms.tic.testframework.test.testdata"/>
             <package name="eu.tsystems.mms.tic.testframework.test.utils"/>

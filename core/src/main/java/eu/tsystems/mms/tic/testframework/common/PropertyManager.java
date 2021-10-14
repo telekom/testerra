@@ -137,7 +137,7 @@ public final class PropertyManager {
      * @param charset If null, the default charset is used
      * @return TRUE if the properties have been loaded
      */
-    static boolean pLoadPropertiesFromResource(final Properties properties, final String resourceFile, String charset) {
+    private static boolean pLoadPropertiesFromResource(final Properties properties, final String resourceFile, String charset) {
         FileUtils fileUtils = new FileUtils();
         try {
             File file = fileUtils.getLocalOrResourceFile(resourceFile);

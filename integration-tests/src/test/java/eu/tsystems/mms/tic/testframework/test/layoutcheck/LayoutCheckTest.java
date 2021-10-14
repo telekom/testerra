@@ -42,7 +42,7 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements LocatorFac
     }
 
     private GuiElement getGuiElementQa(final String qaTag) {
-        return new GuiElement(getClassExclusiveWebDriver(), LOCATE.byQa(qaTag));
+        return new GuiElement(getWebDriver(), LOCATE.byQa(qaTag));
     }
 
     @Test
@@ -79,7 +79,7 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements LocatorFac
         guiElement.asserts().assertScreenshot("TestArticleFailed", 1);
     }
 
-    @Test(expectedExceptions = TimeoutException.class)
+    @Test(expectedExceptions = AssertionError.class)
     public void testCheckElementLayoutSize_fails() {
         GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
         guiElement.asserts().assertScreenshot("TestArticle-90-percent-width", 1);
@@ -87,7 +87,7 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements LocatorFac
 
     @Test
     public void testCheckPageLayout() {
-        LayoutCheck.assertScreenshot(getClassExclusiveWebDriver(), "LayoutTestPage", 5);
+        LayoutCheck.assertScreenshot(getWebDriver(), "LayoutTestPage", 5);
     }
 
 }

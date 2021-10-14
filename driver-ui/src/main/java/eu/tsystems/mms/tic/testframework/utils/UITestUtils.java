@@ -160,8 +160,7 @@ public class UITestUtils implements WebDriverManagerProvider {
     }
 
     private static Screenshot takeScreenshot(WebDriver eventFiringWebDriver, String originalWindowHandle) {
-        FileUtils fileUtils = new FileUtils();
-        Screenshot screenshot = new Screenshot(fileUtils.createTempFileName("screenshot.png"));
+        Screenshot screenshot = new Screenshot();
         takeScreenshot(eventFiringWebDriver, screenshot);
 
         String windowHandle = eventFiringWebDriver.getWindowHandle();

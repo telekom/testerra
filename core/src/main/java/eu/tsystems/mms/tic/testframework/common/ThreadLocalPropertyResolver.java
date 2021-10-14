@@ -24,7 +24,13 @@ package eu.tsystems.mms.tic.testframework.common;
 import java.util.Optional;
 import java.util.Properties;
 
-public class ThreadLocalPropertyResolver implements PropertyResolver {
+/**
+ * Supports thread local properties.
+ * For internal use only!
+ *
+ * @author Mike Reiche <mike.reiche@t-systems.com>
+ */
+class ThreadLocalPropertyResolver implements PropertyResolver {
 
     private final ThreadLocal<Properties> threadLocalProperties = new ThreadLocal<>();
 

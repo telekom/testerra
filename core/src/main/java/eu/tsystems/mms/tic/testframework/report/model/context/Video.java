@@ -31,6 +31,9 @@ public class Video extends Attachment {
     }
 
     public File getVideoFile() {
-        return getOrCreateTempFile(".mp4");
+        if (this.file == null) {
+            this.file = createTempFile(".mp4");
+        }
+        return this.file;
     }
 }

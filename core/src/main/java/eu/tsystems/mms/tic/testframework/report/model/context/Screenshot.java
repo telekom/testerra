@@ -22,10 +22,8 @@
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import java.io.File;
-import java.io.IOException;
 import java.util.Date;
 import java.util.Optional;
-import org.apache.commons.io.FilenameUtils;
 
 public class Screenshot extends Attachment implements Loggable {
 
@@ -51,26 +49,26 @@ public class Screenshot extends Attachment implements Loggable {
     }
 
     public Screenshot(File screenshotFile) {
-        this(screenshotFile, null);
+        super(screenshotFile);
     }
 
     public Screenshot(File screenshotFile, File pageSourceFile) {
         super(screenshotFile);
-        if (pageSourceFile!=null) {
-            setPageSourceFile(pageSourceFile);
-        }
+        setPageSourceFile(pageSourceFile);
     }
 
     @Override
-    public Screenshot setFile(File file) {
+    public void setFile(File file) {
         getMetaData().put(MetaData.DATE, new Date(file.lastModified()).toString());
         getMetaData().put(MetaData.FILE_NAME, file.getName());
         super.setFile(file);
-        return this;
     }
 
     public File getScreenshotFile() {
-        return getOrCreateTempFile(".png");
+        if (this.file == null) {
+            this.file = createTempFile(".png");
+        }
+        return this.file;
     }
 
     public Screenshot setPageSourceFile(File file) {
@@ -84,7 +82,6 @@ public class Screenshot extends Attachment implements Loggable {
     }
 
     public File createPageSourceFile() {
-        this.pageSourceFile = this.getOrCreateTempFile(".html");
-        return this.pageSourceFile;
+        return this.pageSourceFile = this.createTempFile(".html");
     }
 }

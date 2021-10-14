@@ -27,11 +27,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import org.apache.commons.io.FilenameUtils;
 
 public class Attachment implements Loggable {
     private static final HashMap<String, Integer> counter = new HashMap<>();
-    private String tmpName;
-    private File file;
+    private final String tmpName;
+    protected File file;
     private Map<String, String> meta;
 
     /**
@@ -44,28 +46,22 @@ public class Attachment implements Loggable {
     }
 
     public Attachment(File file) {
+        this(FilenameUtils.removeExtension(file.getName()));
         setFile(file);
     }
 
-    protected File getOrCreateTempFile(String withSuffix) {
-        if (file == null) {
-            try {
-                file = File.createTempFile(tmpName, withSuffix);
-                if (file.exists()) file.delete();
-            } catch (IOException e) {
-                log().error(e.getMessage());
-            }
+    protected File createTempFile(String withSuffix) {
+        try {
+            File file = File.createTempFile(tmpName, withSuffix);
+            if (file.exists()) file.delete();
+            return file;
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to create temp file", e);
         }
-        return file;
     }
 
-    protected File getFile() {
-        return file;
-    }
-
-    public Attachment setFile(File file) {
+    public void setFile(File file) {
         this.file = file;
-        return this;
     }
 
     public Map<String, String> getMetaData() {

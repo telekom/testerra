@@ -63,6 +63,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -190,7 +191,7 @@ public class ContextExporter implements Loggable {
             screenshotBuilder.putMeta("sourcesRefId", sourceBuilder.getId());
             fileBuilders[1] = sourceBuilder;
         });
-        return Stream.of(fileBuilders);
+        return Stream.of(fileBuilders).filter(Objects::nonNull);
     }
 
     public File.Builder buildVideo(Video video) {

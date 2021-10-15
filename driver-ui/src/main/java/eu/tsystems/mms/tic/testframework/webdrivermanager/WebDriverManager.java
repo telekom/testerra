@@ -24,12 +24,16 @@
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
+import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
+import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -66,6 +70,7 @@ public final class WebDriverManager {
     private static WebDriverManagerConfig webdriverManagerConfig;
 
     private static final HashMap<String, UserAgentConfig> userAgentConfigurators = new HashMap<>();
+    private static final String SESSION_LOCALE = "locale";
 
     /**
      * Private constructor to hide the public one since this a static only class.
@@ -325,5 +330,29 @@ public final class WebDriverManager {
 
     static UserAgentConfig getUserAgentConfig(String browser) {
         return userAgentConfigurators.get(browser);
+    }
+
+    /**
+     * Sets the locale for a specified session
+     * @param webDriver
+     * @param locale
+     * @return TRUE if locale has been set
+     */
+    public static boolean setSessionLocale(WebDriver webDriver, Locale locale) {
+        Optional<Map<String, Object>> optionalMetaData = WebDriverSessionsManager.getSessionContext(webDriver).map(SessionContext::getMetaData);
+        optionalMetaData.ifPresent(map -> {
+            map.put(SESSION_LOCALE, locale);
+        });
+        return optionalMetaData.isPresent();
+    }
+
+    /**
+     * Returns the session locale
+     * @param webDriver
+     */
+    public static Optional<Locale> getSessionLocale(WebDriver webDriver) {
+        return WebDriverSessionsManager.getSessionContext(webDriver)
+                .map(SessionContext::getMetaData)
+                .map(map -> (Locale)map.get(SESSION_LOCALE));
     }
 }

@@ -43,7 +43,6 @@ import org.sikuli.api.ScreenLocation;
 import org.sikuli.api.ScreenRegion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -60,15 +59,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
-import javax.imageio.ImageIO;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
-import org.sikuli.api.ScreenLocation;
-import org.sikuli.api.ScreenRegion;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import java.util.stream.Stream;
 
 /**
@@ -89,8 +79,7 @@ public class UITestUtils implements WebDriverManagerProvider {
     private static final DateFormat FILES_DATE_FORMAT = new SimpleDateFormat("dd_MM_yyyy__HH_mm_ss");
     private static final Report report = Testerra.getInjector().getInstance(Report.class);
     private static final IExecutionContextController executionContextController = Testerra.getInjector().getInstance(IExecutionContextController.class);
-
-    private static int IE_SCREENSHOT_LIMIT = 1200;
+    private static final int IE_SCREENSHOT_LIMIT = 1200;
 
     @Deprecated
     private UITestUtils() {
@@ -155,7 +144,7 @@ public class UITestUtils implements WebDriverManagerProvider {
             screenshot.getMetaData().put(Screenshot.MetaData.WINDOW, window);
             screenshot.getMetaData().put(Screenshot.MetaData.URL, webDriver.getCurrentUrl());
         } catch (Exception e) {
-            LOGGER.warn("Unable to fullfil screenshot meta data: " + e.getMessage());
+            LOGGER.warn("Unable to fulfill screenshot meta data: " + e.getMessage());
         }
     }
 

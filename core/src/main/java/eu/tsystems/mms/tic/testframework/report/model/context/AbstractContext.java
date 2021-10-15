@@ -48,9 +48,9 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
     protected AbstractContext parentContext;
     private final Date startTime = new Date();
     private Date endTime;
-    private Map<String, String> metaData;
+    private Map<String, Object> metaData;
 
-    public Map<String, String> getMetaData() {
+    public Map<String, Object> getMetaData() {
         if (metaData == null) {
             metaData = new LinkedHashMap<>();
         }

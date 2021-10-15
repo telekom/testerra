@@ -26,40 +26,18 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class LocalizedBundle {
-    private ResourceBundle resourceBundle;
+    private final ResourceBundle resourceBundle;
     private static final ResourceBundle.Control resourceBundleController = new UTF8ResourceBundleControl();
-    /**
-     * When the bundle name is NULL, the {@link #resourceBundle} is fixed
-     */
-    private final String bundleName;
 
     public LocalizedBundle(String bundleName, Locale locale) {
-        this.bundleName = null;
         this.resourceBundle = ResourceBundle.getBundle(bundleName, locale, resourceBundleController);
     }
 
     public LocalizedBundle(String bundleName) {
-        this.bundleName = bundleName;
-        recreateLocalizedResourceBundle();
-    }
-
-    private ResourceBundle getResourceBundle() {
-        /**
-         * When the locale is not fixed and differs from the default locale
-         * than recreate the bundle.
-         */
-        if (this.bundleName != null && Locale.getDefault() != this.resourceBundle.getLocale()) {
-            recreateLocalizedResourceBundle();
-        }
-        return resourceBundle;
-    }
-
-    private void recreateLocalizedResourceBundle() {
-        this.resourceBundle = ResourceBundle.getBundle(this.bundleName, resourceBundleController);
+        this(bundleName, Locale.getDefault());
     }
 
     public String getString(String label) {
-        ResourceBundle resourceBundle = getResourceBundle();
         if (resourceBundle.containsKey(label)) {
             return resourceBundle.getString(label);
         } else {

@@ -31,6 +31,7 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverReques
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
+import java.util.Locale;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -226,5 +227,18 @@ public class WebDriverManagerTest extends AbstractWebDriverTest {
         WebDriverManager.getWebDriver(request);
 
         Assert.assertTrue(request.getDesiredCapabilities().acceptInsecureCerts());
+    }
+
+    @Test
+    public void test_SessionLocale() {
+        Locale defaultLocale = Locale.getDefault();
+        Locale sessionLocale = Locale.KOREAN;
+
+        Assert.assertNotEquals(defaultLocale, sessionLocale);
+
+        WebDriver webDriver = WebDriverManager.getWebDriver();
+        Assert.assertTrue(WebDriverManager.setSessionLocale(webDriver, sessionLocale));
+
+        Assert.assertEquals(WebDriverManager.getSessionLocale(webDriver).orElse(null), sessionLocale);
     }
 }

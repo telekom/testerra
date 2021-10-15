@@ -131,7 +131,7 @@ public class EventLoggingEventDriverListener implements WebDriverEventListener, 
 
     @Override
     public void afterSwitchToWindow(String s, WebDriver webDriver) {
-        log().info("Switched to window \"" + webDriver.getTitle() + "\" (" + webDriver.getCurrentUrl()+")");
+        log().info(String.format("Switched to window \"%s\" (%s)", webDriver.getTitle(), webDriver.getCurrentUrl()));
     }
 
     @Override

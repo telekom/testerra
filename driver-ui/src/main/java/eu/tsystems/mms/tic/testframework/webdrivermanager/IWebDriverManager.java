@@ -28,6 +28,8 @@ import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverRetainer;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -237,5 +239,23 @@ public interface IWebDriverManager extends WebDriverRetainer, Loggable {
         } else {
             return Optional.empty();
         }
+    }
+
+    /**
+     * Sets the locale for a specified session
+     * @param webDriver
+     * @param locale
+     * @return TRUE if locale has been set
+     */
+    default boolean setSessionLocale(WebDriver webDriver, Locale locale) {
+        return WebDriverManager.setSessionLocale(webDriver, locale);
+    }
+
+    /**
+     * Returns the session locale
+     * @param webDriver
+     */
+    default Optional<Locale> getSessionLocale(WebDriver webDriver) {
+        return WebDriverManager.getSessionLocale(webDriver);
     }
 }

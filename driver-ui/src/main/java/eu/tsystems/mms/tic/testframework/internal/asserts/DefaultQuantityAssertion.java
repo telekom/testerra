@@ -129,7 +129,7 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
 
             @Override
             public String createSubject() {
-                return "map";
+                return "mapped to " + Format.shortString(getActual());
             }
         });
     }

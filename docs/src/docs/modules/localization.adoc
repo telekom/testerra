@@ -64,15 +64,35 @@ GuiElement loginBtn = new GuiElement(By.linkText(SimpleLocalization.getText("BTN
 you can switch the default locale the following way.
 [source, java]
 ----
-LocalizedBundle bundle = SimpleLocalization.setDefault(Locale.GERMAN);
+LocalizedBundle defaultBundle = SimpleLocalization.setDefault(Locale.GERMAN);
 ----
 
-But you can use your own localized bundles:
+== Session based localization
+
+For thread-safe localization, you can use session based localization by initializing your localized bundles based on the session's locale.
 
 [source, java]
 ----
-LocalizedBundle germanBundle = new LocalizedBundle("testdata", Locale.GERMAN);
-germanBundle.getString("TEST_KEY");
+Locale sessionLocale = WebDriverManager.getSessionLocale(WebDriver).orElse(Locale.getDefault());
+
+LocalizedBundle sessionBundle = new LocalizedBundle("testdata", sessionLocale);
+sessionBundle.getString("TEST_KEY");
+----
+
+When the SUT locale changes, you should also set the session's locale:
+
+[source, java]
+----
+public class LocalizedPage extends Page {
+
+    public void switchLocale(Locale locale) {
+        // Implement your language switch here
+        // ...
+
+        // Don't forget to set the sessions locale
+        WebDriverManager.setSessionLocale(getWebDriver(), locale);
+    }
+}
 ----
 
 == Change runtime locale

@@ -227,7 +227,6 @@ public class DesktopWebDriverFactory implements
           */
         desktopWebDriverRequest.getBaseUrl().ifPresent(baseUrl -> {
             try {
-                log().info("Opening baseUrl: " + baseUrl.toString());
                 StopWatch.startPageLoad(eventFiringWebDriver);
                 eventFiringWebDriver.get(baseUrl.toString());
             } catch (Exception e) {

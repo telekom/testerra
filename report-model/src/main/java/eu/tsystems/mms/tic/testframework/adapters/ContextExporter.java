@@ -67,6 +67,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 
@@ -172,7 +173,7 @@ public class ContextExporter implements Loggable {
         return builder;
     }
 
-    public File.Builder[] buildScreenshot(Screenshot screenshot) {
+    public Stream<File.Builder> buildScreenshot(Screenshot screenshot) {
         File.Builder[] fileBuilders = new File.Builder[2];
 
         java.io.File currentScreenshotFile = screenshot.getScreenshotFile();
@@ -189,7 +190,7 @@ public class ContextExporter implements Loggable {
             screenshotBuilder.putMeta("sourcesRefId", sourceBuilder.getId());
             fileBuilders[1] = sourceBuilder;
         });
-        return fileBuilders;
+        return Stream.of(fileBuilders);
     }
 
     public File.Builder buildVideo(Video video) {
@@ -317,9 +318,8 @@ public class ContextExporter implements Loggable {
                 Optional<ClickPathEvent.Builder> optional = Optional.ofNullable(this.buildClickPathEvent((eu.tsystems.mms.tic.testframework.clickpath.ClickPathEvent) entry));
                 optional.ifPresent(entryBuilder::setClickPathEvent);
             } else if (entry instanceof Screenshot) {
-                File.Builder[] builders = buildScreenshot((Screenshot) entry);
-                Optional<File.Builder> optional = Optional.ofNullable(builders[0]);
-                optional.ifPresent(file -> entryBuilder.setScreenshotId(file.getId()));
+                Stream<File.Builder> builderStream = buildScreenshot((Screenshot) entry);
+                builderStream.findFirst().ifPresent(builder -> entryBuilder.setScreenshotId(builder.getId()));
             } else if (entry instanceof eu.tsystems.mms.tic.testframework.report.model.context.LogMessage) {
                 eu.tsystems.mms.tic.testframework.report.model.context.LogMessage logEvent = (eu.tsystems.mms.tic.testframework.report.model.context.LogMessage)entry;
                 Optional<LogMessage.Builder> optional = Optional.ofNullable(buildLogMessage(logEvent));

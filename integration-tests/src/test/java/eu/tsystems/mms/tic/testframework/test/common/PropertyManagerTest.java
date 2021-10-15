@@ -23,9 +23,13 @@
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
+import eu.tsystems.mms.tic.testframework.common.WebDriverPropertyResolver;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.util.Collections;
 import java.util.Optional;
+import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -437,5 +441,21 @@ public class PropertyManagerTest extends TesterraTest implements PropertyManager
             Assert.assertEquals(PropertyManager.getProperty(propertyKey), expected);
         });
         Assert.assertNull(PropertyManager.getProperty(propertyKey));
+    }
+
+    @Test
+    public void test_WebDriverPropertyResolver() {
+        String fakeBrowser = "fakeBrowser";
+        String actualBrowser = "HeadlessChrome";
+        Assert.assertNotEquals(PropertyManager.getProperty(TesterraProperties.BROWSER), fakeBrowser);
+
+        WebDriver webDriver = WebDriverManager.getWebDriver();
+
+        PropertyManager.getThreadLocalProperties().setProperty(TesterraProperties.BROWSER, fakeBrowser);
+        Assert.assertEquals(PropertyManager.getProperty(TesterraProperties.BROWSER), fakeBrowser);
+
+        PropertyManager.withResolvers(Collections.singletonList(new WebDriverPropertyResolver(webDriver)), () -> {
+            Assert.assertEquals(PropertyManager.getProperty(TesterraProperties.BROWSER), actualBrowser);
+        });
     }
 }

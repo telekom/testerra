@@ -324,10 +324,15 @@ public final class PropertyManager {
      * gets the local properties of the thread
      *
      * @return local properties of the thread
+     * @deprecated Use {@link #getTestLocalProperties()} instead
      */
     @Deprecated
     public static Properties getThreadLocalProperties() {
        return threadLocalPropertyResolver.getProperties();
+    }
+
+    public static Properties getTestLocalProperties() {
+        return getThreadLocalProperties();
     }
 
     /**

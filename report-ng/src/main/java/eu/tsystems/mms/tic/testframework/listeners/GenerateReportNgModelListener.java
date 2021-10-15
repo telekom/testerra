@@ -31,6 +31,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import java.io.File;
+import java.util.stream.Stream;
 
 public class GenerateReportNgModelListener extends AbstractReportModelListener implements FinalizeExecutionEvent.Listener{
     private final ExecutionAggregate.Builder executionAggregateBuilder = ExecutionAggregate.newBuilder();
@@ -45,11 +46,10 @@ public class GenerateReportNgModelListener extends AbstractReportModelListener i
         }
 
         @Override
-        public eu.tsystems.mms.tic.testframework.report.model.File.Builder[] buildScreenshot(Screenshot screenshot) {
-            eu.tsystems.mms.tic.testframework.report.model.File.Builder[] builders = super.buildScreenshot(screenshot);
-            writeFileBuilderToFile(builders[0]);
-            writeFileBuilderToFile(builders[1]);
-            return builders;
+        public Stream<eu.tsystems.mms.tic.testframework.report.model.File.Builder> buildScreenshot(Screenshot screenshot) {
+            Stream<eu.tsystems.mms.tic.testframework.report.model.File.Builder> builderStream = super.buildScreenshot(screenshot);
+            builderStream.forEach(this::writeFileBuilderToFile);
+            return builderStream;
         }
 
         private void writeFileBuilderToFile(eu.tsystems.mms.tic.testframework.report.model.File.Builder fileBuilder) {

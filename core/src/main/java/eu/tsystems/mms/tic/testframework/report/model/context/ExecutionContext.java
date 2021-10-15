@@ -47,11 +47,6 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
     @Deprecated
     public Map<String, List<MethodContext>> failureAspects;
     public final RunConfig runConfig = new RunConfig();
-
-    /**
-     * @deprecated Use {@link #getMetaData()} instead
-     */
-    public final Map<String, String> metaData = new LinkedHashMap<>();
     public boolean crashed = false;
 
     private Queue<SessionContext> exclusiveSessionContexts;
@@ -63,10 +58,6 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
     public ExecutionContext() {
         name = runConfig.RUNCFG;
         TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(this));
-    }
-
-    public Map<String, String> getMetaData() {
-        return metaData;
     }
 
     public Stream<SuiteContext> readSuiteContexts() {

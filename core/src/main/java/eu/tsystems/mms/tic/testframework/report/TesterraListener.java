@@ -40,7 +40,6 @@ import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodPar
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.OmitInDevelopmentMethodInterceptor;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.SortMethodsByPriorityMethodInterceptor;
-import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.internal.BuildInformation;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
@@ -260,7 +259,7 @@ public class TesterraListener implements
             pBeforeInvocation(method, testResult, context);
         } catch (Throwable t) {
             log().error("FATAL INTERNAL ERROR in beforeInvocation for " + method + ", " + testResult + ", " + context, t);
-            ReportInfo.getDashboardWarning().addInfo(1, "FATAL INTERNAL ERROR during execution! Please analyze the build logs for this error!");
+            //ReportInfo.getDashboardWarning().addInfo(1, "FATAL INTERNAL ERROR during execution! Please analyze the build logs for this error!");
         }
     }
 

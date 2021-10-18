@@ -328,14 +328,13 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
 
     @Deprecated
     public void addPriorityMessage(String msg) {
-        final String extraMessageToAdd = StringUtils.prepareStringForHTML(msg + "\n");
 
         if (priorityMessage == null) {
             priorityMessage = "";
         }
 
-        if (!priorityMessage.contains(extraMessageToAdd)) {
-            priorityMessage += extraMessageToAdd;
+        if (!priorityMessage.contains(msg)) {
+            priorityMessage += msg;
         }
     }
 

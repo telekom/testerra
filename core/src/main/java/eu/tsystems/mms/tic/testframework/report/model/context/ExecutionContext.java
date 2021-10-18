@@ -111,12 +111,4 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
             return getStatusFromContexts(suiteContexts.stream());
         }
     }
-
-    public TestStatusController.Status[] getAvailableStatuses() {
-        return TestStatusController.Status.values();
-    }
-
-    public TestStatusController.Status[] getAvailableStatus() {
-        return TestStatusController.Status.values();
-    }
 }

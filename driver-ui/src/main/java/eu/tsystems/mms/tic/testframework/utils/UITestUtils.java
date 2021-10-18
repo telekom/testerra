@@ -141,8 +141,8 @@ public class UITestUtils implements WebDriverManagerProvider {
                 }
             }
 
-            screenshot.getMetaData().put(Screenshot.MetaData.WINDOW, window);
-            screenshot.getMetaData().put(Screenshot.MetaData.URL, webDriver.getCurrentUrl());
+            metaData.put(Screenshot.MetaData.WINDOW, window);
+            metaData.put(Screenshot.MetaData.URL, webDriver.getCurrentUrl());
         } catch (Exception e) {
             LOGGER.warn("Unable to fulfill screenshot meta data: " + e.getMessage());
         }
@@ -191,11 +191,11 @@ public class UITestUtils implements WebDriverManagerProvider {
     }
 
     private static void makeSimpleScreenshot(WebDriver driver, File screenShotTargetFile) {
-        File file = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         try {
+            File file = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
             FileUtils.moveFile(file, screenShotTargetFile);
-        } catch (IOException e) {
-            LOGGER.error("Error moving screenshot: " + e.getLocalizedMessage());
+        } catch (Exception e) {
+            LOGGER.error("Unable to take screenshot to file", e);
         }
     }
 
@@ -254,22 +254,31 @@ public class UITestUtils implements WebDriverManagerProvider {
         }
     }
 
+    private static void switchToWindow(WebDriver webDriver, String windowHandle) {
+        try {
+            webDriver.switchTo().window(windowHandle);
+        } catch (Exception e) {
+            LOGGER.error("Unable to switch to window " + windowHandle, e);
+        }
+    }
+
     private static List<Screenshot> pTakeAllScreenshotsForSession(WebDriver webDriver) {
         final List<Screenshot> screenshots = new LinkedList<>();
-        String originalWindowHandle = webDriver.getWindowHandle();
+        String originalWindowHandle = null;
+        try {
+            originalWindowHandle = webDriver.getWindowHandle();
+        } catch (Exception e) {
+            LOGGER.error("Unable to get window handle", e);
+            return screenshots;
+        }
         Set<String> windowHandles = webDriver.getWindowHandles();
         if (windowHandles.size() > 1) {
             for (String windowHandle : windowHandles) {
-                // switch to
-                try {
-                    webDriver.switchTo().window(windowHandle);
-                    screenshots.add(takeScreenshot(webDriver, originalWindowHandle));
-                } catch (Exception e) {
-                    LOGGER.error("Unable to switch to window " + windowHandle + " and take a screenshot", e);
-                }
+                switchToWindow(webDriver, windowHandle);
+                screenshots.add(takeScreenshot(webDriver, originalWindowHandle));
             }
             // Switch back to original window handle
-            webDriver.switchTo().window(originalWindowHandle);
+            switchToWindow(webDriver, originalWindowHandle);
         } else {
             screenshots.add(takeScreenshot(webDriver, originalWindowHandle));
         }

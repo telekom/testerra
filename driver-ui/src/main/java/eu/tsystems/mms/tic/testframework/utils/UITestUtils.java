@@ -28,11 +28,13 @@ import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
 import eu.tsystems.mms.tic.testframework.report.Report;
+import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.util.Collection;
 import java.util.stream.Collectors;
 import org.openqa.selenium.OutputType;
@@ -264,14 +266,9 @@ public class UITestUtils implements WebDriverManagerProvider {
 
     private static List<Screenshot> pTakeAllScreenshotsForSession(WebDriver webDriver) {
         final List<Screenshot> screenshots = new LinkedList<>();
-        String originalWindowHandle = null;
-        try {
-            originalWindowHandle = webDriver.getWindowHandle();
-        } catch (Exception e) {
-            LOGGER.error("Unable to get window handle", e);
-            return screenshots;
-        }
+        String originalWindowHandle = WebDriverUtils.getCurrentWindowHandle(webDriver);
         Set<String> windowHandles = webDriver.getWindowHandles();
+
         if (windowHandles.size() > 1) {
             for (String windowHandle : windowHandles) {
                 switchToWindow(webDriver, windowHandle);
@@ -280,6 +277,7 @@ public class UITestUtils implements WebDriverManagerProvider {
             // Switch back to original window handle
             switchToWindow(webDriver, originalWindowHandle);
         } else {
+            switchToWindow(webDriver, originalWindowHandle);
             screenshots.add(takeScreenshot(webDriver, originalWindowHandle));
         }
 

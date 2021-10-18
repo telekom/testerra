@@ -266,8 +266,13 @@ public class UITestUtils implements WebDriverManagerProvider {
 
     private static List<Screenshot> pTakeAllScreenshotsForSession(WebDriver webDriver) {
         final List<Screenshot> screenshots = new LinkedList<>();
-        String originalWindowHandle = WebDriverUtils.getCurrentWindowHandle(webDriver);
         Set<String> windowHandles = webDriver.getWindowHandles();
+        String originalWindowHandle;
+        try {
+            originalWindowHandle = webDriver.getWindowHandle();
+        } catch (Exception e) {
+            originalWindowHandle = windowHandles.stream().findFirst().orElse("");
+        }
 
         if (windowHandles.size() > 1) {
             for (String windowHandle : windowHandles) {

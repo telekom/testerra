@@ -72,18 +72,14 @@ public final class WebDriverUtils {
         return switchToWindow(WebDriverManager.getWebDriver(), predicate);
     }
 
-    public static String getCurrentWindowHandle(WebDriver webDriver) {
+    public static boolean switchToWindow(WebDriver mainWebDriver, Predicate<WebDriver> predicate) {
         String mainWindowHandle;
         try {
-            mainWindowHandle = webDriver.getWindowHandle();
+            mainWindowHandle = mainWebDriver.getWindowHandle();
         } catch (Exception e) {
-            mainWindowHandle = webDriver.getWindowHandles().stream().findFirst().orElse("");
+            mainWindowHandle = "";
         }
-        return mainWindowHandle;
-    }
-
-    public static boolean switchToWindow(WebDriver mainWebDriver, Predicate<WebDriver> predicate) {
-        String finalMainWindowHandle = getCurrentWindowHandle(mainWebDriver);
+        String finalMainWindowHandle = mainWindowHandle;
 
         return mainWebDriver.getWindowHandles().stream()
                 .filter(windowHandle -> !windowHandle.equals(finalMainWindowHandle))

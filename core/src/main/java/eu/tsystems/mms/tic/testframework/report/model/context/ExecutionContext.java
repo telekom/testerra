@@ -27,8 +27,6 @@ import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Stream;
@@ -38,7 +36,6 @@ import org.testng.ITestResult;
 public class ExecutionContext extends AbstractContext implements SynchronizableContext {
     private final Queue<SuiteContext> suiteContexts = new ConcurrentLinkedQueue<>();
     public final RunConfig runConfig = new RunConfig();
-    private final Map<String, String> metaData = new LinkedHashMap<>();
     public boolean crashed = false;
     private Queue<SessionContext> exclusiveSessionContexts;
 
@@ -49,10 +46,6 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
     public ExecutionContext() {
         name = runConfig.RUNCFG;
         TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(this));
-    }
-
-    public Map<String, String> getMetaData() {
-        return metaData;
     }
 
     public Stream<SuiteContext> readSuiteContexts() {

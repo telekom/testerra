@@ -1,7 +1,7 @@
 <!--
   ~ Testerra
   ~
-  ~ (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+  ~ (C) 2021, Mike Reiche,  T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
   ~
   ~ Deutsche Telekom AG and all other contributors /
   ~ copyright owners license this file to you under the Apache
@@ -21,12 +21,13 @@
 <template>
     <div class="code-view"
          class.bind="class"
+         ref="_logView"
     >
-        <div repeat.for="logMessage of logMessages"
+        <div virtual-repeat.for="logMessage of logMessages"
              class="line"
              class.bind="(logMessage.type==1?'error':(logMessage.type==2?'warn':''))"
         >
-            <compose view="./log-line.html"></compose>
+            <compose view="components/log-view/log-line.html"></compose>
         </div>
         <div if.bind="logMessages.length == 0" class="line">(No log messages matching this criteria)</div>
     </div>

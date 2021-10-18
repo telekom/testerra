@@ -28,6 +28,7 @@ import java.lang.annotation.RetentionPolicy;
  * Flags a method (mainly a @test method) as a support method. Retests wont skip these if previously passed.
  */
 @Retention(RetentionPolicy.RUNTIME)
+@Deprecated
 public @interface SupportMethod {
 
     String color() default "#848282";

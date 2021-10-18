@@ -24,7 +24,7 @@ package eu.tsystems.mms.tic.testframework.adapters;
 import com.google.common.net.MediaType;
 import com.google.gson.Gson;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.report.DefaultReport;
+import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent;
 import eu.tsystems.mms.tic.testframework.internal.IDUtils;
@@ -70,8 +70,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 
 public class ContextExporter implements Loggable {
-    private static final Map<TestStatusController.Status, ResultStatusType> STATUS_MAPPING = new LinkedHashMap<>();
-    private final DefaultReport report = (DefaultReport)TesterraListener.getReport();
+    private final Map<TestStatusController.Status, ResultStatusType> STATUS_MAPPING = new LinkedHashMap<>();
+    private final Report report = TesterraListener.getReport();
     private final Gson jsonEncoder = new Gson();
 
     public MethodContext.Builder buildMethodContext(eu.tsystems.mms.tic.testframework.report.model.context.MethodContext methodContext) {

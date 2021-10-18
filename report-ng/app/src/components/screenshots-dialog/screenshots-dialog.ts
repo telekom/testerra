@@ -18,25 +18,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import {autoinject, PLATFORM, useView} from 'aurelia-framework';
+import {autoinject} from 'aurelia-framework';
 import {data} from "../../services/report-model";
 import {MdcDialog} from '@aurelia-mdc-web/dialog';
 import './screenshot-dialog.scss'
-import IFile = data.IFile;
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import ISessionContext = data.ISessionContext;
 
 export interface IScreenshotsDialogParams {
     screenshotIds:string[],
-    current:IFile
+    current:data.IFile
 }
 
 @autoinject
 export class ScreenshotsDialog {
-    private _screenshots:IFile[];
-    private _current:IFile;
+    private _screenshots:data.IFile[];
+    private _current:data.IFile;
     private _index = 0;
     private _sessionContext:ISessionContext;
+    private _pageSourceFile:data.IFile;
 
     constructor(
         private _dialog: MdcDialog,
@@ -66,7 +66,7 @@ export class ScreenshotsDialog {
         // }
     }
 
-    private _showScreenshot(file:IFile) {
+    private _showScreenshot(file:data.IFile) {
         this._current = file;
 
         const sessionKey = this._current.meta.SessionKey;
@@ -76,6 +76,14 @@ export class ScreenshotsDialog {
                 this._sessionContext = sessionContexts.find(value => value.contextValues.name === sessionKey);
             });
         }
+
+        this._pageSourceFile = null;
+        if (this._current.meta.sourcesRefId) {
+            this._statistics.getFilesForIds([this._current.meta.sourcesRefId]).then(files => {
+                this._pageSourceFile = files.find(value => true);
+            })
+        }
+
     }
 
     private _left() {

@@ -33,13 +33,13 @@ public class LocalizationTest extends AbstractWebDriverTest {
 
     @Test(dataProvider = "locales")
     public void test_readUtf8FromResourceBundle(String locale, String expected) {
-        Locale.setDefault(Locale.forLanguageTag(locale));
-        Assert.assertEquals(SimpleLocalization.getText("TEST"), expected);
+        LocalizedBundle defaultBundle = SimpleLocalization.setDefault(Locale.forLanguageTag(locale));
+        Assert.assertEquals(defaultBundle.getString("TEST"), expected);
     }
 
     @Test
     public void test_inexistentLocalizedProperty() {
-        Assert.assertEquals("NOT_EXISTENT", SimpleLocalization.getText("NOT_EXISTENT"));
+        Assert.assertEquals(SimpleLocalization.getText("NOT_EXISTENT"), "NOT_EXISTENT");
     }
 
     @DataProvider
@@ -52,12 +52,11 @@ public class LocalizationTest extends AbstractWebDriverTest {
 
     @Test
     public void test_fixedLocale() {
-        Locale.setDefault(Locale.ENGLISH);
+        LocalizedBundle defaultBundle = SimpleLocalization.setDefault(Locale.ENGLISH);
         LocalizedBundle germanBundle = new LocalizedBundle(SimpleLocalization.BUNDLE_NAME, Locale.GERMAN);
-        LocalizedBundle defaultBundle = new LocalizedBundle(SimpleLocalization.BUNDLE_NAME);
         Assert.assertNotEquals(germanBundle.getString("TEST"), defaultBundle.getString("TEST"));
 
-        Locale.setDefault(Locale.GERMAN);
+        defaultBundle = SimpleLocalization.setDefault(Locale.GERMAN);
         Assert.assertEquals(germanBundle.getString("TEST"), defaultBundle.getString("TEST"));
     }
 

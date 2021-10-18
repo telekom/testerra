@@ -25,15 +25,18 @@
         <div class="flex vcenter">
             <button mdc-icon-button icon="keyboard_arrow_left" click.delegate="_left()" if.bind="_screenshots.length>1"></button>
             <div class="flex">
-                <ul class="mdc-list mdc-list--dense ml1 mr1">
+                <ul class="mdc-list mdc-list--dense ml1 mr1" mdc-caption>
                     <li class="mdc-custom-list-item">
                         <span class="secondary sr1">Title</span>${_current.meta.Title}
                     </li>
                     <li class="mdc-custom-list-item" if.bind="_current.meta.URL.length">
                         <span class="secondary sr1">URL</span><a href="${_current.meta.URL}" rel="noopener" target="_blank">${_current.meta.URL}</a>
                     </li>
+                    <li class="mdc-custom-list-item" if.bind="_pageSourceFile">
+                        <span class="secondary sr1">PageSource</span><a href="${_pageSourceFile.relativePath}" rel="noopener" target="_blank">${_pageSourceFile.relativePath}</a>
+                    </li>
                 </ul>
-                <ul class="mdc-list mdc-list--dense ml1 mr1">
+                <ul class="mdc-list mdc-list--dense ml1 mr1" mdc-caption>
                     <li class="mdc-custom-list-item">
                         <span class="secondary sr1">Taken</span><span title="${_current.lastModified|dateFormat}">${_current.lastModified | dateFormat:"ddd MMM D HH:mm:ss"}</span>
                     </li>
@@ -47,6 +50,7 @@
         </div>
         <button mdc-icon-button class="icon-button--dense" icon="clear" title="Close dialog" data-mdc-dialog-action="cancel"></button>
     </div>
+
     <mdc-dialog-content class="pt0">
         <img src="${_current.relativePath}" class="screenshot-image"/>
     </mdc-dialog-content>

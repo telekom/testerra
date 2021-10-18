@@ -109,7 +109,7 @@ public class TesterraListener implements
     private static final Object LOCK = new Object();
     private static final LoggerContext loggerContext;
     private static final BuildInformation buildInformation;
-    private static final DefaultReport report;
+    private static final Report report;
     private static DefaultTestNGContextGenerator contextGenerator;
 
     static {

@@ -41,11 +41,9 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.sikuli.SikuliWebDriver;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
-import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
-import net.anthavio.phanbedder.Phanbedder;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -58,8 +56,6 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.HttpCommandExecutor;
@@ -69,7 +65,6 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
-import java.io.File;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.Date;
@@ -78,10 +73,6 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRequest> implements Loggable {
-
-    //public static final TimingInfosCollector STARTUP_TIME_COLLECTOR = new TimingInfosCollector();
-
-    private static File phantomjsFile = null;
 
     @Override
     protected DesktopWebDriverRequest buildRequest(AbstractWebDriverRequest request) {
@@ -382,19 +373,6 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 finalCapabilities = chromeOptions;
                 driverClass = ChromeDriver.class;
                 break;
-            case Browsers.phantomjs:
-                File phantomjsFile = getPhantomJSBinary();
-                capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, phantomjsFile.getAbsolutePath());
-                capabilities.setBrowserName(BrowserType.PHANTOMJS);
-                capabilities.setJavascriptEnabled(true);
-
-                String[] args = {
-                        "--ssl-protocol=any"
-                };
-                capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, args);
-                finalCapabilities = capabilities;
-                driverClass = PhantomJSDriver.class;
-                break;
             case Browsers.safari:
                 SafariOptions safariOptions = new SafariOptions();
                 if (userAgentConfig != null) {
@@ -433,7 +411,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         WebDriver driver;
         try {
             if (remoteAddress != null) {
-                final HttpCommandExecutor httpCommandExecutor = new HttpCommandExecutor(new HashMap<>(), remoteAddress, new HttpClientFactory());
+                final HttpCommandExecutor httpCommandExecutor = new HttpCommandExecutor(new HashMap<>(), remoteAddress);
                 driver = new SikuliWebDriver(httpCommandExecutor, finalCapabilities);
                 ((RemoteWebDriver) driver).setFileDetector(new LocalFileDetector());
                 sessionContext.setNodeInfo(new NodeInfo(remoteAddress.getHost(), remoteAddress.getPort()));
@@ -448,23 +426,5 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         }
 
         return driver;
-    }
-
-    private File getPhantomJSBinary() {
-        if (phantomjsFile == null) {
-            log().info("Unpacking phantomJS...");
-            try {
-                phantomjsFile = Phanbedder.unpack(); //Phanbedder to the rescue!
-            } catch (Exception e) {
-                if (e.getMessage() != null && e.getMessage().toLowerCase().contains("failed to make target directory")) {
-                    File tmp = new File(FileUtils.getTempDirectory(), "phantomjs" + System.currentTimeMillis());
-                    phantomjsFile = Phanbedder.unpack(tmp);
-                } else {
-                    throw e;
-                }
-            }
-            log().info("Unpacked phantomJS to: " + phantomjsFile);
-        }
-        return phantomjsFile;
     }
 }

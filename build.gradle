@@ -18,7 +18,7 @@ ext {
     core = project(':core')
     report = project(':report')
 
-    seleniumVersion = '3.141.59'
+    seleniumVersion = '4.0.0'
     guavaVersion = "28.1-jre"
 
     moduleVersion = '1-SNAPSHOT'

@@ -7,7 +7,7 @@ dependencies {
     implementation 'org.xmlunit:xmlunit-core:2.5.0'
     // </XML
 
-    api 'org.seleniumhq.selenium:selenium-server:' + seleniumVersion
+    api 'org.eclipse.jetty:jetty-server:9.4.3.v20170317'
 }
 
 // Deactivate JAR publishing

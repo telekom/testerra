@@ -24,19 +24,20 @@ package eu.tsystems.mms.tic.testframework.core.server;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import java.io.File;
 import java.net.ServerSocket;
-import org.seleniumhq.jetty9.server.handler.ContextHandler;
-import org.seleniumhq.jetty9.server.handler.ResourceHandler;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.ContextHandler;
+import org.eclipse.jetty.server.handler.ResourceHandler;
 
-public class Server {
-    private org.seleniumhq.jetty9.server.Server server;
+public class StaticServer {
+    private Server server;
     private File rootDir;
     private int port;
 
-    public Server() {
+    public StaticServer() {
         this(new File(System.getProperty("user.dir")));
     }
 
-    public Server(File rootDir) {
+    public StaticServer(File rootDir) {
         this.rootDir = rootDir;
     }
 
@@ -46,7 +47,7 @@ public class Server {
 
     public void start(int port) throws Exception {
         this.port = port;
-        server = new org.seleniumhq.jetty9.server.Server(port);
+        server = new Server(port);
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setDirectoriesListed(true);
         resourceHandler.setResourceBase(rootDir.getAbsolutePath());
@@ -76,7 +77,7 @@ public class Server {
     }
 
     public static void main(String[] args) throws Exception {
-        Server server = new Server(FileUtils.getResourceFile("testsites"));
+        StaticServer server = new StaticServer(FileUtils.getResourceFile("testsites"));
         server.start();
         System.out.println("Hit ENTER to stop");
         System.in.read();

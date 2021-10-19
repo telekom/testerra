@@ -21,24 +21,24 @@
  */
 package eu.tsystems.mms.tic.testframework.test.utils;
 
-import eu.tsystems.mms.tic.testframework.core.server.Server;
+import eu.tsystems.mms.tic.testframework.core.server.StaticServer;
 import java.net.BindException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class ServerTest {
 
-    private Server server;
+    private StaticServer server;
 
     @Test
     public void test_StartServer() throws Exception {
-        server = new Server();
+        server = new StaticServer();
         server.start(1234);
     }
 
     @Test(dependsOnMethods = "test_StartServer")
     public void test_AlreadyStartedServer() throws Exception{
-        Server newServer = new Server();
+        StaticServer newServer = new StaticServer();
         try {
             newServer.start(1234);
         } catch (BindException e) {
@@ -48,7 +48,7 @@ public class ServerTest {
 
     @Test
     public void test_NewRandomPort() throws Exception {
-        Server newServer = new Server();
+        StaticServer newServer = new StaticServer();
         newServer.start();
         Assert.assertTrue(newServer.getPort() > 0);
     }

@@ -56,7 +56,9 @@ import eu.tsystems.mms.tic.testframework.report.utils.TestNGContextNameGenerator
 import eu.tsystems.mms.tic.testframework.testing.DefaultTestController;
 import eu.tsystems.mms.tic.testframework.testing.DefaultTestControllerOverrides;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
+import eu.tsystems.mms.tic.testframework.utils.DefaultExecutionUtils;
 import eu.tsystems.mms.tic.testframework.utils.DefaultFormatter;
+import eu.tsystems.mms.tic.testframework.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import org.testng.annotations.Test;
 
@@ -76,6 +78,7 @@ public class CoreHook extends AbstractModule implements ModuleHook, PropertyMana
         bind(TestNGContextNameGenerator.class).to(DefaultTestNGContextGenerator.class).in(Scopes.SINGLETON);
         bind(IdGenerator.class).to(SequenceIdGenerator.class).in(Scopes.SINGLETON);
         bind(IExecutionContextController.class).to(DefaultExecutionContextController.class).in(Scopes.SINGLETON);
+        bind(ExecutionUtils.class).to(DefaultExecutionUtils.class).in(Scopes.SINGLETON);
     }
 
     @Override

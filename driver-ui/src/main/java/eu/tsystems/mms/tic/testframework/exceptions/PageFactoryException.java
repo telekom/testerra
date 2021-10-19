@@ -21,16 +21,20 @@
  */
 package eu.tsystems.mms.tic.testframework.exceptions;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageObject;
+import eu.tsystems.mms.tic.testframework.utils.ExecutionUtils;
 import org.openqa.selenium.WebDriver;
 
 public class PageFactoryException extends RuntimeException {
 
+    private static final ExecutionUtils executionUtils = Testerra.getInjector().getInstance(ExecutionUtils.class);
+
     public PageFactoryException(Class<? extends PageObject> pageClass, WebDriver webDriver, Throwable cause) {
         super(String.format("Could not create instance of %s on \"%s\" (%s)",
                 pageClass.getSimpleName(),
-                (webDriver!=null)?webDriver.getTitle():"null",
-                (webDriver!=null)?webDriver.getCurrentUrl():"null"
+                executionUtils.getFailsafe(webDriver::getTitle).orElse("(na)"),
+                executionUtils.getFailsafe(webDriver::getCurrentUrl).orElse("(na)")
         ), cause);
     }
 }

@@ -74,6 +74,7 @@ public class UITestUtils implements WebDriverManagerProvider {
      * The logger for this class.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(UITestUtils.class);
+    private static final ExecutionUtils executionUtils = Testerra.getInjector().getInstance(ExecutionUtils.class);
 
     /**
      * A date format for files like screenshots.
@@ -108,46 +109,33 @@ public class UITestUtils implements WebDriverManagerProvider {
         takeWebDriverScreenshotToFile(webDriver, screenshotFile);
 
         // get page source (webdriver)
-        String pageSource = webDriver.getPageSource();
-
-        if (pageSource == null) {
-            LOGGER.error("getPageSource() returned nothing, skipping to add page source");
-        } else {
-            // save page source to file
+        executionUtils.getFailsafe(webDriver::getPageSource).ifPresent(pageSource -> {
             savePageSource(pageSource, screenshot.createPageSourceFile());
-        }
+        });
+
+        Map<String, String> metaData = screenshot.getMetaData();
+        sessionContext.map(SessionContext::getSessionKey).ifPresent(s -> metaData.put(Screenshot.MetaData.SESSION_KEY, s));
+        sessionContext.map(SessionContext::getId).ifPresent(s -> metaData.put(Screenshot.MetaData.SESSION_CONTEXT_ID, s));
+        executionUtils.getFailsafe(webDriver::getTitle).ifPresent(s -> metaData.put(Screenshot.MetaData.TITLE, s));
+        executionUtils.getFailsafe(webDriver::getCurrentUrl).ifPresent(s -> metaData.put(Screenshot.MetaData.URL, s));
 
         /*
-        get infos
+        window and focus infos
          */
-        try {
-            Map<String, String> metaData = screenshot.getMetaData();
-            metaData.put(Screenshot.MetaData.SESSION_KEY, sessionContext.map(SessionContext::getSessionKey).orElse(null));
-            metaData.put(Screenshot.MetaData.SESSION_CONTEXT_ID, sessionContext.map(SessionContext::getId).orElse(null));
-            metaData.put(Screenshot.MetaData.TITLE, webDriver.getTitle());
-
-            /*
-            window and focus infos
-             */
-            String window = "";
-            String windowHandle = webDriver.getWindowHandle();
-            Set<String> windowHandles = webDriver.getWindowHandles();
-            if (windowHandles.size() < 2) {
-                window = "#1/1";
-            } else {
-                String[] handleStrings = windowHandles.toArray(new String[0]);
-                for (int i = 0; i < handleStrings.length; i++) {
-                    if (handleStrings[i].equals(windowHandle)) {
-                        window = "#" + (i + 1) + "/" + handleStrings.length;
-                    }
+        String window = "";
+        String windowHandle = executionUtils.getFailsafe(webDriver::getWindowHandle).orElse("");
+        Set<String> windowHandles = webDriver.getWindowHandles();
+        if (windowHandles.size() < 2) {
+            window = "#1/1";
+        } else {
+            String[] handleStrings = windowHandles.toArray(new String[0]);
+            for (int i = 0; i < handleStrings.length; i++) {
+                if (handleStrings[i].equals(windowHandle)) {
+                    window = "#" + (i + 1) + "/" + handleStrings.length;
                 }
             }
-
-            metaData.put(Screenshot.MetaData.WINDOW, window);
-            metaData.put(Screenshot.MetaData.URL, webDriver.getCurrentUrl());
-        } catch (Exception e) {
-            LOGGER.warn("Unable to fulfill screenshot meta data: " + e.getMessage());
         }
+        metaData.put(Screenshot.MetaData.WINDOW, window);
     }
 
     private static Screenshot takeScreenshot(WebDriver eventFiringWebDriver, String originalWindowHandle) {
@@ -267,12 +255,7 @@ public class UITestUtils implements WebDriverManagerProvider {
     private static List<Screenshot> pTakeAllScreenshotsForSession(WebDriver webDriver) {
         final List<Screenshot> screenshots = new LinkedList<>();
         Set<String> windowHandles = webDriver.getWindowHandles();
-        String originalWindowHandle;
-        try {
-            originalWindowHandle = webDriver.getWindowHandle();
-        } catch (Exception e) {
-            originalWindowHandle = windowHandles.stream().findFirst().orElse("");
-        }
+        String originalWindowHandle = executionUtils.getFailsafe(webDriver::getWindowHandle).orElseGet(() -> windowHandles.stream().findFirst().orElse(""));
 
         if (windowHandles.size() > 1) {
             for (String windowHandle : windowHandles) {

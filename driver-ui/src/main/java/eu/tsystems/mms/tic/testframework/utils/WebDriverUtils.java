@@ -22,6 +22,7 @@
  package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
@@ -56,6 +57,7 @@ public final class WebDriverUtils {
      * Logger.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverUtils.class);
+    private static final ExecutionUtils executionUtils = Testerra.getInjector().getInstance(ExecutionUtils.class);
 
     /**
      * Timeout / maximum duration for Window Switching
@@ -73,13 +75,7 @@ public final class WebDriverUtils {
     }
 
     public static boolean switchToWindow(WebDriver mainWebDriver, Predicate<WebDriver> predicate) {
-        String mainWindowHandle;
-        try {
-            mainWindowHandle = mainWebDriver.getWindowHandle();
-        } catch (Exception e) {
-            mainWindowHandle = "";
-        }
-        String finalMainWindowHandle = mainWindowHandle;
+        String finalMainWindowHandle = executionUtils.getFailsafe(mainWebDriver::getWindowHandle).orElse("");
 
         return mainWebDriver.getWindowHandles().stream()
                 .filter(windowHandle -> !windowHandle.equals(finalMainWindowHandle))

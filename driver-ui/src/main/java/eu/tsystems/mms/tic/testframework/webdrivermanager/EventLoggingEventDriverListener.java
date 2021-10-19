@@ -21,7 +21,9 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.utils.ExecutionUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver;
@@ -29,6 +31,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.events.WebDriverEventListener;
 
 public class EventLoggingEventDriverListener implements WebDriverEventListener, Loggable {
+
+    private static final ExecutionUtils executionUtils = Testerra.getInjector().getInstance(ExecutionUtils.class);
 
     @Override
     public void beforeAlertAccept(WebDriver webDriver) {
@@ -131,7 +135,7 @@ public class EventLoggingEventDriverListener implements WebDriverEventListener, 
 
     @Override
     public void afterSwitchToWindow(String s, WebDriver webDriver) {
-        log().info(String.format("Switched to window \"%s\" (%s)", webDriver.getTitle(), webDriver.getCurrentUrl()));
+        log().info(String.format("Switched to window \"%s\" (%s)", executionUtils.getFailsafe(webDriver::getTitle).orElse("(na)"), executionUtils.getFailsafe(webDriver::getCurrentUrl).orElse("(na)")));
     }
 
     @Override

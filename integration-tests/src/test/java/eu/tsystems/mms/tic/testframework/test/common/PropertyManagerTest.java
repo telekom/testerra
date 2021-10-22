@@ -434,6 +434,19 @@ public class PropertyManagerTest extends TesterraTest implements PropertyManager
     }
 
     @Test
+    public void test_priority() {
+
+        String property = "test";
+        String expected = "huhu";
+
+        Assert.assertEquals(PropertyManager.getProperty(property), expected);
+
+        System.setProperty("test", "haha");
+
+        Assert.assertNotEquals(PropertyManager.getProperty(property), expected);
+    }
+
+    @Test
     public void test_resolvePriorityProperty() {
         final String propertyKey = "any-property";
         final String expected = "I-have-been-resolved";

@@ -66,8 +66,8 @@ public final class PropertyManager {
                     (propertyResolvers != null?propertyResolvers.stream():Stream.empty()),
                     Stream.of(
                             threadLocalPropertyResolver,
-                            filePropertyResolver,
-                            systemPropertyResolver
+                            systemPropertyResolver,
+                            filePropertyResolver
                     )
             );
         });

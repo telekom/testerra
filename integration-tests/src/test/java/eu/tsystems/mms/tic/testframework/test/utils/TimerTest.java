@@ -380,7 +380,8 @@ public class TimerTest extends AbstractWebDriverTest implements Loggable {
         Assert.assertEquals(returningObject, "False!");
     }
 
-    @Test
+    @Test(enabled = false)
+    @Deprecated
     public void testT12_ExecuteSequenceWithAddingToMethod() {
         Timer timer = new Timer(SLEEP_TIME_IN_MS, DURATION_IN_MS);
         Throwable throwable = new Throwable();

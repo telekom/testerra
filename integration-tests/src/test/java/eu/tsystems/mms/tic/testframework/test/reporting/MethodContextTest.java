@@ -41,7 +41,8 @@ public class MethodContextTest extends AbstractWebDriverTest {
         return level0;
     }
 
-    @Test
+    @Deprecated
+    @Test(enabled = false)
     public void testT01_SetThrowable() throws Exception {
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         methodContext.addError(getStackedThrowable());

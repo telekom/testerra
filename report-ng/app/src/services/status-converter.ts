@@ -106,7 +106,7 @@ export class StatusConverter {
                 return "Passed";
             case ResultStatusType.MINOR_RETRY:
             case ResultStatusType.PASSED_RETRY:
-                return "Passed on retry";
+                return "Recovered";
             case ResultStatusType.FAILED_RETRIED:
                 return "Retried";
             case ResultStatusType.FAILED:

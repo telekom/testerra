@@ -240,14 +240,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         this.lastFailedStep = step;
     }
 
-    /**
-     * Returns the first found error context
-     * @deprecated Used in methodDetails.vm
-     */
-    public ErrorContext getErrorContext() {
-        return readErrors().findFirst().orElseGet(ErrorContext::new);
-    }
-
     public Stream<ErrorContext> readErrors() {
         return readTestStepActions().flatMap(TestStepAction::readErrors);
     }

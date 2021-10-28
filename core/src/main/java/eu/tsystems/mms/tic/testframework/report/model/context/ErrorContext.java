@@ -32,11 +32,6 @@ public class ErrorContext {
     private ScriptSource executionObjectSource;
     private boolean optional;
 
-    @Deprecated
-    public ErrorContext() {
-
-    }
-
     public ErrorContext(Throwable throwable, boolean optional) {
         this.throwable = throwable;
         this.optional = optional;
@@ -73,11 +68,6 @@ public class ErrorContext {
 
     public Throwable getThrowable() {
         return throwable;
-    }
-
-    @Deprecated
-    public String getReadableErrorMessage() {
-        return Optional.ofNullable(getThrowable()).map(Throwable::getMessage).orElse(null);
     }
 
     /**

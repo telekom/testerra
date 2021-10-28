@@ -5,7 +5,7 @@ plugins {
 dependencies {
     testImplementation driver_ui_desktop
     //testImplementation project(':integration-tests')
-    testImplementation project(':report-ng')
+    testImplementation report
 }
 
 test {

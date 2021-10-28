@@ -400,10 +400,8 @@ public class PropertyManagerTest extends TesterraTest {
 
         PropertyManager.loadProperties("propertyfiles/file.properties");
         PropertyManager.loadThreadLocalProperties("propertyfiles/threadlocal.properties");
-        PropertyManager.getGlobalProperties().put("thread.property", "global");
 
         Assert.assertEquals(PropertyManager.getThreadLocalProperties().getProperty("thread.property"), "thread_file");
-        Assert.assertEquals(PropertyManager.getGlobalProperties().getProperty("thread.property"), "global");
         Assert.assertEquals(PropertyManager.getFileProperties().getProperty("thread.property"), "file");
         Assert.assertEquals(PropertyManager.getProperty("thread.property"), "thread_file");
 
@@ -417,12 +415,10 @@ public class PropertyManagerTest extends TesterraTest {
     public void testT51_ClearAllProperties() {
 
         PropertyManager.loadThreadLocalProperties("propertyfiles/threadlocal.properties");
-        PropertyManager.getGlobalProperties().put("thread.property", "global");
 
         // clear -
         PropertyManager.clearProperties();
         Assert.assertNull(PropertyManager.getThreadLocalProperties().getProperty("thread.property"));
-        Assert.assertNull(PropertyManager.getGlobalProperties().getProperty("thread.property"));
         Assert.assertNull(PropertyManager.getProperty("thread.property"));
     }
 

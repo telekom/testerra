@@ -38,7 +38,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
  *
  * @author Eric Kubenka
  */
-public class CapabilityUtils {
+public class DefaultCapabilityUtils {
 
     /**
      * Clean the given {@link Capabilities} and return a {@link Map}

@@ -41,7 +41,7 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.sikuli.SikuliWebDriver;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
-import eu.tsystems.mms.tic.testframework.utils.CapabilityUtils;
+import eu.tsystems.mms.tic.testframework.utils.DefaultCapabilityUtils;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
@@ -418,7 +418,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 throw new SystemException("Browser must be set through SystemProperty 'browser' or in test.properties file! + is: " + browser);
         }
 
-        Map<String, Object> cleanedCapsMap = new CapabilityUtils().clean(finalCapabilities);
+        Map<String, Object> cleanedCapsMap = new DefaultCapabilityUtils().clean(finalCapabilities);
         sessionContext.setCapabilities(cleanedCapsMap);
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();

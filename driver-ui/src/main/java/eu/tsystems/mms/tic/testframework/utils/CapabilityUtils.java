@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2021, Eric Kubenka, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2021, Mike Reiche,  T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -19,7 +19,7 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.webdrivermanager;
+package eu.tsystems.mms.tic.testframework.utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 /**
  * This is a simple helper to modify log messages of {@link Capabilities} to short long values or do other opertations
@@ -37,7 +38,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
  *
  * @author Eric Kubenka
  */
-class WebDriverCapabilityLogHelper {
+public class CapabilityUtils {
 
     /**
      * Clean the given {@link Capabilities} and return a {@link Map}
@@ -86,5 +87,20 @@ class WebDriverCapabilityLogHelper {
         final List<String> extList = new ArrayList<>();
         ((List<String>) stringListObject).forEach(e -> extList.add(e.substring(0, 10) + "..."));
         return extList;
+    }
+
+    /**
+     * Sets an capability value if the existing value doesn't match the same type,
+     * is an empty string or doesn't exist.
+     * @param capabilities
+     * @param capabilityName
+     * @param capability
+     * @param <T>
+     */
+    public <T> void putIfAbsent(DesiredCapabilities capabilities, String capabilityName, T capability) {
+        Object existingCapability = capabilities.getCapability(capabilityName);
+        if (!capability.getClass().isInstance(existingCapability) || (existingCapability instanceof String && StringUtils.isBlank((String)existingCapability))) {
+            capabilities.setCapability(capabilityName, capability);
+        }
     }
 }

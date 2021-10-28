@@ -25,7 +25,6 @@ package eu.tsystems.mms.tic.testframework.utils;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.internal.Constants;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
 import eu.tsystems.mms.tic.testframework.report.Report;
@@ -84,6 +83,7 @@ public class UITestUtils {
      * A date format for files like screenshots.
      */
     private static final DateFormat FILES_DATE_FORMAT = new SimpleDateFormat("dd_MM_yyyy__HH_mm_ss");
+    public static int IE_SCREENSHOT_LIMIT = 1200;
 
     private UITestUtils() {
 
@@ -115,10 +115,8 @@ public class UITestUtils {
          */
         if (eventFiringWebDriver != null) {
             try {
-                FileUtils fileUtis = new FileUtils();
-                final File screenShotTargetFile = fileUtis.createTempFileName("screenshot.png");
-                final File sourceTargetFile = fileUtis.createTempFileName("pagesource.html");
-                takeWebDriverScreenshotToFile(eventFiringWebDriver, screenShotTargetFile);
+                Screenshot screenshot = new Screenshot();
+                takeWebDriverScreenshotToFile(eventFiringWebDriver, screenshot.getScreenshotFile());
 
                 // get page source (webdriver)
                 String pageSource = eventFiringWebDriver.getPageSource();
@@ -128,11 +126,10 @@ public class UITestUtils {
                 } else {
 
                     // save page source to file
-                    savePageSource(pageSource, sourceTargetFile);
+                    savePageSource(pageSource, screenshot.createPageSourceFile());
                 }
 
                 Report report = TesterraListener.getReport();
-                Screenshot screenshot = new Screenshot(screenShotTargetFile, sourceTargetFile);
                 report.addScreenshot(screenshot, Report.FileMode.MOVE);
 
                 Map<String, String> metaData = screenshot.getMetaData();
@@ -201,8 +198,8 @@ public class UITestUtils {
         if (Browsers.ie.equalsIgnoreCase(WebDriverSessionsManager.getRequestedBrowser(eventFiringWebDriver).orElse(null))) {
             Viewport viewport = JSUtils.getViewport(driver);
 
-            if (viewport.height > Constants.IE_SCREENSHOT_LIMIT) {
-                LOGGER.warn("IE: Not taking screenshot because screen size is larger than height limit of " + Constants.IE_SCREENSHOT_LIMIT);
+            if (viewport.height > IE_SCREENSHOT_LIMIT) {
+                LOGGER.warn("IE: Not taking screenshot because screen size is larger than height limit of " + IE_SCREENSHOT_LIMIT);
                 return;
             }
         }
@@ -282,31 +279,16 @@ public class UITestUtils {
         }
     }
 
-    private static List<Screenshot> pTakeAllScreenshotsForSession(WebDriver driver) {
-
+    private static List<Screenshot> pTakeAllScreenshotsForSession(WebDriver webDriver) {
         final List<Screenshot> screenshots = new LinkedList<>();
-
-        String originalWindowHandle = null;
-        Set<String> windowHandles = null;
-        if (driver != null) {
-            // get actual window to switch back later
-            try {
-                originalWindowHandle = driver.getWindowHandle();
-            } catch (Exception e) {
-                LOGGER.error("Error getting actual window handle from driver", e);
-            }
-            // get all windows
-            if (driver.getWindowHandles().size() > 0) {
-                windowHandles = driver.getWindowHandles();
-            }
-        }
-
-        if (windowHandles != null) {
+        String originalWindowHandle = webDriver.getWindowHandle();
+        Set<String> windowHandles = webDriver.getWindowHandles();
+        if (windowHandles.size() > 1) {
             for (String windowHandle : windowHandles) {
                 // switch to
                 try {
-                    driver.switchTo().window(windowHandle);
-                    Screenshot screenshot = takeScreenshot(driver, originalWindowHandle);
+                    webDriver.switchTo().window(windowHandle);
+                    Screenshot screenshot = takeScreenshot(webDriver, originalWindowHandle);
                     if (screenshot != null) {
                         screenshots.add(screenshot);
                     }
@@ -314,12 +296,12 @@ public class UITestUtils {
                     LOGGER.error("Unable to switch to window " + windowHandle + " and take a screenshot", e);
                 }
             }
-
-            // switch back to original window handle
-            try {
-                driver.switchTo().window(originalWindowHandle);
-            } catch (Exception e) {
-                LOGGER.error("Unable to switch back to original window handle after taking all screenshots", e);
+            // Switch back to original window handle
+            webDriver.switchTo().window(originalWindowHandle);
+        } else {
+            Screenshot screenshot = takeScreenshot(webDriver, originalWindowHandle);
+            if (screenshot != null) {
+                screenshots.add(screenshot);
             }
         }
 

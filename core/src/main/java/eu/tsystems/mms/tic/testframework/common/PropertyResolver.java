@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2021, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2021, Mike Reiche,  T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -18,22 +18,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package eu.tsystems.mms.tic.testframework.report.model.context;
 
-import java.io.File;
+package eu.tsystems.mms.tic.testframework.common;
 
-public class Video extends Attachment {
-    public Video() {
-        super("Video");
-    }
-    public Video(File file) {
-        super(file);
-    }
+import java.util.Optional;
 
-    public File getVideoFile() {
-        if (this.file == null) {
-            this.file = createTempFile(".mp4");
-        }
-        return this.file;
-    }
+public interface PropertyResolver {
+    Optional<String> resolveProperty(String property);
 }

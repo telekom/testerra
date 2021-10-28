@@ -22,9 +22,8 @@
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import java.io.File;
-import java.io.IOException;
 import java.util.Date;
-import org.apache.commons.io.FilenameUtils;
+import java.util.Optional;
 
 public class Screenshot extends Attachment implements Loggable {
 
@@ -49,23 +48,27 @@ public class Screenshot extends Attachment implements Loggable {
         super(name);
     }
 
+    public Screenshot(File screenshotFile) {
+        super(screenshotFile);
+    }
+
     public Screenshot(File screenshotFile, File pageSourceFile) {
         super(screenshotFile);
-        if (pageSourceFile!=null) {
-            setPageSourceFile(pageSourceFile);
-        }
+        setPageSourceFile(pageSourceFile);
     }
 
     @Override
-    public Screenshot setFile(File file) {
+    public void setFile(File file) {
         getMetaData().put(MetaData.DATE, new Date(file.lastModified()).toString());
         getMetaData().put(MetaData.FILE_NAME, file.getName());
         super.setFile(file);
-        return this;
     }
 
     public File getScreenshotFile() {
-        return getOrCreateTempFile(".png");
+        if (this.file == null) {
+            this.file = createTempFile(".png");
+        }
+        return this.file;
     }
 
     public Screenshot setPageSourceFile(File file) {
@@ -74,16 +77,11 @@ public class Screenshot extends Attachment implements Loggable {
         return this;
     }
 
-    public File getPageSourceFile() {
-        if (pageSourceFile==null) {
-            try {
-                File file = File.createTempFile(FilenameUtils.getBaseName(getScreenshotFile().getName()), ".html");
-                if (file.exists()) file.delete();
-                setPageSourceFile(file);
-            } catch (IOException e) {
-                log().error(e.getMessage());
-            }
-        }
-        return pageSourceFile;
+    public Optional<File> getPageSourceFile() {
+        return Optional.ofNullable(pageSourceFile);
+    }
+
+    public File createPageSourceFile() {
+        return this.pageSourceFile = this.createTempFile(".html");
     }
 }

@@ -9,8 +9,7 @@ String property = PropertyManager.getProperty("my.property", "default");
 
 It will look for the property definition appearance in the following order.
 
-- `PropertyManager.getThreadLocalProperties()`
-- `PropertyManager.getGlobalProperties()`
+- `PropertyManager.getTestLocalProperties()`
 - `System.getProperties()`
 - `test.properties`
 

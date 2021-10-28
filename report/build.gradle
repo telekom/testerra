@@ -81,3 +81,7 @@ task cleanReports {
         }
     }
 }
+
+publishing {
+    // Skipped
+}

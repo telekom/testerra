@@ -151,30 +151,17 @@ export class Method {
                     case "details": {
                         if (methodDetails.numDetails > 0) {
                             routeConfig.nav = true;
-                            routeConfig.settings.count = methodDetails.numDetails;
+                            //routeConfig.settings.count = methodDetails.numDetails;
                         } else {
                             disableRoute(routeConfig);
                         }
                         break;
                     }
                     case "assertions": {
-                        let allCollected = 0;
-                        let allOptional = 0;
-                        methodDetails.methodContext.testSteps
-                            .flatMap(value => value.actions)
-                            .flatMap(value => value.entries)
-                            .filter(value => value.assertion)
-                            .map(value => value.assertion)
-                            .forEach(value => {
-                                if (value.optional) {
-                                    allOptional++;
-                                } else {
-                                    allCollected++;
-                                }
-                            });
-                        if (allCollected > 0 || allOptional > 0) {
+                        const numErrorContexts = methodDetails.errorContexts.length;
+                        if (numErrorContexts > 0) {
                             routeConfig.nav = true;
-                            routeConfig.settings.count = `${allCollected}/${allOptional}`;
+                            routeConfig.settings.count = numErrorContexts;
                         } else {
                             disableRoute(routeConfig);
                         }

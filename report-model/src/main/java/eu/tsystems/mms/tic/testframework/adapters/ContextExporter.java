@@ -288,11 +288,11 @@ public class ContextExporter implements Loggable {
             } else if (entry instanceof eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext) {
                 eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext errorContext = (eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext)entry;
                 Optional<ErrorContext.Builder> optional = Optional.ofNullable(buildErrorContext(errorContext));
-                optional.ifPresent(entryBuilder::setAssertion);
+                optional.ifPresent(entryBuilder::setErrorContext);
             }
 
             if (
-                    entryBuilder.hasAssertion()
+                    entryBuilder.hasErrorContext()
                     || entryBuilder.hasLogMessage()
                     || entryBuilder.hasClickPathEvent()
                     || StringUtils.isNotBlank(entryBuilder.getScreenshotId())

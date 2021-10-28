@@ -96,6 +96,20 @@ private static final long serialVersionUID = 0L;
             entryCase_ = 4;
             break;
           }
+          case 42: {
+            eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder subBuilder = null;
+            if (entryCase_ == 5) {
+              subBuilder = ((eu.tsystems.mms.tic.testframework.report.model.ErrorContext) entry_).toBuilder();
+            }
+            entry_ =
+                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.ErrorContext.parser(), extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom((eu.tsystems.mms.tic.testframework.report.model.ErrorContext) entry_);
+              entry_ = subBuilder.buildPartial();
+            }
+            entryCase_ = 5;
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -136,7 +150,8 @@ private static final long serialVersionUID = 0L;
     CLICK_PATH_EVENT(1),
     SCREENSHOT_ID(2),
     LOG_MESSAGE(3),
-    ASSERTION(4),
+    @java.lang.Deprecated ASSERTION(4),
+    ERROR_CONTEXT(5),
     ENTRY_NOT_SET(0);
     private final int value;
     private EntryCase(int value) {
@@ -158,6 +173,7 @@ private static final long serialVersionUID = 0L;
         case 2: return SCREENSHOT_ID;
         case 3: return LOG_MESSAGE;
         case 4: return ASSERTION;
+        case 5: return ERROR_CONTEXT;
         case 0: return ENTRY_NOT_SET;
         default: return null;
       }
@@ -282,30 +298,61 @@ private static final long serialVersionUID = 0L;
 
   public static final int ASSERTION_FIELD_NUMBER = 4;
   /**
-   * <code>.data.ErrorContext assertion = 4;</code>
+   * <code>.data.ErrorContext assertion = 4 [deprecated = true];</code>
    * @return Whether the assertion field is set.
    */
   @java.lang.Override
-  public boolean hasAssertion() {
+  @java.lang.Deprecated public boolean hasAssertion() {
     return entryCase_ == 4;
   }
   /**
-   * <code>.data.ErrorContext assertion = 4;</code>
+   * <code>.data.ErrorContext assertion = 4 [deprecated = true];</code>
    * @return The assertion.
    */
   @java.lang.Override
-  public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getAssertion() {
+  @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getAssertion() {
     if (entryCase_ == 4) {
        return (eu.tsystems.mms.tic.testframework.report.model.ErrorContext) entry_;
     }
     return eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance();
   }
   /**
-   * <code>.data.ErrorContext assertion = 4;</code>
+   * <code>.data.ErrorContext assertion = 4 [deprecated = true];</code>
    */
   @java.lang.Override
-  public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getAssertionOrBuilder() {
+  @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getAssertionOrBuilder() {
     if (entryCase_ == 4) {
+       return (eu.tsystems.mms.tic.testframework.report.model.ErrorContext) entry_;
+    }
+    return eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance();
+  }
+
+  public static final int ERROR_CONTEXT_FIELD_NUMBER = 5;
+  /**
+   * <code>.data.ErrorContext error_context = 5;</code>
+   * @return Whether the errorContext field is set.
+   */
+  @java.lang.Override
+  public boolean hasErrorContext() {
+    return entryCase_ == 5;
+  }
+  /**
+   * <code>.data.ErrorContext error_context = 5;</code>
+   * @return The errorContext.
+   */
+  @java.lang.Override
+  public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getErrorContext() {
+    if (entryCase_ == 5) {
+       return (eu.tsystems.mms.tic.testframework.report.model.ErrorContext) entry_;
+    }
+    return eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance();
+  }
+  /**
+   * <code>.data.ErrorContext error_context = 5;</code>
+   */
+  @java.lang.Override
+  public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getErrorContextOrBuilder() {
+    if (entryCase_ == 5) {
        return (eu.tsystems.mms.tic.testframework.report.model.ErrorContext) entry_;
     }
     return eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance();
@@ -337,6 +384,9 @@ private static final long serialVersionUID = 0L;
     if (entryCase_ == 4) {
       output.writeMessage(4, (eu.tsystems.mms.tic.testframework.report.model.ErrorContext) entry_);
     }
+    if (entryCase_ == 5) {
+      output.writeMessage(5, (eu.tsystems.mms.tic.testframework.report.model.ErrorContext) entry_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -360,6 +410,10 @@ private static final long serialVersionUID = 0L;
     if (entryCase_ == 4) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(4, (eu.tsystems.mms.tic.testframework.report.model.ErrorContext) entry_);
+    }
+    if (entryCase_ == 5) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(5, (eu.tsystems.mms.tic.testframework.report.model.ErrorContext) entry_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -394,6 +448,10 @@ private static final long serialVersionUID = 0L;
         if (!getAssertion()
             .equals(other.getAssertion())) return false;
         break;
+      case 5:
+        if (!getErrorContext()
+            .equals(other.getErrorContext())) return false;
+        break;
       case 0:
       default:
     }
@@ -424,6 +482,10 @@ private static final long serialVersionUID = 0L;
       case 4:
         hash = (37 * hash) + ASSERTION_FIELD_NUMBER;
         hash = (53 * hash) + getAssertion().hashCode();
+        break;
+      case 5:
+        hash = (37 * hash) + ERROR_CONTEXT_FIELD_NUMBER;
+        hash = (53 * hash) + getErrorContext().hashCode();
         break;
       case 0:
       default:
@@ -613,6 +675,13 @@ private static final long serialVersionUID = 0L;
           result.entry_ = assertionBuilder_.build();
         }
       }
+      if (entryCase_ == 5) {
+        if (errorContextBuilder_ == null) {
+          result.entry_ = entry_;
+        } else {
+          result.entry_ = errorContextBuilder_.build();
+        }
+      }
       result.entryCase_ = entryCase_;
       onBuilt();
       return result;
@@ -679,6 +748,10 @@ private static final long serialVersionUID = 0L;
         }
         case ASSERTION: {
           mergeAssertion(other.getAssertion());
+          break;
+        }
+        case ERROR_CONTEXT: {
+          mergeErrorContext(other.getErrorContext());
           break;
         }
         case ENTRY_NOT_SET: {
@@ -1103,19 +1176,19 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> assertionBuilder_;
     /**
-     * <code>.data.ErrorContext assertion = 4;</code>
+     * <code>.data.ErrorContext assertion = 4 [deprecated = true];</code>
      * @return Whether the assertion field is set.
      */
     @java.lang.Override
-    public boolean hasAssertion() {
+    @java.lang.Deprecated public boolean hasAssertion() {
       return entryCase_ == 4;
     }
     /**
-     * <code>.data.ErrorContext assertion = 4;</code>
+     * <code>.data.ErrorContext assertion = 4 [deprecated = true];</code>
      * @return The assertion.
      */
     @java.lang.Override
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getAssertion() {
+    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getAssertion() {
       if (assertionBuilder_ == null) {
         if (entryCase_ == 4) {
           return (eu.tsystems.mms.tic.testframework.report.model.ErrorContext) entry_;
@@ -1129,9 +1202,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.data.ErrorContext assertion = 4;</code>
+     * <code>.data.ErrorContext assertion = 4 [deprecated = true];</code>
      */
-    public Builder setAssertion(eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
+    @java.lang.Deprecated public Builder setAssertion(eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
       if (assertionBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -1145,9 +1218,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.data.ErrorContext assertion = 4;</code>
+     * <code>.data.ErrorContext assertion = 4 [deprecated = true];</code>
      */
-    public Builder setAssertion(
+    @java.lang.Deprecated public Builder setAssertion(
         eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder builderForValue) {
       if (assertionBuilder_ == null) {
         entry_ = builderForValue.build();
@@ -1159,9 +1232,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.data.ErrorContext assertion = 4;</code>
+     * <code>.data.ErrorContext assertion = 4 [deprecated = true];</code>
      */
-    public Builder mergeAssertion(eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
+    @java.lang.Deprecated public Builder mergeAssertion(eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
       if (assertionBuilder_ == null) {
         if (entryCase_ == 4 &&
             entry_ != eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance()) {
@@ -1181,9 +1254,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.data.ErrorContext assertion = 4;</code>
+     * <code>.data.ErrorContext assertion = 4 [deprecated = true];</code>
      */
-    public Builder clearAssertion() {
+    @java.lang.Deprecated public Builder clearAssertion() {
       if (assertionBuilder_ == null) {
         if (entryCase_ == 4) {
           entryCase_ = 0;
@@ -1200,16 +1273,16 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.data.ErrorContext assertion = 4;</code>
+     * <code>.data.ErrorContext assertion = 4 [deprecated = true];</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder getAssertionBuilder() {
+    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder getAssertionBuilder() {
       return getAssertionFieldBuilder().getBuilder();
     }
     /**
-     * <code>.data.ErrorContext assertion = 4;</code>
+     * <code>.data.ErrorContext assertion = 4 [deprecated = true];</code>
      */
     @java.lang.Override
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getAssertionOrBuilder() {
+    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getAssertionOrBuilder() {
       if ((entryCase_ == 4) && (assertionBuilder_ != null)) {
         return assertionBuilder_.getMessageOrBuilder();
       } else {
@@ -1220,7 +1293,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.data.ErrorContext assertion = 4;</code>
+     * <code>.data.ErrorContext assertion = 4 [deprecated = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
@@ -1239,6 +1312,147 @@ private static final long serialVersionUID = 0L;
       entryCase_ = 4;
       onChanged();;
       return assertionBuilder_;
+    }
+
+    private com.google.protobuf.SingleFieldBuilderV3<
+        eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> errorContextBuilder_;
+    /**
+     * <code>.data.ErrorContext error_context = 5;</code>
+     * @return Whether the errorContext field is set.
+     */
+    @java.lang.Override
+    public boolean hasErrorContext() {
+      return entryCase_ == 5;
+    }
+    /**
+     * <code>.data.ErrorContext error_context = 5;</code>
+     * @return The errorContext.
+     */
+    @java.lang.Override
+    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getErrorContext() {
+      if (errorContextBuilder_ == null) {
+        if (entryCase_ == 5) {
+          return (eu.tsystems.mms.tic.testframework.report.model.ErrorContext) entry_;
+        }
+        return eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance();
+      } else {
+        if (entryCase_ == 5) {
+          return errorContextBuilder_.getMessage();
+        }
+        return eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.data.ErrorContext error_context = 5;</code>
+     */
+    public Builder setErrorContext(eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
+      if (errorContextBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        entry_ = value;
+        onChanged();
+      } else {
+        errorContextBuilder_.setMessage(value);
+      }
+      entryCase_ = 5;
+      return this;
+    }
+    /**
+     * <code>.data.ErrorContext error_context = 5;</code>
+     */
+    public Builder setErrorContext(
+        eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder builderForValue) {
+      if (errorContextBuilder_ == null) {
+        entry_ = builderForValue.build();
+        onChanged();
+      } else {
+        errorContextBuilder_.setMessage(builderForValue.build());
+      }
+      entryCase_ = 5;
+      return this;
+    }
+    /**
+     * <code>.data.ErrorContext error_context = 5;</code>
+     */
+    public Builder mergeErrorContext(eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
+      if (errorContextBuilder_ == null) {
+        if (entryCase_ == 5 &&
+            entry_ != eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance()) {
+          entry_ = eu.tsystems.mms.tic.testframework.report.model.ErrorContext.newBuilder((eu.tsystems.mms.tic.testframework.report.model.ErrorContext) entry_)
+              .mergeFrom(value).buildPartial();
+        } else {
+          entry_ = value;
+        }
+        onChanged();
+      } else {
+        if (entryCase_ == 5) {
+          errorContextBuilder_.mergeFrom(value);
+        }
+        errorContextBuilder_.setMessage(value);
+      }
+      entryCase_ = 5;
+      return this;
+    }
+    /**
+     * <code>.data.ErrorContext error_context = 5;</code>
+     */
+    public Builder clearErrorContext() {
+      if (errorContextBuilder_ == null) {
+        if (entryCase_ == 5) {
+          entryCase_ = 0;
+          entry_ = null;
+          onChanged();
+        }
+      } else {
+        if (entryCase_ == 5) {
+          entryCase_ = 0;
+          entry_ = null;
+        }
+        errorContextBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>.data.ErrorContext error_context = 5;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder getErrorContextBuilder() {
+      return getErrorContextFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>.data.ErrorContext error_context = 5;</code>
+     */
+    @java.lang.Override
+    public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getErrorContextOrBuilder() {
+      if ((entryCase_ == 5) && (errorContextBuilder_ != null)) {
+        return errorContextBuilder_.getMessageOrBuilder();
+      } else {
+        if (entryCase_ == 5) {
+          return (eu.tsystems.mms.tic.testframework.report.model.ErrorContext) entry_;
+        }
+        return eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.data.ErrorContext error_context = 5;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
+        getErrorContextFieldBuilder() {
+      if (errorContextBuilder_ == null) {
+        if (!(entryCase_ == 5)) {
+          entry_ = eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance();
+        }
+        errorContextBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder>(
+                (eu.tsystems.mms.tic.testframework.report.model.ErrorContext) entry_,
+                getParentForChildren(),
+                isClean());
+        entry_ = null;
+      }
+      entryCase_ = 5;
+      onChanged();;
+      return errorContextBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

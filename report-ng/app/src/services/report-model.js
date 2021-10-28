@@ -1245,6 +1245,7 @@ export const data = $root.data = (() => {
          * @property {string|null} [screenshotId] TestStepActionEntry screenshotId
          * @property {data.ILogMessage|null} [logMessage] TestStepActionEntry logMessage
          * @property {data.IErrorContext|null} [assertion] TestStepActionEntry assertion
+         * @property {data.IErrorContext|null} [errorContext] TestStepActionEntry errorContext
          */
 
         /**
@@ -1294,17 +1295,25 @@ export const data = $root.data = (() => {
          */
         TestStepActionEntry.prototype.assertion = null;
 
+        /**
+         * TestStepActionEntry errorContext.
+         * @member {data.IErrorContext|null|undefined} errorContext
+         * @memberof data.TestStepActionEntry
+         * @instance
+         */
+        TestStepActionEntry.prototype.errorContext = null;
+
         // OneOf field names bound to virtual getters and setters
         let $oneOfFields;
 
         /**
          * TestStepActionEntry entry.
-         * @member {"clickPathEvent"|"screenshotId"|"logMessage"|"assertion"|undefined} entry
+         * @member {"clickPathEvent"|"screenshotId"|"logMessage"|"assertion"|"errorContext"|undefined} entry
          * @memberof data.TestStepActionEntry
          * @instance
          */
         Object.defineProperty(TestStepActionEntry.prototype, "entry", {
-            get: $util.oneOfGetter($oneOfFields = ["clickPathEvent", "screenshotId", "logMessage", "assertion"]),
+            get: $util.oneOfGetter($oneOfFields = ["clickPathEvent", "screenshotId", "logMessage", "assertion", "errorContext"]),
             set: $util.oneOfSetter($oneOfFields)
         });
 
@@ -1337,6 +1346,9 @@ export const data = $root.data = (() => {
                     break;
                 case 4:
                     m.assertion = $root.data.ErrorContext.decode(r, r.uint32());
+                    break;
+                case 5:
+                    m.errorContext = $root.data.ErrorContext.decode(r, r.uint32());
                     break;
                 default:
                     r.skipType(t & 7);
@@ -1617,6 +1629,7 @@ export const data = $root.data = (() => {
          * @property {string|null} [description] ErrorContext description
          * @property {Array.<data.IStackTraceCause>|null} [stackTrace] ErrorContext stackTrace
          * @property {boolean|null} [optional] ErrorContext optional
+         * @property {string|null} [screenshotId] ErrorContext screenshotId
          */
 
         /**
@@ -1676,6 +1689,14 @@ export const data = $root.data = (() => {
         ErrorContext.prototype.optional = false;
 
         /**
+         * ErrorContext screenshotId.
+         * @member {string} screenshotId
+         * @memberof data.ErrorContext
+         * @instance
+         */
+        ErrorContext.prototype.screenshotId = "";
+
+        /**
          * Decodes an ErrorContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.ErrorContext
@@ -1709,6 +1730,9 @@ export const data = $root.data = (() => {
                     break;
                 case 12:
                     m.optional = r.bool();
+                    break;
+                case 13:
+                    m.screenshotId = r.string();
                     break;
                 default:
                     r.skipType(t & 7);

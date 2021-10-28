@@ -48,15 +48,15 @@
                 </mdc-card>
             </mdc-layout-grid-cell>
 
-            <mdc-layout-grid-cell span="12" if.bind="_methodDetails.methodContext.errorContext.scriptSource">
+            <mdc-layout-grid-cell span="12" if.bind="_failureAspect.errorContext.scriptSource">
                 <mdc-card>
-                    <div mdc-subtitle2 class="card-headline">Origin (${_methodDetails.methodContext.errorContext.scriptSource.fileName})</div>
+                    <div mdc-subtitle2 class="card-headline">Origin (${_failureAspect.errorContext.scriptSource.fileName})</div>
                     <mdc-list-divider></mdc-list-divider>
-                    <code-view source.bind="_methodDetails.methodContext.errorContext.scriptSource"></code-view>
+                    <code-view source.bind="_failureAspect.errorContext.scriptSource"></code-view>
                 </mdc-card>
             </mdc-layout-grid-cell>
 
-            <mdc-layout-grid-cell span="12" if.bind="_methodDetails.methodContext.errorContext.stackTrace">
+            <mdc-layout-grid-cell span="12" if.bind="_failureAspect.errorContext.stackTrace">
                 <mdc-card>
                     <div mdc-subtitle2 class="card-headline space-between">Stacktrace
                         <button mdc-icon-button
@@ -64,12 +64,12 @@
                                 title="Copy to clipboard"
                                 class="icon-button--dense"
                                 style="margin-top: -6px; margin-bottom: -6px;"
-                                click.delegate="_copyStackTraceToClipboard(_methodDetails.methodContext.errorContext.stackTrace)"
+                                click.delegate="_copyStackTraceToClipboard(_failureAspect.errorContext.stackTrace)"
                         ></button>
                     </div>
 
                     <mdc-list-divider></mdc-list-divider>
-                    <mdc-expandable repeat.for="cause of _methodDetails.methodContext.errorContext.stackTrace"
+                    <mdc-expandable repeat.for="cause of _failureAspect.errorContext.stackTrace"
                                     class="card-expandable"
                     >
                         <div

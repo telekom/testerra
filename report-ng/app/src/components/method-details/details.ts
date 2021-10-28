@@ -61,9 +61,19 @@ export class Details {
         this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
             this._methodDetails = methodDetails;
             this._layoutComparisonContext = methodDetails.decodeCustomContext("LayoutCheckContext");
-            if (methodDetails.methodContext.errorContext) {
-                this._failureAspect = new FailureAspectStatistics(methodDetails.methodContext.errorContext);
+            let firstFailureAspect = null;
+            let firstFailedFailureAspect = null;
+            for (const failureAspect of methodDetails.failureAspects) {
+                if (!firstFailureAspect) {
+                    firstFailureAspect = failureAspect;
+                }
+                if (failureAspect.overallFailed > 0) {
+                    firstFailedFailureAspect = failureAspect;
+                    // Stop search on first found failed FailureAspect
+                    break;
+                }
             }
+            this._failureAspect = firstFailedFailureAspect||firstFailureAspect;
         });
     }
 

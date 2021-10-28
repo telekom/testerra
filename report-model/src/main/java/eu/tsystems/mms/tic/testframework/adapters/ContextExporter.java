@@ -143,21 +143,22 @@ public class ContextExporter implements Loggable {
     }
 
     public File.Builder[] buildScreenshot(Screenshot screenshot) {
+        File.Builder[] fileBuilders = new File.Builder[2];
+
         java.io.File currentScreenshotFile = screenshot.getScreenshotFile();
         File.Builder screenshotBuilder = prepareFile(currentScreenshotFile);
         screenshotBuilder.setRelativePath(report.getRelativePath(currentScreenshotFile));
         screenshotBuilder.setMimetype(MediaType.PNG.toString());
         screenshotBuilder.putAllMeta(screenshot.getMetaData());
-
-        java.io.File currentSourceFile = screenshot.getPageSourceFile();
-        File.Builder sourceBuilder = prepareFile(currentSourceFile);
-        sourceBuilder.setRelativePath(report.getRelativePath(currentSourceFile));
-        sourceBuilder.setMimetype(MediaType.PLAIN_TEXT_UTF_8.toString());
-        screenshotBuilder.putMeta("sourcesRefId", sourceBuilder.getId());
-
-        File.Builder[] fileBuilders = new File.Builder[2];
         fileBuilders[0] = screenshotBuilder;
-        fileBuilders[1] = sourceBuilder;
+
+        screenshot.getPageSourceFile().ifPresent(currentSourceFile -> {
+            File.Builder sourceBuilder = prepareFile(currentSourceFile);
+            sourceBuilder.setRelativePath(report.getRelativePath(currentSourceFile));
+            sourceBuilder.setMimetype(MediaType.PLAIN_TEXT_UTF_8.toString());
+            screenshotBuilder.putMeta("sourcesRefId", sourceBuilder.getId());
+            fileBuilders[1] = sourceBuilder;
+        });
         return fileBuilders;
     }
 

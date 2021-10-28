@@ -91,9 +91,9 @@ public class DefaultReport implements Report, Loggable {
             screenshot.setFile(addFile(screenshot.getScreenshotFile(), screenshotsDirectory, fileMode));
         }
 
-        if (screenshot.getPageSourceFile() != null) {
-            screenshot.setPageSourceFile(addFile(screenshot.getPageSourceFile(), screenshotsDirectory, fileMode));
-        }
+        screenshot.getPageSourceFile().ifPresent(file -> {
+            screenshot.setPageSourceFile(addFile(file, screenshotsDirectory, fileMode));
+        });
     }
 
     @Override
@@ -104,7 +104,7 @@ public class DefaultReport implements Report, Loggable {
 
     @Override
     public Screenshot provideScreenshot(File file, FileMode fileMode) {
-        Screenshot screenshot = new Screenshot(file, null);
+        Screenshot screenshot = new Screenshot(file);
         addScreenshotFiles(screenshot, fileMode);
         return screenshot;
     }

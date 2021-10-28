@@ -114,7 +114,7 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
             page.getOpenAgain().click();
         }
         Screenshot screenshot = UITestUtils.takeScreenshot(page.getWebDriver(), false);
-        String screenshotSource = Files.readFile(screenshot.getPageSourceFile());
+        String screenshotSource = Files.readFile(screenshot.getPageSourceFile().get());
 
         String expected = "<p id=\"99\">Open again clicked<br>Open again clicked<br>Open again clicked<br>";
         AssertUtils.assertContains(screenshotSource, expected);

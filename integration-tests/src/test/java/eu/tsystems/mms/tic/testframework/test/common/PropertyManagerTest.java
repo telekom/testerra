@@ -21,12 +21,18 @@
  */
  package eu.tsystems.mms.tic.testframework.test.common;
 
-import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.WebDriverPropertyResolver;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import java.util.Collections;
+import java.util.Optional;
+import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class PropertyManagerTest extends AbstractWebDriverTest {
+public class PropertyManagerTest extends TesterraTest {
 
     /**
      * property test with system properties and replacement system
@@ -405,9 +411,6 @@ public class PropertyManagerTest extends AbstractWebDriverTest {
         PropertyManager.clearThreadlocalProperties();
         Assert.assertNull(PropertyManager.getThreadLocalProperties().getProperty("thread.property"));
 
-        PropertyManager.clearGlobalProperties();
-        Assert.assertNull(PropertyManager.getGlobalProperties().getProperty("thread.property"));
-
         Assert.assertEquals(PropertyManager.getProperty("thread.property"), "file");
     }
 
@@ -423,5 +426,45 @@ public class PropertyManagerTest extends AbstractWebDriverTest {
         Assert.assertNull(PropertyManager.getThreadLocalProperties().getProperty("thread.property"));
         Assert.assertNull(PropertyManager.getGlobalProperties().getProperty("thread.property"));
         Assert.assertNull(PropertyManager.getProperty("thread.property"));
+    }
+
+    @Test
+    public void test_priority() {
+
+        String property = "test";
+        String expected = "huhu";
+
+        Assert.assertEquals(PropertyManager.getProperty(property), expected);
+
+        System.setProperty("test", "haha");
+
+        Assert.assertNotEquals(PropertyManager.getProperty(property), expected);
+    }
+
+    @Test
+    public void test_resolvePriorityProperty() {
+        final String propertyKey = "any-property";
+        final String expected = "I-have-been-resolved";
+
+        PropertyManager.withResolvers(Collections.singletonList(property -> Optional.of(expected)), () -> {
+            Assert.assertEquals(PropertyManager.getProperty(propertyKey), expected);
+        });
+        Assert.assertNull(PropertyManager.getProperty(propertyKey));
+    }
+
+    @Test
+    public void test_WebDriverPropertyResolver() {
+        String fakeBrowser = "fakeBrowser";
+        String actualBrowser = "HeadlessChrome";
+        Assert.assertNotEquals(PropertyManager.getProperty(TesterraProperties.BROWSER), fakeBrowser);
+
+        WebDriver webDriver = WebDriverManager.getWebDriver();
+
+        PropertyManager.getThreadLocalProperties().setProperty(TesterraProperties.BROWSER, fakeBrowser);
+        Assert.assertEquals(PropertyManager.getProperty(TesterraProperties.BROWSER), fakeBrowser);
+
+        PropertyManager.withResolvers(Collections.singletonList(new WebDriverPropertyResolver(webDriver)), () -> {
+            Assert.assertEquals(PropertyManager.getProperty(TesterraProperties.BROWSER), actualBrowser);
+        });
     }
 }

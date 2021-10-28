@@ -178,7 +178,6 @@ message ErrorContext {
     string description = 10 [deprecated = true];
     repeated StackTraceCause stack_trace = 11;
     bool optional = 12;
-    string screenshot_id = 13;
 }
 
 message SessionContext {

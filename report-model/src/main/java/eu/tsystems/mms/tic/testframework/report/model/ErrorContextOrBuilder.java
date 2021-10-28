@@ -104,16 +104,4 @@ public interface ErrorContextOrBuilder extends
    * @return The optional.
    */
   boolean getOptional();
-
-  /**
-   * <code>string screenshot_id = 13;</code>
-   * @return The screenshotId.
-   */
-  java.lang.String getScreenshotId();
-  /**
-   * <code>string screenshot_id = 13;</code>
-   * @return The bytes for screenshotId.
-   */
-  com.google.protobuf.ByteString
-      getScreenshotIdBytes();
 }

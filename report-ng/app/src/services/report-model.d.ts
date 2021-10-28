@@ -731,9 +731,6 @@ export namespace data {
 
         /** ErrorContext optional */
         optional?: (boolean|null);
-
-        /** ErrorContext screenshotId */
-        screenshotId?: (string|null);
     }
 
     /** Represents an ErrorContext. */
@@ -759,9 +756,6 @@ export namespace data {
 
         /** ErrorContext optional. */
         public optional: boolean;
-
-        /** ErrorContext screenshotId. */
-        public screenshotId: string;
 
         /**
          * Decodes an ErrorContext message from the specified reader or buffer.

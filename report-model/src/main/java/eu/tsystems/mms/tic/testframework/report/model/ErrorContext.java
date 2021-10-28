@@ -19,7 +19,6 @@ private static final long serialVersionUID = 0L;
     ticketId_ = "";
     description_ = "";
     stackTrace_ = java.util.Collections.emptyList();
-    screenshotId_ = "";
   }
 
   @java.lang.Override
@@ -90,12 +89,6 @@ private static final long serialVersionUID = 0L;
           case 96: {
 
             optional_ = input.readBool();
-            break;
-          }
-          case 106: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            screenshotId_ = s;
             break;
           }
           default: {
@@ -315,44 +308,6 @@ private static final long serialVersionUID = 0L;
     return optional_;
   }
 
-  public static final int SCREENSHOT_ID_FIELD_NUMBER = 13;
-  private volatile java.lang.Object screenshotId_;
-  /**
-   * <code>string screenshot_id = 13;</code>
-   * @return The screenshotId.
-   */
-  @java.lang.Override
-  public java.lang.String getScreenshotId() {
-    java.lang.Object ref = screenshotId_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      screenshotId_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string screenshot_id = 13;</code>
-   * @return The bytes for screenshotId.
-   */
-  @java.lang.Override
-  public com.google.protobuf.ByteString
-      getScreenshotIdBytes() {
-    java.lang.Object ref = screenshotId_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      screenshotId_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
-
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -382,9 +337,6 @@ private static final long serialVersionUID = 0L;
     if (optional_ != false) {
       output.writeBool(12, optional_);
     }
-    if (!getScreenshotIdBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 13, screenshotId_);
-    }
     unknownFields.writeTo(output);
   }
 
@@ -411,9 +363,6 @@ private static final long serialVersionUID = 0L;
     if (optional_ != false) {
       size += com.google.protobuf.CodedOutputStream
         .computeBoolSize(12, optional_);
-    }
-    if (!getScreenshotIdBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(13, screenshotId_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -443,8 +392,6 @@ private static final long serialVersionUID = 0L;
         .equals(other.getStackTraceList())) return false;
     if (getOptional()
         != other.getOptional()) return false;
-    if (!getScreenshotId()
-        .equals(other.getScreenshotId())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -471,8 +418,6 @@ private static final long serialVersionUID = 0L;
     hash = (37 * hash) + OPTIONAL_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
         getOptional());
-    hash = (37 * hash) + SCREENSHOT_ID_FIELD_NUMBER;
-    hash = (53 * hash) + getScreenshotId().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -625,8 +570,6 @@ private static final long serialVersionUID = 0L;
       }
       optional_ = false;
 
-      screenshotId_ = "";
-
       return this;
     }
 
@@ -671,7 +614,6 @@ private static final long serialVersionUID = 0L;
         result.stackTrace_ = stackTraceBuilder_.build();
       }
       result.optional_ = optional_;
-      result.screenshotId_ = screenshotId_;
       onBuilt();
       return result;
     }
@@ -759,10 +701,6 @@ private static final long serialVersionUID = 0L;
       }
       if (other.getOptional() != false) {
         setOptional(other.getOptional());
-      }
-      if (!other.getScreenshotId().isEmpty()) {
-        screenshotId_ = other.screenshotId_;
-        onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -1415,82 +1353,6 @@ private static final long serialVersionUID = 0L;
     public Builder clearOptional() {
       
       optional_ = false;
-      onChanged();
-      return this;
-    }
-
-    private java.lang.Object screenshotId_ = "";
-    /**
-     * <code>string screenshot_id = 13;</code>
-     * @return The screenshotId.
-     */
-    public java.lang.String getScreenshotId() {
-      java.lang.Object ref = screenshotId_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        screenshotId_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <code>string screenshot_id = 13;</code>
-     * @return The bytes for screenshotId.
-     */
-    public com.google.protobuf.ByteString
-        getScreenshotIdBytes() {
-      java.lang.Object ref = screenshotId_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        screenshotId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string screenshot_id = 13;</code>
-     * @param value The screenshotId to set.
-     * @return This builder for chaining.
-     */
-    public Builder setScreenshotId(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      screenshotId_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string screenshot_id = 13;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearScreenshotId() {
-      
-      screenshotId_ = getDefaultInstance().getScreenshotId();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string screenshot_id = 13;</code>
-     * @param value The bytes for screenshotId to set.
-     * @return This builder for chaining.
-     */
-    public Builder setScreenshotIdBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      screenshotId_ = value;
       onChanged();
       return this;
     }

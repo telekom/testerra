@@ -1629,7 +1629,6 @@ export const data = $root.data = (() => {
          * @property {string|null} [description] ErrorContext description
          * @property {Array.<data.IStackTraceCause>|null} [stackTrace] ErrorContext stackTrace
          * @property {boolean|null} [optional] ErrorContext optional
-         * @property {string|null} [screenshotId] ErrorContext screenshotId
          */
 
         /**
@@ -1689,14 +1688,6 @@ export const data = $root.data = (() => {
         ErrorContext.prototype.optional = false;
 
         /**
-         * ErrorContext screenshotId.
-         * @member {string} screenshotId
-         * @memberof data.ErrorContext
-         * @instance
-         */
-        ErrorContext.prototype.screenshotId = "";
-
-        /**
          * Decodes an ErrorContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.ErrorContext
@@ -1730,9 +1721,6 @@ export const data = $root.data = (() => {
                     break;
                 case 12:
                     m.optional = r.bool();
-                    break;
-                case 13:
-                    m.screenshotId = r.string();
                     break;
                 default:
                     r.skipType(t & 7);

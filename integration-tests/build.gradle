@@ -1,6 +1,6 @@
 dependencies {
     api driver_ui_desktop
-    testImplementation project(':report-ng')
+    testImplementation report
 
     // <XML>
     implementation 'org.xmlunit:xmlunit-core:2.5.0'

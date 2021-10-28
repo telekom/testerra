@@ -16,6 +16,7 @@ ext {
     driver_ui_desktop = project(':driver-ui-desktop')
     image_processing = project(':image-processing')
     core = project(':core')
+    report = project(':report-ng')
 
     seleniumVersion = '3.141.59'
     guavaVersion = "28.1-jre"

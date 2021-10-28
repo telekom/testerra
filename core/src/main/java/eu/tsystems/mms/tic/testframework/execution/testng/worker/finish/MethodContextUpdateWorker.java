@@ -45,7 +45,7 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
         ITestNGMethod testMethod = event.getTestMethod();
 
         // Handle collected assertions if we have more than one
-        if (testResult.isSuccess() && methodContext.readErrors().filter(ErrorContext::isNotOptional).count() > 1) {
+        if (testResult.isSuccess() && methodContext.readErrors().anyMatch(ErrorContext::isNotOptional)) {
             // let the test fail
             testResult.setStatus(ITestResult.FAILURE);
             StringBuilder sb = new StringBuilder();

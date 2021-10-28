@@ -45,7 +45,6 @@ public class MethodEndWorker implements MethodEndEvent.Listener, Loggable {
     public void onMethodEnd(MethodEndEvent event) {
         // clear current result
         ExecutionContextController.clearCurrentTestResult();
-        MethodContext methodContext = event.getMethodContext();
         ITestResult testResult = event.getTestResult();
         ITestNGMethod testMethod = event.getTestMethod();
 

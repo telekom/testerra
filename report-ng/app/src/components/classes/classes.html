@@ -108,10 +108,10 @@
                                        innerhtml.bind="methodDetails.identifier|highlightText:_searchRegexp"
                                     ></a><method-tags class="sl1" details.bind="methodDetails"></method-tags>
                                 </div>
-                                <div if.bind="methodDetails.failureAspectStatistics"
+                                <div repeat.for="failureAspect of methodDetails.failureAspects"
                                      mdc-body2
                                      class="st1"
-                                ><class-name-markup namespace.bind="methodDetails.failureAspectStatistics.relevantCause.className" highlight.bind="_searchRegexp">:</class-name-markup><span innerhtml="${methodDetails.failureAspectStatistics.message|html|highlightText:_searchRegexp}"></span></div>
+                                ><class-name-markup namespace.bind="failureAspect.relevantCause.className" highlight.bind="_searchRegexp">:</class-name-markup><span innerhtml="${failureAspect.message|html|highlightText:_searchRegexp}"></span></div>
                             </td>
                         </tr>
                     </tbody>

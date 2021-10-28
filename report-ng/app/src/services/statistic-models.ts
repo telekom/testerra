@@ -254,9 +254,10 @@ export class FailureAspectStatistics extends Statistics {
     }
 
     addMethodContext(methodContext:IMethodContext) {
-        this._methodContexts.push(methodContext);
-        this.addResultStatus(methodContext.resultStatus);
-        return this;
+        if (this._methodContexts.indexOf(methodContext) == -1) {
+            this._methodContexts.push(methodContext);
+            this.addResultStatus(methodContext.resultStatus);
+        }
     }
 
     /**

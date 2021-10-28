@@ -32,6 +32,7 @@ public class ErrorContext {
     private ScriptSource executionObjectSource;
     private boolean optional;
 
+    @Deprecated
     public ErrorContext() {
 
     }
@@ -76,7 +77,7 @@ public class ErrorContext {
 
     @Deprecated
     public String getReadableErrorMessage() {
-        return getThrowable().getMessage();
+        return Optional.ofNullable(getThrowable()).map(Throwable::getMessage).orElse(null);
     }
 
     /**

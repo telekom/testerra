@@ -90,7 +90,7 @@ public class DefaultCapabilityUtils {
     }
 
     /**
-     * Sets an capability value if the existing value doesn't match the same type,
+     * Sets a capability value if the existing value doesn't match the same type,
      * is an empty string or doesn't exist.
      * @param capabilities
      * @param capabilityName

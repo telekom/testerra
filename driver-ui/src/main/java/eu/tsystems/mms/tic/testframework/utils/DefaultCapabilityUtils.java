@@ -29,6 +29,7 @@ import java.util.TreeMap;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * This is a simple helper to modify log messages of {@link Capabilities} to short long values or do other opertations

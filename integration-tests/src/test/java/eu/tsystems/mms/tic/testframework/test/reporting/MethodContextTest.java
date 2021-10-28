@@ -26,9 +26,10 @@ import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.StackTrace;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import org.testng.annotations.Test;
 
-public class MethodContextTest extends AbstractWebDriverTest {
+public class MethodContextTest extends TesterraTest {
 
     String level0String = "level 0";
 

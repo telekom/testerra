@@ -273,10 +273,10 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
             Throwable retryCause = checkThrowable(throwable);
 
             if (retryCause != null) {
-                MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult);
-                if (methodContext != null) {
-                    methodContext.addPriorityMessage("Retry Cause:\n" + retryCause.toString());
-                }
+//                MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult);
+//                if (methodContext != null) {
+//                    methodContext.addPriorityMessage("Retry Cause:\n" + retryCause.toString());
+//                }
                 return true;
             }
         }

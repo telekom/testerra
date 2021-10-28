@@ -410,8 +410,6 @@ public class PropertyManagerTest extends TesterraTest {
         // clear
         PropertyManager.clearThreadlocalProperties();
         Assert.assertNull(PropertyManager.getThreadLocalProperties().getProperty("thread.property"));
-
-        Assert.assertEquals(PropertyManager.getProperty("thread.property"), "file");
     }
 
     // Disabled because it will break everything

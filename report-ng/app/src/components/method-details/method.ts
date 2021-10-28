@@ -56,16 +56,16 @@ export class Method {
                     icon: "center_focus_strong"
                 }
             },
-            {
-                route: 'assertions',
-                moduleId: PLATFORM.moduleName('./assertions'),
-                nav: true,
-                name: "assertions",
-                title: 'Assertions',
-                settings: {
-                    icon: "rule",
-                }
-            },
+            // {
+            //     route: 'assertions',
+            //     moduleId: PLATFORM.moduleName('./assertions'),
+            //     nav: true,
+            //     name: "assertions",
+            //     title: 'Assertions',
+            //     settings: {
+            //         icon: "rule",
+            //     }
+            // },
             {
                 route: 'steps/:step?',
                 href: "steps",
@@ -157,16 +157,16 @@ export class Method {
                         }
                         break;
                     }
-                    case "assertions": {
-                        const numErrorContexts = methodDetails.errorContexts.length;
-                        if (numErrorContexts > 0) {
-                            routeConfig.nav = true;
-                            routeConfig.settings.count = numErrorContexts;
-                        } else {
-                            disableRoute(routeConfig);
-                        }
-                        break;
-                    }
+                    // case "assertions": {
+                    //     const numErrorContexts = methodDetails.errorContexts.length;
+                    //     if (numErrorContexts > 0) {
+                    //         routeConfig.nav = true;
+                    //         routeConfig.settings.count = numErrorContexts;
+                    //     } else {
+                    //         disableRoute(routeConfig);
+                    //     }
+                    //     break;
+                    // }
                 }
             });
 

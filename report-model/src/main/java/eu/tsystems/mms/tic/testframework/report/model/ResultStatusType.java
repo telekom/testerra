@@ -88,9 +88,8 @@ public enum ResultStatusType
    * entity was expected to fail (with or without an explicit issue), it may or may not be representative
    * </pre>
    *
-   * <code>FAILED_EXPECTED = 10 [deprecated = true];</code>
+   * <code>FAILED_EXPECTED = 10;</code>
    */
-  @java.lang.Deprecated
   FAILED_EXPECTED(10),
   /**
    * <pre>
@@ -193,9 +192,9 @@ public enum ResultStatusType
    * entity was expected to fail (with or without an explicit issue), it may or may not be representative
    * </pre>
    *
-   * <code>FAILED_EXPECTED = 10 [deprecated = true];</code>
+   * <code>FAILED_EXPECTED = 10;</code>
    */
-  @java.lang.Deprecated public static final int FAILED_EXPECTED_VALUE = 10;
+  public static final int FAILED_EXPECTED_VALUE = 10;
   /**
    * <pre>
    * passed after a retry

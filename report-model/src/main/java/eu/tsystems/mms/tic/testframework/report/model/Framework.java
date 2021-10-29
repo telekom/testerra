@@ -259,14 +259,14 @@ public final class Framework {
       "e\022\017\n\013FCV_NOT_SET\020\000\022\014\n\010FCV_HIGH\020\001\022\013\n\007FCV_" +
       "MID\020\002\022\013\n\007FCV_LOW\020\003*G\n\nMethodType\022\016\n\nMT_N" +
       "OT_SET\020\000\022\017\n\013TEST_METHOD\020\001\022\030\n\024CONFIGURATI" +
-      "ON_METHOD\020\002*\351\001\n\020ResultStatusType\022\017\n\013RST_" +
+      "ON_METHOD\020\002*\345\001\n\020ResultStatusType\022\017\n\013RST_" +
       "NOT_SET\020\000\022\n\n\006NO_RUN\020\001\022\014\n\004INFO\020\002\032\002\010\001\022\013\n\007S" +
       "KIPPED\020\003\022\n\n\006PASSED\020\004\022\r\n\005MINOR\020\005\032\002\010\001\022\n\n\006F" +
       "AILED\020\007\022\024\n\014FAILED_MINOR\020\010\032\002\010\001\022\022\n\016FAILED_" +
-      "RETRIED\020\t\022\027\n\017FAILED_EXPECTED\020\n\032\002\010\001\022\020\n\014PA" +
-      "SSED_RETRY\020\013\022\023\n\013MINOR_RETRY\020\014\032\002\010\001\022\014\n\010REP" +
-      "AIRED\020\rB2\n.eu.tsystems.mms.tic.testframe" +
-      "work.report.modelP\001b\006proto3"
+      "RETRIED\020\t\022\023\n\017FAILED_EXPECTED\020\n\022\020\n\014PASSED" +
+      "_RETRY\020\013\022\023\n\013MINOR_RETRY\020\014\032\002\010\001\022\014\n\010REPAIRE" +
+      "D\020\rB2\n.eu.tsystems.mms.tic.testframework" +
+      ".report.modelP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

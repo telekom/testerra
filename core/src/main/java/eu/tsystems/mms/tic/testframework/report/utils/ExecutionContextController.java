@@ -193,7 +193,10 @@ public class ExecutionContextController {
         LOGGER.info(prefix + "**********************************************");
         LOGGER.info(prefix + "Test Methods Count: " + testMethodContextCount.get() + " (" + relevantMethodContextCount.get() + " relevant)");
 
-        logStatusSet(Stream.of(TestStatusController.Status.FAILED, TestStatusController.Status.RETRIED));
+        int overallFailed = executionContext.getStatusCount(TestStatusController.Status.FAILED) - executionContext.getStatusCount(TestStatusController.Status.RETRIED);
+        if (overallFailed > 0) {
+            logStatusSet(Stream.of(TestStatusController.Status.FAILED, TestStatusController.Status.RETRIED));
+        }
         logStatusSet(Stream.of(TestStatusController.Status.FAILED_EXPECTED));
         logStatusSet(Stream.of(TestStatusController.Status.SKIPPED));
         logStatusSet(Stream.of(TestStatusController.Status.PASSED, TestStatusController.Status.RECOVERED, TestStatusController.Status.REPAIRED));

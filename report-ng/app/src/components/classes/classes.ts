@@ -36,7 +36,7 @@ export class Classes extends AbstractViewModel {
     readonly CUSTOM_STATUS_REPAIRED="repaired";
     private _executionStatistics: ExecutionStatistics;
     private _selectedStatus:data.ResultStatusType|string;
-    private _availableStatuses;
+    private _availableStatuses:data.ResultStatusType[]|number[];
     private _filteredMethodDetails:MethodDetails[];
     private _showConfigurationMethods:boolean = null;
     private _searchRegexp:RegExp;
@@ -106,13 +106,17 @@ export class Classes extends AbstractViewModel {
         this._availableStatuses = [];
 
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
-            this._statusConverter.relevantStatuses
-                .concat(...[data.ResultStatusType.FAILED_RETRIED, data.ResultStatusType.PASSED_RETRY])
-                .forEach(status => {
-                    if (executionStatistics.getStatusesCount(this._statusConverter.groupStatus(status)) > 0) {
-                        this._availableStatuses.push(status)
-                    }
-                });
+            for (const key in executionStatistics.executionAggregate.executionContext.statusCounts) {
+                this._availableStatuses.push(this._statusConverter.normalizeStatus(key));
+            }
+            // this._availableStatuses = Object.keys();
+            // this._statusConverter.relevantStatuses
+            //     .concat(...[data.ResultStatusType.FAILED_RETRIED, data.ResultStatusType.PASSED_RETRY])
+            //     .forEach(status => {
+            //         if (executionStatistics.getStatusesCount(this._statusConverter.groupStatus(status)) > 0) {
+            //             this._availableStatuses.push(status)
+            //         }
+            //     });
 
             let relevantFailureAspect:FailureAspectStatistics;
             let filterByFailureAspect = false;

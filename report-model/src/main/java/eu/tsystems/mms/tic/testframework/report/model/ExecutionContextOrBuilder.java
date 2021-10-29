@@ -256,4 +256,38 @@ public interface ExecutionContextOrBuilder extends
 
   int getStatusCountsOrThrow(
       int key);
+
+  /**
+   * <code>map&lt;int32, int32&gt; failure_corridor_counts = 18;</code>
+   */
+  int getFailureCorridorCountsCount();
+  /**
+   * <code>map&lt;int32, int32&gt; failure_corridor_counts = 18;</code>
+   */
+  boolean containsFailureCorridorCounts(
+      int key);
+  /**
+   * Use {@link #getFailureCorridorCountsMap()} instead.
+   */
+  @java.lang.Deprecated
+  java.util.Map<java.lang.Integer, java.lang.Integer>
+  getFailureCorridorCounts();
+  /**
+   * <code>map&lt;int32, int32&gt; failure_corridor_counts = 18;</code>
+   */
+  java.util.Map<java.lang.Integer, java.lang.Integer>
+  getFailureCorridorCountsMap();
+  /**
+   * <code>map&lt;int32, int32&gt; failure_corridor_counts = 18;</code>
+   */
+
+  int getFailureCorridorCountsOrDefault(
+      int key,
+      int defaultValue);
+  /**
+   * <code>map&lt;int32, int32&gt; failure_corridor_counts = 18;</code>
+   */
+
+  int getFailureCorridorCountsOrThrow(
+      int key);
 }

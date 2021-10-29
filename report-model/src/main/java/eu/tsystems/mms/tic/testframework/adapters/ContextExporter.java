@@ -66,11 +66,13 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 
 public class ContextExporter implements Loggable {
-    private final Map<TestStatusController.Status, ResultStatusType> STATUS_MAPPING = new LinkedHashMap<>();
+    private final Map<TestStatusController.Status, ResultStatusType> RESULT_STATUS_MAPPING = new LinkedHashMap<>();
+    private final Map<Class, FailureCorridorValue> FAILURE_CORRIDOR_MAPPING = new LinkedHashMap<>();
     private final Report report = TesterraListener.getReport();
     private final Gson jsonEncoder = new Gson();
 
@@ -94,7 +96,7 @@ public class ContextExporter implements Loggable {
 
         builder.setContextValues(contextValuesBuilder);
 
-        map(methodContext.getStatus(), this::getMappedStatus, builder::setResultStatus);
+        map(methodContext.getStatus(), this::mapResultStatus, builder::setResultStatus);
         map(methodContext.getMethodType(), type -> MethodType.valueOf(type.name()), builder::setMethodType);
         List<Object> parameterValues = methodContext.getParameterValues();
         for (int i = 0; i < parameterValues.size(); ++i) {
@@ -305,17 +307,25 @@ public class ContextExporter implements Loggable {
 
     public ContextExporter() {
         // Prepare a status map
-        STATUS_MAPPING.put(TestStatusController.Status.FAILED, ResultStatusType.FAILED);
-        STATUS_MAPPING.put(TestStatusController.Status.SKIPPED, ResultStatusType.SKIPPED);
-        STATUS_MAPPING.put(TestStatusController.Status.PASSED, ResultStatusType.PASSED);
-        STATUS_MAPPING.put(TestStatusController.Status.FAILED_EXPECTED, ResultStatusType.FAILED_EXPECTED);
-        STATUS_MAPPING.put(TestStatusController.Status.REPAIRED, ResultStatusType.REPAIRED);
-        STATUS_MAPPING.put(TestStatusController.Status.RETRIED, ResultStatusType.FAILED_RETRIED);
-        STATUS_MAPPING.put(TestStatusController.Status.RECOVERED, ResultStatusType.PASSED_RETRY);
+        RESULT_STATUS_MAPPING.put(TestStatusController.Status.FAILED, ResultStatusType.FAILED);
+        RESULT_STATUS_MAPPING.put(TestStatusController.Status.SKIPPED, ResultStatusType.SKIPPED);
+        RESULT_STATUS_MAPPING.put(TestStatusController.Status.PASSED, ResultStatusType.PASSED);
+        RESULT_STATUS_MAPPING.put(TestStatusController.Status.FAILED_EXPECTED, ResultStatusType.FAILED_EXPECTED);
+        RESULT_STATUS_MAPPING.put(TestStatusController.Status.REPAIRED, ResultStatusType.REPAIRED);
+        RESULT_STATUS_MAPPING.put(TestStatusController.Status.RETRIED, ResultStatusType.FAILED_RETRIED);
+        RESULT_STATUS_MAPPING.put(TestStatusController.Status.RECOVERED, ResultStatusType.PASSED_RETRY);
+
+        FAILURE_CORRIDOR_MAPPING.put(FailureCorridor.High.class, FailureCorridorValue.FCV_HIGH);
+        FAILURE_CORRIDOR_MAPPING.put(FailureCorridor.Mid.class, FailureCorridorValue.FCV_MID);
+        FAILURE_CORRIDOR_MAPPING.put(FailureCorridor.Low.class, FailureCorridorValue.FCV_LOW);
     }
 
-    ResultStatusType getMappedStatus(TestStatusController.Status status) {
-        return STATUS_MAPPING.get(status);
+    protected ResultStatusType mapResultStatus(TestStatusController.Status status) {
+        return RESULT_STATUS_MAPPING.get(status);
+    }
+
+    protected FailureCorridorValue mapFailureCorridorClass(Class failureCorridorClass) {
+        return FAILURE_CORRIDOR_MAPPING.get(failureCorridorClass);
     }
 
     /**
@@ -471,7 +481,14 @@ public class ContextExporter implements Loggable {
         builder.putFailureCorridorLimits(FailureCorridorValue.FCV_LOW_VALUE, FailureCorridor.getAllowedTestFailuresLOW());
 
         executionContext.readStatusCounts().forEach(statusEntry -> {
-            builder.putStatusCounts(getMappedStatus(statusEntry.getKey()).getNumber(), statusEntry.getValue());
+            builder.putStatusCounts(mapResultStatus(statusEntry.getKey()).getNumber(), statusEntry.getValue());
+        });
+
+        Stream.of(FailureCorridor.High.class, FailureCorridor.Mid.class, FailureCorridor.Low.class).forEach(failureCorridorClass -> {
+            int count = executionContext.getFailureCorridorCount(failureCorridorClass);
+            if (count > 0) {
+                builder.putFailureCorridorCounts(mapFailureCorridorClass(failureCorridorClass).getNumber(), count);
+            }
         });
 
         return builder;

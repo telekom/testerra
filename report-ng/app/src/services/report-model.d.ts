@@ -187,6 +187,12 @@ export namespace data {
 
         /** ExecutionContext failureCorridorLimits */
         failureCorridorLimits?: ({ [k: string]: number }|null);
+
+        /** ExecutionContext statusCounts */
+        statusCounts?: ({ [k: string]: number }|null);
+
+        /** ExecutionContext failureCorridorCounts */
+        failureCorridorCounts?: ({ [k: string]: number }|null);
     }
 
     /** Represents an ExecutionContext. */
@@ -230,6 +236,12 @@ export namespace data {
 
         /** ExecutionContext failureCorridorLimits. */
         public failureCorridorLimits: { [k: string]: number };
+
+        /** ExecutionContext statusCounts. */
+        public statusCounts: { [k: string]: number };
+
+        /** ExecutionContext failureCorridorCounts. */
+        public failureCorridorCounts: { [k: string]: number };
 
         /**
          * Decodes an ExecutionContext message from the specified reader or buffer.
@@ -1198,7 +1210,8 @@ export namespace data {
         FAILED_RETRIED = 9,
         FAILED_EXPECTED = 10,
         PASSED_RETRY = 11,
-        MINOR_RETRY = 12
+        MINOR_RETRY = 12,
+        REPAIRED = 13
     }
 
     /** Properties of an ExecutionAggregate. */

@@ -34,7 +34,7 @@ class GraphColors {
 }
 
 export interface IFilter {
-    status?:ResultStatusType,
+    status?:data.ResultStatusType,
     class?:string,
 }
 
@@ -44,6 +44,7 @@ export class StatusConverter {
 
     /**
      * Status adapted from {@link TestStatusController.java}
+     * @deprecated
      */
     get failedStatuses() {
         return [
@@ -60,6 +61,9 @@ export class StatusConverter {
         ]
     }
 
+    /**
+     * @deprecated
+     */
     get passedStatuses() {
         return [
             ResultStatusType.PASSED,
@@ -81,6 +85,7 @@ export class StatusConverter {
     /**
      * Groups a status to relevant combined statuses
      * @param status
+     * @deprecated
      */
     groupStatus(status:ResultStatusType):ResultStatusType[] {
         switch (status) {
@@ -90,7 +95,7 @@ export class StatusConverter {
         }
     }
 
-    private _normalizeStatus(status:ResultStatusType|string) {
+    normalizeStatus(status:ResultStatusType|string):number {
         if (typeof status === "string") {
             status = Number.parseInt(status);
         }
@@ -98,7 +103,7 @@ export class StatusConverter {
     }
 
     getLabelForStatus(status: ResultStatusType|string): string {
-        switch (this._normalizeStatus(status)) {
+        switch (this.normalizeStatus(status)) {
             case ResultStatusType.SKIPPED:
                 return "Skipped";
             case ResultStatusType.MINOR:
@@ -113,11 +118,13 @@ export class StatusConverter {
                 return "Failed";
             case ResultStatusType.FAILED_EXPECTED:
                 return "Expected Failed";
+            case ResultStatusType.REPAIRED:
+                return "Repaired"
         }
     }
 
     getIconNameForStatus(status: ResultStatusType|string) {
-        switch (this._normalizeStatus(status)) {
+        switch (this.normalizeStatus(status)) {
             case ResultStatusType.SKIPPED:
                 return "radio_button_unchecked";
             case ResultStatusType.FAILED_RETRIED:
@@ -133,7 +140,7 @@ export class StatusConverter {
     }
 
     getColorForStatus(status: ResultStatusType): string {
-        switch (this._normalizeStatus(status)) {
+        switch (this.normalizeStatus(status)) {
             case ResultStatusType.PASSED:
             case ResultStatusType.PASSED_RETRY:
             case ResultStatusType.MINOR_RETRY:
@@ -153,7 +160,7 @@ export class StatusConverter {
     }
 
     getClassForStatus(status: ResultStatusType|string): string {
-        switch (this._normalizeStatus(status)) {
+        switch (this.normalizeStatus(status)) {
             case ResultStatusType.MINOR:
             case ResultStatusType.PASSED:
                 return "passed";

@@ -36,6 +36,7 @@ import {data} from "../../services/report-model";
 import {MdcSnackbarService} from '@aurelia-mdc-web/snackbar';
 import IStackTraceCause = data.IStackTraceCause;
 import {ILayoutComparisonContext} from "../layout-comparison/layout-comparison";
+import {Clipboard} from "t-systems-aurelia-components/src/utils/clipboard";
 
 @autoinject()
 export class Details {
@@ -69,11 +70,11 @@ export class Details {
 
     private _copyStackTraceToClipboard(stackTrace:IStackTraceCause[]) {
         const msg = stackTrace.flatMap(cause => cause.stackTraceElements).join("\n");
-        navigator.clipboard.writeText(msg).then(response => {
+
+        const clipboard = new Clipboard();
+        clipboard.writeText(msg).then(() => {
             this._snackbarNotification('Stacktrace copied to clipboard');
         });
-
-
     }
 
     private async _snackbarNotification(message: string) {

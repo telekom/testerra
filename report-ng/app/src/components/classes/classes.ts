@@ -33,9 +33,8 @@ import "./classes.scss"
 
 @autoinject()
 export class Classes extends AbstractViewModel {
-    readonly CUSTOM_STATUS_REPAIRED="repaired";
     private _executionStatistics: ExecutionStatistics;
-    private _selectedStatus:data.ResultStatusType|string;
+    private _selectedStatus:data.ResultStatusType;
     private _availableStatuses:data.ResultStatusType[]|number[];
     private _filteredMethodDetails:MethodDetails[];
     private _showConfigurationMethods:boolean = null;
@@ -58,9 +57,8 @@ export class Classes extends AbstractViewModel {
         navInstruction: NavigationInstruction
     ) {
         super.activate(params, routeConfig, navInstruction);
-        if (params.status === this.CUSTOM_STATUS_REPAIRED) {
-            this._selectedStatus = params.status;
-        } else if (params.status) {
+
+        if (params.status) {
             this._selectedStatus = this._statusConverter.getStatusForClass(params.status);
         } else {
             this._selectedStatus = null;
@@ -86,16 +84,8 @@ export class Classes extends AbstractViewModel {
             delete this.queryParams.q;
         }
 
-        const relevantStatuses:ResultStatusType[] = [];
-        let filterRepairedOnly = false;
-
-        if (this._selectedStatus === this.CUSTOM_STATUS_REPAIRED) {
-            relevantStatuses.push(...this._statusConverter.passedStatuses);
-            filterRepairedOnly = true;
-            this.queryParams.status = this.CUSTOM_STATUS_REPAIRED;
-        } else if (this._selectedStatus > 0) {
+        if (this._selectedStatus > 0) {
             this.queryParams.status = this._statusConverter.getClassForStatus(this._selectedStatus);
-            relevantStatuses.push(...this._statusConverter.groupStatus(this._selectedStatus as data.ResultStatusType));
         } else {
             delete this.queryParams.status;
         }
@@ -139,9 +129,6 @@ export class Classes extends AbstractViewModel {
                 })
                 .forEach(classStatistic => {
                     let methodContexts = classStatistic.methodContexts;
-                    if (relevantStatuses.length > 0) {
-                        methodContexts = methodContexts.filter(methodContext => relevantStatuses.indexOf(methodContext.resultStatus) >= 0);
-                    }
 
                     if (filterByFailureAspect) {
                         methodContexts = methodContexts.filter(methodContext => relevantFailureAspect.methodContexts.indexOf(methodContext) >= 0);
@@ -155,8 +142,8 @@ export class Classes extends AbstractViewModel {
                         return new MethodDetails(methodContext, classStatistic);
                     });
 
-                    if (filterRepairedOnly) {
-                        methodDetails = methodDetails.filter(methodDetails => methodDetails.isRepaired);
+                    if (this._selectedStatus > 0) {
+                        methodDetails = methodDetails.filter(methodDetails => methodDetails.matchesStatus(this._selectedStatus));
                     }
 
                     if (this._searchRegexp) {

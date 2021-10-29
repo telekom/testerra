@@ -166,18 +166,20 @@ export class StatusConverter {
                 return "passed";
             case ResultStatusType.MINOR_RETRY:
             case ResultStatusType.PASSED_RETRY:
-                return "passed-retried";
+                return "recovered";
             case ResultStatusType.FAILED_MINOR:
             case ResultStatusType.FAILED:
                 return "failed";
             case ResultStatusType.FAILED_RETRIED:
-                return "failed-retried";
+                return "retried";
             case ResultStatusType.FAILED_EXPECTED:
                 return "failed-expected";
             case ResultStatusType.SKIPPED:
                 return "skipped";
             case ResultStatusType.NO_RUN:
                 return "running";
+            case data.ResultStatusType.REPAIRED:
+                return "repaired";
             default:
                 return "unknown-status";
         }
@@ -193,12 +195,14 @@ export class StatusConverter {
                 return ResultStatusType.SKIPPED;
             case "failed-expected":
                 return ResultStatusType.FAILED_EXPECTED;
-            case "failed-retried":
+            case "retried":
                 return ResultStatusType.FAILED_RETRIED;
             case "failed":
                 return ResultStatusType.FAILED;
-            case "passed-retried":
+            case "recovered":
                 return ResultStatusType.PASSED_RETRY;
+            case "repaired":
+                return data.ResultStatusType.REPAIRED;
         }
     }
 

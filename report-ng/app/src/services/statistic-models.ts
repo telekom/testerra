@@ -55,7 +55,7 @@ abstract class AbstractStatistics implements IStatistics {
      * Returns the number of test cases including passed retried
      */
     get overallTestCases() {
-        return this.getStatusesCount([
+        return this.getSummarizedStatusCount([
             data.ResultStatusType.PASSED,
             data.ResultStatusType.SKIPPED,
             data.ResultStatusType.FAILED,
@@ -63,7 +63,7 @@ abstract class AbstractStatistics implements IStatistics {
         ]);
     }
 
-    getStatusesCount(statuses:number[]) {
+    getSummarizedStatusCount(statuses:number[]) {
         let count = 0;
         statuses.forEach(value => {
             count += this.getStatusCount(value);

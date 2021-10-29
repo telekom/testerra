@@ -26,10 +26,8 @@ import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -119,12 +117,8 @@ public class TestStatusController {
         // raise counters
         switch (status) {
             case NO_RUN:
-            case INFO:
                 break;
 
-            case PASSED_RETRY:
-            case MINOR:
-            case MINOR_RETRY:
             case PASSED:
                 testsSuccessful++;
 
@@ -134,7 +128,6 @@ public class TestStatusController {
                 testsExpectedFailed++;
                 break;
 
-            case FAILED_MINOR:
             case FAILED:
                 testsFailed++;
                 levelFC(methodContext, true);
@@ -144,15 +137,13 @@ public class TestStatusController {
                 testsSkipped++;
                 break;
 
-            case FAILED_RETRIED:
-                testsFailedRetried++;
-                testsFailed--;
-
-                levelFC(methodContext, false);
-                break;
-
             default:
-                throw new SystemException("Not implemented: " + status);
+                if (methodContext.getRetryCounter() > 0) {
+                    testsFailedRetried++;
+                    testsFailed--;
+
+                    levelFC(methodContext, false);
+                }
         }
 
         // print out current test execution state
@@ -188,16 +179,16 @@ public class TestStatusController {
         List<String> out = new ArrayList<>();
 
         if (testsSuccessful > 0) {
-            out.add(testsSuccessful + " Passed");
+            out.add(testsSuccessful + " " + Status.PASSED.title);
         }
         if (testsFailed > 0) {
-            out.add(testsFailed + " Failed");
+            out.add(testsFailed + " " + Status.FAILED.title);
         }
         if (testsSkipped > 0) {
-            out.add(testsSkipped + " Skipped");
+            out.add(testsSkipped + " " + Status.SKIPPED.title);
         }
         if (testsExpectedFailed > 0) {
-            out.add(testsExpectedFailed + " ExpFailed");
+            out.add(testsExpectedFailed + " " + Status.FAILED_EXPECTED.title);
         }
 
         return String.join(SEPARATOR, out);
@@ -261,28 +252,8 @@ public class TestStatusController {
 
     public enum Status {
         PASSED("Passed", true, true),
-        /**
-         * @deprecated Remove this after discontinuing 'report' module
-         */
-        MINOR("Minor", true, true),
-        PASSED_RETRY("Passed after Retry", true, true),
-        /**
-         * @deprecated Remove this after discontinuing 'report' module
-         */
-        MINOR_RETRY("Minor after Retry", false, true),
-        /**
-         * @deprecated Remove this after discontinuing 'report' module
-         */
-        INFO("Info", true, false),
-
         FAILED("Failed", true, true),
-        /**
-         * @deprecated Remove this after discontinuing 'report' module
-         */
-        FAILED_MINOR("Failed + Minor", true, true),
-        FAILED_RETRIED("Retried", true, false),
         FAILED_EXPECTED("Expected Failed", true, false),
-
         SKIPPED("Skipped", true, true),
         NO_RUN("No run", false, true); // this is basically an illegal state
 
@@ -298,29 +269,7 @@ public class TestStatusController {
             this.relevant = relevant;
         }
 
-        public boolean isPassed() {
-            switch (this) {
-                case PASSED:
-                case PASSED_RETRY:
-                case MINOR_RETRY:
-                case MINOR:
-                case INFO:
-                    return true;
-
-                case SKIPPED:
-                case NO_RUN:
-                case FAILED:
-                case FAILED_MINOR:
-                case FAILED_EXPECTED:
-                case FAILED_RETRIED:
-                    return false;
-
-                default:
-                    throw new SystemException("Unhandled state: " + this);
-            }
-        }
-
-        public boolean isFailed(boolean orSkipped, boolean withFailedExpected, boolean withRetried) {
+        public boolean isFailed(boolean orSkipped) {
             switch (this) {
                 case SKIPPED:
                     if (orSkipped) {
@@ -328,24 +277,12 @@ public class TestStatusController {
                     }
                 case NO_RUN:
                 case PASSED:
-                case PASSED_RETRY:
-                case MINOR:
-                case MINOR_RETRY:
-                case INFO:
                     return false;
 
-                case FAILED_RETRIED:
-                    if (!withRetried) {
-                        return false;
-                    }
                 case FAILED_EXPECTED:
-                    if (!withFailedExpected) {
-                        return false;
-                    }
+                    return false;
                 case FAILED:
-                case FAILED_MINOR:
                     return true;
-
 
                 default:
                     throw new SystemException("Unhandled state: " + this);
@@ -355,13 +292,7 @@ public class TestStatusController {
         public boolean isSkipped() {
             switch (this) {
                 case PASSED:
-                case MINOR:
-                case MINOR_RETRY:
-                case PASSED_RETRY:
-                case INFO:
                 case FAILED:
-                case FAILED_MINOR:
-                case FAILED_RETRIED:
                 case FAILED_EXPECTED:
                     return false;
 

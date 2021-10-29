@@ -88,16 +88,18 @@ public enum ResultStatusType
    * entity was expected to fail (with or without an explicit issue), it may or may not be representative
    * </pre>
    *
-   * <code>FAILED_EXPECTED = 10;</code>
+   * <code>FAILED_EXPECTED = 10 [deprecated = true];</code>
    */
+  @java.lang.Deprecated
   FAILED_EXPECTED(10),
   /**
    * <pre>
    * passed after a retry
    * </pre>
    *
-   * <code>PASSED_RETRY = 11;</code>
+   * <code>PASSED_RETRY = 11 [deprecated = true];</code>
    */
+  @java.lang.Deprecated
   PASSED_RETRY(11),
   /**
    * <pre>
@@ -184,17 +186,17 @@ public enum ResultStatusType
    * entity was expected to fail (with or without an explicit issue), it may or may not be representative
    * </pre>
    *
-   * <code>FAILED_EXPECTED = 10;</code>
+   * <code>FAILED_EXPECTED = 10 [deprecated = true];</code>
    */
-  public static final int FAILED_EXPECTED_VALUE = 10;
+  @java.lang.Deprecated public static final int FAILED_EXPECTED_VALUE = 10;
   /**
    * <pre>
    * passed after a retry
    * </pre>
    *
-   * <code>PASSED_RETRY = 11;</code>
+   * <code>PASSED_RETRY = 11 [deprecated = true];</code>
    */
-  public static final int PASSED_RETRY_VALUE = 11;
+  @java.lang.Deprecated public static final int PASSED_RETRY_VALUE = 11;
   /**
    * <pre>
    * minor after a retry

@@ -64,16 +64,6 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
         return getTestClassContext().map(TestClassContext::name).orElseGet(super::getName);
     }
 
-    @Deprecated
-    public String getFullClassName() {
-        return getTestClass().getName();
-    }
-
-    @Deprecated
-    public String getSimpleClassName() {
-        return getTestClass().getSimpleName();
-    }
-
     public Stream<MethodContext> readMethodContexts() {
         return this.methodContexts.stream();
     }
@@ -199,12 +189,6 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
 
     @Override
     public TestStatusController.Status getStatus() {
-        return getStatusFromContexts(getRepresentationalMethods());
-    }
-
-    public Stream<MethodContext> getRepresentationalMethods() {
-        return methodContexts.stream().filter(MethodContext::isRepresentationalTestMethod);
-        //        AbstractContext[] contexts = methodContexts.stream().filter(MethodContext::isRepresentationalTestMethod);
-        //        return contexts;
+        return getStatusFromContexts(readMethodContexts());
     }
 }

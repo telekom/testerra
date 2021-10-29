@@ -279,8 +279,8 @@ enum ResultStatusType {
     FAILED = 7; // failed status, with hard failing issues
     FAILED_MINOR = 8 [deprecated = true]; // failed with additional minor issues
     FAILED_RETRIED = 9; // failed and retry is triggered
-    FAILED_EXPECTED = 10; // entity was expected to fail (with or without an explicit issue), it may or may not be representative
+    FAILED_EXPECTED = 10 [deprecated = true]; // entity was expected to fail (with or without an explicit issue), it may or may not be representative
 
-    PASSED_RETRY = 11; // passed after a retry
+    PASSED_RETRY = 11 [deprecated = true]; // passed after a retry
     MINOR_RETRY = 12 [deprecated = true]; // minor after a retry
 }

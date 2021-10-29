@@ -129,7 +129,7 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
     private TestStatusController.Status getStatusFromCounts(Map<TestStatusController.Status, Integer> counts) {
         for (TestStatusController.Status key : counts.keySet()) {
             Integer value = counts.get(key);
-            if (value > 0 && key.isFailed(true, false, false)) {
+            if (value > 0 && key.isFailed(true)) {
                 return TestStatusController.Status.FAILED;
             }
         }
@@ -180,45 +180,6 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
         return DurationFormatUtils.formatDuration(millis, "SSS 'ms'", false);
     }
 
-    public long nrOfFailed(Map<TestStatusController.Status, Integer> counts) {
-        final AtomicReference<Integer> count = new AtomicReference<>();
-        count.set(0);
-        counts.keySet().forEach(status -> {
-            if (status.isFailed(false, false, false)) {
-                count.set(count.get() + counts.get(status));
-            }
-        });
-        return count.get();
-    }
-
-    public long nrOfPassed(Map<TestStatusController.Status, Integer> counts) {
-        final AtomicReference<Integer> count = new AtomicReference<>();
-        count.set(0);
-        counts.keySet().forEach(status -> {
-            if (status.isPassed()) {
-                count.set(count.get() + counts.get(status));
-            }
-        });
-        return count.get();
-    }
-
-    public long nrOfSkipped(Map<TestStatusController.Status, Integer> counts) {
-        final AtomicReference<Integer> count = new AtomicReference<>();
-        count.set(0);
-        counts.keySet().forEach(status -> {
-            if (status == TestStatusController.Status.SKIPPED) {
-                count.set(count.get() + counts.get(status));
-            }
-        });
-        return count.get();
-    }
-
-    public long passRate(Map<TestStatusController.Status, Integer> counts, long numberOfTests) {
-        if (numberOfTests == 0) {
-            return 0;
-        }
-        return nrOfPassed(counts) * 100 / numberOfTests;
-    }
 
     public void updateEndTimeRecursive(Date date) {
         AbstractContext context = this;

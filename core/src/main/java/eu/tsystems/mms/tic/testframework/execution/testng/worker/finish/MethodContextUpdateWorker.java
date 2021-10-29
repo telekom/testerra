@@ -68,7 +68,7 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
         }
 
         // !!! do nothing when state is RETRY (already set from RetryAnalyzer)
-        if (methodContext.getStatus() != TestStatusController.Status.FAILED_RETRIED) {
+        if (methodContext.getRetryCounter() > 0) {
 
             /*
              * method container status and steps
@@ -93,10 +93,6 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
                     } else {
                         // regular failed
                         TestStatusController.Status status = TestStatusController.Status.FAILED;
-                        if (methodContext.getNumOptionalAssertions() > 0) {
-                            status = TestStatusController.Status.FAILED_MINOR;
-                        }
-
                         TestStatusController.setMethodStatus(methodContext, status, method);
                     }
                 } else {
@@ -122,17 +118,17 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
             } else if (testResult.isSuccess()) {
                 TestStatusController.Status status = TestStatusController.Status.PASSED;
 
-                boolean hasOptionalAssertion = methodContext.getNumOptionalAssertions() > 0;
+//                boolean hasOptionalAssertion = methodContext.getNumOptionalAssertions() > 0;
 
                 // is it a retried test?
-                if (RetryAnalyzer.hasMethodBeenRetried(methodContext)) {
-                    status = TestStatusController.Status.PASSED_RETRY;
-                    if (hasOptionalAssertion) {
-                        status = TestStatusController.Status.MINOR_RETRY;
-                    }
-                } else if (hasOptionalAssertion) {
-                    status = TestStatusController.Status.MINOR;
-                }
+//                if (RetryAnalyzer.hasMethodBeenRetried(methodContext)) {
+//                    status = TestStatusController.Status.PASSED_RETRY;
+//                    if (hasOptionalAssertion) {
+//                        status = TestStatusController.Status.MINOR_RETRY;
+//                    }
+//                } else if (hasOptionalAssertion) {
+//                    status = TestStatusController.Status.MINOR;
+//                }
 
                 // set status
                 TestStatusController.setMethodStatus(methodContext, status, method);

@@ -105,19 +105,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return this.retryNumber;
     }
 
-    /**
-     * @deprecated Use {@link #getFailureCorridorClass()} instead
-     */
-    public FailureCorridor.Value getFailureCorridorValue() {
-        if (this.failureCorridorClass.equals(FailureCorridor.High.class)) {
-            return FailureCorridor.Value.HIGH;
-        } else if (this.failureCorridorClass.equals(FailureCorridor.Mid.class)) {
-            return FailureCorridor.Value.MID;
-        } else {
-            return FailureCorridor.Value.LOW;
-        }
-    }
-
     public void setFailureCorridorClass(Class failureCorridorClass) {
         this.failureCorridorClass = failureCorridorClass;
     }
@@ -126,10 +113,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return this.failureCorridorClass;
     }
 
-    /**
-     * @deprecated Use {@link #readCustomContexts()} instead
-     */
-    public List<CustomContext> getCustomContexts() {
+    private List<CustomContext> getCustomContexts() {
         if (this.customContexts == null) {
             this.customContexts = new LinkedList<>();
         }
@@ -167,31 +151,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
 
     public ClassContext getClassContext() {
         return (ClassContext) this.parentContext;
-    }
-
-    @Deprecated
-    public TestContext getTestContext() {
-        return this.getClassContext().getTestContext();
-    }
-
-    @Deprecated
-    public SuiteContext getSuiteContext() {
-        return this.getTestContext().getSuiteContext();
-    }
-
-    @Deprecated
-    public ExecutionContext getExecutionContext() {
-        return this.getSuiteContext().getExecutionContext();
-    }
-
-    @Deprecated
-    public int getNumAssertions() {
-        return (int)readErrors().filter(errorContext -> !errorContext.isOptional()).count();
-    }
-
-    @Deprecated
-    public int getNumOptionalAssertions() {
-        return (int)readErrors().filter(ErrorContext::isOptional).count();
     }
 
     public Stream<MethodContext> readRelatedMethodContexts() {
@@ -258,24 +217,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return obj.toString().equals(toString());
     }
 
-    /**
-     * checks if test was skipped
-     *
-     * @return the skipped
-     */
-    public boolean isSkipped() {
-        return status == TestStatusController.Status.SKIPPED;
-    }
-
-    /**
-     * Gets whether the test method execution was successful.
-     *
-     * @return The value of <code>successful</code>.
-     */
-    public boolean isSuccessful() {
-        return status == TestStatusController.Status.PASSED || status == TestStatusController.Status.MINOR;
-    }
-
     public void addOptionalAssertion(Throwable throwable) {
         getCurrentTestStep().getCurrentTestStepAction().addAssertion(new ErrorContext(throwable, true));
     }
@@ -286,36 +227,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
 
     public void addError(ErrorContext errorContext) {
         getCurrentTestStep().getCurrentTestStepAction().addAssertion(errorContext);
-    }
-
-    public boolean isRetry() {
-        return status == TestStatusController.Status.FAILED_RETRIED;
-    }
-
-    public boolean isFailed() {
-        switch (status) {
-            case FAILED_EXPECTED:
-            case FAILED:
-            case FAILED_MINOR:
-            case FAILED_RETRIED:
-                return true;
-
-            default:
-                return false;
-        }
-    }
-
-    public boolean isPassed() {
-        switch (status) {
-            case PASSED:
-            case PASSED_RETRY:
-            case MINOR:
-            case MINOR_RETRY:
-                return true;
-
-            default:
-                return false;
-        }
     }
 
     @Deprecated
@@ -343,10 +254,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return !isConfigMethod();
     }
 
-    public boolean isExpectedFailed() {
-        return status == TestStatusController.Status.FAILED_EXPECTED;
-    }
-
     public boolean hasBeenRetried() {
         return retryNumber > 0;
     }
@@ -358,31 +265,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
 
     public void setStatus(TestStatusController.Status status) {
         this.status = status;
-    }
-
-    public boolean isRepresentationalTestMethod() {
-        if (isConfigMethod()) {
-            return false;
-        }
-        switch (status) {
-            case NO_RUN:
-            case FAILED_RETRIED:
-            case INFO:
-            case FAILED_EXPECTED:
-                return false;
-
-            case PASSED:
-            case PASSED_RETRY:
-            case MINOR:
-            case MINOR_RETRY:
-            case FAILED:
-            case FAILED_MINOR:
-            case SKIPPED:
-                return true;
-
-            default:
-                throw new SystemException("Method state not implemented: " + status);
-        }
     }
 
     @Override

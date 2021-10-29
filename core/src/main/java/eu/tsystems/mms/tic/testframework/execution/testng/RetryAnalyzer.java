@@ -181,11 +181,6 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
          */
         if (retry) {
             methodContext = raiseCounterAndChangeMethodContext(testResult, maxRetries);
-
-            Method realMethod = testResult.getMethod().getConstructorOrMethod().getMethod();
-            // explicitly set status if it is not set atm
-            TestStatusController.setMethodStatus(methodContext, TestStatusController.Status.FAILED_RETRIED, realMethod);
-
             RETRIED_METHODS.add(methodContext);
 
             log().error(retryReason + ", send signal for retrying the test " + retryMessageString + "\n" + methodContext);
@@ -207,8 +202,8 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
         MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult);
         if (maxRetries > 0) {
 
-            final String retryLog = "(" + retryCounter + "/" + (maxRetries + 1) + ")";
-            methodContext.infos.add(retryLog);
+//            final String retryLog = "(" + retryCounter + "/" + (maxRetries + 1) + ")";
+//            methodContext.infos.add(retryLog);
             methodContext.setRetryCounter(retryCounter);
         }
 
@@ -335,28 +330,4 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
     public static void registerAdditionalRetryAnalyzer(AdditionalRetryAnalyzer additionalRetryAnalyzer) {
         ADDITIONAL_RETRY_ANALYZERS.add(additionalRetryAnalyzer);
     }
-
-    public static boolean hasMethodBeenRetried(MethodContext methodContext) {
-        return RETRIED_METHODS.stream().anyMatch(m -> {
-
-            if (m.getName().equals(methodContext.getName())) {
-                if (m.getParameterValues().containsAll(methodContext.getParameterValues())) {
-                    AbstractContext context = methodContext;
-                    AbstractContext mContext = m;
-                    while (context.getParentContext() != null) {
-                        if (!context.getParentContext().equals(mContext.getParentContext())) {
-                            return false;
-                        }
-                        context = context.getParentContext();
-                        mContext = mContext.getParentContext();
-                    }
-                }
-
-                return true;
-            }
-
-            return false;
-        });
-    }
-
 }

@@ -251,14 +251,14 @@ public final class Framework {
       "lue\022\017\n\013FCV_NOT_SET\020\000\022\014\n\010FCV_HIGH\020\001\022\013\n\007FC" +
       "V_MID\020\002\022\013\n\007FCV_LOW\020\003*G\n\nMethodType\022\016\n\nMT" +
       "_NOT_SET\020\000\022\017\n\013TEST_METHOD\020\001\022\030\n\024CONFIGURA" +
-      "TION_METHOD\020\002*\327\001\n\020ResultStatusType\022\017\n\013RS" +
+      "TION_METHOD\020\002*\337\001\n\020ResultStatusType\022\017\n\013RS" +
       "T_NOT_SET\020\000\022\n\n\006NO_RUN\020\001\022\014\n\004INFO\020\002\032\002\010\001\022\013\n" +
       "\007SKIPPED\020\003\022\n\n\006PASSED\020\004\022\r\n\005MINOR\020\005\032\002\010\001\022\n\n" +
       "\006FAILED\020\007\022\024\n\014FAILED_MINOR\020\010\032\002\010\001\022\022\n\016FAILE" +
-      "D_RETRIED\020\t\022\023\n\017FAILED_EXPECTED\020\n\022\020\n\014PASS" +
-      "ED_RETRY\020\013\022\023\n\013MINOR_RETRY\020\014\032\002\010\001B2\n.eu.ts" +
-      "ystems.mms.tic.testframework.report.mode" +
-      "lP\001b\006proto3"
+      "D_RETRIED\020\t\022\027\n\017FAILED_EXPECTED\020\n\032\002\010\001\022\024\n\014" +
+      "PASSED_RETRY\020\013\032\002\010\001\022\023\n\013MINOR_RETRY\020\014\032\002\010\001B" +
+      "2\n.eu.tsystems.mms.tic.testframework.rep" +
+      "ort.modelP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

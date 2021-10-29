@@ -184,7 +184,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
             methodContext = raiseCounterAndChangeMethodContext(testResult, maxRetries);
             RETRIED_METHODS.add(methodContext);
 
-            log().error(retryReason + ", send signal for retrying the test " + retryMessageString + "\n" + methodContext);
+            log().info(retryReason + ", send signal for retrying the test " + retryMessageString + "\n" + methodContext);
 
             testResult.getTestContext().getFailedTests().removeResult(testResult);
             testResult.getTestContext().getSkippedTests().removeResult(testResult);

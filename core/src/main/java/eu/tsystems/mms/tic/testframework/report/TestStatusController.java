@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.ITestResult;
@@ -79,8 +80,9 @@ public class TestStatusController {
     }
 
     public static void writeCounterToLog() {
-        String counterInfoMessage = executionContext.readStatusCounts()
-                .map(statusEntry -> statusEntry.getValue() + " " + statusEntry.getKey().title)
+        String counterInfoMessage = Stream.of(Status.FAILED, Status.FAILED_EXPECTED, Status.SKIPPED, Status.PASSED)
+                .filter(status -> executionContext.getStatusCount(status) > 0)
+                .map(status -> executionContext.getStatusCount(status) + " " + status.title)
                 .collect(Collectors.joining(SEPARATOR));
 
         String logMessage = ExecutionContextController.getCurrentExecutionContext().runConfig.getReportName() + " " +

@@ -5,7 +5,6 @@ plugins {
 dependencies {
     testImplementation driver_ui_desktop
     //testImplementation project(':integration-tests')
-    testImplementation report
 }
 
 test {

@@ -51,21 +51,6 @@ public final class FailureCorridor implements Loggable {
 
     }
 
-    @Deprecated
-    public enum Value {
-        HIGH(false, "grey"),
-        MID(true, "grey"),
-        LOW(true, "lightgrey");
-
-        public final boolean show;
-        public final String color;
-
-        Value(boolean show, String color) {
-            this.show = show;
-            this.color = color;
-        }
-    }
-
     private FailureCorridor() {
 
     }

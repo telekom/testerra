@@ -27,21 +27,23 @@ import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
+import java.util.Map;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Stream;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 
-public class ExecutionContext extends AbstractContext implements SynchronizableContext {
+public class ExecutionContext extends AbstractContext implements SynchronizableContext, HasStatus {
     private final Queue<SuiteContext> suiteContexts = new ConcurrentLinkedQueue<>();
     public final RunConfig runConfig = new RunConfig();
     public boolean crashed = false;
     private Queue<SessionContext> exclusiveSessionContexts;
-
     public int estimatedTestMethodCount;
-
     private final ConcurrentLinkedQueue<LogMessage> methodContextLessLogs = new ConcurrentLinkedQueue<>();
+    private final Map<TestStatusController.Status, Integer> statusCounts = new ConcurrentHashMap<>();
+    private final Map<Class, Integer> failureCorridorCounts = new ConcurrentHashMap<>();
 
     public ExecutionContext() {
         name = runConfig.RUNCFG;
@@ -108,7 +110,64 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
                 return TestStatusController.Status.FAILED;
             }
         } else {
-            return getStatusFromContexts(suiteContexts.stream());
+            if (statusCounts.containsKey(TestStatusController.Status.FAILED)) {
+                return TestStatusController.Status.FAILED;
+            } else {
+                return TestStatusController.Status.PASSED;
+            }
         }
+    }
+
+    public void addStatus(MethodContext methodContext) {
+
+        if (methodContext.isConfigMethod()) {
+            return;
+        }
+
+        TestStatusController.Status methodStatus = methodContext.getStatus();
+
+        incrementStatus(methodStatus);
+
+//        if (methodContext.hasBeenRetried()) {
+//            if (methodStatus == TestStatusController.Status.PASSED) {
+//                incrementStatus(TestStatusController.Status.RECOVERED);
+//            } else {
+//                incrementStatus(TestStatusController.Status.RETRIED);
+//            }
+//        }
+
+        methodContext.getFailsAnnotation().ifPresent(fails -> {
+            if (methodStatus == TestStatusController.Status.PASSED) {
+                incrementStatus(TestStatusController.Status.REPAIRED);
+            }
+        });
+
+        if (methodStatus == TestStatusController.Status.FAILED) {
+            incrementFailureCorridor(methodContext.getFailureCorridorClass());
+        }
+    }
+
+    public int getStatusCount(TestStatusController.Status status) {
+        return statusCounts.getOrDefault(status, 0);
+    }
+
+    private void incrementStatus(TestStatusController.Status status) {
+        int statusCount = getStatusCount(status);
+        statusCount++;
+        statusCounts.put(status, statusCount);
+    }
+
+    public int getFailureCorridorCount(Class failureCorridorClass) {
+        return failureCorridorCounts.getOrDefault(failureCorridorClass, 0);
+    }
+
+    private void incrementFailureCorridor(Class failureCorridorClass) {
+        int failureCorridorCount = getFailureCorridorCount(failureCorridorClass);
+        failureCorridorCount++;
+        failureCorridorCounts.put(failureCorridorClass, failureCorridorCount);
+    }
+
+    public Stream<Map.Entry<TestStatusController.Status, Integer>> readStatusCounts() {
+        return statusCounts.entrySet().stream();
     }
 }

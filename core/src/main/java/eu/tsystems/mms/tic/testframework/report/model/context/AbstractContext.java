@@ -32,6 +32,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -122,43 +123,6 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
             }
             return first;
         }
-    }
-
-    public abstract TestStatusController.Status getStatus();
-
-    private TestStatusController.Status getStatusFromCounts(Map<TestStatusController.Status, Integer> counts) {
-        for (TestStatusController.Status key : counts.keySet()) {
-            Integer value = counts.get(key);
-            if (value > 0 && key.isFailed(true)) {
-                return TestStatusController.Status.FAILED;
-            }
-        }
-        return TestStatusController.Status.PASSED;
-    }
-
-    TestStatusController.Status getStatusFromContexts(Stream<? extends AbstractContext> contexts) {
-        Map<TestStatusController.Status, Integer> counts = new LinkedHashMap<>();
-        /*
-        get statuses
-         */
-        // init with 0
-        Arrays.stream(TestStatusController.Status.values()).forEach(status -> counts.put(status, 0));
-
-        contexts.forEach(abstractContext -> {
-            TestStatusController.Status status = abstractContext.getStatus();
-            int value = 0;
-            if (counts.containsKey(status)) {
-                value = counts.get(status);
-            }
-            counts.put(status, value + 1);
-        });
-
-        /*
-        find actual status
-         */
-        TestStatusController.Status status = getStatusFromCounts(counts);
-        status.counts = counts;
-        return status;
     }
 
     public String getDurationAsString() {

@@ -99,9 +99,4 @@ public class TestContext extends AbstractContext implements SynchronizableContex
                 });
 
     }
-
-    @Override
-    public TestStatusController.Status getStatus() {
-        return getStatusFromContexts(classContexts.stream());
-    }
 }

@@ -167,7 +167,7 @@ public class ExecutionContextController {
         AtomicInteger methodContextCount = new AtomicInteger();
         AtomicInteger testMethodContextCount = new AtomicInteger();
         AtomicInteger relevantMethodContextCount = new AtomicInteger();
-        Map<TestStatusController.Status, Long> statusCounts = new HashMap<>();
+
         executionContext.readSuiteContexts().forEach(suiteContext -> {
             suiteContextCount.incrementAndGet();
             suiteContext.readTestContexts().forEach(testContext -> {
@@ -183,9 +183,6 @@ public class ExecutionContextController {
                             if (methodContext.getStatus().relevant) {
                                 relevantMethodContextCount.incrementAndGet();
                             }
-
-                            Long statusCount = statusCounts.getOrDefault(methodContext.getStatus(), 0L);
-                            statusCounts.put(methodContext.getStatus(), ++statusCount);
                         }
                     });
                 });
@@ -198,9 +195,9 @@ public class ExecutionContextController {
         LOGGER.info(prefix + "**********************************************");
         LOGGER.info(prefix + "Test Methods Count: " + testMethodContextCount.get() + " (" + relevantMethodContextCount.get() + " relevant)");
 
-        for (TestStatusController.Status status : TestStatusController.Status.values()) {
-            LOGGER.info(prefix + status.name() + ": " + statusCounts.getOrDefault(status, 0L));
-        }
+        executionContext.readStatusCounts().forEach(statusEntry -> {
+            LOGGER.info(prefix + statusEntry.getKey().title + ": " + statusEntry.getValue());
+        });
 
         LOGGER.info(prefix + "**********************************************");
 

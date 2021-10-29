@@ -305,10 +305,13 @@ public class ContextExporter implements Loggable {
 
     public ContextExporter() {
         // Prepare a status map
-        for (TestStatusController.Status status : TestStatusController.Status.values()) {
-            ResultStatusType resultStatusType = ResultStatusType.valueOf(status.name());
-            STATUS_MAPPING.put(status, resultStatusType);
-        }
+        STATUS_MAPPING.put(TestStatusController.Status.FAILED, ResultStatusType.FAILED);
+        STATUS_MAPPING.put(TestStatusController.Status.SKIPPED, ResultStatusType.SKIPPED);
+        STATUS_MAPPING.put(TestStatusController.Status.PASSED, ResultStatusType.PASSED);
+        STATUS_MAPPING.put(TestStatusController.Status.FAILED_EXPECTED, ResultStatusType.FAILED_EXPECTED);
+        STATUS_MAPPING.put(TestStatusController.Status.REPAIRED, ResultStatusType.REPAIRED);
+        STATUS_MAPPING.put(TestStatusController.Status.RETRIED, ResultStatusType.FAILED_RETRIED);
+        STATUS_MAPPING.put(TestStatusController.Status.RECOVERED, ResultStatusType.PASSED_RETRY);
     }
 
     ResultStatusType getMappedStatus(TestStatusController.Status status) {
@@ -466,6 +469,11 @@ public class ContextExporter implements Loggable {
         builder.putFailureCorridorLimits(FailureCorridorValue.FCV_HIGH_VALUE, FailureCorridor.getAllowedTestFailuresHIGH());
         builder.putFailureCorridorLimits(FailureCorridorValue.FCV_MID_VALUE, FailureCorridor.getAllowedTestFailuresMID());
         builder.putFailureCorridorLimits(FailureCorridorValue.FCV_LOW_VALUE, FailureCorridor.getAllowedTestFailuresLOW());
+
+        executionContext.readStatusCounts().forEach(statusEntry -> {
+            builder.getStatusCountsMap().put(getMappedStatus(statusEntry.getKey()).getNumber(), statusEntry.getValue());
+        });
+
         return builder;
     }
 //

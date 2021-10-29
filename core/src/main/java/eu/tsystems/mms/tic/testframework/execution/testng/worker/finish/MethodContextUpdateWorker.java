@@ -30,6 +30,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import java.lang.reflect.Method;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
@@ -68,7 +69,7 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
         }
 
         // !!! do nothing when state is RETRY (already set from RetryAnalyzer)
-        if (methodContext.getRetryCounter() > 0) {
+        if (methodContext.hasNotBeenRetried()) {
 
             /*
              * method container status and steps
@@ -86,8 +87,8 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
                  * set status
                  */
                 if (testMethod.isTest()) {
-                    Fails fails = testMethod.getConstructorOrMethod().getMethod().getAnnotation(Fails.class);
-                    if (fails != null && !fails.intoReport()) {
+                    Optional<Fails> failsAnnotation = methodContext.getFailsAnnotation();
+                    if (failsAnnotation.isPresent() && !failsAnnotation.get().intoReport()) {
                         // expected failed
                         TestStatusController.setMethodStatus(methodContext, TestStatusController.Status.FAILED_EXPECTED, method);
                     } else {

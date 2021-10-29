@@ -186,9 +186,4 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
         methodContext.setStatus(TestStatusController.Status.SKIPPED);
         return methodContext;
     }
-
-    @Override
-    public TestStatusController.Status getStatus() {
-        return getStatusFromContexts(readMethodContexts());
-    }
 }

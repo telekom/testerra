@@ -64,9 +64,4 @@ public class SuiteContext extends AbstractContext implements SynchronizableConte
                     eventBus.post(new ContextUpdateEvent().setContext(this));
                 });
     }
-
-    @Override
-    public TestStatusController.Status getStatus() {
-        return getStatusFromContexts(testContexts.stream());
-    }
 }

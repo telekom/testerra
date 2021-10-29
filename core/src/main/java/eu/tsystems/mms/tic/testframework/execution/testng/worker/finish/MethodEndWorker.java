@@ -29,6 +29,7 @@ import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
+import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.DefaultFormatter;
@@ -39,6 +40,7 @@ import org.testng.ITestResult;
 public class MethodEndWorker implements MethodEndEvent.Listener, Loggable {
 
     private final Formatter formatter = new DefaultFormatter();
+    private final ExecutionContext executionContext = ExecutionContextController.getCurrentExecutionContext();
 
     @Subscribe
     @Override
@@ -75,6 +77,9 @@ public class MethodEndWorker implements MethodEndEvent.Listener, Loggable {
             // cleanup thread locals from PropertyManager
             PropertyManager.clearThreadlocalProperties();
         }
+
+        executionContext.addStatus(event.getMethodContext());
+        TestStatusController.writeCounterToLog();
 
         TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(event.getMethodContext()));
     }

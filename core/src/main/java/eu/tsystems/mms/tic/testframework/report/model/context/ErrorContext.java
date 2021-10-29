@@ -22,9 +22,13 @@
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
+import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.utils.SourceUtils;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ErrorContext {
     private transient Throwable throwable = null;

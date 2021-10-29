@@ -82,14 +82,6 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
         return this;
     }
 
-    @Override
-    public TestStatusController.Status getStatus() {
-        /*
-        Status is always null here. There is no context result status for sessions.
-         */
-        return null;
-    }
-
     public Optional<Video> getVideo() {
         return Optional.ofNullable(video);
     }

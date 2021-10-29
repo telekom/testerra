@@ -52,6 +52,7 @@ message ExecutionContext {
     repeated LogMessage log_messages = 14;
     int32 estimated_tests_count = 15;
     map<int32, int32> failure_corridor_limits = 16;
+    map<int32, int32> status_counts = 17;
 }
 
 //message ContextClip {
@@ -281,6 +282,7 @@ enum ResultStatusType {
     FAILED_RETRIED = 9; // failed and retry is triggered
     FAILED_EXPECTED = 10 [deprecated = true]; // entity was expected to fail (with or without an explicit issue), it may or may not be representative
 
-    PASSED_RETRY = 11 [deprecated = true]; // passed after a retry
+    PASSED_RETRY = 11; // passed after a retry
     MINOR_RETRY = 12 [deprecated = true]; // minor after a retry
+    REPAIRED = 13; // passed with fail annotation
 }

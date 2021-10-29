@@ -21,6 +21,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
+import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.Counters;
@@ -51,7 +52,7 @@ import java.util.stream.Stream;
  *
  * @author mibu
  */
-public class MethodContext extends AbstractContext implements SynchronizableContext {
+public class MethodContext extends AbstractContext implements SynchronizableContext, HasStatus {
 
     public enum Type {
         TEST_METHOD,
@@ -258,6 +259,10 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return retryNumber > 0;
     }
 
+    public boolean hasNotBeenRetried() {
+        return retryNumber == 0;
+    }
+
     @Override
     public TestStatusController.Status getStatus() {
         return status;
@@ -319,4 +324,11 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
                         .orElse(Stream.empty());
     }
 
+    public Optional<Fails> getFailsAnnotation() {
+        return getAnnotation(Fails.class);
+    }
+
+    private <T extends Annotation> Optional<T> getAnnotation(Class<T> annotationClass) {
+        return getTestNgResult().map(testResult -> testResult.getMethod().getConstructorOrMethod().getMethod().getAnnotation(annotationClass));
+    }
 }

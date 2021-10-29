@@ -28,8 +28,6 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.InheritedFailedException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
-import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.FailsAnnotationFilter;
@@ -145,11 +143,10 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
         /*
         no retry for tests with expected Fails annotation
          */
-        if (testResult.getMethod().getConstructorOrMethod().getMethod().isAnnotationPresent(Fails.class)) {
-
+        Optional<Fails> fails = methodContext.getFailsAnnotation();
+        if (fails.isPresent()) {
             // BUT ONLY: No retry for methods that hav a validFor
-            final Fails failsAnnotation = testResult.getMethod().getConstructorOrMethod().getMethod().getAnnotation(Fails.class);
-            if (FailsAnnotationFilter.isFailsAnnotationValid(failsAnnotation)) {
+            if (FailsAnnotationFilter.isFailsAnnotationValid(fails.get())) {
                 log().warn("Not retrying this method, because test is @Fails annotated.");
                 return false;
             }

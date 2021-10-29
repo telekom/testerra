@@ -471,7 +471,7 @@ public class ContextExporter implements Loggable {
         builder.putFailureCorridorLimits(FailureCorridorValue.FCV_LOW_VALUE, FailureCorridor.getAllowedTestFailuresLOW());
 
         executionContext.readStatusCounts().forEach(statusEntry -> {
-            builder.getStatusCountsMap().put(getMappedStatus(statusEntry.getKey()).getNumber(), statusEntry.getValue());
+            builder.putStatusCounts(getMappedStatus(statusEntry.getKey()).getNumber(), statusEntry.getValue());
         });
 
         return builder;

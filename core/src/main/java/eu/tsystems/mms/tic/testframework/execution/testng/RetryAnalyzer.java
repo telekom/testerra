@@ -28,6 +28,9 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.InheritedFailedException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.FailsAnnotationFilter;
@@ -52,6 +55,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
 
     private static final Queue<AdditionalRetryAnalyzer> ADDITIONAL_RETRY_ANALYZERS = new ConcurrentLinkedQueue();
+    private final ExecutionContext executionContext = ExecutionContextController.getCurrentExecutionContext();
 
     /**
      * Classes list.
@@ -202,6 +206,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
 //            final String retryLog = "(" + retryCounter + "/" + (maxRetries + 1) + ")";
 //            methodContext.infos.add(retryLog);
             methodContext.setRetryCounter(retryCounter);
+            executionContext.incrementStatus(TestStatusController.Status.RETRIED);
         }
 
         return methodContext;
@@ -326,5 +331,28 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
 
     public static void registerAdditionalRetryAnalyzer(AdditionalRetryAnalyzer additionalRetryAnalyzer) {
         ADDITIONAL_RETRY_ANALYZERS.add(additionalRetryAnalyzer);
+    }
+
+    public static boolean hasMethodBeenRetried(MethodContext methodContext) {
+        return RETRIED_METHODS.stream().anyMatch(m -> {
+
+            if (m.getName().equals(methodContext.getName())) {
+                if (m.getParameterValues().containsAll(methodContext.getParameterValues())) {
+                    AbstractContext context = methodContext;
+                    AbstractContext mContext = m;
+                    while (context.getParentContext() != null) {
+                        if (!context.getParentContext().equals(mContext.getParentContext())) {
+                            return false;
+                        }
+                        context = context.getParentContext();
+                        mContext = mContext.getParentContext();
+                    }
+                }
+
+                return true;
+            }
+
+            return false;
+        });
     }
 }

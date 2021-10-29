@@ -118,7 +118,7 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
         }
     }
 
-    public void addStatus(MethodContext methodContext) {
+    public void addStatusCount(MethodContext methodContext) {
 
         if (methodContext.isConfigMethod()) {
             return;
@@ -151,7 +151,7 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
         return statusCounts.getOrDefault(status, 0);
     }
 
-    private void incrementStatus(TestStatusController.Status status) {
+    public void incrementStatus(TestStatusController.Status status) {
         int statusCount = getStatusCount(status);
         statusCount++;
         statusCounts.put(status, statusCount);
@@ -161,7 +161,7 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
         return failureCorridorCounts.getOrDefault(failureCorridorClass, 0);
     }
 
-    private void incrementFailureCorridor(Class failureCorridorClass) {
+    public void incrementFailureCorridor(Class failureCorridorClass) {
         int failureCorridorCount = getFailureCorridorCount(failureCorridorClass);
         failureCorridorCount++;
         failureCorridorCounts.put(failureCorridorClass, failureCorridorCount);

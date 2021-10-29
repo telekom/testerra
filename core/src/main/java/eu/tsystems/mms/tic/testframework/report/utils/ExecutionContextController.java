@@ -21,7 +21,6 @@
  */
  package eu.tsystems.mms.tic.testframework.report.utils;
 
-import com.google.common.util.concurrent.AtomicLongMap;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
@@ -31,15 +30,12 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SuiteContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.TestContext;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.IInvokedMethod;
 import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
@@ -54,6 +50,8 @@ public class ExecutionContextController {
     private static final ThreadLocal<ITestResult> CURRENT_TEST_RESULT = new ThreadLocal<>();
 
     private static final ThreadLocal<SessionContext> CURRENT_SESSION_CONTEXT = new ThreadLocal<>();
+
+    private static final String prefix = "*** Stats: ";
 
     /**
      * //TODO Make {@link Optional}
@@ -156,7 +154,7 @@ public class ExecutionContextController {
 
     public static void printExecutionStatistics() {
         final ExecutionContext executionContext = getCurrentExecutionContext();
-        final String prefix = "*** Stats: ";
+
 
         LOGGER.info(prefix + "**********************************************");
 
@@ -180,7 +178,7 @@ public class ExecutionContextController {
                         if (methodContext.isTestMethod()) {
                             testMethodContextCount.incrementAndGet();
 
-                            if (methodContext.getStatus().relevant) {
+                            if (methodContext.hasNotBeenRetried()) {
                                 relevantMethodContextCount.incrementAndGet();
                             }
                         }
@@ -195,9 +193,10 @@ public class ExecutionContextController {
         LOGGER.info(prefix + "**********************************************");
         LOGGER.info(prefix + "Test Methods Count: " + testMethodContextCount.get() + " (" + relevantMethodContextCount.get() + " relevant)");
 
-        executionContext.readStatusCounts().forEach(statusEntry -> {
-            LOGGER.info(prefix + statusEntry.getKey().title + ": " + statusEntry.getValue());
-        });
+        logStatusSet(Stream.of(TestStatusController.Status.FAILED, TestStatusController.Status.RETRIED));
+        logStatusSet(Stream.of(TestStatusController.Status.FAILED_EXPECTED));
+        logStatusSet(Stream.of(TestStatusController.Status.SKIPPED));
+        logStatusSet(Stream.of(TestStatusController.Status.PASSED, TestStatusController.Status.RECOVERED, TestStatusController.Status.REPAIRED));
 
         LOGGER.info(prefix + "**********************************************");
 
@@ -214,5 +213,19 @@ public class ExecutionContextController {
         LOGGER.info(prefix + "Duration: " + executionContext.getDurationAsString());
 
         LOGGER.info(prefix + "**********************************************");
+    }
+
+    private static void logStatusSet(Stream<TestStatusController.Status> statuses) {
+        String statusSetString = createStatusSetString(statuses);
+        if (statusSetString.length() > 0) {
+            LOGGER.info(prefix + statusSetString);
+        }
+    }
+
+    private static String createStatusSetString(Stream<TestStatusController.Status> statuses) {
+        return statuses
+                .filter(status -> EXECUTION_CONTEXT.getStatusCount(status) > 0)
+                .map(status -> status.title + ": " + EXECUTION_CONTEXT.getStatusCount(status))
+                .collect(Collectors.joining(" ⊃ "));
     }
 }

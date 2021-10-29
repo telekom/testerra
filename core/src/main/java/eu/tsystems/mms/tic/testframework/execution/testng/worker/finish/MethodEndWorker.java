@@ -30,7 +30,6 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.DefaultFormatter;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
@@ -78,7 +77,7 @@ public class MethodEndWorker implements MethodEndEvent.Listener, Loggable {
             PropertyManager.clearThreadlocalProperties();
         }
 
-        executionContext.addStatus(event.getMethodContext());
+        executionContext.addStatusCount(event.getMethodContext());
         TestStatusController.writeCounterToLog();
 
         TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(event.getMethodContext()));

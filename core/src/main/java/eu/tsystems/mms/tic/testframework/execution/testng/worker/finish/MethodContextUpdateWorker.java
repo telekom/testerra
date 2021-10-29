@@ -27,8 +27,10 @@ import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import java.lang.reflect.Method;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -36,6 +38,8 @@ import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 
 public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
+
+    private final ExecutionContext executionContext = ExecutionContextController.getCurrentExecutionContext();
 
     @Subscribe
     @Override
@@ -76,14 +80,6 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
              */
             if (event.isFailed()) {
                 /*
-                 * set throwable
-                 */
-//                Throwable throwable = testResult.getThrowable();
-//                if (throwable != null) {
-//                    methodContext.addError(throwable);
-//                }
-
-                /*
                  * set status
                  */
                 if (testMethod.isTest()) {
@@ -105,31 +101,13 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
                  */
                 TestStep failedStep = methodContext.getCurrentTestStep();
                 methodContext.setFailedStep(failedStep);
-//                    String msg = "";
-//                    String readableMessage = methodContext.errorContext().getReadableErrorMessage();
-//                    if (!StringUtils.isStringEmpty(readableMessage)) {
-//                        msg += readableMessage;
-//                    }
-//
-//                    String additionalErrorMessage = methodContext.errorContext().getAdditionalErrorMessage();
-//                    if (!StringUtils.isStringEmpty(additionalErrorMessage)) {
-//                        msg += additionalErrorMessage;
-//                    }
-//                    failedStep.getCurrentTestStepAction().addFailingLogMessage(msg);
             } else if (testResult.isSuccess()) {
                 TestStatusController.Status status = TestStatusController.Status.PASSED;
 
-//                boolean hasOptionalAssertion = methodContext.getNumOptionalAssertions() > 0;
-
                 // is it a retried test?
-//                if (RetryAnalyzer.hasMethodBeenRetried(methodContext)) {
-//                    status = TestStatusController.Status.PASSED_RETRY;
-//                    if (hasOptionalAssertion) {
-//                        status = TestStatusController.Status.MINOR_RETRY;
-//                    }
-//                } else if (hasOptionalAssertion) {
-//                    status = TestStatusController.Status.MINOR;
-//                }
+                if (RetryAnalyzer.hasMethodBeenRetried(methodContext)) {
+                    executionContext.incrementStatus(TestStatusController.Status.RECOVERED);
+                }
 
                 // set status
                 TestStatusController.setMethodStatus(methodContext, status, method);

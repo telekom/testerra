@@ -133,29 +133,35 @@ public class TestStatusController {
 
     public enum Status {
         // Regular test passed
-        PASSED("Passed", true),
+        PASSED("Passed"),
         // Regular test failed
-        FAILED("Failed", true),
+        FAILED("Failed"),
         // Regular test skipped
-        SKIPPED("Skipped", true),
+        SKIPPED("Skipped"),
         // Test has no status
-        NO_RUN("No run", true),
-        // Test failed with fails annotation
-        FAILED_EXPECTED("Expected Failed",false),
-        // Test passes with fails annotation
-        REPAIRED("Repaired", false),
-        // Test fails with retry
-        RETRIED("Retried", false),
-        // Test passes with retry
-        RECOVERED("Recovered", false),
+        NO_RUN("No run"),
+        /**
+         * Test {@link #FAILED} with {@link MethodContext#getFailsAnnotation()}
+         */
+        FAILED_EXPECTED("Expected Failed"),
+        /**
+         * Test {@link #PASSED} with {@link MethodContext#getFailsAnnotation()}
+         */
+        REPAIRED("Repaired"),
+        /**
+         * Test {@link #FAILED} with {@link MethodContext#hasBeenRetried()}
+         */
+        RETRIED("Retried"),
+        /**
+         * Test {@link #PASSED} with {@link MethodContext#hasBeenRetried()}
+         */
+        RECOVERED("Recovered"),
         ;
 
         public final String title;
-        public final boolean relevant;
 
-        Status(String title, boolean relevant) {
+        Status(String title) {
             this.title = title;
-            this.relevant = relevant;
         }
     }
 }

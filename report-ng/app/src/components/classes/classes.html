@@ -94,7 +94,6 @@
                         <tr repeat.for="methodDetails of _filteredMethodDetails">
                             <td class="p1 centered-text">
                                 <a class="badge status-${methodDetails.detailedStatus|statusClass}">${methodDetails.detailedStatus|statusName}</a>
-                                Retry-Number: ${methodDetails.methodContext.retryNumber}
                             </td>
                             <td class="p1 wrapable">
                                 <a route-href="route: tests; params.bind: withQueryParams({class: methodDetails.classStatistics.classIdentifier})"

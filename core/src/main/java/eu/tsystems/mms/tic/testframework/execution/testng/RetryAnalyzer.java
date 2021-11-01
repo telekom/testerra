@@ -34,8 +34,10 @@ import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.FailsAnnotationFilter;
+import java.util.Comparator;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Stream;
 import org.testng.IRetryAnalyzer;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
@@ -54,8 +56,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
 
-    private static final Queue<AdditionalRetryAnalyzer> ADDITIONAL_RETRY_ANALYZERS = new ConcurrentLinkedQueue();
-    private final ExecutionContext executionContext = ExecutionContextController.getCurrentExecutionContext();
+    private static final Queue<AdditionalRetryAnalyzer> ADDITIONAL_RETRY_ANALYZERS = new ConcurrentLinkedQueue<>();
+    private static final ExecutionContext executionContext = ExecutionContextController.getCurrentExecutionContext();
 
     /**
      * Classes list.
@@ -72,7 +74,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
     /**
      * The retry counter.
      */
-    private final Map<String, Integer> retryCounters = new ConcurrentHashMap<>();
+    private static final Map<String, Integer> retryCounters = new ConcurrentHashMap<>();
 
     public RetryAnalyzer() {
         final String classes = PropertyManager.getProperty(TesterraProperties.FAILED_TESTS_IF_THROWABLE_CLASSES);
@@ -131,7 +133,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
         final String retryMessageString = "(" + (retryCounter + 1) + "/" + (maxRetries + 1) + ")";
 
         if (retryCounter >= maxRetries) {
-            raiseCounterAndChangeMethodContext(testResult, maxRetries);
+            methodHasBeenRetried(methodContext);
             log().warn("Not retrying " + testMethodName + " because run limit (" + maxRetries + ")");
             return false;
         }
@@ -181,7 +183,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
          * process retry
          */
         if (retry) {
-            methodContext = raiseCounterAndChangeMethodContext(testResult, maxRetries);
+            methodHasBeenRetried(methodContext);
             RETRIED_METHODS.add(methodContext);
 
             log().info(retryReason + ", send signal for retrying the test " + retryMessageString + "\n" + methodContext);
@@ -195,24 +197,14 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
         return false;
     }
 
-    private MethodContext raiseCounterAndChangeMethodContext(final ITestResult testResult, final int maxRetries) {
-        // raise counter
-        int retryCounter = raiseRetryCounter(testResult);
-
-        // reset method name
-        MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult);
-        if (maxRetries > 0) {
-
-//            final String retryLog = "(" + retryCounter + "/" + (maxRetries + 1) + ")";
-//            methodContext.infos.add(retryLog);
+    private static void raiseCounterAndChangeMethodContext(MethodContext methodContext) {
+        methodContext.getTestNgResult().ifPresent(iTestResult -> {
+            int retryCounter = raiseRetryCounter(iTestResult);
             methodContext.setRetryCounter(retryCounter);
-            executionContext.incrementStatus(TestStatusController.Status.RETRIED);
-        }
-
-        return methodContext;
+        });
     }
 
-    private int raiseRetryCounter(ITestResult iTestResult) {
+    private static int raiseRetryCounter(ITestResult iTestResult) {
         return getRetryCounter(iTestResult, true);
     }
 
@@ -220,7 +212,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
         return getRetryCounter(iTestResult, false);
     }
 
-    private int getRetryCounter(ITestResult testResult, boolean raise) {
+    private static int getRetryCounter(ITestResult testResult, boolean raise) {
         ITestNGMethod testNGMethod = testResult.getMethod();
 
         String id = testResult.getTestContext().getCurrentXmlTest().getName() + "/" +
@@ -244,8 +236,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
         Integer counter = retryCounters.get(id);
         if (raise) {
             counter++;
-            retryCounters.remove(id);
-            retryCounters.put(id, counter);
+            retryCounters.replace(id, counter);
         }
         return counter;
     }
@@ -333,9 +324,8 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
         ADDITIONAL_RETRY_ANALYZERS.add(additionalRetryAnalyzer);
     }
 
-    public static boolean hasMethodBeenRetried(MethodContext methodContext) {
-        return RETRIED_METHODS.stream().anyMatch(m -> {
-
+    private static Stream<MethodContext> readRetriedMethodsForMethod(MethodContext methodContext) {
+        return RETRIED_METHODS.stream().filter(m -> {
             if (m.getName().equals(methodContext.getName())) {
                 if (m.getParameterValues().containsAll(methodContext.getParameterValues())) {
                     AbstractContext context = methodContext;
@@ -348,11 +338,34 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
                         mContext = mContext.getParentContext();
                     }
                 }
-
                 return true;
             }
-
             return false;
+        });
+    }
+
+    /**
+     * Tells the RetryAnalyzer that a method has been passed
+     * @param methodContext
+     */
+    public static void methodHasBeenPassed(MethodContext methodContext) {
+        RetryAnalyzer.readRetriedMethodsForMethod(methodContext).findFirst().ifPresent(retriedMethod -> {
+            executionContext.incrementStatus(TestStatusController.Status.RECOVERED);
+            raiseCounterAndChangeMethodContext(methodContext);
+
+            methodContext.addDependsOnMethod(retriedMethod);
+            retriedMethod.addRelatedMethodContext(methodContext);
+            RETRIED_METHODS.remove(retriedMethod);
+        });
+    }
+
+    private static void methodHasBeenRetried(MethodContext methodContext) {
+        executionContext.incrementStatus(TestStatusController.Status.RETRIED);
+        raiseCounterAndChangeMethodContext(methodContext);
+
+        readRetriedMethodsForMethod(methodContext).forEach(retriedMethod -> {
+            retriedMethod.addRelatedMethodContext(methodContext);
+            RETRIED_METHODS.remove(retriedMethod);
         });
     }
 }

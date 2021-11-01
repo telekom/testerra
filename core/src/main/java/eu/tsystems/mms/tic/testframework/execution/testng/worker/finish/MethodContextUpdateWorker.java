@@ -104,10 +104,7 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
             } else if (testResult.isSuccess()) {
                 TestStatusController.Status status = TestStatusController.Status.PASSED;
 
-                // is it a retried test?
-                if (RetryAnalyzer.hasMethodBeenRetried(methodContext)) {
-                    executionContext.incrementStatus(TestStatusController.Status.RECOVERED);
-                }
+                RetryAnalyzer.methodHasBeenPassed(methodContext);
 
                 // set status
                 TestStatusController.setMethodStatus(methodContext, status, method);

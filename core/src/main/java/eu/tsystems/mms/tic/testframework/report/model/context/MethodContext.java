@@ -162,8 +162,8 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return this.dependsOnMethodContexts.stream();
     }
 
-    public void setRelatedMethodContexts(List<MethodContext> relatedMethodContexts) {
-        this.relatedMethodContexts = relatedMethodContexts;
+    public void addRelatedMethodContext(MethodContext relatedMethodContext) {
+        this.relatedMethodContexts.add(relatedMethodContext);
     }
 
     public void addDependsOnMethod(MethodContext methodContext) {

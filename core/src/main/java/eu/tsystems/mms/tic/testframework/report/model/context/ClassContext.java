@@ -35,11 +35,7 @@ import org.testng.SkipException;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -52,13 +48,8 @@ import java.util.stream.Stream;
  * @author pele
  */
 public class ClassContext extends AbstractContext implements SynchronizableContext, Loggable {
-
-    /**
-     * @deprecated Use {@link #readMethodContexts()} instead
-     */
-    @Deprecated
-    public final Queue<MethodContext> methodContexts = new ConcurrentLinkedQueue<>();
-    private Class testClass;
+    private final Queue<MethodContext> methodContexts = new ConcurrentLinkedQueue<>();
+    private final Class testClass;
     private TestClassContext testClassContext = null;
 
     public ClassContext(Class testClass, TestContext testContext) {
@@ -80,13 +71,6 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
     @Deprecated
     public String getSimpleClassName() {
         return getTestClass().getSimpleName();
-    }
-
-    /**
-     * @deprecated Use {@link #readMethodContexts()} instead
-     */
-    public Collection<MethodContext> getMethodContexts() {
-        return methodContexts;
     }
 
     public Stream<MethodContext> readMethodContexts() {
@@ -207,7 +191,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
 
     public MethodContext safeAddSkipMethod(ITestResult testResult) {
         MethodContext methodContext = getMethodContext(testResult);
-        methodContext.getErrorContext().setThrowable(new SkipException("Skipped"));
+        methodContext.addError(new SkipException("Skipped"));
         methodContext.setStatus(TestStatusController.Status.SKIPPED);
         return methodContext;
     }
@@ -221,53 +205,5 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
         return methodContexts.stream().filter(MethodContext::isRepresentationalTestMethod);
         //        AbstractContext[] contexts = methodContexts.stream().filter(MethodContext::isRepresentationalTestMethod);
         //        return contexts;
-    }
-
-    public Map<TestStatusController.Status, Integer> createStats() {
-        Map<TestStatusController.Status, Integer> counts = new LinkedHashMap<>();
-        Arrays.stream(TestStatusController.Status.values()).forEach(status -> counts.put(status, 0));
-        return counts;
-    }
-
-    public void addToStats(Map<TestStatusController.Status, Integer> stats, MethodContext methodContext) {
-        TestStatusController.Status status = methodContext.getStatus();
-        int value = stats.getOrDefault(status, 0);
-        stats.put(status, value + 1);
-    }
-
-    /**
-     * Used in dashboard.vm and methodsDashboard.vm
-     */
-    @Deprecated
-    public Map<TestStatusController.Status, Integer> getMethodStats(boolean includeTestMethods, boolean includeConfigMethods) {
-        Map<TestStatusController.Status, Integer> counts = createStats();
-
-        methodContexts.stream()
-                .filter(mc -> (includeTestMethods && mc.isTestMethod()) || (includeConfigMethods && mc.isConfigMethod()))
-                .forEach(methodContext -> {
-                    addToStats(counts, methodContext);
-                });
-
-        return counts;
-    }
-
-    /**
-     * Used in methodsDashboard.vm only
-     */
-    @Deprecated
-    public List<MethodContext> getTestMethodsWithStatus(TestStatusController.Status status) {
-        List<MethodContext> methodContexts = new LinkedList<>();
-        this.methodContexts.forEach(methodContext -> {
-            if (methodContext.isTestMethod() && status == methodContext.getStatus()) {
-                methodContexts.add(methodContext);
-            }
-        });
-        return methodContexts;
-    }
-
-    @Deprecated
-    public void updateMultiContextualName() {
-        TestContext testContext = getTestContext();
-        this.name = this.getName() + "_" + testContext.getSuiteContext().getName() + "_" + testContext.getName();
     }
 }

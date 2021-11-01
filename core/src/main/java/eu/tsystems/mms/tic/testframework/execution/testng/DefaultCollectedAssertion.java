@@ -35,6 +35,6 @@ public class DefaultCollectedAssertion extends AbstractAssertion implements Coll
         add info
          */
         MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
-        currentMethodContext.addCollectedAssertion(error);
+        currentMethodContext.addError(error);
     }
 }

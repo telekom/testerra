@@ -332,28 +332,6 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
         return out;
     }
 
-    public static String enhanceList(String list, String value, String seperator, boolean spaceAfterSeperator) {
-        String out = list;
-        if (isStringEmpty(value)) {
-            return list;
-        }
-        if (seperator == null) {
-            seperator = "";
-        }
-
-        if (!isStringEmpty(list)) {
-            out += seperator;
-            if (spaceAfterSeperator) {
-                out += " ";
-            }
-            out += value;
-        } else {
-            out = value;
-        }
-
-        return out;
-    }
-
     public static String getFirstValidString(String... s) {
         if (s == null || s.length == 0) {
             return null;

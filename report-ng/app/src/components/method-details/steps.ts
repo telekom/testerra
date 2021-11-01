@@ -31,7 +31,7 @@ import './steps.scss'
 
 enum EntryType {
     SCREENSHOT,
-    ASSERTION,
+    ERROR_CONTEXT,
     LOG_MESSAGE,
     CLICK_PATH_EVENT
 }
@@ -40,14 +40,14 @@ class TestStepActionGroup {
     readonly screenshotIds:string[]=[];
     readonly clickPathEvents:data.IClickPathEvent[]=[];
     readonly logMessages:data.ILogMessage[]=[];
-    readonly assertions:data.IErrorContext[]=[];
+    readonly errorContexts:data.IErrorContext[]=[];
 
     addScreenshotId(screenshotId:string) {
         this.screenshotIds.push(screenshotId);
     }
 
-    addAssertion(assertion:data.IErrorContext) {
-        this.assertions.push(assertion);
+    addErrorContext(errorContext:data.IErrorContext) {
+        this.errorContexts.push(errorContext);
     }
 
     addClickPathEvent(clickPathEvent:data.IClickPathEvent) {
@@ -61,8 +61,8 @@ class TestStepActionGroup {
     static getEntryType(entry:data.ITestStepActionEntry) {
         if (entry.screenshotId) {
             return EntryType.SCREENSHOT;
-        } else if (entry.assertion) {
-            return EntryType.ASSERTION;
+        } else if (entry.errorContext) {
+            return EntryType.ERROR_CONTEXT;
         } else if (entry.logMessage) {
             return EntryType.LOG_MESSAGE;
         } else if (entry.clickPathEvent) {
@@ -114,8 +114,8 @@ export class Steps {
                                 currentActionGroup.addScreenshotId(entry.screenshotId);
                                 break;
                             }
-                            case EntryType.ASSERTION: {
-                                currentActionGroup.addAssertion(entry.assertion);
+                            case EntryType.ERROR_CONTEXT: {
+                                currentActionGroup.addErrorContext(entry.errorContext);
                                 break;
                             }
                             case EntryType.CLICK_PATH_EVENT: {

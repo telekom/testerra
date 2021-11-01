@@ -65,7 +65,8 @@ public class Timer implements Loggable {
         private Boolean passState = null;
         private boolean skipThrowingException = false;
 
-        private boolean addThrowableToMethodContext = true;
+        @Deprecated
+        private boolean addThrowableToMethodContext = false;
 
         public boolean isSkipThrowingException() {
             return skipThrowingException;
@@ -75,10 +76,12 @@ public class Timer implements Loggable {
             this.skipThrowingException = skipThrowingException;
         }
 
+        @Deprecated
         public boolean isAddThrowableToMethodContext() {
             return addThrowableToMethodContext;
         }
 
+        @Deprecated
         public void setAddThrowableToMethodContext(boolean addThrowableToMethodContext) {
             this.addThrowableToMethodContext = addThrowableToMethodContext;
         }
@@ -232,18 +235,8 @@ public class Timer implements Loggable {
 
     private void addThrowableToMethodContext(Throwable catchedThrowable) {
         if (catchedThrowable != null) {
-            String catchedThrowableMessage;
-            if (catchedThrowable instanceof AssertionError) {
-                catchedThrowableMessage = catchedThrowable.toString();
-            } else {
-                catchedThrowableMessage = catchedThrowable.getMessage();
-            }
-            if (catchedThrowableMessage != null) {
-                MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
-                if (currentMethodContext != null) {
-                    currentMethodContext.getErrorContext().setThrowable(catchedThrowableMessage, catchedThrowable);
-                }
-            }
+            MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
+            currentMethodContext.addError(catchedThrowable);
         }
     }
 

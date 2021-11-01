@@ -34,10 +34,13 @@
                             <span class="secondary" mdc-body2 title="${action.timestamp|dateFormat}">${action.timestamp|dateFormat:"ddd MMM D HH:mm:ss"}</span>
                         </div>
                         <section>
-                            <div repeat.for="group of action.groups" class="teststep-group">
-                                <expandable-error-context repeat.for="errorContext of group.assertions"
-                                                          error-context.bind="errorContext"
-                                ></expandable-error-context>
+                            <div repeat.for="group of action.groups" class="teststep-group step-item">
+                                <div repeat.for="errorContext of group.errorContexts"
+                                     class="step-item"
+                                >
+                                    <expandable-error-context error-context.bind="errorContext"></expandable-error-context>
+                                </div>
+
                                 <div if.bind="group.screenshotIds.length > 0" class="flex">
                                     <mdc-card
                                         repeat.for="screenshotId of group.screenshotIds"

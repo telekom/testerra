@@ -45,7 +45,7 @@ task buildReport(type: NpmTask) {
     args = ['run', 'build']
 }
 
-build.dependsOn(buildReport)
+//build.dependsOn(buildReport)
 
 task cleanNpm {
     doLast {

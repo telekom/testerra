@@ -111,10 +111,10 @@ public interface MethodContextOrBuilder extends
    *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
    * </pre>
    *
-   * <code>repeated string infos = 19;</code>
+   * <code>repeated string infos = 19 [deprecated = true];</code>
    * @return A list containing the infos.
    */
-  java.util.List<java.lang.String>
+  @java.lang.Deprecated java.util.List<java.lang.String>
       getInfosList();
   /**
    * <pre>
@@ -122,32 +122,32 @@ public interface MethodContextOrBuilder extends
    *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
    * </pre>
    *
-   * <code>repeated string infos = 19;</code>
+   * <code>repeated string infos = 19 [deprecated = true];</code>
    * @return The count of infos.
    */
-  int getInfosCount();
+  @java.lang.Deprecated int getInfosCount();
   /**
    * <pre>
    *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
    *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
    * </pre>
    *
-   * <code>repeated string infos = 19;</code>
+   * <code>repeated string infos = 19 [deprecated = true];</code>
    * @param index The index of the element to return.
    * @return The infos at the given index.
    */
-  java.lang.String getInfos(int index);
+  @java.lang.Deprecated java.lang.String getInfos(int index);
   /**
    * <pre>
    *    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
    *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
    * </pre>
    *
-   * <code>repeated string infos = 19;</code>
+   * <code>repeated string infos = 19 [deprecated = true];</code>
    * @param index The index of the value to return.
    * @return The bytes of the infos at the given index.
    */
-  com.google.protobuf.ByteString
+  @java.lang.Deprecated com.google.protobuf.ByteString
       getInfosBytes(int index);
 
   /**
@@ -213,19 +213,19 @@ public interface MethodContextOrBuilder extends
       getDependsOnMethodContextIdsBytes(int index);
 
   /**
-   * <code>.data.ErrorContext error_context = 25;</code>
+   * <code>.data.ErrorContext error_context = 25 [deprecated = true];</code>
    * @return Whether the errorContext field is set.
    */
-  boolean hasErrorContext();
+  @java.lang.Deprecated boolean hasErrorContext();
   /**
-   * <code>.data.ErrorContext error_context = 25;</code>
+   * <code>.data.ErrorContext error_context = 25 [deprecated = true];</code>
    * @return The errorContext.
    */
-  eu.tsystems.mms.tic.testframework.report.model.ErrorContext getErrorContext();
+  @java.lang.Deprecated eu.tsystems.mms.tic.testframework.report.model.ErrorContext getErrorContext();
   /**
-   * <code>.data.ErrorContext error_context = 25;</code>
+   * <code>.data.ErrorContext error_context = 25 [deprecated = true];</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getErrorContextOrBuilder();
+  @java.lang.Deprecated eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getErrorContextOrBuilder();
 
   /**
    * <code>repeated .data.TestStep test_steps = 26;</code>

@@ -550,6 +550,9 @@ export namespace data {
 
         /** TestStepActionEntry assertion */
         assertion?: (data.IErrorContext|null);
+
+        /** TestStepActionEntry errorContext */
+        errorContext?: (data.IErrorContext|null);
     }
 
     /** Represents a TestStepActionEntry. */
@@ -573,8 +576,11 @@ export namespace data {
         /** TestStepActionEntry assertion. */
         public assertion?: (data.IErrorContext|null);
 
+        /** TestStepActionEntry errorContext. */
+        public errorContext?: (data.IErrorContext|null);
+
         /** TestStepActionEntry entry. */
-        public entry?: ("clickPathEvent"|"screenshotId"|"logMessage"|"assertion");
+        public entry?: ("clickPathEvent"|"screenshotId"|"logMessage"|"assertion"|"errorContext");
 
         /**
          * Decodes a TestStepActionEntry message from the specified reader or buffer.

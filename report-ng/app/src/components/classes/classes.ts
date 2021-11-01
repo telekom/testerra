@@ -87,8 +87,6 @@ export class Classes extends AbstractViewModel {
         }
 
         const relevantStatuses:ResultStatusType[] = [];
-
-        console.log("selected", this._selectedStatus);
         let filterRepairedOnly = false;
 
         if (this._selectedStatus === this.CUSTOM_STATUS_REPAIRED) {
@@ -119,7 +117,7 @@ export class Classes extends AbstractViewModel {
             let relevantFailureAspect:FailureAspectStatistics;
             let filterByFailureAspect = false;
             if (this.queryParams.failureAspect > 0) {
-                relevantFailureAspect = executionStatistics.failureAspectStatistics[this.queryParams.failureAspect-1];
+                relevantFailureAspect = executionStatistics.uniqueFailureAspects[this.queryParams.failureAspect-1];
                 filterByFailureAspect = true;
             }
             this._executionStatistics = executionStatistics;
@@ -150,9 +148,7 @@ export class Classes extends AbstractViewModel {
                     }
 
                     let methodDetails = methodContexts.map(methodContext => {
-                        const methodDetails = new MethodDetails(methodContext, classStatistic);
-                        methodDetails.failureAspectStatistics = (relevantFailureAspect?relevantFailureAspect:(methodContext.errorContext?new FailureAspectStatistics(methodContext.errorContext):null));
-                        return methodDetails;
+                        return new MethodDetails(methodContext, classStatistic);
                     });
 
                     if (filterRepairedOnly) {
@@ -160,7 +156,12 @@ export class Classes extends AbstractViewModel {
                     }
 
                     if (this._searchRegexp) {
-                        methodDetails = methodDetails.filter(methodDetails => methodDetails.failureAspectStatistics?.identifier.match(this._searchRegexp) || methodDetails.identifier.match(this._searchRegexp))
+                        methodDetails = methodDetails.filter(methodDetails => {
+                            return (
+                                methodDetails.identifier.match(this._searchRegexp)
+                                || methodDetails.failureAspects.find(failureAspect => failureAspect.identifier.match(this._searchRegexp))
+                            )
+                        });
                     }
 
                     methodDetails.forEach(methodDetails => {

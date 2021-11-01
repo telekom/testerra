@@ -37,7 +37,6 @@ export class MethodDetails {
     executionStatistics: ExecutionStatistics;
     testContext: data.ITestContext;
     suiteContext: data.ISuiteContext;
-    failureAspectStatistics:FailureAspectStatistics;
     sessionContexts:data.ISessionContext[];
     private _identifier:string = null;
     static readonly FAILS_ANNOTATION_NAME="eu.tsystems.mms.tic.testframework.annotations.Fails";
@@ -46,7 +45,7 @@ export class MethodDetails {
 
     private _decodedAnnotations = {};
     private _decodedCustomContexts = {};
-    private _references = undefined;
+    private _failureAspects:FailureAspectStatistics[] = null;
 
     constructor(
         readonly methodContext:data.IMethodContext,
@@ -89,7 +88,7 @@ export class MethodDetails {
     }
 
     get numDetails() {
-        return (this.methodContext.errorContext ? 1 : 0) + Object.keys(this.methodContext.customContexts).length;
+        return this.failureAspects.length + Object.keys(this.methodContext.customContexts).length;
     }
 
     get failedStep() {
@@ -113,6 +112,25 @@ export class MethodDetails {
 
     decodeAnnotation(name:string):any {
         return this._decode(this.methodContext.annotations, name, this._decodedAnnotations);
+    }
+
+    get errorContexts() {
+        return this.methodContext.testSteps
+            .flatMap(value => value.actions)
+            .flatMap(value => value.entries)
+            .filter(value => value.errorContext)
+            .map(value => value.errorContext);
+    }
+
+    get failureAspects() {
+        if (this._failureAspects == null) {
+            this._failureAspects = this.errorContexts.map(errorContext => {
+                const failureAspect = new FailureAspectStatistics(errorContext);
+                failureAspect.addMethodContext(this.methodContext);
+                return failureAspect;
+            });
+        }
+        return this._failureAspects;
     }
 }
 

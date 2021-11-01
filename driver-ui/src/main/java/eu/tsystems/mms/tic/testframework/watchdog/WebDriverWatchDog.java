@@ -24,8 +24,6 @@ package eu.tsystems.mms.tic.testframework.watchdog;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.ExecutionAbortEvent;
-import eu.tsystems.mms.tic.testframework.info.ReportInfo;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.utils.SecUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.TimingConstants;
 import java.util.ArrayList;

@@ -26,7 +26,6 @@ import com.google.gson.GsonBuilder;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
@@ -34,11 +33,10 @@ import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
+import eu.tsystems.mms.tic.testframework.utils.DefaultCapabilityUtils;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
-import java.net.URL;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -50,11 +48,9 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.time.StopWatch;
-import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.SessionId;
@@ -454,7 +450,7 @@ public final class WebDriverSessionsManager {
     }
 
     private static void logRequest(WebDriverRequest request, SessionContext sessionContext) {
-        Map<String, Object> cleanedCapsMap = new WebDriverCapabilityLogHelper().clean(request.getCapabilities());
+        Map<String, Object> cleanedCapsMap = new DefaultCapabilityUtils().clean(request.getCapabilities());
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .disableHtmlEscaping()

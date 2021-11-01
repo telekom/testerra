@@ -35,7 +35,6 @@ import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.DefaultAssertionWrapper;
 import eu.tsystems.mms.tic.testframework.execution.testng.ThrowingAssertion;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.HandleCollectedAssertsWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodContextUpdateWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodParametersWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorker;
@@ -92,7 +91,6 @@ public class CoreHook extends AbstractModule implements ModuleHook, PropertyMana
 
         eventBus.register(new MethodStartWorker());
         eventBus.register(new MethodParametersWorker());
-        eventBus.register(new HandleCollectedAssertsWorker());// !! must be invoked before MethodAnnotationCheckerWorker
         eventBus.register(new MethodContextUpdateWorker());
         eventBus.register(new OmitInDevelopmentMethodInterceptor());
         eventBus.register(new SortMethodsByPriorityMethodInterceptor());

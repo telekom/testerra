@@ -90,10 +90,6 @@ public abstract class AbstractCheckFieldAction extends AbstractFieldAction imple
             try {
                 checkField(checkableInstance, check);
             } catch (Throwable t) {
-                MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-                if (methodContext != null && t.getMessage() != null) {
-                    methodContext.getErrorContext().setThrowable(t.getMessage(), t);
-                }
                 throw t;
             }
         }

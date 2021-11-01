@@ -20,7 +20,7 @@
  */
 
 import {autoinject, PLATFORM} from 'aurelia-framework';
-import {NavigationInstruction, RouteConfig, Router, RouterConfiguration} from "aurelia-router";
+import {NavigationInstruction, RouteConfig, Router, RouterConfiguration, activationStrategy} from "aurelia-router";
 import {MethodDetails, StatisticsGenerator} from "../../services/statistics-generator";
 import {IScreenshotsDialogParams, ScreenshotsDialog} from "../screenshots-dialog/screenshots-dialog";
 import {MdcDialogService} from '@aurelia-mdc-web/dialog';
@@ -32,6 +32,7 @@ export class Method {
     private _lastScreenshotId:string;
     private _methodDetails:MethodDetails;
     private _loading:boolean = false;
+    private _routes:RouteConfig[];
 
     constructor(
         private _statistics: StatisticsGenerator,
@@ -168,6 +169,7 @@ export class Method {
                     //     break;
                     // }
                 }
+                return routeConfig;
             });
 
             if (!routeConfig.hasChildRouter) {
@@ -180,6 +182,14 @@ export class Method {
 
     private _tabClicked(routeConfig:RouteConfig) {
         this._router.navigateToRoute(routeConfig.name);
+    }
+
+    /**
+     * The replace strategy is necessary to reinitialize the navigation,
+     * when some tabs have been disabled
+     */
+    determineActivationStrategy() {
+        return activationStrategy.replace;
     }
 
     private _showScreenshot(ev:CustomEvent) {

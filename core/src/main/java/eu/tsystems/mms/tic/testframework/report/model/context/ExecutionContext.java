@@ -128,23 +128,11 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
 
         incrementStatus(methodStatus);
 
-//        if (methodContext.hasBeenRetried()) {
-//            if (methodStatus == TestStatusController.Status.PASSED) {
-//                incrementStatus(TestStatusController.Status.RECOVERED);
-//            } else {
-//                incrementStatus(TestStatusController.Status.RETRIED);
-//            }
-//        }
-
         methodContext.getFailsAnnotation().ifPresent(fails -> {
             if (methodStatus == TestStatusController.Status.PASSED) {
                 incrementStatus(TestStatusController.Status.REPAIRED);
             }
         });
-
-        if (methodStatus == TestStatusController.Status.FAILED) {
-            incrementFailureCorridor(methodContext.getFailureCorridorClass());
-        }
     }
 
     public int getStatusCount(TestStatusController.Status status) {

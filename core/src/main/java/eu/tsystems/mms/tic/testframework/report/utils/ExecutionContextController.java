@@ -155,7 +155,6 @@ public class ExecutionContextController {
     public static void printExecutionStatistics() {
         final ExecutionContext executionContext = getCurrentExecutionContext();
 
-
         LOGGER.info(prefix + "**********************************************");
 
         LOGGER.info(prefix + "ExecutionContext: " + executionContext.getName());
@@ -180,6 +179,10 @@ public class ExecutionContextController {
 
                             if (methodContext.hasNotBeenRetried()) {
                                 relevantMethodContextCount.incrementAndGet();
+
+                                if (methodContext.getStatus() == TestStatusController.Status.FAILED) {
+                                    executionContext.incrementFailureCorridor(methodContext.getFailureCorridorClass());
+                                }
                             }
                         }
                     });

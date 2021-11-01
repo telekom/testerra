@@ -32,11 +32,7 @@ import org.testng.ITestContext;
 import org.testng.ITestResult;
 
 public class SuiteContext extends AbstractContext implements SynchronizableContext {
-
-    /**
-     * @deprecated Use {@link #readTestContexts()} instead
-     */
-    public final Queue<TestContext> testContexts = new ConcurrentLinkedQueue<>();
+    private final Queue<TestContext> testContexts = new ConcurrentLinkedQueue<>();
 
     public SuiteContext(ExecutionContext executionContext) {
         this.parentContext = executionContext;

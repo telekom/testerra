@@ -18,5 +18,7 @@ task destClean {
 
 clean.dependsOn(destClean)
 
+processResources.dependsOn(project("app").build)
+
 // Build the report app into resources before building the librar
 //compileJava.dependsOn(project("app").build)

@@ -50,19 +50,34 @@ public interface TestStepActionEntryOrBuilder extends
   eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder getLogMessageOrBuilder();
 
   /**
-   * <code>.data.ErrorContext assertion = 4;</code>
+   * <code>.data.ErrorContext assertion = 4 [deprecated = true];</code>
    * @return Whether the assertion field is set.
    */
-  boolean hasAssertion();
+  @java.lang.Deprecated boolean hasAssertion();
   /**
-   * <code>.data.ErrorContext assertion = 4;</code>
+   * <code>.data.ErrorContext assertion = 4 [deprecated = true];</code>
    * @return The assertion.
    */
-  eu.tsystems.mms.tic.testframework.report.model.ErrorContext getAssertion();
+  @java.lang.Deprecated eu.tsystems.mms.tic.testframework.report.model.ErrorContext getAssertion();
   /**
-   * <code>.data.ErrorContext assertion = 4;</code>
+   * <code>.data.ErrorContext assertion = 4 [deprecated = true];</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getAssertionOrBuilder();
+  @java.lang.Deprecated eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getAssertionOrBuilder();
+
+  /**
+   * <code>.data.ErrorContext error_context = 5;</code>
+   * @return Whether the errorContext field is set.
+   */
+  boolean hasErrorContext();
+  /**
+   * <code>.data.ErrorContext error_context = 5;</code>
+   * @return The errorContext.
+   */
+  eu.tsystems.mms.tic.testframework.report.model.ErrorContext getErrorContext();
+  /**
+   * <code>.data.ErrorContext error_context = 5;</code>
+   */
+  eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getErrorContextOrBuilder();
 
   public eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry.EntryCase getEntryCase();
 }

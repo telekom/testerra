@@ -26,7 +26,6 @@ import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
-import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
@@ -34,7 +33,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.DefaultFormatter;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
-import java.util.Map;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 
@@ -47,7 +45,6 @@ public class MethodEndWorker implements MethodEndEvent.Listener, Loggable {
     public void onMethodEnd(MethodEndEvent event) {
         // clear current result
         ExecutionContextController.clearCurrentTestResult();
-        MethodContext methodContext = event.getMethodContext();
         ITestResult testResult = event.getTestResult();
         ITestNGMethod testMethod = event.getTestMethod();
 
@@ -79,26 +76,6 @@ public class MethodEndWorker implements MethodEndEvent.Listener, Loggable {
             PropertyManager.clearThreadlocalProperties();
         }
 
-        try {
-            /*
-             * Read stored method infos, publish to method container and clean
-             */
-            ReportInfo.MethodInfo methodInfo = ReportInfo.getCurrentMethodInfo();
-            if (methodInfo != null) {
-                Map<String, String> infos = methodInfo.getInfos();
-                for (String key : infos.keySet()) {
-                    methodContext.infos.add(key + " = " + infos.get(key));
-                }
-            }
-        } finally {
-            TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(event.getMethodContext()));
-
-            // clear method infos
-            ReportInfo.clearCurrentMethodInfo();
-
-            // gc
-            //System.gc();
-        }
-
+        TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(event.getMethodContext()));
     }
 }

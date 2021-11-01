@@ -28,8 +28,11 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +56,7 @@ public class TestStatusController {
 
     private static int testsFailedRetried = 0;
     private static int testsExpectedFailed = 0;
-    private static String SEPERATOR = ",";
+    private static final String SEPARATOR = ", ";
 
     private TestStatusController() {
 
@@ -182,28 +185,28 @@ public class TestStatusController {
     public static String getFinalCountersMessage() {
         // V-X-S: 3-2-1  H-M-L: 0-0-0 (1-1-1)
         // 3 Passed, 2 Failed, 1 ExpFailed, 1 Skipped
-        String out = "";
+        List<String> out = new ArrayList<>();
 
         if (testsSuccessful > 0) {
-            out = StringUtils.enhanceList(out, testsSuccessful + " Passed", SEPERATOR, true);
+            out.add(testsSuccessful + " Passed");
         }
         if (testsFailed > 0) {
-            out = StringUtils.enhanceList(out, testsFailed + " Failed", SEPERATOR, true);
+            out.add(testsFailed + " Failed");
         }
         if (testsSkipped > 0) {
-            out = StringUtils.enhanceList(out, testsSkipped + " Skipped", SEPERATOR, true);
+            out.add(testsSkipped + " Skipped");
         }
         if (testsExpectedFailed > 0) {
-            out = StringUtils.enhanceList(out, testsExpectedFailed + " ExpFailed", SEPERATOR, true);
+            out.add(testsExpectedFailed + " ExpFailed");
         }
 
-        return out;
+        return String.join(SEPARATOR, out);
     }
 
     public static String getCounterInfoMessage() {
         String out = getFinalCountersMessage();
         if (testsFailedRetried > 0) {
-            out = StringUtils.enhanceList(out, testsFailedRetried + " Retried", SEPERATOR, true);
+            out += SEPARATOR + testsFailedRetried + " Retried";
         }
         return out;
     }
@@ -257,43 +260,39 @@ public class TestStatusController {
     }
 
     public enum Status {
-        PASSED("green", "&#x2714;", "Passed", true, true),
+        PASSED("Passed", true, true),
         /**
          * @deprecated Remove this after discontinuing 'report' module
          */
-        MINOR("skyblue", "&#x2714;", "Minor", true, true),
-        PASSED_RETRY("#6abd00", "&#x2714;", "Passed after Retry", true, true),
+        MINOR("Minor", true, true),
+        PASSED_RETRY("Passed after Retry", true, true),
         /**
          * @deprecated Remove this after discontinuing 'report' module
          */
-        MINOR_RETRY("#60bd8e", "&#x2714;", "Minor after Retry", false, true),
+        MINOR_RETRY("Minor after Retry", false, true),
         /**
          * @deprecated Remove this after discontinuing 'report' module
          */
-        INFO("#b9b900", "i", "Info", true, false),
+        INFO("Info", true, false),
 
-        FAILED("red", "&#x2718;", "Failed", true, true),
+        FAILED("Failed", true, true),
         /**
          * @deprecated Remove this after discontinuing 'report' module
          */
-        FAILED_MINOR("deeppink", "&#x2718;", "Failed + Minor", true, true),
-        FAILED_RETRIED("pink", "R", "Retried", true, false),
-        FAILED_EXPECTED("grey", "&#x2718;", "Expected Failed", true, false),
+        FAILED_MINOR("Failed + Minor", true, true),
+        FAILED_RETRIED("Retried", true, false),
+        FAILED_EXPECTED("Expected Failed", true, false),
 
-        SKIPPED("orange", "s", "Skipped", true, true),
-        NO_RUN("lightgrey", "x", "No run", false, true); // this is basically an illegal state
+        SKIPPED("Skipped", true, true),
+        NO_RUN("No run", false, true); // this is basically an illegal state
 
-        public final String color;
-        public final String symbol;
         public final String title;
         public final boolean active;
         public final boolean relevant;
 
         public transient Map<Status, Integer> counts = new LinkedHashMap<>();
 
-        Status(String color, String symbol, String title, boolean active, boolean relevant) {
-            this.color = color;
-            this.symbol = symbol;
+        Status(String title, boolean active, boolean relevant) {
             this.title = title;
             this.active = active;
             this.relevant = relevant;

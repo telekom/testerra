@@ -1245,6 +1245,7 @@ export const data = $root.data = (() => {
          * @property {string|null} [screenshotId] TestStepActionEntry screenshotId
          * @property {data.ILogMessage|null} [logMessage] TestStepActionEntry logMessage
          * @property {data.IErrorContext|null} [assertion] TestStepActionEntry assertion
+         * @property {data.IErrorContext|null} [errorContext] TestStepActionEntry errorContext
          */
 
         /**
@@ -1294,17 +1295,25 @@ export const data = $root.data = (() => {
          */
         TestStepActionEntry.prototype.assertion = null;
 
+        /**
+         * TestStepActionEntry errorContext.
+         * @member {data.IErrorContext|null|undefined} errorContext
+         * @memberof data.TestStepActionEntry
+         * @instance
+         */
+        TestStepActionEntry.prototype.errorContext = null;
+
         // OneOf field names bound to virtual getters and setters
         let $oneOfFields;
 
         /**
          * TestStepActionEntry entry.
-         * @member {"clickPathEvent"|"screenshotId"|"logMessage"|"assertion"|undefined} entry
+         * @member {"clickPathEvent"|"screenshotId"|"logMessage"|"assertion"|"errorContext"|undefined} entry
          * @memberof data.TestStepActionEntry
          * @instance
          */
         Object.defineProperty(TestStepActionEntry.prototype, "entry", {
-            get: $util.oneOfGetter($oneOfFields = ["clickPathEvent", "screenshotId", "logMessage", "assertion"]),
+            get: $util.oneOfGetter($oneOfFields = ["clickPathEvent", "screenshotId", "logMessage", "assertion", "errorContext"]),
             set: $util.oneOfSetter($oneOfFields)
         });
 
@@ -1337,6 +1346,9 @@ export const data = $root.data = (() => {
                     break;
                 case 4:
                     m.assertion = $root.data.ErrorContext.decode(r, r.uint32());
+                    break;
+                case 5:
+                    m.errorContext = $root.data.ErrorContext.decode(r, r.uint32());
                     break;
                 default:
                     r.skipType(t & 7);

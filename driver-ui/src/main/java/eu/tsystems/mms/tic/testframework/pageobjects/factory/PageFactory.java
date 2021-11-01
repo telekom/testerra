@@ -144,12 +144,12 @@ public final class PageFactory {
             }
         } catch (Throwable overAllThrowable) {
             // modify test method container
-            final String message = overAllThrowable.getMessage();
-
-            MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-            if (methodContext != null) {
-                methodContext.getErrorContext().setThrowable(message, overAllThrowable, true);
-            }
+//            final String message = overAllThrowable.getMessage();
+//
+//            MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
+//            if (methodContext != null) {
+//                methodContext.getErrorContext().setThrowable(message, overAllThrowable, true);
+//            }
 
             throw overAllThrowable;
         }

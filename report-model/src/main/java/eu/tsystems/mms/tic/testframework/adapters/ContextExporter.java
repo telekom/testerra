@@ -74,32 +74,6 @@ public class ContextExporter implements Loggable {
     private final Report report = TesterraListener.getReport();
     private final Gson jsonEncoder = new Gson();
 
-//    private Map<String,Object> getAnnotationParameters(Annotation annotation) {
-//        Method[] methods = annotation.annotationType().getMethods();
-//        Map<String,Object> params = new HashMap<>();
-//        for (Method method : methods) {
-//            if (method.getDeclaringClass() == annotation.annotationType()) { //this filters out built-in methods, like hashCode etc
-//                try {
-//                    Object value = method.invoke(annotation);
-//                    if (value == null) continue;
-//
-//                    if (value.getClass().isArray()) {
-//                        Object[] values = (Object[])value;
-//                        if (values.length == 0) continue;
-//                        value = Arrays.asList(values);
-//                    } else {
-//                        value = value.toString();
-//                        if (((String) value).isEmpty()) continue;
-//                    }
-//                    params.put(method.getName(), value);
-//                } catch (Exception e) {
-//                    log().error("Unable to retrieve annotation parameter", e);
-//                }
-//            }
-//        }
-//        return params;
-//    }
-
     public MethodContext.Builder buildMethodContext(eu.tsystems.mms.tic.testframework.report.model.context.MethodContext methodContext) {
         MethodContext.Builder builder = MethodContext.newBuilder();
 
@@ -159,7 +133,6 @@ public class ContextExporter implements Loggable {
         methodContext.readDependsOnMethodContexts().forEach(m -> builder.addDependsOnMethodContextIds(m.getId()));
 
         // build context
-        if (methodContext.hasErrorContext()) builder.setErrorContext(buildErrorContext(methodContext.getErrorContext()));
         methodContext.readSessionContexts().forEach(sessionContext -> builder.addSessionContextIds(sessionContext.getId()));
 
         methodContext.readCustomContexts().forEach(customContext -> {
@@ -217,15 +190,6 @@ public class ContextExporter implements Loggable {
         // file size
         builder.setSize(file.length());
     }
-//
-//    public StackTrace.Builder prepareStackTrace(eu.tsystems.mms.tic.testframework.report.model.context.StackTrace stackTrace) {
-//        StackTrace.Builder builder = StackTrace.newBuilder();
-//
-//        //apply(stackTrace.additionalErrorMessage, builder::setAdditionalErrorMessage);
-//        map(stackTrace.stackTrace, this::prepareStackTraceCause, builder::setCause);
-//
-//        return builder;
-//    }
 
     public ScriptSource.Builder buildScriptSource(eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource scriptSource) {
         ScriptSource.Builder builder = ScriptSource.newBuilder();
@@ -260,8 +224,8 @@ public class ContextExporter implements Loggable {
 //        apply(errorContext.errorFingerprint, builder::setErrorFingerprint);
         errorContext.getScriptSource().ifPresent(scriptSource -> builder.setScriptSource(this.buildScriptSource(scriptSource)));
         //errorContext.getExecutionObjectSource().ifPresent(scriptSource -> builder.setExecutionObjectSource(this.buildScriptSource(scriptSource)));
-        if (errorContext.getTicketId() != null) builder.setTicketId(errorContext.getTicketId().toString());
-        apply(errorContext.getDescription(), builder::setDescription);
+//        if (errorContext.getTicketId() != null) builder.setTicketId(errorContext.getTicketId().toString());
+//        apply(errorContext.getDescription(), builder::setDescription);
         builder.setOptional(errorContext.isOptional());
 
         return builder;
@@ -324,11 +288,11 @@ public class ContextExporter implements Loggable {
             } else if (entry instanceof eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext) {
                 eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext errorContext = (eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext)entry;
                 Optional<ErrorContext.Builder> optional = Optional.ofNullable(buildErrorContext(errorContext));
-                optional.ifPresent(entryBuilder::setAssertion);
+                optional.ifPresent(entryBuilder::setErrorContext);
             }
 
             if (
-                    entryBuilder.hasAssertion()
+                    entryBuilder.hasErrorContext()
                     || entryBuilder.hasLogMessage()
                     || entryBuilder.hasClickPathEvent()
                     || StringUtils.isNotBlank(entryBuilder.getScreenshotId())

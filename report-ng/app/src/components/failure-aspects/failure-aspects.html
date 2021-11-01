@@ -76,7 +76,7 @@
                                     <a route-href="route: tests; params.bind: {failureAspect: failureAspect.index+1}"
                                     ><class-name-markup namespace.bind="failureAspect.relevantCause.className" highlight.bind="_searchRegexp">:</class-name-markup><span innerhtml="${failureAspect.message|html|highlightText:_searchRegexp}"></span></a>
                                 </td>
-                                <td class="p1">
+                                <td>
                                     <div repeat.for="status of failureAspect.availableStatuses" class="mt1 mb1">
                                         <a class="badge status-${status|statusClass}"
                                            route-href="route: tests; params.bind: {failureAspect: failureAspect.index+1, status: _statusConverter.getClassForStatus(status)}"

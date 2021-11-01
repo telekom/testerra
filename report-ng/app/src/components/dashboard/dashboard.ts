@@ -80,7 +80,7 @@ export class Dashboard extends AbstractViewModel {
     attached() {
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
             this._executionStatistics = executionStatistics;
-            this._topFailureAspects = this._executionStatistics.failureAspectStatistics.slice(0,3);
+            this._topFailureAspects = this._executionStatistics.uniqueFailureAspects.slice(0,3);
             this._passedRetried = this._executionStatistics.getStatusesCount([ResultStatusType.PASSED_RETRY,ResultStatusType.MINOR_RETRY]);
 
             this._filterItems = [];
@@ -135,7 +135,7 @@ export class Dashboard extends AbstractViewModel {
                 });
             }
 
-            this._executionStatistics.failureAspectStatistics.forEach(failureAspectStatistics => {
+            this._executionStatistics.uniqueFailureAspects.forEach(failureAspectStatistics => {
                 if (failureAspectStatistics.isMinor) {
                     ++this._minorFailures;
                 } else {

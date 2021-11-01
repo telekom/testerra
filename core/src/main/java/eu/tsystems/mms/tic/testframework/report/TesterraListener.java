@@ -34,14 +34,12 @@ import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodStartEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.ListenerUtils;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.HandleCollectedAssertsWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodContextUpdateWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodParametersWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.OmitInDevelopmentMethodInterceptor;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.SortMethodsByPriorityMethodInterceptor;
-import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.internal.BuildInformation;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
@@ -138,7 +136,6 @@ public class TesterraListener implements
 
         eventBus.register(new MethodStartWorker());
         eventBus.register(new MethodParametersWorker());
-        eventBus.register(new HandleCollectedAssertsWorker());// !! must be invoked before MethodAnnotationCheckerWorker
         eventBus.register(new MethodContextUpdateWorker());
 
         eventBus.register(new OmitInDevelopmentMethodInterceptor());
@@ -262,7 +259,7 @@ public class TesterraListener implements
             pBeforeInvocation(method, testResult, context);
         } catch (Throwable t) {
             log().error("FATAL INTERNAL ERROR in beforeInvocation for " + method + ", " + testResult + ", " + context, t);
-            ReportInfo.getDashboardWarning().addInfo(1, "FATAL INTERNAL ERROR during execution! Please analyze the build logs for this error!");
+            //ReportInfo.getDashboardWarning().addInfo(1, "FATAL INTERNAL ERROR during execution! Please analyze the build logs for this error!");
         }
     }
 

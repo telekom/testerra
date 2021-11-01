@@ -81,10 +81,6 @@ export class Dashboard extends AbstractViewModel {
             this._executionStatistics = executionStatistics;
             this._topFailureAspects = this._executionStatistics.uniqueFailureAspects.slice(0,3);
 
-            console.log(executionStatistics.executionAggregate.executionContext);
-
-            console.log(executionStatistics.overallTestCases);
-
             this._filterItems = [];
             let failed = this._executionStatistics.overallFailed;
             if (failed > 0) {

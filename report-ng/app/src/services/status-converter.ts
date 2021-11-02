@@ -42,34 +42,11 @@ export interface IFilter {
 export class StatusConverter {
     private readonly _packageRegexp = new RegExp("^(.+)\\.(\\w+)$");
 
-    /**
-     * Status adapted from {@link TestStatusController.java}
-     * @deprecated
-     */
-    get failedStatuses() {
-        return [
-            ResultStatusType.FAILED,
-            ResultStatusType.FAILED_MINOR,
-            /**
-             * Expected failed is no actual failed status and explicitly featured
-             */
-            //ResultStatusType.FAILED_EXPECTED,
-            /**
-             * {@link ResultStatusType.FAILED_RETRIED} is not a statistical relevant status
-             */
-            ResultStatusType.FAILED_RETRIED
-        ]
-    }
-
-    /**
-     * @deprecated
-     */
     get passedStatuses() {
         return [
             ResultStatusType.PASSED,
             ResultStatusType.PASSED_RETRY,
-            ResultStatusType.MINOR,
-            ResultStatusType.MINOR_RETRY
+            ResultStatusType.REPAIRED,
         ]
     }
 
@@ -85,12 +62,10 @@ export class StatusConverter {
     /**
      * Groups a status to relevant combined statuses
      * @param status
-     * @deprecated
      */
     groupStatus(status:ResultStatusType):ResultStatusType[] {
         switch (status) {
             case ResultStatusType.PASSED: return this.passedStatuses;
-            case ResultStatusType.FAILED: return this.failedStatuses
             default: return [status];
         }
     }

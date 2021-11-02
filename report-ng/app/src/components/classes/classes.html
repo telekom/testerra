@@ -93,7 +93,7 @@
                     <tbody>
                         <tr repeat.for="methodDetails of _filteredMethodDetails">
                             <td class="p1 centered-text">
-                                <a class="badge status-${methodDetails.detailedStatus|statusClass}">${methodDetails.detailedStatus|statusName}</a>
+                                <a class="badge status-${methodDetails.methodContext.resultStatus|statusClass}">${methodDetails.methodContext.resultStatus|statusName}</a>
                             </td>
                             <td class="p1 wrapable">
                                 <a route-href="route: tests; params.bind: withQueryParams({class: methodDetails.classStatistics.classIdentifier})"

@@ -53,27 +53,6 @@ export class MethodDetails {
     ) {
     }
 
-    get detailedStatus() {
-        if (this.methodContext.resultStatus === data.ResultStatusType.PASSED) {
-            if (this.methodContext.annotations[MethodDetails.FAILS_ANNOTATION_NAME]) {
-                return data.ResultStatusType.REPAIRED;
-            } else if (this.methodContext.retryNumber > 0) {
-                return data.ResultStatusType.PASSED_RETRY;
-            }
-        } else if (this.methodContext.resultStatus === data.ResultStatusType.FAILED && this.methodContext.retryNumber > 0) {
-            return data.ResultStatusType.FAILED_RETRIED;
-        }
-        return this.methodContext.resultStatus;
-    }
-
-    matchesStatus(status: data.ResultStatusType) {
-        if (this.methodContext.resultStatus === status) {
-            return true;
-        } else {
-            return this.detailedStatus === status;
-        }
-    }
-
     get failsAnnotation() {
         return this.decodeAnnotation(MethodDetails.FAILS_ANNOTATION_NAME);
     }

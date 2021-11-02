@@ -96,9 +96,7 @@ export class Classes extends AbstractViewModel {
         this._availableStatuses = [];
 
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
-            for (const key in executionStatistics.executionAggregate.executionContext.statusCounts) {
-                this._availableStatuses.push(this._statusConverter.normalizeStatus(key));
-            }
+            this._availableStatuses = executionStatistics.availableStatuses;
             // this._availableStatuses = Object.keys();
             // this._statusConverter.relevantStatuses
             //     .concat(...[data.ResultStatusType.FAILED_RETRIED, data.ResultStatusType.PASSED_RETRY])
@@ -130,6 +128,13 @@ export class Classes extends AbstractViewModel {
                 .forEach(classStatistic => {
                     let methodContexts = classStatistic.methodContexts;
 
+                    if (this._selectedStatus > 0) {
+                        const selectedStatusGroup = this._statusConverter.groupStatus(this._selectedStatus);
+                        methodContexts = methodContexts.filter(methodContext => {
+                            return selectedStatusGroup.indexOf(methodContext.resultStatus) > 0
+                        });
+                    }
+
                     if (filterByFailureAspect) {
                         methodContexts = methodContexts.filter(methodContext => relevantFailureAspect.methodContexts.indexOf(methodContext) >= 0);
                     }
@@ -141,10 +146,6 @@ export class Classes extends AbstractViewModel {
                     let methodDetails = methodContexts.map(methodContext => {
                         return new MethodDetails(methodContext, classStatistic);
                     });
-
-                    if (this._selectedStatus > 0) {
-                        methodDetails = methodDetails.filter(methodDetails => methodDetails.matchesStatus(this._selectedStatus));
-                    }
 
                     if (this._searchRegexp) {
                         methodDetails = methodDetails.filter(methodDetails => {

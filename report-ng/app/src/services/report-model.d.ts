@@ -188,9 +188,6 @@ export namespace data {
         /** ExecutionContext failureCorridorLimits */
         failureCorridorLimits?: ({ [k: string]: number }|null);
 
-        /** ExecutionContext statusCounts */
-        statusCounts?: ({ [k: string]: number }|null);
-
         /** ExecutionContext failureCorridorCounts */
         failureCorridorCounts?: ({ [k: string]: number }|null);
     }
@@ -236,9 +233,6 @@ export namespace data {
 
         /** ExecutionContext failureCorridorLimits. */
         public failureCorridorLimits: { [k: string]: number };
-
-        /** ExecutionContext statusCounts. */
-        public statusCounts: { [k: string]: number };
 
         /** ExecutionContext failureCorridorCounts. */
         public failureCorridorCounts: { [k: string]: number };

@@ -354,7 +354,6 @@ export const data = $root.data = (() => {
          * @property {Array.<data.ILogMessage>|null} [logMessages] ExecutionContext logMessages
          * @property {number|null} [estimatedTestsCount] ExecutionContext estimatedTestsCount
          * @property {Object.<string,number>|null} [failureCorridorLimits] ExecutionContext failureCorridorLimits
-         * @property {Object.<string,number>|null} [statusCounts] ExecutionContext statusCounts
          * @property {Object.<string,number>|null} [failureCorridorCounts] ExecutionContext failureCorridorCounts
          */
 
@@ -371,7 +370,6 @@ export const data = $root.data = (() => {
             this.exclusiveSessionContextIds = [];
             this.logMessages = [];
             this.failureCorridorLimits = {};
-            this.statusCounts = {};
             this.failureCorridorCounts = {};
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
@@ -468,14 +466,6 @@ export const data = $root.data = (() => {
         ExecutionContext.prototype.failureCorridorLimits = $util.emptyObject;
 
         /**
-         * ExecutionContext statusCounts.
-         * @member {Object.<string,number>} statusCounts
-         * @memberof data.ExecutionContext
-         * @instance
-         */
-        ExecutionContext.prototype.statusCounts = $util.emptyObject;
-
-        /**
          * ExecutionContext failureCorridorCounts.
          * @member {Object.<string,number>} failureCorridorCounts
          * @memberof data.ExecutionContext
@@ -560,28 +550,6 @@ export const data = $root.data = (() => {
                     m.failureCorridorLimits[k] = value;
                     break;
                 case 17:
-                    if (m.statusCounts === $util.emptyObject)
-                        m.statusCounts = {};
-                    var c2 = r.uint32() + r.pos;
-                    k = 0;
-                    value = 0;
-                    while (r.pos < c2) {
-                        var tag2 = r.uint32();
-                        switch (tag2 >>> 3) {
-                        case 1:
-                            k = r.int32();
-                            break;
-                        case 2:
-                            value = r.int32();
-                            break;
-                        default:
-                            r.skipType(tag2 & 7);
-                            break;
-                        }
-                    }
-                    m.statusCounts[k] = value;
-                    break;
-                case 18:
                     if (m.failureCorridorCounts === $util.emptyObject)
                         m.failureCorridorCounts = {};
                     var c2 = r.uint32() + r.pos;

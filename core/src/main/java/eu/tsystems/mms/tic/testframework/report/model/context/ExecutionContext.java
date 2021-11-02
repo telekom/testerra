@@ -43,7 +43,6 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
     private Queue<SessionContext> exclusiveSessionContexts;
     public int estimatedTestMethodCount;
     private final ConcurrentLinkedQueue<LogMessage> methodContextLessLogs = new ConcurrentLinkedQueue<>();
-    private final Map<Class, Integer> failureCorridorCounts = new ConcurrentHashMap<>();
 
     public ExecutionContext() {
         name = runConfig.RUNCFG;
@@ -99,15 +98,5 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
 
     public SuiteContext getSuiteContext(ITestContext testContext) {
         return getSuiteContext(TesterraListener.getContextGenerator().getSuiteContextName(testContext));
-    }
-
-    public int getFailureCorridorCount(Class failureCorridorClass) {
-        return failureCorridorCounts.getOrDefault(failureCorridorClass, 0);
-    }
-
-    public void incrementFailureCorridor(Class failureCorridorClass) {
-        int failureCorridorCount = getFailureCorridorCount(failureCorridorClass);
-        failureCorridorCount++;
-        failureCorridorCounts.put(failureCorridorClass, failureCorridorCount);
     }
 }

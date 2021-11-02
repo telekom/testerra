@@ -23,22 +23,18 @@ package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
-import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.Counters;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepController;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.testng.ITestResult;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -60,7 +56,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     private ITestResult testResult;
-    private TestStatusController.Status status = TestStatusController.Status.NO_RUN;
+    private Status status = Status.NO_RUN;
     private final Type methodType;
     private List<Object> parameterValues;
     private int retryNumber = 0;
@@ -263,11 +259,11 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return retryNumber == 0;
     }
 
-    public TestStatusController.Status getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(TestStatusController.Status status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

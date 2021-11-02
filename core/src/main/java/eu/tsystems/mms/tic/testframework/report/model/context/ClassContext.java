@@ -27,7 +27,7 @@ import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
@@ -183,7 +183,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
     public MethodContext safeAddSkipMethod(ITestResult testResult) {
         MethodContext methodContext = getMethodContext(testResult);
         methodContext.addError(new SkipException("Skipped"));
-        methodContext.setStatus(TestStatusController.Status.SKIPPED);
+        methodContext.setStatus(Status.SKIPPED);
         return methodContext;
     }
 }

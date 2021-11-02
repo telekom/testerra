@@ -71,13 +71,14 @@ public final class FailureCorridor implements Loggable {
     }
 
     public static boolean isCorridorMatched() {
-        int testsSuccessful = TestStatusController.getTestsSuccessful();
-        int testsFailed = TestStatusController.getTestsFailed();
-        int testsSkipped = TestStatusController.getTestsSkipped();
+        TestStatusController testStatusController = TesterraListener.getTestStatusController();
+        int testsSuccessful = testStatusController.getTestsSuccessful();
+        int testsFailed = testStatusController.getTestsFailed();
+        int testsSkipped = testStatusController.getTestsSkipped();
 
-        int testsFailedHIGH = TestStatusController.getTestsFailedHIGH();
-        int testsFailedMID = TestStatusController.getTestsFailedMID();
-        int testsFailedLOW = TestStatusController.getTestsFailedLOW();
+        int testsFailedHIGH = testStatusController.getTestsFailedHIGH();
+        int testsFailedMID = testStatusController.getTestsFailedMID();
+        int testsFailedLOW = testStatusController.getTestsFailedLOW();
 
         /*
         check for invalid state
@@ -120,14 +121,14 @@ public final class FailureCorridor implements Loggable {
 
     public static String getStatistics() {
         //  V-X-S: 3-2-1  H-M-L: 0-0-0 (1-1-1)
+        TestStatusController testStatusController = TesterraListener.getTestStatusController();
+        int testsSuccessful = testStatusController.getTestsSuccessful();
+        int testsFailed = testStatusController.getTestsFailed();
+        int testsSkipped = testStatusController.getTestsSkipped();
 
-        int testsSuccessful = TestStatusController.getTestsSuccessful();
-        int testsFailed = TestStatusController.getTestsFailed();
-        int testsSkipped = TestStatusController.getTestsSkipped();
-
-        int testsFailedHIGH = TestStatusController.getTestsFailedHIGH();
-        int testsFailedMID = TestStatusController.getTestsFailedMID();
-        int testsFailedLOW = TestStatusController.getTestsFailedLOW();
+        int testsFailedHIGH = testStatusController.getTestsFailedHIGH();
+        int testsFailedMID = testStatusController.getTestsFailedMID();
+        int testsFailedLOW = testStatusController.getTestsFailedLOW();
 
         String out = "";
         String badMarker = "*";

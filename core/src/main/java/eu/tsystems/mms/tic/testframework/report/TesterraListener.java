@@ -34,7 +34,6 @@ import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodStartEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.ListenerUtils;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodContextUpdateWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodParametersWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorker;
@@ -110,6 +109,7 @@ public class TesterraListener implements
     private static final BuildInformation buildInformation;
     private static final Report report;
     private static DefaultTestNGContextGenerator contextGenerator;
+    private static final TestStatusController testStatusController = new TestStatusController();
 
     static {
         String logLevel = PropertyManager.getProperty("log4j.level");
@@ -136,12 +136,11 @@ public class TesterraListener implements
 
         eventBus.register(new MethodStartWorker());
         eventBus.register(new MethodParametersWorker());
-        eventBus.register(new MethodContextUpdateWorker());
-
         eventBus.register(new OmitInDevelopmentMethodInterceptor());
         eventBus.register(new SortMethodsByPriorityMethodInterceptor());
 
         eventBus.register(new ExecutionEndListener());
+        eventBus.register(testStatusController);
 
         /*
         Call Booter
@@ -171,6 +170,10 @@ public class TesterraListener implements
 
     public static Report getReport() {
         return report;
+    }
+
+    public static TestStatusController getTestStatusController() {
+        return testStatusController;
     }
 
     public static DefaultTestNGContextGenerator getContextGenerator() {

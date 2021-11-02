@@ -23,8 +23,10 @@
 
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
+import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.StatusCounter;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
@@ -52,7 +54,6 @@ public class ExecutionContextController {
     private static final ThreadLocal<ITestResult> CURRENT_TEST_RESULT = new ThreadLocal<>();
 
     private static final ThreadLocal<SessionContext> CURRENT_SESSION_CONTEXT = new ThreadLocal<>();
-    private static final StatusCounter finalCounter = new StatusCounter();
     private static final String prefix = "*** Stats: ";
 
     /**
@@ -179,16 +180,8 @@ public class ExecutionContextController {
                         if (methodContext.isTestMethod()) {
                             testMethodContextCount.incrementAndGet();
 
-                            if (methodContext.isTestMethod()) {
-                                finalCounter.increment(methodContext.getStatus());
-                            }
-
                             if (methodContext.getStatus().isStatisticallyRelevant()) {
                                 relevantMethodContextCount.incrementAndGet();
-
-                                if (methodContext.getStatus() == TestStatusController.Status.FAILED) {
-                                    executionContext.incrementFailureCorridor(methodContext.getFailureCorridorClass());
-                                }
                             }
                         }
                     });
@@ -202,23 +195,26 @@ public class ExecutionContextController {
         LOGGER.info(prefix + "**********************************************");
         LOGGER.info(prefix + "Test Methods Count: " + testMethodContextCount.get() + " (" + relevantMethodContextCount.get() + " relevant)");
 
-        logStatusSet(Stream.of(TestStatusController.Status.FAILED, TestStatusController.Status.RETRIED));
-        logStatusSet(Stream.of(TestStatusController.Status.FAILED_EXPECTED));
-        logStatusSet(Stream.of(TestStatusController.Status.SKIPPED));
-        logStatusSet(Stream.of(TestStatusController.Status.PASSED, TestStatusController.Status.RECOVERED, TestStatusController.Status.REPAIRED));
+        TestStatusController testStatusController = TesterraListener.getTestStatusController();
+        StatusCounter statusCounter = testStatusController.getStatusCounter();
+
+        logStatusSet(Stream.of(Status.FAILED, Status.RETRIED), statusCounter);
+        logStatusSet(Stream.of(Status.FAILED_EXPECTED), statusCounter);
+        logStatusSet(Stream.of(Status.SKIPPED), statusCounter);
+        logStatusSet(Stream.of(Status.PASSED, Status.RECOVERED, Status.REPAIRED), statusCounter);
 
         LOGGER.info(prefix + "**********************************************");
-
-        TestStatusController.Status overallStatus = TestStatusController.Status.FAILED;
+        Status overallStatus = Status.FAILED;
         if (Flags.FAILURE_CORRIDOR_ACTIVE) {
             if (FailureCorridor.isCorridorMatched()) {
-                overallStatus = TestStatusController.Status.PASSED;
+                overallStatus = Status.PASSED;
             }
         } else {
-            if (finalCounter.get(TestStatusController.Status.FAILED) == 0) {
-                overallStatus = TestStatusController.Status.PASSED;
+            if (testStatusController.getTestsFailed() == 0) {
+                overallStatus = Status.PASSED;
             }
         }
+
         LOGGER.info(prefix + "ExecutionContext Status: " + overallStatus.title);
         LOGGER.info(prefix + "FailureCorridor Enabled: " + Flags.FAILURE_CORRIDOR_ACTIVE);
 
@@ -234,17 +230,17 @@ public class ExecutionContextController {
         LOGGER.info(prefix + "**********************************************");
     }
 
-    private static void logStatusSet(Stream<TestStatusController.Status> statuses) {
-        String statusSetString = createStatusSetString(statuses);
+    private static void logStatusSet(Stream<Status> statuses, StatusCounter statusCounter) {
+        String statusSetString = createStatusSetString(statuses, statusCounter);
         if (statusSetString.length() > 0) {
             LOGGER.info(prefix + statusSetString);
         }
     }
 
-    private static String createStatusSetString(Stream<TestStatusController.Status> statuses) {
+    private static String createStatusSetString(Stream<Status> statuses, StatusCounter statusCounter) {
         return statuses
                 .map(status -> {
-                    int summarizedTestStatusCount = finalCounter.getSum(TestStatusController.Status.getStatusGroup(status));
+                    int summarizedTestStatusCount = statusCounter.getSum(Status.getStatusGroup(status));
                     if (summarizedTestStatusCount > 0) {
                         return status.title + ": " + summarizedTestStatusCount;
                     } else {

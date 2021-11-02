@@ -21,18 +21,15 @@
 
 package eu.tsystems.mms.tic.testframework.test.execution;
 
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
-import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.Test;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -86,8 +83,8 @@ public class TestNgDependsOnRetryTest extends TesterraTest {
         MethodContext failedMethod = collected.get(0);
         MethodContext passedMethod = collected.get(1);
 
-        Assert.assertEquals(failedMethod.getStatus(), TestStatusController.Status.FAILED);
-        Assert.assertEquals(passedMethod.getStatus(), TestStatusController.Status.PASSED);
+        Assert.assertEquals(failedMethod.getStatus(), Status.FAILED);
+        Assert.assertEquals(passedMethod.getStatus(), Status.PASSED);
 
         Assert.assertEquals(1, failedMethod.readRelatedMethodContexts().count());
         Assert.assertEquals(1, passedMethod.readDependsOnMethodContexts().count());

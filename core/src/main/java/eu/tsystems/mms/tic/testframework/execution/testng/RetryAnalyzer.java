@@ -23,12 +23,15 @@
 package eu.tsystems.mms.tic.testframework.execution.testng;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
+import eu.tsystems.mms.tic.testframework.annotations.NoRetry;
 import eu.tsystems.mms.tic.testframework.annotations.Retry;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.events.TestStatusUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.InheritedFailedException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.Status;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -58,12 +61,12 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
     /**
      * Classes list.
      */
-    private final List<Class> CLASSES_LIST = new ArrayList<>();
+    private static final List<Class> CLASSES_LIST = new ArrayList<>();
 
     /**
      * Messages list.
      */
-    private final List<String> MESSAGES_LIST = new ArrayList<>();
+    private static final List<String> MESSAGES_LIST = new ArrayList<>();
 
     private static final Queue<MethodContext> RETRIED_METHODS = new ConcurrentLinkedQueue<>();
 
@@ -72,7 +75,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
      */
     private static final Map<String, Integer> retryCounters = new ConcurrentHashMap<>();
 
-    public RetryAnalyzer() {
+    static {
         final String classes = PropertyManager.getProperty(TesterraProperties.FAILED_TESTS_IF_THROWABLE_CLASSES);
         if (classes != null) {
             String[] split = classes.split(",");
@@ -81,7 +84,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
                     Class<?> aClass = Class.forName(clazz.trim());
                     CLASSES_LIST.add(aClass);
                 } catch (ClassNotFoundException e) {
-                    log().error("Error finding class", e);
+                    new RetryAnalyzer().log().error("Error finding class", e);
                 }
             }
         }
@@ -110,16 +113,26 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
         }
 
         return PropertyManager.getIntProperty(TesterraProperties.FAILED_TESTS_MAX_RETRIES, 1);
-
     }
 
     @Override
     public boolean retry(final ITestResult testResult) {
-        String retryReason = null;
-        boolean retry = false;
-
         MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult);
+        boolean retry = shouldRetry(testResult, methodContext);
+        TesterraListener.getEventBus().post(new TestStatusUpdateEvent(methodContext));
+        return retry;
+    }
+
+    private boolean shouldRetry(ITestResult testResult, MethodContext methodContext) {
+        Method method = testResult.getMethod().getConstructorOrMethod().getMethod();
+
+        if (method.isAnnotationPresent(NoRetry.class)) {
+            return false;
+        }
+
+        boolean retry = false;
         final String testMethodName = methodContext.getName();
+        String retryReason = null;
 
         /*
         check retry counter
@@ -312,6 +325,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
         return retryCause;
     }
 
+    @Deprecated
     public static Queue<MethodContext> getRetriedMethods() {
         return RETRIED_METHODS;
     }
@@ -346,7 +360,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
      */
     public static void methodHasBeenPassed(MethodContext methodContext) {
         RetryAnalyzer.readRetriedMethodsForMethod(methodContext).findFirst().ifPresent(retriedMethod -> {
-            methodContext.setStatus(TestStatusController.Status.RECOVERED);
+            methodContext.setStatus(Status.RECOVERED);
             raiseCounterAndChangeMethodContext(methodContext);
 
             methodContext.addDependsOnMethod(retriedMethod);
@@ -356,7 +370,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
     }
 
     private static void methodHasBeenRetried(MethodContext methodContext) {
-        methodContext.setStatus(TestStatusController.Status.RETRIED);
+        methodContext.setStatus(Status.RETRIED);
         raiseCounterAndChangeMethodContext(methodContext);
 
         readRetriedMethodsForMethod(methodContext).forEach(retriedMethod -> {

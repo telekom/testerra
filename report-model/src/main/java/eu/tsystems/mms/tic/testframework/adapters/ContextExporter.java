@@ -25,11 +25,12 @@ import com.google.common.net.MediaType;
 import com.google.gson.Gson;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.Report;
+import eu.tsystems.mms.tic.testframework.report.Status;
+import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent;
 import eu.tsystems.mms.tic.testframework.internal.IDUtils;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.BuildInformation;
 import eu.tsystems.mms.tic.testframework.report.model.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.ContextValues;
@@ -71,7 +72,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 
 public class ContextExporter implements Loggable {
-    private final Map<TestStatusController.Status, ResultStatusType> RESULT_STATUS_MAPPING = new LinkedHashMap<>();
+    private final Map<Status, ResultStatusType> RESULT_STATUS_MAPPING = new LinkedHashMap<>();
     private final Map<Class, FailureCorridorValue> FAILURE_CORRIDOR_MAPPING = new LinkedHashMap<>();
     private final Report report = TesterraListener.getReport();
     private final Gson jsonEncoder = new Gson();
@@ -307,20 +308,20 @@ public class ContextExporter implements Loggable {
 
     public ContextExporter() {
         // Prepare a status map
-        RESULT_STATUS_MAPPING.put(TestStatusController.Status.FAILED, ResultStatusType.FAILED);
-        RESULT_STATUS_MAPPING.put(TestStatusController.Status.SKIPPED, ResultStatusType.SKIPPED);
-        RESULT_STATUS_MAPPING.put(TestStatusController.Status.PASSED, ResultStatusType.PASSED);
-        RESULT_STATUS_MAPPING.put(TestStatusController.Status.FAILED_EXPECTED, ResultStatusType.FAILED_EXPECTED);
-        RESULT_STATUS_MAPPING.put(TestStatusController.Status.REPAIRED, ResultStatusType.REPAIRED);
-        RESULT_STATUS_MAPPING.put(TestStatusController.Status.RETRIED, ResultStatusType.FAILED_RETRIED);
-        RESULT_STATUS_MAPPING.put(TestStatusController.Status.RECOVERED, ResultStatusType.PASSED_RETRY);
+        RESULT_STATUS_MAPPING.put(Status.FAILED, ResultStatusType.FAILED);
+        RESULT_STATUS_MAPPING.put(Status.SKIPPED, ResultStatusType.SKIPPED);
+        RESULT_STATUS_MAPPING.put(Status.PASSED, ResultStatusType.PASSED);
+        RESULT_STATUS_MAPPING.put(Status.FAILED_EXPECTED, ResultStatusType.FAILED_EXPECTED);
+        RESULT_STATUS_MAPPING.put(Status.REPAIRED, ResultStatusType.REPAIRED);
+        RESULT_STATUS_MAPPING.put(Status.RETRIED, ResultStatusType.FAILED_RETRIED);
+        RESULT_STATUS_MAPPING.put(Status.RECOVERED, ResultStatusType.PASSED_RETRY);
 
         FAILURE_CORRIDOR_MAPPING.put(FailureCorridor.High.class, FailureCorridorValue.FCV_HIGH);
         FAILURE_CORRIDOR_MAPPING.put(FailureCorridor.Mid.class, FailureCorridorValue.FCV_MID);
         FAILURE_CORRIDOR_MAPPING.put(FailureCorridor.Low.class, FailureCorridorValue.FCV_LOW);
     }
 
-    protected ResultStatusType mapResultStatus(TestStatusController.Status status) {
+    protected ResultStatusType mapResultStatus(Status status) {
         return RESULT_STATUS_MAPPING.get(status);
     }
 
@@ -431,8 +432,9 @@ public class ContextExporter implements Loggable {
         builder.putFailureCorridorLimits(FailureCorridorValue.FCV_MID_VALUE, FailureCorridor.getAllowedTestFailuresMID());
         builder.putFailureCorridorLimits(FailureCorridorValue.FCV_LOW_VALUE, FailureCorridor.getAllowedTestFailuresLOW());
 
+        TestStatusController testStatusController = TesterraListener.getTestStatusController();
         Stream.of(FailureCorridor.High.class, FailureCorridor.Mid.class, FailureCorridor.Low.class).forEach(failureCorridorClass -> {
-            int count = executionContext.getFailureCorridorCount(failureCorridorClass);
+            int count = testStatusController.getFailureCorridorCount(failureCorridorClass);
             if (count > 0) {
                 builder.putFailureCorridorCounts(mapFailureCorridorClass(failureCorridorClass).getNumber(), count);
             }

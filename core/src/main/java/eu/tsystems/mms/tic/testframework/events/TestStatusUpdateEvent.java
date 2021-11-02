@@ -19,26 +19,21 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.report;
+package eu.tsystems.mms.tic.testframework.events;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 
-public class StatusCounter {
-    private final Map<Status, Integer> statusCounts = new ConcurrentHashMap<>();
-
-    public int get(Status status) {
-        return statusCounts.getOrDefault(status, 0);
+public class TestStatusUpdateEvent {
+    private final MethodContext methodContext;
+    public interface Listener {
+        void onTestStatusUpdate(TestStatusUpdateEvent event);
     }
 
-    public int getSum(Status[] statuses) {
-        return Arrays.stream(statuses).mapToInt(this::get).sum();
+    public TestStatusUpdateEvent(MethodContext methodContext) {
+        this.methodContext = methodContext;
     }
 
-    public void increment(Status status) {
-        int statusCount = get(status);
-        statusCount++;
-        statusCounts.put(status, statusCount);
+    public MethodContext getMethodContext() {
+        return this.methodContext;
     }
 }

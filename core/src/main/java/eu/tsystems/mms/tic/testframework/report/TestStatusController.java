@@ -82,8 +82,8 @@ public class TestStatusController implements TestStatusUpdateEvent.Listener, Log
         }
     }
 
-    private void writeCounterToLog() {
-        String counterInfoMessage = Stream.of(Status.RETRIED, Status.FAILED, Status.FAILED_EXPECTED, Status.SKIPPED, Status.PASSED)
+    public String getCounterInfoMessage() {
+        return Stream.of(Status.RETRIED, Status.FAILED, Status.FAILED_EXPECTED, Status.SKIPPED, Status.PASSED)
                 .map(status -> {
                     int summarizedTestStatusCount = statusCounter.getSum(Status.getStatusGroup(status));
                     if (summarizedTestStatusCount > 0) {
@@ -94,9 +94,11 @@ public class TestStatusController implements TestStatusUpdateEvent.Listener, Log
                 })
                 .filter(Objects::nonNull)
                 .collect(Collectors.joining(SEPARATOR));
+    }
 
+    private void writeCounterToLog() {
         String logMessage = ExecutionContextController.getCurrentExecutionContext().runConfig.getReportName() + " " +
-                getCurrentExecutionContext().runConfig.RUNCFG + ": " + counterInfoMessage;
+                getCurrentExecutionContext().runConfig.RUNCFG + ": " + getCounterInfoMessage();
 
         log().info(logMessage);
     }

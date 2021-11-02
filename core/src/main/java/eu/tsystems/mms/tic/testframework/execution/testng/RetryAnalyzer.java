@@ -119,7 +119,12 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
     public boolean retry(final ITestResult testResult) {
         MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult);
         boolean retry = shouldRetry(testResult, methodContext);
-        TesterraListener.getEventBus().post(new TestStatusUpdateEvent(methodContext));
+        /**
+         * Do not update tests, that expecting to fail
+         */
+        if (methodContext.getStatus() != Status.FAILED_EXPECTED) {
+            TesterraListener.getEventBus().post(new TestStatusUpdateEvent(methodContext));
+        }
         return retry;
     }
 

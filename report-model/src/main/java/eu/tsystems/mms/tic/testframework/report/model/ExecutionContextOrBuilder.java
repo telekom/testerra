@@ -224,45 +224,11 @@ public interface ExecutionContextOrBuilder extends
       int key);
 
   /**
-   * <code>map&lt;int32, int32&gt; status_counts = 17;</code>
-   */
-  int getStatusCountsCount();
-  /**
-   * <code>map&lt;int32, int32&gt; status_counts = 17;</code>
-   */
-  boolean containsStatusCounts(
-      int key);
-  /**
-   * Use {@link #getStatusCountsMap()} instead.
-   */
-  @java.lang.Deprecated
-  java.util.Map<java.lang.Integer, java.lang.Integer>
-  getStatusCounts();
-  /**
-   * <code>map&lt;int32, int32&gt; status_counts = 17;</code>
-   */
-  java.util.Map<java.lang.Integer, java.lang.Integer>
-  getStatusCountsMap();
-  /**
-   * <code>map&lt;int32, int32&gt; status_counts = 17;</code>
-   */
-
-  int getStatusCountsOrDefault(
-      int key,
-      int defaultValue);
-  /**
-   * <code>map&lt;int32, int32&gt; status_counts = 17;</code>
-   */
-
-  int getStatusCountsOrThrow(
-      int key);
-
-  /**
-   * <code>map&lt;int32, int32&gt; failure_corridor_counts = 18;</code>
+   * <code>map&lt;int32, int32&gt; failure_corridor_counts = 17;</code>
    */
   int getFailureCorridorCountsCount();
   /**
-   * <code>map&lt;int32, int32&gt; failure_corridor_counts = 18;</code>
+   * <code>map&lt;int32, int32&gt; failure_corridor_counts = 17;</code>
    */
   boolean containsFailureCorridorCounts(
       int key);
@@ -273,19 +239,19 @@ public interface ExecutionContextOrBuilder extends
   java.util.Map<java.lang.Integer, java.lang.Integer>
   getFailureCorridorCounts();
   /**
-   * <code>map&lt;int32, int32&gt; failure_corridor_counts = 18;</code>
+   * <code>map&lt;int32, int32&gt; failure_corridor_counts = 17;</code>
    */
   java.util.Map<java.lang.Integer, java.lang.Integer>
   getFailureCorridorCountsMap();
   /**
-   * <code>map&lt;int32, int32&gt; failure_corridor_counts = 18;</code>
+   * <code>map&lt;int32, int32&gt; failure_corridor_counts = 17;</code>
    */
 
   int getFailureCorridorCountsOrDefault(
       int key,
       int defaultValue);
   /**
-   * <code>map&lt;int32, int32&gt; failure_corridor_counts = 18;</code>
+   * <code>map&lt;int32, int32&gt; failure_corridor_counts = 17;</code>
    */
 
   int getFailureCorridorCountsOrThrow(

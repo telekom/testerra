@@ -225,16 +225,4 @@ export class StatusConverter {
             }
         }
     }
-
-    /**
-     * Correct the deprecated result status type of the method context
-     */
-    correctStatus(status:ResultStatusType) {
-        switch (status) {
-            case ResultStatusType.FAILED_MINOR: return ResultStatusType.FAILED;
-            case ResultStatusType.MINOR_RETRY: return ResultStatusType.PASSED_RETRY;
-            case ResultStatusType.MINOR: return ResultStatusType.PASSED;
-            default: return status;
-        }
-    }
 }

@@ -211,7 +211,6 @@ export class ClassStatistics extends Statistics {
             this.addResultStatus(methodContext.resultStatus);
         }
         this._methodContexts.push(methodContext);
-        return this;
     }
 
     get methodContexts() {

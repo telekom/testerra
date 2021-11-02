@@ -23,6 +23,7 @@
 
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
+import eu.tsystems.mms.tic.testframework.report.StatusCounter;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
@@ -30,6 +31,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SuiteContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.TestContext;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -50,7 +52,7 @@ public class ExecutionContextController {
     private static final ThreadLocal<ITestResult> CURRENT_TEST_RESULT = new ThreadLocal<>();
 
     private static final ThreadLocal<SessionContext> CURRENT_SESSION_CONTEXT = new ThreadLocal<>();
-
+    private static final StatusCounter finalCounter = new StatusCounter();
     private static final String prefix = "*** Stats: ";
 
     /**
@@ -177,7 +179,11 @@ public class ExecutionContextController {
                         if (methodContext.isTestMethod()) {
                             testMethodContextCount.incrementAndGet();
 
-                            if (methodContext.hasNotBeenRetried()) {
+                            if (methodContext.isTestMethod()) {
+                                finalCounter.increment(methodContext.getStatus());
+                            }
+
+                            if (methodContext.getStatus().isStatisticallyRelevant()) {
                                 relevantMethodContextCount.incrementAndGet();
 
                                 if (methodContext.getStatus() == TestStatusController.Status.FAILED) {
@@ -196,17 +202,24 @@ public class ExecutionContextController {
         LOGGER.info(prefix + "**********************************************");
         LOGGER.info(prefix + "Test Methods Count: " + testMethodContextCount.get() + " (" + relevantMethodContextCount.get() + " relevant)");
 
-        int overallFailed = executionContext.getStatusCount(TestStatusController.Status.FAILED) - executionContext.getStatusCount(TestStatusController.Status.RETRIED);
-        if (overallFailed > 0) {
-            logStatusSet(Stream.of(TestStatusController.Status.FAILED, TestStatusController.Status.RETRIED));
-        }
+        logStatusSet(Stream.of(TestStatusController.Status.FAILED, TestStatusController.Status.RETRIED));
         logStatusSet(Stream.of(TestStatusController.Status.FAILED_EXPECTED));
         logStatusSet(Stream.of(TestStatusController.Status.SKIPPED));
         logStatusSet(Stream.of(TestStatusController.Status.PASSED, TestStatusController.Status.RECOVERED, TestStatusController.Status.REPAIRED));
 
         LOGGER.info(prefix + "**********************************************");
 
-        LOGGER.info(prefix + "ExecutionContext Status: " + executionContext.getStatus());
+        TestStatusController.Status overallStatus = TestStatusController.Status.FAILED;
+        if (Flags.FAILURE_CORRIDOR_ACTIVE) {
+            if (FailureCorridor.isCorridorMatched()) {
+                overallStatus = TestStatusController.Status.PASSED;
+            }
+        } else {
+            if (finalCounter.get(TestStatusController.Status.FAILED) == 0) {
+                overallStatus = TestStatusController.Status.PASSED;
+            }
+        }
+        LOGGER.info(prefix + "ExecutionContext Status: " + overallStatus.title);
         LOGGER.info(prefix + "FailureCorridor Enabled: " + Flags.FAILURE_CORRIDOR_ACTIVE);
 
         if (Flags.FAILURE_CORRIDOR_ACTIVE) {
@@ -230,8 +243,15 @@ public class ExecutionContextController {
 
     private static String createStatusSetString(Stream<TestStatusController.Status> statuses) {
         return statuses
-                .filter(status -> EXECUTION_CONTEXT.getStatusCount(status) > 0)
-                .map(status -> status.title + ": " + EXECUTION_CONTEXT.getStatusCount(status))
+                .map(status -> {
+                    int summarizedTestStatusCount = finalCounter.getSum(TestStatusController.Status.getStatusGroup(status));
+                    if (summarizedTestStatusCount > 0) {
+                        return status.title + ": " + summarizedTestStatusCount;
+                    } else {
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
                 .collect(Collectors.joining(" ⊃ "));
     }
 }

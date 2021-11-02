@@ -365,47 +365,6 @@ public class ContextExporter implements Loggable {
         apply(context.getName(), builder::setName);
         map(context.getStartTime(), Date::getTime, builder::setStartTime);
         map(context.getEndTime(), Date::getTime, builder::setEndTime);
-
-//        if (context instanceof eu.tsystems.mms.tic.testframework.report.model.context.MethodContext) {
-//            eu.tsystems.mms.tic.testframework.report.model.context.MethodContext methodContext = (eu.tsystems.mms.tic.testframework.report.model.context.MethodContext) context;
-//
-//            // result status
-//            map(methodContext.getStatus(), this::getMappedStatus, builder::setResultStatus);
-//
-//            // exec status
-//            if (methodContext.getStatus() == TestStatusController.Status.NO_RUN) {
-//                builder.setExecStatus(ExecStatusType.RUNNING);
-//            } else {
-//                builder.setExecStatus(ExecStatusType.FINISHED);
-//            }
-//        } else if (context instanceof eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext) {
-//            eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext executionContext = (eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext) context;
-//            if (executionContext.crashed) {
-//                /*
-//                crashed state
-//                 */
-//                builder.setExecStatus(ExecStatusType.CRASHED);
-//            } else {
-//                if (TestStatusController.getTestsSkipped() == executionContext.estimatedTestMethodCount) {
-//                    builder.setResultStatus(ResultStatusType.SKIPPED);
-//                    builder.setExecStatus(ExecStatusType.VOID);
-//                } else if (TestStatusController.getTestsFailed() + TestStatusController.getTestsSuccessful() == 0) {
-//                    builder.setResultStatus(ResultStatusType.NO_RUN);
-//                    builder.setExecStatus(ExecStatusType.VOID);
-//
-//                } else {
-//                    ResultStatusType resultStatusType = STATUS_MAPPING.get(executionContext.getStatus());
-//                    builder.setResultStatus(resultStatusType);
-//
-//                    // exec status
-//                    if (executionContext.getEndTime() != null) {
-//                        builder.setExecStatus(ExecStatusType.FINISHED);
-//                    } else {
-//                        builder.setExecStatus(ExecStatusType.RUNNING);
-//                    }
-//                }
-//            }
-//        }
         return builder;
     }
 
@@ -436,10 +395,6 @@ public class ContextExporter implements Loggable {
         apply(throwable.getClass().getName(), builder::setClassName);
         apply(throwable.getMessage(), builder::setMessage);
         builder.addAllStackTraceElements(Arrays.stream(throwable.getStackTrace()).map(StackTraceElement::toString).collect(Collectors.toList()));
-//
-//        if ((throwable.getCause() != null) && (throwable.getCause() != throwable)) {
-//            builder.setCause(this.prepareStackTraceCause(throwable.getCause()));
-//        }
         return builder;
     }
 
@@ -465,10 +420,6 @@ public class ContextExporter implements Loggable {
         ExecutionContext.Builder builder = ExecutionContext.newBuilder();
 
         apply(buildContextValues(executionContext), builder::setContextValues);
-//        forEach(executionContext.suiteContexts, suiteContext -> builder.addSuiteContextIds(suiteContext.getId()));
-//        forEach(executionContext.mergedClassContexts, classContext -> builder.addMergedClassContextIds(classContext.id));
-//        map(executionContext.exitPoints, this::createContextClip, builder::addAllExitPoints);
-//        map(executionContext.failureAspects, this::createContextClip, builder::addAllFailureAscpects);
         map(executionContext.runConfig, this::buildRunConfig, builder::setRunConfig);
         executionContext.readExclusiveSessionContexts().forEach(sessionContext -> builder.addExclusiveSessionContextIds(sessionContext.getId()));
         apply(executionContext.estimatedTestMethodCount, builder::setEstimatedTestsCount);
@@ -479,10 +430,6 @@ public class ContextExporter implements Loggable {
         builder.putFailureCorridorLimits(FailureCorridorValue.FCV_HIGH_VALUE, FailureCorridor.getAllowedTestFailuresHIGH());
         builder.putFailureCorridorLimits(FailureCorridorValue.FCV_MID_VALUE, FailureCorridor.getAllowedTestFailuresMID());
         builder.putFailureCorridorLimits(FailureCorridorValue.FCV_LOW_VALUE, FailureCorridor.getAllowedTestFailuresLOW());
-
-        executionContext.readStatusCounts().forEach(statusEntry -> {
-            builder.putStatusCounts(mapResultStatus(statusEntry.getKey()).getNumber(), statusEntry.getValue());
-        });
 
         Stream.of(FailureCorridor.High.class, FailureCorridor.Mid.class, FailureCorridor.Low.class).forEach(failureCorridorClass -> {
             int count = executionContext.getFailureCorridorCount(failureCorridorClass);

@@ -181,7 +181,6 @@ export class StatisticsGenerator {
                         currentClassStatistics = classStatistics[currentClassStatistics.classIdentifier];
                     }
 
-                    methodContext.resultStatus = this._statusConverter.correctStatus(methodContext.resultStatus);
                     currentClassStatistics.addMethodContext(methodContext);
                 }
                 executionStatistics.setClassStatistics(Object.values(classStatistics));

@@ -30,18 +30,15 @@ import eu.tsystems.mms.tic.testframework.exceptions.InheritedFailedException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.FailsAnnotationFilter;
-import java.util.Comparator;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 import org.testng.IRetryAnalyzer;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +54,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
 
     private static final Queue<AdditionalRetryAnalyzer> ADDITIONAL_RETRY_ANALYZERS = new ConcurrentLinkedQueue<>();
-    private static final ExecutionContext executionContext = ExecutionContextController.getCurrentExecutionContext();
 
     /**
      * Classes list.
@@ -350,7 +346,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
      */
     public static void methodHasBeenPassed(MethodContext methodContext) {
         RetryAnalyzer.readRetriedMethodsForMethod(methodContext).findFirst().ifPresent(retriedMethod -> {
-            executionContext.incrementStatus(TestStatusController.Status.RECOVERED);
+            methodContext.setStatus(TestStatusController.Status.RECOVERED);
             raiseCounterAndChangeMethodContext(methodContext);
 
             methodContext.addDependsOnMethod(retriedMethod);
@@ -360,7 +356,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
     }
 
     private static void methodHasBeenRetried(MethodContext methodContext) {
-        executionContext.incrementStatus(TestStatusController.Status.RETRIED);
+        methodContext.setStatus(TestStatusController.Status.RETRIED);
         raiseCounterAndChangeMethodContext(methodContext);
 
         readRetriedMethodsForMethod(methodContext).forEach(retriedMethod -> {

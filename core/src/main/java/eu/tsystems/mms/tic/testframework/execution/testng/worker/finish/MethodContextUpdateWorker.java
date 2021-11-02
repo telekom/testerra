@@ -39,7 +39,6 @@ import org.testng.ITestResult;
 
 public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
 
-    private final ExecutionContext executionContext = ExecutionContextController.getCurrentExecutionContext();
 
     @Subscribe
     @Override
@@ -47,7 +46,6 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
         Method method = event.getMethod();
         MethodContext methodContext = event.getMethodContext();
         ITestResult testResult = event.getTestResult();
-        ITestNGMethod testMethod = event.getTestMethod();
 
         // Handle collected assertions if we have more than one
         if (testResult.isSuccess() && methodContext.readErrors().anyMatch(ErrorContext::isNotOptional)) {
@@ -79,21 +77,14 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
              * method container status and steps
              */
             if (event.isFailed()) {
+                methodContext.setStatus(TestStatusController.Status.FAILED);
                 /*
                  * set status
                  */
-                if (testMethod.isTest()) {
-                    Optional<Fails> failsAnnotation = methodContext.getFailsAnnotation();
-                    if (failsAnnotation.isPresent() && !failsAnnotation.get().intoReport()) {
-                        // expected failed
-                        TestStatusController.setMethodStatus(methodContext, TestStatusController.Status.FAILED_EXPECTED, method);
-                    } else {
-                        // regular failed
-                        TestStatusController.Status status = TestStatusController.Status.FAILED;
-                        TestStatusController.setMethodStatus(methodContext, status, method);
-                    }
-                } else {
-                    TestStatusController.setMethodStatus(methodContext, TestStatusController.Status.FAILED, method);
+                Optional<Fails> failsAnnotation = methodContext.getFailsAnnotation();
+                if (failsAnnotation.isPresent() && !failsAnnotation.get().intoReport()) {
+                    methodContext.setStatus(TestStatusController.Status.FAILED_EXPECTED);
+                    // expected failed
                 }
 
                 /*
@@ -102,15 +93,17 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
                 TestStep failedStep = methodContext.getCurrentTestStep();
                 methodContext.setFailedStep(failedStep);
             } else if (testResult.isSuccess()) {
-                TestStatusController.Status status = TestStatusController.Status.PASSED;
-
+                methodContext.setStatus(TestStatusController.Status.PASSED);
                 RetryAnalyzer.methodHasBeenPassed(methodContext);
 
-                // set status
-                TestStatusController.setMethodStatus(methodContext, status, method);
+                methodContext.getFailsAnnotation().ifPresent(fails -> {
+                    methodContext.setStatus(TestStatusController.Status.REPAIRED);
+                });
+
             } else if (event.isSkipped()) {
-                TestStatusController.setMethodStatus(methodContext, TestStatusController.Status.SKIPPED, method);
+                methodContext.setStatus(TestStatusController.Status.SKIPPED);
             }
         }
+        TestStatusController.finalizeMethod(methodContext, method);
     }
 }

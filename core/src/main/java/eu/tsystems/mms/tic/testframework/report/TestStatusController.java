@@ -27,9 +27,8 @@ import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.slf4j.Logger;
@@ -43,17 +42,20 @@ public class TestStatusController {
     private static final Logger LOGGER = LoggerFactory.getLogger(TestStatusController.class);
     private static final ExecutionContext executionContext = ExecutionContextController.getCurrentExecutionContext();
     private static final String SEPARATOR = ", ";
+    private static final StatusCounter statusCounter = new StatusCounter();
 
     private TestStatusController() {
 
     }
 
-    public static void setMethodStatus(MethodContext methodContext, Status status, Method method) {
+    public static void finalizeMethod(MethodContext methodContext, Method method) {
         /*
         check for additional marker annotations
          */
         //Annotation[] annotations = method.getAnnotations();
         //methodContext.methodTags = Arrays.stream(annotations).collect(Collectors.toList());
+
+        Status status = methodContext.getStatus();
 
         /*
         set status
@@ -65,24 +67,33 @@ public class TestStatusController {
             if (testResult.getStatus() == ITestResult.CREATED && status == Status.FAILED) {
                 LOGGER.warn("TestNG bug - result status is CREATED, which is wrong. Method status is " + Status.FAILED +
                         ", which is also wrong. Assuming SKIPPED.");
-                status = Status.SKIPPED;
+                methodContext.setStatus(Status.SKIPPED);
             } else if (throwable instanceof SkipException) {
                 LOGGER.info("Found SkipException");
-                status = Status.SKIPPED;
+                methodContext.setStatus(Status.SKIPPED);
             }
         }
-
-        methodContext.setStatus(status);
         methodContext.updateEndTimeRecursive(new Date());
 
         // announce to run context
         MethodRelations.announceRun(method, methodContext);
+
+        if (!methodContext.isConfigMethod()) {
+            statusCounter.increment(methodContext.getStatus());
+        }
     }
 
     public static void writeCounterToLog() {
-        String counterInfoMessage = Stream.of(Status.FAILED, Status.FAILED_EXPECTED, Status.SKIPPED, Status.PASSED)
-                .filter(status -> executionContext.getStatusCount(status) > 0)
-                .map(status -> executionContext.getStatusCount(status) + " " + status.title)
+        String counterInfoMessage = Stream.of(Status.RETRIED, Status.FAILED, Status.FAILED_EXPECTED, Status.SKIPPED, Status.PASSED)
+                .map(status -> {
+                    int summarizedTestStatusCount = statusCounter.getSum(Status.getStatusGroup(status));
+                    if (summarizedTestStatusCount > 0) {
+                        return summarizedTestStatusCount + " " + status.title;
+                    } else {
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
                 .collect(Collectors.joining(SEPARATOR));
 
         String logMessage = ExecutionContextController.getCurrentExecutionContext().runConfig.getReportName() + " " +
@@ -90,12 +101,8 @@ public class TestStatusController {
 
         LOGGER.info(logMessage);
     }
-
-    /**
-     * @deprecated Use {@link ExecutionContext#getStatusCount(Status)} instead
-     */
     public static int getTestsFailed() {
-        return executionContext.getStatusCount(Status.FAILED);
+        return statusCounter.get(Status.FAILED);
     }
 
     /**
@@ -119,18 +126,11 @@ public class TestStatusController {
         return executionContext.getFailureCorridorCount(FailureCorridor.Low.class);
     }
 
-    /**
-     * @deprecated Use {@link ExecutionContext#getStatusCount(Status)} instead
-     */
     public static int getTestsSuccessful() {
-        return executionContext.getStatusCount(Status.PASSED);
+        return statusCounter.get(Status.PASSED);
     }
-
-    /**
-     * @deprecated Use {@link ExecutionContext#getStatusCount(Status)} instead
-     */
     public static int getTestsSkipped() {
-        return executionContext.getStatusCount(Status.SKIPPED);
+        return statusCounter.get(Status.SKIPPED);
     }
 
     public enum Status {
@@ -162,8 +162,22 @@ public class TestStatusController {
 
         public final String title;
 
+        private static final Status[] PASSED_STATUS_GROUP = new Status[]{Status.PASSED, Status.REPAIRED, Status.RECOVERED};
+
         Status(String title) {
             this.title = title;
+        }
+
+        public static Status[] getStatusGroup(Status status) {
+            if (status == Status.PASSED) {
+                return PASSED_STATUS_GROUP;
+            } else {
+                return new Status[]{status};
+            }
+        }
+
+        public boolean isStatisticallyRelevant() {
+            return this != Status.RETRIED;
         }
     }
 }

@@ -52,7 +52,7 @@ import java.util.stream.Stream;
  *
  * @author mibu
  */
-public class MethodContext extends AbstractContext implements SynchronizableContext, HasStatus {
+public class MethodContext extends AbstractContext implements SynchronizableContext {
 
     public enum Type {
         TEST_METHOD,
@@ -263,7 +263,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return retryNumber == 0;
     }
 
-    @Override
     public TestStatusController.Status getStatus() {
         return status;
     }

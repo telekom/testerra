@@ -87,14 +87,18 @@ export class TestClassesCard {
         //Iterate through classStatistics array to fill map with data for series
         classStatistics
             .filter(classStatistic => {
-                return this._filteredStatuses.find(status => classStatistic.getStatusCount(status) > 0);
+                return this._filteredStatuses.find(status => {
+                    const statusGroup = this._statusConverter.groupStatus(status);
+                    return classStatistic.getSummarizedStatusCount(statusGroup) > 0;
+                });
             })
             .sort((a, b) => {
                 return b.getSummarizedStatusCount(this._filteredStatuses) - a.getSummarizedStatusCount(this._filteredStatuses)
             })
             .forEach(classStats => {
                 for (const status of this._filteredStatuses) {
-                    const count = classStats.getStatusCount(status);
+                    const statusGroup = this._statusConverter.groupStatus(status);
+                    const count = classStats.getSummarizedStatusCount(statusGroup);
                     if (count > 0) {
                         data.get(status).push(count);
                     } else {

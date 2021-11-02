@@ -129,9 +129,9 @@ export class Classes extends AbstractViewModel {
                     let methodContexts = classStatistic.methodContexts;
 
                     if (this._selectedStatus > 0) {
-                        const selectedStatusGroup = this._statusConverter.groupStatus(this._selectedStatus);
+                        const selectedStatusGroup = this._statusConverter.groupStatus(this._statusConverter.normalizeStatus(this._selectedStatus));
                         methodContexts = methodContexts.filter(methodContext => {
-                            return selectedStatusGroup.indexOf(methodContext.resultStatus) > 0
+                            return selectedStatusGroup.indexOf(methodContext.resultStatus) >= 0
                         });
                     }
 

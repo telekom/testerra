@@ -45,7 +45,7 @@ export class StatusConverter {
     get passedStatuses() {
         return [
             ResultStatusType.PASSED,
-            ResultStatusType.PASSED_RETRY,
+            ResultStatusType.PASSED_RETRY, // Recovered
             ResultStatusType.REPAIRED,
         ]
     }

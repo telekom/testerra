@@ -34,6 +34,7 @@ import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodStartEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.ListenerUtils;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodContextUpdateWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodParametersWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorker;
@@ -136,6 +137,8 @@ public class TesterraListener implements
 
         eventBus.register(new MethodStartWorker());
         eventBus.register(new MethodParametersWorker());
+        eventBus.register(new MethodContextUpdateWorker());
+
         eventBus.register(new OmitInDevelopmentMethodInterceptor());
         eventBus.register(new SortMethodsByPriorityMethodInterceptor());
 

@@ -120,9 +120,9 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
         MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult);
         boolean retry = shouldRetry(testResult, methodContext);
         /**
-         * Do not update tests, that expecting to fail
+         * Announce the test status change
          */
-        if (methodContext.getStatus() != Status.FAILED_EXPECTED) {
+        if (methodContext.isStatusOneOf(Status.RETRIED, Status.RECOVERED)) {
             TesterraListener.getEventBus().post(new TestStatusUpdateEvent(methodContext));
         }
         return retry;
@@ -172,24 +172,8 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
             }
         }
 
-        /*
-        no retry for tests with fails annotaion in stacktrace
-         */
-        /*if (throwable1 != null && ExecutionUtils.getFailsAnnotationInStackTrace(throwable1.getStackTrace()) != null) {
-
-            final Fails failsAnnotation = testResult.getMethod().getConstructorOrMethod().getMethod().getAnnotation(Fails.class);
-            if (FailsAnnotationFilter.isFailsAnnotationValid(failsAnnotation)) {
-                LOGGER.warn("Not retrying this method, because a method in stacktrace is @Fails annotated.");
-                return false;
-            }
-        }*/
-
         boolean containingFilteredThrowable = isTestResultContainingFilteredThrowable(testResult);
         if (containingFilteredThrowable) {
-            /*
-             * does the throwable filter match?
-             */
-            retryReason = "Found filtered throwable";
             retry = true;
         }
 
@@ -200,7 +184,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
             methodHasBeenRetried(methodContext);
             RETRIED_METHODS.add(methodContext);
 
-            log().info(retryReason + ", send signal for retrying the test " + retryMessageString + "\n" + methodContext);
+            log().info("Send signal for retrying the test " + retryMessageString + "\n" + methodContext);
 
             testResult.getTestContext().getFailedTests().removeResult(testResult);
             testResult.getTestContext().getSkippedTests().removeResult(testResult);
@@ -299,14 +283,14 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
                 Optional<Throwable> optionalRetryCause = additionalRetryAnalyzer.analyzeThrowable(throwable);
                 if (optionalRetryCause.isPresent()) {
                     retryCause = optionalRetryCause.get();
-                    log().info("Retrying test because of: " + retryCause.getMessage());
+                    log().info(String.format("Found retry cause: \"%s\"", retryCause.getMessage()));
                     break;
                 }
             }
 
             for (Class aClass : CLASSES_LIST) {
                 if (throwable.getClass() == aClass) {
-                    log().info("Retrying test because of exception class: " + aClass.getName());
+                    log().info(String.format("Found retry cause: exception class=\"%s\"", aClass.getName()));
                     retryCause = throwable;
                     break;
                 }
@@ -316,7 +300,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
             if (tMessage != null) {
                 for (String message : MESSAGES_LIST) {
                     if (tMessage.contains(message)) {
-                        log().info("Retrying test because of exception message: " + message);
+                        log().info(String.format("Found retry cause: exception message=\"%s\"", message));
                         retryCause = throwable;
                         break;
                     }

@@ -41,11 +41,11 @@ public enum Status {
      */
     REPAIRED("Repaired"),
     /**
-     * Test {@link #FAILED} with {@link MethodContext#hasBeenRetried()}
+     * Test {@link #FAILED} with {@link MethodContext#getRetryCounter()} > 0
      */
     RETRIED("Retried"),
     /**
-     * Test {@link #PASSED} with {@link MethodContext#hasBeenRetried()}
+     * Test {@link #PASSED} with {@link MethodContext#getRetryCounter()} > 0
      */
     RECOVERED("Recovered"),
     ;

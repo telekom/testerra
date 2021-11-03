@@ -90,7 +90,7 @@ public class MethodRelations {
             for (String dependsOnMethod : dependsOnMethods) {
                 // In case of retried dependsOn methods the correct dependsOn-context was not retried
                 Optional<MethodContext> foundContext = methodContext.getClassContext().readMethodContexts()
-                        .filter(context -> context.getName().equals(dependsOnMethod) && !context.hasBeenRetried())
+                        .filter(context -> context.getName().equals(dependsOnMethod) && context.getRetryCounter() == 0)
                         .findFirst();
                 foundContext.ifPresent(methodContext::addDependsOnMethod);
             }

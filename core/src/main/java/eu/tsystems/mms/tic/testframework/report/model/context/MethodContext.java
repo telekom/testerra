@@ -251,20 +251,16 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return !isConfigMethod();
     }
 
-    public boolean hasBeenRetried() {
-        return retryNumber > 0;
-    }
-
-    public boolean hasNotBeenRetried() {
-        return retryNumber == 0;
-    }
-
     public Status getStatus() {
         return status;
     }
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public boolean isStatusOneOf(Status ...statuses) {
+        return Arrays.stream(statuses).anyMatch(givenStatus -> givenStatus == this.status);
     }
 
     @Override

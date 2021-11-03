@@ -122,7 +122,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
         /**
          * Announce the test status change
          */
-        if (methodContext.isStatusOneOf(Status.RETRIED, Status.RECOVERED)) {
+        if (methodContext.isStatusOneOf(Status.RETRIED, Status.RECOVERED, Status.FAILED)) {
             TesterraListener.getEventBus().post(new TestStatusUpdateEvent(methodContext));
         }
         return retry;

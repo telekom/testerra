@@ -83,8 +83,8 @@ public class TestNgDependsOnRetryTest extends TesterraTest {
         MethodContext failedMethod = collected.get(0);
         MethodContext passedMethod = collected.get(1);
 
-        Assert.assertEquals(failedMethod.getStatus(), Status.FAILED);
-        Assert.assertEquals(passedMethod.getStatus(), Status.PASSED);
+        Assert.assertEquals(failedMethod.getStatus(), Status.RETRIED);
+        Assert.assertEquals(passedMethod.getStatus(), Status.RECOVERED);
 
         Assert.assertEquals(1, failedMethod.readRelatedMethodContexts().count());
         Assert.assertEquals(1, passedMethod.readDependsOnMethodContexts().count());

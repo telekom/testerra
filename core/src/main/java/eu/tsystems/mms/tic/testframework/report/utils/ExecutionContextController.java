@@ -54,7 +54,7 @@ public class ExecutionContextController {
     private static final ThreadLocal<ITestResult> CURRENT_TEST_RESULT = new ThreadLocal<>();
 
     private static final ThreadLocal<SessionContext> CURRENT_SESSION_CONTEXT = new ThreadLocal<>();
-    private static final String prefix = "*** Stats: ";
+    private static final String statsPrefix = "*** Stats: ";
 
     /**
      * //TODO Make {@link Optional}
@@ -158,9 +158,9 @@ public class ExecutionContextController {
     public static void printExecutionStatistics() {
         final ExecutionContext executionContext = getCurrentExecutionContext();
 
-        LOGGER.info(prefix + "**********************************************");
+        LOGGER.info(statsPrefix + "**********************************************");
 
-        LOGGER.info(prefix + "ExecutionContext: " + executionContext.getName());
+        LOGGER.info(statsPrefix + "ExecutionContext: " + executionContext.getName());
         AtomicInteger suiteContextCount = new AtomicInteger();
         AtomicInteger classContextCount = new AtomicInteger();
         AtomicInteger testContextCount = new AtomicInteger();
@@ -188,22 +188,23 @@ public class ExecutionContextController {
                 });
             });
         });
-        LOGGER.info(prefix + "SuiteContexts:  " + suiteContextCount.get());
-        LOGGER.info(prefix + "TestContexts:   " + testContextCount.get());
-        LOGGER.info(prefix + "ClassContexts:  " + classContextCount.get());
-        LOGGER.info(prefix + "MethodContexts: " + methodContextCount.get());
-        LOGGER.info(prefix + "**********************************************");
-        LOGGER.info(prefix + "Test Methods Count: " + testMethodContextCount.get() + " (" + relevantMethodContextCount.get() + " relevant)");
+        LOGGER.info(statsPrefix + "SuiteContexts:  " + suiteContextCount.get());
+        LOGGER.info(statsPrefix + "TestContexts:   " + testContextCount.get());
+        LOGGER.info(statsPrefix + "ClassContexts:  " + classContextCount.get());
+        LOGGER.info(statsPrefix + "MethodContexts: " + methodContextCount.get());
+        LOGGER.info(statsPrefix + "**********************************************");
+        LOGGER.info(statsPrefix + "Test Methods Count: " + testMethodContextCount.get() + " (" + relevantMethodContextCount.get() + " relevant)");
 
         TestStatusController testStatusController = TesterraListener.getTestStatusController();
         StatusCounter statusCounter = testStatusController.getStatusCounter();
 
-        logStatusSet(Stream.of(Status.FAILED, Status.RETRIED), statusCounter);
+        logStatusSet(Stream.of(Status.FAILED), statusCounter);
+        logStatusSet(Stream.of(Status.RETRIED), statusCounter);
         logStatusSet(Stream.of(Status.FAILED_EXPECTED), statusCounter);
         logStatusSet(Stream.of(Status.SKIPPED), statusCounter);
         logStatusSet(Stream.of(Status.PASSED, Status.RECOVERED, Status.REPAIRED), statusCounter);
 
-        LOGGER.info(prefix + "**********************************************");
+        LOGGER.info(statsPrefix + "**********************************************");
         Status overallStatus = Status.FAILED;
         if (Flags.FAILURE_CORRIDOR_ACTIVE) {
             if (FailureCorridor.isCorridorMatched()) {
@@ -215,25 +216,25 @@ public class ExecutionContextController {
             }
         }
 
-        LOGGER.info(prefix + "ExecutionContext Status: " + overallStatus.title);
-        LOGGER.info(prefix + "FailureCorridor Enabled: " + Flags.FAILURE_CORRIDOR_ACTIVE);
+        LOGGER.info(statsPrefix + "ExecutionContext Status: " + overallStatus.title);
+        LOGGER.info(statsPrefix + "FailureCorridor Enabled: " + Flags.FAILURE_CORRIDOR_ACTIVE);
 
         if (Flags.FAILURE_CORRIDOR_ACTIVE) {
-            LOGGER.info(prefix + "**********************************************");
-            LOGGER.info(prefix + "FailureCorridor Status : " + FailureCorridor.getStatistics() + " " + FailureCorridor.getStatusMessage());
+            LOGGER.info(statsPrefix + "**********************************************");
+            LOGGER.info(statsPrefix + "FailureCorridor Status : " + FailureCorridor.getStatistics() + " " + FailureCorridor.getStatusMessage());
         }
 
-        LOGGER.info(prefix + "**********************************************");
+        LOGGER.info(statsPrefix + "**********************************************");
 
-        LOGGER.info(prefix + "Duration: " + executionContext.getDurationAsString());
+        LOGGER.info(statsPrefix + "Duration: " + executionContext.getDurationAsString());
 
-        LOGGER.info(prefix + "**********************************************");
+        LOGGER.info(statsPrefix + "**********************************************");
     }
 
     private static void logStatusSet(Stream<Status> statuses, StatusCounter statusCounter) {
         String statusSetString = createStatusSetString(statuses, statusCounter);
         if (statusSetString.length() > 0) {
-            LOGGER.info(prefix + statusSetString);
+            LOGGER.info(statsPrefix + statusSetString);
         }
     }
 

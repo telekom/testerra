@@ -167,7 +167,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
         if (fails.isPresent()) {
             // BUT ONLY: No retry for methods that hav a validFor
             if (FailsAnnotationFilter.isFailsAnnotationValid(fails.get())) {
-                log().warn("Not retrying this method, because test is @Fails annotated.");
+                log().warn(String.format("Not retrying this method, because test is @%s annotated.", Fails.class.getSimpleName()));
                 return false;
             }
         }

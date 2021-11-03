@@ -147,12 +147,9 @@ export class ExecutionStatistics extends Statistics {
     }
 
     protected addStatistics(classStatistics: ClassStatistics) {
+        super.addStatistics(classStatistics)
         classStatistics.methodContexts
             .forEach(methodContext => {
-                if (methodContext.methodType == data.MethodType.TEST_METHOD) {
-                    this.addResultStatus(methodContext.resultStatus);
-                }
-
                 const methodDetails = new MethodDetails(methodContext, classStatistics);
                 methodDetails.failureAspects.forEach(failureAspect => {
                     this._addUniqueFailureAspect(failureAspect, methodContext);

@@ -46,7 +46,7 @@
                                 <span class="item-label"
                                       repeat.for="count of item.counts"
                                       innerhtml="${count}"
-                                      if.bind="count"
+                                      if.bind="count!=null"
                                 ></span>
                             </mdc-list-item-primary-text>
                             <mdc-list-item-secondary-text>

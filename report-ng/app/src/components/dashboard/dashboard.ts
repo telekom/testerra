@@ -82,19 +82,21 @@ export class Dashboard extends AbstractViewModel {
             this._topFailureAspects = this._executionStatistics.uniqueFailureAspects.slice(0,3);
 
             this._filterItems = [];
-            let failed = this._executionStatistics.overallFailed;
-            if (failed > 0) {
-                const failedRetriedCount = this._executionStatistics.getStatusCount(data.ResultStatusType.FAILED_RETRIED);
+            const failed = this._executionStatistics.overallFailed;
+            const failedRetried = this._executionStatistics.getStatusCount(data.ResultStatusType.FAILED_RETRIED);
+            if (failed > 0 || failedRetried > 0) {
+                const counts = []
+                const labels = []
+                counts.push(failed)
+                labels.push(this._statusConverter.getLabelForStatus(ResultStatusType.FAILED))
+                if (failedRetried > 0) {
+                    counts.push(" + " + failedRetried)
+                    labels.push(this._statusConverter.getLabelForStatus(data.ResultStatusType.FAILED_RETRIED))
+                }
                 this._filterItems.push({
                     status: ResultStatusType.FAILED,
-                    counts: [
-                        failed,
-                        failedRetriedCount>0?" + " + failedRetriedCount:null
-                    ],
-                    labels: [
-                        this._statusConverter.getLabelForStatus(ResultStatusType.FAILED),
-                        failedRetriedCount>0?this._statusConverter.getLabelForStatus(data.ResultStatusType.FAILED_RETRIED):null
-                    ],
+                    counts: counts,
+                    labels: labels,
                 });
             }
 

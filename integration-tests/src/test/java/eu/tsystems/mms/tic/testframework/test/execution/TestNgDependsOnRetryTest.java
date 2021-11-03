@@ -66,7 +66,7 @@ public class TestNgDependsOnRetryTest extends TesterraTest {
         Assert.assertEquals(this.counter.get(), 3, "testCaseTwo should executed after retried 'dependsOn' method.");
     }
 
-    @Test(dependsOnMethods = "testCaseOne")
+    @Test(dependsOnMethods = "testCaseOne", groups = "SEQUENTIAL")
     public void test_retriedTestCaseData() {
         Stream<MethodContext> methodContexts = findMethodContext("testCaseOne");
 

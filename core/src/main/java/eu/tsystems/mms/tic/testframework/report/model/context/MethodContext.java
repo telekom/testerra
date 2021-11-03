@@ -75,6 +75,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     private List<MethodContext> relatedMethodContexts = new LinkedList<>();
     private final List<MethodContext> dependsOnMethodContexts = new LinkedList<>();
     private List<CustomContext> customContexts;
+    private List<Annotation> customAnnotations;
 
     /**
      * Public constructor. Creates a new <code>MethodContext</code> object.
@@ -310,9 +311,12 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     public Stream<Annotation> readAnnotations() {
-        return getTestNgResult()
+        return Stream.concat(
+                (this.customAnnotations!=null)?this.customAnnotations.stream():Stream.empty(),
+                getTestNgResult()
                         .map(testResult -> Stream.of(testResult.getMethod().getConstructorOrMethod().getMethod().getAnnotations()))
-                        .orElse(Stream.empty());
+                        .orElse(Stream.empty())
+        );
     }
 
     public Optional<Fails> getFailsAnnotation() {
@@ -320,6 +324,17 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     private <T extends Annotation> Optional<T> getAnnotation(Class<T> annotationClass) {
-        return getTestNgResult().map(testResult -> testResult.getMethod().getConstructorOrMethod().getMethod().getAnnotation(annotationClass));
+        return readAnnotations().filter(annotationClass::isInstance).map(annotation -> (T)annotation).findFirst();
+    }
+
+    /**
+     * Required by cucumber-connector
+     * @param annotation
+     */
+    public void addAnnotation(Annotation annotation) {
+        if (this.customAnnotations == null) {
+            this.customAnnotations = new LinkedList<>();
+        }
+        this.customAnnotations.add(annotation);
     }
 }

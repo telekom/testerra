@@ -34,9 +34,7 @@ public class BrowserUpRemoteProxyServer {
 
     private Integer port;
     private URL upstreamProxy;
-
     private String upstreamNonProxy;
-
     private String bindAddress;
 
     public Integer getPort() {
@@ -51,6 +49,11 @@ public class BrowserUpRemoteProxyServer {
         return Optional.ofNullable(upstreamProxy);
     }
 
+    /**
+     * Sets the URL for the upstream/chained proxy.
+     * Uses the user info for upstream proxy credentials.
+     * @param upstreamProxy
+     */
     public void setUpstreamProxy(URL upstreamProxy) {
         this.upstreamProxy = upstreamProxy;
     }

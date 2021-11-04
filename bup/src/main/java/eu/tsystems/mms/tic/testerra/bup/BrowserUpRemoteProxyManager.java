@@ -150,6 +150,18 @@ public class BrowserUpRemoteProxyManager implements Loggable {
                 startServerUriBuilder.setParameter("proxyHTTPS", "true");
             }
 
+            String userInfo = url.getUserInfo();
+            if (StringUtils.isNotBlank(userInfo)) {
+                String[] parts = userInfo.split(":");
+                if (parts.length > 0) {
+                    startServerUriBuilder.setParameter("proxyUsername", parts[0]);
+
+                    if (parts.length > 1) {
+                        startServerUriBuilder.setParameter("proxyPassword", parts[1]);
+                    }
+                }
+            }
+
             // Set non proxy exceptions for upstream proxy
             proxyServer.getUpstreamNonProxy().filter(StringUtils::isNotBlank).ifPresent(s -> {
                 startServerUriBuilder.setParameter("httpNonProxyHosts", s);

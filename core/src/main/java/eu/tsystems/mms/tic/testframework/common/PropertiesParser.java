@@ -22,12 +22,9 @@ package eu.tsystems.mms.tic.testframework.common;
 
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.transfer.BooleanPackedResponse;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.Properties;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -39,16 +36,7 @@ import java.util.stream.Stream;
  * Created by peter on 01.09.14.
  */
 public final class PropertiesParser implements Loggable {
-
     private static final Pattern patternReplace = Pattern.compile("\\{[^\\}]*\\}");
-    /**
-     * @deprecated Undocumented feature
-     */
-    private static final String REGEX_SENSIBLE = "@SENSIBLE@";
-    /**
-     * @deprecated Undocumented feature
-     */
-    private static final Pattern PATTERN_SENSIBLE = Pattern.compile(REGEX_SENSIBLE);
     private final Supplier<Stream<PropertyResolver>> propertyResolvers;
 
     PropertiesParser(Supplier<Stream<PropertyResolver>> propertyResolversSupplier) {
@@ -94,11 +82,6 @@ public final class PropertiesParser implements Loggable {
                 if (value == null) {
                     log().warn("Property " + match + " not found");
                 } else {
-                    // look if SENSIBLE
-                    final BooleanPackedResponse<String> response = findAndVoidSENSIBLETag(value);
-                    value = response.getResponse();
-                    boolean sensible = response.getBoolean();
-
                     // 1. remember the key because it was replaced
                     List<String> listCopy = new ArrayList<>(searchedStrings.size() + 1);
                     listCopy.addAll(searchedStrings);
@@ -108,29 +91,11 @@ public final class PropertiesParser implements Loggable {
                     // 3. finally replace
                     line = line.replace(match, value);
 
-                    if (sensible) {
-                        value = "###########";
-                    }
-                    log().trace("Replace '" + match + "' by '" + value + "'");
+                    //log().trace("Replace '" + match + "' by '" + value + "'");
                 }
             }
         }
         return line;
-    }
-
-    /**
-     * @deprecated Undocumented feature
-     */
-    private static BooleanPackedResponse<String> findAndVoidSENSIBLETag(String value) {
-        if (value == null) {
-            return new BooleanPackedResponse<>(value, false);
-        }
-        final Matcher matcherSensible = PATTERN_SENSIBLE.matcher(value);
-        if (matcherSensible.find()) {
-            value = value.replaceAll(REGEX_SENSIBLE, "");
-            return new BooleanPackedResponse<>(value, true);
-        }
-        return new BooleanPackedResponse<>(value, false);
     }
 
     /**
@@ -153,12 +118,6 @@ public final class PropertiesParser implements Loggable {
         if (value != null) {
             value = parseLine(value);
         }
-
-        /*
-        replace residual control tags
-         */
-        final BooleanPackedResponse<String> response = findAndVoidSENSIBLETag(value);
-        value = response.getResponse();
 
         return value;
     }

@@ -22,6 +22,7 @@
 package eu.tsystems.mms.tic.testerra.bup;
 
 import java.net.URL;
+import java.util.Optional;
 
 /**
  * Date: 25.05.2020
@@ -46,24 +47,24 @@ public class BrowserUpRemoteProxyServer {
         this.port = port;
     }
 
-    public URL getUpstreamProxy() {
-        return upstreamProxy;
+    public Optional<URL> getUpstreamProxy() {
+        return Optional.ofNullable(upstreamProxy);
     }
 
     public void setUpstreamProxy(URL upstreamProxy) {
         this.upstreamProxy = upstreamProxy;
     }
 
-    public String getUpstreamNonProxy() {
-        return upstreamNonProxy;
+    public Optional<String> getUpstreamNonProxy() {
+        return Optional.ofNullable(upstreamNonProxy);
     }
 
     public void setUpstreamNonProxy(String upstreamNonProxy) {
         this.upstreamNonProxy = upstreamNonProxy;
     }
 
-    public String getBindAddress() {
-        return bindAddress;
+    public Optional<String> getBindAddress() {
+        return Optional.ofNullable(bindAddress);
     }
 
     public void setBindAddress(String bindAddress) {

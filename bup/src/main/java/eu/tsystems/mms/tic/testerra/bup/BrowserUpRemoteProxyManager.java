@@ -139,20 +139,22 @@ public class BrowserUpRemoteProxyManager implements Loggable {
         startServerUriBuilder.setParameter("trustAllServers", "true");
 
         // Set bind address
-        if (StringUtils.isNotBlank(proxyServer.getBindAddress())) {
-            startServerUriBuilder.setParameter("bindAddress", proxyServer.getBindAddress());
-        }
+        proxyServer.getBindAddress().filter(StringUtils::isNotBlank).ifPresent(s -> {
+            startServerUriBuilder.setParameter("bindAddress", s);
+        });
 
         // Set upstream proxy.
-        if (proxyServer.getUpstreamProxy() != null) {
-            startServerUriBuilder.setParameter("httpProxy", String.format("%s:%d", proxyServer.getUpstreamProxy().getHost(), proxyServer.getUpstreamProxy().getPort()));
-            startServerUriBuilder.setParameter("proxyHTTPS", String.format("%s:%d", proxyServer.getUpstreamProxy().getHost(), proxyServer.getUpstreamProxy().getPort()));
+        proxyServer.getUpstreamProxy().ifPresent(url -> {
+            startServerUriBuilder.setParameter("httpProxy", String.format("%s:%d", url.getHost(), url.getPort()));
+            if (url.getHost().equalsIgnoreCase("https")) {
+                startServerUriBuilder.setParameter("proxyHTTPS", "true");
+            }
 
             // Set non proxy exceptions for upstream proxy
-            if (StringUtils.isNotBlank(proxyServer.getUpstreamNonProxy())) {
-                startServerUriBuilder.setParameter("httpNonProxyHosts", proxyServer.getUpstreamNonProxy());
-            }
-        }
+            proxyServer.getUpstreamNonProxy().filter(StringUtils::isNotBlank).ifPresent(s -> {
+                startServerUriBuilder.setParameter("httpNonProxyHosts", s);
+            });
+        });
 
         final URI uri = buildUri(startServerUriBuilder, "Error parsing URL for POST /proxy for BrowserUp proxy server.");
         final HttpPost httpPost = new HttpPost(uri);

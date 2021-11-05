@@ -22,357 +22,131 @@
 
 package eu.tsystems.mms.tic.testframework.report;
 
-import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
+import com.google.common.eventbus.Subscribe;
+import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
+import eu.tsystems.mms.tic.testframework.events.TestStatusUpdateEvent;
 import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.ITestResult;
 import org.testng.SkipException;
+
+import java.lang.reflect.Method;
+import java.util.Date;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import static eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController.getCurrentExecutionContext;
 
-public class TestStatusController {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(TestStatusController.class);
-    private static int testsSuccessful = 0;
-    private static int testsSkipped = 0;
-    private static int testsFailed = 0;
-
-    /*
-    Failure corridor values
-     */
-    private static int testsFailedHIGH = 0;
-    private static int testsFailedMID = 0;
-    private static int testsFailedLOW = 0;
-
-    private static int testsFailedRetried = 0;
-    private static int testsExpectedFailed = 0;
+public class TestStatusController implements TestStatusUpdateEvent.Listener, Loggable {
     private static final String SEPARATOR = ", ";
+    private final StatusCounter statusCounter = new StatusCounter();
+    private final Map<Class, Integer> failureCorridorCounts = new ConcurrentHashMap<>();
 
-    private TestStatusController() {
-
-    }
-//
-//    public static JSONObject createStatusJSON() {
-//        Map<String, Object> statusMap = new HashMap<>();
-//
-//        statusMap.put("TestsSuccessful", testsSuccessful);
-//        statusMap.put("TestsSkipped", testsSkipped);
-//        statusMap.put("TestsFailed", testsFailed);
-//
-//        statusMap.put("FailureCorridorActive", Flags.FAILURE_CORRIDOR_ACTIVE);
-//        statusMap.put("DryRun", Flags.DRY_RUN);
-//
-//        statusMap.put("Status", getCurrentExecutionContext().getStatus());
-//        statusMap.put("StatusBool", getCurrentExecutionContext().getStatus() == Status.PASSED);
-//
-//        statusMap.put("RunCfg", getCurrentExecutionContext().runConfig.RUNCFG);
-//        statusMap.put("Date", getCurrentExecutionContext().startTime.toString());
-//
-//        return new JSONObject(statusMap);
-//    }
-
-    public static void setMethodStatus(MethodContext methodContext, Status status, Method method) {
-        /*
-        check for additional marker annotations
-         */
-        //Annotation[] annotations = method.getAnnotations();
-        //methodContext.methodTags = Arrays.stream(annotations).collect(Collectors.toList());
+    private void finalizeMethod(MethodContext methodContext) {
+        Status status = methodContext.getStatus();
 
         /*
         set status
          */
         if (methodContext.getTestNgResult().isPresent()) {
             ITestResult testResult = methodContext.getTestNgResult().get();
+            Method method = testResult.getMethod().getConstructorOrMethod().getMethod();
             Throwable throwable = testResult.getThrowable();
 
             if (testResult.getStatus() == ITestResult.CREATED && status == Status.FAILED) {
-                LOGGER.warn("TestNG bug - result status is CREATED, which is wrong. Method status is " + Status.FAILED +
+                log().warn("TestNG bug - result status is CREATED, which is wrong. Method status is " + Status.FAILED +
                         ", which is also wrong. Assuming SKIPPED.");
-                status = Status.SKIPPED;
+                methodContext.setStatus(Status.SKIPPED);
             } else if (throwable instanceof SkipException) {
-                LOGGER.info("Found SkipException");
-                status = Status.SKIPPED;
+                log().info("Found SkipException");
+                methodContext.setStatus(Status.SKIPPED);
             }
-        }
 
-        methodContext.setStatus(status);
+            // announce to run context
+            MethodRelations.announceRun(method, methodContext);
+        }
         methodContext.updateEndTimeRecursive(new Date());
 
-        // announce to run context
-        MethodRelations.announceRun(method, methodContext);
+        // Only add status count for tests, not config methds
+        if (methodContext.isTestMethod()) {
+            statusCounter.increment(methodContext.getStatus());
 
-        if (methodContext.isConfigMethod()) {
-            return;
-            // stop here
-        }
-
-        // raise counters
-        switch (status) {
-            case NO_RUN:
-            case INFO:
-                break;
-
-            case PASSED_RETRY:
-            case MINOR:
-            case MINOR_RETRY:
-            case PASSED:
-                testsSuccessful++;
-
-                break;
-
-            case FAILED_EXPECTED:
-                testsExpectedFailed++;
-                break;
-
-            case FAILED_MINOR:
-            case FAILED:
-                testsFailed++;
-                levelFC(methodContext, true);
-                break;
-
-            case SKIPPED:
-                testsSkipped++;
-                break;
-
-            case FAILED_RETRIED:
-                testsFailedRetried++;
-                testsFailed--;
-
-                levelFC(methodContext, false);
-                break;
-
-            default:
-                throw new SystemException("Not implemented: " + status);
-        }
-
-        // print out current test execution state
-        writeCounterToLog();
-    }
-
-    private static void levelFC(MethodContext methodContext, boolean raise) {
-        Class failureCorridorClass = methodContext.getFailureCorridorClass();
-        if (failureCorridorClass.equals(FailureCorridor.High.class)) {
-            if (raise) {
-                testsFailedHIGH++;
-            } else {
-                testsFailedHIGH--;
+            if (methodContext.getStatus() == Status.FAILED) {
+                incrementFailureCorridor(methodContext.getFailureCorridorClass());
             }
-        } else if (failureCorridorClass.equals(FailureCorridor.Mid.class)) {
-            if (raise) {
-                testsFailedMID++;
-            } else {
-                testsFailedMID--;
-            }
-        } else {
-            if (raise) {
-                testsFailedLOW++;
-            } else {
-                testsFailedLOW--;
-            }
+
+            writeCounterToLog();
         }
     }
 
-    public static String getFinalCountersMessage() {
-        // V-X-S: 3-2-1  H-M-L: 0-0-0 (1-1-1)
-        // 3 Passed, 2 Failed, 1 ExpFailed, 1 Skipped
-        List<String> out = new ArrayList<>();
-
-        if (testsSuccessful > 0) {
-            out.add(testsSuccessful + " Passed");
-        }
-        if (testsFailed > 0) {
-            out.add(testsFailed + " Failed");
-        }
-        if (testsSkipped > 0) {
-            out.add(testsSkipped + " Skipped");
-        }
-        if (testsExpectedFailed > 0) {
-            out.add(testsExpectedFailed + " ExpFailed");
-        }
-
-        return String.join(SEPARATOR, out);
+    public String getCounterInfoMessage() {
+        return Stream.of(Status.RETRIED, Status.FAILED, Status.FAILED_EXPECTED, Status.SKIPPED, Status.PASSED)
+                .map(status -> {
+                    int summarizedTestStatusCount = statusCounter.getSum(Status.getStatusGroup(status));
+                    if (summarizedTestStatusCount > 0) {
+                        return summarizedTestStatusCount + " " + status.title;
+                    } else {
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.joining(SEPARATOR));
     }
 
-    public static String getCounterInfoMessage() {
-        String out = getFinalCountersMessage();
-        if (testsFailedRetried > 0) {
-            out += SEPARATOR + testsFailedRetried + " Retried";
-        }
-        return out;
-    }
-
-    public static void writeCounterToLog() {
-        String counterInfoMessage = getCounterInfoMessage();
+    private void writeCounterToLog() {
         String logMessage = ExecutionContextController.getCurrentExecutionContext().runConfig.getReportName() + " " +
-                getCurrentExecutionContext().runConfig.RUNCFG + ": " + counterInfoMessage;
+                getCurrentExecutionContext().runConfig.RUNCFG + ": " + getCounterInfoMessage();
 
-        LOGGER.info(logMessage);
+        log().info(logMessage);
+    }
+    public int getTestsFailed() {
+        return statusCounter.get(Status.FAILED);
     }
 
-    public static int getTestsFailed() {
-        return testsFailed;
+    public int getTestsFailedHIGH() {
+        return getFailureCorridorCount(FailureCorridor.High.class);
     }
 
-    public static int getTestsFailedHIGH() {
-        return testsFailedHIGH;
+    public int getTestsFailedMID() {
+        return getFailureCorridorCount(FailureCorridor.Mid.class);
     }
 
-    public static int getTestsFailedMID() {
-        return testsFailedMID;
+    public int getTestsFailedLOW() {
+        return getFailureCorridorCount(FailureCorridor.Low.class);
     }
 
-    public static int getTestsFailedLOW() {
-        return testsFailedLOW;
+    public int getTestsSuccessful() {
+        return statusCounter.get(Status.PASSED);
     }
 
-    public static int getTestsSuccessful() {
-        return testsSuccessful;
+    public int getTestsSkipped() {
+        return statusCounter.get(Status.SKIPPED);
     }
 
-    public static int getTestsSkipped() {
-        return testsSkipped;
+    @Subscribe
+    @Override
+    public void onTestStatusUpdate(TestStatusUpdateEvent event) {
+        MethodContext methodContext = event.getMethodContext();
+        finalizeMethod(methodContext);
+        TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(methodContext));
     }
 
-    public static int getTestsFailedRetried() {
-        return testsFailedRetried;
+    public int getFailureCorridorCount(Class failureCorridorClass) {
+        return failureCorridorCounts.getOrDefault(failureCorridorClass, 0);
     }
 
-    public static int getTestsExpectedFailed() {
-        return testsExpectedFailed;
+    private void incrementFailureCorridor(Class failureCorridorClass) {
+        int failureCorridorCount = getFailureCorridorCount(failureCorridorClass);
+        failureCorridorCount++;
+        failureCorridorCounts.put(failureCorridorClass, failureCorridorCount);
     }
 
-    public static int getAllFailed() {
-        return testsFailed + testsExpectedFailed;
-    }
-
-    public static boolean areAllTestsPassedYet() {
-        return (getAllFailed() + getTestsSkipped()) == 0;
-    }
-
-    public enum Status {
-        PASSED("Passed", true, true),
-        /**
-         * @deprecated Remove this after discontinuing 'report' module
-         */
-        MINOR("Minor", true, true),
-        PASSED_RETRY("Passed after Retry", true, true),
-        /**
-         * @deprecated Remove this after discontinuing 'report' module
-         */
-        MINOR_RETRY("Minor after Retry", false, true),
-        /**
-         * @deprecated Remove this after discontinuing 'report' module
-         */
-        INFO("Info", true, false),
-
-        FAILED("Failed", true, true),
-        /**
-         * @deprecated Remove this after discontinuing 'report' module
-         */
-        FAILED_MINOR("Failed + Minor", true, true),
-        FAILED_RETRIED("Retried", true, false),
-        FAILED_EXPECTED("Expected Failed", true, false),
-
-        SKIPPED("Skipped", true, true),
-        NO_RUN("No run", false, true); // this is basically an illegal state
-
-        public final String title;
-        public final boolean active;
-        public final boolean relevant;
-
-        public transient Map<Status, Integer> counts = new LinkedHashMap<>();
-
-        Status(String title, boolean active, boolean relevant) {
-            this.title = title;
-            this.active = active;
-            this.relevant = relevant;
-        }
-
-        public boolean isPassed() {
-            switch (this) {
-                case PASSED:
-                case PASSED_RETRY:
-                case MINOR_RETRY:
-                case MINOR:
-                case INFO:
-                    return true;
-
-                case SKIPPED:
-                case NO_RUN:
-                case FAILED:
-                case FAILED_MINOR:
-                case FAILED_EXPECTED:
-                case FAILED_RETRIED:
-                    return false;
-
-                default:
-                    throw new SystemException("Unhandled state: " + this);
-            }
-        }
-
-        public boolean isFailed(boolean orSkipped, boolean withFailedExpected, boolean withRetried) {
-            switch (this) {
-                case SKIPPED:
-                    if (orSkipped) {
-                        return true;
-                    }
-                case NO_RUN:
-                case PASSED:
-                case PASSED_RETRY:
-                case MINOR:
-                case MINOR_RETRY:
-                case INFO:
-                    return false;
-
-                case FAILED_RETRIED:
-                    if (!withRetried) {
-                        return false;
-                    }
-                case FAILED_EXPECTED:
-                    if (!withFailedExpected) {
-                        return false;
-                    }
-                case FAILED:
-                case FAILED_MINOR:
-                    return true;
-
-
-                default:
-                    throw new SystemException("Unhandled state: " + this);
-            }
-        }
-
-        public boolean isSkipped() {
-            switch (this) {
-                case PASSED:
-                case MINOR:
-                case MINOR_RETRY:
-                case PASSED_RETRY:
-                case INFO:
-                case FAILED:
-                case FAILED_MINOR:
-                case FAILED_RETRIED:
-                case FAILED_EXPECTED:
-                    return false;
-
-                case SKIPPED:
-                case NO_RUN:
-                    return true;
-
-                default:
-                    throw new SystemException("Unhandled state: " + this);
-            }
-        }
-
+    public StatusCounter getStatusCounter() {
+        return statusCounter;
     }
 }

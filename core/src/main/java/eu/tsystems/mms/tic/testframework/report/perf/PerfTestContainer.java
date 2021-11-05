@@ -22,14 +22,15 @@
  package eu.tsystems.mms.tic.testframework.report.perf;
 
 import eu.tsystems.mms.tic.testframework.internal.TimingInfo;
+import org.testng.ITestContext;
+import org.testng.ITestResult;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.testng.ITestContext;
-import org.testng.ITestResult;
 
 public final class PerfTestContainer {
 

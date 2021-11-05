@@ -46,15 +46,6 @@ public class PropertyManagerTest extends TesterraTest {
         Assert.assertEquals(property, "bla_blubb", "SystemProperty Replacement works");
     }
 
-    @Test
-    public void testT01b_ReplaceSystemProperty_SensibleData() {
-        System.setProperty("myprop", "@SENSIBLE@bla_{huhu}");
-        System.setProperty("huhu", "@SENSIBLE@blubb");
-        String property = PropertyManager.getProperty("myprop", "nothing");
-
-        Assert.assertEquals(property, "bla_blubb", "SystemProperty Replacement works");
-    }
-
     /**
      * property test with boolean from property manager
      */
@@ -328,7 +319,7 @@ public class PropertyManagerTest extends TesterraTest {
         System.setProperty("myprop", "test_{prop1}_{prop5}");
         System.setProperty("prop1", "value1");
         System.setProperty("prop2", "value2");
-        System.setProperty("prop3", "@SENSIBLE@value3_{prop2}");
+        System.setProperty("prop3", "value3_{prop2}");
         System.setProperty("prop4", "value4_{prop3}");
         System.setProperty("prop5", "value5_{prop4}_{prop1}");
         String property = PropertyManager.getProperty("myprop", "nothing");

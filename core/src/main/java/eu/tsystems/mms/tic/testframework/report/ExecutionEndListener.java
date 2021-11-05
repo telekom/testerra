@@ -64,6 +64,8 @@ final class ExecutionEndListener implements
         ExecutionContext currentExecutionContext = ExecutionContextController.getCurrentExecutionContext();
         currentExecutionContext.updateEndTimeRecursive(new Date());
 
+        ExecutionContextController.printExecutionStatistics();
+
         EventBus eventBus = TesterraListener.getEventBus();
 
         eventBus.post(new ContextUpdateEvent().setContext(currentExecutionContext));

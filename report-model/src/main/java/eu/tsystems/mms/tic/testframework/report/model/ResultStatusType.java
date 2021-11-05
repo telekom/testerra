@@ -108,6 +108,14 @@ public enum ResultStatusType
    */
   @java.lang.Deprecated
   MINOR_RETRY(12),
+  /**
+   * <pre>
+   * passed with fail annotation
+   * </pre>
+   *
+   * <code>REPAIRED = 13;</code>
+   */
+  REPAIRED(13),
   UNRECOGNIZED(-1),
   ;
 
@@ -203,6 +211,14 @@ public enum ResultStatusType
    * <code>MINOR_RETRY = 12 [deprecated = true];</code>
    */
   @java.lang.Deprecated public static final int MINOR_RETRY_VALUE = 12;
+  /**
+   * <pre>
+   * passed with fail annotation
+   * </pre>
+   *
+   * <code>REPAIRED = 13;</code>
+   */
+  public static final int REPAIRED_VALUE = 13;
 
 
   public final int getNumber() {
@@ -241,6 +257,7 @@ public enum ResultStatusType
       case 10: return FAILED_EXPECTED;
       case 11: return PASSED_RETRY;
       case 12: return MINOR_RETRY;
+      case 13: return REPAIRED;
       default: return null;
     }
   }

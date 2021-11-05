@@ -24,6 +24,7 @@ package eu.tsystems.mms.tic.testframework.report.model.context;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.utils.SourceUtils;
+
 import java.util.Optional;
 
 public class ErrorContext {

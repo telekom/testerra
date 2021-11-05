@@ -53,10 +53,6 @@ export class MethodDetails {
     ) {
     }
 
-    get isRepaired() {
-        return this.methodContext.resultStatus === data.ResultStatusType.PASSED && this.methodContext.annotations[MethodDetails.FAILS_ANNOTATION_NAME];
-    }
-
     get failsAnnotation() {
         return this.decodeAnnotation(MethodDetails.FAILS_ANNOTATION_NAME);
     }
@@ -164,7 +160,6 @@ export class StatisticsGenerator {
                         currentClassStatistics = classStatistics[currentClassStatistics.classIdentifier];
                     }
 
-                    methodContext.resultStatus = this._statusConverter.correctStatus(methodContext.resultStatus);
                     currentClassStatistics.addMethodContext(methodContext);
                 }
                 executionStatistics.setClassStatistics(Object.values(classStatistics));

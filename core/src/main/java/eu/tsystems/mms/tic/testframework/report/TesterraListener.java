@@ -78,6 +78,7 @@ import org.testng.internal.TestResult;
 import org.testng.xml.XmlSuite;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Listener for JUnit and TestNg, collects test informations for testreport.
@@ -116,6 +117,7 @@ public class TesterraListener implements
     private static final BuildInformation buildInformation;
     private static final Report report;
     private static DefaultTestNGContextGenerator contextGenerator;
+    private static final TestStatusController testStatusController = new TestStatusController();
 
     static {
         String logLevel = PropertyManager.getProperty("log4j.level");
@@ -148,6 +150,7 @@ public class TesterraListener implements
         eventBus.register(new SortMethodsByPriorityMethodInterceptor());
 
         eventBus.register(new ExecutionEndListener());
+        eventBus.register(testStatusController);
 
         /*
         Call Booter
@@ -177,6 +180,10 @@ public class TesterraListener implements
 
     public static Report getReport() {
         return report;
+    }
+
+    public static TestStatusController getTestStatusController() {
+        return testStatusController;
     }
 
     public static DefaultTestNGContextGenerator getContextGenerator() {

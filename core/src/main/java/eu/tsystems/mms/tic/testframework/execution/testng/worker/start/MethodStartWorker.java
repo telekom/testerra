@@ -56,12 +56,7 @@ public class MethodStartWorker implements Loggable, MethodStartEvent.Listener {
         final IRetryAnalyzer retryAnalyzer = testNGMethod.getRetryAnalyzer(event.getTestResult());
         Method method = event.getMethod();
         if (retryAnalyzer == null || retryAnalyzer instanceof DisabledRetryAnalyzer) {
-            if (method.isAnnotationPresent(NoRetry.class)) {
-                log().trace("Not adding "+ RetryAnalyzer.class.getSimpleName() +" for @NoRetry " + method.getName());
-            } else {
-                testNGMethod.setRetryAnalyzerClass(RetryAnalyzer.class);
-                log().trace("Adding " + RetryAnalyzer.class.getSimpleName() + " for " + method.getName());
-            }
+            testNGMethod.setRetryAnalyzerClass(RetryAnalyzer.class);
         } else {
             log().info("Using a non-default retry analyzer: " + retryAnalyzer + " on " + method.getName());
         }

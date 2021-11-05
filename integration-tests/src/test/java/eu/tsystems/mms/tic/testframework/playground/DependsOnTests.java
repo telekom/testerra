@@ -22,6 +22,7 @@
 package eu.tsystems.mms.tic.testframework.playground;
 
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
+import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.Retry;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -65,5 +66,4 @@ public class DependsOnTests extends AbstractWebDriverTest {
     public void testCaseThree() {
         Assert.assertTrue(true);
     }
-
 }

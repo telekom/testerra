@@ -108,9 +108,12 @@ public class BrowserUpRemoteProxyManager implements Loggable {
      * Calls POST /proxy with parameters
      *
      * @return BrowserUpRemoteProxyServer object.
+     * @deprecated Use {@link #startServer(BrowserUpRemoteProxyServer)} instead
      */
     public BrowserUpRemoteProxyServer startServer() {
-        return startServer(new BrowserUpRemoteProxyServer());
+        BrowserUpRemoteProxyServer browserUpRemoteProxyServer = new BrowserUpRemoteProxyServer();
+        startServer(browserUpRemoteProxyServer);
+        return browserUpRemoteProxyServer;
     }
 
     /**
@@ -119,7 +122,7 @@ public class BrowserUpRemoteProxyManager implements Loggable {
      * @param proxyServer {@link BrowserUpRemoteProxyServer}
      * @return BrowserUpRemoteProxyServer
      */
-    public BrowserUpRemoteProxyServer startServer(BrowserUpRemoteProxyServer proxyServer) {
+    public void startServer(BrowserUpRemoteProxyServer proxyServer) {
 
         final URIBuilder startServerUriBuilder = url().setPath("/proxy");
 
@@ -128,7 +131,6 @@ public class BrowserUpRemoteProxyManager implements Loggable {
             // Check if port already in use...
             if (this.isRunning(proxyServer)) {
                 log().info("Remote proxy session already running on this port.");
-                return proxyServer;
             }
 
             // Set port to start proxyserver on.
@@ -175,7 +177,6 @@ public class BrowserUpRemoteProxyManager implements Loggable {
         final JsonElement jsonElement = JsonParser.parseString(jsonResponse);
         final int port = jsonElement.getAsJsonObject().get("port").getAsInt();
         proxyServer.setPort(port);
-        return proxyServer;
     }
 
     /**

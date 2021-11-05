@@ -51,6 +51,7 @@ import eu.tsystems.mms.tic.testframework.report.utils.DefaultTestNGContextGenera
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.ConcurrentHashMap;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configurator;
@@ -75,9 +76,7 @@ import org.testng.annotations.Test;
 import org.testng.internal.InvokedMethod;
 import org.testng.internal.TestResult;
 import org.testng.xml.XmlSuite;
-
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Listener for JUnit and TestNg, collects test informations for testreport.
@@ -117,6 +116,7 @@ public class TesterraListener implements
     private static final Report report;
     private static DefaultTestNGContextGenerator contextGenerator;
     private static final TestStatusController testStatusController = new TestStatusController();
+    private static final ConcurrentHashMap<ITestNGMethod, Boolean> dataProviderSemaphore = new ConcurrentHashMap<>();
 
     static {
         String logLevel = PropertyManager.getProperty("log4j.level");
@@ -524,14 +524,22 @@ public class TesterraListener implements
 
     @Override
     public void onDataProviderFailure(ITestNGMethod testNGMethod, ITestContext testContext, RuntimeException exception) {
-        TestResult testResult = TestResult.newContextAwareTestResult(testNGMethod, testContext);
-        InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), testResult);
-        MethodContext methodContext = pBeforeInvocation(invokedMethod, testResult, testContext);
-        if (exception.getCause() != null) {
-            methodContext.addError(exception.getCause());
-        } else {
-            methodContext.addError(exception);
+        /**
+         * TestNG calls the data provider initialization for every thread.
+         * Added a semaphore to prevent adding multiple method contexts.
+         */
+        if (!dataProviderSemaphore.containsKey(testNGMethod)) {
+            TestResult testResult = TestResult.newContextAwareTestResult(testNGMethod, testContext);
+            InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), testResult);
+            MethodContext methodContext = pBeforeInvocation(invokedMethod, testResult, testContext);
+            if (exception.getCause() != null) {
+                methodContext.addError(exception.getCause());
+            } else {
+                methodContext.addError(exception);
+            }
+            pAfterInvocation(invokedMethod, testResult, testContext);
+
+            dataProviderSemaphore.put(testNGMethod, true);
         }
-        pAfterInvocation(invokedMethod, testResult, testContext);
     }
 }

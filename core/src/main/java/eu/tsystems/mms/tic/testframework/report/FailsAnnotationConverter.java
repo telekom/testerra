@@ -22,9 +22,10 @@
 package eu.tsystems.mms.tic.testframework.report;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.commons.lang3.StringUtils;
 
 public class FailsAnnotationConverter implements AnnotationConverter<Fails> {
 

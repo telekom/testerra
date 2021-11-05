@@ -21,10 +21,11 @@
 
 package eu.tsystems.mms.tic.testframework.report;
 
-import java.util.HashMap;
-import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class TestAnnotationConverter implements AnnotationConverter<Test> {
 

@@ -23,18 +23,13 @@
 
 import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
-import eu.tsystems.mms.tic.testframework.internal.Flags;
-import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.stream.Stream;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
+
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.stream.Stream;
 
 public class ExecutionContext extends AbstractContext implements SynchronizableContext {
     private final Queue<SuiteContext> suiteContexts = new ConcurrentLinkedQueue<>();

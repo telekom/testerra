@@ -29,6 +29,9 @@ import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import org.testng.ITestResult;
+import org.testng.SkipException;
+
 import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.Map;
@@ -36,8 +39,7 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.testng.ITestResult;
-import org.testng.SkipException;
+
 import static eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController.getCurrentExecutionContext;
 
 public class TestStatusController implements TestStatusUpdateEvent.Listener, Loggable {

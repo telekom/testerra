@@ -50,7 +50,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.DefaultTestNGContextGenerator;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import java.util.Locale;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configurator;
@@ -74,6 +73,7 @@ import org.testng.annotations.Test;
 import org.testng.xml.XmlSuite;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Listener for JUnit and TestNg, collects test informations for testreport.

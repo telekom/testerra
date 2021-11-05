@@ -50,7 +50,8 @@ public class AbstractTest extends TesterraTest {
     @BeforeSuite
     public void setupProxy() throws MalformedURLException {
         URL apiUrl = new URL("http://localhost:8080");
-        BrowserUpRemoteProxyManager bupRemoteProxyManager = new BrowserUpRemoteProxyManager(apiUrl);
+        BrowserUpRemoteProxyManager bupRemoteProxyManager
+                = new BrowserUpRemoteProxyManager(apiUrl);
         bupProxybupRemoteProxyManager.startServer(bupProxy);
 
         /* Additional Proxy setup here */
@@ -67,7 +68,8 @@ public class AbstractTest extends TesterraTest {
     public void tearDownProxy() throws MalformedURLException {
 
         URL apiBaseUrl = new URL("http://localhost:8080");
-        BrowserUpRemoteProxyManager browserUpRemoteProxyManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
+        BrowserUpRemoteProxyManager browserUpRemoteProxyManager
+                = new BrowserUpRemoteProxyManager(apiBaseUrl);
 
         for (Integer proxyPort : browserUpRemoteProxyManager.getProxies()) {
             BrowserUpRemoteProxyServer bupToStop = new BrowserUpRemoteProxyServer();

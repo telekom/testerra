@@ -283,21 +283,12 @@ public class TesterraListener implements
     ) {
         final String methodName = getMethodName(testResult);
 
-//        if (ListenerUtils.wasMethodInvokedBefore("beforeInvocationFor" + methodName, invokedMethod, testResult)) {
-//            return null;
-//        }
+        if (ListenerUtils.wasMethodInvokedBefore("beforeInvocationFor" + methodName, invokedMethod, testResult)) {
+            return null;
+        }
 
-        /*
-         * store testresult, create method context
-         */
-        MethodContext methodContext = ExecutionContextController.setCurrentTestResult(testResult); // stores the actual testresult, auto-creates the method context
+        MethodContext methodContext = ExecutionContextController.setCurrentTestResult(testResult);
         methodContext.getTestStep(TestStep.SETUP);
-
-//        final String infoText = "beforeInvocation: " + invokedMethod.getTestMethod().getTestClass().getName() + "." +
-//                methodName +
-//                " - " + Thread.currentThread().getName();
-//
-//        log().trace(infoText);
 
         AbstractMethodEvent event = new MethodStartEvent()
                 .setTestResult(testResult)
@@ -360,22 +351,21 @@ public class TesterraListener implements
             ITestContext testContext
     ) {
 
-//        final String methodName;
-//        final String testClassName;
-//        if (invokedMethod != null) {
-//            methodName = invokedMethod.getTestMethod().getMethodName();
-//            testClassName = invokedMethod.getTestMethod().getTestClass().getName();
-//        } else {
-//            methodName = testResult.getMethod().getConstructorOrMethod().getName();
-//            testClassName = testResult.getTestClass().getName();
-//        }
+        final String methodName;
+        final String testClassName;
+
+        if (invokedMethod != null) {
+            methodName = invokedMethod.getTestMethod().getMethodName();
+            testClassName = invokedMethod.getTestMethod().getTestClass().getName();
+        } else {
+            methodName = testResult.getMethod().getConstructorOrMethod().getName();
+            testClassName = testResult.getTestClass().getName();
+        }
 
         // CHECKSTYLE:ON
-//        if (ListenerUtils.wasMethodInvokedBefore("afterInvocation", testClassName, methodName, testResult, testContext)) {
-//            return;
-//        }
-
-        final String methodName = getMethodName(testResult);
+        if (ListenerUtils.wasMethodInvokedBefore("afterInvocation", testClassName, methodName, testResult, testContext)) {
+            return;
+        }
 
         /*
          * Get test method container

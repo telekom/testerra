@@ -50,7 +50,6 @@ interface IItem {
 @autoinject()
 export class Dashboard extends AbstractViewModel {
     private _executionStatistics: ExecutionStatistics;
-    private _passedRetried = 0;
     private _majorFailures = 0;
     private _minorFailures = 0;
     private _highCorridor = new FailureCorridor();
@@ -81,56 +80,59 @@ export class Dashboard extends AbstractViewModel {
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
             this._executionStatistics = executionStatistics;
             this._topFailureAspects = this._executionStatistics.uniqueFailureAspects.slice(0,3);
-            this._passedRetried = this._executionStatistics.getStatusesCount([ResultStatusType.PASSED_RETRY,ResultStatusType.MINOR_RETRY]);
 
             this._filterItems = [];
-            let count = this._executionStatistics.getStatusCount(data.ResultStatusType.FAILED);
-            if (count > 0) {
-                const failedRetriedCount = this._executionStatistics.getStatusCount(data.ResultStatusType.FAILED_RETRIED);
+            const failed = this._executionStatistics.overallFailed;
+            const failedRetried = this._executionStatistics.getStatusCount(data.ResultStatusType.FAILED_RETRIED);
+            if (failed > 0 || failedRetried > 0) {
+                const counts = []
+                const labels = []
+                counts.push(failed)
+                labels.push(this._statusConverter.getLabelForStatus(ResultStatusType.FAILED))
+                if (failedRetried > 0) {
+                    counts.push(" + " + failedRetried)
+                    labels.push(this._statusConverter.getLabelForStatus(data.ResultStatusType.FAILED_RETRIED))
+                }
                 this._filterItems.push({
                     status: ResultStatusType.FAILED,
-                    counts: [
-                        count,
-                        failedRetriedCount>0?" + " + failedRetriedCount:null
-                    ],
-                    labels: [
-                        this._statusConverter.getLabelForStatus(ResultStatusType.FAILED),
-                        failedRetriedCount>0?this._statusConverter.getLabelForStatus(data.ResultStatusType.FAILED_RETRIED):null
-                    ],
+                    counts: counts,
+                    labels: labels,
                 });
             }
 
-            count = this._executionStatistics.getStatusCount(ResultStatusType.FAILED_EXPECTED);
-            if (count > 0) {
+            const failedExpected = this._executionStatistics.getStatusCount(ResultStatusType.FAILED_EXPECTED);
+            if (failedExpected > 0) {
                 this._filterItems.push({
                     status: ResultStatusType.FAILED_EXPECTED,
-                    counts: [count],
+                    counts: [failedExpected],
                     labels: [this._statusConverter.getLabelForStatus(ResultStatusType.FAILED_EXPECTED)],
                 });
             }
 
-            count = this._executionStatistics.getStatusCount(ResultStatusType.SKIPPED);
-            if (count > 0) {
+            const skipped = this._executionStatistics.overallSkipped;
+            if (skipped > 0) {
                 this._filterItems.push({
                     status: ResultStatusType.SKIPPED,
-                    counts: [count],
+                    counts: [skipped],
                     labels: [this._statusConverter.getLabelForStatus(ResultStatusType.SKIPPED)],
                 });
             }
 
-            count = this._executionStatistics.overallPassed;
-            if (count > 0) {
+            const passed = this._executionStatistics.overallPassed;
+            if (passed > 0) {
+                const recovered = this._executionStatistics.getStatusCount(data.ResultStatusType.PASSED_RETRY);
+                const repaired = this._executionStatistics.getStatusCount(data.ResultStatusType.REPAIRED);
                 this._filterItems.push({
                     status: ResultStatusType.PASSED,
                     counts: [
-                        count,
-                        (this._executionStatistics.repairedTests>0?`&sup; ${this._executionStatistics.repairedTests}`:null),
-                        (this._passedRetried>0?`&sup; ${this._passedRetried}`:null),
+                        passed,
+                        (repaired>0?`&sup; ${repaired}`:null),
+                        (recovered>0?`&sup; ${recovered}`:null),
                     ],
                     labels: [
                         this._statusConverter.getLabelForStatus(ResultStatusType.PASSED),
-                        (this._executionStatistics.repairedTests>0?"Repaired":null),
-                        (this._passedRetried>0?this._statusConverter.getLabelForStatus(ResultStatusType.PASSED_RETRY):null),
+                        (repaired>0?this._statusConverter.getLabelForStatus(ResultStatusType.REPAIRED):null),
+                        (recovered>0?this._statusConverter.getLabelForStatus(ResultStatusType.PASSED_RETRY):null),
                     ],
                 });
             }
@@ -147,20 +149,12 @@ export class Dashboard extends AbstractViewModel {
              * @todo Move this to {@link ExecutionStatistics}?
              */
             const executionAggregate = this._executionStatistics.executionAggregate;
-            this._highCorridor.limit = executionAggregate.executionContext.failureCorridorLimits[FailureCorridorValue.FCV_MID];
+            this._highCorridor.limit = executionAggregate.executionContext.failureCorridorLimits[FailureCorridorValue.FCV_HIGH];
+            this._highCorridor.count = executionAggregate.executionContext.failureCorridorCounts[FailureCorridorValue.FCV_HIGH]||0;
             this._midCorridor.limit = executionAggregate.executionContext.failureCorridorLimits[FailureCorridorValue.FCV_MID];
+            this._midCorridor.count = executionAggregate.executionContext.failureCorridorCounts[FailureCorridorValue.FCV_MID]||0;
             this._lowCorridor.limit = executionAggregate.executionContext.failureCorridorLimits[FailureCorridorValue.FCV_LOW];
-            Object.values(executionAggregate.methodContexts)
-                .filter(value => value.methodType==MethodType.TEST_METHOD)
-                .forEach(value => {
-                    if (this._statusConverter.failedStatuses.indexOf(value.resultStatus) >= 0) {
-                        switch (value.failureCorridorValue) {
-                            case data.FailureCorridorValue.FCV_HIGH: this._highCorridor.count++; break;
-                            case data.FailureCorridorValue.FCV_MID: this._midCorridor.count++; break;
-                            case data.FailureCorridorValue.FCV_LOW: this._lowCorridor.count++; break;
-                        }
-                    }
-                });
+            this._lowCorridor.count = executionAggregate.executionContext.failureCorridorCounts[FailureCorridorValue.FCV_LOW]||0;
 
             this._loading = false;
         });

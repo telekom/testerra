@@ -46,7 +46,7 @@
                                 <span class="item-label"
                                       repeat.for="count of item.counts"
                                       innerhtml="${count}"
-                                      if.bind="count"
+                                      if.bind="count!=null"
                                 ></span>
                             </mdc-list-item-primary-text>
                             <mdc-list-item-secondary-text>
@@ -80,7 +80,7 @@
                     <mdc-list-divider></mdc-list-divider>
                     <mdc-list
                         single-selection
-                        class="mdc-list--dense p0"
+                        class="mdc-list--dense"
                         if.bind="_topFailureAspects.length > 0"
                     >
                         <mdc-list-item repeat.for="failureAspect of _topFailureAspects"

@@ -23,22 +23,25 @@
 package eu.tsystems.mms.tic.testframework.execution.testng;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
+import eu.tsystems.mms.tic.testframework.annotations.NoRetry;
 import eu.tsystems.mms.tic.testframework.annotations.Retry;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.events.TestStatusUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.InheritedFailedException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.Status;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.FailsAnnotationFilter;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Stream;
 import org.testng.IRetryAnalyzer;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,26 +56,26 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
 
-    private static final Queue<AdditionalRetryAnalyzer> ADDITIONAL_RETRY_ANALYZERS = new ConcurrentLinkedQueue();
+    private static final Queue<AdditionalRetryAnalyzer> ADDITIONAL_RETRY_ANALYZERS = new ConcurrentLinkedQueue<>();
 
     /**
      * Classes list.
      */
-    private final List<Class> CLASSES_LIST = new ArrayList<>();
+    private static final List<Class> CLASSES_LIST = new ArrayList<>();
 
     /**
      * Messages list.
      */
-    private final List<String> MESSAGES_LIST = new ArrayList<>();
+    private static final List<String> MESSAGES_LIST = new ArrayList<>();
 
     private static final Queue<MethodContext> RETRIED_METHODS = new ConcurrentLinkedQueue<>();
 
     /**
      * The retry counter.
      */
-    private final Map<String, Integer> retryCounters = new ConcurrentHashMap<>();
+    private static final Map<String, Integer> retryCounters = new ConcurrentHashMap<>();
 
-    public RetryAnalyzer() {
+    static {
         final String classes = PropertyManager.getProperty(TesterraProperties.FAILED_TESTS_IF_THROWABLE_CLASSES);
         if (classes != null) {
             String[] split = classes.split(",");
@@ -81,7 +84,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
                     Class<?> aClass = Class.forName(clazz.trim());
                     CLASSES_LIST.add(aClass);
                 } catch (ClassNotFoundException e) {
-                    log().error("Error finding class", e);
+                    new RetryAnalyzer().log().error("Error finding class", e);
                 }
             }
         }
@@ -110,16 +113,31 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
         }
 
         return PropertyManager.getIntProperty(TesterraProperties.FAILED_TESTS_MAX_RETRIES, 1);
-
     }
 
     @Override
     public boolean retry(final ITestResult testResult) {
-        String retryReason = null;
-        boolean retry = false;
-
         MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult);
+        boolean retry = shouldRetry(testResult, methodContext);
+        /**
+         * Announce the test status change
+         */
+        if (methodContext.isStatusOneOf(Status.RETRIED, Status.RECOVERED, Status.FAILED)) {
+            TesterraListener.getEventBus().post(new TestStatusUpdateEvent(methodContext));
+        }
+        return retry;
+    }
+
+    private boolean shouldRetry(ITestResult testResult, MethodContext methodContext) {
+        Method method = testResult.getMethod().getConstructorOrMethod().getMethod();
+
+        if (method.isAnnotationPresent(NoRetry.class)) {
+            return false;
+        }
+
+        boolean retry = false;
         final String testMethodName = methodContext.getName();
+        String retryReason = null;
 
         /*
         check retry counter
@@ -129,7 +147,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
         final String retryMessageString = "(" + (retryCounter + 1) + "/" + (maxRetries + 1) + ")";
 
         if (retryCounter >= maxRetries) {
-            raiseCounterAndChangeMethodContext(testResult, maxRetries);
+            methodHasBeenRetried(methodContext);
             log().warn("Not retrying " + testMethodName + " because run limit (" + maxRetries + ")");
             return false;
         }
@@ -145,34 +163,17 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
         /*
         no retry for tests with expected Fails annotation
          */
-        if (testResult.getMethod().getConstructorOrMethod().getMethod().isAnnotationPresent(Fails.class)) {
-
+        Optional<Fails> fails = methodContext.getFailsAnnotation();
+        if (fails.isPresent()) {
             // BUT ONLY: No retry for methods that hav a validFor
-            final Fails failsAnnotation = testResult.getMethod().getConstructorOrMethod().getMethod().getAnnotation(Fails.class);
-            if (FailsAnnotationFilter.isFailsAnnotationValid(failsAnnotation)) {
-                log().warn("Not retrying this method, because test is @Fails annotated.");
+            if (FailsAnnotationFilter.isFailsAnnotationValid(fails.get())) {
+                log().warn(String.format("Not retrying this method, because test is @%s annotated.", Fails.class.getSimpleName()));
                 return false;
             }
         }
 
-        /*
-        no retry for tests with fails annotaion in stacktrace
-         */
-        /*if (throwable1 != null && ExecutionUtils.getFailsAnnotationInStackTrace(throwable1.getStackTrace()) != null) {
-
-            final Fails failsAnnotation = testResult.getMethod().getConstructorOrMethod().getMethod().getAnnotation(Fails.class);
-            if (FailsAnnotationFilter.isFailsAnnotationValid(failsAnnotation)) {
-                LOGGER.warn("Not retrying this method, because a method in stacktrace is @Fails annotated.");
-                return false;
-            }
-        }*/
-
         boolean containingFilteredThrowable = isTestResultContainingFilteredThrowable(testResult);
         if (containingFilteredThrowable) {
-            /*
-             * does the throwable filter match?
-             */
-            retryReason = "Found filtered throwable";
             retry = true;
         }
 
@@ -180,15 +181,10 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
          * process retry
          */
         if (retry) {
-            methodContext = raiseCounterAndChangeMethodContext(testResult, maxRetries);
-
-            Method realMethod = testResult.getMethod().getConstructorOrMethod().getMethod();
-            // explicitly set status if it is not set atm
-            TestStatusController.setMethodStatus(methodContext, TestStatusController.Status.FAILED_RETRIED, realMethod);
-
+            methodHasBeenRetried(methodContext);
             RETRIED_METHODS.add(methodContext);
 
-            log().error(retryReason + ", send signal for retrying the test " + retryMessageString + "\n" + methodContext);
+            log().info("Send signal for retrying the test " + retryMessageString + ": " + testMethodName);
 
             testResult.getTestContext().getFailedTests().removeResult(testResult);
             testResult.getTestContext().getSkippedTests().removeResult(testResult);
@@ -199,23 +195,14 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
         return false;
     }
 
-    private MethodContext raiseCounterAndChangeMethodContext(final ITestResult testResult, final int maxRetries) {
-        // raise counter
-        int retryCounter = raiseRetryCounter(testResult);
-
-        // reset method name
-        MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult);
-        if (maxRetries > 0) {
-
-            final String retryLog = "(" + retryCounter + "/" + (maxRetries + 1) + ")";
-            methodContext.infos.add(retryLog);
+    private static void raiseCounterAndChangeMethodContext(MethodContext methodContext) {
+        methodContext.getTestNgResult().ifPresent(iTestResult -> {
+            int retryCounter = raiseRetryCounter(iTestResult);
             methodContext.setRetryCounter(retryCounter);
-        }
-
-        return methodContext;
+        });
     }
 
-    private int raiseRetryCounter(ITestResult iTestResult) {
+    private static int raiseRetryCounter(ITestResult iTestResult) {
         return getRetryCounter(iTestResult, true);
     }
 
@@ -223,7 +210,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
         return getRetryCounter(iTestResult, false);
     }
 
-    private int getRetryCounter(ITestResult testResult, boolean raise) {
+    private static int getRetryCounter(ITestResult testResult, boolean raise) {
         ITestNGMethod testNGMethod = testResult.getMethod();
 
         String id = testResult.getTestContext().getCurrentXmlTest().getName() + "/" +
@@ -247,8 +234,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
         Integer counter = retryCounters.get(id);
         if (raise) {
             counter++;
-            retryCounters.remove(id);
-            retryCounters.put(id, counter);
+            retryCounters.replace(id, counter);
         }
         return counter;
     }
@@ -297,14 +283,14 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
                 Optional<Throwable> optionalRetryCause = additionalRetryAnalyzer.analyzeThrowable(throwable);
                 if (optionalRetryCause.isPresent()) {
                     retryCause = optionalRetryCause.get();
-                    log().info("Retrying test because of: " + retryCause.getMessage());
+                    log().info(String.format("Found retry cause: \"%s\"", retryCause.getMessage()));
                     break;
                 }
             }
 
             for (Class aClass : CLASSES_LIST) {
                 if (throwable.getClass() == aClass) {
-                    log().info("Retrying test because of exception class: " + aClass.getName());
+                    log().info(String.format("Found retry cause: exception class=\"%s\"", aClass.getName()));
                     retryCause = throwable;
                     break;
                 }
@@ -314,7 +300,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
             if (tMessage != null) {
                 for (String message : MESSAGES_LIST) {
                     if (tMessage.contains(message)) {
-                        log().info("Retrying test because of exception message: " + message);
+                        log().info(String.format("Found retry cause: exception message=\"%s\"", message));
                         retryCause = throwable;
                         break;
                     }
@@ -328,6 +314,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
         return retryCause;
     }
 
+    @Deprecated
     public static Queue<MethodContext> getRetriedMethods() {
         return RETRIED_METHODS;
     }
@@ -336,9 +323,8 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
         ADDITIONAL_RETRY_ANALYZERS.add(additionalRetryAnalyzer);
     }
 
-    public static boolean hasMethodBeenRetried(MethodContext methodContext) {
-        return RETRIED_METHODS.stream().anyMatch(m -> {
-
+    private static Stream<MethodContext> readRetriedMethodsForMethod(MethodContext methodContext) {
+        return RETRIED_METHODS.stream().filter(m -> {
             if (m.getName().equals(methodContext.getName())) {
                 if (m.getParameterValues().containsAll(methodContext.getParameterValues())) {
                     AbstractContext context = methodContext;
@@ -351,12 +337,34 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
                         mContext = mContext.getParentContext();
                     }
                 }
-
                 return true;
             }
-
             return false;
         });
     }
 
+    /**
+     * Tells the RetryAnalyzer that a method has been passed
+     * @param methodContext
+     */
+    public static void methodHasBeenPassed(MethodContext methodContext) {
+        RetryAnalyzer.readRetriedMethodsForMethod(methodContext).findFirst().ifPresent(retriedMethod -> {
+            methodContext.setStatus(Status.RECOVERED);
+            raiseCounterAndChangeMethodContext(methodContext);
+
+            methodContext.addDependsOnMethod(retriedMethod);
+            retriedMethod.addRelatedMethodContext(methodContext);
+            RETRIED_METHODS.remove(retriedMethod);
+        });
+    }
+
+    private static void methodHasBeenRetried(MethodContext methodContext) {
+        methodContext.setStatus(Status.RETRIED);
+        raiseCounterAndChangeMethodContext(methodContext);
+
+        readRetriedMethodsForMethod(methodContext).forEach(retriedMethod -> {
+            retriedMethod.addRelatedMethodContext(methodContext);
+            RETRIED_METHODS.remove(retriedMethod);
+        });
+    }
 }

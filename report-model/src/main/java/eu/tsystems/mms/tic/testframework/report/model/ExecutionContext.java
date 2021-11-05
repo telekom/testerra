@@ -151,6 +151,19 @@ private static final long serialVersionUID = 0L;
                 failureCorridorLimits__.getKey(), failureCorridorLimits__.getValue());
             break;
           }
+          case 138: {
+            if (!((mutable_bitField0_ & 0x00000010) != 0)) {
+              failureCorridorCounts_ = com.google.protobuf.MapField.newMapField(
+                  FailureCorridorCountsDefaultEntryHolder.defaultEntry);
+              mutable_bitField0_ |= 0x00000010;
+            }
+            com.google.protobuf.MapEntry<java.lang.Integer, java.lang.Integer>
+            failureCorridorCounts__ = input.readMessage(
+                FailureCorridorCountsDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
+            failureCorridorCounts_.getMutableMap().put(
+                failureCorridorCounts__.getKey(), failureCorridorCounts__.getValue());
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -191,6 +204,8 @@ private static final long serialVersionUID = 0L;
     switch (number) {
       case 16:
         return internalGetFailureCorridorLimits();
+      case 17:
+        return internalGetFailureCorridorCounts();
       default:
         throw new RuntimeException(
             "Invalid map field number: " + number);
@@ -634,6 +649,87 @@ private static final long serialVersionUID = 0L;
     return map.get(key);
   }
 
+  public static final int FAILURE_CORRIDOR_COUNTS_FIELD_NUMBER = 17;
+  private static final class FailureCorridorCountsDefaultEntryHolder {
+    static final com.google.protobuf.MapEntry<
+        java.lang.Integer, java.lang.Integer> defaultEntry =
+            com.google.protobuf.MapEntry
+            .<java.lang.Integer, java.lang.Integer>newDefaultInstance(
+                eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_ExecutionContext_FailureCorridorCountsEntry_descriptor, 
+                com.google.protobuf.WireFormat.FieldType.INT32,
+                0,
+                com.google.protobuf.WireFormat.FieldType.INT32,
+                0);
+  }
+  private com.google.protobuf.MapField<
+      java.lang.Integer, java.lang.Integer> failureCorridorCounts_;
+  private com.google.protobuf.MapField<java.lang.Integer, java.lang.Integer>
+  internalGetFailureCorridorCounts() {
+    if (failureCorridorCounts_ == null) {
+      return com.google.protobuf.MapField.emptyMapField(
+          FailureCorridorCountsDefaultEntryHolder.defaultEntry);
+    }
+    return failureCorridorCounts_;
+  }
+
+  public int getFailureCorridorCountsCount() {
+    return internalGetFailureCorridorCounts().getMap().size();
+  }
+  /**
+   * <code>map&lt;int32, int32&gt; failure_corridor_counts = 17;</code>
+   */
+
+  @java.lang.Override
+  public boolean containsFailureCorridorCounts(
+      int key) {
+    
+    return internalGetFailureCorridorCounts().getMap().containsKey(key);
+  }
+  /**
+   * Use {@link #getFailureCorridorCountsMap()} instead.
+   */
+  @java.lang.Override
+  @java.lang.Deprecated
+  public java.util.Map<java.lang.Integer, java.lang.Integer> getFailureCorridorCounts() {
+    return getFailureCorridorCountsMap();
+  }
+  /**
+   * <code>map&lt;int32, int32&gt; failure_corridor_counts = 17;</code>
+   */
+  @java.lang.Override
+
+  public java.util.Map<java.lang.Integer, java.lang.Integer> getFailureCorridorCountsMap() {
+    return internalGetFailureCorridorCounts().getMap();
+  }
+  /**
+   * <code>map&lt;int32, int32&gt; failure_corridor_counts = 17;</code>
+   */
+  @java.lang.Override
+
+  public int getFailureCorridorCountsOrDefault(
+      int key,
+      int defaultValue) {
+    
+    java.util.Map<java.lang.Integer, java.lang.Integer> map =
+        internalGetFailureCorridorCounts().getMap();
+    return map.containsKey(key) ? map.get(key) : defaultValue;
+  }
+  /**
+   * <code>map&lt;int32, int32&gt; failure_corridor_counts = 17;</code>
+   */
+  @java.lang.Override
+
+  public int getFailureCorridorCountsOrThrow(
+      int key) {
+    
+    java.util.Map<java.lang.Integer, java.lang.Integer> map =
+        internalGetFailureCorridorCounts().getMap();
+    if (!map.containsKey(key)) {
+      throw new java.lang.IllegalArgumentException();
+    }
+    return map.get(key);
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -684,6 +780,12 @@ private static final long serialVersionUID = 0L;
         internalGetFailureCorridorLimits(),
         FailureCorridorLimitsDefaultEntryHolder.defaultEntry,
         16);
+    com.google.protobuf.GeneratedMessageV3
+      .serializeIntegerMapTo(
+        output,
+        internalGetFailureCorridorCounts(),
+        FailureCorridorCountsDefaultEntryHolder.defaultEntry,
+        17);
     unknownFields.writeTo(output);
   }
 
@@ -747,6 +849,16 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(16, failureCorridorLimits__);
     }
+    for (java.util.Map.Entry<java.lang.Integer, java.lang.Integer> entry
+         : internalGetFailureCorridorCounts().getMap().entrySet()) {
+      com.google.protobuf.MapEntry<java.lang.Integer, java.lang.Integer>
+      failureCorridorCounts__ = FailureCorridorCountsDefaultEntryHolder.defaultEntry.newBuilderForType()
+          .setKey(entry.getKey())
+          .setValue(entry.getValue())
+          .build();
+      size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(17, failureCorridorCounts__);
+    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -790,6 +902,8 @@ private static final long serialVersionUID = 0L;
         != other.getEstimatedTestsCount()) return false;
     if (!internalGetFailureCorridorLimits().equals(
         other.internalGetFailureCorridorLimits())) return false;
+    if (!internalGetFailureCorridorCounts().equals(
+        other.internalGetFailureCorridorCounts())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -834,6 +948,10 @@ private static final long serialVersionUID = 0L;
     if (!internalGetFailureCorridorLimits().getMap().isEmpty()) {
       hash = (37 * hash) + FAILURE_CORRIDOR_LIMITS_FIELD_NUMBER;
       hash = (53 * hash) + internalGetFailureCorridorLimits().hashCode();
+    }
+    if (!internalGetFailureCorridorCounts().getMap().isEmpty()) {
+      hash = (37 * hash) + FAILURE_CORRIDOR_COUNTS_FIELD_NUMBER;
+      hash = (53 * hash) + internalGetFailureCorridorCounts().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -948,6 +1066,8 @@ private static final long serialVersionUID = 0L;
       switch (number) {
         case 16:
           return internalGetFailureCorridorLimits();
+        case 17:
+          return internalGetFailureCorridorCounts();
         default:
           throw new RuntimeException(
               "Invalid map field number: " + number);
@@ -959,6 +1079,8 @@ private static final long serialVersionUID = 0L;
       switch (number) {
         case 16:
           return internalGetMutableFailureCorridorLimits();
+        case 17:
+          return internalGetMutableFailureCorridorCounts();
         default:
           throw new RuntimeException(
               "Invalid map field number: " + number);
@@ -1024,6 +1146,7 @@ private static final long serialVersionUID = 0L;
       estimatedTestsCount_ = 0;
 
       internalGetMutableFailureCorridorLimits().clear();
+      internalGetMutableFailureCorridorCounts().clear();
       return this;
     }
 
@@ -1087,6 +1210,8 @@ private static final long serialVersionUID = 0L;
       result.estimatedTestsCount_ = estimatedTestsCount_;
       result.failureCorridorLimits_ = internalGetFailureCorridorLimits();
       result.failureCorridorLimits_.makeImmutable();
+      result.failureCorridorCounts_ = internalGetFailureCorridorCounts();
+      result.failureCorridorCounts_.makeImmutable();
       onBuilt();
       return result;
     }
@@ -1208,6 +1333,8 @@ private static final long serialVersionUID = 0L;
       }
       internalGetMutableFailureCorridorLimits().mergeFrom(
           other.internalGetFailureCorridorLimits());
+      internalGetMutableFailureCorridorCounts().mergeFrom(
+          other.internalGetFailureCorridorCounts());
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
       return this;
@@ -2449,6 +2576,134 @@ private static final long serialVersionUID = 0L;
     public Builder putAllFailureCorridorLimits(
         java.util.Map<java.lang.Integer, java.lang.Integer> values) {
       internalGetMutableFailureCorridorLimits().getMutableMap()
+          .putAll(values);
+      return this;
+    }
+
+    private com.google.protobuf.MapField<
+        java.lang.Integer, java.lang.Integer> failureCorridorCounts_;
+    private com.google.protobuf.MapField<java.lang.Integer, java.lang.Integer>
+    internalGetFailureCorridorCounts() {
+      if (failureCorridorCounts_ == null) {
+        return com.google.protobuf.MapField.emptyMapField(
+            FailureCorridorCountsDefaultEntryHolder.defaultEntry);
+      }
+      return failureCorridorCounts_;
+    }
+    private com.google.protobuf.MapField<java.lang.Integer, java.lang.Integer>
+    internalGetMutableFailureCorridorCounts() {
+      onChanged();;
+      if (failureCorridorCounts_ == null) {
+        failureCorridorCounts_ = com.google.protobuf.MapField.newMapField(
+            FailureCorridorCountsDefaultEntryHolder.defaultEntry);
+      }
+      if (!failureCorridorCounts_.isMutable()) {
+        failureCorridorCounts_ = failureCorridorCounts_.copy();
+      }
+      return failureCorridorCounts_;
+    }
+
+    public int getFailureCorridorCountsCount() {
+      return internalGetFailureCorridorCounts().getMap().size();
+    }
+    /**
+     * <code>map&lt;int32, int32&gt; failure_corridor_counts = 17;</code>
+     */
+
+    @java.lang.Override
+    public boolean containsFailureCorridorCounts(
+        int key) {
+      
+      return internalGetFailureCorridorCounts().getMap().containsKey(key);
+    }
+    /**
+     * Use {@link #getFailureCorridorCountsMap()} instead.
+     */
+    @java.lang.Override
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.Integer, java.lang.Integer> getFailureCorridorCounts() {
+      return getFailureCorridorCountsMap();
+    }
+    /**
+     * <code>map&lt;int32, int32&gt; failure_corridor_counts = 17;</code>
+     */
+    @java.lang.Override
+
+    public java.util.Map<java.lang.Integer, java.lang.Integer> getFailureCorridorCountsMap() {
+      return internalGetFailureCorridorCounts().getMap();
+    }
+    /**
+     * <code>map&lt;int32, int32&gt; failure_corridor_counts = 17;</code>
+     */
+    @java.lang.Override
+
+    public int getFailureCorridorCountsOrDefault(
+        int key,
+        int defaultValue) {
+      
+      java.util.Map<java.lang.Integer, java.lang.Integer> map =
+          internalGetFailureCorridorCounts().getMap();
+      return map.containsKey(key) ? map.get(key) : defaultValue;
+    }
+    /**
+     * <code>map&lt;int32, int32&gt; failure_corridor_counts = 17;</code>
+     */
+    @java.lang.Override
+
+    public int getFailureCorridorCountsOrThrow(
+        int key) {
+      
+      java.util.Map<java.lang.Integer, java.lang.Integer> map =
+          internalGetFailureCorridorCounts().getMap();
+      if (!map.containsKey(key)) {
+        throw new java.lang.IllegalArgumentException();
+      }
+      return map.get(key);
+    }
+
+    public Builder clearFailureCorridorCounts() {
+      internalGetMutableFailureCorridorCounts().getMutableMap()
+          .clear();
+      return this;
+    }
+    /**
+     * <code>map&lt;int32, int32&gt; failure_corridor_counts = 17;</code>
+     */
+
+    public Builder removeFailureCorridorCounts(
+        int key) {
+      
+      internalGetMutableFailureCorridorCounts().getMutableMap()
+          .remove(key);
+      return this;
+    }
+    /**
+     * Use alternate mutation accessors instead.
+     */
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.Integer, java.lang.Integer>
+    getMutableFailureCorridorCounts() {
+      return internalGetMutableFailureCorridorCounts().getMutableMap();
+    }
+    /**
+     * <code>map&lt;int32, int32&gt; failure_corridor_counts = 17;</code>
+     */
+    public Builder putFailureCorridorCounts(
+        int key,
+        int value) {
+      
+      
+      internalGetMutableFailureCorridorCounts().getMutableMap()
+          .put(key, value);
+      return this;
+    }
+    /**
+     * <code>map&lt;int32, int32&gt; failure_corridor_counts = 17;</code>
+     */
+
+    public Builder putAllFailureCorridorCounts(
+        java.util.Map<java.lang.Integer, java.lang.Integer> values) {
+      internalGetMutableFailureCorridorCounts().getMutableMap()
           .putAll(values);
       return this;
     }

@@ -24,20 +24,17 @@
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.IDUtils;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import org.apache.commons.lang3.time.DurationFormatUtils;
+
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import org.apache.commons.lang3.time.DurationFormatUtils;
 
 public abstract class AbstractContext implements SynchronizableContext, Loggable {
     protected String name;
@@ -124,43 +121,6 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
         }
     }
 
-    public abstract TestStatusController.Status getStatus();
-
-    private TestStatusController.Status getStatusFromCounts(Map<TestStatusController.Status, Integer> counts) {
-        for (TestStatusController.Status key : counts.keySet()) {
-            Integer value = counts.get(key);
-            if (value > 0 && key.isFailed(true, false, false)) {
-                return TestStatusController.Status.FAILED;
-            }
-        }
-        return TestStatusController.Status.PASSED;
-    }
-
-    TestStatusController.Status getStatusFromContexts(Stream<? extends AbstractContext> contexts) {
-        Map<TestStatusController.Status, Integer> counts = new LinkedHashMap<>();
-        /*
-        get statuses
-         */
-        // init with 0
-        Arrays.stream(TestStatusController.Status.values()).forEach(status -> counts.put(status, 0));
-
-        contexts.forEach(abstractContext -> {
-            TestStatusController.Status status = abstractContext.getStatus();
-            int value = 0;
-            if (counts.containsKey(status)) {
-                value = counts.get(status);
-            }
-            counts.put(status, value + 1);
-        });
-
-        /*
-        find actual status
-         */
-        TestStatusController.Status status = getStatusFromCounts(counts);
-        status.counts = counts;
-        return status;
-    }
-
     public String getDurationAsString() {
         Date endTime = this.endTime;
         if (endTime == null) {
@@ -180,45 +140,6 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
         return DurationFormatUtils.formatDuration(millis, "SSS 'ms'", false);
     }
 
-    public long nrOfFailed(Map<TestStatusController.Status, Integer> counts) {
-        final AtomicReference<Integer> count = new AtomicReference<>();
-        count.set(0);
-        counts.keySet().forEach(status -> {
-            if (status.isFailed(false, false, false)) {
-                count.set(count.get() + counts.get(status));
-            }
-        });
-        return count.get();
-    }
-
-    public long nrOfPassed(Map<TestStatusController.Status, Integer> counts) {
-        final AtomicReference<Integer> count = new AtomicReference<>();
-        count.set(0);
-        counts.keySet().forEach(status -> {
-            if (status.isPassed()) {
-                count.set(count.get() + counts.get(status));
-            }
-        });
-        return count.get();
-    }
-
-    public long nrOfSkipped(Map<TestStatusController.Status, Integer> counts) {
-        final AtomicReference<Integer> count = new AtomicReference<>();
-        count.set(0);
-        counts.keySet().forEach(status -> {
-            if (status == TestStatusController.Status.SKIPPED) {
-                count.set(count.get() + counts.get(status));
-            }
-        });
-        return count.get();
-    }
-
-    public long passRate(Map<TestStatusController.Status, Integer> counts, long numberOfTests) {
-        if (numberOfTests == 0) {
-            return 0;
-        }
-        return nrOfPassed(counts) * 100 / numberOfTests;
-    }
 
     public void updateEndTimeRecursive(Date date) {
         AbstractContext context = this;

@@ -21,25 +21,24 @@
 
 package eu.tsystems.mms.tic.testframework.report;
 
-import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class FailsAnnotationConverter implements AnnotationConverter<Fails> {
+public class StatusCounter {
+    private final Map<Status, Integer> statusCounts = new ConcurrentHashMap<>();
 
-    @Override
-    public Map<String, Object> toMap(Fails annotation) {
-        Map<String, Object> map = new HashMap<>();
-        if (!StringUtils.isBlank(annotation.description())) {
-            map.put("description", annotation.description());
-        }
-        if (!StringUtils.isBlank(annotation.ticketString())) {
-            map.put("ticketString", annotation.ticketString());
-        } else if (annotation.ticketId() > 0) {
-            map.put("ticketString", Integer.toString(annotation.ticketId()));
-        }
-        return map;
+    public int get(Status status) {
+        return statusCounts.getOrDefault(status, 0);
+    }
+
+    public int getSum(Status[] statuses) {
+        return Arrays.stream(statuses).mapToInt(this::get).sum();
+    }
+
+    public void increment(Status status) {
+        int statusCount = get(status);
+        statusCount++;
+        statusCounts.put(status, statusCount);
     }
 }

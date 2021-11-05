@@ -23,24 +23,20 @@
 
 import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
-import eu.tsystems.mms.tic.testframework.internal.Flags;
-import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
+import org.testng.ITestContext;
+import org.testng.ITestResult;
+
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Stream;
-import org.testng.ITestContext;
-import org.testng.ITestResult;
 
 public class ExecutionContext extends AbstractContext implements SynchronizableContext {
     private final Queue<SuiteContext> suiteContexts = new ConcurrentLinkedQueue<>();
     public final RunConfig runConfig = new RunConfig();
     public boolean crashed = false;
     private Queue<SessionContext> exclusiveSessionContexts;
-
     public int estimatedTestMethodCount;
-
     private final ConcurrentLinkedQueue<LogMessage> methodContextLessLogs = new ConcurrentLinkedQueue<>();
 
     public ExecutionContext() {
@@ -97,18 +93,5 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
 
     public SuiteContext getSuiteContext(ITestContext testContext) {
         return getSuiteContext(TesterraListener.getContextGenerator().getSuiteContextName(testContext));
-    }
-
-    @Override
-    public TestStatusController.Status getStatus() {
-        if (Flags.FAILURE_CORRIDOR_ACTIVE) {
-            if (FailureCorridor.isCorridorMatched()) {
-                return TestStatusController.Status.PASSED;
-            } else {
-                return TestStatusController.Status.FAILED;
-            }
-        } else {
-            return getStatusFromContexts(suiteContexts.stream());
-        }
     }
 }

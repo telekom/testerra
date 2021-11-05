@@ -19,22 +19,21 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.report;
+package eu.tsystems.mms.tic.testframework.events;
 
-import org.apache.commons.lang3.StringUtils;
-import org.testng.annotations.Test;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 
-import java.util.HashMap;
-import java.util.Map;
+public class TestStatusUpdateEvent {
+    private final MethodContext methodContext;
+    public interface Listener {
+        void onTestStatusUpdate(TestStatusUpdateEvent event);
+    }
 
-public class TestAnnotationConverter implements AnnotationConverter<Test> {
+    public TestStatusUpdateEvent(MethodContext methodContext) {
+        this.methodContext = methodContext;
+    }
 
-    @Override
-    public Map<String, Object> toMap(Test annotation) {
-        Map<String, Object> map = new HashMap<>();
-        if (!StringUtils.isBlank(annotation.description())) {
-            map.put("description", annotation.description());
-        }
-        return map;
+    public MethodContext getMethodContext() {
+        return this.methodContext;
     }
 }

@@ -25,11 +25,12 @@ import com.google.common.net.MediaType;
 import com.google.gson.Gson;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.Report;
+import eu.tsystems.mms.tic.testframework.report.Status;
+import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent;
 import eu.tsystems.mms.tic.testframework.internal.IDUtils;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.BuildInformation;
 import eu.tsystems.mms.tic.testframework.report.model.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.ContextValues;
@@ -66,11 +67,13 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 
 public class ContextExporter implements Loggable {
-    private final Map<TestStatusController.Status, ResultStatusType> STATUS_MAPPING = new LinkedHashMap<>();
+    private final Map<Status, ResultStatusType> RESULT_STATUS_MAPPING = new LinkedHashMap<>();
+    private final Map<Class, FailureCorridorValue> FAILURE_CORRIDOR_MAPPING = new LinkedHashMap<>();
     private final Report report = TesterraListener.getReport();
     private final Gson jsonEncoder = new Gson();
 
@@ -94,7 +97,7 @@ public class ContextExporter implements Loggable {
 
         builder.setContextValues(contextValuesBuilder);
 
-        map(methodContext.getStatus(), this::getMappedStatus, builder::setResultStatus);
+        map(methodContext.getStatus(), this::mapResultStatus, builder::setResultStatus);
         map(methodContext.getMethodType(), type -> MethodType.valueOf(type.name()), builder::setMethodType);
         List<Object> parameterValues = methodContext.getParameterValues();
         for (int i = 0; i < parameterValues.size(); ++i) {
@@ -305,14 +308,25 @@ public class ContextExporter implements Loggable {
 
     public ContextExporter() {
         // Prepare a status map
-        for (TestStatusController.Status status : TestStatusController.Status.values()) {
-            ResultStatusType resultStatusType = ResultStatusType.valueOf(status.name());
-            STATUS_MAPPING.put(status, resultStatusType);
-        }
+        RESULT_STATUS_MAPPING.put(Status.FAILED, ResultStatusType.FAILED);
+        RESULT_STATUS_MAPPING.put(Status.SKIPPED, ResultStatusType.SKIPPED);
+        RESULT_STATUS_MAPPING.put(Status.PASSED, ResultStatusType.PASSED);
+        RESULT_STATUS_MAPPING.put(Status.FAILED_EXPECTED, ResultStatusType.FAILED_EXPECTED);
+        RESULT_STATUS_MAPPING.put(Status.REPAIRED, ResultStatusType.REPAIRED);
+        RESULT_STATUS_MAPPING.put(Status.RETRIED, ResultStatusType.FAILED_RETRIED);
+        RESULT_STATUS_MAPPING.put(Status.RECOVERED, ResultStatusType.PASSED_RETRY);
+
+        FAILURE_CORRIDOR_MAPPING.put(FailureCorridor.High.class, FailureCorridorValue.FCV_HIGH);
+        FAILURE_CORRIDOR_MAPPING.put(FailureCorridor.Mid.class, FailureCorridorValue.FCV_MID);
+        FAILURE_CORRIDOR_MAPPING.put(FailureCorridor.Low.class, FailureCorridorValue.FCV_LOW);
     }
 
-    ResultStatusType getMappedStatus(TestStatusController.Status status) {
-        return STATUS_MAPPING.get(status);
+    protected ResultStatusType mapResultStatus(Status status) {
+        return RESULT_STATUS_MAPPING.get(status);
+    }
+
+    protected FailureCorridorValue mapFailureCorridorClass(Class failureCorridorClass) {
+        return FAILURE_CORRIDOR_MAPPING.get(failureCorridorClass);
     }
 
     /**
@@ -352,47 +366,6 @@ public class ContextExporter implements Loggable {
         apply(context.getName(), builder::setName);
         map(context.getStartTime(), Date::getTime, builder::setStartTime);
         map(context.getEndTime(), Date::getTime, builder::setEndTime);
-
-//        if (context instanceof eu.tsystems.mms.tic.testframework.report.model.context.MethodContext) {
-//            eu.tsystems.mms.tic.testframework.report.model.context.MethodContext methodContext = (eu.tsystems.mms.tic.testframework.report.model.context.MethodContext) context;
-//
-//            // result status
-//            map(methodContext.getStatus(), this::getMappedStatus, builder::setResultStatus);
-//
-//            // exec status
-//            if (methodContext.getStatus() == TestStatusController.Status.NO_RUN) {
-//                builder.setExecStatus(ExecStatusType.RUNNING);
-//            } else {
-//                builder.setExecStatus(ExecStatusType.FINISHED);
-//            }
-//        } else if (context instanceof eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext) {
-//            eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext executionContext = (eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext) context;
-//            if (executionContext.crashed) {
-//                /*
-//                crashed state
-//                 */
-//                builder.setExecStatus(ExecStatusType.CRASHED);
-//            } else {
-//                if (TestStatusController.getTestsSkipped() == executionContext.estimatedTestMethodCount) {
-//                    builder.setResultStatus(ResultStatusType.SKIPPED);
-//                    builder.setExecStatus(ExecStatusType.VOID);
-//                } else if (TestStatusController.getTestsFailed() + TestStatusController.getTestsSuccessful() == 0) {
-//                    builder.setResultStatus(ResultStatusType.NO_RUN);
-//                    builder.setExecStatus(ExecStatusType.VOID);
-//
-//                } else {
-//                    ResultStatusType resultStatusType = STATUS_MAPPING.get(executionContext.getStatus());
-//                    builder.setResultStatus(resultStatusType);
-//
-//                    // exec status
-//                    if (executionContext.getEndTime() != null) {
-//                        builder.setExecStatus(ExecStatusType.FINISHED);
-//                    } else {
-//                        builder.setExecStatus(ExecStatusType.RUNNING);
-//                    }
-//                }
-//            }
-//        }
         return builder;
     }
 
@@ -423,10 +396,6 @@ public class ContextExporter implements Loggable {
         apply(throwable.getClass().getName(), builder::setClassName);
         apply(throwable.getMessage(), builder::setMessage);
         builder.addAllStackTraceElements(Arrays.stream(throwable.getStackTrace()).map(StackTraceElement::toString).collect(Collectors.toList()));
-//
-//        if ((throwable.getCause() != null) && (throwable.getCause() != throwable)) {
-//            builder.setCause(this.prepareStackTraceCause(throwable.getCause()));
-//        }
         return builder;
     }
 
@@ -452,10 +421,6 @@ public class ContextExporter implements Loggable {
         ExecutionContext.Builder builder = ExecutionContext.newBuilder();
 
         apply(buildContextValues(executionContext), builder::setContextValues);
-//        forEach(executionContext.suiteContexts, suiteContext -> builder.addSuiteContextIds(suiteContext.getId()));
-//        forEach(executionContext.mergedClassContexts, classContext -> builder.addMergedClassContextIds(classContext.id));
-//        map(executionContext.exitPoints, this::createContextClip, builder::addAllExitPoints);
-//        map(executionContext.failureAspects, this::createContextClip, builder::addAllFailureAscpects);
         map(executionContext.runConfig, this::buildRunConfig, builder::setRunConfig);
         executionContext.readExclusiveSessionContexts().forEach(sessionContext -> builder.addExclusiveSessionContextIds(sessionContext.getId()));
         apply(executionContext.estimatedTestMethodCount, builder::setEstimatedTestsCount);
@@ -466,6 +431,15 @@ public class ContextExporter implements Loggable {
         builder.putFailureCorridorLimits(FailureCorridorValue.FCV_HIGH_VALUE, FailureCorridor.getAllowedTestFailuresHIGH());
         builder.putFailureCorridorLimits(FailureCorridorValue.FCV_MID_VALUE, FailureCorridor.getAllowedTestFailuresMID());
         builder.putFailureCorridorLimits(FailureCorridorValue.FCV_LOW_VALUE, FailureCorridor.getAllowedTestFailuresLOW());
+
+        TestStatusController testStatusController = TesterraListener.getTestStatusController();
+        Stream.of(FailureCorridor.High.class, FailureCorridor.Mid.class, FailureCorridor.Low.class).forEach(failureCorridorClass -> {
+            int count = testStatusController.getFailureCorridorCount(failureCorridorClass);
+            if (count > 0) {
+                builder.putFailureCorridorCounts(mapFailureCorridorClass(failureCorridorClass).getNumber(), count);
+            }
+        });
+
         return builder;
     }
 //

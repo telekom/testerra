@@ -50,7 +50,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.DefaultTestNGContextGenerator;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import java.util.Locale;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configurator;
@@ -74,6 +73,7 @@ import org.testng.annotations.Test;
 import org.testng.xml.XmlSuite;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Listener for JUnit and TestNg, collects test informations for testreport.
@@ -110,6 +110,7 @@ public class TesterraListener implements
     private static final BuildInformation buildInformation;
     private static final Report report;
     private static DefaultTestNGContextGenerator contextGenerator;
+    private static final TestStatusController testStatusController = new TestStatusController();
 
     static {
         String logLevel = PropertyManager.getProperty("log4j.level");
@@ -142,6 +143,7 @@ public class TesterraListener implements
         eventBus.register(new SortMethodsByPriorityMethodInterceptor());
 
         eventBus.register(new ExecutionEndListener());
+        eventBus.register(testStatusController);
 
         /*
         Call Booter
@@ -171,6 +173,10 @@ public class TesterraListener implements
 
     public static Report getReport() {
         return report;
+    }
+
+    public static TestStatusController getTestStatusController() {
+        return testStatusController;
     }
 
     public static DefaultTestNGContextGenerator getContextGenerator() {

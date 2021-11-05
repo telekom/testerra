@@ -23,13 +23,13 @@
 
 import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
+import org.testng.ITestContext;
+import org.testng.ITestResult;
+
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Stream;
-import org.testng.ITestContext;
-import org.testng.ITestResult;
 
 public class SuiteContext extends AbstractContext implements SynchronizableContext {
     private final Queue<TestContext> testContexts = new ConcurrentLinkedQueue<>();
@@ -63,10 +63,5 @@ public class SuiteContext extends AbstractContext implements SynchronizableConte
                     EventBus eventBus = TesterraListener.getEventBus();
                     eventBus.post(new ContextUpdateEvent().setContext(this));
                 });
-    }
-
-    @Override
-    public TestStatusController.Status getStatus() {
-        return getStatusFromContexts(testContexts.stream());
     }
 }

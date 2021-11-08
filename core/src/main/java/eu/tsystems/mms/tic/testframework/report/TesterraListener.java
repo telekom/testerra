@@ -114,6 +114,13 @@ public class TesterraListener implements
         return Testerra.getInjector().getInstance(Report.class);
     }
 
+    /**
+     * @deprecated Use {@link Testerra#getInjector()}
+     */
+    public static ITestStatusController getTestStatusController() {
+        return Testerra.getInjector().getInstance(ITestStatusController.class);
+    }
+
     static {
         /*
          * Add monitoring event listeners

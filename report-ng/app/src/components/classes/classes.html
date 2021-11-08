@@ -37,7 +37,6 @@
                         >
                             <span class="badge status-${status|statusClass}">${status|statusName}</span>
                         </mdc-list-item>
-                        <mdc-list-item value="repaired" if.bind="_executionStatistics.repairedTests>0"><span class="badge status-passed">Repaired</span></mdc-list-item>
                     </mdc-list>
                 </mdc-select>
             </mdc-layout-grid-cell>
@@ -94,7 +93,7 @@
                     <tbody>
                         <tr repeat.for="methodDetails of _filteredMethodDetails">
                             <td class="p1 centered-text">
-                                <a class="badge status-${methodDetails.methodContext.resultStatus|statusClass}"><span if.bind="methodDetails.isRepaired">Repaired</span><span else>${methodDetails.methodContext.resultStatus|statusName}</span></a>
+                                <a class="badge status-${methodDetails.methodContext.resultStatus|statusClass}">${methodDetails.methodContext.resultStatus|statusName}</a>
                             </td>
                             <td class="p1 wrapable">
                                 <a route-href="route: tests; params.bind: withQueryParams({class: methodDetails.classStatistics.classIdentifier})"

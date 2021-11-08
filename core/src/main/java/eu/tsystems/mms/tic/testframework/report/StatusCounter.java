@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2021, Mike Reiche,  T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -17,33 +17,28 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
- package eu.tsystems.mms.tic.testframework.transfer;
 
-public class BooleanPackedResponse<T> {
+package eu.tsystems.mms.tic.testframework.report;
 
-    private final T response;
-    private final boolean aBoolean;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-    public BooleanPackedResponse(T response, boolean b) {
-        this.response = response;
-        this.aBoolean = b;
+public class StatusCounter {
+    private final Map<Status, Integer> statusCounts = new ConcurrentHashMap<>();
+
+    public int get(Status status) {
+        return statusCounts.getOrDefault(status, 0);
     }
 
-    public T getResponse() {
-        return response;
+    public int getSum(Status[] statuses) {
+        return Arrays.stream(statuses).mapToInt(this::get).sum();
     }
 
-    public boolean getBoolean() {
-        return aBoolean;
-    }
-
-    @Override
-    public String toString() {
-        return "BooleanPackedResponse{" +
-                "response=" + response +
-                ", aBoolean=" + aBoolean +
-                '}';
+    public void increment(Status status) {
+        int statusCount = get(status);
+        statusCount++;
+        statusCounts.put(status, statusCount);
     }
 }

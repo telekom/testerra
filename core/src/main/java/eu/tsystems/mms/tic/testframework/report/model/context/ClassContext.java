@@ -27,7 +27,7 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.Status;
 import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
@@ -61,16 +61,6 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
     @Override
     public String getName() {
         return getTestClassContext().map(TestClassContext::name).orElseGet(super::getName);
-    }
-
-    @Deprecated
-    public String getFullClassName() {
-        return getTestClass().getName();
-    }
-
-    @Deprecated
-    public String getSimpleClassName() {
-        return getTestClass().getSimpleName();
     }
 
     public Stream<MethodContext> readMethodContexts() {
@@ -192,18 +182,11 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
     public MethodContext safeAddSkipMethod(ITestResult testResult) {
         MethodContext methodContext = getMethodContext(testResult);
         methodContext.addError(new SkipException("Skipped"));
-        methodContext.setStatus(TestStatusController.Status.SKIPPED);
+        methodContext.setStatus(Status.SKIPPED);
         return methodContext;
     }
 
-    @Override
-    public TestStatusController.Status getStatus() {
-        return getStatusFromContexts(getRepresentationalMethods());
-    }
-
-    public Stream<MethodContext> getRepresentationalMethods() {
-        return methodContexts.stream().filter(MethodContext::isRepresentationalTestMethod);
-        //        AbstractContext[] contexts = methodContexts.stream().filter(MethodContext::isRepresentationalTestMethod);
-        //        return contexts;
+    public SuiteContext getSuiteContext() {
+        return (SuiteContext) this.parentContext;
     }
 }

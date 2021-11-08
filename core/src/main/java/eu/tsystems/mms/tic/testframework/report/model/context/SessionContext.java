@@ -21,15 +21,13 @@
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
+
 import java.net.URL;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Stream;
-import org.apache.commons.lang3.SerializationUtils;
 
 public class SessionContext extends AbstractContext implements SynchronizableContext {
     private String remoteSessionId;
@@ -89,14 +87,6 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
         return this;
     }
 
-    @Override
-    public TestStatusController.Status getStatus() {
-        /*
-        Status is always null here. There is no context result status for sessions.
-         */
-        return null;
-    }
-
     public Optional<Video> getVideo() {
         return Optional.ofNullable(video);
     }
@@ -106,6 +96,9 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
         return this;
     }
 
+    /**
+     * @deprecated Use {@link #getNodeUrl()} instead
+     */
     @Deprecated
     public Optional<NodeInfo> getNodeInfo() {
         return getNodeUrl().map(NodeInfo::new);

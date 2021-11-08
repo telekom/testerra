@@ -34,7 +34,7 @@ class GraphColors {
 }
 
 export interface IFilter {
-    status?:ResultStatusType,
+    status?:data.ResultStatusType,
     class?:string,
 }
 
@@ -42,30 +42,11 @@ export interface IFilter {
 export class StatusConverter {
     private readonly _packageRegexp = new RegExp("^(.+)\\.(\\w+)$");
 
-    /**
-     * Status adapted from {@link TestStatusController.java}
-     */
-    get failedStatuses() {
-        return [
-            ResultStatusType.FAILED,
-            ResultStatusType.FAILED_MINOR,
-            /**
-             * Expected failed is no actual failed status and explicitly featured
-             */
-            //ResultStatusType.FAILED_EXPECTED,
-            /**
-             * {@link ResultStatusType.FAILED_RETRIED} is not a statistical relevant status
-             */
-            ResultStatusType.FAILED_RETRIED
-        ]
-    }
-
     get passedStatuses() {
         return [
             ResultStatusType.PASSED,
-            ResultStatusType.PASSED_RETRY,
-            ResultStatusType.MINOR,
-            ResultStatusType.MINOR_RETRY
+            ResultStatusType.PASSED_RETRY, // Recovered
+            ResultStatusType.REPAIRED,
         ]
     }
 
@@ -85,12 +66,11 @@ export class StatusConverter {
     groupStatus(status:ResultStatusType):ResultStatusType[] {
         switch (status) {
             case ResultStatusType.PASSED: return this.passedStatuses;
-            case ResultStatusType.FAILED: return this.failedStatuses
             default: return [status];
         }
     }
 
-    private _normalizeStatus(status:ResultStatusType|string) {
+    normalizeStatus(status:ResultStatusType|string):number {
         if (typeof status === "string") {
             status = Number.parseInt(status);
         }
@@ -98,7 +78,7 @@ export class StatusConverter {
     }
 
     getLabelForStatus(status: ResultStatusType|string): string {
-        switch (this._normalizeStatus(status)) {
+        switch (this.normalizeStatus(status)) {
             case ResultStatusType.SKIPPED:
                 return "Skipped";
             case ResultStatusType.MINOR:
@@ -113,11 +93,13 @@ export class StatusConverter {
                 return "Failed";
             case ResultStatusType.FAILED_EXPECTED:
                 return "Expected Failed";
+            case ResultStatusType.REPAIRED:
+                return "Repaired"
         }
     }
 
     getIconNameForStatus(status: ResultStatusType|string) {
-        switch (this._normalizeStatus(status)) {
+        switch (this.normalizeStatus(status)) {
             case ResultStatusType.SKIPPED:
                 return "radio_button_unchecked";
             case ResultStatusType.FAILED_RETRIED:
@@ -133,7 +115,7 @@ export class StatusConverter {
     }
 
     getColorForStatus(status: ResultStatusType): string {
-        switch (this._normalizeStatus(status)) {
+        switch (this.normalizeStatus(status)) {
             case ResultStatusType.PASSED:
             case ResultStatusType.PASSED_RETRY:
             case ResultStatusType.MINOR_RETRY:
@@ -153,24 +135,26 @@ export class StatusConverter {
     }
 
     getClassForStatus(status: ResultStatusType|string): string {
-        switch (this._normalizeStatus(status)) {
+        switch (this.normalizeStatus(status)) {
             case ResultStatusType.MINOR:
             case ResultStatusType.PASSED:
                 return "passed";
             case ResultStatusType.MINOR_RETRY:
             case ResultStatusType.PASSED_RETRY:
-                return "passed-retried";
+                return "recovered";
             case ResultStatusType.FAILED_MINOR:
             case ResultStatusType.FAILED:
                 return "failed";
             case ResultStatusType.FAILED_RETRIED:
-                return "failed-retried";
+                return "retried";
             case ResultStatusType.FAILED_EXPECTED:
                 return "failed-expected";
             case ResultStatusType.SKIPPED:
                 return "skipped";
             case ResultStatusType.NO_RUN:
                 return "running";
+            case data.ResultStatusType.REPAIRED:
+                return "repaired";
             default:
                 return "unknown-status";
         }
@@ -186,12 +170,14 @@ export class StatusConverter {
                 return ResultStatusType.SKIPPED;
             case "failed-expected":
                 return ResultStatusType.FAILED_EXPECTED;
-            case "failed-retried":
+            case "retried":
                 return ResultStatusType.FAILED_RETRIED;
             case "failed":
                 return ResultStatusType.FAILED;
-            case "passed-retried":
+            case "recovered":
                 return ResultStatusType.PASSED_RETRY;
+            case "repaired":
+                return data.ResultStatusType.REPAIRED;
         }
     }
 
@@ -212,18 +198,6 @@ export class StatusConverter {
             return {
                 class: namespace
             }
-        }
-    }
-
-    /**
-     * Correct the deprecated result status type of the method context
-     */
-    correctStatus(status:ResultStatusType) {
-        switch (status) {
-            case ResultStatusType.FAILED_MINOR: return ResultStatusType.FAILED;
-            case ResultStatusType.MINOR_RETRY: return ResultStatusType.PASSED_RETRY;
-            case ResultStatusType.MINOR: return ResultStatusType.PASSED;
-            default: return status;
         }
     }
 }

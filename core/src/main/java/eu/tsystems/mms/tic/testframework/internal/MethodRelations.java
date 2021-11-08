@@ -21,7 +21,6 @@
  */
 package eu.tsystems.mms.tic.testframework.internal;
 
-import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeGroups;
@@ -90,19 +89,11 @@ public class MethodRelations {
             String[] dependsOnMethods = test.dependsOnMethods();
             for (String dependsOnMethod : dependsOnMethods) {
                 // In case of retried dependsOn methods the correct dependsOn-context was not retried
-                Optional<MethodContext> foundContext = methodContext.getClassContext().readMethodContexts().filter(
-                        context -> context.getName().equals(dependsOnMethod) && !context.hasBeenRetried()).findFirst();
+                Optional<MethodContext> foundContext = methodContext.getClassContext().readMethodContexts()
+                        .filter(context -> context.getName().equals(dependsOnMethod) && context.getRetryCounter() == 0)
+                        .findFirst();
                 foundContext.ifPresent(methodContext::addDependsOnMethod);
             }
-
-            /*
-            check for retries
-             */
-            RetryAnalyzer.getRetriedMethods().forEach(retriedMethod -> {
-                if (retriedMethod.getName().equals(methodContext.getName()) && retriedMethod.hasBeenRetried()) {
-                    methodContext.addDependsOnMethod(retriedMethod);
-                }
-            });
         }
     }
 
@@ -167,14 +158,20 @@ public class MethodRelations {
         /*
         new context: populate the previous context to previous main containers
          */
-            List<MethodContext> relatedContainers = new LinkedList<>();
-            relatedContainers.addAll(containerList); // just a copy
-
-            synchronized (containerList) {
-                for (MethodContext methodContainer : containerList) {
-                    methodContainer.setRelatedMethodContexts(relatedContainers);
-                }
-            }
+            containerList.forEach(methodContext -> {
+                containerList.forEach(relatedMethodContext -> {
+                    if (methodContext != relatedMethodContext) {
+                        methodContext.addRelatedMethodContext(relatedMethodContext);
+                    }
+                });
+            });
+//            List<MethodContext> relatedContainers = new LinkedList<>(containerList);
+//
+//            synchronized (containerList) {
+//                for (MethodContext methodContainer : containerList) {
+//                    methodContainer.setRelatedMethodContexts(relatedContainers);
+//                }
+//            }
         }
     }
 }

@@ -52,6 +52,7 @@ message ExecutionContext {
     repeated LogMessage log_messages = 14;
     int32 estimated_tests_count = 15;
     map<int32, int32> failure_corridor_limits = 16;
+    map<int32, int32> failure_corridor_counts = 17;
 }
 
 //message ContextClip {
@@ -283,4 +284,5 @@ enum ResultStatusType {
 
     PASSED_RETRY = 11; // passed after a retry
     MINOR_RETRY = 12 [deprecated = true]; // minor after a retry
+    REPAIRED = 13; // passed with fail annotation
 }

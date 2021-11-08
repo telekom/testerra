@@ -21,22 +21,19 @@
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
-import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.Counters;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepController;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.testng.ITestResult;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -58,7 +55,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     private ITestResult testResult;
-    private TestStatusController.Status status = TestStatusController.Status.NO_RUN;
+    private Status status = Status.NO_RUN;
     private final Type methodType;
     private List<Object> parameterValues;
     private int retryNumber = 0;
@@ -77,6 +74,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     private List<MethodContext> relatedMethodContexts = new LinkedList<>();
     private final List<MethodContext> dependsOnMethodContexts = new LinkedList<>();
     private List<CustomContext> customContexts;
+    private List<Annotation> customAnnotations;
 
     /**
      * Public constructor. Creates a new <code>MethodContext</code> object.
@@ -104,19 +102,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return this.retryNumber;
     }
 
-    /**
-     * @deprecated Use {@link #getFailureCorridorClass()} instead
-     */
-    public FailureCorridor.Value getFailureCorridorValue() {
-        if (this.failureCorridorClass.equals(FailureCorridor.High.class)) {
-            return FailureCorridor.Value.HIGH;
-        } else if (this.failureCorridorClass.equals(FailureCorridor.Mid.class)) {
-            return FailureCorridor.Value.MID;
-        } else {
-            return FailureCorridor.Value.LOW;
-        }
-    }
-
     public void setFailureCorridorClass(Class failureCorridorClass) {
         this.failureCorridorClass = failureCorridorClass;
     }
@@ -125,10 +110,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return this.failureCorridorClass;
     }
 
-    /**
-     * @deprecated Use {@link #readCustomContexts()} instead
-     */
-    public List<CustomContext> getCustomContexts() {
+    private List<CustomContext> getCustomContexts() {
         if (this.customContexts == null) {
             this.customContexts = new LinkedList<>();
         }
@@ -168,31 +150,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return (ClassContext) this.parentContext;
     }
 
-    @Deprecated
-    public TestContext getTestContext() {
-        return this.getClassContext().getTestContext();
-    }
-
-    @Deprecated
-    public SuiteContext getSuiteContext() {
-        return this.getTestContext().getSuiteContext();
-    }
-
-    @Deprecated
-    public ExecutionContext getExecutionContext() {
-        return this.getSuiteContext().getExecutionContext();
-    }
-
-    @Deprecated
-    public int getNumAssertions() {
-        return (int)readErrors().filter(errorContext -> !errorContext.isOptional()).count();
-    }
-
-    @Deprecated
-    public int getNumOptionalAssertions() {
-        return (int)readErrors().filter(ErrorContext::isOptional).count();
-    }
-
     public Stream<MethodContext> readRelatedMethodContexts() {
         return this.relatedMethodContexts.stream();
     }
@@ -201,8 +158,8 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return this.dependsOnMethodContexts.stream();
     }
 
-    public void setRelatedMethodContexts(List<MethodContext> relatedMethodContexts) {
-        this.relatedMethodContexts = relatedMethodContexts;
+    public void addRelatedMethodContext(MethodContext relatedMethodContext) {
+        this.relatedMethodContexts.add(relatedMethodContext);
     }
 
     public void addDependsOnMethod(MethodContext methodContext) {
@@ -257,24 +214,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return obj.toString().equals(toString());
     }
 
-    /**
-     * checks if test was skipped
-     *
-     * @return the skipped
-     */
-    public boolean isSkipped() {
-        return status == TestStatusController.Status.SKIPPED;
-    }
-
-    /**
-     * Gets whether the test method execution was successful.
-     *
-     * @return The value of <code>successful</code>.
-     */
-    public boolean isSuccessful() {
-        return status == TestStatusController.Status.PASSED || status == TestStatusController.Status.MINOR;
-    }
-
     public void addOptionalAssertion(Throwable throwable) {
         getCurrentTestStep().getCurrentTestStepAction().addAssertion(new ErrorContext(throwable, true));
     }
@@ -285,36 +224,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
 
     public void addError(ErrorContext errorContext) {
         getCurrentTestStep().getCurrentTestStepAction().addAssertion(errorContext);
-    }
-
-    public boolean isRetry() {
-        return status == TestStatusController.Status.FAILED_RETRIED;
-    }
-
-    public boolean isFailed() {
-        switch (status) {
-            case FAILED_EXPECTED:
-            case FAILED:
-            case FAILED_MINOR:
-            case FAILED_RETRIED:
-                return true;
-
-            default:
-                return false;
-        }
-    }
-
-    public boolean isPassed() {
-        switch (status) {
-            case PASSED:
-            case PASSED_RETRY:
-            case MINOR:
-            case MINOR_RETRY:
-                return true;
-
-            default:
-                return false;
-        }
     }
 
     @Deprecated
@@ -342,46 +251,16 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return !isConfigMethod();
     }
 
-    public boolean isExpectedFailed() {
-        return status == TestStatusController.Status.FAILED_EXPECTED;
-    }
-
-    public boolean hasBeenRetried() {
-        return retryNumber > 0;
-    }
-
-    @Override
-    public TestStatusController.Status getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(TestStatusController.Status status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
-    public boolean isRepresentationalTestMethod() {
-        if (isConfigMethod()) {
-            return false;
-        }
-        switch (status) {
-            case NO_RUN:
-            case FAILED_RETRIED:
-            case INFO:
-            case FAILED_EXPECTED:
-                return false;
-
-            case PASSED:
-            case PASSED_RETRY:
-            case MINOR:
-            case MINOR_RETRY:
-            case FAILED:
-            case FAILED_MINOR:
-            case SKIPPED:
-                return true;
-
-            default:
-                throw new SystemException("Method state not implemented: " + status);
-        }
+    public boolean isStatusOneOf(Status ...statuses) {
+        return Arrays.stream(statuses).anyMatch(givenStatus -> givenStatus == this.status);
     }
 
     @Override
@@ -434,9 +313,30 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     public Stream<Annotation> readAnnotations() {
-        return getTestNgResult()
+        return Stream.concat(
+                (this.customAnnotations!=null)?this.customAnnotations.stream():Stream.empty(),
+                getTestNgResult()
                         .map(testResult -> Stream.of(testResult.getMethod().getConstructorOrMethod().getMethod().getAnnotations()))
-                        .orElse(Stream.empty());
+                        .orElse(Stream.empty())
+        );
     }
 
+    public Optional<Fails> getFailsAnnotation() {
+        return getAnnotation(Fails.class);
+    }
+
+    private <T extends Annotation> Optional<T> getAnnotation(Class<T> annotationClass) {
+        return readAnnotations().filter(annotationClass::isInstance).map(annotation -> (T)annotation).findFirst();
+    }
+
+    /**
+     * Required by cucumber-connector
+     * @param annotation
+     */
+    public void addAnnotation(Annotation annotation) {
+        if (this.customAnnotations == null) {
+            this.customAnnotations = new LinkedList<>();
+        }
+        this.customAnnotations.add(annotation);
+    }
 }

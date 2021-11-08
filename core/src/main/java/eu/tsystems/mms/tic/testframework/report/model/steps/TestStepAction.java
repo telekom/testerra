@@ -29,7 +29,9 @@ import eu.tsystems.mms.tic.testframework.report.model.Serial;
 import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import eu.tsystems.mms.tic.testframework.report.model.context.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
+import org.apache.logging.log4j.core.LogEvent;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -37,7 +39,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.apache.logging.log4j.core.LogEvent;
 
 public class TestStepAction implements Serializable {
 

@@ -25,17 +25,16 @@ import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.DefaultTestNGContextGenerator;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.stream.Stream;
 import org.testng.IClass;
-import org.testng.IInvokedMethod;
 import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
+
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.stream.Stream;
 
 /**
  * Representation of a TestNG {@link ITestContext}
@@ -97,10 +96,5 @@ public class TestContext extends AbstractContext implements SynchronizableContex
                     eventBus.post(new ContextUpdateEvent().setContext(this));
                 });
 
-    }
-
-    @Override
-    public TestStatusController.Status getStatus() {
-        return getStatusFromContexts(classContexts.stream());
     }
 }

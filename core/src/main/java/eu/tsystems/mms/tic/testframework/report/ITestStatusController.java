@@ -21,25 +21,22 @@
 
 package eu.tsystems.mms.tic.testframework.report;
 
-import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import org.apache.commons.lang3.StringUtils;
+public interface ITestStatusController {
+    String getCounterInfoMessage();
 
-import java.util.HashMap;
-import java.util.Map;
+    int getTestsFailed();
 
-public class FailsAnnotationConverter implements AnnotationConverter<Fails> {
+    int getTestsFailedHIGH();
 
-    @Override
-    public Map<String, Object> toMap(Fails annotation) {
-        Map<String, Object> map = new HashMap<>();
-        if (!StringUtils.isBlank(annotation.description())) {
-            map.put("description", annotation.description());
-        }
-        if (!StringUtils.isBlank(annotation.ticketString())) {
-            map.put("ticketString", annotation.ticketString());
-        } else if (annotation.ticketId() > 0) {
-            map.put("ticketString", Integer.toString(annotation.ticketId()));
-        }
-        return map;
-    }
+    int getTestsFailedMID();
+
+    int getTestsFailedLOW();
+
+    int getTestsSuccessful();
+
+    int getTestsSkipped();
+
+    int getFailureCorridorCount(Class failureCorridorClass);
+
+    StatusCounter getStatusCounter();
 }

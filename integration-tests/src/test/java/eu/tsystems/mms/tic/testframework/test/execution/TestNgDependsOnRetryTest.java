@@ -21,7 +21,14 @@
 
 package eu.tsystems.mms.tic.testframework.test.execution;
 
+import eu.tsystems.mms.tic.testframework.report.Status;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -59,5 +66,34 @@ public class TestNgDependsOnRetryTest extends TesterraTest {
         Assert.assertEquals(this.counter.get(), 3, "testCaseTwo should executed after retried 'dependsOn' method.");
     }
 
+    @Test(dependsOnMethods = "testCaseOne", groups = "SEQUENTIAL")
+    public void test_retriedTestCaseData() {
+        Stream<MethodContext> methodContexts = findMethodContext("testCaseOne");
+
+        List<MethodContext> collected = methodContexts
+                .sorted(Comparator.comparingInt(MethodContext::getRetryCounter))
+                .collect(Collectors.toList());
+
+        Assert.assertEquals(collected.size(), 2);
+
+        collected.forEach(methodContext -> {
+            Assert.assertNotEquals(methodContext.getRetryCounter(), 0);
+        });
+
+        MethodContext failedMethod = collected.get(0);
+        MethodContext passedMethod = collected.get(1);
+
+        Assert.assertEquals(failedMethod.getStatus(), Status.RETRIED);
+        Assert.assertEquals(passedMethod.getStatus(), Status.RECOVERED);
+
+        Assert.assertEquals(1, failedMethod.readRelatedMethodContexts().count());
+        Assert.assertEquals(1, passedMethod.readDependsOnMethodContexts().count());
+    }
+
+    private Stream<MethodContext> findMethodContext(String methodName) {
+        MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
+        return currentMethodContext.getClassContext().readMethodContexts()
+                .filter(methodContext -> methodContext.getName().equals(methodName));
+    }
 
 }

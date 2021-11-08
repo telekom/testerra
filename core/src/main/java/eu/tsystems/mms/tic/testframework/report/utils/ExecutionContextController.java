@@ -23,7 +23,11 @@
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
+import eu.tsystems.mms.tic.testframework.report.ITestStatusController;
+import eu.tsystems.mms.tic.testframework.report.Status;
+import eu.tsystems.mms.tic.testframework.report.StatusCounter;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
@@ -36,10 +40,15 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.IInvokedMethod;
 import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
+
+import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @deprecated Use {@link IExecutionContextController} instead
@@ -54,6 +63,7 @@ public class ExecutionContextController {
     private static final ThreadLocal<ITestResult> CURRENT_TEST_RESULT = new ThreadLocal<>();
 
     private static final ThreadLocal<SessionContext> CURRENT_SESSION_CONTEXT = new ThreadLocal<>();
+    private static final String statsPrefix = "*** Stats: ";
 
     /**
      * @return The current method context or NULL if there was no method initialized.
@@ -159,18 +169,17 @@ public class ExecutionContextController {
 
     public static void printExecutionStatistics() {
         final ExecutionContext executionContext = getCurrentExecutionContext();
-        final String prefix = "*** Stats: ";
 
-        LOGGER.info(prefix + "**********************************************");
+        LOGGER.info(statsPrefix + "**********************************************");
 
-        LOGGER.info(prefix + "ExecutionContext: " + executionContext.getName());
+        LOGGER.info(statsPrefix + "ExecutionContext: " + executionContext.getName());
         AtomicInteger suiteContextCount = new AtomicInteger();
         AtomicInteger classContextCount = new AtomicInteger();
         AtomicInteger testContextCount = new AtomicInteger();
         AtomicInteger methodContextCount = new AtomicInteger();
         AtomicInteger testMethodContextCount = new AtomicInteger();
         AtomicInteger relevantMethodContextCount = new AtomicInteger();
-        Map<TestStatusController.Status, Long> statusCounts = new HashMap<>();
+
         executionContext.readSuiteContexts().forEach(suiteContext -> {
             suiteContextCount.incrementAndGet();
             suiteContext.readTestContexts().forEach(testContext -> {
@@ -183,42 +192,75 @@ public class ExecutionContextController {
                         if (methodContext.isTestMethod()) {
                             testMethodContextCount.incrementAndGet();
 
-                            if (methodContext.getStatus().relevant) {
+                            if (methodContext.getStatus().isStatisticallyRelevant()) {
                                 relevantMethodContextCount.incrementAndGet();
                             }
-
-                            Long statusCount = statusCounts.getOrDefault(methodContext.getStatus(), 0L);
-                            statusCounts.put(methodContext.getStatus(), ++statusCount);
                         }
                     });
                 });
             });
         });
-        LOGGER.info(prefix + "SuiteContexts:  " + suiteContextCount.get());
-        LOGGER.info(prefix + "TestContexts:   " + testContextCount.get());
-        LOGGER.info(prefix + "ClassContexts:  " + classContextCount.get());
-        LOGGER.info(prefix + "MethodContexts: " + methodContextCount.get());
-        LOGGER.info(prefix + "**********************************************");
-        LOGGER.info(prefix + "Test Methods Count: " + testMethodContextCount.get() + " (" + relevantMethodContextCount.get() + " relevant)");
+        LOGGER.info(statsPrefix + "SuiteContexts:  " + suiteContextCount.get());
+        LOGGER.info(statsPrefix + "TestContexts:   " + testContextCount.get());
+        LOGGER.info(statsPrefix + "ClassContexts:  " + classContextCount.get());
+        LOGGER.info(statsPrefix + "MethodContexts: " + methodContextCount.get());
+        LOGGER.info(statsPrefix + "**********************************************");
+        LOGGER.info(statsPrefix + "Test Methods Count: " + testMethodContextCount.get() + " (" + relevantMethodContextCount.get() + " relevant)");
 
-        for (TestStatusController.Status status : TestStatusController.Status.values()) {
-            LOGGER.info(prefix + status.name() + ": " + statusCounts.getOrDefault(status, 0L));
+        ITestStatusController testStatusController = TesterraListener.getTestStatusController();
+        StatusCounter statusCounter = testStatusController.getStatusCounter();
+
+        logStatusSet(Stream.of(Status.FAILED), statusCounter);
+        logStatusSet(Stream.of(Status.RETRIED), statusCounter);
+        logStatusSet(Stream.of(Status.FAILED_EXPECTED), statusCounter);
+        logStatusSet(Stream.of(Status.SKIPPED), statusCounter);
+        logStatusSet(Stream.of(Status.PASSED, Status.RECOVERED, Status.REPAIRED), statusCounter);
+
+        LOGGER.info(statsPrefix + "**********************************************");
+        Status overallStatus = Status.FAILED;
+        if (Testerra.Properties.FAILURE_CORRIDOR_ACTIVE.asBool()) {
+            if (FailureCorridor.isCorridorMatched()) {
+                overallStatus = Status.PASSED;
+            }
+        } else {
+            if (testStatusController.getTestsFailed() == 0) {
+                overallStatus = Status.PASSED;
+            }
         }
 
-        LOGGER.info(prefix + "**********************************************");
-
-        LOGGER.info(prefix + "ExecutionContext Status: " + executionContext.getStatus());
-        LOGGER.info(prefix + "FailureCorridor Enabled: " + Testerra.Properties.FAILURE_CORRIDOR_ACTIVE.asBool());
+        LOGGER.info(statsPrefix + "ExecutionContext Status: " + overallStatus.title);
+        LOGGER.info(statsPrefix + "FailureCorridor Enabled: " + Testerra.Properties.FAILURE_CORRIDOR_ACTIVE.asBool());
 
         if (Testerra.Properties.FAILURE_CORRIDOR_ACTIVE.asBool()) {
-            LOGGER.info(prefix + "**********************************************");
-            LOGGER.info(prefix + "FailureCorridor Status : " + FailureCorridor.getStatistics() + " " + FailureCorridor.getStatusMessage());
+            LOGGER.info(statsPrefix + "**********************************************");
+            LOGGER.info(statsPrefix + "FailureCorridor Status : " + FailureCorridor.getStatistics() + " " + FailureCorridor.getStatusMessage());
         }
 
-        LOGGER.info(prefix + "**********************************************");
+        LOGGER.info(statsPrefix + "**********************************************");
 
-        LOGGER.info(prefix + "Duration: " + executionContext.getDurationAsString());
+        LOGGER.info(statsPrefix + "Duration: " + executionContext.getDurationAsString());
 
-        LOGGER.info(prefix + "**********************************************");
+        LOGGER.info(statsPrefix + "**********************************************");
+    }
+
+    private static void logStatusSet(Stream<Status> statuses, StatusCounter statusCounter) {
+        String statusSetString = createStatusSetString(statuses, statusCounter);
+        if (statusSetString.length() > 0) {
+            LOGGER.info(statsPrefix + statusSetString);
+        }
+    }
+
+    private static String createStatusSetString(Stream<Status> statuses, StatusCounter statusCounter) {
+        return statuses
+                .map(status -> {
+                    int summarizedTestStatusCount = statusCounter.getSum(Status.getStatusGroup(status));
+                    if (summarizedTestStatusCount > 0) {
+                        return status.title + ": " + summarizedTestStatusCount;
+                    } else {
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.joining(" ⊃ "));
     }
 }

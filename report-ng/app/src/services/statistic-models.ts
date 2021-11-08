@@ -32,12 +32,12 @@ import IStackTraceCause = data.IStackTraceCause;
 import {MethodDetails} from "./statistics-generator";
 
 class Statistics {
-    private _statusConverter: StatusConverter
+    private _statusConverter: StatusConverter;
+    private _resultStatuses: { [key: number]: number } = {};
+
     constructor() {
         this._statusConverter = Container.instance.get(StatusConverter);
     }
-
-    private _resultStatuses: { [key: number]: number } = {};
 
     addResultStatus(status: ResultStatusType) {
         if (!this._resultStatuses[status]) {
@@ -54,41 +54,8 @@ class Statistics {
         return statuses;
     }
 
-    /**
-     * Returns the number of test cases including passed retried
-     */
-    get overallTestCases() {
-        return this.getStatusesCount([
-            ResultStatusType.PASSED,
-            ResultStatusType.SKIPPED,
-            ResultStatusType.FAILED,
-            ResultStatusType.FAILED_EXPECTED,
-            ResultStatusType.PASSED_RETRY
-        ]);
-    }
-
-    get overallPassed() {
-        return this.getStatusesCount(this._statusConverter.passedStatuses);
-    }
-
-    get overallSkipped() {
-        return this.getStatusCount(ResultStatusType.SKIPPED);
-    }
-
-    get overallFailed() {
-       return this.getStatusesCount(this._statusConverter.failedStatuses);
-    }
-
     getStatusCount(status: ResultStatusType) {
         return this._resultStatuses[status] | 0;
-    }
-
-    getStatusesCount(statuses:number[]) {
-        let count = 0;
-        statuses.forEach(value => {
-            count += this.getStatusCount(value);
-        })
-        return count;
     }
 
     getUpmostStatus():number {
@@ -114,17 +81,51 @@ class Statistics {
     get statusConverter() {
         return this._statusConverter;
     }
+
+    get overallPassed() {
+        return this.getSummarizedStatusCount(this._statusConverter.passedStatuses);
+    }
+
+    get overallSkipped() {
+        return this.getStatusCount(data.ResultStatusType.SKIPPED);
+    }
+
+    get overallFailed() {
+        return this.getStatusCount(data.ResultStatusType.FAILED);
+    }
+
+    /**
+     * Returns the number of test cases including passed retried
+     */
+    get overallTestCases() {
+        return this.getSummarizedStatusCount([
+            data.ResultStatusType.PASSED,
+            data.ResultStatusType.REPAIRED,
+            data.ResultStatusType.PASSED_RETRY, // Recovered
+            data.ResultStatusType.SKIPPED,
+            data.ResultStatusType.FAILED,
+            data.ResultStatusType.FAILED_EXPECTED,
+            data.ResultStatusType.FAILED_RETRIED,
+        ]);
+    }
+
+    getSummarizedStatusCount(statuses:number[]) {
+        let count = 0;
+        statuses.forEach(value => {
+            count += this.getStatusCount(value);
+        })
+        return count;
+    }
 }
 
 export class ExecutionStatistics extends Statistics {
     private _classStatistics: ClassStatistics[] = [];
     private _uniqueFailureAspects:FailureAspectStatistics[] = [];
-    private _repairedTests = 0;
 
     constructor(
         readonly executionAggregate: ExecutionAggregate
     ) {
-        super();
+        super()
     }
 
     setClassStatistics(classStatistics:ClassStatistics[]) {
@@ -145,19 +146,10 @@ export class ExecutionStatistics extends Statistics {
         failureAspect.addMethodContext(methodContext);
     }
 
-    get repairedTests() {
-        return this._repairedTests;
-    }
-
     protected addStatistics(classStatistics: ClassStatistics) {
-        super.addStatistics(classStatistics);
+        super.addStatistics(classStatistics)
         classStatistics.methodContexts
             .forEach(methodContext => {
-
-                if (methodContext.resultStatus == data.ResultStatusType.PASSED && methodContext.annotations[MethodDetails.FAILS_ANNOTATION_NAME]) {
-                    this._repairedTests++;
-                }
-
                 const methodDetails = new MethodDetails(methodContext, classStatistics);
                 methodDetails.failureAspects.forEach(failureAspect => {
                     this._addUniqueFailureAspect(failureAspect, methodContext);
@@ -204,7 +196,6 @@ export class ClassStatistics extends Statistics {
             this.addResultStatus(methodContext.resultStatus);
         }
         this._methodContexts.push(methodContext);
-        return this;
     }
 
     get methodContexts() {
@@ -264,7 +255,7 @@ export class FailureAspectStatistics extends Statistics {
      * A failure aspect is minor when it has no statuses in failed state
      */
     get isMinor() {
-        return this.getStatusesCount(this.statusConverter.failedStatuses) == 0;
+        return this.getStatusCount(data.ResultStatusType.FAILED) == 0;
     }
 
     get methodContexts() {

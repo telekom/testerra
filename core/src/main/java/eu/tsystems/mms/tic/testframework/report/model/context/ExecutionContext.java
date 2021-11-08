@@ -31,20 +31,19 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import org.testng.ITestContext;
+import org.testng.ITestResult;
+
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Stream;
-import org.testng.ITestContext;
-import org.testng.ITestResult;
 
 public class ExecutionContext extends AbstractContext implements SynchronizableContext {
     private final Queue<SuiteContext> suiteContexts = new ConcurrentLinkedQueue<>();
     public final RunConfig runConfig = new RunConfig();
     public boolean crashed = false;
     private Queue<SessionContext> exclusiveSessionContexts;
-
     public int estimatedTestMethodCount;
-
     private final ConcurrentLinkedQueue<LogMessage> methodContextLessLogs = new ConcurrentLinkedQueue<>();
 
     public ExecutionContext() {
@@ -101,18 +100,5 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
 
     public SuiteContext getSuiteContext(ITestContext testContext) {
         return getSuiteContext(contextNameGenerator.getSuiteContextName(testContext));
-    }
-
-    @Override
-    public TestStatusController.Status getStatus() {
-        if (Testerra.Properties.FAILURE_CORRIDOR_ACTIVE.asBool()) {
-            if (FailureCorridor.isCorridorMatched()) {
-                return TestStatusController.Status.PASSED;
-            } else {
-                return TestStatusController.Status.FAILED;
-            }
-        } else {
-            return getStatusFromContexts(suiteContexts.stream());
-        }
     }
 }

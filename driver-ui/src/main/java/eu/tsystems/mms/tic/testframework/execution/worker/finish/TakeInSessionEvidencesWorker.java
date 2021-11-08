@@ -51,7 +51,7 @@ public class TakeInSessionEvidencesWorker implements MethodEndEvent.Listener {
         if (methodEndEvent.isFailed()) {
             collect(methodEndEvent);
         } else if (methodEndEvent.isSkipped()) {
-            if (methodEndEvent.getMethodContext().getStatus() == TestStatusController.Status.FAILED_RETRIED) {
+            if (methodEndEvent.getMethodContext().getRetryCounter() > 0) {
                 collect(methodEndEvent);
             }
         }

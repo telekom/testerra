@@ -25,7 +25,6 @@ package eu.tsystems.mms.tic.testframework.report;
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.FinalizeExecutionEvent;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 
 /**
  * Listener for the very end of the execution.
@@ -37,8 +36,6 @@ final class FinalizeListener implements FinalizeExecutionEvent.Listener {
     @Override
     @Subscribe
     public void onFinalizeExecution(FinalizeExecutionEvent event) {
-        ExecutionContextController.printExecutionStatistics();
-
         Report report = Testerra.getInjector().getInstance(Report.class);
         report.finalizeReport();
     }

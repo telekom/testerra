@@ -59,7 +59,7 @@ module.exports = ({production} = {}, {analyze, tests, hmr, port, host} = {}) => 
             runtimeChunk: true,  // separates the runtime chunk, required for long term cacheability
             // moduleIds is the replacement for HashedModuleIdsPlugin and NamedModulesPlugin deprecated in https://github.com/webpack/webpack/releases/tag/v4.16.0
             // changes module id's to use hashes be based on the relative path of the module, required for long term cacheability
-            moduleIds: 'hashed',
+            moduleIds: 'deterministic',
             // Use splitChunks to breakdown the App/Aurelia bundle down into smaller chunks
             // https://webpack.js.org/plugins/split-chunks-plugin/
             splitChunks: {
@@ -103,8 +103,9 @@ module.exports = ({production} = {}, {analyze, tests, hmr, port, host} = {}) => 
             hints: false
         },
         devServer: {
-            contentBase: outDir,
-
+            static: {
+                directory: outDir
+            },
             headers: {},
 
             // serve index.html for all 404 (required for push-state)
@@ -113,7 +114,7 @@ module.exports = ({production} = {}, {analyze, tests, hmr, port, host} = {}) => 
             port: port,
             host: host
         },
-        devtool: production ? false : 'cheap-module-eval-source-map',
+        devtool: production ? false : 'eval-source-map',
         module: {
             rules: [
                 {
@@ -187,9 +188,18 @@ module.exports = ({production} = {}, {analyze, tests, hmr, port, host} = {}) => 
              * Optimized moment
              * @see https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
              */
-            new IgnorePlugin(/^\.\/locale$/, /moment$/),
-            ...when(!tests, new CopyWebpackPlugin([
-                {from: 'static', to: outDir, ignore: ['.*']}])), // ignore dot (hidden) files
+            new IgnorePlugin({
+                resourceRegExp: /^\.\/locale$/,
+                contextRegExp: /moment$/
+            }),
+            ...when(!tests, new CopyWebpackPlugin({
+                patterns: [
+                    {
+                        from: 'static',
+                        to: outDir,
+                    }
+                ],
+            })),
             ...when(analyze, new BundleAnalyzerPlugin()),
             /**
              * Note that the usage of following plugin cleans the webpack output directory before build.

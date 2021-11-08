@@ -64,8 +64,8 @@ public abstract class WebDriverFactory<R extends AbstractWebDriverRequest> imple
          */
         DesiredCapabilities tapOptions = new DesiredCapabilities();
         ExecutionContextController.getCurrentExecutionContext().getMetaData().forEach(tapOptions::setCapability);
-        tapOptions.setCapability("scid", sessionContext.getId());
-        tapOptions.setCapability("sessionKey", finalRequest.getSessionKey());
+        //tapOptions.setCapability("scid", sessionContext.getId());
+        //tapOptions.setCapability("sessionKey", finalRequest.getSessionKey());
         preparedCaps.setCapability("tapOptions", tapOptions);
 
         /*

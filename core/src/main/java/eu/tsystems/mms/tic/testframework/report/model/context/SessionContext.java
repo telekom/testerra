@@ -30,8 +30,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Stream;
 
-public class SessionContext extends AbstractContext implements SynchronizableContext {
-    private String remoteSessionId;
+public class SessionContext extends AbstractContext {
     private Video video;
     private NodeInfo nodeInfo;
     private String browserName;
@@ -46,7 +45,7 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }
-        this.name = webDriverRequest.getSessionKey();
+        this.setName(webDriverRequest.getSessionKey());
 
 //        this.provider = provider;
 //
@@ -63,20 +62,20 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
     }
 
     public String getSessionKey() {
-        return this.name;
+        return this.getName();
     }
 
     public SessionContext setSessionKey(String sessionKey) {
-        this.name = sessionKey;
+        this.setName(sessionKey);
         return this;
     }
 
     public Optional<String> getRemoteSessionId() {
-        return Optional.ofNullable(remoteSessionId);
+        return Optional.of(getId());
     }
 
     public SessionContext setRemoteSessionId(String sessionId) {
-        this.remoteSessionId = sessionId;
+        setId(sessionId);
         return this;
     }
 

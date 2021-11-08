@@ -48,15 +48,15 @@ import java.util.stream.Stream;
  *
  * @author pele
  */
-public class ClassContext extends AbstractContext implements SynchronizableContext, Loggable {
+public class ClassContext extends AbstractContext implements Loggable {
     private final Queue<MethodContext> methodContexts = new ConcurrentLinkedQueue<>();
     private final Class testClass;
     private TestClassContext testClassContext = null;
 
     public ClassContext(Class testClass, TestContext testContext) {
         this.testClass = testClass;
-        this.parentContext = testContext;
-        this.name = testClass.getSimpleName();
+        setParentContext(testContext);
+        setName(testClass.getSimpleName());
     }
 
     @Override
@@ -80,7 +80,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
     }
 
     public TestContext getTestContext() {
-        return (TestContext) this.parentContext;
+        return (TestContext) this.getParentContext();
     }
 
     public Class getTestClass() {
@@ -188,6 +188,6 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
     }
 
     public SuiteContext getSuiteContext() {
-        return (SuiteContext) this.parentContext;
+        return (SuiteContext) this.getParentContext();
     }
 }

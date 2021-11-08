@@ -48,7 +48,7 @@ import java.util.stream.Stream;
  *
  * @author mibu
  */
-public class MethodContext extends AbstractContext implements SynchronizableContext {
+public class MethodContext extends AbstractContext {
 
     public enum Type {
         TEST_METHOD,
@@ -89,8 +89,8 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
             final Type methodType,
             final ClassContext classContext
     ) {
-        this.name = name;
-        this.parentContext = classContext;
+        this.setName(name);
+        this.setParentContext(classContext);
         this.methodRunIndex = Counters.increaseMethodExecutionCounter();
         this.methodType = methodType;
     }
@@ -142,13 +142,13 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         if (!this.sessionContexts.contains(sessionContext)) {
             this.sessionContexts.add(sessionContext);
             sessionContext.addMethodContext(this);
-            sessionContext.parentContext = this;
+            sessionContext.setParentContext(this);
             TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(this));
         }
     }
 
     public ClassContext getClassContext() {
-        return (ClassContext) this.parentContext;
+        return (ClassContext) this.getParentContext();
     }
 
     public Stream<MethodContext> readRelatedMethodContexts() {
@@ -268,7 +268,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     public String toString() {
         return "MethodContext{" +
                 "methodRunIndex=" + methodRunIndex +
-                ", name='" + name + '\'' +
+                ", name='" + getName() + '\'' +
                 '}';
     }
 

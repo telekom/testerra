@@ -33,7 +33,6 @@ import eu.tsystems.mms.tic.testframework.events.InterceptMethodsEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodStartEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
-import eu.tsystems.mms.tic.testframework.execution.testng.ListenerUtils;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodContextUpdateWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodParametersWorker;
@@ -50,12 +49,16 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.DefaultTestNGContextGenerator;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.ConcurrentHashMap;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.DefaultConfiguration;
 import org.testng.IConfigurable;
 import org.testng.IConfigureCallBack;
+import org.testng.IDataProviderListener;
 import org.testng.IHookCallBack;
 import org.testng.IHookable;
 import org.testng.IInvokedMethod;
@@ -70,10 +73,10 @@ import org.testng.ITestListener;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 import org.testng.annotations.Test;
+import org.testng.internal.InvokedMethod;
+import org.testng.internal.TestResult;
 import org.testng.xml.XmlSuite;
-
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Listener for JUnit and TestNg, collects test informations for testreport.
@@ -88,7 +91,9 @@ public class TesterraListener implements
         IMethodInterceptor,
         ITestListener,
         ISuiteListener,
-        Loggable {
+        Loggable,
+        IDataProviderListener
+{
     /**
      * Default package namespace for project tests
      */
@@ -111,6 +116,7 @@ public class TesterraListener implements
     private static final Report report;
     private static DefaultTestNGContextGenerator contextGenerator;
     private static final TestStatusController testStatusController = new TestStatusController();
+    private static final ConcurrentHashMap<ITestNGMethod, Boolean> dataProviderSemaphore = new ConcurrentHashMap<>();
 
     static {
         String logLevel = PropertyManager.getProperty("log4j.level");
@@ -276,30 +282,28 @@ public class TesterraListener implements
      * @param testResult result of invoked method.
      * @param testContext
      */
-    private void pBeforeInvocation(
+    private MethodContext pBeforeInvocation(
             IInvokedMethod invokedMethod,
             ITestResult testResult,
             ITestContext testContext
     ) {
         final String methodName = getMethodName(testResult);
 
-        if (ListenerUtils.wasMethodInvokedBefore("beforeInvocationFor" + methodName, invokedMethod, testResult)) {
-            return;
-        }
+//        if (ListenerUtils.wasMethodInvokedBefore("beforeInvocationFor" + methodName, invokedMethod, testResult)) {
+//            return null;
+//        }
 
         /*
          * store testresult, create method context
          */
         MethodContext methodContext = ExecutionContextController.setCurrentTestResult(testResult); // stores the actual testresult, auto-creates the method context
-        ExecutionContextController.setCurrentMethodContext(methodContext);
-
         methodContext.getTestStep(TestStep.SETUP);
 
-        final String infoText = "beforeInvocation: " + invokedMethod.getTestMethod().getTestClass().getName() + "." +
-                methodName +
-                " - " + Thread.currentThread().getName();
-
-        log().trace(infoText);
+//        final String infoText = "beforeInvocation: " + invokedMethod.getTestMethod().getTestClass().getName() + "." +
+//                methodName +
+//                " - " + Thread.currentThread().getName();
+//
+//        log().trace(infoText);
 
         AbstractMethodEvent event = new MethodStartEvent()
                 .setTestResult(testResult)
@@ -312,6 +316,7 @@ public class TesterraListener implements
 
         // We don't close teardown steps, because we want to collect further actions there
         //step.close();
+        return methodContext;
     }
 
     /**
@@ -361,27 +366,22 @@ public class TesterraListener implements
             ITestContext testContext
     ) {
 
-        final String methodName;
-        final String testClassName;
-        if (invokedMethod != null) {
-            methodName = invokedMethod.getTestMethod().getMethodName();
-            testClassName = invokedMethod.getTestMethod().getTestClass().getName();
-        } else {
-            methodName = testResult.getMethod().getConstructorOrMethod().getName();
-            testClassName = testResult.getTestClass().getName();
-        }
+//        final String methodName;
+//        final String testClassName;
+//        if (invokedMethod != null) {
+//            methodName = invokedMethod.getTestMethod().getMethodName();
+//            testClassName = invokedMethod.getTestMethod().getTestClass().getName();
+//        } else {
+//            methodName = testResult.getMethod().getConstructorOrMethod().getName();
+//            testClassName = testResult.getTestClass().getName();
+//        }
 
         // CHECKSTYLE:ON
-        if (ListenerUtils.wasMethodInvokedBefore("afterInvocation", testClassName, methodName, testResult, testContext)) {
-            return;
-        }
+//        if (ListenerUtils.wasMethodInvokedBefore("afterInvocation", testClassName, methodName, testResult, testContext)) {
+//            return;
+//        }
 
-        /*
-        Log
-         */
-        final String infoText = "afterInvocation: " + testClassName + "." + methodName + " - " + Thread.currentThread().getName();
-
-        log().trace(infoText);
+        final String methodName = getMethodName(testResult);
 
         /*
          * Get test method container
@@ -389,10 +389,7 @@ public class TesterraListener implements
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         if (methodContext == null) {
 
-            if (
-                    testResult.getStatus() == ITestResult.CREATED
-                            || testResult.getStatus() == ITestResult.SKIP
-            ) {
+            if (testResult.getStatus() == ITestResult.CREATED || testResult.getStatus() == ITestResult.SKIP) {
                 /*
                  * TestNG bug or whatever ?!?!
                  */
@@ -523,5 +520,26 @@ public class TesterraListener implements
 
     public static boolean isActive() {
         return instances > 0;
+    }
+
+    @Override
+    public void onDataProviderFailure(ITestNGMethod testNGMethod, ITestContext testContext, RuntimeException exception) {
+        /**
+         * TestNG calls the data provider initialization for every thread.
+         * Added a semaphore to prevent adding multiple method contexts.
+         */
+        if (!dataProviderSemaphore.containsKey(testNGMethod)) {
+            TestResult testResult = TestResult.newContextAwareTestResult(testNGMethod, testContext);
+            InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), testResult);
+            MethodContext methodContext = pBeforeInvocation(invokedMethod, testResult, testContext);
+            if (exception.getCause() != null) {
+                methodContext.addError(exception.getCause());
+            } else {
+                methodContext.addError(exception);
+            }
+            pAfterInvocation(invokedMethod, testResult, testContext);
+
+            dataProviderSemaphore.put(testNGMethod, true);
+        }
     }
 }

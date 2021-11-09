@@ -94,7 +94,7 @@ public class BupRemoteProxyManagerPlaygroundTest extends TesterraTest {
         BrowserUpRemoteProxyServer bup1 = new BrowserUpRemoteProxyServer();
         bup1.setPort(8088);
 
-        bup1 = browserUpRemoteProxyManager.startServer(bup1);
+        browserUpRemoteProxyManager.startServer(bup1);
         Assert.assertNotNull(bup1, "Proxy object generated.");
 
         Assert.assertEquals(bup1.getPort().intValue(), 8088, "Port equals desired.");

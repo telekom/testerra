@@ -57,8 +57,8 @@ public class MethodStartWorker implements Loggable, MethodStartEvent.Listener {
         Method method = event.getMethod();
         if (retryAnalyzer == null || retryAnalyzer instanceof DisabledRetryAnalyzer) {
             testNGMethod.setRetryAnalyzerClass(RetryAnalyzer.class);
-        } else {
-            log().info("Using a non-default retry analyzer: " + retryAnalyzer + " on " + method.getName());
+        } else if (!(retryAnalyzer instanceof RetryAnalyzer)){
+            log().info("Using a non-default retry analyzer: " + retryAnalyzer.getClass().getSimpleName() + " on " + method.getName());
         }
     }
 }

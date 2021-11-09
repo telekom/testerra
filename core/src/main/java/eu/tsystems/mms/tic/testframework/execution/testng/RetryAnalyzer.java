@@ -135,9 +135,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
             return false;
         }
 
-        boolean retry = false;
         final String testMethodName = methodContext.getName();
-        String retryReason = null;
 
         /*
         check retry counter
@@ -174,13 +172,6 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
 
         boolean containingFilteredThrowable = isTestResultContainingFilteredThrowable(testResult);
         if (containingFilteredThrowable) {
-            retry = true;
-        }
-
-        /*
-         * process retry
-         */
-        if (retry) {
             methodHasBeenRetried(methodContext);
             RETRIED_METHODS.add(methodContext);
 

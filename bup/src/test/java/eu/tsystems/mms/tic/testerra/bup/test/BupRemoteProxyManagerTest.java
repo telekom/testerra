@@ -179,8 +179,7 @@ public class BupRemoteProxyManagerTest extends TesterraTest {
 
         BrowserUpRemoteProxyServer browserUpRemoteProxyServer = new BrowserUpRemoteProxyServer();
         browserUpRemoteProxyServer.setPort(8088);
-
-        browserUpRemoteProxyServer = browserUpRemoteProxyManager.startServer(browserUpRemoteProxyServer);
+        browserUpRemoteProxyManager.startServer(browserUpRemoteProxyServer);
         Assert.assertNotNull(browserUpRemoteProxyServer, "Proxy object generated.");
 
         Assert.assertEquals(browserUpRemoteProxyServer.getPort().intValue(), 8088, "Port equals desired.");
@@ -224,8 +223,7 @@ public class BupRemoteProxyManagerTest extends TesterraTest {
         browserUpRemoteProxyServer.setBindAddress("192.168.100.1");
         browserUpRemoteProxyServer.setUpstreamProxy(new URL("http://proxy.company.example.org:8080"));
         browserUpRemoteProxyServer.setUpstreamNonProxy(".internal.example.org|.mystuff.example.org");
-
-        browserUpRemoteProxyServer = browserUpRemoteProxyManager.startServer(browserUpRemoteProxyServer);
+        browserUpRemoteProxyManager.startServer(browserUpRemoteProxyServer);
         Assert.assertNotNull(browserUpRemoteProxyServer, "Proxy object generated.");
 
         Assert.assertEquals(browserUpRemoteProxyServer.getPort().intValue(), 8088, "Port equals desired.");
@@ -426,7 +424,7 @@ public class BupRemoteProxyManagerTest extends TesterraTest {
 
         final URL apiBaseUrl = new URL(LOCAL_PROXY_FOR_TEST);
         final BrowserUpRemoteProxyManager browserUpRemoteProxyManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
-        bup1 = browserUpRemoteProxyManager.startServer(bup1);
+        browserUpRemoteProxyManager.startServer(bup1);
     }
 
 }

@@ -52,10 +52,9 @@ public class DefaultTestController implements TestController, Loggable {
         Assertion previousAssertionImpl = this.overrides.setAssertionImpl(assertionImpl);
         try {
             runnable.run();
-        } catch (Throwable t) {
-            assertionImpl.fail(new Error(t));
+        } finally {
+            this.overrides.setAssertionImpl(previousAssertionImpl);
         }
-        this.overrides.setAssertionImpl(previousAssertionImpl);
     }
 
     @Override
@@ -64,10 +63,9 @@ public class DefaultTestController implements TestController, Loggable {
         Assertion previousAssertionImpl = this.overrides.setAssertionImpl(assertionImpl);
         try {
             runnable.run();
-        } catch (Throwable t) {
-            assertionImpl.fail(new Error(t));
+        } finally {
+            this.overrides.setAssertionImpl(previousAssertionImpl);
         }
-        this.overrides.setAssertionImpl(previousAssertionImpl);
     }
 
     @Override
@@ -75,10 +73,8 @@ public class DefaultTestController implements TestController, Loggable {
         int prevTimeout = overrides.setTimeout(seconds);
         try {
             runnable.run();
+        } finally {
             overrides.setTimeout(prevTimeout);
-        } catch (Throwable throwable) {
-            overrides.setTimeout(prevTimeout);
-            throw throwable;
         }
     }
 

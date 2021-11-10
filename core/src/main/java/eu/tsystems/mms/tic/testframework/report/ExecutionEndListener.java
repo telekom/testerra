@@ -47,7 +47,7 @@ final class ExecutionEndListener implements
     @Override
     @Subscribe
     public void onExecutionAbort(ExecutionAbortEvent event) {
-        ExecutionContextController.getCurrentExecutionContext().crashed = true;
+        ExecutionContextController.getCurrentExecutionContext().setCrashed(true);
         finalizeExecutionContext();
     }
 

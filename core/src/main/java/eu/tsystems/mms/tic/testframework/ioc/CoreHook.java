@@ -99,6 +99,9 @@ public class CoreHook extends AbstractModule implements ModuleHook, PropertyMana
         eventBus.register(new SortMethodsByPriorityMethodInterceptor());
         eventBus.register(new ExecutionEndListener());
         eventBus.register(PROPERTY_MANAGER);
+
+        ITestStatusController testStatusController = Testerra.getInjector().getInstance(ITestStatusController.class);
+        eventBus.register(testStatusController);
     }
 
     @Override

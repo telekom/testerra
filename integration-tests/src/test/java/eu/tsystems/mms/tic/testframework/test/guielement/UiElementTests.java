@@ -48,6 +48,7 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
     @Test
     public void test_UiElement_clear() {
         WebTestPage page = getPage();
+
         UiElement element = page.getFinder().findById(5);
         element.sendKeys("Test");
         element.clear().expect().text().is("");
@@ -363,6 +364,30 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
         UiElement empty = getPage().getFinder().createEmpty().setName("SubmitButton");
         empty.expect().displayed(true);
         Assert.assertEquals(empty.toString(true), "WebTestPage -> EmptyUiElement(SubmitButton)");
+    }
+
+    @Test()
+    public void test_pageIsDisplayed() {
+        WebTestPage page = getPage();
+        page.expect().displayed(true);
+    }
+
+    @Test(expectedExceptions = AssertionError.class)
+    public void test_PageIsDisplayed_fails() {
+        WebTestPage page = getPage();
+        page.expect().displayed(false);
+    }
+
+    @Test()
+    public void test_pageIsPresent() {
+        WebTestPage page = getPage();
+        page.expect().present(true);
+    }
+
+    @Test(expectedExceptions = AssertionError.class)
+    public void test_PageIsPresent_fails() {
+        WebTestPage page = getPage();
+        page.expect().present(false);
     }
 
 }

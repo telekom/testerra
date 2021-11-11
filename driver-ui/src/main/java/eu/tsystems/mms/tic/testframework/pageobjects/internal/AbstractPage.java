@@ -38,6 +38,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.XPath;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.AbstractFieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.GuiElementCheckFieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFieldAction;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PageAssertions;
 import eu.tsystems.mms.tic.testframework.testing.TestControllerProvider;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -120,19 +121,19 @@ public abstract class AbstractPage<SELF> implements
      * Package private accessible by {@link PageFactory}
      */
     void checkUiElements(CheckRule checkRule) throws Throwable {
-        pCheckPage(checkRule, true);
+        pCheckPage(checkRule);
     }
 
     /**
      * The call of this method is injected into the constructor of every page class or must be called from every page
      * class constructor!!!
      * If there are several subclasses each calling checkPage, it will be only called from the class of the calling instance.
-     * @deprecated Don't call this method on your own and use {@link eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory#create(Class, WebDriver)} instead
+     * @deprecated Don't call this method on your own and use {@link eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory#create(Class, WebDriver)} or {@link PageAssertions#displayed(boolean)} instead
      */
     @Deprecated
     public final void checkPage() {
         try {
-            pCheckPage(CheckRule.DEFAULT, true);
+            pCheckPage(CheckRule.DEFAULT);
         } catch (Throwable throwable) {
             throw new PageFactoryException(this.getClass(), getWebDriver(), throwable);
         }
@@ -140,7 +141,7 @@ public abstract class AbstractPage<SELF> implements
 
     public abstract String getName(boolean detailed);
 
-    private void pCheckPage(CheckRule checkRule, final boolean checkCaller) throws Throwable {
+    private void pCheckPage(CheckRule checkRule) throws Throwable {
         /*
         page checks
          */

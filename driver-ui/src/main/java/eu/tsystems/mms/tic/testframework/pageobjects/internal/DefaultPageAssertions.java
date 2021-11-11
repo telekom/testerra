@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2021, Mike Reiche,  T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -19,17 +19,22 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.internal.asserts.AbstractPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.internal.asserts.AssertionProvider;
+import eu.tsystems.mms.tic.testframework.internal.asserts.BinaryAssertion;
+import eu.tsystems.mms.tic.testframework.internal.asserts.DefaultBinaryAssertion;
 import eu.tsystems.mms.tic.testframework.internal.asserts.DefaultStringAssertion;
 import eu.tsystems.mms.tic.testframework.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.internal.asserts.PropertyAssertionConfig;
 import eu.tsystems.mms.tic.testframework.internal.asserts.PropertyAssertionFactory;
 import eu.tsystems.mms.tic.testframework.internal.asserts.StringAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultImageAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PageAssertions;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -42,7 +47,7 @@ public class DefaultPageAssertions implements PageAssertions {
     private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.getInjector().getInstance(PropertyAssertionFactory.class);
     private static final Report report = Testerra.getInjector().getInstance(Report.class);
     private final PropertyAssertionConfig propertyAssertionConfig;
-    private final Page page;
+    private final AbstractPage page;
 
     public DefaultPageAssertions(Page page, PropertyAssertionConfig config) {
         this.page = page;
@@ -75,6 +80,44 @@ public class DefaultPageAssertions implements PageAssertions {
             @Override
             public String createSubject() {
                 return Format.separate(page.toString(), "url="+Format.param(getActual()));
+            }
+        });
+    }
+
+    @Override
+    public BinaryAssertion<Boolean> displayed() {
+        return propertyAssertionFactory.createWithConfig(DefaultBinaryAssertion.class, this.propertyAssertionConfig, new AssertionProvider<Boolean>() {
+            @Override
+            public Boolean getActual() {
+                try {
+                    page.checkUiElements(CheckRule.IS_DISPLAYED);
+                    return true;
+                } catch (Throwable e) {
+                    return false;
+                }
+            }
+            @Override
+            public String createSubject() {
+                return Format.separate(page.toString(), "displayed");
+            }
+        });
+    }
+
+    @Override
+    public BinaryAssertion<Boolean> present() {
+        return propertyAssertionFactory.createWithConfig(DefaultBinaryAssertion.class, this.propertyAssertionConfig, new AssertionProvider<Boolean>() {
+            @Override
+            public Boolean getActual() {
+                try {
+                    page.checkUiElements(CheckRule.IS_PRESENT);
+                    return true;
+                } catch (Throwable e) {
+                    return false;
+                }
+            }
+            @Override
+            public String createSubject() {
+                return Format.separate(page.toString(), "present");
             }
         });
     }

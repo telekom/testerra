@@ -21,10 +21,23 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
+import eu.tsystems.mms.tic.testframework.internal.asserts.BinaryAssertion;
 import eu.tsystems.mms.tic.testframework.internal.asserts.ScreenshotAssertion;
 import eu.tsystems.mms.tic.testframework.internal.asserts.StringAssertion;
 
 public interface PageAssertions extends ScreenshotAssertion {
     StringAssertion<String> title();
     StringAssertion<String> url();
+    BinaryAssertion<Boolean> displayed();
+
+    default boolean displayed(boolean bool) {
+        return displayed().is(bool);
+    }
+
+    BinaryAssertion<Boolean> present();
+
+    default boolean present(boolean bool) {
+        return present().is(bool);
+    }
+
 }

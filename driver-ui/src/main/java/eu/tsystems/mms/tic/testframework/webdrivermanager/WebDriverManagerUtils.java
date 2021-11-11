@@ -23,8 +23,6 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
-import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
-import eu.tsystems.mms.tic.testframework.useragents.UapBrowserInformation;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
@@ -33,10 +31,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.net.URL;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Class containing utility methods for WebDriverManager. To keep the WebDriverManager Class cleaner.
@@ -95,8 +90,6 @@ public final class WebDriverManagerUtils {
             driver.quit();
         } catch (final Throwable e) {
             LOGGER.warn("WebDriver could not be quit. May someone did before.", e);
-        } finally {
-            removeCachedBrowserInformation(driver);
         }
     }
 

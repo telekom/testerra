@@ -101,7 +101,7 @@ public class TestStatusController implements TestStatusUpdateEvent.Listener, Log
     }
 
     private void writeCounterToLog() {
-        RunConfig runConfig = getCurrentExecutionContext().getRunConfig();
+        RunConfig runConfig = executionContextController.getExecutionContext().getRunConfig();
         String logMessage = runConfig.getReportName() + " " + runConfig.RUNCFG + ": " + getCounterInfoMessage();
         log().info(logMessage);
     }

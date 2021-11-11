@@ -244,32 +244,43 @@ public class UITestUtils implements WebDriverManagerProvider {
         }
     }
 
-    private static void switchToWindow(WebDriver webDriver, String windowHandle) {
+    private static boolean switchToWindow(WebDriver webDriver, String windowHandle) {
         try {
             webDriver.switchTo().window(windowHandle);
+            return true;
         } catch (Exception e) {
             LOGGER.error("Unable to switch to window " + windowHandle, e);
+            return false;
         }
     }
 
     private static List<Screenshot> pTakeAllScreenshotsForSession(WebDriver webDriver) {
         final List<Screenshot> screenshots = new LinkedList<>();
-        Set<String> windowHandles = webDriver.getWindowHandles();
-        String originalWindowHandle = executionUtils.getFailsafe(webDriver::getWindowHandle).orElseGet(() -> windowHandles.stream().findFirst().orElse(""));
+        executionUtils.getFailsafe(webDriver::getWindowHandles).ifPresent(windowHandles -> {
+            String originalWindowHandle = executionUtils.getFailsafe(webDriver::getWindowHandle).orElseGet(() -> windowHandles.stream().findFirst().orElse(""));
 
-        if (windowHandles.size() > 1) {
-            for (String windowHandle : windowHandles) {
-                switchToWindow(webDriver, windowHandle);
-                screenshots.add(takeScreenshot(webDriver, originalWindowHandle));
+            if (windowHandles.size() > 1) {
+                for (String windowHandle : windowHandles) {
+                    takeScreenshotToList(screenshots, webDriver, windowHandle, originalWindowHandle);
+                }
+                // Switch back to original window handle
+                switchToWindow(webDriver, originalWindowHandle);
+            } else {
+                takeScreenshotToList(screenshots, webDriver, originalWindowHandle, originalWindowHandle);
             }
-            // Switch back to original window handle
-            switchToWindow(webDriver, originalWindowHandle);
-        } else {
-            switchToWindow(webDriver, originalWindowHandle);
-            screenshots.add(takeScreenshot(webDriver, originalWindowHandle));
-        }
-
+        });
         return screenshots;
+    }
+
+    private static void takeScreenshotToList(List<Screenshot> screenshots, WebDriver webDriver, String windowHandle, String originalWindowHandle) {
+        if (switchToWindow(webDriver, windowHandle)) {
+            try {
+                Screenshot screenshot = takeScreenshot(webDriver, originalWindowHandle);
+                screenshots.add(screenshot);
+            } catch (Throwable t) {
+                LOGGER.error("Unable to take screenshot", t);
+            }
+        }
     }
 
     /**

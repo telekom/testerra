@@ -421,9 +421,9 @@ public class ContextExporter implements Loggable {
         ExecutionContext.Builder builder = ExecutionContext.newBuilder();
 
         apply(buildContextValues(executionContext), builder::setContextValues);
-        map(executionContext.runConfig, this::buildRunConfig, builder::setRunConfig);
+        map(executionContext.getRunConfig(), this::buildRunConfig, builder::setRunConfig);
         executionContext.readExclusiveSessionContexts().forEach(sessionContext -> builder.addExclusiveSessionContextIds(sessionContext.getId()));
-        apply(executionContext.estimatedTestMethodCount, builder::setEstimatedTestsCount);
+        apply(executionContext.getEstimatedTestMethodCount(), builder::setEstimatedTestsCount);
         executionContext.readMethodContextLessLogs().forEach(logEvent -> {
             Optional<LogMessage.Builder> optional = Optional.ofNullable(buildLogMessage(logEvent));
             optional.ifPresent(builder::addLogMessages);

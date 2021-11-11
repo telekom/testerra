@@ -33,9 +33,18 @@ import java.util.stream.Stream;
 
 public class ExecutionContext extends AbstractContext {
     private final Queue<SuiteContext> suiteContexts = new ConcurrentLinkedQueue<>();
+    /**
+     * @deprecated Use {@link #getRunConfig()} instead
+     */
     public final RunConfig runConfig = new RunConfig();
+    /**
+     * @deprecated Use {@link #isCrashed()} instead
+     */
     public boolean crashed = false;
     private Queue<SessionContext> exclusiveSessionContexts;
+    /**
+     * @deprecated Use {@link #getEstimatedTestMethodCount()} instead
+     */
     public int estimatedTestMethodCount;
     private final ConcurrentLinkedQueue<LogMessage> methodContextLessLogs = new ConcurrentLinkedQueue<>();
 
@@ -93,5 +102,25 @@ public class ExecutionContext extends AbstractContext {
 
     public SuiteContext getSuiteContext(ITestContext testContext) {
         return getSuiteContext(TesterraListener.getContextGenerator().getSuiteContextName(testContext));
+    }
+
+    public RunConfig getRunConfig() {
+        return this.runConfig;
+    }
+
+    public boolean isCrashed() {
+        return this.crashed;
+    }
+
+    public void setCrashed(boolean crashed) {
+        this.crashed = crashed;
+    }
+
+    public int getEstimatedTestMethodCount() {
+        return this.estimatedTestMethodCount;
+    }
+
+    public void setEstimatedTestMethodCount(int count) {
+        this.estimatedTestMethodCount = count;
     }
 }

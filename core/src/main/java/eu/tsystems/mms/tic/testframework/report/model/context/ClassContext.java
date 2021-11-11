@@ -186,8 +186,4 @@ public class ClassContext extends AbstractContext implements Loggable {
         methodContext.setStatus(Status.SKIPPED);
         return methodContext;
     }
-
-    public SuiteContext getSuiteContext() {
-        return (SuiteContext) this.getParentContext();
-    }
 }

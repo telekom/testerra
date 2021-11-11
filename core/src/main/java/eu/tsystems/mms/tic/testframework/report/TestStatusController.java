@@ -28,6 +28,7 @@ import eu.tsystems.mms.tic.testframework.events.TestStatusUpdateEvent;
 import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.RunConfig;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import org.testng.ITestResult;
 import org.testng.SkipException;
@@ -99,9 +100,8 @@ public class TestStatusController implements TestStatusUpdateEvent.Listener, Log
     }
 
     private void writeCounterToLog() {
-        String logMessage = ExecutionContextController.getCurrentExecutionContext().runConfig.getReportName() + " " +
-                getCurrentExecutionContext().runConfig.RUNCFG + ": " + getCounterInfoMessage();
-
+        RunConfig runConfig = getCurrentExecutionContext().getRunConfig();
+        String logMessage = runConfig.getReportName() + " " + runConfig.RUNCFG + ": " + getCounterInfoMessage();
         log().info(logMessage);
     }
     public int getTestsFailed() {

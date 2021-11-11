@@ -274,4 +274,15 @@ public class UiElementLayoutTests extends AbstractExclusiveTestSitesTest<WebTest
         UiElement parent = page.getFinder().findById("waiterDiv");
         element.expect().bounds().intersects(parent).is(test);
     }
+
+    @Test
+    public void test_viewport() {
+        WebTestPage page = getPage();
+        page.expect().viewport().left().is(0);
+        page.expect().viewport().top().is(0);
+
+        page.expect().viewport().contains(page.getOpenAgainLink()).is(true);
+        page.expect().viewport().width().is(800);
+        page.expect().viewport().height().is(600);
+    }
 }

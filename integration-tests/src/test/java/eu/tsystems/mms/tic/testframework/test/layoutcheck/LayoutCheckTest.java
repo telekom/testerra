@@ -29,6 +29,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.LocatorFactoryProvider;
+import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -57,6 +58,9 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements LocatorFac
     @Test
     public void testCheckElementVisibility() {
         GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
+        Page helperPage = new Page(guiElement.getWebDriver());
+        int top = helperPage.expect().viewport().top().getActual();
+
         guiElement.asserts().assertVisible(true);
         Assert.assertTrue(guiElement.isVisible(true));
 
@@ -69,6 +73,9 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements LocatorFac
         //Assert.assertFalse(guiElement.isVisible(true));
 
         guiElement.scrollIntoView();
+
+        helperPage.expect().viewport().top().isGreaterThan(top);
+
         Assert.assertTrue(guiElement.isVisible(true));
         guiElement.asserts().assertVisible(true);
     }

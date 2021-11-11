@@ -25,6 +25,8 @@ import eu.tsystems.mms.tic.testframework.internal.asserts.AbstractPropertyAssert
 import eu.tsystems.mms.tic.testframework.internal.asserts.AssertionProvider;
 import eu.tsystems.mms.tic.testframework.internal.asserts.BinaryAssertion;
 import eu.tsystems.mms.tic.testframework.internal.asserts.DefaultBinaryAssertion;
+import eu.tsystems.mms.tic.testframework.internal.asserts.DefaultQuantityAssertion;
+import eu.tsystems.mms.tic.testframework.internal.asserts.QuantityAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
 import org.openqa.selenium.Rectangle;
 
@@ -201,6 +203,66 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
             @Override
             public String createSubject() {
                 return "from bottom";
+            }
+        });
+    }
+
+    @Override
+    public QuantityAssertion<Integer> top() {
+        return propertyAssertionFactory.createWithParent(DefaultQuantityAssertion.class, this, new AssertionProvider<Integer>() {
+            @Override
+            public Integer getActual() {
+                return provider.getActual().getY();
+            }
+
+            @Override
+            public String createSubject() {
+                return "top";
+            }
+        });
+    }
+
+    @Override
+    public QuantityAssertion<Integer> left() {
+        return propertyAssertionFactory.createWithParent(DefaultQuantityAssertion.class, this, new AssertionProvider<Integer>() {
+            @Override
+            public Integer getActual() {
+                return provider.getActual().getX();
+            }
+
+            @Override
+            public String createSubject() {
+                return "left";
+            }
+        });
+    }
+
+    @Override
+    public QuantityAssertion<Integer> width() {
+        return propertyAssertionFactory.createWithParent(DefaultQuantityAssertion.class, this, new AssertionProvider<Integer>() {
+            @Override
+            public Integer getActual() {
+                return provider.getActual().getWidth();
+            }
+
+            @Override
+            public String createSubject() {
+                return "width";
+            }
+        });
+    }
+
+    @Override
+    public QuantityAssertion<Integer> height() {
+        return propertyAssertionFactory.createWithParent(DefaultQuantityAssertion.class, this, new AssertionProvider<Integer>() {
+            @Override
+            public Integer getActual() {
+                return provider.getActual().getHeight();
+            }
+
+            @Override
+            public String createSubject() {
+                return "height";
             }
         });
     }

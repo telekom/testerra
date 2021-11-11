@@ -40,4 +40,6 @@ public interface PageAssertions extends ScreenshotAssertion {
         return present().is(bool);
     }
 
+    RectAssertion viewport();
+
 }

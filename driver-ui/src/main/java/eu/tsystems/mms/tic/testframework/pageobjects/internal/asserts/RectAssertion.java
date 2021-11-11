@@ -23,6 +23,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.internal.asserts.ActualProperty;
 import eu.tsystems.mms.tic.testframework.internal.asserts.BinaryAssertion;
+import eu.tsystems.mms.tic.testframework.internal.asserts.QuantityAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
 import org.openqa.selenium.Rectangle;
 
@@ -41,4 +42,9 @@ public interface RectAssertion extends ActualProperty<Rectangle> {
     HorizontalDistanceAssertion fromLeft();
     VerticalDistanceAssertion fromTop();
     VerticalDistanceAssertion fromBottom();
+
+    QuantityAssertion<Integer> top();
+    QuantityAssertion<Integer> left();
+    QuantityAssertion<Integer> width();
+    QuantityAssertion<Integer> height();
 }

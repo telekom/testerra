@@ -288,20 +288,10 @@ public final class WebDriverUtils {
     }
 
     /**
-     * Will get the viewport by executing JavaScript to determine innerwith and offsets
-     *
-     * @param driver {@link WebDriver}
-     * @return Rectangle
+     * @deprecated Use {@link JSUtils#getViewport(WebDriver)} instead
      */
-    public static Rectangle getViewport(WebDriver driver) {
-        Object result = JSUtils.executeScript(driver, "return [window.pageXOffset.toString(), window.pageYOffset.toString(), window.innerWidth.toString(), window.innerHeight.toString()];");
-        if (result != null) {
-            final ArrayList<String> list = (ArrayList<String>)result;
-            List<Double> numbers = list.stream().map(Double::valueOf).collect(Collectors.toList());
-            return new Rectangle(numbers.get(0).intValue(), numbers.get(1).intValue(), numbers.get(3).intValue(), numbers.get(2).intValue());
-        } else {
-            return new Rectangle(-1,-1,-1,-1);
-        }
+    public static Rectangle getViewport(WebDriver webDriver) {
+        return new JSUtils().getViewport(webDriver);
     }
 
 

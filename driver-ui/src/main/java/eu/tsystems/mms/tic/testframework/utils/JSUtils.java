@@ -29,7 +29,6 @@ import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
 import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
-import eu.tsystems.mms.tic.testframework.internal.Viewport;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
@@ -37,6 +36,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -44,10 +44,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.Collectors;
 import org.apache.commons.io.IOUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -458,48 +460,20 @@ public final class JSUtils {
         return out;
     }
 
-    public static Viewport getViewport(WebDriver driver) {
-        if (driver == null) {
-            return null;
-        }
-
-        try {
-            Integer position = null;
-            Integer width = null;
-            Integer height = null;
-
-            String script = "var doc = document.documentElement;" +
-                    "var top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);" +
-                    "return top;";
-            Object jsposition = executeScript(driver, script, "");
-            if (jsposition != null) {
-                position = Integer.valueOf("" + jsposition);
-            }
-
-            script = "var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);" +
-                    "return w;";
-            Object jswidth = executeScript(driver, script, "");
-            if (jswidth != null) {
-                width = Integer.valueOf("" + jswidth);
-            }
-
-            script = "var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);" +
-                    "return h;";
-            Object jsheight = executeScript(driver, script, "");
-            if (jsheight != null) {
-                height = Integer.valueOf("" + jsheight);
-            }
-
-            if (!ObjectUtils.isNull(position, width, height)) {
-                LOGGER.debug("viewport position: " + position);
-                LOGGER.debug("viewport width: " + width);
-                LOGGER.debug("viewport height: " + height);
-                return new Viewport(position, width, height);
-            }
-            return null;
-        } catch (Throwable e) {
-            LOGGER.warn("Error getting viewport", e);
-            return null;
+    /**
+     * Will get the viewport by executing JavaScript to determine innerwith and offsets
+     *
+     * @param driver {@link WebDriver}
+     * @return Rectangle
+     */
+    public Rectangle getViewport(WebDriver driver) {
+        Object result = JSUtils.executeScript(driver, "return [window.pageXOffset.toString(), window.pageYOffset.toString(), window.innerWidth.toString(), window.innerHeight.toString()];");
+        if (result != null) {
+            final ArrayList<String> list = (ArrayList<String>)result;
+            List<Double> numbers = list.stream().map(Double::valueOf).collect(Collectors.toList());
+            return new Rectangle(numbers.get(0).intValue(), numbers.get(1).intValue(), numbers.get(3).intValue(), numbers.get(2).intValue());
+        } else {
+            return new Rectangle(-1,-1,-1,-1);
         }
     }
 

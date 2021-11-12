@@ -28,7 +28,7 @@ import java.util.stream.Stream;
 
 public class AbstractTestStatusTest extends TesterraTest {
 
-    protected Stream<MethodContext> findMethodContext(String methodName) {
+    protected Stream<MethodContext> findMethodContexts(String methodName) {
         MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
         return currentMethodContext.getClassContext().readMethodContexts()
                 .filter(methodContext -> methodContext.getName().equals(methodName));

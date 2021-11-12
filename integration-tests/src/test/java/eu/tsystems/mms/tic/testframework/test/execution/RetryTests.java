@@ -23,12 +23,12 @@ package eu.tsystems.mms.tic.testframework.test.execution;
 
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -39,9 +39,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author mgn
  */
-public class TestNgDependsOnRetryTest extends AbstractTestStatusTest {
+public class RetryTests extends AbstractTestStatusTest {
 
     AtomicInteger counter = new AtomicInteger(0);
+    private boolean webDriverExceptionThrown = false;
+    private boolean unreachableBrowserExceptionThrown = false;
 
     @Test(groups = {"TestNgDependsOnRetryTest"})
     public void testCaseOne() {
@@ -61,14 +63,30 @@ public class TestNgDependsOnRetryTest extends AbstractTestStatusTest {
         Assert.assertTrue(true);
     }
 
-    @Test( dependsOnMethods = "testCaseTwo", groups = {"TestNgDependsOnRetryTest"})
+    @Test(dependsOnMethods = "testCaseTwo", groups = {"TestNgDependsOnRetryTest"})
     public void testCaseThree() {
         Assert.assertEquals(this.counter.get(), 3, "testCaseTwo should executed after retried 'dependsOn' method.");
     }
 
+    @Test(groups = {"TestNgDependsOnRetryTest"})
+    public void test_retryOnWebDriverException() {
+        if (!webDriverExceptionThrown) {
+            webDriverExceptionThrown = true;
+            throw new WebDriverException("was terminated due to TIMEOUT");
+        }
+    }
+
+    @Test(groups = {"TestNgDependsOnRetryTest"})
+    public void test_retryOnUnreachableBrowserException() {
+        if (!unreachableBrowserExceptionThrown) {
+            unreachableBrowserExceptionThrown = true;
+            throw new UnreachableBrowserException("Im just a test");
+        }
+    }
+
     @Test(dependsOnGroups = "TestNgDependsOnRetryTest")
     public void test_retriedTestCaseData() {
-        Stream<MethodContext> methodContexts = findMethodContext("testCaseOne");
+        Stream<MethodContext> methodContexts = findMethodContexts("testCaseOne");
 
         List<MethodContext> collected = methodContexts
                 .sorted(Comparator.comparingInt(MethodContext::getRetryCounter))
@@ -88,5 +106,15 @@ public class TestNgDependsOnRetryTest extends AbstractTestStatusTest {
 
         Assert.assertEquals(1, failedMethod.readRelatedMethodContexts().count());
         Assert.assertEquals(1, passedMethod.readDependsOnMethodContexts().count());
+
+        List<MethodContext> list = findMethodContexts("test_retryOnWebDriverException").collect(Collectors.toList());
+        Assert.assertEquals(list.size(), 2);
+        Assert.assertEquals(list.get(0).getStatus(), Status.RETRIED);
+        Assert.assertEquals(list.get(1).getStatus(), Status.RECOVERED);
+
+        list = findMethodContexts("test_retryOnUnreachableBrowserException").collect(Collectors.toList());
+        Assert.assertEquals(list.size(), 2);
+        Assert.assertEquals(list.get(0).getStatus(), Status.RETRIED);
+        Assert.assertEquals(list.get(1).getStatus(), Status.RECOVERED);
     }
 }

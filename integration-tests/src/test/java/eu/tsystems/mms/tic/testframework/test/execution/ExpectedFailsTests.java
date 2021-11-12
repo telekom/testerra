@@ -80,7 +80,7 @@ public class ExpectedFailsTests extends AbstractTestStatusTest {
 
     @Test(dependsOnGroups = "ExpectedFailsTests", alwaysRun = true)
     public void test_validateTestStatuses() {
-        List<MethodContext> retriedExpectedFailed = findMethodContext("test_retriedExpectedFailed").collect(Collectors.toList());
+        List<MethodContext> retriedExpectedFailed = findMethodContexts("test_retriedExpectedFailed").collect(Collectors.toList());
         Assert.assertEquals(retriedExpectedFailed.size(), 3);
         Assert.assertEquals(retriedExpectedFailed.get(0).getStatus(), Status.RETRIED);
         Assert.assertEquals(retriedExpectedFailed.get(1).getStatus(), Status.RETRIED);
@@ -94,7 +94,7 @@ public class ExpectedFailsTests extends AbstractTestStatusTest {
     }
 
     private void assertMethodStatus(String name, Status status) {
-        Optional<MethodContext> optionalMethodContext = findMethodContext(name).findFirst();
+        Optional<MethodContext> optionalMethodContext = findMethodContexts(name).findFirst();
         Assert.assertTrue(optionalMethodContext.isPresent());
 
         MethodContext methodContext = optionalMethodContext.get();

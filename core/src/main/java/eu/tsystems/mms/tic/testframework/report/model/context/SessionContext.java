@@ -38,6 +38,7 @@ public class SessionContext extends AbstractContext {
     private Map<String, Object> capabilities;
     private final WebDriverRequest webDriverRequest;
     private final Queue<MethodContext> methodContexts = new ConcurrentLinkedQueue<>();
+    private String remoteSessionId;
 
     public SessionContext(WebDriverRequest webDriverRequest) {
         try {
@@ -46,15 +47,6 @@ public class SessionContext extends AbstractContext {
             throw new RuntimeException(e);
         }
         this.setName(webDriverRequest.getSessionKey());
-
-//        this.provider = provider;
-//
-//        final MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
-//        if (currentMethodContext != null) {
-//            this.name = currentMethodContext.getName() + "_";
-//        } else {
-//            this.name = "";
-//        }
     }
 
     public WebDriverRequest getWebDriverRequest() {
@@ -71,11 +63,11 @@ public class SessionContext extends AbstractContext {
     }
 
     public Optional<String> getRemoteSessionId() {
-        return Optional.of(getId());
+        return Optional.ofNullable(this.remoteSessionId);
     }
 
     public SessionContext setRemoteSessionId(String sessionId) {
-        setId(sessionId);
+        this.remoteSessionId = sessionId;
         return this;
     }
 

@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 
 public abstract class AbstractContext implements Loggable {
     private String name;
-    private String id;
+    private final String id = IDUtils.getB64encXID();
     private AbstractContext parentContext;
     private final Date startTime = new Date();
     private Date endTime;
@@ -73,10 +73,6 @@ public abstract class AbstractContext implements Loggable {
 
     protected void setName(String name) {
         this.name = name;
-    }
-
-    protected void setId(String id) {
-        this.id = id;
     }
 
     protected void setParentContext(AbstractContext context) {

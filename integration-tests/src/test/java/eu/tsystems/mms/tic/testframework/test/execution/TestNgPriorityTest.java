@@ -37,33 +37,33 @@ import org.testng.annotations.Test;
  */
 public class TestNgPriorityTest extends TesterraTest implements Loggable {
 
-    private LinkedList<Integer> internalOrder = new LinkedList<>();
+    private final LinkedList<Integer> internalOrder = new LinkedList<>();
 
-    @Test(priority = 2, groups = "SEQUENTIAL")
+    @Test(priority = 2, groups = "TestNgPriorityTest")
     public void testUnderTest2_and2() {
         internalOrder.add(2);
         log().info("TestNgPriorityTest :: 2");
     }
 
-    @Test(priority = 3, groups = "SEQUENTIAL")
+    @Test(priority = 3, groups = "TestNgPriorityTest")
     public void testUnderTest1_but3() {
         internalOrder.add(3);
         log().info("TestNgPriorityTest :: 3");
     }
 
-    @Test(priority = 4, groups = "SEQUENTIAL")
+    @Test(priority = 4, groups = "TestNgPriorityTest")
     public void testUnderTest3_but4() {
         internalOrder.add(4);
         log().info("TestNgPriorityTest :: 4");
     }
 
-    @Test(priority = 1, groups = "SEQUENTIAL")
+    @Test(priority = 1, groups = "TestNgPriorityTest")
     public void testUnderTest4_but1() {
         internalOrder.add(1);
         log().info("TestNgPriorityTest :: 1");
     }
 
-    @Test(priority = 999, groups = "SEQUENTIAL")
+    @Test(priority = 999, dependsOnGroups = "TestNgPriorityTest", alwaysRun = true)
     public void test999_AssertPriorityOfOtherTestcasesInClass() {
 
         Assert.assertEquals(internalOrder.size(), 4, "Method size should be 4");

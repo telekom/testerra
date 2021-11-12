@@ -25,8 +25,9 @@ import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.Retry;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -40,16 +41,11 @@ public class ExpectedFailsTests extends AbstractTestStatusTest {
         return false;
     }
 
-    AtomicInteger counter1 = new AtomicInteger(0);
-
     @Test(groups = {"ExpectedFailsTests"})
     @Fails
     @Retry(maxRetries = 2)
     public void test_retriedExpectedFailed() {
-        counter1.incrementAndGet();
-        if (counter1.get() < 3) {
-            Assert.fail();
-        }
+        Assert.fail();
     }
 
     @Test(groups = {"ExpectedFailsTests"})
@@ -84,7 +80,11 @@ public class ExpectedFailsTests extends AbstractTestStatusTest {
 
     @Test(dependsOnGroups = "ExpectedFailsTests", alwaysRun = true)
     public void test_validateTestStatuses() {
-        Assert.assertEquals(counter1.get(), 3);
+        List<MethodContext> retriedExpectedFailed = findMethodContext("test_retriedExpectedFailed").collect(Collectors.toList());
+        Assert.assertEquals(retriedExpectedFailed.size(), 3);
+        Assert.assertEquals(retriedExpectedFailed.get(0).getStatus(), Status.RETRIED);
+        Assert.assertEquals(retriedExpectedFailed.get(1).getStatus(), Status.RETRIED);
+        Assert.assertEquals(retriedExpectedFailed.get(2).getStatus(), Status.FAILED_EXPECTED);
 
         assertMethodStatus("test_expectedFailed", Status.FAILED_EXPECTED);
         assertMethodStatus("test_validExpectedFailed_withMethod", Status.FAILED_EXPECTED);

@@ -130,7 +130,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
         final String retryMessageString = "(" + (retryCounter + 1) + "/" + (maxRetries + 1) + ")";
 
         if (retryCounter >= maxRetries) {
-            methodHasBeenRetried(methodContext);
+            removeFromRetryCache(methodContext);
             log().warn("Not retrying " + testMethodName + " because run limit (" + maxRetries + ")");
             return false;
         }
@@ -299,7 +299,10 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
     private static void methodHasBeenRetried(MethodContext methodContext) {
         methodContext.setStatus(Status.RETRIED);
         raiseCounterAndChangeMethodContext(methodContext);
+        removeFromRetryCache(methodContext);
+    }
 
+    private static void removeFromRetryCache(MethodContext methodContext) {
         readRetriedMethodsForMethod(methodContext).forEach(retriedMethod -> {
             retriedMethod.addRelatedMethodContext(methodContext);
             RETRIED_METHODS.remove(retriedMethod);

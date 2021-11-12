@@ -65,7 +65,7 @@ public class MethodEndWorker implements MethodEndEvent.Listener, Loggable {
 
         /**
          * When the test did not fail, then we announce the test status to update immediately.
-         * Otherwise, we wait for the {@link RetryAnalyzer} to update it.
+         * Otherwise, we wait for the {@link RetryAnalyzer} or {@link TesterraListener#onTestSkipped(ITestResult)} to update it.
          */
         if (methodContext.getStatus() != Status.FAILED) {
             TesterraListener.getEventBus().post(new TestStatusUpdateEvent(methodContext));

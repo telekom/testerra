@@ -90,9 +90,6 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
             methodContext.getFailsAnnotation().ifPresent(fails -> {
                 methodContext.setStatus(Status.REPAIRED);
             });
-
-        } else if (event.isSkipped()) {
-            methodContext.setStatus(Status.SKIPPED);
         }
     }
 }

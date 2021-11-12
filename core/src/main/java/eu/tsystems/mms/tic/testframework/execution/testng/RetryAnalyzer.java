@@ -22,7 +22,6 @@
 
 package eu.tsystems.mms.tic.testframework.execution.testng;
 
-import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.NoRetry;
 import eu.tsystems.mms.tic.testframework.annotations.Retry;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
@@ -35,7 +34,6 @@ import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.report.utils.FailsAnnotationFilter;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
@@ -156,18 +154,6 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
         final Throwable throwable1 = testResult.getThrowable();
         if (throwable1 != null && throwable1 instanceof InheritedFailedException) {
             return false;
-        }
-
-        /*
-        no retry for tests with expected Fails annotation
-         */
-        Optional<Fails> fails = methodContext.getFailsAnnotation();
-        if (fails.isPresent()) {
-            // BUT ONLY: No retry for methods that hav a validFor
-            if (FailsAnnotationFilter.isFailsAnnotationValid(fails.get())) {
-                log().warn(String.format("Not retrying this method, because test is @%s annotated.", Fails.class.getSimpleName()));
-                return false;
-            }
         }
 
         boolean containingFilteredThrowable = isTestResultContainingFilteredThrowable(testResult);

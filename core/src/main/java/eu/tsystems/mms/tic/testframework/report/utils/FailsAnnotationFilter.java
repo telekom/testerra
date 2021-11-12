@@ -23,6 +23,7 @@
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import java.lang.reflect.Constructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +34,10 @@ import org.slf4j.LoggerFactory;
  * Time: 10:49
  *
  * @author erku
+ */
+
+/**
+ * @deprecated Use {@link Fails#validator()} instead
  */
 public class FailsAnnotationFilter {
 
@@ -49,7 +54,7 @@ public class FailsAnnotationFilter {
 
         // always valid, if String is empty
         if (validFor == null || validFor.length == 0) {
-            return true;
+            return false;
         }
 
         // Split on divider

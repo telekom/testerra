@@ -21,10 +21,12 @@
  */
  package eu.tsystems.mms.tic.testframework.annotations;
 
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.function.Predicate;
 
 /**
  * Class Fails. Marks a test method as a failing test method with the ability to hold some information.
@@ -53,6 +55,11 @@ public @interface Fails {
 
     boolean intoReport() default false;
 
+    /**
+     * @deprecated Use {@link #validatorClass()} instead
+     */
     String[] validFor() default {};
 
+    Class<?> validatorClass() default Object.class;
+    String validator() default "";
 }

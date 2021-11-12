@@ -29,8 +29,13 @@ import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
+import eu.tsystems.mms.tic.testframework.report.utils.FailsAnnotationFilter;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.apache.commons.lang3.StringUtils;
 import org.testng.ITestResult;
 
 public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
@@ -69,18 +74,36 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
          */
         if (event.isFailed()) {
             methodContext.setStatus(Status.FAILED);
-            /*
-             * set status
+
+            /**
+             * Validate the {@link Fails} annotation
              */
             Optional<Fails> failsAnnotation = methodContext.getFailsAnnotation();
-            if (failsAnnotation.isPresent() && !failsAnnotation.get().intoReport()) {
-                methodContext.setStatus(Status.FAILED_EXPECTED);
-                // expected failed
-            }
+            failsAnnotation.ifPresent(fails -> {
+                Boolean isFailsAnnotationValid = false;
 
-            /*
-             * Enhance step infos
-             */
+                if (!fails.intoReport()) {
+                    String validator = fails.validator();
+                    if (StringUtils.isNotBlank(validator)) {
+                        Class<?> validatorClass = fails.validatorClass();
+                        if (validatorClass == null) {
+                            validatorClass = event.getMethod().getDeclaringClass();
+                        }
+
+                        try {
+                            Method validatorMethod = validatorClass.getMethod(validator, MethodContext.class);
+                            isFailsAnnotationValid = (Boolean) validatorMethod.invoke(validatorClass, methodContext);
+                        } catch (Throwable t) {
+                            methodContext.addError(t);
+                        }
+                    } else {
+                        isFailsAnnotationValid = FailsAnnotationFilter.isFailsAnnotationValid(fails);
+                    }
+                }
+                if (isFailsAnnotationValid) {
+                    methodContext.setStatus(Status.FAILED_EXPECTED);
+                }
+            });
             TestStep failedStep = methodContext.getCurrentTestStep();
             methodContext.setFailedStep(failedStep);
         } else if (testResult.isSuccess()) {

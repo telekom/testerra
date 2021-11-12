@@ -39,11 +39,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author mgn
  */
-public class TestNgDependsOnRetryTest extends TesterraTest {
+public class TestNgDependsOnRetryTest extends AbstractTestStatusTest {
 
     AtomicInteger counter = new AtomicInteger(0);
 
-    @Test(priority = 1, groups = "SEQUENTIAL")
+    @Test(groups = {"TestNgDependsOnRetryTest"})
     public void testCaseOne() {
         this.counter.incrementAndGet();
         if (counter.get() == 1) {
@@ -55,18 +55,18 @@ public class TestNgDependsOnRetryTest extends TesterraTest {
 
     }
 
-    @Test(dependsOnMethods = "testCaseOne", priority = 2, groups = "SEQUENTIAL")
+    @Test(dependsOnMethods = "testCaseOne", groups = {"TestNgDependsOnRetryTest"})
     public void testCaseTwo() {
         this.counter.incrementAndGet();
         Assert.assertTrue(true);
     }
 
-    @Test(priority = 999, groups = "SEQUENTIAL")
+    @Test( dependsOnMethods = "testCaseTwo", groups = {"TestNgDependsOnRetryTest"})
     public void testCaseThree() {
         Assert.assertEquals(this.counter.get(), 3, "testCaseTwo should executed after retried 'dependsOn' method.");
     }
 
-    @Test(dependsOnMethods = "testCaseOne", groups = "SEQUENTIAL")
+    @Test(dependsOnGroups = "TestNgDependsOnRetryTest")
     public void test_retriedTestCaseData() {
         Stream<MethodContext> methodContexts = findMethodContext("testCaseOne");
 
@@ -89,11 +89,4 @@ public class TestNgDependsOnRetryTest extends TesterraTest {
         Assert.assertEquals(1, failedMethod.readRelatedMethodContexts().count());
         Assert.assertEquals(1, passedMethod.readDependsOnMethodContexts().count());
     }
-
-    private Stream<MethodContext> findMethodContext(String methodName) {
-        MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
-        return currentMethodContext.getClassContext().readMethodContexts()
-                .filter(methodContext -> methodContext.getName().equals(methodName));
-    }
-
 }

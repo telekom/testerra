@@ -24,6 +24,7 @@ package eu.tsystems.mms.tic.testframework.test.common;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class DataProviderTest extends TesterraTest {
@@ -31,6 +32,17 @@ public class DataProviderTest extends TesterraTest {
     @Test(dataProviderClass = MyDataProvider.class, dataProvider = "throwException")
     @Fails
     public void test_interceptCrashedDataProvider() {
+        Assert.assertTrue(true);
+    }
+
+    @DataProvider()
+    public Object[][] crashingDataProvider() {
+        throw new RuntimeException("crashed data provider");
+    }
+
+    @Test(dataProvider = "crashingDataProvider")
+    @Fails
+    public void test_crashedDataProvider(Object object) {
         Assert.assertTrue(true);
     }
 

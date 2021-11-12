@@ -161,9 +161,6 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
             methodHasBeenRetried(methodContext);
             RETRIED_METHODS.add(methodContext);
             log().info("Send signal for retrying the test " + retryMessageString + ": " + testMethodName);
-
-            testResult.getTestContext().getFailedTests().removeResult(testResult);
-            testResult.getTestContext().getSkippedTests().removeResult(testResult);
             return true;
         }
 
@@ -235,10 +232,6 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
             Throwable retryCause = checkThrowable(throwable);
 
             if (retryCause != null) {
-//                MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult);
-//                if (methodContext != null) {
-//                    methodContext.addPriorityMessage("Retry Cause:\n" + retryCause.toString());
-//                }
                 return true;
             }
         }

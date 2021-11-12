@@ -44,7 +44,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Holds the informations of an test method.
+ * Holds the information of a test method.
  *
  * @author mibu
  */
@@ -60,8 +60,8 @@ public class MethodContext extends AbstractContext {
     private final Type methodType;
     private List<Object> parameterValues;
     private int retryNumber = 0;
-    public int methodRunIndex = -1;
-    public String threadName = "unrelated";
+    private final int methodRunIndex;
+    private final String threadName;
     private TestStep lastFailedStep;
     private Class failureCorridorClass = FailureCorridor.High.class;
 
@@ -70,9 +70,9 @@ public class MethodContext extends AbstractContext {
      */
     public final List<String> infos = new LinkedList<>();
     private final List<SessionContext> sessionContexts = new LinkedList<>();
-    public String priorityMessage = null;
+    private String priorityMessage = null;
     private final TestStepController testStepController = new TestStepController();
-    private List<MethodContext> relatedMethodContexts = new LinkedList<>();
+    private final List<MethodContext> relatedMethodContexts = new LinkedList<>();
     private final List<MethodContext> dependsOnMethodContexts = new LinkedList<>();
     private List<CustomContext> customContexts;
     private List<Annotation> customAnnotations;
@@ -93,6 +93,8 @@ public class MethodContext extends AbstractContext {
         this.setParentContext(classContext);
         this.methodRunIndex = Counters.increaseMethodExecutionCounter();
         this.methodType = methodType;
+        final Thread currentThread = Thread.currentThread();
+        this.threadName = currentThread.getName() + "#" + currentThread.getId();
     }
 
     public void setRetryCounter(int retryCounter) {
@@ -239,11 +241,6 @@ public class MethodContext extends AbstractContext {
         }
     }
 
-    public void setThreadName() {
-        final Thread currentThread = Thread.currentThread();
-        this.threadName = currentThread.getName() + "#" + currentThread.getId();
-    }
-
     public boolean isConfigMethod() {
         return methodType == Type.CONFIGURATION_METHOD;
     }
@@ -336,5 +333,25 @@ public class MethodContext extends AbstractContext {
             this.customAnnotations = new LinkedList<>();
         }
         this.customAnnotations.add(annotation);
+    }
+
+    public int getMethodRunIndex() {
+        return methodRunIndex;
+    }
+
+    public String getThreadName() {
+        return threadName;
+    }
+
+    public Stream<String> readInfos() {
+        return infos.stream();
+    }
+
+    public void addInfo(String info) {
+        this.infos.add(info);
+    }
+
+    public Optional<String> getPriorityMessage() {
+        return Optional.ofNullable(priorityMessage);
     }
 }

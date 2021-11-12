@@ -461,30 +461,12 @@ public class TesterraListener implements
 //    private static final String SKIP_FAILED_DEPENDENCY_MSG = "depends on";
 
     @Override
-    public void onTestSkipped(ITestResult iTestResult) {
-
-//        final ITestContext testContext = iTestResult.getTestContext();
-        MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(iTestResult);
-        methodContext.setStatus(Status.SKIPPED);
-        TesterraListener.getEventBus().post(new TestStatusUpdateEvent(methodContext));
-
-//        /*
-//        Find methods that are ignored due to failed dependency
-//         */
-//        final Throwable throwable = iTestResult.getThrowable();
-//        if (throwable != null && throwable.toString().contains(SKIP_FAILED_DEPENDENCY_MSG)) {
-//            ExecutionContextController.setCurrentTestResult(iTestResult);
-//            pAfterInvocation(null, iTestResult, testContext);
-//        }
-//
-//        /*
-//         add missing method parameters for skipped test methods
-//         */
-//        final Class<?>[] parameterTypes = iTestResult.getMethod().getConstructorOrMethod().getMethod().getParameterTypes();
-//        if (parameterTypes.length > 0) {
-//            final MethodContext methodContextFromTestResult = ExecutionContextController.getMethodContextFromTestResult(iTestResult);
-//            methodContextFromTestResult.setParameterValues(parameterTypes);
-//        }
+    public void onTestSkipped(ITestResult testResult) {
+        if (!testResult.wasRetried()) {
+            MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult);
+            methodContext.setStatus(Status.SKIPPED);
+            TesterraListener.getEventBus().post(new TestStatusUpdateEvent(methodContext));
+        }
     }
 
     @Override

@@ -83,9 +83,4 @@ public class FailsAnnotationFilter {
 
         return true;
     }
-
-    public static boolean isFailsAnnotationValid(final Fails failsAnnotation) {
-        return isFailsAnnotationValid(failsAnnotation.validFor());
-    }
-
 }

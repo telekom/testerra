@@ -27,7 +27,6 @@ import eu.tsystems.mms.tic.testframework.annotations.Retry;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.events.TestStatusUpdateEvent;
-import eu.tsystems.mms.tic.testframework.exceptions.InheritedFailedException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
@@ -96,23 +95,6 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
         }
     }
 
-    /**
-     * The maximum number of retries. Loading every time to be able to set programmatically with System.setProperty().
-     * A static final definition would be loaded to early (@ suite init).
-     */
-    private int getMaxRetries(ITestResult testResult) {
-        if (testResult != null) {
-            // check for annotation
-            Method method = testResult.getMethod().getConstructorOrMethod().getMethod();
-            if (method.isAnnotationPresent(Retry.class)) {
-                Retry retry = method.getAnnotation(Retry.class);
-                return retry.maxRetries();
-            }
-        }
-
-        return PropertyManager.getIntProperty(TesterraProperties.FAILED_TESTS_MAX_RETRIES, 1);
-    }
-
     @Override
     public boolean retry(final ITestResult testResult) {
         MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult);
@@ -134,12 +116,17 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
         }
 
         final String testMethodName = methodContext.getName();
-
-        /*
-        check retry counter
-         */
         int retryCounter = getRetryCounter(testResult);
-        final int maxRetries = getMaxRetries(testResult);
+
+        int annotatedRetries = 0;
+        Optional<Retry> optionalRetry = methodContext.getAnnotation(Retry.class);
+        if (optionalRetry.isPresent()) {
+            annotatedRetries = optionalRetry.get().maxRetries();
+        }
+
+        int defaultRetries = PropertyManager.getIntProperty(TesterraProperties.FAILED_TESTS_MAX_RETRIES, 1);
+        int maxRetries = Math.max(defaultRetries, annotatedRetries);
+
         final String retryMessageString = "(" + (retryCounter + 1) + "/" + (maxRetries + 1) + ")";
 
         if (retryCounter >= maxRetries) {
@@ -148,16 +135,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
             return false;
         }
 
-        /*
-         * no retry when TesterraInheritedExceptions raise
-         */
-        final Throwable throwable1 = testResult.getThrowable();
-        if (throwable1 != null && throwable1 instanceof InheritedFailedException) {
-            return false;
-        }
-
-        boolean containingFilteredThrowable = isTestResultContainingFilteredThrowable(testResult);
-        if (containingFilteredThrowable) {
+        if (annotatedRetries > 0 || (isTestResultContainingFilteredThrowable(testResult) && defaultRetries > 0)) {
             methodHasBeenRetried(methodContext);
             RETRIED_METHODS.add(methodContext);
             log().info("Send signal for retrying the test " + retryMessageString + ": " + testMethodName);
@@ -219,22 +197,13 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
      * @return .
      */
     private boolean isTestResultContainingFilteredThrowable(final ITestResult testResult) {
-        if (testResult.getStatus() != ITestResult.FAILURE) {
-            return false;
-        }
-        if (!testResult.isSuccess()) {
-            Throwable throwable = testResult.getThrowable();
+        Throwable throwable = testResult.getThrowable();
 
-            if (throwable == null) {
-                return false;
-            }
-
+        if (throwable != null) {
             Throwable retryCause = checkThrowable(throwable);
-
-            if (retryCause != null) {
-                return true;
-            }
+            return retryCause != null;
         }
+
         return false;
     }
 

@@ -323,7 +323,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         return getAnnotation(Fails.class);
     }
 
-    private <T extends Annotation> Optional<T> getAnnotation(Class<T> annotationClass) {
+    public <T extends Annotation> Optional<T> getAnnotation(Class<T> annotationClass) {
         return readAnnotations().filter(annotationClass::isInstance).map(annotation -> (T)annotation).findFirst();
     }
 

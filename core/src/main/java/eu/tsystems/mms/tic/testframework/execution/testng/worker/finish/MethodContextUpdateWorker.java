@@ -33,12 +33,16 @@ import eu.tsystems.mms.tic.testframework.report.utils.FailsAnnotationFilter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.ITestResult;
 
 public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
+
+    private static final Map<Class<?>, Object> VALIDATOR_SINGLETONS = new ConcurrentHashMap<>();
 
     @Subscribe
     @Override
@@ -83,21 +87,19 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
                 Boolean isFailsAnnotationValid = false;
 
                 if (!fails.intoReport()) {
-                    String validator = fails.validator();
-                    if (StringUtils.isNotBlank(validator)) {
-                        Class<?> validatorClass = fails.validatorClass();
-                        if (validatorClass == null) {
-                            validatorClass = event.getMethod().getDeclaringClass();
-                        }
-
+                    String validatorMethodName = fails.validator();
+                    if (StringUtils.isNotBlank(validatorMethodName)) {
                         try {
-                            Method validatorMethod = validatorClass.getMethod(validator, MethodContext.class);
-                            isFailsAnnotationValid = (Boolean) validatorMethod.invoke(validatorClass, methodContext);
+                            Object validatorInstance = getValidatorInstance(fails).orElse(event.getTestMethod().getInstance());
+                            Method validatorMethod = validatorInstance.getClass().getMethod(validatorMethodName, MethodContext.class);
+                            isFailsAnnotationValid = (Boolean) validatorMethod.invoke(validatorInstance, methodContext);
                         } catch (Throwable t) {
                             methodContext.addError(t);
                         }
+                    } else if (fails.validFor().length > 0){
+                        isFailsAnnotationValid = FailsAnnotationFilter.isFailsAnnotationValid(fails.validFor());
                     } else {
-                        isFailsAnnotationValid = FailsAnnotationFilter.isFailsAnnotationValid(fails);
+                        isFailsAnnotationValid = true;
                     }
                 }
                 if (isFailsAnnotationValid) {
@@ -113,6 +115,25 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
             methodContext.getFailsAnnotation().ifPresent(fails -> {
                 methodContext.setStatus(Status.REPAIRED);
             });
+        }
+    }
+
+    /**
+     * Returns the defined validator instance of {@link Fails#validatorClass()} as singleton
+     */
+    private Optional<Object> getValidatorInstance(Fails fails) throws Exception {
+        Class<?> validatorClass = fails.validatorClass();
+        Object validatorInstance;
+
+        if (validatorClass == Object.class) {
+            return Optional.empty();
+        } else {
+            if (!VALIDATOR_SINGLETONS.containsKey(validatorClass)) {
+                Constructor<?> constructor = validatorClass.getConstructor();
+                validatorInstance = constructor.newInstance();
+                VALIDATOR_SINGLETONS.put(validatorClass, validatorInstance);
+            }
+            return Optional.of(VALIDATOR_SINGLETONS.get(validatorClass));
         }
     }
 }

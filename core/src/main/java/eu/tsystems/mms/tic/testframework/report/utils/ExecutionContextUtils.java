@@ -68,7 +68,7 @@ public class ExecutionContextUtils {
 
             final String info = "for " + optional.get().getName();
             if (!testMethodName.contains(info)) {
-                methodContext.infos.add(info);
+                methodContext.addInfo(info);
             }
         } else {
             final String msg = "Please use @BeforeMethod before(Method method) and @AfterMethod after(Method method)! This will be mandatory in a future release.";

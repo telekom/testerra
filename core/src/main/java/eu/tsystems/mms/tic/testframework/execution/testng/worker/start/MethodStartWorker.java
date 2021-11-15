@@ -22,7 +22,6 @@
 package eu.tsystems.mms.tic.testframework.execution.testng.worker.start;
 
 import com.google.common.eventbus.Subscribe;
-import eu.tsystems.mms.tic.testframework.annotations.NoRetry;
 import eu.tsystems.mms.tic.testframework.events.MethodStartEvent;
 import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
@@ -41,8 +40,6 @@ public class MethodStartWorker implements Loggable, MethodStartEvent.Listener {
     @Override
     @Subscribe
     public void onMethodStart(MethodStartEvent event) {
-        event.getMethodContext().setThreadName();
-
         ITestNGMethod testMethod = event.getTestMethod();
         if (testMethod.isTest()) {
             addRetryAnalyzer(event);

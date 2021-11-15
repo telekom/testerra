@@ -146,8 +146,12 @@ public class ExecutionContextController {
         CURRENT_SESSION_CONTEXT.set(sessionContext);
     }
 
-    public static SessionContext getCurrentSessionContext() {
-        return CURRENT_SESSION_CONTEXT.get();
+    public static Optional<SessionContext> getCurrentSessionContext() {
+        return Optional.ofNullable(CURRENT_SESSION_CONTEXT.get());
+    }
+
+    public static void clearCurrentSessionContext() {
+        CURRENT_SESSION_CONTEXT.remove();
     }
 
     /**

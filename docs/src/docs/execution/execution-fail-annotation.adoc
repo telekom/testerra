@@ -73,6 +73,27 @@ public void testSomething() {
 }
 ----
 
+Or as a class
+
+[source, java]
+----
+public class FailsValidator {
+    public boolean expectedFailIsValid(MethodContext methodContext) {
+        return true;
+    }
+}
+----
+
+[source, java]
+----
+@Test
+@Fails(validatorClass = FailsValidator.class, validator = "expectedFailIsValid")
+public void testSomething() {
+    // Perform your tests here
+}
+----
+
+
 == Define conditions (`@deprecated`)
 
 You can specify some conditions for expected fails. Only if *_all_* conditions are true, the test is marked as `Expected failed`, otherwise as `Failed`.

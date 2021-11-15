@@ -34,6 +34,7 @@ import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodStartEvent;
 import eu.tsystems.mms.tic.testframework.events.TestStatusUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
+import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodContextUpdateWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodParametersWorker;
@@ -73,6 +74,7 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
+import org.testng.SkipException;
 import org.testng.annotations.Test;
 import org.testng.internal.InvokedMethod;
 import org.testng.internal.TestResult;
@@ -458,11 +460,14 @@ public class TesterraListener implements
 
     }
 
-//    private static final String SKIP_FAILED_DEPENDENCY_MSG = "depends on";
-
     @Override
     public void onTestSkipped(ITestResult testResult) {
-        if (!testResult.wasRetried()) {
+        /**
+         * This method gets not only called when a test was skipped using {@link Test#dependsOnMethods()} or by throwing a {@link SkipException},
+         * but also when a failed test should not be retried by {@link RetryAnalyzer#retry(ITestResult)}
+         * or when a test fails for another reason like {@link #onDataProviderFailure(ITestNGMethod, ITestContext, RuntimeException)}
+         */
+        if (!testResult.wasRetried() && !dataProviderSemaphore.containsKey(testResult.getMethod())) {
             MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult);
             methodContext.setStatus(Status.SKIPPED);
             TesterraListener.getEventBus().post(new TestStatusUpdateEvent(methodContext));

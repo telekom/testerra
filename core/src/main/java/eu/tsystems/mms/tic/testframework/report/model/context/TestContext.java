@@ -39,15 +39,15 @@ import java.util.stream.Stream;
 /**
  * Representation of a TestNG {@link ITestContext}
  */
-public class TestContext extends AbstractContext implements SynchronizableContext {
+public class TestContext extends AbstractContext {
     private final Queue<ClassContext> classContexts = new ConcurrentLinkedQueue<>();
 
     public TestContext(SuiteContext suiteContext) {
-        this.parentContext = suiteContext;
+        this.setParentContext(suiteContext);
     }
 
     public SuiteContext getSuiteContext() {
-        return (SuiteContext) this.parentContext;
+        return (SuiteContext) this.getParentContext();
     }
 
     public Stream<ClassContext> readClassContexts() {

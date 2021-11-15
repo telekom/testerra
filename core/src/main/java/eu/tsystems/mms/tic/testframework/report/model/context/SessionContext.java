@@ -30,8 +30,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Stream;
 
-public class SessionContext extends AbstractContext implements SynchronizableContext {
-    private String remoteSessionId;
+public class SessionContext extends AbstractContext {
     private Video video;
     private NodeInfo nodeInfo;
     private String browserName;
@@ -39,6 +38,7 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
     private Map<String, Object> capabilities;
     private final WebDriverRequest webDriverRequest;
     private final Queue<MethodContext> methodContexts = new ConcurrentLinkedQueue<>();
+    private String remoteSessionId;
 
     public SessionContext(WebDriverRequest webDriverRequest) {
         try {
@@ -46,16 +46,7 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }
-        this.name = webDriverRequest.getSessionKey();
-
-//        this.provider = provider;
-//
-//        final MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
-//        if (currentMethodContext != null) {
-//            this.name = currentMethodContext.getName() + "_";
-//        } else {
-//            this.name = "";
-//        }
+        this.setName(webDriverRequest.getSessionKey());
     }
 
     public WebDriverRequest getWebDriverRequest() {
@@ -63,16 +54,16 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
     }
 
     public String getSessionKey() {
-        return this.name;
+        return this.getName();
     }
 
     public SessionContext setSessionKey(String sessionKey) {
-        this.name = sessionKey;
+        this.setName(sessionKey);
         return this;
     }
 
     public Optional<String> getRemoteSessionId() {
-        return Optional.ofNullable(remoteSessionId);
+        return Optional.ofNullable(this.remoteSessionId);
     }
 
     public SessionContext setRemoteSessionId(String sessionId) {

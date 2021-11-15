@@ -112,10 +112,10 @@ public class ContextExporter implements Loggable {
                 });
 
         apply(methodContext.getRetryCounter(), builder::setRetryNumber);
-        apply(methodContext.methodRunIndex, builder::setMethodRunIndex);
+        apply(methodContext.getMethodRunIndex(), builder::setMethodRunIndex);
 
-        apply(methodContext.priorityMessage, builder::setPriorityMessage);
-        apply(methodContext.threadName, builder::setThreadName);
+        methodContext.getPriorityMessage().ifPresent(builder::setPriorityMessage);
+        apply(methodContext.getThreadName(), builder::setThreadName);
 
         // test steps
         methodContext.readTestSteps().forEach(testStep -> builder.addTestSteps(buildTestStep(testStep)));
@@ -131,7 +131,7 @@ public class ContextExporter implements Loggable {
             builder.setFailureCorridorValue(FailureCorridorValue.FCV_LOW);
         }
         builder.setClassContextId(methodContext.getClassContext().getId());
-        forEach(methodContext.infos, builder::addInfos);
+        methodContext.readInfos().forEach(builder::addInfos);
         methodContext.readRelatedMethodContexts().forEach(m -> builder.addRelatedMethodContextIds(m.getId()));
         methodContext.readDependsOnMethodContexts().forEach(m -> builder.addDependsOnMethodContextIds(m.getId()));
 

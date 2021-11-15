@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.json.JsonException;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -44,6 +45,7 @@ public class RetryTests extends AbstractTestStatusTest {
     AtomicInteger counter = new AtomicInteger(0);
     private boolean webDriverExceptionThrown = false;
     private boolean unreachableBrowserExceptionThrown = false;
+    private boolean jsonExceptionThrown = false;
 
     @Test(groups = {"TestNgDependsOnRetryTest"})
     public void testCaseOne() {
@@ -84,6 +86,14 @@ public class RetryTests extends AbstractTestStatusTest {
         }
     }
 
+    @Test(groups = {"TestNgDependsOnRetryTest"})
+    public void test_retryOnJsonException() {
+        if (!jsonExceptionThrown) {
+            jsonExceptionThrown = true;
+            throw new JsonException("Expected to read a START_MAP but instead have: END");
+        }
+    }
+
     @Test(dependsOnGroups = "TestNgDependsOnRetryTest")
     public void test_retriedTestCaseData() {
         Stream<MethodContext> methodContexts = findMethodContexts("testCaseOne");
@@ -113,6 +123,11 @@ public class RetryTests extends AbstractTestStatusTest {
         Assert.assertEquals(list.get(1).getStatus(), Status.RECOVERED);
 
         list = findMethodContexts("test_retryOnUnreachableBrowserException").collect(Collectors.toList());
+        Assert.assertEquals(list.size(), 2);
+        Assert.assertEquals(list.get(0).getStatus(), Status.RETRIED);
+        Assert.assertEquals(list.get(1).getStatus(), Status.RECOVERED);
+
+        list = findMethodContexts("test_retryOnJsonException").collect(Collectors.toList());
         Assert.assertEquals(list.size(), 2);
         Assert.assertEquals(list.get(0).getStatus(), Status.RETRIED);
         Assert.assertEquals(list.get(1).getStatus(), Status.RECOVERED);

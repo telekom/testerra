@@ -308,6 +308,7 @@ public class ContextExporter implements Loggable {
 
     public ContextExporter() {
         // Prepare a status map
+        RESULT_STATUS_MAPPING.put(Status.NO_RUN, ResultStatusType.NO_RUN);
         RESULT_STATUS_MAPPING.put(Status.FAILED, ResultStatusType.FAILED);
         RESULT_STATUS_MAPPING.put(Status.SKIPPED, ResultStatusType.SKIPPED);
         RESULT_STATUS_MAPPING.put(Status.PASSED, ResultStatusType.PASSED);

@@ -77,14 +77,10 @@ public class TestContext extends AbstractContext {
                 classContextName,
                 () -> {
                     ClassContext newClassContext = new ClassContext(realClass, this);
-                    /*
+                    /**
                      * check if {@link TestClassContext} is present on class
                      */
                     if (realClass.isAnnotationPresent(TestClassContext.class)) {
-
-                        /*
-                        hook into executionContext mergedContexts
-                         */
                         TestClassContext actualTestContext = realClass.getAnnotation(TestClassContext.class);
                         if (actualTestContext.mode() == TestClassContext.Mode.ONE_FOR_ALL) {
                             newClassContext.setTestClassContext(actualTestContext);

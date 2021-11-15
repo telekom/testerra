@@ -59,11 +59,6 @@ public class ClassContext extends AbstractContext implements Loggable {
         setName(testClass.getSimpleName());
     }
 
-    @Override
-    public String getName() {
-        return getTestClassContext().map(TestClassContext::name).orElseGet(super::getName);
-    }
-
     public Stream<MethodContext> readMethodContexts() {
         return this.methodContexts.stream();
     }

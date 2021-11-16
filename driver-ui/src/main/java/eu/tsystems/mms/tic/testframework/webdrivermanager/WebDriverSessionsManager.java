@@ -35,10 +35,8 @@ import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextControlle
 import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.utils.DefaultCapabilityUtils;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
 import java.util.Comparator;
-import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -142,7 +140,7 @@ public final class WebDriverSessionsManager {
         final long threadId = Thread.currentThread().getId();
         WEBDRIVER_THREAD_ID_MAP.remove(eventFiringWebDriver, threadId);
 
-        ExecutionContextController.clearCurrentSessionContext();
+        executionContextController.clearCurrentSessionContext();
 
         /*
         storing driver into driver storage, for whatever reason
@@ -420,16 +418,17 @@ public final class WebDriverSessionsManager {
             if (newRawWebDriver instanceof RemoteWebDriver) {
                 SessionId sessionId = ((RemoteWebDriver) newRawWebDriver).getSessionId();
                 sessionContext.setRemoteSessionId(sessionId.toString());
+            } else {
+                sessionContext.setRemoteSessionId(sessionContext.getId());
             }
 
             LOGGER.info(String.format(
-                    "Started %s (sessionKey=%s, sessionId=%s, node=%s, userAgent=%s) in %s",
+                    "Started %s (sessionKey=%s, node=%s, userAgent=%s) in %s",
                     newRawWebDriver.getClass().getSimpleName(),
                     sessionContext.getSessionKey(),
-                    sessionContext.getRemoteSessionId().orElse("(local)"),
                     sessionContext.getNodeUrl().map(Object::toString).orElse("(unknown)"),
                     sessionContext.getActualBrowserName().orElse("(unknown)") + ":" + sessionContext.getActualBrowserVersion().orElse("(unknown)"),
-                    sw.toString()
+                    sw
             ));
             EventFiringWebDriver eventFiringWebDriver = wrapWebDriver(newRawWebDriver);
             storeWebDriverSession(eventFiringWebDriver, sessionContext);

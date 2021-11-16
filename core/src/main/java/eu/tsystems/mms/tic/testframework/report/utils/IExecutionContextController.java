@@ -32,5 +32,6 @@ public interface IExecutionContextController {
     Optional<MethodContext> getCurrentMethodContext();
     Optional<ITestResult> getCurrentTestResult();
     ExecutionContext getExecutionContext();
+    void clearCurrentSessionContext();
     void setCurrentSessionContext(SessionContext sessionContext);
 }

@@ -8,16 +8,7 @@
         <suite-file path="UiElement.xml"></suite-file>
         <suite-file path="MethodParallel.xml"></suite-file>
         <suite-file path="Localization.xml"></suite-file>
+        <suite-file path="Core.xml"></suite-file>
+        <suite-file path="Execution.xml"></suite-file>
     </suite-files>
-
-    <test name="Sequential tests" parallel="false">
-        <groups>
-            <run>
-                <include name="SEQUENTIAL"/>
-            </run>
-        </groups>
-        <packages>
-            <package name="eu.tsystems.mms.tic.testframework.test.*"/>
-        </packages>
-    </test>
 </suite>

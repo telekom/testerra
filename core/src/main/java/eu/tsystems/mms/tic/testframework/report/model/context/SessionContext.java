@@ -56,11 +56,6 @@ public class SessionContext extends AbstractContext {
         return this.webDriverRequest;
     }
 
-    @Override
-    public String getName() {
-        return this.getSessionKey();
-    }
-
     public String getSessionKey() {
         return this.getName();
     }

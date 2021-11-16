@@ -74,7 +74,7 @@ public class GuiElementAdditionalTests extends AbstractTestSitesTest {
 
     }
 
-    @Test(groups = {"SEQUENTIAL"})
+    @Test()
     public void test04_LocateSubElementWithUniqueConfigurator_fails() {
         Locate.setConfigurator(Locate::unique);
         final WebDriver driver = WebDriverManager.getWebDriver();

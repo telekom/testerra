@@ -23,12 +23,13 @@ package eu.tsystems.mms.tic.testframework.test.execution;
 
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.json.JsonException;
+import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -39,11 +40,14 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author mgn
  */
-public class TestNgDependsOnRetryTest extends TesterraTest {
+public class RetryTests extends AbstractTestStatusTest {
 
     AtomicInteger counter = new AtomicInteger(0);
+    private boolean webDriverExceptionThrown = false;
+    private boolean unreachableBrowserExceptionThrown = false;
+    private boolean jsonExceptionThrown = false;
 
-    @Test(priority = 1, groups = "SEQUENTIAL")
+    @Test(groups = {"TestNgDependsOnRetryTest"})
     public void testCaseOne() {
         this.counter.incrementAndGet();
         if (counter.get() == 1) {
@@ -55,20 +59,44 @@ public class TestNgDependsOnRetryTest extends TesterraTest {
 
     }
 
-    @Test(dependsOnMethods = "testCaseOne", priority = 2, groups = "SEQUENTIAL")
+    @Test(dependsOnMethods = "testCaseOne", groups = {"TestNgDependsOnRetryTest"})
     public void testCaseTwo() {
         this.counter.incrementAndGet();
         Assert.assertTrue(true);
     }
 
-    @Test(priority = 999, groups = "SEQUENTIAL")
+    @Test(dependsOnMethods = "testCaseTwo", groups = {"TestNgDependsOnRetryTest"})
     public void testCaseThree() {
         Assert.assertEquals(this.counter.get(), 3, "testCaseTwo should executed after retried 'dependsOn' method.");
     }
 
-    @Test(dependsOnMethods = "testCaseOne", groups = "SEQUENTIAL")
+    @Test(groups = {"TestNgDependsOnRetryTest"})
+    public void test_retryOnWebDriverException() {
+        if (!webDriverExceptionThrown) {
+            webDriverExceptionThrown = true;
+            throw new WebDriverException("was terminated due to TIMEOUT");
+        }
+    }
+
+    @Test(groups = {"TestNgDependsOnRetryTest"})
+    public void test_retryOnUnreachableBrowserException() {
+        if (!unreachableBrowserExceptionThrown) {
+            unreachableBrowserExceptionThrown = true;
+            throw new UnreachableBrowserException("Im just a test");
+        }
+    }
+
+    @Test(groups = {"TestNgDependsOnRetryTest"})
+    public void test_retryOnJsonException() {
+        if (!jsonExceptionThrown) {
+            jsonExceptionThrown = true;
+            throw new JsonException("Expected to read a START_MAP but instead have: END");
+        }
+    }
+
+    @Test(dependsOnGroups = "TestNgDependsOnRetryTest")
     public void test_retriedTestCaseData() {
-        Stream<MethodContext> methodContexts = findMethodContext("testCaseOne");
+        Stream<MethodContext> methodContexts = findMethodContexts("testCaseOne");
 
         List<MethodContext> collected = methodContexts
                 .sorted(Comparator.comparingInt(MethodContext::getRetryCounter))
@@ -88,12 +116,20 @@ public class TestNgDependsOnRetryTest extends TesterraTest {
 
         Assert.assertEquals(1, failedMethod.readRelatedMethodContexts().count());
         Assert.assertEquals(1, passedMethod.readDependsOnMethodContexts().count());
-    }
 
-    private Stream<MethodContext> findMethodContext(String methodName) {
-        MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
-        return currentMethodContext.getClassContext().readMethodContexts()
-                .filter(methodContext -> methodContext.getName().equals(methodName));
-    }
+        List<MethodContext> list = findMethodContexts("test_retryOnWebDriverException").collect(Collectors.toList());
+        Assert.assertEquals(list.size(), 2);
+        Assert.assertEquals(list.get(0).getStatus(), Status.RETRIED);
+        Assert.assertEquals(list.get(1).getStatus(), Status.RECOVERED);
 
+        list = findMethodContexts("test_retryOnUnreachableBrowserException").collect(Collectors.toList());
+        Assert.assertEquals(list.size(), 2);
+        Assert.assertEquals(list.get(0).getStatus(), Status.RETRIED);
+        Assert.assertEquals(list.get(1).getStatus(), Status.RECOVERED);
+
+        list = findMethodContexts("test_retryOnJsonException").collect(Collectors.toList());
+        Assert.assertEquals(list.size(), 2);
+        Assert.assertEquals(list.get(0).getStatus(), Status.RETRIED);
+        Assert.assertEquals(list.get(1).getStatus(), Status.RECOVERED);
+    }
 }

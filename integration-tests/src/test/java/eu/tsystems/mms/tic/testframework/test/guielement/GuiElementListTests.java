@@ -74,6 +74,7 @@ public class GuiElementListTests extends AbstractTestSitesTest {
     }
 
     private void testNavigationAnchors(GuiElement anchors) {
+        anchors.asserts().assertIsDisplayed();
         Assert.assertEquals(anchors.getNumberOfFoundElements(), 3);
         Assert.assertEquals(anchors.getList().size(), 3);
         Assert.assertEquals(anchors.getList().get(0).getText(), "First");

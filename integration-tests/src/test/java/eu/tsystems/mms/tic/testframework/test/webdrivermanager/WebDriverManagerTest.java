@@ -179,24 +179,29 @@ public class WebDriverManagerTest extends AbstractWebDriverTest {
 
         String newScreenSize = "1024x768";
 
-        PropertyManager.getThreadLocalProperties().setProperty(TesterraProperties.WINDOW_SIZE, newScreenSize);
+        PropertyManager.getTestLocalProperties().setProperty(TesterraProperties.WINDOW_SIZE, newScreenSize);
         String property = PropertyManager.getProperty(TesterraProperties.WINDOW_SIZE, PropertyManager.getProperty(TesterraProperties.DISPLAY_RESOLUTION));
         Assert.assertEquals(property, newScreenSize);
 
         assertNewWebDriverWindowSize(new Dimension(1024, 768));
-
-        PropertyManager.clearThreadlocalProperties();
     }
 
     @Test
     public void test_invalidWindowSize() {
-        PropertyManager.getThreadLocalProperties().setProperty(TesterraProperties.WINDOW_SIZE, "katze");
+        PropertyManager.getTestLocalProperties().setProperty(TesterraProperties.WINDOW_SIZE, "katze");
         String property = PropertyManager.getProperty(TesterraProperties.WINDOW_SIZE, PropertyManager.getProperty(TesterraProperties.DISPLAY_RESOLUTION));
         Assert.assertEquals(property, "katze");
 
         assertNewWebDriverWindowSize(new Dimension(1920, 1080));
+    }
 
-        PropertyManager.clearThreadlocalProperties();
+    @Test
+    public void test_emptyWindowSize() {
+        PropertyManager.getTestLocalProperties().setProperty(TesterraProperties.WINDOW_SIZE, "");
+        String property = PropertyManager.getProperty(TesterraProperties.WINDOW_SIZE);
+        Assert.assertEquals(property, "");
+
+        assertNewWebDriverWindowSize(new Dimension(1920, 1080));
     }
 
     private void assertNewWebDriverWindowSize(Dimension expected) {

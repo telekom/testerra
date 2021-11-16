@@ -23,6 +23,7 @@ package eu.tsystems.mms.tic.testframework.test.reporting;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
+import eu.tsystems.mms.tic.testframework.annotations.Retry;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.BasePage;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.WebTestPage;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
@@ -66,6 +67,7 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
 
     @Test()
     @Fails(description = "This test needs to fail to create a screenshot")
+    @Retry(maxRetries = 0)
     public void test_take_screenshot_on_failure_without_closing_WebDriver() {
         WebDriverManager.getConfig().setShutdownSessions(false);
         Flags.SCREENCASTER_ACTIVE = true;

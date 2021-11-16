@@ -23,7 +23,6 @@ package eu.tsystems.mms.tic.testframework.test.reporting;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.annotations.Retry;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.BasePage;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.WebTestPage;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
@@ -54,7 +53,7 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
     }
 
     @Test()
-    @Fails(description = "This test needs to fail to create a screenshot")
+    @Fails()
     public void test_takeScreenshot_fails() {
         Flags.SCREENCASTER_ACTIVE = true;
         getPage().assertIsTextDisplayed("Screenshot present on failure");
@@ -62,12 +61,11 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
 
     @Test(dependsOnMethods = "test_takeScreenshot_fails", alwaysRun = true)
     public void test_screenshotPresentInMethodContext() {
-        this.screenshot_is_present_in_MethodContext("test_takeScreenshot_fails");
+        this.screenshotIsPresentInMethodContext("test_takeScreenshot_fails");
     }
 
-    @Test(dependsOnMethods = "test_screenshotPresentInMethodContext")
-    @Fails(description = "This test needs to fail to create a screenshot")
-    @Retry(maxRetries = 0)
+    @Test()
+    @Fails()
     public void test_takeScreenshotOnExclusiveSession_fails() {
         WebDriverManager.getConfig().setShutdownSessions(false);
         Flags.SCREENCASTER_ACTIVE = true;
@@ -76,12 +74,12 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
 
     @Test(dependsOnMethods = "test_takeScreenshotOnExclusiveSession_fails", alwaysRun = true)
     public void test_exclusiveSessionScreenshotPresentInMethodContext() {
-        this.screenshot_is_present_in_MethodContext("test_takeScreenshotOnExclusiveSession_fails");
+        this.screenshotIsPresentInMethodContext("test_takeScreenshotOnExclusiveSession_fails");
         WebDriverManager.getConfig().reset();
         WebDriverManager.forceShutdownAllThreads();
     }
 
-    private void screenshot_is_present_in_MethodContext(String methodName) {
+    private void screenshotIsPresentInMethodContext(String methodName) {
         MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
 
         Optional<MethodContext> optionalMethodContext = currentMethodContext.getClassContext().readMethodContexts()
@@ -93,13 +91,14 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
             long count = methodContext.readTestSteps()
                     .flatMap(testStep -> testStep.getTestStepActions().stream())
                     .flatMap(testStepAction -> testStepAction.readEntries(Screenshot.class))
+                    .filter(screenshot -> !screenshot.getMetaData().getOrDefault(Screenshot.MetaData.SESSION_KEY, "").startsWith("EXCLUSIVE_"))
                     .count();
             Assert.assertEquals(count, 1, "Screenshots in MethodContext " + methodName);
         });
     }
 
-    @Test(dependsOnMethods = "test_exclusiveSessionScreenshotPresentInMethodContext")
-    @Fails(description = "This test needs to fail to create a screenshot")
+    @Test()
+    @Fails()
     public void test_takeScreenshotViaCollectedAssertion_fails() {
         Flags.SCREENCASTER_ACTIVE = true;
         AssertCollector.assertTrue(false);
@@ -107,7 +106,7 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
 
     @Test(dependsOnMethods = "test_takeScreenshotViaCollectedAssertion_fails", alwaysRun = true)
     public void test_collectedAssertionScreenshotIsPresentInMethodContext() {
-        this.screenshot_is_present_in_MethodContext("test_takeScreenshotViaCollectedAssertion_fails");
+        this.screenshotIsPresentInMethodContext("test_takeScreenshotViaCollectedAssertion_fails");
     }
 
     @Test

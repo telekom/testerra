@@ -38,7 +38,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Stream;
 
-public class ExecutionContext extends AbstractContext implements SynchronizableContext {
+public class ExecutionContext extends AbstractContext {
     private final Queue<SuiteContext> suiteContexts = new ConcurrentLinkedQueue<>();
     /**
      * @deprecated Use {@link #getRunConfig()} instead
@@ -56,7 +56,7 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
     private final ConcurrentLinkedQueue<LogMessage> methodContextLessLogs = new ConcurrentLinkedQueue<>();
 
     public ExecutionContext() {
-        name = runConfig.RUNCFG;
+        setName(runConfig.RUNCFG);
         Testerra.getEventBus().post(new ContextUpdateEvent().setContext(this));
     }
 
@@ -78,7 +78,7 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
         }
         if (!this.exclusiveSessionContexts.contains(sessionContext)) {
             this.exclusiveSessionContexts.add(sessionContext);
-            sessionContext.parentContext = this;
+            sessionContext.setParentContext(this);
         }
         return this;
     }

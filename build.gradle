@@ -1,7 +1,11 @@
 plugins {
-    id 'com.github.jk1.dependency-license-report' version '1.13'
     id "io.codearte.nexus-staging" version "0.30.0"
+    id 'com.github.jk1.dependency-license-report' version '1.16'
 }
+
+// Plugin dependency-license-report
+import com.github.jk1.license.filter.*
+import com.github.jk1.license.render.*
 
 def jacocoVersion = "0.8.6"
 
@@ -33,6 +37,7 @@ allprojects {
     compileTestJava.options.encoding = "UTF-8"
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
+
 }
 
 subprojects {
@@ -44,6 +49,8 @@ subprojects {
     apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
     apply plugin: 'jacoco'
     apply plugin: 'signing'
+
+    apply plugin: 'com.github.jk1.dependency-license-report'
 
     // important!
     repositories {
@@ -92,6 +99,14 @@ subprojects {
 
     clean.dependsOn(cleanDist)
 
+    // Plugin dependency-license-report
+    licenseReport {
+        filters = [new ExcludeTransitiveDependenciesFilter()]
+        configurations = ['runtimeClasspath', 'testRuntimeClasspath']
+//        renderers = [new CsvReportRenderer("${project.name}.csv"), new InventoryMarkdownReportRenderer("${project.name}.md"), new TextReportRenderer("${project.name.toUpperCase()}.txt") ]
+        renderers = [new InventoryMarkdownReportRenderer("${project.name}.md")]
+        outputDir = "$rootDir/license3rdparty"
+    }
 }
 
 // Do not move this integration because `group` and `version` is needed for publishing

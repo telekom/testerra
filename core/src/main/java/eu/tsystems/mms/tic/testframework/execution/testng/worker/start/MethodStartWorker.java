@@ -41,8 +41,6 @@ public class MethodStartWorker implements Loggable, MethodStartEvent.Listener {
     @Override
     @Subscribe
     public void onMethodStart(MethodStartEvent event) {
-        event.getMethodContext().setThreadName();
-
         ITestNGMethod testMethod = event.getTestMethod();
         if (testMethod.isTest()) {
             addRetryAnalyzer(event);

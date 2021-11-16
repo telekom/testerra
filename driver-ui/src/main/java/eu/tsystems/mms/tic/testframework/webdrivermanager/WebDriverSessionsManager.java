@@ -38,6 +38,7 @@ import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
 import java.util.Comparator;
+import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -51,6 +52,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.time.StopWatch;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.SessionId;
@@ -139,6 +141,8 @@ public final class WebDriverSessionsManager {
 
         final long threadId = Thread.currentThread().getId();
         WEBDRIVER_THREAD_ID_MAP.remove(eventFiringWebDriver, threadId);
+
+        ExecutionContextController.clearCurrentSessionContext();
 
         /*
         storing driver into driver storage, for whatever reason

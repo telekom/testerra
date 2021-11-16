@@ -29,11 +29,20 @@ import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
+import eu.tsystems.mms.tic.testframework.report.utils.FailsAnnotationFilter;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.apache.commons.lang3.StringUtils;
 import org.testng.ITestResult;
 
 public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
+
+    private static final Map<Class<?>, Object> VALIDATOR_SINGLETONS = new ConcurrentHashMap<>();
 
     @Subscribe
     @Override
@@ -69,18 +78,34 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
          */
         if (event.isFailed()) {
             methodContext.setStatus(Status.FAILED);
-            /*
-             * set status
+
+            /**
+             * Validate the {@link Fails} annotation
              */
             Optional<Fails> failsAnnotation = methodContext.getFailsAnnotation();
-            if (failsAnnotation.isPresent() && !failsAnnotation.get().intoReport()) {
-                methodContext.setStatus(Status.FAILED_EXPECTED);
-                // expected failed
-            }
+            failsAnnotation.ifPresent(fails -> {
+                Boolean isFailsAnnotationValid = false;
 
-            /*
-             * Enhance step infos
-             */
+                if (!fails.intoReport()) {
+                    String validatorMethodName = fails.validator();
+                    if (StringUtils.isNotBlank(validatorMethodName)) {
+                        try {
+                            Object validatorInstance = getValidatorInstance(fails).orElse(event.getTestMethod().getInstance());
+                            Method validatorMethod = validatorInstance.getClass().getMethod(validatorMethodName, MethodContext.class);
+                            isFailsAnnotationValid = (Boolean) validatorMethod.invoke(validatorInstance, methodContext);
+                        } catch (Throwable t) {
+                            methodContext.addError(t);
+                        }
+                    } else if (fails.validFor().length > 0){
+                        isFailsAnnotationValid = FailsAnnotationFilter.isFailsAnnotationValid(fails.validFor());
+                    } else {
+                        isFailsAnnotationValid = true;
+                    }
+                }
+                if (isFailsAnnotationValid) {
+                    methodContext.setStatus(Status.FAILED_EXPECTED);
+                }
+            });
             TestStep failedStep = methodContext.getCurrentTestStep();
             methodContext.setFailedStep(failedStep);
         } else if (testResult.isSuccess()) {
@@ -90,6 +115,25 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
             methodContext.getFailsAnnotation().ifPresent(fails -> {
                 methodContext.setStatus(Status.REPAIRED);
             });
+        }
+    }
+
+    /**
+     * Returns the defined validator instance of {@link Fails#validatorClass()} as singleton
+     */
+    private Optional<Object> getValidatorInstance(Fails fails) throws Exception {
+        Class<?> validatorClass = fails.validatorClass();
+        Object validatorInstance;
+
+        if (validatorClass == Object.class) {
+            return Optional.empty();
+        } else {
+            if (!VALIDATOR_SINGLETONS.containsKey(validatorClass)) {
+                Constructor<?> constructor = validatorClass.getConstructor();
+                validatorInstance = constructor.newInstance();
+                VALIDATOR_SINGLETONS.put(validatorClass, validatorInstance);
+            }
+            return Optional.of(VALIDATOR_SINGLETONS.get(validatorClass));
         }
     }
 }

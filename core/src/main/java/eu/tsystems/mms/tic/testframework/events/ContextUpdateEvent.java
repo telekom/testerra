@@ -22,7 +22,7 @@
 
 package eu.tsystems.mms.tic.testframework.events;
 
-import eu.tsystems.mms.tic.testframework.report.model.context.SynchronizableContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
 
 /**
  * This event gets fired whenever a context should be updated.
@@ -33,13 +33,13 @@ public class ContextUpdateEvent {
         void onContextUpdate(ContextUpdateEvent event);
     }
 
-    private SynchronizableContext context;
+    private AbstractContext context;
 
-    public SynchronizableContext getContext() {
+    public AbstractContext getContext() {
         return context;
     }
 
-    public ContextUpdateEvent setContext(SynchronizableContext context) {
+    public ContextUpdateEvent setContext(AbstractContext context) {
         this.context = context;
         return this;
     }

@@ -1,0 +1,19 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="Testerra Core Features" verbose="10" configfailurepolicy="continue" thread-count="10" parallel="false">
+
+    <test name="Core" parallel="methods">
+        <groups>
+            <run>
+                <exclude name="SEQUENTIAL"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="eu.tsystems.mms.tic.testframework.test.common"/>
+            <package name="eu.tsystems.mms.tic.testframework.test.reporting"/>
+            <package name="eu.tsystems.mms.tic.testframework.test.testdata"/>
+            <package name="eu.tsystems.mms.tic.testframework.test.webdrivermanager"/>
+            <package name="eu.tsystems.mms.tic.testframework.test.utils"/>
+            <package name="eu.tsystems.mms.tic.testframework.test.events"/>
+        </packages>
+    </test>
+</suite>

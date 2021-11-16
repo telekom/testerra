@@ -93,15 +93,13 @@ The following optional properties can be set.
 | ----------------------------- | ----------------------------------------------------- |
 | `withJacoco`                   | Enables Jacoco code coverage analysis |
 
-### Dependency report
+### License report
 
-Create a report about used dependencies, for example in HTML style:
+Create a report about used licenses for every dependency:
 
-``gradle htmlDependencyReport``
+``gradle generateLicenseReport``
 
-You will find the report in every module under ``build/reports/project/dependencies/index.html``.
-
-See more details here: https://docs.gradle.org/current/userguide/project_report_plugin.html
+You will find the reports of all modules under  ``license3rdparty``.
 
 ### Publishing
 

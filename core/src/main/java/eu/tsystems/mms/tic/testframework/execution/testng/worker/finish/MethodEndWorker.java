@@ -41,8 +41,6 @@ public class MethodEndWorker implements MethodEndEvent.Listener, Loggable {
     @Subscribe
     @Override
     public void onMethodEnd(MethodEndEvent event) {
-        ExecutionContextController.clearCurrentTestResult();
-
         ITestResult testResult = event.getTestResult();
         ITestNGMethod testMethod = event.getTestMethod();
         MethodContext methodContext = event.getMethodContext();
@@ -63,5 +61,7 @@ public class MethodEndWorker implements MethodEndEvent.Listener, Loggable {
         if (methodContext.getStatus() != Status.FAILED) {
             Testerra.getEventBus().post(new TestStatusUpdateEvent(methodContext));
         }
+
+        ExecutionContextController.clearCurrentTestResult();
     }
 }

@@ -19,31 +19,18 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.test.common;
+package eu.tsystems.mms.tic.testframework.test.execution;
 
-import eu.tsystems.mms.tic.testframework.annotations.Fails;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import java.util.stream.Stream;
 
-public class DataProviderTest extends TesterraTest {
+public class AbstractTestStatusTest extends TesterraTest {
 
-    @Test(dataProviderClass = MyDataProvider.class, dataProvider = "throwException")
-    @Fails
-    public void test_interceptCrashedDataProvider() {
-        Assert.assertTrue(true);
+    protected Stream<MethodContext> findMethodContexts(String methodName) {
+        MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
+        return currentMethodContext.getClassContext().readMethodContexts()
+                .filter(methodContext -> methodContext.getName().equals(methodName));
     }
-
-    @DataProvider()
-    public Object[][] crashingDataProvider() {
-        throw new RuntimeException("crashed data provider");
-    }
-
-    @Test(dataProvider = "crashingDataProvider")
-    @Fails
-    public void test_crashedDataProvider(Object object) {
-        Assert.assertTrue(true);
-    }
-
 }

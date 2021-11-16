@@ -29,14 +29,14 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Stream;
 
-public class SessionContext extends AbstractContext implements SynchronizableContext {
-    private String remoteSessionId;
+public class SessionContext extends AbstractContext {
     private Video video;
     private String actualBrowserName;
     private String actualBrowserVersion;
     private WebDriverRequest webDriverRequest;
     private URL nodeUrl;
     private final Queue<MethodContext> methodContexts = new ConcurrentLinkedQueue<>();
+    private String remoteSessionId;
 
     public SessionContext(WebDriverRequest webDriverRequest) {
         try {
@@ -44,15 +44,7 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }
-
-//        this.provider = provider;
-//
-//        final MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
-//        if (currentMethodContext != null) {
-//            this.name = currentMethodContext.getName() + "_";
-//        } else {
-//            this.name = "";
-//        }
+        this.setName(webDriverRequest.getSessionKey());
     }
 
     private void setWebDriverRequest(WebDriverRequest webDriverRequest) {
@@ -70,16 +62,16 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
     }
 
     public String getSessionKey() {
-        return this.name;
+        return this.getName();
     }
 
     public SessionContext setSessionKey(String sessionKey) {
-        this.name = sessionKey;
+        this.setName(sessionKey);
         return this;
     }
 
     public Optional<String> getRemoteSessionId() {
-        return Optional.ofNullable(remoteSessionId);
+        return Optional.ofNullable(this.remoteSessionId);
     }
 
     public SessionContext setRemoteSessionId(String sessionId) {

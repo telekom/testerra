@@ -28,7 +28,8 @@ import org.testng.annotations.Test;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Created on 21.04.2021
+ * The retry of these tests is controlled by
+ * tt.failed.tests.if.throwable.messages in test.properties
  *
  * @author mgn
  */

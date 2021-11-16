@@ -44,29 +44,29 @@ public void testItWillFail() {
 | description | Give more details about the failure.
 | ticketString | Define a bug ticket ID or URL as a String value.
 | intoReport | If `true` the failing test is shown as `Failed` instead of `Expected Failed` (default: `false`).
-| validFor | Define the <<Define conditions, conditions>> of the expected failed.
+| validator | Define a method that checks if the expected failure is valid.
+| validatorClass | Define a class for the `validator` method (optional)
 |===
 
-== Define conditions
+== Defining a validator
 
-You can specify some conditions for expected fails. Only if *_all_* conditions are true, the test is marked as `Expected failed`, otherwise as `Failed`.
+With expected fails validators, you can define if the  `Expected Failed` state is valid or not.
+When the validator returns `true`, the expected failed status is valid, otherwise, the test will result in a regular `Failed`.
+You can use that feature to mark a test as expecting to fail for known circumstances, like browser or environment configurations.
 
-.The conditions are based on properties specified in `test.properties`
-[source, properties, subs="attributes"]
-----
-# test.properties
-environment=test
-country=de
-----
+You define a validator the following way:
 
-.Usage of validFor in the `@Fails` annotation
 [source, java]
 ----
+public boolean browserCouldFail(MethodContext methodContext) {
+    return methodContext.readSessionContexts()
+                .map(SessionContext::getActualBrowserName)
+                .anyMatch(s -> s.contains("internet explorer"));
+}
+
 @Test
-@Fails(description = "Failing for environment 'test' and country 'de'", validFor = {"environment=test", "country=de"})
-public void testExpectedFailed() {
-    Assert.fail();
+@Fails(validator = "browserCouldFail")
+public void testSomething() {
+    // Perform your tests here
 }
 ----
-
-If the test is executed with other values of the properties (like country=uk) the test will marked as `Failed`.

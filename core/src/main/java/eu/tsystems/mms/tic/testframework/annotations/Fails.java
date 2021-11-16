@@ -19,7 +19,7 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.annotations;
+package eu.tsystems.mms.tic.testframework.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -53,6 +53,11 @@ public @interface Fails {
 
     boolean intoReport() default false;
 
+    /**
+     * @deprecated Use {@link #validatorClass()} instead
+     */
     String[] validFor() default {};
 
+    Class<?> validatorClass() default Object.class;
+    String validator() default "";
 }

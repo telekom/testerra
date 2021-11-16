@@ -90,7 +90,6 @@ public class ProxyUtilsTest extends TesterraTest {
 
     @Test
     public void testT02_getHttpsProxyString() {
-        provideProxySettings();
         final String expectedUrlString = PROXY_HOST_HTTPS + ":" + PROXY_PORT_HTTPS;
 
         WebDriverProxyUtils utils = new WebDriverProxyUtils();

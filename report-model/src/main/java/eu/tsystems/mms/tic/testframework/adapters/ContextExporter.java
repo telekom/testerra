@@ -97,7 +97,7 @@ public class ContextExporter implements Loggable {
 
         builder.setContextValues(contextValuesBuilder);
 
-        map(methodContext.getStatus(), this::mapResultStatus, builder::setResultStatus);
+        builder.setResultStatus(this.mapResultStatus(methodContext));
         map(methodContext.getMethodType(), type -> MethodType.valueOf(type.name()), builder::setMethodType);
         List<Object> parameterValues = methodContext.getParameterValues();
         for (int i = 0; i < parameterValues.size(); ++i) {
@@ -308,6 +308,7 @@ public class ContextExporter implements Loggable {
 
     public ContextExporter() {
         // Prepare a status map
+        RESULT_STATUS_MAPPING.put(Status.NO_RUN, ResultStatusType.NO_RUN);
         RESULT_STATUS_MAPPING.put(Status.FAILED, ResultStatusType.FAILED);
         RESULT_STATUS_MAPPING.put(Status.SKIPPED, ResultStatusType.SKIPPED);
         RESULT_STATUS_MAPPING.put(Status.PASSED, ResultStatusType.PASSED);
@@ -321,12 +322,23 @@ public class ContextExporter implements Loggable {
         FAILURE_CORRIDOR_MAPPING.put(FailureCorridor.Low.class, FailureCorridorValue.FCV_LOW);
     }
 
-    protected ResultStatusType mapResultStatus(Status status) {
-        return RESULT_STATUS_MAPPING.get(status);
+    private ResultStatusType mapResultStatus(eu.tsystems.mms.tic.testframework.report.model.context.MethodContext methodContext) {
+        Status status = methodContext.getStatus();
+        ResultStatusType resultStatusType = RESULT_STATUS_MAPPING.get(status);
+        if (resultStatusType == null) {
+            resultStatusType = ResultStatusType.RST_NOT_SET;
+            log().error(String.format("Unable to map result status '%s' of method '%s', using '%s'", status, methodContext.getName(), resultStatusType));
+        }
+        return resultStatusType;
     }
 
-    protected FailureCorridorValue mapFailureCorridorClass(Class failureCorridorClass) {
-        return FAILURE_CORRIDOR_MAPPING.get(failureCorridorClass);
+    private FailureCorridorValue mapFailureCorridorClass(Class failureCorridorClass) {
+        FailureCorridorValue failureCorridorValue = FAILURE_CORRIDOR_MAPPING.get(failureCorridorClass);
+        if (failureCorridorValue == null) {
+            failureCorridorValue = FailureCorridorValue.FCV_HIGH;
+            log().warn(String.format("Mapping unknown failure corridor class '%s' to '%s'", failureCorridorClass, failureCorridorValue));
+        }
+        return failureCorridorValue;
     }
 
     /**

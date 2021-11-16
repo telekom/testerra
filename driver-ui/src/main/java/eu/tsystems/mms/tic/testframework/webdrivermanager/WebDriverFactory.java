@@ -64,8 +64,8 @@ public abstract class WebDriverFactory<R extends AbstractWebDriverRequest> imple
          */
         DesiredCapabilities tapOptions = new DesiredCapabilities();
         ExecutionContextController.getCurrentExecutionContext().getMetaData().forEach(tapOptions::setCapability);
-        tapOptions.setCapability("scid", sessionContext.getId());
-        tapOptions.setCapability("sessionKey", finalRequest.getSessionKey());
+        //tapOptions.setCapability("scid", sessionContext.getId());
+        //tapOptions.setCapability("sessionKey", finalRequest.getSessionKey());
         preparedCaps.setCapability("tapOptions", tapOptions);
 
         /*
@@ -81,18 +81,19 @@ public abstract class WebDriverFactory<R extends AbstractWebDriverRequest> imple
         if (rawDriver instanceof RemoteWebDriver) {
             SessionId sessionId = ((RemoteWebDriver) rawDriver).getSessionId();
             sessionContext.setRemoteSessionId(sessionId.toString());
+        } else {
+            sessionContext.setRemoteSessionId(sessionContext.getId());
         }
 
         sessionContext.setActualBrowserName(browserInformation.getBrowserName());
         sessionContext.setActualBrowserVersion(browserInformation.getBrowserVersion());
         log().info(String.format(
-                "Started %s (sessionKey=%s, sessionId=%s, node=%s, userAgent=%s) in %s",
+                "Started %s (sessionKey=%s, node=%s, userAgent=%s) in %s",
                 rawDriver.getClass().getSimpleName(),
                 sessionContext.getSessionKey(),
-                sessionContext.getRemoteSessionId().orElse("(local)"),
                 sessionContext.getNodeInfo().map(Object::toString).orElse("(unknown)"),
                 browserInformation.getBrowserName() + ":" + browserInformation.getBrowserVersion(),
-                sw.toString()
+                sw
         ));
 
         /*

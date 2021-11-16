@@ -36,10 +36,10 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public abstract class AbstractContext implements SynchronizableContext, Loggable {
-    protected String name;
+public abstract class AbstractContext implements Loggable {
+    private String name;
     private final String id = IDUtils.getB64encXID();
-    protected AbstractContext parentContext;
+    private AbstractContext parentContext;
     private final Date startTime = new Date();
     private Date endTime;
     private Map<String, Object> metaData;
@@ -71,6 +71,14 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
         return this.id;
     }
 
+    protected void setName(String name) {
+        this.name = name;
+    }
+
+    protected void setParentContext(AbstractContext context) {
+        this.parentContext = context;
+    }
+
     /**
      * Gets an context for a specified name.
      * If it not exists, it will be created by a supplier,
@@ -93,7 +101,7 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
          * which could be generated.
          */
         List<T> list = contexts.stream()
-                .filter(context -> name.equals(context.name))
+                .filter(context -> name.equals(context.getName()))
                 .collect(Collectors.toList());
 
         if (list.size() == 0) {
@@ -102,7 +110,7 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
             }
             try {
                 T context = newContextSupplier.get();
-                context.name = name;
+                context.setName(name);
                 contexts.add(context);
 
                 if (whenAddedToQueue != null) {
@@ -149,10 +157,5 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
             context.endTime = date;
             context = context.parentContext;
         }
-    }
-
-    @Override
-    public SynchronizableContext getParent() {
-        return parentContext;
     }
 }

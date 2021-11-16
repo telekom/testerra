@@ -31,15 +31,15 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Stream;
 
-public class SuiteContext extends AbstractContext implements SynchronizableContext {
+public class SuiteContext extends AbstractContext {
     private final Queue<TestContext> testContexts = new ConcurrentLinkedQueue<>();
 
     public SuiteContext(ExecutionContext executionContext) {
-        this.parentContext = executionContext;
+        this.setParentContext(executionContext);
     }
 
     public ExecutionContext getExecutionContext() {
-        return (ExecutionContext)this.parentContext;
+        return (ExecutionContext)this.getParentContext();
     }
 
     public Stream<TestContext> readTestContexts() {

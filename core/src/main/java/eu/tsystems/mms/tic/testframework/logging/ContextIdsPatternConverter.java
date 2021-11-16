@@ -50,10 +50,9 @@ public class ContextIdsPatternConverter extends LogEventPatternConverter {
         }
 
         // enhance with method context id
-        SessionContext currentSessionContext = ExecutionContextController.getCurrentSessionContext();
-        if (currentSessionContext != null) {
-            toAppendTo.append("[SCID:").append(currentSessionContext.getId()).append("]");
-        }
+        ExecutionContextController.getCurrentSessionContext().flatMap(SessionContext::getRemoteSessionId).ifPresent(s -> {
+            toAppendTo.append("[SCID:").append(s).append("]");
+        });
     }
 
     public static ContextIdsPatternConverter newInstance(String[] options) {

@@ -22,6 +22,7 @@
 package eu.tsystems.mms.tic.testframework.playground;
 
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
+import eu.tsystems.mms.tic.testframework.annotations.Retry;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -37,6 +38,8 @@ public class RetryTests extends AbstractWebDriverTest {
 
     AtomicInteger counter1 = new AtomicInteger(0);
     AtomicInteger counter2 = new AtomicInteger(0);
+    AtomicInteger counter3 = new AtomicInteger(0);
+    AtomicInteger counter4 = new AtomicInteger(0);
 
     @Test
     public void retryAlwaysFailed() {
@@ -69,6 +72,22 @@ public class RetryTests extends AbstractWebDriverTest {
     @Test(dependsOnMethods = "secondRetryDependsOnMethod")
     public void secondRetryCallOfDependsOn() {
         Assert.assertTrue(true);
+    }
+
+    @Test
+    @Retry(maxRetries = 4)
+    public void test_willPassOnThirdRetry() {
+        if (counter3.incrementAndGet() < 3) {
+            Assert.fail();
+        }
+    }
+
+    @Test
+    @Retry(maxRetries = 4)
+    public void test_willPassOnFifthRetry() {
+        if (counter4.incrementAndGet() <= 4) {
+            Assert.fail();
+        }
     }
 
 

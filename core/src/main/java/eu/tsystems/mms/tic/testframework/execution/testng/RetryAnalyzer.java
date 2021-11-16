@@ -127,7 +127,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
         int defaultRetries = PropertyManager.getIntProperty(TesterraProperties.FAILED_TESTS_MAX_RETRIES, 1);
         int maxRetries = Math.max(defaultRetries, annotatedRetries);
 
-        final String retryMessageString = "(" + (retryCounter + 1) + "/" + (maxRetries + 1) + ")";
+        final String retryMessageString = "(" + (retryCounter + 1) + "/" + maxRetries + ")";
 
         if (retryCounter >= maxRetries) {
             removeFromRetryCache(methodContext);

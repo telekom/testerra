@@ -38,11 +38,12 @@ public class Locate {
     private boolean unique = false;
     private By by;
     private String preparedFormat;
-    private static Consumer<Locate> locatorConfigurator;
+    private static final ThreadLocal<Consumer<Locate>> locatorConfigurator = new ThreadLocal<>();
 
     private Locate() {
-        if (locatorConfigurator != null) {
-            locatorConfigurator.accept(this);
+        Consumer<Locate> consumer = locatorConfigurator.get();
+        if (consumer != null) {
+            consumer.accept(this);
         }
     }
 
@@ -53,16 +54,25 @@ public class Locate {
     }
 
     /**
-     * Sets a global configurator callback for all created {@link Locate} instances
+     * Sets a thread-local configurator callback for all created {@link Locate} instances.
+     * @param callback When null, the configurator will be removed.
      */
-    public static void setConfigurator(Consumer<Locate> callback) {
+    public static void setThreadLocalConfigurator(Consumer<Locate> callback) {
         Logger logger = LoggerFactory.getLogger(Locate.class);
         if (callback != null) {
+            locatorConfigurator.set(callback);
             logger.info("Using global configurator");
         } else {
+            locatorConfigurator.remove();
             logger.info("Unset global configurator");
         }
-        locatorConfigurator = callback;
+    }
+
+    /**
+     * @deprecated Use {@link #setThreadLocalConfigurator(Consumer)} instead
+     */
+    public static void setConfigurator(Consumer<Locate> callback) {
+        setThreadLocalConfigurator(callback);
     }
 
     /**

@@ -1,7 +1,7 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
-<suite name="GuiElement" verbose="10" configfailurepolicy="continue" thread-count="10" parallel="false">
+<suite name="GuiElement" verbose="10" configfailurepolicy="continue" thread-count="10" parallel="methods">
 
-    <test name="GuiElement Core Features" parallel="methods">
+    <test name="Core Features">
         <groups>
             <run>
                 <exclude name="SEQUENTIAL"/>
@@ -17,7 +17,7 @@
         </classes>
     </test>
 
-    <test name="GuiElement Layout Features" parallel="methods">
+    <test name="Layout Features">
         <groups>
             <run>
                 <exclude name="SEQUENTIAL"/>

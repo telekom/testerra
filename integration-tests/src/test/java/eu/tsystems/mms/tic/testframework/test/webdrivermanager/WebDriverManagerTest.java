@@ -209,7 +209,7 @@ public class WebDriverManagerTest extends AbstractWebDriverTest {
         Assert.assertEquals(windowSize.getWidth(), expected.getWidth());
         Assert.assertEquals(windowSize.getHeight(), expected.getHeight());
 
-        WebDriver webDriver = WebDriverManager.getWebDriver();
+        WebDriver webDriver = WebDriverManager.getWebDriver(request);
         Dimension size = webDriver.manage().window().getSize();
         Assert.assertEquals(size.getWidth(), expected.getWidth());
         Assert.assertEquals(size.getHeight(), expected.getHeight());

@@ -26,11 +26,12 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import java.util.stream.Stream;
 
-public class AbstractTestStatusTest extends TesterraTest {
+public interface TestStatusTest {
 
-    protected Stream<MethodContext> findMethodContexts(String methodName) {
-        MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
-        return currentMethodContext.getClassContext().readMethodContexts()
-                .filter(methodContext -> methodContext.getName().equals(methodName));
+    default Stream<MethodContext> findMethodContexts(String methodName) {
+        return ExecutionContextController.getMethodContextForThread().map(methodContext -> {
+            return methodContext.getClassContext().readMethodContexts()
+                    .filter(otherMethodContext -> otherMethodContext.getName().equals(methodName));
+        }).orElse(Stream.empty());
     }
 }

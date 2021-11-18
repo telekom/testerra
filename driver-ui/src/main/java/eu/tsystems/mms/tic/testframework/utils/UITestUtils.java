@@ -94,7 +94,9 @@ public class UITestUtils {
 
         if (intoReport) {
             if (screenshot != null) {
-                ExecutionContextController.getCurrentMethodContext().addScreenshots(Stream.of(screenshot));
+                ExecutionContextController.getMethodContextForThread().ifPresent(methodContext -> {
+                    methodContext.addScreenshots(Stream.of(screenshot));
+                });
             }
         }
 
@@ -267,10 +269,9 @@ public class UITestUtils {
                 saveBufferedImage(screenshotImage, targetFile);
                 Report report = TesterraListener.getReport();
                 Screenshot screenshot = report.provideScreenshot(targetFile, Report.FileMode.MOVE);
-                final MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-                if (methodContext != null) {
+                ExecutionContextController.getMethodContextForThread().ifPresent(methodContext -> {
                     methodContext.addScreenshots(Stream.of(screenshot));
-                }
+                });
             } catch (IOException e) {
                 LOGGER.error("Could not take screenshot", e);
             }
@@ -355,7 +356,9 @@ public class UITestUtils {
         List<Screenshot> allScreenshots = new LinkedList<>();
         takeScreenshotsFromThreadSessions().forEach(webDriverScreenshots -> {
             if (publishToReport) {
-                ExecutionContextController.getCurrentMethodContext().addScreenshots(webDriverScreenshots.stream());
+                ExecutionContextController.getMethodContextForThread().ifPresent(methodContext -> {
+                    methodContext.addScreenshots(webDriverScreenshots.stream());
+                });
             }
             allScreenshots.addAll(webDriverScreenshots);
         });

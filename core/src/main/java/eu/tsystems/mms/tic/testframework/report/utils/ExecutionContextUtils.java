@@ -88,12 +88,13 @@ public class ExecutionContextUtils {
     }
 
     public static String getMethodNameFromCurrentTestResult(boolean withClassName) {
-        ITestResult currentTestResult = ExecutionContextController.getCurrentTestResult();
-        String methodName = "";
-        if (withClassName) {
-            methodName += currentTestResult.getTestClass().getRealClass().getSimpleName() + ".";
-        }
-        methodName += currentTestResult.getMethod().getMethodName();
-        return methodName;
+        return ExecutionContextController.getTestResultForThread().map(testResult -> {
+            String methodName = "";
+            if (withClassName) {
+                methodName += testResult.getTestClass().getRealClass().getSimpleName() + ".";
+            }
+            methodName += testResult.getMethod().getMethodName();
+            return methodName;
+        }).orElse("");
     }
 }

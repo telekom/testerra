@@ -25,13 +25,14 @@ import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.Retry;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class ExpectedFailsTests extends AbstractTestStatusTest {
+public class ExpectedFailsTests extends TesterraTest implements TestStatusTest {
 
     public boolean failedExpectedIsValid(MethodContext methodContext) {
         return true;

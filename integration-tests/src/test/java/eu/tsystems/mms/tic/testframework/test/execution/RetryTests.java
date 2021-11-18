@@ -23,6 +23,7 @@ package eu.tsystems.mms.tic.testframework.test.execution;
 
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,7 +41,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author mgn
  */
-public class RetryTests extends AbstractTestStatusTest {
+public class RetryTests extends TesterraTest implements TestStatusTest {
 
     AtomicInteger counter = new AtomicInteger(0);
     private boolean webDriverExceptionThrown = false;

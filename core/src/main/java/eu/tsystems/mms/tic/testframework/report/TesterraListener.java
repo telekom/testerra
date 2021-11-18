@@ -53,6 +53,7 @@ import eu.tsystems.mms.tic.testframework.report.utils.DefaultTestNGContextGenera
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.LoggerContext;
@@ -386,12 +387,10 @@ public class TesterraListener implements
 
         final String methodName = getMethodName(testResult);
 
-        /*
-         * Get test method container
-         */
-        MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-        if (methodContext == null) {
+        Optional<MethodContext> optionalMethodContext = ExecutionContextController.getMethodContextForThread();
+        MethodContext methodContext;
 
+        if (!optionalMethodContext.isPresent()) {
             if (testResult.getStatus() == ITestResult.CREATED || testResult.getStatus() == ITestResult.SKIP) {
                 /*
                  * TestNG bug or whatever ?!?!
@@ -401,6 +400,8 @@ public class TesterraListener implements
             } else {
                 throw new SystemException("INTERNAL ERROR. Could not create methodContext for " + methodName + " with result: " + testResult);
             }
+        } else {
+            methodContext = optionalMethodContext.get();
         }
 
         AbstractMethodEvent event = new MethodEndEvent()

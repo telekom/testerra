@@ -25,6 +25,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import java.util.Optional;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.appender.AbstractAppender;
 
@@ -37,9 +38,9 @@ public class TestStepLogAppender extends AbstractAppender {
     @Override
     public void append(LogEvent event) {
         LogMessage logMessage = new LogMessage(event);
-        MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
-        if (currentMethodContext != null) {
-            currentMethodContext.addLogMessage(logMessage);
+        Optional<MethodContext> optionalMethodContext = ExecutionContextController.getMethodContextForThread();
+        if (optionalMethodContext.isPresent()) {
+            optionalMethodContext.get().addLogMessage(logMessage);
         } else {
             ExecutionContextController.getCurrentExecutionContext().addLogMessage(logMessage);
         }

@@ -53,20 +53,36 @@ public class ExecutionContextController {
 
     private static final ThreadLocal<MethodContext> CURRENT_METHOD_CONTEXT = new ThreadLocal<>();
     private static final ThreadLocal<ITestResult> CURRENT_TEST_RESULT = new ThreadLocal<>();
-
     private static final ThreadLocal<SessionContext> CURRENT_SESSION_CONTEXT = new ThreadLocal<>();
     private static final String statsPrefix = "*** Stats: ";
 
     /**
-     * //TODO Make {@link Optional}
+     * @deprecated Use {@link #getMethodContextForThread()} instead
      * @return The current method context or NULL if there was no method initialized.
      */
     public static MethodContext getCurrentMethodContext() {
         return CURRENT_METHOD_CONTEXT.get();
     }
 
+    /**
+     * Returns the method context of the current thread
+     */
+    public static Optional<MethodContext> getMethodContextForThread() {
+        return Optional.ofNullable(CURRENT_METHOD_CONTEXT.get());
+    }
+
+    /**
+     * @deprecated Use {@link #getTestResultForThread()} instead
+     */
     public static ITestResult getCurrentTestResult() {
-        return CURRENT_TEST_RESULT.get();
+        return getTestResultForThread().orElse(null);
+    }
+
+    /**
+     * Returns the test result of the current thread
+     */
+    public static Optional<ITestResult> getTestResultForThread() {
+        return Optional.ofNullable(CURRENT_TEST_RESULT.get());
     }
 
     public static synchronized ExecutionContext getCurrentExecutionContext() {
@@ -146,8 +162,18 @@ public class ExecutionContextController {
         CURRENT_SESSION_CONTEXT.set(sessionContext);
     }
 
-    public static Optional<SessionContext> getCurrentSessionContext() {
+    /**
+     * Returns the current active session context, set by WebdriverProxy
+     */
+    public static Optional<SessionContext> getSessionContextForThread() {
         return Optional.ofNullable(CURRENT_SESSION_CONTEXT.get());
+    }
+
+    /**
+     * @deprecated Use {@link #getSessionContextForThread()} instead
+     */
+    public static SessionContext getCurrentSessionContext() {
+        return getSessionContextForThread().orElse(null);
     }
 
     public static void clearCurrentSessionContext() {

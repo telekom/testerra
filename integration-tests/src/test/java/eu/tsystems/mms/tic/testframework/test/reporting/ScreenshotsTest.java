@@ -29,7 +29,6 @@ import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.test.execution.TestStatusTest;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
@@ -60,34 +59,22 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
 
     @Test(dependsOnMethods = "test_takeScreenshot_fails", alwaysRun = true)
     public void test_screenshotPresentInMethodContext() {
-        this.screenshotIsPresentInMethodContext("test_takeScreenshot_fails");
+        this.screenshotIsPresentInMethodContext("test_takeScreenshot_fails", false);
     }
 
     @Test()
     @Fails()
     public void test_takeScreenshotOnExclusiveSession_fails() {
         WebDriverManager.getConfig().setShutdownSessions(false);
+        //WebDriverManager.makeSessionExclusive(getWebDriver());
         getPage().assertIsTextDisplayed("Screenshot present on failure");
     }
 
     @Test(dependsOnMethods = "test_takeScreenshotOnExclusiveSession_fails", alwaysRun = true)
     public void test_exclusiveSessionScreenshotPresentInMethodContext() {
-        this.screenshotIsPresentInMethodContext("test_takeScreenshotOnExclusiveSession_fails");
+        this.screenshotIsPresentInMethodContext("test_takeScreenshotOnExclusiveSession_fails", true);
         WebDriverManager.getConfig().reset();
         WebDriverManager.forceShutdownAllThreads();
-    }
-
-    private void screenshotIsPresentInMethodContext(String methodName) {
-        Optional<MethodContext> optionalMethodContext = findMethodContexts(methodName).findFirst();
-        Assert.assertTrue(optionalMethodContext.isPresent());
-        optionalMethodContext.ifPresent(methodContext -> {
-            long count = methodContext.readTestSteps()
-                    .flatMap(testStep -> testStep.getTestStepActions().stream())
-                    .flatMap(testStepAction -> testStepAction.readEntries(Screenshot.class))
-                    .filter(screenshot -> !screenshot.getMetaData().getOrDefault(Screenshot.MetaData.SESSION_KEY, "").startsWith("EXCLUSIVE_"))
-                    .count();
-            Assert.assertEquals(count, 1, "Screenshots in MethodContext " + methodName);
-        });
     }
 
     @Test()
@@ -98,7 +85,20 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
 
     @Test(dependsOnMethods = "test_takeScreenshotViaCollectedAssertion_fails", alwaysRun = true)
     public void test_collectedAssertionScreenshotIsPresentInMethodContext() {
-        this.screenshotIsPresentInMethodContext("test_takeScreenshotViaCollectedAssertion_fails");
+        this.screenshotIsPresentInMethodContext("test_takeScreenshotViaCollectedAssertion_fails", false);
+    }
+
+    private void screenshotIsPresentInMethodContext(String methodName, boolean exclusive) {
+        Optional<MethodContext> optionalMethodContext = findMethodContexts(methodName).findFirst();
+        Assert.assertTrue(optionalMethodContext.isPresent());
+        optionalMethodContext.ifPresent(methodContext -> {
+            long count = methodContext.readTestSteps()
+                    .flatMap(testStep -> testStep.getTestStepActions().stream())
+                    .flatMap(testStepAction -> testStepAction.readEntries(Screenshot.class))
+                    .filter(screenshot -> !exclusive || screenshot.getMetaData().getOrDefault(Screenshot.MetaData.SESSION_KEY, "").startsWith("EXCLUSIVE_"))
+                    .count();
+            Assert.assertEquals(count, 1, "Screenshots in MethodContext " + methodName);
+        });
     }
 
     @Test

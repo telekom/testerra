@@ -66,7 +66,7 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
     @Fails()
     public void test_takeScreenshotOnExclusiveSession_fails() {
         WebDriverManager.getConfig().setShutdownSessions(false);
-        //WebDriverManager.makeSessionExclusive(getWebDriver());
+        WebDriverManager.makeSessionExclusive(getWebDriver());
         getPage().assertIsTextDisplayed("Screenshot present on failure");
     }
 

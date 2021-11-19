@@ -29,13 +29,16 @@ import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
+import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.test.execution.TestStatusTest;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.reporters.Files;
@@ -91,11 +94,17 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
     private void screenshotIsPresentInMethodContext(String methodName, boolean exclusive) {
         Optional<MethodContext> optionalMethodContext = findMethodContexts(methodName).findFirst();
         Assert.assertTrue(optionalMethodContext.isPresent());
+
         optionalMethodContext.ifPresent(methodContext -> {
+            List<String> relevantSessionKeys = methodContext.readSessionContexts()
+                    .filter(sessionContext -> exclusive == sessionContext.isExclusive())
+                    .map(SessionContext::getSessionKey)
+                    .collect(Collectors.toList());
+
             long count = methodContext.readTestSteps()
                     .flatMap(testStep -> testStep.getTestStepActions().stream())
                     .flatMap(testStepAction -> testStepAction.readEntries(Screenshot.class))
-                    .filter(screenshot -> exclusive == screenshot.getMetaData().getOrDefault(Screenshot.MetaData.SESSION_KEY, "").startsWith("EXCLUSIVE_"))
+                    .filter(screenshot -> relevantSessionKeys.contains(screenshot.getMetaData().get(Screenshot.MetaData.SESSION_KEY)))
                     .count();
             Assert.assertEquals(count, 1, "Screenshots in MethodContext " + methodName);
         });

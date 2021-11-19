@@ -29,6 +29,8 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
+import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
@@ -67,8 +69,6 @@ public final class WebDriverSessionsManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverSessionsManager.class);
 
     private static final Map<String, WebDriverFactory> WEB_DRIVER_FACTORIES = new HashMap<>();
-
-    public static final String EXCLUSIVE_PREFIX = "EXCLUSIVE_";
 
     public static final Map<Date, Throwable> SESSION_STARTUP_ERRORS = new LinkedHashMap<>();
 
@@ -303,7 +303,7 @@ public final class WebDriverSessionsManager {
         /*
         Add session to exclusive map.
          */
-        String exclusiveSessionKey = EXCLUSIVE_PREFIX + UUID.randomUUID().toString();
+        String exclusiveSessionKey = SessionContext.EXCLUSIVE_PREFIX + UUID.randomUUID().toString();
         EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.put(exclusiveSessionKey, eventFiringWebDriver);
 
         /*
@@ -343,7 +343,7 @@ public final class WebDriverSessionsManager {
         /*
         Check for exclusive session
          */
-        if (sessionKey.startsWith(EXCLUSIVE_PREFIX)) {
+        if (sessionKey.startsWith(SessionContext.EXCLUSIVE_PREFIX)) {
             // returning exclusive session
             if (EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.containsKey(sessionKey)) {
                 return EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.get(sessionKey);

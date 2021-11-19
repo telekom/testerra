@@ -37,6 +37,7 @@ public class SessionContext extends AbstractContext {
     private URL nodeUrl;
     private final Queue<MethodContext> methodContexts = new ConcurrentLinkedQueue<>();
     private String remoteSessionId;
+    public static final String EXCLUSIVE_PREFIX = "EXCLUSIVE_";
 
     public SessionContext(WebDriverRequest webDriverRequest) {
         try {
@@ -63,6 +64,10 @@ public class SessionContext extends AbstractContext {
     public SessionContext setSessionKey(String sessionKey) {
         this.setName(sessionKey);
         return this;
+    }
+
+    public boolean isExclusive() {
+        return getSessionKey().startsWith(EXCLUSIVE_PREFIX);
     }
 
     public Optional<String> getRemoteSessionId() {

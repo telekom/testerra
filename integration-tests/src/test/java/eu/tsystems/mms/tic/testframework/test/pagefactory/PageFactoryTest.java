@@ -64,7 +64,7 @@ public class PageFactoryTest extends AbstractTestSitesTest {
         final File reportScreenshotDirectory = TesterraListener.getReport().getReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
         Assert.assertNotNull(reportScreenshotDirectory);
 
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        final WebDriver driver = getWebDriver();
 
         final int fileCountBeforeAction = getNumFiles(reportScreenshotDirectory);
         PropertyManager.getTestLocalProperties().setProperty(TesterraProperties.SCREENSHOT_ON_PAGELOAD, "false");

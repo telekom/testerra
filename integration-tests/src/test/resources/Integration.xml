@@ -6,7 +6,6 @@
         <suite-file path="GuiElementVariations.xml"></suite-file>
         <suite-file path="PageObjects.xml"></suite-file>
         <suite-file path="UiElement.xml"></suite-file>
-        <suite-file path="MethodParallel.xml"></suite-file>
         <suite-file path="Localization.xml"></suite-file>
         <suite-file path="Core.xml"></suite-file>
         <suite-file path="Execution.xml"></suite-file>

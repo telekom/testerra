@@ -70,3 +70,48 @@ public void testSomething() {
     // Perform your tests here
 }
 ----
+
+Or as a class
+
+[source, java]
+----
+public class FailsValidator {
+    public boolean expectedFailIsValid(MethodContext methodContext) {
+        return true;
+    }
+}
+----
+
+[source, java]
+----
+@Test
+@Fails(validatorClass = FailsValidator.class, validator = "expectedFailIsValid")
+public void testSomething() {
+    // Perform your tests here
+}
+----
+
+
+== Define conditions (`@deprecated`)
+
+You can specify some conditions for expected fails. Only if *_all_* conditions are true, the test is marked as `Expected failed`, otherwise as `Failed`.
+
+.The conditions are based on properties specified in `test.properties`
+[source, properties, subs="attributes"]
+----
+# test.properties
+environment=test
+country=de
+----
+
+.Usage of validFor in the `@Fails` annotation
+[source, java]
+----
+@Test
+@Fails(description = "Failing for environment 'test' and country 'de'", validFor = {"environment=test", "country=de"})
+public void testExpectedFailed() {
+    Assert.fail();
+}
+----
+
+If the test is executed with other values of the properties (like country=uk) the test will marked as `Failed`.

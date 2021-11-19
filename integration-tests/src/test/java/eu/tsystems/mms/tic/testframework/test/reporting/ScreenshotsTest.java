@@ -21,21 +21,22 @@
 
 package eu.tsystems.mms.tic.testframework.test.reporting;
 
-import eu.tsystems.mms.tic.testframework.AbstractExclusiveTestSitesTest;
+import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.BasePage;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.WebTestPage;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
+import eu.tsystems.mms.tic.testframework.internal.Flags;
+import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
+import eu.tsystems.mms.tic.testframework.test.page.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
-import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.io.IOException;
 import java.util.Optional;
-import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.reporters.Files;
@@ -44,39 +45,41 @@ import org.testng.reporters.Files;
  * Tests if screenshots are added to the MethodContext when a test fails.
  * @author Mike Reiche
  */
-public class ScreenshotsTest extends AbstractExclusiveTestSitesTest<WebTestPage> implements PageFactoryTest, AssertProvider {
+public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactoryTest {
 
     @Override
-    public Class<WebTestPage> getPageClass() {
-        return WebTestPage.class;
+    public BasePage getPage() {
+        return PageFactory.create(BasePage.class, WebDriverManager.getWebDriver());
     }
 
-//    @Test()
-//    @Fails(description = "This test needs to fail to create a screenshot")
-//    public void test_take_screenshot_on_failure() {
-//        System.setProperty(Testerra.Properties.SCREENSHOTTER_ACTIVE.toString(), "true");
-//        getPage().assertIsTextDisplayed("Screenshot present on failure");
-//    }
-//
-//    @Test(dependsOnMethods = "test_take_screenshot_on_failure", alwaysRun = true)
-//    public void test_screenshot_present_in_MethodContext() {
-//        this.screenshot_is_present_in_MethodContext("test_take_screenshot_on_failure");
-//    }
-//
-//    @Test()
-//    @Fails(description = "This test needs to fail to create a screenshot")
-//    public void test_take_screenshot_on_failure_without_closing_WebDriver() {
-//        WEB_DRIVER_MANAGER.getConfig().setShutdownSessions(false);
-//        System.setProperty(Testerra.Properties.SCREENSHOTTER_ACTIVE.toString(), "true");
-//        getPage().assertIsTextDisplayed("Screenshot present on failure");
-//    }
-//
-//    @Test(dependsOnMethods = "test_take_screenshot_on_failure_without_closing_WebDriver", alwaysRun = true)
-//    public void test_screenshot_present_in_MethodContext_without_closing_WebDriver() {
-//        this.screenshot_is_present_in_MethodContext("test_take_screenshot_on_failure_without_closing_WebDriver");
-//    }
+    @Test()
+    @Fails()
+    public void test_takeScreenshot_fails() {
+        Flags.SCREENCASTER_ACTIVE = true;
+        getPage().assertIsTextDisplayed("Screenshot present on failure");
+    }
 
-    private void screenshot_is_present_in_MethodContext(String methodName) {
+    @Test(dependsOnMethods = "test_takeScreenshot_fails", alwaysRun = true)
+    public void test_screenshotPresentInMethodContext() {
+        this.screenshotIsPresentInMethodContext("test_takeScreenshot_fails");
+    }
+
+    @Test()
+    @Fails()
+    public void test_takeScreenshotOnExclusiveSession_fails() {
+        WebDriverManager.getConfig().setShutdownSessions(false);
+        Flags.SCREENCASTER_ACTIVE = true;
+        getPage().assertIsTextDisplayed("Screenshot present on failure");
+    }
+
+    @Test(dependsOnMethods = "test_takeScreenshotOnExclusiveSession_fails", alwaysRun = true)
+    public void test_exclusiveSessionScreenshotPresentInMethodContext() {
+        this.screenshotIsPresentInMethodContext("test_takeScreenshotOnExclusiveSession_fails");
+        WebDriverManager.getConfig().reset();
+        WebDriverManager.forceShutdownAllThreads();
+    }
+
+    private void screenshotIsPresentInMethodContext(String methodName) {
         MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
 
         Optional<MethodContext> optionalMethodContext = currentMethodContext.getClassContext().readMethodContexts()
@@ -88,32 +91,27 @@ public class ScreenshotsTest extends AbstractExclusiveTestSitesTest<WebTestPage>
             long count = methodContext.readTestSteps()
                     .flatMap(testStep -> testStep.getTestStepActions().stream())
                     .flatMap(testStepAction -> testStepAction.readEntries(Screenshot.class))
+                    .filter(screenshot -> !screenshot.getMetaData().getOrDefault(Screenshot.MetaData.SESSION_KEY, "").startsWith("EXCLUSIVE_"))
                     .count();
-            ASSERT.assertGreaterEqualThan(count, 1, "Screenshots in MethodContext " + methodName);
+            Assert.assertEquals(count, 1, "Screenshots in MethodContext " + methodName);
         });
     }
 
-    @Test
-    @Fails(description = "This test needs to fail to create a screenshot")
-    public void test_take_screenshot_via_collected_assertion() {
-        log().info("started");
-        System.setProperty(Testerra.Properties.SCREENSHOTTER_ACTIVE.toString(), "true");
-        UiElement uiElement = getPage().getFinder().find(By.name("inexistent-element"));
-        CONTROL.withTimeout(0, () -> {
-            CONTROL.collectAssertions(() -> {
-                uiElement.assertThat().displayed(true);
-            });
-        });
+    @Test()
+    @Fails()
+    public void test_takeScreenshotViaCollectedAssertion_fails() {
+        Flags.SCREENCASTER_ACTIVE = true;
+        AssertCollector.assertTrue(false);
     }
 
-    @Test(dependsOnMethods = "test_take_screenshot_via_collected_assertion", alwaysRun = true)
-    public void test_Screenshot_is_present_in_MethodContext_on_collected_assertion() {
-        this.screenshot_is_present_in_MethodContext("test_take_screenshot_via_collected_assertion");
+    @Test(dependsOnMethods = "test_takeScreenshotViaCollectedAssertion_fails", alwaysRun = true)
+    public void test_collectedAssertionScreenshotIsPresentInMethodContext() {
+        this.screenshotIsPresentInMethodContext("test_takeScreenshotViaCollectedAssertion_fails");
     }
 
     @Test
     public void test_DOMSource() throws IOException {
-        WebTestPage page = getPage();
+        WebTestPage page = new WebTestPage(WebDriverManager.getWebDriver());
 
         for (int s = 0; s < 3; ++s) {
             page.getOpenAgain().click();

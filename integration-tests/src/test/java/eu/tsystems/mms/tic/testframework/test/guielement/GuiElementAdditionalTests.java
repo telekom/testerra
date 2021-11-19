@@ -76,7 +76,7 @@ public class GuiElementAdditionalTests extends AbstractTestSitesTest implements 
 
     @Test()
     public void test04_LocateSubElementWithUniqueConfigurator_fails() {
-        Locate.setConfigurator(Locator::unique);
+        Locate.setThreadLocalConfigurator(Locator::unique);
         final WebDriver driver = getWebDriver();
         GuiElement body = new GuiElement(driver, By.xpath("//body"));
         GuiElement div = body.getSubElement(By.xpath("//div"));
@@ -91,6 +91,6 @@ public class GuiElementAdditionalTests extends AbstractTestSitesTest implements 
         }
 
         ASSERT.assertEndsWith(notFoundException.getCause().getMessage(), "equals [1]");
-        Locate.setConfigurator(null);
+        Locate.setThreadLocalConfigurator(null);
     }
 }

@@ -30,6 +30,7 @@ public class Screenshot extends Attachment implements Loggable {
     public static class MetaData {
         public static final String SESSION_KEY="SessionKey";
         public static final String SESSION_CONTEXT_ID = "sessionContextId";
+        public static final String REMOTE_SESSION_ID = "remoteSessionId";
         public static final String TITLE="Title";
         public static final String WINDOW="Window";
         public static final String URL="URL";

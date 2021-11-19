@@ -23,7 +23,14 @@
 package eu.tsystems.mms.tic.testframework.test.pagefactory;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExistingElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
+import eu.tsystems.mms.tic.testframework.report.Report;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import java.io.File;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -49,5 +56,36 @@ public class PageFactoryTest extends AbstractTestSitesTest {
 
         testPage.checkPage();
         Assert.assertTrue(atomicBoolean.get());
+    }
+
+    @Test
+    public void testT08_CheckPage_ScreenshotOnLoad() {
+
+        final File reportScreenshotDirectory = TesterraListener.getReport().getReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
+        Assert.assertNotNull(reportScreenshotDirectory);
+
+        final WebDriver driver = WebDriverManager.getWebDriver();
+
+        final int fileCountBeforeAction = getNumFiles(reportScreenshotDirectory);
+        PropertyManager.getTestLocalProperties().setProperty(TesterraProperties.SCREENSHOT_ON_PAGELOAD, "false");
+        new PageWithExistingElement(driver);
+
+        final int fileCountAfterCheckPageWithoutScreenshot = getNumFiles(reportScreenshotDirectory);
+        Assert.assertEquals(fileCountBeforeAction, fileCountAfterCheckPageWithoutScreenshot, "Record Screenshot count not altered.");
+
+        PropertyManager.getTestLocalProperties().setProperty(TesterraProperties.SCREENSHOT_ON_PAGELOAD, "true");
+        new PageWithExistingElement(driver);
+        final int fileCountAfterCheckPageWithScreenshot = getNumFiles(reportScreenshotDirectory);
+
+        Assert.assertNotEquals(fileCountAfterCheckPageWithoutScreenshot, fileCountAfterCheckPageWithScreenshot, "Record Screenshot count altered.");
+    }
+
+    private int getNumFiles(File directory) {
+        File[] files = directory.listFiles();
+        if (files == null) {
+            return 0;
+        } else {
+            return files.length;
+        }
     }
 }

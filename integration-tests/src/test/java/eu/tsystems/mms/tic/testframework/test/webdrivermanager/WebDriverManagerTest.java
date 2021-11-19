@@ -196,6 +196,15 @@ public class WebDriverManagerTest extends TesterraTest implements PropertyManage
         assertNewWebDriverWindowSize(new Dimension(1920, 1080));
     }
 
+    @Test
+    public void test_emptyWindowSize() {
+        PROPERTY_MANAGER.setTestLocalProperty(Testerra.Properties.WINDOW_SIZE, "");
+        String property = PROPERTY_MANAGER.getProperty(Testerra.Properties.WINDOW_SIZE);
+        Assert.assertEquals(property, "");
+
+        assertNewWebDriverWindowSize(new Dimension(1920, 1080));
+    }
+
     private void assertNewWebDriverWindowSize(Dimension expected) {
         WebDriverManagerConfig config = WebDriverManager.getConfig();
         config.reset();
@@ -206,7 +215,7 @@ public class WebDriverManagerTest extends TesterraTest implements PropertyManage
         Assert.assertEquals(windowSize.getWidth(), expected.getWidth());
         Assert.assertEquals(windowSize.getHeight(), expected.getHeight());
 
-        WebDriver webDriver = WebDriverManager.getWebDriver();
+        WebDriver webDriver = WebDriverManager.getWebDriver(request);
         Dimension size = webDriver.manage().window().getSize();
         Assert.assertEquals(size.getWidth(), expected.getWidth());
         Assert.assertEquals(size.getHeight(), expected.getHeight());

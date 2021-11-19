@@ -112,6 +112,7 @@ public class UITestUtils implements WebDriverManagerProvider {
         });
 
         Map<String, String> metaData = screenshot.getMetaData();
+        sessionContext.flatMap(SessionContext::getRemoteSessionId).ifPresent(s -> metaData.put(Screenshot.MetaData.REMOTE_SESSION_ID, s));
         sessionContext.map(SessionContext::getSessionKey).ifPresent(s -> metaData.put(Screenshot.MetaData.SESSION_KEY, s));
         sessionContext.map(SessionContext::getId).ifPresent(s -> metaData.put(Screenshot.MetaData.SESSION_CONTEXT_ID, s));
         executionUtils.getFailsafe(webDriver::getTitle).ifPresent(s -> metaData.put(Screenshot.MetaData.TITLE, s));

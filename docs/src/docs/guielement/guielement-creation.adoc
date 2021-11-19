@@ -110,10 +110,10 @@ UiElement buttonContainsText = find(byText);
 
 === Default locator configurator
 
-When you want to preconfigure all locators, you can use
+When you want to preconfigure all locators in the current thread, you can use
 [source,java]
 ----
-LOCATE.setConfigurator(locator -> {
+LOCATE.setThreadLocalConfigurator(locator -> {
    // Configure your locator here
 });
 ----

@@ -22,21 +22,13 @@
 package eu.tsystems.mms.tic.testframework.test.pagefactory;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExistingElement;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExistingStaticElement;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithNonCheckableCheck;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithNotExistingElement;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithNullElement;
 import eu.tsystems.mms.tic.testframework.exceptions.PageFactoryException;
-import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
-import java.io.File;
-import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
 public class CheckPageTest extends AbstractTestSitesTest implements PageFactoryProvider {
@@ -64,42 +56,5 @@ public class CheckPageTest extends AbstractTestSitesTest implements PageFactoryP
     @Test(expectedExceptions = RuntimeException.class)
     public void testT05_checkNonCheckableElement() throws Exception {
         PAGE_FACTORY.createPage(PageWithNonCheckableCheck.class, getClassExclusiveWebDriver());
-    }
-
-    @Test
-    public void testT08_CheckPage_ScreenshotOnLoad() {
-
-        Report report = Testerra.getInjector().getInstance(Report.class);
-        final File reportScreenshotDirectory = report.getReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
-        Assert.assertNotNull(reportScreenshotDirectory);
-
-        final WebDriver driver = getClassExclusiveWebDriver();
-
-        final int fileCountBeforeAction = getNumFiles(reportScreenshotDirectory);
-        PropertyManager.getFileProperties().setProperty(TesterraProperties.SCREENSHOT_ON_PAGELOAD, "false");
-        new PageWithExistingElement(driver);
-
-        final int fileCountAfterCheckPageWithoutScreenshot = getNumFiles(reportScreenshotDirectory);
-        Assert.assertEquals(fileCountBeforeAction, fileCountAfterCheckPageWithoutScreenshot, "Record Screenshot count not altered.");
-
-        PropertyManager.getFileProperties().setProperty(TesterraProperties.SCREENSHOT_ON_PAGELOAD, "true");
-        new PageWithExistingElement(driver);
-        final int fileCountAfterCheckPageWithScreenshot = getNumFiles(reportScreenshotDirectory);
-
-        Assert.assertNotEquals(fileCountAfterCheckPageWithoutScreenshot, fileCountAfterCheckPageWithScreenshot, "Record Screenshot count altered.");
-    }
-
-    private int getNumFiles(File directory) {
-        File[] files = directory.listFiles();
-        if (files == null) {
-            return 0;
-        } else {
-            return files.length;
-        }
-    }
-
-    @AfterMethod(alwaysRun = true)
-    public void tearDownScreenshotOnLoad() {
-        PropertyManager.getFileProperties().setProperty(TesterraProperties.SCREENSHOT_ON_PAGELOAD, "false");
     }
 }

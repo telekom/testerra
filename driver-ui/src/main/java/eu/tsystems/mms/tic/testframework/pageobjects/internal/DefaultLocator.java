@@ -22,6 +22,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
 import eu.tsystems.mms.tic.testframework.pageobjects.LocatorFactoryProvider;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -37,8 +38,9 @@ public class DefaultLocator implements Locator, LocatorFactoryProvider {
 
     DefaultLocator(By by) {
         this.by = by;
-        if (LOCATE.locatorConsumer != null) {
-            LOCATE.locatorConsumer.accept(this);
+        Consumer<Locator> consumer = LOCATE.locatorConfigurator.get();
+        if (consumer != null) {
+            consumer.accept(this);
         }
     }
 

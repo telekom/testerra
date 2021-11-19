@@ -26,12 +26,11 @@ import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.BasePage;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.WebTestPage;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
-import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.test.page.PageFactoryTest;
+import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -55,7 +54,6 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
     @Test()
     @Fails()
     public void test_takeScreenshot_fails() {
-        Flags.SCREENCASTER_ACTIVE = true;
         getPage().assertIsTextDisplayed("Screenshot present on failure");
     }
 
@@ -68,7 +66,6 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
     @Fails()
     public void test_takeScreenshotOnExclusiveSession_fails() {
         WebDriverManager.getConfig().setShutdownSessions(false);
-        Flags.SCREENCASTER_ACTIVE = true;
         getPage().assertIsTextDisplayed("Screenshot present on failure");
     }
 
@@ -100,7 +97,6 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
     @Test()
     @Fails()
     public void test_takeScreenshotViaCollectedAssertion_fails() {
-        Flags.SCREENCASTER_ACTIVE = true;
         AssertCollector.assertTrue(false);
     }
 

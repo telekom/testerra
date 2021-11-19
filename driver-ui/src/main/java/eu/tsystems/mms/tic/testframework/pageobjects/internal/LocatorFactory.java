@@ -35,7 +35,7 @@ import org.openqa.selenium.By;
  * @author Mike Reiche
  */
 public class LocatorFactory implements Loggable {
-    Consumer<Locator> locatorConsumer;
+    ThreadLocal<Consumer<Locator>> locatorConfigurator = new ThreadLocal<>();
 
     public Locator by(By by) {
         return new DefaultLocator(by);
@@ -52,10 +52,13 @@ public class LocatorFactory implements Loggable {
         return new DefaultPreparedLocator(format);
     }
 
-    public void setConfigurator(Consumer<Locator> consumer) {
+    public void setThreadLocalConfigurator(Consumer<Locator> consumer) {
         if (consumer != null) {
+            locatorConfigurator.set(consumer);
             log().info("Using global configurator");
+        } else {
+            locatorConfigurator.remove();
+            log().info("Unset global configurator");
         }
-        this.locatorConsumer = consumer;
     }
 }

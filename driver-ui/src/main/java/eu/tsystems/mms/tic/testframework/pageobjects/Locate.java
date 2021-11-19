@@ -40,6 +40,11 @@ public interface Locate extends Locator, LocatorFactoryProvider {
 
     @Deprecated
     static void setConfigurator(Consumer<Locator> consumer) {
-        LOCATE.setConfigurator(consumer);
+        LOCATE.setThreadLocalConfigurator(consumer);
+    }
+
+    @Deprecated
+    static void setThreadLocalConfigurator(Consumer<Locator> consumer) {
+        LOCATE.setThreadLocalConfigurator(consumer);
     }
 }

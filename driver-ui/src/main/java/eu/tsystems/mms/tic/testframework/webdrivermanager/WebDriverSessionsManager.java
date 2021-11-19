@@ -29,8 +29,6 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
-import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
@@ -244,7 +242,7 @@ public final class WebDriverSessionsManager {
         });
         unlinkFromThread(sessionKey, eventFiringWebDriver);
         WEBDRIVER_SESSIONS_CONTEXTS_MAP.remove(eventFiringWebDriver);
-        if (sessionKey.startsWith(EXCLUSIVE_PREFIX)) {
+        if (sessionKey.startsWith(SessionContext.EXCLUSIVE_PREFIX)) {
             EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.remove(sessionKey);
         }
         LOGGER.debug("Shut down: " + sessionIdentifier);

@@ -235,8 +235,9 @@ public class Timer implements Loggable {
 
     private void addThrowableToMethodContext(Throwable catchedThrowable) {
         if (catchedThrowable != null) {
-            MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
-            currentMethodContext.addError(catchedThrowable);
+            ExecutionContextController.getMethodContextForThread().ifPresent(methodContext -> {
+                methodContext.addError(catchedThrowable);
+            });
         }
     }
 

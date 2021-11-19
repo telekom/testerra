@@ -56,7 +56,7 @@ public class UITestUtilsTest extends AbstractTestSitesTest implements AssertProv
         UITestUtils.takeScreenshot(webDriver, true);
         UITestUtils.takeScreenshot(webDriver, true);
 
-        Assert.assertEquals(readScreenshots(ExecutionContextController.getCurrentMethodContext()).count(), 2);
+        Assert.assertEquals(readScreenshots(ExecutionContextController.getMethodContextForThread().get()).count(), 2);
     }
 
     private Stream<Screenshot> readScreenshots(MethodContext methodContext) {
@@ -72,7 +72,7 @@ public class UITestUtilsTest extends AbstractTestSitesTest implements AssertProv
 
         UITestUtils.takeScreenshots(true);
 
-        ASSERT.assertGreaterEqualThan(readScreenshots(ExecutionContextController.getCurrentMethodContext()).count(), 1);
+        ASSERT.assertGreaterEqualThan(readScreenshots(ExecutionContextController.getMethodContextForThread().get()).count(), 1);
     }
 
 }

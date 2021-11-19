@@ -23,7 +23,6 @@ package eu.tsystems.mms.tic.testframework.execution.testng;
 
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import java.util.List;
@@ -38,8 +37,7 @@ public class DefaultOptionalAssertion extends AbstractAssertion implements
     @Override
     public void fail(Error error) {
         log().warn("Failed optional assertion: " + error.getMessage());
-        MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-        if (methodContext != null) {
+        ExecutionContextController.getMethodContextForThread().ifPresent(methodContext -> {
             // add nf info
             methodContext.addOptionalAssertion(error);
 
@@ -48,8 +46,6 @@ public class DefaultOptionalAssertion extends AbstractAssertion implements
             if (screenshots != null) {
                 methodContext.addScreenshots(screenshots.stream());
             }
-
-            // not collecting a video here
-        }
+        });
     }
 }

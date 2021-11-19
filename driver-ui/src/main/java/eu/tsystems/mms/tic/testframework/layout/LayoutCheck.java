@@ -573,8 +573,10 @@ public final class LayoutCheck implements PropertyManagerProvider {
         if (annotatedReferenceFile.exists()) {
             context.annotatedScreenshot = report.provideScreenshot(annotatedReferenceFile, Report.FileMode.MOVE);
         }
-        MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-        methodContext.addCustomContext(context);
+
+        ExecutionContextController.getMethodContextForThread().ifPresent(methodContext -> {
+            methodContext.addCustomContext(context);
+        });
     }
 
     public static void assertScreenshot(WebDriver webDriver, String targetImageName, double confidenceThreshold) {

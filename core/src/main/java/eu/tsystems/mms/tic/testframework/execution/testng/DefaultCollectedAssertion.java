@@ -21,7 +21,6 @@
 
 package eu.tsystems.mms.tic.testframework.execution.testng;
 
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 
 /**
@@ -31,10 +30,8 @@ public class DefaultCollectedAssertion extends AbstractAssertion implements Coll
 
     @Override
     public void fail(Error error) {
-        /*
-        add info
-         */
-        MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
-        currentMethodContext.addError(error);
+        ExecutionContextController.getMethodContextForThread().ifPresent(methodContext -> {
+            methodContext.addError(error);
+        });
     }
 }

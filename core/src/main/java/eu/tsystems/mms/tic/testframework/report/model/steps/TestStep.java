@@ -29,9 +29,10 @@ import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 /**
- * A static wrapper for {@link MethodContext#getTestSteps()}
+ * A static wrapper for {@link MethodContext#readTestSteps()}
  * Created by piet on 11.03.16.
  */
 public class TestStep implements Serializable, Loggable {
@@ -127,10 +128,10 @@ public class TestStep implements Serializable, Loggable {
      * @param name
      */
     public static TestStep begin(final String name) {
-        MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
+        Optional<MethodContext> optionalMethodContext = ExecutionContextController.getMethodContextForThread();
         TestStep testStep;
-        if (methodContext != null) {
-            testStep = methodContext.getTestStep(name);
+        if (optionalMethodContext.isPresent()) {
+            testStep = optionalMethodContext.get().getTestStep(name);
         } else {
             testStep = new TestStep(name);
         }
@@ -142,13 +143,9 @@ public class TestStep implements Serializable, Loggable {
      * End the current test step. In most cases this is not needed. Just announce a new one!
      */
     public static void end() {
-        MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-        if (methodContext != null) {
-            TestStep actualTestStep = methodContext.getCurrentTestStep();
-            if (actualTestStep != null) {
-                actualTestStep.close();
-            }
-        }
+        ExecutionContextController.getMethodContextForThread().ifPresent(methodContext -> {
+            methodContext.getCurrentTestStep().close();
+        });
     }
 
     public boolean hasActions() {

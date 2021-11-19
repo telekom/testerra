@@ -131,7 +131,7 @@ public final class WebDriverSessionsManager {
         WEBDRIVER_SESSIONS_CONTEXTS_MAP.put(eventFiringWebDriver, sessionContext);
     }
 
-    private static void unlinkFromThread(String sessionKey, WebDriver eventFiringWebDriver) {
+    private static void unlinkFromThread(String sessionKey, EventFiringWebDriver eventFiringWebDriver) {
         final String sessionIdentifier = createSessionIdentifier(eventFiringWebDriver, sessionKey);
         LOGGER.trace("Unlink from thread: " + sessionIdentifier);
         String threadSessionKey = getThreadSessionKey(sessionKey);
@@ -180,13 +180,7 @@ public final class WebDriverSessionsManager {
                     "The driver object of the argument must be an instance of RemoteWebDriver");
         }
 
-        EventFiringWebDriver eventFiringWebDriver;
-
-        if (webDriver instanceof EventFiringWebDriver) {
-            eventFiringWebDriver = (EventFiringWebDriver)webDriver;
-        } else {
-            eventFiringWebDriver = wrapWebDriver(webDriver);
-        }
+        EventFiringWebDriver eventFiringWebDriver = wrapWebDriver(webDriver);
 
         LOGGER.info("Introducing webdriver object");
         //EventFiringWebDriver eventFiringWebDriver = wrapRawWebDriverWithEventFiringWebDriver(driver);
@@ -225,30 +219,31 @@ public final class WebDriverSessionsManager {
     }
 
     public static void shutdownWebDriver(WebDriver webDriver) {
-        String sessionKey = getSessionKey(webDriver);
-        String sessionIdentifier = createSessionIdentifier(webDriver, sessionKey);
+        EventFiringWebDriver eventFiringWebDriver = checkForWrappedWebDriver(webDriver);
+        String sessionKey = getSessionKey(eventFiringWebDriver);
+        String sessionIdentifier = createSessionIdentifier(eventFiringWebDriver, sessionKey);
 
         beforeQuitActions.forEach(webDriverConsumer -> {
             try {
                 LOGGER.trace("Call before shutdown handler");
-                webDriverConsumer.accept(webDriver);
+                webDriverConsumer.accept(eventFiringWebDriver);
             } catch (Exception e) {
                 LOGGER.error("Failed executing before shutdown handler", e);
             }
         });
         LOGGER.info("Shutting down " + sessionIdentifier);
-        WebDriverManagerUtils.quitWebDriverSession(webDriver);
+        WebDriverManagerUtils.quitWebDriverSession(eventFiringWebDriver);
 
         afterQuitActions.forEach(webDriverConsumer -> {
             try {
                 LOGGER.trace("Call after shutdown handler");
-                webDriverConsumer.accept(webDriver);
+                webDriverConsumer.accept(eventFiringWebDriver);
             } catch (Exception e) {
                 LOGGER.error("Failed executing after shutdown handler", e);
             }
         });
-        unlinkFromThread(sessionKey, webDriver);
-        WEBDRIVER_SESSIONS_CONTEXTS_MAP.remove(webDriver);
+        unlinkFromThread(sessionKey, eventFiringWebDriver);
+        WEBDRIVER_SESSIONS_CONTEXTS_MAP.remove(eventFiringWebDriver);
         if (sessionKey.startsWith(EXCLUSIVE_PREFIX)) {
             EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.remove(sessionKey);
         }
@@ -295,20 +290,16 @@ public final class WebDriverSessionsManager {
     }
 
     static synchronized String makeSessionExclusive(final WebDriver webDriver) {
-        if (!(webDriver instanceof EventFiringWebDriver)) {
-            throw new RuntimeException(webDriver.getClass().getSimpleName() + " is no instance of " + EventFiringWebDriver.class.getSimpleName());
-        }
+        EventFiringWebDriver eventFiringWebDriver = checkForWrappedWebDriver(webDriver);
 
-        EventFiringWebDriver eventFiringWebDriver = (EventFiringWebDriver)webDriver;
-
-        if (EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.containsValue(webDriver)) {
+        if (EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.containsValue(eventFiringWebDriver)) {
             LOGGER.error("Session already set exclusive.");
             return null;
         }
 
-        SessionContext sessionContext = getSessionContext(webDriver).get();
+        SessionContext sessionContext = getSessionContext(eventFiringWebDriver).get();
         String sessionKey = sessionContext.getSessionKey();
-        unlinkFromThread(sessionKey, webDriver);
+        unlinkFromThread(sessionKey, eventFiringWebDriver);
         /*
         Add session to exclusive map.
          */
@@ -477,11 +468,20 @@ public final class WebDriverSessionsManager {
         }
     }
 
+    private static EventFiringWebDriver checkForWrappedWebDriver(WebDriver webDriver) {
+        if (!(webDriver instanceof EventFiringWebDriver)) {
+            throw new IllegalArgumentException(webDriver.getClass().getSimpleName() + " is no instance of " + EventFiringWebDriver.class.getSimpleName());
+        }
+        return (EventFiringWebDriver)webDriver;
+    }
+
     public static boolean isExclusiveSession(WebDriver webDriver) {
+        webDriver = checkForWrappedWebDriver(webDriver);
         return EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.containsValue(webDriver);
     }
 
     public static Optional<SessionContext> getSessionContext(WebDriver webDriver) {
+        webDriver = checkForWrappedWebDriver(webDriver);
         return Optional.ofNullable(WEBDRIVER_SESSIONS_CONTEXTS_MAP.get(webDriver));
     }
 

@@ -95,7 +95,7 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
             long count = methodContext.readTestSteps()
                     .flatMap(testStep -> testStep.getTestStepActions().stream())
                     .flatMap(testStepAction -> testStepAction.readEntries(Screenshot.class))
-                    .filter(screenshot -> !exclusive || screenshot.getMetaData().getOrDefault(Screenshot.MetaData.SESSION_KEY, "").startsWith("EXCLUSIVE_"))
+                    .filter(screenshot -> exclusive == screenshot.getMetaData().getOrDefault(Screenshot.MetaData.SESSION_KEY, "").startsWith("EXCLUSIVE_"))
                     .count();
             Assert.assertEquals(count, 1, "Screenshots in MethodContext " + methodName);
         });

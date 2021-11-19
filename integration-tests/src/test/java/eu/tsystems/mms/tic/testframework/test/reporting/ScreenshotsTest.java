@@ -48,7 +48,7 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
 
     @Override
     public BasePage getPage() {
-        return PageFactory.create(BasePage.class, WebDriverManager.getWebDriver());
+        return PageFactory.create(BasePage.class, getWebDriver());
     }
 
     @Test()
@@ -107,7 +107,7 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
 
     @Test
     public void test_DOMSource() throws IOException {
-        WebTestPage page = new WebTestPage(WebDriverManager.getWebDriver());
+        WebTestPage page = new WebTestPage(getWebDriver());
 
         for (int s = 0; s < 3; ++s) {
             page.getOpenAgain().click();

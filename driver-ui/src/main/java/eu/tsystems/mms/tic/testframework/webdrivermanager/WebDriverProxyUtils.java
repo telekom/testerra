@@ -38,17 +38,6 @@ public class WebDriverProxyUtils {
 
     }
 
-    static void updateSessionContextRelations(SessionContext sessionContext) {
-        /*
-        assign usage in current method
-        (this is useful for sessions that are shared between method contexts)
-         */
-        ExecutionContextController.setCurrentSessionContext(sessionContext);
-        ExecutionContextController.getMethodContextForThread().ifPresent(methodContext -> {
-            methodContext.addSessionContext(sessionContext);
-        });
-    }
-
     /**
      * Will return proxy String for Selenium WebDriver commands like {host}:{port}
      *

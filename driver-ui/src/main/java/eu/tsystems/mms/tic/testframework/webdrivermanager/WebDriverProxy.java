@@ -21,29 +21,27 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
+import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
 import java.lang.reflect.Method;
 import org.openqa.selenium.WebDriver;
 
 public class WebDriverProxy extends ObjectUtils.PassThroughProxy<WebDriver> implements Loggable {
 
-    public WebDriverProxy(WebDriver driver) {
+    private final SessionContext sessionContext;
+    private static final IExecutionContextController executionContextController = Testerra.getInjector().getInstance(IExecutionContextController.class);
+
+    public WebDriverProxy(WebDriver driver, SessionContext sessionContext) {
         super(driver);
+        this.sessionContext = sessionContext;
     }
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        WebDriverSessionsManager.getSessionContext(target).ifPresent(sessionContext -> {
-            if (!method.getName().equals("toString")) {
-                String msg = target.getClass().getSimpleName() + "." + method.getName();
-                log().trace(msg);
-            }
-
-            WebDriverProxyUtils.updateSessionContextRelations(sessionContext);
-        });
-
+        executionContextController.setCurrentSessionContext(this.sessionContext);
         return invoke(method, args);
     }
 

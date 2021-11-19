@@ -180,7 +180,6 @@ public final class WebDriverSessionsManager {
                     "The driver object of the argument must be an instance of RemoteWebDriver");
         }
 
-        EventFiringWebDriver eventFiringWebDriver = wrapWebDriver(webDriver);
 
         LOGGER.info("Introducing webdriver object");
         //EventFiringWebDriver eventFiringWebDriver = wrapRawWebDriverWithEventFiringWebDriver(driver);
@@ -190,6 +189,7 @@ public final class WebDriverSessionsManager {
 
         // create new session context
         SessionContext sessionContext = new SessionContext(request);
+        EventFiringWebDriver eventFiringWebDriver = wrapWebDriver(webDriver, sessionContext);
 
         // store to method context
         executionContextController.getCurrentMethodContext().ifPresent(methodContext -> {
@@ -421,7 +421,7 @@ public final class WebDriverSessionsManager {
                     sessionContext.getActualBrowserName().orElse("(unknown)") + ":" + sessionContext.getActualBrowserVersion().orElse("(unknown)"),
                     sw
             ));
-            EventFiringWebDriver eventFiringWebDriver = wrapWebDriver(newRawWebDriver);
+            EventFiringWebDriver eventFiringWebDriver = wrapWebDriver(newRawWebDriver, sessionContext);
             storeWebDriverSession(eventFiringWebDriver, sessionContext);
 
             webDriverFactory.setupNewWebDriverSession(eventFiringWebDriver, sessionContext);
@@ -512,7 +512,7 @@ public final class WebDriverSessionsManager {
         return WEBDRIVER_SESSIONS_CONTEXTS_MAP.keySet().stream();
     }
 
-    private static EventFiringWebDriver wrapWebDriver(WebDriver webDriver) {
+    private static EventFiringWebDriver wrapWebDriver(WebDriver webDriver, SessionContext sessionContext) {
         /*
         wrap the driver with the proxy
          */
@@ -523,8 +523,9 @@ public final class WebDriverSessionsManager {
          * For more info, please ask @rnhb
          */
         try {
+            WebDriverProxy webDriverProxy = new WebDriverProxy(webDriver, sessionContext);
             Class[] interfaces = ObjectUtils.getAllInterfacesOf(webDriver);
-            webDriver = ObjectUtils.simpleProxy(WebDriver.class, webDriver, WebDriverProxy.class, interfaces);
+            webDriver = ObjectUtils.simpleProxy(WebDriver.class, webDriverProxy, interfaces);
         } catch (Exception e) {
             LOGGER.error("Could not create proxy for raw webdriver", e);
         }

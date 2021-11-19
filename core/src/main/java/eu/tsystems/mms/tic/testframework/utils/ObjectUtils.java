@@ -65,6 +65,9 @@ public final class ObjectUtils {
                 handler);
     }
 
+    /**
+     * @deprecated Use {@link #simpleProxy(Class, InvocationHandler, Class[])} instead
+     */
     public static <T> T simpleProxy(Class<? extends T> iface, T target, Class<? extends PassThroughProxy> handler, Class<?>...otherIfaces) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         InvocationHandler handlerInstance = handler.getConstructor(iface).newInstance(target);
         return simpleProxy(iface, handlerInstance, otherIfaces);

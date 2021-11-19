@@ -50,7 +50,7 @@ public class WebElementProxy extends ObjectUtils.PassThroughProxy<WebElement> im
                 log().trace(msg);
             }
 
-            WebDriverProxyUtils.updateSessionContextRelations(sessionContext);
+            //WebDriverProxyUtils.updateSessionContextRelations(sessionContext);
         });
         return invoke(method, args);
     }

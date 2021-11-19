@@ -51,8 +51,7 @@ public final class AssertionChecker {
 
     public static void storeNonFunctionalInfo(Throwable throwable) {
         LOGGER.warn("Found non-functional error", throwable);
-        MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-        if (methodContext != null) {
+        ExecutionContextController.getMethodContextForThread().ifPresent(methodContext -> {
             // add nf info
             methodContext.addOptionalAssertion(throwable);
 
@@ -61,8 +60,6 @@ public final class AssertionChecker {
             if (screenshots != null) {
                 methodContext.addScreenshots(screenshots.stream());
             }
-
-            // not collecting a video here
-        }
+        });
     }
 }

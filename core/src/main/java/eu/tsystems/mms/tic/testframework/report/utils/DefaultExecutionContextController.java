@@ -31,7 +31,7 @@ public class DefaultExecutionContextController implements IExecutionContextContr
 
     @Override
     public Optional<SessionContext> getCurrentSessionContext() {
-        return ExecutionContextController.getCurrentSessionContext();
+        return ExecutionContextController.getSessionContextForThread();
     }
 
     @Override

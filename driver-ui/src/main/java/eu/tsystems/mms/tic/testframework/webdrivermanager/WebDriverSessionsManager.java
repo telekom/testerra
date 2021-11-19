@@ -198,10 +198,8 @@ public final class WebDriverSessionsManager {
         SessionContext sessionContext = new SessionContext(request);
 
         // store to method context
-        executionContextController.getMethodContextForThread().ifPresent(methodContext -> {
-            methodContext.ifPresent(methodContext -> {
+        executionContextController.getCurrentMethodContext().ifPresent(methodContext -> {
             methodContext.addSessionContext(sessionContext);
-        });
         });
         storeWebDriverSession(eventFiringWebDriver, sessionContext);
     }

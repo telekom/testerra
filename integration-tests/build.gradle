@@ -30,6 +30,12 @@ test {
         s = ['src/test/resources/Smoke.xml']
     }
 
+    def preTest = findProperty("pretest")
+    if (preTest) {
+        s = ['src/test/resources/Execution.xml']
+    }
+
+
     useTestNG() {
         suites s
 //        configFailurePolicy "continue"

@@ -139,8 +139,9 @@ public class UITestUtils {
                 /*
                 get infos
                  */
-                metaData.put(Screenshot.MetaData.SESSION_KEY, sessionContext.map(SessionContext::getSessionKey).orElse(null));
-                metaData.put(Screenshot.MetaData.SESSION_CONTEXT_ID, sessionContext.map(SessionContext::getId).orElse(null));
+                sessionContext.flatMap(SessionContext::getRemoteSessionId).ifPresent(s -> metaData.put(Screenshot.MetaData.REMOTE_SESSION_ID, s));
+                sessionContext.map(SessionContext::getSessionKey).ifPresent(s -> metaData.put(Screenshot.MetaData.SESSION_KEY, s));
+                sessionContext.map(SessionContext::getId).ifPresent(s -> metaData.put(Screenshot.MetaData.SESSION_CONTEXT_ID, s));
                 metaData.put(Screenshot.MetaData.TITLE, eventFiringWebDriver.getTitle());
 
                 /*

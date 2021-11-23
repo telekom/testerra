@@ -30,22 +30,24 @@ import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.test.execution.TestStatusTest;
 import eu.tsystems.mms.tic.testframework.test.page.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import java.io.IOException;
-import java.util.Optional;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.reporters.Files;
 
+import java.io.IOException;
+import java.util.Optional;
+
 /**
  * Tests if screenshots are added to the MethodContext when a test fails.
+ *
  * @author Mike Reiche
  */
-public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactoryTest {
+public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactoryTest, TestStatusTest {
 
     @Override
     public BasePage getPage() {
@@ -77,12 +79,8 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
         this.screenshot_is_present_in_MethodContext("test_take_screenshot_on_failure_without_closing_WebDriver");
     }
 
-    private void screenshotIsPresentInMethodContext(String methodName) {
-        MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
-
-        Optional<MethodContext> optionalMethodContext = currentMethodContext.getClassContext().readMethodContexts()
-                .filter(methodContext -> methodContext.getName().equals(methodName))
-                .findFirst();
+    private void screenshot_is_present_in_MethodContext(String methodName) {
+        Optional<MethodContext> optionalMethodContext = findMethodContexts(methodName).findFirst();
 
         Assert.assertTrue(optionalMethodContext.isPresent());
         optionalMethodContext.ifPresent(methodContext -> {

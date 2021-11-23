@@ -55,7 +55,7 @@ public class UITestUtilsTest extends AbstractTestSitesTest {
         UITestUtils.takeScreenshot(webDriver, true);
         UITestUtils.takeScreenshot(webDriver, true);
 
-        Assert.assertEquals(readScreenshots(ExecutionContextController.getCurrentMethodContext()).count(), 2);
+        Assert.assertEquals(readScreenshots(ExecutionContextController.getMethodContextForThread().get()).count(), 2);
     }
 
     private Stream<Screenshot> readScreenshots(MethodContext methodContext) {
@@ -65,13 +65,14 @@ public class UITestUtilsTest extends AbstractTestSitesTest {
     @Test
     public void test_takeScreenshotOnExclusiveSession() {
         WebDriver webDriver = WebDriverManager.getWebDriver();
-        WebDriverManager.makeSessionExclusive(webDriver);
+        String sessionId = WebDriverManager.makeSessionExclusive(webDriver);
 
         Assert.assertEquals(WebDriverSessionsManager.getWebDriversFromCurrentThread().count(), 0);
-        
+
         UITestUtils.takeScreenshots(true);
 
-        Assert.assertEquals(readScreenshots(ExecutionContextController.getCurrentMethodContext()).count(), 1);
+        Assert.assertEquals(readScreenshots(ExecutionContextController.getMethodContextForThread().get()).count(), 1);
+        WebDriverManager.shutdownExclusiveSession(sessionId);
     }
 
 }

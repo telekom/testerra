@@ -44,10 +44,9 @@ public class WebDriverProxyUtils {
         (this is useful for sessions that are shared between method contexts)
          */
         ExecutionContextController.setCurrentSessionContext(sessionContext);
-        MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-        if (methodContext != null) {
+        ExecutionContextController.getMethodContextForThread().ifPresent(methodContext -> {
             methodContext.addSessionContext(sessionContext);
-        }
+        });
     }
 
     /**

@@ -23,6 +23,14 @@ Generates visualization of package sizes
 npm run analyze
 ```
 
+## Update aurelia-mdc
+
+```shell
+npm install -g npm-check-updates
+ncu -u "/aurelia-mdc-web/"
+npm install
+```
+
 ## References
 
 - Material Framework: https://github.com/aurelia-ui-toolkits/aurelia-mdc-web

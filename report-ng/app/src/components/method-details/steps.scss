@@ -17,6 +17,7 @@ div.container {
 #timeline {
   position: relative;
 }
+
 #timeline .timeline:after {
   content: '';
   width: 2px;
@@ -41,7 +42,7 @@ div.container {
 }
 
 #timeline section.step {
-  position: relative;
+    position: relative;
     margin-bottom: 2em;
 }
 
@@ -53,7 +54,7 @@ div.container {
     margin-top: -2em;
 }
 
-#timeline section.step section .teststep-group:not(:first-child)  {
+.step-item:not(:first-child)  {
     margin-top: 8px;
 }
 

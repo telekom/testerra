@@ -30,6 +30,8 @@ import FailureCorridorValue = data.FailureCorridorValue;
 import ResultStatusType = data.ResultStatusType;
 import "./dashboard.scss"
 import {ClassBarClick} from "../test-classes-card/test-classes-card";
+import {NavigationInstruction, RouteConfig} from "aurelia-router";
+import {PieceClickedEvent} from "../test-results-card/test-results-card";
 
 class FailureCorridor {
     count:number = 0;
@@ -42,22 +44,19 @@ class FailureCorridor {
 interface IItem {
     status: ResultStatusType,
     counts: (string|number)[],
-    active: boolean,
     labels: string[],
 }
 
 @autoinject()
 export class Dashboard extends AbstractViewModel {
     private _executionStatistics: ExecutionStatistics;
-    private _passedRetried = 0;
     private _majorFailures = 0;
     private _minorFailures = 0;
     private _highCorridor = new FailureCorridor();
     private _midCorridor = new FailureCorridor();
     private _lowCorridor = new FailureCorridor();
     private _filterItems:IItem[];
-    private _breakdownFilter:IFilter;
-    private _classFilter:IFilter;
+    private _filter:IFilter;
     private _topFailureAspects:FailureAspectStatistics[];
     private _loading = true;
 
@@ -68,70 +67,77 @@ export class Dashboard extends AbstractViewModel {
         super();
     }
 
+    activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
+        super.activate(params, routeConfig, navInstruction);
+        if (this.queryParams.status) {
+            this._filter = {
+                status: this._statusConverter.getStatusForClass(this.queryParams.status)
+            }
+        }
+    }
 
     attached() {
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
             this._executionStatistics = executionStatistics;
-            this._topFailureAspects = this._executionStatistics.failureAspectStatistics.slice(0,3);
-            this._passedRetried = this._executionStatistics.getStatusesCount([ResultStatusType.PASSED_RETRY,ResultStatusType.MINOR_RETRY]);
+            this._topFailureAspects = this._executionStatistics.uniqueFailureAspects.slice(0,3);
 
             this._filterItems = [];
-            let count = this._executionStatistics.getStatusCount(data.ResultStatusType.FAILED);
-            if (count > 0) {
-                const failedRetriedCount = this._executionStatistics.getStatusCount(data.ResultStatusType.FAILED_RETRIED);
+            const failed = this._executionStatistics.overallFailed;
+            const failedRetried = this._executionStatistics.getStatusCount(data.ResultStatusType.FAILED_RETRIED);
+            if (failed > 0 || failedRetried > 0) {
+                const counts = []
+                const labels = []
+                counts.push(failed)
+                labels.push(this._statusConverter.getLabelForStatus(ResultStatusType.FAILED))
+                if (failedRetried > 0) {
+                    counts.push(" + " + failedRetried)
+                    labels.push(this._statusConverter.getLabelForStatus(data.ResultStatusType.FAILED_RETRIED))
+                }
                 this._filterItems.push({
                     status: ResultStatusType.FAILED,
-                    counts: [
-                        count,
-                        failedRetriedCount>0?" + " + failedRetriedCount:null
-                    ],
-                    labels: [
-                        this._statusConverter.getLabelForStatus(ResultStatusType.FAILED),
-                        failedRetriedCount>0?this._statusConverter.getLabelForStatus(data.ResultStatusType.FAILED_RETRIED):null
-                    ],
-                    active:false,
+                    counts: counts,
+                    labels: labels,
                 });
             }
 
-            count = this._executionStatistics.getStatusCount(ResultStatusType.FAILED_EXPECTED);
-            if (count > 0) {
+            const failedExpected = this._executionStatistics.getStatusCount(ResultStatusType.FAILED_EXPECTED);
+            if (failedExpected > 0) {
                 this._filterItems.push({
                     status: ResultStatusType.FAILED_EXPECTED,
-                    counts: [count],
+                    counts: [failedExpected],
                     labels: [this._statusConverter.getLabelForStatus(ResultStatusType.FAILED_EXPECTED)],
-                    active:false
                 });
             }
 
-            count = this._executionStatistics.getStatusCount(ResultStatusType.SKIPPED);
-            if (count > 0) {
+            const skipped = this._executionStatistics.overallSkipped;
+            if (skipped > 0) {
                 this._filterItems.push({
                     status: ResultStatusType.SKIPPED,
-                    counts: [count],
+                    counts: [skipped],
                     labels: [this._statusConverter.getLabelForStatus(ResultStatusType.SKIPPED)],
-                    active:false
                 });
             }
 
-            count = this._executionStatistics.overallPassed;
-            if (count > 0) {
+            const passed = this._executionStatistics.overallPassed;
+            if (passed > 0) {
+                const recovered = this._executionStatistics.getStatusCount(data.ResultStatusType.PASSED_RETRY);
+                const repaired = this._executionStatistics.getStatusCount(data.ResultStatusType.REPAIRED);
                 this._filterItems.push({
                     status: ResultStatusType.PASSED,
                     counts: [
-                        count,
-                        (this._executionStatistics.repairedTests>0?`&sup; ${this._executionStatistics.repairedTests}`:null),
-                        (this._passedRetried>0?`&sup; ${this._passedRetried}`:null),
+                        passed,
+                        (repaired>0?`&sup; ${repaired}`:null),
+                        (recovered>0?`&sup; ${recovered}`:null),
                     ],
                     labels: [
                         this._statusConverter.getLabelForStatus(ResultStatusType.PASSED),
-                        (this._executionStatistics.repairedTests>0?"Repaired":null),
-                        (this._passedRetried>0?this._statusConverter.getLabelForStatus(ResultStatusType.PASSED_RETRY):null),
+                        (repaired>0?this._statusConverter.getLabelForStatus(ResultStatusType.REPAIRED):null),
+                        (recovered>0?this._statusConverter.getLabelForStatus(ResultStatusType.PASSED_RETRY):null),
                     ],
-                    active:false
                 });
             }
 
-            this._executionStatistics.failureAspectStatistics.forEach(failureAspectStatistics => {
+            this._executionStatistics.uniqueFailureAspects.forEach(failureAspectStatistics => {
                 if (failureAspectStatistics.isMinor) {
                     ++this._minorFailures;
                 } else {
@@ -143,56 +149,59 @@ export class Dashboard extends AbstractViewModel {
              * @todo Move this to {@link ExecutionStatistics}?
              */
             const executionAggregate = this._executionStatistics.executionAggregate;
-            this._highCorridor.limit = executionAggregate.executionContext.failureCorridorLimits[FailureCorridorValue.FCV_MID];
+            this._highCorridor.limit = executionAggregate.executionContext.failureCorridorLimits[FailureCorridorValue.FCV_HIGH];
+            this._highCorridor.count = executionAggregate.executionContext.failureCorridorCounts[FailureCorridorValue.FCV_HIGH]||0;
             this._midCorridor.limit = executionAggregate.executionContext.failureCorridorLimits[FailureCorridorValue.FCV_MID];
+            this._midCorridor.count = executionAggregate.executionContext.failureCorridorCounts[FailureCorridorValue.FCV_MID]||0;
             this._lowCorridor.limit = executionAggregate.executionContext.failureCorridorLimits[FailureCorridorValue.FCV_LOW];
-            Object.values(executionAggregate.methodContexts)
-                .filter(value => value.methodType==MethodType.TEST_METHOD)
-                .forEach(value => {
-                    if (this._statusConverter.failedStatuses.indexOf(value.resultStatus) >= 0) {
-                        switch (value.failureCorridorValue) {
-                            case data.FailureCorridorValue.FCV_HIGH: this._highCorridor.count++; break;
-                            case data.FailureCorridorValue.FCV_MID: this._midCorridor.count++; break;
-                            case data.FailureCorridorValue.FCV_LOW: this._lowCorridor.count++; break;
-                        }
-                    }
-                });
+            this._lowCorridor.count = executionAggregate.executionContext.failureCorridorCounts[FailureCorridorValue.FCV_LOW]||0;
 
             this._loading = false;
         });
     };
 
-    private _resultClicked(item:IItem) {
+    private _setFilter(filter:IFilter, updateUrl:boolean = true) {
+        this._filter = filter;
+        if (filter) {
+            this.queryParams.status = this._statusConverter.getClassForStatus(this._filter.status);
+            this.queryParams.class = this._filter.class;
+        } else {
+            delete this.queryParams.status;
+        }
+        if (updateUrl) {
+            this.updateUrl(this.queryParams);
+        }
+    }
+
+    private _resultItemClicked(item:IItem) {
         /**
          * It still happens that items keep selected when they shouldn't
          * https://gist.dumber.app/?gist=f09831456ae377d1121e8a41eece1c42
          */
-        this._filterItems.filter(value => value !== item).forEach(value => value.active = false);
-        item.active = !item.active;
-        if (item.active) {
-            this._classFilter = this._breakdownFilter = {
-                status: item.status
-            };
+        if (item.status === this._filter?.status) {
+            this._setFilter(null);
         } else {
-            this._classFilter = this._breakdownFilter = null;
+            this._setFilter({
+                status: item.status
+            });
         }
     }
 
-    private _pieFilterChanged(ev:CustomEvent) {
-        this._classFilter = ev.detail;
-        this._filterItems.forEach(value => {
-            value.active = ev.detail?.status === value.status;
-        })
+    private _piePieceClicked(ev:PieceClickedEvent) {
+        if (ev.detail.filter?.status === this._filter?.status) {
+            this._setFilter(null);
+        } else {
+            this._setFilter(ev.detail.filter);
+        }
     }
 
-    private _barFilterChanged(ev:ClassBarClick) {
-        const queryParams:any = ev.detail.filter;
-        queryParams.status = this._statusConverter.getClassForStatus(ev.detail.filter.status);
+    private _classBarClicked(ev:ClassBarClick) {
+        this._setFilter(ev.detail.filter, false);
         if (ev.detail.mouseEvent.button == 0) {
-            this.navInstruction.router.navigateToRoute("tests", queryParams);
+            this.navInstruction.router.navigateToRoute("tests", this.queryParams);
         } else {
             // Open window in new tab
-            const classView = window.open(this.navInstruction.router.generate("tests", queryParams));
+            const classView = window.open(this.navInstruction.router.generate("tests", this.queryParams));
             classView.blur();
             window.focus()
         }

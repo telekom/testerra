@@ -95,7 +95,7 @@ public abstract class AbstractMailConnector implements Loggable {
 
         try {
             MailSSLSocketFactory sf = new MailSSLSocketFactory();
-            CertUtils certUtils = new CertUtils();
+            CertUtils certUtils = CertUtils.getInstance();
             if (certUtils.isTrustAllHosts()) {
                 log().warn("Trusting all hosts");
                 sf.setTrustAllHosts(true);

@@ -74,9 +74,9 @@ public class GuiElementAdditionalTests extends AbstractTestSitesTest {
 
     }
 
-    @Test(groups = {"SEQUENTIAL"})
+    @Test()
     public void test04_LocateSubElementWithUniqueConfigurator_fails() {
-        Locate.setConfigurator(Locate::unique);
+        Locate.setThreadLocalConfigurator(Locate::unique);
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement body = new GuiElement(driver, By.xpath("//body"));
         GuiElement div = body.getSubElement(By.xpath("//div"));
@@ -91,6 +91,6 @@ public class GuiElementAdditionalTests extends AbstractTestSitesTest {
         }
 
         Assert.assertTrue(notFoundException.getCause().getMessage().contains("Too many WebElements found"), "Expect to fail because of too many WebElements found");
-        Locate.setConfigurator(null);
+        Locate.setThreadLocalConfigurator(null);
     }
 }

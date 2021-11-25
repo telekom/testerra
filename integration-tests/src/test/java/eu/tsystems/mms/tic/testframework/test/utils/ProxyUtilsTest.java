@@ -19,18 +19,22 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.test.utils;
+package eu.tsystems.mms.tic.testframework.test.utils;
 
+import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.ProxyUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverProxyUtils;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.Properties;
 import org.openqa.selenium.Proxy;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Tests class for {@link ProxyUtils} and {@link WebDriverProxyUtils}
@@ -53,7 +57,7 @@ public class ProxyUtilsTest extends TesterraTest {
     private static String BACKUP_PROXY_HTTPS_HOST = "";
     private static String BACKUP_PROXY_HTTPS_PORT = "";
 
-    @BeforeClass()
+    @BeforeMethod()
     public void provideProxySettings() {
 
         BACKUP_PROXY_HTTP_HOST = System.getProperty("http.proxyHost", "");
@@ -62,26 +66,18 @@ public class ProxyUtilsTest extends TesterraTest {
         BACKUP_PROXY_HTTPS_HOST = System.getProperty("https.proxyHost", "");
         BACKUP_PROXY_HTTPS_PORT = System.getProperty("https.proxyPort", "");
 
-        System.setProperty("http.proxyHost", PROXY_HOST_HTTP);
-        System.setProperty("http.proxyPort", PROXY_PORT_HTTP);
+        Properties testLocalProperties = PropertyManager.getTestLocalProperties();
 
-        System.setProperty("https.proxyHost", PROXY_HOST_HTTPS);
-        System.setProperty("https.proxyPort", PROXY_PORT_HTTPS);
+        testLocalProperties.setProperty("http.proxyHost", PROXY_HOST_HTTP);
+        testLocalProperties.setProperty("http.proxyPort", PROXY_PORT_HTTP);
 
-    }
+        testLocalProperties.setProperty("https.proxyHost", PROXY_HOST_HTTPS);
+        testLocalProperties.setProperty("https.proxyPort", PROXY_PORT_HTTPS);
 
-    @AfterClass()
-    public void removeProxySettings() {
-        System.setProperty("http.proxyHost", BACKUP_PROXY_HTTP_HOST);
-        System.setProperty("http.proxyPort", BACKUP_PROXY_HTTP_PORT);
-
-        System.setProperty("https.proxyHost", BACKUP_PROXY_HTTPS_HOST);
-        System.setProperty("https.proxyPort", BACKUP_PROXY_HTTPS_PORT);
     }
 
     @Test
     public void testT01_getHttpProxyString() {
-
         final String expectedUrlString = PROXY_HOST_HTTP + ":" + PROXY_PORT_HTTP;
 
         final URL actualProxyUrl = ProxyUtils.getSystemHttpProxyUrl();
@@ -94,7 +90,6 @@ public class ProxyUtilsTest extends TesterraTest {
 
     @Test
     public void testT02_getHttpsProxyString() {
-
         final String expectedUrlString = PROXY_HOST_HTTPS + ":" + PROXY_PORT_HTTPS;
 
         WebDriverProxyUtils utils = new WebDriverProxyUtils();
@@ -131,8 +126,19 @@ public class ProxyUtilsTest extends TesterraTest {
         WebDriverProxyUtils utils = new WebDriverProxyUtils();
         String proxyString = "http://proxyUser:secretPassword@my-proxy:3128";
         Proxy proxy = utils.createSocksProxyFromUrl(new URL(proxyString));
-        Assert.assertEquals(proxy.getHttpProxy(),"my-proxy:3128");
-        Assert.assertEquals(proxy.getSocksUsername(),"proxyUser");
+        Assert.assertEquals(proxy.getHttpProxy(), "my-proxy:3128");
+        Assert.assertEquals(proxy.getSocksUsername(), "proxyUser");
         Assert.assertEquals(proxy.getSocksPassword(), "secretPassword");
+    }
+
+    @Test
+    public void test06_createDefaultProxyFromUrl() {
+        WebDriverProxyUtils utils = new WebDriverProxyUtils();
+        Proxy proxy = utils.getDefaultHttpProxy();
+
+        Assert.assertEquals(proxy.getHttpProxy(), PROXY_HOST_HTTPS + ":" + PROXY_PORT_HTTPS);
+        Assert.assertEquals(proxy.getSslProxy(), PROXY_HOST_HTTPS + ":" + PROXY_PORT_HTTPS);
+        Assert.assertNull(proxy.getFtpProxy());
+        Assert.assertNull(proxy.getSocksProxy());
     }
 }

@@ -25,14 +25,22 @@ import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
+import eu.tsystems.mms.tic.testframework.utils.CertUtils;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
-import java.util.Map;
+import java.util.Locale;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.util.Map;
 
 /**
  * Tests for WebDriverManager
@@ -92,14 +100,17 @@ public class WebDriverManagerTest extends AbstractWebDriverTest {
 
     @Test
     public void testT03_MakeSessionExclusive() {
+        WebDriver exclusiveDriver = WebDriverManager.getWebDriver();
+        Assert.assertEquals(WebDriverSessionsManager.getWebDriversFromCurrentThread().count(), 1);
 
-        final WebDriver exclusiveDriver = WebDriverManager.getWebDriver();
-        final String sessionId = WebDriverManager.makeSessionExclusive(exclusiveDriver);
+        String sessionId = WebDriverManager.makeSessionExclusive(exclusiveDriver);
+
+        Assert.assertEquals(WebDriverSessionsManager.getWebDriversFromCurrentThread().count(), 0);
 
         Assert.assertNotNull(WebDriverSessionsManager.getSessionContext(exclusiveDriver).get());
 
-        final WebDriver driver2 = WebDriverManager.getWebDriver("Session2");
-        final WebDriver exclusiveDriverActual = WebDriverManager.getWebDriver(sessionId);
+        WebDriver driver2 = WebDriverManager.getWebDriver("Session2");
+        WebDriver exclusiveDriverActual = WebDriverManager.getWebDriver(sessionId);
 
         Assert.assertEquals(exclusiveDriver, exclusiveDriverActual, "Got the same WebDriver!");
         WebDriverManager.shutdownExclusiveSession(sessionId);
@@ -133,4 +144,106 @@ public class WebDriverManagerTest extends AbstractWebDriverTest {
         WebDriverManager.getThreadCapabilities().clear();
     }
 
+    @Test
+    public void testT06_clonedWebDriverRequest() {
+        final String sessionKey = "testT06";
+        final String capKey = "MyCap";
+        final String capVal = "myValue";
+
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        request.setSessionKey(sessionKey);
+        DesiredCapabilities baseCaps = request.getDesiredCapabilities();
+        baseCaps.setCapability(capKey, capVal);
+
+        WebDriver webDriver = WebDriverManager.getWebDriver(request);
+        SessionContext sessionContext = WebDriverSessionsManager.getSessionContext(webDriver).get();
+        DesktopWebDriverRequest clonedRequest = (DesktopWebDriverRequest) sessionContext.getWebDriverRequest();
+
+        // Test for cloned primitives
+        Assert.assertEquals(sessionKey, clonedRequest.getSessionKey());
+        clonedRequest.setSessionKey("NewSessionKey");
+        Assert.assertNotEquals(sessionKey, clonedRequest.getSessionKey());
+
+        // Test for not shallow copy of capabilities
+        DesiredCapabilities clonedCaps = clonedRequest.getDesiredCapabilities();
+        Assert.assertEquals(capVal, clonedCaps.getCapability(capKey));
+        Assert.assertEquals(clonedCaps.getCapability(capKey), baseCaps.getCapability(capKey));
+
+        clonedCaps.setCapability(capKey, "newValue");
+        Assert.assertNotEquals(clonedCaps.getCapability(capKey), baseCaps.getCapability(capKey));
+    }
+
+    @Test
+    public void test_WindowSize() {
+        assertNewWebDriverWindowSize(new Dimension(800, 600));
+
+        String newScreenSize = "1024x768";
+
+        PropertyManager.getTestLocalProperties().setProperty(TesterraProperties.WINDOW_SIZE, newScreenSize);
+        String property = PropertyManager.getProperty(TesterraProperties.WINDOW_SIZE, PropertyManager.getProperty(TesterraProperties.DISPLAY_RESOLUTION));
+        Assert.assertEquals(property, newScreenSize);
+
+        assertNewWebDriverWindowSize(new Dimension(1024, 768));
+    }
+
+    @Test
+    public void test_invalidWindowSize() {
+        PropertyManager.getTestLocalProperties().setProperty(TesterraProperties.WINDOW_SIZE, "katze");
+        String property = PropertyManager.getProperty(TesterraProperties.WINDOW_SIZE, PropertyManager.getProperty(TesterraProperties.DISPLAY_RESOLUTION));
+        Assert.assertEquals(property, "katze");
+
+        assertNewWebDriverWindowSize(new Dimension(1920, 1080));
+    }
+
+    @Test
+    public void test_emptyWindowSize() {
+        PropertyManager.getTestLocalProperties().setProperty(TesterraProperties.WINDOW_SIZE, "");
+        String property = PropertyManager.getProperty(TesterraProperties.WINDOW_SIZE);
+        Assert.assertEquals(property, "");
+
+        assertNewWebDriverWindowSize(new Dimension(1920, 1080));
+    }
+
+    private void assertNewWebDriverWindowSize(Dimension expected) {
+        WebDriverManagerConfig config = WebDriverManager.getConfig();
+        config.reset();
+        Assert.assertFalse(config.shouldMaximizeViewport());
+
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        Dimension windowSize = request.getWindowSize();
+        Assert.assertEquals(windowSize.getWidth(), expected.getWidth());
+        Assert.assertEquals(windowSize.getHeight(), expected.getHeight());
+
+        WebDriver webDriver = WebDriverManager.getWebDriver(request);
+        Dimension size = webDriver.manage().window().getSize();
+        Assert.assertEquals(size.getWidth(), expected.getWidth());
+        Assert.assertEquals(size.getHeight(), expected.getHeight());
+        WebDriverManager.shutdown();
+    }
+
+    @Test
+    public void test_acceptInsecureCertificates() {
+        CertUtils certUtils = CertUtils.getInstance();
+        certUtils.setTrustAllHosts(true);
+        Assert.assertTrue(certUtils.isTrustAllHosts());
+
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+
+        WebDriverManager.getWebDriver(request);
+
+        Assert.assertTrue(request.getDesiredCapabilities().acceptInsecureCerts());
+    }
+
+    @Test
+    public void test_SessionLocale() {
+        Locale defaultLocale = Locale.getDefault();
+        Locale sessionLocale = Locale.KOREAN;
+
+        Assert.assertNotEquals(defaultLocale, sessionLocale);
+
+        WebDriver webDriver = WebDriverManager.getWebDriver();
+        Assert.assertTrue(WebDriverManager.setSessionLocale(webDriver, sessionLocale));
+
+        Assert.assertEquals(WebDriverManager.getSessionLocale(webDriver).orElse(null), sessionLocale);
+    }
 }

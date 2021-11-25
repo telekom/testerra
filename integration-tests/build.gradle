@@ -1,15 +1,12 @@
 dependencies {
     api driver_ui_desktop
-    testImplementation project(':report-ng')
-    testImplementation project(':report')
+    testImplementation report
 
     // <XML>
     implementation 'org.xmlunit:xmlunit-core:2.5.0'
     // </XML
 
     api 'org.seleniumhq.selenium:selenium-server:' + seleniumVersion
-    // https://mvnrepository.com/artifact/com.github.tomakehurst/wiremock
-    testImplementation "com.github.tomakehurst:wiremock-jre8:2.26.3"
 }
 
 // Deactivate JAR publishing

@@ -93,14 +93,15 @@ export class DependencyNetwork {
     }
 
     private _createMethodDetails(methodContextIds:string[]):MethodDetails[] {
-        return methodContextIds.filter(methodId => {
-            return (methodId != this._methodDetails.methodContext.contextValues.id);
-        })
-        .map(methodId => {
-            return this._methodDetails.executionStatistics.executionAggregate.methodContexts[methodId]
-        })
-        .filter(methodContext => methodContext)
-        .map(methodContext => new MethodDetails(methodContext, this._methodDetails.classStatistics))
+        return methodContextIds
+            // .filter(methodId => {
+            //     return (methodId != this._methodDetails.methodContext.contextValues.id);
+            // })
+            .map(methodId => {
+                return this._methodDetails.executionStatistics.executionAggregate.methodContexts[methodId]
+            })
+            .filter(methodContext => methodContext)
+            .map(methodContext => new MethodDetails(methodContext, this._methodDetails.classStatistics))
     }
 
     private _createGraph() {

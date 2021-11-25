@@ -22,18 +22,15 @@
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
-import java.net.URL;
+
 import java.util.Map;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Stream;
-import org.apache.commons.lang3.SerializationUtils;
 
-public class SessionContext extends AbstractContext implements SynchronizableContext {
-    private String remoteSessionId;
+public class SessionContext extends AbstractContext {
     private Video video;
     private NodeInfo nodeInfo;
     private String browserName;
@@ -41,19 +38,15 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
     private Map<String, Object> capabilities;
     private final WebDriverRequest webDriverRequest;
     private final Queue<MethodContext> methodContexts = new ConcurrentLinkedQueue<>();
+    private String remoteSessionId;
 
     public SessionContext(WebDriverRequest webDriverRequest) {
-        this.webDriverRequest = SerializationUtils.clone(webDriverRequest);
-        this.name = webDriverRequest.getSessionKey();
-
-//        this.provider = provider;
-//
-//        final MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
-//        if (currentMethodContext != null) {
-//            this.name = currentMethodContext.getName() + "_";
-//        } else {
-//            this.name = "";
-//        }
+        try {
+            this.webDriverRequest = webDriverRequest.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+        this.setName(webDriverRequest.getSessionKey());
     }
 
     public WebDriverRequest getWebDriverRequest() {
@@ -61,29 +54,21 @@ public class SessionContext extends AbstractContext implements SynchronizableCon
     }
 
     public String getSessionKey() {
-        return this.name;
+        return this.getName();
     }
 
     public SessionContext setSessionKey(String sessionKey) {
-        this.name = sessionKey;
+        this.setName(sessionKey);
         return this;
     }
 
     public Optional<String> getRemoteSessionId() {
-        return Optional.ofNullable(remoteSessionId);
+        return Optional.ofNullable(this.remoteSessionId);
     }
 
     public SessionContext setRemoteSessionId(String sessionId) {
         this.remoteSessionId = sessionId;
         return this;
-    }
-
-    @Override
-    public TestStatusController.Status getStatus() {
-        /*
-        Status is always null here. There is no context result status for sessions.
-         */
-        return null;
     }
 
     public Optional<Video> getVideo() {

@@ -24,7 +24,8 @@ package eu.tsystems.mms.tic.testframework.listeners;
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.events.FinalizeExecutionEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import java.net.URL;
+import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,9 +35,11 @@ import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.ProviderNotFoundException;
 import java.util.Collections;
-import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.apache.commons.io.FileUtils;
 
 public class CopyReportAppListener implements FinalizeExecutionEvent.Listener, Loggable {
@@ -51,7 +54,7 @@ public class CopyReportAppListener implements FinalizeExecutionEvent.Listener, L
     @Override
     public void onFinalizeExecution(FinalizeExecutionEvent event) {
         try {
-            for (Path resourcePath : getPathsFromResourceJAR("report-ng")) {
+            for (Path resourcePath : getPathsFromResource("report-ng").collect(Collectors.toList())) {
                 final String stringRepresentationOfResourcePath = StringUtils.stripStart(resourcePath.toString(), "/");
                 try (final InputStream resourceStream = getClass().getClassLoader().getResourceAsStream(stringRepresentationOfResourcePath)) {
                     if (resourceStream == null) {
@@ -67,26 +70,43 @@ public class CopyReportAppListener implements FinalizeExecutionEvent.Listener, L
     }
 
     /**
+     * This methods tries to read all files from a resource directory.
+     * When this methods runs inside a JAR, it reads the directory listing from the JAR's resource folder:
+     *      application.jar#/folder/...
+     * and maps them to relative resource paths:
+     *      /folder/file1.jpg
+     *      /folder/file2.js
+     *      ...
+     * Otherwise, it reads the directory listing from the local resource folder:
+     *      ../build/resources/main/folder/...
+     * and maps the files to relative resource paths:
+     *       /folder/file1.jpg
+     *       /folder/file2.js
+     *       ...
+     *
+     * In both cases, you need to read the actual resource by {@link ClassLoader#getResource(String)}.
      * @see {https://mkyong.com/java/java-read-a-file-from-resources-folder/}
      */
-    private List<Path> getPathsFromResourceJAR(String folder) throws URISyntaxException, IOException {
+    private Stream<Path> getPathsFromResource(String folder) throws URISyntaxException, IOException {
         // get path of the current running JAR
-        String jarPath = getClass().getProtectionDomain()
+        URI pathUri = getClass()
+                .getProtectionDomain()
                 .getCodeSource()
                 .getLocation()
-                .toURI()
-                .getRawPath();
+                .toURI();
 
-        List<Path> result;
-
-        // file walks JAR
-        URI uri = URI.create("jar:file:" + jarPath);
-        try (FileSystem fs = FileSystems.newFileSystem(uri, Collections.emptyMap())) {
-            result = Files.walk(fs.getPath(folder))
+        try {
+            URI uri = URI.create("jar:file:" + pathUri.getRawPath());
+            FileSystem fs = FileSystems.newFileSystem(uri, Collections.emptyMap());
+            Path resourceDirPath = fs.getPath(folder);
+            return Files.walk(resourceDirPath).filter(Files::isRegularFile);
+        } catch (IOException | ProviderNotFoundException e) {
+            URL resourceUrl = getClass().getClassLoader().getResource(folder);
+            log().warn(String.format("Unable to read from resource JAR: %s, trying local resources: %s", e.getMessage(), resourceUrl));
+            Path resourceDirPath = Paths.get(resourceUrl.toURI());
+            return Files.walk(resourceDirPath)
                     .filter(Files::isRegularFile)
-                    .collect(Collectors.toList());
+                    .map(resourceFilePath -> resourceDirPath.getParent().relativize(resourceFilePath));
         }
-
-        return result;
     }
 }

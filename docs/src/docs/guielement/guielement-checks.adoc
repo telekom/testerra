@@ -1,8 +1,8 @@
 = Checks
 
-Similar to the assertion methods GuiElement provide so called check methods.
+Similar to the assertion methods GuiElement provides so called check methods.
 
-== Visibilty checks
+== Visibility checks
 
 Checks if the element is present in the DOM
 [source,java]
@@ -11,8 +11,8 @@ element.isPresent();
 ----
 
 Checks if the element is present in the Viewport,
-if it's visible by it's `display` and `visibility` style properties
-and it's `width` and `height` are both greater than 0.
+if it is visible by it's `display` and `visibility` style properties
+and if it's `width` and `height` are both greater than 0.
 [source,java]
 ----
 element.isDisplayed();
@@ -26,7 +26,14 @@ in the scroll area of the viewport.
 element.isVisible(boolean fullyVisible);
 ----
 
-NOTE: It doesn't relate to `opacity` or `z-index` style properties. If you need to test the perceptually visibility to the human eye, you should consider to implement <<Layout Check>>.
+NOTE: It doesn't relate to `opacity` or `z-index` style properties. If you need to test the perceptual visibility to the human eye, you should consider implementing <<Layout Check>>.
+
+[IMPORTANT]
+======
+It is not recommended to use these methods for assertions because they return the current state of the element without observing changes of the element or the page.
+
+The assertion `element.asserts().assertIsDisplayed()` always uses the default GuiElement timeout until it fails. This should always be used for verifications.
+======
 
 == Standard WebElement checks
 

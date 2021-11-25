@@ -22,6 +22,7 @@
 package eu.tsystems.mms.tic.testerra.bup;
 
 import java.net.URL;
+import java.util.Optional;
 
 /**
  * Date: 25.05.2020
@@ -33,6 +34,8 @@ public class BrowserUpRemoteProxyServer {
 
     private Integer port;
     private URL upstreamProxy;
+    private String upstreamNonProxy;
+    private String bindAddress;
 
     public Integer getPort() {
         return port;
@@ -42,11 +45,32 @@ public class BrowserUpRemoteProxyServer {
         this.port = port;
     }
 
-    public URL getUpstreamProxy() {
-        return upstreamProxy;
+    public Optional<URL> getUpstreamProxy() {
+        return Optional.ofNullable(upstreamProxy);
     }
 
+    /**
+     * Sets the URL for the upstream/chained proxy.
+     * Uses the user info for upstream proxy credentials.
+     * @param upstreamProxy
+     */
     public void setUpstreamProxy(URL upstreamProxy) {
         this.upstreamProxy = upstreamProxy;
+    }
+
+    public Optional<String> getUpstreamNonProxy() {
+        return Optional.ofNullable(upstreamNonProxy);
+    }
+
+    public void setUpstreamNonProxy(String upstreamNonProxy) {
+        this.upstreamNonProxy = upstreamNonProxy;
+    }
+
+    public Optional<String> getBindAddress() {
+        return Optional.ofNullable(bindAddress);
+    }
+
+    public void setBindAddress(String bindAddress) {
+        this.bindAddress = bindAddress;
     }
 }

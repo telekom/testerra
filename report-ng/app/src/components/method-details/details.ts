@@ -36,6 +36,7 @@ import {data} from "../../services/report-model";
 import {MdcSnackbarService} from '@aurelia-mdc-web/snackbar';
 import IStackTraceCause = data.IStackTraceCause;
 import {ILayoutComparisonContext} from "../layout-comparison/layout-comparison";
+import {Clipboard} from "t-systems-aurelia-components/src/utils/clipboard";
 
 @autoinject()
 export class Details {
@@ -61,19 +62,29 @@ export class Details {
         this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
             this._methodDetails = methodDetails;
             this._layoutComparisonContext = methodDetails.decodeCustomContext("LayoutCheckContext");
-            if (methodDetails.methodContext.errorContext) {
-                this._failureAspect = new FailureAspectStatistics(methodDetails.methodContext.errorContext);
+            let firstFailureAspect = null;
+            let firstFailedFailureAspect = null;
+            for (const failureAspect of methodDetails.failureAspects) {
+                if (!firstFailureAspect) {
+                    firstFailureAspect = failureAspect;
+                }
+                if (failureAspect.overallFailed > 0) {
+                    firstFailedFailureAspect = failureAspect;
+                    // Stop search on first found failed FailureAspect
+                    break;
+                }
             }
+            this._failureAspect = firstFailedFailureAspect||firstFailureAspect;
         });
     }
 
     private _copyStackTraceToClipboard(stackTrace:IStackTraceCause[]) {
         const msg = stackTrace.flatMap(cause => cause.stackTraceElements).join("\n");
-        navigator.clipboard.writeText(msg).then(response => {
+
+        const clipboard = new Clipboard();
+        clipboard.writeText(msg).then(() => {
             this._snackbarNotification('Stacktrace copied to clipboard');
         });
-
-
     }
 
     private async _snackbarNotification(message: string) {

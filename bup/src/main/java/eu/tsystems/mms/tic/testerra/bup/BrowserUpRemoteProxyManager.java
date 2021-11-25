@@ -27,8 +27,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -108,9 +108,12 @@ public class BrowserUpRemoteProxyManager implements Loggable {
      * Calls POST /proxy with parameters
      *
      * @return BrowserUpRemoteProxyServer object.
+     * @deprecated Use {@link #startServer(BrowserUpRemoteProxyServer)} instead
      */
     public BrowserUpRemoteProxyServer startServer() {
-        return startServer(new BrowserUpRemoteProxyServer());
+        BrowserUpRemoteProxyServer browserUpRemoteProxyServer = new BrowserUpRemoteProxyServer();
+        startServer(browserUpRemoteProxyServer);
+        return browserUpRemoteProxyServer;
     }
 
     /**
@@ -119,32 +122,53 @@ public class BrowserUpRemoteProxyManager implements Loggable {
      * @param proxyServer {@link BrowserUpRemoteProxyServer}
      * @return BrowserUpRemoteProxyServer
      */
-    public BrowserUpRemoteProxyServer startServer(BrowserUpRemoteProxyServer proxyServer) {
+    public void startServer(BrowserUpRemoteProxyServer proxyServer) {
 
         final URIBuilder startServerUriBuilder = url().setPath("/proxy");
 
         if (proxyServer.getPort() != null) {
 
-            // check if port already in use...
+            // Check if port already in use...
             if (this.isRunning(proxyServer)) {
                 log().info("Remote proxy session already running on this port.");
-                return proxyServer;
             }
 
-            // set port to start proxyserver on.
+            // Set port to start proxyserver on.
             startServerUriBuilder.setParameter("port", String.valueOf(proxyServer.getPort()));
         }
 
-        // always trust them.
+        // Always trust them.
         startServerUriBuilder.setParameter("trustAllServers", "true");
 
-        // always set bindAddress
-        startServerUriBuilder.setParameter("bindAddress", this.baseUrl.getHost());
+        // Set bind address
+        proxyServer.getBindAddress().filter(StringUtils::isNotBlank).ifPresent(s -> {
+            startServerUriBuilder.setParameter("bindAddress", s);
+        });
 
-        // set upstream proxy.
-        if (proxyServer.getUpstreamProxy() != null) {
-            startServerUriBuilder.setParameter("httpProxy", String.format("%s:%d", proxyServer.getUpstreamProxy().getHost(), proxyServer.getUpstreamProxy().getPort()));
-        }
+        // Set upstream proxy.
+        proxyServer.getUpstreamProxy().ifPresent(url -> {
+            startServerUriBuilder.setParameter("httpProxy", String.format("%s:%d", url.getHost(), url.getPort()));
+            if (url.getHost().equalsIgnoreCase("https")) {
+                startServerUriBuilder.setParameter("proxyHTTPS", "true");
+            }
+
+            String userInfo = url.getUserInfo();
+            if (StringUtils.isNotBlank(userInfo)) {
+                String[] parts = userInfo.split(":");
+                if (parts.length > 0) {
+                    startServerUriBuilder.setParameter("proxyUsername", parts[0]);
+
+                    if (parts.length > 1) {
+                        startServerUriBuilder.setParameter("proxyPassword", parts[1]);
+                    }
+                }
+            }
+
+            // Set non proxy exceptions for upstream proxy
+            proxyServer.getUpstreamNonProxy().filter(StringUtils::isNotBlank).ifPresent(s -> {
+                startServerUriBuilder.setParameter("httpNonProxyHosts", s);
+            });
+        });
 
         final URI uri = buildUri(startServerUriBuilder, "Error parsing URL for POST /proxy for BrowserUp proxy server.");
         final HttpPost httpPost = new HttpPost(uri);
@@ -153,7 +177,6 @@ public class BrowserUpRemoteProxyManager implements Loggable {
         final JsonElement jsonElement = JsonParser.parseString(jsonResponse);
         final int port = jsonElement.getAsJsonObject().get("port").getAsInt();
         proxyServer.setPort(port);
-        return proxyServer;
     }
 
     /**

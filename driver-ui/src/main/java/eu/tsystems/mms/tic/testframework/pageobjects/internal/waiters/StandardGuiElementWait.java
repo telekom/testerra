@@ -82,8 +82,8 @@ public class StandardGuiElementWait implements GuiElementWait {
         Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
             @Override
             public void run() {
-                setReturningObject(!checkForEnabled); // in case of an error while executing webelement method -> no exception has to be thrown
-                setSkipThrowingException(true);
+                //setReturningObject(!checkForEnabled); // in case of an error while executing webelement method -> no exception has to be thrown
+                //setSkipThrowingException(true);
 
                 boolean isEnabled = guiElementStatusCheck.isEnabled();
                 boolean sequenceStatus = isEnabled == checkForEnabled;
@@ -209,8 +209,8 @@ public class StandardGuiElementWait implements GuiElementWait {
         Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
             @Override
             public void run() {
-                setReturningObject(!checkForSelected); // in case of an error while executing webelement method -> no exception has to be thrown
-                setSkipThrowingException(true);
+//                setReturningObject(!checkForSelected); // in case of an error while executing webelement method -> no exception has to be thrown
+//                setSkipThrowingException(true);
 
                 boolean selected = guiElementStatusCheck.isSelected();
                 boolean sequenceStatus = selected == checkForSelected;

@@ -25,11 +25,12 @@ import com.google.common.net.MediaType;
 import com.google.gson.Gson;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.Report;
+import eu.tsystems.mms.tic.testframework.report.Status;
+import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent;
 import eu.tsystems.mms.tic.testframework.internal.IDUtils;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.BuildInformation;
 import eu.tsystems.mms.tic.testframework.report.model.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.ContextValues;
@@ -57,11 +58,8 @@ import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,38 +67,15 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 
 public class ContextExporter implements Loggable {
-    private static final Map<TestStatusController.Status, ResultStatusType> STATUS_MAPPING = new LinkedHashMap<>();
+    private final Map<Status, ResultStatusType> RESULT_STATUS_MAPPING = new LinkedHashMap<>();
+    private final Map<Class, FailureCorridorValue> FAILURE_CORRIDOR_MAPPING = new LinkedHashMap<>();
     private final Report report = TesterraListener.getReport();
     private final Gson jsonEncoder = new Gson();
-
-    private Map<String,Object> getAnnotationParameters(Annotation annotation) {
-        Method[] methods = annotation.annotationType().getMethods();
-        Map<String,Object> params = new HashMap<>();
-        for (Method method : methods) {
-            if (method.getDeclaringClass() == annotation.annotationType()) { //this filters out built-in methods, like hashCode etc
-                try {
-                    Object value = method.invoke(annotation);
-                    if (value == null) continue;
-
-                    if (value.getClass().isArray()) {
-                        Object[] values = (Object[])value;
-                        if (values.length == 0) continue;
-                        value = Arrays.asList(values);
-                    } else {
-                        value = value.toString();
-                        if (((String) value).isEmpty()) continue;
-                    }
-                    params.put(method.getName(), value);
-                } catch (Exception e) {
-                    log().error("Unable to retrieve annotation parameter", e);
-                }
-            }
-        }
-        return params;
-    }
 
     public MethodContext.Builder buildMethodContext(eu.tsystems.mms.tic.testframework.report.model.context.MethodContext methodContext) {
         MethodContext.Builder builder = MethodContext.newBuilder();
@@ -122,7 +97,7 @@ public class ContextExporter implements Loggable {
 
         builder.setContextValues(contextValuesBuilder);
 
-        map(methodContext.getStatus(), this::getMappedStatus, builder::setResultStatus);
+        builder.setResultStatus(this.mapResultStatus(methodContext));
         map(methodContext.getMethodType(), type -> MethodType.valueOf(type.name()), builder::setMethodType);
         List<Object> parameterValues = methodContext.getParameterValues();
         for (int i = 0; i < parameterValues.size(); ++i) {
@@ -130,17 +105,17 @@ public class ContextExporter implements Loggable {
         }
 
         methodContext.readAnnotations()
-                // Skip TestNG annotations
-                .filter(annotation -> !annotation.annotationType().getName().startsWith("org.testng"))
                 .forEach(annotation -> {
-                    builder.putAnnotations(annotation.annotationType().getName(), this.jsonEncoder.toJson(getAnnotationParameters(annotation)));
+                    report.getAnnotationConverter(annotation).ifPresent(annotationExporter -> {
+                        builder.putAnnotations(annotation.annotationType().getName(), this.jsonEncoder.toJson(annotationExporter.toMap(annotation)));
+                    });
                 });
 
         apply(methodContext.getRetryCounter(), builder::setRetryNumber);
-        apply(methodContext.methodRunIndex, builder::setMethodRunIndex);
+        apply(methodContext.getMethodRunIndex(), builder::setMethodRunIndex);
 
-        apply(methodContext.priorityMessage, builder::setPriorityMessage);
-        apply(methodContext.threadName, builder::setThreadName);
+        methodContext.getPriorityMessage().ifPresent(builder::setPriorityMessage);
+        apply(methodContext.getThreadName(), builder::setThreadName);
 
         // test steps
         methodContext.readTestSteps().forEach(testStep -> builder.addTestSteps(buildTestStep(testStep)));
@@ -156,12 +131,11 @@ public class ContextExporter implements Loggable {
             builder.setFailureCorridorValue(FailureCorridorValue.FCV_LOW);
         }
         builder.setClassContextId(methodContext.getClassContext().getId());
-        forEach(methodContext.infos, builder::addInfos);
+        methodContext.readInfos().forEach(builder::addInfos);
         methodContext.readRelatedMethodContexts().forEach(m -> builder.addRelatedMethodContextIds(m.getId()));
         methodContext.readDependsOnMethodContexts().forEach(m -> builder.addDependsOnMethodContextIds(m.getId()));
 
         // build context
-        if (methodContext.hasErrorContext()) builder.setErrorContext(buildErrorContext(methodContext.getErrorContext()));
         methodContext.readSessionContexts().forEach(sessionContext -> builder.addSessionContextIds(sessionContext.getId()));
 
         methodContext.readCustomContexts().forEach(customContext -> {
@@ -172,21 +146,22 @@ public class ContextExporter implements Loggable {
     }
 
     public File.Builder[] buildScreenshot(Screenshot screenshot) {
+        File.Builder[] fileBuilders = new File.Builder[2];
+
         java.io.File currentScreenshotFile = screenshot.getScreenshotFile();
         File.Builder screenshotBuilder = prepareFile(currentScreenshotFile);
         screenshotBuilder.setRelativePath(report.getRelativePath(currentScreenshotFile));
         screenshotBuilder.setMimetype(MediaType.PNG.toString());
         screenshotBuilder.putAllMeta(screenshot.getMetaData());
-
-        java.io.File currentSourceFile = screenshot.getPageSourceFile();
-        File.Builder sourceBuilder = prepareFile(currentSourceFile);
-        sourceBuilder.setRelativePath(report.getRelativePath(currentSourceFile));
-        sourceBuilder.setMimetype(MediaType.PLAIN_TEXT_UTF_8.toString());
-        screenshotBuilder.putMeta("sourcesRefId", sourceBuilder.getId());
-
-        File.Builder[] fileBuilders = new File.Builder[2];
         fileBuilders[0] = screenshotBuilder;
-        fileBuilders[1] = sourceBuilder;
+
+        screenshot.getPageSourceFile().ifPresent(currentSourceFile -> {
+            File.Builder sourceBuilder = prepareFile(currentSourceFile);
+            sourceBuilder.setRelativePath(report.getRelativePath(currentSourceFile));
+            sourceBuilder.setMimetype(MediaType.PLAIN_TEXT_UTF_8.toString());
+            screenshotBuilder.putMeta("sourcesRefId", sourceBuilder.getId());
+            fileBuilders[1] = sourceBuilder;
+        });
         return fileBuilders;
     }
 
@@ -218,15 +193,6 @@ public class ContextExporter implements Loggable {
         // file size
         builder.setSize(file.length());
     }
-//
-//    public StackTrace.Builder prepareStackTrace(eu.tsystems.mms.tic.testframework.report.model.context.StackTrace stackTrace) {
-//        StackTrace.Builder builder = StackTrace.newBuilder();
-//
-//        //apply(stackTrace.additionalErrorMessage, builder::setAdditionalErrorMessage);
-//        map(stackTrace.stackTrace, this::prepareStackTraceCause, builder::setCause);
-//
-//        return builder;
-//    }
 
     public ScriptSource.Builder buildScriptSource(eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource scriptSource) {
         ScriptSource.Builder builder = ScriptSource.newBuilder();
@@ -261,8 +227,8 @@ public class ContextExporter implements Loggable {
 //        apply(errorContext.errorFingerprint, builder::setErrorFingerprint);
         errorContext.getScriptSource().ifPresent(scriptSource -> builder.setScriptSource(this.buildScriptSource(scriptSource)));
         //errorContext.getExecutionObjectSource().ifPresent(scriptSource -> builder.setExecutionObjectSource(this.buildScriptSource(scriptSource)));
-        if (errorContext.getTicketId() != null) builder.setTicketId(errorContext.getTicketId().toString());
-        apply(errorContext.getDescription(), builder::setDescription);
+//        if (errorContext.getTicketId() != null) builder.setTicketId(errorContext.getTicketId().toString());
+//        apply(errorContext.getDescription(), builder::setDescription);
         builder.setOptional(errorContext.isOptional());
 
         return builder;
@@ -325,14 +291,14 @@ public class ContextExporter implements Loggable {
             } else if (entry instanceof eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext) {
                 eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext errorContext = (eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext)entry;
                 Optional<ErrorContext.Builder> optional = Optional.ofNullable(buildErrorContext(errorContext));
-                optional.ifPresent(entryBuilder::setAssertion);
+                optional.ifPresent(entryBuilder::setErrorContext);
             }
 
             if (
-                    entryBuilder.hasAssertion()
+                    entryBuilder.hasErrorContext()
                     || entryBuilder.hasLogMessage()
                     || entryBuilder.hasClickPathEvent()
-                    || entryBuilder.getScreenshotId() != null
+                    || StringUtils.isNotBlank(entryBuilder.getScreenshotId())
             ) {
                 actionBuilder.addEntries(entryBuilder);
             }
@@ -342,14 +308,37 @@ public class ContextExporter implements Loggable {
 
     public ContextExporter() {
         // Prepare a status map
-        for (TestStatusController.Status status : TestStatusController.Status.values()) {
-            ResultStatusType resultStatusType = ResultStatusType.valueOf(status.name());
-            STATUS_MAPPING.put(status, resultStatusType);
-        }
+        RESULT_STATUS_MAPPING.put(Status.NO_RUN, ResultStatusType.NO_RUN);
+        RESULT_STATUS_MAPPING.put(Status.FAILED, ResultStatusType.FAILED);
+        RESULT_STATUS_MAPPING.put(Status.SKIPPED, ResultStatusType.SKIPPED);
+        RESULT_STATUS_MAPPING.put(Status.PASSED, ResultStatusType.PASSED);
+        RESULT_STATUS_MAPPING.put(Status.FAILED_EXPECTED, ResultStatusType.FAILED_EXPECTED);
+        RESULT_STATUS_MAPPING.put(Status.REPAIRED, ResultStatusType.REPAIRED);
+        RESULT_STATUS_MAPPING.put(Status.RETRIED, ResultStatusType.FAILED_RETRIED);
+        RESULT_STATUS_MAPPING.put(Status.RECOVERED, ResultStatusType.PASSED_RETRY);
+
+        FAILURE_CORRIDOR_MAPPING.put(FailureCorridor.High.class, FailureCorridorValue.FCV_HIGH);
+        FAILURE_CORRIDOR_MAPPING.put(FailureCorridor.Mid.class, FailureCorridorValue.FCV_MID);
+        FAILURE_CORRIDOR_MAPPING.put(FailureCorridor.Low.class, FailureCorridorValue.FCV_LOW);
     }
 
-    ResultStatusType getMappedStatus(TestStatusController.Status status) {
-        return STATUS_MAPPING.get(status);
+    private ResultStatusType mapResultStatus(eu.tsystems.mms.tic.testframework.report.model.context.MethodContext methodContext) {
+        Status status = methodContext.getStatus();
+        ResultStatusType resultStatusType = RESULT_STATUS_MAPPING.get(status);
+        if (resultStatusType == null) {
+            resultStatusType = ResultStatusType.RST_NOT_SET;
+            log().error(String.format("Unable to map result status '%s' of method '%s', using '%s'", status, methodContext.getName(), resultStatusType));
+        }
+        return resultStatusType;
+    }
+
+    private FailureCorridorValue mapFailureCorridorClass(Class failureCorridorClass) {
+        FailureCorridorValue failureCorridorValue = FAILURE_CORRIDOR_MAPPING.get(failureCorridorClass);
+        if (failureCorridorValue == null) {
+            failureCorridorValue = FailureCorridorValue.FCV_HIGH;
+            log().warn(String.format("Mapping unknown failure corridor class '%s' to '%s'", failureCorridorClass, failureCorridorValue));
+        }
+        return failureCorridorValue;
     }
 
     /**
@@ -389,47 +378,6 @@ public class ContextExporter implements Loggable {
         apply(context.getName(), builder::setName);
         map(context.getStartTime(), Date::getTime, builder::setStartTime);
         map(context.getEndTime(), Date::getTime, builder::setEndTime);
-
-//        if (context instanceof eu.tsystems.mms.tic.testframework.report.model.context.MethodContext) {
-//            eu.tsystems.mms.tic.testframework.report.model.context.MethodContext methodContext = (eu.tsystems.mms.tic.testframework.report.model.context.MethodContext) context;
-//
-//            // result status
-//            map(methodContext.getStatus(), this::getMappedStatus, builder::setResultStatus);
-//
-//            // exec status
-//            if (methodContext.getStatus() == TestStatusController.Status.NO_RUN) {
-//                builder.setExecStatus(ExecStatusType.RUNNING);
-//            } else {
-//                builder.setExecStatus(ExecStatusType.FINISHED);
-//            }
-//        } else if (context instanceof eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext) {
-//            eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext executionContext = (eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext) context;
-//            if (executionContext.crashed) {
-//                /*
-//                crashed state
-//                 */
-//                builder.setExecStatus(ExecStatusType.CRASHED);
-//            } else {
-//                if (TestStatusController.getTestsSkipped() == executionContext.estimatedTestMethodCount) {
-//                    builder.setResultStatus(ResultStatusType.SKIPPED);
-//                    builder.setExecStatus(ExecStatusType.VOID);
-//                } else if (TestStatusController.getTestsFailed() + TestStatusController.getTestsSuccessful() == 0) {
-//                    builder.setResultStatus(ResultStatusType.NO_RUN);
-//                    builder.setExecStatus(ExecStatusType.VOID);
-//
-//                } else {
-//                    ResultStatusType resultStatusType = STATUS_MAPPING.get(executionContext.getStatus());
-//                    builder.setResultStatus(resultStatusType);
-//
-//                    // exec status
-//                    if (executionContext.getEndTime() != null) {
-//                        builder.setExecStatus(ExecStatusType.FINISHED);
-//                    } else {
-//                        builder.setExecStatus(ExecStatusType.RUNNING);
-//                    }
-//                }
-//            }
-//        }
         return builder;
     }
 
@@ -460,10 +408,6 @@ public class ContextExporter implements Loggable {
         apply(throwable.getClass().getName(), builder::setClassName);
         apply(throwable.getMessage(), builder::setMessage);
         builder.addAllStackTraceElements(Arrays.stream(throwable.getStackTrace()).map(StackTraceElement::toString).collect(Collectors.toList()));
-//
-//        if ((throwable.getCause() != null) && (throwable.getCause() != throwable)) {
-//            builder.setCause(this.prepareStackTraceCause(throwable.getCause()));
-//        }
         return builder;
     }
 
@@ -489,13 +433,9 @@ public class ContextExporter implements Loggable {
         ExecutionContext.Builder builder = ExecutionContext.newBuilder();
 
         apply(buildContextValues(executionContext), builder::setContextValues);
-//        forEach(executionContext.suiteContexts, suiteContext -> builder.addSuiteContextIds(suiteContext.getId()));
-//        forEach(executionContext.mergedClassContexts, classContext -> builder.addMergedClassContextIds(classContext.id));
-//        map(executionContext.exitPoints, this::createContextClip, builder::addAllExitPoints);
-//        map(executionContext.failureAspects, this::createContextClip, builder::addAllFailureAscpects);
-        map(executionContext.runConfig, this::buildRunConfig, builder::setRunConfig);
+        map(executionContext.getRunConfig(), this::buildRunConfig, builder::setRunConfig);
         executionContext.readExclusiveSessionContexts().forEach(sessionContext -> builder.addExclusiveSessionContextIds(sessionContext.getId()));
-        apply(executionContext.estimatedTestMethodCount, builder::setEstimatedTestsCount);
+        apply(executionContext.getEstimatedTestMethodCount(), builder::setEstimatedTestsCount);
         executionContext.readMethodContextLessLogs().forEach(logEvent -> {
             Optional<LogMessage.Builder> optional = Optional.ofNullable(buildLogMessage(logEvent));
             optional.ifPresent(builder::addLogMessages);
@@ -503,6 +443,15 @@ public class ContextExporter implements Loggable {
         builder.putFailureCorridorLimits(FailureCorridorValue.FCV_HIGH_VALUE, FailureCorridor.getAllowedTestFailuresHIGH());
         builder.putFailureCorridorLimits(FailureCorridorValue.FCV_MID_VALUE, FailureCorridor.getAllowedTestFailuresMID());
         builder.putFailureCorridorLimits(FailureCorridorValue.FCV_LOW_VALUE, FailureCorridor.getAllowedTestFailuresLOW());
+
+        TestStatusController testStatusController = TesterraListener.getTestStatusController();
+        Stream.of(FailureCorridor.High.class, FailureCorridor.Mid.class, FailureCorridor.Low.class).forEach(failureCorridorClass -> {
+            int count = testStatusController.getFailureCorridorCount(failureCorridorClass);
+            if (count > 0) {
+                builder.putFailureCorridorCounts(mapFailureCorridorClass(failureCorridorClass).getNumber(), count);
+            }
+        });
+
         return builder;
     }
 //

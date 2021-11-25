@@ -25,7 +25,6 @@ import {AbstractViewModel} from "../abstract-view-model";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {StatusConverter} from "../../services/status-converter";
 import {FailureAspectStatistics} from "../../services/statistic-models";
-import './failure-aspects.scss'
 import {data} from "../../services/report-model";
 import ResultStatusType = data.ResultStatusType;
 
@@ -63,7 +62,7 @@ export class FailureAspects extends AbstractViewModel {
         this._filteredFailureAspects = [];
         this._loading = true;
         this._statistics.getExecutionStatistics().then(executionStatistics => {
-            this._filteredFailureAspects = executionStatistics.failureAspectStatistics
+            this._filteredFailureAspects = executionStatistics.uniqueFailureAspects
                 .filter(failureAspectStatistics => {
                     if (this._showExpectedFailed) {
                         return true;

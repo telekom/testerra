@@ -30,6 +30,9 @@ import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.openqa.selenium.Dimension;
 
 public class DesktopWebDriverRequest extends AbstractWebDriverRequest implements Loggable, Serializable {
 
@@ -72,5 +75,30 @@ public class DesktopWebDriverRequest extends AbstractWebDriverRequest implements
     @Override
     public Optional<URL> getServerUrl() {
         return Optional.ofNullable(this.getSeleniumServerUrl());
+    }
+
+    public Dimension getWindowSize() {
+        Dimension dimension;
+        String windowSizeProperty = PropertyManager.getProperty(TesterraProperties.WINDOW_SIZE, PropertyManager.getProperty(TesterraProperties.DISPLAY_RESOLUTION));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(windowSizeProperty)) {
+            Pattern pattern = Pattern.compile("(\\d+)x(\\d+)");
+            Matcher matcher = pattern.matcher(windowSizeProperty);
+
+            if (matcher.find()) {
+                int width = Integer.parseInt(matcher.group(1));
+                int height = Integer.parseInt(matcher.group(2));
+                dimension = new Dimension(width, height);
+            } else {
+                dimension = getDefaultDimension();
+                log().error(String.format("Unable to parse property %s=%s, falling back to default: %s", TesterraProperties.WINDOW_SIZE, windowSizeProperty, dimension));
+            }
+        } else {
+            dimension = getDefaultDimension();
+        }
+        return dimension;
+    }
+
+    private Dimension getDefaultDimension() {
+        return new Dimension(1920, 1080);
     }
 }

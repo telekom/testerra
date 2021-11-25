@@ -52,6 +52,7 @@ message ExecutionContext {
     repeated LogMessage log_messages = 14;
     int32 estimated_tests_count = 15;
     map<int32, int32> failure_corridor_limits = 16;
+    map<int32, int32> failure_corridor_counts = 17;
 }
 
 //message ContextClip {
@@ -75,11 +76,11 @@ message MethodContext {
     string execution_context_id = 16 [deprecated = true];
 //    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
 //    repeated ErrorContext collected_assertions = 18 [deprecated = true];
-    repeated string infos = 19;
+    repeated string infos = 19 [deprecated = true];
     string priority_message = 21;
     repeated string related_method_context_ids = 23;
     repeated string depends_on_method_context_ids = 24;
-    ErrorContext error_context = 25;
+    ErrorContext error_context = 25 [deprecated = true];
     repeated TestStep test_steps = 26;
 
     string test_context_id = 27 [deprecated = true];
@@ -130,7 +131,8 @@ message TestStepActionEntry {
         ClickPathEvent click_path_event = 1;
         string screenshot_id = 2;
         LogMessage log_message = 3;
-        ErrorContext assertion = 4;
+        ErrorContext assertion = 4 [deprecated = true];
+        ErrorContext error_context = 5;
     }
 }
 
@@ -173,8 +175,8 @@ message ErrorContext {
 //    string error_fingerprint = 6 [deprecated = true];
     ScriptSource script_source = 7;
 //    ScriptSource execution_object_source = 8 [deprecated = true];
-    string ticketId = 9;
-    string description = 10;
+    string ticketId = 9 [deprecated = true];
+    string description = 10 [deprecated = true];
     repeated StackTraceCause stack_trace = 11;
     bool optional = 12;
 }
@@ -269,7 +271,7 @@ message File {
 enum ResultStatusType {
     RST_NOT_SET = 0;
     NO_RUN = 1; // default status when entity is spawned, basically an illegal end status
-    INFO = 2; // info status, not representative
+    INFO = 2 [deprecated = true]; // info status, not representative
     SKIPPED = 3; // skipped
 
     PASSED = 4; // passed status, without any issue
@@ -282,4 +284,5 @@ enum ResultStatusType {
 
     PASSED_RETRY = 11; // passed after a retry
     MINOR_RETRY = 12 [deprecated = true]; // minor after a retry
+    REPAIRED = 13; // passed with fail annotation
 }

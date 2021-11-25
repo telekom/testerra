@@ -354,6 +354,7 @@ export const data = $root.data = (() => {
          * @property {Array.<data.ILogMessage>|null} [logMessages] ExecutionContext logMessages
          * @property {number|null} [estimatedTestsCount] ExecutionContext estimatedTestsCount
          * @property {Object.<string,number>|null} [failureCorridorLimits] ExecutionContext failureCorridorLimits
+         * @property {Object.<string,number>|null} [failureCorridorCounts] ExecutionContext failureCorridorCounts
          */
 
         /**
@@ -369,6 +370,7 @@ export const data = $root.data = (() => {
             this.exclusiveSessionContextIds = [];
             this.logMessages = [];
             this.failureCorridorLimits = {};
+            this.failureCorridorCounts = {};
             if (p)
                 for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                     if (p[ks[i]] != null)
@@ -464,6 +466,14 @@ export const data = $root.data = (() => {
         ExecutionContext.prototype.failureCorridorLimits = $util.emptyObject;
 
         /**
+         * ExecutionContext failureCorridorCounts.
+         * @member {Object.<string,number>} failureCorridorCounts
+         * @memberof data.ExecutionContext
+         * @instance
+         */
+        ExecutionContext.prototype.failureCorridorCounts = $util.emptyObject;
+
+        /**
          * Decodes an ExecutionContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.ExecutionContext
@@ -538,6 +548,28 @@ export const data = $root.data = (() => {
                         }
                     }
                     m.failureCorridorLimits[k] = value;
+                    break;
+                case 17:
+                    if (m.failureCorridorCounts === $util.emptyObject)
+                        m.failureCorridorCounts = {};
+                    var c2 = r.uint32() + r.pos;
+                    k = 0;
+                    value = 0;
+                    while (r.pos < c2) {
+                        var tag2 = r.uint32();
+                        switch (tag2 >>> 3) {
+                        case 1:
+                            k = r.int32();
+                            break;
+                        case 2:
+                            value = r.int32();
+                            break;
+                        default:
+                            r.skipType(tag2 & 7);
+                            break;
+                        }
+                    }
+                    m.failureCorridorCounts[k] = value;
                     break;
                 default:
                     r.skipType(t & 7);
@@ -1245,6 +1277,7 @@ export const data = $root.data = (() => {
          * @property {string|null} [screenshotId] TestStepActionEntry screenshotId
          * @property {data.ILogMessage|null} [logMessage] TestStepActionEntry logMessage
          * @property {data.IErrorContext|null} [assertion] TestStepActionEntry assertion
+         * @property {data.IErrorContext|null} [errorContext] TestStepActionEntry errorContext
          */
 
         /**
@@ -1294,17 +1327,25 @@ export const data = $root.data = (() => {
          */
         TestStepActionEntry.prototype.assertion = null;
 
+        /**
+         * TestStepActionEntry errorContext.
+         * @member {data.IErrorContext|null|undefined} errorContext
+         * @memberof data.TestStepActionEntry
+         * @instance
+         */
+        TestStepActionEntry.prototype.errorContext = null;
+
         // OneOf field names bound to virtual getters and setters
         let $oneOfFields;
 
         /**
          * TestStepActionEntry entry.
-         * @member {"clickPathEvent"|"screenshotId"|"logMessage"|"assertion"|undefined} entry
+         * @member {"clickPathEvent"|"screenshotId"|"logMessage"|"assertion"|"errorContext"|undefined} entry
          * @memberof data.TestStepActionEntry
          * @instance
          */
         Object.defineProperty(TestStepActionEntry.prototype, "entry", {
-            get: $util.oneOfGetter($oneOfFields = ["clickPathEvent", "screenshotId", "logMessage", "assertion"]),
+            get: $util.oneOfGetter($oneOfFields = ["clickPathEvent", "screenshotId", "logMessage", "assertion", "errorContext"]),
             set: $util.oneOfSetter($oneOfFields)
         });
 
@@ -1337,6 +1378,9 @@ export const data = $root.data = (() => {
                     break;
                 case 4:
                     m.assertion = $root.data.ErrorContext.decode(r, r.uint32());
+                    break;
+                case 5:
+                    m.errorContext = $root.data.ErrorContext.decode(r, r.uint32());
                     break;
                 default:
                     r.skipType(t & 7);
@@ -2629,6 +2673,7 @@ export const data = $root.data = (() => {
      * @property {number} FAILED_EXPECTED=10 FAILED_EXPECTED value
      * @property {number} PASSED_RETRY=11 PASSED_RETRY value
      * @property {number} MINOR_RETRY=12 MINOR_RETRY value
+     * @property {number} REPAIRED=13 REPAIRED value
      */
     data.ResultStatusType = (function() {
         const valuesById = {}, values = Object.create(valuesById);
@@ -2644,6 +2689,7 @@ export const data = $root.data = (() => {
         values[valuesById[10] = "FAILED_EXPECTED"] = 10;
         values[valuesById[11] = "PASSED_RETRY"] = 11;
         values[valuesById[12] = "MINOR_RETRY"] = 12;
+        values[valuesById[13] = "REPAIRED"] = 13;
         return values;
     })();
 

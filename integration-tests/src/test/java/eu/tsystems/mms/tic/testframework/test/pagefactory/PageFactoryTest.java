@@ -23,6 +23,8 @@
 package eu.tsystems.mms.tic.testframework.test.pagefactory;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.BasePage;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.BasePage2016;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExistingElement;
@@ -36,12 +38,17 @@ import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.ResponsiveWeb
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.ResponsiveWebTestPage_Min_600px;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
+import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
+import eu.tsystems.mms.tic.testframework.report.Report;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.UnspecificWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
+import java.io.File;
 import java.net.MalformedURLException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -145,5 +152,53 @@ public class PageFactoryTest extends AbstractTestSitesTest {
 
         final PageWithExistingElement pageWithExistingElement = PageFactory.create(PageWithExistingElement.class, driver);
         final PageWithNotExistingElementWithoutCheckPage pageWithNotExistingElement = PageFactory.checkNot(PageWithNotExistingElementWithoutCheckPage.class, driver);
+    }
+
+    @Test
+    public void test_pageLoadedCallback() {
+        WebDriver webDriver = getWebDriver();
+        AtomicBoolean atomicBoolean = new AtomicBoolean();
+
+        Page testPage = new Page(webDriver) {
+            @Override
+            protected void pageLoaded() {
+                super.pageLoaded();
+                atomicBoolean.set(true);
+            }
+        };
+
+        testPage.checkPage();
+        Assert.assertTrue(atomicBoolean.get());
+    }
+
+    @Test
+    public void testT08_CheckPage_ScreenshotOnLoad() {
+
+        final File reportScreenshotDirectory = TesterraListener.getReport().getReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
+        Assert.assertNotNull(reportScreenshotDirectory);
+
+        final WebDriver driver = WebDriverManager.getWebDriver();
+
+        final int fileCountBeforeAction = getNumFiles(reportScreenshotDirectory);
+        PropertyManager.getTestLocalProperties().setProperty(TesterraProperties.SCREENSHOT_ON_PAGELOAD, "false");
+        new PageWithExistingElement(driver);
+
+        final int fileCountAfterCheckPageWithoutScreenshot = getNumFiles(reportScreenshotDirectory);
+        Assert.assertEquals(fileCountBeforeAction, fileCountAfterCheckPageWithoutScreenshot, "Record Screenshot count not altered.");
+
+        PropertyManager.getTestLocalProperties().setProperty(TesterraProperties.SCREENSHOT_ON_PAGELOAD, "true");
+        new PageWithExistingElement(driver);
+        final int fileCountAfterCheckPageWithScreenshot = getNumFiles(reportScreenshotDirectory);
+
+        Assert.assertNotEquals(fileCountAfterCheckPageWithoutScreenshot, fileCountAfterCheckPageWithScreenshot, "Record Screenshot count altered.");
+    }
+
+    private int getNumFiles(File directory) {
+        File[] files = directory.listFiles();
+        if (files == null) {
+            return 0;
+        } else {
+            return files.length;
+        }
     }
 }

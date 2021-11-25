@@ -27,7 +27,7 @@ import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
@@ -36,11 +36,7 @@ import org.testng.SkipException;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -52,42 +48,15 @@ import java.util.stream.Stream;
  *
  * @author pele
  */
-public class ClassContext extends AbstractContext implements SynchronizableContext, Loggable {
-
-    /**
-     * @deprecated Use {@link #readMethodContexts()} instead
-     */
-    @Deprecated
-    public final Queue<MethodContext> methodContexts = new ConcurrentLinkedQueue<>();
-    private Class testClass;
+public class ClassContext extends AbstractContext implements Loggable {
+    private final Queue<MethodContext> methodContexts = new ConcurrentLinkedQueue<>();
+    private final Class testClass;
     private TestClassContext testClassContext = null;
 
     public ClassContext(Class testClass, TestContext testContext) {
         this.testClass = testClass;
-        this.parentContext = testContext;
-        this.name = testClass.getSimpleName();
-    }
-
-    @Override
-    public String getName() {
-        return getTestClassContext().map(TestClassContext::name).orElseGet(super::getName);
-    }
-
-    @Deprecated
-    public String getFullClassName() {
-        return getTestClass().getName();
-    }
-
-    @Deprecated
-    public String getSimpleClassName() {
-        return getTestClass().getSimpleName();
-    }
-
-    /**
-     * @deprecated Use {@link #readMethodContexts()} instead
-     */
-    public Collection<MethodContext> getMethodContexts() {
-        return methodContexts;
+        setParentContext(testContext);
+        setName(testClass.getSimpleName());
     }
 
     public Stream<MethodContext> readMethodContexts() {
@@ -106,7 +75,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
     }
 
     public TestContext getTestContext() {
-        return (TestContext) this.parentContext;
+        return (TestContext) this.getParentContext();
     }
 
     public Class getTestClass() {
@@ -208,67 +177,8 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
 
     public MethodContext safeAddSkipMethod(ITestResult testResult) {
         MethodContext methodContext = getMethodContext(testResult);
-        methodContext.getErrorContext().setThrowable(null, new SkipException("Skipped"));
-        methodContext.setStatus(TestStatusController.Status.SKIPPED);
+        methodContext.addError(new SkipException("Skipped"));
+        methodContext.setStatus(Status.SKIPPED);
         return methodContext;
-    }
-
-    @Override
-    public TestStatusController.Status getStatus() {
-        return getStatusFromContexts(getRepresentationalMethods());
-    }
-
-    public Stream<MethodContext> getRepresentationalMethods() {
-        return methodContexts.stream().filter(MethodContext::isRepresentationalTestMethod);
-        //        AbstractContext[] contexts = methodContexts.stream().filter(MethodContext::isRepresentationalTestMethod);
-        //        return contexts;
-    }
-
-    public Map<TestStatusController.Status, Integer> createStats() {
-        Map<TestStatusController.Status, Integer> counts = new LinkedHashMap<>();
-        Arrays.stream(TestStatusController.Status.values()).forEach(status -> counts.put(status, 0));
-        return counts;
-    }
-
-    public void addToStats(Map<TestStatusController.Status, Integer> stats, MethodContext methodContext) {
-        TestStatusController.Status status = methodContext.getStatus();
-        int value = stats.getOrDefault(status, 0);
-        stats.put(status, value + 1);
-    }
-
-    /**
-     * Used in dashboard.vm and methodsDashboard.vm
-     */
-    @Deprecated
-    public Map<TestStatusController.Status, Integer> getMethodStats(boolean includeTestMethods, boolean includeConfigMethods) {
-        Map<TestStatusController.Status, Integer> counts = createStats();
-
-        methodContexts.stream()
-                .filter(mc -> (includeTestMethods && mc.isTestMethod()) || (includeConfigMethods && mc.isConfigMethod()))
-                .forEach(methodContext -> {
-                    addToStats(counts, methodContext);
-                });
-
-        return counts;
-    }
-
-    /**
-     * Used in methodsDashboard.vm only
-     */
-    @Deprecated
-    public List<MethodContext> getTestMethodsWithStatus(TestStatusController.Status status) {
-        List<MethodContext> methodContexts = new LinkedList<>();
-        this.methodContexts.forEach(methodContext -> {
-            if (methodContext.isTestMethod() && status == methodContext.getStatus()) {
-                methodContexts.add(methodContext);
-            }
-        });
-        return methodContexts;
-    }
-
-    @Deprecated
-    public void updateMultiContextualName() {
-        TestContext testContext = getTestContext();
-        this.name = this.getName() + "_" + testContext.getSuiteContext().getName() + "_" + testContext.getName();
     }
 }

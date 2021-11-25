@@ -31,7 +31,6 @@ import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.enums.Position;
 import eu.tsystems.mms.tic.testframework.exceptions.SetupException;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
-import eu.tsystems.mms.tic.testframework.internal.Defaults;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
@@ -42,8 +41,8 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.sikuli.SikuliWebDriver;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
+import eu.tsystems.mms.tic.testframework.utils.DefaultCapabilityUtils;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
@@ -127,10 +126,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 StopWatch.startPageLoad(driver);
                 driver.get(baseUrl.toString());
             } catch (Exception e) {
-                if (StringUtils.containsAll(e.getMessage(), true, "Reached error page", "connectionFailure")) {
-                    throw new RuntimeException("Could not start driver session, because of unreachable url: " + baseUrl, e);
-                }
-                throw e;
+                log().error("Unable to open baseUrl", e);
             }
         });
         return driver;
@@ -228,10 +224,10 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 }
             } catch (Throwable t1) {
                 log().error("Could not maximize window", t1);
-                setWindowSizeBasedOnDisplayResolution(window, browser);
+                setWindowSizeBasedOnDisplayResolution(window, request);
             }
         } else {
-            setWindowSizeBasedOnDisplayResolution(window, browser);
+            setWindowSizeBasedOnDisplayResolution(window, request);
         }
 
         if (!Browsers.safari.equalsIgnoreCase(browser)) {
@@ -252,33 +248,28 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         }
     }
 
-    private void setWindowSizeBasedOnDisplayResolution(WebDriver.Window window, String browser) {
-        log().debug("Trying to set window size to: " + Defaults.DISPLAY_RESOLUTION);
-        String[] split = Defaults.DISPLAY_RESOLUTION.split("x");
-        int width = Integer.parseInt(split[0]);
-        int height = Integer.parseInt(split[1]);
-        try {
-            window.setSize(new Dimension(width, height));
-        } catch (Throwable t2) {
-            log().error("Could not set window size", t2);
+    private void setWindowSize(WebDriver.Window window, Dimension dimension) {
+        window.setPosition(new Point(0, 0));
+        window.setSize(dimension);
+    }
 
-            if (Browsers.edge.equals(browser)) {
-                log().debug("Edge Browser was requested, trying a second workaround");
+    private void setWindowSizeBasedOnDisplayResolution(WebDriver.Window window, DesktopWebDriverRequest request) {
+        Dimension dimension = request.getWindowSize();
+
+        try {
+            setWindowSize(window, dimension);
+        } catch (Throwable t) {
+            log().error("Could not set window size", t);
+
+            if (Browsers.edge.equals(request.getBrowser())) {
+                log().debug("Edge Browser was requested, trying workaround");
 
                 Timer timer = new Timer(500, 5000);
                 ThrowablePackedResponse<Object> response = timer.executeSequence(new Timer.Sequence<Object>() {
                     @Override
                     public void run() throws Throwable {
                         setSkipThrowingException(true);
-                        log().debug("Trying setPosition() and setSize()");
-                        try {
-                            window.setPosition(new Point(0, 0));
-                            window.setSize(new Dimension(width, height));
-                            log().debug("Yup, success!");
-                        } catch (Exception e) {
-                            log().warn("Nope. Got error: " + e.getMessage());
-                            throw e;
-                        }
+                        setWindowSize(window, dimension);
                     }
                 });
 
@@ -427,7 +418,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 throw new SystemException("Browser must be set through SystemProperty 'browser' or in test.properties file! + is: " + browser);
         }
 
-        Map<String, Object> cleanedCapsMap = new WebDriverCapabilityLogHelper().clean(finalCapabilities);
+        Map<String, Object> cleanedCapsMap = new DefaultCapabilityUtils().clean(finalCapabilities);
         sessionContext.setCapabilities(cleanedCapsMap);
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();

@@ -104,14 +104,11 @@ public final class WebDriverManagerUtils {
      */
     protected static void quitWebDriverSession(final WebDriver driver) {
         try {
-            if (driver == null) {
-                LOGGER.info("No WebDriver found. Maybe it has already been closed.");
-            } else {
-                driver.quit();
-                removeCachedBrowserInformation(driver);
-            }
+            driver.quit();
         } catch (final Throwable e) {
-            LOGGER.info("WebDriver could not be quit. May someone did before.", e);
+            LOGGER.warn("WebDriver could not be quit. May someone did before.", e);
+        } finally {
+            removeCachedBrowserInformation(driver);
         }
     }
 

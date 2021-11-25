@@ -24,58 +24,36 @@ package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
 
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
-import eu.tsystems.mms.tic.testframework.info.ReportInfo;
-import eu.tsystems.mms.tic.testframework.internal.CollectedAssertions;
-import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
+import eu.tsystems.mms.tic.testframework.events.TestStatusUpdateEvent;
+import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.DefaultFormatter;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
-import eu.tsystems.mms.tic.testframework.utils.SourceUtils;
-import java.util.Map;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 
 public class MethodEndWorker implements MethodEndEvent.Listener, Loggable {
-
     private final Formatter formatter = new DefaultFormatter();
 
     @Subscribe
     @Override
     public void onMethodEnd(MethodEndEvent event) {
-        // clear current result
-        ExecutionContextController.clearCurrentTestResult();
-        MethodContext methodContext = event.getMethodContext();
         ITestResult testResult = event.getTestResult();
         ITestNGMethod testMethod = event.getTestMethod();
+        MethodContext methodContext = event.getMethodContext();
 
-        StringBuilder sb = new StringBuilder();
+        String msg = String.format("%s %s", methodContext.getStatus().title, formatter.toString(testMethod));
         if (event.isFailed()) {
-            sb
-                    .append(TestStatusController.Status.FAILED.title)
-                    .append(" ")
-                    .append(formatter.toString(testMethod));
-            log().error(sb.toString(), testResult.getThrowable());
-        }
-        else if (event.getTestResult().isSuccess()) {
-            sb
-                    .append(TestStatusController.Status.PASSED.title)
-                    .append(" ")
-                    .append(formatter.toString(testMethod));
-            log().info(sb.toString(), testResult.getThrowable());
-        }
-        else if (event.isSkipped()) {
-            sb
-                    .append(TestStatusController.Status.SKIPPED.title)
-                    .append(" ")
-                    .append(formatter.toString(testMethod));
-            log().warn(sb.toString(), testResult.getThrowable());
+            log().error(msg, testResult.getThrowable());
+        } else if (event.getTestResult().isSuccess()) {
+            log().info(msg, testResult.getThrowable());
+        } else if (event.isSkipped()) {
+            log().warn(msg, testResult.getThrowable());
         }
 
         if (testMethod.isTest()) {
@@ -83,26 +61,14 @@ public class MethodEndWorker implements MethodEndEvent.Listener, Loggable {
             PropertyManager.clearThreadlocalProperties();
         }
 
-        try {
-            /*
-             * Read stored method infos, publish to method container and clean
-             */
-            ReportInfo.MethodInfo methodInfo = ReportInfo.getCurrentMethodInfo();
-            if (methodInfo != null) {
-                Map<String, String> infos = methodInfo.getInfos();
-                for (String key : infos.keySet()) {
-                    methodContext.infos.add(key + " = " + infos.get(key));
-                }
-            }
-        } finally {
-            TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(event.getMethodContext()));
-
-            // clear method infos
-            ReportInfo.clearCurrentMethodInfo();
-
-            // gc
-            //System.gc();
+        /**
+         * When the test did not fail, then we announce the test status to update immediately.
+         * Otherwise, we wait for the {@link RetryAnalyzer} or {@link TesterraListener#onTestSkipped(ITestResult)} to update it.
+         */
+        if (methodContext.getStatus() != Status.FAILED) {
+            TesterraListener.getEventBus().post(new TestStatusUpdateEvent(methodContext));
         }
 
+        ExecutionContextController.clearCurrentTestResult();
     }
 }

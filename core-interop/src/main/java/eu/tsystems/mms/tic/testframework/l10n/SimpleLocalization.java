@@ -21,14 +21,29 @@
  */
 package eu.tsystems.mms.tic.testframework.l10n;
 
+import java.util.Locale;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 final public class SimpleLocalization {
-    private static final LocalizedBundle bundle = new LocalizedBundle("lang");
+    public static final String BUNDLE_NAME = "lang";
+    private static LocalizedBundle bundle;
+    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleLocalization.class);
 
     public static String getText(final String label) {
-        return bundle.getString(label);
+        return getDefaultBundle().getString(label);
     }
 
-    public LocalizedBundle getBundle() {
+    public static LocalizedBundle getDefaultBundle() {
+        if (bundle == null) {
+            setDefault(Locale.getDefault());
+        }
+        return bundle;
+    }
+
+    public static LocalizedBundle setDefault(Locale locale) {
+        LOGGER.info("Change default locale to: " + locale);
+        bundle = new LocalizedBundle(BUNDLE_NAME, locale);
         return bundle;
     }
 }

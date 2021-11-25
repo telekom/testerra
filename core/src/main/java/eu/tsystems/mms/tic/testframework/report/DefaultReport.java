@@ -28,7 +28,10 @@ import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import java.io.File;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.Arrays;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DefaultReport implements Report, Loggable {
 
@@ -36,6 +39,7 @@ public class DefaultReport implements Report, Loggable {
     private final String baseDir = PropertyManager.getProperty(TesterraProperties.REPORTDIR, "test-report");
     private final File finalReportDirectory = new File(baseDir);
     private final File tempReportDirectory;
+    private final ConcurrentHashMap<Class<? extends Annotation>, AnnotationConverter> annotationConverters = new ConcurrentHashMap<>();
 
     public DefaultReport() {
         FileUtils fileUtils = new FileUtils();
@@ -59,7 +63,7 @@ public class DefaultReport implements Report, Loggable {
                     break;
             }
         } catch (IOException e) {
-            log().error(e.getMessage());
+            log().error("Could not add file", e);
         }
         return new File(directory, sourceFile.getName());
     }
@@ -87,9 +91,9 @@ public class DefaultReport implements Report, Loggable {
             screenshot.setFile(addFile(screenshot.getScreenshotFile(), screenshotsDirectory, fileMode));
         }
 
-        if (screenshot.getPageSourceFile() != null) {
-            screenshot.setPageSourceFile(addFile(screenshot.getPageSourceFile(), screenshotsDirectory, fileMode));
-        }
+        screenshot.getPageSourceFile().ifPresent(file -> {
+            screenshot.setPageSourceFile(addFile(file, screenshotsDirectory, fileMode));
+        });
     }
 
     @Override
@@ -100,7 +104,7 @@ public class DefaultReport implements Report, Loggable {
 
     @Override
     public Screenshot provideScreenshot(File file, FileMode fileMode) {
-        Screenshot screenshot = new Screenshot(file, null);
+        Screenshot screenshot = new Screenshot(file);
         addScreenshotFiles(screenshot, fileMode);
         return screenshot;
     }
@@ -143,5 +147,17 @@ public class DefaultReport implements Report, Loggable {
             }
         }
         return absFilePath;
+    }
+
+    public void registerAnnotationConverter(Class<? extends Annotation> annotationClass, AnnotationConverter annotationExporter) {
+        annotationConverters.put(annotationClass, annotationExporter);
+    }
+
+    public void unregisterAnnotationConverter(Class<? extends Annotation> annotationClass) {
+        annotationConverters.remove(annotationClass);
+    }
+
+    public Optional<AnnotationConverter> getAnnotationConverter(Annotation annotation) {
+        return Optional.ofNullable(annotationConverters.get(annotation.annotationType()));
     }
 }

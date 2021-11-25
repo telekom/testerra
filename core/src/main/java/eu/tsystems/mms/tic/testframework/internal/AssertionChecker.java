@@ -22,7 +22,6 @@
  package eu.tsystems.mms.tic.testframework.internal;
 
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
-import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -52,8 +51,7 @@ public final class AssertionChecker {
 
     public static void storeNonFunctionalInfo(Throwable throwable) {
         LOGGER.warn("Found non-functional error", throwable);
-        MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-        if (methodContext != null) {
+        ExecutionContextController.getMethodContextForThread().ifPresent(methodContext -> {
             // add nf info
             methodContext.addOptionalAssertion(throwable);
 
@@ -62,8 +60,6 @@ public final class AssertionChecker {
             if (screenshots != null) {
                 methodContext.addScreenshots(screenshots.stream());
             }
-
-            // not collecting a video here
-        }
+        });
     }
 }

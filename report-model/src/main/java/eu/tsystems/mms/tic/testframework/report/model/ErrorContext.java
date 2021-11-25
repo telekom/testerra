@@ -180,11 +180,11 @@ private static final long serialVersionUID = 0L;
    *    ScriptSource execution_object_source = 8 [deprecated = true];
    * </pre>
    *
-   * <code>string ticketId = 9;</code>
+   * <code>string ticketId = 9 [deprecated = true];</code>
    * @return The ticketId.
    */
   @java.lang.Override
-  public java.lang.String getTicketId() {
+  @java.lang.Deprecated public java.lang.String getTicketId() {
     java.lang.Object ref = ticketId_;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
@@ -201,11 +201,11 @@ private static final long serialVersionUID = 0L;
    *    ScriptSource execution_object_source = 8 [deprecated = true];
    * </pre>
    *
-   * <code>string ticketId = 9;</code>
+   * <code>string ticketId = 9 [deprecated = true];</code>
    * @return The bytes for ticketId.
    */
   @java.lang.Override
-  public com.google.protobuf.ByteString
+  @java.lang.Deprecated public com.google.protobuf.ByteString
       getTicketIdBytes() {
     java.lang.Object ref = ticketId_;
     if (ref instanceof java.lang.String) {
@@ -222,11 +222,11 @@ private static final long serialVersionUID = 0L;
   public static final int DESCRIPTION_FIELD_NUMBER = 10;
   private volatile java.lang.Object description_;
   /**
-   * <code>string description = 10;</code>
+   * <code>string description = 10 [deprecated = true];</code>
    * @return The description.
    */
   @java.lang.Override
-  public java.lang.String getDescription() {
+  @java.lang.Deprecated public java.lang.String getDescription() {
     java.lang.Object ref = description_;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
@@ -239,11 +239,11 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string description = 10;</code>
+   * <code>string description = 10 [deprecated = true];</code>
    * @return The bytes for description.
    */
   @java.lang.Override
-  public com.google.protobuf.ByteString
+  @java.lang.Deprecated public com.google.protobuf.ByteString
       getDescriptionBytes() {
     java.lang.Object ref = description_;
     if (ref instanceof java.lang.String) {
@@ -920,10 +920,10 @@ private static final long serialVersionUID = 0L;
      *    ScriptSource execution_object_source = 8 [deprecated = true];
      * </pre>
      *
-     * <code>string ticketId = 9;</code>
+     * <code>string ticketId = 9 [deprecated = true];</code>
      * @return The ticketId.
      */
-    public java.lang.String getTicketId() {
+    @java.lang.Deprecated public java.lang.String getTicketId() {
       java.lang.Object ref = ticketId_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
@@ -940,10 +940,10 @@ private static final long serialVersionUID = 0L;
      *    ScriptSource execution_object_source = 8 [deprecated = true];
      * </pre>
      *
-     * <code>string ticketId = 9;</code>
+     * <code>string ticketId = 9 [deprecated = true];</code>
      * @return The bytes for ticketId.
      */
-    public com.google.protobuf.ByteString
+    @java.lang.Deprecated public com.google.protobuf.ByteString
         getTicketIdBytes() {
       java.lang.Object ref = ticketId_;
       if (ref instanceof String) {
@@ -961,11 +961,11 @@ private static final long serialVersionUID = 0L;
      *    ScriptSource execution_object_source = 8 [deprecated = true];
      * </pre>
      *
-     * <code>string ticketId = 9;</code>
+     * <code>string ticketId = 9 [deprecated = true];</code>
      * @param value The ticketId to set.
      * @return This builder for chaining.
      */
-    public Builder setTicketId(
+    @java.lang.Deprecated public Builder setTicketId(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
@@ -980,10 +980,10 @@ private static final long serialVersionUID = 0L;
      *    ScriptSource execution_object_source = 8 [deprecated = true];
      * </pre>
      *
-     * <code>string ticketId = 9;</code>
+     * <code>string ticketId = 9 [deprecated = true];</code>
      * @return This builder for chaining.
      */
-    public Builder clearTicketId() {
+    @java.lang.Deprecated public Builder clearTicketId() {
       
       ticketId_ = getDefaultInstance().getTicketId();
       onChanged();
@@ -994,11 +994,11 @@ private static final long serialVersionUID = 0L;
      *    ScriptSource execution_object_source = 8 [deprecated = true];
      * </pre>
      *
-     * <code>string ticketId = 9;</code>
+     * <code>string ticketId = 9 [deprecated = true];</code>
      * @param value The bytes for ticketId to set.
      * @return This builder for chaining.
      */
-    public Builder setTicketIdBytes(
+    @java.lang.Deprecated public Builder setTicketIdBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
@@ -1012,10 +1012,10 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object description_ = "";
     /**
-     * <code>string description = 10;</code>
+     * <code>string description = 10 [deprecated = true];</code>
      * @return The description.
      */
-    public java.lang.String getDescription() {
+    @java.lang.Deprecated public java.lang.String getDescription() {
       java.lang.Object ref = description_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
@@ -1028,10 +1028,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string description = 10;</code>
+     * <code>string description = 10 [deprecated = true];</code>
      * @return The bytes for description.
      */
-    public com.google.protobuf.ByteString
+    @java.lang.Deprecated public com.google.protobuf.ByteString
         getDescriptionBytes() {
       java.lang.Object ref = description_;
       if (ref instanceof String) {
@@ -1045,11 +1045,11 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string description = 10;</code>
+     * <code>string description = 10 [deprecated = true];</code>
      * @param value The description to set.
      * @return This builder for chaining.
      */
-    public Builder setDescription(
+    @java.lang.Deprecated public Builder setDescription(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
@@ -1060,21 +1060,21 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string description = 10;</code>
+     * <code>string description = 10 [deprecated = true];</code>
      * @return This builder for chaining.
      */
-    public Builder clearDescription() {
+    @java.lang.Deprecated public Builder clearDescription() {
       
       description_ = getDefaultInstance().getDescription();
       onChanged();
       return this;
     }
     /**
-     * <code>string description = 10;</code>
+     * <code>string description = 10 [deprecated = true];</code>
      * @param value The bytes for description to set.
      * @return This builder for chaining.
      */
-    public Builder setDescriptionBytes(
+    @java.lang.Deprecated public Builder setDescriptionBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();

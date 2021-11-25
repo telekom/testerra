@@ -23,103 +23,117 @@ package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
 
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.annotations.InfoMethod;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.Status;
+import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
+import eu.tsystems.mms.tic.testframework.report.utils.FailsAnnotationFilter;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import org.testng.ITestNGMethod;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+import org.apache.commons.lang3.StringUtils;
 import org.testng.ITestResult;
 
 public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
 
+    private static final Map<Class<?>, Object> VALIDATOR_SINGLETONS = new ConcurrentHashMap<>();
+
     @Subscribe
     @Override
     public void onMethodEnd(MethodEndEvent event) {
-        Method method = event.getMethod();
         MethodContext methodContext = event.getMethodContext();
         ITestResult testResult = event.getTestResult();
-        ITestNGMethod testMethod = event.getTestMethod();
 
-        // !!! do nothing when state is RETRY (already set from RetryAnalyzer)
-        if (methodContext.getStatus() != TestStatusController.Status.FAILED_RETRIED) {
+        // Handle collected assertions if we have more than one
+        if (testResult.isSuccess() && methodContext.readErrors().anyMatch(ErrorContext::isNotOptional)) {
+            // let the test fail
+            testResult.setStatus(ITestResult.FAILURE);
+            StringBuilder sb = new StringBuilder();
+            sb.append("The following assertions failed:");
+            AtomicInteger i = new AtomicInteger();
+            methodContext.readErrors()
+                    .filter(ErrorContext::isNotOptional)
+                    .forEach(errorContext -> {
+                        i.incrementAndGet();
+                        sb.append("\n").append(i).append(") ").append(errorContext.getThrowable().getMessage());
+                    });
 
-            // in case of info method
-            if (method.isAnnotationPresent(InfoMethod.class) && (event.isSkipped() || testResult.isSuccess())) {
-                TestStatusController.setMethodStatus(methodContext, TestStatusController.Status.INFO, method);
-            } else {
-
-                /*
-                 * method container status and steps
-                 */
-                if (event.isFailed()) {
-
-                    /*
-                     * set throwable
-                     */
-                    Throwable throwable = testResult.getThrowable();
-                    methodContext.getErrorContext().setThrowable(null, throwable);
-
-                    /*
-                     * set status
-                     */
-                    if (testMethod.isTest()) {
-                        Fails fails = testMethod.getConstructorOrMethod().getMethod().getAnnotation(Fails.class);
-                        if (fails != null && !fails.intoReport()) {
-                            // expected failed
-                            TestStatusController.setMethodStatus(methodContext, TestStatusController.Status.FAILED_EXPECTED, method);
-                        } else {
-                            // regular failed
-                            TestStatusController.Status status = TestStatusController.Status.FAILED;
-                            if (methodContext.getNumOptionalAssertions() > 0) {
-                                status = TestStatusController.Status.FAILED_MINOR;
-                            }
-
-                            TestStatusController.setMethodStatus(methodContext, status, method);
-                        }
-                    } else {
-                        TestStatusController.setMethodStatus(methodContext, TestStatusController.Status.FAILED, method);
-                    }
-
-                    /*
-                     * Enhance step infos
-                     */
-                    TestStep failedStep = methodContext.getCurrentTestStep();
-                    methodContext.setFailedStep(failedStep);
-//                    String msg = "";
-//                    String readableMessage = methodContext.errorContext().getReadableErrorMessage();
-//                    if (!StringUtils.isStringEmpty(readableMessage)) {
-//                        msg += readableMessage;
-//                    }
-//
-//                    String additionalErrorMessage = methodContext.errorContext().getAdditionalErrorMessage();
-//                    if (!StringUtils.isStringEmpty(additionalErrorMessage)) {
-//                        msg += additionalErrorMessage;
-//                    }
-//                    failedStep.getCurrentTestStepAction().addFailingLogMessage(msg);
-                } else if (testResult.isSuccess()) {
-                    TestStatusController.Status status = TestStatusController.Status.PASSED;
-
-                    boolean hasOptionalAssertion = methodContext.getNumOptionalAssertions() > 0;
-
-                    // is it a retried test?
-                    if (RetryAnalyzer.hasMethodBeenRetried(methodContext)) {
-                        status = TestStatusController.Status.PASSED_RETRY;
-                        if (hasOptionalAssertion) {
-                            status = TestStatusController.Status.MINOR_RETRY;
-                        }
-                    } else if (hasOptionalAssertion) {
-                        status = TestStatusController.Status.MINOR;
-                    }
-
-                    // set status
-                    TestStatusController.setMethodStatus(methodContext, status, method);
-                } else if (event.isSkipped()) {
-                    TestStatusController.setMethodStatus(methodContext, TestStatusController.Status.SKIPPED, method);
-                }
+            AssertionError testMethodContainerError = new AssertionError(sb.toString());
+            testResult.setThrowable(testMethodContainerError);
+        } else {
+            Throwable throwable = testResult.getThrowable();
+            if (throwable != null) {
+                methodContext.addError(throwable);
             }
+        }
+
+        /*
+         * method container status and steps
+         */
+        if (event.isFailed()) {
+            methodContext.setStatus(Status.FAILED);
+
+            /**
+             * Validate the {@link Fails} annotation
+             */
+            Optional<Fails> failsAnnotation = methodContext.getFailsAnnotation();
+            failsAnnotation.ifPresent(fails -> {
+                Boolean isFailsAnnotationValid = false;
+
+                if (!fails.intoReport()) {
+                    String validatorMethodName = fails.validator();
+                    if (StringUtils.isNotBlank(validatorMethodName)) {
+                        try {
+                            Object validatorInstance = getValidatorInstance(fails).orElse(event.getTestMethod().getInstance());
+                            Method validatorMethod = validatorInstance.getClass().getMethod(validatorMethodName, MethodContext.class);
+                            isFailsAnnotationValid = (Boolean) validatorMethod.invoke(validatorInstance, methodContext);
+                        } catch (Throwable t) {
+                            methodContext.addError(t);
+                        }
+                    } else if (fails.validFor().length > 0){
+                        isFailsAnnotationValid = FailsAnnotationFilter.isFailsAnnotationValid(fails.validFor());
+                    } else {
+                        isFailsAnnotationValid = true;
+                    }
+                }
+                if (isFailsAnnotationValid) {
+                    methodContext.setStatus(Status.FAILED_EXPECTED);
+                }
+            });
+            TestStep failedStep = methodContext.getCurrentTestStep();
+            methodContext.setFailedStep(failedStep);
+        } else if (testResult.isSuccess()) {
+            methodContext.setStatus(Status.PASSED);
+            RetryAnalyzer.methodHasBeenPassed(methodContext);
+
+            methodContext.getFailsAnnotation().ifPresent(fails -> {
+                methodContext.setStatus(Status.REPAIRED);
+            });
+        }
+    }
+
+    /**
+     * Returns the defined validator instance of {@link Fails#validatorClass()} as singleton
+     */
+    private Optional<Object> getValidatorInstance(Fails fails) throws Exception {
+        Class<?> validatorClass = fails.validatorClass();
+        Object validatorInstance;
+
+        if (validatorClass == Object.class) {
+            return Optional.empty();
+        } else {
+            if (!VALIDATOR_SINGLETONS.containsKey(validatorClass)) {
+                Constructor<?> constructor = validatorClass.getConstructor();
+                validatorInstance = constructor.newInstance();
+                VALIDATOR_SINGLETONS.put(validatorClass, validatorInstance);
+            }
+            return Optional.of(VALIDATOR_SINGLETONS.get(validatorClass));
         }
     }
 }

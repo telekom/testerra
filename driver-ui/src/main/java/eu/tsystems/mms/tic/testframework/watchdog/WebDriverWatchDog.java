@@ -23,7 +23,6 @@
 package eu.tsystems.mms.tic.testframework.watchdog;
 
 import eu.tsystems.mms.tic.testframework.events.ExecutionAbortEvent;
-import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.utils.SecUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.TimingConstants;
@@ -150,7 +149,7 @@ public final class WebDriverWatchDog {
                                         Generate Report and give up
                                          */
                                         try {
-                                            ReportInfo.getDashboardWarning().addInfo(0, "Watchdog stopped the test");
+                                            //ReportInfo.getDashboardWarning().addInfo(0, "Watchdog stopped the test");
                                             TesterraListener.getEventBus().post(new ExecutionAbortEvent());
                                         } finally {
                                             System.err.println("Causing stacktrace on thread " + threadId + ":\n" + readableStacktrace);

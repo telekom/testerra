@@ -32,12 +32,12 @@ import IStackTraceCause = data.IStackTraceCause;
 import {MethodDetails} from "./statistics-generator";
 
 class Statistics {
-    private _statusConverter: StatusConverter
+    private _statusConverter: StatusConverter;
+    private _resultStatuses: { [key: number]: number } = {};
+
     constructor() {
         this._statusConverter = Container.instance.get(StatusConverter);
     }
-
-    private _resultStatuses: { [key: number]: number } = {};
 
     addResultStatus(status: ResultStatusType) {
         if (!this._resultStatuses[status]) {
@@ -54,41 +54,8 @@ class Statistics {
         return statuses;
     }
 
-    /**
-     * Returns the number of test cases including passed retried
-     */
-    get overallTestCases() {
-        return this.getStatusesCount([
-            ResultStatusType.PASSED,
-            ResultStatusType.SKIPPED,
-            ResultStatusType.FAILED,
-            ResultStatusType.FAILED_EXPECTED,
-            ResultStatusType.PASSED_RETRY
-        ]);
-    }
-
-    get overallPassed() {
-        return this.getStatusesCount(this._statusConverter.passedStatuses);
-    }
-
-    get overallSkipped() {
-        return this.getStatusCount(ResultStatusType.SKIPPED);
-    }
-
-    get overallFailed() {
-       return this.getStatusesCount(this._statusConverter.failedStatuses);
-    }
-
     getStatusCount(status: ResultStatusType) {
         return this._resultStatuses[status] | 0;
-    }
-
-    getStatusesCount(statuses:number[]) {
-        let count = 0;
-        statuses.forEach(value => {
-            count += this.getStatusCount(value);
-        })
-        return count;
     }
 
     getUpmostStatus():number {
@@ -114,17 +81,51 @@ class Statistics {
     get statusConverter() {
         return this._statusConverter;
     }
+
+    get overallPassed() {
+        return this.getSummarizedStatusCount(this._statusConverter.passedStatuses);
+    }
+
+    get overallSkipped() {
+        return this.getStatusCount(data.ResultStatusType.SKIPPED);
+    }
+
+    get overallFailed() {
+        return this.getStatusCount(data.ResultStatusType.FAILED);
+    }
+
+    /**
+     * Returns the number of test cases including passed retried
+     */
+    get overallTestCases() {
+        return this.getSummarizedStatusCount([
+            data.ResultStatusType.PASSED,
+            data.ResultStatusType.REPAIRED,
+            data.ResultStatusType.PASSED_RETRY, // Recovered
+            data.ResultStatusType.SKIPPED,
+            data.ResultStatusType.FAILED,
+            data.ResultStatusType.FAILED_EXPECTED,
+            data.ResultStatusType.FAILED_RETRIED,
+        ]);
+    }
+
+    getSummarizedStatusCount(statuses:number[]) {
+        let count = 0;
+        statuses.forEach(value => {
+            count += this.getStatusCount(value);
+        })
+        return count;
+    }
 }
 
 export class ExecutionStatistics extends Statistics {
     private _classStatistics: ClassStatistics[] = [];
-    private _failureAspectStatistics:FailureAspectStatistics[] = [];
-    private _repairedTests = 0;
+    private _uniqueFailureAspects:FailureAspectStatistics[] = [];
 
     constructor(
         readonly executionAggregate: ExecutionAggregate
     ) {
-        super();
+        super()
     }
 
     setClassStatistics(classStatistics:ClassStatistics[]) {
@@ -132,64 +133,34 @@ export class ExecutionStatistics extends Statistics {
         this._classStatistics.forEach(classStatistics => this.addStatistics(classStatistics));
     }
 
-    private _addUniqueFailureAspect(errorContext:IErrorContext, methodContext:IMethodContext) {
-        let failureAspectStatistics = new FailureAspectStatistics(errorContext);
-
-        const foundFailureAspectStatistics = this._failureAspectStatistics.find(existingFailureAspectStatistics => {
-            return existingFailureAspectStatistics.identifier == failureAspectStatistics.identifier;
+    private _addUniqueFailureAspect(failureAspect: FailureAspectStatistics, methodContext: data.IMethodContext) {
+        const foundFailureAspect = this._uniqueFailureAspects.find(existingFailureAspectStatistics => {
+            return existingFailureAspectStatistics.identifier == failureAspect.identifier;
         });
 
-        if (foundFailureAspectStatistics) {
-            failureAspectStatistics = foundFailureAspectStatistics;
+        if (foundFailureAspect) {
+            failureAspect = foundFailureAspect;
         } else {
-            this._failureAspectStatistics.push(failureAspectStatistics);
+            this._uniqueFailureAspects.push(failureAspect);
         }
-        failureAspectStatistics.addMethodContext(methodContext);
-    }
-
-    get repairedTests() {
-        return this._repairedTests;
+        failureAspect.addMethodContext(methodContext);
     }
 
     protected addStatistics(classStatistics: ClassStatistics) {
-        super.addStatistics(classStatistics);
+        super.addStatistics(classStatistics)
         classStatistics.methodContexts
             .forEach(methodContext => {
-
-                if (methodContext.resultStatus == data.ResultStatusType.PASSED && methodContext.annotations[MethodDetails.FAIL_ANNOTATION_NAME]) {
-                    this._repairedTests++;
-                }
-
-                if (methodContext.errorContext) {
-                    this._addUniqueFailureAspect(methodContext.errorContext, methodContext);
-                }
-
-                methodContext.testSteps
-                    .flatMap(value => value.actions)
-                    .flatMap(value => value.entries)
-                    .filter(value => value.assertion)
-                    .map(value => value.assertion)
-                    .forEach(value => {
-                        this._addUniqueFailureAspect(value, methodContext);
-                    })
-
-                // const exitPointStatistics = new ExitPointStatistics().addMethodContext(methodContext);
-                //
-                // const foundExitPointStatistics = this._exitPointStatistics.find(existingExitPointStatistics => {
-                //     return existingExitPointStatistics.fingerprint == exitPointStatistics.fingerprint;
-                // });
-                // if (foundExitPointStatistics) {
-                //     foundExitPointStatistics.addMethodContext(exitPointStatistics.methodContext);
-                // } else {
-                //     this._exitPointStatistics.push(exitPointStatistics);
-                // }
+                const methodDetails = new MethodDetails(methodContext, classStatistics);
+                methodDetails.failureAspects.forEach(failureAspect => {
+                    this._addUniqueFailureAspect(failureAspect, methodContext);
+                })
             })
 
         // Sort failure aspects by fail count
-        this._failureAspectStatistics = this._failureAspectStatistics.sort((a, b) => b.overallFailed-a.overallFailed);
+        this._uniqueFailureAspects = this._uniqueFailureAspects.sort((a, b) => b.overallFailed-a.overallFailed);
 
-        for (let i = 0; i < this._failureAspectStatistics.length; ++i) {
-            this._failureAspectStatistics[i].index = i;
+        for (let i = 0; i < this._uniqueFailureAspects.length; ++i) {
+            this._uniqueFailureAspects[i].index = i;
         }
     }
 
@@ -201,8 +172,8 @@ export class ExecutionStatistics extends Statistics {
     //     return this._exitPointStatistics;
     // }
 
-    get failureAspectStatistics() {
-        return this._failureAspectStatistics;
+    get uniqueFailureAspects() {
+        return this._uniqueFailureAspects;
     }
 }
 
@@ -225,7 +196,6 @@ export class ClassStatistics extends Statistics {
             this.addResultStatus(methodContext.resultStatus);
         }
         this._methodContexts.push(methodContext);
-        return this;
     }
 
     get methodContexts() {
@@ -247,15 +217,22 @@ export class FailureAspectStatistics extends Statistics {
     public index:number;
 
     constructor(
-        private _errorContext:IErrorContext
+        readonly errorContext:IErrorContext
     ) {
         super();
-        this.relevantCause = this._findRelevantCause(this._errorContext.stackTrace);
-        if (this._errorContext.description) {
-            this.identifier = this._errorContext.description;
-            this.message = this._errorContext.description;
+        this.relevantCause = this._findRelevantCause(this.errorContext.stackTrace);
+        if (this.errorContext.description) {
+            this.identifier = this.errorContext.description;
+            this.message = this.errorContext.description;
         } else if (this.relevantCause) {
-            this.message = this.relevantCause.message?.trim();
+            // Cut the identifier message to first occurrence of line-break
+            const breakPos = this.relevantCause.message?.indexOf("\n");
+            if (breakPos >= 0) {
+                this.message = this.relevantCause.message.substring(0, breakPos);
+            } else {
+                this.message = this.relevantCause.message;
+            }
+            this.message = this.message.trim();
             this.identifier = this.relevantCause.className + this.message;
         }
     }
@@ -275,16 +252,17 @@ export class FailureAspectStatistics extends Statistics {
     }
 
     addMethodContext(methodContext:IMethodContext) {
-        this._methodContexts.push(methodContext);
-        this.addResultStatus(methodContext.resultStatus);
-        return this;
+        if (this._methodContexts.indexOf(methodContext) == -1) {
+            this._methodContexts.push(methodContext);
+            this.addResultStatus(methodContext.resultStatus);
+        }
     }
 
     /**
      * A failure aspect is minor when it has no statuses in failed state
      */
     get isMinor() {
-        return this.getStatusesCount(this.statusConverter.failedStatuses) == 0;
+        return this.getStatusCount(data.ResultStatusType.FAILED) == 0;
     }
 
     get methodContexts() {

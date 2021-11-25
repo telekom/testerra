@@ -21,12 +21,9 @@
  */
 package eu.tsystems.mms.tic.testframework.report.utils;
 
-import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.ITestContext;
 import org.testng.ITestResult;
 
 import java.lang.reflect.Method;
@@ -71,14 +68,13 @@ public class ExecutionContextUtils {
 
             final String info = "for " + optional.get().getName();
             if (!testMethodName.contains(info)) {
-                methodContext.infos.add(info);
+                methodContext.addInfo(info);
             }
         } else {
-            final String msg = "Please use @BeforeMethod before(Method method) and @AfterMethod after(Method method)!" +
-                    "\nThis will be mandatory in a future release.";
+            final String msg = "Please use @BeforeMethod before(Method method) and @AfterMethod after(Method method)! This will be mandatory in a future release.";
 
             LOGGER.info(msg);
-            ReportInfo.getDashboardWarning().addInfo(10, StringUtils.prepareStringForHTML(msg));
+            //ReportInfo.getDashboardWarning().addInfo(10, msg);
         }
     }
 
@@ -92,12 +88,13 @@ public class ExecutionContextUtils {
     }
 
     public static String getMethodNameFromCurrentTestResult(boolean withClassName) {
-        ITestResult currentTestResult = ExecutionContextController.getCurrentTestResult();
-        String methodName = "";
-        if (withClassName) {
-            methodName += currentTestResult.getTestClass().getRealClass().getSimpleName() + ".";
-        }
-        methodName += currentTestResult.getMethod().getMethodName();
-        return methodName;
+        return ExecutionContextController.getTestResultForThread().map(testResult -> {
+            String methodName = "";
+            if (withClassName) {
+                methodName += testResult.getTestClass().getRealClass().getSimpleName() + ".";
+            }
+            methodName += testResult.getMethod().getMethodName();
+            return methodName;
+        }).orElse("");
     }
 }

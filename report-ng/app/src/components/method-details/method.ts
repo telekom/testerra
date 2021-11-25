@@ -20,8 +20,8 @@
  */
 
 import {autoinject, PLATFORM} from 'aurelia-framework';
-import {NavigationInstruction, RouteConfig, Router, RouterConfiguration} from "aurelia-router";
-import {FailsAnnotation, MethodDetails, StatisticsGenerator} from "../../services/statistics-generator";
+import {NavigationInstruction, RouteConfig, Router, RouterConfiguration, activationStrategy} from "aurelia-router";
+import {MethodDetails, StatisticsGenerator} from "../../services/statistics-generator";
 import {IScreenshotsDialogParams, ScreenshotsDialog} from "../screenshots-dialog/screenshots-dialog";
 import {MdcDialogService} from '@aurelia-mdc-web/dialog';
 
@@ -31,8 +31,8 @@ export class Method {
     private _allScreenshotIds:string[];
     private _lastScreenshotId:string;
     private _methodDetails:MethodDetails;
-    private _failsAnnotation:FailsAnnotation;
     private _loading:boolean = false;
+    private _routes:RouteConfig[];
 
     constructor(
         private _statistics: StatisticsGenerator,
@@ -57,16 +57,16 @@ export class Method {
                     icon: "center_focus_strong"
                 }
             },
-            {
-                route: 'assertions',
-                moduleId: PLATFORM.moduleName('./assertions'),
-                nav: true,
-                name: "assertions",
-                title: 'Assertions',
-                settings: {
-                    icon: "rule",
-                }
-            },
+            // {
+            //     route: 'assertions',
+            //     moduleId: PLATFORM.moduleName('./assertions'),
+            //     nav: true,
+            //     name: "assertions",
+            //     title: 'Assertions',
+            //     settings: {
+            //         icon: "rule",
+            //     }
+            // },
             {
                 route: 'steps/:step?',
                 href: "steps",
@@ -120,7 +120,6 @@ export class Method {
         this._loading = true;
         this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
             this._methodDetails = methodDetails;
-            this._failsAnnotation = this._methodDetails.failsAnnotation;
             this._allScreenshotIds = this._statistics.getScreenshotIdsFromMethodContext(methodDetails.methodContext);
             this._lastScreenshotId = this._allScreenshotIds.reverse().find(() => true);
             this._loading = false;
@@ -133,7 +132,7 @@ export class Method {
                     }
                     case "dependencies": {
                         const count = methodDetails.methodContext.relatedMethodContextIds.length + methodDetails.methodContext.dependsOnMethodContextIds.length;
-                        if (count > 1) {
+                        if (count > 0) {
                             routeConfig.nav = true;
                             routeConfig.settings.count = count;
                         } else {
@@ -153,36 +152,24 @@ export class Method {
                     case "details": {
                         if (methodDetails.numDetails > 0) {
                             routeConfig.nav = true;
-                            routeConfig.settings.count = methodDetails.numDetails;
+                            //routeConfig.settings.count = methodDetails.numDetails;
                         } else {
                             disableRoute(routeConfig);
                         }
                         break;
                     }
-                    case "assertions": {
-                        let allCollected = 0;
-                        let allOptional = 0;
-                        methodDetails.methodContext.testSteps
-                            .flatMap(value => value.actions)
-                            .flatMap(value => value.entries)
-                            .filter(value => value.assertion)
-                            .map(value => value.assertion)
-                            .forEach(value => {
-                                if (value.optional) {
-                                    allOptional++;
-                                } else {
-                                    allCollected++;
-                                }
-                            });
-                        if (allCollected > 0 || allOptional > 0) {
-                            routeConfig.nav = true;
-                            routeConfig.settings.count = `${allCollected}/${allOptional}`;
-                        } else {
-                            disableRoute(routeConfig);
-                        }
-                        break;
-                    }
+                    // case "assertions": {
+                    //     const numErrorContexts = methodDetails.errorContexts.length;
+                    //     if (numErrorContexts > 0) {
+                    //         routeConfig.nav = true;
+                    //         routeConfig.settings.count = numErrorContexts;
+                    //     } else {
+                    //         disableRoute(routeConfig);
+                    //     }
+                    //     break;
+                    // }
                 }
+                return routeConfig;
             });
 
             if (!routeConfig.hasChildRouter) {
@@ -195,6 +182,14 @@ export class Method {
 
     private _tabClicked(routeConfig:RouteConfig) {
         this._router.navigateToRoute(routeConfig.name);
+    }
+
+    /**
+     * The replace strategy is necessary to reinitialize the navigation,
+     * when some tabs have been disabled
+     */
+    determineActivationStrategy() {
+        return activationStrategy.replace;
     }
 
     private _showScreenshot(ev:CustomEvent) {

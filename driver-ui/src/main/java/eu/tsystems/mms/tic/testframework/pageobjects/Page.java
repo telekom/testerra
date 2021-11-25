@@ -194,10 +194,9 @@ public abstract class Page extends AbstractPage {
         if (Browsers.safari.equalsIgnoreCase(browser) || Browsers.phantomjs.equalsIgnoreCase(browser)) {
             String msg = "Recursive Page Scan does not work. Unsupported Browser.";
             log().error(msg);
-            MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-            if (methodContext != null) {
+            ExecutionContextController.getMethodContextForThread().ifPresent(methodContext -> {
                 methodContext.addPriorityMessage(msg);
-            }
+            });
             // don't return here, let it run into failure...
         }
 

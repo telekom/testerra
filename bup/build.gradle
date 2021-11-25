@@ -5,10 +5,9 @@ plugins {
 dependencies {
 
     api core
-    testImplementation report
 
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
-    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.google.code.gson:gson:2.8.8'
 
     // https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
     implementation 'org.apache.httpcomponents:httpclient:4.5.13'
@@ -22,6 +21,7 @@ dependencies {
     // https://mvnrepository.com/artifact/com.github.tomakehurst/wiremock
     testImplementation "com.github.tomakehurst:wiremock-jre8:2.26.3"
 
+    testImplementation report
 }
 
 test {

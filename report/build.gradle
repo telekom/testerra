@@ -3,24 +3,12 @@ plugins {
 }
 
 dependencies {
-    api core
-    api core_interop
-
-    // <Report>
-    implementation 'org.apache.velocity:velocity:1.7'
-    implementation group: 'org.apache.velocity', name: 'velocity-tools', version: '2.0'
-    implementation 'org.jfree:jfreechart:1.0.19'
-    // </Report>
-
     testImplementation driver_ui_desktop
-    testImplementation project(':integration-tests')
-    testImplementation project(':report-ng')
+    //testImplementation project(':integration-tests')
 }
 
 test {
-    String[] s = [
-            'src/test/resources/ReportingTestSuite.xml',
-    ]
+    String[] s = []
 
     def nr = findProperty("nr")
     if (nr) {
@@ -91,4 +79,8 @@ task cleanReports {
             delete "report-testsundertest-0$nr"
         }
     }
+}
+
+publishing {
+    // Skipped
 }

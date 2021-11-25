@@ -65,6 +65,18 @@ html {
     cursor: pointer;
 }
 
+.centered-text {
+    text-align: center;
+}
+
+.two-lines {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-inline-box;
+    -webkit-line-clamp: 2; /* number of lines to show */
+    -webkit-box-orient: vertical;
+}
+
 //a {
 //    mdc-icon {
 //        text-decoration: none !important;

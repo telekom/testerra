@@ -48,9 +48,10 @@
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="4" position="middle" class="flex">
                 <mdc-form-field class="right-aligned">
-                    <mdc-switch checked.bind="_showExpectedFailed"
-                                change.delegate="_showExpectedFailedChanged()"
-                    ></mdc-switch>
+                    <button mdc-switch
+                            checked.bind="_showExpectedFailed"
+                            change.delegate="_showExpectedFailedChanged()"
+                    ></button>
                     <label>Show expected failed</label>
                 </mdc-form-field>
             </mdc-layout-grid-cell>
@@ -59,27 +60,32 @@
                 <mdc-data-table class="w100"
                                 if.bind="_filteredFailureAspects.length > 0"
                 >
-                    <mdc-data-table-header>
-                        <mdc-data-table-header-cell class="rank-column">Rank</mdc-data-table-header-cell>
-                        <mdc-data-table-header-cell class="w75">Failure Aspect</mdc-data-table-header-cell>
-                        <mdc-data-table-header-cell>Statuses</mdc-data-table-header-cell>
-                    </mdc-data-table-header>
-                    <mdc-data-table-content>
-                        <mdc-data-table-row repeat.for="failureAspect of _filteredFailureAspects">
-                            <mdc-data-table-cell mdc-body1 class="rank-column" css="font-size: ${_calcFontSize(failureAspect.index)}rem;">${failureAspect.index+1}</mdc-data-table-cell>
-                            <mdc-data-table-cell class="p1 wrapable" mdc-body1>
-                                <a route-href="route: tests; params.bind: {failureAspect: failureAspect.index+1}"
-                                ><class-name-markup namespace.bind="failureAspect.relevantCause.className" highlight.bind="_searchRegexp">:</class-name-markup><span innerhtml="${failureAspect.message|html|highlightText:_searchRegexp}"></span></a>
-                            </mdc-data-table-cell>
-                            <mdc-data-table-cell>
-                                <div repeat.for="status of failureAspect.availableStatuses" class="mt1 mb1">
-                                    <a class="badge status-${status|statusClass}"
-                                       route-href="route: tests; params.bind: {failureAspect: failureAspect.index+1, status: _statusConverter.getClassForStatus(status)}"
-                                    >${failureAspect.getStatusCount(status)} ${status|statusName}</a>
-                                </div>
-                            </mdc-data-table-cell>
-                        </mdc-data-table-row>
-                    </mdc-data-table-content>
+                    <table>
+                        <thead>
+                            <th class="centered-text">Rank</th>
+                            <th class="w75">Failure Aspect</th>
+                            <th>Statuses</th>
+                        </thead>
+                        <tbody>
+                            <tr repeat.for="failureAspect of _filteredFailureAspects">
+                                <td mdc-body1
+                                    class="centered-text"
+                                    css="font-size: ${_calcFontSize(failureAspect.index)}rem;"
+                                >${failureAspect.index+1}</td>
+                                <td class="p1 wrapable" mdc-body1>
+                                    <a route-href="route: tests; params.bind: {failureAspect: failureAspect.index+1}"
+                                    ><class-name-markup namespace.bind="failureAspect.relevantCause.className" highlight.bind="_searchRegexp">:</class-name-markup><span innerhtml="${failureAspect.message|html|highlightText:_searchRegexp}"></span></a>
+                                </td>
+                                <td>
+                                    <div repeat.for="status of failureAspect.availableStatuses" class="mt1 mb1">
+                                        <a class="badge status-${status|statusClass}"
+                                           route-href="route: tests; params.bind: {failureAspect: failureAspect.index+1, status: _statusConverter.getClassForStatus(status)}"
+                                        >${failureAspect.getStatusCount(status)} ${status|statusName}</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </mdc-data-table>
                 <alert if.bind="!_loading && !_filteredFailureAspects.length">
                     <mdc-icon class="big-icon sr1">find_in_page</mdc-icon>

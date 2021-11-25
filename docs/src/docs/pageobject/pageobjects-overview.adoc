@@ -11,6 +11,8 @@ In a regular Web Application there is a defined navigation flow. This means ther
 In the example below we have a search dialog with a search action on it that lets you navigate to a `ResultPage` with the search result.
 When a search is performed the browser will navigate to the `ResultPage`. In your page you create a new object of your next page.
 
+
+
 This new page object is used for the next steps in your test.
 
 .Example of a page flow
@@ -29,10 +31,12 @@ The annoation `Check` marks the GuiElements as mandatory for the page. Testerra 
 public class SearchPage extends Page {
 
     @Check
-    private final GuiElement searchButton = new GuiElement(driver, By.name("searchButton"));
+    private final GuiElement searchButton =
+            new GuiElement(this.getWebDriver(), By.name("searchButton"));
 
     @Check
-    private final GuiElement inputField = new GuiElement(driver, By.name("inputField"));
+    private final GuiElement inputField =
+            new GuiElement(this.getWebDriver(), By.name("inputField"));
 
     // constructor
     public SearchPage(WebDriver driver) {
@@ -43,7 +47,7 @@ public class SearchPage extends Page {
     public ResultPage search(String text){
         inputField.type(text);
         searchButton.click();
-        return PageFactory.create(ResultPage.class, driver);
+        return PageFactory.create(ResultPage.class, this.getWebDriver());
     }
 }
 ----
@@ -58,6 +62,7 @@ public class TestClass extends TesterraTest {
 
     @Test
     public void myTest() {
+        WebDriver driver = WebDriverManager.getWebDriver();
         HomePage homePage = PageFactory.create(HomePage.class, driver);
         SearchPage searchPage = homePage.openSearch();
         ResultPage resultPage = searchPage.search("search text");

@@ -108,11 +108,6 @@ public final class TesterraProperties {
     public static final String WEBDRIVER_WINDOW_SWITCH_MAX_DURATION = "tt.wdm.timeouts.seconds.window.switch.duration";
 
     /**
-     * WDM: Kill WebDriver on stucking selenium command after this.
-     */
-    public static final String WEBDRIVER_TIMEOUT_SECONDS_STUCK_COMMAND = "tt.wdm.timeouts.seconds.selenium.command.stuck";
-
-    /**
      * Visually marks every GuiElement that is being processed. Might break a LayoutTest.
      */
     public static final String DEMO_MODE = "tt.demomode";
@@ -210,7 +205,9 @@ public final class TesterraProperties {
     public static final String FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_MID = "tt.failure.corridor.allowed.failed.tests.mid";
     public static final String FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_LOW = "tt.failure.corridor.allowed.failed.tests.low";
 
+    @Deprecated
     public static final String DISPLAY_RESOLUTION = "tt.display.resolution";
+    public static final String WINDOW_SIZE="tt.window.size";
 
     public static final String PAGE_FACTORY_LOOPS = "tt.page.factory.loops";
     public static final String EXECUTION_OMIT_IN_DEVELOPMENT = "tt.execution.omit.indevelopment";

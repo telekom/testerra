@@ -35,6 +35,7 @@ import org.testng.annotations.Test;
  *
  * @author erku
  */
+@Deprecated
 public class FailsAnnotationFilterTest extends AbstractWebDriverTest {
 
     private static String PROPERTY_ONE = "test.foobar.fails.annotation.test.property.one";

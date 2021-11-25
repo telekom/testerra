@@ -31,10 +31,8 @@ public final class CollectedAssertions {
     }
 
     public synchronized static void store(Throwable throwable) {
-        /*
-        add info
-         */
-        MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
-        currentMethodContext.addCollectedAssertion(throwable);
+        ExecutionContextController.getMethodContextForThread().ifPresent(methodContext -> {
+            methodContext.addError(throwable);
+        });
     }
 }

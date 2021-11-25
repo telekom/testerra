@@ -27,16 +27,6 @@ import {Config} from "./config-dev";
 import {data} from "./report-model";
 import {StatusConverter} from "./status-converter";
 
-export class FailsAnnotation {
-    constructor(
-        readonly annotation:any
-    ) {
-    }
-    get ticketIsUrl() {
-        return this.annotation.ticketString?.match(StatusConverter.urlRegexp);
-    }
-}
-
 export interface ILogEntry extends data.ILogMessage {
     methodContext?: data.IMethodContext;
     index?:number,
@@ -47,13 +37,15 @@ export class MethodDetails {
     executionStatistics: ExecutionStatistics;
     testContext: data.ITestContext;
     suiteContext: data.ISuiteContext;
-    failureAspectStatistics:FailureAspectStatistics;
     sessionContexts:data.ISessionContext[];
     private _identifier:string = null;
-    static readonly FAIL_ANNOTATION_NAME="eu.tsystems.mms.tic.testframework.annotations.Fails";
+    static readonly FAILS_ANNOTATION_NAME="eu.tsystems.mms.tic.testframework.annotations.Fails";
+    static readonly TEST_ANNOTATION_NAME="org.testng.annotations.Test";
+    static readonly XRAY_ANNOTATION_NAME="eu.tsystems.mms.tic.testerra.plugins.xray.annotation.XrayTest";
+
     private _decodedAnnotations = {};
     private _decodedCustomContexts = {};
-    private _failsAnnotation:FailsAnnotation;
+    private _failureAspects:FailureAspectStatistics[] = null;
 
     constructor(
         readonly methodContext:data.IMethodContext,
@@ -61,22 +53,17 @@ export class MethodDetails {
     ) {
     }
 
-    get isRepaired() {
-        return this.methodContext.resultStatus === data.ResultStatusType.PASSED && this.methodContext.annotations[MethodDetails.FAIL_ANNOTATION_NAME];
+    get failsAnnotation() {
+        return this.decodeAnnotation(MethodDetails.FAILS_ANNOTATION_NAME);
     }
 
-    get failsAnnotation():FailsAnnotation|null {
-        if (this._failsAnnotation === undefined) {
-            const data = this.decodeAnnotation(MethodDetails.FAIL_ANNOTATION_NAME);
-            if (data) {
-                this._failsAnnotation = new FailsAnnotation(data);
-            } else {
-                this._failsAnnotation = null;
-            }
-        }
-        return this._failsAnnotation;
+    get testAnnotation() {
+        return this.decodeAnnotation(MethodDetails.TEST_ANNOTATION_NAME);
     }
 
+    get xrayAnnotation() {
+        return this.decodeAnnotation(MethodDetails.XRAY_ANNOTATION_NAME);
+    }
 
     get identifier() {
         if (!this._identifier) {
@@ -97,7 +84,7 @@ export class MethodDetails {
     }
 
     get numDetails() {
-        return (this.methodContext.errorContext ? 1 : 0) + Object.keys(this.methodContext.customContexts).length;
+        return this.failureAspects.length + Object.keys(this.methodContext.customContexts).length;
     }
 
     get failedStep() {
@@ -121,6 +108,25 @@ export class MethodDetails {
 
     decodeAnnotation(name:string):any {
         return this._decode(this.methodContext.annotations, name, this._decodedAnnotations);
+    }
+
+    get errorContexts() {
+        return this.methodContext.testSteps
+            .flatMap(value => value.actions)
+            .flatMap(value => value.entries)
+            .filter(value => value.errorContext)
+            .map(value => value.errorContext);
+    }
+
+    get failureAspects() {
+        if (this._failureAspects == null) {
+            this._failureAspects = this.errorContexts.map(errorContext => {
+                const failureAspect = new FailureAspectStatistics(errorContext);
+                failureAspect.addMethodContext(this.methodContext);
+                return failureAspect;
+            });
+        }
+        return this._failureAspects;
     }
 }
 
@@ -154,7 +160,6 @@ export class StatisticsGenerator {
                         currentClassStatistics = classStatistics[currentClassStatistics.classIdentifier];
                     }
 
-                    methodContext.resultStatus = this._statusConverter.correctStatus(methodContext.resultStatus);
                     currentClassStatistics.addMethodContext(methodContext);
                 }
                 executionStatistics.setClassStatistics(Object.values(classStatistics));

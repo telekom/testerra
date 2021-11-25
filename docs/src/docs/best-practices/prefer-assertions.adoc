@@ -10,7 +10,11 @@ If you need to check several properties of a GuiElement, always prefer
 ----
 // Good practice
 element.asserts().assertText("Search results");
+element.asserts().assertIsDisplayed();
 
 // Bad practice
 Assert.assertTrue(element.getText().contains("Search results"));
+
+// Worse practice - could results in fails if page rendering isn't finished yet
+Assert.assertTrue(element.isDisplayed());
 ----

@@ -47,7 +47,7 @@ final class ExecutionEndListener implements
     @Override
     @Subscribe
     public void onExecutionAbort(ExecutionAbortEvent event) {
-        ExecutionContextController.getCurrentExecutionContext().crashed = true;
+        ExecutionContextController.getCurrentExecutionContext().setCrashed(true);
         finalizeExecutionContext();
     }
 
@@ -63,6 +63,8 @@ final class ExecutionEndListener implements
 
         ExecutionContext currentExecutionContext = ExecutionContextController.getCurrentExecutionContext();
         currentExecutionContext.updateEndTimeRecursive(new Date());
+
+        ExecutionContextController.printExecutionStatistics();
 
         EventBus eventBus = TesterraListener.getEventBus();
 

@@ -23,27 +23,23 @@
 
 import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.stream.Stream;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 
-public class SuiteContext extends AbstractContext implements SynchronizableContext {
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.stream.Stream;
 
-    /**
-     * @deprecated Use {@link #readTestContexts()} instead
-     */
-    public final Queue<TestContext> testContexts = new ConcurrentLinkedQueue<>();
+public class SuiteContext extends AbstractContext {
+    private final Queue<TestContext> testContexts = new ConcurrentLinkedQueue<>();
 
     public SuiteContext(ExecutionContext executionContext) {
-        this.parentContext = executionContext;
+        this.setParentContext(executionContext);
     }
 
     public ExecutionContext getExecutionContext() {
-        return (ExecutionContext)this.parentContext;
+        return (ExecutionContext)this.getParentContext();
     }
 
     public Stream<TestContext> readTestContexts() {
@@ -67,10 +63,5 @@ public class SuiteContext extends AbstractContext implements SynchronizableConte
                     EventBus eventBus = TesterraListener.getEventBus();
                     eventBus.post(new ContextUpdateEvent().setContext(this));
                 });
-    }
-
-    @Override
-    public TestStatusController.Status getStatus() {
-        return getStatusFromContexts(testContexts.stream());
     }
 }

@@ -5,14 +5,12 @@ A page objects represents a HTML pages and or a subpage. It contains GuiElements
 
 In your test you only uses the provided actions of your page like an API. The page object himself uses the GuiElements as an API to interact with the website.
 
-Advantages:
-// TODO: update list
+We recommend the usage of page objects:
 
-- Easy to maintain.
-- Easy readability of scripts
-- Reduce or eliminate duplicity
-- Re-usability of code
-- Reliability
+- They are easy to maintain.
+- They are improve the readability of test scripts.
+- They reduce or eliminate duplicity of code.
+- The pages are reusable.
 
 == Navigation Principle
 In a regular Web Application there is a defined navigation flow. This means there are pages with actions on it that let you navigate to other pages.

@@ -10,24 +10,24 @@ import org.testng.annotations.Test;
 public class GenerateSimpleTestStatusTest extends TesterraTest {
 
     @Test
-    public void testPassed() {
+    public void test_Passed() {
         Assert.assertTrue(true, "Creating TestStatus 'Passed'");
     }
 
     @Test
-    public void testFailed() {
+    public void test_Failed() {
         Assert.fail("Creating TestStatus 'Failed'");
     }
 
     @InfoMethod
     @Test
-    public void testSkippedNoStatus() {
+    public void test_SkippedNoStatus() {
 
         throw new SkipException("Test skipped.");
     }
 
     @Test
-    public void testSkipped() {
+    public void test_Skipped() {
 
         throw new SkipException("Test skipped.");
     }

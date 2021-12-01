@@ -8,7 +8,7 @@ In your test you only uses the provided actions of your page like an API. The pa
 We recommend the usage of page objects:
 
 - They are easy to maintain.
-- They are improve the readability of test scripts.
+- They improve the readability of test scripts.
 - They reduce or eliminate duplicity of code.
 - The pages are reusable.
 

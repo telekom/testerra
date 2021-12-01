@@ -11,6 +11,8 @@ In a regular Web Application there is a defined navigation flow. This means ther
 In the example below we have a search dialog with a search action on it that lets you navigate to a `ResultPage` with the search result.
 When a search is performed the browser will navigate to the `ResultPage`. In your page you create a new object of your next page.
 
+
+
 This new page object is used for the next steps in your test.
 
 .Example of a page flow
@@ -29,10 +31,12 @@ The annotation `Check` marks the UiElements as mandatory for the page. Testerra 
 public class SearchPage extends Page {
 
     @Check
-    private final UiElement searchButton = find(By.name("searchButton"));
+    private final UiElement searchButton =
+            find(By.name("searchButton"));
 
     @Check
-    private final UiElement inputField = find(By.name("inputField"));
+    private final UiElement inputField =
+            find(By.name("inputField"));
 
     // constructor
     public SearchPage(WebDriver driver) {

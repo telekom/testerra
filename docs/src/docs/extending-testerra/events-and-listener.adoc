@@ -26,7 +26,7 @@ This event can be used to send test results to a test management system or issue
 |Called before suite execution. The events methods list provides a list of tests to execute. Read more about this in <<Intercept test method execution>>
 
 |`ContextUpdateEvent`
-|Called every time the internal context data has been changed significantly. This can be used to synchronize the internal test context model.
+|Called every time the internal context data has been changed significantly.
 
 |`FinalizeExecutionEvent`
 |Called on the very end of the test execution when the execution model has been finalized. Use this event to generate a report.

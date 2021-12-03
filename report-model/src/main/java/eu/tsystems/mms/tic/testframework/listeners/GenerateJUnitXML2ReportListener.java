@@ -30,7 +30,6 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
-import eu.tsystems.mms.tic.testframework.report.junit.SimpleReportEntry;
 import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
@@ -116,8 +115,6 @@ public class GenerateJUnitXML2ReportListener implements
             Status status = event.getMethodContext().getStatus();
             ITestResult iTestResult = event.getMethodContext().getTestNgResult().get();
             Method method = methodFromEvent.get();
-
-            SimpleReportEntry reportEntry = new SimpleReportEntry(method.getDeclaringClass().getName(), method.getName());
 
             switch (status) {
                 case PASSED:

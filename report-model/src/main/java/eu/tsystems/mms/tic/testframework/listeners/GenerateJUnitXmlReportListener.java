@@ -36,7 +36,7 @@ import org.testng.ISuiteListener;
 /**
  * Generates TestNG and jUnit xml reports
  */
-public class GenerateXmlReportListener implements
+public class GenerateJUnitXmlReportListener implements
         Loggable,
         ExecutionFinishEvent.Listener,
         MethodEndEvent.Listener,
@@ -47,7 +47,7 @@ public class GenerateXmlReportListener implements
 
     JUnitXMLReporter XML_REPORTER;
 
-    public GenerateXmlReportListener() {
+    public GenerateJUnitXmlReportListener() {
         XML_REPORTER =  new JUnitXMLReporter(true, report.getReportDirectory(Report.XML_FOLDER_NAME));
     }
 
@@ -76,8 +76,8 @@ public class GenerateXmlReportListener implements
         generateReport();
 
         // generate testng-results.xml
-        org.testng.reporters.XMLReporter testNgXmlReporter = new org.testng.reporters.XMLReporter();
-        testNgXmlReporter.generateReport(event.getXmlSuites(), event.getSuites(), report.getReportDirectory(Report.XML_FOLDER_NAME).toString());
+//        org.testng.reporters.XMLReporter testNgXmlReporter = new org.testng.reporters.XMLReporter();
+//        testNgXmlReporter.generateReport(event.getXmlSuites(), event.getSuites(), report.getReportDirectory(Report.XML_FOLDER_NAME).toString());
     }
 
     @Override

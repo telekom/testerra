@@ -35,11 +35,12 @@ import eu.tsystems.mms.tic.testframework.report.TesterraListener;
  */
 public class GenerateTestNGXmlReportListener implements Loggable, ExecutionFinishEvent.Listener {
 
-    Report report = TesterraListener.getReport();
+    private Report report = TesterraListener.getReport();
 
     @Override
     @Subscribe
     public void onExecutionFinish(ExecutionFinishEvent event) {
+        log().debug("Generating TestNG XML report...");
         org.testng.reporters.XMLReporter testNgXmlReporter = new org.testng.reporters.XMLReporter();
         testNgXmlReporter.generateReport(event.getXmlSuites(), event.getSuites(), report.getReportDirectory(Report.XML_FOLDER_NAME).toString());
     }

@@ -24,14 +24,18 @@ package eu.tsystems.mms.tic.testframework.listeners;
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.events.ExecutionAbortEvent;
 import eu.tsystems.mms.tic.testframework.events.ExecutionFinishEvent;
-import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
+import eu.tsystems.mms.tic.testframework.events.TestStatusUpdateEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.Report;
+import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.junit.JUnitXMLReporter;
 import eu.tsystems.mms.tic.testframework.report.junit.SimpleReportEntry;
 import org.testng.ISuite;
 import org.testng.ISuiteListener;
+
+import java.lang.reflect.Method;
+import java.util.Optional;
 
 /**
  * Generates TestNG and jUnit xml reports
@@ -39,34 +43,60 @@ import org.testng.ISuiteListener;
 public class GenerateJUnitXmlReportListener implements
         Loggable,
         ExecutionFinishEvent.Listener,
-        MethodEndEvent.Listener,
+        TestStatusUpdateEvent.Listener,
         ISuiteListener,
-        ExecutionAbortEvent.Listener
-{
-    Report report = TesterraListener.getReport();
+        ExecutionAbortEvent.Listener {
+    private Report report = TesterraListener.getReport();
 
-    JUnitXMLReporter XML_REPORTER;
+    private JUnitXMLReporter xmlReporter;
+
+    private org.testng.reporters.JUnitXMLReporter junitXMLReporter;
 
     public GenerateJUnitXmlReportListener() {
-        XML_REPORTER =  new JUnitXMLReporter(true, report.getReportDirectory(Report.XML_FOLDER_NAME));
+        xmlReporter = new JUnitXMLReporter(true, report.getReportDirectory(Report.XML_FOLDER_NAME));
     }
 
     @Subscribe
     @Override
     public void onStart(ISuite suite) {
-        XML_REPORTER.testSetStarting(new SimpleReportEntry("", "Test starting"));
+        xmlReporter.testSetStarting(new SimpleReportEntry("", "Test starting"));
     }
-
-    @Override
+    
     @Subscribe
-    public void onMethodEnd(MethodEndEvent event) {
-        // create xml results entry
-        SimpleReportEntry reportEntry = new SimpleReportEntry(event.getMethod().getDeclaringClass().getName(), event.getMethod().getName());
-        if (event.getTestResult().isSuccess()) {
-            XML_REPORTER.testSucceeded(reportEntry);
-        } else if (event.isFailed()) {
-            // set xml status
-            XML_REPORTER.testFailed(reportEntry, "", "");
+    @Override
+    public void onTestStatusUpdate(TestStatusUpdateEvent event) {
+
+        Optional<Method> methodFromEvent = this.getMethodFromEvent(event);
+        if (methodFromEvent.isPresent()) {
+
+//        MethodContext methodContext = event.getMethodContext();
+            Status status = event.getMethodContext().getStatus();
+            Method method = methodFromEvent.get();
+
+            SimpleReportEntry reportEntry = new SimpleReportEntry(method.getDeclaringClass().getName(), method.getName());
+
+//            log().debug(String.format("%s has the status %s", method.getName(), status));
+            switch (status) {
+                case PASSED:
+                case REPAIRED:
+                case RECOVERED:
+                    xmlReporter.testSucceeded(reportEntry);
+                    break;
+                case FAILED:
+                case FAILED_EXPECTED:
+                    // event.getMethodContext().getTestNgResult().get() --> Error message
+                    xmlReporter.testFailed(reportEntry, "", "");
+                    break;
+                case NO_RUN:
+                case RETRIED:
+                    // do nothing
+                    break;
+                case SKIPPED:
+                    xmlReporter.testSkipped(reportEntry);
+                    break;
+                default:
+                    log().debug(String.format("Method state %s of %s cannot handle.", status, method.getName()));
+            }
         }
     }
 
@@ -80,8 +110,8 @@ public class GenerateJUnitXmlReportListener implements
 //        testNgXmlReporter.generateReport(event.getXmlSuites(), event.getSuites(), report.getReportDirectory(Report.XML_FOLDER_NAME).toString());
     }
 
-    @Override
     @Subscribe
+    @Override
     public void onExecutionAbort(ExecutionAbortEvent event) {
         generateReport();
     }
@@ -93,12 +123,15 @@ public class GenerateJUnitXmlReportListener implements
 //        JSONObject statusJSON = TestStatusController.createStatusJSON();
 //        log().debug("Status:\n" + statusJSON);
 
-        /*
-        Create surefire and testng results xml
-         */
-        // generate xml reports for surefire
-        log().debug("Generating xml reports...");
-        XML_REPORTER.testSetCompleted(new SimpleReportEntry("", "Results"));
+        log().debug("Generating JUnit XML report...");
+        xmlReporter.testSetCompleted(new SimpleReportEntry("", "Results"));
 
     }
+
+    private Optional<Method> getMethodFromEvent(TestStatusUpdateEvent event) {
+        return event.getMethodContext().getTestNgResult()
+                .map(iTestResult -> iTestResult.getMethod().getConstructorOrMethod().getMethod());
+    }
+
+
 }

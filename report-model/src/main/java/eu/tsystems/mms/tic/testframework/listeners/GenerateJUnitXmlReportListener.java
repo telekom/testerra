@@ -38,7 +38,7 @@ import java.lang.reflect.Method;
 import java.util.Optional;
 
 /**
- * Generates TestNG and jUnit xml reports
+ * Generates JUnit xml reports
  */
 public class GenerateJUnitXmlReportListener implements
         Loggable,
@@ -61,7 +61,7 @@ public class GenerateJUnitXmlReportListener implements
     public void onStart(ISuite suite) {
         xmlReporter.testSetStarting(new SimpleReportEntry("", "Test starting"));
     }
-    
+
     @Subscribe
     @Override
     public void onTestStatusUpdate(TestStatusUpdateEvent event) {
@@ -69,13 +69,11 @@ public class GenerateJUnitXmlReportListener implements
         Optional<Method> methodFromEvent = this.getMethodFromEvent(event);
         if (methodFromEvent.isPresent()) {
 
-//        MethodContext methodContext = event.getMethodContext();
             Status status = event.getMethodContext().getStatus();
             Method method = methodFromEvent.get();
 
             SimpleReportEntry reportEntry = new SimpleReportEntry(method.getDeclaringClass().getName(), method.getName());
 
-//            log().debug(String.format("%s has the status %s", method.getName(), status));
             switch (status) {
                 case PASSED:
                 case REPAIRED:

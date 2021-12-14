@@ -1,6 +1,9 @@
 = Proxy Utilities
 
-This is a static helper class based for reading the proxy configuration from system or from `system.properties`.
+This is a static helper class based for reading the proxy configuration via `PropertyManager`.
+
+For specifying proxy settings in `system.properties` see also an example <<_property_file,here>>. See details about handling of `system.properties` <<_property_files, here>>.
+
 
 [source,java]
 ----
@@ -8,10 +11,14 @@ import java.net.URL;
 import eu.tsystems.mms.tic.testframework.utils.ProxyUtils;
 
 // Format e.g.: http://{http.proxyHost}:{http.proxyPort}
-// ProxyUtils tries to find out current setting with 'System.getProperty()':
-// If its blank, the value is taken from 'system.properties' file.
 URL httpProxyUrl = ProxyUtils.getSystemHttpProxyUrl();
 URL httpsProxyUrl = ProxyUtils.getSystemHttpsProxyUrl();
 ----
 
-You can overwrite the values in `system.properties` with JVM parameter like `-Dhttps.proxyHost=yourproxy.com`.
+NOTE: You can overwrite the values in `system.properties` with JVM parameter like +
+`-Dhttps.proxyHost=yourproxy.com`.
+
+// ProxyUtils always uses PropertyManager to get proxy settings like 'https.proxyHost'
+
+// ProxyUtils tries to find out current setting with 'System.getProperty()':
+// If its blank, the value is taken from 'system.properties' file.

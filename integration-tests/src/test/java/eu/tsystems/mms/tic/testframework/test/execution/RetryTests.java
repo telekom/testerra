@@ -21,20 +21,22 @@
 
 package eu.tsystems.mms.tic.testframework.test.execution;
 
+import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.json.JsonException;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Testclass to test the behaviour of TestNG in case of a retried test if it is a precondition of another test
@@ -53,7 +55,7 @@ public class RetryTests extends TesterraTest implements TestStatusTest {
         this.counter.incrementAndGet();
         if (counter.get() == 1) {
             // Message is already defined in test.properties
-            Assert.assertTrue(false, "test_FailedToPassedHistoryWithRetry");
+            Assert.fail("test_FailedToPassedHistoryWithRetry");
         } else {
             Assert.assertTrue(true);
         }
@@ -95,7 +97,30 @@ public class RetryTests extends TesterraTest implements TestStatusTest {
         }
     }
 
-    @Test(dependsOnGroups = "TestNgDependsOnRetryTest")
+    @Test
+    public void test_RetryFailed() {
+        throw new JsonException("Expected to read a START_MAP but instead have: END");
+    }
+
+    @Fails
+    @Test
+    public void test_RetryFailedExpected() {
+        throw new JsonException("Expected to read a START_MAP but instead have: END");
+    }
+
+    @Fails(validatorClass = ExpectedFailedValidator.class, validator = "failedExpectedIsValid")
+    @Test
+    public void test_RetryFailedExpectedValidExpectedFailed() {
+        throw new JsonException("Expected to read a START_MAP but instead have: END");
+    }
+
+    @Fails(validatorClass = ExpectedFailedValidator.class, validator = "failedExpectedIsNotValid")
+    @Test
+    public void test_RetryFailedExpectedInvalidExpectedFailed() {
+        throw new JsonException("Expected to read a START_MAP but instead have: END");
+    }
+
+    @Test(dependsOnGroups = "TestNgDependsOnRetryTest", alwaysRun = true)
     public void test_retriedTestCaseData() {
         Stream<MethodContext> methodContexts = findMethodContexts("testCaseOne");
 

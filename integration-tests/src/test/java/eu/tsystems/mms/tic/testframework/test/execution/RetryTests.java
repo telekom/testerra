@@ -22,6 +22,7 @@
 package eu.tsystems.mms.tic.testframework.test.execution;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
+import eu.tsystems.mms.tic.testframework.annotations.NoRetry;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
@@ -97,6 +98,12 @@ public class RetryTests extends TesterraTest implements TestStatusTest {
         }
     }
 
+    @NoRetry
+    @Test
+    public void test_NoRetry() {
+        throw new JsonException("Expected to read a START_MAP but instead have: END");
+    }
+
     @Test
     public void test_RetryFailed() {
         throw new JsonException("Expected to read a START_MAP but instead have: END");
@@ -104,19 +111,19 @@ public class RetryTests extends TesterraTest implements TestStatusTest {
 
     @Fails
     @Test
-    public void test_RetryFailedExpected() {
+    public void test_RetryExpectedFailed() {
         throw new JsonException("Expected to read a START_MAP but instead have: END");
     }
 
     @Fails(validatorClass = ExpectedFailedValidator.class, validator = "failedExpectedIsValid")
     @Test
-    public void test_RetryFailedExpectedValidExpectedFailed() {
+    public void test_RetryValidExpectedFailed() {
         throw new JsonException("Expected to read a START_MAP but instead have: END");
     }
 
     @Fails(validatorClass = ExpectedFailedValidator.class, validator = "failedExpectedIsNotValid")
     @Test
-    public void test_RetryFailedExpectedInvalidExpectedFailed() {
+    public void test_RetryInvalidExpectedFailed() {
         throw new JsonException("Expected to read a START_MAP but instead have: END");
     }
 

@@ -7,6 +7,9 @@
                 <exclude name="SEQUENTIAL"/>
             </run>
         </groups>
+<!--        <classes>-->
+<!--        <class name="eu.tsystems.mms.tic.testframework.test.execution.RetryTests"/>-->
+<!--        </classes>-->
         <packages>
             <package name="eu.tsystems.mms.tic.testframework.test.execution"/>
         </packages>
@@ -18,6 +21,9 @@
                 <include name="SEQUENTIAL"/>
             </run>
         </groups>
+<!--        <classes>-->
+<!--            <class name="eu.tsystems.mms.tic.testframework.test.execution.RetryTests"/>-->
+<!--        </classes>-->
         <packages>
             <package name="eu.tsystems.mms.tic.testframework.test.execution"/>
         </packages>

@@ -102,7 +102,7 @@ public class WebDriverManagerConfig extends AbstractWebDriverConfiguration imple
         }
 
         if (StringUtils.isBlank(this.getPlatformName().orElse(null))) {
-            this.setPlatformName(PropertyManager.getProperty(TesterraProperties.BROWSER_PLATFORM, ""));
+            this.setPlatformName(PropertyManager.getProperty(TesterraProperties.BROWSER_PLATFORM, null));
         }
     }
 

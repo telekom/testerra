@@ -28,7 +28,6 @@ import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.listeners.GenerateJUnitXML2ReportListener;
 import eu.tsystems.mms.tic.testframework.listeners.GenerateTestNGXmlReportListener;
 import eu.tsystems.mms.tic.testframework.report.TestStepLogAppender;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import org.apache.logging.log4j.core.Appender;
 
 public class ReportModelHook extends AbstractModule implements ModuleHook {

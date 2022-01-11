@@ -21,6 +21,7 @@
  */
 package eu.tsystems.mms.tic.testframework.constants;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.common.Testerra.Properties;
 
 /**
@@ -113,4 +114,14 @@ public final class TesterraProperties {
 
     public static final String SCREENCASTER_ACTIVE_ON_SUCCESS = "tt.screencaster.active.on.success";
     public static final String SCREENCASTER_ACTIVE_ON_FAILED = "tt.screencaster.active.on.failed";
+
+    /**
+     * @deprecated Use {@link Properties#SELENIUM_SERVER_URL} instead
+     */
+    public static final String SELENIUM_SERVER_URL = Properties.SELENIUM_SERVER_URL.toString();
+
+    /**
+     * @deprecated Use {@link Properties#WEBDRIVER_MODE} instead
+     */
+    public static final String WEBDRIVERMODE = Properties.WEBDRIVER_MODE.toString();
 }

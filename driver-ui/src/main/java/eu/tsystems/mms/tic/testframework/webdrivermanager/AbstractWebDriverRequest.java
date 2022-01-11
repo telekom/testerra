@@ -94,6 +94,20 @@ public class AbstractWebDriverRequest implements WebDriverRequest {
         this.serverUrl = url;
     }
 
+    /**
+     * @deprecated Use {@link #setServerUrl(URL)} instead
+     */
+    public void setSeleniumServerUrl(URL url) {
+        this.setServerUrl(url);
+    }
+
+    /**
+     * @deprecated Use {@link #setServerUrl(URL)} instead
+     */
+    public void setSeleniumServerUrl(String url) throws MalformedURLException {
+        this.setServerUrl(url);
+    }
+
     @Override
     public boolean getShutdownAfterTest() {
         return shutdownAfterTest;

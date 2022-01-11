@@ -9,13 +9,12 @@ Testerra provides a Google Guava event bus with custom events for test execution
 |Called on start of every test method annotated by TestNG `@Test` annotation.
 
 |`MethodEndEvent`
-|Called at the end of every test method annotated by TestNG `@Test` annotation. This can be used to send test results to a test management system or issue tracker.
+|Called at the end of every test method annotated by TestNG `@Test` annotation.
 
-//|TEST_START
-//|Called on start of every test method annotated by TestNG `@Test` annotation and every test configuration method annotated by TestNG `@BeforeMethod` or similar, but before the execution of registered <<Before Method Worker>>
-//|TIMESTAMP+
-//ITestResult +
-//IInvokedMethod
+|`TestStatusUpdateEvent`
+|Called after the final result of every test method annotated by TestNG `@Test` annotation. A final result of a test method can be `PASSED`, `RETRIED`, `RECOVERED`, `SKIPPED`, `FAILED` or `EXPECTED_FAILED`.
+
+This event can be used to send test results to a test management system or issue tracker.
 
 | `ExecutionFinishEvent`
 |Called at the end of test run to trigger report generation and other output worker.
@@ -26,22 +25,8 @@ Testerra provides a Google Guava event bus with custom events for test execution
 |`InterceptMethodsEvent`
 |Called before suite execution. The events methods list provides a list of tests to execute. Read more about this in <<Intercept test method execution>>
 
-//|FIRST_FAILED_TEST
-//|Called on the first failing test of your test run.
-//|TIMESTAMP +
-//METHOD_NAME +
-//ITestResult +
-//IInvokedMethod
-//
-//|TEST_WITH_FILTERED_THROWABLE
-//|Called on every failed test method when Testerra `RetryAnalyzer`found a cause to retry the test.
-//|TIMESTAMP +
-//METHOD_NAME +
-//ITestResult +
-//IInvokedMethod
-
 |`ContextUpdateEvent`
-|Called every time the internal context data has been changed significantly. This can be used to synchronize the internal test context model.
+|Called every time the internal context data has been changed significantly.
 
 |`FinalizeExecutionEvent`
 |Called on the very end of the test execution when the execution model has been finalized. Use this event to generate a report.
@@ -52,19 +37,24 @@ Testerra provides a Google Guava event bus with custom events for test execution
 
 The simplest way to get in touch with the event bus is to write and register your own implementation of the event's `Listener` interface and add the `@Subscribe` annotation.
 
-.Simple LogEventListener
+.Simple event listener based on `TestStatusUpdateEvent`
 [source,java]
 ----
 import com.google.common.eventbus.Subscribe;
-import eu.tsystems.mms.tic.testframework.events.MethodStartEvent;
+import eu.tsystems.mms.tic.testframework.events.TestStatusUpdateEvent;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 
-public class LogEventListener implements MethodStartEvent.Listener, Loggable {
+public class MyStatusListener implements TestStatusUpdateEvent.Listener, Loggable {
 
     @Override
     @Subscribe
-    public void onMethodStart(MethodStartEvent event) {
-        log().info("Event logged: " + event.getMethod());
+    public void onTestStatusUpdate(TestStatusUpdateEvent event) {
+        MethodContext methodContext = event.getMethodContext();
+        log().info(
+                String.format("%s has the status %s", methodContext.getName(),
+                        methodContext.getStatus())
+        );
     }
 }
 ----

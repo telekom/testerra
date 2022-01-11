@@ -2,7 +2,7 @@
 
 include::../properties/property-attributes.adoc[]
 
-Before you can use `WebDriver` sessions, you have to setup a Selenium-compatible server.
+Before you can use WebDriver sessions, you have to set up a Selenium-compatible server.
 
 == Setup remote sessions
 
@@ -14,16 +14,18 @@ For using a remote Selenium server (e.g. a Selenium Grid) you only have to tell 
 {selenium_server_url}=http://localhost:4444/wd/hub
 ----
 
-NOTE: The browser support depends on the remote selenium setup.
+NOTE: The browser support depends on the remote Selenium setup.
 
 == Create a local session (not recommended)
 
 Regularly, there is no reason to use local Selenium sessions based on binaries.
 We won't recommend using that, because we've experienced slightly differences between the local and remote behaviour.
 
-However, Testerra supports using local web drivers.
+However, Testerra supports using local WebDrivers when you keep the property `{selenium_server_url}` empty. Selenium will search for browser binaries in your `PATH` environment variable.
 
-- Search for your browser's selenium driver online, like _selenium gecko driver_ for Firefox or _selenium crome driver_ for Chrome based browsers
+=== Manually configure WebDriver binaries
+
+- Search for your browser's Selenium driver online, like _selenium gecko driver_ for Firefox or _selenium crome driver_ for Chrome based browsers
 - Download your WebDriver binary from browser vendor's website to a local location
 - Make sure the driver version supports your installed browser
 - Since the properties are system properties, you need to put the location of the binaries to the `system.properties` file as mentioned in the <<Property files>> section.
@@ -39,14 +41,14 @@ webdriver.edge.driver=...
 webdriver.ie.driver=...
 ----
 
-You can also pass the wedriver by the command line using
+You can also pass the WebDriver by the command line using
 ```bash
 -Dwebdriver.gecko.driver=C:\absolute\path\to\your\geckodriver.exe
 ```
 
 == Define browser type and version
 
-Before starting a `WebDriver` session, you should configure your desired browser like.
+Before starting a WebDriver session, you should configure your desired browser like.
 
 [source,properties,subs="attributes"]
 ----

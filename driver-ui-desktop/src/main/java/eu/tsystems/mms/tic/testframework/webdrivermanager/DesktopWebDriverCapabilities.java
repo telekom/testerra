@@ -87,6 +87,11 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
             WebDriverManagerUtils.addBrowserVersionToCapabilities(desiredCapabilities, desktopWebDriverRequest.getBrowserVersion());
         }
 
+        desktopWebDriverRequest.getPlatformName().ifPresent(s -> {
+            desiredCapabilities.setCapability(CapabilityType.PLATFORM_NAME, s);
+            desiredCapabilities.setCapability(CapabilityType.PLATFORM, s);
+        });
+
         /*
         add endpoint bases caps
          */

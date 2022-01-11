@@ -105,6 +105,9 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         if (finalRequest.getWebDriverMode() == null) {
             finalRequest.setWebDriverMode(WebDriverManager.getConfig().getWebDriverMode());
         }
+
+        request.getPlatformName().ifPresent(finalRequest::setPlatformName);
+
         return finalRequest;
     }
 

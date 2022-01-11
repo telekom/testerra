@@ -22,7 +22,7 @@ The following types of browsrs are supported:
 a| Only defines the browser type, will be overwritten by {browser_setting}.
 | {browser_version} | na. | Only defines the browser version, will be overwritten by {browser_setting}.
 | {baseurl} | na. | URL of the first site called in a new browser session.
-| {webdriver_mode} | remote | Sets the webdriver mode. remote uses an external Selenium server
+| {webdriver_mode} | remote | Sets the webdriver mode. remote uses an external Selenium server (deprecated).
 | {selenium_server_url} | na. | The complete URL to a remote Selenium server. +
 (e.g.: `http://localhost:4444/wd/hub`)
 

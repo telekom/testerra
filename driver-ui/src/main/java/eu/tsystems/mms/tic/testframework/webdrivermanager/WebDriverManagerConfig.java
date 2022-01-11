@@ -40,11 +40,6 @@ public class WebDriverManagerConfig extends AbstractWebDriverConfiguration imple
     private boolean executeCloseWindows = true;
 
     /**
-     * WebDriverMode that is used.
-     */
-    private WebDriverMode webDriverMode;
-
-    /**
      * Close windows after Test Methods.
      */
     private boolean closeWindowsAfterTestMethod;
@@ -67,7 +62,6 @@ public class WebDriverManagerConfig extends AbstractWebDriverConfiguration imple
 
     public WebDriverManagerConfig reset() {
         this.executeCloseWindows = true;
-        this.webDriverMode = WebDriverMode.valueOf(PropertyManager.getProperty(TesterraProperties.WEBDRIVERMODE, WebDriverMode.remote.name()));
         this.closeWindowsAfterTestMethod = PropertyManager.getBooleanProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, true);
         this.closeWindowsOnFailure = PropertyManager.getBooleanProperty(TesterraProperties.CLOSE_WINDOWS_ON_FAILURE, true);
         this.maximize = PropertyManager.getBooleanProperty(TesterraProperties.BROWSER_MAXIMIZE, false);
@@ -100,8 +94,9 @@ public class WebDriverManagerConfig extends AbstractWebDriverConfiguration imple
         }
     }
 
+    @Deprecated
     public WebDriverMode getWebDriverMode() {
-        return webDriverMode;
+        return null;
     }
 
     public boolean shouldShutdownSessions() {

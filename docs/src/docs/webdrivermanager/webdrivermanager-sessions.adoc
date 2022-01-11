@@ -11,9 +11,6 @@ For using a remote Selenium server (e.g. a Selenium Grid) you only have to tell 
 .Additional settings in test.properties
 [source,properties,subs="attributes"]
 ----
-{webdriver_mode}=remote
-{selenium_server_host}=localhost
-{selenium_server_port}=4444
 {selenium_server_url}=http://localhost:4444/wd/hub
 ----
 
@@ -34,7 +31,6 @@ However, Testerra supports using local web drivers.
 .system.properties
 [source,properties,subs="attributes"]
 ----
-{webdriver_mode}=local
 webdriver.gecko.driver="C:\\absolute\\path\to\\your\\geckodriver.exe"
 
 # or for other browsers

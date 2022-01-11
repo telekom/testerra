@@ -37,6 +37,9 @@ import org.openqa.selenium.Dimension;
 public class DesktopWebDriverRequest extends AbstractWebDriverRequest implements Loggable, Serializable {
     private URL seleniumServerURL;
 
+    /**
+     * @deprecated Use {@link #getServerUrl()} instead
+     */
     public URL getSeleniumServerUrl() {
         if (seleniumServerURL == null) {
             String serverUrl = PropertyManager.getProperty(TesterraProperties.SELENIUM_SERVER_URL);
@@ -58,14 +61,28 @@ public class DesktopWebDriverRequest extends AbstractWebDriverRequest implements
         return seleniumServerURL;
     }
 
+    /**
+     * @deprecated Use {@link #setSeleniumServerUrl(String)} instead
+     */
     public DesktopWebDriverRequest setSeleniumServerUrl(String url) throws MalformedURLException {
         this.seleniumServerURL = new URL(url);
         return this;
     }
 
+    /**
+     * @deprecated Use {@link #setServerUrl(URL)} instead
+     */
     public DesktopWebDriverRequest setSeleniumServerUrl(URL url) {
         this.seleniumServerURL = url;
         return this;
+    }
+
+    public void setServerUrl(String url) throws MalformedURLException {
+        this.setSeleniumServerUrl(url);
+    }
+
+    public void setServerUrl(URL url) {
+        this.setSeleniumServerUrl(url);
     }
 
     /**

@@ -22,10 +22,10 @@
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.utils.CertUtils;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -83,9 +83,16 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
         desiredCapabilities.merge(preSetCaps);
 
         // set browser version into capabilities
-        if (!StringUtils.isStringEmpty(desktopWebDriverRequest.getBrowserVersion())) {
+        if (StringUtils.isNotBlank(desktopWebDriverRequest.getBrowserVersion())) {
             WebDriverManagerUtils.addBrowserVersionToCapabilities(desiredCapabilities, desktopWebDriverRequest.getBrowserVersion());
         }
+
+        desktopWebDriverRequest.getPlatformName()
+                .map(StringUtils::isNotBlank)
+                .ifPresent(s -> {
+                    desiredCapabilities.setCapability(CapabilityType.PLATFORM_NAME, s);
+                    desiredCapabilities.setCapability(CapabilityType.PLATFORM, s);
+                });
 
         /*
         add endpoint bases caps

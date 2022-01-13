@@ -238,7 +238,7 @@ public class ContextExporter implements Loggable {
         TestStep.Builder builder = TestStep.newBuilder();
 
         apply(testStep.getName(), builder::setName);
-        forEach(testStep.getTestStepActions(), testStepAction -> builder.addActions(buildTestStepAction(testStepAction)));
+        testStep.readActions().forEach(testStepAction -> builder.addActions(buildTestStepAction(testStepAction)));
 
         return builder;
     }

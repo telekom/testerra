@@ -99,6 +99,8 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             throw new SystemException(request.getClass().getSimpleName() + " is not allowed here");
         }
 
+        request.getPlatformName().ifPresent(finalRequest::setPlatformName);
+
         return finalRequest;
     }
 

@@ -172,7 +172,7 @@ public class MethodContext extends AbstractContext {
     }
 
     private Stream<TestStepAction> readTestStepActions() {
-        return this.readTestSteps().flatMap(testStep -> testStep.getTestStepActions().stream());
+        return this.readTestSteps().flatMap(TestStep::readActions);
     }
 
     public TestStepAction addLogMessage(LogMessage logMessage) {
@@ -197,6 +197,10 @@ public class MethodContext extends AbstractContext {
 
     public void setFailedStep(TestStep step) {
         this.lastFailedStep = step;
+    }
+
+    public Optional<TestStep> getFailedStep() {
+        return Optional.ofNullable(this.lastFailedStep);
     }
 
     public Stream<ErrorContext> readErrors() {

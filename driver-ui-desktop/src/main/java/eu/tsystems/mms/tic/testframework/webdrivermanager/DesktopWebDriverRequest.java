@@ -65,14 +65,14 @@ public class DesktopWebDriverRequest extends AbstractWebDriverRequest implements
      * @deprecated Use {@link #setSeleniumServerUrl(String)} instead
      */
     public DesktopWebDriverRequest setSeleniumServerUrl(String url) throws MalformedURLException {
-        this.seleniumServerURL = new URL(url);
-        return this;
+        return this.setSeleniumServerUrl(new URL(url));
     }
 
     /**
      * @deprecated Use {@link #setServerUrl(URL)} instead
      */
     public DesktopWebDriverRequest setSeleniumServerUrl(URL url) {
+        this.setWebDriverMode(WebDriverMode.remote);
         this.seleniumServerURL = url;
         return this;
     }

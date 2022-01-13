@@ -29,6 +29,7 @@ public abstract class AbstractWebDriverConfiguration implements Serializable {
     private String browser;
     private String browserVersion;
     private URL baseUrl;
+    private String platformName;
 
     public String getBrowser() {
         return browser;
@@ -60,5 +61,13 @@ public abstract class AbstractWebDriverConfiguration implements Serializable {
     public AbstractWebDriverConfiguration setBaseUrl(URL baseUrl) {
         this.baseUrl = baseUrl;
         return this;
+    }
+
+    public void setPlatformName(String platformName) {
+        this.platformName = platformName;
+    }
+
+    public Optional<String> getPlatformName() {
+        return Optional.ofNullable(this.platformName);
     }
 }

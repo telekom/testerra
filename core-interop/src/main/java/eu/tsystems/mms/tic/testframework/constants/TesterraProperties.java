@@ -44,6 +44,7 @@ public final class TesterraProperties {
     // BROWSER_SETTING syntax: browser:version
     // BROWSER_SETTING overrides BROWSER and BROWSER_VERSION
     public static final String BROWSER_SETTING = "tt.browser.setting";
+    public static final String BROWSER_PLATFORM = "tt.browser.platform";
 
     /**
      * Property to set the host of the remote selenium server.

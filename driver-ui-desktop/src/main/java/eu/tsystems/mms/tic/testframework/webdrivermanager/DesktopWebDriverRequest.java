@@ -54,11 +54,11 @@ public class DesktopWebDriverRequest extends AbstractWebDriverRequest implements
     }
 
     public DesktopWebDriverRequest setSeleniumServerUrl(String url) throws MalformedURLException {
-        this.seleniumServerURL = new URL(url);
-        return this;
+        return this.setSeleniumServerUrl(new URL(url));
     }
 
     public DesktopWebDriverRequest setSeleniumServerUrl(URL url) {
+        this.setWebDriverMode(WebDriverMode.remote);
         this.seleniumServerURL = url;
         return this;
     }

@@ -6,7 +6,8 @@ include::property-attributes.adoc[]
 | Property | default | Description
 
 | {browser_setting} | na.
-a| Define browser type and optional browser version as single string like `firefox` or `firefox:65` (overrides {browser} and {browser_version}) (recommended). +
+a| Define the user agent configuration like `browser[:version[:platform]]` (example: `firefox:65:windows`). Overrides {browser}, {browser_version} and {browser_platform} (recommended).
+
 The following types of browsrs are supported:
 
 * firefox
@@ -21,6 +22,7 @@ The following types of browsrs are supported:
 | {browser} | na.
 a| Only defines the browser type, will be overwritten by {browser_setting}.
 | {browser_version} | na. | Only defines the browser version, will be overwritten by {browser_setting}.
+| {browser_platform} | na. | Only defines the browser platform, will be overwritten by {browser_setting}.
 | {baseurl} | na. | URL of the first site called in a new browser session.
 | {webdriver_mode} | remote | Sets the webdriver mode. remote uses an external Selenium server
 | {selenium_server_url} | na. | The complete URL to a remote Selenium server. +

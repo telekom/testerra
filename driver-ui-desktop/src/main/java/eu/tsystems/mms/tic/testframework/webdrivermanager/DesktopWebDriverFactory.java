@@ -99,13 +99,6 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             throw new SystemException(request.getClass().getSimpleName() + " is not allowed here");
         }
 
-        /*
-        set webdriver mode
-         */
-        if (finalRequest.getWebDriverMode() == null) {
-            finalRequest.setWebDriverMode(WebDriverManager.getConfig().getWebDriverMode());
-        }
-
         request.getPlatformName().ifPresent(finalRequest::setPlatformName);
 
         return finalRequest;
@@ -294,11 +287,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
          * Remote or local
          */
         WebDriver newDriver;
-        URL remoteAddress = null;
-        if (desktopWebDriverRequest.getWebDriverMode() == WebDriverMode.remote) {
-            remoteAddress = desktopWebDriverRequest.getSeleniumServerUrl();
-        }
-
+        URL remoteAddress = desktopWebDriverRequest.getServerUrl().orElse(null);
         /*
          * Start a new web driver session.
          */

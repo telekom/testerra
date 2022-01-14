@@ -50,14 +50,19 @@ public final class TesterraProperties {
      * Property to set the host of the remote selenium server.
      */
     public static final String SELENIUM_SERVER_URL = "tt.selenium.server.url";
+    /**
+     * @deprecated Use {@link #SELENIUM_SERVER_URL} instead
+     */
     public static final String SELENIUM_SERVER_HOST = "tt.selenium.server.host";
 
     /**
      * Property to set the port of the remote selenium server.
+     * @deprecated Use {@link #SELENIUM_SERVER_URL} instead
      */
     public static final String SELENIUM_SERVER_PORT = "tt.selenium.server.port";
 
     /**
+     * @deprecated Use {@link #SELENIUM_SERVER_URL} instead
      * Property Key for webdriver mode remote|local
      */
     public static final String WEBDRIVERMODE = "tt.webdriver.mode";

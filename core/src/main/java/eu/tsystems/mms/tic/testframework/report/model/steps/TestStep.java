@@ -30,6 +30,7 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * A static wrapper for {@link MethodContext#readTestSteps()}
@@ -65,8 +66,15 @@ public class TestStep implements Serializable, Loggable {
         return name;
     }
 
+    /**
+     * @deprecated Use {@link #readActions()} instead
+     */
     public List<TestStepAction> getTestStepActions() {
         return testStepActions;
+    }
+
+    public Stream<TestStepAction> readActions() {
+        return this.testStepActions.stream();
     }
 
     /**

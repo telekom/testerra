@@ -30,6 +30,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
+import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.test.execution.TestStatusTest;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
@@ -105,7 +106,7 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
                     .collect(Collectors.toList());
 
             long count = methodContext.readTestSteps()
-                    .flatMap(testStep -> testStep.getTestStepActions().stream())
+                    .flatMap(TestStep::readActions)
                     .flatMap(testStepAction -> testStepAction.readEntries(Screenshot.class))
                     .filter(screenshot -> relevantSessionKeys.contains(screenshot.getMetaData().get(Screenshot.MetaData.SESSION_KEY)))
                     .count();

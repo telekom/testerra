@@ -26,7 +26,6 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.enums.Position;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import java.io.Serializable;
 import java.net.MalformedURLException;
@@ -34,6 +33,7 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.Dimension;
 
 public class DesktopWebDriverRequest extends SeleniumWebDriverRequest implements Loggable, Serializable {
@@ -49,10 +49,16 @@ public class DesktopWebDriverRequest extends SeleniumWebDriverRequest implements
         this.maximizePosition = Position.valueOf(PropertyManager.getProperty(TesterraProperties.BROWSER_MAXIMIZE_POSITION, Position.CENTER.toString()).toUpperCase());
     }
 
+    /**
+     * @deprecated Use {@link #getServerUrl()}
+     */
     public WebDriverMode getWebDriverMode() {
-        return webDriverMode;
+        return null;
     }
 
+    /**
+     * @deprecated Use {@link #setServerUrl(URL)} instead
+     */
     public void setWebDriverMode(WebDriverMode webDriverMode) {
         this.webDriverMode = webDriverMode;
     }

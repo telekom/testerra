@@ -28,7 +28,6 @@ import {AbstractViewModel} from "../abstract-view-model";
 import {data} from "../../services/report-model";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import MethodType = data.MethodType;
-import ResultStatusType = data.ResultStatusType;
 import "./classes.scss"
 
 @autoinject()

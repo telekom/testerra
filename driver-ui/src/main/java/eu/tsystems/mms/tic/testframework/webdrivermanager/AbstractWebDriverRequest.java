@@ -22,7 +22,6 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
@@ -38,6 +37,7 @@ public class AbstractWebDriverRequest implements WebDriverRequest {
     private boolean shutdownAfterTestFailed = false;
     private boolean shutdownAfterExecution = true;
     private String browserName;
+    private String platformName;
 
     public AbstractWebDriverRequest() {
         setShutdownAfterTest(PropertyManager.getBooleanProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, true));
@@ -154,4 +154,13 @@ public class AbstractWebDriverRequest implements WebDriverRequest {
         }
         return clone;
     }
+
+    public void setPlatformName(String platformName) {
+        this.platformName = platformName;
+    }
+
+    public Optional<String> getPlatformName() {
+        return Optional.ofNullable(this.platformName);
+    }
+
 }

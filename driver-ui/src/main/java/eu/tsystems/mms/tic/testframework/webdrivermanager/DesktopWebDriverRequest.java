@@ -38,13 +38,11 @@ import org.openqa.selenium.Dimension;
 
 public class DesktopWebDriverRequest extends SeleniumWebDriverRequest implements Loggable, Serializable {
 
-    private WebDriverMode webDriverMode;
     private boolean maximize;
     private Position maximizePosition;
 
     public DesktopWebDriverRequest() {
         super();
-        this.webDriverMode = WebDriverMode.valueOf(Testerra.Properties.WEBDRIVER_MODE.asString());
         this.maximize = PropertyManager.getBooleanProperty(TesterraProperties.BROWSER_MAXIMIZE, false);
         this.maximizePosition = Position.valueOf(PropertyManager.getProperty(TesterraProperties.BROWSER_MAXIMIZE_POSITION, Position.CENTER.toString()).toUpperCase());
     }
@@ -60,19 +58,26 @@ public class DesktopWebDriverRequest extends SeleniumWebDriverRequest implements
      * @deprecated Use {@link #setServerUrl(URL)} instead
      */
     public void setWebDriverMode(WebDriverMode webDriverMode) {
-        this.webDriverMode = webDriverMode;
+
     }
 
     @Override
     public Optional<URL> getServerUrl() {
         if (!super.getServerUrl().isPresent()) {
-            try {
-                this.setServerUrl(new URL(StringUtils.getFirstValidString(
-                        Testerra.Properties.SELENIUM_SERVER_URL.asString(),
-                        "http://" + Testerra.Properties.SELENIUM_SERVER_HOST.asString() + ":" + Testerra.Properties.SELENIUM_SERVER_PORT.asString() + "/wd/hub"
-                )));
-            } catch (MalformedURLException e) {
-                throw new RuntimeException("Unable to retrieve default Selenium URL from properties", e);
+            String serverUrl = Testerra.Properties.SELENIUM_SERVER_URL.asString();
+            if (StringUtils.isBlank(serverUrl)) {
+                final String serverHost = Testerra.Properties.SELENIUM_SERVER_HOST.asString();
+                if (StringUtils.isNotBlank(serverHost)) {
+                    serverUrl = String.format("http://%s:%d/wd/hub", serverHost, Testerra.Properties.SELENIUM_SERVER_PORT.asLong());
+                }
+            }
+
+            if (StringUtils.isNotBlank(serverUrl)) {
+                try {
+                    setServerUrl(serverUrl);
+                } catch (MalformedURLException e) {
+                    log().error("Unable to retrieve default Selenium URL from properties", e);
+                }
             }
         }
         return super.getServerUrl();

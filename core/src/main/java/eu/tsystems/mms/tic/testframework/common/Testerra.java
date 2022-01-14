@@ -33,6 +33,7 @@ import eu.tsystems.mms.tic.testframework.internal.BuildInformation;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -64,7 +65,7 @@ public class Testerra {
         MONITOR_MEMORY("tt.monitor.memory", true),
         DEMO_MODE("tt.demomode",false),
         @Deprecated
-        SELENIUM_SERVER_HOST("tt.selenium.server.host", "localhost"),
+        SELENIUM_SERVER_HOST("tt.selenium.server.host", null),
         @Deprecated
         SELENIUM_SERVER_PORT("tt.selenium.server.port", 4444),
         SELENIUM_SERVER_URL("tt.selenium.server.url", String.format("http://%s:%s/wd/hub", SELENIUM_SERVER_HOST.asString(), SELENIUM_SERVER_PORT.asString())),
@@ -76,7 +77,7 @@ public class Testerra {
         PERF_GENERATE_STATISTICS("tt.perf.generate.statistics", false),
         REUSE_DATAPROVIDER_DRIVER_BY_THREAD("tt.reuse.dataprovider.driver.by.thread", false),
         /**
-         * @todo Default should be based on WebDriverMode class
+         * @deprecated Use {@link WebDriverRequest#getServerUrl()} instead
          */
         WEBDRIVER_MODE("tt.webdriver.mode", "remote"),
         FAILURE_CORRIDOR_ACTIVE("tt.failure.corridor.active", true),

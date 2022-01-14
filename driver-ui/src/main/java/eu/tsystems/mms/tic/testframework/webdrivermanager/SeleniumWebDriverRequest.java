@@ -23,11 +23,11 @@
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Optional;
+import org.apache.commons.lang3.StringUtils;
 
 public class SeleniumWebDriverRequest extends AbstractWebDriverRequest implements Loggable, Serializable {
 
@@ -36,17 +36,22 @@ public class SeleniumWebDriverRequest extends AbstractWebDriverRequest implement
     public SeleniumWebDriverRequest() {
         super();
         String browserSetting = IWebDriverManager.Properties.BROWSER_SETTING.asString();
-        if (!StringUtils.isStringEmpty(browserSetting)) {
+
+        if (StringUtils.isBlank(browserSetting)) {
             String[] split = browserSetting.split(":");
             if (split.length > 0) this.setBrowser(split[0].trim());
             if (split.length > 1) this.setBrowserVersion(split[1].trim());
+            if (split.length > 2) this.setPlatformName(split[2].trim());
         }
 
-        if (StringUtils.isStringEmpty(this.getBrowser())) {
+        if (StringUtils.isBlank(this.getBrowser())) {
             this.setBrowser(IWebDriverManager.Properties.BROWSER.asString());
         }
-        if (StringUtils.isStringEmpty(this.getBrowserVersion())) {
+        if (StringUtils.isBlank(this.getBrowserVersion())) {
             this.setBrowserVersion(IWebDriverManager.Properties.BROWSER_VERSION.asString());
+        }
+        if (StringUtils.isBlank(this.getPlatformName().orElse(null))) {
+            this.setBrowserVersion(IWebDriverManager.Properties.BROWSER_PLATFORM.asString());
         }
 
         String baseUrl = Testerra.Properties.BASEURL.asString();

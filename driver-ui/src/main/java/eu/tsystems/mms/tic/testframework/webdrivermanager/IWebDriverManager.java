@@ -50,6 +50,7 @@ public interface IWebDriverManager extends WebDriverRetainer, Loggable {
         BROWSER("tt.browser", ""),
         BROWSER_VERSION("tt.browser.version", ""),
         BROWSER_SETTING("tt.browser.setting", ""),
+        BROWSER_PLATFORM("tt.browser.platform", null),
         ;
         private final String property;
         private final Object defaultValue;

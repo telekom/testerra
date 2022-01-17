@@ -26,7 +26,7 @@ import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExist
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverCapabilities;
+import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
@@ -36,7 +36,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class DriverAndGuiElementTest extends TesterraTest {
+public class DriverAndGuiElementTest extends TesterraTest implements WebDriverManagerProvider {
 
     static {
         System.setProperty("tt.browser.setting", "firefox:66");

@@ -87,6 +87,7 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
     @Test()
     @Fails()
     public void test_takeScreenshotViaCollectedAssertion_fails() {
+        getWebDriver();
         AssertCollector.assertTrue(false);
     }
 

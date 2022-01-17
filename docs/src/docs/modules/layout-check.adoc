@@ -15,10 +15,6 @@ At this point an automatic comparison of reference screenshots can help. This te
 == Description
 
 A layout test with the Testerra utilities is actually a comparison between a reference and the actual state. This is done via the screenshot functionality of Selenium, in which both screenshots (reference and actual) are compared pixel by pixel from top to bottom. In this comparison, a third image is created in which differences (ReferencePixel != ActualPixel) are marked in red.
-The LayoutCheck can perform a check in two ways:
-
-- *PIXEL*: Pixel-based image comparison of the entire reference image without exception. You get a quantified value for pixel displacement in percent (0-100%)
-- *ANNOTATED*: The image comparison is based on annotations in the reference image. The annotations are rectangles in a certain color, which include the areas to be checked. You get a quantified value for displaced annotations in percent.
 
 === Prerequisites
 The following prerequisites must be met
@@ -49,18 +45,16 @@ In order to get the layout check to work, you need at least a reference image an
 ----
 The directory for reference image may result in `src/test/resources/layout-references/chrome/WelcomePage.png` for example.
 
-== PIXEL Mode
-
 The comparison is generally carried out over the entire reference image. In this case, it is a prerequisite that the reference screenshot and the screenshot created during the test runtime have the same resolution (height and width are identical).
 
-Mostly the website consists of many more elements than should be checked. Ingredients such as the header,
-menus or footer may falsify the test result if there are deviations from the reference,
-but these are not currently the subject of the test. For this reason,
-the `{layoutcheck_ignore_color}` property can be used to determine that a particular color in the image can be excluded from comparison.
+To control the threshold, you can use the following properties.
 
-To validate the layout in Pixel Mode, you can check the whole page or a single <<GuiElements,GuiElement>>.
+* `{layoutcheck_pixel_rgb_deviation_percent}` defines, which color difference in percentage of a single pixel is count as a match. You can use that value to handle slightly changes in color or alpha values.
+* `{layoutcheck_match_threshold}` is the overall percentage amount of pixels that need to match, to pass the layout check based test.
 
-=== Check the whole page
+To validate the layout, you can check the whole page or a single <<GuiElements,GuiElement>>.
+
+== Check the whole page
 
 [source, java]
 ----
@@ -68,7 +62,7 @@ import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 LayoutCheck.assertScreenshot(WebDriverManager.getWebDriver(), "WelcomePage", 1);
 ----
 
-=== Check a single GuiElement
+== Check a single GuiElement
 
 To check the layout of a single GuiElement only, you can use the standard asserts implementation.
 
@@ -81,7 +75,7 @@ final GuiElement guiElement;
 guiElement.asserts().assertScreenshot(guiElementImage, 10);
 ----
 
-=== Take reference screenshots on first run
+== Take reference screenshots on first run
 
 When you have configured the reference screenshots location and implemented the tests, you can now set the option
 
@@ -92,7 +86,3 @@ When you have configured the reference screenshots location and implemented the 
 to enable taking automatically screenshots based on the current browser and size configuration and storing them to the reference image's location.
 
 WARNING: All concrete distance values in this {layoutcheck_takereference}-mode will return `0` (zero) and always pass the tests.
-
-== ANNOTATED Mode
-
-For this mode, an arbitrary number of rectangles with a line width of one pixel are defined in the reference images. The color of the rectangles is to be communicated to Testerra via the upper left pixel (x=1, y=1). In the current screenshot, Testerra searches for the area within the annotated selection. The resolution of the current screenshot is irrelevant.

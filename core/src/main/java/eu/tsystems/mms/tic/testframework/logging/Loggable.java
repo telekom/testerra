@@ -29,4 +29,8 @@ public interface Loggable {
     default Logger log() {
         return LoggerFactory.getLogger(this.getClass());
     }
+
+    default Logger prompt() {
+        return PromptLogger.getLogger(this.getClass());
+    }
 }

@@ -166,6 +166,7 @@ message LogMessage {
     int64 timestamp = 4;
     string thread_name = 5;
     repeated StackTraceCause stack_trace = 6;
+    bool prompt = 7;
 }
 
 message ErrorContext {

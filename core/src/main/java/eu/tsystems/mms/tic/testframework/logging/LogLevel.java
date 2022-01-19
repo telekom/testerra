@@ -25,6 +25,7 @@
  * Enum for containing the 4 logLevel types.
  *
  * @author pele
+ * @deprecated
  */
 public enum LogLevel {
     /**

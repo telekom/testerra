@@ -21,11 +21,13 @@
  package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import java.util.Optional;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.LogEvent;
 
 import java.io.Serializable;
 import java.util.Date;
+import org.apache.logging.log4j.message.Message;
 
 /**
  * Copy of {@link LogEvent} because Log4j2 reuses the event instance
@@ -39,7 +41,11 @@ public class LogMessage implements Serializable, Loggable {
     private final Throwable thrown;
     private final String message;
     private final Level level;
+    private final boolean prompt;
 
+    /**
+     * Creates a log message based on a Log4J log event
+     */
     public LogMessage(LogEvent event) {
         this.timestamp = event.getTimeMillis();
         this.threadName = event.getThreadName();
@@ -47,18 +53,38 @@ public class LogMessage implements Serializable, Loggable {
         this.thrown = event.getThrown();
         this.message = event.getMessage().getFormattedMessage();
         this.level = event.getLevel();
+        this.prompt = false;
+    }
+
+    /**
+     * Creates a prompt log message with {@link Level#INFO}
+     */
+    public LogMessage(Message message) {
+        this(message, Level.INFO);
+    }
+
+    /**
+     * Creates a prompt log message
+     */
+    public LogMessage(Message message, Level logLevel) {
+        this(LogMessage.class.getSimpleName(), message, logLevel);
+    }
+
+    /**
+     * Creates a prompt log message with logger name
+     */
+    public LogMessage(String loggerName, Message message, Level logLevel) {
+        this.timestamp = new Date().getTime();
+        this.threadName = Thread.currentThread().getName();
+        this.loggerName = loggerName;
+        this.thrown = message.getThrowable();
+        this.message = message.getFormattedMessage();
+        this.level = logLevel;
+        this.prompt = true;
     }
 
     public Level getLogLevel() {
         return this.level;
-    }
-
-    /**
-     * Required by velocity templates
-     */
-    @Deprecated
-    public Date getDate() {
-        return new Date(this.getTimestamp());
     }
 
     public long getTimestamp() {
@@ -77,7 +103,11 @@ public class LogMessage implements Serializable, Loggable {
         return this.message;
     }
 
-    public Throwable getThrown() {
-        return this.thrown;
+    public Optional<Throwable> getThrown() {
+        return Optional.ofNullable(this.thrown);
+    }
+
+    public boolean isPrompt() {
+        return prompt;
     }
 }

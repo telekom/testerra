@@ -396,10 +396,14 @@ public class ContextExporter implements Loggable {
         }
         builder.setTimestamp(logMessage.getTimestamp());
         builder.setThreadName(logMessage.getThreadName());
+        builder.setPrompt(logMessage.isPrompt());
 
-        traceThrowable(logMessage.getThrown(), throwable -> {
-            builder.addStackTrace(this.buildStackTraceCause(throwable));
+        logMessage.getThrown().ifPresent(t -> {
+            traceThrowable(t, throwable -> {
+                builder.addStackTrace(this.buildStackTraceCause(throwable));
+            });
         });
+
         return builder;
     }
 

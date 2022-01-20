@@ -15,7 +15,7 @@ include::property-attributes.adoc[]
 | {layoutcheck_distance_path} | `src/test/resources/screenreferences/distance` | Directory path under which the calculated distance images are stored.
 | {layoutcheck_actual_path}       | `src/test/resources/screenreferences/actual` | Directory path under which the current screenshots for the comparison are saved
 | {layoutcheck_pixel_rgb_deviation_percent}       | 0 | Max allowed difference in rgb values between actual and reference image in percentage. If R, G, and B percentages are higher than the given value, the corresponding pixel is marked as false (=red color in distance image)
-| {layoutcheck_match_threshold}       | 0.95d | Defines how many percent of pixels are considered a match. Should be as high as possible and as low as needed.
+//| {layoutcheck_match_threshold}       | 0.95d | Defines how many percent of pixels are considered a match. Should be as high as possible and as low as needed.
 | {layoutcheck_displacement_threshold}       | 5 | Displacement distance of matches that is considered as error (when distance > {layoutcheck_displacement_threshold})
 | {layoutcheck_intra_grouping_threshold}       | 5 | Threshold for grouping movement errors (errors <= {layoutcheck_intra_grouping_threshold} are grouped)
 | {layoutcheck_min_match_distance}       | 5 | Max distance for grouping multiple matches as single match (distance of matches < {layoutcheck_min_match_distance} are marked as single match)

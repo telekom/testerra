@@ -47,10 +47,7 @@ The directory for reference image may result in `src/test/resources/layout-refer
 
 The comparison is generally carried out over the entire reference image. In this case, it is a prerequisite that the reference screenshot and the screenshot created during the test runtime have the same resolution (height and width are identical).
 
-To control the threshold, you can use the following properties.
-
-* `{layoutcheck_pixel_rgb_deviation_percent}` defines, which color difference in percentage of a single pixel is count as a match. You can use that value to handle slightly changes in color or alpha values.
-* `{layoutcheck_match_threshold}` is the overall percentage amount of pixels that need to match, to pass the layout check based test.
+The property `{layoutcheck_pixel_rgb_deviation_percent}` controls, which color difference in percentage of a single pixel is count as a match. You can use that value to handle slightly changes in color or alpha values.
 
 To validate the layout, you can check the whole page or a single <<GuiElements,GuiElement>>.
 
@@ -58,8 +55,10 @@ To validate the layout, you can check the whole page or a single <<GuiElements,G
 
 [source, java]
 ----
-import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
-LayoutCheck.assertScreenshot(WebDriverManager.getWebDriver(), "WelcomePage", 1);
+// 1% of the pixels are allowed to be different
+float pixelDistanceToleranceThresholdPercent = 1.0;
+
+LayoutCheck.assertScreenshot(webDriver, "WelcomePage", pixelDistanceToleranceThresholdPercent);
 ----
 
 == Check a single GuiElement
@@ -68,11 +67,11 @@ To check the layout of a single GuiElement only, you can use the standard assert
 
 [source, java]
 ----
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+// 10% of the pixels are allowed to be different
+float pixelDistanceToleranceThresholdPercent = 10.0;
+String guiElementImage = "HeaderComponent";
 
-final String guiElementImage = "HeaderComponent";
-final GuiElement guiElement;
-guiElement.asserts().assertScreenshot(guiElementImage, 10);
+guiElement.asserts().assertScreenshot(guiElementImage, pixelDistanceToleranceThresholdPercent);
 ----
 
 == Take reference screenshots on first run

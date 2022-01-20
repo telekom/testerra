@@ -69,9 +69,8 @@ To check the layout of a single GuiElement only, you can use the standard assert
 ----
 // 10% of the pixels are allowed to be different
 float pixelDistanceToleranceThresholdPercent = 10.0;
-String guiElementImage = "HeaderComponent";
 
-guiElement.asserts().assertScreenshot(guiElementImage, pixelDistanceToleranceThresholdPercent);
+guiElement.asserts().assertScreenshot("HeaderComponent", pixelDistanceToleranceThresholdPercent);
 ----
 
 == Take reference screenshots on first run

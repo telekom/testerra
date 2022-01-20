@@ -21,12 +21,12 @@
  package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.logging.Prompt;
+import java.util.Arrays;
 import java.util.Optional;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.LogEvent;
-
 import java.io.Serializable;
-import java.util.Date;
 import org.apache.logging.log4j.message.Message;
 
 /**
@@ -51,36 +51,14 @@ public class LogMessage implements Serializable, Loggable {
         this.threadName = event.getThreadName();
         this.loggerName = event.getLoggerName();
         this.thrown = event.getThrown();
-        this.message = event.getMessage().getFormattedMessage();
-        this.level = event.getLevel();
-        this.prompt = false;
-    }
-
-    /**
-     * Creates a prompt log message with {@link Level#INFO}
-     */
-    public LogMessage(Message message) {
-        this(message, Level.INFO);
-    }
-
-    /**
-     * Creates a prompt log message
-     */
-    public LogMessage(Message message, Level logLevel) {
-        this(LogMessage.class.getSimpleName(), message, logLevel);
-    }
-
-    /**
-     * Creates a prompt log message with logger name
-     */
-    public LogMessage(String loggerName, Message message, Level logLevel) {
-        this.timestamp = new Date().getTime();
-        this.threadName = Thread.currentThread().getName();
-        this.loggerName = loggerName;
-        this.thrown = message.getThrowable();
+        final Message message = event.getMessage();
+        if (message.getParameters() != null) {
+            this.prompt = Arrays.stream(message.getParameters()).anyMatch(Prompt.class::isInstance);
+        } else {
+            this.prompt = false;
+        }
         this.message = message.getFormattedMessage();
-        this.level = logLevel;
-        this.prompt = true;
+        this.level = event.getLevel();
     }
 
     public Level getLogLevel() {

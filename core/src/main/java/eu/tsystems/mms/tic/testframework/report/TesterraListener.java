@@ -43,6 +43,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.OmitInDev
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.SortMethodsByPriorityMethodInterceptor;
 import eu.tsystems.mms.tic.testframework.internal.BuildInformation;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.logging.MethodContextLogAppender;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
 import eu.tsystems.mms.tic.testframework.report.hooks.ConfigMethodHook;
 import eu.tsystems.mms.tic.testframework.report.hooks.TestMethodHook;
@@ -121,6 +122,7 @@ public class TesterraListener implements
     private static DefaultTestNGContextGenerator contextGenerator;
     private static final TestStatusController testStatusController = new TestStatusController();
     private static final ConcurrentHashMap<ITestNGMethod, Boolean> dataProviderSemaphore = new ConcurrentHashMap<>();
+    private static final MethodContextLogAppender logAppender;
 
     static {
         String logLevel = PropertyManager.getProperty("log4j.level");
@@ -130,6 +132,12 @@ public class TesterraListener implements
         }
         DefaultConfiguration defaultConfiguration = new DefaultConfiguration();
         loggerContext = Configurator.initialize(defaultConfiguration);
+
+        // Enable report formatter here
+        logAppender = new MethodContextLogAppender();
+        logAppender.start();
+        loggerContext.getRootLogger().addAppender(logAppender);
+
         buildInformation = new BuildInformation();
         eventBus = new EventBus();
         report = new DefaultReport();

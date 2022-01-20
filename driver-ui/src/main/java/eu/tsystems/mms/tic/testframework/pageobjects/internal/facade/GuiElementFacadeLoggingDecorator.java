@@ -21,15 +21,10 @@
  */
  package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
-import eu.tsystems.mms.tic.testframework.logging.LogLevel;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class GuiElementFacadeLoggingDecorator extends GuiElementFacadeDecorator {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(GuiElement.class);
+public class GuiElementFacadeLoggingDecorator extends GuiElementFacadeDecorator implements Loggable {
 
     private final GuiElementData guiElementData;
 
@@ -54,24 +49,6 @@ public class GuiElementFacadeLoggingDecorator extends GuiElementFacadeDecorator 
 
     private void print(String message) {
         String messageToLog = message + " on " + guiElementData.toString();
-
-        LogLevel logLevel = guiElementData.getLogLevel();
-
-        switch (logLevel) {
-            case INFO:
-                LOGGER.info(messageToLog);
-                break;
-            case DEBUG:
-                LOGGER.debug(messageToLog);
-                break;
-            case ERROR:
-                LOGGER.error(messageToLog);
-                break;
-            case WARNING:
-                LOGGER.warn(messageToLog);
-                break;
-            default:
-                LOGGER.error("LogLevel " + logLevel + " unknown. Tried to print " + message);
-        }
+        log().info(messageToLog);
     }
 }

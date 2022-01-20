@@ -21,13 +21,8 @@
 <template>
     <div class="code-view"
          class.bind="class"
-    >
-        <div repeat.for="logMessage of logMessages"
+    ><div repeat.for="logMessage of logMessages"
              class="line"
              class.bind="(logMessage.type==1?'error':(logMessage.type==2?'warn':''))"
-        >
-            <compose view="./log-line.html"></compose>
-        </div>
-        <div if.bind="logMessages.length == 0" class="line">(No log messages matching this criteria)</div>
-    </div>
+        ><compose view="./log-line.html"></compose></div><div if.bind="logMessages.length == 0" class="line">(No log messages matching this criteria)</div></div>
 </template>

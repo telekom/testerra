@@ -154,7 +154,7 @@ public class ExecutionContextController {
      *
      * @param methodContext Method Context.
      */
-    private static void setCurrentMethodContext(final MethodContext methodContext) {
+    public static void setCurrentMethodContext(final MethodContext methodContext) {
         CURRENT_METHOD_CONTEXT.set(methodContext);
     }
 

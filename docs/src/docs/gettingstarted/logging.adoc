@@ -14,3 +14,37 @@ You can also change the root log level from the command line via.
 ----
 -Dlog4j.level=DEBUG
 ----
+
+== Log own messages
+
+The `Loggable` interface provide some logging features and always uses the current instance class as logger name.
+
+[source,java]
+----
+class MyClass implements Loggable {
+
+    public void doSomething() {
+        log().info("Do something");
+    }
+}
+----
+
+Which results in a log message similar to
+
+[source]
+----
+[main][INFO][MCID:xyz][SCID:abc]: MyClass - Do something
+----
+
+The markers `MCID` and `SCID` are referencing to the current MethodContext respectively SessionContext ID.
+
+== Prompt messages
+
+Very important messages can be prompted using:
+
+[source,java]
+----
+log().warn("Important message", Loggable::prompt);
+----
+
+That tells the Report to display these messages in a different way (optional).

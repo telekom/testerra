@@ -1535,6 +1535,7 @@ export const data = $root.data = (() => {
          * @property {number|null} [timestamp] LogMessage timestamp
          * @property {string|null} [threadName] LogMessage threadName
          * @property {Array.<data.IStackTraceCause>|null} [stackTrace] LogMessage stackTrace
+         * @property {boolean|null} [prompt] LogMessage prompt
          */
 
         /**
@@ -1602,6 +1603,14 @@ export const data = $root.data = (() => {
         LogMessage.prototype.stackTrace = $util.emptyArray;
 
         /**
+         * LogMessage prompt.
+         * @member {boolean} prompt
+         * @memberof data.LogMessage
+         * @instance
+         */
+        LogMessage.prototype.prompt = false;
+
+        /**
          * Decodes a LogMessage message from the specified reader or buffer.
          * @function decode
          * @memberof data.LogMessage
@@ -1638,6 +1647,9 @@ export const data = $root.data = (() => {
                     if (!(m.stackTrace && m.stackTrace.length))
                         m.stackTrace = [];
                     m.stackTrace.push($root.data.StackTraceCause.decode(r, r.uint32()));
+                    break;
+                case 7:
+                    m.prompt = r.bool();
                     break;
                 default:
                     r.skipType(t & 7);

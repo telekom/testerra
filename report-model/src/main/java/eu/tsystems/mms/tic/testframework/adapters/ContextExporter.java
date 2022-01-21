@@ -113,8 +113,7 @@ public class ContextExporter implements Loggable {
 
         apply(methodContext.getRetryCounter(), builder::setRetryNumber);
         apply(methodContext.getMethodRunIndex(), builder::setMethodRunIndex);
-
-        methodContext.getPriorityMessage().ifPresent(builder::setPriorityMessage);
+        //methodContext.getPriorityMessage().ifPresent(builder::setPriorityMessage);
         apply(methodContext.getThreadName(), builder::setThreadName);
 
         // test steps
@@ -131,7 +130,6 @@ public class ContextExporter implements Loggable {
             builder.setFailureCorridorValue(FailureCorridorValue.FCV_LOW);
         }
         builder.setClassContextId(methodContext.getClassContext().getId());
-        methodContext.readInfos().forEach(builder::addInfos);
         methodContext.readRelatedMethodContexts().forEach(m -> builder.addRelatedMethodContextIds(m.getId()));
         methodContext.readDependsOnMethodContexts().forEach(m -> builder.addDependsOnMethodContextIds(m.getId()));
 
@@ -396,10 +394,14 @@ public class ContextExporter implements Loggable {
         }
         builder.setTimestamp(logMessage.getTimestamp());
         builder.setThreadName(logMessage.getThreadName());
+        builder.setPrompt(logMessage.isPrompt());
 
-        traceThrowable(logMessage.getThrown(), throwable -> {
-            builder.addStackTrace(this.buildStackTraceCause(throwable));
+        logMessage.getThrown().ifPresent(t -> {
+            traceThrowable(t, throwable -> {
+                builder.addStackTrace(this.buildStackTraceCause(throwable));
+            });
         });
+
         return builder;
     }
 

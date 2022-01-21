@@ -92,6 +92,11 @@ private static final long serialVersionUID = 0L;
                 input.readMessage(eu.tsystems.mms.tic.testframework.report.model.StackTraceCause.parser(), extensionRegistry));
             break;
           }
+          case 56: {
+
+            prompt_ = input.readBool();
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -311,6 +316,17 @@ private static final long serialVersionUID = 0L;
     return stackTrace_.get(index);
   }
 
+  public static final int PROMPT_FIELD_NUMBER = 7;
+  private boolean prompt_;
+  /**
+   * <code>bool prompt = 7;</code>
+   * @return The prompt.
+   */
+  @java.lang.Override
+  public boolean getPrompt() {
+    return prompt_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -343,6 +359,9 @@ private static final long serialVersionUID = 0L;
     for (int i = 0; i < stackTrace_.size(); i++) {
       output.writeMessage(6, stackTrace_.get(i));
     }
+    if (prompt_ != false) {
+      output.writeBool(7, prompt_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -373,6 +392,10 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(6, stackTrace_.get(i));
     }
+    if (prompt_ != false) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(7, prompt_);
+    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -399,6 +422,8 @@ private static final long serialVersionUID = 0L;
         .equals(other.getThreadName())) return false;
     if (!getStackTraceList()
         .equals(other.getStackTraceList())) return false;
+    if (getPrompt()
+        != other.getPrompt()) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -425,6 +450,9 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + STACK_TRACE_FIELD_NUMBER;
       hash = (53 * hash) + getStackTraceList().hashCode();
     }
+    hash = (37 * hash) + PROMPT_FIELD_NUMBER;
+    hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+        getPrompt());
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -575,6 +603,8 @@ private static final long serialVersionUID = 0L;
       } else {
         stackTraceBuilder_.clear();
       }
+      prompt_ = false;
+
       return this;
     }
 
@@ -616,6 +646,7 @@ private static final long serialVersionUID = 0L;
       } else {
         result.stackTrace_ = stackTraceBuilder_.build();
       }
+      result.prompt_ = prompt_;
       onBuilt();
       return result;
     }
@@ -707,6 +738,9 @@ private static final long serialVersionUID = 0L;
             stackTraceBuilder_.addAllMessages(other.stackTrace_);
           }
         }
+      }
+      if (other.getPrompt() != false) {
+        setPrompt(other.getPrompt());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -1289,6 +1323,37 @@ private static final long serialVersionUID = 0L;
         stackTrace_ = null;
       }
       return stackTraceBuilder_;
+    }
+
+    private boolean prompt_ ;
+    /**
+     * <code>bool prompt = 7;</code>
+     * @return The prompt.
+     */
+    @java.lang.Override
+    public boolean getPrompt() {
+      return prompt_;
+    }
+    /**
+     * <code>bool prompt = 7;</code>
+     * @param value The prompt to set.
+     * @return This builder for chaining.
+     */
+    public Builder setPrompt(boolean value) {
+      
+      prompt_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>bool prompt = 7;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearPrompt() {
+      
+      prompt_ = false;
+      onChanged();
+      return this;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

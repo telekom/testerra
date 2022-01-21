@@ -151,15 +151,15 @@ public interface MethodContextOrBuilder extends
       getInfosBytes(int index);
 
   /**
-   * <code>string priority_message = 21;</code>
+   * <code>string priority_message = 21 [deprecated = true];</code>
    * @return The priorityMessage.
    */
-  java.lang.String getPriorityMessage();
+  @java.lang.Deprecated java.lang.String getPriorityMessage();
   /**
-   * <code>string priority_message = 21;</code>
+   * <code>string priority_message = 21 [deprecated = true];</code>
    * @return The bytes for priorityMessage.
    */
-  com.google.protobuf.ByteString
+  @java.lang.Deprecated com.google.protobuf.ByteString
       getPriorityMessageBytes();
 
   /**

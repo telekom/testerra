@@ -21,11 +21,13 @@
  package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.logging.Prompt;
+import java.util.Arrays;
+import java.util.Optional;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.LogEvent;
-
 import java.io.Serializable;
-import java.util.Date;
+import org.apache.logging.log4j.message.Message;
 
 /**
  * Copy of {@link LogEvent} because Log4j2 reuses the event instance
@@ -39,26 +41,28 @@ public class LogMessage implements Serializable, Loggable {
     private final Throwable thrown;
     private final String message;
     private final Level level;
+    private final boolean prompt;
 
+    /**
+     * Creates a log message based on a Log4J log event
+     */
     public LogMessage(LogEvent event) {
         this.timestamp = event.getTimeMillis();
         this.threadName = event.getThreadName();
         this.loggerName = event.getLoggerName();
         this.thrown = event.getThrown();
-        this.message = event.getMessage().getFormattedMessage();
+        final Message message = event.getMessage();
+        if (message.getParameters() != null) {
+            this.prompt = Arrays.stream(message.getParameters()).anyMatch(Prompt.class::isInstance);
+        } else {
+            this.prompt = false;
+        }
+        this.message = message.getFormattedMessage();
         this.level = event.getLevel();
     }
 
     public Level getLogLevel() {
         return this.level;
-    }
-
-    /**
-     * Required by velocity templates
-     */
-    @Deprecated
-    public Date getDate() {
-        return new Date(this.getTimestamp());
     }
 
     public long getTimestamp() {
@@ -77,7 +81,11 @@ public class LogMessage implements Serializable, Loggable {
         return this.message;
     }
 
-    public Throwable getThrown() {
-        return this.thrown;
+    public Optional<Throwable> getThrown() {
+        return Optional.ofNullable(this.thrown);
+    }
+
+    public boolean isPrompt() {
+        return prompt;
     }
 }

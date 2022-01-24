@@ -329,9 +329,9 @@ public final class WebDriverSessionsManager {
         }
 
         if (StringUtils.isEmpty(webDriverRequest.getPlatformName().orElse(null))) {
-            WebDriverManager.getConfig().getPlatformName().ifPresent(platfrom -> {
-                if (StringUtils.isNotEmpty(platfrom)) {
-                    webDriverRequest.setPlatformName(platfrom);
+            WebDriverManager.getConfig().getPlatformName().ifPresent(platform -> {
+                if (StringUtils.isNotEmpty(platform)) {
+                    webDriverRequest.setPlatformName(platform);
                 }
             });
         }

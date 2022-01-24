@@ -328,8 +328,12 @@ public final class WebDriverSessionsManager {
             webDriverRequest.setBrowserVersion(WebDriverManager.getConfig().getBrowserVersion());
         }
 
-        if (StringUtils.isBlank(webDriverRequest.getPlatformName().orElse(null))) {
-            WebDriverManager.getConfig().getPlatformName().ifPresent(webDriverRequest::setPlatformName);
+        if (StringUtils.isEmpty(webDriverRequest.getPlatformName().orElse(null))) {
+            WebDriverManager.getConfig().getPlatformName().ifPresent(platfrom -> {
+                if (StringUtils.isNotEmpty(platfrom)) {
+                    webDriverRequest.setPlatformName(platfrom);
+                }
+            });
         }
 
         String browser = webDriverRequest.getBrowser();

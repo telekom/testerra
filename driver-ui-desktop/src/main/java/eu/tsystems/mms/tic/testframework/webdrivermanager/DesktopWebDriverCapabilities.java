@@ -22,13 +22,14 @@
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.utils.CertUtils;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 @Deprecated
 public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
@@ -88,7 +89,6 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
         }
 
         desktopWebDriverRequest.getPlatformName()
-                .map(StringUtils::isNotBlank)
                 .ifPresent(s -> {
                     desiredCapabilities.setCapability(CapabilityType.PLATFORM_NAME, s);
                     desiredCapabilities.setCapability(CapabilityType.PLATFORM, s);

@@ -19,7 +19,7 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.webdrivermanager;
+package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
@@ -32,6 +32,13 @@ import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -43,12 +50,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
-import org.apache.commons.lang3.StringUtils;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import static eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverFactory.wrapRawWebDriverWithEventFiringWebDriver;
 
 public final class WebDriverSessionsManager {
@@ -149,7 +151,7 @@ public final class WebDriverSessionsManager {
     /**
      * Introduce an own webdriver object. Selenium session will be released in this case.
      *
-     * @param driver     .
+     * @param driver .
      * @param sessionKey .
      */
     static void introduceWebDriver(final String sessionKey, final WebDriver driver) {
@@ -220,7 +222,6 @@ public final class WebDriverSessionsManager {
         WEBDRIVER_SESSIONS_CONTEXTS_MAP.remove(WebDriverUtils.getLowestWebDriver(webDriver));
         LOGGER.debug("Shut down: " + sessionIdentifier);
     }
-
 
     static void shutdownAllThreadSessions() {
         getWebDriversFromCurrentThread().forEach(WebDriverSessionsManager::shutdownWebDriver);
@@ -311,7 +312,6 @@ public final class WebDriverSessionsManager {
         return WEBDRIVER_THREAD_ID_MAP.entrySet().stream().filter(entry -> entry.getValue() == threadId).map(Map.Entry::getKey);
     }
 
-
     public static WebDriver getWebDriver(AbstractWebDriverRequest webDriverRequest) {
         /*
         get session key
@@ -328,10 +328,15 @@ public final class WebDriverSessionsManager {
             webDriverRequest.setBrowserVersion(WebDriverManager.getConfig().getBrowserVersion());
         }
 
+        if (StringUtils.isEmpty(webDriverRequest.getPlatformName().orElse(null))) {
+            WebDriverManager.getConfig().getPlatformName().ifPresent(webDriverRequest::setPlatformName);
+        }
+
         String browser = webDriverRequest.getBrowser();
 
         if (StringUtils.isBlank(browser)) {
-            throw new SystemException(String.format("No browser configured. Please define one in %s.setBrowser() or property '%s'", WebDriverRequest.class.getSimpleName(), TesterraProperties.BROWSER));
+            throw new SystemException(
+                    String.format("No browser configured. Please define one in %s.setBrowser() or property '%s'", WebDriverRequest.class.getSimpleName(), TesterraProperties.BROWSER));
         }
 
         String sessionKey = webDriverRequest.getSessionKey();

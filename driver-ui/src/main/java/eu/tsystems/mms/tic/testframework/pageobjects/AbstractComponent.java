@@ -116,11 +116,15 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
 
     @Override
     public String getName(boolean detailed) {
-        if (this.hasOwnName()) {
+        if (this.hasOwnName() && !detailed) {
             return this.name;
-        } else {
-            return String.format("%s(%s)", getClass().getSimpleName(), rootElement.getName(detailed));
         }
+
+        String name = this.name;
+        if (StringUtils.isBlank(name)) {
+            this.name = getClass().getSimpleName();
+        }
+        return String.format("%s(%s)", name, rootElement.getName(detailed));
     }
 
     @Override

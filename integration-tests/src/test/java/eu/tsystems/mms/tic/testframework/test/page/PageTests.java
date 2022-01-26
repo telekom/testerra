@@ -131,8 +131,8 @@ public class PageTests extends AbstractExclusiveTestSitesTest<WebTestPage> imple
         page.inputForm().button().expect().value().is("Button1");
         page.inputForm().input().clear().sendKeys(input).expect().value().is(input);
         page.inputForm().button().expect().foundElements().is(1);
-        Assert.assertEquals(page.inputForm().toString(false), "WebTestPage -> InputForm(inputForm)");
-        Assert.assertEquals(page.inputForm().toString(true), "WebTestPage -> InputForm(inputForm)(By.className: box)");
+        Assert.assertEquals(page.inputForm().toString(false), "WebTestPage -> inputForm");
+        Assert.assertEquals(page.inputForm().toString(true), "WebTestPage -> inputForm(UiElement(By.className: box))");
     }
 
     @Test(expectedExceptions = PageFactoryException.class)
@@ -152,6 +152,7 @@ public class PageTests extends AbstractExclusiveTestSitesTest<WebTestPage> imple
 
         ASSERT.assertInstanceOf(ancestors.get(0), WebTestPage.class);
         ASSERT.assertInstanceOf(ancestors.get(1), InputForm.class);
-        Assert.assertEquals(tableRow.toString(true), "WebTestPage -> InputForm(inputForm)(By.className: box) -> TableRow(tableRow)(By.tagName: empty)");
+        Assert.assertEquals(tableRow.toString(false), "WebTestPage -> inputForm -> tableRow");
+        Assert.assertEquals(tableRow.toString(true), "WebTestPage -> inputForm(UiElement(By.className: box)) -> tableRow(UiElement(By.tagName: empty))");
     }
 }

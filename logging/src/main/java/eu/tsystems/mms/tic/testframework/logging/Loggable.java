@@ -26,6 +26,8 @@ import org.slf4j.LoggerFactory;
 
 public interface Loggable {
 
+    Prompt prompt = new Prompt();
+
     default Logger log() {
         return LoggerFactory.getLogger(this.getClass());
     }

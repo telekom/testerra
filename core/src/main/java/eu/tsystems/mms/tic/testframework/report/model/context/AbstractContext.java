@@ -39,10 +39,8 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public abstract class AbstractContext implements Loggable {
-    private static final IdGenerator idGenerator = Testerra.getInjector().getInstance(IdGenerator.class);
-    protected static final TestNGContextNameGenerator contextNameGenerator = Testerra.getInjector().getInstance(TestNGContextNameGenerator.class);
     private String name;
-    private String id = idGenerator.generate().toString();
+    private String id;
     private AbstractContext parentContext;
     private final Date startTime = new Date();
     private Date endTime;
@@ -72,6 +70,9 @@ public abstract class AbstractContext implements Loggable {
     }
 
     public String getId() {
+        if (this.id == null) {
+            this.id = Testerra.getInjector().getInstance(IdGenerator.class).generate().toString();
+        }
         return this.id;
     }
 

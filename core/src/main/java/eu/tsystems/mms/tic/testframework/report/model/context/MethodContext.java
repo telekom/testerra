@@ -24,6 +24,7 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.internal.Counters;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
@@ -63,13 +64,7 @@ public class MethodContext extends AbstractContext {
     private final String threadName;
     private TestStep lastFailedStep;
     private Class failureCorridorClass = FailureCorridor.High.class;
-
-    /**
-     * @deprecated
-     */
-    public final List<String> infos = new LinkedList<>();
     private final List<SessionContext> sessionContexts = new LinkedList<>();
-    private String priorityMessage = null;
     private final TestStepController testStepController = new TestStepController();
     private final List<MethodContext> relatedMethodContexts = new LinkedList<>();
     private final List<MethodContext> dependsOnMethodContexts = new LinkedList<>();
@@ -234,14 +229,7 @@ public class MethodContext extends AbstractContext {
 
     @Deprecated
     public void addPriorityMessage(String msg) {
-
-        if (priorityMessage == null) {
-            priorityMessage = "";
-        }
-
-        if (!priorityMessage.contains(msg)) {
-            priorityMessage += msg;
-        }
+        log().info(msg, this, Loggable.prompt);
     }
 
     public boolean isConfigMethod() {
@@ -349,15 +337,24 @@ public class MethodContext extends AbstractContext {
         return threadName;
     }
 
+    /**
+     * @deprecated Use {@link TestStepAction#readEntries()} instead
+     */
     public Stream<String> readInfos() {
-        return infos.stream();
+        return Stream.empty();
     }
 
+    /**
+     * @deprecated Use {@link TestStepAction#addLogMessage(LogMessage)} instead
+     */
     public void addInfo(String info) {
-        this.infos.add(info);
+        log().info(info, this, Loggable.prompt);
     }
 
+    /**
+     * @deprecated Use {@link TestStepAction#readEntries()} instead
+     */
     public Optional<String> getPriorityMessage() {
-        return Optional.ofNullable(priorityMessage);
+        return Optional.empty();
     }
 }

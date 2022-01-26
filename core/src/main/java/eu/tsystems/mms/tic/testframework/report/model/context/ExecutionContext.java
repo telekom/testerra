@@ -93,7 +93,7 @@ public class ExecutionContext extends AbstractContext {
     }
 
     public SuiteContext getSuiteContext(ITestResult testResult) {
-        return getSuiteContext(contextNameGenerator.getSuiteContextName(testResult));
+        return getSuiteContext(Testerra.getInjector().getInstance(TestNGContextNameGenerator.class).getSuiteContextName(testResult));
     }
 
     private synchronized SuiteContext getSuiteContext(String suiteContextName) {
@@ -108,7 +108,7 @@ public class ExecutionContext extends AbstractContext {
     }
 
     public SuiteContext getSuiteContext(ITestContext testContext) {
-        return getSuiteContext(contextNameGenerator.getSuiteContextName(testContext));
+        return getSuiteContext(Testerra.getInjector().getInstance(TestNGContextNameGenerator.class).getSuiteContextName(testContext));
     }
 
     public RunConfig getRunConfig() {

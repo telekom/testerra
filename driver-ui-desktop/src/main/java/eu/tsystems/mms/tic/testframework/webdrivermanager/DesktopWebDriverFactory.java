@@ -67,6 +67,7 @@ import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.BrowserType;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.HttpCommandExecutor;
 import org.openqa.selenium.remote.LocalFileDetector;
@@ -199,10 +200,14 @@ public class DesktopWebDriverFactory implements
                 break;
         }
 
+        DesiredCapabilities desiredCapabilities = finalRequest.getDesiredCapabilities();
         if (userAgentCapabilities != null) {
-            finalRequest.getDesiredCapabilities().merge(userAgentCapabilities);
+            desiredCapabilities.merge(userAgentCapabilities);
         }
-
+        finalRequest.getPlatformName().ifPresent(s -> {
+            desiredCapabilities.setCapability(CapabilityType.PLATFORM, s);
+            desiredCapabilities.setCapability(CapabilityType.PLATFORM_NAME, s);
+        });
         return finalRequest;
     }
 
@@ -373,7 +378,7 @@ public class DesktopWebDriverFactory implements
         final DesiredCapabilities requestCapabilities = request.getDesiredCapabilities();
         RemoteWebDriver webDriver;
         try {
-            if (request.getWebDriverMode() == WebDriverMode.remote && request.getServerUrl().isPresent()) {
+            if (request.getServerUrl().isPresent()) {
                 final URL seleniumUrl = request.getServerUrl().get();
                 final HttpCommandExecutor httpCommandExecutor = new HttpCommandExecutor(new HashMap<>(), seleniumUrl, new HttpClientFactory());
                 webDriver = new RemoteWebDriver(httpCommandExecutor, requestCapabilities);

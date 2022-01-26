@@ -26,12 +26,18 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import com.google.inject.Scopes;
 import com.google.inject.util.Modules;
 import eu.tsystems.mms.tic.testframework.events.ModulesInitializedEvent;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.internal.BuildInformation;
+import eu.tsystems.mms.tic.testframework.internal.IdGenerator;
+import eu.tsystems.mms.tic.testframework.internal.SequenceIdGenerator;
+import eu.tsystems.mms.tic.testframework.logging.MethodContextLogAppender;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
+import eu.tsystems.mms.tic.testframework.report.utils.DefaultTestNGContextGenerator;
+import eu.tsystems.mms.tic.testframework.report.utils.TestNGContextNameGenerator;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import java.io.BufferedReader;
@@ -118,6 +124,7 @@ public class Testerra {
     private static final EventBus eventBus;
     private static final LoggerContext loggerContext;
     private static final BuildInformation buildInformation;
+    private static final MethodContextLogAppender logAppender;
 
     static {
         String logLevel = System.getProperty("log4j.level");
@@ -126,12 +133,16 @@ public class Testerra {
             Configurator.setRootLevel(desiredLogLevel);
         }
         DefaultConfiguration defaultConfiguration = new DefaultConfiguration();
+        eventBus = new EventBus();
         loggerContext = Configurator.initialize(defaultConfiguration);
+        logAppender = new MethodContextLogAppender();
+        loggerContext.getRootLogger().addAppender(logAppender);
+        logAppender.start();
+
         buildInformation = new BuildInformation();
         printTesterraBanner();
         moduleHooks = new LinkedList<>();
         injector = initIoc();
-        eventBus = new EventBus();
         initHooks();
         Runtime.getRuntime().addShutdownHook(new Thread(Testerra::shutdown));
     }

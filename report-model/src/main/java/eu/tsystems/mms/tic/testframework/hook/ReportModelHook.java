@@ -27,12 +27,8 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.listeners.GenerateJUnitXML2ReportListener;
 import eu.tsystems.mms.tic.testframework.listeners.GenerateTestNGXmlReportListener;
-import eu.tsystems.mms.tic.testframework.report.TestStepLogAppender;
-import org.apache.logging.log4j.core.Appender;
 
 public class ReportModelHook extends AbstractModule implements ModuleHook {
-
-    private Appender reportLogAppender;
 
     @Override
     public void init() {
@@ -40,16 +36,9 @@ public class ReportModelHook extends AbstractModule implements ModuleHook {
         EventBus eventBus = Testerra.getEventBus();
         eventBus.register(new GenerateTestNGXmlReportListener());
         eventBus.register(new GenerateJUnitXML2ReportListener());
-
-        // Enable report formatter here
-        this.reportLogAppender = new TestStepLogAppender();
-        this.reportLogAppender.start();
-        Testerra.getLoggerContext().getRootLogger().addAppender(this.reportLogAppender);
     }
 
     @Override
     public void terminate() {
-        // Reset to default logger
-        Testerra.getLoggerContext().getRootLogger().removeAppender(this.reportLogAppender);
     }
 }

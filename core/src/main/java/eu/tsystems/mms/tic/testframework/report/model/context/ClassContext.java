@@ -28,6 +28,7 @@ import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.Status;
+import eu.tsystems.mms.tic.testframework.report.utils.TestNGContextNameGenerator;
 import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
@@ -101,6 +102,8 @@ public class ClassContext extends AbstractContext implements Loggable {
 
         Optional<MethodContext> found;
         String methodContextName;
+
+        TestNGContextNameGenerator contextNameGenerator = Testerra.getInjector().getInstance(TestNGContextNameGenerator.class);
 
         if (testResult != null) {
             found = methodContexts.stream()

@@ -9,6 +9,7 @@ public interface WebDriverRequest extends Cloneable {
     String getSessionKey();
     String getBrowser();
     String getBrowserVersion();
+    Optional<String> getPlatformName();
     Map<String, Object> getCapabilities();
 
     boolean getShutdownAfterTest();

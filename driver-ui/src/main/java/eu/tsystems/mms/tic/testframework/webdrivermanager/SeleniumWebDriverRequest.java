@@ -50,8 +50,9 @@ public class SeleniumWebDriverRequest extends AbstractWebDriverRequest implement
         if (StringUtils.isBlank(this.getBrowserVersion())) {
             this.setBrowserVersion(IWebDriverManager.Properties.BROWSER_VERSION.asString());
         }
-        if (StringUtils.isBlank(this.getPlatformName().orElse(null))) {
-            this.setBrowserVersion(IWebDriverManager.Properties.BROWSER_PLATFORM.asString());
+        
+        if (!this.getPlatformName().isPresent()) {
+            this.setPlatformName(IWebDriverManager.Properties.BROWSER_PLATFORM.asString());
         }
 
         String baseUrl = Testerra.Properties.BASEURL.asString();

@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.DefaultTestNGContextGenerator;
+import eu.tsystems.mms.tic.testframework.report.utils.TestNGContextNameGenerator;
 import org.testng.IClass;
 import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
@@ -55,7 +56,7 @@ public class TestContext extends AbstractContext {
     }
 
     public ClassContext getClassContext(ITestResult testResult) {
-        return this.pGetClassContext(testResult.getTestClass(), contextNameGenerator.getClassContextName(testResult));
+        return this.pGetClassContext(testResult.getTestClass(), Testerra.getInjector().getInstance(TestNGContextNameGenerator.class).getClassContextName(testResult));
     }
 
     /**

@@ -24,6 +24,7 @@ import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
+import eu.tsystems.mms.tic.testframework.report.utils.TestNGContextNameGenerator;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 
@@ -47,11 +48,11 @@ public class SuiteContext extends AbstractContext {
     }
 
     public TestContext getTestContext(ITestResult testResult) {
-        return getTestContext(contextNameGenerator.getTestContextName(testResult));
+        return getTestContext(Testerra.getInjector().getInstance(TestNGContextNameGenerator.class).getTestContextName(testResult));
     }
 
     public TestContext getTestContext(ITestContext testContext) {
-        return getTestContext(contextNameGenerator.getTestContextName(testContext));
+        return getTestContext(Testerra.getInjector().getInstance(TestNGContextNameGenerator.class).getTestContextName(testContext));
     }
 
     private synchronized TestContext getTestContext(String testContextName) {

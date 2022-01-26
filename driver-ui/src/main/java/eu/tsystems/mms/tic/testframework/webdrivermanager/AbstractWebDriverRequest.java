@@ -26,6 +26,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 import java.util.Optional;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class AbstractWebDriverRequest implements WebDriverRequest {
@@ -156,7 +157,9 @@ public class AbstractWebDriverRequest implements WebDriverRequest {
     }
 
     public void setPlatformName(String platformName) {
-        this.platformName = platformName;
+        if (StringUtils.isNotBlank(platformName)) {
+            this.platformName = platformName;
+        }
     }
 
     public Optional<String> getPlatformName() {

@@ -79,7 +79,7 @@
 :layoutcheck_actual_path:                       tt.layoutcheck.actual.path
 :layoutcheck_pixel_rgb_deviation_percent:       tt.layout.pixel.rgb.deviation.percent
 
-:layoutcheck_pixel_rgb_deviation_percent:       tt.layoutcheck.match.threshold
+:layoutcheck_match_threshold:                   tt.layoutcheck.match.threshold
 :layoutcheck_displacement_threshold:            tt.layoutcheck.displacement.threshold
 :layoutcheck_intra_grouping_threshold:          tt.layoutcheck.intra.grouping.threshold
 :layoutcheck_min_match_distance:                tt.layoutcheck.min.match.distance

@@ -61,28 +61,6 @@ public class DesktopWebDriverRequest extends SeleniumWebDriverRequest implements
 
     }
 
-    @Override
-    public Optional<URL> getServerUrl() {
-        if (!super.getServerUrl().isPresent()) {
-            String serverUrl = Testerra.Properties.SELENIUM_SERVER_URL.asString();
-            if (StringUtils.isBlank(serverUrl)) {
-                final String serverHost = Testerra.Properties.SELENIUM_SERVER_HOST.asString();
-                if (StringUtils.isNotBlank(serverHost)) {
-                    serverUrl = String.format("http://%s:%d/wd/hub", serverHost, Testerra.Properties.SELENIUM_SERVER_PORT.asLong());
-                }
-            }
-
-            if (StringUtils.isNotBlank(serverUrl)) {
-                try {
-                    setServerUrl(serverUrl);
-                } catch (MalformedURLException e) {
-                    log().error("Unable to retrieve default Selenium URL from properties", e);
-                }
-            }
-        }
-        return super.getServerUrl();
-    }
-
     public void setMaximizeBrowser(boolean maximize) {
         this.maximize = maximize;
     }

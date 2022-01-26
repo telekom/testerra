@@ -50,7 +50,7 @@ public class SeleniumWebDriverRequest extends AbstractWebDriverRequest implement
         if (StringUtils.isBlank(this.getBrowserVersion())) {
             this.setBrowserVersion(IWebDriverManager.Properties.BROWSER_VERSION.asString());
         }
-        
+
         if (!this.getPlatformName().isPresent()) {
             this.setPlatformName(IWebDriverManager.Properties.BROWSER_PLATFORM.asString());
         }
@@ -77,5 +77,27 @@ public class SeleniumWebDriverRequest extends AbstractWebDriverRequest implement
     public SeleniumWebDriverRequest setBaseUrl(URL baseUrl) {
         this.baseUrl = baseUrl;
         return this;
+    }
+
+    @Override
+    public Optional<URL> getServerUrl() {
+        if (!super.getServerUrl().isPresent()) {
+            String serverUrl = Testerra.Properties.SELENIUM_SERVER_URL.asString();
+            if (StringUtils.isBlank(serverUrl)) {
+                final String serverHost = Testerra.Properties.SELENIUM_SERVER_HOST.asString();
+                if (StringUtils.isNotBlank(serverHost)) {
+                    serverUrl = String.format("http://%s:%d/wd/hub", serverHost, Testerra.Properties.SELENIUM_SERVER_PORT.asLong());
+                }
+            }
+
+            if (StringUtils.isNotBlank(serverUrl)) {
+                try {
+                    setServerUrl(serverUrl);
+                } catch (MalformedURLException e) {
+                    log().error("Unable to retrieve default Selenium URL from properties", e);
+                }
+            }
+        }
+        return super.getServerUrl();
     }
 }

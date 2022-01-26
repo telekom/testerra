@@ -48,7 +48,7 @@ public class WebTestPage extends BasePage {
     private final GuiElement button1 = new GuiElement(this.getWebDriver(), By.id("4"));
 
     @Check
-    private InputForm inputForm = createComponent(InputForm.class, find(By.className("box")));
+    private final InputForm inputForm = createComponent(InputForm.class, find(By.className("box")));
 
     /** The output text field. */
     @Check

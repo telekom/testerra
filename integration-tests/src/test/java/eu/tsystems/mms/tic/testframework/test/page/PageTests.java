@@ -129,7 +129,7 @@ public class PageTests extends AbstractExclusiveTestSitesTest<WebTestPage> imple
         final String input = "Ich gebe etwas ein";
         WebTestPage page = getPage();
         page.inputForm().button().expect().value().is("Button1");
-        page.inputForm().input().clear().sendKeys(input).expect().value().is(input);
+        page.inputForm().input().clear().sendKeys(input).expect().value(input);
         page.inputForm().button().expect().foundElements().is(1);
         Assert.assertEquals(page.inputForm().toString(false), "WebTestPage -> inputForm");
         Assert.assertEquals(page.inputForm().toString(true), "WebTestPage -> inputForm(UiElement(By.className: box))");

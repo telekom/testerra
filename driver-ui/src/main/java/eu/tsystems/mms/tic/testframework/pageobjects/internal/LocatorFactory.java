@@ -55,10 +55,10 @@ public class LocatorFactory implements Loggable {
     public void setThreadLocalConfigurator(Consumer<Locator> consumer) {
         if (consumer != null) {
             locatorConfigurator.set(consumer);
-            log().info("Using global configurator");
+            log().info("Using thread local configurator");
         } else {
             locatorConfigurator.remove();
-            log().info("Unset global configurator");
+            log().info("Unset thread local configurator");
         }
     }
 }

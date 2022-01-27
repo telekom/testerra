@@ -1,6 +1,6 @@
-= Restrict element access
+= Information hiding
 
-The PageObject pattern encapsulates UiElements for all activities on the page. Thats why every element should be private accessible by the page only. But for testing purposes, it could be useful to allow access to some elements. In this case, you can create public methods and return the element casting to `TestableUiElement`.
+The PageObject pattern encapsulates UiElements for all activities on the page. That's why every element should be private accessible by the page only. But for testing purposes, it could be useful to allow access to some elements. In this case, you can create public methods and return the element casting to `TestableUiElement`.
 
 [source,java]
 ----

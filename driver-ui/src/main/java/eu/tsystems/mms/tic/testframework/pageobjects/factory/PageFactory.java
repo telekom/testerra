@@ -19,22 +19,20 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.pageobjects.factory;
+package eu.tsystems.mms.tic.testframework.pageobjects.factory;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageVariables;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import org.apache.commons.collections.buffer.CircularFifoBuffer;
+import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.WebDriver;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.commons.collections.buffer.CircularFifoBuffer;
-import org.openqa.selenium.WebDriver;
 
 public final class PageFactory {
 
@@ -51,12 +49,8 @@ public final class PageFactory {
     private static String GLOBAL_PAGES_PREFIX = null;
     private static ThreadLocal<String> THREAD_LOCAL_PAGES_PREFIX = new ThreadLocal<>();
 
-    /**
-     * This loop detection feature is obsolete as soon {@link AbstractPage#checkPage()} is no more part of a public API
-     */
-    @Deprecated
     private static final ThreadLocal<CircularFifoBuffer> LOOP_DETECTION_LOGGER = new ThreadLocal<>();
-    @Deprecated
+
     private static final int NR_OF_LOOPS = PropertyManager.getIntProperty(TesterraProperties.PAGE_FACTORY_LOOPS, 20);
 
     private PageFactory() {
@@ -112,7 +106,7 @@ public final class PageFactory {
         find matching implementing class
          */
         String pagesPrefix = GLOBAL_PAGES_PREFIX;
-        if (!StringUtils.isStringEmpty(THREAD_LOCAL_PAGES_PREFIX.get())) {
+        if (StringUtils.isNotEmpty(THREAD_LOCAL_PAGES_PREFIX.get())) {
             pagesPrefix = THREAD_LOCAL_PAGES_PREFIX.get();
         }
         pageClass = ClassFinder.getBestMatchingClass(pageClass, driver, pagesPrefix);
@@ -186,6 +180,10 @@ public final class PageFactory {
         }
 
         return t;
+    }
+
+    public static void clearLoopDetectionBuffer() {
+        LOOP_DETECTION_LOGGER.get().clear();
     }
 
     public static void clearCache() {

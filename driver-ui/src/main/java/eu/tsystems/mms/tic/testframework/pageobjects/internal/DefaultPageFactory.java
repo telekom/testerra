@@ -20,22 +20,33 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
+import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.PageFactoryException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Component;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import java.lang.reflect.Constructor;
+import org.apache.commons.collections.buffer.CircularFifoBuffer;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebDriver;
 
-public class DefaultPageFactory implements PageFactory, Loggable {
+import java.lang.reflect.Constructor;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class DefaultPageFactory implements PageFactory, MethodEndEvent.Listener, Loggable {
 
     @Deprecated
     private String GLOBAL_PAGES_PREFIX = null;
     @Deprecated
     private final ThreadLocal<String> THREAD_LOCAL_PAGES_PREFIX = new ThreadLocal<>();
+
+    private static final ThreadLocal<CircularFifoBuffer> LOOP_DETECTION_LOGGER = new ThreadLocal<>();
+    private static final int NR_OF_LOOPS = Properties.PAGE_FACTORY_LOOPS.asLong().intValue();
 
     @Override
     public PageFactory setGlobalPagesPrefix(String pagePrefix) {
@@ -55,6 +66,12 @@ public class DefaultPageFactory implements PageFactory, Loggable {
         return this;
     }
 
+    public DefaultPageFactory() {
+        // For clear PageFactory loop detection buffer
+        EventBus eventBus = Testerra.getEventBus();
+        eventBus.register(this);
+    }
+
     @Override
     public <T extends Page> T createPage(Class<T> pageClass, WebDriver webDriver) {
         return createPageWithCheckRule(pageClass, webDriver, CheckRule.DEFAULT);
@@ -62,10 +79,10 @@ public class DefaultPageFactory implements PageFactory, Loggable {
 
     private String getConfiguredPrefix() {
         String pagesPrefix = GLOBAL_PAGES_PREFIX;
-        if (!StringUtils.isStringEmpty(THREAD_LOCAL_PAGES_PREFIX.get())) {
+        if (StringUtils.isNotEmpty(THREAD_LOCAL_PAGES_PREFIX.get())) {
             pagesPrefix = THREAD_LOCAL_PAGES_PREFIX.get();
         }
-        return (pagesPrefix!=null?pagesPrefix:"");
+        return (pagesPrefix != null ? pagesPrefix : "");
     }
 
     @Override
@@ -73,7 +90,7 @@ public class DefaultPageFactory implements PageFactory, Loggable {
         try {
             Constructor<T> constructor = componentClass.getConstructor(UiElement.class);
             T component = constructor.newInstance(rootElement);
-            ((AbstractPage)component).checkUiElements();
+            ((AbstractPage) component).checkUiElements();
             return component;
         } catch (Throwable throwable) {
             throw new PageFactoryException(componentClass, rootElement.getWebDriver(), throwable);
@@ -83,16 +100,50 @@ public class DefaultPageFactory implements PageFactory, Loggable {
     @Override
     @Deprecated
     public <T extends Page> T createPageWithCheckRule(Class<T> pageClass, WebDriver webDriver, CheckRule checkRule) {
+        T page;
         try {
-            String pageClassString = String.format("%s.%s%s",pageClass.getPackage().getName(), getConfiguredPrefix(), pageClass.getSimpleName());
+            String pageClassString = String.format("%s.%s%s", pageClass.getPackage().getName(), getConfiguredPrefix(), pageClass.getSimpleName());
             pageClass = (Class<T>) Class.forName(pageClassString);
 
             Constructor<T> constructor = pageClass.getConstructor(WebDriver.class);
-            T page = constructor.newInstance(webDriver);
-            ((AbstractPage)page).checkUiElements(checkRule);
-            return page;
+            page = constructor.newInstance(webDriver);
+            ((AbstractPage) page).checkUiElements(checkRule);
         } catch (Throwable throwable) {
             throw new PageFactoryException(pageClass, webDriver, throwable);
         }
+        this.runLoopDetection(pageClass);
+        return page;
+    }
+
+    private void runLoopDetection(Class pageClass) {
+        CircularFifoBuffer buffer = LOOP_DETECTION_LOGGER.get();
+        if (buffer == null) {
+            CircularFifoBuffer fifoBuffer = new CircularFifoBuffer(NR_OF_LOOPS);
+            LOOP_DETECTION_LOGGER.set(fifoBuffer);
+            buffer = LOOP_DETECTION_LOGGER.get();
+        }
+
+        buffer.add(pageClass);
+
+        // Check if complete buffer contains only one class
+        if (buffer.size() == NR_OF_LOOPS) {
+            List<Class> list = (List<Class>) buffer.stream().distinct().collect(Collectors.toList());
+
+            // if this list is size 1, then there is only 1 page type loaded in NR_OF_LOOPS load actions (recorded by the buffer)
+            if (list.size() == 1) {
+                // NR_OF_LOOPS times this one class has been loaded in this thread
+                throw new RuntimeException("PageFactory create loop detected loading: " + list.get(0));
+            }
+        }
+    }
+
+    @Override
+    @Subscribe
+    public void onMethodEnd(MethodEndEvent event) {
+        this.clearLoopDetectionBuffer();
+    }
+
+    private void clearLoopDetectionBuffer() {
+        LOOP_DETECTION_LOGGER.get().clear();
     }
 }

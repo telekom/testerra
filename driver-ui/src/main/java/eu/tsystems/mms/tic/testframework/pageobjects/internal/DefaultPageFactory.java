@@ -91,7 +91,6 @@ public class DefaultPageFactory implements PageFactory, MethodEndEvent.Listener,
             Constructor<T> constructor = componentClass.getConstructor(UiElement.class);
             T component = constructor.newInstance(rootElement);
             ((AbstractPage) component).checkUiElements();
-//            this.runLoopDetection(componentClass);
             return component;
         } catch (Throwable throwable) {
             throw new PageFactoryException(componentClass, rootElement.getWebDriver(), throwable);

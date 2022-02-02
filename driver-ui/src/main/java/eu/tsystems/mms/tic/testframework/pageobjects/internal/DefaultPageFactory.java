@@ -104,6 +104,7 @@ public class DefaultPageFactory implements PageFactory, MethodEndEvent.Listener,
         try {
             String pageClassString = String.format("%s.%s%s", pageClass.getPackage().getName(), getConfiguredPrefix(), pageClass.getSimpleName());
             pageClass = (Class<T>) Class.forName(pageClassString);
+
             Constructor<T> constructor = pageClass.getConstructor(WebDriver.class);
             page = constructor.newInstance(webDriver);
             ((AbstractPage) page).checkUiElements(checkRule);

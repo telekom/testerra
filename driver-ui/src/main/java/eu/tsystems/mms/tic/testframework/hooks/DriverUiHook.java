@@ -30,6 +30,7 @@ import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.execution.testng.WebDriverRetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.ConditionalBehaviourWorker;
+import eu.tsystems.mms.tic.testframework.execution.worker.finish.PageFactoryBufferWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.TakeInSessionEvidencesWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverShutDownWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.start.PerformanceTestWorker;
@@ -107,6 +108,9 @@ public class DriverUiHook extends AbstractModule implements ModuleHook {
          */
         eventBus.register(new WebDriverShutDownWorker());
         eventBus.register(new ShutdownSessionsListener());
+
+        // Clear PageFactory loop detection buffer
+        eventBus.register(new PageFactoryBufferWorker());
 
         /*
         register services

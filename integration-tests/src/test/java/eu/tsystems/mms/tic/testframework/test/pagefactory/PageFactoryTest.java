@@ -25,16 +25,21 @@ package eu.tsystems.mms.tic.testframework.test.pagefactory;
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.BasePage;
+import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.GuiElementListPage;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExistingElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
+import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import java.io.File;
-import java.util.concurrent.atomic.AtomicBoolean;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import java.io.File;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Tests the responsive page factory for correct instantiated classes.
@@ -80,6 +85,43 @@ public class PageFactoryTest extends AbstractTestSitesTest {
         Assert.assertNotEquals(fileCountAfterCheckPageWithoutScreenshot, fileCountAfterCheckPageWithScreenshot, "Record Screenshot count altered.");
     }
 
+//    @Test(expectedExceptions = RuntimeException.class, expectedExceptionsMessageRegExp = "PageFactory create loop detected loading.*")
+//    public void testT10_LoopDetectionTest_Exception() {
+//        WebDriver driver = WebDriverManager.getWebDriver();
+//        for (int i = 0; i < 6; i++) {
+//            PageFactory.create(GuiElementListPage.class, driver);
+//        }
+//    }
+//
+//    @Test()
+//    public void testT11_LoopDetectionTest_Passed() {
+//        WebDriver driver = WebDriverManager.getWebDriver();
+//        for (int i = 0; i < 6; i++) {
+//            PageFactory.create(GuiElementListPage.class, driver);
+//            PageFactory.create(BasePage.class, driver);
+//        }
+//    }
+//
+//    @DataProvider(name = "LoopDetectionInDataProvider", parallel = false)
+//    public Object[][] testT12_Dataprovider() {
+//        return new Object[][]{
+//                {"Test_1"}, {"Test_2"}, {"Test_3"}
+//        };
+//    }
+
+    /**
+     * PageFactory loop detection buffer is cleared after every method
+     *
+     * @param loop
+     */
+    @Test(dataProvider = "LoopDetectionInDataProvider")
+    public void testT12_LoopDetectionTest_DataProvider_ParallelFalse(String loop) {
+        WebDriver driver = WebDriverManager.getWebDriver();
+        for (int i = 0; i < 2; i++) {
+            PageFactory.create(BasePage.class, driver);
+        }
+    }
+
     private int getNumFiles(File directory) {
         File[] files = directory.listFiles();
         if (files == null) {
@@ -88,4 +130,5 @@ public class PageFactoryTest extends AbstractTestSitesTest {
             return files.length;
         }
     }
+
 }

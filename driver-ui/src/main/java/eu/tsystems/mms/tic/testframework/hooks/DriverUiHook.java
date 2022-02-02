@@ -24,13 +24,12 @@ package eu.tsystems.mms.tic.testframework.hooks;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
-import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.execution.testng.WebDriverRetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.ConditionalBehaviourWorker;
-import eu.tsystems.mms.tic.testframework.execution.worker.finish.PageFactoryBufferWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.TakeInSessionEvidencesWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverShutDownWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.start.PerformanceTestWorker;
@@ -42,7 +41,6 @@ import eu.tsystems.mms.tic.testframework.listeners.WatchdogStartupListener;
 import eu.tsystems.mms.tic.testframework.pageobjects.DefaultUiElementFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.AriaElementLocator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultPageFactory;
-import eu.tsystems.mms.tic.testframework.testing.UiElementOverrides;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultUiElementFinderFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.PageFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFactory;
@@ -52,6 +50,7 @@ import eu.tsystems.mms.tic.testframework.report.ScreenshotGrabber;
 import eu.tsystems.mms.tic.testframework.report.SourceGrabber;
 import eu.tsystems.mms.tic.testframework.report.UITestStepIntegration;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
+import eu.tsystems.mms.tic.testframework.testing.UiElementOverrides;
 import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.useragents.UapBrowserInformation;
 import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
@@ -104,13 +103,10 @@ public class DriverUiHook extends AbstractModule implements ModuleHook {
         eventBus.register(new TakeInSessionEvidencesWorker());
 
         /*
-        ********* SESSIONS SHUTDOWN *********
+         ********* SESSIONS SHUTDOWN *********
          */
         eventBus.register(new WebDriverShutDownWorker());
         eventBus.register(new ShutdownSessionsListener());
-
-        // Clear PageFactory loop detection buffer
-        eventBus.register(new PageFactoryBufferWorker());
 
         /*
         register services

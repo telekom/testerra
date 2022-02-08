@@ -1,6 +1,11 @@
 # Integration tests
 
-## Start Report prepare tests
+## Run pretest
+```shell
+gradle test -Ppretest -Dlog4j.configurationFile=src/test/resources/log4j-pretest.xml
+```
+
+## Start Report prepare tests (deprecated)
 
 Generate the demo reports for report tests
 

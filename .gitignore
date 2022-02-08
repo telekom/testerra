@@ -17,3 +17,6 @@ gradlew
 /integration-tests/src/test/resources/screenreferences/
 
 logs/integration-test-log4j.log
+/license3rdparty/
+!/license3rdparty/*.md
+

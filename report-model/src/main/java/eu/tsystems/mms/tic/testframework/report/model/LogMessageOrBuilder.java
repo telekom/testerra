@@ -83,4 +83,10 @@ public interface LogMessageOrBuilder extends
    */
   eu.tsystems.mms.tic.testframework.report.model.StackTraceCauseOrBuilder getStackTraceOrBuilder(
       int index);
+
+  /**
+   * <code>bool prompt = 7;</code>
+   * @return The prompt.
+   */
+  boolean getPrompt();
 }

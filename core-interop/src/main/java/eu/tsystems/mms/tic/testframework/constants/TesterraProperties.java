@@ -44,19 +44,25 @@ public final class TesterraProperties {
     // BROWSER_SETTING syntax: browser:version
     // BROWSER_SETTING overrides BROWSER and BROWSER_VERSION
     public static final String BROWSER_SETTING = "tt.browser.setting";
+    public static final String BROWSER_PLATFORM = "tt.browser.platform";
 
     /**
      * Property to set the host of the remote selenium server.
      */
     public static final String SELENIUM_SERVER_URL = "tt.selenium.server.url";
+    /**
+     * @deprecated Use {@link #SELENIUM_SERVER_URL} instead
+     */
     public static final String SELENIUM_SERVER_HOST = "tt.selenium.server.host";
 
     /**
      * Property to set the port of the remote selenium server.
+     * @deprecated Use {@link #SELENIUM_SERVER_URL} instead
      */
     public static final String SELENIUM_SERVER_PORT = "tt.selenium.server.port";
 
     /**
+     * @deprecated Use {@link #SELENIUM_SERVER_URL} instead
      * Property Key for webdriver mode remote|local
      */
     public static final String WEBDRIVERMODE = "tt.webdriver.mode";

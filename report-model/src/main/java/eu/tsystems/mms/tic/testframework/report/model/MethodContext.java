@@ -583,11 +583,11 @@ private static final long serialVersionUID = 0L;
   public static final int PRIORITY_MESSAGE_FIELD_NUMBER = 21;
   private volatile java.lang.Object priorityMessage_;
   /**
-   * <code>string priority_message = 21;</code>
+   * <code>string priority_message = 21 [deprecated = true];</code>
    * @return The priorityMessage.
    */
   @java.lang.Override
-  public java.lang.String getPriorityMessage() {
+  @java.lang.Deprecated public java.lang.String getPriorityMessage() {
     java.lang.Object ref = priorityMessage_;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
@@ -600,11 +600,11 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string priority_message = 21;</code>
+   * <code>string priority_message = 21 [deprecated = true];</code>
    * @return The bytes for priorityMessage.
    */
   @java.lang.Override
-  public com.google.protobuf.ByteString
+  @java.lang.Deprecated public com.google.protobuf.ByteString
       getPriorityMessageBytes() {
     java.lang.Object ref = priorityMessage_;
     if (ref instanceof java.lang.String) {
@@ -2766,10 +2766,10 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object priorityMessage_ = "";
     /**
-     * <code>string priority_message = 21;</code>
+     * <code>string priority_message = 21 [deprecated = true];</code>
      * @return The priorityMessage.
      */
-    public java.lang.String getPriorityMessage() {
+    @java.lang.Deprecated public java.lang.String getPriorityMessage() {
       java.lang.Object ref = priorityMessage_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
@@ -2782,10 +2782,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string priority_message = 21;</code>
+     * <code>string priority_message = 21 [deprecated = true];</code>
      * @return The bytes for priorityMessage.
      */
-    public com.google.protobuf.ByteString
+    @java.lang.Deprecated public com.google.protobuf.ByteString
         getPriorityMessageBytes() {
       java.lang.Object ref = priorityMessage_;
       if (ref instanceof String) {
@@ -2799,11 +2799,11 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string priority_message = 21;</code>
+     * <code>string priority_message = 21 [deprecated = true];</code>
      * @param value The priorityMessage to set.
      * @return This builder for chaining.
      */
-    public Builder setPriorityMessage(
+    @java.lang.Deprecated public Builder setPriorityMessage(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
@@ -2814,21 +2814,21 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string priority_message = 21;</code>
+     * <code>string priority_message = 21 [deprecated = true];</code>
      * @return This builder for chaining.
      */
-    public Builder clearPriorityMessage() {
+    @java.lang.Deprecated public Builder clearPriorityMessage() {
       
       priorityMessage_ = getDefaultInstance().getPriorityMessage();
       onChanged();
       return this;
     }
     /**
-     * <code>string priority_message = 21;</code>
+     * <code>string priority_message = 21 [deprecated = true];</code>
      * @param value The bytes for priorityMessage to set.
      * @return This builder for chaining.
      */
-    public Builder setPriorityMessageBytes(
+    @java.lang.Deprecated public Builder setPriorityMessageBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();

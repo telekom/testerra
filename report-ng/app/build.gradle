@@ -36,7 +36,7 @@ project.afterEvaluate {
 
 node {
     download = true
-    version = "10.17.0"
+    version = "16.4.0"
     useGradleProxySettings = true
 }
 

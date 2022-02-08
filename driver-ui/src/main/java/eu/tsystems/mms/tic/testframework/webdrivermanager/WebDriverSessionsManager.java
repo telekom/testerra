@@ -19,7 +19,7 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.webdrivermanager;
+package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
@@ -28,11 +28,17 @@ import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -44,12 +50,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
-import org.apache.commons.lang3.StringUtils;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import static eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverFactory.wrapRawWebDriverWithEventFiringWebDriver;
 
 public final class WebDriverSessionsManager {
@@ -57,8 +58,6 @@ public final class WebDriverSessionsManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverSessionsManager.class);
 
     private static final Map<String, WebDriverFactory> WEB_DRIVER_FACTORIES = new HashMap<>();
-
-    public static final String EXCLUSIVE_PREFIX = "EXCLUSIVE_";
 
     public static final Map<Date, Throwable> SESSION_STARTUP_ERRORS = new LinkedHashMap<>();
 
@@ -152,7 +151,7 @@ public final class WebDriverSessionsManager {
     /**
      * Introduce an own webdriver object. Selenium session will be released in this case.
      *
-     * @param driver     .
+     * @param driver .
      * @param sessionKey .
      */
     static void introduceWebDriver(final String sessionKey, final WebDriver driver) {
@@ -224,7 +223,6 @@ public final class WebDriverSessionsManager {
         LOGGER.debug("Shut down: " + sessionIdentifier);
     }
 
-
     static void shutdownAllThreadSessions() {
         getWebDriversFromCurrentThread().forEach(WebDriverSessionsManager::shutdownWebDriver);
     }
@@ -279,7 +277,7 @@ public final class WebDriverSessionsManager {
         /*
         Add session to exclusive map.
          */
-        String exclusiveSessionKey = EXCLUSIVE_PREFIX + UUID.randomUUID().toString();
+        String exclusiveSessionKey = SessionContext.EXCLUSIVE_PREFIX + UUID.randomUUID().toString();
         EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.put(exclusiveSessionKey, eventFiringWebDriver);
 
         /*
@@ -314,7 +312,6 @@ public final class WebDriverSessionsManager {
         return WEBDRIVER_THREAD_ID_MAP.entrySet().stream().filter(entry -> entry.getValue() == threadId).map(Map.Entry::getKey);
     }
 
-
     public static WebDriver getWebDriver(AbstractWebDriverRequest webDriverRequest) {
         /*
         get session key
@@ -331,17 +328,22 @@ public final class WebDriverSessionsManager {
             webDriverRequest.setBrowserVersion(WebDriverManager.getConfig().getBrowserVersion());
         }
 
+        if (StringUtils.isEmpty(webDriverRequest.getPlatformName().orElse(null))) {
+            WebDriverManager.getConfig().getPlatformName().ifPresent(webDriverRequest::setPlatformName);
+        }
+
         String browser = webDriverRequest.getBrowser();
 
         if (StringUtils.isBlank(browser)) {
-            throw new SystemException(String.format("No browser configured. Please define one in %s.setBrowser() or property '%s'", WebDriverRequest.class.getSimpleName(), TesterraProperties.BROWSER));
+            throw new SystemException(
+                    String.format("No browser configured. Please define one in %s.setBrowser() or property '%s'", WebDriverRequest.class.getSimpleName(), TesterraProperties.BROWSER));
         }
 
         String sessionKey = webDriverRequest.getSessionKey();
         /*
         Check for exclusive session
          */
-        if (sessionKey.startsWith(EXCLUSIVE_PREFIX)) {
+        if (sessionKey.startsWith(SessionContext.EXCLUSIVE_PREFIX)) {
             // returning exclusive session
             if (EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.containsKey(sessionKey)) {
                 return EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.get(sessionKey);

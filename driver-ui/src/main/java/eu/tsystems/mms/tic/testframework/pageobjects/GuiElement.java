@@ -25,9 +25,7 @@ import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
-import eu.tsystems.mms.tic.testframework.exceptions.UiElementException;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
-import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Checkable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.ConfiguredAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
@@ -50,8 +48,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.StandardGui
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.StandardGuiElementWait;
-import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import java.awt.Color;
 import java.io.File;
@@ -336,9 +332,7 @@ public class GuiElement implements
 
     @Override
     public void select() {
-        guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.select();
-        guiElementData.resetLogLevel();
     }
 
     /**
@@ -347,7 +341,6 @@ public class GuiElement implements
      * @param select true/false/null.
      */
     public void select(Boolean select) {
-        guiElementData.setLogLevel(LogLevel.INFO);
         if (select == null) {
             LOGGER.info("Select option is null. Selecting/Deselecting nothing.");
         }
@@ -356,28 +349,21 @@ public class GuiElement implements
         } else {
             guiElementFacade.deselect();
         }
-        guiElementData.resetLogLevel();
     }
 
     @Override
     public void deselect() {
-        guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.deselect();
-        guiElementData.resetLogLevel();
     }
 
     @Override
     public void type(String text) {
-        guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.type(text);
-        guiElementData.resetLogLevel();
     }
 
     @Override
     public void click() {
-        guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.click();
-        guiElementData.resetLogLevel();
     }
 
     /**
@@ -389,9 +375,7 @@ public class GuiElement implements
     @Override
     @Deprecated
     public void clickJS() {
-        guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.clickJS();
-        guiElementData.resetLogLevel();
     }
 
     /**
@@ -403,9 +387,7 @@ public class GuiElement implements
     @Override
     @Deprecated
     public void clickAbsolute() {
-        guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.clickAbsolute();
-        guiElementData.resetLogLevel();
     }
 
     /**
@@ -427,9 +409,7 @@ public class GuiElement implements
 
     @Override
     public void sendKeys(CharSequence... charSequences) {
-        guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.sendKeys(charSequences);
-        guiElementData.resetLogLevel();
     }
 
     @Override
@@ -784,14 +764,6 @@ public class GuiElement implements
             guiElements.add(guiElement);
         }
         return guiElements;
-    }
-
-    public LogLevel getLogLevel() {
-        return guiElementData.getLogLevel();
-    }
-
-    public void setLogLevel(LogLevel logLevel) {
-        guiElementData.setLogLevel(logLevel);
     }
 
     public GuiElement shadowRoot() {

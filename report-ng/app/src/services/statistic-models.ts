@@ -164,6 +164,10 @@ export class ExecutionStatistics extends Statistics {
         }
     }
 
+    get promptLogs() {
+        return this.executionAggregate.executionContext.logMessages.filter(value => value.prompt);
+    }
+
     get classStatistics() {
         return this._classStatistics;
     }

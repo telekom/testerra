@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2021, Mike Reiche,  T-Systems MMS GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -19,26 +19,42 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.report;
+package eu.tsystems.mms.tic.testframework.logging;
 
 import eu.tsystems.mms.tic.testframework.report.model.context.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import java.util.Arrays;
 import java.util.Optional;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.appender.AbstractAppender;
+import org.apache.logging.log4j.message.Message;
 
-public class TestStepLogAppender extends AbstractAppender {
+public class MethodContextLogAppender extends AbstractAppender {
 
-    public TestStepLogAppender() {
-        super("TestStepLogAppender", null, null, true, null);
+    public MethodContextLogAppender() {
+        super("MethodContextLogAppender", null, null, true, null);
     }
 
     @Override
-    public void append(LogEvent event) {
-        LogMessage logMessage = new LogMessage(event);
-        Optional<MethodContext> optionalMethodContext = ExecutionContextController.getMethodContextForThread();
+    public void append(final LogEvent event) {
+        final LogMessage logMessage = new LogMessage(event);
+        Optional<MethodContext> optionalMethodContext;
+        final Message message = event.getMessage();
+        if (message.getParameters() != null) {
+            optionalMethodContext = Arrays.stream(event.getMessage().getParameters())
+                    .filter(MethodContext.class::isInstance)
+                    .map(o -> (MethodContext) o)
+                    .findFirst();
+        } else {
+            optionalMethodContext = Optional.empty();
+        }
+
+        // Otherwise, we take the current method context from execution context
+        if (!optionalMethodContext.isPresent()) {
+            optionalMethodContext = ExecutionContextController.getMethodContextForThread();
+        }
+
         if (optionalMethodContext.isPresent()) {
             optionalMethodContext.get().addLogMessage(logMessage);
         } else {

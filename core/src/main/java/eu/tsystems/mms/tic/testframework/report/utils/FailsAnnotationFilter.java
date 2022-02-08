@@ -54,7 +54,7 @@ public class FailsAnnotationFilter {
 
         // always valid, if String is empty
         if (validFor == null || validFor.length == 0) {
-            return false;
+            return true;
         }
 
         // Split on divider

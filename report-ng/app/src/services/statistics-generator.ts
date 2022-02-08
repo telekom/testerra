@@ -46,6 +46,7 @@ export class MethodDetails {
     private _decodedAnnotations = {};
     private _decodedCustomContexts = {};
     private _failureAspects:FailureAspectStatistics[] = null;
+    private _numDetails = -1;
 
     constructor(
         readonly methodContext:data.IMethodContext,
@@ -84,7 +85,22 @@ export class MethodDetails {
     }
 
     get numDetails() {
-        return this.failureAspects.length + Object.keys(this.methodContext.customContexts).length;
+        if (this._numDetails === -1) {
+            this._numDetails = this.failureAspects.length
+                + Object.keys(this.methodContext.customContexts).length
+            ;
+        }
+        return this._numDetails;
+    }
+
+    get promptLogs() {
+        return this.methodContext.testSteps
+            .flatMap(value => value.actions)
+            .flatMap(value => value.entries)
+            .filter(value => value.logMessage)
+            .map(value => value.logMessage)
+            .filter(value => value.prompt)
+            ;
     }
 
     get failedStep() {

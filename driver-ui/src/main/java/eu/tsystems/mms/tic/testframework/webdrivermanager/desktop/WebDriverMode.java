@@ -21,6 +21,12 @@
  */
  package eu.tsystems.mms.tic.testframework.webdrivermanager.desktop;
 
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
+
+/**
+ * @deprecated Use {@link TesterraProperties#SELENIUM_SERVER_URL} or {@link WebDriverRequest#getServerUrl()} instead
+ */
 public enum WebDriverMode {
     remote,
     local

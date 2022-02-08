@@ -122,6 +122,21 @@
                 ></test-duration-card>
             </mdc-layout-grid-cell>
 
+            <mdc-layout-grid-cell span="12" if.bind="_methodDetails.promptLogs.length > 0">
+                <mdc-card>
+                    <div mdc-subtitle2 class="card-headline">Priority messages</div>
+                    <mdc-list-divider></mdc-list-divider>
+                    <ul class="mdc-list mdc-list--dense m0 p0" mdc-caption>
+                        <li class="mdc-custom-list-item"
+                            class.bind="(logMessage.type===1?'status-failed':(logMessage.type===2?'status-skipped':''))"
+                            repeat.for="logMessage of _methodDetails.promptLogs"
+                        >
+                            <span lass="two-lines"><class-name-markup namespace.bind="logMessage.loggerName">:</class-name-markup>${logMessage.message|html}</span>
+                        </li>
+                    </ul>
+                </mdc-card>
+            </mdc-layout-grid-cell>
+
             <mdc-layout-grid-cell span="12">
                 <mdc-tab-bar>
                     <mdc-tab repeat.for="route of _router.routes"

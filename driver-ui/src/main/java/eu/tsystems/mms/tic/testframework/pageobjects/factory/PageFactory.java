@@ -183,7 +183,9 @@ public final class PageFactory {
     }
 
     public static void clearLoopDetectionBuffer() {
-        LOOP_DETECTION_LOGGER.get().clear();
+        if (LOOP_DETECTION_LOGGER.get() != null) {
+            LOOP_DETECTION_LOGGER.get().clear();
+        }
     }
 
     public static void clearCache() {

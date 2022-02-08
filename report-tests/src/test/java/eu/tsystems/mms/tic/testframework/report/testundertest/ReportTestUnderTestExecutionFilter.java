@@ -21,11 +21,11 @@
 package eu.tsystems.mms.tic.testframework.report.testundertest;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
-import eu.tsystems.mms.tic.testframework.report.pageobjects.ExitPointCreaterTestClass1;
+import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssert;
 import org.testng.Assert;
 import org.testng.SkipException;
 import org.testng.annotations.Test;
+import pageobjects.ExitPointCreaterTestClass1;
 
 public class ReportTestUnderTestExecutionFilter extends AbstractTest {
 
@@ -55,7 +55,7 @@ public class ReportTestUnderTestExecutionFilter extends AbstractTest {
 
     @Test
     public void test_FilterFailedMinor() {
-        NonFunctionalAssert.assertTrue(false);
+        OptionalAssert.assertTrue(false);
         Assert.assertTrue(false);
     }
 
@@ -71,7 +71,7 @@ public class ReportTestUnderTestExecutionFilter extends AbstractTest {
     public synchronized void test_FilterFailedMinorWithPassedRetry() throws Exception {
         retryCounter2++;
         if (retryCounter2 < 2) {
-            NonFunctionalAssert.assertTrue(false);
+            OptionalAssert.assertTrue(false);
             throw new Exception("RetryUnderTest");
         }
     }
@@ -83,13 +83,13 @@ public class ReportTestUnderTestExecutionFilter extends AbstractTest {
 
     @Test
     public void test_FilterFailedMinorWithFailedRetry() throws Exception {
-        NonFunctionalAssert.assertTrue(false);
+        OptionalAssert.assertTrue(false);
         throw new Exception("RetryUnderTest");
     }
 
     @Test
     public void test_FilterPassedMinor() {
-        NonFunctionalAssert.assertTrue(false);
+        OptionalAssert.assertTrue(false);
     }
 
     @Test

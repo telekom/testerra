@@ -18,7 +18,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package eu.tsystems.mms.tic.testframework.report.pageobjects;
+package pageobjects;
 
 public class ExitPointCreatorTestClass2 {
 

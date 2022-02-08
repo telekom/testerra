@@ -12,4 +12,5 @@ include 'bup'
 include 'report-model'
 include 'report-ng'
 include 'report-ng:app'
+include 'report-tests'
 

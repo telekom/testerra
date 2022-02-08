@@ -18,14 +18,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package eu.tsystems.mms.tic.testframework.report.pageobjects;
+package pageobjects;
 
-import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
+import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssert;
 
 public class ExitPointCreaterTestClass1 {
 
     public static void testCreatorForDifferentExitPoints() throws Exception {
-        NonFunctionalAssert.assertTrue(2>3);
+        OptionalAssert.assertTrue(2 > 3);
         throw new Exception();
     }
 }

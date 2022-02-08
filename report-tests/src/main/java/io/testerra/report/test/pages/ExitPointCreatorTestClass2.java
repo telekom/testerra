@@ -18,14 +18,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package pageobjects;
+package io.testerra.report.test.pages;
 
-import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssert;
+public class ExitPointCreatorTestClass2 {
 
-public class ExitPointCreaterTestClass1 {
-
-    public static void testCreatorForDifferentExitPoints() throws Exception {
-        OptionalAssert.assertTrue(2 > 3);
-        throw new Exception();
+    public static void testCreatorForDifferentExitPoints2() throws Exception {
+        int q = 5/0;
     }
 }

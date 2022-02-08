@@ -22,7 +22,7 @@ package eu.tsystems.mms.tic.testframework.report.testundertest;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.report.general.TestsUnderTestGroup;
-import pageobjects.ExitPointCreaterTestClass1;
+import io.testerra.report.test.pages.ExitPointCreaterTestClass1;
 import java.util.UUID;
 import org.testng.annotations.Test;
 

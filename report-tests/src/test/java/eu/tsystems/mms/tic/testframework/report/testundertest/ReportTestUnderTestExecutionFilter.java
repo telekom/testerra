@@ -25,7 +25,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssert;
 import org.testng.Assert;
 import org.testng.SkipException;
 import org.testng.annotations.Test;
-import pageobjects.ExitPointCreaterTestClass1;
+import io.testerra.report.test.pages.ExitPointCreaterTestClass1;
 
 public class ReportTestUnderTestExecutionFilter extends AbstractTest {
 

@@ -22,7 +22,7 @@ package eu.tsystems.mms.tic.testframework.report.testundertest;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
-import pageobjects.ExitPointCreaterTestClass1;
+import io.testerra.report.test.pages.ExitPointCreaterTestClass1;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import org.testng.Assert;
 import org.testng.SkipException;

@@ -23,6 +23,7 @@ package io.testerra.report.test;
 
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import io.testerra.report.test.AbstractReportTest;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

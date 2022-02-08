@@ -21,6 +21,7 @@
 
 package io.testerra.report.test;
 
+import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import io.testerra.report.test.AbstractReportTest;
@@ -39,7 +40,7 @@ public class ReportUnderTest extends AbstractReportTest {
 
     @Test
     public void test_visitReportDirectory() {
-        this.visitTestPage(WebDriverManager.getWebDriver(), "report-testsundertest-01/report-ng");
+        this.visitTestPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty("reportDirectoryExecution1"));
 
         Assert.assertTrue(true);
         TimerUtils.sleep(100000);

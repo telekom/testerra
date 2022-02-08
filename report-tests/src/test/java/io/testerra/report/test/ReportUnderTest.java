@@ -22,13 +22,24 @@
 package io.testerra.report.test;
 
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class ReportUnderTest extends AbstractReportTest {
 
     @Test
-    public void test_visitReport() {
+    public void test_visitReportDefault() {
+        this.visitTestPage(WebDriverManager.getWebDriver());
+
+        Assert.assertTrue(true);
+        TimerUtils.sleep(100000);
+    }
+
+    @Test
+    public void test_visitReportDirectory() {
+        this.visitTestPage(WebDriverManager.getWebDriver(), "report-testsundertest-01/report-ng");
+
         Assert.assertTrue(true);
         TimerUtils.sleep(100000);
     }

@@ -5,7 +5,7 @@ plugins {
 dependencies {
     implementation project(':integration-tests')
 
-    testImplementation driver_ui_desktop
+    implementation driver_ui_desktop
     testImplementation project(':report-ng')
 }
 

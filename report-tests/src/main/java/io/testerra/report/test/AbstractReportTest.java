@@ -22,29 +22,43 @@
 
 package io.testerra.report.test;
 
-import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.core.server.Server;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
-import java.io.File;
-import java.lang.reflect.Method;
-import java.net.BindException;
-import java.net.URISyntaxException;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 
+import java.io.File;
+import java.lang.reflect.Method;
+import java.net.BindException;
+
 /**
  * Abstract test class for tests based on static test site resources
  */
-public abstract class AbstractReportTest extends AbstractWebDriverTest implements Loggable {
+public abstract class AbstractReportTest extends TesterraTest implements Loggable {
 
     private final static File serverRootDir = new File("./");
     private final static Server server = new Server(serverRootDir);
+
+    @BeforeMethod(alwaysRun = true)
+    public void configureChromeOptions(Method method) {
+        WebDriverManager.setUserAgentConfig(Browsers.chromeHeadless, new ChromeConfig() {
+            @Override
+            public void configure(ChromeOptions options) {
+                options.addArguments("--disable-dev-shm-usage");
+            }
+        });
+    }
 
     @BeforeTest(alwaysRun = true)
     public void setUp() throws Exception {
@@ -56,10 +70,11 @@ public abstract class AbstractReportTest extends AbstractWebDriverTest implement
         }
     }
 
-    @BeforeMethod(alwaysRun = true)
-    public void visitTestPage(Method method) {
-        visitTestPage(getWebDriver());
-    }
+//    @BeforeMethod(alwaysRun = true)
+//    public void visitTestPage(Method method) {
+////        visitTestPage(getWebDriver());
+//        visitTestPage(WebDriverManager.getWebDriver());
+//    }
 
     /**
      * Open a custom Webdriver session with the default test page.
@@ -73,7 +88,7 @@ public abstract class AbstractReportTest extends AbstractWebDriverTest implement
     /**
      * Open a custom Webdriver session with the default test page.
      *
-     * @param driver   {@link WebDriver} Current Instance
+     * @param driver {@link WebDriver} Current Instance
      * @param directory {@link TestPage} page to open
      */
     public synchronized void visitTestPage(WebDriver driver, String directory) {
@@ -89,4 +104,6 @@ public abstract class AbstractReportTest extends AbstractWebDriverTest implement
     protected String getReportDir() {
         return PropertyManager.getProperty(TesterraProperties.REPORTDIR, "test-report");
     }
+
+
 }

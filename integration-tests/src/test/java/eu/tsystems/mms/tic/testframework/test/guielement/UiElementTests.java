@@ -84,7 +84,7 @@ public class UiElementTests extends AbstractExclusiveTestSitesTest<WebTestPage> 
     public void test_UiElement_displayed_false() {
         WebTestPage page = getPage();
         UiElementAssertion expect = page.notDisplayedElement().expect();
-        expect.attribute(Attribute.STYLE).contains("display: none");
+        expect.attribute(Attribute.STYLE).contains("display: none").is(true);
         expect.displayed(false);
         expect.hasClasses("button").is(false);
     }

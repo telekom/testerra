@@ -64,11 +64,15 @@ Maven:
 Create a Test Class and extend the TesterraTest class:
 
 ````java
-public class MyTest extends TesterraTest {
+public class MyTest extends TesterraTest implements UiElementFinderFactoryProvider, WebDriverManagerProvider {
     
     @Test
     public void testT01_My_first_tt_test() {
-        // ...
+        UiElementFinder finder = UI_ELEMENT_FINDER_FACTORY.create(WEB_DRIVER_MANAGER.getWebDriver());
+        
+        finder.find(By.name("q"))
+                .type("Hallo World")
+                .expect().value().endsWith("Hallo").is(false);
     }
 }
 ````

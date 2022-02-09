@@ -2,6 +2,7 @@ package eu.tsystems.mms.tic.testframework.test.execution;
 
 import eu.tsystems.mms.tic.testframework.annotations.InfoMethod;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
+import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssert;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 
@@ -21,6 +22,11 @@ public class GenerateSimpleTestStatusTest extends TesterraTest {
     @Test
     public void test_Failed() {
         Assert.fail("Creating TestStatus 'Failed'");
+    }
+
+    @Test
+    public void test_Optional_Assert() {
+        OptionalAssert.fail("minor fail");
     }
 
     @InfoMethod

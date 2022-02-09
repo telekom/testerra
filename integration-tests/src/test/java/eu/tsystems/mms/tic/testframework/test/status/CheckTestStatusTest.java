@@ -26,6 +26,7 @@ public class CheckTestStatusTest extends TesterraTest {
     public static Object[][] provideExpectedStatusPerMethod() {
         return new Object[][]{
                 {"test_Failed", Status.FAILED },
+                {"test_Optional_Assert", Status.PASSED },
                 {"test_Passed", Status.PASSED },
                 {"testAssertCollector", Status.FAILED},
                 {"test_expectedFailed", Status.FAILED_EXPECTED},

@@ -19,4 +19,3 @@ gradlew
 logs/integration-test-log4j.log
 /license3rdparty/
 !/license3rdparty/*.md
-

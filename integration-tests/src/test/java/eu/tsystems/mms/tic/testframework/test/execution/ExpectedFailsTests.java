@@ -56,6 +56,12 @@ public class ExpectedFailsTests extends TesterraTest implements TestStatusTest {
     }
 
     @Test(groups = {"ExpectedFailsTests"})
+    @Fails(description = "not failing anymore")
+    public void test_expectedFailedPassed() {
+        Assert.assertTrue(true);
+    }
+
+    @Test(groups = {"ExpectedFailsTests"})
     @Fails(validator = "failedExpectedIsValid")
     public void test_validExpectedFailed_withMethod() {
         Assert.fail();
@@ -88,6 +94,7 @@ public class ExpectedFailsTests extends TesterraTest implements TestStatusTest {
         Assert.assertEquals(retriedExpectedFailed.get(2).getStatus(), Status.FAILED_EXPECTED);
 
         assertMethodStatus("test_expectedFailed", Status.FAILED_EXPECTED);
+        assertMethodStatus("test_expectedFailedPassed", Status.REPAIRED);
         assertMethodStatus("test_validExpectedFailed_withMethod", Status.FAILED_EXPECTED);
         assertMethodStatus("test_invalidExpectedFailed_withMethod", Status.FAILED);
         assertMethodStatus("test_validExpectedFailed_withClass", Status.FAILED_EXPECTED);
@@ -99,6 +106,6 @@ public class ExpectedFailsTests extends TesterraTest implements TestStatusTest {
         Assert.assertTrue(optionalMethodContext.isPresent());
 
         MethodContext methodContext = optionalMethodContext.get();
-        Assert.assertEquals(methodContext.getStatus(), status);
+        Assert.assertEquals(methodContext.getStatus(), status, "status is correct.");
     }
 }

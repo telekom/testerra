@@ -2,7 +2,7 @@
 
 ## Run pretest
 ```shell
-gradle test -Ppretest -Dlog4j.configurationFile=src/test/resources/log4j-pretest.xml
+gradle test -P pretest=true -D log4j2.configurationFile=src/test/resources/log4j2-pretest.xml
 ```
 
 ## Start Report prepare tests (deprecated)

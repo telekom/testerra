@@ -21,7 +21,6 @@
  */
  package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
-import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
@@ -60,8 +59,6 @@ public class GuiElementData {
     @Deprecated
     public GuiElementCore parent;
     public final int index;
-    public LogLevel logLevel = LogLevel.DEBUG;
-    public LogLevel storedLogLevel = logLevel;
     public String browser;
     public boolean shadowRoot = false;
 
@@ -164,20 +161,4 @@ public class GuiElementData {
     public boolean hasFrameLogic() {
         return frameLogic != null;
     }
-
-    public LogLevel getLogLevel() {
-        return logLevel;
-    }
-
-    public void setLogLevel(LogLevel logLevel) {
-        // store previous log level away
-        this.storedLogLevel = this.logLevel;
-        // set new log level
-        this.logLevel = logLevel;
-    }
-
-    public void resetLogLevel() {
-        this.logLevel = this.storedLogLevel;
-    }
-
 }

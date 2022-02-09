@@ -680,6 +680,9 @@ export namespace data {
 
         /** LogMessage stackTrace */
         stackTrace?: (data.IStackTraceCause[]|null);
+
+        /** LogMessage prompt */
+        prompt?: (boolean|null);
     }
 
     /** Represents a LogMessage. */
@@ -708,6 +711,9 @@ export namespace data {
 
         /** LogMessage stackTrace. */
         public stackTrace: data.IStackTraceCause[];
+
+        /** LogMessage prompt. */
+        public prompt: boolean;
 
         /**
          * Decodes a LogMessage message from the specified reader or buffer.

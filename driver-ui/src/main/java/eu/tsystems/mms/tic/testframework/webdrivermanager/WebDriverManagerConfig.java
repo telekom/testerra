@@ -25,9 +25,9 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.enums.Position;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import java.net.MalformedURLException;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Class holding configuration settings for the WebDriverManager. Some are writable. This class is not ThreadSafe, some
@@ -38,11 +38,6 @@ public class WebDriverManagerConfig extends AbstractWebDriverConfiguration imple
      * Specifies if windows should be closed.
      */
     private boolean executeCloseWindows = true;
-
-    /**
-     * WebDriverMode that is used.
-     */
-    private WebDriverMode webDriverMode;
 
     /**
      * Close windows after Test Methods.
@@ -67,7 +62,6 @@ public class WebDriverManagerConfig extends AbstractWebDriverConfiguration imple
 
     public WebDriverManagerConfig reset() {
         this.executeCloseWindows = true;
-        this.webDriverMode = WebDriverMode.valueOf(PropertyManager.getProperty(TesterraProperties.WEBDRIVERMODE, WebDriverMode.remote.name()));
         this.closeWindowsAfterTestMethod = PropertyManager.getBooleanProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, true);
         this.closeWindowsOnFailure = PropertyManager.getBooleanProperty(TesterraProperties.CLOSE_WINDOWS_ON_FAILURE, true);
         this.maximize = PropertyManager.getBooleanProperty(TesterraProperties.BROWSER_MAXIMIZE, false);
@@ -86,22 +80,29 @@ public class WebDriverManagerConfig extends AbstractWebDriverConfiguration imple
 
     private void initBrowser() {
         String browserSetting = PropertyManager.getProperty(TesterraProperties.BROWSER_SETTING);
-        if (!StringUtils.isStringEmpty(browserSetting)) {
+        if (StringUtils.isNotBlank(browserSetting)) {
             String[] split = browserSetting.split(":");
             if (split.length > 0) this.setBrowser(split[0].trim());
             if (split.length > 1) this.setBrowserVersion(split[1].trim());
+            if (split.length > 2) this.setPlatformName(split[2].trim());
         }
 
-        if (StringUtils.isStringEmpty(this.getBrowser())) {
+        if (StringUtils.isBlank(this.getBrowser())) {
             this.setBrowser(PropertyManager.getProperty(TesterraProperties.BROWSER, ""));
         }
-        if (StringUtils.isStringEmpty(this.getBrowserVersion())) {
+
+        if (StringUtils.isBlank(this.getBrowserVersion())) {
             this.setBrowserVersion(PropertyManager.getProperty(TesterraProperties.BROWSER_VERSION, ""));
+        }
+
+        if (StringUtils.isBlank(this.getPlatformName().orElse(null))) {
+            this.setPlatformName(PropertyManager.getProperty(TesterraProperties.BROWSER_PLATFORM, ""));
         }
     }
 
+    @Deprecated
     public WebDriverMode getWebDriverMode() {
-        return webDriverMode;
+        return null;
     }
 
     public boolean shouldShutdownSessions() {

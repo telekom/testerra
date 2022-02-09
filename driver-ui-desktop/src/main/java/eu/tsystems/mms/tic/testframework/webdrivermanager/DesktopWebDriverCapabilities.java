@@ -22,13 +22,14 @@
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.utils.CertUtils;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.regex.Pattern;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 @Deprecated
 public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
@@ -83,9 +84,15 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
         desiredCapabilities.merge(preSetCaps);
 
         // set browser version into capabilities
-        if (!StringUtils.isStringEmpty(desktopWebDriverRequest.getBrowserVersion())) {
+        if (StringUtils.isNotBlank(desktopWebDriverRequest.getBrowserVersion())) {
             WebDriverManagerUtils.addBrowserVersionToCapabilities(desiredCapabilities, desktopWebDriverRequest.getBrowserVersion());
         }
+
+        desktopWebDriverRequest.getPlatformName()
+                .ifPresent(s -> {
+                    desiredCapabilities.setCapability(CapabilityType.PLATFORM_NAME, s);
+                    desiredCapabilities.setCapability(CapabilityType.PLATFORM, s);
+                });
 
         /*
         add endpoint bases caps
@@ -108,11 +115,14 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
     @Deprecated
     private static void addEndPointCapabilities(DesktopWebDriverRequest desktopWebDriverRequest) {
         for (Pattern pattern : ENDPOINT_CAPABILITIES.keySet()) {
-            if (pattern.matcher(desktopWebDriverRequest.getSeleniumServerUrl().getHost()).find()) {
-                Capabilities capabilities = ENDPOINT_CAPABILITIES.get(pattern);
-                desktopWebDriverRequest.getDesiredCapabilities().merge(capabilities);
-                LOGGER.info("Applying EndPoint Capabilities: " + capabilities);
-            }
+            desktopWebDriverRequest.getServerUrl().ifPresent(url -> {
+                if (pattern.matcher(url.getHost()).find()) {
+                    Capabilities capabilities = ENDPOINT_CAPABILITIES.get(pattern);
+                    desktopWebDriverRequest.getDesiredCapabilities().merge(capabilities);
+                    LOGGER.info("Applying EndPoint Capabilities: " + capabilities);
+                }
+            });
+
         }
     }
 

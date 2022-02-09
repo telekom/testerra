@@ -55,6 +55,7 @@ asciidoctor {
             sectanchors: '',
             Author: 'The Testerra Team of T-Systems MMS',
             revnumber: "${version}",
+            nofooter: true,
             'source-highlighter': 'highlightjs',
             'highlightjs-theme': 'atom-one-light',
             highlightjsdir: 'highlight',

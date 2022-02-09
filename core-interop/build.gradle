@@ -14,9 +14,11 @@ dependencies {
     api 'org.apache.commons:commons-lang3:3.9'
 
     // <TesterraLogger>
-    api 'org.apache.logging.log4j:log4j-slf4j18-impl:2.13.2'
-    api 'org.apache.logging.log4j:log4j-api:2.13.2'
-    api 'org.apache.logging.log4j:log4j-core:2.13.2'
+    // Fixes Log4Shell vulnerability (https://www.lightbend.com/blog/log4j2-security-advisory)
+    def log4jVersion = "2.16.0"
+    api "org.apache.logging.log4j:log4j-slf4j18-impl:${log4jVersion}"
+    api "org.apache.logging.log4j:log4j-api:${log4jVersion}"
+    api "org.apache.logging.log4j:log4j-core:${log4jVersion}"
     // </TesterraLogger>
 
     //implementation 'org.javassist:javassist:3.20.0-GA'

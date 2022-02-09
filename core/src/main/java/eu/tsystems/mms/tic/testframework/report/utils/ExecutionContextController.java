@@ -145,17 +145,8 @@ public class ExecutionContextController {
     public static MethodContext setCurrentTestResult(ITestResult iTestResult) {
         CURRENT_TEST_RESULT.set(iTestResult);
         MethodContext methodContext = getMethodContextFromTestResult(iTestResult);
-        setCurrentMethodContext(methodContext);
-        return methodContext;
-    }
-
-    /**
-     * Set currently active test.
-     *
-     * @param methodContext Method Context.
-     */
-    private static void setCurrentMethodContext(final MethodContext methodContext) {
         CURRENT_METHOD_CONTEXT.set(methodContext);
+        return methodContext;
     }
 
     public static void setCurrentSessionContext(final SessionContext sessionContext) {

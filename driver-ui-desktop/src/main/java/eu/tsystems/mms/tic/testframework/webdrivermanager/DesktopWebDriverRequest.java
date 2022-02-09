@@ -24,7 +24,6 @@
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import java.io.Serializable;
 import java.net.MalformedURLException;
@@ -32,43 +31,71 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.Dimension;
 
 public class DesktopWebDriverRequest extends AbstractWebDriverRequest implements Loggable, Serializable {
-
     private URL seleniumServerURL;
-    private WebDriverMode webDriverMode;
 
+    /**
+     * @deprecated Use {@link #getServerUrl()} instead
+     */
     public URL getSeleniumServerUrl() {
         if (seleniumServerURL == null) {
-            try {
-                setSeleniumServerUrl(StringUtils.getFirstValidString(
-                        PropertyManager.getProperty(TesterraProperties.SELENIUM_SERVER_URL),
-                        "http://" + StringUtils.getFirstValidString(PropertyManager.getProperty(TesterraProperties.SELENIUM_SERVER_HOST), "localhost") + ":" + StringUtils.getFirstValidString(PropertyManager.getProperty(TesterraProperties.SELENIUM_SERVER_PORT), "4444") + "/wd/hub"
-                ));
-            } catch (MalformedURLException e) {
-                log().error("Unable to retrieve default Selenium URL from properties", e);
+            String serverUrl = PropertyManager.getProperty(TesterraProperties.SELENIUM_SERVER_URL);
+            if (StringUtils.isBlank(serverUrl)) {
+                final String serverHost = PropertyManager.getProperty(TesterraProperties.SELENIUM_SERVER_HOST);
+                if (StringUtils.isNotBlank(serverHost)) {
+                    serverUrl = String.format("http://%s:%d/wd/hub", serverHost, PropertyManager.getIntProperty(TesterraProperties.SELENIUM_SERVER_PORT, 4444));
+                }
+            }
+
+            if (StringUtils.isNotBlank(serverUrl)) {
+                try {
+                    setSeleniumServerUrl(serverUrl);
+                } catch (MalformedURLException e) {
+                    log().error("Unable to retrieve default Selenium URL from properties", e);
+                }
             }
         }
         return seleniumServerURL;
     }
 
+    /**
+     * @deprecated Use {@link #setSeleniumServerUrl(String)} instead
+     */
     public DesktopWebDriverRequest setSeleniumServerUrl(String url) throws MalformedURLException {
-        this.seleniumServerURL = new URL(url);
-        return this;
+        return this.setSeleniumServerUrl(new URL(url));
     }
 
+    /**
+     * @deprecated Use {@link #setServerUrl(URL)} instead
+     */
     public DesktopWebDriverRequest setSeleniumServerUrl(URL url) {
+        this.setWebDriverMode(WebDriverMode.remote);
         this.seleniumServerURL = url;
         return this;
     }
 
-    public WebDriverMode getWebDriverMode() {
-        return webDriverMode;
+    public void setServerUrl(String url) throws MalformedURLException {
+        this.setSeleniumServerUrl(url);
     }
 
+    public void setServerUrl(URL url) {
+        this.setSeleniumServerUrl(url);
+    }
+
+    /**
+     * @deprecated Use {@link #getServerUrl()}
+     */
+    public WebDriverMode getWebDriverMode() {
+        return null;
+    }
+
+    /**
+     * @deprecated Use {@link #setSeleniumServerUrl(URL)} instead
+     */
     public DesktopWebDriverRequest setWebDriverMode(WebDriverMode webDriverMode) {
-        this.webDriverMode = webDriverMode;
         return this;
     }
 

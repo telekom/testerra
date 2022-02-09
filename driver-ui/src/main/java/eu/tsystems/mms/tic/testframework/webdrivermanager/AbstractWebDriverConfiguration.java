@@ -20,6 +20,8 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -29,6 +31,7 @@ public abstract class AbstractWebDriverConfiguration implements Serializable {
     private String browser;
     private String browserVersion;
     private URL baseUrl;
+    private String platformName;
 
     public String getBrowser() {
         return browser;
@@ -60,5 +63,15 @@ public abstract class AbstractWebDriverConfiguration implements Serializable {
     public AbstractWebDriverConfiguration setBaseUrl(URL baseUrl) {
         this.baseUrl = baseUrl;
         return this;
+    }
+
+    public void setPlatformName(String platformName) {
+        if (StringUtils.isNotEmpty(platformName)) {
+            this.platformName = platformName;
+        }
+    }
+
+    public Optional<String> getPlatformName() {
+        return Optional.ofNullable(this.platformName);
     }
 }

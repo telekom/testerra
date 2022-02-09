@@ -77,7 +77,7 @@ message MethodContext {
 //    repeated ErrorContext non_functional_infos = 17 [deprecated = true];
 //    repeated ErrorContext collected_assertions = 18 [deprecated = true];
     repeated string infos = 19 [deprecated = true];
-    string priority_message = 21;
+    string priority_message = 21 [deprecated = true];
     repeated string related_method_context_ids = 23;
     repeated string depends_on_method_context_ids = 24;
     ErrorContext error_context = 25 [deprecated = true];
@@ -166,6 +166,7 @@ message LogMessage {
     int64 timestamp = 4;
     string thread_name = 5;
     repeated StackTraceCause stack_trace = 6;
+    bool prompt = 7;
 }
 
 message ErrorContext {

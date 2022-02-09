@@ -53,17 +53,17 @@ dependencies {
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j18-impl</artifactId>
-            <version>2.13.2</version>
+            <version>2.16.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
-            <version>2.13.2</version>
+            <version>2.16.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>2.13.2</version>
+            <version>2.16.0</version>
         </dependency>
 
     </dependencies>
@@ -89,6 +89,9 @@ Create a new file at `src/test/resources` with the name `test.properties`.
 
 # Setting the start page
 {baseurl}=http://example.org
+
+# Local Selenium server URL (see "Setup Selenium" section)
+{selenium_server_url}=http://localhost:4444/wd/hub
 ----
 
 TIP: All defined properties can be overwritten later by adding system parameters to your command. +

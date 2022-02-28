@@ -29,7 +29,6 @@ public class GenerateSimpleTestStatusTest extends TesterraTest {
         OptionalAssert.fail("minor fail");
     }
 
-    @InfoMethod
     @Test
     public void test_SkippedNoStatus() {
         throw new SkipException(SKIPPED_EXCEPTION_MESSAGE);

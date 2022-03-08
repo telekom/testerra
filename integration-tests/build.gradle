@@ -32,7 +32,7 @@ test {
 
     def preTest = findProperty("pretest")
     if (preTest) {
-        s = ['src/test/resources/Pretest_StatusTests.xml']
+        s = ['src/test/resources/Pretest_Tests.xml']
     }
 
 

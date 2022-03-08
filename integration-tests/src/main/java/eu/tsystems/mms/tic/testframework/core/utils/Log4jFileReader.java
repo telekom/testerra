@@ -21,6 +21,7 @@
  */
 package eu.tsystems.mms.tic.testframework.core.utils;
 
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.Status;
 
 import java.io.File;
@@ -38,11 +39,11 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
+import org.testng.collections.CollectionUtils;
 
-public class Log4jFileReader {
+public class Log4jFileReader implements Loggable {
 
     public final String PATH_TO_LOG_FILE;
-    private static final Logger LOGGER = LoggerFactory.getLogger(Log4jFileReader.class);
 
     public Log4jFileReader(final String pathToLogFile) {
         PATH_TO_LOG_FILE = pathToLogFile;
@@ -50,6 +51,7 @@ public class Log4jFileReader {
 
     /**
      * check existence of log file
+     *
      * @return boolean containing status of existence
      */
     public boolean existsFile() {
@@ -59,6 +61,7 @@ public class Log4jFileReader {
 
     /**
      * filter log file with given classNameSlug and methodNameSlug
+     *
      * @param classNameSlug className in log file entry
      * @param methodNameSlug methodName in log file entry
      * @return List<String> of found entries
@@ -66,11 +69,11 @@ public class Log4jFileReader {
     public List<String> filterLogForTestMethod(final String classNameSlug, final String methodNameSlug) {
         final List<String> allLogEntries = readLines();
         List<String> filteredLogEntries = Collections.synchronizedList(allLogEntries);
-        LOGGER.debug(String.format("File has '%s' entries.", filteredLogEntries.size()));
+        log().debug(String.format("File has '%s' entries.", filteredLogEntries.size()));
 
         if (classNameSlug != null) {
             filteredLogEntries = filteredLogEntries.parallelStream().filter(s -> s.contains(classNameSlug)).collect(Collectors.toList());
-            LOGGER.debug(String.format("Filtered with '%s', entries left: '%s'", classNameSlug, filteredLogEntries.size()));
+            log().debug(String.format("Filtered with '%s', entries left: '%s'", classNameSlug, filteredLogEntries.size()));
         }
 
         if (methodNameSlug != null) {
@@ -79,45 +82,60 @@ public class Log4jFileReader {
             final Predicate<String> predicate = s -> pattern.matcher(s).find();
 
             filteredLogEntries = filteredLogEntries.parallelStream().filter(predicate).collect(Collectors.toList());
-            LOGGER.debug(String.format("Filtered with '%s', entries left: '%s'", methodNameSlug, filteredLogEntries.size()));
+            log().debug(String.format("Filtered with '%s', entries left: '%s'", methodNameSlug, filteredLogEntries.size()));
         }
 
         final String logInfoMessage = String.format("Found %s log entries for '%s' and  '%s'.", filteredLogEntries.size(), classNameSlug, methodNameSlug);
-        LOGGER.info(logInfoMessage);
+        log().info(logInfoMessage);
 
-        LOGGER.info("Found entries: " + Arrays.toString(filteredLogEntries.toArray(new String[0])));
+        log().info("Found entries: " + Arrays.toString(filteredLogEntries.toArray(new String[0])));
         return filteredLogEntries;
     }
 
     /**
-     * find a entry existing in the log directly after given parentEntry
-     * @param parentEntry entry to find first following entry
+     *
+     * @param searchString
+     * @return
+     */
+    public List<String> filterLogForString(final String searchString) {
+        final List<String> allLogEntries = readLines();
+        if (searchString != null) {
+            return allLogEntries.stream().filter(line -> line.contains(searchString)).collect(Collectors.toList());
+        }
+        return Collections.EMPTY_LIST;
+    }
+
+    /**
+     * find an entry existing in the log directly after given searchString
+     *
+     * @param searchString entry to find first following entry
      * @return String following entry
      */
-    public String filterLogForFollowingEntry(final String parentEntry) {
+    public String filterLogForFollowingEntry(final String searchString) {
         final List<String> allLogEntries = readLines();
         String matchedEntry = "not_found";
 
-        if (parentEntry != null) {
+        if (searchString != null) {
             for (int i = 0; i < allLogEntries.size(); i++) {
                 final String foundEntry = allLogEntries.get(i);
 
-                if (foundEntry.equals(parentEntry)) {
-                    LOGGER.info(String.format("Found ParentEntry: '%s'. ", parentEntry));
+                if (foundEntry.equals(searchString)) {
+                    log().info(String.format("Found ParentEntry: '%s'. ", searchString));
 
                     matchedEntry = allLogEntries.get(i + 1);
-                    LOGGER.info(String.format("Found ChildEntry '%s'. ", matchedEntry));
+                    log().info(String.format("Found ChildEntry '%s'. ", matchedEntry));
                     break;
                 }
             }
         }
 
-        LOGGER.info(String.format("Returning entry '%s'.", matchedEntry));
+        log().info(String.format("Returning entry '%s'.", matchedEntry));
         return matchedEntry;
     }
 
     /**
      * verify expectedStatus for all entries found for classNameSlug and methodNameSlug
+     *
      * @param classNameSlug className in log file entry
      * @param methodNameSlug methodName in log file entry
      * @param expectedStatus expectedStatus for found entries
@@ -126,7 +144,7 @@ public class Log4jFileReader {
         final List<String> foundEntries = filterLogForTestMethod(classNameSlug, methodNameSlug);
 
         for (final String entry : foundEntries) {
-            LOGGER.debug(String.format("Asserting '%s' for '%s'",
+            log().debug(String.format("Asserting '%s' for '%s'",
                     expectedStatus, methodNameSlug));
             Assert.assertTrue(entry.contains(expectedStatus.title),
                     String.format("'%s' has status '%s'", methodNameSlug, expectedStatus));
@@ -135,6 +153,7 @@ public class Log4jFileReader {
 
     /**
      * read log line by line
+     *
      * @return List<String> of found entries
      */
     private List<String> readLines() {

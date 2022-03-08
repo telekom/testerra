@@ -3,7 +3,7 @@
 
     <test name="Parallel" parallel="methods">
         <packages>
-            <package name="eu.tsystems.mms.tic.testframework.test.status"/>
+            <package name="io.testerra.test.status"/>
         </packages>
     </test>
 </suite>

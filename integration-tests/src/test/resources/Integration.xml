@@ -6,6 +6,7 @@
         <suite-file path="PageObjects.xml"/>
         <suite-file path="Localization.xml"/>
         <suite-file path="Core.xml"/>
+        <suite-file path="Execution.xml"/>
         <suite-file path="CheckTestStatus.xml"/>
     </suite-files>
 </suite>

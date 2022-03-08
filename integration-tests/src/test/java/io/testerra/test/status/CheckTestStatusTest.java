@@ -19,7 +19,7 @@
  * under the License.
  *
  */
-package eu.tsystems.mms.tic.testframework.test.status;
+package io.testerra.test.status;
 
 import eu.tsystems.mms.tic.testframework.core.utils.Log4jFileReader;
 import eu.tsystems.mms.tic.testframework.report.Status;
@@ -38,7 +38,7 @@ public class CheckTestStatusTest extends TesterraTest {
     private final Log4jFileReader LOG_4_J_FILE_READER = new Log4jFileReader("logs/pre-test-log4j.log");
 
     // terms for searching log file
-    private final String METHOD_START_WORKER_SEARCH_TERM = "start.MethodStartWorker";
+//    private final String METHOD_START_WORKER_SEARCH_TERM = "start.MethodStartWorker";
     private final String METHOD_END_WORKER_SEARCH_TERM = "finish.MethodEndWorker";
     private final String RETRY_ANALYZER_SEARCH_TERM = "testng.RetryAnalyzer";
 
@@ -68,15 +68,15 @@ public class CheckTestStatusTest extends TesterraTest {
         };
     }
 
-    @DataProvider
-    public static Object[][] providePriorityPerMethod() {
-        return new Object[][]{
-                {"testUnderTest2_and2", Status.PASSED, 2},
-                {"testUnderTest1_but3", Status.PASSED, 3},
-                {"testUnderTest3_but4", Status.PASSED, 4},
-                {"testUnderTest4_but1", Status.PASSED, 1},
-        };
-    }
+//    @DataProvider
+//    public static Object[][] providePriorityPerMethod() {
+//        return new Object[][]{
+//                {"testUnderTest2_and2", Status.PASSED, 2},
+//                {"testUnderTest1_but3", Status.PASSED, 3},
+//                {"testUnderTest3_but4", Status.PASSED, 4},
+//                {"testUnderTest4_but1", Status.PASSED, 1},
+//        };
+//    }
 
     @DataProvider
     public static Object[][] provideTestMethodsRetried() {
@@ -101,7 +101,7 @@ public class CheckTestStatusTest extends TesterraTest {
 
     @BeforeClass
     public void verifyLogFileExists() {
-        Assert.assertTrue(LOG_4_J_FILE_READER.existsFile(), "log file exists.");
+        Assert.assertTrue(LOG_4_J_FILE_READER.existsFile(), "Log file exists.");
     }
 
     @Test(dataProvider = "provideExpectedStatusPerMethod")
@@ -109,20 +109,20 @@ public class CheckTestStatusTest extends TesterraTest {
         LOG_4_J_FILE_READER.assertTestStatusPerMethod(METHOD_END_WORKER_SEARCH_TERM, methodName, expectedTestStatus);
     }
 
-    @Test(dataProvider = "providePriorityPerMethod")
-    public void verifyPriorityStatus(final String methodName, final Status expectedTestStatus, final int expectedPriority) {
-        // check basic test status
-        LOG_4_J_FILE_READER.assertTestStatusPerMethod(METHOD_END_WORKER_SEARCH_TERM, methodName, expectedTestStatus);
-
-        // check priority information
-        final List<String> methodStartEntries = LOG_4_J_FILE_READER.filterLogForTestMethod(METHOD_START_WORKER_SEARCH_TERM, methodName);
-        Assert.assertEquals(methodStartEntries.size(), 1,
-                "correct amount of method start entries found.");
-
-        final String priorityEntry = LOG_4_J_FILE_READER.filterLogForFollowingEntry(methodStartEntries.get(0));
-        Assert.assertTrue(priorityEntry.contains(String.valueOf(expectedPriority)),
-                String.format("priority '%s' found in entry '%s'", expectedPriority, priorityEntry));
-    }
+//    @Test(dataProvider = "providePriorityPerMethod")
+//    public void verifyPriorityStatus(final String methodName, final Status expectedTestStatus, final int expectedPriority) {
+//        // check basic test status
+//        LOG_4_J_FILE_READER.assertTestStatusPerMethod(METHOD_END_WORKER_SEARCH_TERM, methodName, expectedTestStatus);
+//
+//        // check priority information
+//        final List<String> methodStartEntries = LOG_4_J_FILE_READER.filterLogForTestMethod(METHOD_START_WORKER_SEARCH_TERM, methodName);
+//        Assert.assertEquals(methodStartEntries.size(), 1,
+//                "correct amount of method start entries found.");
+//
+//        final String priorityEntry = LOG_4_J_FILE_READER.filterLogForFollowingEntry(methodStartEntries.get(0));
+//        Assert.assertTrue(priorityEntry.contains(String.valueOf(expectedPriority)),
+//                String.format("priority '%s' found in entry '%s'", expectedPriority, priorityEntry));
+//    }
 
     @Test(dataProvider = "provideTestMethodsRetried")
     public void verifyRetryStatus(final String methodName, final Status finalStatus) {

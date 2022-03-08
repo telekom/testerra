@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Configuration packages="eu.tsystems.mms.tic.testframework.logging">
     <Appenders>
+        <Console name="CONSOLE">
+            <PatternLayout pattern="%d{dd.MM.yyyy HH:mm:ss.SSS} [%t][%p]%contextIds: %c{2} - %m{nolookups}%n"/>
+        </Console>
         <File name="PreTestFile" fileName="logs/pre-test-log4j.log" append="false">
             <PatternLayout>
                 <Pattern>%d{dd.MM.yyyy HH:mm:ss.SSS} [%t][%p]%contextIds: %c{2} - %m%n</Pattern>
@@ -12,6 +15,7 @@
     </Appenders>
     <Loggers>
         <Root level="info">
+            <AppenderRef ref="CONSOLE"/>
             <AppenderRef ref="PreTestFile"/>
         </Root>
     </Loggers>

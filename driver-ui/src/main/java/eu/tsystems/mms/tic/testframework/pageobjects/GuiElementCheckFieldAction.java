@@ -27,9 +27,9 @@ import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.CheckFieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebDriver;
 
 public class GuiElementCheckFieldAction extends CheckFieldAction {
@@ -142,7 +142,7 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
         }
 
         if (check.optional()) {
-            pCheckField(guiElement, guiElement.nonFunctionalAsserts(), checkRule, findNot, fast);
+            pCheckField(guiElement, guiElement.optionalAsserts(), checkRule, findNot, fast);
         } else {
 
             try {
@@ -154,7 +154,7 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
                 if @Check has a prioritizedErrorMessage mark, then wrap t's
                  */
                 String prioritizedErrorMessage = check.prioritizedErrorMessage();
-                if (!StringUtils.isStringEmpty(prioritizedErrorMessage)) {
+                if (!StringUtils.isBlank(prioritizedErrorMessage)) {
                     throw new AssertionError(prioritizedErrorMessage, pageNotFoundException);
                 } else {
                     throw pageNotFoundException;
@@ -174,7 +174,7 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
                 WebDriver driver = guiElement.getWebDriver();
                 String sessionId = WebDriverManagerUtils.getSessionKey(driver);
 
-                if (!StringUtils.isStringEmpty(sessionId)) {
+                if (!StringUtils.isBlank(sessionId)) {
                     // do only search for the gui element if JS is disabled
                     if (WebDriverManager.isJavaScriptActivated(driver)) {
                         execute = false;

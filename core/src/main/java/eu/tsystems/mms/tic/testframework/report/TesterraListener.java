@@ -52,10 +52,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.DefaultTestNGContextGenerator;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configurator;
@@ -63,6 +59,7 @@ import org.apache.logging.log4j.core.config.DefaultConfiguration;
 import org.testng.IConfigurable;
 import org.testng.IConfigureCallBack;
 import org.testng.IDataProviderListener;
+import org.testng.IDataProviderMethod;
 import org.testng.IHookCallBack;
 import org.testng.IHookable;
 import org.testng.IInvokedMethod;
@@ -81,10 +78,15 @@ import org.testng.annotations.Test;
 import org.testng.internal.InvokedMethod;
 import org.testng.internal.TestResult;
 import org.testng.xml.XmlSuite;
+
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Listener for JUnit and TestNg, collects test informations for testreport.
+ * Listener for JUnit and TestNg, collects test information for testreport.
  *
  * @author mrgi, mibu, pele, sepr
  */
@@ -97,8 +99,7 @@ public class TesterraListener implements
         ITestListener,
         ISuiteListener,
         Loggable,
-        IDataProviderListener
-{
+        IDataProviderListener {
     /**
      * Default package namespace for project tests
      */
@@ -523,11 +524,48 @@ public class TesterraListener implements
     }
 
     @Override
+    public void beforeDataProviderExecution(IDataProviderMethod dataProviderMethod, ITestNGMethod testNGMethod, ITestContext testContext) {
+        /**
+         * TestNG calls the data provider initialization for every thread.
+         * Added a semaphore to prevent adding multiple method contexts.
+         */
+        log().info("Before data provider execution");
+//        if (!dataProviderSemaphore.containsKey(testNGMethod)) {
+            // TODO: Creates here a new method context
+//            testNGMethod.getDataProviderMethod().getMethod();
+//            TestResult testResult = TestResult.newContextAwareTestResult(testNGMethod, testContext);
+//            InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), testResult);
+//            MethodContext methodContext = pBeforeInvocation(invokedMethod, testResult, testContext);
+
+//            dataProviderSemaphore.put(testNGMethod, true);
+//        }
+    }
+
+    @Override
+    public void afterDataProviderExecution(IDataProviderMethod dataProviderMethod, ITestNGMethod method, ITestContext iTestContext) {
+        log().info("After dataprovider execution");
+        // not implemented
+    }
+
+    @Override
     public void onDataProviderFailure(ITestNGMethod testNGMethod, ITestContext testContext, RuntimeException exception) {
         /**
          * TestNG calls the data provider initialization for every thread.
          * Added a semaphore to prevent adding multiple method contexts.
          */
+//        Optional<MethodContext> methodContext = ExecutionContextController.getMethodContextForThread();
+//        methodContext.ifPresent(context -> {
+//            TestResult testResult = TestResult.newContextAwareTestResult(testNGMethod, testContext);
+//            InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), testResult);
+//            if (exception.getCause() != null) {
+//                context.addError(exception.getCause());
+//            } else {
+//                context.addError(exception);
+//            }
+//
+//            pAfterInvocation(invokedMethod, testResult, testContext);
+//
+//        });
         if (!dataProviderSemaphore.containsKey(testNGMethod)) {
             TestResult testResult = TestResult.newContextAwareTestResult(testNGMethod, testContext);
             InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), testResult);

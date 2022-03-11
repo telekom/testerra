@@ -30,15 +30,15 @@ import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.FailsAnnotationFilter;
+import org.apache.commons.lang3.StringUtils;
+import org.testng.ITestResult;
+
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-import org.apache.commons.lang3.StringUtils;
-import org.testng.ITestResult;
 
 public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
 
@@ -50,28 +50,46 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
         MethodContext methodContext = event.getMethodContext();
         ITestResult testResult = event.getTestResult();
 
-        // Handle collected assertions if we have more than one
-        if (testResult.isSuccess() && methodContext.readErrors().anyMatch(ErrorContext::isNotOptional)) {
-            // let the test fail
-            testResult.setStatus(ITestResult.FAILURE);
+        // Handle assertions and exceptions in dataprovider methods
+        if (testResult.getMethod().isDataDriven() && methodContext.readErrors().findFirst().isPresent()) {
+            testResult.setStatus(ITestResult.SKIP);
+            methodContext.setStatus(Status.SKIPPED);
             StringBuilder sb = new StringBuilder();
-            sb.append("The following assertions failed:");
+            sb.append("The following assertions failed in dataprovider method ");
+            sb.append(testResult.getMethod().getDataProviderMethod().getMethod().getName());
+            sb.append(":");
             AtomicInteger i = new AtomicInteger();
             methodContext.readErrors()
-                    .filter(ErrorContext::isNotOptional)
+//                    .filter(ErrorContext::isNotOptional)
                     .forEach(errorContext -> {
                         i.incrementAndGet();
                         sb.append("\n").append(i).append(") ").append(errorContext.getThrowable().getMessage());
                     });
-
             AssertionError testMethodContainerError = new AssertionError(sb.toString());
             testResult.setThrowable(testMethodContainerError);
-        } else {
-            Throwable throwable = testResult.getThrowable();
-            if (throwable != null) {
-                methodContext.addError(throwable);
+        } else
+            // Handle collected assertions if we have more than one
+            if (testResult.isSuccess() && methodContext.readErrors().anyMatch(ErrorContext::isNotOptional)) {
+                // let the test fail
+                testResult.setStatus(ITestResult.FAILURE);
+                StringBuilder sb = new StringBuilder();
+                sb.append("The following assertions failed:");
+                AtomicInteger i = new AtomicInteger();
+                methodContext.readErrors()
+                        .filter(ErrorContext::isNotOptional)
+                        .forEach(errorContext -> {
+                            i.incrementAndGet();
+                            sb.append("\n").append(i).append(") ").append(errorContext.getThrowable().getMessage());
+                        });
+
+                AssertionError testMethodContainerError = new AssertionError(sb.toString());
+                testResult.setThrowable(testMethodContainerError);
+            } else {
+                Throwable throwable = testResult.getThrowable();
+                if (throwable != null) {
+                    methodContext.addError(throwable);
+                }
             }
-        }
 
         /*
          * method container status and steps
@@ -96,7 +114,7 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
                         } catch (Throwable t) {
                             methodContext.addError(t);
                         }
-                    } else if (fails.validFor().length > 0){
+                    } else if (fails.validFor().length > 0) {
                         isFailsAnnotationValid = FailsAnnotationFilter.isFailsAnnotationValid(fails.validFor());
                     } else {
                         isFailsAnnotationValid = true;

@@ -76,7 +76,9 @@ import org.testng.ITestResult;
 import org.testng.SkipException;
 import org.testng.annotations.Test;
 import org.testng.internal.InvokedMethod;
+import org.testng.internal.TestNGMethod;
 import org.testng.internal.TestResult;
+import org.testng.internal.annotations.JDK15AnnotationFinder;
 import org.testng.xml.XmlSuite;
 
 import java.util.Date;
@@ -372,7 +374,6 @@ public class TesterraListener implements
      * @param testResult result of invoked method.
      * @param testContext steps of test.
      */
-    // CHECKSTYLE:OFF
     private void pAfterInvocation(
             IInvokedMethod invokedMethod,
             ITestResult testResult,
@@ -389,7 +390,6 @@ public class TesterraListener implements
 //            testClassName = testResult.getTestClass().getName();
 //        }
 
-        // CHECKSTYLE:ON
 //        if (ListenerUtils.wasMethodInvokedBefore("afterInvocation", testClassName, methodName, testResult, testContext)) {
 //            return;
 //        }
@@ -532,18 +532,29 @@ public class TesterraListener implements
         log().info("Before data provider execution");
 //        if (!dataProviderSemaphore.containsKey(testNGMethod)) {
             // TODO: Creates here a new method context
-//            testNGMethod.getDataProviderMethod().getMethod();
-//            TestResult testResult = TestResult.newContextAwareTestResult(testNGMethod, testContext);
+
+//            TestNGMethod dpMethod = new TestNGMethod(dataProviderMethod.getMethod(), null, testNGMethod.getXmlTest(), dataProviderMethod);
+////            testNGMethod.getDataProviderMethod().getMethod();
+//            TestResult testResult = TestResult.newContextAwareTestResult(dpMethod, testContext);
+//
+//
+//
 //            InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), testResult);
+//
 //            MethodContext methodContext = pBeforeInvocation(invokedMethod, testResult, testContext);
+
+
 
 //            dataProviderSemaphore.put(testNGMethod, true);
 //        }
     }
 
     @Override
-    public void afterDataProviderExecution(IDataProviderMethod dataProviderMethod, ITestNGMethod method, ITestContext iTestContext) {
+    public void afterDataProviderExecution(IDataProviderMethod dataProviderMethod, ITestNGMethod testNGMethod, ITestContext testContext) {
         log().info("After dataprovider execution");
+        TestResult testResult = TestResult.newContextAwareTestResult(testNGMethod, testContext);
+        InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), testResult);
+        pAfterInvocation(invokedMethod, testResult, testContext);
         // not implemented
     }
 

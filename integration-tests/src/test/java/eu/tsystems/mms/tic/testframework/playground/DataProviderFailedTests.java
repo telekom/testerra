@@ -33,7 +33,10 @@ import org.testng.annotations.Test;
  *
  * @author mgn
  */
-public class SetupFailedTests extends TesterraTest implements Loggable {
+public class DataProviderFailedTests extends TesterraTest implements Loggable {
+
+    // TODO:
+    // - Data provider provides no data
 
     @DataProvider(name = "dpAssertFailed")
     public Object[][] dpAssertFailedMethod() {
@@ -47,17 +50,7 @@ public class SetupFailedTests extends TesterraTest implements Loggable {
 
     }
 
-    @DataProvider(name = "dpAssertPassed")
-    public Object[][] dpAssertPassedMethod() {
-        Object[][] objects = new Object[1][1];
-        Assert.assertTrue(true, "Passed assertion in Dataprovider");
-        return objects;
-    }
 
-    @Test(dataProvider = "dpAssertPassed")
-    public void testDpAssertPassed(String dp) throws Exception {
-        log().info("Test case passed");
-    }
 
     @DataProvider(name = "dpOptionalAssertFailed")
     public Object[][] dpOptionalAssertFailed() {

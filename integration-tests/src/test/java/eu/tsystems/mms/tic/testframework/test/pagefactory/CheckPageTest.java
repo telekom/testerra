@@ -22,6 +22,10 @@
 package eu.tsystems.mms.tic.testframework.test.pagefactory;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithCheckRuleIsDisplayed;
+import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithCheckRuleIsNotDisplayed;
+import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithCheckRuleIsNotPresent;
+import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithCheckRuleIsPresent;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExistingElement;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExistingStaticElement;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithNonCheckableCheck;
@@ -57,4 +61,25 @@ public class CheckPageTest extends AbstractTestSitesTest implements PageFactoryP
     public void testT05_checkNonCheckableElement() throws Exception {
         PAGE_FACTORY.createPage(PageWithNonCheckableCheck.class, getClassExclusiveWebDriver());
     }
+
+    @Test()
+    public void testT06_checkCheckRule_IsNotDislayed() {
+        PAGE_FACTORY.createPage(PageWithCheckRuleIsNotDisplayed.class, getClassExclusiveWebDriver());
+    }
+
+    @Test
+    public void testT07_checkCheckRule_IsPresent() {
+        PAGE_FACTORY.createPage(PageWithCheckRuleIsPresent.class, getClassExclusiveWebDriver());
+    }
+
+    @Test(expectedExceptions = PageFactoryException.class)
+    public void testT08_checkCheckRule_IsDisplayed() {
+        PAGE_FACTORY.createPage(PageWithCheckRuleIsDisplayed.class, getClassExclusiveWebDriver());
+    }
+
+    @Test()
+    public void testT09_checkCheckRule_IsNotPresent() {
+        PAGE_FACTORY.createPage(PageWithCheckRuleIsNotPresent.class, getClassExclusiveWebDriver());
+    }
+
 }

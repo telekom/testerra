@@ -23,6 +23,7 @@ package eu.tsystems.mms.tic.testframework.core.utils;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.Status;
+import org.testng.Assert;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,11 +36,6 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.Assert;
-import org.testng.collections.CollectionUtils;
 
 public class Log4jFileReader implements Loggable {
 
@@ -93,14 +89,16 @@ public class Log4jFileReader implements Loggable {
     }
 
     /**
-     *
      * @param searchString
      * @return
      */
     public List<String> filterLogForString(final String searchString) {
         final List<String> allLogEntries = readLines();
         if (searchString != null) {
-            return allLogEntries.stream().filter(line -> line.contains(searchString)).collect(Collectors.toList());
+            List<String> filteredLogEntries = allLogEntries.stream().filter(line -> line.contains(searchString)).collect(Collectors.toList());
+            log().info(String.format("Found %s log entries for '%s'.", filteredLogEntries.size(), searchString));
+            log().info("Found entries: " + Arrays.toString(filteredLogEntries.toArray(new String[0])));
+            return filteredLogEntries;
         }
         return Collections.EMPTY_LIST;
     }

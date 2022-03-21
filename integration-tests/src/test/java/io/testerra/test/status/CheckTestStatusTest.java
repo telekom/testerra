@@ -213,9 +213,8 @@ public class CheckTestStatusTest extends TesterraTest {
     }
 
     @Test(dataProvider = "provideFinalTestResult")
-    public void testT07_verifyCompleteResult(final String resultString, final String testObject) {
+    public void testT06_verifyCompleteResult(final String resultString, final String testObject) {
         List<String> foundEntries = LOG_4_J_FILE_READER.filterLogForString(resultString);
-
         Assert.assertEquals(foundEntries.size(), 1, String.format("The count of %s should contains in log with the string '%s'.", testObject, resultString));
     }
 }

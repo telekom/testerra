@@ -19,3 +19,4 @@ gradlew
 /license3rdparty/
 !/license3rdparty/*.md
 /integration-tests/logs/pre-test-log4j.log
+/integration-tests/pretest-status/

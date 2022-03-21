@@ -29,7 +29,6 @@ import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.RunConfig;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import org.testng.ITestResult;
 import org.testng.SkipException;
 
@@ -75,7 +74,7 @@ public class TestStatusController implements TestStatusUpdateEvent.Listener, Log
 
         // Only add status count for tests, not config methds
         if (methodContext.isTestMethod()) {
-            statusCounter.increment(methodContext.getStatus());
+            statusCounter.increment(methodContext);
 
             if (methodContext.getStatus() == Status.FAILED) {
                 incrementFailureCorridor(methodContext.getFailureCorridorClass());
@@ -104,6 +103,7 @@ public class TestStatusController implements TestStatusUpdateEvent.Listener, Log
         String logMessage = runConfig.getReportName() + " " + runConfig.RUNCFG + ": " + getCounterInfoMessage();
         log().info(logMessage);
     }
+
     public int getTestsFailed() {
         return statusCounter.get(Status.FAILED);
     }

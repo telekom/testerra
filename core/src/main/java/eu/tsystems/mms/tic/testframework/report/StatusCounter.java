@@ -21,24 +21,32 @@
 
 package eu.tsystems.mms.tic.testframework.report;
 
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class StatusCounter {
     private final Map<Status, Integer> statusCounts = new ConcurrentHashMap<>();
 
+    private final Map<String, Status> methodMaps = new ConcurrentHashMap<>();
+
     public int get(Status status) {
-        return statusCounts.getOrDefault(status, 0);
+        return Collections.frequency(this.methodMaps.values(), status);
     }
 
     public int getSum(Status[] statuses) {
         return Arrays.stream(statuses).mapToInt(this::get).sum();
     }
 
-    public void increment(Status status) {
-        int statusCount = get(status);
-        statusCount++;
-        statusCounts.put(status, statusCount);
+    public void increment(MethodContext context) {
+        // Create unique identifier for status counter
+        // The status can be changed through RetryAnalyzer, so this method is called twice for this identifier
+        final String identifier = context.getClassContext().getName() + "." + context.getName() + "_" + context.getMethodRunIndex();
+        final Status status = context.getStatus();
+
+        methodMaps.put(identifier, status);
     }
 }

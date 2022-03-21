@@ -19,7 +19,7 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.test.common;
+package io.testerra.test.pretest_status;
 
 import org.testng.annotations.DataProvider;
 

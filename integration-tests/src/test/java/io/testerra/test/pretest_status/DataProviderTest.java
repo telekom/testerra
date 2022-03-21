@@ -19,9 +19,8 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.test.common;
+package io.testerra.test.pretest_status;
 
-import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -30,20 +29,30 @@ import org.testng.annotations.Test;
 public class DataProviderTest extends TesterraTest {
 
     @Test(dataProviderClass = MyDataProvider.class, dataProvider = "throwException")
-    @Fails
-    public void test_interceptCrashedDataProvider() {
+    public void testT01_interceptCrashedDataProvider() {
         Assert.assertTrue(true);
     }
 
     @DataProvider()
     public Object[][] crashingDataProvider() {
-        throw new RuntimeException("crashed data provider");
+        throw new RuntimeException("Crashed data provider");
     }
 
     @Test(dataProvider = "crashingDataProvider")
-    @Fails
-    public void test_crashedDataProvider(Object object) {
+    public void testT02_crashedDataProvider(Object object) {
         Assert.assertTrue(true);
+    }
+
+    @DataProvider(name = "assertFailedDataProvider")
+    public Object[][] dpAssertFailedMethod() {
+        Object[][] objects = new Object[1][1];
+        Assert.fail("Failed assertion in data provider");
+        return objects;
+    }
+
+    @Test(dataProvider = "assertFailedDataProvider")
+    public void testT03_AssertFailedDataProvider(String dp) throws Exception {
+
     }
 
 }

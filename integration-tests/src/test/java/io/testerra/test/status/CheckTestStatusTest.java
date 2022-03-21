@@ -63,6 +63,9 @@ public class CheckTestStatusTest extends TesterraTest {
                 {"test_Skipped", Status.FAILED, Status.SKIPPED.title},
                 {"test_SkippedNoStatus", Status.FAILED, Status.SKIPPED.title},
                 {"test_Skipped_dependingOnFailed", Status.NO_RUN, "depends on not successfully finished methods"},
+                {"testT01_interceptCrashedDataProvider", Status.SKIPPED, "java.lang.AssertionError"},
+                {"testT02_crashedDataProvider", Status.SKIPPED, "java.lang.AssertionError"},
+                {"testT03_AssertFailedDataProvider", Status.SKIPPED, "java.lang.AssertionError"}
         };
     }
 
@@ -92,14 +95,14 @@ public class CheckTestStatusTest extends TesterraTest {
         return new Object[][]{
                 {"*** Stats: SuiteContexts:  2", "SuiteContext"},
                 {"*** Stats: TestContexts:   2", "TestContext"},
-                {"*** Stats: ClassContexts:  4", "ClassContext"},
-                {"*** Stats: MethodContexts: 41", "MethodContexts"},
-                {"*** Stats: Test Methods Count: 38 (28 relevant)", "Test methods"},
+                {"*** Stats: ClassContexts:  5", "ClassContext"},
+                {"*** Stats: MethodContexts: 44", "MethodContexts"},
+                {"*** Stats: Test Methods Count: 41 (31 relevant)", "Test methods"},
                 {"*** Stats: Failed: 7", "Failed tests"},
                 {"*** Stats: Retried: 10", "Retried tests"},
                 {"*** Stats: Expected Failed: 6", "Expected failed tests"},
-                {"*** Stats: Skipped: 3", "Skipped tests"},
-                {"*** Stats: Passed: 12 ? Recovered: 4 ? Repaired: 1", "Passed tests"}
+                {"*** Stats: Skipped: 6", "Skipped tests"},
+                {"*** Stats: Passed: 12 ⊃ Recovered: 4 ⊃ Repaired: 1", "Passed tests"}
         };
     }
 
@@ -109,12 +112,12 @@ public class CheckTestStatusTest extends TesterraTest {
     }
 
     @Test(dataProvider = "provideExpectedStatusPerMethod")
-    public void verifySimpleTestStatus(final String methodName, final Status expectedTestStatus) {
+    public void testT01_verifySimpleTestStatus(final String methodName, final Status expectedTestStatus) {
         LOG_4_J_FILE_READER.assertTestStatusPerMethod(METHOD_END_WORKER_SEARCH_TERM, methodName, expectedTestStatus);
     }
 
     @Test(dataProvider = "provideTestMethodsRetried")
-    public void verifyRetryStatus(final String methodName, final Status finalStatus) {
+    public void testT02_verifyRetryStatus(final String methodName, final Status finalStatus) {
 
         final String failedStatus = Status.FAILED.title;
         final String finalStatusTitle = finalStatus.title;
@@ -148,7 +151,7 @@ public class CheckTestStatusTest extends TesterraTest {
     }
 
     @Test(dataProvider = "provideTestMethodsNoRetry")
-    public void verifyNoRetryStatus(final String methodName) {
+    public void testT03_verifyNoRetryStatus(final String methodName) {
 
         final String failedStatus = Status.FAILED.title;
 
@@ -166,7 +169,7 @@ public class CheckTestStatusTest extends TesterraTest {
     }
 
     @Test
-    public void testExpectedFailsStatus() {
+    public void testT04_verifyExpectedFailsStatus() {
 
         final String methodName = "test_retriedExpectedFailed";
 
@@ -192,7 +195,7 @@ public class CheckTestStatusTest extends TesterraTest {
     }
 
     @Test(dataProvider = "provideTestMethodsSkipped")
-    public void testSkippedStatus(final String methodName, final Status expectedInitialStatus, final String skippedInformationInLog) {
+    public void testT05_verifySkippedStatus(final String methodName, final Status expectedInitialStatus, final String skippedInformationInLog) {
 
         final String expectedInitialStatusTitle = expectedInitialStatus.title;
 
@@ -210,7 +213,7 @@ public class CheckTestStatusTest extends TesterraTest {
     }
 
     @Test(dataProvider = "provideFinalTestResult")
-    public void testCompleteResult(final String resultString, final String testObject) {
+    public void testT07_verifyCompleteResult(final String resultString, final String testObject) {
         List<String> foundEntries = LOG_4_J_FILE_READER.filterLogForString(resultString);
 
         Assert.assertEquals(foundEntries.size(), 1, String.format("The count of %s should contains in log with the string '%s'.", testObject, resultString));

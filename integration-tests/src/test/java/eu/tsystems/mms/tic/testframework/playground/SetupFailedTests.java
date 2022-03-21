@@ -22,6 +22,8 @@
 package eu.tsystems.mms.tic.testframework.playground;
 
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
+import eu.tsystems.mms.tic.testframework.annotations.Fails;
+import eu.tsystems.mms.tic.testframework.annotations.Retry;
 import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssert;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
@@ -82,6 +84,19 @@ public class SetupFailedTests extends TesterraTest implements Loggable {
     @Test(dataProvider = "dpException")
     public void testDpException(String dp) throws Exception {
 
+    }
+
+    @Test()
+    @Fails
+    @Retry(maxRetries = 1)
+    public void test_retriedExpectedFailed() {
+        Assert.fail();
+    }
+
+    @Test()
+    @Retry(maxRetries = 1)
+    public void test_retriedFailed() {
+        Assert.fail();
     }
 
 //    @BeforeMethod(groups = "failedGroup1")

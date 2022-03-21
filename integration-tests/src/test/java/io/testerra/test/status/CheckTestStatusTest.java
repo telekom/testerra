@@ -24,13 +24,12 @@ package io.testerra.test.status;
 import eu.tsystems.mms.tic.testframework.core.utils.Log4jFileReader;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
-
-import java.util.List;
-
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import java.util.List;
 
 public class CheckTestStatusTest extends TesterraTest {
 
@@ -38,7 +37,6 @@ public class CheckTestStatusTest extends TesterraTest {
     private final Log4jFileReader LOG_4_J_FILE_READER = new Log4jFileReader("logs/pre-test-log4j.log");
 
     // terms for searching log file
-//    private final String METHOD_START_WORKER_SEARCH_TERM = "start.MethodStartWorker";
     private final String METHOD_END_WORKER_SEARCH_TERM = "finish.MethodEndWorker";
     private final String RETRY_ANALYZER_SEARCH_TERM = "testng.RetryAnalyzer";
 
@@ -46,9 +44,9 @@ public class CheckTestStatusTest extends TesterraTest {
     @DataProvider
     public static Object[][] provideExpectedStatusPerMethod() {
         return new Object[][]{
-                {"test_Failed", Status.FAILED },
-                {"test_Optional_Assert", Status.PASSED },
-                {"test_Passed", Status.PASSED },
+                {"test_Failed", Status.FAILED},
+                {"test_Optional_Assert", Status.PASSED},
+                {"test_Passed", Status.PASSED},
                 {"testAssertCollector", Status.FAILED},
                 {"test_expectedFailed", Status.FAILED_EXPECTED},
                 {"test_expectedFailedPassed", Status.PASSED},
@@ -67,16 +65,6 @@ public class CheckTestStatusTest extends TesterraTest {
                 {"test_Skipped_dependingOnFailed", Status.NO_RUN, "depends on not successfully finished methods"},
         };
     }
-
-//    @DataProvider
-//    public static Object[][] providePriorityPerMethod() {
-//        return new Object[][]{
-//                {"testUnderTest2_and2", Status.PASSED, 2},
-//                {"testUnderTest1_but3", Status.PASSED, 3},
-//                {"testUnderTest3_but4", Status.PASSED, 4},
-//                {"testUnderTest4_but1", Status.PASSED, 1},
-//        };
-//    }
 
     @DataProvider
     public static Object[][] provideTestMethodsRetried() {
@@ -99,6 +87,22 @@ public class CheckTestStatusTest extends TesterraTest {
         };
     }
 
+    @DataProvider
+    public static Object[][] provideFinalTestResult() {
+        return new Object[][]{
+                {"*** Stats: SuiteContexts:  2", "SuiteContext"},
+                {"*** Stats: TestContexts:   2", "TestContext"},
+                {"*** Stats: ClassContexts:  4", "ClassContext"},
+                {"*** Stats: MethodContexts: 41", "MethodContexts"},
+                {"*** Stats: Test Methods Count: 38 (28 relevant)", "Test methods"},
+                {"*** Stats: Failed: 7", "Failed tests"},
+                {"*** Stats: Retried: 10", "Retried tests"},
+                {"*** Stats: Expected Failed: 6", "Expected failed tests"},
+                {"*** Stats: Skipped: 3", "Skipped tests"},
+                {"*** Stats: Passed: 12 ? Recovered: 4 ? Repaired: 1", "Passed tests"}
+        };
+    }
+
     @BeforeClass
     public void verifyLogFileExists() {
         Assert.assertTrue(LOG_4_J_FILE_READER.existsFile(), "Log file exists.");
@@ -109,24 +113,8 @@ public class CheckTestStatusTest extends TesterraTest {
         LOG_4_J_FILE_READER.assertTestStatusPerMethod(METHOD_END_WORKER_SEARCH_TERM, methodName, expectedTestStatus);
     }
 
-//    @Test(dataProvider = "providePriorityPerMethod")
-//    public void verifyPriorityStatus(final String methodName, final Status expectedTestStatus, final int expectedPriority) {
-//        // check basic test status
-//        LOG_4_J_FILE_READER.assertTestStatusPerMethod(METHOD_END_WORKER_SEARCH_TERM, methodName, expectedTestStatus);
-//
-//        // check priority information
-//        final List<String> methodStartEntries = LOG_4_J_FILE_READER.filterLogForTestMethod(METHOD_START_WORKER_SEARCH_TERM, methodName);
-//        Assert.assertEquals(methodStartEntries.size(), 1,
-//                "correct amount of method start entries found.");
-//
-//        final String priorityEntry = LOG_4_J_FILE_READER.filterLogForFollowingEntry(methodStartEntries.get(0));
-//        Assert.assertTrue(priorityEntry.contains(String.valueOf(expectedPriority)),
-//                String.format("priority '%s' found in entry '%s'", expectedPriority, priorityEntry));
-//    }
-
     @Test(dataProvider = "provideTestMethodsRetried")
     public void verifyRetryStatus(final String methodName, final Status finalStatus) {
-
 
         final String failedStatus = Status.FAILED.title;
         final String finalStatusTitle = finalStatus.title;
@@ -212,14 +200,19 @@ public class CheckTestStatusTest extends TesterraTest {
         final List<String> foundEntries = LOG_4_J_FILE_READER.filterLogForTestMethod(METHOD_END_WORKER_SEARCH_TERM, methodName);
         final String logLine = foundEntries.get(0);
 
-        Assert.assertEquals(foundEntries.size(), 1,
-                "correct amount of method end entries found.");
-        Assert.assertTrue(logLine.contains(expectedInitialStatusTitle),
-                String.format("'%s' has status '%s' in log line '%s'", methodName, expectedInitialStatusTitle, logLine));
+        Assert.assertEquals(foundEntries.size(), 1, "correct amount of method end entries found.");
+        Assert.assertTrue(logLine.contains(expectedInitialStatusTitle), String.format("'%s' has status '%s' in log line '%s'", methodName, expectedInitialStatusTitle, logLine));
 
         // check entry with information for skipped
         final String skippedMethodEntry = LOG_4_J_FILE_READER.filterLogForFollowingEntry(logLine);
         Assert.assertTrue(skippedMethodEntry.contains(skippedInformationInLog),
                 String.format("status '%s' found in entry '%s'", skippedInformationInLog, skippedMethodEntry));
+    }
+
+    @Test(dataProvider = "provideFinalTestResult")
+    public void testCompleteResult(final String resultString, final String testObject) {
+        List<String> foundEntries = LOG_4_J_FILE_READER.filterLogForString(resultString);
+
+        Assert.assertEquals(foundEntries.size(), 1, String.format("The count of %s should contains in log with the string '%s'.", testObject, resultString));
     }
 }

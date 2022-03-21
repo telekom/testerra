@@ -74,7 +74,6 @@ public abstract class AbstractDragAndDropTest extends AbstractTestSitesTest {
     }
 
     @Test
-    @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
     public void testT01_DragAndDrop() {
 
         if (!(this instanceof DragAndDropJSTest)) {
@@ -94,8 +93,7 @@ public abstract class AbstractDragAndDropTest extends AbstractTestSitesTest {
     }
 
     @Test
-    @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
-    public void testT2_DragAndDropOverFrames() {
+    public void testT02_DragAndDropOverFrames() {
 
         if (!(this instanceof DragAndDropJSTest)) {
             throw new SkipException("Skipped. We only support DragAndDropJs");

@@ -143,7 +143,9 @@ public class DefaultPageFactory implements PageFactory, MethodEndEvent.Listener,
         this.clearLoopDetectionBuffer();
     }
 
-    private void clearLoopDetectionBuffer() {
-        LOOP_DETECTION_LOGGER.get().clear();
+    public static void clearLoopDetectionBuffer() {
+        if (LOOP_DETECTION_LOGGER.get() != null) {
+            LOOP_DETECTION_LOGGER.get().clear();
+        }
     }
 }

@@ -14,7 +14,6 @@ public class GenerateSimpleTestStatusTest extends TesterraTest {
 
     @Test
     public void test_Passed() {
-        Assert.assertTrue(true, "Creating TestStatus 'Passed'");
     }
 
     @Test
@@ -29,11 +28,6 @@ public class GenerateSimpleTestStatusTest extends TesterraTest {
 
     @Test
     public void test_SkippedNoStatus() {
-        throw new SkipException(SKIPPED_EXCEPTION_MESSAGE);
-    }
-
-    @Test
-    public void test_Skipped() {
         throw new SkipException(SKIPPED_EXCEPTION_MESSAGE);
     }
 

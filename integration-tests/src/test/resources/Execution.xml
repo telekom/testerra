@@ -12,7 +12,7 @@
         </packages>
     </test>
 
-<!--  needed for priority test methods  -->
+    <!--  needed for priority test methods  -->
     <test name="Sequential" parallel="none">
         <groups>
             <run>

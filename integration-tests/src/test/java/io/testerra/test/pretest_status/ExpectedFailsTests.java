@@ -59,7 +59,6 @@ public class ExpectedFailsTests extends TesterraTest implements TestStatusTest {
     @Test(groups = {"ExpectedFailsTests"})
     @Fails(description = "not failing anymore")
     public void test_expectedFailedPassed() {
-        Assert.assertTrue(true);
     }
 
     @Test(groups = {"ExpectedFailsTests"})

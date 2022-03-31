@@ -30,7 +30,6 @@ public class DataProviderTest extends TesterraTest {
 
     @Test(dataProviderClass = MyDataProvider.class, dataProvider = "throwException")
     public void testT01_interceptCrashedDataProvider() {
-        Assert.assertTrue(true);
     }
 
     @DataProvider()
@@ -40,7 +39,6 @@ public class DataProviderTest extends TesterraTest {
 
     @Test(dataProvider = "crashingDataProvider")
     public void testT02_crashedDataProvider(Object object) {
-        Assert.assertTrue(true);
     }
 
     @DataProvider(name = "assertFailedDataProvider")

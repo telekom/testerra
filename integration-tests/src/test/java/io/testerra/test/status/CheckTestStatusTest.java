@@ -60,7 +60,6 @@ public class CheckTestStatusTest extends TesterraTest {
     @DataProvider
     public static Object[][] provideTestMethodsSkipped() {
         return new Object[][]{
-                {"test_Skipped", Status.FAILED, Status.SKIPPED.title},
                 {"test_SkippedNoStatus", Status.FAILED, Status.SKIPPED.title},
                 {"test_Skipped_dependingOnFailed", Status.NO_RUN, "depends on not successfully finished methods"},
                 {"testT01_interceptCrashedDataProvider", Status.SKIPPED, "java.lang.AssertionError"},
@@ -125,7 +124,7 @@ public class CheckTestStatusTest extends TesterraTest {
         // check basic test status in log
         final List<String> methodEndEntries = LOG_4_J_FILE_READER.filterLogForTestMethod(METHOD_END_WORKER_SEARCH_TERM, methodName);
 
-        Assert.assertEquals(methodEndEntries.size(), 2,
+        Assert.assertEquals(methodEndEntries.size(), 1,
                 "correct amount of test status entries found.");
         Assert.assertTrue(methodEndEntries.get(0).contains(failedStatus),
                 String.format("'%s' has status '%s'", methodName, failedStatus));

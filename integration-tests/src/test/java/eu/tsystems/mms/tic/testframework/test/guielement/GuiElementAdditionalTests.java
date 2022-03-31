@@ -30,6 +30,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import io.testerra.test.pretest_guielement.GuiElementAdditional2Tests;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -52,7 +53,7 @@ public class GuiElementAdditionalTests extends AbstractTestSitesTest {
         input.sendKeys(absoluteFilePath);
     }
 
-    // Needs pretest `io.testerra.test.pretest_guielement.testGuiElement_Create_SensibleData()`
+    /** Needs pretest {@link GuiElementAdditional2Tests#testGuiElement_Create_SensibleData}. */
     @Test
     public void testT02_SensibleData() {
         final String searchStringSensibleData = "facade.GuiElementFacadeLoggingDecorator - type \"*****************\" on By.id: 1";

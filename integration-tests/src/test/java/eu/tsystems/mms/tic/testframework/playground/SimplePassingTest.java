@@ -33,7 +33,7 @@ public class SimplePassingTest extends AbstractWebDriverTest {
     }
 
     @Test
-    @Fails(description = "Test should repaired")
+    @Fails(description = "Test should be repaired")
     public void testPassingRepaired() {
 
     }

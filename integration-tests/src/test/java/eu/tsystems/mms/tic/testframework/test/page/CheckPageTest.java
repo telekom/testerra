@@ -24,6 +24,7 @@ package eu.tsystems.mms.tic.testframework.test.page;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithCheckRule;
+import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithCheckRulePrioritizedMessage;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExistingElement;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExistingStaticElement;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithNonCheckableCheck;
@@ -114,5 +115,11 @@ public class CheckPageTest extends AbstractTestSitesTest {
     public void testT08_CheckPage_CheckRule() {
         WebDriver webDriver = WebDriverManager.getWebDriver();
         PageFactory.create(PageWithCheckRule.class, webDriver);
+    }
+
+    @Test(expectedExceptions = java.lang.AssertionError.class, expectedExceptionsMessageRegExp = ".*myMessage*.")
+    public void testT09_CheckPage_CheckRule_Message() {
+        WebDriver webDriver = WebDriverManager.getWebDriver();
+        PageFactory.create(PageWithCheckRulePrioritizedMessage.class, webDriver);
     }
 }

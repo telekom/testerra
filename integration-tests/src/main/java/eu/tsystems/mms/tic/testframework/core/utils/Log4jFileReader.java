@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -63,7 +62,7 @@ public class Log4jFileReader implements Loggable {
      * @return List<String> of found entries
      */
     public List<String> filterLogForTestMethod(final String classNameSlug, final String methodNameSlug) {
-        List<String> filteredLogEntries = Collections.synchronizedList(readLines());
+        List<String> filteredLogEntries = readLines();
         log().debug("File has '{}' entries.", filteredLogEntries.size());
 
         if (classNameSlug != null) {
@@ -95,7 +94,6 @@ public class Log4jFileReader implements Loggable {
      */
     public List<String> filterLogForString(final String searchString) {
         final List<String> allLogEntries = readLines();
-        Assert.assertNotNull(searchString, "searchString should contain a valid string");
 
         List<String> filteredLogEntries = allLogEntries.stream().filter(line -> line.contains(searchString)).collect(Collectors.toList());
         log().info("Found {} log entries for '{}'.", filteredLogEntries.size(), searchString);

@@ -29,7 +29,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class StatusCounter {
-    private final Map<Status, Integer> statusCounts = new ConcurrentHashMap<>();
 
     private final Map<String, Status> methodMaps = new ConcurrentHashMap<>();
 

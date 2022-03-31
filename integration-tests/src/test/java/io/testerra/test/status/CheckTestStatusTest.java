@@ -124,7 +124,7 @@ public class CheckTestStatusTest extends TesterraTest {
         // check basic test status in log
         final List<String> methodEndEntries = LOG_4_J_FILE_READER.filterLogForTestMethod(METHOD_END_WORKER_SEARCH_TERM, methodName);
 
-        Assert.assertEquals(methodEndEntries.size(), 1,
+        Assert.assertEquals(methodEndEntries.size(), 2,
                 "correct amount of test status entries found.");
         Assert.assertTrue(methodEndEntries.get(0).contains(failedStatus),
                 String.format("'%s' has status '%s'", methodName, failedStatus));

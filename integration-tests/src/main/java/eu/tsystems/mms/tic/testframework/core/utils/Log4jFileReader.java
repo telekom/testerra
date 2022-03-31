@@ -46,7 +46,7 @@ public class Log4jFileReader implements Loggable {
     }
 
     /**
-     * check existence of log file
+     * Check existence of log file
      *
      * @return boolean containing status of existence
      */
@@ -56,7 +56,7 @@ public class Log4jFileReader implements Loggable {
     }
 
     /**
-     * filter log file with given classNameSlug and methodNameSlug
+     * Filter log file with given classNameSlug and methodNameSlug
      *
      * @param classNameSlug className in log file entry
      * @param methodNameSlug methodName in log file entry
@@ -88,22 +88,23 @@ public class Log4jFileReader implements Loggable {
     }
 
     /**
-     * @param searchString
-     * @return
+     * Find all log entries contains a given string.
+     *
+     * @param searchString String used for filtering
+     * @return List<String> of found entries
      */
     public List<String> filterLogForString(final String searchString) {
         final List<String> allLogEntries = readLines();
-        if (searchString != null) {
-            List<String> filteredLogEntries = allLogEntries.stream().filter(line -> line.contains(searchString)).collect(Collectors.toList());
-            log().info("Found {} log entries for '{}'.", filteredLogEntries.size(), searchString);
-            log().info("Found entries: {}", Arrays.toString(filteredLogEntries.toArray(new String[0])));
-            return filteredLogEntries;
-        }
-        return Collections.EMPTY_LIST;
+        Assert.assertNotNull(searchString, "searchString should contain a valid string");
+
+        List<String> filteredLogEntries = allLogEntries.stream().filter(line -> line.contains(searchString)).collect(Collectors.toList());
+        log().info("Found {} log entries for '{}'.", filteredLogEntries.size(), searchString);
+        log().info("Found entries: {}", Arrays.toString(filteredLogEntries.toArray(new String[0])));
+        return filteredLogEntries;
     }
 
     /**
-     * find an entry existing in the log directly after given searchString
+     * Find an entry existing in the log directly after given searchString
      *
      * @param searchString entry to find first following entry
      * @return String following entry
@@ -131,7 +132,7 @@ public class Log4jFileReader implements Loggable {
     }
 
     /**
-     * verify expectedStatus for all entries found for classNameSlug and methodNameSlug
+     * Verify expectedStatus for all entries found for classNameSlug and methodNameSlug
      *
      * @param classNameSlug className in log file entry
      * @param methodNameSlug methodName in log file entry
@@ -147,7 +148,7 @@ public class Log4jFileReader implements Loggable {
     }
 
     /**
-     * read log line by line
+     * Read log line by line
      *
      * @return List<String> of found entries
      */

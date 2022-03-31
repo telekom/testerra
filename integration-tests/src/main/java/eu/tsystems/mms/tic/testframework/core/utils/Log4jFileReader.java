@@ -63,13 +63,12 @@ public class Log4jFileReader implements Loggable {
      * @return List<String> of found entries
      */
     public List<String> filterLogForTestMethod(final String classNameSlug, final String methodNameSlug) {
-        final List<String> allLogEntries = readLines();
-        List<String> filteredLogEntries = Collections.synchronizedList(allLogEntries);
-        log().debug(String.format("File has '%s' entries.", filteredLogEntries.size()));
+        List<String> filteredLogEntries = Collections.synchronizedList(readLines());
+        log().debug("File has '{}' entries.", filteredLogEntries.size());
 
         if (classNameSlug != null) {
             filteredLogEntries = filteredLogEntries.parallelStream().filter(s -> s.contains(classNameSlug)).collect(Collectors.toList());
-            log().debug(String.format("Filtered with '%s', entries left: '%s'", classNameSlug, filteredLogEntries.size()));
+            log().debug("Filtered with '{}', entries left: '{}'", classNameSlug, filteredLogEntries.size());
         }
 
         if (methodNameSlug != null) {
@@ -78,7 +77,7 @@ public class Log4jFileReader implements Loggable {
             final Predicate<String> predicate = s -> pattern.matcher(s).find();
 
             filteredLogEntries = filteredLogEntries.parallelStream().filter(predicate).collect(Collectors.toList());
-            log().debug(String.format("Filtered with '%s', entries left: '%s'", methodNameSlug, filteredLogEntries.size()));
+            log().debug("Filtered with '{}', entries left: '{}'", methodNameSlug, filteredLogEntries.size());
         }
 
         final String logInfoMessage = String.format("Found %s log entries for '%s' and  '%s'.", filteredLogEntries.size(), classNameSlug, methodNameSlug);
@@ -96,8 +95,8 @@ public class Log4jFileReader implements Loggable {
         final List<String> allLogEntries = readLines();
         if (searchString != null) {
             List<String> filteredLogEntries = allLogEntries.stream().filter(line -> line.contains(searchString)).collect(Collectors.toList());
-            log().info(String.format("Found %s log entries for '%s'.", filteredLogEntries.size(), searchString));
-            log().info("Found entries: " + Arrays.toString(filteredLogEntries.toArray(new String[0])));
+            log().info("Found {} log entries for '{}'.", filteredLogEntries.size(), searchString);
+            log().info("Found entries: {}", Arrays.toString(filteredLogEntries.toArray(new String[0])));
             return filteredLogEntries;
         }
         return Collections.EMPTY_LIST;
@@ -118,16 +117,16 @@ public class Log4jFileReader implements Loggable {
                 final String foundEntry = allLogEntries.get(i);
 
                 if (foundEntry.equals(searchString)) {
-                    log().info(String.format("Found ParentEntry: '%s'. ", searchString));
+                    log().info("Found ParentEntry: '{}'. ", searchString);
 
                     matchedEntry = allLogEntries.get(i + 1);
-                    log().info(String.format("Found ChildEntry '%s'. ", matchedEntry));
+                    log().info("Found ChildEntry '{}'. ", matchedEntry);
                     break;
                 }
             }
         }
 
-        log().info(String.format("Returning entry '%s'.", matchedEntry));
+        log().info("Returning entry '{}'.", matchedEntry);
         return matchedEntry;
     }
 
@@ -142,10 +141,8 @@ public class Log4jFileReader implements Loggable {
         final List<String> foundEntries = filterLogForTestMethod(classNameSlug, methodNameSlug);
 
         for (final String entry : foundEntries) {
-            log().debug(String.format("Asserting '%s' for '%s'",
-                    expectedStatus, methodNameSlug));
-            Assert.assertTrue(entry.contains(expectedStatus.title),
-                    String.format("'%s' has status '%s'", methodNameSlug, expectedStatus));
+            log().debug("Asserting '{}' for '{}'", expectedStatus, methodNameSlug);
+            Assert.assertTrue(entry.contains(expectedStatus.title), String.format("'%s' has status '%s'", methodNameSlug, expectedStatus));
         }
     }
 

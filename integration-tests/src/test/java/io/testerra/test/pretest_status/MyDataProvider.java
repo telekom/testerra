@@ -23,9 +23,12 @@ package io.testerra.test.pretest_status;
 
 import org.testng.annotations.DataProvider;
 
+/**
+ * External data provider
+ */
 public class MyDataProvider {
     @DataProvider
-    public static Object[][] throwException() {
+    public static Object[][] dataProviderThrowingException() {
         throw new RuntimeException("I was told to throw that.");
     }
 }

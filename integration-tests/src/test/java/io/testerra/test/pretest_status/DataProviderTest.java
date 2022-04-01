@@ -28,29 +28,37 @@ import org.testng.annotations.Test;
 
 public class DataProviderTest extends TesterraTest {
 
-    @Test(dataProviderClass = MyDataProvider.class, dataProvider = "throwException")
+    /**
+     * This test uses an external data provider throwing an exception
+     */
+    @Test(dataProviderClass = MyDataProvider.class, dataProvider = "dataProviderThrowingException")
     public void testT01_interceptCrashedDataProvider() {
     }
 
     @DataProvider()
-    public Object[][] crashingDataProvider() {
+    public Object[][] dataProviderThrowingException() {
         throw new RuntimeException("Crashed data provider");
     }
 
-    @Test(dataProvider = "crashingDataProvider")
+    /**
+     * This test uses an internal data provider throwing an exception
+     */
+    @Test(dataProvider = "dataProviderThrowingException")
     public void testT02_crashedDataProvider(Object object) {
     }
 
-    @DataProvider(name = "assertFailedDataProvider")
-    public Object[][] dpAssertFailedMethod() {
+    @DataProvider
+    public Object[][] dataProviderThrowingAssertion() {
         Object[][] objects = new Object[1][1];
         Assert.fail("Failed assertion in data provider");
         return objects;
     }
 
-    @Test(dataProvider = "assertFailedDataProvider")
+    /**
+     * This test uses an internal data provider throwing an assertion
+     */
+    @Test(dataProvider = "dataProviderThrowingAssertion")
     public void testT03_AssertFailedDataProvider(String dp) throws Exception {
-
     }
 
 }

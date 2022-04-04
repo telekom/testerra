@@ -19,7 +19,7 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.pageobjects;
+package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
@@ -154,7 +154,7 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
                 if @Check has a prioritizedErrorMessage mark, then wrap t's
                  */
                 String prioritizedErrorMessage = check.prioritizedErrorMessage();
-                if (!StringUtils.isBlank(prioritizedErrorMessage)) {
+                if (!StringUtils.isEmpty(prioritizedErrorMessage)) {
                     throw new AssertionError(prioritizedErrorMessage, pageNotFoundException);
                 } else {
                     throw pageNotFoundException;

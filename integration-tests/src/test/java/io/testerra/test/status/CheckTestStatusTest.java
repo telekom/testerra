@@ -145,7 +145,7 @@ public class CheckTestStatusTest extends TesterraTest {
                     String.format("entry '%s' has information on abortion of retry due to exceeded limit", retryLimitEntry));
         } else {
             Assert.assertEquals(retryEntries.size(), 1,
-                    String.format("'%s' was retried '%s' time", methodName, 1));
+                    String.format("'%s' should retried '%s' time", methodName, 1));
         }
     }
 

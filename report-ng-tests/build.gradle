@@ -16,7 +16,7 @@ test {
     if (nr) {
         setFailureCorridor(nr)
         setCloseWindows()
-        setReportDir("report-testsundertest-0" + nr)
+        setReportDir("src/test/resources/reports/report-testsundertest-0" + nr)
         s = ['src/test/resources/testng/ReportTestsUnderTest' + nr + '.xml']
     }
 

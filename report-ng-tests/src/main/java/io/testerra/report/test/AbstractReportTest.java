@@ -31,6 +31,7 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
+import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -47,7 +48,7 @@ import java.net.BindException;
  */
 public abstract class AbstractReportTest extends TesterraTest implements Loggable {
 
-    private final static File serverRootDir = new File("./");
+    private final static File serverRootDir = FileUtils.getResourceFile("reports");
     private final static Server server = new Server(serverRootDir);
 
     @BeforeMethod(alwaysRun = true)
@@ -93,8 +94,10 @@ public abstract class AbstractReportTest extends TesterraTest implements Loggabl
      */
     public synchronized void visitTestPage(WebDriver driver, String directory) {
         Assert.assertTrue(serverRootDir.exists(), String.format("Server root directory '%s' doesn't exists", serverRootDir));
+
         File reportDir = new File(serverRootDir, directory);
         Assert.assertTrue(reportDir.exists(), String.format("Report directory '%s' doesn't exists", reportDir));
+
         if (!driver.getCurrentUrl().contains(directory)) {
             String baseUrl = String.format("http://localhost:%d/%s", server.getPort(), directory);
             driver.get(baseUrl);

@@ -28,6 +28,7 @@ import org.testng.Assert;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -154,7 +155,7 @@ public class Log4jFileReader implements Loggable {
 
         final File logFile = Paths.get(PATH_TO_LOG_FILE).toFile();
         try {
-            return new LinkedList<>(org.apache.commons.io.FileUtils.readLines(logFile, Charset.defaultCharset()));
+            return new LinkedList<>(org.apache.commons.io.FileUtils.readLines(logFile, StandardCharsets.UTF_8));
         } catch (IOException e) {
             throw new RuntimeException("Error reading file to List of Strings.", e);
         }

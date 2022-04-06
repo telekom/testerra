@@ -21,3 +21,4 @@ gradlew
 
 /integration-tests/logs/pre-test-log4j.log
 /integration-tests/pretest-status/
+/integration-tests/report-pretest/

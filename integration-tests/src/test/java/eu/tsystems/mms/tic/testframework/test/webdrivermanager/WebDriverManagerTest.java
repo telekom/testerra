@@ -73,9 +73,9 @@ public class WebDriverManagerTest extends TesterraTest implements PropertyManage
             throw new RuntimeException("This testcase only runs for chrome or chrome headless");
         }
 
-        if (!webDriverMode.equalsIgnoreCase("local")) {
-            throw new RuntimeException("This testcase only runs for local executions.");
-        }
+//        if (!webDriverMode.equalsIgnoreCase("local")) {
+//            throw new RuntimeException("This testcase only runs for local executions.");
+//        }
 
         // create new options
         final ChromeOptions chromeOptions = new ChromeOptions();

@@ -57,7 +57,7 @@ public class GuiElementAdditionalTests extends AbstractTestSitesTest implements 
     /** Needs pretest {@link GuiElementAdditional2Tests#testGuiElement_Create_SensibleData}. */
     @Test
     public void testT02_SensibleData() {
-        final String searchStringSensibleData = "facade.GuiElementFacadeLoggingDecorator - type \"*****************\" on By.id: 1";
+        final String searchStringSensibleData = "facade.UiElementLogger - type(\"*****************\") on UiElement(By.id: 1)";
         final String searchStringNotExisits = "type \"testT02_SensibleData\" on By.id: 1";
 
         List<String> foundEntries = LOG_4_J_FILE_READER.filterLogForString(searchStringSensibleData);

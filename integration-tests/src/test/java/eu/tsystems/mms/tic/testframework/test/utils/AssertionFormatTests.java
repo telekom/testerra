@@ -64,7 +64,7 @@ public class AssertionFormatTests extends AbstractExclusiveTestSitesTest<WebTest
     @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that WebTestPage title=\\[Input test\\] length \\[10\\] is between \\[3000\\] and \\[1\\]")
     public void test_Page_title_length_format() {
         WebTestPage page = getPage();
-        CONTROL.withTimeout(0, () -> page.expect().title().length().isBetween(3000,1));
+        CONTROL.withTimeout(0, () -> page.expect().title().length().isBetween(3000, 1));
     }
 
     @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that WebTestPage -> UiElement\\(By.id: notDisplayedElement\\) style=\\[display: none;\\] ends with \\[block\\] is true")
@@ -73,7 +73,7 @@ public class AssertionFormatTests extends AbstractExclusiveTestSitesTest<WebTest
         CONTROL.withTimeout(0, () -> page.notDisplayedElement().expect().attribute("style").endsWith("block").is(true));
     }
 
-    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that WebTestPage -> InputForm\\(inputForm\\) -> submitButton value=\\[Button1\\] equals \\[Glickmisch\\]")
+    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that WebTestPage -> inputForm -> submitButton value=\\[Button1\\] equals \\[Glickmisch\\]")
     public void test_Component_text_format() {
         WebTestPage page = getPage();
         CONTROL.withTimeout(0, () -> page.inputForm().button().expect().value("Glickmisch"));

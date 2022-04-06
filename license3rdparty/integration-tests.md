@@ -1,7 +1,7 @@
 
 #integration-tests
 ##Dependency License Report
-_2021-11-08 11:43:16 MEZ_
+_2022-04-06 13:49:37 MESZ_
 ## The Apache Software License, Version 2.0
 
 **1** **Group:** `org.seleniumhq.selenium` **Name:** `selenium-server` **Version:** `3.141.59` 

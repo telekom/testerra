@@ -1,7 +1,7 @@
 
 #surefire-connector
 ##Dependency License Report
-_2021-11-08 11:43:20 MEZ_
+_2022-04-06 13:49:39 MESZ_
 ## Apache License, Version 2.0
 
 **1** **Group:** `org.apache.maven.surefire` **Name:** `surefire-testng` **Version:** `2.19.1` 

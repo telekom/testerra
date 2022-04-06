@@ -1,7 +1,7 @@
 
 #mail-connector
 ##Dependency License Report
-_2021-11-08 11:43:17 MEZ_
+_2022-04-06 13:49:38 MESZ_
 ## Apache 2.0
 
 **1** **Group:** `com.icegreen` **Name:** `greenmail` **Version:** `1.5.9` 

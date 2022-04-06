@@ -2,12 +2,13 @@
 <suite name="Testerra Integration Test Suite" verbose="10" configfailurepolicy="continue" thread-count="10" parallel="false">
 
     <suite-files>
-        <suite-file path="GuiElementStandard.xml"></suite-file>
-        <suite-file path="GuiElementVariations.xml"></suite-file>
-        <suite-file path="PageObjects.xml"></suite-file>
+        <suite-file path="GuiElementStandard.xml"/>
+        <suite-file path="GuiElementVariations.xml"/>
+        <suite-file path="PageObjects.xml"/>
         <suite-file path="UiElement.xml"></suite-file>
-        <suite-file path="Localization.xml"></suite-file>
-        <suite-file path="Core.xml"></suite-file>
-        <suite-file path="Execution.xml"></suite-file>
+        <suite-file path="Localization.xml"/>
+        <suite-file path="Core.xml"/>
+        <suite-file path="Execution.xml"/>
+        <suite-file path="CheckTestStatus.xml"/>
     </suite-files>
 </suite>

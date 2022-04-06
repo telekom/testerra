@@ -1,12 +1,3 @@
----
-name: Pull Request
-about: Create a pull request for your changes
-title: ''
-labels: enhancement
-assignees: ''
-
----
-
 # Description
 
 Please include a summary of your changes and which issue(s) you fixed. Please include relevant motivation and context as well. 

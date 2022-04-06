@@ -22,20 +22,15 @@
 package eu.tsystems.mms.tic.testframework.playground;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.annotations.InDevelopment;
 import eu.tsystems.mms.tic.testframework.annotations.InfoMethod;
-import eu.tsystems.mms.tic.testframework.annotations.New;
-import eu.tsystems.mms.tic.testframework.annotations.ReadyForApproval;
-import eu.tsystems.mms.tic.testframework.annotations.SupportMethod;
 import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
-import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
+import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssert;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.RandomUtils;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
-import java.lang.reflect.Method;
 import org.openqa.selenium.WebDriverException;
 import org.testng.Assert;
 import org.testng.SkipException;
@@ -45,6 +40,8 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
+
+import java.lang.reflect.Method;
 
 @TestClassContext(name = "MyClass")
 public class ReportingAllStatesTests extends TesterraTest {
@@ -69,7 +66,7 @@ public class ReportingAllStatesTests extends TesterraTest {
                 AssertCollector.assertEquals(2, 1, "late fail");
                 break;
             case MINOR:
-                NonFunctionalAssert.assertEquals(2, 1, "minor fail");
+                OptionalAssert.assertEquals(2, 1, "minor fail");
                 break;
             case RETRY:
                 throw new WebDriverException("Error communicating with the remote browser. It may have died.");
@@ -92,7 +89,7 @@ public class ReportingAllStatesTests extends TesterraTest {
         int size = 20;
         Object[][] objects = new Object[size][1];
         for (int i = 0; i < size; i++) {
-            objects[i][0] = "" + (i+1);
+            objects[i][0] = "" + (i + 1);
         }
         return objects;
     }
@@ -296,7 +293,6 @@ public class ReportingAllStatesTests extends TesterraTest {
         throw new WebDriverException("Error communicating with the remote browser. It may have died.");
     }
 
-
     @Test
     public void testNewRun() throws Exception {
 
@@ -315,26 +311,6 @@ public class ReportingAllStatesTests extends TesterraTest {
         TimerUtils.sleep(RandomUtils.generateRandomInt(20));
 
         failingStep(How.RETRY);
-    }
-
-    @New
-    @Test
-    public void testNew() {}
-
-    @ReadyForApproval
-    @Test
-    public void testRFA() {}
-
-    @New
-    @ReadyForApproval
-    @Test
-    public void testNewRFA() {}
-
-    @New
-    @ReadyForApproval
-    @Test
-    public void testNewRFAFailing() {
-        failingStep(How.FAST);
     }
 
     @Test
@@ -369,20 +345,6 @@ public class ReportingAllStatesTests extends TesterraTest {
     }
 
     @Test
-    @SupportMethod
-    @New
-    @ReadyForApproval
-    @InDevelopment
-    public void testAllMarkers() throws Exception {
-    }
-
-    @InDevelopment
-    @Test
-    public void testInDevelopment() {
-
-    }
-
-    @Test
     public void testAssertCollector() {
         AssertCollector.fail("failed1");
         AssertCollector.fail("failed2");
@@ -393,9 +355,4 @@ public class ReportingAllStatesTests extends TesterraTest {
     public void beforeMethod(Method method) {
     }
 
-    @InfoMethod
-    @Test
-    public void testInfo() {
-
-    }
 }

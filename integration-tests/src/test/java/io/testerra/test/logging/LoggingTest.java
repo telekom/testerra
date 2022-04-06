@@ -27,7 +27,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.test.execution.TestStatusTest;
+import io.testerra.test.pretest_status.TestStatusTest;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import java.util.List;
 import java.util.Optional;

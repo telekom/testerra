@@ -23,7 +23,7 @@
 package eu.tsystems.mms.tic.testframework.test.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.core.utils.LogAssertUtils;
+import eu.tsystems.mms.tic.testframework.core.utils.Log4jFileReader;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
@@ -31,13 +31,18 @@ import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
 import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
-import java.io.File;
+import io.testerra.test.pretest_guielement.GuiElementAdditional2Tests;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.io.File;
+import java.util.List;
+
 public class GuiElementAdditionalTests extends AbstractTestSitesTest implements AssertProvider {
+
+    private final Log4jFileReader LOG_4_J_FILE_READER = new Log4jFileReader("logs/pre-test-log4j.log");
 
     @Test
     public void testT01_Upload() {
@@ -45,24 +50,21 @@ public class GuiElementAdditionalTests extends AbstractTestSitesTest implements 
         final File resourceFile = FileUtils.getResourceFile("testfiles/Test.txt");
         final String absoluteFilePath = resourceFile.getAbsolutePath();
 
-
         GuiElement input = new GuiElement(driver, By.id("2"));
         input.sendKeys(absoluteFilePath);
     }
 
+    /** Needs pretest {@link GuiElementAdditional2Tests#testGuiElement_Create_SensibleData}. */
     @Test
     public void testT02_SensibleData() {
+        final String searchStringSensibleData = "facade.GuiElementFacadeLoggingDecorator - type \"*****************\" on By.id: 1";
+        final String searchStringNotExisits = "type \"testT02_SensibleData\" on By.id: 1";
 
-        final WebDriver driver = getWebDriver();
-        GuiElement input = new GuiElement(driver, By.id("1")).sensibleData();
+        List<String> foundEntries = LOG_4_J_FILE_READER.filterLogForString(searchStringSensibleData);
+        Assert.assertEquals(foundEntries.size(), 1, String.format("Log should contains string '%s'", searchStringSensibleData));
 
-        Assert.assertTrue(input.isDisplayed());
-        Assert.assertTrue(input.hasSensibleData());
-
-        input.type("testT02_SensibleData");
-        // pageobjects.GuiElement - type "*****************" on By.id: 1
-        LogAssertUtils.assertEntryInLogFile("type(\"*****************\")");
-        LogAssertUtils.assertEntryNotInLogFile("type(\"testT02_SensibleData\")");
+        foundEntries = LOG_4_J_FILE_READER.filterLogForString(searchStringNotExisits);
+        Assert.assertEquals(foundEntries.size(), 0, String.format("Log should not contain string '%s'", searchStringNotExisits));
     }
 
     @Test

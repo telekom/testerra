@@ -75,7 +75,7 @@ public class TestStatusController implements TestStatusUpdateEvent.Listener, Log
 
         // Only add status count for tests, not config methds
         if (methodContext.isTestMethod()) {
-            statusCounter.increment(methodContext.getStatus());
+            statusCounter.increment(methodContext);
 
             if (methodContext.getStatus() == Status.FAILED) {
                 incrementFailureCorridor(methodContext.getFailureCorridorClass());

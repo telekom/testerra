@@ -23,6 +23,8 @@
 package eu.tsystems.mms.tic.testframework.test.page;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithCheckRule;
+import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithCheckRulePrioritizedMessage;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExistingElement;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExistingStaticElement;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithNonCheckableCheck;
@@ -32,6 +34,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
+import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -106,5 +109,17 @@ public class CheckPageTest extends AbstractTestSitesTest {
         } catch (PageNotFoundException e) {
             Assert.fail("No PageNotFoundException should be thrown because checkPage should not be executed from parent page.");
         }
+    }
+
+    @Test
+    public void testT08_CheckPage_CheckRule() {
+        WebDriver webDriver = WebDriverManager.getWebDriver();
+        PageFactory.create(PageWithCheckRule.class, webDriver);
+    }
+
+    @Test(expectedExceptions = java.lang.AssertionError.class, expectedExceptionsMessageRegExp = ".*myMessage*.")
+    public void testT09_CheckPage_CheckRule_Message() {
+        WebDriver webDriver = WebDriverManager.getWebDriver();
+        PageFactory.create(PageWithCheckRulePrioritizedMessage.class, webDriver);
     }
 }

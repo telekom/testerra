@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2021, Mike Reiche,  T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2021, Mike Reiche,  T-Systems MMS GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -19,13 +19,18 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.test.common;
+package io.testerra.report.test;
 
-import org.testng.annotations.DataProvider;
+import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
-public class MyDataProvider {
-    @DataProvider
-    public static Object[][] throwException() {
-        throw new RuntimeException("I was told to throw that.");
+public class ReportUnderTest extends AbstractReportTest {
+
+    @Test
+    public void test_visitReport() {
+        Assert.assertTrue(true);
+        TimerUtils.sleep(100000);
     }
+
 }

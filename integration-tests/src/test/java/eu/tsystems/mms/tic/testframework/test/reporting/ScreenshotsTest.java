@@ -32,7 +32,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.test.execution.TestStatusTest;
+import io.testerra.test.pretest_status.TestStatusTest;
 import eu.tsystems.mms.tic.testframework.test.page.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;

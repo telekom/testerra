@@ -22,7 +22,6 @@
 
 package eu.tsystems.mms.tic.testframework.test.guielement;
 
-import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -54,10 +53,8 @@ public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementLay
         GuiElement g = getDynamicTextElement();
         g.asserts().assertIsNotDisplayed();
 
-
         getTimeOutInput().type("4000");
         getShowWithTimeOutButton().click();
-
 
         g.setTimeoutInSeconds(8);
 
@@ -105,7 +102,6 @@ public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementLay
         boolean result = g.waits().waitForIsNotDisplayedFromWebElement();
         Assert.assertFalse(result, "Text was not found after TimeOut");
     }
-
 
     @Test
     public void testT5_GuiElement_waitForAnyFollowingTextNodeContains() {
@@ -238,7 +234,6 @@ public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementLay
         Assert.assertFalse(found, "The Element is found.");
     }
 
-
     /**
      * Test if GuiElement.waits().waitForIsNotPresent works for a not displayed element
      */
@@ -256,7 +251,6 @@ public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementLay
         boolean found = getDisplayedElement().waits().waitForIsNotPresent();
         Assert.assertFalse(found, "The Element is found.");
     }
-
 
     /**
      * Test if GuiElement.waits().waitForText works for text that is there already
@@ -361,7 +355,6 @@ public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementLay
         boolean found = getNotDisplayedElement().waits().waitForIsDisplayed();
         Assert.assertFalse(found, "The Element is found.");
     }
-
 
     @Test
     public void testT31_GuiElement_waitForIsNotDisplayed() {
@@ -495,7 +488,6 @@ public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementLay
 
     //assertion tests
     @Test
-    @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
     public void testT41_GuiElement_assertIsNotSelectable() {
         testT13_GuiElement_assertIsNotSelectable();
     }

@@ -19,18 +19,19 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.test.execution;
+package io.testerra.test.pretest_status;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.Retry;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.testng.Assert;
-import org.testng.annotations.Test;
 
 public class ExpectedFailsTests extends TesterraTest implements TestStatusTest {
 
@@ -53,6 +54,11 @@ public class ExpectedFailsTests extends TesterraTest implements TestStatusTest {
     @Fails
     public void test_expectedFailed() {
         Assert.fail();
+    }
+
+    @Test(groups = {"ExpectedFailsTests"})
+    @Fails(description = "not failing anymore")
+    public void test_expectedFailedPassed() {
     }
 
     @Test(groups = {"ExpectedFailsTests"})
@@ -88,6 +94,7 @@ public class ExpectedFailsTests extends TesterraTest implements TestStatusTest {
         Assert.assertEquals(retriedExpectedFailed.get(2).getStatus(), Status.FAILED_EXPECTED);
 
         assertMethodStatus("test_expectedFailed", Status.FAILED_EXPECTED);
+        assertMethodStatus("test_expectedFailedPassed", Status.REPAIRED);
         assertMethodStatus("test_validExpectedFailed_withMethod", Status.FAILED_EXPECTED);
         assertMethodStatus("test_invalidExpectedFailed_withMethod", Status.FAILED);
         assertMethodStatus("test_validExpectedFailed_withClass", Status.FAILED_EXPECTED);
@@ -99,6 +106,6 @@ public class ExpectedFailsTests extends TesterraTest implements TestStatusTest {
         Assert.assertTrue(optionalMethodContext.isPresent());
 
         MethodContext methodContext = optionalMethodContext.get();
-        Assert.assertEquals(methodContext.getStatus(), status);
+        Assert.assertEquals(methodContext.getStatus(), status, "status is correct.");
     }
 }

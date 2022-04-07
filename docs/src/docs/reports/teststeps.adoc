@@ -1,0 +1,30 @@
+= Test Steps
+
+To use test steps is a good and recommended way to increase the transparency of the test.
+In case of failures it is easier to understand its context:
+
+image::report-ng-02.png[align="center", alt="Test Steps"]
+
+To define test case it must be marked with a TestStep.begin(<message>) statement as demonstated in the example test 
+testT04_TableEntryNotPresent() in the testerra skeleton project:
+
+[source,java]
+----
+    @Test
+    @Fails(ticketString = "http://jira.mms/JIRA-1337", description = "Will fail because user does not exist")
+    @FailureCorridor.Low
+    public void testT04_TableEntryNotPresent() {
+
+        final UserModel userNonExisting = userModelFactory.createNonExisting();
+        TestStep.begin("1. Init driver");
+
+        final WebDriver driver = WebDriverManager.getWebDriver();
+        StartPage startPage = PageFactory.create(StartPage.class, driver);
+
+        TestStep.begin("2. Navigate to tables");
+        TablePage tablePage = startPage.goToTablePage();
+
+        TestStep.begin("3. Assert user shown.");
+        Assert.assertTrue(tablePage.isUserShown(userNonExisting));
+    }
+----

@@ -1,0 +1,8 @@
+= Setup
+
+The simplest way to add Report-NG test reports to your project is to use the testerra project skeleton as a foundation.
+See <<Testerra Skeleton project>> how to start with it.
+You can use Report-NG instantly because there it is already configured for use with maven as well as gradle.
+
+If you are not using the testerra skeleton, make sure to have the dependency "io.testerra:report-ng" added.
+

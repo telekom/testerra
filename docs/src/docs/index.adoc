@@ -26,6 +26,7 @@ include::execution.adoc[leveloffset=+1]
 
 '''
 = Testerra Features
+include::reports.adoc[leveloffset=+1]
 include::modules.adoc[leveloffset=+1]
 include::utilities.adoc[leveloffset=+1]
 

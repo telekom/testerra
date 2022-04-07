@@ -1,0 +1,7 @@
+= Reporting with Report-NG
+
+include::reports/overview.adoc[leveloffset=+1]
+include::reports/setup.adoc[leveloffset=+1]
+include::reports/teststeps.adoc[leveloffset=+1]
+include::reports/prioritymessages.adoc[leveloffset=+1]
+

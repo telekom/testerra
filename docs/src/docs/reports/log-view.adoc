@@ -1,0 +1,6 @@
+= Log View
+
+The log view shows all loginformation that were recorded during test execution.
+It allows to filter by message log level and to search log messages according to a given search term or keyword.
+
+image::report-ng-12.png[align="center", alt="Log View"]

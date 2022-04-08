@@ -39,6 +39,6 @@ Priority messages can also be used to enrich the dashboard with test run specifi
     }
 ----
 
-The priority message is displayed on the priority message panel on the right side of the Breakdown pie chart:
+The priority message is displayed on the priority message panel right from the Breakdown pie chart:
 
 image::report-ng-04.png[align="center", alt="Priority Message on Dashboard"]

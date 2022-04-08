@@ -1,0 +1,27 @@
+= Test Details view
+
+The report provides a list of all executed tests that can be filtered according to the status, the class or the name of the test. 
+If you want to include the setup and configuration methods in this list you must activate this switch on the right side:
+
+image::report-ng-07.png[align="left", alt="Test case list filter"]
+
+When you click on the name of a test case in this list, you can see all details of its last execution.
+
+On the top are general status information of the test execution, test timing information and if a screenshot was taken during the test execution it can be viewed here as well.
+
+image::report-ng-08.png[align="left", alt="Test details"]
+
+More information are provided on different tab panes:
+
+* Details - a tab pan that is present when the test failed which shows the type (aspect) of the failure, the lines of test code causing this failure and a stack trace
+* Steps - a tab pane which lists all test steps of the test execution in detail and is discussed below. 
+* Sessions - a tab pane which shows the web driver sessions with its capabilities when a web driver session was active.
+* Dependencies - a tab pane that shows the dependencies of this test case in case there are any.
+
+Sessions tab pane:
+
+image::report-ng-09.png[align="left", alt="Webdriver Sessions"]
+
+Dependencies tab pane:
+
+image::report-ng-10.png[align="left", alt="Webdriver Sessions"]

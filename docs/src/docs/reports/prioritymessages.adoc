@@ -2,7 +2,7 @@
 
 == For test methods
 
-In case you would like to some have some log messages displayed on a prominent place in the test details page, you can use priority messages like this:
+In case you would like to some have some log messages displayed on a prominent place on the test details page, you can use priority messages like this:
 
 [source,java]
 ----

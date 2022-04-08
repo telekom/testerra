@@ -1,0 +1,8 @@
+= Threads View
+
+The Threads View displays all activities on the individual worker threads in a gantt chart.
+Use the mouse wheel to zoom in or out on the time axis.
+Click the left button while moving the mouse to scroll vertically. 
+Use the scroll bar on the right to scroll horizontally.
+
+image::report-ng-13.png[align="center", alt="Threads View"]

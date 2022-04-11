@@ -22,8 +22,6 @@
 
 package eu.tsystems.mms.tic.testframework.test.guielement;
 
-import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
@@ -31,8 +29,6 @@ import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.ThrowableUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils;
-import java.util.ArrayList;
-import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
@@ -42,6 +38,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGuiElementTest {
 
@@ -172,7 +171,6 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
      * Test if GuiElement.asserts().assertIsNotSelectable works for an unselectable element
      */
     @Test
-    @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
     public void testT13_GuiElement_assertIsNotSelectable() {
         getNotSelectableElement().asserts().assertIsNotSelectable();
     }
@@ -231,7 +229,6 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
         Assert.assertFalse(isPresent, "The Element is not present, assertion should fail");
     }
 
-
     /**
      * Test if GuiElement.asserts().assertAnyFollowingTextNodeContains works for an element that contains the text in any
      * following node
@@ -276,7 +273,6 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
             AssertUtils.assertContains(e.getCause().getMessage(), guiElement.getLocator().toString());
         }
     }
-
 
     @Test
     public void test_GuiElement_findPrepared() {
@@ -335,7 +331,6 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
         Assert.assertNotNull(linkOpenAgain.getWebElement());
     }
 
-
     /**
      * Test if GuiElement.find() works for a named element
      */
@@ -355,7 +350,6 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
      * Test if mouseOver() works with TesterraProperties "false"
      */
     @Test
-    @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
     public void testT29N_GuiElement_mouseOverNotSupportedMouseActions() {
         getTextBoxElement().mouseOver();
         getLoggerTableElement().asserts().assertTextContains("Mouse over");
@@ -365,7 +359,6 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
      * Test if mouseOver() works with TesterraProperties "true"
      */
     @Test
-    @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
     public void testT30_GuiElement_mouseOverWithSupportedMouseActions() {
         getTextBoxElement().mouseOver();
         getLoggerTableElement().asserts().assertTextContains("Mouse over");
@@ -544,7 +537,6 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
      * Test if clickAbsolute on GuiElement was performed
      */
     @Test
-    @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
     public void testT47_GuiElement_clickAbsolute_WithPriorMouseOverActions() {
         GuiElement element = getClickableElement();
         GuiElement out = getLoggerTableElement();
@@ -577,7 +569,6 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
         out.asserts().assertContainsText("Input 5 Mouse over");
     }
 
-
     /**
      * Test if GuiElement.asserts().assertInputFieldLength returns right length of input field
      */
@@ -586,7 +577,6 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
         GuiElement element = getTextBoxElement();
         element.asserts().assertInputFieldLength(5);
     }
-
 
     @Test
     public void testT53_GuiElement_anyFollowingTextNodeContains() {
@@ -813,7 +803,6 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
         Assert.assertTrue(10 < height && height < 500 && 10 < width && width < 500, "Size is appropriate");
     }
 
-
     @Test
     public void testT80_GuiElement_IsEnabled() {
         GuiElement element = getEnabledElement();
@@ -884,7 +873,6 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
         boolean found = element.isSelectable();
         Assert.assertFalse(found, "The Element is selectable");
     }
-
 
     @Test
     public void testT88_GuiElement_getBy() {

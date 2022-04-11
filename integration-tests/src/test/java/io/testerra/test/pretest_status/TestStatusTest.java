@@ -19,18 +19,19 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.test.execution;
+package io.testerra.test.pretest_status;
 
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+import java.util.stream.Stream;
 
-public class ExpectedFailedValidator {
+public interface TestStatusTest {
 
-    public boolean failedExpectedIsValid(MethodContext methodContext) {
-        return true;
+    default Stream<MethodContext> findMethodContexts(String methodName) {
+        return ExecutionContextController.getMethodContextForThread().map(methodContext -> {
+            return methodContext.getClassContext().readMethodContexts()
+                    .filter(otherMethodContext -> otherMethodContext.getName().equals(methodName));
+        }).orElse(Stream.empty());
     }
-
-    public boolean failedExpectedIsNotValid(MethodContext methodContext) {
-        return false;
-    }
-
 }

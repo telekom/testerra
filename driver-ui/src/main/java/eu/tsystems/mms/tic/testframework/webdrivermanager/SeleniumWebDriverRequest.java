@@ -37,7 +37,7 @@ public class SeleniumWebDriverRequest extends AbstractWebDriverRequest implement
         super();
         String browserSetting = IWebDriverManager.Properties.BROWSER_SETTING.asString();
 
-        if (StringUtils.isBlank(browserSetting)) {
+        if (StringUtils.isNotBlank(browserSetting)) {
             String[] split = browserSetting.split(":");
             if (split.length > 0) this.setBrowser(split[0].trim());
             if (split.length > 1) this.setBrowserVersion(split[1].trim());

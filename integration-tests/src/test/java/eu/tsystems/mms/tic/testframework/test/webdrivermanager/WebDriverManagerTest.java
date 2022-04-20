@@ -24,15 +24,15 @@ package eu.tsystems.mms.tic.testframework.test.webdrivermanager;
 import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
-import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
+import eu.tsystems.mms.tic.testframework.report.utils.DefaultExecutionContextController;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.CertUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
-import java.util.Locale;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -41,7 +41,9 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Tests for WebDriverManager
@@ -64,18 +66,12 @@ public class WebDriverManagerTest extends TesterraTest implements PropertyManage
 
     @Test
     public void testT02_introduceOwnDriver() {
-
-        final String webDriverMode = Testerra.Properties.WEBDRIVER_MODE.asString();
         String browser = IWebDriverManager.Properties.BROWSER.asString();
 
         // Exit options for testcase
         if (!browser.equalsIgnoreCase(Browsers.chrome) && !browser.equalsIgnoreCase(Browsers.chromeHeadless)) {
             throw new RuntimeException("This testcase only runs for chrome or chrome headless");
         }
-
-//        if (!webDriverMode.equalsIgnoreCase("local")) {
-//            throw new RuntimeException("This testcase only runs for local executions.");
-//        }
 
         // create new options
         final ChromeOptions chromeOptions = new ChromeOptions();
@@ -175,7 +171,7 @@ public class WebDriverManagerTest extends TesterraTest implements PropertyManage
     }
 
     @Test
-    public void test_WindowSize() {
+    public void testT07_WindowSize() {
         assertNewWebDriverWindowSize(new Dimension(800, 600));
 
         String newScreenSize = "1024x768";
@@ -188,7 +184,7 @@ public class WebDriverManagerTest extends TesterraTest implements PropertyManage
     }
 
     @Test
-    public void test_invalidWindowSize() {
+    public void testT08_invalidWindowSize() {
         PROPERTY_MANAGER.setTestLocalProperty(Testerra.Properties.WINDOW_SIZE, "katze");
         String property = PROPERTY_MANAGER.getProperty(Testerra.Properties.WINDOW_SIZE, PROPERTY_MANAGER.getProperty(Testerra.Properties.DISPLAY_RESOLUTION));
         Assert.assertEquals(property, "katze");
@@ -197,7 +193,7 @@ public class WebDriverManagerTest extends TesterraTest implements PropertyManage
     }
 
     @Test
-    public void test_emptyWindowSize() {
+    public void testT09_emptyWindowSize() {
         PROPERTY_MANAGER.setTestLocalProperty(Testerra.Properties.WINDOW_SIZE, "");
         String property = PROPERTY_MANAGER.getProperty(Testerra.Properties.WINDOW_SIZE);
         Assert.assertEquals(property, "");
@@ -223,7 +219,7 @@ public class WebDriverManagerTest extends TesterraTest implements PropertyManage
     }
 
     @Test
-    public void test_acceptInsecureCertificates() {
+    public void testT10_acceptInsecureCertificates() {
         CertUtils certUtils = CertUtils.getInstance();
         certUtils.setTrustAllHosts(true);
         Assert.assertTrue(certUtils.isTrustAllHosts());
@@ -236,7 +232,7 @@ public class WebDriverManagerTest extends TesterraTest implements PropertyManage
     }
 
     @Test
-    public void test_SessionLocale() {
+    public void testT11_SessionLocale() {
         Locale defaultLocale = Locale.getDefault();
         Locale sessionLocale = Locale.KOREAN;
 
@@ -246,5 +242,31 @@ public class WebDriverManagerTest extends TesterraTest implements PropertyManage
         Assert.assertTrue(WebDriverManager.setSessionLocale(webDriver, sessionLocale));
 
         Assert.assertEquals(WebDriverManager.getSessionLocale(webDriver).orElse(null), sessionLocale);
+    }
+
+    private String reusedSessionId;
+    private final String sessionKey = "reuse";
+
+    @Test
+    public void testT12_ReuseSession1() {
+        DesktopWebDriverRequest desktopWebDriverRequest = new DesktopWebDriverRequest();
+        desktopWebDriverRequest.setShutdownAfterTest(false);
+        desktopWebDriverRequest.setSessionKey(sessionKey);
+        WebDriver webDriver = WebDriverManager.getWebDriver(desktopWebDriverRequest);
+        new DefaultExecutionContextController().getCurrentSessionContext().ifPresent(sessionContext -> reusedSessionId = sessionContext.getRemoteSessionId().get());
+    }
+
+    @Test(dependsOnMethods = "testT12_ReuseSession1")
+    public void testT13_ResuseSession2() {
+        DefaultExecutionContextController executionContextController = new DefaultExecutionContextController();
+        WebDriver webDriver = WebDriverManager.getWebDriver(sessionKey);
+
+        Assert.assertEquals(this.reusedSessionId, executionContextController.getCurrentSessionContext().get().getRemoteSessionId().get());
+        Optional<SessionContext> foundSessionContext = executionContextController.getCurrentMethodContext().get().readSessionContexts().filter(
+                sessionContext -> sessionContext.getSessionKey().equals(sessionKey)).findFirst();
+        Assert.assertTrue(foundSessionContext.isPresent(), "Method context should contain the reused session context");
+        Assert.assertEquals(reusedSessionId, foundSessionContext.get().getRemoteSessionId().get(),
+                "Session ID of session context should the same of session context of method `testT12_ReuseSession1`");
+        WebDriverManager.shutdown();
     }
 }

@@ -29,6 +29,7 @@ import eu.tsystems.mms.tic.testframework.core.server.Server;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
+import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
@@ -42,6 +43,9 @@ import org.testng.annotations.BeforeTest;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.net.BindException;
+
+import io.testerra.report.test.pages.AbstractReportPage;
+import io.testerra.report.test.pages.ReportDashBoardPage;
 
 /**
  * Abstract test class for tests based on static test site resources
@@ -83,7 +87,7 @@ public abstract class AbstractReportTest extends TesterraTest implements Loggabl
      * @param driver {@link WebDriver} Current webDriver Instance
      */
     public synchronized void visitTestPage(WebDriver driver) {
-        visitTestPage(driver, getReportDir());
+        visitTestPage(ReportDashBoardPage.class, driver, getReportDir());
     }
 
     /**
@@ -92,7 +96,7 @@ public abstract class AbstractReportTest extends TesterraTest implements Loggabl
      * @param driver {@link WebDriver} Current Instance
      * @param directory {@link TestPage} page to open
      */
-    public synchronized void visitTestPage(WebDriver driver, String directory) {
+    public synchronized <T extends AbstractReportPage> T visitTestPage(final Class<T> reportPageClass, final WebDriver driver, final String directory) {
         Assert.assertTrue(serverRootDir.exists(), String.format("Server root directory '%s' doesn't exists", serverRootDir));
 
         File reportDir = new File(serverRootDir, directory);
@@ -102,6 +106,7 @@ public abstract class AbstractReportTest extends TesterraTest implements Loggabl
             String baseUrl = String.format("http://localhost:%d/%s", server.getPort(), directory);
             driver.get(baseUrl);
         }
+        return PageFactory.create(reportPageClass, driver);
     }
 
     protected String getReportDir() {

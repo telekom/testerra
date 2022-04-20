@@ -23,7 +23,7 @@ compile 'eu.tsystems.mms.tic.testerra:report:1-SNAPSHOT'
 ## Run 'Report under Test' tests
 
 ```shell
-gradle test -Pnr=1
+gradle test -P pretest=true
 ```
 
 Or run all

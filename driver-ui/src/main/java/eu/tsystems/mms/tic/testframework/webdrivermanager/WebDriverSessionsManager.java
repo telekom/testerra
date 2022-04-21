@@ -36,27 +36,28 @@ import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.utils.DefaultCapabilityUtils;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.function.Consumer;
-import java.util.stream.Stream;
-import org.apache.commons.lang3.time.StopWatch;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.StopWatch;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.SessionId;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Queue;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 /**
  * @todo Migrate to {@link DefaultWebDriverManager}
@@ -79,7 +80,8 @@ public final class WebDriverSessionsManager {
     private static final Queue<Consumer<WebDriver>> WEBDRIVER_STARTUP_HANDLERS = new ConcurrentLinkedQueue<>();
 
     private static final String FULL_SESSION_KEY_SPLIT_MARKER = "___";
-    private static final Set<WebDriverFactory> webDriverFactories = Testerra.getInjector().getInstance(Key.get(new TypeLiteral<Set<WebDriverFactory>>(){}));
+    private static final Set<WebDriverFactory> webDriverFactories = Testerra.getInjector().getInstance(Key.get(new TypeLiteral<Set<WebDriverFactory>>() {
+    }));
     static final Queue<Consumer<WebDriverRequest>> webDriverRequestConfigurators = new ConcurrentLinkedQueue<>();
     private static final IExecutionContextController executionContextController = Testerra.getInjector().getInstance(IExecutionContextController.class);
 
@@ -169,7 +171,7 @@ public final class WebDriverSessionsManager {
     /**
      * Introduce an own webdriver object. Selenium session will be released in this case.
      *
-     * @param webDriver     .
+     * @param webDriver .
      * @param sessionKey .
      */
     static void introduceWebDriver(final String sessionKey, WebDriver webDriver) {
@@ -177,7 +179,6 @@ public final class WebDriverSessionsManager {
             throw new IllegalArgumentException(
                     "The driver object of the argument must be an instance of RemoteWebDriver");
         }
-
 
         LOGGER.info("Introducing webdriver object");
         //EventFiringWebDriver eventFiringWebDriver = wrapRawWebDriverWithEventFiringWebDriver(driver);
@@ -247,7 +248,6 @@ public final class WebDriverSessionsManager {
         }
         LOGGER.debug("Shut down: " + sessionIdentifier);
     }
-
 
     static void shutdownAllThreadSessions() {
         getWebDriversFromCurrentThread().forEach(WebDriverSessionsManager::shutdownWebDriver);
@@ -357,6 +357,15 @@ public final class WebDriverSessionsManager {
         session already exists?
          */
         if (existingWebDriver != null) {
+            /*
+            Link sessionContext to methodContext if not exist
+             e.g. Session was created in setup method and reused in test method
+            */
+            executionContextController.getCurrentSessionContext().ifPresent(currentSessionContext ->
+                    executionContextController.getCurrentMethodContext().ifPresent(currentMethodContext ->
+                            currentMethodContext.addSessionContext(currentSessionContext)
+                    ));
+
             return existingWebDriver;
         }
 
@@ -370,7 +379,8 @@ public final class WebDriverSessionsManager {
         String browser = webDriverRequest.getBrowser();
 
         if (StringUtils.isBlank(browser)) {
-            throw new SystemException(String.format("No browser configured. Please define one in %s.setBrowser() or property '%s'", WebDriverRequest.class.getSimpleName(), IWebDriverManager.Properties.BROWSER_SETTING));
+            throw new SystemException(String.format("No browser configured. Please define one in %s.setBrowser() or property '%s'", WebDriverRequest.class.getSimpleName(),
+                    IWebDriverManager.Properties.BROWSER_SETTING));
         }
 
         if (WEB_DRIVER_FACTORIES.containsKey(browser)) {
@@ -451,7 +461,7 @@ public final class WebDriverSessionsManager {
                 "New %s (sessionKey=%s, server=%s) with capabilities:\n%s",
                 request.getClass().getSimpleName(),
                 sessionContext.getSessionKey(),
-                (request.getServerUrl().isPresent()?request.getServerUrl().get(): "local"),
+                (request.getServerUrl().isPresent() ? request.getServerUrl().get() : "local"),
                 gson.toJson(cleanedCapsMap)
         ));
         LOGGER.debug(String.format("Starting (sessionKey=%s) here", sessionContext.getSessionKey()), new Throwable());
@@ -470,7 +480,7 @@ public final class WebDriverSessionsManager {
         if (!(webDriver instanceof EventFiringWebDriver)) {
             throw new IllegalArgumentException(webDriver.getClass().getSimpleName() + " is no instance of " + EventFiringWebDriver.class.getSimpleName());
         }
-        return (EventFiringWebDriver)webDriver;
+        return (EventFiringWebDriver) webDriver;
     }
 
     public static boolean isExclusiveSession(WebDriver webDriver) {

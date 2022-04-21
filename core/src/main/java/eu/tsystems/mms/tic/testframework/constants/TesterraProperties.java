@@ -21,13 +21,13 @@
  */
 package eu.tsystems.mms.tic.testframework.constants;
 
-import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.common.Testerra.Properties;
 
 /**
  * Class holding keys of all properties.
- * @deprecated Use {@link Properties} instead
+ *
  * @todo Move these Properties to {@link Properties}
+ * @deprecated Use {@link Properties} instead
  */
 public final class TesterraProperties {
     /**

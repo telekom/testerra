@@ -32,7 +32,6 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverReques
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
@@ -253,14 +252,14 @@ public class WebDriverManagerTest extends TesterraTest implements PropertyManage
         DesktopWebDriverRequest desktopWebDriverRequest = new DesktopWebDriverRequest();
         desktopWebDriverRequest.setShutdownAfterTest(false);
         desktopWebDriverRequest.setSessionKey(sessionKey);
-        WebDriver webDriver = WebDriverManager.getWebDriver(desktopWebDriverRequest);
+        WebDriverManager.getWebDriver(desktopWebDriverRequest);
         new DefaultExecutionContextController().getCurrentSessionContext().ifPresent(sessionContext -> reusedSessionId = sessionContext.getRemoteSessionId().get());
     }
 
     @Test(dependsOnMethods = "testT12_ReuseSession1")
     public void testT13_ResuseSession2() {
         DefaultExecutionContextController executionContextController = new DefaultExecutionContextController();
-        WebDriver webDriver = WebDriverManager.getWebDriver(sessionKey);
+        WebDriverManager.getWebDriver(sessionKey);
 
         Assert.assertEquals(this.reusedSessionId, executionContextController.getCurrentSessionContext().get().getRemoteSessionId().get());
         Optional<SessionContext> foundSessionContext = executionContextController.getCurrentMethodContext().get().readSessionContexts().filter(
@@ -269,8 +268,11 @@ public class WebDriverManagerTest extends TesterraTest implements PropertyManage
         Assert.assertEquals(reusedSessionId, foundSessionContext.get().getRemoteSessionId().get(),
                 "Session ID of session context should the same of session context of method `testT12_ReuseSession1`");
 
+        // Second access to 'reuse' session has no impact on methodContext
+        WebDriverManager.getWebDriver(sessionKey);
+
         // Create a second session 'default'
-        WebDriver webDriver2 = WebDriverManager.getWebDriver();
+        WebDriverManager.getWebDriver();
         Assert.assertEquals(executionContextController.getCurrentMethodContext().get().readSessionContexts().count(), 2, "Current method context should 2 sessions.");
 
         WebDriverManager.shutdown();

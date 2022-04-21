@@ -29,7 +29,6 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
@@ -364,7 +363,8 @@ public final class WebDriverSessionsManager {
             */
             executionContextController.getCurrentSessionContext().ifPresent(currentSessionContext ->
                     executionContextController.getCurrentMethodContext().ifPresent(currentMethodContext ->
-                            linkSessionContextToMethodContextIfNotExist(currentSessionContext, currentMethodContext)));
+                            currentMethodContext.addSessionContext(currentSessionContext)
+                    ));
 
             return existingWebDriver;
         }
@@ -448,19 +448,6 @@ public final class WebDriverSessionsManager {
             return eventFiringWebDriver;
         } else {
             throw new SystemException(String.format("No %s registered for browser '%s'", WebDriverFactory.class.getSimpleName(), browser));
-        }
-    }
-
-    /**
-     * Link sessionContext to methodContext if not exist, e.g. if Session was created in setup method and reused in test method
-     */
-    private static void linkSessionContextToMethodContextIfNotExist(final SessionContext sessionContext, final MethodContext methodContext) {
-        final boolean sessionNotAmongMethodRemoteSessions = methodContext.readSessionContexts()
-                .map(SessionContext::getRemoteSessionId)
-                .filter(Optional::isPresent) // Optional.empty().equals(Optional.empty()) -> true
-                .noneMatch(remoteSessionId -> sessionContext.getRemoteSessionId().get().equals(remoteSessionId));
-        if (sessionNotAmongMethodRemoteSessions) {
-            methodContext.addSessionContext(sessionContext);
         }
     }
 

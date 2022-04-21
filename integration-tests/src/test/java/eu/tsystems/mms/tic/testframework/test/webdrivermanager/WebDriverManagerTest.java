@@ -32,6 +32,7 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverReques
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
@@ -267,6 +268,11 @@ public class WebDriverManagerTest extends TesterraTest implements PropertyManage
         Assert.assertTrue(foundSessionContext.isPresent(), "Method context should contain the reused session context");
         Assert.assertEquals(reusedSessionId, foundSessionContext.get().getRemoteSessionId().get(),
                 "Session ID of session context should the same of session context of method `testT12_ReuseSession1`");
+
+        // Create a second session 'default'
+        WebDriver webDriver2 = WebDriverManager.getWebDriver();
+        Assert.assertEquals(executionContextController.getCurrentMethodContext().get().readSessionContexts().count(), 2, "Current method context should 2 sessions.");
+
         WebDriverManager.shutdown();
     }
 }

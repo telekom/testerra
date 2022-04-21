@@ -29,6 +29,7 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
@@ -36,31 +37,28 @@ import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.utils.DefaultCapabilityUtils;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
-
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import org.apache.commons.lang3.time.StopWatch;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.StopWatch;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.SessionId;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Queue;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 /**
  * @todo Migrate to {@link DefaultWebDriverManager}
@@ -360,25 +358,13 @@ public final class WebDriverSessionsManager {
         session already exists?
          */
         if (existingWebDriver != null) {
-            // Link sessionContext to methodContext if not exist
-            // e.g. Session was created in setup method and reused in test method
-            executionContextController.getCurrentSessionContext()
-                    .ifPresent(currentSessionContext -> executionContextController.getCurrentMethodContext().ifPresent(methodContext -> {
-                        long countFoundSessions = methodContext.readSessionContexts()
-                                .filter(sessionContext -> {
-                                    Optional<String> remoteSessionId = sessionContext.getRemoteSessionId();
-                                    if (remoteSessionId.isPresent() && currentSessionContext.getRemoteSessionId().isPresent()) {
-                                        if (remoteSessionId.get().equals(currentSessionContext.getRemoteSessionId().get())) {
-                                            return true;
-                                        }
-                                    }
-                                    return false;
-                                })
-                                .count();
-                        if (countFoundSessions == 0) {
-                            executionContextController.getCurrentMethodContext().get().addSessionContext(currentSessionContext);
-                        }
-                    }));
+            /*
+            Link sessionContext to methodContext if not exist
+             e.g. Session was created in setup method and reused in test method
+            */
+            executionContextController.getCurrentSessionContext().ifPresent(currentSessionContext ->
+                    executionContextController.getCurrentMethodContext().ifPresent(currentMethodContext ->
+                            linkSessionContextToMethodContextIfNotExist(currentSessionContext, currentMethodContext)));
 
             return existingWebDriver;
         }
@@ -462,6 +448,19 @@ public final class WebDriverSessionsManager {
             return eventFiringWebDriver;
         } else {
             throw new SystemException(String.format("No %s registered for browser '%s'", WebDriverFactory.class.getSimpleName(), browser));
+        }
+    }
+
+    /**
+     * Link sessionContext to methodContext if not exist, e.g. if Session was created in setup method and reused in test method
+     */
+    private static void linkSessionContextToMethodContextIfNotExist(final SessionContext sessionContext, final MethodContext methodContext) {
+        final boolean sessionNotAmongMethodRemoteSessions = methodContext.readSessionContexts()
+                .map(SessionContext::getRemoteSessionId)
+                .filter(Optional::isPresent) // Optional.empty().equals(Optional.empty()) -> true
+                .noneMatch(remoteSessionId -> sessionContext.getRemoteSessionId().get().equals(remoteSessionId));
+        if (sessionNotAmongMethodRemoteSessions) {
+            methodContext.addSessionContext(sessionContext);
         }
     }
 

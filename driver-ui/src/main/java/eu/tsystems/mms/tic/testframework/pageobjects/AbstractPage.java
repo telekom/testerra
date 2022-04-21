@@ -276,6 +276,13 @@ public abstract class AbstractPage implements Loggable {
         }
     }
 
+    public List<FieldWithActionConfig> getAnnotatedFields() {
+        List<Class<? extends AbstractPage>> allClasses = collectAllClasses(false);
+
+        return getFields(allClasses, false, false);
+
+    }
+
     private void applyPageOptions(PageOptions pageOptions) {
         if (pageOptions.elementTimeoutInSeconds() >= 0) {
             log().info("Applying timeout value for this page object: " + pageOptions.elementTimeoutInSeconds() + "s");

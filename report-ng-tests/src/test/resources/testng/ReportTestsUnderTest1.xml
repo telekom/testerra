@@ -17,6 +17,7 @@
     <test name="Skipped Status Creator">
         <classes>
             <class name="io.testerra.report.test.pretest_status.simple.GenerateSkippedStatusInTesterraReportTest"/>
+            <class name="io.testerra.report.test.pretest_status.simple.GenerateSkippedStatusViaBeforeMethodInTesterraReportTest"/>
         </classes>
     </test>
 
@@ -26,74 +27,10 @@
         </classes>
     </test>
 
-<!--    <test name="High-Corridor Creator">-->
-<!--        <classes>-->
-<!--            <class name="eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestCorridorHigh"/>-->
-<!--        </classes>-->
-<!--    </test>-->
-
-<!--    <test name="Mid-Corridor Creator">-->
-<!--        <classes>-->
-<!--            <class name="eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestCorridorMid"/>-->
-<!--        </classes>-->
-<!--    </test>-->
-
-<!--    <test name="Low-Corridor Creator">-->
-<!--        <groups>-->
-<!--            <run>-->
-<!--                <exclude name="TESTSUNDERTESTFILTER"/>-->
-<!--            </run>-->
-<!--        </groups>-->
-<!--        <classes>-->
-<!--            <class name="eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestCorridorLow"/>-->
-<!--            <class name="eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestFailed"/>-->
-<!--        </classes>-->
-<!--    </test>-->
-
-<!--    <test name="Sync Failed Creator">-->
-<!--        <classes>-->
-<!--            <class name="eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestSyncFailed"/>-->
-<!--        </classes>-->
-<!--    </test>-->
-
-<!--    &lt;!&ndash; Depends On Creator &ndash;&gt;-->
-<!--    <test name="Sequence" parallel="false">-->
-<!--        <classes>-->
-<!--            <class name="eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestDependsOn"/>-->
-<!--        </classes>-->
-<!--    </test>-->
-
-<!--    &lt;!&ndash; Depends On Creator &ndash;&gt;-->
-<!--    <test name="Parallel" parallel="methods">-->
-<!--        <classes>-->
-<!--            <class name="eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestDependsOn"/>-->
-<!--        </classes>-->
-<!--    </test>-->
-
-<!--    <test name="Retry History Creator">-->
-<!--        <parameter name="reportNumber" value="1"/>-->
-<!--        <classes>-->
-<!--            <class name="eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestRetryHistory"/>-->
-<!--        </classes>-->
-<!--    </test>-->
-
-<!--    <test name="Execution Filter Creator">-->
-<!--        <classes>-->
-<!--            <class name="eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestExecutionFilter"/>-->
-<!--        </classes>-->
-<!--    </test>-->
-
-<!--    <test name="Annotation Creator">-->
-<!--        <classes>-->
-<!--            <class name="eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestAnnotations"/>-->
-<!--        </classes>-->
-<!--    </test>-->
-
-<!--    <test name="AssertCollector Creator">-->
-<!--        <classes>-->
-<!--            <class name="eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestAssertCollector"/>-->
-<!--        </classes>-->
-<!--    </test>-->
-
+    <test name="Screenshot Creator">
+        <classes>
+            <class name="io.testerra.report.test.pretest_status.simple.GenerateScreenshotsInTesterraReportTest"/>
+        </classes>
+    </test>
 
 </suite>

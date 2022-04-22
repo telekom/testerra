@@ -21,40 +21,21 @@
 
 package io.testerra.report.test.pretest_status.simple;
 
-import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 
 import org.testng.Assert;
-import org.testng.SkipException;
-import org.testng.annotations.DataProvider;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class GenerateSkippedStatusInTesterraReportTest extends TesterraTest {
+public class GenerateSkippedStatusViaBeforeMethodInTesterraReportTest extends TesterraTest {
 
-    private final String SKIPPED_EXCEPTION_MESSAGE = String.format("Test %s.", Status.SKIPPED.title);
-
-    @Test()
-    public void test_Failed() {
-        Assert.fail("Creating TestStatus 'Failed'");
+    @BeforeMethod()
+    public void beforeMethodFailing() {
+        Assert.fail("Error in @BeforeMethod");
     }
 
     @Test
-    public void test_SkippedNoStatus() {
-        throw new SkipException(SKIPPED_EXCEPTION_MESSAGE);
-    }
-
-    @Test(dependsOnMethods = "test_Failed")
-    public void test_Skipped_DependingOnFailed() {
-        // will be skipped
-    }
-
-    @DataProvider
-    public Object[][] dataProviderWithError() {
-        throw new RuntimeException("Error in DataProvider.");
-    }
-
-    @Test(dataProvider = "dataProviderWithError")
-    public void test_Skipped_AfterErrorInDataProvider() {
-        // will be skipped
+    public void test_Skipped_AfterErrorInBeforeMethod() {
+//    Skipped due to failing before method
     }
 }

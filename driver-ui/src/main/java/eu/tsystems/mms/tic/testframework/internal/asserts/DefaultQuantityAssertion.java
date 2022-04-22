@@ -22,10 +22,12 @@
 package eu.tsystems.mms.tic.testframework.internal.asserts;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.function.Function;
 
 /**
  * Default implementation of {@link QuantityAssertion}
+ *
  * @author Mike Reiche
  */
 public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE> implements QuantityAssertion<TYPE> {
@@ -34,23 +36,29 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
         super(parentAssertion, provider);
     }
 
+    /*
+    Big decimal values are round by default with scale 2 and RoundingMode.HALF_UP
+    eg. 1.005 -> 1.01, 1.114 -> 1.11
+    */
+    private static final int BIGDECIMAL_ROUND_SCALE = 2;
+
     @Override
     public boolean is(Object expected, String failMessage) {
         if (expected instanceof Boolean) {
-            boolean expectedBoolean = (Boolean)expected;
+            boolean expectedBoolean = (Boolean) expected;
             return this.is(expectedBoolean, failMessage);
         }
         return testSequence(
                 provider,
                 (actual) -> assertionImpl.equals(actual, expected),
-                (actual) -> assertionImpl.formatExpectEquals(null, expected ,createFailMessage(failMessage))
+                (actual) -> assertionImpl.formatExpectEquals(null, expected, createFailMessage(failMessage))
         );
     }
 
     @Override
     public boolean isNot(Object expected, String failMessage) {
         if (expected instanceof Boolean) {
-            boolean expectedBoolean = (Boolean)expected;
+            boolean expectedBoolean = (Boolean) expected;
             return this.is(!expectedBoolean, failMessage);
         } else {
             return testSequence(
@@ -65,7 +73,7 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
         if (given == null) {
             return null;
         } else {
-            return new BigDecimal(given.toString());
+            return new BigDecimal(given.toString()).setScale(BIGDECIMAL_ROUND_SCALE, RoundingMode.HALF_UP);
         }
     }
 
@@ -143,7 +151,7 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
                 if (!(provider.getActual() instanceof BigDecimal)) {
                     number = new BigDecimal(provider.getActual().toString());
                 } else {
-                    number = (BigDecimal)provider.getActual();
+                    number = (BigDecimal) provider.getActual();
                 }
                 return number.abs();
             }

@@ -64,21 +64,26 @@ export class Details {
             this._layoutComparisonContext = methodDetails.decodeCustomContext("LayoutCheckContext");
             let firstFailureAspect = null;
             let firstFailedFailureAspect = null;
+
             for (const failureAspect of methodDetails.failureAspects) {
+                failureAspect.errorContext.optional
                 if (!firstFailureAspect) {
                     firstFailureAspect = failureAspect;
                 }
                 if (failureAspect.overallFailed > 0) {
                     firstFailedFailureAspect = failureAspect;
-                    // Stop search on first found failed FailureAspect
-                    break;
+                    // Stop search on first found failed non-optional FailureAspect
+                    // If only optionals exist the last optional is taken
+                    if (!failureAspect.errorContext.optional) {
+                        break;
+                    }
                 }
             }
-            this._failureAspect = firstFailedFailureAspect||firstFailureAspect;
+            this._failureAspect = firstFailedFailureAspect || firstFailureAspect;
         });
     }
 
-    private _copyStackTraceToClipboard(stackTrace:IStackTraceCause[]) {
+    private _copyStackTraceToClipboard(stackTrace: IStackTraceCause[]) {
         const msg = stackTrace.flatMap(cause => cause.stackTraceElements).join("\n");
 
         const clipboard = new Clipboard();
@@ -88,7 +93,7 @@ export class Details {
     }
 
     private async _snackbarNotification(message: string) {
-        await this._snackBar.open(message,undefined,{
+        await this._snackBar.open(message, undefined, {
             dismissible: true,
             classes: "snackbar--fill-color"
         });

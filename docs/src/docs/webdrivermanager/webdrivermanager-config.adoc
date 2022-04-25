@@ -30,7 +30,9 @@ DesktopWebDriverRequest myRequest = new DesktopWebDriverRequest();
 myRequest.setBaseUrl("http://example.org");
 myRequest.setBrowser(Browsers.firefox);
 myRequest.setBrowserVersion("66");
-myRequest.setSessionKey("mysession");     // if no custom session defined, the default value 'default' is set
+myRequest.setSessionKey("mysession");   // if no custom session defined,
+                                        // the default value 'default' is set
+myRequest.setWindowSize(new Dimension(2560,1440));
 
 WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver(myRequest);
 ----

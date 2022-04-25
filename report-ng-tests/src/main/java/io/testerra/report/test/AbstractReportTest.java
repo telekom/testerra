@@ -93,6 +93,7 @@ public abstract class AbstractReportTest extends TesterraTest implements Loggabl
     /**
      * Open a custom Webdriver session with the default test page.
      *
+     * @param reportPageClass report page that should be reached
      * @param driver {@link WebDriver} Current Instance
      * @param directory {@link TestPage} page to open
      */

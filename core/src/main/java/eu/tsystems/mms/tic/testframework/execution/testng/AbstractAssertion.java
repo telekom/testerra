@@ -21,18 +21,27 @@
 
 package eu.tsystems.mms.tic.testframework.execution.testng;
 
+import org.testng.Assert;
+
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import org.testng.Assert;
 
 /**
  * Default implementation of {@link Assertion}
+ *
  * @author Mike Reiche
  */
 public abstract class AbstractAssertion implements Assertion {
+
+    /*
+    Big decimal values are round by default with given scale and RoundingMode.HALF_UP
+    eg. 1.005 -> 1.01, 1.114 -> 1.11
+    */
+    private static final int BIGDECIMAL_ROUND_SCALE = 3;
 
     public String format(Object actual, Object expected, Object subject) {
         StringBuilder builder = new StringBuilder();
@@ -124,7 +133,7 @@ public abstract class AbstractAssertion implements Assertion {
 
     @Override
     public boolean isNull(Object actual) {
-        return actual==null;
+        return actual == null;
     }
 
     @Override
@@ -179,7 +188,7 @@ public abstract class AbstractAssertion implements Assertion {
 
     @Override
     public boolean containsNot(String actual, String expected) {
-        return actual!=null && !actual.contains(expected);
+        return actual != null && !actual.contains(expected);
     }
 
     @Override
@@ -201,7 +210,7 @@ public abstract class AbstractAssertion implements Assertion {
 
     @Override
     public String formatExpectGreaterThan(BigDecimal actual, BigDecimal expected, Object subject) {
-        return format(actual, String.format("is greater than [%s]", expected), subject);
+        return format(scaleBigDecimal(actual), String.format("is greater than [%s]", scaleBigDecimal(expected)), subject);
     }
 
     @Override
@@ -218,7 +227,7 @@ public abstract class AbstractAssertion implements Assertion {
 
     @Override
     public String formatExpectGreaterEqualThan(BigDecimal actual, BigDecimal expected, Object subject) {
-        return format(actual, String.format("is greater or equal than [%s]", expected), subject);
+        return format(scaleBigDecimal(actual), String.format("is greater or equal than [%s]", scaleBigDecimal(expected)), subject);
     }
 
     @Override
@@ -235,7 +244,7 @@ public abstract class AbstractAssertion implements Assertion {
 
     @Override
     public String formatExpectLowerThan(BigDecimal actual, BigDecimal expected, Object subject) {
-        return format(actual, String.format("is lower than [%s]", expected), subject);
+        return format(scaleBigDecimal(actual), String.format("is lower than [%s]", scaleBigDecimal(expected)), subject);
     }
 
     @Override
@@ -252,7 +261,7 @@ public abstract class AbstractAssertion implements Assertion {
 
     @Override
     public String formatExpectLowerEqualThan(BigDecimal actual, BigDecimal expected, Object subject) {
-        return format(actual, String.format("is lower or equal than [%s]", expected), subject);
+        return format(scaleBigDecimal(actual), String.format("is lower or equal than [%s]", scaleBigDecimal(expected)), subject);
     }
 
     @Override
@@ -269,13 +278,13 @@ public abstract class AbstractAssertion implements Assertion {
 
     @Override
     public String formatExpectIsBetween(BigDecimal actual, BigDecimal lower, BigDecimal higher, Object subject) {
-        return format(actual, String.format("is between [%s] and [%s]", lower, higher), subject);
+        return format(scaleBigDecimal(actual), String.format("is between [%s] and [%s]", scaleBigDecimal(lower), scaleBigDecimal(higher)), subject);
     }
 
     @Override
     public void assertBetween(BigDecimal actual, BigDecimal lower, BigDecimal higher, Object subject) {
         if (!isBetween(actual, lower, higher)) {
-            fail(formatExpectIsBetween(actual, lower, higher, subject));
+            fail(formatExpectIsBetween(scaleBigDecimal(actual), scaleBigDecimal(lower), scaleBigDecimal(higher), subject));
         }
     }
 
@@ -468,6 +477,14 @@ public abstract class AbstractAssertion implements Assertion {
     public void assertInstanceOf(Object actual, Class expected, Object subject) {
         if (!expected.isInstance(actual)) {
             fail(formatExpectEquals(actual, String.format("instance of [%s]", expected), subject));
+        }
+    }
+
+    private BigDecimal scaleBigDecimal(BigDecimal value) {
+        if (value.scale() >= BIGDECIMAL_ROUND_SCALE) {
+            return value.setScale(BIGDECIMAL_ROUND_SCALE, RoundingMode.HALF_UP);
+        } else {
+            return value;
         }
     }
 }

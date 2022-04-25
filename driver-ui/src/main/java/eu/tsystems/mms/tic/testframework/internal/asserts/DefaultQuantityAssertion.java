@@ -22,7 +22,6 @@
 package eu.tsystems.mms.tic.testframework.internal.asserts;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.function.Function;
 
 /**
@@ -35,12 +34,6 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
     public DefaultQuantityAssertion(AbstractPropertyAssertion parentAssertion, AssertionProvider<TYPE> provider) {
         super(parentAssertion, provider);
     }
-
-    /*
-    Big decimal values are round by default with given scale and RoundingMode.HALF_UP
-    eg. 1.005 -> 1.01, 1.114 -> 1.11
-    */
-    private static final int BIGDECIMAL_ROUND_SCALE = 3;
 
     @Override
     public boolean is(Object expected, String failMessage) {
@@ -73,20 +66,16 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
         if (given == null) {
             return null;
         } else {
-            return this.scaleAndRound(new BigDecimal(given.toString()));
+            return new BigDecimal(given.toString());
         }
-    }
-
-    private BigDecimal scaleAndRound(BigDecimal value) {
-        return value.setScale(BIGDECIMAL_ROUND_SCALE, RoundingMode.HALF_UP);
     }
 
     @Override
     public boolean isGreaterThan(BigDecimal expected, String failMessage) {
         return testSequence(
                 provider,
-                (actual) -> assertionImpl.isGreaterThan(toBigDecimal(actual), scaleAndRound(expected)),
-                (actual) -> assertionImpl.formatExpectGreaterThan(toBigDecimal(actual), scaleAndRound(expected), createFailMessage(failMessage))
+                (actual) -> assertionImpl.isGreaterThan(toBigDecimal(actual), expected),
+                (actual) -> assertionImpl.formatExpectGreaterThan(toBigDecimal(actual), expected, createFailMessage(failMessage))
         );
     }
 
@@ -94,8 +83,8 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
     public boolean isLowerThan(BigDecimal expected, String failMessage) {
         return testSequence(
                 provider,
-                (actual) -> assertionImpl.isLowerThan(toBigDecimal(actual), scaleAndRound(expected)),
-                (actual) -> assertionImpl.formatExpectLowerThan(toBigDecimal(actual), scaleAndRound(expected), createFailMessage(failMessage))
+                (actual) -> assertionImpl.isLowerThan(toBigDecimal(actual), expected),
+                (actual) -> assertionImpl.formatExpectLowerThan(toBigDecimal(actual), expected, createFailMessage(failMessage))
         );
     }
 
@@ -103,8 +92,8 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
     public boolean isGreaterEqualThan(BigDecimal expected, String failMessage) {
         return testSequence(
                 provider,
-                (actual) -> assertionImpl.isGreaterEqualThan(toBigDecimal(actual), scaleAndRound(expected)),
-                (actual) -> assertionImpl.formatExpectGreaterEqualThan(toBigDecimal(actual), scaleAndRound(expected), createFailMessage(failMessage))
+                (actual) -> assertionImpl.isGreaterEqualThan(toBigDecimal(actual), expected),
+                (actual) -> assertionImpl.formatExpectGreaterEqualThan(toBigDecimal(actual), expected, createFailMessage(failMessage))
         );
     }
 
@@ -112,8 +101,8 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
     public boolean isLowerEqualThan(BigDecimal expected, String failMessage) {
         return testSequence(
                 provider,
-                (actual) -> assertionImpl.isLowerEqualThan(toBigDecimal(actual), scaleAndRound(expected)),
-                (actual) -> assertionImpl.formatExpectLowerEqualThan(toBigDecimal(actual), scaleAndRound(expected), createFailMessage(failMessage))
+                (actual) -> assertionImpl.isLowerEqualThan(toBigDecimal(actual), expected),
+                (actual) -> assertionImpl.formatExpectLowerEqualThan(toBigDecimal(actual), expected, createFailMessage(failMessage))
         );
     }
 
@@ -121,8 +110,8 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
     public boolean isBetween(BigDecimal lower, BigDecimal higher, String failMessage) {
         return testSequence(
                 provider,
-                (actual) -> assertionImpl.isBetween(toBigDecimal(actual), scaleAndRound(lower), scaleAndRound(higher)),
-                (actual) -> assertionImpl.formatExpectIsBetween(toBigDecimal(actual), scaleAndRound(lower), scaleAndRound(higher), createFailMessage(failMessage))
+                (actual) -> assertionImpl.isBetween(toBigDecimal(actual), lower, higher),
+                (actual) -> assertionImpl.formatExpectIsBetween(toBigDecimal(actual), lower, higher, createFailMessage(failMessage))
         );
     }
 

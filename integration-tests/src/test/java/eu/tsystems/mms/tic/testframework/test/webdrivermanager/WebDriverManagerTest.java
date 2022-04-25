@@ -22,7 +22,6 @@
 package eu.tsystems.mms.tic.testframework.test.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
-import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.DefaultExecutionContextController;
@@ -176,8 +175,8 @@ public class WebDriverManagerTest extends TesterraTest implements PropertyManage
 
         String newScreenSize = "1024x768";
 
-        PROPERTY_MANAGER.setTestLocalProperty(Testerra.Properties.WINDOW_SIZE, newScreenSize);
-        String property = PROPERTY_MANAGER.getProperty(Testerra.Properties.WINDOW_SIZE, PROPERTY_MANAGER.getProperty(Testerra.Properties.DISPLAY_RESOLUTION));
+        PROPERTY_MANAGER.setTestLocalProperty(DesktopWebDriverRequest.Properties.WINDOW_SIZE, newScreenSize);
+        String property = PROPERTY_MANAGER.getProperty(DesktopWebDriverRequest.Properties.WINDOW_SIZE, PROPERTY_MANAGER.getProperty(DesktopWebDriverRequest.Properties.DISPLAY_RESOLUTION));
         Assert.assertEquals(property, newScreenSize);
 
         assertNewWebDriverWindowSize(new Dimension(1024, 768));
@@ -185,8 +184,8 @@ public class WebDriverManagerTest extends TesterraTest implements PropertyManage
 
     @Test
     public void testT08_invalidWindowSize() {
-        PROPERTY_MANAGER.setTestLocalProperty(Testerra.Properties.WINDOW_SIZE, "katze");
-        String property = PROPERTY_MANAGER.getProperty(Testerra.Properties.WINDOW_SIZE, PROPERTY_MANAGER.getProperty(Testerra.Properties.DISPLAY_RESOLUTION));
+        PROPERTY_MANAGER.setTestLocalProperty(DesktopWebDriverRequest.Properties.WINDOW_SIZE, "katze");
+        String property = PROPERTY_MANAGER.getProperty(DesktopWebDriverRequest.Properties.WINDOW_SIZE, PROPERTY_MANAGER.getProperty(DesktopWebDriverRequest.Properties.DISPLAY_RESOLUTION));
         Assert.assertEquals(property, "katze");
 
         assertNewWebDriverWindowSize(new Dimension(1920, 1080));
@@ -194,8 +193,8 @@ public class WebDriverManagerTest extends TesterraTest implements PropertyManage
 
     @Test
     public void testT09_emptyWindowSize() {
-        PROPERTY_MANAGER.setTestLocalProperty(Testerra.Properties.WINDOW_SIZE, "");
-        String property = PROPERTY_MANAGER.getProperty(Testerra.Properties.WINDOW_SIZE);
+        PROPERTY_MANAGER.setTestLocalProperty(DesktopWebDriverRequest.Properties.WINDOW_SIZE, "");
+        String property = PROPERTY_MANAGER.getProperty(DesktopWebDriverRequest.Properties.WINDOW_SIZE);
         Assert.assertEquals(property, "");
 
         assertNewWebDriverWindowSize(new Dimension(1920, 1080));

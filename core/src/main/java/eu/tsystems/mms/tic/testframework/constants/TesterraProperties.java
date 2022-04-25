@@ -102,9 +102,6 @@ public final class TesterraProperties {
      */
     public static final String SCREENSHOT_ON_PAGELOAD = "tt.screenshot.on.pageload";
 
-    public static final String BROWSER_MAXIMIZE = "tt.browser.maximize";
-    public static final String BROWSER_MAXIMIZE_POSITION = "tt.browser.maximize.position";
-
     public static final String SYSTEM_SETTINGS_FILE = "tt.system.settings.file";
 
     public static final String RUNCFG = "tt.runcfg";

@@ -43,6 +43,8 @@ import org.testng.annotations.Test;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Tests for WebDriverManager
@@ -199,7 +201,7 @@ public class WebDriverManagerTest extends TesterraTest implements PropertyManage
         String property = PROPERTY_MANAGER.getProperty(DesktopWebDriverRequest.Properties.WINDOW_SIZE, PROPERTY_MANAGER.getProperty(DesktopWebDriverRequest.Properties.DISPLAY_RESOLUTION));
         Assert.assertEquals(property, "katze");
 
-        assertNewWebDriverWindowSize(new Dimension(1920, 1080));
+        assertNewWebDriverWindowSize(this.getDefaultDimension());
     }
 
     @Test
@@ -208,7 +210,21 @@ public class WebDriverManagerTest extends TesterraTest implements PropertyManage
         String property = PROPERTY_MANAGER.getProperty(DesktopWebDriverRequest.Properties.WINDOW_SIZE);
         Assert.assertEquals(property, "");
 
-        assertNewWebDriverWindowSize(new Dimension(1920, 1080));
+        assertNewWebDriverWindowSize(this.getDefaultDimension());
+    }
+
+    private Dimension getDefaultDimension() {
+        // Should '1920x1080'
+        String defaultWindowSize = DesktopWebDriverRequest.Properties.WINDOW_SIZE.getDefault().toString();
+        Pattern pattern = Pattern.compile("(\\d+)x(\\d+)");
+        Matcher matcher = pattern.matcher(defaultWindowSize);
+        if (matcher.find()) {
+            int width = Integer.parseInt(matcher.group(1));
+            int height = Integer.parseInt(matcher.group(2));
+            return new Dimension(width, height);
+        } else {
+            return null;
+        }
     }
 
     private void assertNewWebDriverWindowSize(Dimension expected) {

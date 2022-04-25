@@ -36,12 +36,18 @@ import java.util.regex.Pattern;
 
 public class DesktopWebDriverRequest extends SeleniumWebDriverRequest implements Loggable, Serializable, PropertyManagerProvider {
 
+    /*
+    Default values for the size of a browser window.
+     */
+    private static final int DEFAULT_WINDOW_SIZE_X = 1920;
+    private static final int DEFAULT_WINDOW_SIZE_Y = 1080;
+
     public enum Properties implements IProperties {
         BROWSER_MAXIMIZE("tt.browser.maximize", false),
         BROWSER_MAXIMIZE_POSITION("tt.browser.maximize.position", Position.CENTER.toString()),
         /** @deprecated Use the property {@link Properties.WINDOW_SIZE} instead */
         @Deprecated
-        DISPLAY_RESOLUTION("tt.display.resolution", "1920x1080"),
+        DISPLAY_RESOLUTION("tt.display.resolution", String.format("%sx%s", DEFAULT_WINDOW_SIZE_X, DEFAULT_WINDOW_SIZE_Y)),
         WINDOW_SIZE("tt.window.size", DISPLAY_RESOLUTION.asString());
 
         private final String property;
@@ -113,7 +119,7 @@ public class DesktopWebDriverRequest extends SeleniumWebDriverRequest implements
     }
 
     private Dimension readDimensionFromString(final String windowSizeProperty) {
-        Dimension dimension = new Dimension(1920, 1080);
+        Dimension dimension = new Dimension(DEFAULT_WINDOW_SIZE_X, DEFAULT_WINDOW_SIZE_Y);
         if (StringUtils.isNotBlank(windowSizeProperty)) {
             Pattern pattern = Pattern.compile("(\\d+)x(\\d+)");
             Matcher matcher = pattern.matcher(windowSizeProperty);

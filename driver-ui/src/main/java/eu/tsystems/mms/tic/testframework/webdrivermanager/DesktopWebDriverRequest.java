@@ -39,6 +39,7 @@ public class DesktopWebDriverRequest extends SeleniumWebDriverRequest implements
     public enum Properties implements IProperties {
         BROWSER_MAXIMIZE("tt.browser.maximize", false),
         BROWSER_MAXIMIZE_POSITION("tt.browser.maximize.position", Position.CENTER.toString()),
+        /** @deprecated Use the property {@link Properties.WINDOW_SIZE} instead */
         @Deprecated
         DISPLAY_RESOLUTION("tt.display.resolution", "1920x1080"),
         WINDOW_SIZE("tt.window.size", DISPLAY_RESOLUTION.asString());
@@ -112,6 +113,7 @@ public class DesktopWebDriverRequest extends SeleniumWebDriverRequest implements
     }
 
     private Dimension readDimensionFromString(final String windowSizeProperty) {
+        Dimension dimension = new Dimension(1920, 1080);
         if (StringUtils.isNotBlank(windowSizeProperty)) {
             Pattern pattern = Pattern.compile("(\\d+)x(\\d+)");
             Matcher matcher = pattern.matcher(windowSizeProperty);
@@ -119,19 +121,12 @@ public class DesktopWebDriverRequest extends SeleniumWebDriverRequest implements
             if (matcher.find()) {
                 int width = Integer.parseInt(matcher.group(1));
                 int height = Integer.parseInt(matcher.group(2));
-                this.dimension = new Dimension(width, height);
+                dimension = new Dimension(width, height);
             } else {
-                this.dimension = getDefaultDimension();
                 log().error(String.format("Unable to parse property %s=%s, falling back to default: %s", Properties.WINDOW_SIZE, windowSizeProperty, dimension));
             }
-        } else {
-            this.dimension = getDefaultDimension();
         }
         return dimension;
-    }
-
-    private Dimension getDefaultDimension() {
-        return new Dimension(1920, 1080);
     }
 
 }

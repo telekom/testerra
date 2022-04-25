@@ -183,6 +183,17 @@ public class WebDriverManagerTest extends TesterraTest implements PropertyManage
     }
 
     @Test
+    public void testT07a_WindowSizeRequest() {
+        Dimension expected = new Dimension(1024, 768);
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        request.setWindowSize(expected);
+        WebDriver webDriver = WebDriverManager.getWebDriver(request);
+        Dimension size = webDriver.manage().window().getSize();
+        Assert.assertEquals(size.getWidth(), expected.getWidth());
+        Assert.assertEquals(size.getHeight(), expected.getHeight());
+    }
+
+    @Test
     public void testT08_invalidWindowSize() {
         PROPERTY_MANAGER.setTestLocalProperty(DesktopWebDriverRequest.Properties.WINDOW_SIZE, "katze");
         String property = PROPERTY_MANAGER.getProperty(DesktopWebDriverRequest.Properties.WINDOW_SIZE, PROPERTY_MANAGER.getProperty(DesktopWebDriverRequest.Properties.DISPLAY_RESOLUTION));

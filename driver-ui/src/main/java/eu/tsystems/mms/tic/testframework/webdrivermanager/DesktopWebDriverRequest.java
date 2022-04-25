@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
 import eu.tsystems.mms.tic.testframework.enums.Position;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.Dimension;
 
 import java.io.Serializable;
@@ -39,7 +40,7 @@ public class DesktopWebDriverRequest extends SeleniumWebDriverRequest implements
         BROWSER_MAXIMIZE("tt.browser.maximize", false),
         BROWSER_MAXIMIZE_POSITION("tt.browser.maximize.position", Position.CENTER.toString()),
         @Deprecated
-        DISPLAY_RESOLUTION("tt.display.resolution", null),
+        DISPLAY_RESOLUTION("tt.display.resolution", "1920x1080"),
         WINDOW_SIZE("tt.window.size", DISPLAY_RESOLUTION.asString());
 
         private final String property;
@@ -63,12 +64,13 @@ public class DesktopWebDriverRequest extends SeleniumWebDriverRequest implements
 
     private boolean maximize;
     private Position maximizePosition;
+    private Dimension dimension;
 
     public DesktopWebDriverRequest() {
         super();
         this.maximize = PROPERTY_MANAGER.getBooleanProperty(Properties.BROWSER_MAXIMIZE, Properties.BROWSER_MAXIMIZE.getDefault());
         this.maximizePosition = Position.valueOf(PROPERTY_MANAGER.getProperty(Properties.BROWSER_MAXIMIZE_POSITION, Properties.BROWSER_MAXIMIZE_POSITION.getDefault()).toUpperCase());
-//        this.maximizePosition = Position.valueOf(PropertyManager.getProperty(TesterraProperties.BROWSER_MAXIMIZE_POSITION, Position.CENTER.toString()).toUpperCase());
+        this.dimension = this.readDimensionFromString(Properties.WINDOW_SIZE.asString());
     }
 
     /**
@@ -102,22 +104,28 @@ public class DesktopWebDriverRequest extends SeleniumWebDriverRequest implements
     }
 
     public Dimension getWindowSize() {
-        Dimension dimension;
-        String windowSizeProperty = Properties.WINDOW_SIZE.asString();
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(windowSizeProperty)) {
+        return this.dimension;
+    }
+
+    public void setWindowSize(Dimension dimension) {
+        this.dimension = dimension;
+    }
+
+    private Dimension readDimensionFromString(final String windowSizeProperty) {
+        if (StringUtils.isNotBlank(windowSizeProperty)) {
             Pattern pattern = Pattern.compile("(\\d+)x(\\d+)");
             Matcher matcher = pattern.matcher(windowSizeProperty);
 
             if (matcher.find()) {
                 int width = Integer.parseInt(matcher.group(1));
                 int height = Integer.parseInt(matcher.group(2));
-                dimension = new Dimension(width, height);
+                this.dimension = new Dimension(width, height);
             } else {
-                dimension = getDefaultDimension();
+                this.dimension = getDefaultDimension();
                 log().error(String.format("Unable to parse property %s=%s, falling back to default: %s", Properties.WINDOW_SIZE, windowSizeProperty, dimension));
             }
         } else {
-            dimension = getDefaultDimension();
+            this.dimension = getDefaultDimension();
         }
         return dimension;
     }

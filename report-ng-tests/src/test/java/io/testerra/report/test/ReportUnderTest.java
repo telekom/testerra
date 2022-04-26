@@ -22,8 +22,11 @@
 package io.testerra.report.test;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.testerra.report.test.pages.ReportDashBoardPage;
@@ -32,11 +35,35 @@ import io.testerra.report.test.pages.ReportTestsPage;
 
 public class ReportUnderTest extends AbstractReportTest {
 
+    @DataProvider
+    public static Object[][] provideTestsPerStatus() {
+        return new Object[][]{
+                {6, Status.FAILED},
+                {3, Status.FAILED_EXPECTED},
+                {4, Status.SKIPPED},
+                {4, Status.PASSED},
+                {1, Status.REPAIRED},
+        };
+    }
+
+
     @Test
     public void test_visitReport() {
         final ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, WebDriverManager.getWebDriver(),
                 PropertyManager.getProperty("reportDirectoryGeneratedTestStatus"));
         reportDashBoardPage.gotoToReportPage(ReportPageType.TESTS, ReportTestsPage.class);
+    }
+
+    @Test(dataProvider = "provideTestsPerStatus")
+    public void test_verifyTestPerStatusInReport(final int amountOfTests, final Status testStatus) {
+        final String expectedText = String.format("%s %s", amountOfTests, testStatus.title);
+
+        final ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, WebDriverManager.getWebDriver(),
+                PropertyManager.getProperty("reportDirectoryGeneratedTestStatus"));
+
+        final String testsPerStatus = reportDashBoardPage.getTestsPerStatus(testStatus);
+        Assert.assertTrue(testsPerStatus.contains(expectedText),
+                String.format("Tests card for status '%s' in report contains '%s'", testStatus, expectedText));
     }
 
 }

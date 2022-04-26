@@ -23,6 +23,9 @@ package io.testerra.report.test.pages;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.report.Status;
+
+import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -30,11 +33,13 @@ import org.openqa.selenium.WebDriver;
 public class ReportDashBoardPage extends AbstractReportPage {
 
     @Check
-    public GuiElement testDurationElement = pageContent.getSubElement(By.tagName("test-duration-card"));
+    private final GuiElement testsElement = pageContent.getSubElement(By.xpath(".//mdc-card[./div[contains(text(), 'Tests')]]"));
     @Check
-    public GuiElement testResultElement = pageContent.getSubElement(By.tagName("test-results-card"));
+    private final GuiElement testDurationElement = pageContent.getSubElement(By.tagName("test-duration-card"));
     @Check
-    public GuiElement testClassesElement = pageContent.getSubElement(By.tagName("test-classes-card"));
+    private final GuiElement testResultElement = pageContent.getSubElement(By.tagName("test-results-card"));
+    @Check
+    private final GuiElement testClassesElement = pageContent.getSubElement(By.tagName("test-classes-card"));
 
     public ReportDashBoardPage(WebDriver driver) {
         super(driver);
@@ -42,5 +47,39 @@ public class ReportDashBoardPage extends AbstractReportPage {
 
     public void assertPageIsShown() {
         verifyReportPage(ReportPageType.DASHBOARD);
+    }
+
+    /**
+     * extract information of executed tests per Status from DashBoardPage Tests card
+     * @param testStatus
+     * @return
+     */
+    public String getTestsPerStatus(final Status testStatus) {
+
+        String testsPerStatus = "not_existing";
+        // repaired status is within element of passed status
+        final GuiElement testsStatusElement = testStatus.equals(Status.REPAIRED)
+                ? testsElement.getSubElement((getXpathToTestsPerStatus(Status.PASSED)))
+                : testsElement.getSubElement((getXpathToTestsPerStatus(testStatus)));
+        final List<GuiElement> listOfAmountInformation = testsStatusElement.getSubElement(By.xpath("./mdc-list-item-primary-text/span")).getList();
+
+        // for passed when repaired executions exist
+        if (listOfAmountInformation.size() > 1) {
+            final List<GuiElement> listOfStatusInformation = testsStatusElement.getSubElement(By.xpath("./mdc-list-item-secondary-text/span")).getList();
+            for (int i = 0; i < listOfStatusInformation.size(); i++) {
+                if (listOfStatusInformation.get(i).getText().contains(testStatus.title)) {
+                    testsPerStatus = listOfAmountInformation.get(i).getText() + " " + listOfStatusInformation.get(i).getText();
+                }
+            }
+        } else {
+            testsPerStatus = testsStatusElement.getText().replace("\n", " ");
+        }
+
+        return testsPerStatus;
+    }
+
+    private By getXpathToTestsPerStatus(final Status testStatus) {
+        final String xPathToTestsPerStatusTemplate = ".//mdc-list-item[.//mdc-icon[@title = '%s']]//span[contains(@class, 'mdc-list-item__content')]";
+        return By.xpath(String.format(xPathToTestsPerStatusTemplate, testStatus.title));
     }
 }

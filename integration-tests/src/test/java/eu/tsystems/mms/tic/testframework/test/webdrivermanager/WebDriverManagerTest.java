@@ -22,7 +22,6 @@
 package eu.tsystems.mms.tic.testframework.test.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
-import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.DefaultExecutionContextController;
@@ -44,6 +43,8 @@ import org.testng.annotations.Test;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Tests for WebDriverManager
@@ -176,29 +177,54 @@ public class WebDriverManagerTest extends TesterraTest implements PropertyManage
 
         String newScreenSize = "1024x768";
 
-        PROPERTY_MANAGER.setTestLocalProperty(Testerra.Properties.WINDOW_SIZE, newScreenSize);
-        String property = PROPERTY_MANAGER.getProperty(Testerra.Properties.WINDOW_SIZE, PROPERTY_MANAGER.getProperty(Testerra.Properties.DISPLAY_RESOLUTION));
+        PROPERTY_MANAGER.setTestLocalProperty(DesktopWebDriverRequest.Properties.WINDOW_SIZE, newScreenSize);
+        String property = PROPERTY_MANAGER.getProperty(DesktopWebDriverRequest.Properties.WINDOW_SIZE, PROPERTY_MANAGER.getProperty(DesktopWebDriverRequest.Properties.DISPLAY_RESOLUTION));
         Assert.assertEquals(property, newScreenSize);
 
         assertNewWebDriverWindowSize(new Dimension(1024, 768));
     }
 
     @Test
+    public void testT07a_WindowSizeRequest() {
+        Dimension expected = new Dimension(1024, 768);
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        request.setWindowSize(expected);
+        WebDriver webDriver = WebDriverManager.getWebDriver(request);
+        Dimension size = webDriver.manage().window().getSize();
+        Assert.assertEquals(size.getWidth(), expected.getWidth());
+        Assert.assertEquals(size.getHeight(), expected.getHeight());
+    }
+
+    @Test
     public void testT08_invalidWindowSize() {
-        PROPERTY_MANAGER.setTestLocalProperty(Testerra.Properties.WINDOW_SIZE, "katze");
-        String property = PROPERTY_MANAGER.getProperty(Testerra.Properties.WINDOW_SIZE, PROPERTY_MANAGER.getProperty(Testerra.Properties.DISPLAY_RESOLUTION));
+        PROPERTY_MANAGER.setTestLocalProperty(DesktopWebDriverRequest.Properties.WINDOW_SIZE, "katze");
+        String property = PROPERTY_MANAGER.getProperty(DesktopWebDriverRequest.Properties.WINDOW_SIZE, PROPERTY_MANAGER.getProperty(DesktopWebDriverRequest.Properties.DISPLAY_RESOLUTION));
         Assert.assertEquals(property, "katze");
 
-        assertNewWebDriverWindowSize(new Dimension(1920, 1080));
+        assertNewWebDriverWindowSize(this.getDefaultDimension());
     }
 
     @Test
     public void testT09_emptyWindowSize() {
-        PROPERTY_MANAGER.setTestLocalProperty(Testerra.Properties.WINDOW_SIZE, "");
-        String property = PROPERTY_MANAGER.getProperty(Testerra.Properties.WINDOW_SIZE);
+        PROPERTY_MANAGER.setTestLocalProperty(DesktopWebDriverRequest.Properties.WINDOW_SIZE, "");
+        String property = PROPERTY_MANAGER.getProperty(DesktopWebDriverRequest.Properties.WINDOW_SIZE);
         Assert.assertEquals(property, "");
 
-        assertNewWebDriverWindowSize(new Dimension(1920, 1080));
+        assertNewWebDriverWindowSize(this.getDefaultDimension());
+    }
+
+    private Dimension getDefaultDimension() {
+        // Should '1920x1080'
+        String defaultWindowSize = DesktopWebDriverRequest.Properties.WINDOW_SIZE.getDefault().toString();
+        Pattern pattern = Pattern.compile("(\\d+)x(\\d+)");
+        Matcher matcher = pattern.matcher(defaultWindowSize);
+        if (matcher.find()) {
+            int width = Integer.parseInt(matcher.group(1));
+            int height = Integer.parseInt(matcher.group(2));
+            return new Dimension(width, height);
+        } else {
+            return null;
+        }
     }
 
     private void assertNewWebDriverWindowSize(Dimension expected) {

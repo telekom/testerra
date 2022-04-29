@@ -56,6 +56,15 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements LocatorFac
     }
 
     @Test
+    public void testCheckElementLayoutWithSubfolder() {
+        GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
+        guiElement.asserts().assertScreenshot("subfolder/TestArticle", 1.3);
+
+        guiElement = getGuiElementQa("section/invisibleTestArticle");
+        guiElement.asserts().assertScreenshot("subfolder/InvisibleTestArticle", 1.3);
+    }
+
+    @Test
     public void testCheckElementVisibility() {
         GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
         Page helperPage = new Page(guiElement.getWebDriver());

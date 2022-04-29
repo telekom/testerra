@@ -347,7 +347,7 @@ public final class LayoutCheck implements PropertyManagerProvider {
             matchStep.distance = generateDistanceImage(
                     referenceImage,
                     actualImage,
-                    matchStep.distanceFileName.toAbsolutePath().toString(),
+                    matchStep.distanceFileName,
                     useIgnoreColor
             );
         } catch (Exception e) {
@@ -379,7 +379,8 @@ public final class LayoutCheck implements PropertyManagerProvider {
     private static double generateDistanceImage(
             final BufferedImage expectedImage,
             final BufferedImage actualImage,
-            final String resultFilename,
+//            final String resultFilename,
+            final Path resultFilename,
             final boolean useIgnoreColor
     ) {
         // for counting the pixels that are different
@@ -481,8 +482,9 @@ public final class LayoutCheck implements PropertyManagerProvider {
         }
 
         try {
-            // write image to given file
-            ImageIO.write(distanceImage, "PNG", new File(resultFilename));
+            // Write image to given file
+            resultFilename.toFile().getParentFile().mkdirs();
+            ImageIO.write(distanceImage, "PNG", new File(resultFilename.toAbsolutePath().toString()));
         } catch (IOException ioe) {
             LOGGER.error(
                     String.format("An error occurred while trying to persist image to '%s'.", resultFilename),

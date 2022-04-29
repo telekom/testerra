@@ -5,12 +5,10 @@ In case of failures it is easier to understand their context:
 
 image::report-ng-02.png[align="center", alt="Test Steps"]
 
-Test steps are defined within the test code by marking their begin as demonstrated in this example test of the testerra skeleton project:
+Test steps are defined within the test code by marking their begin as demonstrated in this example test of the Testerra skeleton project:
 [source,java]
 ----
     @Test
-    @Fails(ticketString = "http://jira.mms/JIRA-1337", description = "Will fail because user does not exist")
-    @FailureCorridor.Low
     public void testT04_TableEntryNotPresent() {
 
         final UserModel userNonExisting = userModelFactory.createNonExisting();

@@ -6,6 +6,8 @@ In case you would like to have some log messages displayed on a prominent place 
 
 [source,java]
 ----
+public class MyTestClass extends TesterraTest implements Loggable {
+ 
     Logger log() {
         return LoggerFactory.getLogger(this.getClass());
     }
@@ -21,6 +23,7 @@ In case you would like to have some log messages displayed on a prominent place 
         // some test activities ...
         log().error("Tell me more!", Loggable.prompt);
     }
+}
 ----
 
 As a result the information, warnings and errors are visible on the priority message panel in the center of the test detail page:

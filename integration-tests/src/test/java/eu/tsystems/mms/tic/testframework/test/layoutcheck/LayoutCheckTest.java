@@ -19,19 +19,14 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.test.layoutcheck;
+package eu.tsystems.mms.tic.testframework.test.layoutcheck;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
-import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.LocatorFactoryProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -47,7 +42,7 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements LocatorFac
     }
 
     @Test
-    public void testCheckElementLayout() {
+    public void testT01_CheckElementLayout() {
         GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
         guiElement.asserts().assertScreenshot("TestArticle", 1.3);
 
@@ -56,7 +51,7 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements LocatorFac
     }
 
     @Test
-    public void testCheckElementLayoutWithSubfolder() {
+    public void testT02_CheckElementLayoutWithSubfolder() {
         GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
         guiElement.asserts().assertScreenshot("subfolder/TestArticle", 1.3);
 
@@ -65,7 +60,7 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements LocatorFac
     }
 
     @Test
-    public void testCheckElementVisibility() {
+    public void testT03_CheckElementVisibility() {
         GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
         Page helperPage = new Page(guiElement.getWebDriver());
         int top = helperPage.expect().viewport().top().getActual();
@@ -90,19 +85,19 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements LocatorFac
     }
 
     @Test(expectedExceptions = AssertionError.class)
-    public void testCheckElementLayoutDistance_fails() {
+    public void testT04_CheckElementLayoutDistance_fails() {
         GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
         guiElement.asserts().assertScreenshot("TestArticleFailed", 1);
     }
 
     @Test(expectedExceptions = AssertionError.class)
-    public void testCheckElementLayoutSize_fails() {
+    public void testT05_CheckElementLayoutSize_fails() {
         GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
         guiElement.asserts().assertScreenshot("TestArticle-90-percent-width", 1);
     }
 
     @Test
-    public void testCheckPageLayout() {
+    public void testT06_CheckPageLayout() {
         LayoutCheck.assertScreenshot(getWebDriver(), "LayoutTestPage", 5);
     }
 

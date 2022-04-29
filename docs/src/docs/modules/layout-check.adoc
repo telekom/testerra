@@ -61,6 +61,8 @@ float pixelDistanceToleranceThresholdPercent = 1.0;
 page.expect().screenshot().pixelDistance("WelcomePage").isLowerThan(pixelDistanceToleranceThresholdPercent);
 ----
 
+TIP: To organize the reference screenshots in subfolders you can add the relative structure to the name like `my/additional/folder/WelcomePage`.
+
 == Check a single UiElement
 
 To check the layout of a single UiElement only, you can use the standard asserts implementation.

@@ -377,7 +377,6 @@ public final class LayoutCheck implements PropertyManagerProvider {
     private static double generateDistanceImage(
             final BufferedImage expectedImage,
             final BufferedImage actualImage,
-//            final String resultFilename,
             final Path resultFilename,
             final boolean useIgnoreColor
     ) {

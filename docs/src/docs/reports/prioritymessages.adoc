@@ -8,10 +8,6 @@ In case you would like to have some log messages displayed on a prominent place 
 ----
 public class MyTestClass extends TesterraTest implements Loggable {
  
-    Logger log() {
-        return LoggerFactory.getLogger(this.getClass());
-    }
-
     @Test
     public void testT01_PriorityMessages() {
 

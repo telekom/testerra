@@ -120,7 +120,7 @@ public class UiElementActionTests extends AbstractExclusiveTestSitesTest<WebTest
 
         UiElement element = page.getFinder().findById(1);
         element.sendKeys("Test");
-        element.clear().expect().attribute(Attribute.VALUE).is("");
+        element.clear().expect().value().is("");
     }
 
     @Test
@@ -129,10 +129,10 @@ public class UiElementActionTests extends AbstractExclusiveTestSitesTest<WebTest
 
         UiElement element = page.getFinder().findById(5);
         element.type("text");
-        element.expect().attribute(Attribute.VALUE).is("text");
-        element.expect().attribute(Attribute.VALUE).isContaining("tex");
+        element.expect().value().is("text");
+        element.expect().value().isContaining("tex");
         element.type("foo");
-        element.expect().attribute(Attribute.VALUE).is("foo");
+        element.expect().value().is("foo");
     }
 
 }

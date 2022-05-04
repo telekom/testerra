@@ -8,9 +8,14 @@
             </run>
         </groups>
         <classes>
-            <class name="eu.tsystems.mms.tic.testframework.test.guielement.UiElementTests"/>
+            <class name="eu.tsystems.mms.tic.testframework.test.guielement.UiElementCommonTests"/>
             <class name="eu.tsystems.mms.tic.testframework.test.guielement.UiElementLayoutTests"/>
             <class name="eu.tsystems.mms.tic.testframework.test.guielement.UiElementListTests"/>
+            <class name="eu.tsystems.mms.tic.testframework.test.guielement.UiElementActionTests"/>
+            <class name="eu.tsystems.mms.tic.testframework.test.guielement.UiElementExpectAttributeTests"/>
+            <class name="eu.tsystems.mms.tic.testframework.test.guielement.UiElementPresentTests"/>
+            <class name="eu.tsystems.mms.tic.testframework.test.guielement.UiElementVisibilityTests"/>
+            <class name="eu.tsystems.mms.tic.testframework.test.guielement.UiElementWaiterTests"/>
         </classes>
     </test>
 </suite>

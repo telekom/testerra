@@ -1,9 +1,30 @@
+/*
+ * Testerra
+ *
+ * (C) 2022, Martin Großmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package eu.tsystems.mms.tic.testframework.test.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractExclusiveTestSitesTest;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.WebTestPage;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
+import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
@@ -99,7 +120,7 @@ public class UiElementActionTests extends AbstractExclusiveTestSitesTest<WebTest
 
         UiElement element = page.getFinder().findById(1);
         element.sendKeys("Test");
-        element.clear().expect().attribute("value").is("");
+        element.clear().expect().attribute(Attribute.VALUE).is("");
     }
 
     @Test
@@ -108,10 +129,10 @@ public class UiElementActionTests extends AbstractExclusiveTestSitesTest<WebTest
 
         UiElement element = page.getFinder().findById(5);
         element.type("text");
-        element.expect().attribute("value").is("text");
-        element.expect().attribute("value").isContaining("tex");
+        element.expect().attribute(Attribute.VALUE).is("text");
+        element.expect().attribute(Attribute.VALUE).isContaining("tex");
         element.type("foo");
-        element.expect().attribute("value").is("foo");
+        element.expect().attribute(Attribute.VALUE).is("foo");
     }
 
 }

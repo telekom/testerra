@@ -46,4 +46,12 @@ public interface StringAssertion<T> extends QuantityAssertion<T> {
     BinaryAssertion <Boolean> hasWords(List<String> words);
 
     QuantityAssertion<Integer> length();
+
+    default boolean isContaining(String text) {
+        return contains(text).is(true);
+    }
+
+    default boolean isNotContaining(String text) {
+        return contains(text).is(false);
+    }
 }

@@ -22,16 +22,17 @@
 package eu.tsystems.mms.tic.testframework.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * Default implementation of {@link StringAssertion}
+ *
  * @author Mike Reiche
  */
 public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> implements StringAssertion<T>, Loggable {
-
 
     public DefaultStringAssertion(AbstractPropertyAssertion parentAssertion, AssertionProvider<T> provider) {
         super(parentAssertion, provider);
@@ -100,7 +101,14 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
     @Override
     public BinaryAssertion<Boolean> hasWords(List<String> words) {
         final String wordsList = String.join("|", words);
-        final Pattern wordsPattern = Pattern.compile("\\b(" + wordsList + ")\\b", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+        final String wordsListPattern = "\\b("
+                + wordsList
+                .replace("(", "\\(")
+                .replace(")", "\\)")
+                .replace("[", "\\[")
+                .replace("]", "\\]")
+                + ")";
+        final Pattern wordsPattern = Pattern.compile(wordsListPattern, Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 
         return propertyAssertionFactory.createWithParent(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
@@ -117,7 +125,6 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
             }
         });
     }
-
 
     @Override
     public QuantityAssertion<Integer> length() {

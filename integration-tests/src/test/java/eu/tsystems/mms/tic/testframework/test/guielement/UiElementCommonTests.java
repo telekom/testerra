@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.UiElementAssertionError;
 import eu.tsystems.mms.tic.testframework.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.XPath;
 import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -103,6 +104,22 @@ public class UiElementCommonTests extends AbstractExclusiveTestSitesTest<WebTest
         UiElement empty = getPage().getFinder().createEmpty().setName("SubmitButton");
         empty.expect().displayed(true);
         Assert.assertEquals(empty.toString(true), "WebTestPage -> EmptyUiElement(SubmitButton)");
+    }
+
+    @Test
+    public void testT10_UiElement_text_assert() {
+        WebTestPage page = getPage();
+        UiElement element = page.getFinder().find(XPath.from("label").text().hasWords("TimeOut in Millis (0-inf)"));
+        element.expect().text().hasWords("TimeOut in Millis (0-inf)").is(true);
+        element.expect().text().hasWords("TimeOut in Millis").is(true);
+        element.expect().text().hasWords("0-inf)").is(true);
+        element.expect().text().hasWords("TimeOut in Millis".split("\\s+")).is(true);
+        element.expect().text().hasWords("TimeOut", "in", "Millis").is(true);
+
+        element.expect().text().hasWords("Out").is(false);
+
+
+
     }
 
 }

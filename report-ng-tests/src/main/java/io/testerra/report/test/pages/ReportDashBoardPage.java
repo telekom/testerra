@@ -24,11 +24,11 @@ package io.testerra.report.test.pages;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.report.Status;
-
-import java.util.List;
-
+import io.testerra.report.test.helper.TestState;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+
+import java.util.List;
 
 public class ReportDashBoardPage extends AbstractReportPage {
 
@@ -51,6 +51,7 @@ public class ReportDashBoardPage extends AbstractReportPage {
 
     /**
      * extract information of executed tests per Status from DashBoardPage Tests card
+     *
      * @param testStatus
      * @return
      */
@@ -81,5 +82,22 @@ public class ReportDashBoardPage extends AbstractReportPage {
     private By getXpathToTestsPerStatus(final Status testStatus) {
         final String xPathToTestsPerStatusTemplate = ".//mdc-list-item[.//mdc-icon[@title = '%s']]//span[contains(@class, 'mdc-list-item__content')]";
         return By.xpath(String.format(xPathToTestsPerStatusTemplate, testStatus.title));
+    }
+
+    public void assertPieChartContainsTestState(TestState status) {
+        GuiElement pieChartPart = new GuiElement(getWebDriver(),
+                By.xpath(String.format("//*[@class='apexcharts-series apexcharts-pie-series' and @seriesName='%s']", status.getStateName())));
+        pieChartPart.asserts().assertIsDisplayed();
+    }
+
+    public void clickPieChartPart(TestState status) {
+        GuiElement pieChartPart = new GuiElement(getWebDriver(), By.xpath(String.format("//apex-chart//*[@seriesName='%s']", status.getStateName())));
+        pieChartPart.click();
+    }
+
+    public void assertCorrectBarChartsAreDisplayed(TestState state) {
+        GuiElement testClassesFirstBarChart = new GuiElement(getWebDriver(), By.xpath("//*[@class='apexcharts-bar-series apexcharts-plot-series']"));
+        testClassesFirstBarChart.asserts().assertIsDisplayed();
+        testClassesFirstBarChart.getSubElement(By.xpath(String.format("//*[@seriesName='%s']", state.getStateName()))).asserts().assertIsDisplayed();
     }
 }

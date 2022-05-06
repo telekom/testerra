@@ -24,6 +24,7 @@ package eu.tsystems.mms.tic.testframework.internal.asserts;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -100,28 +101,38 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
 
     @Override
     public BinaryAssertion<Boolean> hasWords(List<String> words) {
-        final String wordsList = String.join("|", words);
-        final String wordsListPattern = "\\b("
-                + wordsList
-                .replace("(", "\\(")
-                .replace(")", "\\)")
-                .replace("[", "\\[")
-                .replace("]", "\\]")
-                + ")";
-        final Pattern wordsPattern = Pattern.compile(wordsListPattern, Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+
+        AtomicInteger found = new AtomicInteger();
+        words.forEach(word -> {
+            /*
+            Non-word characters have an impact to word boundary regex '\b'
+            If word contains non-word characters, assertion falls back to string.contains()
+            */
+            final Pattern wordBoundCharPattern = Pattern.compile("\\W");
+            Matcher charMatcher = wordBoundCharPattern.matcher(word);
+            if (!charMatcher.find()) {
+                final Pattern wordBoundaryPattern = Pattern.compile("\\b(" + word + ")\\b", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+                Matcher wordMatcher = wordBoundaryPattern.matcher(provider.getActual().toString());
+                if (wordMatcher.find()) {
+                    found.incrementAndGet();
+                }
+            } else {
+                log().warn("'{}' contains non-word characters. 'hasWords()' assertion falls back to string.contains()", word);
+                if (provider.getActual().toString().toLowerCase().contains(word.toLowerCase())) {
+                    found.incrementAndGet();
+                }
+            }
+        });
 
         return propertyAssertionFactory.createWithParent(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                int found = 0;
-                Matcher matcher = wordsPattern.matcher(provider.getActual().toString());
-                while (matcher.find()) found++;
-                return found >= words.size();
+                return found.get() == words.size();
             }
 
             @Override
             public String createSubject() {
-                return "has words " + Format.param(wordsList);
+                return "has words " + Format.param(String.join("|", words));
             }
         });
     }

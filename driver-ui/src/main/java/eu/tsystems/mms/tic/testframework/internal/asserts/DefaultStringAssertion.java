@@ -124,40 +124,7 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
                 return "has words " + Format.param(wordsList);
             }
         });
-
-//        AtomicInteger found = new AtomicInteger();
-//        words.forEach(word -> {
-//            /*
-//            Non-word characters have an impact to word boundary regex '\b'
-//            If word contains non-word characters, assertion falls back to string.contains()
-//            */
-//            final Pattern wordBoundCharPattern = Pattern.compile("\\W");
-//            Matcher charMatcher = wordBoundCharPattern.matcher(word);
-//            if (!charMatcher.find()) {
-//                final Pattern wordBoundaryPattern = Pattern.compile("\\b(" + word + ")\\b", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
-//                Matcher wordMatcher = wordBoundaryPattern.matcher(provider.getActual().toString());
-//                if (wordMatcher.find()) {
-//                    found.incrementAndGet();
-//                }
-//            } else {
-//                log().warn("'{}' contains non-word characters. 'hasWords()' assertion falls back to string.contains()", word);
-//                if (provider.getActual().toString().toLowerCase().contains(word.toLowerCase())) {
-//                    found.incrementAndGet();
-//                }
-//            }
-//        });
-//
-//        return propertyAssertionFactory.createWithParent(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
-//            @Override
-//            public Boolean getActual() {
-//                return found.get() == words.size();
-//            }
-//
-//            @Override
-//            public String createSubject() {
-//                return "has words " + Format.param(String.join("|", words));
-//            }
-//        });
+        
     }
 
     @Override

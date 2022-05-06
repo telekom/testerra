@@ -11,6 +11,7 @@ UiElement element = find(By.id("button"));
 // Expect the element text
 element.expect().text("Hello World");
 element.expect().text().contains("World").is(boolean);
+element.expect().text().isContaining("World");  // Short form
 element.expect().text().map(String::trim).startsWith("Hello").is(boolean);
 
 // Expect the existence of an attribute

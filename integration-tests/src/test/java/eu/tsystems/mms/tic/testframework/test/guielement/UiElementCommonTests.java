@@ -119,6 +119,7 @@ public class UiElementCommonTests extends AbstractExclusiveTestSitesTest<WebTest
         element.expect().text().hasWords("tIMEoUT in mILLIS").is(true);
 
         element.expect().text().hasWords("Out").is(false);
+        element.expect().text().hasWords("TimeOut", "in", "foo").is(false);
 
 
 

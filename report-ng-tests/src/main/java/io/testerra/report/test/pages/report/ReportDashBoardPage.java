@@ -19,16 +19,25 @@
  * under the License.
  */
 
-package io.testerra.report.test.pages;
+package io.testerra.report.test.pages.report;
 
+import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.report.Status;
+import eu.tsystems.mms.tic.testframework.utils.FileUtils;
+import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import io.testerra.report.test.helper.TestState;
+import io.testerra.report.test.pages.AbstractReportPage;
+import io.testerra.report.test.pages.ReportPageType;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 public class ReportDashBoardPage extends AbstractReportPage {
 
@@ -86,18 +95,38 @@ public class ReportDashBoardPage extends AbstractReportPage {
 
     public void assertPieChartContainsTestState(TestState status) {
         GuiElement pieChartPart = new GuiElement(getWebDriver(),
-                By.xpath(String.format("//*[@class='apexcharts-series apexcharts-pie-series' and @seriesName='%s']", status.getStateName())));
+                By.xpath(String.format("//*[@class='apexcharts-series apexcharts-pie-series' and @seriesName='%s']", status.getStateNameWithReplacement())));
         pieChartPart.asserts().assertIsDisplayed();
     }
 
     public void clickPieChartPart(TestState status) {
-        GuiElement pieChartPart = new GuiElement(getWebDriver(), By.xpath(String.format("//apex-chart//*[@seriesName='%s']", status.getStateName())));
+        GuiElement pieChartPart = new GuiElement(getWebDriver(),
+                By.xpath(String.format("//*[@class='apexcharts-series apexcharts-pie-series' and @seriesName='%s']", status.getStateNameWithReplacement())));
         pieChartPart.click();
     }
 
-    public void assertCorrectBarChartsAreDisplayed(TestState state) {
-        GuiElement testClassesFirstBarChart = new GuiElement(getWebDriver(), By.xpath("//*[@class='apexcharts-bar-series apexcharts-plot-series']"));
-        testClassesFirstBarChart.asserts().assertIsDisplayed();
-        testClassesFirstBarChart.getSubElement(By.xpath(String.format("//*[@seriesName='%s']", state.getStateName()))).asserts().assertIsDisplayed();
+    public void clickNumberChartPart(TestState testState) {
+        String xpath = "//mdc-layout-grid-cell//mdc-list//mdc-list-item";
+        List<GuiElement> testClassesNumberChartList = new GuiElement(getWebDriver(), By.xpath(xpath)).getList();
+        Objects.requireNonNull(testClassesNumberChartList.stream()
+                .filter(guiElement -> guiElement.getSubElement(By.xpath("//mdc-icon")).getAttribute("title").equals(testState.getStateName()))
+                .findFirst()
+                .orElse(null)).click();
     }
+
+    public void assertCorrectBarChartsAreDisplayed(TestState state) {
+        String xpath = "//*[contains(@class,'apexcharts-bar-series') and contains(@class,'apexcharts-plot-series')]";
+        GuiElement barListRoot = new GuiElement(getWebDriver(), By.xpath(xpath));
+        List<GuiElement> barList = barListRoot.getSubElement(By.xpath("//*[@class='apexcharts-series']")).getList();
+        Assert.assertEquals(barList.size(), 1, "There should be just 1 entry!");
+
+    }
+
+
+    public void assertNumbersChartContainsTestState(TestState testState) {
+        String xpath = String.format("//mdc-layout-grid-cell//mdc-list//mdc-list-item//mdc-icon[@title='%s']", testState.getStateName());
+        GuiElement testClassesNumberChart = new GuiElement(getWebDriver(), By.xpath(xpath));
+        testClassesNumberChart.asserts().assertIsDisplayed();
+    }
+
 }

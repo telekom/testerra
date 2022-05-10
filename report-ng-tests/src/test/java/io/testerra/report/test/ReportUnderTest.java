@@ -29,9 +29,9 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.testerra.report.test.pages.ReportDashBoardPage;
+import io.testerra.report.test.pages.report.ReportDashBoardPage;
 import io.testerra.report.test.pages.ReportPageType;
-import io.testerra.report.test.pages.ReportTestsPage;
+import io.testerra.report.test.pages.report.ReportTestsPage;
 
 public class ReportUnderTest extends AbstractReportTest {
 

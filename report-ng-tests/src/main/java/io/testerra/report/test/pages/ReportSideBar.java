@@ -24,9 +24,12 @@ package io.testerra.report.test.pages;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public abstract class ReportSideBar extends ReportHeader {
 
@@ -38,6 +41,10 @@ public abstract class ReportSideBar extends ReportHeader {
     private final GuiElement sideBarTests = sideBar.getSubElement(By.xpath(".//mdc-list-item[.//span[contains(text(), 'Tests')]]"));
     @Check
     private final GuiElement sideBarFailureAspects = sideBar.getSubElement(By.xpath(".//mdc-list-item[.//span[contains(text(), 'Failure Aspects')]]"));
+    @Check
+    private final GuiElement sideBarLogs = sideBar.getSubElement(By.xpath(".//mdc-list-item[.//span[contains(text(), 'Logs')]]"));
+    @Check
+    private final GuiElement sideBarThreads = sideBar.getSubElement(By.xpath(".//mdc-list-item[.//span[contains(text(), 'Threads')]]"));
 
     public ReportSideBar(WebDriver driver) {
         super(driver);
@@ -51,26 +58,29 @@ public abstract class ReportSideBar extends ReportHeader {
             case TESTS:
                 sideBarTests.click();
                 break;
+            case FAILURE_ASPECTS:
+                sideBarFailureAspects.click();
+                break;
+            case LOGS:
+                sideBarLogs.click();
+                break;
+            case THREADS:
+                sideBarThreads.click();
+                break;
         }
 
         return PageFactory.create(reportPageClass, getWebDriver());
     }
 
 
-    protected void verifyReportPage(final ReportPageType reportPageType) {
-        switch (reportPageType) {
-            case DASHBOARD:
-                sideBarDashBoard.asserts().assertAttributeContains("class", "mdc-list-item--activated");
-                sideBarTests.asserts().assertAttributeContainsNot("class", "mdc-list-item--activated");
-                sideBarFailureAspects.asserts().assertAttributeContainsNot("class", "mdc-list-item--activated");
-                break;
-            case TESTS:
-                sideBarTests.asserts().assertAttributeContains("class", "mdc-list-item--activated");
-                sideBarDashBoard.asserts().assertAttributeContainsNot("class", "mdc-list-item--activated");
-                sideBarFailureAspects.asserts().assertAttributeContainsNot("class", "mdc-list-item--activated");
-                break;
-            default:
-                break;
+    public void verifyReportPage(final ReportPageType reportPageType) {
+        List<GuiElement> sideBarElements = sideBar.getSubElement(By.xpath("/mdc-drawer-content/mdc-list-item")).getList();
+        for(GuiElement sidebarElement : sideBarElements){
+            if (Objects.equals(sidebarElement.getText().toUpperCase(), reportPageType.name())){
+                sidebarElement.asserts().assertAttributeContains("class", "mdc-list-item--activated");
+            } else {
+                sidebarElement.asserts().assertAttributeContainsNot("class", "mdc-list-item--activated");
+            }
         }
     }
 }

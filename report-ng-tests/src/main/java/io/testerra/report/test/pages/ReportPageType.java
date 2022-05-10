@@ -22,5 +22,5 @@
 package io.testerra.report.test.pages;
 
 public enum ReportPageType {
-    DASHBOARD, TESTS
+    DASHBOARD, TESTS, FAILURE_ASPECTS, LOGS, THREADS
 }

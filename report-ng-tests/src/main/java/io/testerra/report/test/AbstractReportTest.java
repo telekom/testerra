@@ -45,7 +45,7 @@ import java.lang.reflect.Method;
 import java.net.BindException;
 
 import io.testerra.report.test.pages.AbstractReportPage;
-import io.testerra.report.test.pages.ReportDashBoardPage;
+import io.testerra.report.test.pages.report.ReportDashBoardPage;
 
 /**
  * Abstract test class for tests based on static test site resources

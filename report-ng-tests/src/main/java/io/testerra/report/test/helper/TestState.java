@@ -3,7 +3,7 @@ package io.testerra.report.test.helper;
 public enum TestState {
 
     Failed("Failed"),
-    ExpectedFailed("ExpectedxFailed"),
+    ExpectedFailed("Expected Failed"),
     Skipped("Skipped"),
     Passed("Passed");
 
@@ -15,6 +15,10 @@ public enum TestState {
 
     public String getStateName() {
         return stateName;
+    }
+
+    public String getStateNameWithReplacement(){
+        return stateName.replace(" ", "x");
     }
 
 }

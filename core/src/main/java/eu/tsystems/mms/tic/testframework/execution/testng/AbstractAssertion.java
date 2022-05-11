@@ -481,10 +481,8 @@ public abstract class AbstractAssertion implements Assertion {
     }
 
     private BigDecimal scaleBigDecimal(BigDecimal value) {
-        if (value.scale() >= BIGDECIMAL_ROUND_SCALE) {
-            return value.setScale(BIGDECIMAL_ROUND_SCALE, RoundingMode.HALF_UP);
-        } else {
-            return value;
-        }
+        return value == null ? null :
+                (value.scale() >= BIGDECIMAL_ROUND_SCALE ? value.setScale(BIGDECIMAL_ROUND_SCALE, RoundingMode.HALF_UP) : value);
+
     }
 }

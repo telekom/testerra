@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="suite1" parallel="methods" thread-count="20">
+
+    <test name="test1">
+        <groups>
+            <run>
+                <include name="passed"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="eu.tsystems.mms.tic.testframework.playground.SimpleFailingTest"></class>
+        </classes>
+    </test>
+</suite>

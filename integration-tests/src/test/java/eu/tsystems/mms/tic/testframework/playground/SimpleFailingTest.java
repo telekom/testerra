@@ -27,9 +27,17 @@ import org.testng.annotations.Test;
 
 public class SimpleFailingTest extends TesterraTest {
 
+    @Test(groups = "passed")
+    public void testPassed() {
+    }
+
     @Test
     public void testFailing() {
-        Assert.assertEquals(1,2);
+        Assert.fail("This test should fail");
+    }
+
+    @Test(dependsOnMethods = "testFailing")
+    public void testDependsOnFailed() {
     }
 
 }

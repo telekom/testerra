@@ -1,6 +1,8 @@
 package io.testerra.report.test;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
+import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import io.testerra.report.test.helper.TestState;
@@ -16,6 +18,16 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
     @DataProvider
     public Object[][] dataProviderForDifferentTestStates() {
         return new Object[][]{{TestState.Passed}, {TestState.Failed}, {TestState.ExpectedFailed}, {TestState.Skipped}};
+    }
+
+    @DataProvider
+    public static Object[][] dataProviderForDifferentTestStatesWithAmounts() {
+        return new Object[][]{
+                {6, TestState.Failed},
+                {3, TestState.ExpectedFailed},
+                {4, TestState.Skipped},
+                {4, TestState.Passed},
+        };
     }
 
     @DataProvider
@@ -38,9 +50,9 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
         TestStep.begin("Check whether each test status displays the correct test classes.");
         reportDashBoardPage.assertPieChartContainsTestState(testState);
 
-        TestStep.begin("Check whether to corresponding test-state-part of the pieChart refreshes the shown test classes");
+        TestStep.begin("Check whether the corresponding test-state-part of the pieChart refreshes the shown test classes");
         reportDashBoardPage.clickPieChartPart(testState);
-        reportDashBoardPage.assertCorrectBarChartsAreDisplayed(testState);
+        reportDashBoardPage.assertCorrectBarChartsAreDisplayed();
     }
 
     @Test(dataProvider = "dataProviderForDifferentTestStates")
@@ -54,9 +66,9 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
         TestStep.begin("Check whether each test status displays the correct test classes.");
         reportDashBoardPage.assertNumbersChartContainsTestState(testState);
 
-        TestStep.begin("Check whether to corresponding test-state-part of the pieChart refreshes the shown test classes");
+        TestStep.begin("Check whether the corresponding test-state-part of the numbersChart refreshes the shown test classes");
         reportDashBoardPage.clickNumberChartPart(testState);
-        reportDashBoardPage.assertCorrectBarChartsAreDisplayed(testState);
+        reportDashBoardPage.assertCorrectBarChartsAreDisplayed();
     }
 
     @Test(dataProvider = "dataProviderForNavigationBetweenDifferentPages")
@@ -73,15 +85,82 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
     }
 
     @Test
-    public void testT07_headlineOfReport() {
+    public void testT04_reportDurationDisplayed() {
+        WebDriver driver = WebDriverManager.getWebDriver();
+
+        TestStep.begin("Navigate to dashboard page.");
+        ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        reportDashBoardPage.assertPageIsShown();
+
+        TestStep.begin("Check whether the start is displayed");
+        reportDashBoardPage.assertStartTimeIsDisplayed();
+
+        TestStep.begin("Check whether the end is displayed");
+        reportDashBoardPage.assertEndedTimeIsDisplayed();
+
+        TestStep.begin("Check whether the duration is displayed and correct");
+        reportDashBoardPage.assertDurationIsDisplayedCorrect();
+    }
+
+    @Test(dataProvider = "dataProviderForDifferentTestStates")
+    public void testT05_barChartLinksToFilteredTestsPage(TestState testState){
+        WebDriver driver = WebDriverManager.getWebDriver();
+
+        TestStep.begin("Navigate to dashboard page.");
+        final ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        reportDashBoardPage.assertPageIsShown();
+
+        TestStep.begin("Check whether each test status displays the correct test classes.");
+        reportDashBoardPage.assertNumbersChartContainsTestState(testState);
+
+        TestStep.begin("Check whether clicking on barchart bars navigates to tests page with correct filter.");
+        reportDashBoardPage.clickNumberChartPart(testState);
+        ReportTestsPage reportTestsPage = reportDashBoardPage.navigateToFilteredTestPageByClickingBarChartBar();
+        reportTestsPage.assertPageIsShown();
+        reportTestsPage.assertCorrectTestStatus(testState);
     }
 
     @Test
-    public void testT08_reportTestDate() {
+    public void testT06_barChartLengthPerHover() {
+        //TODO
+    }
+
+    @Test(dataProvider = "dataProviderForDifferentTestStatesWithAmounts")
+    public void testT07_reportPercentages(int amount, TestState testState){
+        WebDriver driver = WebDriverManager.getWebDriver();
+
+        TestStep.begin("Navigate to dashboard page.");
+        final ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        reportDashBoardPage.assertPageIsShown();
+
+        TestStep.begin("Check whether each test status displays the correct test classes.");
+        reportDashBoardPage.assertPieChartContainsTestState(testState);
+
+        TestStep.begin("Check whether the displayed percentages are correct");
+        reportDashBoardPage.assertPieChartPercentages(amount, testState);
+    }
+
+    @Test(dataProvider = "dataProviderForDifferentTestStates")
+    public void testT08_barChartFilterHovering(TestState testState){
+        WebDriver driver = WebDriverManager.getWebDriver();
+
+        TestStep.begin("Navigate to dashboard page.");
+        final ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        reportDashBoardPage.assertPageIsShown();
+
+        TestStep.begin("Check whether each test status displays the correct test classes.");
+        reportDashBoardPage.assertNumbersChartContainsTestState(testState);
+
+        TestStep.begin("Show corresponding bars to test state");
+        reportDashBoardPage.clickNumberChartPart(testState);
+
+        TestStep.begin("Check whether hovering above a bar in barchart let a popup appear with correct content");
+        reportDashBoardPage.assertPopupWhileHoveringWithCorrectContent(testState);
     }
 
     @Test
-    public void testT09_reportTestNumbers() {
+    public void testT09_failureCorridorCorrectness(FailureCorridor failureCorridor){
+
     }
 
 

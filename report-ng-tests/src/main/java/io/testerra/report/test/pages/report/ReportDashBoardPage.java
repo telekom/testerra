@@ -21,23 +21,21 @@
 
 package io.testerra.report.test.pages.report;
 
-import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.Status;
-import eu.tsystems.mms.tic.testframework.utils.FileUtils;
-import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import io.testerra.report.test.helper.TestState;
 import io.testerra.report.test.pages.AbstractReportPage;
 import io.testerra.report.test.pages.ReportPageType;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
+import java.text.*;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ReportDashBoardPage extends AbstractReportPage {
 
@@ -114,7 +112,7 @@ public class ReportDashBoardPage extends AbstractReportPage {
                 .orElse(null)).click();
     }
 
-    public void assertCorrectBarChartsAreDisplayed(TestState state) {
+    public void assertCorrectBarChartsAreDisplayed() {
         String xpath = "//*[contains(@class,'apexcharts-bar-series') and contains(@class,'apexcharts-plot-series')]";
         GuiElement barListRoot = new GuiElement(getWebDriver(), By.xpath(xpath));
         List<GuiElement> barList = barListRoot.getSubElement(By.xpath("//*[@class='apexcharts-series']")).getList();
@@ -129,4 +127,69 @@ public class ReportDashBoardPage extends AbstractReportPage {
         testClassesNumberChart.asserts().assertIsDisplayed();
     }
 
+    public void assertStartTimeIsDisplayed(){
+        GuiElement startedText = testDurationElement.getSubElement(By.xpath("(//*[@class='mdc-custom-list-item'])[1]/span"));
+        startedText.asserts().assertIsDisplayed();
+        startedText.asserts().assertText("Started");
+    }
+
+    public void assertEndedTimeIsDisplayed(){
+        GuiElement endedText = testDurationElement.getSubElement(By.xpath("(//*[@class='mdc-custom-list-item'])[2]/span"));
+        endedText.asserts().assertIsDisplayed();
+        endedText.asserts().assertText("Ended");
+    }
+
+    public void assertDurationIsDisplayedCorrect(){
+        GuiElement durationGuiElement = testDurationElement.getSubElement(By.xpath( "//div[contains(@class,'card-content')]"));
+        String duration = durationGuiElement.getText().split("\n")[1];
+        if (duration.length() < 11) {
+            checkStringForCorrectFormat(new SimpleDateFormat("s's' SSS'ms'"), duration);
+        } else if (duration.length() < 18) {
+            checkStringForCorrectFormat(new SimpleDateFormat("mm'mins' s's' SSS'ms'"), duration);
+        } else {
+            checkStringForCorrectFormat(new SimpleDateFormat("H'h' mm'mins' s's' SSS'ms'"), duration);
+        }
+
+    }
+    private void checkStringForCorrectFormat(DateFormat expectedStringFormat, String currentString){
+
+        try {
+            expectedStringFormat.parse(currentString);
+        } catch (Exception e) {
+            Assert.fail("The string doesn't match with the expected format");
+        }
+    }
+
+    public ReportTestsPage navigateToFilteredTestPageByClickingBarChartBar() {
+        String xpath = "//*[contains(@class,'apexcharts-bar-series') and contains(@class,'apexcharts-plot-series')]//*[@class='apexcharts-series']//*";
+        new GuiElement(getWebDriver(), By.xpath(xpath)).click();
+        return PageFactory.create(ReportTestsPage.class, getWebDriver());
+    }
+
+    public void assertPieChartPercentages(int expectedAmount, TestState status){
+        GuiElement pieChartPart = new GuiElement(getWebDriver(), By.xpath(String.format("(//*[@class='apexcharts-datalabels'])[%d]", status.ordinal()+1)));
+
+        String path = "//mdc-drawer//mdc-list-item[.//span[contains(text(), 'Tests')]]";
+        String amountOfTotalTestAsString = new GuiElement(getWebDriver(), By.xpath(path))
+                .getText().split(" ")[1].replace("(", "").replace(")", "");
+        String percentageString = getPercentagesFromReportByStates(expectedAmount, amountOfTotalTestAsString);
+        pieChartPart.asserts().assertText(percentageString);
+    }
+
+    private String getPercentagesFromReportByStates(double amount, String total){
+        DecimalFormat df = new DecimalFormat("##.# %", new DecimalFormatSymbols(Locale.ENGLISH));
+        return df.format(amount / Double.parseDouble(total)).replace(" ", "");
+    }
+
+    public void assertPopupWhileHoveringWithCorrectContent(TestState testState) {
+        String xpath = "//*[contains(@class,'apexcharts-bar-series') and contains(@class,'apexcharts-plot-series')]//*[@class='apexcharts-series']//*";
+        GuiElement barList = new GuiElement(getWebDriver(), By.xpath(xpath));
+        Actions action = new Actions(getWebDriver());
+        for(GuiElement bar : barList.getList()){
+            action.moveToElement(bar.getWebElement()).build().perform();
+            String path = "//*[contains(@class,'apexcharts-canvas')]//div[contains(@class,'apexcharts-tooltip')]//span[@class='apexcharts-tooltip-text-label']";
+            Optional<GuiElement> popUpTestState = new GuiElement(getWebDriver(), By.xpath(path)).getList().stream().filter(i -> i.getText().contains(testState.getStateName())).findFirst();
+            Assert.assertTrue(popUpTestState.isPresent(), "Should find a text element, which contains the corresponding state description!");
+        }
+    }
 }

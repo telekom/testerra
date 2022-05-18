@@ -34,6 +34,8 @@ import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import io.testerra.report.test.pages.AbstractReportPage;
+import io.testerra.report.test.pages.report.ReportDashBoardPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.Assert;
@@ -43,9 +45,6 @@ import org.testng.annotations.BeforeTest;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.net.BindException;
-
-import io.testerra.report.test.pages.AbstractReportPage;
-import io.testerra.report.test.pages.report.ReportDashBoardPage;
 
 /**
  * Abstract test class for tests based on static test site resources
@@ -94,8 +93,8 @@ public abstract class AbstractReportTest extends TesterraTest implements Loggabl
      * Open a custom Webdriver session with the default test page.
      *
      * @param reportPageClass report page that should be reached
-     * @param driver {@link WebDriver} Current Instance
-     * @param directory {@link TestPage} page to open
+     * @param driver          {@link WebDriver} Current Instance
+     * @param directory       {@link TestPage} page to open
      */
     public synchronized <T extends AbstractReportPage> T visitTestPage(final Class<T> reportPageClass, final WebDriver driver, final String directory) {
         Assert.assertTrue(serverRootDir.exists(), String.format("Server root directory '%s' doesn't exists", serverRootDir));

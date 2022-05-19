@@ -29,13 +29,20 @@ import io.testerra.report.test.helper.TestState;
 import io.testerra.report.test.pages.AbstractReportPage;
 import io.testerra.report.test.pages.ReportPageType;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 
-import java.text.*;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.Optional;
 
 public class ReportDashBoardPage extends AbstractReportPage {
 
@@ -117,7 +124,6 @@ public class ReportDashBoardPage extends AbstractReportPage {
         GuiElement barListRoot = new GuiElement(getWebDriver(), By.xpath(xpath));
         List<GuiElement> barList = barListRoot.getSubElement(By.xpath("//*[@class='apexcharts-series']")).getList();
         Assert.assertEquals(barList.size(), 1, "There should be just 1 entry!");
-
     }
 
 
@@ -127,20 +133,20 @@ public class ReportDashBoardPage extends AbstractReportPage {
         testClassesNumberChart.asserts().assertIsDisplayed();
     }
 
-    public void assertStartTimeIsDisplayed(){
+    public void assertStartTimeIsDisplayed() {
         GuiElement startedText = testDurationElement.getSubElement(By.xpath("(//*[@class='mdc-custom-list-item'])[1]/span"));
         startedText.asserts().assertIsDisplayed();
         startedText.asserts().assertText("Started");
     }
 
-    public void assertEndedTimeIsDisplayed(){
+    public void assertEndedTimeIsDisplayed() {
         GuiElement endedText = testDurationElement.getSubElement(By.xpath("(//*[@class='mdc-custom-list-item'])[2]/span"));
         endedText.asserts().assertIsDisplayed();
         endedText.asserts().assertText("Ended");
     }
 
-    public void assertDurationIsDisplayedCorrect(){
-        GuiElement durationGuiElement = testDurationElement.getSubElement(By.xpath( "//div[contains(@class,'card-content')]"));
+    public void assertDurationIsDisplayedCorrect() {
+        GuiElement durationGuiElement = testDurationElement.getSubElement(By.xpath("//div[contains(@class,'card-content')]"));
         String duration = durationGuiElement.getText().split("\n")[1];
         if (duration.length() < 11) {
             checkStringForCorrectFormat(new SimpleDateFormat("s's' SSS'ms'"), duration);
@@ -151,7 +157,8 @@ public class ReportDashBoardPage extends AbstractReportPage {
         }
 
     }
-    private void checkStringForCorrectFormat(DateFormat expectedStringFormat, String currentString){
+
+    private void checkStringForCorrectFormat(DateFormat expectedStringFormat, String currentString) {
 
         try {
             expectedStringFormat.parse(currentString);
@@ -166,8 +173,8 @@ public class ReportDashBoardPage extends AbstractReportPage {
         return PageFactory.create(ReportTestsPage.class, getWebDriver());
     }
 
-    public void assertPieChartPercentages(int expectedAmount, TestState status){
-        GuiElement pieChartPart = new GuiElement(getWebDriver(), By.xpath(String.format("(//*[@class='apexcharts-datalabels'])[%d]", status.ordinal()+1)));
+    public void assertPieChartPercentages(int expectedAmount, TestState status) {
+        GuiElement pieChartPart = new GuiElement(getWebDriver(), By.xpath(String.format("(//*[@class='apexcharts-datalabels'])[%d]", status.ordinal() + 1)));
 
         String path = "//mdc-drawer//mdc-list-item[.//span[contains(text(), 'Tests')]]";
         String amountOfTotalTestAsString = new GuiElement(getWebDriver(), By.xpath(path))
@@ -176,7 +183,7 @@ public class ReportDashBoardPage extends AbstractReportPage {
         pieChartPart.asserts().assertText(percentageString);
     }
 
-    private String getPercentagesFromReportByStates(double amount, String total){
+    private String getPercentagesFromReportByStates(double amount, String total) {
         DecimalFormat df = new DecimalFormat("##.# %", new DecimalFormatSymbols(Locale.ENGLISH));
         return df.format(amount / Double.parseDouble(total)).replace(" ", "");
     }
@@ -185,11 +192,76 @@ public class ReportDashBoardPage extends AbstractReportPage {
         String xpath = "//*[contains(@class,'apexcharts-bar-series') and contains(@class,'apexcharts-plot-series')]//*[@class='apexcharts-series']//*";
         GuiElement barList = new GuiElement(getWebDriver(), By.xpath(xpath));
         Actions action = new Actions(getWebDriver());
-        for(GuiElement bar : barList.getList()){
+        for (GuiElement bar : barList.getList()) {
             action.moveToElement(bar.getWebElement()).build().perform();
             String path = "//*[contains(@class,'apexcharts-canvas')]//div[contains(@class,'apexcharts-tooltip')]//span[@class='apexcharts-tooltip-text-label']";
             Optional<GuiElement> popUpTestState = new GuiElement(getWebDriver(), By.xpath(path)).getList().stream().filter(i -> i.getText().contains(testState.getStateName())).findFirst();
             Assert.assertTrue(popUpTestState.isPresent(), "Should find a text element, which contains the corresponding state description!");
+        }
+    }
+
+    public void assertBarChartIsDisplayed() {
+        String xpath = "//*[contains(@class,'apexcharts-bar-series') and contains(@class,'apexcharts-plot-series')]";
+        GuiElement barListRoot = new GuiElement(getWebDriver(), By.xpath(xpath));
+        List<GuiElement> barList = barListRoot.getSubElement(By.xpath("//*[@class='apexcharts-series']")).getList();
+        Assert.assertEquals(barList.size(), 4, "There should be 4 entries, 1 for each test state!");
+    }
+
+    public void assertCorrectBarsLength(double threshold) {
+        final double lengthUnit = getOneLengthUnit();
+        Assert.assertNotEquals(lengthUnit, 0, "The length of a bar in the barchart representing one test should not be 0!");
+
+        String xpath = "//*[contains(@class,'apexcharts-bar-series') and contains(@class,'apexcharts-plot-series')]";
+        GuiElement barListRoot = new GuiElement(getWebDriver(), By.xpath(xpath));
+        List<GuiElement> barTypeList = barListRoot.getSubElement(By.xpath("//*[@class='apexcharts-series']")).getList();
+        for (GuiElement barType : barTypeList) {
+            List<GuiElement> bars = barType.getSubElement(By.xpath("//*")).getList();
+            for (GuiElement bar : bars) {
+                String valAsString = getBuggedAttributePerJavascriptExecutor(bar, "val", 1);
+                Assert.assertNotNull(valAsString);
+                int amountOfLengthUnits = Integer.parseInt(valAsString);
+                double upperBound = (lengthUnit * amountOfLengthUnits) * (1 + threshold);
+                double lowerBound = (lengthUnit * amountOfLengthUnits) * (1 - threshold);
+                double actualBarLength = Double.parseDouble(Objects.requireNonNull(getBuggedAttributePerJavascriptExecutor(bar, "barWidth", 8)));
+                //System.out.printf("%f €? [%f, %f]%n", actualBarLength, lowerBound, upperBound);
+                Assert.assertTrue(lowerBound <= actualBarLength && actualBarLength <= upperBound,
+                        String.format("BarWidth got too much deviation to excepted bounds! %f not in [%f, %f]", actualBarLength, lowerBound, upperBound));
+            }
+        }
+    }
+
+    private double getOneLengthUnit() {
+        String xpath = "//*[contains(@class,'apexcharts-bar-series') and contains(@class,'apexcharts-plot-series')]";
+        GuiElement barListRoot = new GuiElement(getWebDriver(), By.xpath(xpath));
+        List<GuiElement> barTypeList = barListRoot.getSubElement(By.xpath("//*[@class='apexcharts-series']")).getList();
+        for (GuiElement barType : barTypeList) {
+            List<GuiElement> bars = barType.getSubElement(By.xpath("//*")).getList();
+            for (GuiElement bar : bars) {
+                if (bar.getAttribute("val").equals("1")) {
+                    String barWidth = getBuggedAttributePerJavascriptExecutor(bar, "barWidth", 8);
+                    Assert.assertNotNull(barWidth, "GuiElement attribute value is null!");
+                    return Double.parseDouble(barWidth);
+                }
+            }
+        }
+        return 0;
+    }
+
+    private String getBuggedAttributePerJavascriptExecutor(GuiElement guiElement, String attribute, int expectedLengthOfValue) {
+        try {
+            WebElement element = guiElement.getWebElement();
+            JavascriptExecutor executor = (JavascriptExecutor) getWebDriver();
+            Object aa = executor.executeScript("var items = {}; for (index = 0; index < arguments[0].attributes.length; ++index) { items[arguments[0].attributes[index].name] = arguments[0].attributes[index].value }; return items;", element);
+            String listOfAllAttributes = aa.toString();
+            int attributeSubstringStart = listOfAllAttributes.indexOf(attribute);
+            int lengthOfAttributeSequence = attribute.length() + expectedLengthOfValue + 1;
+            String substring = listOfAllAttributes.substring(attributeSubstringStart, attributeSubstringStart + lengthOfAttributeSequence);
+            if (substring.contains("=0,")) {
+                return "0";
+            }
+            return substring.split("=")[1];
+        } catch (Exception e) {
+            return "0";
         }
     }
 }

@@ -121,8 +121,17 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
     }
 
     @Test
-    public void testT06_barChartLengthPerHover() {
-        //TODO
+    public void testT06_barChartLength() {
+        WebDriver driver = WebDriverManager.getWebDriver();
+        final double threshold = 0.01;  //1% (random chosen value, but some threshold is needed when asserting with double)
+
+        TestStep.begin("Navigate to dashboard page.");
+        final ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        reportDashBoardPage.assertPageIsShown();
+
+        TestStep.begin("Check barchart is shown and iterate through all bars to check correct length");
+        reportDashBoardPage.assertBarChartIsDisplayed();
+        reportDashBoardPage.assertCorrectBarsLength(threshold);
     }
 
     @Test(dataProvider = "dataProviderForDifferentTestStatesWithAmounts")
@@ -158,9 +167,9 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
         reportDashBoardPage.assertPopupWhileHoveringWithCorrectContent(testState);
     }
 
-    @Test
+    @Test(enabled = false)
     public void testT09_failureCorridorCorrectness(FailureCorridor failureCorridor){
-
+        //TODO:
     }
 
 

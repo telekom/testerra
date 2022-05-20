@@ -1,8 +1,6 @@
 package io.testerra.report.test;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
-import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import io.testerra.report.test.helper.TestState;
@@ -37,6 +35,15 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
                         {ReportPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class},
                         {ReportPageType.LOGS, ReportLogsPage.class},
                         {ReportPageType.THREADS, ReportThreadsPage.class}};
+    }
+
+    @DataProvider
+    public Object[][] dataProviderFailureCorridorBounds() {
+        PropertyManager.loadProperties("report-ng-tests/src/test/resources/test.properties");
+        return new Object[][]
+                {{"High", PropertyManager.getIntProperty("tt.failure.corridor.allowed.failed.tests.high")},
+                        {"Mid", PropertyManager.getIntProperty("tt.failure.corridor.allowed.failed.tests.mid")},
+                        {"Low", PropertyManager.getIntProperty("tt.failure.corridor.allowed.failed.tests.low")}};
     }
 
     @Test(dataProvider = "dataProviderForDifferentTestStates")
@@ -103,7 +110,7 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
     }
 
     @Test(dataProvider = "dataProviderForDifferentTestStates")
-    public void testT05_barChartLinksToFilteredTestsPage(TestState testState){
+    public void testT05_barChartLinksToFilteredTestsPage(TestState testState) {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
@@ -135,7 +142,7 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
     }
 
     @Test(dataProvider = "dataProviderForDifferentTestStatesWithAmounts")
-    public void testT07_reportPercentages(int amount, TestState testState){
+    public void testT07_reportPercentages(int amount, TestState testState) {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
@@ -150,7 +157,7 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
     }
 
     @Test(dataProvider = "dataProviderForDifferentTestStates")
-    public void testT08_barChartFilterHovering(TestState testState){
+    public void testT08_barChartFilterHovering(TestState testState) {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
@@ -167,9 +174,17 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
         reportDashBoardPage.assertPopupWhileHoveringWithCorrectContent(testState);
     }
 
-    @Test(enabled = false)
-    public void testT09_failureCorridorCorrectness(FailureCorridor failureCorridor){
-        //TODO:
+    @Test(dataProvider = "dataProviderFailureCorridorBounds")
+    public void testT09_failureCorridorCorrectness(String failureCorridorType, int bound) {
+        WebDriver driver = WebDriverManager.getWebDriver();
+
+        TestStep.begin("Navigate to dashboard page.");
+        final ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        reportDashBoardPage.assertPageIsShown();
+
+        TestStep.begin("Check displayed and compare failure corridor values to allowed bounds");
+        reportDashBoardPage.assertFailureCorridorIsDisplayed(failureCorridorType);
+        reportDashBoardPage.assertFailureCorridorValuesAreCorrectClassified(failureCorridorType, bound);
     }
 
 

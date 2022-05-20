@@ -28,6 +28,7 @@ import eu.tsystems.mms.tic.testframework.report.Status;
 import io.testerra.report.test.helper.TestState;
 import io.testerra.report.test.pages.AbstractReportPage;
 import io.testerra.report.test.pages.ReportPageType;
+import org.checkerframework.checker.units.qual.A;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -262,6 +263,23 @@ public class ReportDashBoardPage extends AbstractReportPage {
             return substring.split("=")[1];
         } catch (Exception e) {
             return "0";
+        }
+    }
+
+    public void assertFailureCorridorIsDisplayed(String failureCorridorType) {
+        String path = String.format("//*[contains(@class.bind,'Corridor') and contains(text(), '%s')]", failureCorridorType);
+        GuiElement failureCorridor = new GuiElement(getWebDriver(), By.xpath(path));
+        failureCorridor.asserts().assertIsDisplayed();
+    }
+
+    public void assertFailureCorridorValuesAreCorrectClassified(String failureCorridorType,int bound) {
+        String path = String.format("//*[contains(@class.bind,'Corridor') and contains(text(), '%s')]", failureCorridorType);
+        GuiElement failureCorridor = new GuiElement(getWebDriver(), By.xpath(path));
+        int displayedAmount = Integer.parseInt(failureCorridor.getText().split(" ")[0]);
+        if (displayedAmount <= bound){
+            Assert.assertTrue(failureCorridor.getAttribute("class").contains("status-passed"), "Corridor should be classified correctly!");
+        }else {
+            Assert.assertTrue(failureCorridor.getAttribute("class").contains("status-failed"), "Corridor should be classified correctly!");
         }
     }
 }

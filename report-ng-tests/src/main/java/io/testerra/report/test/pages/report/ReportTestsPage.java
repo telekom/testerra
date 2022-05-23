@@ -24,7 +24,7 @@ package io.testerra.report.test.pages.report;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 
-import io.testerra.report.test.helper.TestState;
+import eu.tsystems.mms.tic.testframework.report.Status;
 import io.testerra.report.test.pages.AbstractReportPage;
 import io.testerra.report.test.pages.ReportPageType;
 import org.openqa.selenium.By;
@@ -49,10 +49,10 @@ public class ReportTestsPage extends AbstractReportPage {
         verifyReportPage(ReportPageType.TESTS);
     }
 
-    public void assertCorrectTestStatus(TestState testState) {
+    public void assertCorrectTestStatus(Status status) {
         List<GuiElement> tableRows = new GuiElement(getWebDriver(), By.xpath("//tbody[@class='mdc-data-table__content au-target']/tr")).getList();
         for(GuiElement row : tableRows){
-            row.getSubElement(By.xpath("/td")).asserts().assertText(testState.getStateName());
+            row.getSubElement(By.xpath("/td")).asserts().assertText(status.title);
         }
     }
 }

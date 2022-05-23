@@ -25,10 +25,9 @@ import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.Status;
-import io.testerra.report.test.helper.TestState;
+import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import io.testerra.report.test.pages.AbstractReportPage;
 import io.testerra.report.test.pages.ReportPageType;
-import org.checkerframework.checker.units.qual.A;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -44,6 +43,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ReportDashBoardPage extends AbstractReportPage {
 
@@ -52,9 +52,11 @@ public class ReportDashBoardPage extends AbstractReportPage {
     @Check
     private final GuiElement testDurationElement = pageContent.getSubElement(By.tagName("test-duration-card"));
     @Check
-    private final GuiElement testResultElement = pageContent.getSubElement(By.tagName("test-results-card"));
+    private final GuiElement testResultElement = pageContent.getSubElement(By.tagName("test-results-card"));    //pieChart
     @Check
     private final GuiElement testClassesElement = pageContent.getSubElement(By.tagName("test-classes-card"));
+
+    private final GuiElement testTopFailureAspectsElement = getTopFailureAspectsCard();
 
     public ReportDashBoardPage(WebDriver driver) {
         super(driver);
@@ -99,38 +101,46 @@ public class ReportDashBoardPage extends AbstractReportPage {
         return By.xpath(String.format(xPathToTestsPerStatusTemplate, testStatus.title));
     }
 
-    public void assertPieChartContainsTestState(TestState status) {
-        GuiElement pieChartPart = new GuiElement(getWebDriver(),
-                By.xpath(String.format("//*[@class='apexcharts-series apexcharts-pie-series' and @seriesName='%s']", status.getStateNameWithReplacement())));
+    private GuiElement getTopFailureAspectsCard() {
+        Optional<GuiElement> optionalTopFailureAspects = new GuiElement(getWebDriver(), By.xpath("//mdc-card")).getList()
+                .stream()
+                .filter(i -> i.getSubElement(By.xpath("/div[contains(text(), 'Failure Aspects')]")).isDisplayed())
+                .findFirst();
+        Assert.assertTrue(optionalTopFailureAspects.isPresent());
+        return optionalTopFailureAspects.get();
+    }
+
+    public void assertPieChartContainsTestState(Status status) {
+        GuiElement pieChartPart = testResultElement.getSubElement(
+                By.xpath(String.format("//*[@class='apexcharts-series apexcharts-pie-series' and @seriesName='%s']", status.getTitleWithSpaceReplacement())));
         pieChartPart.asserts().assertIsDisplayed();
     }
 
-    public void clickPieChartPart(TestState status) {
-        GuiElement pieChartPart = new GuiElement(getWebDriver(),
-                By.xpath(String.format("//*[@class='apexcharts-series apexcharts-pie-series' and @seriesName='%s']", status.getStateNameWithReplacement())));
+    public void clickPieChartPart(Status status) {
+        GuiElement pieChartPart = testResultElement.getSubElement(
+                By.xpath(String.format("//*[@class='apexcharts-series apexcharts-pie-series' and @seriesName='%s']", status.getTitleWithSpaceReplacement())));
         pieChartPart.click();
     }
 
-    public void clickNumberChartPart(TestState testState) {
-        String xpath = "//mdc-layout-grid-cell//mdc-list//mdc-list-item";
-        List<GuiElement> testClassesNumberChartList = new GuiElement(getWebDriver(), By.xpath(xpath)).getList();
+    public void clickNumberChartPart(Status status) {
+        List<GuiElement> testClassesNumberChartList = testsElement.getSubElement(By.xpath("//mdc-list-item")).getList();
         Objects.requireNonNull(testClassesNumberChartList.stream()
-                .filter(guiElement -> guiElement.getSubElement(By.xpath("//mdc-icon")).getAttribute("title").equals(testState.getStateName()))
+                .filter(guiElement -> guiElement.getSubElement(By.xpath("//mdc-icon")).getAttribute("title").equals(status.title))
                 .findFirst()
                 .orElse(null)).click();
     }
 
     public void assertCorrectBarChartsAreDisplayed() {
         String xpath = "//*[contains(@class,'apexcharts-bar-series') and contains(@class,'apexcharts-plot-series')]";
-        GuiElement barListRoot = new GuiElement(getWebDriver(), By.xpath(xpath));
+        GuiElement barListRoot = testClassesElement.getSubElement(By.xpath(xpath));
         List<GuiElement> barList = barListRoot.getSubElement(By.xpath("//*[@class='apexcharts-series']")).getList();
         Assert.assertEquals(barList.size(), 1, "There should be just 1 entry!");
     }
 
 
-    public void assertNumbersChartContainsTestState(TestState testState) {
-        String xpath = String.format("//mdc-layout-grid-cell//mdc-list//mdc-list-item//mdc-icon[@title='%s']", testState.getStateName());
-        GuiElement testClassesNumberChart = new GuiElement(getWebDriver(), By.xpath(xpath));
+    public void assertNumbersChartContainsTestState(Status status) {
+        String xpath = String.format("//mdc-list-item//mdc-icon[@title='%s']", status.title);
+        GuiElement testClassesNumberChart = testsElement.getSubElement(By.xpath(xpath));
         testClassesNumberChart.asserts().assertIsDisplayed();
     }
 
@@ -170,16 +180,14 @@ public class ReportDashBoardPage extends AbstractReportPage {
 
     public ReportTestsPage navigateToFilteredTestPageByClickingBarChartBar() {
         String xpath = "//*[contains(@class,'apexcharts-bar-series') and contains(@class,'apexcharts-plot-series')]//*[@class='apexcharts-series']//*";
-        new GuiElement(getWebDriver(), By.xpath(xpath)).click();
+        testClassesElement.getSubElement(By.xpath(xpath)).click();
         return PageFactory.create(ReportTestsPage.class, getWebDriver());
     }
 
-    public void assertPieChartPercentages(int expectedAmount, TestState status) {
-        GuiElement pieChartPart = new GuiElement(getWebDriver(), By.xpath(String.format("(//*[@class='apexcharts-datalabels'])[%d]", status.ordinal() + 1)));
+    public void assertPieChartPercentages(int expectedAmount, Status status) {
+        GuiElement pieChartPart = testResultElement.getSubElement(By.xpath(String.format("(//*[@class='apexcharts-datalabels'])[%d]", status.ordinal() + 1)));
 
-        String path = "//mdc-drawer//mdc-list-item[.//span[contains(text(), 'Tests')]]";
-        String amountOfTotalTestAsString = new GuiElement(getWebDriver(), By.xpath(path))
-                .getText().split(" ")[1].replace("(", "").replace(")", "");
+        String amountOfTotalTestAsString = getSideBarTests().getText().split(" ")[1].replace("(", "").replace(")", "");
         String percentageString = getPercentagesFromReportByStates(expectedAmount, amountOfTotalTestAsString);
         pieChartPart.asserts().assertText(percentageString);
     }
@@ -189,21 +197,21 @@ public class ReportDashBoardPage extends AbstractReportPage {
         return df.format(amount / Double.parseDouble(total)).replace(" ", "");
     }
 
-    public void assertPopupWhileHoveringWithCorrectContent(TestState testState) {
+    public void assertPopupWhileHoveringWithCorrectContent(Status status) {
         String xpath = "//*[contains(@class,'apexcharts-bar-series') and contains(@class,'apexcharts-plot-series')]//*[@class='apexcharts-series']//*";
-        GuiElement barList = new GuiElement(getWebDriver(), By.xpath(xpath));
+        GuiElement barList = testClassesElement.getSubElement(By.xpath(xpath));
         Actions action = new Actions(getWebDriver());
         for (GuiElement bar : barList.getList()) {
             action.moveToElement(bar.getWebElement()).build().perform();
             String path = "//*[contains(@class,'apexcharts-canvas')]//div[contains(@class,'apexcharts-tooltip')]//span[@class='apexcharts-tooltip-text-label']";
-            Optional<GuiElement> popUpTestState = new GuiElement(getWebDriver(), By.xpath(path)).getList().stream().filter(i -> i.getText().contains(testState.getStateName())).findFirst();
+            Optional<GuiElement> popUpTestState = new GuiElement(getWebDriver(), By.xpath(path)).getList().stream().filter(i -> i.getText().contains(status.title)).findFirst();
             Assert.assertTrue(popUpTestState.isPresent(), "Should find a text element, which contains the corresponding state description!");
         }
     }
 
     public void assertBarChartIsDisplayed() {
         String xpath = "//*[contains(@class,'apexcharts-bar-series') and contains(@class,'apexcharts-plot-series')]";
-        GuiElement barListRoot = new GuiElement(getWebDriver(), By.xpath(xpath));
+        GuiElement barListRoot = testClassesElement.getSubElement(By.xpath(xpath));
         List<GuiElement> barList = barListRoot.getSubElement(By.xpath("//*[@class='apexcharts-series']")).getList();
         Assert.assertEquals(barList.size(), 4, "There should be 4 entries, 1 for each test state!");
     }
@@ -213,7 +221,7 @@ public class ReportDashBoardPage extends AbstractReportPage {
         Assert.assertNotEquals(lengthUnit, 0, "The length of a bar in the barchart representing one test should not be 0!");
 
         String xpath = "//*[contains(@class,'apexcharts-bar-series') and contains(@class,'apexcharts-plot-series')]";
-        GuiElement barListRoot = new GuiElement(getWebDriver(), By.xpath(xpath));
+        GuiElement barListRoot = testClassesElement.getSubElement(By.xpath(xpath));
         List<GuiElement> barTypeList = barListRoot.getSubElement(By.xpath("//*[@class='apexcharts-series']")).getList();
         for (GuiElement barType : barTypeList) {
             List<GuiElement> bars = barType.getSubElement(By.xpath("//*")).getList();
@@ -233,7 +241,7 @@ public class ReportDashBoardPage extends AbstractReportPage {
 
     private double getOneLengthUnit() {
         String xpath = "//*[contains(@class,'apexcharts-bar-series') and contains(@class,'apexcharts-plot-series')]";
-        GuiElement barListRoot = new GuiElement(getWebDriver(), By.xpath(xpath));
+        GuiElement barListRoot = testClassesElement.getSubElement(By.xpath(xpath));
         List<GuiElement> barTypeList = barListRoot.getSubElement(By.xpath("//*[@class='apexcharts-series']")).getList();
         for (GuiElement barType : barTypeList) {
             List<GuiElement> bars = barType.getSubElement(By.xpath("//*")).getList();
@@ -272,14 +280,39 @@ public class ReportDashBoardPage extends AbstractReportPage {
         failureCorridor.asserts().assertIsDisplayed();
     }
 
-    public void assertFailureCorridorValuesAreCorrectClassified(String failureCorridorType,int bound) {
+    public void assertFailureCorridorValuesAreCorrectClassified(String failureCorridorType, int bound) {
         String path = String.format("//*[contains(@class.bind,'Corridor') and contains(text(), '%s')]", failureCorridorType);
         GuiElement failureCorridor = new GuiElement(getWebDriver(), By.xpath(path));
         int displayedAmount = Integer.parseInt(failureCorridor.getText().split(" ")[0]);
-        if (displayedAmount <= bound){
+        if (displayedAmount <= bound) {
             Assert.assertTrue(failureCorridor.getAttribute("class").contains("status-passed"), "Corridor should be classified correctly!");
-        }else {
+        } else {
             Assert.assertTrue(failureCorridor.getAttribute("class").contains("status-failed"), "Corridor should be classified correctly!");
         }
+    }
+
+    public void assertTopFailureAspectsAreDisplayed() {
+        testTopFailureAspectsElement.asserts().assertIsDisplayed();
+    }
+
+    public ReportFailureAspectsPage clickMajorFailureAspectsLink() {
+        GuiElement majorLink = testTopFailureAspectsElement.getSubElement(By.xpath("//*[contains(text(), 'Major')]"));
+        majorLink.asserts().assertIsDisplayed();
+        majorLink.click();
+        return PageFactory.create(ReportFailureAspectsPage.class, getWebDriver());
+    }
+
+    public ReportFailureAspectsPage clickMinorFailureAspectsLink() {
+        GuiElement minorLink = testTopFailureAspectsElement.getSubElement(By.xpath("//*[contains(text(), 'Minor')]"));
+        minorLink.asserts().assertIsDisplayed();
+        minorLink.click();
+        return PageFactory.create(ReportFailureAspectsPage.class, getWebDriver());
+    }
+
+    public List<String> getOrderListOfTopFailureAspects() {
+        return testTopFailureAspectsElement.getSubElement(By.xpath("/mdc-list//span[@class='mdc-list-item__content']")).getList()
+                .stream()
+                .map(GuiElement::getText)
+                .collect(Collectors.toList());
     }
 }

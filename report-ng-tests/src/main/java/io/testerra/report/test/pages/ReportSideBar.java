@@ -83,4 +83,8 @@ public abstract class ReportSideBar extends ReportHeader {
             }
         }
     }
+
+    public GuiElement getSideBarTests(){
+        return sideBarTests;
+    }
 }

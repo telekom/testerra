@@ -50,9 +50,8 @@ public class AbstractTest extends TesterraTest {
     @BeforeSuite
     public void setupProxy() throws MalformedURLException {
         URL apiUrl = new URL("http://localhost:8080");
-        BrowserUpRemoteProxyManager bupRemoteProxyManager
-                = new BrowserUpRemoteProxyManager(apiUrl);
-        bupProxybupRemoteProxyManager.startServer(bupProxy);
+        BrowserUpRemoteProxyManager bupManager = new BrowserUpRemoteProxyManager(apiUrl);
+        bupManager.startServer(bupProxy);
 
         /* Additional Proxy setup here */
         String bmpProxyAddress = String.format("%s:%d", apiUrl.getHost(), bupProxy.getPort());
@@ -68,13 +67,12 @@ public class AbstractTest extends TesterraTest {
     public void tearDownProxy() throws MalformedURLException {
 
         URL apiBaseUrl = new URL("http://localhost:8080");
-        BrowserUpRemoteProxyManager browserUpRemoteProxyManager
-                = new BrowserUpRemoteProxyManager(apiBaseUrl);
+        BrowserUpRemoteProxyManager bupManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
 
-        for (Integer proxyPort : browserUpRemoteProxyManager.getProxies()) {
+        for (Integer proxyPort : bupManager.getProxies()) {
             BrowserUpRemoteProxyServer bupToStop = new BrowserUpRemoteProxyServer();
             bupToStop.setPort(proxyPort);
-            browserUpRemoteProxyManager.stopServer(bupToStop);
+            bupManager.stopServer(bupToStop);
         }
     }
 }
@@ -89,7 +87,7 @@ If you need a dedicated port, use `startServer(BrowserUpRemoteProxyServer proxyS
 BrowserUpRemoteProxyServer browserUpRemoteProxyServer = new BrowserUpRemoteProxyServer();
 browserUpRemoteProxyServer.setPort(8088);
 
-browserUpRemoteProxyManager.startServer(browserUpRemoteProxyServer);
+bupManager.startServer(browserUpRemoteProxyServer);
 ----
 
 If the port already used, the `BrowserUpRemoteProxyManager` will do nothing, and just return the given config-object of type `BrowserUpRemoteProxyServer`.
@@ -100,16 +98,16 @@ If your SUT is protected by HTTP basic auth, you can set up these credentials as
 
 [source,java]
 ----
-URL baseUrl = WEB_DRIVER_MANAGER.getConfig().getBaseUrl();
+URL baseUrl = WEB_DRIVER_MANAGER.getConfig().getBaseUrl().get();
 String basicAuthUser;
 String basicAuthPassword;
 
 URL apiBaseUrl = new URL(LOCAL_PROXY_FOR_TEST);
-BrowserUpRemoteProxyManager browserUpRemoteProxyManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
+BrowserUpRemoteProxyManager bupManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
 BrowserUpRemoteProxyServer bup1 = new BrowserUpRemoteProxyServer();
-browserUpRemoteProxyManager.startServer(bup1);
+bupManager.startServer(bup1);
 
-browserUpRemoteProxyManager.setBasicAuth(bup1, baseUrl.getHost(), basicAuthUser, basicAuthPassword);
+bupManager.setBasicAuth(bup1, baseUrl.getHost(), basicAuthUser, basicAuthPassword);
 ----
 
 === Upstream proxy
@@ -124,8 +122,8 @@ bup1.setUpstreamProxy(ProxyUtils.getSystemHttpProxyUrl());
 // Setup non-proxy for your upstream proxy, if needed
 bup1.setUpstreamNonProxy(".internal.example.org|.mystuff.example.org");
 
-BrowserUpRemoteProxyManager browserUpRemoteProxyManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
-browserUpRemoteProxyManager.startServer(bup1);
+BrowserUpRemoteProxyManager bupManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
+bupManager.startServer(bup1);
 ----
 
 NOTE: User info like `username:password` is supported in your upstream proxy URL.
@@ -141,8 +139,8 @@ BrowserUpRemoteProxyServer bup1 = new BrowserUpRemoteProxyServer();
 // Setup a bind address, default is '0.0.0.0'
 bup1.setBindAddress("192.168.100.1");
 
-BrowserUpRemoteProxyManager browserUpRemoteProxyManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
-browserUpRemoteProxyManager.startServer(bup1);
+BrowserUpRemoteProxyManager bupManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
+bupManager.startServer(bup1);
 ----
 
 === Other features
@@ -152,24 +150,24 @@ browserUpRemoteProxyManager.startServer(bup1);
 /*
  Check if proxy alread runs on port...
  */
-BrowserUpRemoteProxyManager browserUpRemoteProxyManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
+BrowserUpRemoteProxyManager bupManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
 
 BrowserUpRemoteProxyServer bup1 = new BrowserUpRemoteProxyServer();
 bup1.setPort(8088);
 
-browserUpRemoteProxyManager.startServer(bup1);
-boolean isRunning = browserUpRemoteProxyManager.isRunning(nup1);
+bupManager.startServer(bup1);
+boolean isRunning = bupManager.isRunning(bup1);
 
 /*
  Maps specific host names to another host names or IP adresses
  */
-browserUpRemoteProxyManager.setHostMapping(BrowserUpRemoteProxyServer proxyServer, Map<String, String> hostMap);
+bupManager.setHostMapping(BrowserUpRemoteProxyServer proxyServer, Map<String, String> hostMap);
 
 /*
  Capture the traffic and return it as a JsonElement
  You can choose, if you want to capture only the headers, the content or both via the boolean flags.
  */
-browserUpRemoteProxyManager.startCapture(
+bupManager.startCapture(
     BrowserUpRemoteProxyServer proxyServer,
     String initialPageRef,
     boolean isCaptureHeaders,
@@ -180,7 +178,7 @@ JsonElement stopCapture(BrowserUpRemoteProxyServer proxyServer);
 /*
  Adds additional key-value pairs to the headers.
 */
-browserUpRemoteProxyManager.addHeader(BrowserUpRemoteProxyServer proxyServer, String key, String value);
+bupManager.addHeader(BrowserUpRemoteProxyServer proxyServer, String key, String value);
 ----
 
 == Local browser instances

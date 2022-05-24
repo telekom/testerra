@@ -24,14 +24,10 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.net.URL;
 
 /**
  * Class containing utility methods for WebDriverManager. To keep the WebDriverManager Class cleaner.
@@ -44,12 +40,12 @@ public final class WebDriverManagerUtils {
      * Logger.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverManagerUtils.class);
+
     /**
      * Hide constructor.
      */
     private WebDriverManagerUtils() {
     }
-
 
     public static BrowserInformation getBrowserInformation(final WebDriver driver) {
         if (driver == null) {
@@ -92,61 +88,6 @@ public final class WebDriverManagerUtils {
             LOGGER.warn("WebDriver could not be quit. May someone did before.", e);
         }
     }
-
-    public static void addBrowserVersionToCapabilities(final DesiredCapabilities capabilities, final String version) {
-//        capabilities.setCapability(CapabilityType.VERSION, version);
-//        capabilities.setCapability(CapabilityType.BROWSER_VERSION, version);
-        capabilities.setVersion(version);
-    }
-
-    /**
-     * Add proxy settings to capabilities. proxyString may be "proxyhost:8080".
-     *
-     * @param capabilities .
-     * @param proxyString .
-     * @param noProxyString .
-     * @deprecated
-     */
-    @Deprecated
-    public static void addProxyToCapabilities(final DesiredCapabilities capabilities, final String proxyString, final String noProxyString) {
-        addProxyToCapabilities(capabilities, proxyString);
-    }
-
-    /**
-     * Add proxy settings to capabilities. proxyString may be "proxyhost:8080".
-     *
-     * @param capabilities {@link DesiredCapabilities}
-     * @param proxyUrl {@link URL}
-     * @deprecated
-     */
-    @Deprecated
-    public static void addProxyToCapabilities(final DesiredCapabilities capabilities, final URL proxyUrl) {
-        WebDriverProxyUtils utils = new WebDriverProxyUtils();
-        capabilities.setCapability(CapabilityType.PROXY, utils.createSocksProxyFromUrl(proxyUrl));
-    }
-
-    /**
-     * Add proxy settings to capabilities. proxyString may be "proxyhost:8080".
-     *
-     * @param capabilities {@link DesiredCapabilities}
-     * @param proxyString {@link String}
-     * @deprecated
-     */
-    @Deprecated
-    public static void addProxyToCapabilities(final DesiredCapabilities capabilities, final String proxyString) {
-
-        Proxy proxy = new Proxy();
-        proxy.setHttpProxy(proxyString);
-        proxy.setFtpProxy(proxyString);
-        proxy.setSslProxy(proxyString);
-        //        proxy.setSocksProxy(proxyString);
-
-        //        JSONArray a = new JSONArray();
-        //        a.put(noProxyString);
-        //        proxy.setNoProxy(a + "");
-        capabilities.setCapability(CapabilityType.PROXY, proxy);
-    }
-
 
     /**
      * @deprecated Use {@link WebDriverSessionsManager#getSessionContext(WebDriver)} instead

@@ -124,7 +124,6 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
                 return "has words " + Format.param(wordsList);
             }
         });
-        
     }
 
     @Override

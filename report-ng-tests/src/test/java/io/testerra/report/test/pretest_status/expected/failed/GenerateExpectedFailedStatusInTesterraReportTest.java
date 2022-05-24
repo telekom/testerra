@@ -46,7 +46,7 @@ public class GenerateExpectedFailedStatusInTesterraReportTest extends TesterraTe
     public void test_PassedAfterRetry() {
         this.counter.incrementAndGet();
         if (counter.get() == 1) {
-            Assert.fail("initial fail.");
+            Assert.fail("test_FailedToPassedHistoryWithRetry");
         } else {
             Assert.assertTrue(true);
         }

@@ -43,6 +43,8 @@ public class ReportUnderTest extends AbstractReportTest {
                 {4, Status.SKIPPED},
                 {4, Status.PASSED},
                 {1, Status.REPAIRED},
+                {1, Status.RETRIED},
+                {1, Status.RECOVERED},
         };
     }
 
@@ -50,7 +52,7 @@ public class ReportUnderTest extends AbstractReportTest {
     @Test
     public void test_visitReport() {
         final ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, WebDriverManager.getWebDriver(),
-                PropertyManager.getProperty("reportDirectoryGeneratedTestStatus"));
+                PropertyManager.getProperty("file.path.content.root"));
         reportDashBoardPage.gotoToReportPage(ReportPageType.TESTS, ReportTestsPage.class);
     }
 
@@ -59,7 +61,7 @@ public class ReportUnderTest extends AbstractReportTest {
         final String expectedText = String.format("%s %s", amountOfTests, testStatus.title);
 
         final ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, WebDriverManager.getWebDriver(),
-                PropertyManager.getProperty("reportDirectoryGeneratedTestStatus"));
+                PropertyManager.getProperty("file.path.content.root"));
 
         final String testsPerStatus = reportDashBoardPage.getTestsPerStatus(testStatus);
         Assert.assertTrue(testsPerStatus.contains(expectedText),

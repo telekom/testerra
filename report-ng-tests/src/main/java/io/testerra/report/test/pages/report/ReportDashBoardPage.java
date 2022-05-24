@@ -65,10 +65,24 @@ public class ReportDashBoardPage extends AbstractReportPage {
     public String getTestsPerStatus(final Status testStatus) {
 
         String testsPerStatus = "not_existing";
-        // repaired status is within element of passed status
-        final GuiElement testsStatusElement = testStatus.equals(Status.REPAIRED)
-                ? testsElement.getSubElement((getXpathToTestsPerStatus(Status.PASSED)))
-                : testsElement.getSubElement((getXpathToTestsPerStatus(testStatus)));
+
+        final GuiElement testsStatusElement;
+        switch (testStatus) {
+            // retried status is within element of failed status
+            case RETRIED:
+                testsStatusElement = testsElement.getSubElement((getXpathToTestsPerStatus(Status.FAILED)));
+                break;
+            // repaired and recovered status are within element of passed status
+            case REPAIRED:
+            case RECOVERED:
+                testsStatusElement = testsElement.getSubElement((getXpathToTestsPerStatus(Status.PASSED)));
+                break;
+            // remaining test status have dedicated elements
+            default:
+               testsStatusElement = testsElement.getSubElement((getXpathToTestsPerStatus(testStatus)));
+               break;
+        }
+
         final List<GuiElement> listOfAmountInformation = testsStatusElement.getSubElement(By.xpath("./mdc-list-item-primary-text/span")).getList();
 
         // for passed when repaired executions exist

@@ -38,10 +38,10 @@ public class ReportUnderTest extends AbstractReportTest {
     @DataProvider
     public static Object[][] provideTestsPerStatus() {
         return new Object[][]{
-                {6, Status.FAILED},
+                {5, Status.FAILED},
                 {3, Status.FAILED_EXPECTED},
                 {4, Status.SKIPPED},
-                {4, Status.PASSED},
+                {5, Status.PASSED},
                 {1, Status.REPAIRED},
                 {1, Status.RETRIED},
                 {1, Status.RECOVERED},

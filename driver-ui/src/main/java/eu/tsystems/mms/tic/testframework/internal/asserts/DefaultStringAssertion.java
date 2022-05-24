@@ -22,16 +22,18 @@
 package eu.tsystems.mms.tic.testframework.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Default implementation of {@link StringAssertion}
+ *
  * @author Mike Reiche
  */
 public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> implements StringAssertion<T>, Loggable {
-
 
     public DefaultStringAssertion(AbstractPropertyAssertion parentAssertion, AssertionProvider<T> provider) {
         super(parentAssertion, provider);
@@ -99,8 +101,14 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
 
     @Override
     public BinaryAssertion<Boolean> hasWords(List<String> words) {
-        final String wordsList = String.join("|", words);
-        final Pattern wordsPattern = Pattern.compile("\\b(" + wordsList + ")\\b", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+        final Pattern nonWordAtBegin = Pattern.compile("^\\W");
+        final Pattern nonWordAtTheEnd = Pattern.compile("\\W$");
+
+        final String wordsList = words.stream()
+                .map(word -> (nonWordAtBegin.matcher(word).find() ? "\\B" : "\\b") + "\\Q" + word) // word boundary for begin
+                .map(word -> word + "\\E" + (nonWordAtTheEnd.matcher(word).find() ? "\\B" : "\\b")) // word boundary for end
+                .collect(Collectors.joining("|"));
+        final Pattern wordsPattern = Pattern.compile(wordsList, Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 
         return propertyAssertionFactory.createWithParent(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
@@ -108,7 +116,7 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
                 int found = 0;
                 Matcher matcher = wordsPattern.matcher(provider.getActual().toString());
                 while (matcher.find()) found++;
-                return found >= words.size();
+                return found == words.size();
             }
 
             @Override
@@ -117,7 +125,6 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
             }
         });
     }
-
 
     @Override
     public QuantityAssertion<Integer> length() {

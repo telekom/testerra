@@ -1,32 +1,33 @@
 package io.testerra.report.test;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import io.testerra.report.test.helper.TestState;
 import io.testerra.report.test.pages.AbstractReportPage;
 import io.testerra.report.test.pages.ReportPageType;
 import io.testerra.report.test.pages.report.*;
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import java.util.List;
 
 public class ReportDashBoardPageTest extends AbstractReportTest {
 
     @DataProvider
     public Object[][] dataProviderForDifferentTestStates() {
-        return new Object[][]{{TestState.Passed}, {TestState.Failed}, {TestState.ExpectedFailed}, {TestState.Skipped}};
+        return new Object[][]{{Status.PASSED}, {Status.FAILED}, {Status.FAILED_EXPECTED}, {Status.SKIPPED}};
     }
 
     @DataProvider
     public static Object[][] dataProviderForDifferentTestStatesWithAmounts() {
         return new Object[][]{
-                {6, TestState.Failed},
-                {3, TestState.ExpectedFailed},
-                {4, TestState.Skipped},
-                {4, TestState.Passed},
+                {6, Status.FAILED},
+                {3, Status.FAILED_EXPECTED},
+                {4, Status.SKIPPED},
+                {4, Status.PASSED},
         };
     }
 
@@ -39,8 +40,17 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
                         {ReportPageType.THREADS, ReportThreadsPage.class}};
     }
 
+    @DataProvider
+    public Object[][] dataProviderFailureCorridorBounds() {
+        PropertyManager.loadProperties("report-ng-tests/src/test/resources/test.properties");
+        return new Object[][]
+                {{"High", PropertyManager.getIntProperty("tt.failure.corridor.allowed.failed.tests.high")},
+                        {"Mid", PropertyManager.getIntProperty("tt.failure.corridor.allowed.failed.tests.mid")},
+                        {"Low", PropertyManager.getIntProperty("tt.failure.corridor.allowed.failed.tests.low")}};
+    }
+
     @Test(dataProvider = "dataProviderForDifferentTestStates")
-    public void testT01_showCorrectTestClassesWhenClickingOnPieChart(TestState testState) {
+    public void testT01_showCorrectTestClassesWhenClickingOnPieChart(Status status) {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
@@ -48,15 +58,15 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
         reportDashBoardPage.assertPageIsShown();
 
         TestStep.begin("Check whether each test status displays the correct test classes.");
-        reportDashBoardPage.assertPieChartContainsTestState(testState);
+        reportDashBoardPage.assertPieChartContainsTestState(status);
 
         TestStep.begin("Check whether the corresponding test-state-part of the pieChart refreshes the shown test classes");
-        reportDashBoardPage.clickPieChartPart(testState);
+        reportDashBoardPage.clickPieChartPart(status);
         reportDashBoardPage.assertCorrectBarChartsAreDisplayed();
     }
 
     @Test(dataProvider = "dataProviderForDifferentTestStates")
-    public void testT02_showCorrectTestClassesWhenClickingOnNumbersChart(TestState testState) {
+    public void testT02_showCorrectTestClassesWhenClickingOnNumbersChart(Status status) {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
@@ -64,10 +74,10 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
         reportDashBoardPage.assertPageIsShown();
 
         TestStep.begin("Check whether each test status displays the correct test classes.");
-        reportDashBoardPage.assertNumbersChartContainsTestState(testState);
+        reportDashBoardPage.assertNumbersChartContainsTestState(status);
 
         TestStep.begin("Check whether the corresponding test-state-part of the numbersChart refreshes the shown test classes");
-        reportDashBoardPage.clickNumberChartPart(testState);
+        reportDashBoardPage.clickNumberChartPart(status);
         reportDashBoardPage.assertCorrectBarChartsAreDisplayed();
     }
 
@@ -103,7 +113,7 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
     }
 
     @Test(dataProvider = "dataProviderForDifferentTestStates")
-    public void testT05_barChartLinksToFilteredTestsPage(TestState testState){
+    public void testT05_barChartLinksToFilteredTestsPage(Status status) {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
@@ -111,22 +121,31 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
         reportDashBoardPage.assertPageIsShown();
 
         TestStep.begin("Check whether each test status displays the correct test classes.");
-        reportDashBoardPage.assertNumbersChartContainsTestState(testState);
+        reportDashBoardPage.assertNumbersChartContainsTestState(status);
 
         TestStep.begin("Check whether clicking on barchart bars navigates to tests page with correct filter.");
-        reportDashBoardPage.clickNumberChartPart(testState);
+        reportDashBoardPage.clickNumberChartPart(status);
         ReportTestsPage reportTestsPage = reportDashBoardPage.navigateToFilteredTestPageByClickingBarChartBar();
         reportTestsPage.assertPageIsShown();
-        reportTestsPage.assertCorrectTestStatus(testState);
+        reportTestsPage.assertCorrectTestStatus(status);
     }
 
     @Test
-    public void testT06_barChartLengthPerHover() {
-        //TODO
+    public void testT06_barChartLength() {
+        WebDriver driver = WebDriverManager.getWebDriver();
+        final double threshold = 0.01;  //1% (random chosen value, but some threshold is needed when asserting with double)
+
+        TestStep.begin("Navigate to dashboard page.");
+        final ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        reportDashBoardPage.assertPageIsShown();
+
+        TestStep.begin("Check barchart is shown and iterate through all bars to check correct length");
+        reportDashBoardPage.assertBarChartIsDisplayed();
+        reportDashBoardPage.assertCorrectBarsLength(threshold);
     }
 
     @Test(dataProvider = "dataProviderForDifferentTestStatesWithAmounts")
-    public void testT07_reportPercentages(int amount, TestState testState){
+    public void testT07_reportPercentages(int amount, Status status) {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
@@ -134,14 +153,14 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
         reportDashBoardPage.assertPageIsShown();
 
         TestStep.begin("Check whether each test status displays the correct test classes.");
-        reportDashBoardPage.assertPieChartContainsTestState(testState);
+        reportDashBoardPage.assertPieChartContainsTestState(status);
 
         TestStep.begin("Check whether the displayed percentages are correct");
-        reportDashBoardPage.assertPieChartPercentages(amount, testState);
+        reportDashBoardPage.assertPieChartPercentages(amount, status);
     }
 
     @Test(dataProvider = "dataProviderForDifferentTestStates")
-    public void testT08_barChartFilterHovering(TestState testState){
+    public void testT08_barChartFilterHovering(Status status) {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
@@ -149,18 +168,76 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
         reportDashBoardPage.assertPageIsShown();
 
         TestStep.begin("Check whether each test status displays the correct test classes.");
-        reportDashBoardPage.assertNumbersChartContainsTestState(testState);
+        reportDashBoardPage.assertNumbersChartContainsTestState(status);
 
         TestStep.begin("Show corresponding bars to test state");
-        reportDashBoardPage.clickNumberChartPart(testState);
+        reportDashBoardPage.clickNumberChartPart(status);
 
         TestStep.begin("Check whether hovering above a bar in barchart let a popup appear with correct content");
-        reportDashBoardPage.assertPopupWhileHoveringWithCorrectContent(testState);
+        reportDashBoardPage.assertPopupWhileHoveringWithCorrectContent(status);
+    }
+
+    @Test(dataProvider = "dataProviderFailureCorridorBounds")
+    public void testT09_failureCorridorCorrectness(String failureCorridorType, int bound) {
+        WebDriver driver = WebDriverManager.getWebDriver();
+
+        TestStep.begin("Navigate to dashboard page.");
+        final ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        reportDashBoardPage.assertPageIsShown();
+
+        TestStep.begin("Check displayed and compare failure corridor values to allowed bounds");
+        reportDashBoardPage.assertFailureCorridorIsDisplayed(failureCorridorType);
+        reportDashBoardPage.assertFailureCorridorValuesAreCorrectClassified(failureCorridorType, bound);
     }
 
     @Test
-    public void testT09_failureCorridorCorrectness(FailureCorridor failureCorridor){
+    public void testT10_topFailureAspectsMajorLink() {
+        WebDriver driver = WebDriverManager.getWebDriver();
 
+        TestStep.begin("Navigate to dashboard page.");
+        final ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        reportDashBoardPage.assertPageIsShown();
+
+        TestStep.begin("Check top failure aspects are displayed");
+        reportDashBoardPage.assertTopFailureAspectsAreDisplayed();
+
+        TestStep.begin("Check Major failure aspects link works correct");
+        ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.clickMajorFailureAspectsLink();
+        reportFailureAspectsPage.assertEveryDisplayedFailureAspectGotFailedStatus();
+    }
+
+    @Test
+    public void testT11_topFailureAspectsMinorLink() {
+        WebDriver driver = WebDriverManager.getWebDriver();
+
+        TestStep.begin("Navigate to dashboard page.");
+        final ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        reportDashBoardPage.assertPageIsShown();
+
+        TestStep.begin("Check top failure aspects are displayed");
+        reportDashBoardPage.assertTopFailureAspectsAreDisplayed();
+
+        TestStep.begin("Check Minor failure aspects link works correct");
+        ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.clickMinorFailureAspectsLink();
+        reportFailureAspectsPage.assertNoDisplayedFailureAspectGotFailedStatus();
+    }
+
+    @Test
+    public void testT12_topFailureAspectsOrderedList() {
+        WebDriver driver = WebDriverManager.getWebDriver();
+
+        TestStep.begin("Navigate to dashboard page.");
+        final ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        reportDashBoardPage.assertPageIsShown();
+
+        TestStep.begin("Check top failure aspects are displayed");
+        reportDashBoardPage.assertTopFailureAspectsAreDisplayed();
+
+        TestStep.begin("Check order of listed failure aspects is correct");
+        List<String> topFailureAspectsReportDashboardPage = reportDashBoardPage.getOrderListOfTopFailureAspects();
+        ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
+        List<String> topFailureAspectsReportFailureAspectsPage = reportFailureAspectsPage.getOrderListOfTopFailureAspects();
+        Assert.assertEquals(topFailureAspectsReportDashboardPage, topFailureAspectsReportFailureAspectsPage.subList(0, 3));
     }
 
 

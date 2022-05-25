@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import io.testerra.report.test.pages.utils.RegExUtils;
+
 public abstract class ReportSideBar extends ReportHeader {
 
     @Check
@@ -86,5 +88,11 @@ public abstract class ReportSideBar extends ReportHeader {
 
     public GuiElement getSideBarTests(){
         return sideBarTests;
+    }
+
+    public int getAmountOfTests() {
+        final String testsTextOfSidebar = sideBarTests.getText();
+        String regExpResultOfString = RegExUtils.getRegExpResultOfString(RegExUtils.RegExp.DIGITS_ONLY, testsTextOfSidebar);
+        return Integer.parseInt(regExpResultOfString);
     }
 }

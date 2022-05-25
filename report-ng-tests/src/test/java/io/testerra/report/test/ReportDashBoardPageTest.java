@@ -4,15 +4,22 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import io.testerra.report.test.pages.AbstractReportPage;
-import io.testerra.report.test.pages.ReportPageType;
-import io.testerra.report.test.pages.report.*;
+
+import java.util.List;
+
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.util.List;
+import io.testerra.report.test.pages.AbstractReportPage;
+import io.testerra.report.test.pages.ReportPageType;
+import io.testerra.report.test.pages.report.ReportDashBoardPage;
+import io.testerra.report.test.pages.report.ReportFailureAspectsPage;
+import io.testerra.report.test.pages.report.ReportLogsPage;
+import io.testerra.report.test.pages.report.ReportTestsPage;
+import io.testerra.report.test.pages.report.ReportThreadsPage;
+import io.testerra.report.test.pages.utils.DateTimeUtils;
 
 public class ReportDashBoardPageTest extends AbstractReportTest {
 
@@ -24,10 +31,10 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
     @DataProvider
     public static Object[][] dataProviderForDifferentTestStatesWithAmounts() {
         return new Object[][]{
-                {6, Status.FAILED},
+                {5, Status.FAILED},
                 {3, Status.FAILED_EXPECTED},
                 {4, Status.SKIPPED},
-                {4, Status.PASSED},
+                {5, Status.PASSED}
         };
     }
 
@@ -109,7 +116,9 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
         reportDashBoardPage.assertEndedTimeIsDisplayed();
 
         TestStep.begin("Check whether the duration is displayed and correct");
-        reportDashBoardPage.assertDurationIsDisplayedCorrect();
+        final String testDuration = reportDashBoardPage.getTestDuration();
+        final boolean dateFormatIsCorrect = DateTimeUtils.verifyDateTimeString(testDuration);
+        Assert.assertTrue(dateFormatIsCorrect, String.format("Test Duration '%s' has correct format", testDuration));
     }
 
     @Test(dataProvider = "dataProviderForDifferentTestStates")
@@ -195,7 +204,8 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
-        final ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        final ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver,
+                PropertyManager.getProperty("file.path.content.root"));
         reportDashBoardPage.assertPageIsShown();
 
         TestStep.begin("Check top failure aspects are displayed");
@@ -203,7 +213,8 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
 
         TestStep.begin("Check Major failure aspects link works correct");
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.clickMajorFailureAspectsLink();
-        reportFailureAspectsPage.assertEveryDisplayedFailureAspectGotFailedStatus();
+        final boolean hasFailedState = reportFailureAspectsPage.getFailedStateExistence();
+        Assert.assertTrue(hasFailedState, "FailureAspectsPage contains State 'Failed'");
     }
 
     @Test
@@ -219,7 +230,9 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
 
         TestStep.begin("Check Minor failure aspects link works correct");
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.clickMinorFailureAspectsLink();
-        reportFailureAspectsPage.assertNoDisplayedFailureAspectGotFailedStatus();
+        final boolean hasFailedState = reportFailureAspectsPage.getFailedStateExistence();
+        Assert.assertFalse(hasFailedState, "FailureAspectsPage contains State 'Failed'");
+
     }
 
     @Test

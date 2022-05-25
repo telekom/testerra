@@ -24,7 +24,6 @@ package io.testerra.report.test.pretest_status.simple;
 import static eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager.getWebDriver;
 
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExistingElement;
-import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 
 import org.openqa.selenium.WebDriver;
@@ -32,6 +31,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import io.testerra.report.test.AbstractTestSitesTest;
+import io.testerra.report.test.pages.TestPage;
 
 public class GenerateScreenshotsInTesterraReportTest extends AbstractTestSitesTest {
 

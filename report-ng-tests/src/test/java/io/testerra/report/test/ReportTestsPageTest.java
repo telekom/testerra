@@ -1,4 +1,4 @@
-package io.testerra.report.test.pretest_status;
+package io.testerra.report.test;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.Status;

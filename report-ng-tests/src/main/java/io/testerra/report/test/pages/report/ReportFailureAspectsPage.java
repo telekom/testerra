@@ -15,7 +15,7 @@ import io.testerra.report.test.pages.AbstractReportPage;
 public class ReportFailureAspectsPage extends AbstractReportPage {
 
     @Check
-    private final GuiElement failureAspectsTable = new GuiElement(getWebDriver(), By.xpath("//table//tbody"));
+    private final GuiElement failureAspectsTable = new GuiElement(getWebDriver(), By.xpath("//table//tbody//tr"));
 
     /**
      * Constructor for existing sessions.

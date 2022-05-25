@@ -190,7 +190,7 @@ public class ReportTestsPage extends AbstractReportPage {
                 .collect(Collectors.toSet());
         for (String methodName : methods) {
             testSearchInput.type(methodName);
-            TimerUtils.sleep(5000, "Necessary sleep  gives enough time to refresh all locator");
+            TimerUtils.sleep(1000, "Necessary sleep  gives enough time to refresh all locator");
             assertTableIsDisplayedCorrect();
             testSearchInput.clear();
         }

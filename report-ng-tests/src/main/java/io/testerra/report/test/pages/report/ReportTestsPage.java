@@ -89,11 +89,18 @@ public class ReportTestsPage extends AbstractReportPage {
     private void assertMethodColumnContainsCorrectMethods() {
         String filter = testSearchInput.getAttribute("value").toUpperCase(Locale.ROOT);
         if (filter.equals("")) return;
-        getColumnWithoutHead(3)
-                .stream()
-                .map(i -> i.getSubElement(By.xpath("//*[contains(text(), 'test')]")))
-                .map(GuiElement::getText)
-                .forEach(i -> Assert.assertEquals(i.toUpperCase(Locale.ROOT), filter));
+        if (filter.startsWith("TEST")) {
+            getColumnWithoutHead(3)
+                    .stream()
+                    .map(i -> i.getSubElement(By.xpath("//*[contains(text(), 'test')]")))
+                    .map(GuiElement::getText)
+                    .forEach(i -> Assert.assertEquals(i.toUpperCase(Locale.ROOT), filter));
+        } else {
+            getColumnWithoutHead(3)
+                    .stream()
+                    .map(GuiElement::getText)
+                    .forEach(i -> Assert.assertTrue(i.toUpperCase(Locale.ROOT).contains(filter)));
+        }
     }
 
     private void assertClassColumnContainsCorrectClasses() {
@@ -210,5 +217,22 @@ public class ReportTestsPage extends AbstractReportPage {
                 .filter(i -> i.contains("Configuration"))
                 .count();
         Assert.assertTrue(amountOfDisplayedConfigurationMethods > 0, "Configuration methods should be listed and contain the corresponding tag!");
+    }
+
+    public void assertCorrectTableWhenLoopingThroughFailureAspect(){
+        Set<String> advices = getColumnWithoutHead(3)
+                .stream()
+                .map(i -> i.getSubElement(By.xpath("/div")).getList())
+                .filter(i -> i.size() > 1)
+                .map(i -> i.get(i.size()-1))
+                .map(i -> i.getText().split(":")[0])
+                .collect(Collectors.toSet());
+        for (String advice : advices) {
+            System.out.println(advice);
+            testSearchInput.type(advice);
+            TimerUtils.sleep(1000, "Necessary sleep  gives enough time to refresh all locator");
+            assertTableIsDisplayedCorrect();
+            testSearchInput.clear();
+        }
     }
 }

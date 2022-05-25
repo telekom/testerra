@@ -89,7 +89,22 @@ public class ReportTestsPageTest extends AbstractReportTest {
     }
 
     @Test
-    public void testT05_showConfigurationMethods() {
+    public void testT05_SearchForFailureAspect() {
+        WebDriver driver = WebDriverManager.getWebDriver();
+
+        TestStep.begin("Navigate to dashboard page.");
+        ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+
+        TestStep.begin("Navigate to tests page.");
+        ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportPageType.TESTS, ReportTestsPage.class);
+        reportTestsPage.assertPageIsShown();
+
+        TestStep.begin("Loop through all available assertions and check whether the table is displayed correctly.");
+        reportTestsPage.assertCorrectTableWhenLoopingThroughFailureAspect();
+    }
+
+    @Test
+    public void testT06_showConfigurationMethods() {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");

@@ -65,11 +65,6 @@ public class ReportTestsPage extends AbstractReportPage {
         return tableHead.getSubElement(By.xpath("//tr//th")).getList();
     }
 
-    private List<GuiElement> getRow(int rowNumber) {
-        GuiElement row = tableRows.getList().get(rowNumber);
-        return row.getSubElement(By.xpath("//td")).getList();
-    }
-
     public void assertPageIsShown() {
         verifyReportPage(ReportPageType.TESTS);
     }
@@ -134,7 +129,7 @@ public class ReportTestsPage extends AbstractReportPage {
 
     private void assertMethodStatusContainsText(String expectedText, String actual) {
         if (expectedText.equals("Passed")) {
-            Assert.assertTrue(actual.equals(expectedText) || actual.equals("Repaired"));
+            Assert.assertTrue(actual.equals(expectedText) || actual.equals("Repaired") || actual.equals("Recovered"));
         } else {
             Assert.assertEquals(actual, expectedText);
         }
@@ -161,11 +156,11 @@ public class ReportTestsPage extends AbstractReportPage {
                 .forEach(i -> Assert.assertEquals(i, status.title, "There should be only methods with expected status listed"));
     }
 
-    public void selectTestStateFilter(Status status) {
+    public void selectTestStateFilter(String stateName) {
         testStatusSelect.click();
-        Optional<GuiElement> guiElementOptional = testStatusSelect.getSubElement(By.xpath("//mdc-list-item")).getList()
+        Optional<GuiElement> guiElementOptional = testStatusSelect.getSubElement(By.xpath("//mdc-menu//mdc-list-item")).getList()
                 .stream()
-                .filter(i -> i.getText().equals(status.title))
+                .filter(i -> i.getText().contains(stateName))
                 .findFirst();
         Assert.assertTrue(guiElementOptional.isPresent());
         guiElementOptional.get().click();
@@ -219,12 +214,12 @@ public class ReportTestsPage extends AbstractReportPage {
         Assert.assertTrue(amountOfDisplayedConfigurationMethods > 0, "Configuration methods should be listed and contain the corresponding tag!");
     }
 
-    public void assertCorrectTableWhenLoopingThroughFailureAspect(){
+    public void assertCorrectTableWhenLoopingThroughFailureAspect() {
         Set<String> advices = getColumnWithoutHead(3)
                 .stream()
                 .map(i -> i.getSubElement(By.xpath("/div")).getList())
                 .filter(i -> i.size() > 1)
-                .map(i -> i.get(i.size()-1))
+                .map(i -> i.get(i.size() - 1))
                 .map(i -> i.getText().split(":")[0])
                 .collect(Collectors.toSet());
         for (String advice : advices) {
@@ -233,6 +228,24 @@ public class ReportTestsPage extends AbstractReportPage {
             TimerUtils.sleep(1000, "Necessary sleep  gives enough time to refresh all locator");
             assertTableIsDisplayedCorrect();
             testSearchInput.clear();
+        }
+    }
+
+    public List<String> getListOfAllSelectableStates() {
+        testStatusSelect.click();
+        List<String> returnList = testStatusSelect.getSubElement(By.xpath("//mdc-menu//mdc-list-item")).getList()
+                .stream()
+                .map(GuiElement::getText)
+                .filter(i -> !i.contains("All"))
+                .collect(Collectors.toList());
+        testStatusSelect.click();
+        return returnList;
+    }
+
+    public void LoopThroughPossibleTestStateListAndAssertTableIsDisplayedCorrect(List<String> testStates) {
+        for (String stateName : testStates) {
+            selectTestStateFilter(stateName);
+            assertTableIsDisplayedCorrect();
         }
     }
 }

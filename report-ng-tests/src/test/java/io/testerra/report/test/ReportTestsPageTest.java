@@ -12,6 +12,8 @@ import org.openqa.selenium.WebDriver;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.util.List;
+
 public class ReportTestsPageTest extends AbstractReportTest {
 
     @DataProvider
@@ -40,8 +42,8 @@ public class ReportTestsPageTest extends AbstractReportTest {
         reportTestsPage.assertTableIsDisplayedCorrect();
     }
 
-    @Test(dataProvider = "dataProviderForDifferentTestStatesForFiltering")
-    public void testT02_filterForTestStates(Status status) {
+    @Test
+    public void testT02_filterForTestStates() {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
@@ -51,11 +53,11 @@ public class ReportTestsPageTest extends AbstractReportTest {
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportPageType.TESTS, ReportTestsPage.class);
         reportTestsPage.assertPageIsShown();
 
-        TestStep.begin("Filter for test state");
-        reportTestsPage.selectTestStateFilter(status);
+        TestStep.begin("Get a list of all possible test states, which can be selected on tests page");
+        List<String> testStates = reportTestsPage.getListOfAllSelectableStates();
 
-        TestStep.begin("Check whether the table on tests page is displayed correctly");
-        reportTestsPage.assertTableIsDisplayedCorrect();
+        TestStep.begin("Check whether the tests page table is correct for every test state");
+        reportTestsPage.LoopThroughPossibleTestStateListAndAssertTableIsDisplayedCorrect(testStates);
     }
 
     @Test

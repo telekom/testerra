@@ -530,13 +530,13 @@ public final class WebDriverSessionsManager {
          * It can be made more robust, if we always can retrieve the storedSessionId of the WebDriver, given a WebDriver object.
          * For more info, please ask @rnhb
          */
-        try {
-            WebDriverProxy webDriverProxy = new WebDriverProxy(webDriver, sessionContext);
-            Class[] interfaces = ObjectUtils.getAllInterfacesOf(webDriver);
-            webDriver = ObjectUtils.simpleProxy(WebDriver.class, webDriverProxy, interfaces);
-        } catch (Exception e) {
-            LOGGER.error("Could not create proxy for raw webdriver", e);
-        }
+//        try {
+//            WebDriverProxy webDriverProxy = new WebDriverProxy(webDriver, sessionContext);
+//            Class[] interfaces = ObjectUtils.getAllInterfacesOf(webDriver);
+//            webDriver = ObjectUtils.simpleProxy(WebDriver.class, webDriverProxy, interfaces);
+//        } catch (Exception e) {
+//            LOGGER.error("Could not create proxy for raw webdriver", e);
+//        }
 
         return new EventFiringWebDriver(webDriver);
     }

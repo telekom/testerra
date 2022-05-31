@@ -38,15 +38,15 @@ public abstract class ReportSideBar extends ReportHeader {
     @Check
     private final GuiElement sideBar = new GuiElement(getWebDriver(), By.xpath("//mdc-drawer"));
     @Check
-    private final GuiElement sideBarDashBoard = sideBar.getSubElement(By.xpath(".//mdc-list-item[.//span[(text() = 'Dashboard')]]"));
+    private final GuiElement sideBarDashBoard = getSidebarElement(ReportPageType.DASHBOARD);
     @Check
-    private final GuiElement sideBarTests = sideBar.getSubElement(By.xpath(".//mdc-list-item[.//span[contains(text(), 'Tests')]]"));
+    private final GuiElement sideBarTests = getSidebarElement(ReportPageType.TESTS);
     @Check
-    private final GuiElement sideBarFailureAspects = sideBar.getSubElement(By.xpath(".//mdc-list-item[.//span[contains(text(), 'Failure Aspects')]]"));
+    private final GuiElement sideBarFailureAspects = getSidebarElement(ReportPageType.FAILURE_ASPECTS);
     @Check
-    private final GuiElement sideBarLogs = sideBar.getSubElement(By.xpath(".//mdc-list-item[.//span[contains(text(), 'Logs')]]"));
+    private final GuiElement sideBarLogs = getSidebarElement(ReportPageType.LOGS);
     @Check
-    private final GuiElement sideBarThreads = sideBar.getSubElement(By.xpath(".//mdc-list-item[.//span[contains(text(), 'Threads')]]"));
+    private final GuiElement sideBarThreads = getSidebarElement(ReportPageType.THREADS);
 
     public ReportSideBar(WebDriver driver) {
         super(driver);
@@ -74,11 +74,10 @@ public abstract class ReportSideBar extends ReportHeader {
         return PageFactory.create(reportPageClass, getWebDriver());
     }
 
-
-    public void verifyReportPage(final ReportPageType reportPageType) {
+    public void verifyActiveSidebarCategory(final ReportPageType reportPageType) {
         List<GuiElement> sideBarElements = sideBar.getSubElement(By.xpath("/mdc-drawer-content/mdc-list-item")).getList();
         for(GuiElement sidebarElement : sideBarElements){
-            if (Objects.equals(sidebarElement.getText().toUpperCase(), reportPageType.name())){
+            if (sidebarElement.getText().toUpperCase().equals(reportPageType.name())){
                 sidebarElement.asserts().assertAttributeContains("class", "mdc-list-item--activated");
             } else {
                 sidebarElement.asserts().assertAttributeContainsNot("class", "mdc-list-item--activated");
@@ -86,13 +85,14 @@ public abstract class ReportSideBar extends ReportHeader {
         }
     }
 
-    public GuiElement getSideBarTests(){
-        return sideBarTests;
-    }
-
     public int getAmountOfTests() {
         final String testsTextOfSidebar = sideBarTests.getText();
-        String regExpResultOfString = RegExUtils.getRegExpResultOfString(RegExUtils.RegExp.DIGITS_ONLY, testsTextOfSidebar);
+        final String regExpResultOfString = RegExUtils.getRegExpResultOfString(RegExUtils.RegExp.DIGITS_ONLY, testsTextOfSidebar);
+
         return Integer.parseInt(regExpResultOfString);
+    }
+
+    private GuiElement getSidebarElement(ReportPageType reportPageType) {
+        return sideBar.getSubElement(By.xpath(String.format(".//mdc-list-item[.//span[(text() = '%s')]]", reportPageType.title)));
     }
 }

@@ -45,10 +45,6 @@ public class ReportTestsPage extends AbstractReportPage {
         super(driver);
     }
 
-    public void assertPageIsShown() {
-        verifyReportPage(ReportPageType.TESTS);
-    }
-
     public void assertCorrectTestStatus(Status status) {
         List<GuiElement> tableRows = new GuiElement(getWebDriver(), By.xpath("//tbody[@class='mdc-data-table__content au-target']/tr")).getList();
         for(GuiElement row : tableRows){

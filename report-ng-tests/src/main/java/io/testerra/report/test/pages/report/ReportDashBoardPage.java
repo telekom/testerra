@@ -42,7 +42,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 
 import io.testerra.report.test.pages.AbstractReportPage;
-import io.testerra.report.test.pages.ReportPageType;
 
 public class ReportDashBoardPage extends AbstractReportPage {
 
@@ -78,10 +77,6 @@ public class ReportDashBoardPage extends AbstractReportPage {
         super(driver);
     }
 
-    public void assertPageIsShown() {
-        verifyReportPage(ReportPageType.DASHBOARD);
-    }
-
     /**
      * extract information of executed tests per Status from DashBoardPage Tests card
      *
@@ -96,16 +91,16 @@ public class ReportDashBoardPage extends AbstractReportPage {
         switch (testStatus) {
             // retried status is within element of failed status
             case RETRIED:
-                testsStatusElement = testsElement.getSubElement((getXpathToTestsPerStatus(Status.FAILED)));
+                testsStatusElement = getTestStateElementPerStatus(Status.FAILED);
                 break;
             // repaired and recovered status are within element of passed status
             case REPAIRED:
             case RECOVERED:
-                testsStatusElement = testsElement.getSubElement((getXpathToTestsPerStatus(Status.PASSED)));
+                testsStatusElement = getTestStateElementPerStatus(Status.PASSED);
                 break;
             // remaining test status have dedicated elements
             default:
-               testsStatusElement = testsElement.getSubElement((getXpathToTestsPerStatus(testStatus)));
+               testsStatusElement = getTestStateElementPerStatus(testStatus);
                break;
         }
 
@@ -126,9 +121,9 @@ public class ReportDashBoardPage extends AbstractReportPage {
         return testsPerStatus;
     }
 
-    private By getXpathToTestsPerStatus(final Status testStatus) {
-        final String xPathToTestsPerStatusTemplate = ".//mdc-list-item[.//mdc-icon[@title = '%s']]//span[contains(@class, 'mdc-list-item__content')]";
-        return By.xpath(String.format(xPathToTestsPerStatusTemplate, testStatus.title));
+    private GuiElement getTestStateElementPerStatus(final Status testStatus) {
+        GuiElement testStateIconInTestsList = getTestStateIconInTestsList(testStatus);
+        return testStateIconInTestsList.getSubElement(By.xpath(".//span[contains(@class, 'mdc-list-item__content')]"));
     }
 
     private GuiElement getTopFailureAspectsCard() {
@@ -155,12 +150,11 @@ public class ReportDashBoardPage extends AbstractReportPage {
                 By.xpath(String.format(xPathToPieChartPart, status.getTitleWithSpaceReplacement())));
     }
 
-    public void clickNumberChartPart(Status status) {
-        List<GuiElement> testClassesNumberChartList = testsElement.getSubElement(By.xpath("//mdc-list-item")).getList();
-        Objects.requireNonNull(testClassesNumberChartList.stream()
-                .filter(guiElement -> guiElement.getSubElement(By.xpath("//mdc-icon")).getAttribute("title").equals(status.title))
-                .findFirst()
-                .orElse(null)).click();
+    public ReportDashBoardPage clickTestStateIconInTestsList(Status status) {
+        GuiElement testStateIcon = getTestStateIconInTestsList(status);
+        testStateIcon.click();
+
+        return PageFactory.create(ReportDashBoardPage.class, getWebDriver());
     }
 
     public void assertCorrectBarChartsAreDisplayed() {
@@ -169,10 +163,14 @@ public class ReportDashBoardPage extends AbstractReportPage {
     }
 
 
-    public void assertNumbersChartContainsTestState(Status status) {
-        String xpath = String.format("//mdc-list-item//mdc-icon[@title='%s']", status.title);
-        GuiElement testClassesNumberChart = testsElement.getSubElement(By.xpath(xpath));
-        testClassesNumberChart.asserts().assertIsDisplayed();
+    public void assertTestStateIconInTestsList(Status status) {
+        GuiElement testStateIcon = getTestStateIconInTestsList(status);
+        testStateIcon.asserts(String.format("Test state icon '%s' is displayed", status.title)).assertIsDisplayed();
+    }
+
+    private GuiElement getTestStateIconInTestsList(Status status) {
+        String xpath = String.format(".//mdc-list-item[.//mdc-icon[@title='%s']]", status.title);
+        return testsElement.getSubElement(By.xpath(xpath));
     }
 
     public void assertStartTimeIsDisplayed() {
@@ -201,7 +199,7 @@ public class ReportDashBoardPage extends AbstractReportPage {
         double amountOfTotalTestAsString = getAmountOfTests();
 
         String percentageString = getPercentagesFromReportByStates(expectedAmount, amountOfTotalTestAsString);
-        pieChartPart.asserts().assertText(percentageString);
+        pieChartPart.asserts(String.format("Pie Charts contains '%s'", percentageString)).assertText(percentageString);
     }
 
     private String getPercentagesFromReportByStates(double amount, double total) {

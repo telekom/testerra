@@ -4,7 +4,6 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import io.testerra.report.test.AbstractReportTest;
 import io.testerra.report.test.pages.ReportPageType;
 import io.testerra.report.test.pages.report.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.ReportTestsPage;
@@ -16,17 +15,6 @@ import java.util.List;
 
 public class ReportTestsPageTest extends AbstractReportTest {
 
-    @DataProvider
-    public static Object[][] dataProviderForDifferentTestStatesForFiltering() {
-        return new Object[][]{
-                {Status.FAILED},
-                {Status.FAILED_EXPECTED},
-                {Status.SKIPPED},
-                {Status.PASSED},
-                {Status.REPAIRED},
-        };
-    }
-
     @Test
     public void testT01_checkInitialTable() {
         WebDriver driver = WebDriverManager.getWebDriver();
@@ -36,7 +24,6 @@ public class ReportTestsPageTest extends AbstractReportTest {
 
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportPageType.TESTS, ReportTestsPage.class);
-        reportTestsPage.assertPageIsShown();
 
         TestStep.begin("Check whether the table on tests page is displayed correctly");
         reportTestsPage.assertTableIsDisplayedCorrect();
@@ -51,7 +38,6 @@ public class ReportTestsPageTest extends AbstractReportTest {
 
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportPageType.TESTS, ReportTestsPage.class);
-        reportTestsPage.assertPageIsShown();
 
         TestStep.begin("Get a list of all possible test states, which can be selected on tests page");
         List<String> testStates = reportTestsPage.getListOfAllSelectableStates();
@@ -69,7 +55,6 @@ public class ReportTestsPageTest extends AbstractReportTest {
 
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportPageType.TESTS, ReportTestsPage.class);
-        reportTestsPage.assertPageIsShown();
 
         TestStep.begin("Loop through all available classes and check whether the table is displayed correctly.");
         reportTestsPage.assertCorrectTableWhenLoopingThroughClasses();
@@ -84,7 +69,6 @@ public class ReportTestsPageTest extends AbstractReportTest {
 
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportPageType.TESTS, ReportTestsPage.class);
-        reportTestsPage.assertPageIsShown();
 
         TestStep.begin("Loop through all available methods and check whether the table is displayed correctly.");
         reportTestsPage.assertCorrectTableWhenLoopingThroughMethods();
@@ -99,7 +83,6 @@ public class ReportTestsPageTest extends AbstractReportTest {
 
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportPageType.TESTS, ReportTestsPage.class);
-        reportTestsPage.assertPageIsShown();
 
         TestStep.begin("Loop through all available assertions and check whether the table is displayed correctly.");
         reportTestsPage.assertCorrectTableWhenLoopingThroughFailureAspect();
@@ -114,7 +97,6 @@ public class ReportTestsPageTest extends AbstractReportTest {
 
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportPageType.TESTS, ReportTestsPage.class);
-        reportTestsPage.assertPageIsShown();
 
         TestStep.begin("Enable 'Show configuration methods and check whether more methods are displayed");
         reportTestsPage.assertShowConfigurationMethodsButtonDisplaysMoreMethods();

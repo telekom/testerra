@@ -25,6 +25,15 @@ import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.Status;
+import io.testerra.report.test.pages.AbstractReportPage;
+import io.testerra.report.test.pages.ReportPageType;
+import io.testerra.report.test.pages.utils.RegExUtils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.testng.Assert;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -33,16 +42,6 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.testng.Assert;
-
-import io.testerra.report.test.pages.AbstractReportPage;
-import io.testerra.report.test.pages.ReportPageType;
 
 public class ReportDashBoardPage extends AbstractReportPage {
 
@@ -105,8 +104,8 @@ public class ReportDashBoardPage extends AbstractReportPage {
                 break;
             // remaining test status have dedicated elements
             default:
-               testsStatusElement = testsElement.getSubElement((getXpathToTestsPerStatus(testStatus)));
-               break;
+                testsStatusElement = testsElement.getSubElement((getXpathToTestsPerStatus(testStatus)));
+                break;
         }
 
         final List<GuiElement> listOfAmountInformation = testsStatusElement.getSubElement(By.xpath("./mdc-list-item-primary-text/span")).getList();
@@ -131,23 +130,15 @@ public class ReportDashBoardPage extends AbstractReportPage {
         return By.xpath(String.format(xPathToTestsPerStatusTemplate, testStatus.title));
     }
 
-    private GuiElement getTopFailureAspectsCard() {
-        Optional<GuiElement> optionalTopFailureAspects = new GuiElement(getWebDriver(), By.xpath("//mdc-card")).getList()
-                .stream()
-                .filter(i -> i.getSubElement(By.xpath("/div[contains(text(), 'Failure Aspects')]")).isDisplayed())
-                .findFirst();
-        Assert.assertTrue(optionalTopFailureAspects.isPresent());
-        return optionalTopFailureAspects.get();
-    }
-
     public void assertPieChartContainsTestState(final Status status) {
         GuiElement pieChartPart = getPieChartPart(status);
-        pieChartPart.asserts().assertIsDisplayed();
+        pieChartPart.asserts("There should be a pie chart displayed!").assertIsDisplayed();
     }
 
-    public void clickPieChartPart(final Status status) {
+    public ReportDashBoardPage clickPieChartPart(final Status status) {
         GuiElement pieChartPart = getPieChartPart(status);
         pieChartPart.click();
+        return PageFactory.create(ReportDashBoardPage.class, getWebDriver());
     }
 
     private GuiElement getPieChartPart(final Status status) {
@@ -155,12 +146,10 @@ public class ReportDashBoardPage extends AbstractReportPage {
                 By.xpath(String.format(xPathToPieChartPart, status.getTitleWithSpaceReplacement())));
     }
 
-    public void clickNumberChartPart(Status status) {
-        List<GuiElement> testClassesNumberChartList = testsElement.getSubElement(By.xpath("//mdc-list-item")).getList();
-        Objects.requireNonNull(testClassesNumberChartList.stream()
-                .filter(guiElement -> guiElement.getSubElement(By.xpath("//mdc-icon")).getAttribute("title").equals(status.title))
-                .findFirst()
-                .orElse(null)).click();
+    public ReportDashBoardPage clickNumberChartPart(Status status) {
+        GuiElement testClassesNumberChartElement = testsElement.getSubElement(By.xpath(String.format("//mdc-list-item[.//mdc-icon[@title='%s']]", status.title)));
+        testClassesNumberChartElement.click();
+        return PageFactory.create(ReportDashBoardPage.class, getWebDriver());
     }
 
     public void assertCorrectBarChartsAreDisplayed() {
@@ -170,9 +159,9 @@ public class ReportDashBoardPage extends AbstractReportPage {
 
 
     public void assertNumbersChartContainsTestState(Status status) {
-        String xpath = String.format("//mdc-list-item//mdc-icon[@title='%s']", status.title);
-        GuiElement testClassesNumberChart = testsElement.getSubElement(By.xpath(xpath));
-        testClassesNumberChart.asserts().assertIsDisplayed();
+        String testClassesNumberChartPath = String.format("//mdc-list-item//mdc-icon[@title='%s']", status.title);
+        GuiElement testClassesNumberChart = testsElement.getSubElement(By.xpath(testClassesNumberChartPath));
+        testClassesNumberChart.asserts("There should be a chart displayed containing the amounts of each test state!").assertIsDisplayed();
     }
 
     public void assertStartTimeIsDisplayed() {
@@ -193,15 +182,27 @@ public class ReportDashBoardPage extends AbstractReportPage {
         return PageFactory.create(ReportTestsPage.class, getWebDriver());
     }
 
-    // TODO: total amount printed not fitting for percentage calculation, as soon as retried tests occurred
     public void assertPieChartPercentages(int expectedAmount, Status status) {
+        //iterate through tests card and sum up all "main" numbers of all test states (f.e. not retried or recovered)
+        int amountOfTests = testsElement.getSubElement(By.xpath("//mdc-list-item")).getList()
+                .stream()
+                .map(GuiElement::getText)
+                .map(i -> RegExUtils.getRegExpResultOfString(RegExUtils.RegExp.DIGITS_ONLY, i))
+                .map(Integer::parseInt)
+                .mapToInt(i -> i)
+                .sum();
 
-        GuiElement pieChartPart = testResultElement.getSubElement(By.xpath(String.format("(//*[@class='apexcharts-datalabels'])[%d]", status.ordinal() + 1)));
-
-        double amountOfTotalTestAsString = getAmountOfTests();
-
-        String percentageString = getPercentagesFromReportByStates(expectedAmount, amountOfTotalTestAsString);
-        pieChartPart.asserts().assertText(percentageString);
+        //there are two different GuiElements for each pie chart part, one contains graphics, the other contains percentage content
+        //the GuiElement with percentage-content got no direct information which test state is corresponding, BUT: it got equivalent index
+        //even if there is an attribute "data:realIndex", it is somehow not accessible, BUT: there is another attribute "rel" which is accessible
+        //"data:realIndex" = "rel" - 1
+        int index = Integer.parseInt(
+                testResultElement.getSubElement(
+                        By.xpath(String.format(xPathToPieChartPart, status.getTitleWithSpaceReplacement()))
+                ).getAttribute("rel")) - 1;
+        GuiElement pieChartPart = testResultElement.getSubElement(By.xpath("//*[@class='apexcharts-datalabels']")).getList().get(index);
+        String percentageString = getPercentagesFromReportByStates(expectedAmount, amountOfTests);
+        pieChartPart.asserts(String.format("The pie chart should contain percentage labels with correct content.[Actual:%s]", pieChartPart.getText())).assertText(percentageString);
     }
 
     private String getPercentagesFromReportByStates(double amount, double total) {
@@ -213,8 +214,8 @@ public class ReportDashBoardPage extends AbstractReportPage {
         Actions action = new Actions(getWebDriver());
         for (GuiElement bar : segmentsOfBarsPerTestStatus.getList()) {
             action.moveToElement(bar.getWebElement()).build().perform();
-            String path = "//*[contains(@class,'apexcharts-canvas')]//div[contains(@class,'apexcharts-tooltip')]//span[@class='apexcharts-tooltip-text-label']";
-            Optional<GuiElement> popUpTestState = new GuiElement(getWebDriver(), By.xpath(path)).getList().stream().filter(i -> i.getText().contains(status.title)).findFirst();
+            String popUpTestStatePath = "//*[contains(@class,'apexcharts-canvas')]//div[contains(@class,'apexcharts-tooltip')]//span[@class='apexcharts-tooltip-text-label']";
+            Optional<GuiElement> popUpTestState = new GuiElement(getWebDriver(), By.xpath(popUpTestStatePath)).getList().stream().filter(i -> i.getText().contains(status.title)).findFirst();
             Assert.assertTrue(popUpTestState.isPresent(), "Should find a text element, which contains the corresponding state description!");
         }
     }
@@ -233,7 +234,7 @@ public class ReportDashBoardPage extends AbstractReportPage {
             List<GuiElement> bars = barType.getSubElement(By.xpath("//*")).getList();
             for (GuiElement bar : bars) {
                 String valAsString = getBuggedAttributePerJavascriptExecutor(bar, "val", 1);
-                Assert.assertNotNull(valAsString);
+                Assert.assertNotNull(valAsString, "There should be a attribute 'val' with the expected length of 1!");
                 int amountOfLengthUnits = Integer.parseInt(valAsString);
                 double upperBound = (lengthUnit * amountOfLengthUnits) * (1 + threshold);
                 double lowerBound = (lengthUnit * amountOfLengthUnits) * (1 - threshold);
@@ -268,11 +269,11 @@ public class ReportDashBoardPage extends AbstractReportPage {
             String listOfAllAttributes = aa.toString();
             int attributeSubstringStart = listOfAllAttributes.indexOf(attribute);
             int lengthOfAttributeSequence = attribute.length() + expectedLengthOfValue + 1;
-            String substring = listOfAllAttributes.substring(attributeSubstringStart, attributeSubstringStart + lengthOfAttributeSequence);
-            if (substring.contains("=0,")) {
+            String subStringOfOneAttribute = listOfAllAttributes.substring(attributeSubstringStart, attributeSubstringStart + lengthOfAttributeSequence);
+            if (subStringOfOneAttribute.contains("=0,")) {
                 return "0";
             }
-            return substring.split("=")[1];
+            return subStringOfOneAttribute.split("=")[1];
         } catch (Exception e) {
             return "0";
         }

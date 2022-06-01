@@ -18,7 +18,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
 
-        TestStep.begin("Navigate to tests page.");
+        TestStep.begin("Navigate to failure aspects page.");
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
 
         reportFailureAspectsPage.assertFailureAspectsTableIsDisplayedCorrect();
@@ -31,7 +31,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
 
-        TestStep.begin("Navigate to tests page.");
+        TestStep.begin("Navigate to failure aspects page.");
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
 
         TestStep.begin("Check whether the table become adjusted correctly when different types are selected");
@@ -45,7 +45,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
 
-        TestStep.begin("Navigate to tests page.");
+        TestStep.begin("Navigate to failure aspects page.");
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
 
         TestStep.begin("Check whether the table become adjusted correctly when different search requests are queried");
@@ -59,7 +59,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
 
-        TestStep.begin("Navigate to tests page.");
+        TestStep.begin("Navigate to failure aspects page.");
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
 
         TestStep.begin("Check whether the table become adjusted correctly when 'show expected failed' button is enabled!");

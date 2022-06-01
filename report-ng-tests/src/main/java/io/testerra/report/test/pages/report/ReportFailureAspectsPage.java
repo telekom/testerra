@@ -2,20 +2,35 @@ package io.testerra.report.test.pages.report;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.Status;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
+import io.testerra.report.test.pages.AbstractReportPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 
-import io.testerra.report.test.pages.AbstractReportPage;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ReportFailureAspectsPage extends AbstractReportPage {
 
     @Check
-    private final GuiElement failureAspectsTable = new GuiElement(getWebDriver(), By.xpath("//table//tbody//tr"));
+    private final GuiElement testTypeSelect = pageContent.getSubElement(By.xpath("//mdc-select[@label='Type']"));
+
+    @Check
+    private final GuiElement testInputSearch = pageContent.getSubElement(By.xpath("//label[@label='Search']//input"));
+
+    @Check
+    private final GuiElement testShowExpectedFailsButton = pageContent.getSubElement(By.xpath("//button[@role='switch']"));
+
+    @Check
+    private final GuiElement failureAspectsTable = pageContent.getSubElement(By.xpath("//tbody[@ref='content']"));
 
     /**
      * Constructor for existing sessions.
@@ -24,6 +39,14 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
      */
     public ReportFailureAspectsPage(WebDriver driver) {
         super(driver);
+    }
+
+    private List<GuiElement> getColumn(int column) {
+        List<GuiElement> returnList = new ArrayList<>();
+        for (GuiElement element : failureAspectsTable.getSubElement(By.xpath("//tr")).getList()) {
+            returnList.add(element.getSubElement(By.xpath("//td")).getList().get(column));
+        }
+        return returnList;
     }
 
     public boolean getFailedStateExistence() {
@@ -43,11 +66,94 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
     }
 
     public List<String> getOrderListOfTopFailureAspects() {
-        List<GuiElement> tableRows = failureAspectsTable.getList();
-        List<String> failureAspects = new ArrayList<>();
-        for (GuiElement row : tableRows) {
-            failureAspects.add(row.getSubElement(By.xpath("//td")).getList().get(1).getText());
+        return getColumn(1)
+                .stream()
+                .map(GuiElement::getText)
+                .collect(Collectors.toList());
+    }
+
+    public void assertFailureAspectsTableIsDisplayedCorrect() {
+        assertRankColumnDoesNotContainDuplicate();
+        assertFailureAspectsColumnContainsCorrectAspects();
+        assertStatusColumnContainsCorrectStates();
+    }
+
+    private void assertRankColumnDoesNotContainDuplicate() {
+        int amountOfRows = new HashSet<>(getColumn(0)).size();
+        int amountOfDifferentRanks = getColumn(0)
+                .stream()
+                .map(GuiElement::getText)
+                .collect(Collectors.toSet()).size();
+        Assert.assertEquals(amountOfDifferentRanks, amountOfRows, "There should be as many rows as ranks, one for each!");
+    }
+
+    private void assertFailureAspectsColumnContainsCorrectAspects() {
+        String filter = testInputSearch.getAttribute("value").toUpperCase(Locale.ROOT);
+        if (filter.equals("")) return;
+        getColumn(1)
+                .stream()
+                .map(GuiElement::getText)
+                .map(String::toUpperCase)
+                .forEach(i -> Assert.assertTrue(i.contains(filter),
+                        String.format("All listed aspects should match the given filter.[Actual: %s] [Expected: %s]", i, filter)));
+    }
+
+    private void assertStatusColumnContainsCorrectStates() {
+        String buttonState = testShowExpectedFailsButton.getAttribute("aria-checked");
+        if (buttonState.equals("false")) {
+            getColumn(2)
+                    .stream()
+                    .map(GuiElement::getText)
+                    .forEach(i -> Assert.assertFalse(i.contains(Status.FAILED_EXPECTED.title)));
         }
-        return failureAspects;
+        if (testTypeSelect.getText().equals("Major")) {
+            Assert.assertTrue(getFailedStateExistence(), "There should be failed states in every row!");
+        }
+        if (testTypeSelect.getText().equals("Minor")) {
+            Assert.assertFalse(getFailedStateExistence(), "There should not be any failed states in a row!");
+        }
+    }
+
+    public void assertFailureAspectTableIsCorrectDisplayedWhenIteratingThroughSelectableTypes() {
+
+        //Minor
+        testTypeSelect.click();
+        Optional<GuiElement> optionalMinorSelection = testTypeSelect.getSubElement(By.xpath("//mdc-list-item")).getList()
+                .stream()
+                .filter(i -> i.getText().contains("Minor"))
+                .findFirst();
+        Assert.assertTrue(optionalMinorSelection.isPresent());
+        optionalMinorSelection.get().click();
+        assertFailureAspectsTableIsDisplayedCorrect();
+
+        //Major
+        testTypeSelect.click();
+        Optional<GuiElement> optionalMajorSelection = testTypeSelect.getSubElement(By.xpath("//mdc-list-item")).getList()
+                .stream()
+                .filter(i -> i.getText().contains("Major"))
+                .findFirst();
+        Assert.assertTrue(optionalMajorSelection.isPresent());
+        optionalMajorSelection.get().click();
+        assertFailureAspectsTableIsDisplayedCorrect();
+    }
+
+    public void assertFailureAspectTableIsCorrectDisplayedWhenSearchingForDifferentAspects() {
+        Set<String> failureAspects = getColumn(1)
+                .stream()
+                .map(i -> i.getText().split(":")[0])
+                .collect(Collectors.toSet());
+
+        for (String aspect : failureAspects) {
+            testInputSearch.type(aspect);
+            TimerUtils.sleep(1000, "Necessary sleep gives page enough time to refresh page table content and locator");
+            assertFailureAspectsTableIsDisplayedCorrect();
+            testInputSearch.clear();
+        }
+    }
+
+    public ReportFailureAspectsPage disableButton() {
+        Assert.assertEquals(testShowExpectedFailsButton.getAttribute("aria-checked"), "true", "Button should be enabled!");
+        testShowExpectedFailsButton.click();
+        return PageFactory.create(ReportFailureAspectsPage.class, getWebDriver());
     }
 }

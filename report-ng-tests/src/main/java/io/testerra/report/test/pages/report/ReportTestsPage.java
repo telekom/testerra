@@ -24,7 +24,6 @@ package io.testerra.report.test.pages.report;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.report.Status;
-import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import io.testerra.report.test.pages.AbstractReportPage;
 import io.testerra.report.test.pages.ReportPageType;
@@ -33,8 +32,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 
-import java.sql.Time;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ReportTestsPage extends AbstractReportPage {
@@ -90,7 +93,7 @@ public class ReportTestsPage extends AbstractReportPage {
         getColumnWithoutHead(3)
                 .stream()
                 .map(i -> i.getText().toUpperCase(Locale.ROOT))
-                .forEach(i -> Assert.assertTrue(i.contains(filter), "Every found Methode should contain: "+ filter));
+                .forEach(i -> Assert.assertTrue(i.contains(filter), "Every found Methode should contain: " + filter));
     }
 
     private void assertClassColumnContainsCorrectClasses() {
@@ -238,7 +241,6 @@ public class ReportTestsPage extends AbstractReportPage {
                 .map(i -> i.getText().split(":")[0])
                 .collect(Collectors.toSet());
         for (String advice : advices) {
-            System.out.println(advice);
             testSearchInput.type(advice);
             TimerUtils.sleep(1000, "Necessary sleep gives enough time to refresh all locator");
             assertTableIsDisplayedCorrect();

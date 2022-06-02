@@ -53,7 +53,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
     }
 
     @Test
-    public void testT_checkButtonFilter() {
+    public void testT04_checkButtonFilter() {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
@@ -63,7 +63,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
 
         TestStep.begin("Check whether the table become adjusted correctly when 'show expected failed' button is enabled!");
-        reportFailureAspectsPage = reportFailureAspectsPage.disableButton();
+        reportFailureAspectsPage.assertShowExpectedFailedButtonWorksCorrectly();
         reportFailureAspectsPage.assertFailureAspectsTableIsDisplayedCorrect();
     }
 

@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -99,13 +98,6 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
     }
 
     private void assertStatusColumnContainsCorrectStates() {
-        String buttonState = testShowExpectedFailsButton.getAttribute("aria-checked");
-        if (buttonState.equals("false")) {
-            getColumn(2)
-                    .stream()
-                    .map(GuiElement::getText)
-                    .forEach(i -> Assert.assertFalse(i.contains(Status.FAILED_EXPECTED.title)));
-        }
         if (testTypeSelect.getText().equals("Major")) {
             Assert.assertTrue(getFailedStateExistence(), "There should be failed states in every row!");
         }
@@ -114,26 +106,22 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
         }
     }
 
+    public void assertShowExpectedFailedButtonWorksCorrectly(){
+        int amountOfAspectsButtonEnabled = new HashSet<>(getColumn(2)).size();
+        disableButton();
+        int amountOfAspectsButtonDisabled = new HashSet<>(getColumn(2)).size();
+        Assert.assertTrue(amountOfAspectsButtonDisabled < amountOfAspectsButtonEnabled,
+                "There should be more aspects listed, when expected fails button is enabled!");
+    }
+
     public void assertFailureAspectTableIsCorrectDisplayedWhenIteratingThroughSelectableTypes() {
 
         //Minor
-        testTypeSelect.click();
-        Optional<GuiElement> optionalMinorSelection = testTypeSelect.getSubElement(By.xpath("//mdc-list-item")).getList()
-                .stream()
-                .filter(i -> i.getText().contains("Minor"))
-                .findFirst();
-        Assert.assertTrue(optionalMinorSelection.isPresent());
-        optionalMinorSelection.get().click();
+        selectDropBoxElement(testTypeSelect, "Minor");
         assertFailureAspectsTableIsDisplayedCorrect();
 
         //Major
-        testTypeSelect.click();
-        Optional<GuiElement> optionalMajorSelection = testTypeSelect.getSubElement(By.xpath("//mdc-list-item")).getList()
-                .stream()
-                .filter(i -> i.getText().contains("Major"))
-                .findFirst();
-        Assert.assertTrue(optionalMajorSelection.isPresent());
-        optionalMajorSelection.get().click();
+        selectDropBoxElement(testTypeSelect, "Major");
         assertFailureAspectsTableIsDisplayedCorrect();
     }
 

@@ -36,7 +36,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -160,42 +159,12 @@ public class ReportTestsPage extends AbstractReportPage {
                 .forEach(i -> Assert.assertEquals(i, status.title, "There should be only methods with expected status listed"));
     }
 
-    private void selectTestStateFilter(String stateName) {
-        testStatusSelect.click();
-
-        //code line below should work, but does not. No clue why... (throws 'ElementNotFound' Exception)
-        //testStatusSelect.getSubElement(By.xpath(String.format("//mdc-list-item[contains(text(), '%s')]", stateName))).click();
-
-        //alternative:
-        Optional<GuiElement> optionalGuiElement = testStatusSelect.getSubElement(By.xpath("//mdc-list-item")).getList()
-                .stream()
-                .filter(i -> i.getText().contains(stateName))
-                .findFirst();
-        Assert.assertTrue(optionalGuiElement.isPresent());
-        optionalGuiElement.get().click();
-    }
-
     public void assertCorrectTableWhenLoopingThroughClasses() {
         Set<String> classes = getColumnWithoutHead(1).stream().map(GuiElement::getText).collect(Collectors.toSet());
         for (String className : classes) {
-            selectClass(className);
+            selectDropBoxElement(testClassSelect, className);
             assertTableIsDisplayedCorrect();
         }
-    }
-
-    private void selectClass(String className) {
-        testClassSelect.click();
-
-        //code line below should work, but does not. No clue why... (throws 'ElementNotFound' Exception)
-        //testClassSelect.getSubElement(By.xpath(String.format("//mdc-list-item[contains(text(), '%s')]", className))).click();
-
-        //alternative:
-        Optional<GuiElement> optionalGuiElement = testClassSelect.getSubElement(By.xpath("//mdc-list-item")).getList()
-                .stream()
-                .filter(i -> i.getText().contains(className))
-                .findFirst();
-        Assert.assertTrue(optionalGuiElement.isPresent());
-        optionalGuiElement.get().click();
     }
 
     public void assertCorrectTableWhenLoopingThroughMethods() {
@@ -262,7 +231,7 @@ public class ReportTestsPage extends AbstractReportPage {
 
     public void LoopThroughPossibleTestStateListAndAssertTableIsDisplayedCorrect(List<String> testStates) {
         for (String stateName : testStates) {
-            selectTestStateFilter(stateName);
+            selectDropBoxElement(testStatusSelect, stateName);
             assertTableIsDisplayedCorrect();
         }
     }

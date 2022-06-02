@@ -23,9 +23,11 @@ package io.testerra.report.test.pages;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
+
+import java.util.Optional;
 
 public abstract class AbstractReportPage extends ReportSideBar {
 
@@ -39,5 +41,18 @@ public abstract class AbstractReportPage extends ReportSideBar {
      */
     public AbstractReportPage(WebDriver driver) {
         super(driver);
+    }
+
+    // for any reason, the following line should work, but does not:
+    // specificDropBox.getSubElement(By.xpath("mdc-list-item[contains(text(), '<label>')]")).click();
+    // following method is replaces the call above
+    public void selectDropBoxElement(GuiElement dropbox, String label) {
+        dropbox.click();
+        Optional<GuiElement> optionalDropBoxSelection = dropbox.getSubElement(By.xpath("//mdc-list-item")).getList()
+                .stream()
+                .filter(i -> i.getText().contains(label))
+                .findFirst();
+        Assert.assertTrue(optionalDropBoxSelection.isPresent());
+        optionalDropBoxSelection.get().click();
     }
 }

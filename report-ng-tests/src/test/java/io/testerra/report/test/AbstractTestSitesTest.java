@@ -27,12 +27,11 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
+import io.testerra.report.test.pages.TestPage;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.BeforeTest;
 
 import java.net.BindException;
-
-import io.testerra.report.test.pages.TestPage;
 
 /**
  * Abstract test class for tests based on static test site resources

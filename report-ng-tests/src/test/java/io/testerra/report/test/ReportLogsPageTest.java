@@ -27,7 +27,7 @@ public class ReportLogsPageTest extends AbstractReportTest {
     }
 
     @Test
-    @Fails
+    @Fails(description = "filter does not work correct (issues with brackets, spaces and not even applied to whole log report)")
     public void testT02_checkSearchFilter() {
         WebDriver driver = WebDriverManager.getWebDriver();
 

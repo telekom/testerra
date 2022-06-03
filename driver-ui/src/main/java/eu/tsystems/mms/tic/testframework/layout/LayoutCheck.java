@@ -481,7 +481,7 @@ public final class LayoutCheck implements PropertyManagerProvider {
         try {
             // Write image to given file
             resultFilename.toFile().getParentFile().mkdirs();
-            ImageIO.write(distanceImage, "PNG", new File(resultFilename.toAbsolutePath().toString()));
+            ImageIO.write(distanceImage, "PNG", resultFilename.toAbsolutePath().toFile());
         } catch (IOException ioe) {
             LOGGER.error(
                     String.format("An error occurred while trying to persist image to '%s'.", resultFilename),

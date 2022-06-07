@@ -1,12 +1,13 @@
-package io.testerra.report.test;
+package io.testerra.report.test.sideBarPagesTests;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import io.testerra.report.test.AbstractReportTest;
 import io.testerra.report.test.pages.ReportPageType;
-import io.testerra.report.test.pages.report.ReportDashBoardPage;
-import io.testerra.report.test.pages.report.ReportLogsPage;
+import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
+import io.testerra.report.test.pages.report.sideBarPages.ReportLogsPage;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
 

@@ -19,14 +19,17 @@
  * under the License.
  */
 
-package io.testerra.report.test.pages.report;
+package io.testerra.report.test.pages.report.sideBarPages;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import io.testerra.report.test.pages.AbstractReportPage;
 import io.testerra.report.test.pages.ReportPageType;
+import io.testerra.report.test.pages.report.ReportDetailsPage;
+import io.testerra.report.test.pages.report.ReportMethodPage;
 import io.testerra.report.test.pages.utils.RegExUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -234,5 +237,11 @@ public class ReportTestsPage extends AbstractReportPage {
             selectDropBoxElement(testStatusSelect, stateName);
             assertTableIsDisplayedCorrect();
         }
+    }
+
+    public ReportDetailsPage navigateToFailedMethodReport() {
+        selectDropBoxElement(testStatusSelect, "Failed");
+        getColumnWithoutHead(3).get(0).getSubElement(By.xpath("//a")).click();
+        return PageFactory.create(ReportDetailsPage.class, getWebDriver());
     }
 }

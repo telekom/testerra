@@ -35,7 +35,7 @@ import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import io.testerra.report.test.pages.AbstractReportPage;
-import io.testerra.report.test.pages.report.ReportDashBoardPage;
+import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.Assert;

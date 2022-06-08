@@ -2,9 +2,7 @@ package io.testerra.report.test.pages.report;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
-import io.testerra.report.test.pages.ReportPageType;
 import io.testerra.report.test.pages.report.sideBarPages.ReportThreadsPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

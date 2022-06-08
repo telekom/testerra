@@ -1,7 +1,6 @@
 package io.testerra.report.test.ReportMethodPages;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import io.testerra.report.test.AbstractReportTest;
@@ -10,13 +9,10 @@ import io.testerra.report.test.pages.report.ReportConcreteMethodPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportThreadsPage;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.testng.annotations.Guice;
 import org.testng.annotations.Test;
 
 import java.util.List;
-import java.util.Map;
 
 public class ReportConcreteMethodPageTest extends AbstractReportTest {
 

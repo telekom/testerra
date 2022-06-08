@@ -41,8 +41,10 @@ Include the following dependency in your project. Please replace `1.0` with the 
 
 Gradle:
 ```groovy
-compile 'io.testerra:driver-ui-desktop:1.0'
-compile 'io.testerra:report-ng:1.0'
+dependencies {
+    implementation 'io.testerra:driver-ui-desktop:1.0'
+    implementation 'io.testerra:report-ng:1.0'
+}
 ```
 
 Maven:

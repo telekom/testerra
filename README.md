@@ -37,7 +37,7 @@ Testerra is developed by our Test Automation Experts at T-Systems MMS in Dresden
 
 ## Setup
 
-Include the following dependency in your project. Please replace `2-SNAPSHOT` with the latest version.
+Include the following dependency in your project.
 
 Gradle:
 ```groovy

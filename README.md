@@ -33,14 +33,16 @@ You may see Testerra as an open source test automation library for web frontend 
 
 Testerra is developed by our Test Automation Experts at T-Systems MMS in Dresden. In numerous projects Testerra is used as the standard test automation framework and includes the experience of more then 10 years of test automation.
 
+**This is the branch of Testerra 2. For Testerra 1 go to https://github.com/telekom/testerra/tree/master** 
+
 ## Setup
 
 Include the following dependency in your project. Please replace `2-SNAPSHOT` with the latest version.
 
 Gradle:
 ```groovy
-compile 'io.testerra:driver-ui-desktop:2-SNAPSHOT'
-compile 'io.testerra:report-ng:2-SNAPSHOT'
+compile 'io.testerra:driver-ui-desktop:2.0-RC-21'
+compile 'io.testerra:report-ng:2.0-RC-21'
 ```
 
 Maven:
@@ -49,12 +51,12 @@ Maven:
     <dependency>
         <groupId>io.testerra</groupId>
         <artifactId>driver-ui-desktop</artifactId>
-        <version>2-SNAPSHOT</version>
+        <version>2.0-RC-21</version>
     </dependency>
     <dependency>
         <groupId>io.testerra</groupId>
         <artifactId>report-ng</artifactId>
-        <version>2-SNAPSHOT</version>
+        <version>2.0-RC-21</version>
     </dependency>
 </dependencies>
 ```
@@ -71,15 +73,15 @@ public class MyTest extends TesterraTest implements UiElementFinderFactoryProvid
         UiElementFinder finder = UI_ELEMENT_FINDER_FACTORY.create(WEB_DRIVER_MANAGER.getWebDriver());
         
         finder.find(By.name("q"))
-                .type("Hallo World")
-                .expect().value().endsWith("Hallo").is(false);
+                .type("Hello World")
+                .expect().value().endsWith("Hello").is(false);
     }
 }
 ````
 
 ## Documentation
 
-* Check out our comprehensive [Testerra documentation](http://docs.testerra.io/testerra/2.0-RC-6/)!
+* Check out our comprehensive [Testerra 2 documentation](https://docs.testerra.io/testerra/2-latest/index.html)!
 * Feel free to try out our ready-to-use [Skeleton project][testerra-skeleton].
 
 ## Extras

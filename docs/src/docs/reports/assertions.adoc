@@ -1,0 +1,24 @@
+= More on Assertions
+
+== Assert Collections for Functional Asserts
+
+When an <<#_assert_collector_of_functional_asserts, Assert Collector>> is used and some of its assertions fail the test is not aborted, but it will be marked as failure in `Report-NG`:
+
+image::report-ng-22.png[align="center", alt="Assert Collector Fail"]
+image::report-ng-19.png[align="center", alt="Assert Collector Details"]
+
+The failures are marked in the step view:
+
+image::report-ng-20.png[align="center", alt="Assert Collector Steps"]
+
+
+== Optional Asserts
+
+When <<#_optional_asserts, Optional Asserts>> fail, the test will also be fully executed and will be marked as passed. 
+
+image::report-ng-21.png[align="center", alt="Optional Assert Pass"]
+image::report-ng-17.png[align="center", alt="Optional Assert Details"]
+
+The failed optional asserts will be displayed as warnings (non functional errors):
+
+image::report-ng-18.png[align="center", alt="Optional Assert Steps"]

@@ -22,7 +22,12 @@ When it's still not defined, in will fall back to the given default value.
 
 include::../properties/property-attributes.adoc[]
 
-Testerra supports and loads automatically `.properties` files located under  `test/resources`.
+Testerra supports to load `.properties` files located under  `test/resources`.
+
+The following files are loaded automatically at Testerra start (in that order):
+
+* `test.properties`
+* `system.properties`
 
 The `test.properties` is called the Test Configuration and contains everything required by the test, like Browser setup, SUT credentials or Layout test thresholds.
 

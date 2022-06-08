@@ -13,15 +13,19 @@ For Testerra you need at least the following dependencies.
 ----
 // build.gradle
 
-apply plugin: 'java'
+apply plugin: 'java-library'
 
 // Its highly recommended to normalize your project to Unicode
 compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = "UTF-8"
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
-    compile 'io.testerra:driver-ui-desktop:{revnumber}'
-    compile 'io.testerra:report-ng:{revnumber}'
+    implementation 'io.testerra:driver-ui-desktop:{revnumber}'
+    implementation 'io.testerra:report-ng:{revnumber}'
 }
 ----
 

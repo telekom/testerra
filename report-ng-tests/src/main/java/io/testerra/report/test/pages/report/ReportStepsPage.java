@@ -1,9 +1,8 @@
-package io.testerra.report.test.ReportMethodPages;
+package io.testerra.report.test.pages.report;
 
-import io.testerra.report.test.pages.report.ReportMethodPage;
 import org.openqa.selenium.WebDriver;
 
-public class ReportStepsPage extends ReportMethodPage {
+public class ReportStepsPage extends AbstractMethodReportPage{
     /**
      * Constructor for existing sessions.
      *

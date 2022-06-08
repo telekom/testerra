@@ -28,9 +28,9 @@ import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import io.testerra.report.test.pages.AbstractReportPage;
 import io.testerra.report.test.pages.ReportPageType;
-import io.testerra.report.test.pages.report.ReportDetailsPage;
-import io.testerra.report.test.pages.report.ReportMethodPage;
+import io.testerra.report.test.pages.report.ReportConcreteMethodPage;
 import io.testerra.report.test.pages.utils.RegExUtils;
+import org.checkerframework.checker.units.qual.A;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -239,9 +240,28 @@ public class ReportTestsPage extends AbstractReportPage {
         }
     }
 
-    public ReportDetailsPage navigateToFailedMethodReport() {
-        selectDropBoxElement(testStatusSelect, "Failed");
-        getColumnWithoutHead(3).get(0).getSubElement(By.xpath("//a")).click();
-        return PageFactory.create(ReportDetailsPage.class, getWebDriver());
+    public ReportConcreteMethodPage navigateToMethodReport(int methodIndex) {
+        GuiElement rowEntries =  tableRows.getList().get(methodIndex).getSubElement(By.xpath("//td"));
+        rowEntries.asserts().assertIsDisplayed();
+        rowEntries.getList().get(3).getSubElement(By.xpath("//a")).click();
+        return PageFactory.create(ReportConcreteMethodPage.class, getWebDriver());
+    }
+
+    public List<String[]> getTable() {
+        List<String[]> table = new ArrayList<>();
+        for(GuiElement row : tableRows.getList()){
+            List<GuiElement> columns = row.getSubElement(By.xpath("//td")).getList();
+            String[] stringRow = new String[4];
+            stringRow[0] = columns.get(0).getText();
+            stringRow[1] = columns.get(1).getText();
+            stringRow[2] = columns.get(2).getText();
+            stringRow[3] = columns.get(3).getSubElement(By.xpath("//a")).getText();
+            table.add(stringRow);
+        }
+        return table;
+    }
+
+    public void clickConfigurationMethodsSwitch(){
+        configurationMethodsSwitch.click();
     }
 }

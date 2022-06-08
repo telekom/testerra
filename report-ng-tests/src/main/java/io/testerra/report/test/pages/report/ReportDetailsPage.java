@@ -5,7 +5,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class ReportDetailsPage extends ReportMethodPage {
+public class ReportDetailsPage extends AbstractMethodReportPage {
+
 
     @Check
     private final GuiElement pageContent = new GuiElement(getWebDriver(), By.xpath("//router-view[@class='au-target']//mdc-layout-grid"));
@@ -24,6 +25,5 @@ public class ReportDetailsPage extends ReportMethodPage {
     public ReportDetailsPage(WebDriver driver) {
         super(driver);
     }
-
 
 }

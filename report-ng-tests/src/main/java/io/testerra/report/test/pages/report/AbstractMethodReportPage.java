@@ -8,19 +8,20 @@ import io.testerra.report.test.pages.ReportPageType;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public abstract class ReportMethodPage extends AbstractReportPage {
+public abstract class AbstractMethodReportPage extends AbstractReportPage {
 
+    //TODO: there is maybe a better locator
     @Check
-    private final GuiElement testMethodCard = pageContent.getSubElement(By.xpath("(//mdc-card)[1]"));
+    protected final GuiElement testMethodCard = pageContent.getSubElement(By.xpath("(//mdc-card)[1]"));
 
-    private final GuiElement testLastScreenshot = pageContent.getSubElement(By.xpath("//mdc-card[contains(text(),'Last Screenshot')]"));
+    protected final GuiElement testLastScreenshot = pageContent.getSubElement(By.xpath("//mdc-card[contains(text(),'Last Screenshot')]"));
     @Check
-    private final GuiElement testDurationCard = pageContent.getSubElement(By.xpath("//test-duration-card"));
+    protected final GuiElement testDurationCard = pageContent.getSubElement(By.xpath("//test-duration-card"));
     @Check
-    private final GuiElement testTabBar = pageContent.getSubElement(By.xpath("//mdc-tab-bar"));
-    @Check
+    protected final GuiElement testTabBar = pageContent.getSubElement(By.xpath("//mdc-tab-bar"));
+
     private final GuiElement testDetailsTab = testTabBar.getSubElement(By.xpath("//mdc-tab[.//span[@class='mdc-tab__text-label' and contains(text(),'Details')]]"));
-    @Check
+
     private final GuiElement testStepsTab = testTabBar.getSubElement(By.xpath("//mdc-tab[.//span[@class='mdc-tab__text-label' and contains(text(),'Steps')]]"));
 
     private final GuiElement testSessionsTab = testTabBar.getSubElement(By.xpath("//mdc-tab[.//span[@class='mdc-tab__text-label' and contains(text(),'Sessions')]]"));
@@ -32,12 +33,12 @@ public abstract class ReportMethodPage extends AbstractReportPage {
      *
      * @param driver .
      */
-    public ReportMethodPage(WebDriver driver) {
+    public AbstractMethodReportPage(WebDriver driver) {
         super(driver);
     }
 
-    public <T extends ReportMethodPage> T navigateBetweenTabs(ReportPageType reportPageType, Class<T> reportPageClass) {
-        switch (reportPageType){
+    protected <T extends AbstractMethodReportPage> T navigateBetweenTabs(ReportPageType reportPageType, Class<T> reportPageClass) {
+        switch (reportPageType) {
             case DETAILS:
                 testDetailsTab.click();
                 break;
@@ -53,4 +54,6 @@ public abstract class ReportMethodPage extends AbstractReportPage {
         }
         return PageFactory.create(reportPageClass, getWebDriver());
     }
+
+
 }

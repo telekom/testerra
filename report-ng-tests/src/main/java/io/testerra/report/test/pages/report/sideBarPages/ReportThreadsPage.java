@@ -60,7 +60,7 @@ public class ReportThreadsPage extends AbstractReportPage {
         optional.get().click();
     }
 
-    private void assertMethodBoxIsSelected(String method) {
+    public void assertMethodBoxIsSelected(String method) {
         for (GuiElement guiElement : testThreadReport.getList()) {
             if (guiElement.getText().split("\n")[0].equals(method.trim())) {
                 guiElement.getSubElement(By.xpath("/div"))

@@ -34,23 +34,18 @@ import eu.tsystems.mms.tic.testframework.events.MethodStartEvent;
 import eu.tsystems.mms.tic.testframework.events.TestStatusUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodContextUpdateWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorker;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.logging.MethodContextLogAppender;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
-import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.hooks.ConfigMethodHook;
 import eu.tsystems.mms.tic.testframework.report.hooks.TestMethodHook;
+import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.testng.IConfigurable;
+import org.testng.IConfigurationListener;
 import org.testng.IConfigureCallBack;
 import org.testng.IDataProviderListener;
 import org.testng.IHookCallBack;
@@ -72,6 +67,11 @@ import org.testng.internal.InvokedMethod;
 import org.testng.internal.TestResult;
 import org.testng.xml.XmlSuite;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * Listener for JUnit and TestNg, collects test informations for testreport.
  *
@@ -86,7 +86,8 @@ public class TesterraListener implements
         ITestListener,
         ISuiteListener,
         Loggable,
-        IDataProviderListener
+        IDataProviderListener,
+        IConfigurationListener
 {
     /**
      * Default package namespace for project tests
@@ -423,6 +424,12 @@ public class TesterraListener implements
             methodContext.setStatus(Status.SKIPPED);
             TesterraListener.getEventBus().post(new TestStatusUpdateEvent(methodContext));
         }
+    }
+
+    @Override
+    public void onConfigurationSkip(ITestResult testResult) {
+        MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult);
+        methodContext.setStatus(Status.SKIPPED);
     }
 
     @Override

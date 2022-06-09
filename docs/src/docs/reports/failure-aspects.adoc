@@ -1,0 +1,10 @@
+= Failure Aspects View
+
+In case of many failures it is important to be able to find out the most severe failure reasons (aspects) that caused the most failed tests cases.
+
+For this the Failure Aspect View was designed.
+
+image::report-ng-11.png[align="center", alt="Failure Aspect View"]
+
+It comes with a filter as well and shows the most severe problems on the top and the number of tests that they caused to fail.
+

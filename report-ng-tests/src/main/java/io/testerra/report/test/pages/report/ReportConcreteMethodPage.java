@@ -47,4 +47,9 @@ public class ReportConcreteMethodPage extends AbstractMethodReportPage {
         testThreadLink.click();
         return PageFactory.create(ReportThreadsPage.class, getWebDriver());
     }
+
+    public String getTestDuration() {
+        GuiElement durationGuiElement = testDurationCard.getSubElement(By.xpath("//div[contains(@class,'card-content')]"));
+        return durationGuiElement.getText().split("\n")[1];
+    }
 }

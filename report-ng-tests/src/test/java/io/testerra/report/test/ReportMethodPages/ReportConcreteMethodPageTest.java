@@ -9,7 +9,9 @@ import io.testerra.report.test.pages.report.ReportConcreteMethodPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportThreadsPage;
+import io.testerra.report.test.pages.utils.DateTimeUtils;
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.List;
@@ -29,7 +31,6 @@ public class ReportConcreteMethodPageTest extends AbstractReportTest {
         TestStep.begin("Get content of all methods");
         reportTestsPage.clickConfigurationMethodsSwitch();
         List<String[]> methodsContentRows = reportTestsPage.getTable();
-        System.out.println(methodsContentRows.size());
 
         TestStep.begin("Navigate to method detail page and check for correct content");
         ReportConcreteMethodPage reportConcreteMethodPage;
@@ -44,17 +45,24 @@ public class ReportConcreteMethodPageTest extends AbstractReportTest {
     }
 
     @Test
-    public void testT04_checkCorrectFailedInStep() {
+    public void testT02_checkDurationFormat() {
+        WebDriver driver = WebDriverManager.getWebDriver();
 
+        TestStep.begin("Navigate to dashboard page.");
+        ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+
+        TestStep.begin("Navigate to method page.");
+        ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportPageType.TESTS, ReportTestsPage.class);
+        ReportConcreteMethodPage reportConcreteMethodPage = reportTestsPage.navigateToMethodReport(0);
+
+        TestStep.begin("Check whether the duration is displayed and correct");
+        final String testDuration = reportConcreteMethodPage.getTestDuration();
+        final boolean dateFormatIsCorrect = DateTimeUtils.verifyDateTimeString(testDuration);
+        Assert.assertTrue(dateFormatIsCorrect, String.format("Test Duration '%s' has correct format", testDuration));
     }
 
     @Test
-    public void testT05_checkCorrectThread() {
-
-    }
-
-    @Test
-    public void testT06_checkCorrect() {
+    public void testT03_checkLastScreenShotCard(){
 
     }
 

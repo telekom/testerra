@@ -30,7 +30,6 @@ import io.testerra.report.test.pages.AbstractReportPage;
 import io.testerra.report.test.pages.ReportPageType;
 import io.testerra.report.test.pages.report.ReportConcreteMethodPage;
 import io.testerra.report.test.pages.utils.RegExUtils;
-import org.checkerframework.checker.units.qual.A;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -39,7 +38,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -261,7 +259,15 @@ public class ReportTestsPage extends AbstractReportPage {
         return table;
     }
 
-    public void clickConfigurationMethodsSwitch(){
+    public void clickConfigurationMethodsSwitch() {
         configurationMethodsSwitch.click();
+    }
+
+    public GuiElement getTestStatusSelect() {
+        return this.testStatusSelect;
+    }
+
+    public int getAmountOfTableRows() {
+        return tableRows.getNumberOfFoundElements();
     }
 }

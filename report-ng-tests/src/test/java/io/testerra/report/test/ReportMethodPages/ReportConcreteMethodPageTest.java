@@ -63,7 +63,7 @@ public class ReportConcreteMethodPageTest extends AbstractReportTest {
 
     @Test
     public void testT03_checkLastScreenShotCard(){
-
+        //TODO: should every method-report (for failed methods) contain a screenshot?
     }
 
 }

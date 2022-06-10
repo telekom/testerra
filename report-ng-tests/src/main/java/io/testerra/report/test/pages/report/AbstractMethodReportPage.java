@@ -18,6 +18,8 @@ public abstract class AbstractMethodReportPage extends AbstractReportPage {
     @Check
     protected final GuiElement testDurationCard = pageContent.getSubElement(By.xpath("//test-duration-card"));
     @Check
+    protected final GuiElement tabBarPagesContent = new GuiElement(getWebDriver(), By.xpath("//router-view[./mdc-layout-grid]/router-view"));
+    @Check
     protected final GuiElement testTabBar = pageContent.getSubElement(By.xpath("//mdc-tab-bar"));
 
     private final GuiElement testDetailsTab = testTabBar.getSubElement(By.xpath("//mdc-tab[.//span[@class='mdc-tab__text-label' and contains(text(),'Details')]]"));
@@ -37,7 +39,7 @@ public abstract class AbstractMethodReportPage extends AbstractReportPage {
         super(driver);
     }
 
-    protected <T extends AbstractMethodReportPage> T navigateBetweenTabs(ReportPageType reportPageType, Class<T> reportPageClass) {
+    public <T extends AbstractMethodReportPage> T navigateBetweenTabs(ReportPageType reportPageType, Class<T> reportPageClass) {
         switch (reportPageType) {
             case DETAILS:
                 testDetailsTab.click();

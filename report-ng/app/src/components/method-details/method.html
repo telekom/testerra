@@ -131,7 +131,10 @@
                             class.bind="(logMessage.type===1?'status-failed':(logMessage.type===2?'status-skipped':''))"
                             repeat.for="logMessage of _methodDetails.promptLogs"
                         >
-                            <span lass="two-lines"><class-name-markup namespace.bind="logMessage.loggerName">:</class-name-markup>${logMessage.message|html}</span>
+                            <span lass="two-lines" >
+                                <class-name-markup namespace.bind="logMessage.loggerName">:</class-name-markup>
+                                <span innerhtml.bind="logMessage.message|html"></span>
+                            </span>
                         </li>
                     </ul>
                 </mdc-card>

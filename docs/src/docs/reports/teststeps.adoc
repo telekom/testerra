@@ -1,26 +1,26 @@
 = Test Steps
 
 It is a good and recommended practice to use test steps to increase the transparency of the test.
-In case of failures it is easier to understand their context:
-
-image::report-ng-02.png[align="center", alt="Test Steps"]
+In case of failures it is easier to understand their context.
 
 Test steps are defined within the test code by marking their begin as demonstrated in this example test of the Testerra skeleton project:
 [source,java]
 ----
     @Test
     public void testT04_TableEntryNotPresent() {
-
         final UserModel userNonExisting = userModelFactory.createNonExisting();
-        TestStep.begin("1. Init driver");
 
-        final WebDriver driver = WebDriverManager.getWebDriver();
-        StartPage startPage = PageFactory.create(StartPage.class, driver);
+        TestStep.begin("Init driver and first page");
+        StartPage startPage = PAGE_FACTORY.createPage(StartPage.class);
 
-        TestStep.begin("2. Navigate to tables");
+        TestStep.begin("Navigate to tables");
         TablePage tablePage = startPage.goToTablePage();
 
-        TestStep.begin("3. Assert user shown.");
+        TestStep.begin("Assert user shown.");
         Assert.assertTrue(tablePage.isUserShown(userNonExisting));
     }
 ----
+
+image::report-ng-02.png[align="center", alt="Test Steps"]
+
+NOTE: All steps are numbered automatically. The step `Setup` is added by Testerra.

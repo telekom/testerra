@@ -19,19 +19,16 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.test.layoutcheck;
+package eu.tsystems.mms.tic.testframework.test.layoutcheck;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
-import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
+import eu.tsystems.mms.tic.testframework.pageobjects.DefaultUiElementFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.LocatorFactoryProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.WebDriver;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -46,17 +43,30 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements LocatorFac
         return new GuiElement(getWebDriver(), LOCATE.byQa(qaTag));
     }
 
-    @Test
-    public void testCheckElementLayout() {
-        GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
-        guiElement.asserts().assertScreenshot("TestArticle", 1.3);
-
-        guiElement = getGuiElementQa("section/invisibleTestArticle");
-        guiElement.asserts().assertScreenshot("InvisibleTestArticle", 1.3);
+    private UiElement getUIElementQa(final String qaTag) {
+        return new DefaultUiElementFactory().createWithWebDriver(getWebDriver(), LOCATE.byQa(qaTag));
     }
 
     @Test
-    public void testCheckElementVisibility() {
+    public void testT01_CheckElementLayout() {
+        UiElement uiElement = getUIElementQa("section/layoutTestArticle");
+        uiElement.expect().screenshot().pixelDistance("TestArticle").isLowerThan(1.3);
+
+        uiElement = getUIElementQa("section/invisibleTestArticle");
+        uiElement.expect().screenshot().pixelDistance("InvisibleTestArticle").isLowerThan(1.3);
+    }
+
+    @Test
+    public void testT02_CheckElementLayoutWithSubfolder() {
+        GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
+        guiElement.asserts().assertScreenshot("subfolder/TestArticle", 1.3);
+
+        guiElement = getGuiElementQa("section/invisibleTestArticle");
+        guiElement.asserts().assertScreenshot("subfolder/InvisibleTestArticle", 1.3);
+    }
+
+    @Test
+    public void testT03_CheckElementVisibility() {
         GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
         Page helperPage = new Page(guiElement.getWebDriver());
         int top = helperPage.expect().viewport().top().getActual();
@@ -81,19 +91,19 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements LocatorFac
     }
 
     @Test(expectedExceptions = AssertionError.class)
-    public void testCheckElementLayoutDistance_fails() {
+    public void testT04_CheckElementLayoutDistance_fails() {
         GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
         guiElement.asserts().assertScreenshot("TestArticleFailed", 1);
     }
 
     @Test(expectedExceptions = AssertionError.class)
-    public void testCheckElementLayoutSize_fails() {
+    public void testT05_CheckElementLayoutSize_fails() {
         GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
         guiElement.asserts().assertScreenshot("TestArticle-90-percent-width", 1);
     }
 
     @Test
-    public void testCheckPageLayout() {
+    public void testT06_CheckPageLayout() {
         LayoutCheck.assertScreenshot(getWebDriver(), "LayoutTestPage", 5);
     }
 

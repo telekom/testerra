@@ -22,7 +22,6 @@
 package eu.tsystems.mms.tic.testframework.layout;
 
 import eu.tsystems.mms.tic.testframework.common.IProperties;
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
@@ -30,7 +29,6 @@ import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.layout.extraction.AnnotationReader;
 import eu.tsystems.mms.tic.testframework.layout.reporting.LayoutCheckContext;
 import eu.tsystems.mms.tic.testframework.report.Report;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import java.awt.Color;
@@ -347,7 +345,7 @@ public final class LayoutCheck implements PropertyManagerProvider {
             matchStep.distance = generateDistanceImage(
                     referenceImage,
                     actualImage,
-                    matchStep.distanceFileName.toAbsolutePath().toString(),
+                    matchStep.distanceFileName,
                     useIgnoreColor
             );
         } catch (Exception e) {
@@ -379,7 +377,7 @@ public final class LayoutCheck implements PropertyManagerProvider {
     private static double generateDistanceImage(
             final BufferedImage expectedImage,
             final BufferedImage actualImage,
-            final String resultFilename,
+            final Path resultFilename,
             final boolean useIgnoreColor
     ) {
         // for counting the pixels that are different
@@ -481,8 +479,9 @@ public final class LayoutCheck implements PropertyManagerProvider {
         }
 
         try {
-            // write image to given file
-            ImageIO.write(distanceImage, "PNG", new File(resultFilename));
+            // Write image to given file
+            resultFilename.toFile().getParentFile().mkdirs();
+            ImageIO.write(distanceImage, "PNG", resultFilename.toAbsolutePath().toFile());
         } catch (IOException ioe) {
             LOGGER.error(
                     String.format("An error occurred while trying to persist image to '%s'.", resultFilename),

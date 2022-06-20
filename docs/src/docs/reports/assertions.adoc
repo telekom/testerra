@@ -14,7 +14,7 @@ image::report-ng-20.png[align="center", alt="Assert Collector Steps"]
 
 == Optional assertions
 
-When <<#_optional__collected_assertions, Optional assertions>> fail, the test will also be fully executed and will be marked as passed.
+When <<#_optional_assertions, Optional assertions>> fail, the test will also be fully executed and will be marked as passed.
 
 image::report-ng-21.png[align="center", alt="Optional Assert Pass"]
 image::report-ng-17.png[align="center", alt="Optional Assert Details"]

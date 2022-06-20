@@ -6,5 +6,5 @@ For this the Failure Aspect View was designed.
 
 image::report-ng-11.png[align="center", alt="Failure Aspect View"]
 
-It comes with a filter as well and shows the most severe problems on the top and the number of tests that they caused to fail.
+It comes with a filter as well and shows the most occurred problems on the top with the number of tests that they caused to fail.
 

@@ -190,7 +190,8 @@ public class GenerateJUnitXML2ReportListener implements
 
         createElementFromTestResults(document, m_configIssues);
         createElementFromTestResults(document, m_allTests);
-        createElementFromIgnoredTests(document, context);
+        // Update: Removed ignored tests from result file because many JUnit interpreter add ignored tests to test scope although they were not.
+//        createElementFromIgnoredTests(document, context);
 
         document.pop();
 

@@ -40,11 +40,9 @@ The markers `MCID` and `SCID` are referencing to the current MethodContext respe
 
 == Prompt messages
 
-Very important messages can be prompted using:
+Very important messages can be prompted to the <<Priority Messages, ReportNG>> using:
 
 [source,java]
 ----
-log().warn("Important message", Loggable::prompt);
+log().warn("Important message", Loggable.prompt);
 ----
-
-That tells the Report to display these messages in a different way (optional).

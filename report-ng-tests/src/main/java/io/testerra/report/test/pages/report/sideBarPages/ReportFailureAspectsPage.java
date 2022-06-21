@@ -2,7 +2,6 @@ package io.testerra.report.test.pages.report.sideBarPages;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import io.testerra.report.test.pages.AbstractReportPage;
@@ -139,9 +138,8 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
         }
     }
 
-    public ReportFailureAspectsPage disableButton() {
+    public void disableButton() {
         Assert.assertEquals(testShowExpectedFailsButton.getAttribute("aria-checked"), "true", "Button should be enabled!");
         testShowExpectedFailsButton.click();
-        return PageFactory.create(ReportFailureAspectsPage.class, getWebDriver());
     }
 }

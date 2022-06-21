@@ -6,7 +6,7 @@ import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import io.testerra.report.test.AbstractReportTest;
 import io.testerra.report.test.pages.AbstractReportPage;
-import io.testerra.report.test.pages.ReportPageType;
+import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportFailureAspectsPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportLogsPage;
@@ -39,20 +39,22 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
 
     @DataProvider
     public Object[][] dataProviderForNavigationBetweenDifferentPages() {
-        return new Object[][]
-                {{ReportPageType.TESTS, ReportTestsPage.class},
-                        {ReportPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class},
-                        {ReportPageType.LOGS, ReportLogsPage.class},
-                        {ReportPageType.THREADS, ReportThreadsPage.class}};
+        return new Object[][]{
+                {ReportSidebarPageType.TESTS, ReportTestsPage.class},
+                {ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class},
+                {ReportSidebarPageType.LOGS, ReportLogsPage.class},
+                {ReportSidebarPageType.THREADS, ReportThreadsPage.class}
+        };
     }
 
     @DataProvider
     public Object[][] dataProviderFailureCorridorBounds() {
         PropertyManager.loadProperties("report-ng-tests/src/test/resources/test.properties");
-        return new Object[][]
-                {{"High", PropertyManager.getIntProperty("tt.failure.corridor.allowed.failed.tests.high")},
-                        {"Mid", PropertyManager.getIntProperty("tt.failure.corridor.allowed.failed.tests.mid")},
-                        {"Low", PropertyManager.getIntProperty("tt.failure.corridor.allowed.failed.tests.low")}};
+        return new Object[][]{
+                {"High", PropertyManager.getIntProperty("tt.failure.corridor.allowed.failed.tests.high")},
+                {"Mid", PropertyManager.getIntProperty("tt.failure.corridor.allowed.failed.tests.mid")},
+                {"Low", PropertyManager.getIntProperty("tt.failure.corridor.allowed.failed.tests.low")}
+        };
     }
 
     @Test(dataProvider = "dataProviderForDifferentTestStates")
@@ -86,7 +88,7 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
     }
 
     @Test(dataProvider = "dataProviderForNavigationBetweenDifferentPages")
-    public void testT03_navigationTowardsDifferentPagesDashBoardPage(ReportPageType type, Class<AbstractReportPage> pageClass) {
+    public void testT03_navigationTowardsDifferentPagesDashBoardPage(ReportSidebarPageType type, Class<AbstractReportPage> pageClass) {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
@@ -235,7 +237,7 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
 
         TestStep.begin("Check order of listed failure aspects is correct");
         List<String> topFailureAspectsReportDashboardPage = reportDashBoardPage.getOrderListOfTopFailureAspects();
-        ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
+        ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
         List<String> topFailureAspectsReportFailureAspectsPage = reportFailureAspectsPage.getOrderListOfTopFailureAspects();
         Assert.assertEquals(topFailureAspectsReportDashboardPage, topFailureAspectsReportFailureAspectsPage.subList(0, 3));
     }

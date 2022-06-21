@@ -27,8 +27,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import io.testerra.report.test.pages.AbstractReportPage;
-import io.testerra.report.test.pages.ReportPageType;
-import io.testerra.report.test.pages.report.ReportConcreteMethodPage;
+import io.testerra.report.test.pages.ReportSidebarPageType;
+import io.testerra.report.test.pages.report.methodReport.ReportMethodPage;
 import io.testerra.report.test.pages.utils.RegExUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -60,7 +60,7 @@ public class ReportTestsPage extends AbstractReportPage {
         super(driver);
     }
 
-    private List<GuiElement> getColumnWithoutHead(int columnNumber) {
+    public List<GuiElement> getColumnWithoutHead(int columnNumber) {
         List<GuiElement> column = new ArrayList<>();
         for (GuiElement row : tableRows.getList()) {
             column.add(row.getSubElement(By.xpath("//td")).getList().get(columnNumber));
@@ -73,7 +73,7 @@ public class ReportTestsPage extends AbstractReportPage {
     }
 
     public void assertPageIsShown() {
-        verifyReportPage(ReportPageType.TESTS);
+        verifyReportPage(ReportSidebarPageType.TESTS);
     }
 
     public void assertTableIsDisplayedCorrect() {
@@ -238,11 +238,11 @@ public class ReportTestsPage extends AbstractReportPage {
         }
     }
 
-    public ReportConcreteMethodPage navigateToMethodReport(int methodIndex) {
-        GuiElement rowEntries =  tableRows.getList().get(methodIndex).getSubElement(By.xpath("//td"));
+    public ReportMethodPage navigateToMethodReport(int methodIndex) {
+        GuiElement rowEntries = tableRows.getList().get(methodIndex).getSubElement(By.xpath("//td"));
         rowEntries.asserts().assertIsDisplayed();
         rowEntries.getList().get(3).getSubElement(By.xpath("//a")).click();
-        return PageFactory.create(ReportConcreteMethodPage.class, getWebDriver());
+        return PageFactory.create(ReportMethodPage.class, getWebDriver());
     }
 
     public List<String[]> getTable() {
@@ -269,5 +269,17 @@ public class ReportTestsPage extends AbstractReportPage {
 
     public int getAmountOfTableRows() {
         return tableRows.getNumberOfFoundElements();
+    }
+
+    public boolean methodGotFailureAspect(int methodIndex) {
+        return getColumnWithoutHead(3).get(methodIndex).getSubElement(By.xpath("//div")).getNumberOfFoundElements() > 1;
+    }
+
+    public void search(String query) {
+        testSearchInput.type(query);
+    }
+
+    public void clearSearchbar() {
+        testSearchInput.clear();
     }
 }

@@ -5,7 +5,7 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import io.testerra.report.test.AbstractReportTest;
-import io.testerra.report.test.pages.ReportPageType;
+import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportLogsPage;
 import org.openqa.selenium.WebDriver;
@@ -21,7 +21,7 @@ public class ReportLogsPageTest extends AbstractReportTest {
         ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
 
         TestStep.begin("Navigate to logs page.");
-        ReportLogsPage reportLogsPage = reportDashBoardPage.gotoToReportPage(ReportPageType.LOGS, ReportLogsPage.class);
+        ReportLogsPage reportLogsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.LOGS, ReportLogsPage.class);
 
         TestStep.begin("Check whether the logLevel-select works correctly");
         reportLogsPage.assertLogReportIsCorrectWhenDifferentLogLevelAreSelected();
@@ -36,7 +36,7 @@ public class ReportLogsPageTest extends AbstractReportTest {
         ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
 
         TestStep.begin("Navigate to logs page.");
-        ReportLogsPage reportLogsPage = reportDashBoardPage.gotoToReportPage(ReportPageType.LOGS, ReportLogsPage.class);
+        ReportLogsPage reportLogsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.LOGS, ReportLogsPage.class);
 
         TestStep.begin("Check whether the search filter works correctly");
         //fails because filter does not work correct

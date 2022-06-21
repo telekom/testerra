@@ -26,7 +26,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import io.testerra.report.test.pages.AbstractReportPage;
-import io.testerra.report.test.pages.ReportPageType;
+import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.utils.RegExUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -71,22 +71,15 @@ public class ReportDashBoardPage extends AbstractReportPage {
     private final GuiElement topFailuresLink = testTopFailureAspectsElement.getSubElement(By.xpath("/mdc-list//span[@class='mdc-list-item__content']"));
 
     private final String xPathToPieChartPart = "//*[@class='apexcharts-series apexcharts-pie-series' and @seriesName='%s']";
-    private final String xPathToFailureCorridor = "//*[contains(@class.bind,'Corridor') and contains(text(), '%s')]";
 
     public ReportDashBoardPage(WebDriver driver) {
         super(driver);
     }
 
     public void assertPageIsShown() {
-        verifyReportPage(ReportPageType.DASHBOARD);
+        verifyReportPage(ReportSidebarPageType.DASHBOARD);
     }
 
-    /**
-     * extract information of executed tests per Status from DashBoardPage Tests card
-     *
-     * @param testStatus
-     * @return
-     */
     public String getTestsPerStatus(final Status testStatus) {
 
         String testsPerStatus = "not_existing";
@@ -295,6 +288,7 @@ public class ReportDashBoardPage extends AbstractReportPage {
     }
 
     private GuiElement getFailureCorridorPart(final String failureCorridorType) {
+        String xPathToFailureCorridor = "//*[contains(@class.bind,'Corridor') and contains(text(), '%s')]";
         return new GuiElement(getWebDriver(), By.xpath(String.format(xPathToFailureCorridor, failureCorridorType)));
     }
 

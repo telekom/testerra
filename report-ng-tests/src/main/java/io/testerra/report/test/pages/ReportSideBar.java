@@ -24,14 +24,12 @@ package io.testerra.report.test.pages;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
+import io.testerra.report.test.pages.utils.RegExUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import io.testerra.report.test.pages.utils.RegExUtils;
 
 public abstract class ReportSideBar extends ReportHeader {
 
@@ -52,8 +50,8 @@ public abstract class ReportSideBar extends ReportHeader {
         super(driver);
     }
 
-    public <T extends AbstractReportPage> T gotoToReportPage(final ReportPageType reportPageType, final Class<T> reportPageClass) {
-        switch (reportPageType) {
+    public <T extends AbstractReportPage> T gotoToReportPage(final ReportSidebarPageType reportSidebarPageType, final Class<T> reportPageClass) {
+        switch (reportSidebarPageType) {
             case DASHBOARD:
                 sideBarDashBoard.click();
                 break;
@@ -75,10 +73,10 @@ public abstract class ReportSideBar extends ReportHeader {
     }
 
 
-    public void verifyReportPage(final ReportPageType reportPageType) {
+    public void verifyReportPage(final ReportSidebarPageType reportSidebarPageType) {
         List<GuiElement> sideBarElements = sideBar.getSubElement(By.xpath("/mdc-drawer-content/mdc-list-item")).getList();
-        for(GuiElement sidebarElement : sideBarElements){
-            if (Objects.equals(sidebarElement.getText().toUpperCase(), reportPageType.name())){
+        for (GuiElement sidebarElement : sideBarElements) {
+            if (Objects.equals(sidebarElement.getText().toUpperCase(), reportSidebarPageType.name())) {
                 sidebarElement.asserts().assertAttributeContains("class", "mdc-list-item--activated");
             } else {
                 sidebarElement.asserts().assertAttributeContainsNot("class", "mdc-list-item--activated");

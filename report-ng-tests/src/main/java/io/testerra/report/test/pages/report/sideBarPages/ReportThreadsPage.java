@@ -19,7 +19,7 @@ public class ReportThreadsPage extends AbstractReportPage {
     @Check
     private final GuiElement testMethodDropDownList = pageContent.getSubElement(By.xpath("//div[./label[@label='Method']]//mdc-lookup"));
     @Check
-    private final GuiElement testThreadReport = pageContent.getSubElement(By.xpath("//div[@class='vis-foreground']/div"));
+    private final GuiElement testThreadReport = pageContent.getSubElement(By.xpath("//div[@class='vis-foreground']"));
 
     /**
      * Constructor for existing sessions.
@@ -61,7 +61,7 @@ public class ReportThreadsPage extends AbstractReportPage {
     }
 
     public void assertMethodBoxIsSelected(String method) {
-        for (GuiElement guiElement : testThreadReport.getList()) {
+        for (GuiElement guiElement : testThreadReport.getSubElement(By.xpath("div")).getList()) {
             if (guiElement.getText().split("\n")[0].equals(method.trim())) {
                 guiElement.getSubElement(By.xpath("/div"))
                         .asserts("Searched element should marked as selected")

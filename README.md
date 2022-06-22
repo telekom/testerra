@@ -79,7 +79,7 @@ public class MyTest extends TesterraTest {
 
 ## Documentation
 
-* Check out our comprehensive [Testerra documentation](http://docs.testerra.io)!
+* Check out our comprehensive [Testerra 1 documentation](https://docs.testerra.io/testerra/1-latest/index.html)!
 * Feel free to try out our ready-to-use [Skeleton project][testerra-skeleton].
 
 ## Extras

@@ -16,6 +16,8 @@ CONTROL.collectAssertions(() -> {
 });
 ----
 
+See <<#_collected_assertions_2, here>> how collected assertions are presented in Report-NG.
+
 == Optional assertions
 
 Optional asserts do not let the test fail, but the assertion message will be added to the log with loglevel `WARN` and will result in an minor failure aspect.
@@ -28,6 +30,8 @@ CONTROL.optionalAssertions(() -> {
     ASSERT.assertEquals("hello", "world");
 });
 ----
+
+See <<#_optional_assertions_2, here>> how optional assertions are presented in Report-NG.
 
 == Change internal timeout
 

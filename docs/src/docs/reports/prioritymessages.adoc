@@ -1,0 +1,43 @@
+= Priority Messages
+
+== For test methods
+
+In case you would like to have some log messages displayed on a prominent place on the test details page, you can log priority messages like this:
+
+[source,java]
+----
+public class MyTestClass extends TesterraTest implements Loggable {
+ 
+    @Test
+    public void testT01_PriorityMessages() {
+
+    	log().info("It's gonna be ok.", Loggable.prompt);
+
+    	// some test activities ...
+        log().warn("Warn me!", Loggable.prompt);
+
+        // some test activities ...
+        log().error("Tell me more!", Loggable.prompt);
+    }
+}
+----
+
+As a result the information, warnings and errors are visible on the priority message panel in the center of the test detail page:
+
+image::report-ng-03.png[align="center", alt="Priority Messages"]
+
+== For global context
+
+Priority messages can also be used to enrich the dashboard with test run specific information (e.g. the environment it was executed in. In this case log the priority message as following:
+
+[source,java]
+----
+    @Test(groups = "LOGS")
+    public void test_promptOutSideMethodContext() {
+        new Thread(() -> log().info("Prompt outside method context", Loggable.prompt)).start();
+    }
+----
+
+The priority message is displayed on the priority message panel right from the Breakdown pie chart:
+
+image::report-ng-04.png[align="center", alt="Priority Message on Dashboard"]

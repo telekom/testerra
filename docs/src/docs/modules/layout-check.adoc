@@ -22,10 +22,6 @@ The following prerequisites must be met
 . Concrete execution environment: Layout tests should run in a concrete browser environment to ensure the comparability of the screenshots.
 ** Size of browser window: Define fixed size to exclude different sizes of the images at different VM resolutions
 ** Screen resolution and scaling: Make sure you have the same screen resolution and scaling on each presentation device.
-//. Build Server: The library underlying ANNOTATED mode supports the operating systems
-//** Windows 32 - and 64 - Bit
-//** Linux Debian 32 - and 64 - Bit (glibc >= 2.15; Jenkins)
-//** MacOSX (untested)
 
 == Configuration
 
@@ -86,3 +82,7 @@ When you have configured the reference screenshots location and implemented the 
 to enable taking automatically screenshots based on the current browser and size configuration and storing them to the reference image's location.
 
 WARNING: All concrete distance values in this {layoutcheck_takereference}-mode will return `0` (zero) and always pass the tests.
+
+== Reporting
+
+Report-NG provides a good presentation of the results of layout checks. See <<#_layout_checks, here>> for more details.

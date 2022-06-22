@@ -33,7 +33,7 @@ You may see Testerra as an open source test automation library for web frontend 
 
 Testerra is developed by our Test Automation Experts at T-Systems MMS in Dresden. In numerous projects Testerra is used as the standard test automation framework and includes the experience of more then 10 years of test automation.
 
-**This is the branch of Testerra 2. For Testerra 1 go to https://github.com/telekom/testerra/tree/master** 
+**This is the branch of Testerra 2. For Testerra 1 go to https://github.com/telekom/testerra/tree/testerra1** 
 
 ## Setup
 

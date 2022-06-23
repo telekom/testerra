@@ -40,6 +40,9 @@ public class FailsAnnotationConverter implements AnnotationConverter<Fails> {
         } else if (annotation.ticketId() > 0) {
             map.put("ticketString", Integer.toString(annotation.ticketId()));
         }
+        if(!StringUtils.isBlank(annotation.validator())) {
+            map.put("validator", annotation.validatorClass().getCanonicalName() +"."+ annotation.validator());
+        }
         return map;
     }
 }

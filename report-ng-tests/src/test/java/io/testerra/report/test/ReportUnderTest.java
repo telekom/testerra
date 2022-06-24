@@ -24,14 +24,12 @@ package io.testerra.report.test;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-
+import io.testerra.report.test.pages.ReportSidebarPageType;
+import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
+import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import io.testerra.report.test.pages.report.ReportDashBoardPage;
-import io.testerra.report.test.pages.ReportPageType;
-import io.testerra.report.test.pages.report.ReportTestsPage;
 
 public class ReportUnderTest extends AbstractReportTest {
 
@@ -53,7 +51,7 @@ public class ReportUnderTest extends AbstractReportTest {
     public void test_visitReport() {
         final ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, WebDriverManager.getWebDriver(),
                 PropertyManager.getProperty("file.path.content.root"));
-        reportDashBoardPage.gotoToReportPage(ReportPageType.TESTS, ReportTestsPage.class);
+        reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
     }
 
     @Test(dataProvider = "provideTestsPerStatus")

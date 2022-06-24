@@ -21,18 +21,6 @@
 
 package io.testerra.report.test.pages;
 
-public enum ReportPageType {
-    DASHBOARD("Dashboard"),
-    TESTS("Tests"),
-    FAILURE_ASPECTS("Failure Aspects"),
-    LOGS("Logs"),
-    THREADS("Threads");
-
-    public final String title;
-
-    ReportPageType(String title) {
-        this.title = title;
-    }
-
-
+public enum ReportSidebarPageType {
+    DASHBOARD, TESTS, FAILURE_ASPECTS, LOGS, THREADS
 }

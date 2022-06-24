@@ -24,36 +24,34 @@ package io.testerra.report.test.pages;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
+import io.testerra.report.test.pages.utils.RegExUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import io.testerra.report.test.pages.utils.RegExUtils;
 
 public abstract class ReportSideBar extends ReportHeader {
 
     @Check
     private final GuiElement sideBar = new GuiElement(getWebDriver(), By.xpath("//mdc-drawer"));
     @Check
-    private final GuiElement sideBarDashBoard = getSidebarElement(ReportPageType.DASHBOARD);
+    private final GuiElement sideBarDashBoard = sideBar.getSubElement(By.xpath(".//mdc-list-item[.//span[(text() = 'Dashboard')]]"));
     @Check
-    private final GuiElement sideBarTests = getSidebarElement(ReportPageType.TESTS);
+    private final GuiElement sideBarTests = sideBar.getSubElement(By.xpath(".//mdc-list-item[.//span[contains(text(), 'Tests')]]"));
     @Check
-    private final GuiElement sideBarFailureAspects = getSidebarElement(ReportPageType.FAILURE_ASPECTS);
+    private final GuiElement sideBarFailureAspects = sideBar.getSubElement(By.xpath(".//mdc-list-item[.//span[contains(text(), 'Failure Aspects')]]"));
     @Check
-    private final GuiElement sideBarLogs = getSidebarElement(ReportPageType.LOGS);
+    private final GuiElement sideBarLogs = sideBar.getSubElement(By.xpath(".//mdc-list-item[.//span[contains(text(), 'Logs')]]"));
     @Check
-    private final GuiElement sideBarThreads = getSidebarElement(ReportPageType.THREADS);
+    private final GuiElement sideBarThreads = sideBar.getSubElement(By.xpath(".//mdc-list-item[.//span[contains(text(), 'Threads')]]"));
 
     public ReportSideBar(WebDriver driver) {
         super(driver);
     }
 
-    public <T extends AbstractReportPage> T gotoToReportPage(final ReportPageType reportPageType, final Class<T> reportPageClass) {
-        switch (reportPageType) {
+    public <T extends AbstractReportPage> T gotoToReportPage(final ReportSidebarPageType reportSidebarPageType, final Class<T> reportPageClass) {
+        switch (reportSidebarPageType) {
             case DASHBOARD:
                 sideBarDashBoard.click();
                 break;
@@ -74,10 +72,11 @@ public abstract class ReportSideBar extends ReportHeader {
         return PageFactory.create(reportPageClass, getWebDriver());
     }
 
-    public void verifyActiveSidebarCategory(final ReportPageType reportPageType) {
+
+    public void verifyReportPage(final ReportSidebarPageType reportSidebarPageType) {
         List<GuiElement> sideBarElements = sideBar.getSubElement(By.xpath("/mdc-drawer-content/mdc-list-item")).getList();
-        for(GuiElement sidebarElement : sideBarElements){
-            if (sidebarElement.getText().toUpperCase().equals(reportPageType.name())){
+        for (GuiElement sidebarElement : sideBarElements) {
+            if (Objects.equals(sidebarElement.getText().toUpperCase(), reportSidebarPageType.name())) {
                 sidebarElement.asserts().assertAttributeContains("class", "mdc-list-item--activated");
             } else {
                 sidebarElement.asserts().assertAttributeContainsNot("class", "mdc-list-item--activated");
@@ -85,14 +84,13 @@ public abstract class ReportSideBar extends ReportHeader {
         }
     }
 
-    public int getAmountOfTests() {
-        final String testsTextOfSidebar = sideBarTests.getText();
-        final String regExpResultOfString = RegExUtils.getRegExpResultOfString(RegExUtils.RegExp.DIGITS_ONLY, testsTextOfSidebar);
-
-        return Integer.parseInt(regExpResultOfString);
+    public GuiElement getSideBarTests(){
+        return sideBarTests;
     }
 
-    private GuiElement getSidebarElement(ReportPageType reportPageType) {
-        return sideBar.getSubElement(By.xpath(String.format(".//mdc-list-item[.//span[(text() = '%s')]]", reportPageType.title)));
+    public int getAmountOfTests() {
+        final String testsTextOfSidebar = sideBarTests.getText();
+        String regExpResultOfString = RegExUtils.getRegExpResultOfString(RegExUtils.RegExp.DIGITS_ONLY, testsTextOfSidebar);
+        return Integer.parseInt(regExpResultOfString);
     }
 }

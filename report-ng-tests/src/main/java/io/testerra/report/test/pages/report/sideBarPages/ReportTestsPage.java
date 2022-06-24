@@ -19,19 +19,26 @@
  * under the License.
  */
 
-package io.testerra.report.test.pages.report;
+package io.testerra.report.test.pages.report.sideBarPages;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import io.testerra.report.test.pages.AbstractReportPage;
-import io.testerra.report.test.pages.ReportPageType;
+import io.testerra.report.test.pages.ReportSidebarPageType;
+import io.testerra.report.test.pages.report.methodReport.ReportMethodPage;
+import io.testerra.report.test.pages.utils.RegExUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ReportTestsPage extends AbstractReportPage {
@@ -53,7 +60,7 @@ public class ReportTestsPage extends AbstractReportPage {
         super(driver);
     }
 
-    private List<GuiElement> getColumnWithoutHead(int columnNumber) {
+    public List<GuiElement> getColumnWithoutHead(int columnNumber) {
         List<GuiElement> column = new ArrayList<>();
         for (GuiElement row : tableRows.getList()) {
             column.add(row.getSubElement(By.xpath("//td")).getList().get(columnNumber));
@@ -63,6 +70,10 @@ public class ReportTestsPage extends AbstractReportPage {
 
     private List<GuiElement> getHeadRow() {
         return tableHead.getSubElement(By.xpath("//tr//th")).getList();
+    }
+
+    public void assertPageIsShown() {
+        verifyReportPage(ReportSidebarPageType.TESTS);
     }
 
     public void assertTableIsDisplayedCorrect() {
@@ -80,18 +91,10 @@ public class ReportTestsPage extends AbstractReportPage {
     private void assertMethodColumnContainsCorrectMethods() {
         String filter = testSearchInput.getAttribute("value").toUpperCase(Locale.ROOT);
         if (filter.equals("")) return;
-        if (filter.startsWith("TEST")) {
-            getColumnWithoutHead(3)
-                    .stream()
-                    .map(i -> i.getSubElement(By.xpath("//*[contains(text(), 'test')]")))
-                    .map(GuiElement::getText)
-                    .forEach(i -> Assert.assertEquals(i.toUpperCase(Locale.ROOT), filter));
-        } else {
-            getColumnWithoutHead(3)
-                    .stream()
-                    .map(GuiElement::getText)
-                    .forEach(i -> Assert.assertTrue(i.toUpperCase(Locale.ROOT).contains(filter)));
-        }
+        getColumnWithoutHead(3)
+                .stream()
+                .map(i -> i.getText().toUpperCase(Locale.ROOT))
+                .forEach(i -> Assert.assertTrue(i.contains(filter), "Every found Methode should contain: " + filter));
     }
 
     private void assertClassColumnContainsCorrectClasses() {
@@ -100,7 +103,8 @@ public class ReportTestsPage extends AbstractReportPage {
         getColumnWithoutHead(1)
                 .stream()
                 .map(GuiElement::getText)
-                .forEach(i -> Assert.assertEquals(i, expectedClass));
+                .forEach(i -> Assert.assertEquals(i, expectedClass, String.format(
+                        "Class-column should contain correct only entries with correct class! [%s]", expectedClass)));
     }
 
     private void assertGivenAmountOfTestIsListed() {
@@ -125,14 +129,19 @@ public class ReportTestsPage extends AbstractReportPage {
 
     private void assertMethodStatusContainsText(String expectedText, String actual) {
         if (expectedText.equals("Passed")) {
-            Assert.assertTrue(actual.equals(expectedText) || actual.equals("Repaired") || actual.equals("Recovered"));
+            Assert.assertTrue(actual.equals(expectedText) || actual.equals("Repaired") || actual.equals("Recovered"),
+                    "Test states 'Passed','Repaired' and 'Recovered' are accepted test states when state 'passed' is selected.");
         } else {
-            Assert.assertEquals(actual, expectedText);
+            Assert.assertEquals(actual, expectedText, "There should be only test methods with selected state displayed.");
         }
     }
 
     private void assertClassColumnHeadlineContainsCorrectText() {
-        int amountOfDifferentClasses = getColumnWithoutHead(1).stream().map(GuiElement::getText).collect(Collectors.toSet()).size();
+        int amountOfDifferentClasses = getColumnWithoutHead(1)
+                .stream()
+                .map(GuiElement::getText)
+                .collect(Collectors.toSet())
+                .size();
         Assert.assertEquals(getHeadRow().get(1).getText(), String.format("Class (%s)", amountOfDifferentClasses), "Headline should contain correct number!");
     }
 
@@ -152,32 +161,12 @@ public class ReportTestsPage extends AbstractReportPage {
                 .forEach(i -> Assert.assertEquals(i, status.title, "There should be only methods with expected status listed"));
     }
 
-    public void selectTestStateFilter(String stateName) {
-        testStatusSelect.click();
-        Optional<GuiElement> guiElementOptional = testStatusSelect.getSubElement(By.xpath("//mdc-menu//mdc-list-item")).getList()
-                .stream()
-                .filter(i -> i.getText().contains(stateName))
-                .findFirst();
-        Assert.assertTrue(guiElementOptional.isPresent());
-        guiElementOptional.get().click();
-    }
-
     public void assertCorrectTableWhenLoopingThroughClasses() {
         Set<String> classes = getColumnWithoutHead(1).stream().map(GuiElement::getText).collect(Collectors.toSet());
         for (String className : classes) {
-            selectClass(className);
+            selectDropBoxElement(testClassSelect, className);
             assertTableIsDisplayedCorrect();
         }
-    }
-
-    private void selectClass(String className) {
-        testClassSelect.click();
-        Optional<GuiElement> optionalGuiElement = testClassSelect.getSubElement(By.xpath("//mdc-list-item")).getList()
-                .stream()
-                .filter(i -> i.getText().equals(className))
-                .findFirst();
-        Assert.assertTrue(optionalGuiElement.isPresent());
-        optionalGuiElement.get().click();
     }
 
     public void assertCorrectTableWhenLoopingThroughMethods() {
@@ -195,9 +184,13 @@ public class ReportTestsPage extends AbstractReportPage {
     }
 
     public void assertShowConfigurationMethodsButtonDisplaysMoreMethods() {
-        int amountOfMethodsBeforeSwitching = Integer.parseInt(getHeadRow().get(3).getText().split(" ")[1].replace("(", "").replace(")", ""));
+        String amountOfMethodsBeforeSwitchingAsString = RegExUtils.getRegExpResultOfString(RegExUtils.RegExp.DIGITS_ONLY,
+                getHeadRow().get(3).getText().split(" ")[1]);
+        int amountOfMethodsBeforeSwitching = Integer.parseInt(amountOfMethodsBeforeSwitchingAsString);
         configurationMethodsSwitch.click();
-        int amountOfMethodsAfterSwitching = Integer.parseInt(getHeadRow().get(3).getText().split(" ")[1].replace("(", "").replace(")", ""));
+        String amountOfMethodsAfterSwitchingAsString = RegExUtils.getRegExpResultOfString(RegExUtils.RegExp.DIGITS_ONLY,
+                getHeadRow().get(3).getText().split(" ")[1]);
+        int amountOfMethodsAfterSwitching = Integer.parseInt(amountOfMethodsAfterSwitchingAsString);
         Assert.assertTrue(amountOfMethodsAfterSwitching > amountOfMethodsBeforeSwitching, "There should be some configuration methods added!");
     }
 
@@ -219,9 +212,8 @@ public class ReportTestsPage extends AbstractReportPage {
                 .map(i -> i.getText().split(":")[0])
                 .collect(Collectors.toSet());
         for (String advice : advices) {
-            System.out.println(advice);
             testSearchInput.type(advice);
-            TimerUtils.sleep(1000, "Necessary sleep  gives enough time to refresh all locator");
+            TimerUtils.sleep(1000, "Necessary sleep gives enough time to refresh all locator");
             assertTableIsDisplayedCorrect();
             testSearchInput.clear();
         }
@@ -235,13 +227,59 @@ public class ReportTestsPage extends AbstractReportPage {
                 .filter(i -> !i.contains("All"))
                 .collect(Collectors.toList());
         testStatusSelect.click();
+        TimerUtils.sleep(1000, "Necessary sleep gives some time to refresh status selection");
         return returnList;
     }
 
     public void LoopThroughPossibleTestStateListAndAssertTableIsDisplayedCorrect(List<String> testStates) {
         for (String stateName : testStates) {
-            selectTestStateFilter(stateName);
+            selectDropBoxElement(testStatusSelect, stateName);
             assertTableIsDisplayedCorrect();
         }
+    }
+
+    public ReportMethodPage navigateToMethodReport(int methodIndex) {
+        GuiElement rowEntries = tableRows.getList().get(methodIndex).getSubElement(By.xpath("//td"));
+        rowEntries.asserts().assertIsDisplayed();
+        rowEntries.getList().get(3).getSubElement(By.xpath("//a")).click();
+        return PageFactory.create(ReportMethodPage.class, getWebDriver());
+    }
+
+    public List<String[]> getTable() {
+        List<String[]> table = new ArrayList<>();
+        for(GuiElement row : tableRows.getList()){
+            List<GuiElement> columns = row.getSubElement(By.xpath("//td")).getList();
+            String[] stringRow = new String[4];
+            stringRow[0] = columns.get(0).getText();
+            stringRow[1] = columns.get(1).getText();
+            stringRow[2] = columns.get(2).getText();
+            stringRow[3] = columns.get(3).getSubElement(By.xpath("//a")).getText();
+            table.add(stringRow);
+        }
+        return table;
+    }
+
+    public void clickConfigurationMethodsSwitch() {
+        configurationMethodsSwitch.click();
+    }
+
+    public GuiElement getTestStatusSelect() {
+        return this.testStatusSelect;
+    }
+
+    public int getAmountOfTableRows() {
+        return tableRows.getNumberOfFoundElements();
+    }
+
+    public boolean methodGotFailureAspect(int methodIndex) {
+        return getColumnWithoutHead(3).get(methodIndex).getSubElement(By.xpath("//div")).getNumberOfFoundElements() > 1;
+    }
+
+    public void search(String query) {
+        testSearchInput.type(query);
+    }
+
+    public void clearSearchbar() {
+        testSearchInput.clear();
     }
 }

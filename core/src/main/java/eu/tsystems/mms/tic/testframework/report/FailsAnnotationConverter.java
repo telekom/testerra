@@ -32,16 +32,16 @@ public class FailsAnnotationConverter implements AnnotationConverter<Fails> {
     @Override
     public Map<String, Object> toMap(Fails annotation) {
         Map<String, Object> map = new HashMap<>();
-        if (!StringUtils.isBlank(annotation.description())) {
+        if (StringUtils.isNotBlank(annotation.description())) {
             map.put("description", annotation.description());
         }
-        if (!StringUtils.isBlank(annotation.ticketString())) {
+        if (StringUtils.isNotBlank(annotation.ticketString())) {
             map.put("ticketString", annotation.ticketString());
         } else if (annotation.ticketId() > 0) {
             map.put("ticketString", Integer.toString(annotation.ticketId()));
         }
-        if(!StringUtils.isBlank(annotation.validator())) {
-            map.put("validator", annotation.validatorClass().getCanonicalName() +"."+ annotation.validator());
+        if (StringUtils.isNotBlank(annotation.validator())) {
+            map.put("validator", annotation.validatorClass().getCanonicalName() + "." + annotation.validator());
         }
         return map;
     }

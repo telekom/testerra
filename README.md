@@ -85,7 +85,7 @@ public class MyTest extends TesterraTest implements UiElementFinderFactoryProvid
 
 * Check out our comprehensive [Testerra 2 documentation](https://docs.testerra.io/testerra/2-latest/index.html)!
 * Feel free to try out our ready-to-use [Skeleton project][testerra-skeleton].
-* Some more Testerra features can be found at https://github.com/T-Systems-MMS/testerra-demo.
+* Some more Testerra features can be found [here][testerra-demo].
 
 ## Extras
 
@@ -154,19 +154,21 @@ The following channels are available for discussions, feedback, and support requ
 
 ### Testerra extensions
 
-| Repository          | Description                                                           |
-| ------------------- | --------------------------------------------------------------------- |
-| [testerra-skeleton] | Testerra Skeleton Project |
-| [testerra-selenoid-connector] | Testerra Selenoid Connector |
-| [testerra-hpqc-connector] | Testerra HPQC Connector |
-| [testerra-teamcity-connector] | Testerra TeamCity Connector |
-| [testerra-cucumber-connector] | Testerra Cucumber Connector |
-| [testerra-xray-connector] | Testerra Xray Connector |
-| [testerra-appium-connector] | Testerra Appium Connector |
+| Repository                        | Description                     |
+|-----------------------------------|---------------------------------|
+| [testerra-skeleton]               | Testerra Skeleton Project       |
+| [testerra-demo]                   | Testerra demo projects          |
+| [testerra-selenoid-connector]     | Testerra Selenoid Connector     |
+| [testerra-hpqc-connector]         | Testerra HPQC Connector         |
+| [testerra-teamcity-connector]     | Testerra TeamCity Connector     |
+| [testerra-cucumber-connector]     | Testerra Cucumber Connector     |
+| [testerra-xray-connector]         | Testerra Xray Connector         |
+| [testerra-appium-connector]       | Testerra Appium Connector       |
 | [testerra-azure-devops-connector] | Testerra Azure DevOps Connector |
 
 [testerra]: https://github.com/telekom/testerra
 [testerra-skeleton]: https://github.com/telekom/testerra-skeleton
+[testerra-demo]: https://github.com/T-Systems-MMS/testerra-demo
 [testerra-selenoid-connector]: https://github.com/telekom/testerra-selenoid-connector
 [testerra-hpqc-connector]: https://github.com/telekom/testerra-hpqc-connector
 [testerra-teamcity-connector]: https://github.com/telekom/testerra-teamcity-connector

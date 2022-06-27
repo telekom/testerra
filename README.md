@@ -85,6 +85,7 @@ public class MyTest extends TesterraTest implements UiElementFinderFactoryProvid
 
 * Check out our comprehensive [Testerra 2 documentation](https://docs.testerra.io/testerra/2-latest/index.html)!
 * Feel free to try out our ready-to-use [Skeleton project][testerra-skeleton].
+* Some more Testerra features can be found at https://github.com/T-Systems-MMS/testerra-demo.
 
 ## Extras
 

@@ -59,8 +59,9 @@
                     >
                         <span class="badge status-failed-expected sr1">@Fails</span>
                         <div>
-                            <div if.bind="_methodDetails.failsAnnotation.description">${_methodDetails.failsAnnotation.description}</div>
-                            <div if.bind="_methodDetails.failsAnnotation.ticketString">Ticket: <span innerhtml.bind="_methodDetails.failsAnnotation.ticketString|html"></span></div>
+                            <div if.bind="_methodDetails.failsAnnotation.description&&7!= _methodDetails.methodContext.resultStatus">${_methodDetails.failsAnnotation.description}</div>
+                            <div if.bind="_methodDetails.failsAnnotation.ticketString&&7!= _methodDetails.methodContext.resultStatus">Ticket: <span innerhtml.bind="_methodDetails.failsAnnotation.ticketString|html"></span></div>
+                            <div if.bind="_methodDetails.failsAnnotation.validator&&7== _methodDetails.methodContext.resultStatus">Your conditions for Expected fails were not fulfilled: <br> ${_methodDetails.failsAnnotation.validator}</div>
                         </div>
                     </div>
                     <mdc-list-divider if.bind="_methodDetails.failsAnnotation"></mdc-list-divider>

@@ -1,4 +1,4 @@
-package io.testerra.report.test.sideBarPagesTests;
+package io.testerra.report.test.report_test.sidebarpages;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
@@ -25,6 +25,8 @@ public class ReportThreadsPageTest extends AbstractReportTest {
         ReportThreadsPage reportThreadsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.THREADS, ReportThreadsPage.class);
 
         TestStep.begin("Check whether thread report contains all methods");
+        // TODO: assert for initially existing Threads, before filtering
+        //  analyze usage of explicit DataProvider with some methods
         Set<String> methods = reportThreadsPage.getThreadMethods();
         reportThreadsPage.assertSearchForMethodWorksCorrect(methods);
     }

@@ -1,4 +1,4 @@
-package io.testerra.report.test.ReportMethodPages;
+package io.testerra.report.test.report_test.methodpages;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.Status;
@@ -40,6 +40,7 @@ public class ReportDetailsTabTest extends AbstractReportTest {
 
         TestStep.begin("Check whether the displayed test state corresponds to each method");
         reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), status.title);
+        // TODO: rework with explicit values?
         for (int i = 0; i < reportTestsPage.getAmountOfTableRows(); i++) {
 
             if (!reportTestsPage.methodGotFailureAspect(i)) continue;
@@ -66,6 +67,7 @@ public class ReportDetailsTabTest extends AbstractReportTest {
 
         TestStep.begin("Select passed status and check target tab for non-failure-aspects methods");
         reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), Status.PASSED.title);
+        // TODO: rework with explicit values?
         for (int i = 0; i < reportTestsPage.getAmountOfTableRows(); i++) {
 
             if (!reportTestsPage.methodGotFailureAspect(i)) continue;
@@ -92,6 +94,8 @@ public class ReportDetailsTabTest extends AbstractReportTest {
 
         TestStep.begin("Check for each failed test method whether it contains a valid failure aspect");
         reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), Status.FAILED.title);
+
+        // TODO: rework with explicit values?
         for (int i = 0; i < reportTestsPage.getAmountOfTableRows(); i++) {
 
             if (!reportTestsPage.methodGotFailureAspect(i)) continue;
@@ -118,6 +122,8 @@ public class ReportDetailsTabTest extends AbstractReportTest {
 
         TestStep.begin("Check for each failed test method whether it contains a valid failure aspect");
         reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), Status.FAILED_EXPECTED.title);
+
+        // TODO: rework with explicit values
         for (int i = 0; i < reportTestsPage.getAmountOfTableRows(); i++) {
 
             if (!reportTestsPage.methodGotFailureAspect(i)) continue;
@@ -144,6 +150,8 @@ public class ReportDetailsTabTest extends AbstractReportTest {
 
         TestStep.begin("Check for each failed test method whether it contains a valid failure aspect");
         reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), Status.REPAIRED.title);
+
+        // TODO: rework with explicit values
         for (int i = 0; i < reportTestsPage.getAmountOfTableRows(); i++) {
 
             ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(i);
@@ -167,6 +175,8 @@ public class ReportDetailsTabTest extends AbstractReportTest {
 
         TestStep.begin("Check for each failed test method whether it contains a valid failure aspect");
         reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), Status.SKIPPED.title);
+
+        // TODO: rework with explicit values
         for (int i = 0; i < reportTestsPage.getAmountOfTableRows(); i++) {
 
             ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(i);

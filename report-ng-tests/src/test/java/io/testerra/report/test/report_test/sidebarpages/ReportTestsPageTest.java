@@ -1,4 +1,4 @@
-package io.testerra.report.test.sideBarPagesTests;
+package io.testerra.report.test.report_test.sidebarpages;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
@@ -39,6 +39,7 @@ public class ReportTestsPageTest extends AbstractReportTest {
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
         TestStep.begin("Get a list of all possible test states, which can be selected on tests page");
+        // TODO: use Dataprovider with TestStatus instead
         List<String> testStates = reportTestsPage.getListOfAllSelectableStates();
 
         TestStep.begin("Check whether the tests page table is correct for every test state");
@@ -98,6 +99,7 @@ public class ReportTestsPageTest extends AbstractReportTest {
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
         TestStep.begin("Enable 'Show configuration methods and check whether more methods are displayed");
+        // TODO: don't hide actions in asserts
         reportTestsPage.assertShowConfigurationMethodsButtonDisplaysMoreMethods();
 
         TestStep.begin("Enable 'Show configuration methods' and check whether more methods are displayed");

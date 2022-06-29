@@ -1,4 +1,4 @@
-package io.testerra.report.test.ReportMethodPages;
+package io.testerra.report.test.report_test.methodpages;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;

@@ -1,4 +1,4 @@
-package io.testerra.report.test.sideBarPagesTests;
+package io.testerra.report.test.report_test.sidebarpages;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.Status;

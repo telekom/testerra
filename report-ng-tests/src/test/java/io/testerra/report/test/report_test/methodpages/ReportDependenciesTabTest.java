@@ -1,4 +1,4 @@
-package io.testerra.report.test.ReportMethodPages;
+package io.testerra.report.test.report_test.methodpages;
 
 import io.testerra.report.test.AbstractReportTest;
 import org.testng.Assert;

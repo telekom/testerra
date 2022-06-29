@@ -89,6 +89,12 @@ public abstract class AbstractReportTest extends TesterraTest implements Loggabl
         visitTestPage(ReportDashBoardPage.class, driver, getReportDir());
     }
 
+
+    public synchronized <T extends AbstractReportPage> T visitTestPage(final Class<T> reportPageClass, final WebDriver driver) {
+        return visitTestPage(reportPageClass, driver, PropertyManager.getProperty("file.path.content.root"));
+    }
+
+
     /**
      * Open a custom Webdriver session with the default test page.
      *

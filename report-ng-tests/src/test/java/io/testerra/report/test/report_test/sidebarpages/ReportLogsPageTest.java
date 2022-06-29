@@ -1,4 +1,4 @@
-package io.testerra.report.test.sideBarPagesTests;
+package io.testerra.report.test.report_test.sidebarpages;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
@@ -43,6 +43,7 @@ public class ReportLogsPageTest extends AbstractReportTest {
         // -> filter does not work when there are leading or trailing spaces
         // -> filter does not work when there are brackets in the filter request
         // (-> filter is only applied on the right side of the logReport behind the "-"- sign in each line)
+        // TODO: search constraints: bug or feature?
         reportLogsPage.assertLogReportIsCorrectWhenSearchingForDifferentLogLines();
     }
 

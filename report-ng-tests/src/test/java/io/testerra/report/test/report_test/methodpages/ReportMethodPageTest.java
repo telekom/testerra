@@ -1,4 +1,4 @@
-package io.testerra.report.test.ReportMethodPages;
+package io.testerra.report.test.report_test.methodpages;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
@@ -34,6 +34,9 @@ public class ReportMethodPageTest extends AbstractReportTest {
 
         TestStep.begin("Navigate to method detail page and check for correct content");
         ReportMethodPage reportMethodPage;
+        // TODO: rework: use method name as provided data and click link?
+        //  one per status
+        //  expected in dedicated date structure or multiple data in provider? not with live reading in list of array from page
         for (String[] row : methodsContentRows) {
             reportMethodPage = reportTestsPage.navigateToMethodReport(Integer.parseInt(row[2]) - 1);
 

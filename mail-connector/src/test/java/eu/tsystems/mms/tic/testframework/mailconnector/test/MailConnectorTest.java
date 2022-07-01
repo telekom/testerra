@@ -61,6 +61,8 @@ import javax.mail.search.RecipientTerm;
 import javax.mail.search.SearchTerm;
 import javax.mail.search.SentDateTerm;
 import javax.mail.search.SubjectTerm;
+
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -472,7 +474,7 @@ public class MailConnectorTest extends TesterraTest {
     public void testT08_sendAndWaitForMessageWithoutAttachement_SubjectSenderRecipient() throws Exception {
 
         final String subject = "testT08_sendAndWaitForMessageWithoutAttachement_SubjectSenderRecipient"
-                + StringUtils.getRandomStringWithLength(5);
+                + RandomStringUtils.random(5, true, false);
 
         final SearchTerm searchTerm = new AndTerm(new SearchTerm [] {
                         new SubjectTerm(subject),
@@ -492,7 +494,7 @@ public class MailConnectorTest extends TesterraTest {
     public void testT09_sendAndWaitForMessageWithoutAttachement_SubjectRecipient() throws Exception {
 
         final String subject = "testT09_sendAndWaitForMessageWithoutAttachement_SubjectRecipient"
-                + StringUtils.getRandomStringWithLength(5);
+                + RandomStringUtils.random(5, true, false);
 
         final SearchTerm searchTerm = new AndTerm(
                 new SubjectTerm(subject),
@@ -510,7 +512,7 @@ public class MailConnectorTest extends TesterraTest {
     public void testT10_sendAndWaitForMessageWithoutAttachement_SubjectSender() throws Exception {
 
         final String subject = "testT10_sendAndWaitForMessageWithoutAttachement_SubjectSender"
-                + StringUtils.getRandomStringWithLength(5);
+                + RandomStringUtils.random(5, true, false);
 
         final SearchTerm searchTerm = new AndTerm(
                 new SubjectTerm(subject),

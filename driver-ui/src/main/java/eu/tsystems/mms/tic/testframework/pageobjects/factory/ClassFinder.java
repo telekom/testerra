@@ -27,7 +27,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.PageObject;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PageAssertions;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -35,6 +34,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebDriver;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
@@ -67,7 +68,7 @@ final public class ClassFinder {
         private static final Map<Class<? extends PageObject>, Map<String, PrioritizedClassInfos<? extends PageObject>>> IMPLEMENTATIONS_CACHE = new ConcurrentHashMap<>();
 
         private static PrioritizedClassInfos getCache(Class<? extends PageObject> pageClass, String prefixOrNull) {
-            if (StringUtils.isStringEmpty(prefixOrNull)) {
+            if (StringUtils.isBlank(prefixOrNull)) {
                 prefixOrNull = NULL_PAGE_PREFIX;
             }
 
@@ -86,7 +87,7 @@ final public class ClassFinder {
         }
 
         private static void setCache(Class<? extends PageObject> pageClass, String prefixOrNull, PrioritizedClassInfos<? extends PageObject> prioritizedClassInfos) {
-            if (StringUtils.isStringEmpty(prefixOrNull)) {
+            if (StringUtils.isBlank(prefixOrNull)) {
                 prefixOrNull = NULL_PAGE_PREFIX;
             }
 
@@ -148,7 +149,7 @@ final public class ClassFinder {
             if (matchesOurAnyOfPatterns(resPart)) {
                 // prefixed classes with existing and matching res part
                 prioritizedClassInfos.getPrefixedClasses().add(new ResolutionClassInfo<>(subClass, resPart));
-            } else if (StringUtils.isStringEmpty(resPart)) {
+            } else if (StringUtils.isBlank(resPart)) {
                 // prefixed classes without res part
                 prioritizedClassInfos.setPrefixedBaseClass(subClass);
             }
@@ -162,7 +163,7 @@ final public class ClassFinder {
     }
 
     private static boolean matchesOurAnyOfPatterns(String resPartOfClassName) {
-        if (StringUtils.isStringEmpty(resPartOfClassName)) {
+        if (StringUtils.isBlank(resPartOfClassName)) {
             return false;
         }
         if (resPartOfClassName.matches(PATTERN_LOW) ||
@@ -342,7 +343,7 @@ final public class ClassFinder {
         }
 
         private void grabResolutions(String resPart) {
-            if (StringUtils.isStringEmpty(resPart)) {
+            if (StringUtils.isBlank(resPart)) {
                 return;
             }
 

@@ -20,16 +20,17 @@
  */
 package eu.tsystems.mms.tic.testframework.utils;
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-public class ProxyUtils {
+public class ProxyUtils implements PropertyManagerProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProxyUtils.class);
 
@@ -57,14 +58,14 @@ public class ProxyUtils {
 
         String proxyString = "";
 
-        final String proxyHost = PropertyManager.getProperty(proxyType + ".proxyHost");
+        final String proxyHost = PROPERTY_MANAGER.getProperty(proxyType + ".proxyHost");
         if (proxyHost != null) {
             proxyString += proxyHost;
         } else {
             return null;
         }
 
-        final String proxyPort = PropertyManager.getProperty(proxyType + ".proxyPort");
+        final String proxyPort = PROPERTY_MANAGER.getProperty(proxyType + ".proxyPort");
         if (proxyPort != null) {
             proxyString += ":" + proxyPort;
         }
@@ -86,17 +87,17 @@ public class ProxyUtils {
 
         try {
 
-            final String user = PropertyManager.getProperty(proxyType + ".proxyUser");
-            if (org.apache.commons.lang3.StringUtils.isNotEmpty(user)) {
+            final String user = PROPERTY_MANAGER.getProperty(proxyType + ".proxyUser");
+            if (StringUtils.isNotBlank(user)) {
                 proxyUrlString += URLEncoder.encode(user, urlEncoding);
             }
 
-            final String password = PropertyManager.getProperty(proxyType + ".proxyPassword");
-            if (org.apache.commons.lang3.StringUtils.isNotEmpty(password)) {
+            final String password = PROPERTY_MANAGER.getProperty(proxyType + ".proxyPassword");
+            if (StringUtils.isNotBlank(password)) {
                 proxyUrlString += ":" + URLEncoder.encode(password, urlEncoding);
             }
 
-            if (org.apache.commons.lang3.StringUtils.isNotEmpty(user)) {
+            if (StringUtils.isNotBlank(user)) {
                 proxyUrlString += "@";
             }
 

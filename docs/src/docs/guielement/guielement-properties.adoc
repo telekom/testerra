@@ -2,7 +2,7 @@
 
 == Use the `getActual()`
 
-The values of most properties of an UiElement can be returned by the `getActual()` method.
+The values of most properties of a UiElement can be returned by the `getActual()` method.
 
 .The given HTML snippet
 [source,html]

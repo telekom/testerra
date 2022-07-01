@@ -68,6 +68,7 @@ public abstract class AbstractReportMethodPage extends AbstractReportPage {
 
     public String getTestDuration() {
         GuiElement durationGuiElement = testDurationCard.getSubElement(By.xpath("//div[contains(@class,'card-content')]"));
+        // TODO try using fitting regex
         return durationGuiElement.getText().split("\n")[1];
     }
 

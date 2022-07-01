@@ -34,9 +34,9 @@ public class ReportMethodPageTest extends AbstractReportTest {
 
         TestStep.begin("Navigate to method detail page and check for correct content");
         ReportMethodPage reportMethodPage;
-        // TODO: rework: use method name as provided data and click link?
+        // TODO: rework: use method name as provided data and click link
         //  one per status
-        //  expected in dedicated date structure or multiple data in provider? not with live reading in list of array from page
+        //  expected values with data in provider, not with live reading in list of array from page
         for (String[] row : methodsContentRows) {
             reportMethodPage = reportTestsPage.navigateToMethodReport(Integer.parseInt(row[2]) - 1);
 

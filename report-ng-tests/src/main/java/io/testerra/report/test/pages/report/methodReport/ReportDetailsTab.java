@@ -38,6 +38,7 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
 
     public void detailPageAssertsFailureAspectsCorrespondsToCorrectStatus(String expectedStatusTitle) {
         String expectedStatusTitleFormatted = expectedStatusTitle.toLowerCase();
+        // TODO: use Status Enum instead of hardcoded String
         if (expectedStatusTitleFormatted.equals("expected failed"))
             expectedStatusTitleFormatted = "failed-expected";
         GuiElement failureAspectColoredPart = testFailureAspect.getSubElement(By.xpath("//div[contains(@class, 'status')]"));

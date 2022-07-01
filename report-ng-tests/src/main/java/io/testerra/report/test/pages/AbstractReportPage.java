@@ -46,6 +46,7 @@ public abstract class AbstractReportPage extends ReportSideBar {
     // for any reason, the following line should work, but does not:
     // specificDropBox.getSubElement(By.xpath("mdc-list-item[contains(text(), '<label>')]")).click();
     // following method is replaces the call above
+    // TODO: use contains(., '<label>'): mdc-list-items has sub span, hence text() is not working
     public void selectDropBoxElement(GuiElement dropbox, String label) {
         dropbox.click();
         Optional<GuiElement> optionalDropBoxSelection = dropbox.getSubElement(By.xpath("//mdc-list-item")).getList()

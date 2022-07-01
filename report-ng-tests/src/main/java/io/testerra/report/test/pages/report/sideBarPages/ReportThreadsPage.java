@@ -30,6 +30,7 @@ public class ReportThreadsPage extends AbstractReportPage {
         super(driver);
     }
 
+    // TODO: assert in Test
     public Set<String> getThreadMethods() {
         testMethodSearchbar.click();
         Set<String> set = testMethodDropDownList.getSubElement(By.xpath("//mdc-list-item")).getList()
@@ -41,6 +42,7 @@ public class ReportThreadsPage extends AbstractReportPage {
         return set;
     }
 
+    // TODO: separate action and assert
     public void assertSearchForMethodWorksCorrect(Set<String> methods) {
         for (String method : methods) {
             selectMethod(method);
@@ -48,6 +50,8 @@ public class ReportThreadsPage extends AbstractReportPage {
         }
     }
 
+    // TODO: implement correct POP: new page after action to avoid sleeps
+    //  separate action and assert/ avoid assert: test needs to react on Optional
     private void selectMethod(String method) {
         testMethodSearchbar.click();
         testMethodSearchbar.type(method);
@@ -56,11 +60,12 @@ public class ReportThreadsPage extends AbstractReportPage {
                 .stream()
                 .filter(i -> i.getText().contains(method))
                 .findFirst();
-        Assert.assertTrue(optional.isPresent());
+        Assert.assertTrue(optional.isPresent(), String.format("expected sth for %s", method));
         optional.get().click();
     }
 
     public void assertMethodBoxIsSelected(String method) {
+        // TODO: use explicit locator, like //div[contains(@class, 'vis-item') and contains(@class, 'vis-range') and .//div[text()='<method>']]
         for (GuiElement guiElement : testThreadReport.getSubElement(By.xpath("div")).getList()) {
             if (guiElement.getText().split("\n")[0].equals(method.trim())) {
                 guiElement.getSubElement(By.xpath("/div"))

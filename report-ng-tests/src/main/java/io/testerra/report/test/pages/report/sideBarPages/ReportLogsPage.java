@@ -33,6 +33,9 @@ public class ReportLogsPage extends AbstractReportPage {
         super(driver);
     }
 
+    // TODO: separate action and assert
+    //  read Lines in test
+    //  call utils class/method with read lines for asserting the expected LogLevel
     public void assertLogReportContainsCorrectLogLevel(LogLevel logLevel) {
         testLogReportLines.getList()
                 .stream()
@@ -41,6 +44,10 @@ public class ReportLogsPage extends AbstractReportPage {
                         "Log report should contain only log statements with selected logLevel: " + logLevel.getTitle()));
     }
 
+    // TODO: separate actions and asserts
+    //  select Level per Level from Test, like per DataProvider
+    //  assert from test after selction
+
     public void assertLogReportIsCorrectWhenDifferentLogLevelAreSelected() {
         for (LogLevel level : LogLevel.values()) {
             selectDropBoxElement(testLogLevelSelect, level.getTitle());
@@ -48,6 +55,7 @@ public class ReportLogsPage extends AbstractReportPage {
         }
     }
 
+    // TODO: evaluate if the searching constraints are ok
     public Set<String> getReportLines() {
         return testLogReportLines.getList()
                 .stream()
@@ -67,9 +75,17 @@ public class ReportLogsPage extends AbstractReportPage {
                         String.format("All highlighted text parts should contain the searchbar input.\n[Filter: %s]\n[Actual: %s]", expectedText, i)));
     }
 
+    // TODO: why assert at first --> can be separate check of needed in test
     public void assertLogReportIsCorrectWhenSearchingForDifferentLogLines() {
         Set<String> reportLines = getReportLines();
         Assert.assertTrue(reportLines.size() > 0, "There should be at least one line!");
+
+        // TODO: separate action and asserts, no reading of existing lines and splitting
+        //  dataprovider with expected values: search value from test (Enum with testnames, or use TestStatus,...)
+        //  assert afterwards in test
+        //  implement working search method on page with clear as first step
+        //  implement correct POP: after input new Page is instantiated to avoid explicit sleeps
+
         for (String line : getReportLines()) {
             testSearchbarInput.type(line);
             TimerUtils.sleep(3000);

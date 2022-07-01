@@ -40,7 +40,7 @@ public class ReportDetailsTabTest extends AbstractReportTest {
 
         TestStep.begin("Check whether the displayed test state corresponds to each method");
         reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), status.title);
-        // TODO: rework with explicit values?
+        // TODO: rework with explicit values
         for (int i = 0; i < reportTestsPage.getAmountOfTableRows(); i++) {
 
             if (!reportTestsPage.methodGotFailureAspect(i)) continue;

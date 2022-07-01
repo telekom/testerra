@@ -22,6 +22,7 @@ public class ReportMethodPage extends AbstractReportPage {
     }
 
     public AbstractReportMethodPage getActivePage() {
+        // TODO: better solution than exception catching to distinguish Steps and Details Tab
         try {
             return PageFactory.create(ReportDetailsTab.class, getWebDriver());
         } catch (Exception ignored) {

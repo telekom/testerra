@@ -27,6 +27,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         reportFailureAspectsPage.assertFailureAspectsTableIsDisplayedCorrect();
     }
 
+    // TODO: test with explicitly provided filter options via Dataprovider
     @Test
     public void testT02_checkTypeFilter() {
         WebDriver driver = WebDriverManager.getWebDriver();
@@ -42,6 +43,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         reportFailureAspectsPage.assertFailureAspectTableIsCorrectDisplayedWhenIteratingThroughSelectableTypes();
     }
 
+    // TODO: test with explicitly provided failure aspects via Dataprovider
     @Test
     public void testT03_checkSearchFilter() {
         WebDriver driver = WebDriverManager.getWebDriver();

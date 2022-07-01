@@ -4,10 +4,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
-import io.testerra.report.test.pages.AbstractReportPage;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -15,6 +11,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
+
+import io.testerra.report.test.pages.AbstractReportPage;
 
 public class ReportFailureAspectsPage extends AbstractReportPage {
 
@@ -39,10 +41,16 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
         super(driver);
     }
 
-    private List<GuiElement> getColumn(int column) {
+    /**
+     * return specified columns by index
+     * @param column
+     * @return
+     */
+    private List<GuiElement> getColumns(int column) {
         List<GuiElement> returnList = new ArrayList<>();
-        for (GuiElement element : failureAspectsTable.getSubElement(By.xpath("//tr")).getList()) {
-            returnList.add(element.getSubElement(By.xpath("//td")).getList().get(column));
+        for (GuiElement tableRows : failureAspectsTable.getSubElement(By.xpath("//tr")).getList()) {
+            List<GuiElement> tableColumns = tableRows.getSubElement(By.xpath("//td")).getList();
+            returnList.add(tableColumns.get(column));
         }
         return returnList;
     }
@@ -64,21 +72,29 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
     }
 
     public List<String> getOrderListOfTopFailureAspects() {
-        return getColumn(1)
+        return getColumns(1)
                 .stream()
                 .map(GuiElement::getText)
                 .collect(Collectors.toList());
     }
 
+    // TODO: not all called methods here are relevant when calling the base method --> second one has a return in case of no search input
+    //  refactoring needed: call needed methods separately in tests, than generalization might be an option
     public void assertFailureAspectsTableIsDisplayedCorrect() {
         assertRankColumnDoesNotContainDuplicate();
+        // TODO: avoid: only needed when search occurred --> call in specific test
         assertFailureAspectsColumnContainsCorrectAspects();
+        // TODO: avoid: only needed when filtering occurred --> call in specific test
         assertStatusColumnContainsCorrectStates();
     }
 
     private void assertRankColumnDoesNotContainDuplicate() {
-        int amountOfRows = new HashSet<>(getColumn(0)).size();
-        int amountOfDifferentRanks = getColumn(0)
+        final List<GuiElement> columns = getColumns(0);
+
+        // TODO: Why? columns.size should be the same
+        final int amountOfRows = new HashSet<>(columns).size();
+        // TODO: what is done here? there is no filter of any kind, so basically it is all the same as getColumns size
+        final int amountOfDifferentRanks = columns
                 .stream()
                 .map(GuiElement::getText)
                 .collect(Collectors.toSet()).size();
@@ -87,8 +103,14 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
 
     private void assertFailureAspectsColumnContainsCorrectAspects() {
         String filter = testInputSearch.getAttribute("value").toUpperCase(Locale.ROOT);
+
+
+        // TODO: this hides unwanted assert skips --> avoid, call method from test, when it is clear if input occurred before;
+        //  expected value as parameter, not from element reading
         if (filter.equals("")) return;
-        getColumn(1)
+
+
+        getColumns(1)
                 .stream()
                 .map(GuiElement::getText)
                 .map(String::toUpperCase)
@@ -96,6 +118,7 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
                         String.format("All listed aspects should match the given filter.[Actual: %s] [Expected: %s]", i, filter)));
     }
 
+    // TODO: assert might be skipped but not wanted to; call directly from test when selection is known
     private void assertStatusColumnContainsCorrectStates() {
         if (testTypeSelect.getText().equals("Major")) {
             Assert.assertTrue(getFailedStateExistence(), "There should be failed states in every row!");
@@ -105,39 +128,48 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
         }
     }
 
+    // TODO: Why Hashsets? getColumns returns a list already; avoid action in assert methods, make actions in test and call assert from test
     public void assertShowExpectedFailedButtonWorksCorrectly(){
-        int amountOfAspectsButtonEnabled = new HashSet<>(getColumn(2)).size();
+        int amountOfAspectsButtonEnabled = new HashSet<>(getColumns(2)).size();
         disableButton();
-        int amountOfAspectsButtonDisabled = new HashSet<>(getColumn(2)).size();
+        int amountOfAspectsButtonDisabled = new HashSet<>(getColumns(2)).size();
         Assert.assertTrue(amountOfAspectsButtonDisabled < amountOfAspectsButtonEnabled,
                 "There should be more aspects listed, when expected fails button is enabled!");
     }
 
+    // TODO: separate action from assert, call assert after each selection in the test
     public void assertFailureAspectTableIsCorrectDisplayedWhenIteratingThroughSelectableTypes() {
 
         //Minor
         selectDropBoxElement(testTypeSelect, "Minor");
+        // TODO: check only needed stuff --> do not make general methods, with if dependent asserts
         assertFailureAspectsTableIsDisplayedCorrect();
 
         //Major
         selectDropBoxElement(testTypeSelect, "Major");
+        // TODO: check only needed stuff --> do not make general methods, with if dependent asserts
         assertFailureAspectsTableIsDisplayedCorrect();
     }
 
+    // TODO: separate action from assert, call assert after each selection in the test
     public void assertFailureAspectTableIsCorrectDisplayedWhenSearchingForDifferentAspects() {
-        Set<String> failureAspects = getColumn(1)
+
+        Set<String> failureAspects = getColumns(1)
                 .stream()
                 .map(i -> i.getText().split(":")[0])
                 .collect(Collectors.toSet());
 
         for (String aspect : failureAspects) {
             testInputSearch.type(aspect);
+            // TODO: avoid sleeps, use page object pattern with instantiation of Pages after actions
             TimerUtils.sleep(1000, "Necessary sleep gives page enough time to refresh page table content and locator");
             assertFailureAspectsTableIsDisplayedCorrect();
             testInputSearch.clear();
         }
     }
 
+    // TODO: assert and action in one method, do actions in test and assert afterwards
+    //  add fitting method name, if method is need at all
     public void disableButton() {
         Assert.assertEquals(testShowExpectedFailsButton.getAttribute("aria-checked"), "true", "Button should be enabled!");
         testShowExpectedFailsButton.click();

@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @deprecated Use {@link eu.tsystems.mms.tic.testframework.utils.Sequence} instead

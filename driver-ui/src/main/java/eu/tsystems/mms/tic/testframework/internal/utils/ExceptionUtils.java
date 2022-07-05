@@ -81,7 +81,7 @@ public class ExceptionUtils extends CoreExceptionUtils {
 //            }
 //        }
 
-        if (StringUtils.isNotBlank(actionName) || actionName.equals(INIT_STRING)) {
+        if (StringUtils.isBlank(actionName) || actionName.equals(INIT_STRING)) {
             return String.format("Construct %s", simpleClassName);
         } else {
             return String.format("%s.%s", simpleClassName, actionName);

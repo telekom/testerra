@@ -26,18 +26,12 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
-import com.google.inject.Scopes;
 import com.google.inject.util.Modules;
 import eu.tsystems.mms.tic.testframework.events.ModulesInitializedEvent;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.internal.BuildInformation;
-import eu.tsystems.mms.tic.testframework.internal.IdGenerator;
-import eu.tsystems.mms.tic.testframework.internal.SequenceIdGenerator;
 import eu.tsystems.mms.tic.testframework.logging.MethodContextLogAppender;
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
-import eu.tsystems.mms.tic.testframework.report.utils.DefaultTestNGContextGenerator;
-import eu.tsystems.mms.tic.testframework.report.utils.TestNGContextNameGenerator;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import java.io.BufferedReader;
@@ -161,14 +155,18 @@ public class Testerra {
     }
 
     /**
-     * We initialize the IoC modules in class name order,
+     * We initialize the IoC modules in a custom class name order,
      * and override each previously configured module with the next.
+     *
+     * The custom comparator is needed to prevent that custom modules are initialized before
+     * the Testerra core modules 'CoreHook', 'DriverUiHook', 'DriverUi_Desktop'. So Testerra core modules cannot
+     * overwrite custom implementations (of factories, providers etc.) but custom modules can do this to inject their own behaviour.
      */
     private static Injector initIoc() {
         Reflections reflections = new Reflections(TesterraListener.DEFAULT_PACKAGE);
         Set<Class<? extends AbstractModule>> classes = reflections.getSubTypesOf(AbstractModule.class);
         Iterator<Class<? extends AbstractModule>> iterator = classes.iterator();
-        TreeMap<String, Module> sortedModules = new TreeMap<>();
+        TreeMap<String, Module> sortedModules = new TreeMap<>(new ModuleComparator());
 
         // Override each module with next
         Module prevModule = null;

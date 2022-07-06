@@ -63,6 +63,8 @@ Maven:
 </dependencies>
 ```
 
+Testerra requires **JDK11** or later.
+
 ### Using Testerra functionality
 
 Create a Test Class and extend the TesterraTest class:

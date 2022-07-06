@@ -1,4 +1,4 @@
 = System requirements
 
-* Testerra is based on Java. You need a *JDK 8* or later.
+* Testerra is based on Java. You need a *JDK 11* or later.
 * Execute your tests with *Maven* or *Gradle*

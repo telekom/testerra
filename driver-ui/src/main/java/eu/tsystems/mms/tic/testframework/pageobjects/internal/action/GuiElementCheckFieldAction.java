@@ -28,7 +28,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.AbstractPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.UiElementBase;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import java.lang.reflect.Field;
 
 public class GuiElementCheckFieldAction extends AbstractCheckFieldAction {
@@ -110,7 +111,7 @@ public class GuiElementCheckFieldAction extends AbstractCheckFieldAction {
             if @Check has a prioritizedErrorMessage mark, then wrap it
              */
             String prioritizedErrorMessage = check.prioritizedErrorMessage();
-            if (!StringUtils.isStringEmpty(prioritizedErrorMessage)) {
+            if (StringUtils.isNotBlank(prioritizedErrorMessage)) {
                 throw new AssertionError(prioritizedErrorMessage, error);
             } else {
                 throw error;

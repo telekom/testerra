@@ -24,9 +24,9 @@ package eu.tsystems.mms.tic.testframework.utils;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @deprecated Use {@link eu.tsystems.mms.tic.testframework.utils.Sequence} instead
@@ -188,14 +188,12 @@ public class Timer implements Loggable {
             }
         }
 
-
         if (sequence.isAddThrowableToMethodContext()) {
             addThrowableToMethodContext(catchedThrowable);
         }
 
         // create timeout exception
         TimeoutException timeoutException = createTimeoutException(catchedThrowable);
-
 
         // give back a packed response when we have an object to give back or we have to skip throwing something
         if (sequence.getReturningObject() != null || sequence.isSkipThrowingException()) {
@@ -226,7 +224,7 @@ public class Timer implements Loggable {
         }
 
         // stack exception if errormessage is given
-        if (!StringUtils.isStringEmpty(errorMessage)) {
+        if (StringUtils.isNotBlank(errorMessage)) {
             timeoutException = new TimeoutException(errorMessage, timeoutException);
         }
 

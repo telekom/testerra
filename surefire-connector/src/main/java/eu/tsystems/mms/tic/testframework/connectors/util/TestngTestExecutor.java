@@ -22,7 +22,7 @@
 package eu.tsystems.mms.tic.testframework.connectors.util;
 
 import eu.tsystems.mms.tic.testframework.utils.MapUtils;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.surefire.report.ReporterException;
 import org.apache.maven.surefire.report.ReporterFactory;
 import org.apache.maven.surefire.report.RunListener;
@@ -227,7 +227,7 @@ public final class TestngTestExecutor {
     private static Properties removeQCSynchronizerFromListeners(final Properties confOptions) {
         final String listenerStr = confOptions.getProperty("listener");
 
-        if (!StringUtils.isStringEmpty(listenerStr)) {
+        if (StringUtils.isNotBlank(listenerStr)) {
             final String[] listeners = listenerStr.split(",");
             final StringBuilder builder = new StringBuilder();
             for (final String listener : listeners) {

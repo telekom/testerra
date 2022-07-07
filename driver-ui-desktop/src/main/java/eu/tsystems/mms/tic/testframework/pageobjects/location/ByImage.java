@@ -23,7 +23,6 @@
 
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.sikuli.WebDriverScreen;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.awt.Rectangle;
@@ -33,6 +32,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.SearchContext;
@@ -113,7 +114,7 @@ public class ByImage extends By {
 
             int nr = 0;
             String tagName = webElement.getTagName();
-            while (!StringUtils.isStringEmpty(tagName) && tagName.contains("frame")) {
+            while (StringUtils.isNotBlank(tagName) && tagName.contains("frame")) {
                 /*
                  this is a frame element
                  */

@@ -19,11 +19,11 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.internal.utils;
+package eu.tsystems.mms.tic.testframework.internal.utils;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.AbstractPage;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class ExceptionUtils extends CoreExceptionUtils {
 
@@ -81,10 +81,7 @@ public class ExceptionUtils extends CoreExceptionUtils {
 //            }
 //        }
 
-        if (
-            StringUtils.isStringEmpty(actionName)
-            || actionName.equals(INIT_STRING)
-        ) {
+        if (StringUtils.isBlank(actionName) || actionName.equals(INIT_STRING)) {
             return String.format("Construct %s", simpleClassName);
         } else {
             return String.format("%s.%s", simpleClassName, actionName);

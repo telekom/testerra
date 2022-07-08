@@ -57,6 +57,7 @@ import java.util.stream.Collectors;
 /**
  * This is the core main class where everything begins.
  * Using this method will initialize Testerra and all its modules.
+ *
  * @author Mike Reiche <mike.reiche@t-systems.com>
  */
 public class Testerra {
@@ -64,7 +65,7 @@ public class Testerra {
     public enum Properties implements IProperties {
         DRY_RUN("tt.dryrun", false),
         MONITOR_MEMORY("tt.monitor.memory", true),
-        DEMO_MODE("tt.demomode",false),
+        DEMO_MODE("tt.demomode", false),
         @Deprecated
         SELENIUM_SERVER_HOST("tt.selenium.server.host", null),
         @Deprecated
@@ -156,14 +157,18 @@ public class Testerra {
     }
 
     /**
-     * We initialize the IoC modules in class name order,
+     * We initialize the IoC modules in a custom class name order,
      * and override each previously configured module with the next.
+     * <p>
+     * The custom comparator is needed to prevent that custom modules are initialized before
+     * the Testerra core modules 'CoreHook', 'DriverUiHook', 'DriverUi_Desktop'. So Testerra core modules cannot
+     * overwrite custom implementations (of factories, providers etc.) but custom modules can do this to inject their own behaviour.
      */
     private static Injector initIoc() {
         Reflections reflections = new Reflections(TesterraListener.DEFAULT_PACKAGE);
         Set<Class<? extends AbstractModule>> classes = reflections.getSubTypesOf(AbstractModule.class);
         Iterator<Class<? extends AbstractModule>> iterator = classes.iterator();
-        TreeMap<String, Module> sortedModules = new TreeMap<>();
+        TreeMap<String, Module> sortedModules = new TreeMap<>(new ModuleComparator());
 
         // Override each module with next
         Module prevModule = null;
@@ -177,9 +182,9 @@ public class Testerra {
             LOGGER.info(String.format("Register IoC modules: %s", String.join(", ", sortedModules.keySet())));
             for (Module overrideModule : sortedModules.values()) {
                 if (overrideModule instanceof ModuleHook) {
-                    moduleHooks.add((ModuleHook)overrideModule);
+                    moduleHooks.add((ModuleHook) overrideModule);
                 }
-                if (prevModule!=null) {
+                if (prevModule != null) {
                     overrideModule = Modules.override(prevModule).with(overrideModule);
                 }
                 prevModule = overrideModule;

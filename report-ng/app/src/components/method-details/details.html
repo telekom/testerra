@@ -31,54 +31,47 @@
 
         </mdc-layout-grid-inner>
     </mdc-layout-grid>
+        <mdc-card mdc-elevation="4"  class="mb1" repeat.for="failureAspect of _methodDetails.failureAspects" >
 
-    <div repeat.for="failureAspect of _methodDetails.failureAspects">
-        <mdc-expandable accordion mdc-elevation="4">
-            <div
-                slot="caption"
-                mdc-body2
-                class="two-lines"
-            >
-                <span if.bind="failureAspect.relevantCause.className">Failure Aspect: ${failureAspect.relevantCause.className}</span>
-            </div>
-            <div class="card-content status-${_methodDetails.methodContext.resultStatus|statusClass}">
-                <div mdc-headline5><class-name-markup namespace.bind="failureAspect.relevantCause.className">:</class-name-markup><span innerhtml="${failureAspect.message|html}"></span></div>
+            <div class="p1 status-${_methodDetails.methodContext.resultStatus|statusClass} upper-rounded">
+                <div mdc-headline5><class-name-markup namespace.bind="failureAspect.relevantCause.className">:</class-name-markup><span>${failureAspect.message}</span></div>
                 <div class="mt1" if.bind="_layoutComparisonContext">
                     <layout-comparison context.bind="_layoutComparisonContext"></layout-comparison>
                 </div>
             </div>
-
-            <div mdc-subtitle2 class="card-headline">Origin (${failureAspect.errorContext.scriptSource.fileName})</div>
-            <code-view source.bind="failureAspect.errorContext.scriptSource"></code-view>
-
-            <div mdc-subtitle2 class="card-headline space-between">Stacktrace
-                <button mdc-icon-button
-                        icon="content_copy"
-                        title="Copy to clipboard"
-                        class="icon-button--dense"
-                        style="margin-top: -6px; margin-bottom: -6px;"
-                        click.delegate="_copyStackTraceToClipboard(failureAspect.errorContext.stackTrace)"
-                ></button>
+            <div class="pl1 pr1 pb1">
+                <div mdc-subtitle2 class="card-headline">Origin (${failureAspect.errorContext.scriptSource.fileName})</div>
+                <code-view source.bind="failureAspect.errorContext.scriptSource"></code-view>
             </div>
+            <mdc-list-divider class="au-target mdc-list-divider"></mdc-list-divider>
+            <div class="pl1 pr1 pb1">
+                <div mdc-subtitle2 class="card-headline space-between">Stacktrace
+                    <button mdc-icon-button
+                            icon="content_copy"
+                            title="Copy to clipboard"
+                            class="icon-button--dense"
+                            style="margin-top: -6px; margin-bottom: -6px;"
+                            click.delegate="_copyStackTraceToClipboard(failureAspect.errorContext.stackTrace)"
+                    ></button>
+                </div>
 
-            <!-- TODO fix expandable arrow direction-->
-            <mdc-expandable repeat.for="cause of failureAspect.errorContext.stackTrace"
-                            class="card-expandable"
-            >
-                <div
-                    slot="caption"
-                    mdc-body2
-                    class="two-lines"
+                <mdc-expandable repeat.for="cause of failureAspect.errorContext.stackTrace"
+                                class="card-expandable"
                 >
-                    <class-name-markup namespace.bind="cause.className"><span if.bind="cause.message">: ${cause.message}</span></class-name-markup>
-                </div>
-                <div class="code-view">
-                    <div class="line"
-                         repeat.for="line of cause.stackTraceElements"
-                         class.bind="line.indexOf(_methodDetails.methodContext.contextValues.name)>=0?'error':''"
-                         innerhtml="${_hljs.highlight('java', line).value}"></div>
-                </div>
-            </mdc-expandable>
-        </mdc-expandable>
-    </div>
+                    <div
+                        slot="caption"
+                        mdc-body2
+                        class="two-lines"
+                    >
+                        <class-name-markup namespace.bind="cause.className"><span if.bind="cause.message">: ${cause.message}</span></class-name-markup>
+                    </div>
+                    <div class="code-view">
+                        <div class="line"
+                             repeat.for="line of cause.stackTraceElements"
+                             class.bind="line.indexOf(_methodDetails.methodContext.contextValues.name)>=0?'error':''"
+                             innerhtml="${_hljs.highlight('java', line).value}"></div>
+                    </div>
+                </mdc-expandable>
+            </div>
+        </mdc-card>
 </template>

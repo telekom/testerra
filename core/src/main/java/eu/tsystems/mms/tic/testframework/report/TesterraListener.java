@@ -90,9 +90,10 @@ public class TesterraListener implements
     /**
      * Default package namespace used in ClassFinder and for initializing of modules.
      *
-     * Currently, there is no default package defined. Testerra always scans the whole class path.
+     * Additional modules have to use
      */
-    public final static String DEFAULT_PACKAGE = "";
+    public final static String DEFAULT_PACKAGE = "eu.tsystems.mms.tic";
+    public static final String[] DEFULT_PACKAGES = {"eu.tsystems.mms.tic", "io.testerra"};
 
     /**
      * Skip test methods control.

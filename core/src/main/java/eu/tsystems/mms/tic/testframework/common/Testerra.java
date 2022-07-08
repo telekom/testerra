@@ -39,6 +39,7 @@ import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.DefaultConfiguration;
 import org.reflections.Reflections;
+import org.reflections.util.ConfigurationBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -165,7 +166,7 @@ public class Testerra {
      * overwrite custom implementations (of factories, providers etc.) but custom modules can do this to inject their own behaviour.
      */
     private static Injector initIoc() {
-        Reflections reflections = new Reflections(TesterraListener.DEFAULT_PACKAGE);
+        Reflections reflections = new Reflections(new ConfigurationBuilder().forPackages(TesterraListener.DEFULT_PACKAGES));
         Set<Class<? extends AbstractModule>> classes = reflections.getSubTypesOf(AbstractModule.class);
         Iterator<Class<? extends AbstractModule>> iterator = classes.iterator();
         TreeMap<String, Module> sortedModules = new TreeMap<>(new ModuleComparator());

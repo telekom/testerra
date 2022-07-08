@@ -4,7 +4,7 @@ To register your module, you need to create a module injection configuration bas
 
 [source,java]
 ----
-package eu.tsystems.mms.tic.mymodule;
+package io.testerra.myproject.mymodule;
 
 import com.google.inject.AbstractModule;
 
@@ -16,7 +16,7 @@ public class ConfigureMyModule extends AbstractModule {
 }
 ----
 
-IMPORTANT: Please be aware, that the package namespace prefix `eu.tsystems.mms.tic` is required in order to find your module configuration.
+IMPORTANT: Please be aware, that the package namespace prefix `io.testerra` is required in order to find your module configuration.
 
 NOTE: All module configuration instances are loaded in alphabetical order.
 
@@ -26,7 +26,7 @@ When you need more module features, like registering to <<Events and Listeners, 
 
 [source,java]
 ----
-package eu.tsystems.mms.tic.mymodule;
+package io.testerra.myproject.mymodule;
 
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 

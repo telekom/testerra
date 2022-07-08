@@ -25,7 +25,6 @@ import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageObject;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PageAssertions;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
@@ -116,7 +115,7 @@ final public class ClassFinder {
             prefix = "";
         }
 
-        final Reflections reflections = new Reflections(TesterraListener.PROJECT_PACKAGE);
+        final Reflections reflections = new Reflections("");
         final String baseClassName = baseClass.getSimpleName();
 
         PrioritizedClassInfos<T> prioritizedClassInfos = new PrioritizedClassInfos<>();

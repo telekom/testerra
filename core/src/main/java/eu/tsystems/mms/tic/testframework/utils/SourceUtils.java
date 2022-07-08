@@ -19,13 +19,16 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.utils;
+package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
-import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
 import eu.tsystems.mms.tic.testframework.report.DefaultReport;
+import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
+import org.reflections.Reflections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -37,9 +40,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
-import org.reflections.Reflections;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public final class SourceUtils {
 
@@ -116,7 +116,7 @@ public final class SourceUtils {
         // is class in throwable??
         int causeNumberForClass = getCauseNumberForClass(throwable, classWithFailure, 0);
         if (causeNumberForClass == -1) {
-             return null;
+            return null;
         }
 
         // search for caller
@@ -124,8 +124,7 @@ public final class SourceUtils {
         if (!cachedClassNames.containsKey(callerSubClass)) {
             classNames = findClassNamesForSubTypesOf(callerSubClass);
             cachedClassNames.put(callerSubClass, classNames);
-        }
-        else {
+        } else {
             classNames = cachedClassNames.get(callerSubClass);
             if (classNames.size() == 0) {
                 classNames = findClassNamesForSubTypesOf(callerSubClass);
@@ -180,7 +179,7 @@ public final class SourceUtils {
 
     private static List<String> findClassNamesForSubTypesOf(Class clazz) {
         final List<String> classnames = new ArrayList<String>();
-        Reflections reflections = new Reflections(TesterraListener.PROJECT_PACKAGE);
+        Reflections reflections = new Reflections("");
         Set<Class> subTypesOf = reflections.getSubTypesOf(clazz);
         for (Class aClass : subTypesOf) {
             classnames.add(aClass.getName());
@@ -214,8 +213,7 @@ public final class SourceUtils {
         if (source != null) {
             LOGGER.debug("Found source:\n" + source);
             return source;
-        }
-        else {
+        } else {
             LOGGER.debug("Did not find source for " + filename + " in " + sourceRoot);
             return null;
         }
@@ -238,8 +236,7 @@ public final class SourceUtils {
                     LINE
                      */
                     scriptSource.addLine(new ScriptSource.Line(line, lineCounter));
-                }
-                else if (lineCounter == lineNr) {
+                } else if (lineCounter == lineNr) {
                     /*
                     LINE WITH ISSUE
                      */
@@ -256,8 +253,7 @@ public final class SourceUtils {
                 lineCounter++;
             }
             br.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             LOGGER.warn("Error reading source of " + file.getName(), e);
         }
         return null;

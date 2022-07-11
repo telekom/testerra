@@ -52,7 +52,7 @@ export class Method {
                 moduleId: PLATFORM.moduleName('./details'),
                 nav: true,
                 name: "details",
-                title: 'Details',
+                title: 'Error Details',
                 settings: {
                     icon: "center_focus_strong"
                 }
